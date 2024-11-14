@@ -11,7 +11,12 @@ import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
-import { ExtWalletContextType, WalletContext } from './wallet.provider';
+import { securityService } from '../security/security.service';
+import {
+  channel,
+  ExtWalletContextType,
+  WalletContext,
+} from './wallet.provider';
 import { IKeyItem, IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
@@ -61,8 +66,11 @@ export const useWallet = () => {
     async (profileId: string, password: string) => {
       console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
+      await securityService.clearSecurityPhrase();
       if (profile) {
-        return setProfile(profile);
+        const res = await setProfile(profile);
+        channel.postMessage({ action: 'switch-profile', payload: profile });
+        return res;
       }
       return null;
     },
@@ -70,12 +78,18 @@ export const useWallet = () => {
   );
 
   const lockProfile = useCallback(() => {
-    setProfile(undefined);
+    const run = async () => {
+      await securityService.clearSecurityPhrase();
+      await setProfile(undefined);
+      channel.postMessage({ action: 'switch-profile', payload: undefined });
+    };
+    run();
   }, [setProfile]);
 
   const unlockKeySource = useCallback(
     async (keySource: IKeySource) => {
       const password = await askForPassword();
+      console.log('unlockKeySource', keySource, password);
       if (!password) {
         throw new Error('Password is required');
       }

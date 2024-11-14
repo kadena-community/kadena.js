@@ -57,10 +57,17 @@ export const config: UserConfig = {
   build: {
     ssr: false,
     minify: false,
-    sourcemap: 'inline',
+    sourcemap: 'hidden',
     rollupOptions: {
+      input: {
+        html: 'index.html',
+        main: 'src/index.ts', // your main app entry point
+        sw: 'src/service-worker/service-worker.ts', // entry for the service worker
+      },
       output: {
         minifyInternalExports: false,
+        entryFileNames: (chunk) =>
+          chunk.name === 'sw' ? '[name].js' : 'assets/[name]-[hash].js', // Specify output filename pattern for SW
       },
     },
     commonjsOptions: {

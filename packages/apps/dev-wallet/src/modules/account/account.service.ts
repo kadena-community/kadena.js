@@ -29,6 +29,7 @@ import { genKeyPair } from '@kadena/cryptography-utils';
 import { transactionRepository } from '../transaction/transaction.repository';
 import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';
 
+import { config } from '@/config';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { execution } from '@kadena/client/fp';
 import { INetwork, networkRepository } from '../network/network.repository';
@@ -221,49 +222,45 @@ const hasSameGuard = (a?: IKeySet['guard'], b?: IKeySet['guard']) => {
 };
 
 export const syncAccount = async (account: IAccount | IWatchedAccount) => {
-  console.log('syncing account', account.address);
   const network = await networkRepository.getNetwork(account.networkUUID);
-  const updatedAccount = { ...account };
+  const patch: Partial<IAccount | IWatchedAccount> = {};
 
   const chainResult = (await discoverAccount(
-    updatedAccount.address,
+    account.address,
     network.networkId,
     undefined,
-    updatedAccount.contract,
+    account.contract,
   )
     .execute()
     .catch((error) =>
       console.error('DISCOVERY ERROR', error),
     )) as IDiscoveredAccount[];
 
-  console.log('chainResult', account.address, chainResult);
-
   const filteredResult = chainResult.filter(
     ({ result }) =>
       Boolean(result) && hasSameGuard(result?.guard, account.keyset?.guard),
   );
 
-  updatedAccount.chains = filteredResult.map(({ chainId, result }) => ({
+  patch.chains = filteredResult.map(({ chainId, result }) => ({
     chainId,
     balance: result!.balance ? new PactNumber(result!.balance).toString() : '0',
   }));
 
-  updatedAccount.overallBalance = filteredResult.reduce(
+  patch.overallBalance = filteredResult.reduce(
     (acc, { result }) =>
       result?.balance
         ? new PactNumber(result.balance).plus(acc).toDecimal()
         : acc,
     '0',
   );
-  if ('watched' in updatedAccount) {
-    if (updatedAccount.watched) {
-      await accountRepository.updateWatchedAccount(updatedAccount);
-    }
-  } else {
-    await accountRepository.updateAccount(updatedAccount as IAccount);
+  patch.syncTime = Date.now();
+  if ('watched' in account && account.watched) {
+    return accountRepository.patchWatchedAccount(account.uuid, patch);
   }
-  console.log('updated account', updatedAccount);
-  return updatedAccount;
+  return accountRepository.patchAccount(
+    account.uuid,
+    patch as Partial<IAccount>,
+  );
 };
 
 export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
@@ -275,15 +272,27 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
     profileId,
     networkUUID,
   );
-  console.log('syncing accounts', accounts);
   // sync all accounts sequentially to avoid rate limiting
   const result = [];
-  for (const account of accounts) {
+  const now = Date.now();
+  const accountsToSync = [...accounts, ...watchedAccounts].filter(
+    (account) =>
+      !account.syncTime ||
+      account.syncTime < now - config.ACCOUNTS.SYNC_INTERVAL,
+  );
+
+  await Promise.all(
+    accountsToSync.map((account) =>
+      'watched' in account
+        ? accountRepository.patchWatchedAccount(account.uuid, { syncTime: now })
+        : accountRepository.patchAccount(account.uuid, { syncTime: now }),
+    ),
+  );
+
+  for (const account of accountsToSync) {
     result.push(await syncAccount(account));
   }
-  for (const account of watchedAccounts) {
-    result.push(await syncAccount(account));
-  }
+
   return result;
 };
 

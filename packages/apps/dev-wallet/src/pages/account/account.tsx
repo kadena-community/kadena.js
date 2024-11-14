@@ -24,7 +24,7 @@ import {
 } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
 import { linkClass } from '../transfer/style.css';
@@ -45,6 +45,13 @@ export function AccountPage() {
     watchAccounts.find((account) => account.uuid === accountId);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (account) {
+      console.log('syncing account', account?.uuid);
+      syncAccount(account);
+    }
+  }, [account?.uuid]);
 
   const keyset = account?.keyset;
   const asset = fungibles.find((f) => f.contract === account?.contract);
