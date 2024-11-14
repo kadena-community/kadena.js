@@ -127,7 +127,6 @@ export async function kadenaDecrypt(
   password: BinaryLike,
   encryptedData: [Uint8Array, Uint8Array, Uint8Array],
 ): Promise<Uint8Array> {
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!encryptedData) {
     throw new Error('Encrypted data is empty');
   }
