@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="./boot.css" />
   </head>
   <body class="boot">
-    <div id="root"></div>
-    <!-- Welcome message will be removed after wallet is loaded -->
     <div id="welcome-message" class="welcome-wrapper">
       <div class="welcome-message-content">
         <img
@@ -19,9 +17,11 @@
           style="margin: 0"
         />
         <h1 style="margin: 0; font-weight: 400">Chainweaver v3</h1>
-        <p style="margin: 0">Loading</p>
+        <div id="loading-content">Loading...</div>
       </div>
     </div>
+    <div id="root"></div>
+    <!-- Welcome message will be removed after wallet is loaded -->
 
     <script type="module" src="/src/index.ts"></script>
   </body>

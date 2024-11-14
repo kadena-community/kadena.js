@@ -7,12 +7,17 @@ const removeBootTheme = () => {
   document.body.classList.remove(`boot-theme-${getTheme()}`);
 };
 
+const loadingContent = document.getElementById('loading-content');
+
 // the entry file for the dev wallet app
 // TODO: we need to do setup app here like service worker, etc
 async function bootstrap() {
   registerServiceWorker();
   addBootTheme();
   import('./App/main').then(async ({ renderApp }) => {
+    if (loadingContent) {
+      loadingContent.innerHTML = '';
+    }
     renderApp();
     globalThis.addEventListener('wallet-loaded', function () {
       document.getElementById('welcome-message')?.remove();
@@ -29,6 +34,9 @@ async function bootstrap() {
 }
 
 function registerServiceWorker() {
+  if (loadingContent) {
+    loadingContent.innerHTML = 'Loading Service Worker...';
+  }
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js')
@@ -37,6 +45,9 @@ function registerServiceWorker() {
           'Service Worker registered with scope:',
           registration.scope,
         );
+        if (loadingContent) {
+          loadingContent.innerHTML = 'Service Worker registered!';
+        }
         registration.onupdatefound = () => {
           const newWorker = registration.installing;
           if (!newWorker) return;
@@ -49,6 +60,10 @@ function registerServiceWorker() {
         };
       })
       .catch((error) => {
+        if (loadingContent) {
+          loadingContent.innerHTML =
+            '<div>Service Worker registration failed!</div><div>using fallback mode</div><div>Loading UI...</div>';
+        }
         console.error('Service Worker registration failed:', error);
       });
   }

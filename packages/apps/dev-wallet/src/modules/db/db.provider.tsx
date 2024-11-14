@@ -1,13 +1,22 @@
+import { LoadingContent } from '@/Components/LoadingContent/LoadingContent';
 import { sleep } from '@/utils/helpers';
+import { Stack, Text } from '@kadena/kode-ui';
 import { FC, ReactNode, useEffect, useState } from 'react';
 import { addDefaultFungibles } from '../account/account.repository';
 import { addDefaultNetworks } from '../network/network.repository';
 import { closeDatabaseConnections, setupDatabase } from './db.service';
 
 const renderDefaultError = ({ message }: Error) => (
-  <div>
-    DataBase Error happens; <br /> {message}
-  </div>
+  <Stack
+    textAlign="left"
+    justifyContent={'flex-start'}
+    alignItems={'flex-start'}
+  >
+    <Stack flexDirection={'column'} gap={'xxs'}>
+      <Text color="emphasize">DataBase Error!</Text>
+      <Text>{message}</Text>
+    </Stack>
+  </Stack>
 );
 
 export const DatabaseProvider: FC<{
@@ -16,7 +25,7 @@ export const DatabaseProvider: FC<{
   renderError?: (error: Error) => ReactNode;
 }> = ({
   children,
-  fallback = 'initializing database',
+  fallback = <Text>initializing database ...</Text>,
   renderError = renderDefaultError,
 }) => {
   const [initialized, setInitialized] = useState(false);
@@ -61,8 +70,8 @@ export const DatabaseProvider: FC<{
   }, []);
 
   if (errorObject) {
-    return renderError(errorObject);
+    return <LoadingContent> {renderError(errorObject)}</LoadingContent>;
   }
 
-  return initialized ? children : fallback;
+  return initialized ? children : <LoadingContent>{fallback}</LoadingContent>;
 };

@@ -1,6 +1,6 @@
 import { DatabaseProvider } from '@/modules/db/db.provider';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
-import { MediaContextProvider } from '@kadena/kode-ui';
+import { MediaContextProvider, useTheme } from '@kadena/kode-ui';
 import { LayoutProvider } from '@kadena/kode-ui/patterns';
 import { useEffect } from 'react';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
@@ -8,6 +8,7 @@ import { Routes } from './routes';
 import { SessionProvider } from './session';
 
 function Providers({ children }: { children: React.ReactNode }) {
+  useTheme();
   useEffect(() => {
     if (!localStorage.getItem('theme')) {
       localStorage.setItem('theme', 'dark');
@@ -15,18 +16,18 @@ function Providers({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <MediaContextProvider>
-      <SessionProvider>
-        <PromptProvider>
-          <DatabaseProvider>
-            <WalletProvider>
-              <LayoutProvider>
+      <LayoutProvider>
+        <SessionProvider>
+          <PromptProvider>
+            <DatabaseProvider>
+              <WalletProvider>
                 {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
                 <PromptProvider>{children}</PromptProvider>
-              </LayoutProvider>
-            </WalletProvider>
-          </DatabaseProvider>
-        </PromptProvider>
-      </SessionProvider>
+              </WalletProvider>
+            </DatabaseProvider>
+          </PromptProvider>
+        </SessionProvider>
+      </LayoutProvider>
     </MediaContextProvider>
   );
 }
