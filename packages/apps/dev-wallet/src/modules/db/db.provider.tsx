@@ -1,4 +1,4 @@
-import { LoadingContent } from '@/Components/LoadingContent/LoadingContent';
+import { BootContent } from '@/Components/BootContent/BootContent';
 import { sleep } from '@/utils/helpers';
 import { Stack, Text } from '@kadena/kode-ui';
 import { FC, ReactNode, useEffect, useState } from 'react';
@@ -70,8 +70,8 @@ export const DatabaseProvider: FC<{
   }, []);
 
   if (errorObject) {
-    return <LoadingContent> {renderError(errorObject)}</LoadingContent>;
+    return <BootContent> {renderError(errorObject)}</BootContent>;
   }
 
-  return initialized ? children : <LoadingContent>{fallback}</LoadingContent>;
+  return initialized ? children : <BootContent>{fallback}</BootContent>;
 };

@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 const loadingContent = document.getElementById('loading-content');
 
-export function LoadingContent({ children }: { children: React.ReactNode }) {
+export function BootContent({ children }: { children: React.ReactNode }) {
   if (!loadingContent) {
     return children;
   }

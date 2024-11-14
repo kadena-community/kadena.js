@@ -1,4 +1,4 @@
-import { LoadingContent } from '@/Components/LoadingContent/LoadingContent';
+import { BootContent } from '@/Components/BootContent/BootContent';
 import { Session } from '@/utils/session';
 import { Text } from '@kadena/kode-ui';
 import {
@@ -47,9 +47,9 @@ export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
       {loaded ? (
         children
       ) : (
-        <LoadingContent>
+        <BootContent>
           <Text>Loading session...</Text>
-        </LoadingContent>
+        </BootContent>
       )}
     </sessionContext.Provider>
   );
