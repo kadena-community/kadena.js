@@ -12,7 +12,7 @@ const loadingContent = document.getElementById('loading-content');
 // the entry file for the dev wallet app
 // TODO: we need to do setup app here like service worker, etc
 async function bootstrap() {
-  registerServiceWorker();
+  await registerServiceWorker();
   addBootTheme();
   import('./App/main').then(async ({ renderApp }) => {
     if (loadingContent) {
@@ -36,12 +36,12 @@ async function bootstrap() {
   }, 200);
 }
 
-function registerServiceWorker() {
+async function registerServiceWorker() {
   if (loadingContent) {
     loadingContent.innerHTML = 'Loading Service Worker...';
   }
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
+    await navigator.serviceWorker
       .register('/sw.js')
       .then((registration) => {
         console.log(
@@ -49,7 +49,8 @@ function registerServiceWorker() {
           registration.scope,
         );
         if (loadingContent) {
-          loadingContent.innerHTML = 'Service Worker registered!';
+          loadingContent.innerHTML =
+            '<div>Service Worker registered!</div><div>Loading components...</div>';
         }
         registration.onupdatefound = () => {
           const newWorker = registration.installing;

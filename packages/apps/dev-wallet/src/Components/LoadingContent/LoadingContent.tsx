@@ -1,8 +1,9 @@
 import { Stack } from '@kadena/kode-ui';
 import { createPortal } from 'react-dom';
 
+const loadingContent = document.getElementById('loading-content');
+
 export function LoadingContent({ children }: { children: React.ReactNode }) {
-  const loadingContent = document.getElementById('loading-content');
   if (!loadingContent) {
     return children;
   }
