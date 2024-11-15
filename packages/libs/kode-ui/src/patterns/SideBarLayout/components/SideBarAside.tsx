@@ -23,10 +23,12 @@ export const SideBarAside: FC<{
     isRightAsideExpanded,
     rightAsideTitle,
     setRightAsideRef,
+    rightAsideOnClose,
   } = useLayout();
   const ref = useRef<HTMLDivElement | null>();
 
   const handleExpand = (e: PressEvent) => {
+    if (rightAsideOnClose) rightAsideOnClose();
     setIsRightAsideExpanded(false);
   };
 

@@ -1,52 +1,50 @@
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
-import { createToken } from '@/services/createToken';
+import type { IInitTokenProps } from '@/services/initToken';
+import { initToken } from '@/services/initToken';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export interface ISecurityFormProps {
-  name: string;
-  symbol: string;
-  kadenaId: string;
+interface IProps {
+  onClose: () => void;
 }
 
-export const SecurityForm: FC = () => {
-  const { setIsRightAsideExpanded } = useLayout();
+export const InitTokenForm: FC<IProps> = ({ onClose }) => {
   const { activeNetwork } = useNetwork();
   const { account } = useAccount();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
-  const { register, handleSubmit } = useForm<ISecurityFormProps>({
+  const { register, handleSubmit } = useForm<IInitTokenProps>({
     defaultValues: {
       name: '',
     },
   });
 
-  const onSubmit = async (data: ISecurityFormProps) => {
+  const onSubmit = async (data: IInitTokenProps) => {
     console.log({ data });
     setError(null);
-    try {
-      await createToken(data, activeNetwork, account!);
+    //try {
+    await initToken(data, activeNetwork, account!);
 
-      // setIsRightAsideExpanded(false);
-    } catch (e: any) {
-      setError(e?.message || e);
-    }
+    //onClose();
+    // setIsRightAsideExpanded(false);
+    // } catch (e: any) {
+    //   setError(e?.message || e);
+    // }
   };
 
   return (
-    <RightAside isOpen>
+    <RightAside isOpen onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RightAsideHeader label="Create New Security" />
+        <RightAsideHeader label="Init Asset" />
         <RightAsideContent>
           <TextField label="Name" {...register('name', { required: true })} />
           <TextField
@@ -59,10 +57,7 @@ export const SecurityForm: FC = () => {
           />
         </RightAsideContent>
         <RightAsideFooter>
-          <Button
-            onPress={() => setIsRightAsideExpanded(false)}
-            variant="transparent"
-          >
+          <Button onPress={onClose} variant="transparent">
             Cancel
           </Button>
           <Button type="submit">Create Security</Button>

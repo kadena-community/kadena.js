@@ -19,13 +19,13 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         enableSystem={true}
         enableColorScheme={true} // When enabled, we can't make the background of the embedded iframe transparent
       >
-        <LayoutProvider>
-          <NetworkProvider>
-            <AccountProvider>
+        <NetworkProvider>
+          <AccountProvider>
+            <LayoutProvider>
               <AssetProvider>{children}</AssetProvider>
-            </AccountProvider>
-          </NetworkProvider>
-        </LayoutProvider>
+            </LayoutProvider>
+          </AccountProvider>
+        </NetworkProvider>
       </ThemeProvider>
     </MediaContextProvider>
   );

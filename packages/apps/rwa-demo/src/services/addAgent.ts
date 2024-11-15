@@ -1,9 +1,17 @@
 import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
-import type { ISecurityFormProps } from '@/components/SecurityForm/SecurityForm';
 import { getClient } from '@/utils/client';
+import { getPubKey } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import type { ConnectedAccount } from '@kadena/spirekey-sdk';
 import { sign } from '@kadena/spirekey-sdk';
+
+export interface IAddAgentProps {
+  agent: string;
+}
+
+const createPubKeyFromAccount = (account: string): string => {
+  return account.replace('k:', '').replace('r:', '');
+};
 
 const doSubmit = async (txArg: any) => {
   const client = getClient();
@@ -18,48 +26,45 @@ const doSubmit = async (txArg: any) => {
   //   }
 };
 
-export const createToken = async (
-  data: ISecurityFormProps,
+export const addAgent = async (
+  data: IAddAgentProps,
   network: INetwork,
-  owner: ConnectedAccount,
+  account: ConnectedAccount,
 ) => {
   const transaction = Pact.builder
     .execution(
-      `RWA.agent-role.add-agent (read-string 'agent) (read-keyset 'agent_guard)`,
+      `(RWA.agent-role.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
     )
     .setMeta({
-      senderAccount: owner.accountName,
+      senderAccount: account.accountName,
       chainId: network.chainId,
     })
-    .addSigner(owner.keyset?.keys[1]!, (withCap) => [
-      withCap(`RWA.agent-role.ONLY-OWNER`),
-      withCap(`coin.GAS`),
-    ])
-    .addData(
-      'agent',
-      'k:929e05b703e610a1a85b2cbe22d449ef787bc02ef00b1a62c868b41820eee5ef',
+    .addSigner(
+      {
+        pubKey: getPubKey(account!),
+        scheme: 'WebAuthn',
+      },
+      (withCap) => [withCap(`RWA.agent-role.ONLY-OWNER`), withCap(`coin.GAS`)],
     )
+    .addData('agent', data.agent)
     .addData('agent_guard', {
-      keys: [
-        '929e05b703e610a1a85b2cbe22d449ef787bc02ef00b1a62c868b41820eee5ef',
-      ],
+      keys: [createPubKeyFromAccount(data.agent)],
       pred: 'keys-all',
     })
+
     .setNetworkId(network.networkId)
     .createTransaction();
 
   console.log({ transaction });
+  console.log(transaction.cmd);
   console.log(JSON.parse(transaction.cmd));
 
-  const { transactions, isReady } = await sign([transaction], [owner]);
+  const { transactions, isReady } = await sign([transaction], [account]);
   await isReady();
+  console.log(transactions);
 
-  console.log({ transactions });
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   transactions.map(async (t) => {
-    // should perform check to see if all sigs are present
-
-    console.log({ t });
     await doSubmit(t);
   });
 };

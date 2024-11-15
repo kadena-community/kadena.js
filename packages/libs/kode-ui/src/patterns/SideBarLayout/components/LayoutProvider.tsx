@@ -1,5 +1,11 @@
 import type { FC, PropsWithChildren } from 'react';
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from 'react';
 import type { PressEvent } from 'react-aria';
 import type { ISideBarLayoutLocation } from '../types';
 
@@ -34,6 +40,8 @@ export interface ILayoutContext {
   setRightAsideRef: (value?: HTMLDivElement | null) => void;
   isRightAsideExpanded: boolean;
   setIsRightAsideExpanded: (value: boolean) => void;
+  rightAsideOnClose?: () => void;
+  setRightAsideOnClose: (value: () => void) => void;
   breadcrumbsRef?: HTMLDivElement | null;
   setBreadcrumbsRef: (value?: HTMLDivElement | null) => void;
 }
@@ -52,6 +60,7 @@ export const LayoutContext = createContext<ILayoutContext>({
   setRightAsideTitle: () => {},
   isRightAsideExpanded: false,
   setIsRightAsideExpanded: () => {},
+  setRightAsideOnClose: () => {},
 });
 
 export const useLayout = () => useContext(LayoutContext);
@@ -65,6 +74,7 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [breadcrumbsRef, setBreadcrumbsRefState] =
     useState<HTMLDivElement | null>(null);
   const [isRightAsideExpanded, setIsRightAsideExpanded] = useState(false);
+  const rightAsideOnCloseRef = useRef();
   const [rightAsideTitle, setRightAsideTitleState] = useState<
     string | undefined
   >('');
@@ -126,6 +136,9 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setBreadcrumbsRef = (value?: HTMLDivElement | null) => {
     setBreadcrumbsRefState(value ? value : null);
   };
+  const setRightAsideOnClose = (value?: any) => {
+    rightAsideOnCloseRef.current = value;
+  };
 
   const isActiveUrl = (url?: string) => {
     return !!url && url === location?.url;
@@ -153,6 +166,8 @@ export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setIsRightAsideExpanded: handleSetRightAsideExpanded,
         breadcrumbsRef,
         setBreadcrumbsRef,
+        rightAsideOnClose: rightAsideOnCloseRef.current,
+        setRightAsideOnClose,
       }}
     >
       {children}
