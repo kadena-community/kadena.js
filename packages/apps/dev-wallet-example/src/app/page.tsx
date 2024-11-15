@@ -17,7 +17,8 @@ const sleep = (time: number) =>
     }, time);
   });
 
-const walletOrigin = () => (window as any).walletUrl || 'http://localhost:1420';
+const walletOrigin = () =>
+  (window as any).walletUrl || 'https://wallet.kadena.io';
 const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';
@@ -48,7 +49,7 @@ const communicate =
   };
 
 let walletGlobal: Window | null = null;
-async function getWalletConnection(page: string = '') {
+async function getWalletConnection(page: string = '', popup = true) {
   if (walletGlobal && !walletGlobal.closed) {
     return {
       message: communicate(window, walletGlobal),
@@ -56,7 +57,11 @@ async function getWalletConnection(page: string = '') {
       close: () => walletGlobal?.close(),
     };
   }
-  const wallet = window.open('', walletName);
+  const wallet = window.open(
+    '',
+    walletName,
+    popup ? 'width=800,height=800' : undefined,
+  );
 
   if (!wallet) {
     throw new Error('POPUP_BLOCKED');
@@ -217,7 +222,7 @@ export default function Home() {
           disabled={!state || (state && state.accounts.length < 2)}
           onClick={async () => {
             if (!state) return;
-            const { message, close } = await getWalletConnection();
+            const { message, focus, close } = await getWalletConnection();
             const tx = transferAllCommand({
               sender: {
                 account: state.accounts[0].address,
@@ -231,6 +236,7 @@ export default function Home() {
               amount: state.accounts[0].chains[0].balance,
               contract: state.accounts[0].contract,
             });
+            focus();
             const response = await message(
               'SIGN_REQUEST',
               createTransaction(tx()) as any,

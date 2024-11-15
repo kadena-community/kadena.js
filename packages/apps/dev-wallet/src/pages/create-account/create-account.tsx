@@ -205,11 +205,11 @@ export function CreateAccount() {
                 style={{ maxWidth: 650 }}
               >
                 <Stack flexDirection={'column'} gap={'sm'}>
-                  <Radio value="k:account">k: account</Radio>
+                  <Radio value="k:account">Single Key</Radio>
                   <Text size="small">
                     This account will be guarded by a single key, this is the
                     most relevant way if you are creating a personal account;
-                    Also this type of account supposed widely by kadena
+                    Also this type of account supported widely by kadena
                     ecosystem.
                   </Text>
                   <Text size="small" color="emphasize">
@@ -218,15 +218,15 @@ export function CreateAccount() {
                 </Stack>
                 <Divider />
                 <Stack flexDirection={'column'} gap={'sm'}>
-                  <Radio value="w:account">w: account</Radio>
+                  <Radio value="w:account">Multi Keys</Radio>
                   <Text size="small">
-                    This account will be guarded by a keyset or (single key when
-                    key type is web-authn). This will offers a way to create
-                    shared account or more secure account guarded by several
-                    keys.
+                    This account will be guarded by a keyset. This will offers a
+                    way to create shared account or more secure account guarded
+                    by several keys.
                   </Text>
                   <Text size="small" color="emphasize">
-                    Tip: The account guard is immutable and can't be changed.
+                    Tip: The account guard is immutable and the account address
+                    is bind to the guard.
                   </Text>
                 </Stack>
                 <Divider />
