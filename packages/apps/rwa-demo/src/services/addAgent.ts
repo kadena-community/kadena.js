@@ -29,7 +29,7 @@ export const addAgent = async (
   network: INetwork,
   account: ConnectedAccount,
 ) => {
-  const transaction = Pact.builder
+  return Pact.builder
     .execution(
       `(RWA.agent-role.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
     )
@@ -49,17 +49,4 @@ export const addAgent = async (
 
     .setNetworkId(network.networkId)
     .createTransaction();
-
-  console.log({ transaction });
-  console.log(transaction.cmd);
-  console.log(JSON.parse(transaction.cmd));
-
-  // const { transactions, isReady } = await sign([transaction], [account]);
-  // await isReady();
-  // console.log(transactions);
-
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  // transactions.map(async (t) => {
-  //   await doSubmit(t);
-  // });
 };
