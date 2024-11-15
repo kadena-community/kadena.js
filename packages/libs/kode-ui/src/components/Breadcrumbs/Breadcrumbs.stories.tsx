@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Badge } from '../Badge/Badge';
 import type { IBreadcrumbsProps } from '../Breadcrumbs';
 import { ProductIcon } from '../Icon';
 import { Breadcrumbs } from './Breadcrumbs';
@@ -64,6 +65,39 @@ export const Primary: Story = {
     const items = ItemArray.slice(0, itemsCount);
     return (
       <Breadcrumbs icon={icon}>
+        {items.map((item, idx) => {
+          return (
+            <BreadcrumbsItem
+              key={item}
+              href={idx < items.length - 1 ? item : undefined}
+              isDisabled={idx % 2 === 1}
+            >
+              {item}
+            </BreadcrumbsItem>
+          );
+        })}
+      </Breadcrumbs>
+    );
+  },
+};
+
+export const WithBadge: Story = {
+  name: 'Breadcrumbs With Badge',
+  args: {
+    icon: <ProductIcon.KadenaOverview />,
+    itemsCount: 3,
+  },
+  render: ({ itemsCount, icon }) => {
+    const items = ItemArray.slice(0, itemsCount);
+    return (
+      <Breadcrumbs
+        icon={icon}
+        badge={
+          <Badge size="sm" style="highContrast">
+            Testnet
+          </Badge>
+        }
+      >
         {items.map((item, idx) => {
           return (
             <BreadcrumbsItem

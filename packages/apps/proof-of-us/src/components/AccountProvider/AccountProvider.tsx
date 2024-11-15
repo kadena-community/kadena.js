@@ -2,7 +2,7 @@
 import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import { store } from '@/utils/socket/store';
-import { connect, initSpireKey } from '@kadena/spirekey-sdk';
+import { connect } from '@kadena/spirekey-sdk';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -59,9 +59,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     }
 
-    initSpireKey({
-      hostUrl: process.env.NEXT_PUBLIC_WALLET_URL,
-    });
     setIsMounted(true);
   }, []);
 

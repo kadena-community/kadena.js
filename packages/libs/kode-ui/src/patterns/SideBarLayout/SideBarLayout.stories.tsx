@@ -9,7 +9,7 @@ import {
 } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
@@ -66,13 +66,36 @@ const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
 const InnerLayout = () => {
   const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
     useLayout();
+  const [hasOpenSidebar, setHasOpenSidebar] = useState(false);
+  const [hasOpenOtherSidebar, setHasOpenOtherSidebar] = useState(false);
 
   return (
     <>
-      <RightAside isOpen={isRightAsideExpanded}>
-        <RightAsideHeader label="test header" />
-        <RightAsideContent>content</RightAsideContent>
-      </RightAside>
+      {isRightAsideExpanded && hasOpenSidebar && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+            setHasOpenSidebar(false);
+          }}
+        >
+          <RightAsideHeader label="test header" />
+          <RightAsideContent>content</RightAsideContent>
+        </RightAside>
+      )}
+
+      {isRightAsideExpanded && hasOpenOtherSidebar && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+            setHasOpenOtherSidebar(false);
+          }}
+        >
+          <RightAsideHeader label="test header" />
+          <RightAsideContent>content</RightAsideContent>
+        </RightAside>
+      )}
       <SideBarLayout
         logo={
           <a href="https://kadena.io" target="_blank" rel="noreferrer">
@@ -183,13 +206,29 @@ const InnerLayout = () => {
           flexDirection="column"
           style={{ maxWidth: '800px', height: '400px' }}
         >
-          <Stack width="100%" justifyContent="center" margin="md">
+          <Stack
+            width="100%"
+            flexDirection="column"
+            justifyContent="center"
+            margin="md"
+            gap="md"
+          >
             <Button
               onPress={() => {
                 setIsRightAsideExpanded(true);
+                setHasOpenSidebar(true);
               }}
             >
               open sidebar
+            </Button>
+
+            <Button
+              onPress={() => {
+                setIsRightAsideExpanded(true);
+                setHasOpenOtherSidebar(true);
+              }}
+            >
+              open other sidebar
             </Button>
           </Stack>
           content
