@@ -1,4 +1,7 @@
-import type { ICommandResult } from '@kadena/chainweb-node-client';
+import type {
+  ClientRequestInit,
+  ICommandResult,
+} from '@kadena/chainweb-node-client';
 import { local } from '@kadena/chainweb-node-client';
 import { hash as blackHash } from '@kadena/cryptography-utils';
 import { composePactCommand, execution } from '../../composePactCommand';
@@ -7,7 +10,7 @@ export function runPact(
   hostUrl: string,
   code: string,
   data: Record<string, unknown> = {},
-  requestOptions: { headers?: Record<string, string> } = {},
+  requestInit?: ClientRequestInit,
 ): Promise<ICommandResult> {
   const pactCommand = composePactCommand(execution(code), {
     payload: { exec: { data } },
@@ -24,7 +27,7 @@ export function runPact(
     {
       preflight: false,
       signatureVerification: false,
-      ...requestOptions,
+      ...requestInit,
     },
   );
 }

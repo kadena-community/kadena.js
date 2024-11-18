@@ -1,4 +1,5 @@
 import type { IPollRequestBody, IPollResponse } from './interfaces/PactAPI';
+import type { ClientRequestInit } from './local';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import { fetch } from './utils/fetch';
@@ -18,9 +19,9 @@ export async function poll(
   requestBody: IPollRequestBody,
   apiHost: string,
   confirmationDepth = 0,
-  { headers }: { headers?: Record<string, string> } = {},
+  requestInit?: ClientRequestInit,
 ): Promise<IPollResponse> {
-  const request = stringifyAndMakePOSTRequest(requestBody, headers);
+  const request = stringifyAndMakePOSTRequest(requestBody, requestInit);
   const pollUrl = new URL(`${apiHost}/api/v1/poll`);
   if (confirmationDepth > 0) {
     pollUrl.searchParams.append(

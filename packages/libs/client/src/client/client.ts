@@ -1,4 +1,5 @@
 import type {
+  ClientRequestInit,
   ICommandResult,
   ILocalCommandResult,
   ILocalOptions,
@@ -8,6 +9,7 @@ import type {
 } from '@kadena/chainweb-node-client';
 import { listen, local, poll, send } from '@kadena/chainweb-node-client';
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import { head } from '../integration-tests/helpers/fp-helpers';
 import type { IPactCommand } from '../interfaces/IPactCommand';
 import { runPact } from './api/runPact';
 import { getSpv, pollSpv } from './api/spv';
@@ -17,6 +19,7 @@ import type {
   IPollOptions,
   IPollRequestPromise,
 } from './interfaces/interfaces';
+import { mergeOptions } from './utils/mergeOptions';
 import {
   groupByHost,
   kadenaHostGenerator,
@@ -49,7 +52,10 @@ export interface ISubmit {
    * @param transaction - The transaction to be submitted.
    * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
-  (transaction: ICommand): Promise<ITransactionDescriptor>;
+  (
+    transaction: ICommand,
+    options?: ClientRequestInit,
+  ): Promise<ITransactionDescriptor>;
 
   /**
    * Submits one or more public (unencrypted) signed commands to the blockchain for execution.
@@ -60,7 +66,10 @@ export interface ISubmit {
    * @param transactionList - The list of transactions to be submitted.
    * @returns A promise that resolves the transactionDescriptor {@link ITransactionDescriptor}
    */
-  (transactionList: ICommand[]): Promise<ITransactionDescriptor[]>;
+  (
+    transactionList: ICommand[],
+    options?: ClientRequestInit,
+  ): Promise<ITransactionDescriptor[]>;
 }
 
 /**
@@ -118,6 +127,7 @@ export interface IBaseClient {
    */
   getStatus: (
     transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
+    options?: ClientRequestInit,
   ) => Promise<IPollResponse>;
 
   /**
@@ -130,6 +140,7 @@ export interface IBaseClient {
    */
   listen: (
     transactionDescriptor: ITransactionDescriptor,
+    options?: ClientRequestInit,
   ) => Promise<ICommandResult>;
 
   /**
@@ -160,6 +171,7 @@ export interface IBaseClient {
   createSpv: (
     transactionDescriptor: ITransactionDescriptor,
     targetChainId: ChainId,
+    options?: ClientRequestInit,
   ) => Promise<string>;
 }
 
@@ -174,6 +186,7 @@ export interface IClient extends IBaseClient {
    */
   preflight: (
     transaction: ICommand | IUnsignedCommand,
+    options?: ClientRequestInit,
   ) => Promise<ILocalCommandResult>;
 
   /**
@@ -182,7 +195,10 @@ export interface IClient extends IBaseClient {
    * @remarks
    * @see {@link IBaseClient.local | local() function}
    */
-  signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
+  signatureVerification: (
+    transaction: ICommand,
+    options?: ClientRequestInit,
+  ) => Promise<ICommandResult>;
 
   /**
    * An alias for `local` when both preflight and signatureVerification are `false`.
@@ -191,7 +207,10 @@ export interface IClient extends IBaseClient {
    * @remarks
    * @see {@link IBaseClient.local | local() function}
    */
-  dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+  dirtyRead: (
+    transaction: IUnsignedCommand,
+    options?: ClientRequestInit,
+  ) => Promise<ICommandResult>;
 
   /**
    * Generates a command from the code and data, then sends it to the '/local' endpoint.
@@ -201,7 +220,7 @@ export interface IClient extends IBaseClient {
   runPact: (
     code: string,
     data: Record<string, unknown>,
-    option: INetworkOptions,
+    option: ClientRequestInit & INetworkOptions,
   ) => Promise<ICommandResult>;
 
   /**
@@ -216,7 +235,10 @@ export interface IClient extends IBaseClient {
    * Alias for `submit` that accepts only one transaction. useful when you want more precise type checking.
    * {@link IBaseClient.submit | submit() function}
    */
-  submitOne: (transaction: ICommand) => Promise<ITransactionDescriptor>;
+  submitOne: (
+    transaction: ICommand,
+    options?: ClientRequestInit,
+  ) => Promise<ITransactionDescriptor>;
 
   /**
    * Use {@link IBaseClient.getStatus | getStatus() function}
@@ -226,6 +248,7 @@ export interface IClient extends IBaseClient {
    */
   getPoll: (
     transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
+    options?: ClientRequestInit,
   ) => Promise<IPollResponse>;
 
   /**
@@ -268,18 +291,19 @@ export interface ICreateClient {
       chainId: ChainId;
       networkId: string;
       type?: 'local' | 'send' | 'poll' | 'listen' | 'spv';
-    }) => string | { hostUrl: string; headers: Record<string, string> },
+    }) => string | { hostUrl: string; requestInit: ClientRequestInit },
     defaults?: { confirmationDepth?: number },
   ): IClient;
 }
 
 const getHostData = (
-  hostObject: string | { hostUrl: string; headers: Record<string, string> },
+  hostObject: string | { hostUrl: string; requestInit: ClientRequestInit },
 ) => {
   const hostUrl =
     typeof hostObject === 'string' ? hostObject : hostObject.hostUrl;
-  const headers = typeof hostObject === 'object' ? hostObject.headers : {};
-  return { hostUrl, headers };
+  const requestInit =
+    typeof hostObject === 'object' ? hostObject.requestInit : {};
+  return { hostUrl, requestInit };
 };
 
 /**
@@ -300,13 +324,10 @@ export const createClient: ICreateClient = (
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
       });
-      const { hostUrl, headers } = getHostData(hostObject);
-      return local(body, hostUrl, {
-        ...options,
-        headers: headers,
-      });
+      const { hostUrl, requestInit } = getHostData(hostObject);
+      return local(body, hostUrl, mergeOptions(requestInit, options));
     },
-    submit: (async (body) => {
+    submit: (async (body, options) => {
       const isList = Array.isArray(body);
       const commands = isList ? body : [body];
       const [first] = commands;
@@ -319,11 +340,13 @@ export const createClient: ICreateClient = (
         networkId: cmd.networkId,
       });
 
-      const { hostUrl, headers } = getHostData(hostObject);
+      const { hostUrl, requestInit } = getHostData(hostObject);
 
-      const { requestKeys } = await send({ cmds: commands }, hostUrl, {
-        headers,
-      });
+      const { requestKeys } = await send(
+        { cmds: commands },
+        hostUrl,
+        mergeOptions(requestInit, options),
+      );
 
       const transactionDescriptors = requestKeys.map((key) => ({
         requestKey: key,
@@ -343,20 +366,23 @@ export const createClient: ICreateClient = (
       const results = groupByHost(
         requestsList.map(({ requestKey, chainId, networkId }) => {
           const hostObject = getHost({ chainId, networkId, type: 'poll' });
-          const { hostUrl, headers } = getHostData(hostObject);
-          const host = JSON.stringify({ host: hostUrl, headers });
+          const { hostUrl, requestInit } = getHostData(hostObject);
           return {
             requestKey,
-            host,
+            host: hostUrl,
+            requestInit,
           };
         }),
       ).map(([host, requestKeys]) => {
-        const { hostUrl, headers } = JSON.parse(host);
-        return pollStatus(hostUrl, requestKeys, {
-          confirmationDepth,
-          ...options,
-          headers,
-        });
+        const requestInit = requestKeys[0].requestInit;
+        return pollStatus(
+          host,
+          requestKeys.map((r) => r.requestKey),
+          {
+            confirmationDepth,
+            ...mergeOptions(requestInit, options),
+          },
+        );
       });
 
       // merge all of the result in one object
@@ -364,7 +390,7 @@ export const createClient: ICreateClient = (
 
       return mergedPollRequestPromises;
     },
-    async getStatus(transactionDescriptors) {
+    async getStatus(transactionDescriptors, options?: ClientRequestInit) {
       const requestsList = Array.isArray(transactionDescriptors)
         ? transactionDescriptors
         : [transactionDescriptors];
@@ -373,14 +399,23 @@ export const createClient: ICreateClient = (
         groupByHost(
           requestsList.map(({ requestKey, chainId, networkId }) => {
             const hostObject = getHost({ chainId, networkId, type: 'poll' });
-            const { hostUrl, headers } = getHostData(hostObject);
-            const host = JSON.stringify({ host: hostUrl, headers });
+            const { hostUrl, requestInit } = getHostData(hostObject);
             return {
               requestKey,
-              host,
+              host: hostUrl,
+              requestInit,
             };
           }),
-        ).map(([hostUrl, requestKeys]) => poll({ requestKeys }, hostUrl)),
+        ).map(([hostUrl, requestKeys]) => {
+          const requestInit = requestKeys[0].requestInit;
+
+          return poll(
+            { requestKeys: requestKeys.map((r) => r.requestKey) },
+            hostUrl,
+            undefined,
+            mergeOptions(requestInit, options),
+          );
+        }),
       );
 
       // merge all of the result in one object
@@ -389,57 +424,75 @@ export const createClient: ICreateClient = (
       return mergedResults;
     },
 
-    async listen({ requestKey, chainId, networkId }) {
+    async listen({ requestKey, chainId, networkId }, options) {
       const hostObject = getHost({ chainId, networkId, type: 'listen' });
-      const { hostUrl, headers } = getHostData(hostObject);
-      const result = await listen({ listen: requestKey }, hostUrl, { headers });
+      const { hostUrl, requestInit } = getHostData(hostObject);
+      const result = await listen(
+        { listen: requestKey },
+        hostUrl,
+        mergeOptions(requestInit, options),
+      );
 
       return result;
     },
 
     pollCreateSpv({ requestKey, chainId, networkId }, targetChainId, options) {
       const hostObject = getHost({ chainId, networkId, type: 'spv' });
-      const { hostUrl, headers } = getHostData(hostObject);
-      return pollSpv(hostUrl, requestKey, targetChainId, {
-        ...options,
-        headers,
-      });
+      const { hostUrl, requestInit } = getHostData(hostObject);
+      return pollSpv(
+        hostUrl,
+        requestKey,
+        targetChainId,
+        mergeOptions(requestInit, options),
+      );
     },
 
-    async createSpv({ requestKey, chainId, networkId }, targetChainId) {
+    async createSpv(
+      { requestKey, chainId, networkId },
+      targetChainId,
+      options,
+    ) {
       const hostObject = getHost({ chainId, networkId, type: 'spv' });
-      const { hostUrl, headers } = getHostData(hostObject);
-      return getSpv(hostUrl, requestKey, targetChainId, { headers });
+      const { hostUrl, requestInit } = getHostData(hostObject);
+      return getSpv(
+        hostUrl,
+        requestKey,
+        targetChainId,
+        mergeOptions(requestInit, options),
+      );
     },
   };
 
   return {
     ...client,
     submitOne: client.submit,
-    preflight(body) {
+    preflight(body, options) {
       return client.local(body, {
+        ...options,
         preflight: true,
         signatureVerification: true,
       });
     },
-    signatureVerification(body) {
+    signatureVerification(body, options) {
       return client.local(body, {
+        ...options,
         preflight: false,
         signatureVerification: true,
       });
     },
-    dirtyRead(body) {
+    dirtyRead(body, options) {
       return client.local(body, {
+        ...options,
         preflight: false,
         signatureVerification: false,
       });
     },
     runPact: (code, data, options) => {
       const hostObject = getHost(options);
-      const { hostUrl, headers } = getHostData(hostObject);
+      const { hostUrl, requestInit } = getHostData(hostObject);
       if (hostUrl === '') throw new Error('NO_HOST_URL');
 
-      return runPact(hostUrl, code, data, { headers });
+      return runPact(hostUrl, code, data, mergeOptions(requestInit, options));
     },
     send: client.submit,
     getPoll: client.getStatus,

@@ -1,3 +1,5 @@
+import type { ClientRequestInit } from './local';
+
 /**
  * Formats API request body to use with `fetch` function.
  *
@@ -7,13 +9,10 @@
  */
 export function stringifyAndMakePOSTRequest<T>(
   body: T,
-  headers: Record<string, string> = {},
+  requestInit?: ClientRequestInit,
 ) {
   return {
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
+    ...requestInit,
     method: 'POST',
     body: JSON.stringify(body),
   };

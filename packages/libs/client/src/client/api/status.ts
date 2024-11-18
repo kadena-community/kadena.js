@@ -29,8 +29,10 @@ export const pollStatus: IPollStatus = (
     timeout,
     interval,
     confirmationDepth = 0,
-    headers = {},
+    onResult = () => {},
+    ...requestInit
   } = options ?? {};
+  const signal = requestInit.signal ?? undefined;
   let requestKeys = [...requestIds];
   const prs: Record<string, IExtPromise<ICommandResult>> = requestKeys.reduce(
     (acc, requestKey) => ({
@@ -40,19 +42,28 @@ export const pollStatus: IPollStatus = (
     {},
   );
   const task = async (): Promise<void> => {
-    requestKeys.forEach(onPoll);
-    const pollResponse = await poll({ requestKeys }, host, confirmationDepth, {
-      headers,
-    });
-    Object.values(pollResponse).forEach((item) => {
-      prs[item.reqKey].resolve(item);
-      requestKeys = requestKeys.filter((key) => key !== item.reqKey);
-    });
+    try {
+      requestKeys.forEach(onPoll);
+      const pollResponse = await poll(
+        { requestKeys },
+        host,
+        confirmationDepth,
+        requestInit,
+      );
+      Object.values(pollResponse).forEach((item) => {
+        prs[item.reqKey].resolve(item);
+        onResult(item.reqKey, item);
+        requestKeys = requestKeys.filter((key) => key !== item.reqKey);
+      });
+    } catch (error) {
+      onPoll(undefined, error);
+      throw error;
+    }
     if (requestKeys.length > 0) {
       return Promise.reject(new Error('NOT_COMPLETED'));
     }
   };
-  const retryStatus = retry(task);
+  const retryStatus = retry(task, signal);
 
   retryStatus({ interval, timeout }).catch((err) => {
     Object.values(prs).forEach((pr) => {

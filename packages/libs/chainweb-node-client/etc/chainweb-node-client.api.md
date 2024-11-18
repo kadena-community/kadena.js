@@ -24,6 +24,9 @@ export type ChainwebChainId = (typeof CHAINS)[number];
 export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'testnet05' | 'development';
 
 // @alpha (undocumented)
+export type ClientRequestInit = Omit<RequestInit, 'method' | 'body'>;
+
+// @alpha (undocumented)
 export function convertIUnsignedTransactionToNoSig(transaction: IUnsignedCommand): ICommand;
 
 // @alpha
@@ -86,9 +89,7 @@ export interface ILocalCommandResult {
 }
 
 // @alpha (undocumented)
-export interface ILocalOptions {
-    // (undocumented)
-    headers?: Record<string, string>;
+export interface ILocalOptions extends ClientRequestInit {
     // (undocumented)
     preflight?: boolean;
     // (undocumented)
@@ -155,9 +156,7 @@ export interface ISPVRequestBody {
 }
 
 // @alpha
-export function listen(requestBody: IListenRequestBody, apiHost: string, { headers }?: {
-    headers?: Record<string, string>;
-}): Promise<ICommandResult>;
+export function listen(requestBody: IListenRequestBody, apiHost: string, requestInit?: ClientRequestInit): Promise<ICommandResult>;
 
 // @alpha (undocumented)
 export type ListenResponse = ICommandResult;
@@ -166,10 +165,9 @@ export type ListenResponse = ICommandResult;
 export function local<T extends ILocalOptions>(requestBody: LocalRequestBody, apiHost: string, options?: T): Promise<LocalResponse<T>>;
 
 // @alpha
-export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, headers, }: {
+export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, ...requestInit }: ILocalOptions & {
     signatureVerification: boolean;
     preflight: boolean;
-    headers?: Record<string, string>;
 }): Promise<IPreflightResult | ICommandResult>;
 
 // @alpha (undocumented)
@@ -196,33 +194,36 @@ export function parseResponse<T>(response: Response): Promise<T>;
 export function parseResponseTEXT(response: Response): Promise<string>;
 
 // @alpha
-export function poll(requestBody: IPollRequestBody, apiHost: string, confirmationDepth?: number, { headers }?: {
-    headers?: Record<string, string>;
-}): Promise<IPollResponse>;
+export function poll(requestBody: IPollRequestBody, apiHost: string, confirmationDepth?: number, requestInit?: ClientRequestInit): Promise<IPollResponse>;
 
 // @alpha
-export function send(requestBody: ISendRequestBody, apiHost: string, { headers }?: {
-    headers?: Record<string, string>;
-}): Promise<SendResponse>;
+export function send(requestBody: ISendRequestBody, apiHost: string, requestInit?: ClientRequestInit): Promise<SendResponse>;
 
 // @alpha
 export type SendResponse = IRequestKeys;
 
 // @alpha
-export function spv(requestBody: ISPVRequestBody, apiHost: string, { headers }?: {
-    headers?: Record<string, string>;
-}): Promise<SPVResponse | Response>;
+export function spv(requestBody: ISPVRequestBody, apiHost: string, requestInit?: ClientRequestInit): Promise<SPVResponse | Response>;
 
 // @alpha
 export type SPVResponse = SPVProof;
 
 // @alpha
-export function stringifyAndMakePOSTRequest<T>(body: T, headers?: Record<string, string>): {
-    headers: {
-        'Content-Type': string;
-    };
+export function stringifyAndMakePOSTRequest<T>(body: T, requestInit?: ClientRequestInit): {
     method: string;
     body: string;
+    cache?: RequestCache | undefined;
+    credentials?: RequestCredentials | undefined;
+    headers?: HeadersInit | undefined;
+    integrity?: string | undefined;
+    keepalive?: boolean | undefined;
+    mode?: RequestMode | undefined;
+    priority?: RequestPriority | undefined;
+    redirect?: RequestRedirect | undefined;
+    referrer?: string | undefined;
+    referrerPolicy?: ReferrerPolicy | undefined;
+    signal?: AbortSignal | null | undefined;
+    window?: null | undefined;
 };
 
 // (No @packageDocumentation comment for this package)

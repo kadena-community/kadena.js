@@ -6,6 +6,7 @@
 
 import { ChainId } from '@kadena/types';
 import type Client from '@walletconnect/sign-client';
+import type { ClientRequestInit } from '@kadena/chainweb-node-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
@@ -82,9 +83,9 @@ export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetw
 
 // @public (undocumented)
 export interface IBaseClient {
-    createSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId) => Promise<string>;
-    getStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
-    listen: (transactionDescriptor: ITransactionDescriptor) => Promise<ICommandResult>;
+    createSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId, options?: ClientRequestInit) => Promise<string>;
+    getStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor, options?: ClientRequestInit) => Promise<IPollResponse>;
+    listen: (transactionDescriptor: ITransactionDescriptor, options?: ClientRequestInit) => Promise<ICommandResult>;
     local: <T extends ILocalOptions>(transaction: LocalRequestBody, options?: T) => Promise<LocalResponse<T>>;
     pollCreateSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId, options?: IPollOptions) => Promise<string>;
     pollStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor, options?: IPollOptions) => IPollRequestPromise<ICommandResult>;
@@ -118,16 +119,16 @@ export type ICapabilityItem = ICap;
 
 // @public
 export interface IClient extends IBaseClient {
-    dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+    dirtyRead: (transaction: IUnsignedCommand, options?: ClientRequestInit) => Promise<ICommandResult>;
     // @deprecated
-    getPoll: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
+    getPoll: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor, options?: ClientRequestInit) => Promise<IPollResponse>;
     pollOne: (transactionDescriptor: ITransactionDescriptor, options?: IPollOptions) => Promise<ICommandResult>;
-    preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
-    runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
+    preflight: (transaction: ICommand | IUnsignedCommand, options?: ClientRequestInit) => Promise<ILocalCommandResult>;
+    runPact: (code: string, data: Record<string, unknown>, option: ClientRequestInit & INetworkOptions) => Promise<ICommandResult>;
     // @deprecated
     send: ISubmit;
-    signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
-    submitOne: (transaction: ICommand) => Promise<ITransactionDescriptor>;
+    signatureVerification: (transaction: ICommand, options?: ClientRequestInit) => Promise<ICommandResult>;
+    submitOne: (transaction: ICommand, options?: ClientRequestInit) => Promise<ITransactionDescriptor>;
 }
 
 export { ICommand }
@@ -168,8 +169,8 @@ export interface ICreateClient {
         networkId: string;
         type?: 'local' | 'send' | 'poll' | 'listen' | 'spv';
     }) => string | {
-        host: string;
-        headers: Record<string, string>;
+        hostUrl: string;
+        requestInit: ClientRequestInit;
     }, defaults?: {
         confirmationDepth?: number;
     }): IClient;
@@ -281,17 +282,17 @@ export interface IPartialPactCommand extends AllPartial<IPactCommand> {
 }
 
 // @public
-export interface IPollOptions {
+export interface IPollOptions extends ClientRequestInit {
     // (undocumented)
     confirmationDepth?: number;
-    // (undocumented)
-    headers?: Record<string, string>;
     // Warning: (ae-incompatible-release-tags) The symbol "interval" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
     //
     // (undocumented)
     interval?: Milliseconds;
     // (undocumented)
-    onPoll?: (id: string) => void;
+    onPoll?: (id: string | undefined, error: any) => void;
+    // (undocumented)
+    onResult?: (requestKey: string, result: ICommandResult) => void;
     // Warning: (ae-incompatible-release-tags) The symbol "timeout" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
     //
     // (undocumented)
@@ -441,8 +442,8 @@ export function isSignedTransaction(command: IUnsignedCommand | ICommand): comma
 
 // @public (undocumented)
 export interface ISubmit {
-    (transaction: ICommand): Promise<ITransactionDescriptor>;
-    (transactionList: ICommand[]): Promise<ITransactionDescriptor[]>;
+    (transaction: ICommand, options?: ClientRequestInit): Promise<ITransactionDescriptor>;
+    (transactionList: ICommand[], options?: ClientRequestInit): Promise<ITransactionDescriptor[]>;
 }
 
 // @public (undocumented)

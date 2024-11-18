@@ -1,3 +1,4 @@
+import type { ClientRequestInit } from '@kadena/chainweb-node-client';
 import type {
   INetworkOptions,
   IPollRequestPromise,
@@ -156,12 +157,16 @@ export const groupByHost = (
   items: Array<{
     requestKey: string;
     host: string;
+    requestInit?: ClientRequestInit;
   }>,
-): [string, string[]][] => {
-  const byHost = new Map<string, string[]>();
-  items.forEach(({ host: hostUrl, requestKey }) => {
+): [string, { requestInit?: ClientRequestInit; requestKey: string }[]][] => {
+  const byHost = new Map<
+    string,
+    { requestInit?: ClientRequestInit; requestKey: string }[]
+  >();
+  items.forEach(({ host: hostUrl, requestKey, requestInit }) => {
     const prev = byHost.get(hostUrl) ?? [];
-    byHost.set(hostUrl, [...prev, requestKey]);
+    byHost.set(hostUrl, [...prev, { requestInit, requestKey }]);
   });
   return [...byHost.entries()];
 };
