@@ -105,6 +105,7 @@ export async function getWalletConnection(page: string = '') {
     // todo: replace this by a better way to know when the wallet is ready
     return waitForWallet();
   });
+  // eslint-disable-next-line require-atomic-updates
   walletGlobal = wallet;
   return {
     message,

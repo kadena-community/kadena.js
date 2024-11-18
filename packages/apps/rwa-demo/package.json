@@ -32,6 +32,8 @@
     "@vanilla-extract/recipes": "0.5.1",
     "@vanilla-extract/sprinkles": "1.6.1",
     "cache-sh": "^1.2.1",
+    "graphql": "~16.8.1",
+    "graphql-ws": "^5.16.0",
     "next": "14.2.2",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",

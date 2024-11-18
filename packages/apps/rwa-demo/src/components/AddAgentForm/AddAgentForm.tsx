@@ -3,7 +3,6 @@ import { useNetwork } from '@/hooks/networks';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { getClient } from '@/utils/client';
-import type { IUnsignedCommand } from '@kadena/client';
 import {
   Button,
   Dialog,

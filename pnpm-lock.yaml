@@ -1312,6 +1312,12 @@ importers:
       cache-sh:
         specifier: ^1.2.1
         version: 1.3.1
+      graphql:
+        specifier: ~16.8.1
+        version: 16.8.2
+      graphql-ws:
+        specifier: ^5.16.0
+        version: 5.16.0(graphql@16.8.2)
       next:
         specifier: 14.2.2
         version: 14.2.2(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
