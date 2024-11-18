@@ -20,7 +20,6 @@ export const useGetAgents = () => {
     },
   });
 
-  console.log(data?.events.edges);
   const agents =
     data?.events.edges.map((edge: any) => {
       console.log(edge);

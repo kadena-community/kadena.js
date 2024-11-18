@@ -1,7 +1,8 @@
 'use client';
+import { useNetwork } from '@/hooks/networks';
+import { isAgent } from '@/services/isAgent';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
-import type { ConnectedAccount } from '@kadena/spirekey-sdk';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -13,12 +14,13 @@ interface IAccountError {
 }
 
 export interface IAccountContext {
-  account?: ConnectedAccount;
+  account?: IWalletAccount;
   error?: IAccountError;
   isMounted: boolean;
   login: () => void;
   logout: () => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
+  isAgent: boolean;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -27,12 +29,24 @@ export const AccountContext = createContext<IAccountContext>({
   login: () => {},
   logout: () => {},
   sign: async () => undefined,
+  isAgent: false,
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [account, setAccount] = useState<ConnectedAccount>();
+  const [account, setAccount] = useState<IWalletAccount>();
   const [isMounted, setIsMounted] = useState(false);
+  const [isAgentState, setIsAgentState] = useState(false);
+  const { activeNetwork } = useNetwork();
   const router = useRouter();
+
+  const checkIsAgent = async (account: IWalletAccount) => {
+    const resIsAgent = await isAgent(
+      { agent: account.address },
+      activeNetwork,
+      account,
+    );
+    setIsAgentState(!!resIsAgent);
+  };
 
   const login = useCallback(async () => {
     const { message, focus, close } = await getWalletConnection();
@@ -49,6 +63,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     const account = (payload as IState).accounts[0] as IWalletAccount;
+
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
     close();
   }, [router]);
@@ -73,6 +88,16 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     setIsMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!account) {
+      setIsAgentState(false);
+      return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    checkIsAgent(account);
+  }, [account]);
+
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
     const { message, close } = await getWalletConnection();
     const response = await message('SIGN_REQUEST', tx as any);
@@ -87,7 +112,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <AccountContext.Provider
-      value={{ account, login, logout, sign, isMounted }}
+      value={{ account, login, logout, sign, isMounted, isAgent: isAgentState }}
     >
       {children}
     </AccountContext.Provider>

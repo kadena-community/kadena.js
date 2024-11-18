@@ -24,12 +24,10 @@ export const AgentsList: FC = () => {
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
-      console.log({ cmd: JSON.parse(signedTransaction.cmd) });
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
       await client.listen(res);
-      console.log(111, { res });
       console.log('DONE');
     } catch (e: any) {}
   };

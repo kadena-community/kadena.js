@@ -313,7 +313,6 @@ export const FormatWithAction: Story = {
   },
   render: ({ isLoading }) => {
     const callAction = (value: any) => {
-      console.log({ value });
       alert(value);
     };
     return (
