@@ -29,7 +29,6 @@ export const isAgent = async (
     preflight: false,
     signatureVerification: false,
   });
-  console.log({ result });
 
   return result.status === 'success' ? result.data : undefined;
 };
