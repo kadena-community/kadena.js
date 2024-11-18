@@ -35,8 +35,8 @@ export const CompactTableDesktop: FC<IProps> = ({
     >
       <Table aria-label={label} isStriped className={tableClass}>
         <TableHeader>
-          {fields.map((field) => (
-            <Column key={field.key.toString()} width={field.width}>
+          {fields.map((field, idx) => (
+            <Column key={`${field.key.toString()} ${idx}`} width={field.width}>
               <Stack
                 width="100%"
                 className={alignVariants({ align: field.align ?? 'start' })}

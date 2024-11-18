@@ -36,6 +36,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
   const [isMounted, setIsMounted] = useState(false);
   const [isAgentState, setIsAgentState] = useState(false);
+
   const { activeNetwork } = useNetwork();
   const router = useRouter();
 
@@ -63,7 +64,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     const account = (payload as IState).accounts[0] as IWalletAccount;
-    console.log(account);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
     close();
   }, [router]);

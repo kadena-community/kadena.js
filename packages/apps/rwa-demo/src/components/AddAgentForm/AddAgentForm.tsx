@@ -1,5 +1,6 @@
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
+import { useTransactions } from '@/hooks/transactions';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { getClient } from '@/utils/client';
@@ -27,6 +28,7 @@ interface IProps {
 export const AddAgentForm: FC<IProps> = ({ onClose }) => {
   const { activeNetwork } = useNetwork();
   const { account, sign } = useAccount();
+  const { addTransaction } = useTransactions();
   const [openModal, setOpenModal] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
@@ -46,9 +48,12 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
-      console.log(res);
 
-      await client.listen(res);
+      addTransaction({
+        ...res,
+        type: 'ADDAGENT',
+        data: { ...res, ...data },
+      });
       console.log('DONE');
     } catch (e: any) {
       setError(e?.message || e);

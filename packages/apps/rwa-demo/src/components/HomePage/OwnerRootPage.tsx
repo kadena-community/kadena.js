@@ -4,13 +4,16 @@ import { AgentsList } from '@/components/AgentsList/AgentsList';
 import { InitTokenForm } from '@/components/InitTokenForm/InitTokenForm';
 import { SetComplianceForm } from '@/components/SetComplianceForm/SetComplianceForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { MonoAdd } from '@kadena/kode-icons';
+import { useAsset } from '@/hooks/asset';
+import { MonoAdd, MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
+import { PauseForm } from '../PauseForm/PauseForm';
 
 export const OwnerRootPage = () => {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+
   const [hasOpenInitForm, setHasOpenInitForm] = useState(false);
   const [hasOpenAgentForm, setHasOpenAgentForm] = useState(false);
   const [hasOpenComplianceForm, setHasOpenComplianceForm] = useState(false);
@@ -67,6 +70,8 @@ export const OwnerRootPage = () => {
       )}
 
       <Stack gap="sm">
+        <PauseForm />
+
         <Button startVisual={<MonoAdd />} onClick={handleAddAgent}>
           Add Agent
         </Button>

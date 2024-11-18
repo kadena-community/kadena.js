@@ -22,8 +22,6 @@ export const useGetAgents = () => {
 
   const agents =
     data?.events.edges.map((edge: any) => {
-      console.log(edge);
-
       return {
         blockHeight: edge.node.block.height,
         chainId: edge.node.chainId,
