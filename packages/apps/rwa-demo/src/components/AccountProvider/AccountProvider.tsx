@@ -1,12 +1,12 @@
 'use client';
-import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-
+import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import type { ConnectedAccount } from '@kadena/spirekey-sdk';
-import { connect } from '@kadena/spirekey-sdk';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
+import type { IState, IWalletAccount } from './utils';
+import { getWalletConnection } from './utils';
 
 interface IAccountError {
   message: string;
@@ -18,6 +18,7 @@ export interface IAccountContext {
   isMounted: boolean;
   login: () => void;
   logout: () => void;
+  sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -25,6 +26,7 @@ export const AccountContext = createContext<IAccountContext>({
   isMounted: false,
   login: () => {},
   logout: () => {},
+  sign: async () => undefined,
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -33,14 +35,22 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
 
   const login = useCallback(async () => {
-    try {
-      setIsMounted(true);
-      const acc = await connect(env.NETWORKID, env.CHAINID);
-      setAccount(acc);
-      localStorage.setItem(getAccountCookieName(), JSON.stringify(acc));
-    } catch (e) {
-      localStorage.removeItem(getAccountCookieName());
+    const { message, focus, close } = await getWalletConnection();
+    focus();
+    const response = await message('CONNECTION_REQUEST', {
+      name: 'RWA-demo',
+    });
+
+    if ((response.payload as any).status !== 'accepted') {
+      return;
     }
+    const { payload } = await message('GET_STATUS', {
+      name: 'RWA-demo',
+    });
+
+    const account = (payload as IState).accounts[0] as IWalletAccount;
+    localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
+    close();
   }, [router]);
 
   const logout = useCallback(() => {
@@ -63,8 +73,22 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     setIsMounted(true);
   }, []);
 
+  const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
+    const { message, close } = await getWalletConnection();
+    const response = await message('SIGN_REQUEST', tx as any);
+    const payload: {
+      status: 'signed' | 'rejected';
+      transaction?: ICommand;
+    } = response.payload as any;
+
+    close();
+    return payload.transaction;
+  };
+
   return (
-    <AccountContext.Provider value={{ account, login, logout, isMounted }}>
+    <AccountContext.Provider
+      value={{ account, login, logout, sign, isMounted }}
+    >
       {children}
     </AccountContext.Provider>
   );

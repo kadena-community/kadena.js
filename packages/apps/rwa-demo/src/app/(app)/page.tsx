@@ -1,9 +1,10 @@
 'use client';
 import { AddAgentForm } from '@/components/AddAgentForm/AddAgentForm';
+import { AgentsList } from '@/components/AgentsList/AgentsList';
 import { InitTokenForm } from '@/components/InitTokenForm/InitTokenForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { MonoAdd } from '@kadena/kode-icons';
-import { Button } from '@kadena/kode-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
@@ -23,7 +24,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <Stack width="100%" flexDirection="column" gap="md">
       <SideBarBreadcrumbs>
         <SideBarBreadcrumbsItem href="/">Tokens</SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
@@ -43,14 +44,19 @@ const Home = () => {
           }}
         />
       )}
-      <Button startVisual={<MonoAdd />} onClick={handleAddAgent}>
-        Add Agent
-      </Button>
 
-      <Button startVisual={<MonoAdd />} onClick={handleInitToken}>
-        Init Token
-      </Button>
-    </div>
+      <Stack gap="sm">
+        <Button startVisual={<MonoAdd />} onClick={handleAddAgent}>
+          Add Agent
+        </Button>
+
+        <Button startVisual={<MonoAdd />} onClick={handleInitToken}>
+          Init Token
+        </Button>
+      </Stack>
+
+      <AgentsList />
+    </Stack>
   );
 };
 

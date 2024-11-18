@@ -8,6 +8,7 @@ const NETWORKNAME = process.env.NEXT_PUBLIC_NETWORKNAME;
 const NETWORKHOST = process.env.NEXT_PUBLIC_NETWORKHOST;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
 const ACCOUNT = process.env.NEXT_PUBLIC_ACCOUNT;
+const GRAPHURL = process.env.NEXT_PUBLIC_GRAPHURL;
 
 if (!WALLET_URL) console.error('NEXT_PUBLIC_WALLET_URL is not set');
 if (!URL) console.error('NEXT_PUBLIC_URL is not set');
@@ -17,6 +18,7 @@ if (!NETWORKNAME) console.error('NEXT_PUBLIC_NETWORKNAME is not set');
 if (!NETWORKHOST) console.error('NEXT_PUBLIC_NETWORKHOST is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
 if (!ACCOUNT) console.error('NEXT_PUBLIC_ACCOUNT is not set');
+if (!GRAPHURL) console.error('NEXT_PUBLIC_GRAPHURL is not set');
 
 export const env = {
   WALLET_URL,
@@ -27,4 +29,5 @@ export const env = {
   NETWORKHOST: NETWORKHOST ?? '',
   CHAINWEBAPIURL: CHAINWEBAPIURL ?? '',
   ACCOUNTID: ACCOUNT,
+  GRAPHURL: GRAPHURL ?? '',
 } as const;
