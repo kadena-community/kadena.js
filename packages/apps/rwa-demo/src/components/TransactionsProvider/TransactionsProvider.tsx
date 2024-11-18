@@ -10,7 +10,7 @@ export interface ITransaction {
   type: string;
   data: Record<string, string>;
   listener?: Promise<void | ICommandResult>;
-  result: any;
+  result?: any;
 }
 
 export interface ITransactionsContext {

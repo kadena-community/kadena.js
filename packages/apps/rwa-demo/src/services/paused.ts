@@ -1,4 +1,3 @@
-import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
 import { ADMIN } from '@/constants';
 import { getClient } from '@/utils/client';

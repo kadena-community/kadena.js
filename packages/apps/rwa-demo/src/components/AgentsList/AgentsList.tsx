@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
 export const AgentsList: FC = () => {
-  const [innerData, setInnerData] = useState([]);
+  const [innerData, setInnerData] = useState<any[]>([]);
   const { data } = useGetAgents();
   const { account, sign } = useAccount();
   const { activeNetwork } = useNetwork();
@@ -50,12 +50,12 @@ export const AgentsList: FC = () => {
 
     const data = await Promise.all(promises);
 
-    console.log({ data });
     setInnerData(data);
   };
 
   useEffect(() => {
     const tx = getTransactions('ADDAGENT');
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(tx);
   }, [transactions]);
 

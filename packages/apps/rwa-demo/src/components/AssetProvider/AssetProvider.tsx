@@ -1,6 +1,5 @@
 'use client';
 import { useNetwork } from '@/hooks/networks';
-import { isPaused } from '@/services/isPaused';
 import { paused } from '@/services/paused';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
