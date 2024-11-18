@@ -13,6 +13,10 @@ export function stringifyAndMakePOSTRequest<T>(
 ) {
   return {
     ...requestInit,
+    headers: {
+      'Content-Type': 'application/json',
+      ...requestInit?.headers,
+    },
     method: 'POST',
     body: JSON.stringify(body),
   };
