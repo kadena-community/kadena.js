@@ -10,7 +10,7 @@ import {
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
-import { Button, Stack } from './../../components';
+import { Button, Dialog, DialogHeader, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
@@ -68,9 +68,20 @@ const InnerLayout = () => {
     useLayout();
   const [hasOpenSidebar, setHasOpenSidebar] = useState(false);
   const [hasOpenOtherSidebar, setHasOpenOtherSidebar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <>
+      {openDialog && (
+        <Dialog
+          isOpen
+          onOpenChange={() => {
+            setOpenDialog(false);
+          }}
+        >
+          <DialogHeader>Header of dialog</DialogHeader>
+        </Dialog>
+      )}
       {isRightAsideExpanded && hasOpenSidebar && (
         <RightAside
           isOpen
@@ -93,7 +104,16 @@ const InnerLayout = () => {
           }}
         >
           <RightAsideHeader label="test header" />
-          <RightAsideContent>content</RightAsideContent>
+          <RightAsideContent>
+            content
+            <Button
+              onPress={() => {
+                setOpenDialog(true);
+              }}
+            >
+              Open Dialog on TOP of Sidebar
+            </Button>
+          </RightAsideContent>
         </RightAside>
       )}
       <SideBarLayout

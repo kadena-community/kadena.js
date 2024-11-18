@@ -121,7 +121,7 @@ export const menuBackdropClass = recipe({
         position: 'fixed',
         inset: 0,
         background: token('color.neutral.n90@alpha20'),
-        zIndex: token('zIndex.overlay'),
+        zIndex: 8000,
         backdropFilter: 'blur(8px)',
         opacity: 0,
         willChange: 'transform, opacity',
