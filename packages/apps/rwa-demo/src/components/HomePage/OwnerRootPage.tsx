@@ -6,7 +6,7 @@ import { SetComplianceForm } from '@/components/SetComplianceForm/SetComplianceF
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { MonoAdd } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
+import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { PauseForm } from '../PauseForm/PauseForm';
 
@@ -40,9 +40,8 @@ export const OwnerRootPage = () => {
 
   return (
     <Stack width="100%" flexDirection="column" gap="md">
-      <SideBarBreadcrumbs>
-        <SideBarBreadcrumbsItem href="/">Tokens</SideBarBreadcrumbsItem>
-      </SideBarBreadcrumbs>
+      <SideBarBreadcrumbs />
+
       {isRightAsideExpanded && hasOpenComplianceForm && (
         <SetComplianceForm
           onClose={() => {
