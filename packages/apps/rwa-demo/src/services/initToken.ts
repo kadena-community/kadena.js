@@ -1,9 +1,7 @@
+import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
 import { ADMIN } from '@/constants';
-import { getPubKey } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
-import type { ConnectedAccount } from '@kadena/spirekey-sdk';
-import { sign } from '@kadena/spirekey-sdk';
 
 export interface IInitTokenProps {
   name: string;
@@ -11,27 +9,12 @@ export interface IInitTokenProps {
   kadenaId: string;
 }
 
-// const doSubmit = async (txArg: any) => {
-//   const client = getClient();
-
-//   // try {
-//   console.log(1);
-
-//   const res = await client.submit(txArg);
-//   console.log({ res });
-//   //     return;
-//   //   } catch (err: any) {
-//   //     console.log(err);
-//   //   }
-// };
-
 export const initToken = async (
   data: IInitTokenProps,
   network: INetwork,
-  owner: ConnectedAccount,
+  owner: IWalletAccount,
 ) => {
-  console.log({ owner });
-  const transaction = Pact.builder
+  return Pact.builder
     .execution(
       `
       (RWA.agent-role.init (read-keyset 'owner_guard))
@@ -41,12 +24,12 @@ export const initToken = async (
       `,
     )
     .setMeta({
-      senderAccount: owner.accountName,
+      senderAccount: owner.address,
       chainId: network.chainId,
     })
     .addSigner(
       {
-        pubKey: getPubKey(owner!),
+        pubKey: owner.keyset.guard.keys[0],
         scheme: 'WebAuthn',
       },
       (withCap) => [],
@@ -58,16 +41,4 @@ export const initToken = async (
     })
     .setNetworkId(network.networkId)
     .createTransaction();
-
-  console.log({ transaction });
-  console.log({ cmd: JSON.parse(transaction.cmd) });
-  const { transactions } = await sign([transaction], [owner]);
-  // console.log(res);
-  console.log({ transactions });
-  // transactions.map(async (t) => {
-  //   // should perform check to see if all sigs are present
-
-  //   console.log({ t });
-  //   await doSubmit(t);
-  // });
 };

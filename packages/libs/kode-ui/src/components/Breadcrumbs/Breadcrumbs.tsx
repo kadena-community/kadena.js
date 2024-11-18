@@ -7,7 +7,7 @@ import { containerClass, navClass } from './Breadcrumbs.css';
 import type { IBreadcrumbItemProps } from './BreadcrumbsItem';
 
 export interface IBreadcrumbsProps extends AriaBreadcrumbsProps {
-  children:
+  children?:
     | FunctionComponentElement<IBreadcrumbItemProps>
     | FunctionComponentElement<IBreadcrumbItemProps>[];
   icon?: React.ReactElement;

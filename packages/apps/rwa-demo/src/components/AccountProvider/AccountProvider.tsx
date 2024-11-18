@@ -63,7 +63,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     const account = (payload as IState).accounts[0] as IWalletAccount;
-
+    console.log(account);
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
     close();
   }, [router]);

@@ -1,7 +1,7 @@
+import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
 import { ADMIN } from '@/constants';
 import { Pact } from '@kadena/client';
-import type { ConnectedAccount } from '@kadena/spirekey-sdk';
 
 export interface ISetComplianceProps {
   maxBalance: number;
@@ -11,7 +11,7 @@ export interface ISetComplianceProps {
 export const setCompliance = async (
   data: ISetComplianceProps,
   network: INetwork,
-  account: ConnectedAccount,
+  account: IWalletAccount,
 ) => {
   return Pact.builder
     .execution(
