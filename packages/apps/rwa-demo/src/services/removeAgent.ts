@@ -3,23 +3,17 @@ import { ADMIN } from '@/constants';
 import { Pact } from '@kadena/client';
 import type { ConnectedAccount } from '@kadena/spirekey-sdk';
 
-export interface IAddAgentProps {
+export interface IRemoveAgentProps {
   agent: string;
 }
 
-const createPubKeyFromAccount = (account: string): string => {
-  return account.replace('k:', '').replace('r:', '');
-};
-
-export const addAgent = async (
-  data: IAddAgentProps,
+export const removeAgent = async (
+  data: IRemoveAgentProps,
   network: INetwork,
   account: ConnectedAccount,
 ) => {
   return Pact.builder
-    .execution(
-      `(RWA.agent-role.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
-    )
+    .execution(`(RWA.agent-role.remove-agent (read-string 'agent))`)
     .setMeta({
       senderAccount: ADMIN.account,
       chainId: network.chainId,
@@ -29,11 +23,6 @@ export const addAgent = async (
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.agent)
-    .addData('agent_guard', {
-      keys: [createPubKeyFromAccount(data.agent)],
-      pred: 'keys-all',
-    })
-
     .setNetworkId(network.networkId)
     .createTransaction();
 };
