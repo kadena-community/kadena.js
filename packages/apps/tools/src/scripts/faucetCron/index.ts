@@ -57,8 +57,6 @@ export const runJob = async () => {
   try {
     const accountResult = await getFaucetAccount();
 
-    console.log(accountResult.errors[0]);
-
     if (accountResult?.errors?.length) {
       await sendErrorMessage();
       return;
