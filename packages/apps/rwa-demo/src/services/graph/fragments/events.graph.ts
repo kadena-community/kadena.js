@@ -6,7 +6,7 @@ export const CORE_EVENTS_FIELDS: DocumentNode = gql`
     chainId
     block {
       height
-      minerAccount
+      creationTime
     }
     requestKey
     parameters

@@ -26,7 +26,6 @@ export const AgentsList: FC = () => {
     } catch (e: any) {}
   };
 
-  console.log({ data });
   return (
     <CompactTable
       fields={[
