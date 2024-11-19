@@ -1,16 +1,9 @@
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
-import { useTransactions } from '@/hooks/transactions';
-import type { IAddAgentProps } from '@/services/addAgent';
-import { addAgent } from '@/services/addAgent';
+import type { IRegisterIdentityProps } from '@/services/registerIdentity';
+import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  TextField,
-} from '@kadena/kode-ui';
+import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -25,35 +18,31 @@ interface IProps {
   onClose: () => void;
 }
 
-export const AddAgentForm: FC<IProps> = ({ onClose }) => {
+export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
   const { activeNetwork } = useNetwork();
   const { account, sign } = useAccount();
-  const { addTransaction } = useTransactions();
-  const [openModal, setOpenModal] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
-  const { register, handleSubmit } = useForm<IAddAgentProps>({
+  const { register, handleSubmit } = useForm<IRegisterIdentityProps>({
     defaultValues: {
-      agent: '',
+      investor: '',
     },
   });
 
-  const onSubmit = async (data: IAddAgentProps) => {
+  const onSubmit = async (data: IRegisterIdentityProps) => {
+    const newData: IRegisterIdentityProps = { ...data, agent: account! };
     setError(null);
     try {
-      const tx = await addAgent(data, activeNetwork, account!);
+      const tx = await registerIdentity(newData, activeNetwork);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
+      console.log(res);
 
-      addTransaction({
-        ...res,
-        type: 'ADDAGENT',
-        data: { ...res, ...data },
-      });
+      await client.listen(res);
       console.log('DONE');
     } catch (e: any) {
       setError(e?.message || e);
@@ -64,30 +53,20 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
 
   return (
     <>
-      <Dialog
-        isOpen={openModal}
-        onOpenChange={() => {
-          setOpenModal(false);
-        }}
-      >
-        <DialogHeader>Transaction</DialogHeader>
-        <DialogContent>df</DialogContent>
-      </Dialog>
-
       <RightAside isOpen onClose={onClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <RightAsideHeader label="Add Agent" />
+          <RightAsideHeader label="Add Investor" />
           <RightAsideContent>
             <TextField
-              label="Agent Account"
-              {...register('agent', { required: true })}
+              label="Investor Account"
+              {...register('investor', { required: true })}
             />
           </RightAsideContent>
           <RightAsideFooter>
             <Button onPress={onClose} variant="transparent">
               Cancel
             </Button>
-            <Button type="submit">Add Agent</Button>
+            <Button type="submit">Add Investor</Button>
           </RightAsideFooter>
         </form>
       </RightAside>

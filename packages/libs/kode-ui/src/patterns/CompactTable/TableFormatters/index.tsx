@@ -1,4 +1,5 @@
 import { FormatAccount } from './FormatAccount';
+import { FormatActions } from './FormatActions';
 import { FormatAmount } from './FormatAmount';
 import { FormatDefault } from './FormatDefault';
 import { FormatJsonParse } from './FormatJsonParse';
@@ -13,6 +14,7 @@ import type {
 
 export const CompactTableFormatters = {
   FormatAccount,
+  FormatActions,
   FormatAmount,
   FormatDefault,
   FormatLink,

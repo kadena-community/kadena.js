@@ -1,7 +1,6 @@
+import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
-import { ADMIN } from '@/constants';
 import { Pact } from '@kadena/client';
-import type { ConnectedAccount } from '@kadena/spirekey-sdk';
 
 export interface IAddAgentProps {
   agent: string;
@@ -11,33 +10,20 @@ const createPubKeyFromAccount = (account: string): string => {
   return account.replace('k:', '').replace('r:', '');
 };
 
-// const doSubmit = async (txArg: any) => {
-//   const client = getClient();
-
-//   // try {
-//   console.log(1);
-//   const res = await client.submit(txArg);
-//   console.log({ res });
-//   //     return;
-//   //   } catch (err: any) {
-//   //     console.log(err);
-//   //   }
-// };
-
 export const addAgent = async (
   data: IAddAgentProps,
   network: INetwork,
-  account: ConnectedAccount,
+  account: IWalletAccount,
 ) => {
   return Pact.builder
     .execution(
       `(RWA.agent-role.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
     )
     .setMeta({
-      senderAccount: ADMIN.account,
+      senderAccount: account.address,
       chainId: network.chainId,
     })
-    .addSigner(ADMIN.publicKey, (withCap) => [
+    .addSigner(account.keyset.guard.keys[0], (withCap) => [
       withCap(`RWA.agent-role.ONLY-OWNER`),
       withCap(`coin.GAS`),
     ])

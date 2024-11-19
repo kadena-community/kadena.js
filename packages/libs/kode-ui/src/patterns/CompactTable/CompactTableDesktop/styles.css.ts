@@ -5,7 +5,7 @@ export const tableClass = style({
   width: '100%',
 });
 
-globalStyle(`${tableClass} td span`, {
+globalStyle(`${tableClass} td > span`, {
   display: 'block',
   alignItems: 'center',
   contain: 'inline-size',

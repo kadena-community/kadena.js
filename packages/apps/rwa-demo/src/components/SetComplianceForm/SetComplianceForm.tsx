@@ -1,16 +1,9 @@
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
-import { useTransactions } from '@/hooks/transactions';
-import type { IAddAgentProps } from '@/services/addAgent';
-import { addAgent } from '@/services/addAgent';
+import type { ISetComplianceProps } from '@/services/setCompliance';
+import { setCompliance } from '@/services/setCompliance';
 import { getClient } from '@/utils/client';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  TextField,
-} from '@kadena/kode-ui';
+import { Button, NumberField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -25,23 +18,22 @@ interface IProps {
   onClose: () => void;
 }
 
-export const AddAgentForm: FC<IProps> = ({ onClose }) => {
+export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
   const { activeNetwork } = useNetwork();
   const { account, sign } = useAccount();
-  const { addTransaction } = useTransactions();
-  const [openModal, setOpenModal] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
-  const { register, handleSubmit } = useForm<IAddAgentProps>({
+  const { register, handleSubmit } = useForm<ISetComplianceProps>({
     defaultValues: {
-      agent: '',
+      maxBalance: 0,
+      maxSupply: 0,
     },
   });
 
-  const onSubmit = async (data: IAddAgentProps) => {
+  const onSubmit = async (data: ISetComplianceProps) => {
     setError(null);
     try {
-      const tx = await addAgent(data, activeNetwork, account!);
+      const tx = await setCompliance(data, activeNetwork, account!);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -49,45 +41,34 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      addTransaction({
-        ...res,
-        type: 'ADDAGENT',
-        data: { ...res, ...data },
-      });
+      await client.listen(res);
       console.log('DONE');
     } catch (e: any) {
       setError(e?.message || e);
     }
-
     onClose();
   };
 
   return (
     <>
-      <Dialog
-        isOpen={openModal}
-        onOpenChange={() => {
-          setOpenModal(false);
-        }}
-      >
-        <DialogHeader>Transaction</DialogHeader>
-        <DialogContent>df</DialogContent>
-      </Dialog>
-
       <RightAside isOpen onClose={onClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <RightAsideHeader label="Add Agent" />
+          <RightAsideHeader label="Set compliance" />
           <RightAsideContent>
-            <TextField
-              label="Agent Account"
-              {...register('agent', { required: true })}
+            <NumberField
+              label="Max Balance"
+              {...register('maxBalance', { required: true })}
+            />
+            <NumberField
+              label="Max Supply"
+              {...register('maxSupply', { required: true })}
             />
           </RightAsideContent>
           <RightAsideFooter>
             <Button onPress={onClose} variant="transparent">
               Cancel
             </Button>
-            <Button type="submit">Add Agent</Button>
+            <Button type="submit">Set Compliance</Button>
           </RightAsideFooter>
         </form>
       </RightAside>
