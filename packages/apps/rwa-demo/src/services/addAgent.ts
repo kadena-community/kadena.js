@@ -1,5 +1,5 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
-import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
+import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IAddAgentProps {
@@ -12,7 +12,6 @@ const createPubKeyFromAccount = (account: string): string => {
 
 export const addAgent = async (
   data: IAddAgentProps,
-  network: INetwork,
   account: IWalletAccount,
 ) => {
   return Pact.builder
@@ -21,7 +20,7 @@ export const addAgent = async (
     )
     .setMeta({
       senderAccount: account.address,
-      chainId: network.chainId,
+      chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
       withCap(`RWA.agent-role.ONLY-OWNER`),
@@ -33,6 +32,6 @@ export const addAgent = async (
       pred: 'keys-all',
     })
 
-    .setNetworkId(network.networkId)
+    .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

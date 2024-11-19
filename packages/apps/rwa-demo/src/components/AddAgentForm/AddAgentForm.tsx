@@ -1,5 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { useNetwork } from '@/hooks/networks';
 import { useTransactions } from '@/hooks/transactions';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
@@ -26,7 +25,6 @@ interface IProps {
 }
 
 export const AddAgentForm: FC<IProps> = ({ onClose }) => {
-  const { activeNetwork } = useNetwork();
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
   const [openModal, setOpenModal] = useState(false);
@@ -41,7 +39,7 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
   const onSubmit = async (data: IAddAgentProps) => {
     setError(null);
     try {
-      const tx = await addAgent(data, activeNetwork, account!);
+      const tx = await addAgent(data, account!);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;

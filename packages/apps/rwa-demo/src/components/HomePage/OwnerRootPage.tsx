@@ -1,7 +1,6 @@
 'use client';
 import { AddAgentForm } from '@/components/AddAgentForm/AddAgentForm';
 import { AgentsList } from '@/components/AgentsList/AgentsList';
-import { InitTokenForm } from '@/components/InitTokenForm/InitTokenForm';
 import { SetComplianceForm } from '@/components/SetComplianceForm/SetComplianceForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { MonoAdd } from '@kadena/kode-icons';
@@ -20,12 +19,6 @@ export const OwnerRootPage = () => {
     setIsRightAsideExpanded(true);
     setHasOpenAgentForm(true);
     setHasOpenComplianceForm(false);
-  };
-
-  const handleInitToken = () => {
-    setIsRightAsideExpanded(true);
-    setHasOpenComplianceForm(false);
-    setHasOpenAgentForm(false);
   };
 
   const handleComplianceForm = () => {

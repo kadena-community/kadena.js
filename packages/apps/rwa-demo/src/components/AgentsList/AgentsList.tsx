@@ -1,6 +1,5 @@
 import { useAccount } from '@/hooks/account';
 import { useGetAgents } from '@/hooks/getAgents';
-import { useNetwork } from '@/hooks/networks';
 import { removeAgent } from '@/services/removeAgent';
 import { getClient } from '@/utils/client';
 import { MonoDelete } from '@kadena/kode-icons';
@@ -11,15 +10,10 @@ import type { FC } from 'react';
 export const AgentsList: FC = () => {
   const { data } = useGetAgents();
   const { account, sign } = useAccount();
-  const { activeNetwork } = useNetwork();
 
   const handleDelete = async (accountName: any) => {
     try {
-      const tx = await removeAgent(
-        { agent: accountName },
-        activeNetwork,
-        account!,
-      );
+      const tx = await removeAgent({ agent: accountName }, account!);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;

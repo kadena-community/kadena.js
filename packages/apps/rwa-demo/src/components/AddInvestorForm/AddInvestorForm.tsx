@@ -1,5 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { useNetwork } from '@/hooks/networks';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
@@ -19,7 +18,6 @@ interface IProps {
 }
 
 export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
-  const { activeNetwork } = useNetwork();
   const { account, sign } = useAccount();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
@@ -33,7 +31,7 @@ export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
     const newData: IRegisterIdentityProps = { ...data, agent: account! };
     setError(null);
     try {
-      const tx = await registerIdentity(newData, activeNetwork);
+      const tx = await registerIdentity(newData);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;

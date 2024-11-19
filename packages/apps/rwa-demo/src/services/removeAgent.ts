@@ -1,6 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
-import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
 import { ADMIN } from '@/constants';
+import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IRemoveAgentProps {
@@ -9,20 +9,19 @@ export interface IRemoveAgentProps {
 
 export const removeAgent = async (
   data: IRemoveAgentProps,
-  network: INetwork,
   account: IWalletAccount,
 ) => {
   return Pact.builder
     .execution(`(RWA.agent-role.remove-agent (read-string 'agent))`)
     .setMeta({
       senderAccount: ADMIN.account,
-      chainId: network.chainId,
+      chainId: getNetwork().chainId,
     })
     .addSigner(ADMIN.publicKey, (withCap) => [
       withCap(`RWA.agent-role.ONLY-OWNER`),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.agent)
-    .setNetworkId(network.networkId)
+    .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };
