@@ -6,7 +6,7 @@ export const faucetAccount = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
 export const MINBALANCE = 1000;
 
 //graph
-export const MAXBLOCKHEIGHT_DIFFERENCE = 1;
+export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
 
 export interface IChainAccount {
   balance: number;

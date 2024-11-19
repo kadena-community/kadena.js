@@ -1,11 +1,15 @@
 import { MAXBLOCKHEIGHT_DIFFERENCE } from '../constants';
 import { sendErrorMessage } from './messages';
 
-const countHeightOnChainweb = async (): Promise<number> => {
+interface IEnvProps {
+  env: 'testnet04' | 'mainnet01';
+  chainweb: string;
+  graphql: string;
+}
+
+const countHeightOnChainweb = async (props: IEnvProps): Promise<number> => {
   try {
-    const result = await fetch(
-      'https://ap1.testnet.chainweb.com/chainweb/0.0/testnet04/cut',
-    );
+    const result = await fetch(props.chainweb);
     const data: any = await result.json();
     return Object.entries(data.hashes)
       .map(([key, val]) => val)
@@ -17,8 +21,8 @@ const countHeightOnChainweb = async (): Promise<number> => {
   }
 };
 
-const countHeightOnGraph = async (): Promise<number> => {
-  const result = await fetch('https://graph.testnet.kadena.network/graphql', {
+const countHeightOnGraph = async (props: IEnvProps): Promise<number> => {
+  const result = await fetch(props.graphql, {
     method: 'POST',
     headers: {
       accept:
@@ -42,22 +46,22 @@ const countHeightOnGraph = async (): Promise<number> => {
   return data.data.lastBlockHeight * 20;
 };
 
-export const runJob = async () => {
+export const runJobPerEnvironment = async (props: IEnvProps) => {
   try {
-    const totalHeightOnChainWeb = await countHeightOnChainweb();
-    const totalHeightOnGraph = await countHeightOnGraph();
+    const totalHeightOnChainWeb = await countHeightOnChainweb(props);
+    const totalHeightOnGraph = await countHeightOnGraph(props);
 
     if (Number.isNaN(totalHeightOnChainWeb)) {
       await sendErrorMessage({
-        title: 'ap1.testnet.chainweb.com fail',
-        msg: 'We were unable to retrieve the blockheights from chainweb. \n There seems to be an issue with ChainWeb (https://ap1.testnet.chainweb.com/chainweb/0.0/testnet04/cut)',
+        title: `${props.env} chainweb.com fail`,
+        msg: `We were unable to retrieve the blockheights from chainweb. \n There seems to be an issue with ChainWeb (${props.chainweb})`,
       });
       return;
     }
     if (Number.isNaN(totalHeightOnGraph)) {
       await sendErrorMessage({
-        title: 'graph.testnet fail',
-        msg: 'We were unable to retrieve the blockheights from the test graph. \n There seems to be an issue with test graph (https://graph.testnet.kadena.network/graphql)',
+        title: `${props.env} graph fail`,
+        msg: `We were unable to retrieve the blockheights from the test graph. \n There seems to be an issue with test graph (${props.graphql})`,
       });
       return;
     }
@@ -67,14 +71,28 @@ export const runJob = async () => {
       MAXBLOCKHEIGHT_DIFFERENCE
     ) {
       await sendErrorMessage({
-        title: 'graph.testnet issue',
-        msg: `There is a large difference in the last blockheight between testnet.chainweb and graph.testnet. \n difference: ${Math.abs(totalHeightOnChainWeb - totalHeightOnGraph)}`,
+        title: `${props.env} graph issue`,
+        msg: `There is a large difference in the last blockheight between ${props.env} chainweb and graph. \n difference: ${Math.abs(totalHeightOnChainWeb - totalHeightOnGraph)}`,
       });
     }
   } catch (e) {
     await sendErrorMessage({
-      title: 'There was a general issue with the test.graph cron job',
+      title: `There was a general issue with the ${props.env} graph cron job`,
       msg: ``,
     });
   }
+};
+
+export const runJob = async () => {
+  await runJobPerEnvironment({
+    env: 'testnet04',
+    chainweb: 'https://ap1.testnet.chainweb.com/chainweb/0.0/testnet04/cut',
+    graphql: 'https://graph.testnet.kadena.network/graphql',
+  });
+
+  await runJobPerEnvironment({
+    env: 'mainnet01',
+    chainweb: 'https://api.chainweb.com/chainweb/0.0/mainnet01/cut ',
+    graphql: 'https://graph.kadena.network/graphql',
+  });
 };
