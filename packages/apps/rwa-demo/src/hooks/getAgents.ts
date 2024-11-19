@@ -16,17 +16,61 @@ export const getEventsDocument = (
   },
 ): Apollo.DocumentNode => coreEvents;
 
+interface IRecord {
+  isRemoved?: boolean;
+  blockHeight?: number;
+  chainId: string;
+  requestKey: string;
+  accountName: string;
+  creationTime: string;
+  result: boolean;
+}
+
+const sortAgents = (arr: IRecord[]): IRecord[] => {
+  return arr
+    .sort((a, b) => {
+      if (
+        new Date(a.creationTime).getTime() < new Date(b.creationTime).getTime()
+      )
+        return -1;
+      return 1;
+    })
+    .reduce((acc: IRecord[], val: IRecord) => {
+      if (val.isRemoved) {
+        const newAcc = acc.filter((v) => v.accountName !== val.accountName);
+        return newAcc;
+      }
+      acc.push(val);
+      return acc;
+    }, []);
+};
+
 export const useGetAgents = () => {
-  const [innerData, setInnerData] = useState<any[]>([]);
+  const [innerData, setInnerData] = useState<IRecord[]>([]);
   const { getTransactions, transactions } = useTransactions();
-  const { loading, data, error } = useEventsQuery({
+  const {
+    loading: addedLoading,
+    data: addedData,
+    error,
+  } = useEventsQuery({
     variables: {
       qualifiedName: 'RWA.agent-role.AGENT-ADDED',
     },
   });
 
+  const { data: removedData, loading: removedLoading } = useEventsQuery({
+    variables: {
+      qualifiedName: 'RWA.agent-role.AGENT-REMOVED',
+    },
+  });
+
   const initInnerData = async (transactions: ITransaction[]) => {
-    const promises = transactions.map(async (t) => {
+    if (addedLoading || removedLoading) {
+      setInnerData([]);
+      return;
+    }
+
+    const promises = transactions.map(async (t): Promise<IRecord> => {
       const result = await t.listener;
       return {
         blockHeight: result?.metaData?.blockHeight,
@@ -34,32 +78,47 @@ export const useGetAgents = () => {
         requestKey: t.requestKey,
         accountName: t.data.agent,
         result: result?.result.status === 'success',
-      };
+      } as IRecord;
     });
-
     const promiseResults = await Promise.all(promises);
 
-    const agents =
-      data?.events.edges.map((edge: any) => {
+    const agentsAdded: IRecord[] =
+      addedData?.events.edges.map((edge: any) => {
         return {
+          isRemoved: false,
           blockHeight: edge.node.block.height,
           chainId: edge.node.chainId,
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
+          creationTime: edge.node.block.creationTime,
           result: true,
-        };
+        } as const;
       }) ?? [];
 
-    console.log({ agents });
+    const agentsRemoved: IRecord[] =
+      removedData?.events.edges.map((edge: any) => {
+        return {
+          isRemoved: true,
+          blockHeight: edge.node.block.height,
+          chainId: edge.node.chainId,
+          requestKey: edge.node.requestKey,
+          accountName: JSON.parse(edge.node.parameters)[0],
+          creationTime: edge.node.block.creationTime,
+          result: true,
+        } as const;
+      }) ?? [];
 
-    setInnerData([...agents, ...promiseResults]);
+    setInnerData([
+      ...sortAgents([...agentsAdded, ...agentsRemoved]),
+      ...promiseResults,
+    ]);
   };
 
   useEffect(() => {
     const tx = getTransactions('ADDAGENT');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(tx);
-  }, [transactions, data]);
+  }, [transactions, addedData, removedData, removedLoading, addedLoading]);
 
-  return { loading, data: innerData, error };
+  return { data: innerData, error };
 };

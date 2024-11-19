@@ -1,7 +1,6 @@
 'use client';
 import { AddAgentForm } from '@/components/AddAgentForm/AddAgentForm';
 import { AgentsList } from '@/components/AgentsList/AgentsList';
-import { InitTokenForm } from '@/components/InitTokenForm/InitTokenForm';
 import { SetComplianceForm } from '@/components/SetComplianceForm/SetComplianceForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { MonoAdd } from '@kadena/kode-icons';
@@ -13,28 +12,18 @@ import { PauseForm } from '../PauseForm/PauseForm';
 export const OwnerRootPage = () => {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
-  const [hasOpenInitForm, setHasOpenInitForm] = useState(false);
   const [hasOpenAgentForm, setHasOpenAgentForm] = useState(false);
   const [hasOpenComplianceForm, setHasOpenComplianceForm] = useState(false);
 
   const handleAddAgent = () => {
     setIsRightAsideExpanded(true);
-    setHasOpenInitForm(false);
     setHasOpenAgentForm(true);
     setHasOpenComplianceForm(false);
-  };
-
-  const handleInitToken = () => {
-    setIsRightAsideExpanded(true);
-    setHasOpenInitForm(true);
-    setHasOpenComplianceForm(false);
-    setHasOpenAgentForm(false);
   };
 
   const handleComplianceForm = () => {
     setIsRightAsideExpanded(true);
     setHasOpenComplianceForm(true);
-    setHasOpenInitForm(false);
     setHasOpenAgentForm(false);
   };
 
@@ -58,14 +47,6 @@ export const OwnerRootPage = () => {
           }}
         />
       )}
-      {isRightAsideExpanded && hasOpenInitForm && (
-        <InitTokenForm
-          onClose={() => {
-            setIsRightAsideExpanded(false);
-            setHasOpenInitForm(false);
-          }}
-        />
-      )}
 
       <Stack gap="sm">
         <PauseForm />
@@ -76,10 +57,6 @@ export const OwnerRootPage = () => {
 
         <Button startVisual={<MonoAdd />} onClick={handleComplianceForm}>
           Set Compliance
-        </Button>
-
-        <Button startVisual={<MonoAdd />} onClick={handleInitToken}>
-          Init Token
         </Button>
       </Stack>
 

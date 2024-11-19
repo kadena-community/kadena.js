@@ -1,6 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
-import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
 import { ADMIN } from '@/constants';
+import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface ISetComplianceProps {
@@ -10,7 +10,6 @@ export interface ISetComplianceProps {
 
 export const setCompliance = async (
   data: ISetComplianceProps,
-  network: INetwork,
   account: IWalletAccount,
 ) => {
   return Pact.builder
@@ -20,10 +19,10 @@ export const setCompliance = async (
     )
     .setMeta({
       senderAccount: ADMIN.account,
-      chainId: network.chainId,
+      chainId: getNetwork().chainId,
     })
     .addSigner(ADMIN.publicKey)
 
-    .setNetworkId(network.networkId)
+    .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

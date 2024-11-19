@@ -1,6 +1,5 @@
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
-import { useNetwork } from '@/hooks/networks';
 import { togglePause } from '@/services/togglePause';
 import { getClient } from '@/utils/client';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
@@ -10,11 +9,10 @@ import type { FC } from 'react';
 export const PauseForm: FC = () => {
   const { isPaused } = useAsset();
   const { account, sign } = useAccount();
-  const { activeNetwork } = useNetwork();
 
   const handlePauseToggle = async () => {
     try {
-      const transaction = await togglePause(isPaused, activeNetwork, account!);
+      const transaction = await togglePause(isPaused, account!);
 
       const signedTransaction = await sign(transaction);
       if (!signedTransaction) return;

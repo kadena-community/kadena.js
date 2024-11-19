@@ -1,6 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
-import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
 import { ADMIN } from '@/constants';
+import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IRemoveAgentProps {
@@ -9,7 +9,6 @@ export interface IRemoveAgentProps {
 
 export const togglePause = async (
   isPaused: boolean,
-  network: INetwork,
   account: IWalletAccount,
 ) => {
   if (isPaused) {
@@ -17,22 +16,22 @@ export const togglePause = async (
       .execution(`(RWA.mvp-token.pause  (read-string 'agent))`)
       .setMeta({
         senderAccount: ADMIN.account,
-        chainId: network.chainId,
+        chainId: getNetwork().chainId,
       })
       .addSigner(ADMIN.publicKey, (withCap) => [withCap(`coin.GAS`)])
       .addData('agent', ADMIN.account)
-      .setNetworkId(network.networkId)
+      .setNetworkId(getNetwork().networkId)
       .createTransaction();
   } else {
     return Pact.builder
       .execution(`(RWA.mvp-token.unpause  (read-string 'agent))`)
       .setMeta({
         senderAccount: ADMIN.account,
-        chainId: network.chainId,
+        chainId: getNetwork().chainId,
       })
       .addSigner(ADMIN.publicKey, (withCap) => [withCap(`coin.GAS`)])
       .addData('agent', ADMIN.account)
-      .setNetworkId(network.networkId)
+      .setNetworkId(getNetwork().networkId)
       .createTransaction();
   }
 };

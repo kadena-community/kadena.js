@@ -1,28 +1,21 @@
-import type { IWalletAccount } from '@/components/AccountProvider/utils';
-import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
-import { ADMIN } from '@/constants';
-import { getClient } from '@/utils/client';
+import { getClient, getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IIsAgentProps {
   agent: string;
 }
 
-export const isAgent = async (
-  data: IIsAgentProps,
-  network: INetwork,
-  account: IWalletAccount,
-) => {
+export const isAgent = async (data: IIsAgentProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
     .execution(`(RWA.agent-role.is-agent (read-string 'agent))`)
     .setMeta({
-      senderAccount: ADMIN.account,
-      chainId: network.chainId,
+      senderAccount: data.agent,
+      chainId: getNetwork().chainId,
     })
     .addData('agent', data.agent)
-    .setNetworkId(network.networkId)
+    .setNetworkId(getNetwork().networkId)
     .createTransaction();
 
   const { result } = await client.local(transaction, {

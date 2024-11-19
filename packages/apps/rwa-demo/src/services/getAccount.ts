@@ -1,16 +1,15 @@
-import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
-import { getClient } from '@/utils/client';
+import { getClient, getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
-export const getAccount = async (accountId: string, network: INetwork) => {
+export const getAccount = async (accountId: string) => {
   const client = getClient();
 
   const transaction = Pact.builder
     .execution(`(coin.details "${accountId}")`)
     .setMeta({
-      chainId: network.chainId,
+      chainId: getNetwork().chainId,
     })
-    .setNetworkId(network.networkId)
+    .setNetworkId(getNetwork().networkId)
     .createTransaction();
 
   const { result } = await client.local(transaction, {

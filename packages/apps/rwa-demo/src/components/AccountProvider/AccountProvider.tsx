@@ -1,5 +1,4 @@
 'use client';
-import { useNetwork } from '@/hooks/networks';
 import { isAgent } from '@/services/isAgent';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
@@ -37,15 +36,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [isAgentState, setIsAgentState] = useState(false);
 
-  const { activeNetwork } = useNetwork();
   const router = useRouter();
 
   const checkIsAgent = async (account: IWalletAccount) => {
-    const resIsAgent = await isAgent(
-      { agent: account.address },
-      activeNetwork,
-      account,
-    );
+    const resIsAgent = await isAgent({ agent: account.address });
     setIsAgentState(!!resIsAgent);
   };
 

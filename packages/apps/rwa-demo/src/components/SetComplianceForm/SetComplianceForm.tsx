@@ -1,5 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { useNetwork } from '@/hooks/networks';
 import type { ISetComplianceProps } from '@/services/setCompliance';
 import { setCompliance } from '@/services/setCompliance';
 import { getClient } from '@/utils/client';
@@ -19,7 +18,6 @@ interface IProps {
 }
 
 export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
-  const { activeNetwork } = useNetwork();
   const { account, sign } = useAccount();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
@@ -33,7 +31,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
   const onSubmit = async (data: ISetComplianceProps) => {
     setError(null);
     try {
-      const tx = await setCompliance(data, activeNetwork, account!);
+      const tx = await setCompliance(data, account!);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
