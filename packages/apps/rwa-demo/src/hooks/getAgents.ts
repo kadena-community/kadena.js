@@ -27,13 +27,13 @@ export const useGetAgents = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.agent-role.AGENT-ADDED',
+      qualifiedName: 'RWA.mvp-token.AGENT-ADDED',
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.agent-role.AGENT-REMOVED',
+      qualifiedName: 'RWA.mvp-token.AGENT-REMOVED',
     },
   });
 

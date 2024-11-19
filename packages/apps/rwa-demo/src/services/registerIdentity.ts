@@ -7,21 +7,32 @@ export interface IRegisterIdentityProps {
   agent: IWalletAccount;
 }
 
+const createPubKeyFromAccount = (account: string): string => {
+  return account.replace('k:', '').replace('r:', '');
+};
+
 export const registerIdentity = async (data: IRegisterIdentityProps) => {
   return Pact.builder
     .execution(
-      `(RWA.identity-registry.register-identity (read-string 'investor) "" 1 (read-string 'agent))`,
+      `(RWA.mvp-token.register-identity (read-string 'investor) (read-string 'agent) 1)
+      (RWA.mvp-token.create-account (read-string 'investor) (read-keyset 'investor-keyset))
+      `,
     )
+    .addData('investor-keyset', {
+      keys: [createPubKeyFromAccount(data.investor)],
+      pred: 'keys-all',
+    })
+    .addData('investor', data.investor)
+    .addData('agent', data.agent.address)
     .setMeta({
       senderAccount: data.agent.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(data.agent.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.agent-role.ONLY-AGENT`, data.agent.address),
+      withCap(`RWA.mvp-token.ONLY-AGENT`, data.agent.address),
       withCap(`coin.GAS`),
     ])
-    .addData('investor', data.investor)
-    .addData('agent', data.agent.address)
+
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

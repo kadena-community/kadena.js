@@ -16,14 +16,14 @@ export const addAgent = async (
 ) => {
   return Pact.builder
     .execution(
-      `(RWA.agent-role.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
+      `(RWA.mvp-token.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
     )
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.agent-role.ONLY-OWNER`),
+      withCap(`RWA.mvp-token.ONLY-OWNER`, ''),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.agent)

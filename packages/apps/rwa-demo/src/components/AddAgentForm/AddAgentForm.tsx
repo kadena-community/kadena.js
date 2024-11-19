@@ -41,12 +41,14 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
     try {
       const tx = await addAgent(data, account!);
 
+      console.log(tx);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
+      console.log({ res });
       addTransaction({
         ...res,
         type: 'ADDAGENT',
