@@ -7,7 +7,6 @@ import { MonoAdd } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { PauseForm } from '../PauseForm/PauseForm';
 
 export const OwnerRootPage = () => {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
@@ -49,8 +48,6 @@ export const OwnerRootPage = () => {
       )}
 
       <Stack gap="sm">
-        <PauseForm />
-
         <Button startVisual={<MonoAdd />} onClick={handleAddAgent}>
           Add Agent
         </Button>

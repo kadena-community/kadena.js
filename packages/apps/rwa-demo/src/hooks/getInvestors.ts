@@ -18,7 +18,7 @@ export const getEventsDocument = (
   },
 ): Apollo.DocumentNode => coreEvents;
 
-export const useGetAgents = () => {
+export const useGetInvestors = () => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
   const { getTransactions, transactions } = useTransactions();
   const {
@@ -27,13 +27,13 @@ export const useGetAgents = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.agent-role.AGENT-ADDED',
+      qualifiedName: 'RWA.identity-registry.IDENTITY-REGISTERED',
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.agent-role.AGENT-REMOVED',
+      qualifiedName: 'RWA.identity-registry.IDENTITY-REMOVED',
     },
   });
 

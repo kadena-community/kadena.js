@@ -6,6 +6,8 @@ import { useLayout } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { AddInvestorForm } from '../AddInvestorForm/AddInvestorForm';
+import { InvestorList } from '../InvestorList/InvestorList';
+import { PauseForm } from '../PauseForm/PauseForm';
 
 export const AgentRootPage: FC = () => {
   const { isAgent, account } = useAccount();
@@ -32,10 +34,12 @@ export const AgentRootPage: FC = () => {
         />
       )}
       <Stack gap="sm">
+        <PauseForm />
         <Button startVisual={<MonoAdd />} onPress={handleAddInvestor}>
           Add Investor
         </Button>
       </Stack>
+      <InvestorList />
     </Stack>
   );
 };

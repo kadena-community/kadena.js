@@ -30,21 +30,21 @@ export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
   const onSubmit = async (data: IRegisterIdentityProps) => {
     const newData: IRegisterIdentityProps = { ...data, agent: account! };
     setError(null);
-    try {
-      const tx = await registerIdentity(newData);
+    //try {
+    const tx = await registerIdentity(newData);
+    console.log(tx);
+    const signedTransaction = await sign(tx);
+    if (!signedTransaction) return;
 
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
+    const client = getClient();
+    const res = await client.submit(signedTransaction);
+    console.log(res);
 
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-      console.log(res);
-
-      await client.listen(res);
-      console.log('DONE');
-    } catch (e: any) {
-      setError(e?.message || e);
-    }
+    await client.listen(res);
+    console.log('DONE');
+    // } catch (e: any) {
+    //   setError(e?.message || e);
+    // }
 
     onClose();
   };
