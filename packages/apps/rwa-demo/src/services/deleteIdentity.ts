@@ -19,7 +19,7 @@ export const deleteIdentity = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.agent-role.ONLY-AGENT`, account.address),
+      withCap(`RWA.mvp-token.ONLY-AGENT`, account.address),
       withCap(`coin.GAS`),
     ])
     .addData('investor', data.investor)

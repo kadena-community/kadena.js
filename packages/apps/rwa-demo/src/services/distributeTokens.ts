@@ -33,7 +33,7 @@ export const distributeTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.agent-role.ONLY-AGENT`, account.address),
+      withCap(`RWA.mvp-token.ONLY-AGENT`, account.address),
       withCap(
         `RWA.mvp-token.TRANSFER`,
         'c:soLScugf2M-6r5L-leMUCGvgddyB1qaKh9s7ka4upGU',
