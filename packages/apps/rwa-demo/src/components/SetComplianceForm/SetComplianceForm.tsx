@@ -1,8 +1,6 @@
-import { useAccount } from '@/hooks/account';
+import { useSetCompliance } from '@/hooks/setCompliance';
 import type { ISetComplianceProps } from '@/services/setCompliance';
-import { setCompliance } from '@/services/setCompliance';
-import { getClient } from '@/utils/client';
-import { Button, NumberField } from '@kadena/kode-ui';
+import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -18,7 +16,7 @@ interface IProps {
 }
 
 export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
-  const { account, sign } = useAccount();
+  const { submit } = useSetCompliance();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
   const { register, handleSubmit } = useForm<ISetComplianceProps>({
@@ -29,21 +27,8 @@ export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
   });
 
   const onSubmit = async (data: ISetComplianceProps) => {
-    setError(null);
-    try {
-      const tx = await setCompliance(data, account!);
+    await submit(data);
 
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      await client.listen(res);
-      console.log('DONE');
-    } catch (e: any) {
-      setError(e?.message || e);
-    }
     onClose();
   };
 
@@ -53,11 +38,13 @@ export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <RightAsideHeader label="Set compliance" />
           <RightAsideContent>
-            <NumberField
+            <TextField
+              type="number"
               label="Max Balance"
               {...register('maxBalance', { required: true })}
             />
-            <NumberField
+            <TextField
+              type="number"
               label="Max Supply"
               {...register('maxSupply', { required: true })}
             />

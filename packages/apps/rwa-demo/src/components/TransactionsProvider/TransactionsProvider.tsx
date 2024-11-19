@@ -8,7 +8,7 @@ import { createContext, useCallback, useState } from 'react';
 export interface ITransaction {
   requestKey: string;
   type: string;
-  data: Record<string, string>;
+  data: Record<string, string | number>;
   listener?: Promise<void | ICommandResult>;
   result?: boolean;
 }
