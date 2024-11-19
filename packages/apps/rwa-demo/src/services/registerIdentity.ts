@@ -22,7 +22,6 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
     ])
     .addData('investor', data.investor)
     .addData('agent', data.agent.address)
-
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };
