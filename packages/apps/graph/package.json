@@ -16,8 +16,13 @@
   "bin": {
     "kadena-graph": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "prisma"
+  ],
   "scripts": {
     "build": "pnpm run pactjs:generate:contracts && pnpm prisma:generate && tsc",
+    "build:docker": "cache-sh -i \"{src/**/*,build/*,package.json,Dockerfile}\" \"pnpm run build:bun && docker build -t kadena/graph .\"",
     "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
     "devnet": "docker volume create kadena_devnet_crashnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -p 1789:1789 -p 1848:1848 -v kadena_devnet_crashnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet:crashnet-arm64",
     "devnet:update": "docker pull kadena/devnet",
@@ -97,6 +102,7 @@
     "@types/pg": "~8.11.5",
     "@types/seedrandom": "~3.0.8",
     "@types/ws": "^8.5.10",
+    "cache-sh": "^1.2.1",
     "prettier": "~3.2.5",
     "ts-node": "~10.9.2",
     "typescript": "5.4.5"

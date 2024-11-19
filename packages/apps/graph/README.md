@@ -9,31 +9,33 @@
 </picture>
 <!-- markdownlint-enable MD033 -->
 
-- [Getting started](#getting-started)
-  - [Method 1: Using the published npm package](#method-1-using-the-published-npm-package)
-  - [Method 2: Building and running from source](#method-2-building-and-running-from-source)
-  - [Running your first query](#running-your-first-query)
-  - [Example queries per use case](#example-queries-per-use-case)
-    - [Wallet related](#wallet-related)
-    - [Explorer related](#explorer-related)
-    - [Event related](#event-related)
-    - [Fungible related](#fungible-related)
-    - [Non-fungible related](#non-fungible-related)
-- [Features](#features)
-  - [Tracing and trace analysis](#tracing-and-trace-analysis)
-  - [Query Complexity](#query-complexity)
-  - [Prisma JSON field queries](#prisma-json-field-queries)
-  - [Paginated results](#paginated-results)
-- [Useful extra's](#useful-extras)
-  - [Network Information](#network-information)
-  - [Running devnet](#running-devnet)
-    - [GraphQL](#graphql)
-  - [Connecting to the database](#connecting-to-the-database)
-  - [Simulating traffic on the devnet](#simulating-traffic-on-the-devnet)
-    - [Coin simulation](#coin-simulation)
-    - [Marmalade simulation](#marmalade-simulation)
-    - [Flood devnet](#flood-devnet)
-- [Changelog](#changelog)
+- [@kadena/graph](#kadenagraph)
+  - [Getting started](#getting-started)
+    - [Method 1: Using the published npm package](#method-1-using-the-published-npm-package)
+    - [Method 2: Building and running from source](#method-2-building-and-running-from-source)
+    - [Method 3: Using docker-compose](#method-3-using-docker-compose)
+    - [Running your first query](#running-your-first-query)
+    - [Example queries per use case](#example-queries-per-use-case)
+      - [Wallet related](#wallet-related)
+      - [Explorer related](#explorer-related)
+      - [Event related](#event-related)
+      - [Fungible related](#fungible-related)
+      - [Non-fungible related](#non-fungible-related)
+  - [Features](#features)
+    - [Tracing and trace analysis](#tracing-and-trace-analysis)
+    - [Query Complexity](#query-complexity)
+    - [Prisma JSON field queries](#prisma-json-field-queries)
+    - [Paginated results](#paginated-results)
+  - [Useful extra's](#useful-extras)
+    - [Network Information](#network-information)
+    - [Running devnet](#running-devnet)
+      - [GraphQL](#graphql)
+    - [Connecting to the database](#connecting-to-the-database)
+    - [Simulating traffic on the devnet](#simulating-traffic-on-the-devnet)
+      - [Coin simulation](#coin-simulation)
+      - [Marmalade simulation](#marmalade-simulation)
+      - [Flood devnet](#flood-devnet)
+  - [Changelog](#changelog)
 
 ## Getting started
 
@@ -44,7 +46,7 @@ If you are not familiar yet with GraphQL, we recommend to first read the [offici
 
 This GraphQL server creates a readonly GraphQL endpoint that retrieves data from a Chainweb node and a [chainweb-data](https://github.com/kadena-io/chainweb-data) PostgreSQL database. The Chainweb node is used to execute pact queries to, for uses such as retrieving account balances. The PostgreSQL database is used to read data such as blocks, transactions, and events. By default, the GraphQL server points to a local devnet instance.
 
-Prequisites:
+Prerequisites:
 
 - [Node.js](https://nodejs.org/en/download/)
 - A running Chainweb node and chainweb-data PostgreSQL database with the migrations in `cwd-extra-migrations` applied. If you don't have this set up, see [Running devnet](#running-devnet).
@@ -81,6 +83,26 @@ Then, run the project:
 
 ```sh
 pnpm run start
+```
+
+### Method 3: Using docker-compose
+
+Build and run the project from docker-compose.
+
+Modify the [`.env`](./.env.example) accordingly, and then run the following commands:
+
+This will use the **released package from NPM** @kadena/graph.
+
+```sh
+docker compose build graphql
+docker compose up graphql -p 4000:4000
+```
+
+If you want to use the **build from source**, you can use the following command:
+
+```sh
+docker compose build graphql-source
+docker compose up graphql-source -p 4000:4000
 ```
 
 ### Running your first query
