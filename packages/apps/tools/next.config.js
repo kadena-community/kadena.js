@@ -61,6 +61,15 @@ const config = {
           },
         ],
       },
+      {
+        source: '/api/graph',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0',
+          },
+        ],
+      },
     ];
   },
 };
