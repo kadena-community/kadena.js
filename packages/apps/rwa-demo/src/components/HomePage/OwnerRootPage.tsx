@@ -13,20 +13,17 @@ import { PauseForm } from '../PauseForm/PauseForm';
 export const OwnerRootPage = () => {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
-  const [hasOpenInitForm, setHasOpenInitForm] = useState(false);
   const [hasOpenAgentForm, setHasOpenAgentForm] = useState(false);
   const [hasOpenComplianceForm, setHasOpenComplianceForm] = useState(false);
 
   const handleAddAgent = () => {
     setIsRightAsideExpanded(true);
-    setHasOpenInitForm(false);
     setHasOpenAgentForm(true);
     setHasOpenComplianceForm(false);
   };
 
   const handleInitToken = () => {
     setIsRightAsideExpanded(true);
-    setHasOpenInitForm(true);
     setHasOpenComplianceForm(false);
     setHasOpenAgentForm(false);
   };
@@ -34,7 +31,6 @@ export const OwnerRootPage = () => {
   const handleComplianceForm = () => {
     setIsRightAsideExpanded(true);
     setHasOpenComplianceForm(true);
-    setHasOpenInitForm(false);
     setHasOpenAgentForm(false);
   };
 
@@ -58,14 +54,6 @@ export const OwnerRootPage = () => {
           }}
         />
       )}
-      {isRightAsideExpanded && hasOpenInitForm && (
-        <InitTokenForm
-          onClose={() => {
-            setIsRightAsideExpanded(false);
-            setHasOpenInitForm(false);
-          }}
-        />
-      )}
 
       <Stack gap="sm">
         <PauseForm />
@@ -76,10 +64,6 @@ export const OwnerRootPage = () => {
 
         <Button startVisual={<MonoAdd />} onClick={handleComplianceForm}>
           Set Compliance
-        </Button>
-
-        <Button startVisual={<MonoAdd />} onClick={handleInitToken}>
-          Init Token
         </Button>
       </Stack>
 

@@ -20,7 +20,7 @@ export const registerIdentity = async (
       chainId: network.chainId,
     })
     .addSigner(data.agent.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.agent-role.ONLY-AGENT`, [data.agent.address]),
+      withCap(`RWA.agent-role.ONLY-AGENT`, data.agent.address),
       withCap(`coin.GAS`),
     ])
     .addData('investor', data.investor)
