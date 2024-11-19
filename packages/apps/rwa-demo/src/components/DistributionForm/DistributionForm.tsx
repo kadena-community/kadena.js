@@ -18,11 +18,8 @@ interface IProps {
 export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
   const { submit } = useDistributeTokens();
   const { register, handleSubmit } = useForm<IDistributeTokensProps>({
-    defaultValues: {
-      amount: '',
-      investorAccount,
-    },
     values: {
+      amount: 0,
       investorAccount,
     },
   });
