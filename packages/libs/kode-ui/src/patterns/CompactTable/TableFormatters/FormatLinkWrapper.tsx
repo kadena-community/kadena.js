@@ -41,8 +41,6 @@ export const FormatLinkWrapper = ({
       <LinkWrapper
         href={formatURL(url, valueToString(value))}
         to={formatURL(url, valueToString(value))}
-        passHref
-        legacyBehavior
         className={linkClass}
       >
         <Text variant="code" className={dataFieldClass}>

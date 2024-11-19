@@ -1,5 +1,5 @@
-import { useSetCompliance } from '@/hooks/setCompliance';
-import type { ISetComplianceProps } from '@/services/setCompliance';
+import { useDistributeTokens } from '@/hooks/distributeTokens';
+import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -12,18 +12,22 @@ import { useForm } from 'react-hook-form';
 
 interface IProps {
   onClose: () => void;
+  investorAccount: string;
 }
 
-export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
-  const { submit } = useSetCompliance();
-  const { register, handleSubmit } = useForm<ISetComplianceProps>({
+export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
+  const { submit } = useDistributeTokens();
+  const { register, handleSubmit } = useForm<IDistributeTokensProps>({
     defaultValues: {
-      maxBalance: 0,
-      maxSupply: 0,
+      amount: '',
+      investorAccount,
+    },
+    values: {
+      investorAccount,
     },
   });
 
-  const onSubmit = async (data: ISetComplianceProps) => {
+  const onSubmit = async (data: IDistributeTokensProps) => {
     await submit(data);
 
     onClose();
@@ -33,24 +37,19 @@ export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
     <>
       <RightAside isOpen onClose={onClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <RightAsideHeader label="Set compliance" />
+          <RightAsideHeader label="Distribute Tokens" />
           <RightAsideContent>
             <TextField
+              label="Amount"
               type="number"
-              label="Max Balance"
-              {...register('maxBalance', { required: true })}
-            />
-            <TextField
-              type="number"
-              label="Max Supply"
-              {...register('maxSupply', { required: true })}
+              {...register('amount', { required: true })}
             />
           </RightAsideContent>
           <RightAsideFooter>
             <Button onPress={onClose} variant="transparent">
               Cancel
             </Button>
-            <Button type="submit">Set Compliance</Button>
+            <Button type="submit">Distribute</Button>
           </RightAsideFooter>
         </form>
       </RightAside>

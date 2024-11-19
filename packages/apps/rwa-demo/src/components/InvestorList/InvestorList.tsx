@@ -5,6 +5,7 @@ import { getClient } from '@/utils/client';
 import { MonoDelete } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
+import Link from 'next/link';
 import type { FC } from 'react';
 
 export const InvestorList: FC = () => {
@@ -39,7 +40,15 @@ export const InvestorList: FC = () => {
           width: '10%',
           render: CompactTableFormatters.FormatStatus(),
         },
-        { label: 'Account', key: 'accountName', width: '50%' },
+        {
+          label: 'Account',
+          key: 'accountName',
+          width: '50%',
+          render: CompactTableFormatters.FormatLinkWrapper({
+            url: '/investors/:value',
+            linkComponent: Link,
+          }),
+        },
         { label: 'Requestkey', key: 'requestKey', width: '30%' },
         {
           label: '',

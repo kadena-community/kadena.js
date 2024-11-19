@@ -126,7 +126,6 @@ export function ContactForm({
                 rules={{ required: true }}
                 defaultValue={getValues('discoverdAccount')}
                 render={({ field }) => {
-                  console.log({ field });
                   return (
                     <Stack flexDirection={'column'} gap={'sm'}>
                       <AccountInput
