@@ -3,7 +3,7 @@ import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IAddAgentProps {
-  agent: string;
+  accountName: string;
 }
 
 const createPubKeyFromAccount = (account: string): string => {
@@ -26,9 +26,9 @@ export const addAgent = async (
       withCap(`RWA.mvp-token.ONLY-OWNER`, ''),
       withCap(`coin.GAS`),
     ])
-    .addData('agent', data.agent)
+    .addData('agent', data.accountName)
     .addData('agent_guard', {
-      keys: [createPubKeyFromAccount(data.agent)],
+      keys: [createPubKeyFromAccount(data.accountName)],
       pred: 'keys-all',
     })
 

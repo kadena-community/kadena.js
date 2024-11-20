@@ -58,7 +58,9 @@ const preview: Preview = {
       },
     },
   },
+
   decorators: [withCenteredStory],
+  tags: ['autodocs'],
 };
 
 export default preview;

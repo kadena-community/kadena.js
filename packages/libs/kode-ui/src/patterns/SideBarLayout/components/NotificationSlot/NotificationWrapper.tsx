@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect } from 'react';
+import { useNotifications } from '../LayoutProvider';
 import type { INotificationMinimizedProps } from '../LayoutProvider/NotificationsProvider';
-import { useNotifications } from '../LayoutProvider/NotificationsProvider';
 import { Notification } from './../../../../components';
 
 type IProps = PropsWithChildren & INotificationMinimizedProps;

@@ -3,7 +3,7 @@ import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IRegisterIdentityProps {
-  investor: string;
+  accountName: string;
   agent: IWalletAccount;
 }
 
@@ -19,17 +19,17 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       `,
     )
     .addData('investor-keyset', {
-      keys: [createPubKeyFromAccount(data.investor)],
+      keys: [createPubKeyFromAccount(data.accountName)],
       pred: 'keys-all',
     })
-    .addData('investor', data.investor)
+    .addData('investor', data.accountName)
     .addData('agent', data.agent.address)
     .setMeta({
       senderAccount: data.agent.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(data.agent.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-AGENT`, data.agent.address),
+      withCap(`RWA.mvp-token.ONLY-AGENT`, 'whitelist-manager'),
       withCap(`coin.GAS`),
     ])
 

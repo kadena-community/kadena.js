@@ -26,6 +26,7 @@ const config: StorybookConfig = {
     },
     getAbsolutePath('@storybook/addon-mdx-gfm'),
     getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
+    '@chromatic-com/storybook',
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-webpack5'),
@@ -36,9 +37,7 @@ const config: StorybookConfig = {
       },
     },
   },
-  docs: {
-    autodocs: true,
-  },
+  docs: {},
   // Add this for Vanilla Extract
   webpackFinal(config) {
     // Add Vanilla-Extract and MiniCssExtract Plugins

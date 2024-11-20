@@ -1,4 +1,5 @@
 import { useAccount } from '@/hooks/account';
+import { useTransactions } from '@/hooks/transactions';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
@@ -10,7 +11,6 @@ import {
   RightAsideHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface IProps {
@@ -20,31 +20,32 @@ interface IProps {
 export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
   const { account, sign } = useAccount();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setError] = useState<string | null>(null);
+  const { addTransaction } = useTransactions();
   const { register, handleSubmit } = useForm<IRegisterIdentityProps>({
     defaultValues: {
-      investor: '',
+      accountName: '',
     },
   });
 
   const onSubmit = async (data: IRegisterIdentityProps) => {
     const newData: IRegisterIdentityProps = { ...data, agent: account! };
-    setError(null);
-    //try {
-    const tx = await registerIdentity(newData);
-    console.log(tx);
-    const signedTransaction = await sign(tx);
-    if (!signedTransaction) return;
+    try {
+      const tx = await registerIdentity(newData);
+      const signedTransaction = await sign(tx);
+      if (!signedTransaction) return;
 
-    const client = getClient();
-    const res = await client.submit(signedTransaction);
-    console.log(res);
+      const client = getClient();
+      const res = await client.submit(signedTransaction);
+      console.log(res);
 
-    await client.listen(res);
-    console.log('DONE');
-    // } catch (e: any) {
-    //   setError(e?.message || e);
-    // }
+      addTransaction({
+        ...res,
+        type: 'IDENTITY-REGISTERED',
+        data: { ...res, ...data },
+      });
+
+      console.log('DONE');
+    } catch (e: any) {}
 
     onClose();
   };
@@ -57,7 +58,7 @@ export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
           <RightAsideContent>
             <TextField
               label="Investor Account"
-              {...register('investor', { required: true })}
+              {...register('accountName', { required: true })}
             />
           </RightAsideContent>
           <RightAsideFooter>

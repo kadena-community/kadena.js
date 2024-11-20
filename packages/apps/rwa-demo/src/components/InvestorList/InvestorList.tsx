@@ -16,16 +16,12 @@ export const InvestorList: FC = () => {
     try {
       const tx = await deleteIdentity({ investor: accountName }, account!);
 
-      console.log(tx);
-      console.log(JSON.parse(tx.cmd));
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      console.log(res);
       await client.listen(res);
       console.log('DONE');
     } catch (e: any) {}

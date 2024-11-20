@@ -27,13 +27,13 @@ export const useGetInvestors = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.identity-registry.IDENTITY-REGISTERED',
+      qualifiedName: 'RWA.mvp-token.IDENTITY-REGISTERED',
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.identity-registry.IDENTITY-REMOVED',
+      qualifiedName: 'RWA.mvp-token.IDENTITY-REMOVED',
     },
   });
 
@@ -81,6 +81,8 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
+    console.log({ agentsAdded, agentsRemoved });
+
     setInnerData([
       ...filterRemovedRecords([...agentsAdded, ...agentsRemoved]),
       ...promiseResults,
@@ -88,7 +90,7 @@ export const useGetInvestors = () => {
   };
 
   useEffect(() => {
-    const tx = getTransactions('ADDAGENT');
+    const tx = getTransactions('IDENTITY-REGISTERED');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(tx);
   }, [transactions, addedData, removedData, removedLoading, addedLoading]);

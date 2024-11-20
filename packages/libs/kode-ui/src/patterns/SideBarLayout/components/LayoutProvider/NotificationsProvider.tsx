@@ -9,6 +9,7 @@ export type INotificationMinimizedProps = Pick<
   id: string;
   label: string;
   message: string;
+  url?: string;
 };
 
 interface INotificationsContext {

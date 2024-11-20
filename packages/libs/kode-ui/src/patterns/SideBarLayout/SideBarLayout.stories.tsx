@@ -374,6 +374,7 @@ export const Primary: IStory = {
 };
 
 const NotificationsLayout = () => {
+  console.log(11, useNotifications);
   const { addNotification } = useNotifications();
   const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
     useLayout();
@@ -488,6 +489,7 @@ const NotificationsLayout = () => {
                   label: 'This is an info Notification',
                   message: 'And this is the message',
                   isDismissable: true,
+                  url: 'https://explorer.kadena.io',
                 });
               }}
             >

@@ -28,16 +28,13 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
   const [openModal, setOpenModal] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setError] = useState<string | null>(null);
   const { register, handleSubmit } = useForm<IAddAgentProps>({
     defaultValues: {
-      agent: '',
+      accountName: '',
     },
   });
 
   const onSubmit = async (data: IAddAgentProps) => {
-    setError(null);
     try {
       const tx = await addAgent(data, account!);
 
@@ -55,9 +52,7 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
         data: { ...res, ...data },
       });
       console.log('DONE');
-    } catch (e: any) {
-      setError(e?.message || e);
-    }
+    } catch (e: any) {}
 
     onClose();
   };
@@ -80,7 +75,7 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
           <RightAsideContent>
             <TextField
               label="Agent Account"
-              {...register('agent', { required: true })}
+              {...register('accountName', { required: true })}
             />
           </RightAsideContent>
           <RightAsideFooter>
