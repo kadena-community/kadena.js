@@ -42,10 +42,6 @@ export interface HDWalletRepository {
   getKeySource: (id: string) => Promise<KeySourceType>;
   addKeySource: (profile: KeySourceType) => Promise<void>;
   updateKeySource: (profile: KeySourceType) => Promise<void>;
-  updateEncryptedValue: (
-    key: string,
-    value: string | Uint8Array,
-  ) => Promise<void>;
 }
 
 const createKeySourceRepository = ({
@@ -63,9 +59,6 @@ const createKeySourceRepository = ({
     updateKeySource: async (keySource: KeySourceType): Promise<void> => {
       return update('keySource', keySource);
     },
-    updateEncryptedValue: async (key: string, value: string | Uint8Array) => {
-      return update('encryptedValue', value, key);
-    }
   };
 };
 

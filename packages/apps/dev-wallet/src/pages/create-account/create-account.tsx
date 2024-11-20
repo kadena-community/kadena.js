@@ -10,7 +10,11 @@ import { createPrincipal } from '@kadena/client-utils/built-in';
 
 import { Key } from '@/Components/Key/Key.tsx';
 import { Keyset } from '@/Components/Keyset/Keyset.tsx';
-import { MonoAdd } from '@kadena/kode-icons/system';
+import {
+  MonoAdd,
+  MonoCheck,
+  MonoOpenInBrowser,
+} from '@kadena/kode-icons/system';
 import {
   Button,
   Card,
@@ -23,11 +27,12 @@ import {
   Stack,
   Text,
   TextField,
+  Link as UiLink,
 } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { panelClass } from '../home/style.css.ts';
 import { CreateKeySetForm } from '../keys/Components/CreateKeySetForm.tsx';
 import { buttonListClass } from './style.css.ts';
@@ -42,12 +47,13 @@ type IKeySetType =
       type: 'key';
     };
 
-type AccountType = 'k:account' | 'w:account' | 'r:account';
+type AccountType = 'multi-signatures' | 'single-key';
 export function CreateAccount() {
+  const [showUsedItems, setShowUsedItems] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedItem, setSelectedItem] = useState<IKeySetType>();
   const [created, setCreated] = useState<IAccount | null>(null);
-  const [accountType, setAccountType] = useState<AccountType>('k:account');
+  const [accountType, setAccountType] = useState<AccountType>('single-key');
   const [searchParams] = useSearchParams();
   const urlContract = searchParams.get('contract');
   const [contract, setContract] = useState<string | null>(urlContract);
@@ -66,14 +72,24 @@ export function CreateAccount() {
     (account) => account.contract === contract,
   );
 
-  const usedKeys = filteredAccounts.map((account) => {
-    const keys = account.keyset?.guard.keys;
-    if (keys?.length === 1 && account.keyset?.guard.pred === 'keys-all') {
-      return keys[0];
-    }
-  });
+  const getSingleKeyAccount = (key: string) =>
+    filteredAccounts.find((account) => {
+      const keys = account.keyset?.guard.keys;
+      if (
+        keys?.length === 1 &&
+        keys[0] === key &&
+        account.keyset?.guard.pred === 'keys-all'
+      ) {
+        return account;
+      }
+    });
 
-  const usedKeysets = filteredAccounts.map((account) => account.keyset?.uuid);
+  const symbol =
+    fungibles.find((f) => f.contract === contract)?.symbol ?? contract;
+
+  const aliasDefaultValue = contract
+    ? `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`
+    : '';
 
   const createAccountByKeyset = async (keyset: IKeySet) => {
     if (!profile || !activeNetwork || !contract) {
@@ -81,7 +97,7 @@ export function CreateAccount() {
     }
     const account: IAccount = {
       uuid: crypto.randomUUID(),
-      alias: alias || '',
+      alias: alias || aliasDefaultValue,
       profileId: profile.uuid,
       address: keyset.principal,
       keysetId: keyset.uuid,
@@ -143,15 +159,24 @@ export function CreateAccount() {
     return <Navigate to={`/account/${created.uuid}`} />;
   }
 
-  const filteredKeySources = keySources.filter(
-    (ks) =>
-      (accountType === 'k:account' && ks.source !== 'web-authn') ||
-      (accountType === 'w:account' && ks.source === 'web-authn'),
-  );
+  const filteredKeysets = keysets
+    .filter((keyset) => keyset.guard.keys.length >= 2)
+    .map((keyset) => ({
+      ...keyset,
+      account: filteredAccounts.find(
+        (account) => account.keysetId === keyset.uuid,
+      ),
+    }))
+    .sort((a) => (a.account ? 1 : -1));
 
-  const filteredKeysets = keysets.filter(
-    (keyset) =>
-      keyset.guard.keys.length >= 2 && !usedKeysets.includes(keyset.uuid),
+  const showUsedItemsComponent = (
+    <Button
+      isCompact
+      variant="transparent"
+      onClick={() => setShowUsedItems((prev) => !prev)}
+    >
+      {showUsedItems ? 'Hide used items' : 'Show used items'}
+    </Button>
   );
 
   return (
@@ -187,6 +212,8 @@ export function CreateAccount() {
             </Select>
             <TextField
               label="Alias"
+              defaultValue={aliasDefaultValue}
+              value={alias || aliasDefaultValue}
               onChange={(e) => setAlias(e.target.value)}
             />
 
@@ -205,7 +232,7 @@ export function CreateAccount() {
                 style={{ maxWidth: 650 }}
               >
                 <Stack flexDirection={'column'} gap={'sm'}>
-                  <Radio value="k:account">Single Key</Radio>
+                  <Radio value="single-key">Single Key Account</Radio>
                   <Text size="small">
                     This account will be guarded by a single key, this is the
                     most relevant way if you are creating a personal account;
@@ -218,7 +245,9 @@ export function CreateAccount() {
                 </Stack>
                 <Divider />
                 <Stack flexDirection={'column'} gap={'sm'}>
-                  <Radio value="w:account">Multi Keys</Radio>
+                  <Radio value="multi-signatures">
+                    Multi Signatures Account
+                  </Radio>
                   <Text size="small">
                     This account will be guarded by a keyset. This will offers a
                     way to create shared account or more secure account guarded
@@ -230,36 +259,20 @@ export function CreateAccount() {
                   </Text>
                 </Stack>
                 <Divider />
-                <Stack flexDirection={'column'} gap={'sm'}>
-                  <Radio value="r:account" isDisabled>
-                    r: account (not supposed yet)
-                  </Radio>
-                  <Stack
-                    gap="sm"
-                    style={{ opacity: 0.7 }}
-                    flexDirection={'column'}
-                  >
-                    <Text size="small">
-                      This account will be guarded by a keyset reference. this
-                      is more suitable if you want to change the guard later
-                      without creating a new account. Creating this type of
-                      account requires namespace generation so its not supported
-                      yet with most of the wallets
-                    </Text>
-                    <Text size="small">
-                      Tip: Since the guard can be changed, this type of account
-                      is more flexible.
-                    </Text>
-                  </Stack>
-                </Stack>
               </Stack>
             </RadioGroup>
 
             {contract && (
               <Stack flexDirection={'column'} gap={'xxl'}>
-                {accountType === 'w:account' && (
+                {accountType === 'multi-signatures' && (
                   <Stack flexDirection={'column'} gap={'md'}>
-                    <Heading variant="h4">Keysets</Heading>
+                    <Stack
+                      justifyContent={'space-between'}
+                      alignItems={'center'}
+                    >
+                      <Heading variant="h4">Keysets</Heading>
+                      {showUsedItemsComponent}
+                    </Stack>
                     <Stack
                       flexDirection={'column'}
                       gap={'md'}
@@ -283,98 +296,133 @@ export function CreateAccount() {
                       </Text>
                       <Stack flexDirection={'column'} gap={'sm'}>
                         <Stack flexDirection={'column'}>
-                          {filteredKeysets.map((keyset) => {
-                            return (
-                              <ButtonItem
-                                key={keyset.uuid}
-                                selected={
-                                  selectedItem?.type === 'keyset' &&
-                                  selectedItem?.item.uuid === keyset.uuid
-                                }
-                                onClick={() =>
-                                  setSelectedItem({
-                                    item: keyset,
-                                    type: 'keyset',
-                                  })
-                                }
-                              >
-                                <Stack
-                                  gap={'md'}
-                                  justifyContent={'center'}
-                                  alignItems={'center'}
-                                >
-                                  <Stack flex={1}>
-                                    {<Keyset keySet={keyset} />}
-                                  </Stack>
+                          {filteredKeysets
+                            .filter((ks) => showUsedItems || !ks.account)
+                            .map((keyset) => {
+                              return (
+                                <Stack gap={'sm'} alignItems={'center'}>
+                                  <ButtonItem
+                                    key={keyset.uuid}
+                                    disabled={Boolean(keyset.account)}
+                                    selected={
+                                      selectedItem?.type === 'keyset' &&
+                                      selectedItem?.item.uuid === keyset.uuid
+                                    }
+                                    onClick={() => {
+                                      if (!keyset.account) {
+                                        setSelectedItem({
+                                          item: keyset,
+                                          type: 'keyset',
+                                        });
+                                      }
+                                    }}
+                                  >
+                                    <Stack
+                                      gap={'md'}
+                                      justifyContent={'center'}
+                                      alignItems={'center'}
+                                    >
+                                      <Stack flex={1} gap={'sm'}>
+                                        {<Keyset keySet={keyset} />}
+                                      </Stack>
+                                    </Stack>
+                                  </ButtonItem>
+                                  {keyset.account && (
+                                    <UiLink
+                                      href={`/account/${keyset.account.uuid}`}
+                                      component={Link}
+                                    >
+                                      <MonoOpenInBrowser />
+                                    </UiLink>
+                                  )}
+                                  {!keyset.account && (
+                                    <Button
+                                      variant="transparent"
+                                      onPress={() => {
+                                        setSelectedItem({
+                                          item: keyset,
+                                          type: 'keyset',
+                                        });
+                                      }}
+                                    >
+                                      <MonoCheck />
+                                    </Button>
+                                  )}
                                 </Stack>
-                              </ButtonItem>
-                            );
-                          })}
+                              );
+                            })}
                         </Stack>
                       </Stack>
                     </Stack>
                   </Stack>
                 )}
-                {['k:account', 'w:account'].includes(accountType) &&
-                  filteredKeySources.length && (
+                {accountType === 'single-key' && keySources.length && (
+                  <Stack
+                    // className={panelClass}
+                    flexDirection={'column'}
+                    gap={'md'}
+                    flex={1}
+                  >
                     <Stack
-                      // className={panelClass}
-                      flexDirection={'column'}
-                      gap={'md'}
-                      flex={1}
+                      justifyContent={'space-between'}
+                      alignItems={'center'}
                     >
                       <Heading variant="h4">Keys</Heading>
-                      <Stack flexDirection={'column'} gap={'md'}>
-                        {filteredKeySources.map((keySource) => {
-                          const filteredKeys = keySource.keys.filter(
-                            (key) => !usedKeys.includes(key.publicKey),
-                          );
-                          return (
+                      {showUsedItemsComponent}
+                    </Stack>
+                    <Stack flexDirection={'column'} gap={'md'}>
+                      {keySources.map((keySource) => {
+                        const filteredKeys = keySource.keys.filter((key) =>
+                          getSingleKeyAccount(key.publicKey),
+                        );
+                        return (
+                          <Stack
+                            key={keySource.uuid}
+                            gap={'md'}
+                            flexDirection={'column'}
+                            className={panelClass}
+                          >
                             <Stack
-                              key={keySource.uuid}
-                              gap={'md'}
-                              flexDirection={'column'}
-                              className={panelClass}
+                              justifyContent={'space-between'}
+                              alignItems={'center'}
                             >
-                              <Stack
-                                justifyContent={'space-between'}
-                                alignItems={'center'}
+                              <Heading variant="h4">{keySource.source}</Heading>
+                              <Button
+                                variant="outlined"
+                                isCompact
+                                onPress={async () => {
+                                  const key = await createKey(keySource);
+                                  setSelectedItem({
+                                    item: key,
+                                    type: 'key',
+                                  });
+                                }}
                               >
-                                <Heading variant="h4">
-                                  {keySource.source}
-                                </Heading>
-                                <Button
-                                  variant="outlined"
-                                  isCompact
-                                  onPress={async () => {
-                                    const key = await createKey(keySource);
-                                    setSelectedItem({
-                                      item: key,
-                                      type: 'key',
-                                    });
-                                  }}
-                                >
-                                  <Stack alignItems={'center'} gap={'sm'}>
-                                    <MonoAdd />
-                                    <span>
-                                      Create a new key from {keySource.source}
-                                    </span>
-                                  </Stack>
-                                </Button>
-                              </Stack>
-                              <Text>
-                                {filteredKeys.length === 0
-                                  ? 'There is not key available to select, create a new one'
-                                  : 'Select on of the following keys to create account'}
-                              </Text>
-                              <Stack flexDirection={'column'}>
-                                <Stack></Stack>
-                                {keySource.keys
-                                  .filter(
-                                    (key) => !usedKeys.includes(key.publicKey),
-                                  )
-                                  .map((key) => {
-                                    return (
+                                <Stack alignItems={'center'} gap={'sm'}>
+                                  <MonoAdd />
+                                  <span>
+                                    Create a new key from {keySource.source}
+                                  </span>
+                                </Stack>
+                              </Button>
+                            </Stack>
+                            <Text>
+                              {filteredKeys.length === 0
+                                ? 'There is not key available to select, create a new one'
+                                : 'Select on of the following keys to create account'}
+                            </Text>
+                            <Stack flexDirection={'column'}>
+                              {keySource.keys
+                                .map((key) => ({
+                                  ...key,
+                                  account: getSingleKeyAccount(key.publicKey),
+                                }))
+                                .filter((key) => showUsedItems || !key.account)
+                                .sort((a) => (a.account ? 1 : -1))
+                                .map((key) => {
+                                  const account = key.account;
+                                  return (
+                                    <Stack gap={'sm'} alignItems={'center'}>
                                       <ButtonItem
                                         key={key.publicKey}
                                         selected={
@@ -382,12 +430,14 @@ export function CreateAccount() {
                                           selectedItem?.item.publicKey ===
                                             key.publicKey
                                         }
-                                        onClick={() =>
+                                        disabled={Boolean(account)}
+                                        onClick={() => {
+                                          if (account) return;
                                           setSelectedItem({
                                             item: key,
                                             type: 'key',
-                                          })
-                                        }
+                                          });
+                                        }}
                                       >
                                         <Stack gap={'sm'} alignItems={'center'}>
                                           <Stack gap={'sm'} flex={1}>
@@ -398,15 +448,37 @@ export function CreateAccount() {
                                           </Stack>
                                         </Stack>
                                       </ButtonItem>
-                                    );
-                                  })}
-                              </Stack>
+                                      {account && (
+                                        <UiLink
+                                          href={`/account/${account?.uuid}`}
+                                          component={Link}
+                                        >
+                                          <MonoOpenInBrowser />
+                                        </UiLink>
+                                      )}
+                                      {!account && (
+                                        <Button
+                                          variant="transparent"
+                                          onPress={() => {
+                                            setSelectedItem({
+                                              item: key,
+                                              type: 'key',
+                                            });
+                                          }}
+                                        >
+                                          <MonoCheck />
+                                        </Button>
+                                      )}
+                                    </Stack>
+                                  );
+                                })}
                             </Stack>
-                          );
-                        })}
-                      </Stack>
+                          </Stack>
+                        );
+                      })}
                     </Stack>
-                  )}
+                  </Stack>
+                )}
               </Stack>
             )}
           </Stack>
@@ -422,10 +494,7 @@ export function CreateAccount() {
                 }
               }}
             >
-              <>
-                Create {accountType}{' '}
-                {selectedItem?.type ? `with ${selectedItem.type}` : ''}
-              </>
+              <>Create {accountType} account</>
             </Button>
           </Stack>
         </Stack>

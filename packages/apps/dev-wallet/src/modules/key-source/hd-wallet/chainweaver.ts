@@ -124,6 +124,8 @@ export function createChainweaverService() {
       keysetId: string,
       oldPassword: string,
       newPassword: string,
+      persist = (cbs: Array<() => Promise<void>>) =>
+        Promise.all(cbs.map((cb) => cb())),
     ) => {
       try {
         const keySource = await keySourceRepository.getKeySource(keysetId);
@@ -153,24 +155,21 @@ export function createChainweaverService() {
             );
 
             return () =>
-              keySourceRepository.updateEncryptedValue(
-                key.secretId,
-                newSecretKey,
-              );
+              walletRepository.updateEncryptedValue(key.secretId, newSecretKey);
           }),
         );
 
-        // update all keys in repository
-        return Promise.all([
-          newKeys.map((update) => update()),
-          keySourceRepository.updateEncryptedValue(
-            keySource.rootKeyId,
-            newRootKey,
-          ),
+        return await persist([
+          ...newKeys,
+          () =>
+            walletRepository.updateEncryptedValue(
+              keySource.rootKeyId,
+              newRootKey,
+            ),
         ]);
-      } catch (e) {
-        throw new Error(`Error changing password
-${(e as any).message}`);
+      } catch (e: any) {
+        const message = 'message' in e ? e.message : JSON.stringify(e);
+        throw new Error(`Error changing password\n${message}`);
       }
     },
 

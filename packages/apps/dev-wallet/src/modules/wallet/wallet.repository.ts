@@ -54,7 +54,7 @@ const createWalletRepository = ({
       return add('profile', profile);
     },
     updateProfile: async (profile: IProfile): Promise<void> => {
-      return update('profile', profile);
+      return update('profile', profile, undefined);
     },
     getEncryptedValue: async (key: string): Promise<Uint8Array> => {
       return getOne('encryptedValue', key);
@@ -64,6 +64,12 @@ const createWalletRepository = ({
       value: string | Uint8Array,
     ): Promise<void> => {
       return add('encryptedValue', value, key, { noCreationTime: true });
+    },
+    updateEncryptedValue: async (
+      key: string,
+      value: string | Uint8Array,
+    ): Promise<void> => {
+      return update('encryptedValue', value, key);
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
       return (

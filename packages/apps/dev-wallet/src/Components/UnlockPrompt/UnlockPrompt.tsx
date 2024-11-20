@@ -25,7 +25,15 @@ export const UnlockPrompt: React.FC<{
     keepOpen: 'session' | 'short-time' | 'never';
   }) => void;
   reject: (reason: any) => void;
-}> = ({ resolve, reject, showPassword, rememberPassword, profile }) => {
+  storePassword?: boolean;
+}> = ({
+  resolve,
+  reject,
+  showPassword,
+  rememberPassword,
+  profile,
+  storePassword = true,
+}) => {
   const { control, register, handleSubmit } = useForm({
     defaultValues: {
       keepOpen: rememberPassword || 'session',
@@ -63,26 +71,28 @@ export const UnlockPrompt: React.FC<{
               label="Password"
             />
           )}
-          <Controller
-            name="keepOpen"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup
-                label="Keep open"
-                direction={'column'}
-                defaultValue={rememberPassword || 'session'}
-                value={field.value}
-                onChange={(value) => {
-                  console.log('value', value);
-                  field.onChange(value);
-                }}
-              >
-                <Radio value="session">Keep open during this session</Radio>
-                <Radio value="short-time">Lock after 5 minutes</Radio>
-                <Radio value="never">always ask</Radio>
-              </RadioGroup>
-            )}
-          />
+          {storePassword && (
+            <Controller
+              name="keepOpen"
+              control={control}
+              render={({ field }) => (
+                <RadioGroup
+                  label="Keep open"
+                  direction={'column'}
+                  defaultValue={rememberPassword || 'session'}
+                  value={field.value}
+                  onChange={(value) => {
+                    console.log('value', value);
+                    field.onChange(value);
+                  }}
+                >
+                  <Radio value="session">Keep open during this session</Radio>
+                  <Radio value="short-time">Lock after 5 minutes</Radio>
+                  <Radio value="never">always ask</Radio>
+                </RadioGroup>
+              )}
+            />
+          )}
           <Stack gap={'sm'}>
             <Button variant="transparent" type="reset" onClick={reject}>
               Cancel

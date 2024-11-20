@@ -1,4 +1,4 @@
-import { cardColor, cardHoverColor } from '@/utils/color';
+import { cardColor } from '@/utils/color';
 import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
@@ -59,14 +59,17 @@ export const buttonListClass = style([
     background: tokens.kda.foundation.color.background.surface.default,
     selectors: {
       '&:hover': {
-        background: cardHoverColor,
+        background: tokens.kda.foundation.color.border.base.default,
       },
       '&:disabled': {
         opacity: 0.5,
         cursor: 'not-allowed',
       },
+      '&:disabled:hover': {
+        background: tokens.kda.foundation.color.border.base.default,
+      },
       '&.selected': {
-        background: cardHoverColor,
+        background: tokens.kda.foundation.color.border.base.default,
         border: `1px solid ${tokens.kda.foundation.color.border.base['@active']}`,
       },
     },
