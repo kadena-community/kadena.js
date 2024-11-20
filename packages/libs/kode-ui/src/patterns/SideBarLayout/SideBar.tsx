@@ -66,7 +66,6 @@ export const SideBar: FC<ISideBarProps> = ({
             startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
           />
         </Stack>
-
         {appContext && <SideBarAppContext>{appContext}</SideBarAppContext>}
         {navigation && <SideBarNavigation>{navigation}</SideBarNavigation>}
         {context && <SideBarContext>{context}</SideBarContext>}

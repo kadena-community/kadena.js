@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import type { PressEvent } from 'react-aria';
-import type { ISideBarLayoutLocation } from '../types';
+import type { ISideBarLayoutLocation } from '../../types';
 
 export interface IAppContextProps {
   visual: React.ReactElement;

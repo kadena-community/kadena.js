@@ -13,7 +13,11 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogHeader, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
-import { LayoutProvider, useLayout } from './components/LayoutProvider';
+import {
+  LayoutProvider,
+  useLayout,
+  useNotifications,
+} from './components/LayoutProvider';
 import { KLogo } from './components/Logo/KLogo';
 import {
   RightAside,
@@ -370,6 +374,7 @@ export const Primary: IStory = {
 };
 
 const NotificationsLayout = () => {
+  const { addNotification } = useNotifications();
   const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
     useLayout();
 
@@ -461,6 +466,32 @@ const NotificationsLayout = () => {
               }}
             >
               Open sidebar
+            </Button>
+
+            <Button
+              onPress={() => {
+                addNotification({
+                  icon: <MonoAccountTree />,
+                  label: 'This is an error Notification',
+                  message: 'And this is the message',
+                  intent: 'negative',
+                });
+              }}
+            >
+              Add Error Notification
+            </Button>
+
+            <Button
+              onPress={() => {
+                addNotification({
+                  icon: <MonoAccountTree />,
+                  label: 'This is an info Notification',
+                  message: 'And this is the message',
+                  isDismissable: true,
+                });
+              }}
+            >
+              Add Info Notification
             </Button>
           </Stack>
         </Stack>
