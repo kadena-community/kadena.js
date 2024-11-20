@@ -3,6 +3,7 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { MediaContextProvider, Stack } from './../../components';
 import { useLayout } from './components/LayoutProvider';
+import { NotificationSlot } from './components/NotificationSlot/NotificationSlot';
 import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
 import {
@@ -80,6 +81,7 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
               <Stack flex={1}>{children}</Stack>
             </Stack>
             <SideBarAside location={location} />
+            <NotificationSlot />
           </main>
 
           {footer}

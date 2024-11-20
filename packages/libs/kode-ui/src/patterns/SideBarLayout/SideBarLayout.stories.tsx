@@ -13,7 +13,11 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogHeader, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
-import { LayoutProvider, useLayout } from './components/LayoutProvider';
+import {
+  LayoutProvider,
+  useLayout,
+  useNotifications,
+} from './components/LayoutProvider';
 import { KLogo } from './components/Logo/KLogo';
 import {
   RightAside,
@@ -61,6 +65,34 @@ const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
   ...props
 }) => {
   return <a {...props}>{children}</a>;
+};
+
+const InnerFooter = () => {
+  return (
+    <SideBarFooter>
+      <SideBarFooterItem
+        visual={<MonoWindow />}
+        component={LinkComponent}
+        href="https://kadena.io"
+        label="option 1"
+      />
+      <SideBarFooterItem
+        visual={<MonoWifiTethering />}
+        onPress={() => {}}
+        label="option 2"
+      />
+      <SideBarFooterItem
+        visual={<MonoWorkspaces />}
+        onPress={() => {}}
+        label="option 3"
+      />
+      <SideBarFooterItem
+        visual={<MonoLightMode />}
+        onPress={() => {}}
+        label="option 4"
+      />
+    </SideBarFooter>
+  );
 };
 
 const InnerLayout = () => {
@@ -196,31 +228,7 @@ const InnerLayout = () => {
             }
           />
         }
-        footer={
-          <SideBarFooter>
-            <SideBarFooterItem
-              visual={<MonoWindow />}
-              component={LinkComponent}
-              href="https://kadena.io"
-              label="option 1"
-            />
-            <SideBarFooterItem
-              visual={<MonoWifiTethering />}
-              onPress={() => {}}
-              label="option 2"
-            />
-            <SideBarFooterItem
-              visual={<MonoWorkspaces />}
-              onPress={() => {}}
-              label="option 3"
-            />
-            <SideBarFooterItem
-              visual={<MonoLightMode />}
-              onPress={() => {}}
-              label="option 4"
-            />
-          </SideBarFooter>
-        }
+        footer={<InnerFooter />}
       >
         <Stack
           flexDirection="column"
@@ -365,33 +373,149 @@ export const Primary: IStory = {
   },
 };
 
-const InnerLayoutFull = () => {
+const NotificationsLayout = () => {
+  const { addNotification } = useNotifications();
+  const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
+    useLayout();
+
   return (
-    <SideBarLayout
-      location={{
-        url: 'https://kadena.io',
-        push: console.log,
-      }}
-      logo={
-        <a href="https://kadena.io" target="_blank" rel="noreferrer">
-          <KLogo height={40} />
-        </a>
-      }
-      variant="full"
-    >
-      <Stack style={{ maxWidth: '800px' }}>content</Stack>
-    </SideBarLayout>
+    <>
+      {isRightAsideExpanded && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+          }}
+        >
+          <RightAsideHeader label="test header" />
+
+          <RightAsideContent>content</RightAsideContent>
+        </RightAside>
+      )}
+      <SideBarLayout
+        logo={
+          <a href="https://kadena.io" target="_blank" rel="noreferrer">
+            <KLogo height={40} />
+          </a>
+        }
+        location={{
+          url: 'https://kadena.io',
+          push: console.log,
+        }}
+        sidebar={
+          <SideBar
+            logo={
+              <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                <KLogo height={40} />
+              </a>
+            }
+            navigation={
+              <>
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Mainnet"
+                  href="javascript:void()"
+                />
+              </>
+            }
+            context={
+              <>
+                <SideBarItemsInline>
+                  <SideBarItem
+                    visual={<MonoAccountTree />}
+                    label="Profile"
+                    onPress={() => {}}
+                  />
+
+                  <SideBarItem
+                    visual={<MonoLightMode />}
+                    label="Change theme"
+                    onPress={() => {}}
+                  >
+                    <Button
+                      aria-label="Change theme"
+                      variant={isExpanded ? 'transparent' : 'outlined'}
+                      isCompact={!isExpanded}
+                      startVisual={<MonoLightMode />}
+                      onPress={() => {}}
+                    />
+                  </SideBarItem>
+                </SideBarItemsInline>
+              </>
+            }
+          />
+        }
+        footer={<InnerFooter />}
+      >
+        <Stack
+          flexDirection="column"
+          style={{ maxWidth: '800px', height: '400px' }}
+        >
+          <Stack
+            width="100%"
+            flexDirection="column"
+            justifyContent="center"
+            margin="md"
+            gap="md"
+          >
+            <p>content</p>
+
+            <Button
+              onPress={() => {
+                setIsRightAsideExpanded(true);
+              }}
+            >
+              Open sidebar
+            </Button>
+
+            <Button
+              onPress={() => {
+                addNotification({
+                  icon: <MonoAccountTree />,
+                  label: 'This is an error Notification',
+                  message: 'And this is the message',
+                  intent: 'negative',
+                });
+              }}
+            >
+              Add Error Notification
+            </Button>
+
+            <Button
+              onPress={() => {
+                addNotification({
+                  icon: <MonoAccountTree />,
+                  label: 'This is an info Notification',
+                  message: 'And this is the message',
+                  isDismissable: true,
+                });
+              }}
+            >
+              Add Info Notification
+            </Button>
+          </Stack>
+        </Stack>
+      </SideBarLayout>
+    </>
   );
 };
 
-export const Full: IStory = {
-  name: 'Full centered layout',
+export const Notifications: IStory = {
+  name: 'Notifications',
 
   args: {},
   render: () => {
     return (
       <LayoutProvider>
-        <InnerLayoutFull />
+        <SideBarBreadcrumbs icon={<MonoAccountTree />}>
+          <SideBarBreadcrumbsItem href="/accounts">
+            He-man
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Skeletor
+          </SideBarBreadcrumbsItem>
+        </SideBarBreadcrumbs>
+        <NotificationsLayout />
       </LayoutProvider>
     );
   },

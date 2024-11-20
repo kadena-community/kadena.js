@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import type { PressEvent } from 'react-aria';
-import type { ISideBarLayoutLocation } from '../types';
+import type { ISideBarLayoutLocation } from '../../types';
 
 export interface IAppContextProps {
   visual: React.ReactElement;
@@ -67,7 +67,7 @@ export const useLayout = () => useContext(LayoutContext);
 
 export interface ILayoutProvider extends PropsWithChildren {}
 
-export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
+export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [rightAsideRef, setRightAsideRefState] =
     useState<HTMLDivElement | null>(null);
 

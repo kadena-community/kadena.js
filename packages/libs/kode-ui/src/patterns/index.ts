@@ -28,6 +28,7 @@ export {
   SideBarTree,
   SideBarTreeItem,
   useLayout,
+  useNotifications,
 } from './SideBarLayout';
 export type {
   ISideBarFooterItemProps,

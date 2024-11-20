@@ -1,4 +1,8 @@
-export { LayoutProvider, useLayout } from './components/LayoutProvider';
+export {
+  LayoutProvider,
+  useLayout,
+  useNotifications,
+} from './components/LayoutProvider';
 export { SideBarFooter } from './components/SideBarFooter';
 export { SideBarFooterItem } from './components/SideBarFooterItem';
 export type { ISideBarFooterItemProps } from './components/SideBarFooterItem';
