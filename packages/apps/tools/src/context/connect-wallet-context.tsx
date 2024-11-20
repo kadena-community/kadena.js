@@ -49,7 +49,7 @@ export const StorageKeys: Record<
 };
 
 export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {
-  NETWORK: 'testnet04',
+  NETWORK: 'mainnet01',
   CHAIN_ID: '1',
 };
 
