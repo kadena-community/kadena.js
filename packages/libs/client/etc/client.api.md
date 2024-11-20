@@ -6,7 +6,7 @@
 
 import { ChainId } from '@kadena/types';
 import type Client from '@walletconnect/sign-client';
-import type { ClientRequestInit } from '@kadena/chainweb-node-client';
+import { ClientRequestInit } from '@kadena/chainweb-node-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
@@ -33,6 +33,8 @@ export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
 export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
 
 export { ChainId }
+
+export { ClientRequestInit }
 
 // @public
 export const createClient: ICreateClient;

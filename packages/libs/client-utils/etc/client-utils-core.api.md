@@ -44,7 +44,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -78,7 +80,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -111,7 +115,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -144,7 +150,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -177,7 +185,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -196,7 +206,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
         pactId: string;
         step: number;
         proof: string;
-        rollback: boolean;
+        rollback: boolean; /**
+        * @alpha
+        */
         data: {};
     }) => IEmitterWrapper<[{
     event: "sign";
@@ -216,7 +228,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -249,7 +263,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -282,7 +298,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -315,7 +333,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
@@ -348,7 +368,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: I
     pactId: string;
     step: number;
     proof: string;
-    rollback: boolean;
+    rollback: boolean; /**
+    * @alpha
+    */
     data: {};
     };
     }, {
