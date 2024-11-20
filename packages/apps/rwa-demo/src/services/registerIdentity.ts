@@ -29,7 +29,7 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       chainId: getNetwork().chainId,
     })
     .addSigner(data.agent.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-AGENT`, data.agent.address),
+      withCap(`RWA.mvp-token.ONLY-AGENT`, 'whitelist-manager'),
       withCap(`coin.GAS`),
     ])
 

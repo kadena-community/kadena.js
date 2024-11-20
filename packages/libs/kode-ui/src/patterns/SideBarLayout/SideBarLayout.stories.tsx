@@ -488,6 +488,7 @@ const NotificationsLayout = () => {
                   label: 'This is an info Notification',
                   message: 'And this is the message',
                   isDismissable: true,
+                  url: 'https://explorer.kadena.io',
                 });
               }}
             >

@@ -2,6 +2,7 @@
 import { useNetwork } from '@/hooks/networks';
 import { getClient } from '@/utils/client';
 import type { ICommandResult } from '@kadena/client';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useState } from 'react';
 
@@ -26,18 +27,29 @@ export const TransactionsContext = createContext<ITransactionsContext>({
 });
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { addNotification } = useNotifications();
   const [transactions, setTransactions] = useState<
     Record<ITransaction['requestKey'], ITransaction>
   >({});
 
   const { activeNetwork } = useNetwork();
 
-  const addListener = useCallback((requestKey: string) => {
+  const addListener = useCallback((data: ITransaction) => {
     return getClient()
       .listen({
-        requestKey,
+        requestKey: data.requestKey,
         chainId: activeNetwork.chainId,
         networkId: activeNetwork.networkId,
+      })
+      .then((result) => {
+        if (result.result.status === 'failure') {
+          addNotification({
+            intent: 'negative',
+            label: 'there was an error',
+            message: data.type,
+            url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+          });
+        }
       })
       .catch(console.log);
   }, []);
@@ -55,7 +67,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const data = { ...request };
-    data.listener = addListener(data.requestKey);
+    data.listener = addListener(data);
     setTransactions((v) => {
       return { ...v, [request.requestKey]: { ...data } };
     });

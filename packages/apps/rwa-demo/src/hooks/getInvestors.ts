@@ -27,13 +27,13 @@ export const useGetInvestors = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.identity-registry.IDENTITY-REGISTERED',
+      qualifiedName: 'RWA.mvp-token.IDENTITY-REGISTERED',
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.identity-registry.IDENTITY-REMOVED',
+      qualifiedName: 'RWA.mvp-token.IDENTITY-REMOVED',
     },
   });
 

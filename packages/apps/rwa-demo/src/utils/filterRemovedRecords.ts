@@ -10,9 +10,6 @@ export interface IRecord {
 
 export const filterRemovedRecords = (arr: IRecord[]): IRecord[] => {
   return arr
-    .filter((v, idx, self) => {
-      return idx === self.findIndex((t) => t.accountName === v.accountName);
-    })
     .sort((a, b) => {
       if (
         new Date(a.creationTime).getTime() < new Date(b.creationTime).getTime()
@@ -20,7 +17,6 @@ export const filterRemovedRecords = (arr: IRecord[]): IRecord[] => {
         return -1;
       return 1;
     })
-
     .reduce((acc: IRecord[], val: IRecord) => {
       if (val.isRemoved) {
         const newAcc = acc.filter((v) => v.accountName !== val.accountName);
@@ -28,5 +24,8 @@ export const filterRemovedRecords = (arr: IRecord[]): IRecord[] => {
       }
       acc.push(val);
       return acc;
-    }, []);
+    }, [])
+    .filter((v, idx, self) => {
+      return idx === self.findIndex((t) => t.accountName === v.accountName);
+    });
 };

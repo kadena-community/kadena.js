@@ -16,9 +16,6 @@ export const InvestorList: FC = () => {
     try {
       const tx = await deleteIdentity({ investor: accountName }, account!);
 
-      console.log(tx);
-      console.log(JSON.parse(tx.cmd));
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 

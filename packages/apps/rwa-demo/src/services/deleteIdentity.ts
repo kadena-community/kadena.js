@@ -11,15 +11,13 @@ export const deleteIdentity = async (
   account: IWalletAccount,
 ) => {
   return Pact.builder
-    .execution(
-      `(RWA.identity-registry.delete-identity (read-string 'investor) (read-string 'agent))`,
-    )
+    .execution(`(RWA.mvp-token.delete-identity (read-string 'investor))`)
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-AGENT`, account.address),
+      withCap(`RWA.mvp-token.ONLY-AGENT`, 'whitelist-manager'),
       withCap(`coin.GAS`),
     ])
     .addData('investor', data.investor)
