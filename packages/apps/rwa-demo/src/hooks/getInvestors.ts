@@ -81,6 +81,8 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
+    console.log({ agentsAdded, agentsRemoved });
+
     setInnerData([
       ...filterRemovedRecords([...agentsAdded, ...agentsRemoved]),
       ...promiseResults,
@@ -88,7 +90,7 @@ export const useGetInvestors = () => {
   };
 
   useEffect(() => {
-    const tx = getTransactions('ADDAGENT');
+    const tx = getTransactions('IDENTITY-REGISTERED');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(tx);
   }, [transactions, addedData, removedData, removedLoading, addedLoading]);

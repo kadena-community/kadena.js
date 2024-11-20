@@ -3,7 +3,7 @@ import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IRegisterIdentityProps {
-  investor: string;
+  accountName: string;
   agent: IWalletAccount;
 }
 
@@ -19,10 +19,10 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       `,
     )
     .addData('investor-keyset', {
-      keys: [createPubKeyFromAccount(data.investor)],
+      keys: [createPubKeyFromAccount(data.accountName)],
       pred: 'keys-all',
     })
-    .addData('investor', data.investor)
+    .addData('investor', data.accountName)
     .addData('agent', data.agent.address)
     .setMeta({
       senderAccount: data.agent.address,

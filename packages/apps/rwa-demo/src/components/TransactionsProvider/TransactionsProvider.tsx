@@ -9,7 +9,7 @@ import { createContext, useCallback, useState } from 'react';
 export interface ITransaction {
   requestKey: string;
   type: string;
-  data: Record<string, string | number>;
+  data: Record<string, any>;
   listener?: Promise<void | ICommandResult>;
   result?: boolean;
 }
@@ -25,6 +25,14 @@ export const TransactionsContext = createContext<ITransactionsContext>({
   addTransaction: (request) => {},
   getTransactions: () => [],
 });
+
+const interpretErrorMessage = (result: any, data: ITransaction): string => {
+  if (result.result.error?.message?.includes('Insert: row found for key')) {
+    return `{data.type}: This key already exists`;
+  }
+
+  return `${data.type}: ${result.result.error.message}`;
+};
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { addNotification } = useNotifications();
@@ -46,12 +54,19 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
           addNotification({
             intent: 'negative',
             label: 'there was an error',
-            message: data.type,
+            message: interpretErrorMessage(result, data),
             url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
           });
         }
       })
-      .catch(console.log);
+      .catch((e) => {
+        addNotification({
+          intent: 'negative',
+          label: 'there was an error',
+          message: JSON.stringify(e),
+          url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+        });
+      });
   }, []);
 
   const getTransactions = (type: string) => {

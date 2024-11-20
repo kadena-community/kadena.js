@@ -22,7 +22,6 @@ export const InvestorList: FC = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      console.log(res);
       await client.listen(res);
       console.log('DONE');
     } catch (e: any) {}

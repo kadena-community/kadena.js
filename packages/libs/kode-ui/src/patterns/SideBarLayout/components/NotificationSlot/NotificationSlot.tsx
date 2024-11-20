@@ -1,3 +1,4 @@
+import { MonoArrowOutward } from '@kadena/kode-icons/system';
 import type { FC } from 'react';
 import React from 'react';
 import { useNotifications } from '../LayoutProvider';
@@ -24,7 +25,12 @@ export const NotificationSlot: FC = () => {
             {message}
             {props.url && (
               <NotificationFooter>
-                <Link href={props.url} target="_blank">
+                <Link
+                  endVisual={<MonoArrowOutward />}
+                  variant={props.intent}
+                  href={props.url}
+                  target="_blank"
+                >
                   Explorer
                 </Link>
               </NotificationFooter>
