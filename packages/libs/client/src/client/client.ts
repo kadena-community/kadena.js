@@ -9,7 +9,6 @@ import type {
 } from '@kadena/chainweb-node-client';
 import { listen, local, poll, send } from '@kadena/chainweb-node-client';
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
-import { head } from '../integration-tests/helpers/fp-helpers';
 import type { IPactCommand } from '../interfaces/IPactCommand';
 import { runPact } from './api/runPact';
 import { getSpv, pollSpv } from './api/spv';

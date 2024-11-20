@@ -3,7 +3,6 @@ import type {
   ICommandResult,
 } from '@kadena/chainweb-node-client';
 import type { ChainId } from '@kadena/types';
-import type { ITransactionDescriptor } from '../client';
 
 /**
  * @public
