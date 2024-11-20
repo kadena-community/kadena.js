@@ -1,11 +1,8 @@
 import type { FC } from 'react';
 import React from 'react';
 import { useNotifications } from '../LayoutProvider';
-import {
-  Notification,
-  NotificationHeading,
-  Stack,
-} from './../../../../components';
+import { NotificationHeading, Stack } from './../../../../components';
+import { NotificationWrapper } from './NotificationWrapper';
 import { notificationsSlotClass } from './style.css';
 
 export const NotificationSlot: FC = () => {
@@ -14,13 +11,13 @@ export const NotificationSlot: FC = () => {
   console.log(reversedNotifications);
   return (
     <Stack className={notificationsSlotClass}>
-      {reversedNotifications.slice(0, 3).map((props, idx) => {
-        const { label, message, ...rest } = props;
+      {reversedNotifications.map((props) => {
+        const { label, message } = props;
         return (
-          <Notification key={idx} {...rest}>
+          <NotificationWrapper key={props.id} {...props}>
             {label && <NotificationHeading>{label}</NotificationHeading>}
             {message}
-          </Notification>
+          </NotificationWrapper>
         );
       })}
     </Stack>

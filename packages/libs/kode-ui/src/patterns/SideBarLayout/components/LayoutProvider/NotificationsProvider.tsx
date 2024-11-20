@@ -51,12 +51,6 @@ export const NotificationsProvider: FC<INotificationsProvider> = ({
     };
 
     setNotifications((v) => [...v, notificationProps]);
-
-    if (!notificationProps.isDismissable) {
-      setTimeout(() => {
-        removeNotification(notificationProps);
-      }, 12000);
-    }
   };
 
   return (

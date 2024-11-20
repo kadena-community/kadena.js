@@ -1,3 +1,4 @@
+import { globalStyle } from '@vanilla-extract/css';
 import { atoms, responsiveStyle, style, token } from './../../../../styles';
 
 export const notificationsSlotClass = style([
@@ -19,3 +20,7 @@ export const notificationsSlotClass = style([
     },
   }),
 ]);
+
+globalStyle(`${notificationsSlotClass} > *:nth-child(n+4)`, {
+  display: 'none',
+});
