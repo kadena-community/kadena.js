@@ -67,7 +67,7 @@ export const useLayout = () => useContext(LayoutContext);
 
 export interface ILayoutProvider extends PropsWithChildren {}
 
-export const LayoutProvider: FC<ILayoutProvider> = ({ children }) => {
+export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [rightAsideRef, setRightAsideRefState] =
     useState<HTMLDivElement | null>(null);
 
