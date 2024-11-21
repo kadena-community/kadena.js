@@ -1,5 +1,5 @@
 import { creatLowChainsString, lowFaucetChains, runJob } from '..';
-import type { IAccount, IChainAccount } from '../constants';
+import type { IAccount, IChainAccount } from '../../constants';
 
 describe('faucetCron Utils', () => {
   describe('creatLowChainsString', () => {

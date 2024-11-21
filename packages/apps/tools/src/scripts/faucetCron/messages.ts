@@ -1,6 +1,6 @@
 import { creatLowChainsString, lowFaucetChains } from '.';
-import type { IAccount } from './constants';
-import { MINBALANCE, channelId, faucetAccount, tokenId } from './constants';
+import type { IAccount } from './../constants';
+import { MINBALANCE, channelId, faucetAccount, tokenId } from './../constants';
 
 export const sendMessage = async (data: IAccount): Promise<void> => {
   const lowChains = lowFaucetChains(
