@@ -1,5 +1,21 @@
 # @kadena/proof-of-us
 
+## 0.5.14
+
+### Patch Changes
+
+- Updated dependencies \[a8204ab]
+- Updated dependencies \[7cefeb1]
+- Updated dependencies \[edcfbe0]
+- Updated dependencies \[8467af0]
+- Updated dependencies \[14e809a]
+- Updated dependencies \[8467af0]
+  - @kadena/graph\@2.0.0
+  - @kadena/kode-ui\@0.19.0
+  - @kadena/client\@1.15.0
+  - @kadena/kode-icons\@0.3.0
+  - @kadena/pactjs\@0.4.3
+
 ## 0.5.13
 
 ### Patch Changes
