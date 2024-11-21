@@ -25,6 +25,10 @@ export class Logger {
     this._level = LOG_LEVELS[level];
   }
 
+  public setTransport(transport: ILogTransport) {
+    this._transport = transport;
+  }
+
   public setLevel(level: LogLevel) {
     this._level = LOG_LEVELS[level];
   }

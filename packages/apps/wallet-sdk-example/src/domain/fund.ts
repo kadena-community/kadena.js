@@ -113,3 +113,33 @@ export async function createAndTransferFund({
     );
   }
 }
+
+export function fundDifferentFungibleAccount({
+  chainId,
+  networkId,
+  account,
+}: {
+  chainId: ChainId;
+  networkId: string;
+  account: {
+    name: string;
+    publicKeys: string[];
+    predicate: string;
+  };
+}) {
+  const KEYSET_NAME = 'new_keyset';
+  const transaction = Pact.builder
+    .execution(
+      `(use n_f9b22d2046c2a52575cc94f961c8b9a095e349e7.testfau)
+   (generate-tokens "${account.name}" (read-keyset '${KEYSET_NAME}) 1000.0)`,
+    )
+    .addSigner(account.publicKeys[0], (withCapability: any) => [
+      withCapability(`coin.GAS`, account.name, { int: 1 }, { decimal: '1.0' }),
+    ])
+    .addKeyset(KEYSET_NAME, account.predicate, ...account.publicKeys)
+    .setMeta({ senderAccount: account.name, chainId })
+    .setNetworkId(networkId)
+    .createTransaction();
+
+  return transaction;
+}

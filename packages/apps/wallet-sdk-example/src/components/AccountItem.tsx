@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createAndTransferFund } from '../domain/fund';
 
+import { useFund } from '../hooks/fund';
 import { useAddressToName } from '../hooks/kadenaNames/kadenaNamesResolver';
 import type { Account } from '../state/wallet';
 import { useWalletState } from '../state/wallet';
@@ -27,7 +28,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [chainModalVisible, setChainModalVisible] = useState(false);
   const [selectedChain, setSelectedChain] = useState(wallet.selectedChain);
-
+  const { onFundOtherFungible } = useFund();
   const {
     name: resolvedName,
     loading: nameLoading,
@@ -108,12 +109,20 @@ export const AccountItem: React.FC<AccountItemProps> = ({
         </div>
         <div className="flex justify-between items-center">
           <span className="font-semibold text-text-secondary">Fund:</span>
-          <button
-            onClick={openChainModal}
-            className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
-          >
-            Fund
-          </button>
+          <div>
+            <button
+              onClick={openChainModal}
+              className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
+            >
+              Fund
+            </button>
+            <button
+              onClick={onFundOtherFungible}
+              className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
+            >
+              Fund Other
+            </button>
+          </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="font-semibold text-text-secondary">Active:</span>
