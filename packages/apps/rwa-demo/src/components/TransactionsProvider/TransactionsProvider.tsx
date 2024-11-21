@@ -16,13 +16,15 @@ export interface ITransaction {
 
 export interface ITransactionsContext {
   transactions: Record<ITransaction['requestKey'], ITransaction>;
-  addTransaction: (request: ITransaction) => void;
+  addTransaction: (request: ITransaction) => ITransaction;
   getTransactions: (type: string) => ITransaction[];
 }
 
 export const TransactionsContext = createContext<ITransactionsContext>({
   transactions: {},
-  addTransaction: (request) => {},
+  addTransaction: (request) => {
+    return {} as ITransaction;
+  },
   getTransactions: () => [],
 });
 
@@ -78,7 +80,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const addTransaction = (request: ITransaction) => {
     if (transactions[request.requestKey]) {
       console.error('requestKey already exists', request.requestKey);
-      return;
+      return transactions[request.requestKey];
     }
 
     const data = { ...request };
@@ -86,6 +88,8 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     setTransactions((v) => {
       return { ...v, [request.requestKey]: { ...data } };
     });
+
+    return data;
   };
 
   return (

@@ -16,7 +16,6 @@ export const useDistributeTokens = () => {
       const tx = await distributeTokens(data, account!);
 
       console.log(tx);
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
