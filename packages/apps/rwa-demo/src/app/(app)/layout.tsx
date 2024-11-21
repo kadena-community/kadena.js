@@ -1,7 +1,8 @@
 'use client';
 import { SideBarLayout } from '@kadena/kode-ui/patterns';
 
-import { Link } from '@kadena/kode-ui';
+import { SupplyCount } from '@/components/SupplyCount/SupplyCount';
+import { Link, Stack } from '@kadena/kode-ui';
 import React from 'react';
 import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
@@ -20,7 +21,10 @@ const RootLayout = ({
       }
       sidebar={<SideBar />}
     >
-      {children}
+      <Stack width="100%" flexDirection="column" gap="sm">
+        <SupplyCount />
+        {children}
+      </Stack>
     </SideBarLayout>
   );
 };

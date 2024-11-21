@@ -56,8 +56,6 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
 
       await transaction.listener;
       setPaused(undefined);
-
-      console.log('DONE');
     } catch (e: any) {}
   };
 
@@ -76,7 +74,6 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
 
   useEffect(() => {
     if (isLoading) {
-      console.log('PAUSED');
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       fetchData();
     }
