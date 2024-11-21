@@ -30,6 +30,7 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
     "fund": "npx ts-node -T src/devnet/simulation/index.ts fund",
+    "postinstall": "prisma generate",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
@@ -107,6 +108,7 @@
     "ts-node": "~10.9.2",
     "typescript": "5.4.5"
   },
+  "prisma.schema": "./prisma/schema.prisma",
   "_moduleAliases": {
     "@db": "src/db",
     "@services": "src/services",
