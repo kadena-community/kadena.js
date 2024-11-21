@@ -119,36 +119,6 @@ export default builder.node(
             last: args.last,
           }),
         }),
-        async totalCount(parent) {
-          try {
-            return (
-              await Promise.all([
-                await prismaClient.transfer.count({
-                  where: {
-                    senderAccount: parent.accountName,
-                    // NOT: {
-                    //   receiverAccount: parent.accountName,
-                    // },
-                    moduleName: parent.fungibleName,
-                    chainId: parseInt(parent.chainId),
-                  },
-                }),
-                await prismaClient.transfer.count({
-                  where: {
-                    receiverAccount: parent.accountName,
-                    // NOT: {
-                    //   senderAccount: parent.accountName,
-                    // },
-                    moduleName: parent.fungibleName,
-                    chainId: parseInt(parent.chainId),
-                  },
-                }),
-              ])
-            ).reduce((acc, count) => acc + count, 0);
-          } catch (error) {
-            throw normalizeError(error);
-          }
-        },
         async resolve(condition, parent) {
           try {
             return (

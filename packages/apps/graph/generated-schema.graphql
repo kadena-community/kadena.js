@@ -166,7 +166,6 @@ type FungibleAccountTransactionsConnectionEdge {
 type FungibleAccountTransfersConnection {
   edges: [FungibleAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type FungibleAccountTransfersConnectionEdge {

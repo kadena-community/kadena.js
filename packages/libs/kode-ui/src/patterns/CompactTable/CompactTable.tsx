@@ -46,9 +46,8 @@ export const CompactTable: React.FC<ICompactTableProps> = ({
           label={label}
         />
       </Media>
-      {!!(setPage && pageInfo && totalCount && pageSize) && (
+      {!!(setPage && pageInfo && pageSize) && (
         <TablePagination
-          totalCount={totalCount}
           pageSize={pageSize}
           setPage={setPage}
           pageInfo={pageInfo}

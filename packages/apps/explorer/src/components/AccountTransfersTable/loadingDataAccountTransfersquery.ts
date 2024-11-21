@@ -11,7 +11,6 @@ export const loadingData: AccountTransfersQuery = {
         hasPreviousPage: false,
         startCursor: '',
       },
-      totalCount: 0,
       edges: Array(6).fill({
         node: {
           requestKey: '0',

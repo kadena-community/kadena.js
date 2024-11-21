@@ -15,7 +15,7 @@ export interface ITablePaginationPageOptions {
   last?: number | null;
 }
 interface IProps {
-  totalCount: number;
+  totalCount?: number;
   pageSize: number;
   setPage: (page: ITablePaginationPageOptions) => void;
   pageInfo: {
@@ -32,6 +32,7 @@ export const TablePagination: FC<IProps> = ({
   setPage,
   pageInfo,
 }) => {
+  console.log([pageSize, totalCount, setPage, JSON.stringify(pageInfo)]);
   const handlePageSelect = (direction: string) => () => {
     if (direction === 'next') {
       setPage({ after: pageInfo.endCursor, first: pageSize });
@@ -43,7 +44,7 @@ export const TablePagination: FC<IProps> = ({
       setPage({ first: pageSize });
     }
     if (direction === 'last') {
-      setPage({ last: totalCount % pageSize });
+      setPage({ last: totalCount ? totalCount % pageSize : pageSize });
     }
   };
 
