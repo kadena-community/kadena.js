@@ -964,6 +964,13 @@ export type EventsQueryVariables = Exact<{
 
 export type EventsQuery = { __typename?: 'Query', events: { __typename?: 'QueryEventsConnection', edges: Array<{ __typename?: 'QueryEventsConnectionEdge', node: { __typename?: 'Event', chainId: any, requestKey: string, parameters?: string | null, block: { __typename?: 'Block', height: any, creationTime: any } } }> } };
 
+export type EventSubscriptionSubscriptionVariables = Exact<{
+  qualifiedName: Scalars['String']['input'];
+}>;
+
+
+export type EventSubscriptionSubscription = { __typename?: 'Subscription', events?: Array<{ __typename?: 'Event', parameters?: string | null }> | null };
+
 export type CoreEventsFieldsFragment = { __typename?: 'Event', chainId: any, requestKey: string, parameters?: string | null, block: { __typename?: 'Block', height: any, creationTime: any } };
 
 export const CoreEventsFieldsFragmentDoc = gql`
@@ -1021,3 +1028,33 @@ export type EventsQueryHookResult = ReturnType<typeof useEventsQuery>;
 export type EventsLazyQueryHookResult = ReturnType<typeof useEventsLazyQuery>;
 export type EventsSuspenseQueryHookResult = ReturnType<typeof useEventsSuspenseQuery>;
 export type EventsQueryResult = Apollo.QueryResult<EventsQuery, EventsQueryVariables>;
+export const EventSubscriptionDocument = gql`
+    subscription eventSubscription($qualifiedName: String!) {
+  events(qualifiedEventName: $qualifiedName) {
+    parameters
+  }
+}
+    `;
+
+/**
+ * __useEventSubscriptionSubscription__
+ *
+ * To run a query within a React component, call `useEventSubscriptionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useEventSubscriptionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEventSubscriptionSubscription({
+ *   variables: {
+ *      qualifiedName: // value for 'qualifiedName'
+ *   },
+ * });
+ */
+export function useEventSubscriptionSubscription(baseOptions: Apollo.SubscriptionHookOptions<EventSubscriptionSubscription, EventSubscriptionSubscriptionVariables> & ({ variables: EventSubscriptionSubscriptionVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<EventSubscriptionSubscription, EventSubscriptionSubscriptionVariables>(EventSubscriptionDocument, options);
+      }
+export type EventSubscriptionSubscriptionHookResult = ReturnType<typeof useEventSubscriptionSubscription>;
+export type EventSubscriptionSubscriptionResult = Apollo.SubscriptionResult<EventSubscriptionSubscription>;

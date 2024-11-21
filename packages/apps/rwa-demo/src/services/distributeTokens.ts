@@ -21,7 +21,7 @@ export const distributeTokens = async (
   return Pact.builder
     .execution(
       `
-       (RWA.mvp-token.mint (read-string 'investor) 3.0)`,
+       (RWA.mvp-token.mint (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('agent', account.address)
     .addData('investor', data.investorAccount)
@@ -36,7 +36,7 @@ export const distributeTokens = async (
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
       withCap(`RWA.mvp-token.ONLY-AGENT`, 'supply-modifier'),
       withCap(`RWA.mvp-token.TRANSFER`, env.ZEROADDRESS, data.investorAccount, {
-        decimal: '3.0',
+        decimal: data.amount,
       }),
       withCap(`coin.GAS`),
     ])
