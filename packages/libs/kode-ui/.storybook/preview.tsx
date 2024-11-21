@@ -1,13 +1,12 @@
-import { DocsContainer } from '@storybook/addon-docs';
 import { type Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 import React from 'react';
-import { useDarkMode } from 'storybook-dark-mode';
 import { withCenteredStory } from '../src/storyDecorators';
 import { darkThemeClass } from '../src/styles';
 import { colorPalette } from '../src/styles/colors';
 import '../src/styles/global.css';
 import './global.css';
+import { ThemeProvider } from './ThemeProvider';
 
 const preview: Preview = {
   parameters: {
@@ -19,7 +18,6 @@ const preview: Preview = {
     },
     darkMode: {
       classTarget: 'html',
-      current: 'light',
       // Override the default dark theme
       dark: { ...themes.dark, appBg: colorPalette.$black },
       darkClass: [darkThemeClass, 'dark-mode'],
@@ -31,14 +29,7 @@ const preview: Preview = {
     },
     docs: {
       container: (context: any) => {
-        const isDark = useDarkMode();
-
-        const props = {
-          ...context,
-          theme: isDark ? themes.dark : themes.light,
-        };
-
-        return React.createElement(DocsContainer, props);
+        return React.createElement(ThemeProvider, { ...context });
       },
     },
     status: {
