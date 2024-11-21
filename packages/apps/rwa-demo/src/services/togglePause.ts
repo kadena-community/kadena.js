@@ -12,7 +12,7 @@ export const togglePause = async (
 ) => {
   if (isPaused) {
     return Pact.builder
-      .execution(`(RWA.mvp-token.pause  (read-string 'agent))`)
+      .execution(`(RWA.mvp-token.unpause)`)
       .setMeta({
         senderAccount: account.address,
         chainId: getNetwork().chainId,
@@ -25,15 +25,15 @@ export const togglePause = async (
       .createTransaction();
   } else {
     return Pact.builder
-      .execution(`(RWA.mvp-token.unpause  (read-string 'agent))`)
+      .execution(`(RWA.mvp-token.pause)`)
       .setMeta({
         senderAccount: account.address,
         chainId: getNetwork().chainId,
       })
       .addSigner(account.keyset.guard.keys[0], (withCap) => [
+        withCap(`RWA.mvp-token.ONLY-AGENT`, 'FREEZER'),
         withCap(`coin.GAS`),
       ])
-      .addData('agent', account.address)
       .setNetworkId(getNetwork().networkId)
       .createTransaction();
   }

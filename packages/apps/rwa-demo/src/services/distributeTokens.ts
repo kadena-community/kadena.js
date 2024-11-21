@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { env } from '@/utils/env';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
@@ -20,7 +21,7 @@ export const distributeTokens = async (
   return Pact.builder
     .execution(
       `
-       (RWA.mvp-token.mint (read-string 'investor) ${new PactNumber(data.amount).toPactDecimal().decimal} (read-string 'agent))`,
+       (RWA.mvp-token.mint (read-string 'investor) 3.0)`,
     )
     .addData('agent', account.address)
     .addData('investor', data.investorAccount)
@@ -33,14 +34,10 @@ export const distributeTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-AGENT`, account.address),
-      withCap(
-        `RWA.mvp-token.TRANSFER`,
-        'c:soLScugf2M-6r5L-leMUCGvgddyB1qaKh9s7ka4upGU',
-        data.investorAccount,
-
-        { decimal: data.amount },
-      ),
+      withCap(`RWA.mvp-token.ONLY-AGENT`, 'supply-modifier'),
+      withCap(`RWA.mvp-token.TRANSFER`, env.ZEROADDRESS, data.investorAccount, {
+        decimal: '3.0',
+      }),
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)
