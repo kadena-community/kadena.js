@@ -1,5 +1,31 @@
 # @kadena/graph
 
+## 2.0.0
+
+### Major Changes
+
+- a8204ab: BREAKING: removed `totalCount` on any `transfers` connection
+
+  We removed this as it caused performance issues. You can rely on `hasNextPage`
+  and `hasPreviousPage` to determine if there are more pages
+
+### Minor Changes
+
+- 8467af0: Adds improvements to run as stand-alone as well as in Docker
+
+  - adds postinstall script to install the platform specific Prisma engines
+  - adds a Dockerfile to build from NPM deployed @kadena/graph package
+  - adds a Dockerfile to build from source
+
+### Patch Changes
+
+- 8467af0: Add postinstall script to install platform specific binaries
+  - @kadena/chainweb-node-client\@0.7.0
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
 ## 1.0.14
 
 ### Patch Changes

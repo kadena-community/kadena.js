@@ -1,5 +1,18 @@
 # @kadena/kadena-cli
 
+## 1.3.6
+
+### Patch Changes
+
+- ca64e67: Fixed malformed json error in tx send
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/hd-wallet\@0.5.0
+  - @kadena/pactjs\@0.4.3
+  - @kadena/pactjs-generator\@1.15.0
+  - @kadena/pactjs-cli\@1.15.0
+
 ## 1.3.5
 
 ### Patch Changes

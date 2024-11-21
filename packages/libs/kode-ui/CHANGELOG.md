@@ -1,5 +1,17 @@
 # @kadena/kode-ui
 
+## 0.19.0
+
+### Minor Changes
+
+- 7cefeb1: add SideBar Component
+- edcfbe0: add notifications hook to the sidebar layout
+- 14e809a: Text size extended with inherit
+
+### Patch Changes
+
+- @kadena/kode-icons\@0.3.0
+
 ## 0.18.0
 
 ### Minor Changes
