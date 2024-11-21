@@ -104,15 +104,6 @@ const TransactionResult = builder.objectType('TransactionResult', {
           last: args.last,
         }),
       }),
-      async totalCount(parent) {
-        return await prismaClient.transfer.count({
-          where: {
-            blockHash: parent.blockHash,
-            requestKey: parent.hash,
-            chainId: parent.chainId,
-          },
-        });
-      },
       async resolve(query, parent) {
         return await prismaClient.transfer.findMany({
           ...query,

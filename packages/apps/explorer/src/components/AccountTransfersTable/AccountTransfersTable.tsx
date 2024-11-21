@@ -76,7 +76,6 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
       setPage={handlePageChange}
       pageSize={pageSize}
       pageInfo={innerData.node!.transfers.pageInfo}
-      totalCount={innerData.node!.transfers.totalCount}
       isLoading={isLoading}
       fields={[
         {
