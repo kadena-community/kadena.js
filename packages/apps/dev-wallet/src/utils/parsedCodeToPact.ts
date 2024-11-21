@@ -60,8 +60,10 @@ function parsedCodeToPact(
   const name = code.function.name;
   const module = code.function.module;
   const fn = [namespace, module, name].filter(Boolean).join('.');
-  const useBreakLine = breakLines && code.args.length > 1;
+  const useBreakLine = breakLines && code.args?.length > 1;
   const lineChar = useBreakLine ? '\n' : ' ';
+
+  if (!code.args) return '';
   const shortenCode = `(${fn}${lineChar}${code.args
     .map((arg) =>
       useBreakLine
