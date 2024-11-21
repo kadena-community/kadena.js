@@ -1,0 +1,23 @@
+services:
+  graphql-source:
+    image: kadena/devnet
+    ports:
+      - '4000:4000'
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+    build:
+      context: ../../../
+      dockerfile: ./packages/apps/graph/source.Dockerfile
+
+  # build with `docker compose build graphql`
+  # run with `docker compose up graphql`
+  graphql:
+    image: kadena/devnet
+    ports:
+      - '4000:4000'
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+    build:
+      dockerfile: Dockerfile
