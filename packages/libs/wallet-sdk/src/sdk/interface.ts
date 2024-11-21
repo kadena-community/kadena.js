@@ -23,8 +23,14 @@ interface IBaseTransfer {
   success: boolean;
   chainId: ChainId;
   networkId: string;
+  block: {
+    hash: string;
+    height: number;
+    creationTime: Date;
+    blockDepthEstimate: number;
+  };
   /** Only available when lookup account paid for transaction fee */
-  transactionFeeTransfer: ITransactionFeeTransfer | null;
+  transactionFeeTransfer?: ITransactionFeeTransfer;
 }
 
 interface ISameChainTransfer extends IBaseTransfer {
@@ -34,7 +40,7 @@ interface ISameChainTransfer extends IBaseTransfer {
 interface ICrossChainTransfer extends IBaseTransfer {
   isCrossChainTransfer: true;
   targetChainId: ChainId;
-  continuation: {
+  continuation?: {
     requestKey: string;
     success: boolean;
   };

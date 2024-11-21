@@ -139,10 +139,14 @@ export const Transfers = () => {
                           ? `-${transfer.amount}`
                           : `+${transfer.amount}`}
                       </span>
-                      <br />
-                      <span className="text-red-400">
-                        {`-${transfer.transactionFeeTransfer?.amount}`}
-                      </span>
+                      {transfer.transactionFeeTransfer && (
+                        <>
+                          <br />
+                          <span className="text-red-400">
+                            {`-${transfer.transactionFeeTransfer.amount}`}
+                          </span>
+                        </>
+                      )}
                     </td>
                     <td className="py-2 px-4 text-secondary-green">
                       {transfer.success ? 'Success' : 'Failed'}

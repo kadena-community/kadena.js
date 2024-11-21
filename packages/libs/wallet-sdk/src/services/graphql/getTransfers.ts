@@ -1,76 +1,17 @@
+import type { ChainId } from '@kadena/types';
 import { createClient, fetchExchange } from '@urql/core';
-import { graphql } from '../../gql/gql.js';
+import type { TransferFieldsFragment } from '../../gql/graphql.js';
 import type { Transfer } from '../../sdk/interface.js';
 import { parsePactNumber } from '../../utils/pact.util.js';
 import { safeJsonParse } from '../../utils/string.util.js';
 import { isEmpty, notEmpty } from '../../utils/typeUtils.js';
+import { TRANSFER_QUERY } from './transfer.query.js';
 
-const accountTransfersQuery = graphql(`
-  query accountTransfers($accountName: String!, $fungibleName: String) {
-    fungibleAccount(accountName: $accountName, fungibleName: $fungibleName) {
-      transfers(first: 100) {
-        edges {
-          node {
-            amount
-            block {
-              hash
-              creationTime
-            }
-            chainId
-            crossChainTransfer {
-              receiverAccount
-              senderAccount
-              chainId
-              requestKey
-              transaction {
-                result {
-                  __typename
-                  ... on TransactionResult {
-                    goodResult
-                    badResult
-                  }
-                }
-              }
-            }
-            transaction {
-              cmd {
-                networkId
-                signers {
-                  clist {
-                    name
-                    args
-                  }
-                }
-              }
-              result {
-                __typename
-                ... on TransactionResult {
-                  events {
-                    edges {
-                      node {
-                        name
-                        parameters
-                      }
-                    }
-                  }
-                  goodResult
-                  badResult
-                }
-              }
-            }
-            senderAccount
-            height
-            orderIndex
-            requestKey
-            receiverAccount
-          }
-        }
-      }
-    }
-  }
-`);
+type GqlTransfer = TransferFieldsFragment & {
+  crossChainTransfer?: TransferFieldsFragment | null;
+};
 
-function parseClist(node: Nodes[0]) {
+function parseClist(node: GqlTransfer) {
   if (isEmpty(node.transaction)) return [];
   const clist = node.transaction.cmd.signers.flatMap((x) =>
     x.clist
@@ -83,6 +24,27 @@ function parseClist(node: Nodes[0]) {
   );
   return clist;
 }
+type CList = ReturnType<typeof parseClist>;
+
+function parseEvents(node: GqlTransfer) {
+  if (
+    isEmpty(node.transaction) ||
+    node.transaction.result.__typename === 'TransactionMempoolInfo'
+  ) {
+    return [];
+  }
+  return node.transaction.result.events.edges
+    .flatMap((x) => {
+      if (!x) return null;
+      const parameters = safeJsonParse<(number | string | object)[]>(
+        x.node.parameters,
+      );
+      if (parameters === null) return null;
+      return { name: x.node.name, parameters };
+    })
+    .filter(notEmpty);
+}
+type Events = ReturnType<typeof parseEvents>;
 
 async function fetchTransfers(
   graphqlUrl: string,
@@ -91,44 +53,197 @@ async function fetchTransfers(
 ) {
   const client = createClient({ url: graphqlUrl, exchanges: [fetchExchange] });
   const result = await client
-    .query(accountTransfersQuery, { accountName, fungibleName })
+    .query(TRANSFER_QUERY, { accountName, fungibleName })
     .toPromise();
+
   const nodes = result.data?.fungibleAccount?.transfers.edges.map(
-    (edge) => edge.node,
+    (edge) => edge.node as GqlTransfer,
   );
 
-  return nodes ?? [];
+  return {
+    transfers: nodes ?? [],
+    lastBlockHeight: (result.data?.lastBlockHeight ?? null) as number | null,
+  };
 }
 
-type Nodes = Awaited<ReturnType<typeof fetchTransfers>>;
+type GqlTransferParsed = GqlTransfer & {
+  events: Events;
+  clist: CList;
+  fungibleName: string;
+  crossChainTransfer?:
+    | (TransferFieldsFragment & {
+        events: Events;
+        clist: CList;
+        fungibleName: string;
+      })
+    | null;
+};
 
-const isSuccess = (node: Nodes[0]) =>
-  node.transaction?.result.__typename === 'TransactionResult' &&
-  Boolean(node.transaction.result.goodResult);
-
-const nodeToTransfer = (node: Nodes[0], fungibleName?: string): Transfer => {
+const parseTransfer = (
+  node: GqlTransfer,
+  fungibleName: string,
+): GqlTransferParsed => {
   return {
-    amount: node.amount,
-    chainId: node.chainId,
-    requestKey: node.requestKey,
-    senderAccount: node.senderAccount,
-    receiverAccount: node.receiverAccount,
-    success: isSuccess(node),
-    token: fungibleName ?? 'coin',
-    isCrossChainTransfer: false,
-    networkId: node.transaction?.cmd.networkId!,
-    transactionFeeTransfer: null,
+    ...node,
+    events: parseEvents(node),
+    clist: parseClist(node),
+    fungibleName,
+    crossChainTransfer: node.crossChainTransfer
+      ? parseTransfer(node.crossChainTransfer, fungibleName)
+      : null,
   };
 };
 
-// Currently queries all chains
-export async function getTransfers(
-  graphqlUrl: string,
+const isTransactionFeeTransfer = (transfer: GqlTransfer) =>
+  transfer.orderIndex === 0;
+
+const isSuccess = (transfer: GqlTransfer) => {
+  return (
+    transfer.transaction?.result.__typename === 'TransactionResult' &&
+    Boolean(transfer.transaction.result.goodResult)
+  );
+};
+
+const matchSender = (
+  transfer: GqlTransferParsed,
+  arg: number | string | object,
+) => {
+  return transfer.senderAccount !== '' ? arg === transfer.senderAccount : true;
+};
+const matchReceiver = (
+  transfer: GqlTransferParsed,
+  arg: number | string | object,
+) => {
+  return transfer.receiverAccount !== ''
+    ? arg === transfer.receiverAccount
+    : true;
+};
+const matchAmount = (
+  transfer: GqlTransferParsed,
+  arg: number | string | object,
+) => {
+  return transfer.amount <= parsePactNumber(arg);
+};
+
+const getCrossChainTransferStart = (transfer: GqlTransferParsed) => {
+  const match = transfer.events.find(
+    (event) =>
+      event.name === `TRANSFER_XCHAIN` &&
+      matchSender(transfer, event.parameters[0]) &&
+      matchReceiver(transfer, event.parameters[1]) &&
+      matchAmount(transfer, event.parameters[2]),
+  );
+  if (isEmpty(match)) return null;
+  return {
+    receiverAccount: (transfer.receiverAccount ||
+      transfer.crossChainTransfer?.receiverAccount ||
+      match.parameters[1]) as string,
+    senderAccount: (transfer.senderAccount ||
+      transfer.crossChainTransfer?.senderAccount ||
+      match.parameters[0]) as string,
+    targetChainId: String(match.parameters?.[3]) as ChainId,
+  };
+};
+
+const getCrossChainTransferFinish = (transfer: GqlTransferParsed) => {
+  const match = transfer.events.find(
+    (event) =>
+      event.name === 'TRANSFER_XCHAIN_RECD' &&
+      matchSender(transfer, event.parameters[0]) &&
+      matchReceiver(transfer, event.parameters[1]) &&
+      matchAmount(transfer, event.parameters[2]),
+  );
+
+  if (isEmpty(match)) return null;
+
+  return {
+    receiverAccount: (transfer.receiverAccount ||
+      transfer.crossChainTransfer?.receiverAccount ||
+      match.parameters?.[1]) as string,
+    senderAccount: (transfer.senderAccount ||
+      transfer.crossChainTransfer?.senderAccount ||
+      match.parameters?.[0]) as string,
+    targetChainId: String(
+      transfer.crossChainTransfer?.chainId || match.parameters?.[3],
+    ) as ChainId,
+  };
+};
+
+const mapBaseTransfer = (
+  gqlTransfer: GqlTransferParsed,
+  lastBlockHeight: number,
+): Transfer => {
+  return {
+    amount: gqlTransfer.amount,
+    chainId: String(gqlTransfer.chainId) as ChainId,
+    requestKey: gqlTransfer.requestKey,
+    senderAccount: gqlTransfer.senderAccount,
+    receiverAccount: gqlTransfer.receiverAccount,
+    isCrossChainTransfer: false,
+    success: isSuccess(gqlTransfer),
+    token: gqlTransfer.fungibleName,
+    networkId: gqlTransfer.transaction?.cmd.networkId!,
+    block: {
+      creationTime: new Date(gqlTransfer.block.creationTime),
+      blockDepthEstimate: lastBlockHeight - 3 - gqlTransfer.block.height,
+      hash: gqlTransfer.block.hash,
+      height: gqlTransfer.block.height,
+    },
+  };
+};
+
+export const gqlTransferToTransfer = (
+  rawGqlTransfer: GqlTransfer,
+  _accountName: string,
+  lastBlockHeight: number,
+  fungibleName: string = 'coin',
+): Transfer | null => {
+  const gqlTransfer = parseTransfer(rawGqlTransfer, fungibleName);
+  const xChainStart = getCrossChainTransferStart(gqlTransfer);
+  const xChainFinish = getCrossChainTransferFinish(gqlTransfer);
+
+  if (xChainStart) {
+    const result: Transfer = {
+      ...mapBaseTransfer(gqlTransfer, lastBlockHeight),
+      isCrossChainTransfer: true,
+      targetChainId: xChainStart.targetChainId,
+      receiverAccount: isTransactionFeeTransfer(gqlTransfer)
+        ? gqlTransfer.receiverAccount
+        : xChainStart.receiverAccount,
+    };
+    if (gqlTransfer.crossChainTransfer) {
+      result.continuation = {
+        requestKey: gqlTransfer.crossChainTransfer.requestKey,
+        success: isSuccess(gqlTransfer.crossChainTransfer),
+      };
+    }
+    return result;
+  }
+
+  if (xChainFinish) {
+    // crossChainTransfer can't be null for finish events
+    if (!gqlTransfer.crossChainTransfer) return null;
+    return {
+      ...mapBaseTransfer(gqlTransfer.crossChainTransfer, lastBlockHeight),
+      isCrossChainTransfer: true,
+      targetChainId: String(gqlTransfer.chainId) as ChainId,
+      receiverAccount: xChainFinish.receiverAccount,
+      continuation: {
+        requestKey: gqlTransfer.requestKey,
+        success: isSuccess(gqlTransfer),
+      },
+    };
+  }
+
+  return mapBaseTransfer(gqlTransfer, lastBlockHeight);
+};
+
+export function parseGqlTransfers(
+  nodes: GqlTransfer[],
+  lastBlockHeight: number,
   accountName: string,
   fungibleName?: string,
-): Promise<Transfer[]> {
-  const nodes = await fetchTransfers(graphqlUrl, accountName, fungibleName);
-
+): Transfer[] {
   const grouped = nodes.reduce(
     (acc, node) => {
       const key = node.requestKey;
@@ -139,15 +254,11 @@ export async function getTransfers(
     {} as Record<string, typeof nodes>,
   );
 
-  // TODO: work cases
-  // [x] Simple same-chain transfer with 1 transfer and 1 gas fee
-  // [ ] Safe transfer. show 2 transfers, and both link to the same gas fee
-  // [ ] Cross-chain transfer
-  return Object.values(grouped).flatMap((nodes) => {
-    const transactionFee = nodes.find((node) => node.orderIndex === 0);
-    const transfers = nodes.filter((node) => node.orderIndex > 0);
+  const mapped = Object.values(grouped).flatMap((nodes) => {
+    const transactionFee = nodes.find((node) => isTransactionFeeTransfer(node));
+    const transfers = nodes.filter((node) => !isTransactionFeeTransfer(node));
 
-    if (isEmpty(transactionFee)) return [];
+    // console.log('nodes', nodes);
 
     // Failed transfers only have the transaction fee transfer
     // For wallets, give the transfer with original amount and receiver
@@ -155,17 +266,24 @@ export async function getTransfers(
       const gqlTransfer = nodes[0];
 
       if (isSuccess(gqlTransfer)) {
+        // eslint-disable-next-line no-console
         console.log(
           'RequestKey found with one one Transfer, but it does not have failed status.',
         );
         return [];
       }
 
-      // Reconstruct original transfer
+      // Not success, must be a gas payment: Reconstruct original transfer
       const clist = parseClist(gqlTransfer);
       const transferCap = clist.find((x) => x.name === 'coin.TRANSFER')?.args;
       if (isEmpty(transferCap)) return [];
-      const transactionFeeTransfer = nodeToTransfer(gqlTransfer, fungibleName);
+      const transactionFeeTransfer = gqlTransferToTransfer(
+        gqlTransfer,
+        accountName,
+        lastBlockHeight,
+        fungibleName,
+      );
+      if (!transactionFeeTransfer) return [];
       const transfer: Transfer = {
         ...transactionFeeTransfer,
         receiverAccount: String(transferCap[1]),
@@ -182,15 +300,52 @@ export async function getTransfers(
       return [transfer];
     }
 
-    return transfers.map(
-      (node) =>
-        ({
-          ...nodeToTransfer(node, fungibleName),
-          transactionFeeTransfer: {
-            ...nodeToTransfer(transactionFee, fungibleName),
-            isBulkTransfer: transfers.length > 1,
-          },
-        }) as Transfer,
-    );
+    return transfers.map((gqlTransfer) => {
+      const base = gqlTransferToTransfer(
+        gqlTransfer,
+        accountName,
+        lastBlockHeight,
+        fungibleName,
+      );
+      if (!base) return null;
+      const transactionFeeBase = transactionFee
+        ? gqlTransferToTransfer(
+            transactionFee,
+            accountName,
+            lastBlockHeight,
+            fungibleName,
+          )
+        : null;
+      return {
+        ...base,
+        transactionFeeTransfer: transactionFeeBase
+          ? {
+              ...transactionFeeBase,
+              isBulkTransfer: transfers.length > 1,
+            }
+          : undefined,
+      } as Transfer;
+    });
   });
+
+  return mapped.filter(notEmpty);
+}
+
+// Currently queries all chains
+export async function getTransfers(
+  graphqlUrl: string,
+  accountName: string,
+  fungibleName?: string,
+): Promise<Transfer[]> {
+  const { transfers: nodes, lastBlockHeight } = await fetchTransfers(
+    graphqlUrl,
+    accountName,
+    fungibleName,
+  );
+  return parseGqlTransfers(
+    nodes,
+    lastBlockHeight ?? 0,
+    accountName,
+    fungibleName,
+  );
 }

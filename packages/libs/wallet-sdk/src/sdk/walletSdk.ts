@@ -6,10 +6,12 @@ import {
 } from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
-import * as v from 'valibot';
 
 import * as accountService from '../services/accountService.js';
+import { pollRequestKeys } from '../services/chainweb/chainweb.js';
 import { getTransfers } from '../services/graphql/getTransfers.js';
+import { poll } from '../utils/retry.js';
+import { isEmpty, notEmpty } from '../utils/typeUtils.js';
 import { exchange } from './exchange.js';
 import type { ChainwebHostGenerator, GraphqlHostGenerator } from './host.js';
 import {
@@ -30,13 +32,12 @@ import { KadenaNames } from './kadenaNames.js';
 import type { ILogTransport, LogLevel } from './logger.js';
 import { Logger } from './logger.js';
 import type { ResponseResult } from './schema.js';
-import { responseSchema } from './schema.js';
 import { simpleTransferCreateCommand } from './utils-tmp.js';
 
 export class WalletSDK {
   private _chainwebHostGenerator: ChainwebHostGenerator;
   private _graphqlHostGenerator: GraphqlHostGenerator;
-  public _logger: Logger;
+  public logger: Logger;
 
   public kadenaNames: KadenaNames;
   public exchange: typeof exchange = exchange;
@@ -51,7 +52,7 @@ export class WalletSDK {
       options?.chainwebHostGenerator ?? defaultChainwebHostGenerator;
     this._graphqlHostGenerator =
       options?.graphqlHostGenerator ?? defaultGraphqlHostGenerator;
-    this._logger = new Logger(
+    this.logger = new Logger(
       options?.logLevel ?? 'WARN',
       options?.logTransport,
     );
@@ -75,7 +76,7 @@ export class WalletSDK {
   ): ReturnType<GraphqlHostGenerator> {
     const result = this._graphqlHostGenerator(...args);
     if (!result) {
-      this._logger.error(
+      this.logger.error(
         'Failed to generate graphql url using graphqlHostGenerator method',
       );
       throw new Error(
@@ -171,40 +172,27 @@ export class WalletSDK {
       networkId: transaction.networkId,
       chainId: transaction.chainId,
     });
-    // TODO: refactor to poll
-    // if options is in kadena client now, use that
-    const listenUrl = new URL(`${host}/api/v1/listen`);
-    const data = await fetch(listenUrl.toString(), {
-      signal: options?.signal,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ listen: transaction.requestKey }),
-    })
-      .then((res) => res.json())
-      .catch(() => ({
-        result: {
-          status: 'failure',
-          error: {
-            message: 'Failed to get response from server',
-            type: 'NetworkFailure',
-          },
-        } as ResponseResult,
-      }));
-    const parsed = v.safeParse(responseSchema, data);
-    if (parsed.success === false) {
-      this._logger.warn(
-        `[WalletSDk] waitForPendingTransaction Parsing issues:\n${v.flatten(parsed.issues)}`,
-        { transaction, issues: parsed.issues },
-      );
-      return {
-        status: 'failure',
-        error: {
-          type: 'ParseFailure',
-          message: 'Failed to parse response',
-        },
-      };
-    }
-    return parsed.output.result;
+    return poll(
+      async (signal) => {
+        const response = await pollRequestKeys({
+          chainwebUrl: host,
+          logger: this.logger,
+          requestKeys: [transaction.requestKey],
+          signal,
+        });
+
+        if (isEmpty(response[transaction.requestKey])) {
+          throw new Error('Request key not found');
+        }
+
+        return response[transaction.requestKey].result;
+      },
+      {
+        delayMs: 1000,
+        timeoutSeconds: 120,
+        signal: options?.signal,
+      },
+    );
   }
 
   public subscribePendingTransactions(
@@ -213,17 +201,69 @@ export class WalletSDK {
       transaction: ITransactionDescriptor,
       result: ResponseResult,
     ) => void,
-    options?: { signal?: AbortSignal },
+    options?: {
+      signal?: AbortSignal;
+      confirmationDepth?: number;
+      timeoutSeconds?: number;
+      intervalMs?: number;
+    },
   ): void {
-    const promises = transactions.map(async (transaction) => {
-      const result = await this.waitForPendingTransaction(transaction, {
-        signal: options?.signal,
-      });
-      callback(transaction, result);
+    const groupByHost = transactions.reduce(
+      (acc, tx) => {
+        const host = this.getChainwebUrl({
+          networkId: tx.networkId,
+          chainId: tx.chainId,
+        });
+        acc[host] = acc[host] || [];
+        acc[host].push(tx);
+        return acc;
+      },
+      {} as Record<string, ITransactionDescriptor[]>,
+    );
+
+    const promises = Object.entries(groupByHost).map(async ([host, txs]) => {
+      // List of request keys to poll
+      let requestKeys = txs.map((tx) => tx.requestKey);
+
+      return await poll(
+        async (signal) => {
+          const response = await pollRequestKeys({
+            chainwebUrl: host,
+            logger: this.logger,
+            requestKeys: requestKeys,
+            signal,
+          });
+
+          // Execute callback for finished request keys
+          requestKeys.forEach((key) => {
+            if (notEmpty(response[key])) {
+              callback(
+                txs.find((tx) => tx.requestKey === key)!,
+                response[key].result,
+              );
+            }
+          });
+
+          // Remove finished request keys from list
+          requestKeys = requestKeys.filter((key) => notEmpty(response[key]));
+
+          // If there are still request keys to poll, throw an error so `poll` can retry
+          if (requestKeys.length > 0) {
+            throw new Error('Some Request Key(s) not found');
+          }
+        },
+        {
+          delayMs: options?.intervalMs ?? 1000,
+          timeoutSeconds:
+            options?.timeoutSeconds ??
+            Math.max(60, (options?.confirmationDepth ?? 1) * 60),
+          signal: options?.signal,
+        },
+      );
     });
 
     Promise.all(promises).catch((error) => {
-      // console.log(error);
+      this.logger.error(error);
     });
   }
 
@@ -246,7 +286,7 @@ export class WalletSDK {
 
       return accountDetailsList;
     } catch (error) {
-      this._logger.error(`Error in fetching account details: ${error.message}`);
+      this.logger.error(`Error in fetching account details: ${error.message}`);
       throw new Error(`Failed to get account details for ${accountName}`);
     }
   }
@@ -270,7 +310,10 @@ export class WalletSDK {
     chainId: ChainId,
   ): Promise<number> {
     const host = this.getChainwebUrl({ networkId, chainId });
-    const result = await estimateGas(JSON.parse(transaction.cmd), host);
+    const result = await estimateGas(
+      JSON.parse(transaction.cmd),
+      new URL(host).origin,
+    );
     return result.gasLimit;
   }
 }

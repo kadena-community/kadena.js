@@ -29,31 +29,28 @@ export const responseSchema = v.object({
   continuation: v.any(), // seen: "null"
   txId: v.nullable(v.string()), // seen: "null"
   // Fallback for metaData and events, prioritize having access to result
-  metaData: v.fallback(
-    v.optional(
+  metaData: v.optional(
+    v.object({
+      blockTime: v.number(),
+      prevBlockHash: v.string(),
+      blockHash: v.string(),
+      blockHeight: v.number(),
+    }),
+  ),
+  events: v.optional(
+    v.array(
       v.object({
-        blockTime: v.number(),
-        prevBlockHash: v.string(),
-        blockHash: v.string(),
-        blockHeight: v.number(),
+        params: v.array(v.union([v.string(), v.number()])),
+        name: v.string(),
+        module: v.object({
+          namespace: v.any(), // seen: "null"
+          name: v.string(),
+        }),
+        moduleHash: v.string(),
       }),
     ),
-    undefined,
-  ),
-  events: v.fallback(
-    v.optional(
-      v.array(
-        v.object({
-          params: v.array(v.union([v.string(), v.number()])),
-          name: v.string(),
-          module: v.object({
-            namespace: v.any(), // seen: "null"
-            name: v.string(),
-          }),
-          moduleHash: v.string(),
-        }),
-      ),
-    ),
-    undefined,
   ),
 });
+
+export const pollResponseSchema = v.record(v.string(), responseSchema);
+export type PollResponse = v.InferOutput<typeof pollResponseSchema>;
