@@ -38,8 +38,8 @@ export const transferTokens = async (
           decimal: data.amount,
         },
       ),
-      withCap(`coin.GAS`),
     ])
+    .addSigner(account.keyset.guard.keys[0], (withCap) => [withCap(`coin.GAS`)])
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

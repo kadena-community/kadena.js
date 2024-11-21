@@ -1,6 +1,7 @@
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';
+import type { IUnsignedCommand } from '@kadena/client';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
@@ -8,21 +9,25 @@ export const useTransferTokens = () => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
 
-  const submit = async (data: ITransferTokensProps) => {
+  const createTx = async (
+    data: ITransferTokensProps,
+  ): Promise<IUnsignedCommand | undefined> => {
+    const tx = await transferTokens(data, account!);
+
+    return tx;
+  };
+
+  const submit = async (unsignedTransaction: IUnsignedCommand) => {
     try {
-      const tx = await transferTokens(data, account!);
-
-      console.log(tx);
-      const signedTransaction = await sign(tx);
+      const signedTransaction = await sign(unsignedTransaction);
       if (!signedTransaction) return;
-
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
       addTransaction({
         ...res,
-        type: 'DISTRIBUTETOKENS',
-        data: { ...res, ...data },
+        type: 'TRANSFERTOKENS',
+        data: { ...res },
       });
 
       console.log({ res });
@@ -30,5 +35,5 @@ export const useTransferTokens = () => {
     } catch (e: any) {}
   };
 
-  return { submit };
+  return { submit, createTx };
 };

@@ -1,7 +1,18 @@
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
-import { Button, Select, SelectItem, TextField } from '@kadena/kode-ui';
+import type { IUnsignedCommand } from '@kadena/client';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  Select,
+  SelectItem,
+  TextareaField,
+  TextField,
+} from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -9,6 +20,7 @@ import {
   RightAsideHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
@@ -18,7 +30,11 @@ interface IProps {
 
 export const TransferForm: FC<IProps> = ({ onClose, investorAccount }) => {
   const { data: investors } = useGetInvestors();
-  const { submit } = useTransferTokens();
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const { createTx, submit } = useTransferTokens();
+  const [tx, setTx] = useState<IUnsignedCommand>();
+  const [openModal, setOpenModal] = useState(false);
 
   const { register, control, handleSubmit } = useForm<ITransferTokensProps>({
     values: {
@@ -28,11 +44,16 @@ export const TransferForm: FC<IProps> = ({ onClose, investorAccount }) => {
     },
   });
 
-  const onSubmit = async (data: ITransferTokensProps) => {
-    console.log(1111, { data });
-    await submit(data);
+  const handleSign = async () => {
+    const value = textareaRef.current?.value as unknown as IUnsignedCommand;
+    console.log(value);
+    await submit(value);
+  };
 
-    onClose();
+  const onSubmit = async (data: ITransferTokensProps) => {
+    const result = await createTx(data);
+    setTx(result);
+    setOpenModal(true);
   };
 
   const filteredInvestors = investors.filter(
@@ -41,6 +62,25 @@ export const TransferForm: FC<IProps> = ({ onClose, investorAccount }) => {
 
   return (
     <>
+      {openModal && (
+        <Dialog
+          isOpen
+          onOpenChange={() => {
+            setOpenModal(false);
+          }}
+        >
+          <DialogHeader>Transaction</DialogHeader>
+          <DialogContent>
+            <TextareaField
+              defaultValue={JSON.stringify(tx, null, 2)}
+              ref={textareaRef}
+            />
+          </DialogContent>
+          <DialogFooter>
+            <Button onPress={handleSign}>Sign</Button>
+          </DialogFooter>
+        </Dialog>
+      )}
       <RightAside isOpen onClose={onClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <RightAsideHeader label="Transfer Tokens" />
