@@ -2,21 +2,20 @@ import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getClient, getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
-export interface IGetBalanceProps {
-  investorAccount: string;
+export interface IIsPausedProps {
   account: IWalletAccount;
 }
 
-export const getBalance = async (data: IGetBalanceProps) => {
+export const isPaused = async (data: IIsPausedProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.mvp-token.get-balance (read-string 'account))`)
+    .execution(`(RWA.mvp-token.paused)`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,
     })
-    .addData('account', data.investorAccount)
+    .addData('agent', data.account.address)
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 

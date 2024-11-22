@@ -38,7 +38,6 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
     try {
       const tx = await addAgent(data, account!);
 
-      console.log(tx);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -54,6 +53,7 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
       console.log('DONE');
     } catch (e: any) {}
 
+    setOpenModal(false);
     onClose();
   };
 
