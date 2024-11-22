@@ -20,15 +20,8 @@ jobs:
         with:
           node-version: 20
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
-      - name: pnpm install
-        run: pnpm install
-
-      - name: Cache for Turbo
-        uses: rharkor/caching-for-turbo@v1.5
+      - name: Runner setup
+        uses: ./.github/actions/runner-setup
 
       - name: Build docs dependencies
         run: pnpm turbo run build --filter=@kadena/docs^...

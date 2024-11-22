@@ -21,9 +21,6 @@ jobs:
       - name: Runner setup
         uses: ./.github/actions/runner-setup
 
-      - name: Cache for Turbo
-        uses: rharkor/caching-for-turbo@v1.5
-
       - name: Build Docs Tools
         run:  pnpm turbo build --filter @kadena/docs --no-cache
 
