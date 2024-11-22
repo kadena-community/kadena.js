@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IRemoveAgentProps {
@@ -13,14 +14,14 @@ export const togglePause = async (
   const func = isPaused ? 'unpause' : 'pause';
 
   return Pact.builder
-    .execution(`(RWA.mvp-token.${func})`)
+    .execution(`(RWA.${getAsset()}.${func})`)
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addData('agent', account.address)
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-AGENT`, 'freezer'),
+      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'freezer'),
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)

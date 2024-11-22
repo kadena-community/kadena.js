@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IRegisterIdentityProps {
@@ -14,8 +15,8 @@ const createPubKeyFromAccount = (account: string): string => {
 export const registerIdentity = async (data: IRegisterIdentityProps) => {
   return Pact.builder
     .execution(
-      `(RWA.mvp-token.register-identity (read-string 'investor) (read-string 'agent) 1)
-      (RWA.mvp-token.create-account (read-string 'investor) (read-keyset 'investor-keyset))
+      `(RWA.${getAsset()}.register-identity (read-string 'investor) (read-string 'agent) 1)
+      (RWA.${getAsset()}.create-account (read-string 'investor) (read-keyset 'investor-keyset))
       `,
     )
     .addData('investor-keyset', {
@@ -29,7 +30,7 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       chainId: getNetwork().chainId,
     })
     .addSigner(data.agent.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-AGENT`, 'whitelist-manager'),
+      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'whitelist-manager'),
       withCap(`coin.GAS`),
     ])
 

@@ -12,20 +12,22 @@ import {
   RightAsideHeader,
   useLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC } from 'react';
+import { useState, type FC } from 'react';
 import { AssetForm } from './AssetForm';
 
 export const AssetSwitch: FC = () => {
   const { assets, asset, setAsset } = useAsset();
+  const [openSide, setOpenSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
   return (
     <>
-      {isRightAsideExpanded && (
+      {isRightAsideExpanded && openSide && (
         <RightAside
           isOpen
           onClose={() => {
             setIsRightAsideExpanded(false);
+            setOpenSide(false);
           }}
         >
           <RightAsideHeader label="Assets" />
@@ -56,6 +58,7 @@ export const AssetSwitch: FC = () => {
         <ContextMenuItem
           onClick={() => {
             setIsRightAsideExpanded(true);
+            setOpenSide(true);
           }}
           endVisual={<MonoSettings />}
           label="Asset Settings"

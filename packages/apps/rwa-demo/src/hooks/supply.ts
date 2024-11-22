@@ -2,6 +2,7 @@ import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply } from '@/services/supply';
+import { getAsset } from '@/utils/getAsset';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
@@ -22,7 +23,7 @@ export const useSupply = () => {
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: 'RWA.mvp-token.SUPPLY',
+      qualifiedName: `RWA.${getAsset()}.SUPPLY`,
     },
   });
 

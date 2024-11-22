@@ -2,6 +2,7 @@ import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { isPaused } from '@/services/isPaused';
+import { getAsset } from '@/utils/getAsset';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
@@ -22,12 +23,12 @@ export const usePaused = () => {
 
   const { data: pausedData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: 'RWA.mvp-token.PAUSED',
+      qualifiedName: `RWA.${getAsset()}.PAUSED`,
     },
   });
   const { data: unpausedData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: 'RWA.mvp-token.UNPAUSED',
+      qualifiedName: `RWA.${getAsset()}.UNPAUSED`,
     },
   });
 

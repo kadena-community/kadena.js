@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getClient, getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface ISupplyProps {
@@ -10,7 +11,7 @@ export const supply = async (data: ISupplyProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.mvp-token.supply)`)
+    .execution(`(RWA.${getAsset()}.supply)`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,
