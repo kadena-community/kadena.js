@@ -38,18 +38,36 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
   const handleSave = (e: PressEvent) => {
     const key = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY);
     const assets = JSON.parse(localStorage.getItem(key) ?? '[]');
-    if (assets.filter((a: string) => a === value)) {
-      assets.push(value);
-      localStorage.setItem(key, JSON.stringify(assets));
-      setValue('');
+
+    let newAssets = [...assets];
+    if (!asset) {
+      const newAsset = {
+        uuid: crypto.randomUUID(),
+        name: value,
+      };
+      newAssets.push(newAsset);
 
       addNotification({
         label: 'Asset added',
         intent: 'positive',
       });
+    } else {
+      newAssets = newAssets.map((v) => {
+        if (v.uuid === asset.uuid) {
+          return { ...v, name: value };
+        }
+        return v;
+      });
 
-      window.dispatchEvent(new Event(key));
+      addNotification({
+        label: 'Asset Changed',
+        intent: 'positive',
+      });
     }
+
+    setValue('');
+    localStorage.setItem(key, JSON.stringify(newAssets));
+    window.dispatchEvent(new Event(key));
   };
 
   return (

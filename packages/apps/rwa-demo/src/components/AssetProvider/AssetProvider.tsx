@@ -14,11 +14,13 @@ export interface IAssetContext {
   asset?: IAsset;
   assets: IAsset[];
   paused: boolean;
+  setAsset: (asset: IAsset) => void;
 }
 
 export const AssetContext = createContext<IAssetContext>({
   assets: [],
   paused: false,
+  setAsset: () => {},
 });
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -35,7 +37,12 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const storageListener = (event: StorageEvent | Event) => {
     if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
-      getAssets();
+      return;
+    getAssets();
+  };
+
+  const handleSelectAsset = (data: IAsset) => {
+    setAsset(data);
   };
 
   useEffect(() => {
@@ -50,7 +57,9 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <AssetContext.Provider value={{ asset, assets, paused }}>
+    <AssetContext.Provider
+      value={{ asset, assets, setAsset: handleSelectAsset, paused }}
+    >
       {children}
     </AssetContext.Provider>
   );

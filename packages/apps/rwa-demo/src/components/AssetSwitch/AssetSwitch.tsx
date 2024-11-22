@@ -16,7 +16,7 @@ import type { FC } from 'react';
 import { AssetForm } from './AssetForm';
 
 export const AssetSwitch: FC = () => {
-  const { assets } = useAsset();
+  const { assets, asset, setAsset } = useAsset();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
   return (
@@ -40,12 +40,16 @@ export const AssetSwitch: FC = () => {
       <ContextMenu
         trigger={
           <Button isCompact variant="outlined">
-            Select asset
+            {asset ? asset.name : 'Select an asset'}
           </Button>
         }
       >
         {assets.map((ass) => (
-          <ContextMenuItem key={ass.uuid} label={ass.name} />
+          <ContextMenuItem
+            onClick={() => setAsset(ass)}
+            key={ass.uuid}
+            label={ass.name}
+          />
         ))}
         <ContextMenuDivider />
 
