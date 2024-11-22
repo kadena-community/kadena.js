@@ -355,7 +355,15 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // subscribe to db changes and update the context
   useEffect(() => {
-    const unsubscribe = dbService.subscribe((event, storeName, data) => {
+    const unsubscribe = dbService.subscribe(async (event, storeName, data) => {
+      if (event === 'import') {
+        setContextValue(getDefaultContext());
+        await retrieveFungibles();
+        await retrieveNetworks();
+        await retrieveProfileList();
+        await retrieveContacts();
+        setContextValue((ctx) => ({ ...ctx, loaded: true }));
+      }
       const profileId =
         data && typeof data === 'object' && 'profileId' in data
           ? data.profileId

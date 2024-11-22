@@ -1,7 +1,7 @@
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { IDBBackup } from '@/modules/db/db.service';
+import { dbService, IDBBackup } from '@/modules/db/db.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import InitialsAvatar from '@/pages/select-profile/initials';
@@ -21,6 +21,7 @@ import {
   CardFooterGroup,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface IV3Backup {
   scheme: 'v3';
@@ -34,6 +35,7 @@ export function RecoveredV3({
   loadedContent: IV3Backup;
   cancel: () => void;
 }) {
+  const navigate = useNavigate();
   const prompt = usePrompt();
   const { profileList: walletProfiles } = useWallet();
   const [bypassAvailableCheck, setBypassAvailableCheck] = useState(false);
@@ -152,7 +154,17 @@ export function RecoveredV3({
           Back
         </Button>
         <CardFooterGroup>
-          <Button variant="primary" isDisabled={selectedProfiles.length < 1}>
+          <Button
+            variant="primary"
+            isDisabled={selectedProfiles.length < 1}
+            onClick={async () => {
+              await dbService.importBackup(
+                loadedContent.data,
+                selectedProfiles,
+              );
+              navigate('/');
+            }}
+          >
             import
           </Button>
         </CardFooterGroup>

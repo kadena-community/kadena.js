@@ -1,6 +1,7 @@
 import { IDBBackup } from '@/modules/db/db.service';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { browse, readContent } from '@/utils/select-file';
+import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoRestore } from '@kadena/kode-icons/system';
 import {
   Box,
@@ -73,7 +74,18 @@ export function WalletRecovery() {
                 if (file && file instanceof File) {
                   const content = await readContent(file);
                   try {
-                    const json = JSON.parse(content);
+                    const json = JSON.parse(content, (_key, value) => {
+                      if (typeof value !== 'string') return value;
+                      if (value.startsWith('Uint8Array:')) {
+                        const base64Url = value.split('Uint8Array:')[1];
+                        return base64UrlDecodeArr(base64Url);
+                      }
+                      if (value.startsWith('ArrayBuffer:')) {
+                        const base64Url = value.split('ArrayBuffer:')[1];
+                        return base64UrlDecodeArr(base64Url).buffer;
+                      }
+                      return value;
+                    });
                     console.log(json);
                     setFileContent(json);
                     if (json.wallet_version === '3') {

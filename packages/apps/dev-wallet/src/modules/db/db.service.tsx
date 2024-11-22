@@ -1,6 +1,7 @@
 import { config } from '@/config';
 import {
   addItem,
+  clearStore,
   connect,
   dbDump,
   deleteDatabase,
@@ -143,7 +144,7 @@ const injectDb = <R extends (...args: any[]) => Promise<any>>(
     });
   }) as R;
 
-type EventTypes = 'add' | 'update' | 'delete';
+type EventTypes = 'add' | 'update' | 'delete' | 'import';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
 
@@ -178,6 +179,10 @@ export interface IDBService {
   remove: (storeName: string, key: string) => Promise<void>;
   subscribe: ISubscribe;
   serializeTables: () => Promise<string>;
+  importBackup: (
+    backup: IDBBackup,
+    profileUUIds?: string[],
+  ) => Promise<boolean>;
 }
 
 const dbChannel = new BroadcastChannel('db-channel');
@@ -205,7 +210,7 @@ export interface IDBBackup {
   }[];
   data: {
     profile: Table<IProfile>;
-    encryptedValue: Table<string>;
+    encryptedValue: Table<{ uuid: string; profileId: string; value: string }>;
     keySource: Table<IKeySource>;
     account: Table<IAccount>;
     'watched-account': Table<IWatchedAccount>;
@@ -219,25 +224,47 @@ export interface IDBBackup {
 }
 
 export const importBackup =
-  (db: IDBDatabase) => (backup: IDBBackup, profileUUIds?: string[]) => {
-    const transaction = db.transaction(Object.keys(backup.data), 'readwrite');
+  (db: IDBDatabase) => async (backup: IDBBackup, profileUUIds?: string[]) => {
     const tables = Object.keys(backup.data) as Array<keyof IDBBackup['data']>;
-    tables.forEach((table) => {
-      const store = transaction.objectStore(table);
-      const data = backup.data[table];
-      data.forEach(({ key, value }) => {
-        if (profileUUIds && table === 'profile') {
-          if (!profileUUIds.includes(key)) {
-            return;
-          }
-        }
-        store.put(value, key);
+    const transaction = db.transaction(tables, 'readwrite');
+    const dbProfiles: IProfile[] = await getAllItems(
+      db,
+      transaction,
+    )('profile');
+    if (!dbProfiles.length) {
+      // we can consider this a fresh database
+      if (backup.db_version !== db.version) {
+        // TODO: we can add a migration path here
+        throw new Error(
+          `Database version mismatch: expected ${db.version} but got ${backup.db_version}`,
+        );
+      }
+      await tables.map(async (table) => {
+        const store = transaction.objectStore(table);
+        const data = backup.data[table];
+        await clearStore(db, transaction)(table);
+        Promise.all(
+          data.map(({ key, value }) => {
+            if ('profileId' in value) {
+              if (
+                !profileUUIds ||
+                !profileUUIds.length ||
+                profileUUIds.includes(value.profileId)
+              ) {
+                console.log('adding', key, value);
+                store.add(value);
+              }
+            } else {
+              console.log('adding', key, value);
+              store.add(value);
+            }
+          }),
+        );
       });
-    });
-    return new Promise<void>((resolve, reject) => {
-      transaction.oncomplete = () => resolve();
-      transaction.onerror = () => reject(transaction.error);
-    });
+      return true;
+    }
+
+    throw new Error('Database is not empty');
   };
 
 export const createDbService = () => {
@@ -284,7 +311,7 @@ export const createDbService = () => {
   const notify =
     (event: EventTypes) =>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (storeName: string, ...rest: any[]) => {
+    (storeName: string | any, ...rest: any[]) => {
       listeners.forEach((cb) => cb(event, storeName, ...rest));
       broadcast(event, storeName, rest);
     };
@@ -304,6 +331,7 @@ export const createDbService = () => {
       const backup: IDBBackup = { checksum, wallet_version: '3', ...dbData };
       return JSON.stringify(backup, BufferToBase64UrlReplacer, 2);
     },
+    importBackup: injectDb(importBackup, notify('import')),
   };
 };
 

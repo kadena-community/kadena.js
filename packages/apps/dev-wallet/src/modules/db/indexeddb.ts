@@ -303,3 +303,18 @@ export const dbDump = (db: IDBDatabase) => () => {
       data: data,
     }));
 };
+
+export const clearStore =
+  (db: IDBDatabase, transaction?: IDBTransaction) => (storeName: string) => {
+    return new Promise<void>((resolve, reject) => {
+      const tx = transaction ?? db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
+      const request = store.clear();
+      request.onerror = () => {
+        reject(request.error);
+      };
+      request.onsuccess = () => {
+        resolve();
+      };
+    });
+  };
