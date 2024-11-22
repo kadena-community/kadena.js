@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface ISetAddressFrozenProps {
@@ -11,7 +12,7 @@ export interface ISetAddressFrozenProps {
 export const setAddressFrozen = async (data: ISetAddressFrozenProps) => {
   return Pact.builder
     .execution(
-      `(RWA.mvp-token.set-address-frozen (read-string 'investor) ${data.pause})
+      `(RWA.${getAsset()}.set-address-frozen (read-string 'investor) ${data.pause})
       `,
     )
     .addData('investor', data.investorAccount)
@@ -21,7 +22,7 @@ export const setAddressFrozen = async (data: ISetAddressFrozenProps) => {
       chainId: getNetwork().chainId,
     })
     .addSigner(data.agentAccount.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-AGENT`, 'freezer'),
+      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'freezer'),
       withCap(`coin.GAS`),
     ])
 

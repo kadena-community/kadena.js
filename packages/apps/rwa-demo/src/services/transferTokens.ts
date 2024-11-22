@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
@@ -21,7 +22,7 @@ export const transferTokens = async (
   return Pact.builder
     .execution(
       `
-       (RWA.mvp-token.transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
+       (RWA.${getAsset()}.transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('investorFrom', data.investorFromAccount)
     .addData('investorTo', data.investorToAccount)
@@ -31,7 +32,7 @@ export const transferTokens = async (
     })
     .addSigner(createPubKeyFromAccount(data.investorFromAccount), (withCap) => [
       withCap(
-        `RWA.mvp-token.TRANSFER`,
+        `RWA.${getAsset()}.TRANSFER`,
         data.investorFromAccount,
         data.investorToAccount,
         {

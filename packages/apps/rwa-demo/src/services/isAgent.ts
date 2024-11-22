@@ -1,4 +1,5 @@
 import { getClient, getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IIsAgentProps {
@@ -9,7 +10,7 @@ export const isAgent = async (data: IIsAgentProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.mvp-token.is-agent (read-string 'agent))`)
+    .execution(`(RWA.${getAsset()}.is-agent (read-string 'agent))`)
     .setMeta({
       senderAccount: data.agent,
       chainId: getNetwork().chainId,

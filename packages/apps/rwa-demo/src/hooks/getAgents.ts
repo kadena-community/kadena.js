@@ -4,6 +4,7 @@ import type { ITransaction } from '@/components/TransactionsProvider/Transaction
 import { coreEvents } from '@/services/graph/agent.graph';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
+import { getAsset } from '@/utils/getAsset';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useTransactions } from './transactions';
@@ -27,13 +28,13 @@ export const useGetAgents = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.mvp-token.AGENT-ADDED',
+      qualifiedName: `RWA.${getAsset()}.AGENT-ADDED`,
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.mvp-token.AGENT-REMOVED',
+      qualifiedName: `RWA.${getAsset()}.AGENT-REMOVED`,
     },
   });
 

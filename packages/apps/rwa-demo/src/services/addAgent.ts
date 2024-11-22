@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IAddAgentProps {
@@ -16,14 +17,14 @@ export const addAgent = async (
 ) => {
   return Pact.builder
     .execution(
-      `(RWA.mvp-token.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
+      `(RWA.${getAsset()}.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
     )
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.mvp-token.ONLY-OWNER`, ''),
+      withCap(`RWA.${getAsset()}.ONLY-OWNER`, ''),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.accountName)
