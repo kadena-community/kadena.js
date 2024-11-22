@@ -12,7 +12,8 @@ import {
   RightAsideHeader,
   useLayout,
 } from '@kadena/kode-ui/patterns';
-import { useState, type FC } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import { AssetForm } from './AssetForm';
 
 export const AssetSwitch: FC = () => {

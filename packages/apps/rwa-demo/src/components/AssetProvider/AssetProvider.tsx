@@ -4,8 +4,10 @@ import {
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
 import { usePaused } from '@/hooks/paused';
+import { getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { useRouter } from 'next/navigation';
+
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
@@ -68,8 +70,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const asset = localStorage.getItem(selectedKey);
-    setAsset(asset ? JSON.parse(asset) : undefined);
+    const asset = getFullAsset();
+    setAsset(asset);
+    if (asset) {
+      return;
+    }
   }, []);
 
   return (
