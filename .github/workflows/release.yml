@@ -61,3 +61,22 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         # Do something more interesting when a publish happens.
         run: echo ${{ steps.changesets.outputs.publishedPackages }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ vars.GHCR_USER }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ghcr.io/kadena.js/graph:latest .
+          cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:latest -t ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
+
+      - name: Push Docker Image to GHCR
+        run: |
+          docker push ghcr.io/kadena.js/graph:latest
