@@ -62,10 +62,10 @@ const createWalletRepository = ({
     updateProfile: async (profile: IProfile): Promise<void> => {
       return update('profile', profile, undefined);
     },
-    getEncryptedValue: async (key: string): Promise<Uint8Array> => {
+    getEncryptedValue: async (uuid: string): Promise<Uint8Array> => {
       const { value } = (await getOne<IEncryptedValue>(
         'encryptedValue',
-        key,
+        uuid,
       )) ?? {
         value: undefined,
       };
@@ -92,6 +92,9 @@ const createWalletRepository = ({
     },
     getKeySource: async (keySourceId: string): Promise<IKeySource> => {
       return getOne('keySource', keySourceId);
+    },
+    getAllKeySources: async (): Promise<IKeySource[]> => {
+      return getAll('keySource');
     },
   };
 };

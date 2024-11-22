@@ -29,28 +29,49 @@ export const connect = (name: string, version: number) => {
     throw new Error('INVALID_INTEGER: must be a positive integer');
   }
   let fulfilled = false;
-  return new Promise<{ db: IDBDatabase; needsUpgrade: boolean }>(
-    (resolve, reject) => {
-      const request = indexedDB.open(name, version);
-      request.onerror = () => {
-        if (fulfilled) return;
-        fulfilled = true;
-        reject(request.error);
-      };
-      request.onsuccess = () => {
-        if (fulfilled) return;
-        fulfilled = true;
-        const db = request.result;
-        resolve({ db, needsUpgrade: false });
-      };
-      request.onupgradeneeded = async () => {
-        if (fulfilled) return;
-        fulfilled = true;
-        const db = request.result;
-        resolve({ db, needsUpgrade: true });
-      };
-    },
-  );
+  return new Promise<
+    | {
+        db: IDBDatabase;
+        needsUpgrade: false;
+      }
+    | {
+        db: IDBDatabase;
+        needsUpgrade: true;
+        oldVersion: number;
+        versionTransaction: IDBTransaction;
+      }
+  >((resolve, reject) => {
+    const request = indexedDB.open(name, version);
+    request.onerror = () => {
+      if (fulfilled) return;
+      fulfilled = true;
+      reject(request.error);
+    };
+    request.onsuccess = () => {
+      if (fulfilled) return;
+      fulfilled = true;
+      const db = request.result;
+      resolve({ db, needsUpgrade: false });
+    };
+    request.onupgradeneeded = async (event) => {
+      if (fulfilled) return;
+      fulfilled = true;
+      const db = request.result;
+      const versionTransaction: IDBTransaction | undefined = (
+        event?.target as any
+      )?.transaction;
+      if (!versionTransaction) {
+        reject(new Error('No transaction found'));
+        return;
+      }
+      resolve({
+        db,
+        needsUpgrade: true,
+        oldVersion: event.oldVersion,
+        versionTransaction,
+      });
+    };
+  });
 };
 
 export const deleteDatabase = (name: string) => {
@@ -84,14 +105,15 @@ const sortByCreationDate = <T>(a: T, b: T) => {
 };
 
 export const getAllItems =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, versionTransaction?: IDBTransaction) =>
   <T>(
     storeName: string,
     filter?: string[] | string | IDBKeyRange,
     indexName?: string,
   ) => {
     return new Promise<T[]>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readonly');
+      const transaction =
+        versionTransaction || db.transaction(storeName, 'readonly');
       const store = transaction.objectStore(storeName);
       let request: IDBRequest;
       if (indexName) {

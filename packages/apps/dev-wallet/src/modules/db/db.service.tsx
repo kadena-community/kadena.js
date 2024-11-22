@@ -2,7 +2,6 @@ import { config } from '@/config';
 import {
   addItem,
   connect,
-  createStore,
   dbDump,
   deleteDatabase,
   deleteItem,
@@ -20,10 +19,11 @@ import {
 } from '../account/account.repository';
 import { IActivity } from '../activity/activity.repository';
 import { IContact } from '../contact/contact.repository';
-import { IHDChainweaver } from '../key-source/key-source.repository';
 import { INetwork } from '../network/network.repository';
 import { ITransaction } from '../transaction/transaction.repository';
 import { IKeySource, IProfile } from '../wallet/wallet.repository';
+import { createTables } from './migration/createDB';
+import { migrateFrom37to38 } from './migration/migrateFrom37to38';
 
 // since we create the database in the first call we need to make sure another call does not happen
 // while the database is still being created; so I use execInSequence.
@@ -63,15 +63,28 @@ const createConnectionPool = (
   };
 };
 
-const { DB_NAME, DB_VERSION, DB_WIPE_ON_VERSION_CHANGE } = config.DB;
+const { DB_NAME, DB_VERSION } = config.DB;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
   let db = result.db;
   if (result.needsUpgrade) {
-    if (import.meta.env.DEV || DB_WIPE_ON_VERSION_CHANGE) {
+    const oldVersion = result.oldVersion;
+    if (oldVersion === 0) {
+      console.log('creating new database');
+      createTables(db);
+      return db;
+    }
+    if (oldVersion < 37) {
+      const confirmed = confirm(
+        'You’re using an outdated database version that doesn’t support migration. To continue using the app, all data must be wiped. Do you want to proceed?',
+      );
+      if (!confirmed) {
+        throw new Error('OUTDATED_DATABASE: database needs upgrade');
+      }
+
       console.log(
-        'in development we delete the database if schema is changed for now since we are still in early stage of development',
+        'Attempting to delete database because it is too old to be migrated',
       );
       db.close();
       console.log('deleting database');
@@ -79,65 +92,26 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       console.log('creating new database');
       const { db: newDb } = await connect(DB_NAME, DB_VERSION);
       db = newDb;
+
+      createTables(db);
+      return db;
     }
-    // NOTE: If you change the schema, you need to update the upgrade method
-    // below to migrate the data. the current version just creates the database
-    const create = createStore(db);
-    create('profile', 'uuid', [{ index: 'name', unique: true }]);
-    create('encryptedValue');
-    create('keySource', 'uuid', [{ index: 'profileId' }]);
-    create('account', 'uuid', [
-      { index: 'address' },
-      { index: 'keysetId' },
-      { index: 'profileId' },
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
-      {
-        index: 'unique-account',
-        indexKeyPath: ['keysetId', 'contract', 'networkUUID'],
-        unique: true,
-      },
-    ]);
-    create('watched-account', 'uuid', [
-      { index: 'address' },
-      { index: 'profileId' },
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
-      {
-        index: 'unique-account',
-        indexKeyPath: ['profileId', 'contract', 'address', 'networkUUID'],
-        unique: true,
-      },
-    ]);
-    create('network', 'uuid', [{ index: 'networkId', unique: true }]);
-    create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
-    create('keyset', 'uuid', [
-      { index: 'profileId' },
-      { index: 'principal' },
-      {
-        index: 'unique-keyset',
-        indexKeyPath: ['profileId', 'principal'],
-        unique: true,
-      },
-    ]);
-    create('transaction', 'uuid', [
-      { index: 'hash' },
-      { index: 'profileId' },
-      { index: 'groupId' },
-      { index: 'network', indexKeyPath: ['profileId', 'networkUUID'] },
-      {
-        index: 'unique-tx',
-        indexKeyPath: ['profileId', 'networkUUID', 'hash'],
-        unique: true,
-      },
-      {
-        index: 'network-status',
-        indexKeyPath: ['profileId', 'networkUUID', 'status'],
-      },
-    ]);
-    create('activity', 'uuid', [
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
-      { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
-    ]);
-    create('contact', 'uuid', [{ index: 'name', unique: true }]);
+
+    for (
+      let fromVersion = oldVersion;
+      fromVersion < DB_VERSION;
+      fromVersion++
+    ) {
+      // we need to add a migration path for each version
+      if (fromVersion === 37) {
+        console.log('migrating from 37 to 38');
+        await migrateFrom37to38(db, result.versionTransaction);
+        continue;
+      }
+      throw new Error(
+        `There is no migration path for this version ${fromVersion} to ${fromVersion + 1}`,
+      );
+    }
   }
 
   return db;
@@ -243,88 +217,6 @@ export interface IDBBackup {
     contact: Table<IContact>;
   };
 }
-
-const filterData = (data: IDBBackup['data'], profileUUIds?: string[]) => {
-  if (!profileUUIds) {
-    return data;
-  }
-  const filteredData: IDBBackup['data'] = {
-    profile: [],
-    encryptedValue: [],
-    keySource: [],
-    account: [],
-    'watched-account': [],
-    network: [],
-    fungible: [],
-    keyset: [],
-    transaction: [],
-    activity: [],
-    contact: [],
-  };
-  const globalTables = ['contact', 'fungible', 'network'] as const;
-  const withProfileId = [
-    'keySource',
-    'account',
-    'watched-account',
-    'keyset',
-    'transaction',
-    'activity',
-  ] as const;
-  const onlyInsert: {
-    [K in (typeof globalTables)[number]]: Table<
-      IDBBackup['data'][K][0]['value']
-    >;
-  } = Object.assign(
-    {},
-    ...globalTables.map((table) => ({ [table]: data[table] })),
-  );
-  const updateData: {
-    [K in (typeof withProfileId)[number]]: Table<
-      IDBBackup['data'][K][0]['value']
-    >;
-  } = Object.assign(
-    {},
-    ...withProfileId.map((table) => ({
-      [table]: data[table].filter(({ value: { profileId } }) =>
-        profileUUIds.includes(profileId),
-      ),
-    })),
-  );
-  const findEncryptedValue = (key?: string) => {
-    return key
-      ? data.encryptedValue.find(({ key: k }) => k === key)?.value
-      : undefined;
-  };
-  const encryptedValues = profileUUIds.map((uuid) => {
-    const profile = data.profile.find(({ key }) => key === uuid);
-    if (!profile) {
-      return [];
-    }
-    const legacyKeySources: IHDChainweaver[] = data.keySource
-      .map(({ value }) =>
-        value.source === 'HD-chainweaver' &&
-        profileUUIds.includes(value.profileId)
-          ? value
-          : undefined,
-      )
-      .filter((v) => v) as IHDChainweaver[];
-    return [
-      findEncryptedValue(profile.value.secretId),
-      findEncryptedValue(profile.value.securityPhraseId),
-      ...legacyKeySources
-        .map((ks) => [
-          findEncryptedValue(ks.secretId),
-          findEncryptedValue(ks.rootKeyId),
-          ...ks.keys.map(({ secretId }) => findEncryptedValue(secretId)),
-        ])
-        .flat(Infinity),
-    ];
-  });
-  return {
-    onlyInsert,
-    updateData,
-  };
-};
 
 export const importBackup =
   (db: IDBDatabase) => (backup: IDBBackup, profileUUIds?: string[]) => {
