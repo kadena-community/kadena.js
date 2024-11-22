@@ -1,3 +1,4 @@
+import { Fungible } from '@/modules/account/account.repository';
 import { IContact } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IReceiverAccount } from '@/pages/transfer/utils';
@@ -20,17 +21,16 @@ import { ListItem } from '../ListItem/ListItem';
 
 export function WatchAccountsDialog({
   onClose,
-  contract,
+  fungible,
   networkId,
   onWatch,
 }: {
-  contract: string;
+  fungible: Fungible;
   networkId: string;
   onClose: () => void;
   onWatch: (account: IReceiverAccount[]) => void;
 }) {
-  const { contacts, fungibles } = useWallet();
-  const asset = fungibles.find((f) => f.contract === contract);
+  const { contacts } = useWallet();
   const [account, setAccount] = useState<IReceiverAccount>();
   const [selectedContacts, setSelectedContacts] = useState<IContact[]>([]);
   return (
@@ -42,12 +42,12 @@ export function WatchAccountsDialog({
             You can watch any account on the network.
           </Heading>
           <Stack gap={'md'} flexDirection={'column'}>
-            <Heading variant="h6">Enter a {asset?.symbol} Address</Heading>
+            <Heading variant="h6">Enter a {fungible?.symbol} Address</Heading>
             <AccountInput
               onAccount={setAccount}
               account={account}
               networkId={networkId}
-              contract={contract}
+              fungible={fungible}
             />
           </Stack>
           {contacts.length > 0 && (

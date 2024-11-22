@@ -1,5 +1,6 @@
 import {
   accountRepository,
+  Fungible,
   IAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
@@ -29,12 +30,12 @@ import { WatchAccountsDialog } from './WatchAccountDialog';
 
 export function Accounts({
   accounts,
-  contract = 'coin',
+  fungible,
   watchedAccounts,
 }: {
   accounts: Array<IAccount>;
   watchedAccounts: Array<IWatchedAccount>;
-  contract: string;
+  fungible: Fungible;
 }) {
   const [show, setShow] = useState<'owned' | 'watched'>('owned');
   const { createNextAccount, activeNetwork, profile } = useWallet();
@@ -46,12 +47,13 @@ export function Accounts({
       <WatchAccountsDialog
         onWatch={resolve}
         onClose={reject}
-        contract={contract}
+        fungible={fungible}
         networkId={activeNetwork!.networkId}
       />
     ))) as IReceiverAccount[];
     const accountsToWatch: IWatchedAccount[] = accounts.map((account) => ({
       uuid: crypto.randomUUID(),
+      fungibleId: fungible.uuid,
       alias: account.alias ?? '',
       profileId: profile!.uuid,
       address: account.address,
@@ -66,7 +68,6 @@ export function Accounts({
           ),
         },
       },
-      contract,
       networkUUID: activeNetwork!.uuid,
       watched: true,
     }));
@@ -104,13 +105,13 @@ export function Accounts({
           </Stack>
         </Stack>
         <Stack gap={'sm'}>
-          {contract &&
+          {fungible &&
             (show === 'owned' ? (
               <Button
                 startVisual={<MonoAdd />}
                 variant="outlined"
                 isCompact
-                onClick={() => createNextAccount({ contract })}
+                onClick={() => createNextAccount({ fungible })}
               >
                 Next Account
               </Button>
@@ -137,8 +138,8 @@ export function Accounts({
             >
               <Link
                 to={
-                  contract
-                    ? `/create-account${contract ? `?contract=${contract}` : ''}`
+                  fungible
+                    ? `/create-account?fungibleId=${fungible.uuid}`
                     : '/create-account'
                 }
                 className={noStyleLinkClass}

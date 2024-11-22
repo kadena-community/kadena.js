@@ -33,7 +33,8 @@ export function ContactForm({
   onDone: (contect: IContact) => void;
   isOpen: boolean;
 }) {
-  const { activeNetwork } = useWallet();
+  const { activeNetwork, fungibles } = useWallet();
+  const coin = fungibles.find((f) => f.contract === 'coin');
   const [error, setError] = useState<string | null>(null);
   const {
     register,
@@ -131,7 +132,7 @@ export function ContactForm({
                       <AccountInput
                         account={field.value}
                         networkId={activeNetwork.networkId}
-                        contract={'coin'}
+                        fungible={coin!}
                         onAccount={(value) => {
                           field.onChange(value);
                         }}

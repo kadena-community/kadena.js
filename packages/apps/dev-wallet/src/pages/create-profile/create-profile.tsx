@@ -1,6 +1,7 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { config } from '@/config';
+import { accountRepository } from '@/modules/account/account.repository';
 import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import {
@@ -114,11 +115,16 @@ export function CreateProfile() {
 
     const key = await createKey(keySource);
 
+    const coin = await accountRepository.getFungibleByContract('coin');
+    if (!coin) {
+      throw new Error('Coin not found');
+    }
+
     await createKAccount({
       profileId: profile.uuid,
       networkUUID: activeNetwork.uuid,
       publicKey: key.publicKey,
-      contract: 'coin',
+      fungibleId: coin.uuid,
       alias: 'Account 1',
     });
 

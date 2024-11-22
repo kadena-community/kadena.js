@@ -7,6 +7,7 @@ import {
 } from '@/modules/key-source/key-source.repository';
 import { IKeySource, IProfile } from '@/modules/wallet/wallet.repository';
 import { createStore, getAllItems } from '../indexeddb';
+import { backupName } from './utils/backupName';
 
 // also make this model more consistent with other models
 export async function migrateFrom37to38(
@@ -42,7 +43,7 @@ export async function migrateFrom37to38(
       );
     }
   });
-  const v38db = `temp:encryptedValue_v38_${crypto.randomUUID()}`;
+  const v38db = `temp:encryptedValue_v38_${Date.now()}`;
   return new Promise<void>((resolve, reject) => {
     const create = createStore(db);
     create(v38db, 'uuid', [{ index: 'profileId' }]);
@@ -79,8 +80,11 @@ export async function migrateFrom37to38(
     };
   }).then(() => {
     // We can now delete the old store; but for now I still keep it for debugging and if something goes wrong we can rollback
-    transaction.objectStore('encryptedValue').name =
-      'backup:encryptedValue_v37';
+    transaction.objectStore('encryptedValue').name = backupName(
+      'encryptedValue',
+      37,
+    );
+
     transaction.objectStore(v38db).name = 'encryptedValue';
   });
 }

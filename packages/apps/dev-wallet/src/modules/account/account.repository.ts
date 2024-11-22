@@ -4,6 +4,7 @@ import { BuiltInPredicate, ChainId } from '@kadena/client';
 import { UUID } from '../types';
 
 export interface Fungible {
+  uuid: UUID;
   contract: string; // unique identifier
   title: string;
   symbol: string;
@@ -26,7 +27,7 @@ export interface IAccount {
   uuid: string;
   networkUUID: UUID;
   profileId: string;
-  contract: string;
+  fungibleId: UUID;
   keysetId: string;
   address: string;
   overallBalance: string;
@@ -137,8 +138,12 @@ const createAccountRepository = ({
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);
     },
-    getFungible: async (contract: string): Promise<Fungible> => {
-      return getOne('fungible', contract);
+    getFungible: async (uuid: UUID): Promise<void> => {
+      return getOne('fungible', uuid);
+    },
+    getFungibleByContract: async (contract: string): Promise<Fungible> => {
+      const result: Fungible[] = await getAll('fungible', contract, 'contract');
+      return result[0];
     },
     getAllFungibles: async (): Promise<Fungible[]> => {
       return ((await getAll('fungible')) as Fungible[]).reverse();
@@ -188,10 +193,11 @@ export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 export const accountRepository = createAccountRepository(dbService);
 
 export const addDefaultFungibles = execInSequence(async () => {
-  const fungible = await accountRepository.getFungible('coin');
+  const fungible = await accountRepository.getFungibleByContract('coin');
 
   if (!fungible) {
     const coin: Fungible = {
+      uuid: crypto.randomUUID(),
       title: 'Kadena Coin',
       symbol: 'KDA',
       interface: 'fungible-v2',

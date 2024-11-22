@@ -109,7 +109,7 @@ export function Transfer() {
       const account = accounts.find((account) => account.uuid === accountId);
       if (account) {
         setValue('sender', account.uuid);
-        setValue('contract', account.contract);
+        setValue('contract', account.fungibleId);
       }
     } else {
       setValue('sender', '');
@@ -389,7 +389,7 @@ export function Transfer() {
                       {accounts
                         .filter(
                           (account) =>
-                            account.contract === contract &&
+                            account.fungibleId === contract &&
                             +account.overallBalance > 0,
                         )
                         .map((account) => (
@@ -483,7 +483,8 @@ export function Transfer() {
                   {accounts
                     .filter(
                       (acc) =>
-                        acc.uuid !== account?.uuid && acc.contract === contract,
+                        acc.uuid !== account?.uuid &&
+                        acc.fungibleId === contract,
                     )
                     .map((account) => (
                       <ComboboxItem key={account.address}>

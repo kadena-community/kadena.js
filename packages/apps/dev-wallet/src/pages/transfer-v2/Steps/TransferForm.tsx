@@ -114,7 +114,7 @@ export function TransferForm({
     formState,
   } = useForm<Transfer>({
     defaultValues: {
-      fungible: urlAccount?.contract ?? fungibles[0].contract,
+      fungible: urlAccount?.fungibleId ?? fungibles[0].contract,
       accountId: accountId ?? '',
       chain: '',
       receivers: [
@@ -149,7 +149,7 @@ export function TransferForm({
 
   const filteredAccounts = useMemo(
     () =>
-      allAccounts.filter((account) => account.contract === watchFungibleType),
+      allAccounts.filter((account) => account.fungibleId === watchFungibleType),
     [allAccounts, watchFungibleType],
   );
 
@@ -165,7 +165,7 @@ export function TransferForm({
         );
         if (activity && account) {
           reset({
-            fungible: account.contract,
+            fungible: account.fungibleId,
             accountId: activity.data.transferData.accountId,
             chain: activity.data.transferData.chain,
             receivers: activity.data.transferData.receivers.map((receiver) => ({

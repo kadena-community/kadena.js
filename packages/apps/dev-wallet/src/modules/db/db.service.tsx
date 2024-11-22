@@ -24,6 +24,7 @@ import { ITransaction } from '../transaction/transaction.repository';
 import { IKeySource, IProfile } from '../wallet/wallet.repository';
 import { createTables } from './migration/createDB';
 import { migrateFrom37to38 } from './migration/migrateFrom37to38';
+import { migrateFrom38to39 } from './migration/migrateFrom38to39';
 
 // since we create the database in the first call we need to make sure another call does not happen
 // while the database is still being created; so I use execInSequence.
@@ -106,6 +107,11 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       if (fromVersion === 37) {
         console.log('migrating from 37 to 38');
         await migrateFrom37to38(db, result.versionTransaction);
+        continue;
+      }
+      if (fromVersion === 38) {
+        console.log('migrating from 38 to 39');
+        await migrateFrom38to39(db, result.versionTransaction);
         continue;
       }
       throw new Error(

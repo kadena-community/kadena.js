@@ -9,14 +9,14 @@ import { AddTokenForm } from './AddTokenForm';
 import { assetBoxClass } from './style.css';
 
 export function Assets({
-  selectedContract,
-  setSelectedContract,
+  selectedFungible,
+  setSelectedFungible,
   accounts,
   fungibles,
   showAddToken = false,
 }: {
-  selectedContract: string;
-  setSelectedContract: (contract: string) => void;
+  selectedFungible: Fungible;
+  setSelectedFungible: (fungible: Fungible) => void;
   accounts: IAccount[];
   fungibles: Fungible[];
   showAddToken?: boolean;
@@ -24,7 +24,7 @@ export function Assets({
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const assets = useMemo(() => {
     return fungibles.map((item) => {
-      const acs = accounts.filter((a) => a.contract === item.contract);
+      const acs = accounts.filter((a) => a.fungibleId === item.contract);
       return {
         ...item,
         accounts: acs,
@@ -63,10 +63,10 @@ export function Assets({
               alignItems={'center'}
               className={classNames(
                 assetBoxClass,
-                asset.contract === selectedContract && 'selected',
+                asset.uuid === selectedFungible.uuid && 'selected',
               )}
               gap={'lg'}
-              onClick={() => setSelectedContract(asset.contract)}
+              onClick={() => setSelectedFungible(asset)}
             >
               <Stack alignItems={'center'} gap={'sm'}>
                 <Text>

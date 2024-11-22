@@ -1,5 +1,6 @@
 import {
   accountRepository,
+  Fungible,
   IAccount,
   IKeySet,
 } from '@/modules/account/account.repository.ts';
@@ -54,8 +55,6 @@ export function CreateAccount() {
   const [created, setCreated] = useState<IAccount | null>(null);
   const [accountType, setAccountType] = useState<AccountType>('single-key');
   const [searchParams] = useSearchParams();
-  const urlContract = searchParams.get('contract');
-  const [contract, setContract] = useState<string | null>(urlContract);
   const [alias, setAlias] = useState<string | null>(null);
   const {
     keySources,
@@ -67,8 +66,17 @@ export function CreateAccount() {
     accounts,
   } = useWallet();
 
+  const fungibleId = searchParams.get('fungibleId');
+  const [fungible, setFungible] = useState<Fungible | null>(
+    fungibles.find((f) => f.uuid === fungibleId) ?? null,
+  );
+
+  if (!fungible) {
+    return <Navigate to="/" />;
+  }
+
   const filteredAccounts = accounts.filter(
-    (account) => account.contract === contract,
+    (account) => account.fungibleId === fungible?.uuid,
   );
 
   const getSingleKeyAccount = (key: string) =>
@@ -83,15 +91,14 @@ export function CreateAccount() {
       }
     });
 
-  const symbol =
-    fungibles.find((f) => f.contract === contract)?.symbol ?? contract;
+  const symbol = fungible?.symbol || fungible?.contract;
 
-  const aliasDefaultValue = contract
-    ? `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`
+  const aliasDefaultValue = fungible
+    ? `${fungible.contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`
     : '';
 
   const createAccountByKeyset = async (keyset: IKeySet) => {
-    if (!profile || !activeNetwork || !contract) {
+    if (!profile || !activeNetwork || !fungible) {
       throw new Error('Profile or active network not found');
     }
     const account: IAccount = {
@@ -101,7 +108,7 @@ export function CreateAccount() {
       address: keyset.principal,
       keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
-      contract,
+      fungibleId: fungible.uuid,
       chains: [],
       overallBalance: '0',
     };
@@ -112,7 +119,7 @@ export function CreateAccount() {
   };
 
   const createAccountByKey = async (key: IKeyItem) => {
-    if (!profile || !activeNetwork || !contract) {
+    if (!profile || !activeNetwork || !fungible) {
       throw new Error('Profile or active network not found');
     }
 
@@ -145,7 +152,7 @@ export function CreateAccount() {
       address: keyset.principal,
       keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
-      contract,
+      fungibleId: fungible.uuid,
       chains: [],
       overallBalance: '0',
     };
@@ -197,14 +204,13 @@ export function CreateAccount() {
           <Stack flexDirection={'column'} gap={'xxl'}>
             <Select
               label="Fungible Contract"
-              selectedKey={contract}
-              onSelectionChange={(key) => setContract(key as string)}
+              selectedKey={fungible.uuid}
+              onSelectionChange={(key) =>
+                setFungible(fungibles.find((f) => f.uuid === key)! as Fungible)
+              }
             >
               {fungibles.map((fungible) => (
-                <SelectItem
-                  key={fungible.contract}
-                  textValue={fungible.contract}
-                >
+                <SelectItem key={fungible.uuid} textValue={fungible.uuid}>
                   {fungible.symbol} ({fungible.contract})
                 </SelectItem>
               ))}
@@ -261,7 +267,7 @@ export function CreateAccount() {
               </Stack>
             </RadioGroup>
 
-            {contract && (
+            {fungible && (
               <Stack flexDirection={'column'} gap={'xxl'}>
                 {accountType === 'multi-signatures' && (
                   <Stack flexDirection={'column'} gap={'md'}>

@@ -1,3 +1,4 @@
+import { Fungible } from '@/modules/account/account.repository';
 import { Keyset } from '@/pages/transfer-v2/Components/keyset';
 import { discoverReceiver } from '@/pages/transfer-v2/utils';
 import { DiscoverdAccounts } from '@/pages/transfer/components/DiscoverdAccounts';
@@ -12,12 +13,12 @@ import { KeySetDialog } from '../KeysetDialog/KeySetDialog';
 
 export function AccountInput({
   networkId,
-  contract,
+  fungible,
   onAccount,
   account,
 }: {
   networkId: string;
-  contract: string;
+  fungible: Fungible;
   account?: IReceiverAccount;
   onAccount: (account: IReceiverAccount) => void;
 }) {
@@ -50,7 +51,7 @@ export function AccountInput({
       const accounts = await discoverReceiver(
         innerAddress,
         networkId,
-        contract,
+        fungible.contract,
         (key) => key,
       );
       setDiscovering(false);
