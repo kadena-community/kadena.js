@@ -1,5 +1,12 @@
 # @kadena/dev-wallet
 
+## 0.4.5
+
+### Patch Changes
+
+- Updated dependencies \[90a5684]
+  - @kadena/hd-wallet\@0.6.0
+
 ## 0.4.4
 
 ### Patch Changes
