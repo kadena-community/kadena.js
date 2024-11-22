@@ -1,8 +1,10 @@
 'use client';
 import { SideBarLayout } from '@kadena/kode-ui/patterns';
 
+import { AssetForm } from '@/components/AssetSwitch/AssetForm';
 import { SupplyCount } from '@/components/SupplyCount/SupplyCount';
-import { Link, Stack } from '@kadena/kode-ui';
+import { getAsset } from '@/utils/getAsset';
+import { Heading, Link, Stack } from '@kadena/kode-ui';
 import React from 'react';
 import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
@@ -12,6 +14,23 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  if (!getAsset()) {
+    return (
+      <Stack
+        flexDirection="column"
+        width="100%"
+        alignItems="center"
+        justifyContent="center"
+        style={{ height: '100dvh' }}
+      >
+        <div>
+          <Heading>Add new asset</Heading>
+          <AssetForm />
+        </div>
+      </Stack>
+    );
+  }
+
   return (
     <SideBarLayout
       logo={

@@ -1,10 +1,9 @@
 import { LOCALSTORAGE_ASSETS_KEY } from '@/constants';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { MonoAdd, MonoEditNote, MonoRemove } from '@kadena/kode-icons';
-import type { PressEvent } from '@kadena/kode-ui';
 import { Button, TextField } from '@kadena/kode-ui';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import type { ChangeEventHandler, FC } from 'react';
+import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import { useRef, useState } from 'react';
 import type { IAsset } from '../AssetProvider/AssetProvider';
 
@@ -35,7 +34,7 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
     });
   };
 
-  const handleSave = (e: PressEvent) => {
+  const handleSave: FormEventHandler<HTMLFormElement> = () => {
     const key = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY);
     const assets = JSON.parse(localStorage.getItem(key) ?? '[]');
 
@@ -71,27 +70,29 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
   };
 
   return (
-    <TextField
-      ref={ref}
-      value={value}
-      label="New"
-      isRequired
-      onChange={handleChange}
-      endAddon={
-        <>
-          <Button
-            isDisabled={!value}
-            onPress={handleSave}
-            endVisual={!asset ? <MonoAdd /> : <MonoEditNote />}
-          />
-          {asset?.uuid && (
+    <form onSubmit={handleSave}>
+      <TextField
+        ref={ref}
+        value={value}
+        label="New"
+        isRequired
+        onChange={handleChange}
+        endAddon={
+          <>
             <Button
-              onPress={() => handleRemove(asset)}
-              endVisual={<MonoRemove />}
+              type="submit"
+              isDisabled={!value}
+              endVisual={!asset ? <MonoAdd /> : <MonoEditNote />}
             />
-          )}
-        </>
-      }
-    />
+            {asset?.uuid && (
+              <Button
+                onPress={() => handleRemove(asset)}
+                endVisual={<MonoRemove />}
+              />
+            )}
+          </>
+        }
+      />
+    </form>
   );
 };
