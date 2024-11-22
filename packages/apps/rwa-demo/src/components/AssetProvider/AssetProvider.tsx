@@ -1,5 +1,8 @@
 'use client';
-import { LOCALSTORAGE_ASSETS_KEY } from '@/constants';
+import {
+  LOCALSTORAGE_ASSETS_KEY,
+  LOCALSTORAGE_ASSETS_SELECTED_KEY,
+} from '@/constants';
 import { usePaused } from '@/hooks/paused';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import type { FC, PropsWithChildren } from 'react';
@@ -28,6 +31,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
   const [assets, setAssets] = useState<IAsset[]>([]);
   const storageKey = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY) ?? '';
+  const selectedKey =
+    getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused();
 
   const getAssets = () => {
@@ -42,6 +47,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleSelectAsset = (data: IAsset) => {
+    localStorage.setItem(selectedKey, JSON.stringify(data));
     setAsset(data);
   };
 
@@ -54,6 +60,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       window.removeEventListener(storageKey, storageListener);
       window.removeEventListener('storage', storageListener);
     };
+  }, []);
+
+  useEffect(() => {
+    const asset = localStorage.getItem(selectedKey);
+    setAsset(asset ? JSON.parse(asset) : undefined);
   }, []);
 
   return (
