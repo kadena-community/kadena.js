@@ -58,7 +58,10 @@ export const WalletContext = createContext<
       }>,
       setActiveNetwork: (activeNetwork: INetwork | undefined) => void,
       syncAllAccounts: (force?: boolean) => void,
-      askForPassword: (force?: boolean) => Promise<string | null>,
+      askForPassword: (
+        force?: boolean,
+        options?: { storePassword?: boolean },
+      ) => Promise<string | null>,
     ]
   | null
 >(null);
@@ -91,7 +94,10 @@ function usePassword(profile: IProfile | undefined) {
   );
 
   const askForPassword = useCallback(
-    async (force = false): Promise<string | null> => {
+    async (
+      force = false,
+      { storePassword = true } = {},
+    ): Promise<string | null> => {
       const profile = profileRef.current;
       console.log('asking for password', profile);
       if (!force) {
@@ -137,7 +143,9 @@ function usePassword(profile: IProfile | undefined) {
             <UnlockPrompt
               resolve={async (unlockOptions) => {
                 try {
-                  await storeData(unlockOptions);
+                  if (storePassword) {
+                    await storeData(unlockOptions);
+                  }
                   resolve(unlockOptions.password);
                 } catch (e) {
                   reject(e);
@@ -147,6 +155,7 @@ function usePassword(profile: IProfile | undefined) {
               showPassword
               rememberPassword={profile.options.rememberPassword}
               profile={profile}
+              storePassword={storePassword}
             />
           ))) as string;
         }
@@ -158,7 +167,9 @@ function usePassword(profile: IProfile | undefined) {
                   const pass = await WalletService.getWebAuthnPass(profile);
                   if (!pass) reject('Failed to unlock profile');
                   const unlockOptions = { password: pass, keepOpen };
-                  await storeData(unlockOptions);
+                  if (storePassword) {
+                    await storeData(unlockOptions);
+                  }
                   resolve(unlockOptions.password);
                 } catch (e) {
                   reject(e);
@@ -167,6 +178,7 @@ function usePassword(profile: IProfile | undefined) {
               reject={reject}
               rememberPassword={profile.options.rememberPassword}
               profile={profile}
+              storePassword={storePassword}
             />
           ))) as string;
         }

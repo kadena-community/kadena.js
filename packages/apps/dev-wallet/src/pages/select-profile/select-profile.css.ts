@@ -46,11 +46,10 @@ export const imgClass = style([
     borderRadius: 'xxl',
   }),
   {
-    width: '40px',
-    height: '40px',
     backgroundColor: cardColor,
   },
 ]);
+
 export const aliasClass = style([
   atoms({
     fontSize: 'sm',
@@ -62,8 +61,10 @@ export const aliasClass = style([
 export const initialsClass = style([
   atoms({
     fontWeight: 'primaryFont.bold',
-    color: 'text.base.default',
   }),
+  {
+    color: 'white',
+  },
 ]);
 
 export const linkBlockClass = style([

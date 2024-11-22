@@ -7,7 +7,6 @@ import {
   MonoSwapHoriz,
   MonoTableRows,
   MonoTerminal,
-  MonoTextSnippet,
 } from '@kadena/kode-icons';
 import { Box, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
@@ -57,10 +56,6 @@ export const Sidebar: FC = () => {
               <SidebarItem route="/networks">
                 <MonoNetworkCheck />
                 Networks
-              </SidebarItem>
-              <SidebarItem route="/backup-recovery-phrase/write-down">
-                <MonoTextSnippet />
-                Backup
               </SidebarItem>
               <SidebarItem route="/key-management/keys">
                 <MonoKey />

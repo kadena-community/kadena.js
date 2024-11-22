@@ -5,9 +5,15 @@ import {
   IPactCommand,
   IUnsignedCommand,
 } from '@kadena/client';
-import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
+import {
+  kadenaChangePassword,
+  kadenaDecrypt,
+  kadenaEncrypt,
+} from '@kadena/hd-wallet';
+import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
+import { securityService } from '../security/security.service';
 import {
   IKeyItem,
   IKeySource,
@@ -183,4 +189,66 @@ export const getWebAuthnPass = async (
     }
   }
   console.error('Failed to unlock profile');
+};
+
+// TODO: this needs to be written with caution as changing password is a critical operation
+// if something goes wrong the user might lose access to their funds; So we need to first create a backup of data and then
+// if everything goes well we can delete the old data
+export const changePassword = async (
+  profileId: string,
+  currentPassword: string,
+  newPassword: string,
+) => {
+  const profile = await walletRepository.getProfile(profileId);
+  const keySources = await walletRepository.getProfileKeySources(profileId);
+  if (!profile) return;
+  const encryptedMnemonic = await walletRepository.getEncryptedValue(
+    profile.securityPhraseId,
+  );
+  if (!encryptedMnemonic) {
+    throw new Error('No mnemonic found');
+  }
+  const data = await kadenaChangePassword(
+    currentPassword,
+    encryptedMnemonic,
+    newPassword,
+    'buffer',
+  );
+  const secret = await kadenaEncrypt(
+    newPassword,
+    JSON.stringify({ secretId: profile.secretId }),
+    'buffer',
+  );
+  const legacyKeySource = keySources.filter(
+    ({ source }) => source === 'HD-chainweaver',
+  );
+  const persistData: Array<() => Promise<void>> = [];
+  if (legacyKeySource.length > 0) {
+    const service = (await keySourceManager.get(
+      'HD-chainweaver',
+    )) as ChainweaverService;
+    await Promise.all(
+      legacyKeySource.map(async (keySource) => {
+        await service.changePassword(
+          keySource.uuid,
+          currentPassword,
+          newPassword,
+          (updates) => {
+            persistData.push(...updates);
+            return Promise.resolve([]);
+          },
+        );
+      }),
+    );
+  }
+
+  persistData.push(
+    () => walletRepository.updateEncryptedValue(profile.securityPhraseId, data),
+    () => walletRepository.updateEncryptedValue(profile.secretId, secret),
+  );
+
+  // save all data to the db in on place after all the operations are done;
+  // TODO: For more reliability, this must be performed as a single transaction, ensuring that if anything goes wrong, the IndexedDB data is rolled back.
+  await Promise.all(persistData.map((cb) => cb()));
+  await securityService.clearSecurityPhrase();
 };

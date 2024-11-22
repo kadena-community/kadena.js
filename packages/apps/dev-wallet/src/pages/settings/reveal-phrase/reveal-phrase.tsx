@@ -2,13 +2,13 @@ import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
+import { MonoSettings } from '@kadena/kode-icons/system';
 import { Notification } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export function WriteDownRecoveryPhrase() {
+export function RevealPhrase() {
   const { decryptSecret, askForPassword, profile } = useWallet();
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
@@ -42,10 +42,12 @@ export function WriteDownRecoveryPhrase() {
   }
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
-        <SideBarBreadcrumbsItem href="/backup-recovery-phrase/write-down">
-          Recovery phrase
+      <SideBarBreadcrumbs icon={<MonoSettings />}>
+        <SideBarBreadcrumbsItem href="/settings">
+          Settings
+        </SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/settings/reveal-phrase">
+          Reveal Recovery Phrase
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       {
@@ -53,8 +55,8 @@ export function WriteDownRecoveryPhrase() {
           <BackupMnemonic
             mnemonic={mnemonic}
             onDecrypt={decryptMnemonic}
-            onSkip={() => navigate('/')}
-            onConfirm={() => navigate('/')}
+            onSkip={() => navigate('/settings')}
+            onConfirm={() => navigate('/settings')}
           />
         </AuthCard>
       }

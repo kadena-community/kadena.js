@@ -132,7 +132,7 @@ export const addItem =
     storeName: string,
     value: T,
     key?: string,
-    { noCreationTime } = { noCreationTime: false },
+    { noCreationTime = false } = {},
   ) => {
     return new Promise<void>((resolve, reject) => {
       const transaction = db.transaction(storeName, 'readwrite');

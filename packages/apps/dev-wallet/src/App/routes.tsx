@@ -23,14 +23,15 @@ import { KeysPage } from '@/pages/keys/keys-page';
 import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
+import { ChangePassword } from '@/pages/settings/change-password/change-password';
+import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
+import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transactions } from '@/pages/transactions/transactions';
 import { TransferV2 } from '@/pages/transfer-v2/transfer-v2';
 import { Heading } from '@kadena/kode-ui';
 import { useWallet } from '../modules/wallet/wallet.hook';
-import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
-import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
 import { CreateProfile } from '../pages/create-profile/create-profile';
 import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
@@ -120,14 +121,7 @@ export const Routes: FC = () => {
             <Route path="/account/:accountId" element={<AccountPage />} />
             <Route path="/transfer" element={<TransferV2 />} />
             <Route path="/contacts" element={<Contacts />} />
-            <Route
-              path="/backup-recovery-phrase"
-              element={<BackupRecoveryPhrase />}
-            />
-            <Route
-              path="/backup-recovery-phrase/write-down"
-              element={<WriteDownRecoveryPhrase />}
-            />
+            <Route path="/settings" element={<Settings />} />
             <Route
               path="/account-discovery/:keySourceId"
               element={<AccountDiscovery />}
@@ -135,6 +129,11 @@ export const Routes: FC = () => {
           </Route>
         </Route>
         <Route element={<LayoutMini />}>
+          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
+          <Route
+            path="/settings/change-password"
+            element={<ChangePassword />}
+          />
           <Route
             path="/unlock-profile/:profileId"
             element={<UnlockProfile origin={origin} />}
