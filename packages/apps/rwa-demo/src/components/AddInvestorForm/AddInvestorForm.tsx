@@ -42,6 +42,7 @@ export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
         ...res,
         type: 'IDENTITY-REGISTERED',
         data: { ...res, ...data },
+        tx: signedTransaction,
       });
 
       console.log('DONE');

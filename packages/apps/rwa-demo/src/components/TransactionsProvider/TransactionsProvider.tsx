@@ -1,12 +1,16 @@
 'use client';
+import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
 import { getClient } from '@/utils/client';
-import type { ICommandResult } from '@kadena/client';
+import { store } from '@/utils/store';
+import type { ICommand, ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface ITransaction {
+  uuid: string;
+  tx: ICommand;
   requestKey: string;
   type: string;
   data: Record<string, any>;
@@ -16,7 +20,7 @@ export interface ITransaction {
 
 export interface ITransactionsContext {
   transactions: Record<ITransaction['requestKey'], ITransaction>;
-  addTransaction: (request: ITransaction) => ITransaction;
+  addTransaction: (request: Omit<ITransaction, 'uuid'>) => ITransaction;
   getTransactions: (type: string) => ITransaction[];
 }
 
@@ -38,6 +42,7 @@ const interpretErrorMessage = (result: any, data: ITransaction): string => {
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { addNotification } = useNotifications();
+  const { account } = useAccount();
   const [transactions, setTransactions] = useState<
     Record<ITransaction['requestKey'], ITransaction>
   >({});
@@ -77,20 +82,38 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       .filter((val) => val.type === type);
   };
 
-  const addTransaction = (request: ITransaction) => {
+  const addTransaction = (
+    request: Omit<ITransaction, 'uuid'>,
+  ): ITransaction => {
     if (transactions[request.requestKey]) {
       console.error('requestKey already exists', request.requestKey);
       return transactions[request.requestKey];
     }
 
-    const data = { ...request };
+    const data = { ...request, uuid: crypto.randomUUID() };
     data.listener = addListener(data);
     setTransactions((v) => {
       return { ...v, [request.requestKey]: { ...data } };
     });
 
+    store.addTransaction(data);
+
     return data;
   };
+
+  const listenToTransactions = (e) => {
+    console.log('listentotransactions', e);
+  };
+
+  const init = async () => {
+    const data = await store.getAllTransactions(account!);
+    console.log({ data });
+    store.listenToAllTransactions(account!, listenToTransactions);
+  };
+  useEffect(() => {
+    if (!account) return;
+    init();
+  }, [account]);
 
   return (
     <TransactionsContext.Provider

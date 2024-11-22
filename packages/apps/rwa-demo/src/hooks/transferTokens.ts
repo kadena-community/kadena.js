@@ -28,6 +28,7 @@ export const useTransferTokens = () => {
         ...res,
         type: 'TRANSFERTOKENS',
         data: { ...res },
+        tx: signedTransaction,
       });
 
       console.log({ res });

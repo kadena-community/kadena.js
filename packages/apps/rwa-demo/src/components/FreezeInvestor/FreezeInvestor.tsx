@@ -51,6 +51,7 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
           ...res,
           ...data,
         },
+        tx: signedTransaction,
       });
 
       await transaction.listener;

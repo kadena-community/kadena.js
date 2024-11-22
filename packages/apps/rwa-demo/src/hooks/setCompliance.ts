@@ -25,6 +25,7 @@ export const useSetCompliance = () => {
         ...res,
         type: 'SETCOMPLIANCE',
         data: { ...res, ...data },
+        tx: signedTransaction,
       });
 
       console.log({ res });

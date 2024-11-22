@@ -26,6 +26,7 @@ export const useDistributeTokens = () => {
         ...res,
         type: 'DISTRIBUTETOKENS',
         data: { ...res, ...data },
+        tx: signedTransaction,
       });
 
       console.log({ res });

@@ -29,6 +29,7 @@ export const PauseForm: FC = () => {
         ...res,
         type: 'PAUSE',
         data: { ...res },
+        tx: signedTransaction,
       });
 
       await transaction.listener;
