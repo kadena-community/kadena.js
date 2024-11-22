@@ -5,6 +5,7 @@ import {
 } from '@/constants';
 import { usePaused } from '@/hooks/paused';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
+import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
@@ -27,6 +28,7 @@ export const AssetContext = createContext<IAssetContext>({
 });
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
+  const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [asset, setAsset] = useState<IAsset>();
   const [assets, setAssets] = useState<IAsset[]>([]);
@@ -38,6 +40,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const getAssets = () => {
     const result = localStorage.getItem(storageKey);
     setAssets(JSON.parse(result ?? '[]'));
+    router.refresh();
   };
 
   const storageListener = (event: StorageEvent | Event) => {
@@ -49,6 +52,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
     setAsset(data);
+
+    router.refresh();
   };
 
   useEffect(() => {
