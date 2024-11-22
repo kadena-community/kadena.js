@@ -37,6 +37,12 @@ export interface IProfile {
   );
 }
 
+export interface IEncryptedValue {
+  uuid: string;
+  value: Uint8Array;
+  profileId: string;
+}
+
 const createWalletRepository = ({
   getAll,
   getOne,
@@ -57,19 +63,27 @@ const createWalletRepository = ({
       return update('profile', profile, undefined);
     },
     getEncryptedValue: async (key: string): Promise<Uint8Array> => {
-      return getOne('encryptedValue', key);
+      const { value } = (await getOne<IEncryptedValue>(
+        'encryptedValue',
+        key,
+      )) ?? {
+        value: undefined,
+      };
+      return value;
     },
     addEncryptedValue: async (
-      key: string,
+      uuid: string,
       value: string | Uint8Array,
+      profileId: string,
     ): Promise<void> => {
-      return add('encryptedValue', value, key, { noCreationTime: true });
+      return add('encryptedValue', { uuid, value, profileId });
     },
     updateEncryptedValue: async (
-      key: string,
+      uuid: string,
       value: string | Uint8Array,
+      profileId: string,
     ): Promise<void> => {
-      return update('encryptedValue', value, key);
+      return update('encryptedValue', { uuid, value, profileId });
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
       return (

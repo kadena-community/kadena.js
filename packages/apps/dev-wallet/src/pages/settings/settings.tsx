@@ -1,3 +1,4 @@
+import { dbService } from '@/modules/db/db.service';
 import {
   MonoDownload,
   MonoPassword,
@@ -9,6 +10,28 @@ import { Button, Heading, Stack, Link as UiLink } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { Link } from 'react-router-dom';
 import { ProfileNameColorForm } from './components/ProfileNameColorForm';
+
+function downloadJSON(content: string, filename: string) {
+  // Create a Blob with the JSON string
+  const blob = new Blob([content], { type: 'application/json' });
+
+  // Create a link element
+  const link = document.createElement('a');
+
+  // Set the link's href to a URL representing the Blob
+  link.href = URL.createObjectURL(blob);
+
+  // Set the download attribute with the desired filename
+  link.download = filename;
+
+  // Append the link to the body temporarily and trigger the download
+  document.body.appendChild(link);
+  link.click();
+
+  // Clean up: remove the link element and revoke the Blob URL
+  document.body.removeChild(link);
+  URL.revokeObjectURL(link.href);
+}
 
 export function Settings() {
   const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
@@ -41,15 +64,17 @@ export function Settings() {
       >
         Change Password
       </UiLink>
-      <UiLink
-        href="/settings/change-network"
-        component={Link}
+      <Button
+        onClick={async () => {
+          const tables = await dbService.serializeTables();
+          console.log('tables', tables);
+          downloadJSON(tables, 'chainweaver-db-backup.json');
+        }}
         variant="outlined"
         startVisual={<MonoDownload />}
-        isDisabled
       >
-        Download Backup File
-      </UiLink>
+        Download Entire Database
+      </Button>
       <UiLink
         href="/settings/change-network"
         component={Link}

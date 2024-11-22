@@ -68,6 +68,21 @@ export const deleteDatabase = (name: string) => {
   });
 };
 
+const sortByCreationDate = <T>(a: T, b: T) => {
+  if (
+    a &&
+    b &&
+    typeof a === 'object' &&
+    typeof b === 'object' &&
+    CREATION_TIME_KEY in a &&
+    CREATION_TIME_KEY in b &&
+    typeof a[CREATION_TIME_KEY] === 'number' &&
+    typeof b[CREATION_TIME_KEY] === 'number'
+  )
+    return b[CREATION_TIME_KEY] - a[CREATION_TIME_KEY];
+  return 0;
+};
+
 export const getAllItems =
   (db: IDBDatabase) =>
   <T>(
@@ -90,22 +105,46 @@ export const getAllItems =
       };
       request.onsuccess = () => {
         const result = request.result ?? [];
-        resolve(
-          result.sort((a: T, b: T) => {
-            if (
-              a &&
-              b &&
-              typeof a === 'object' &&
-              typeof b === 'object' &&
-              CREATION_TIME_KEY in a &&
-              CREATION_TIME_KEY in b &&
-              typeof a[CREATION_TIME_KEY] === 'number' &&
-              typeof b[CREATION_TIME_KEY] === 'number'
-            )
-              return b[CREATION_TIME_KEY] - a[CREATION_TIME_KEY];
-            return 0;
-          }),
-        );
+        resolve(result.sort(sortByCreationDate));
+      };
+    });
+  };
+
+export const getAllKeyValues =
+  (db: IDBDatabase) =>
+  <T>(
+    storeName: string,
+    filter?: string[] | string | IDBKeyRange,
+    indexName?: string,
+  ) => {
+    return new Promise<{ key: IDBValidKey; value: T }[]>((resolve, reject) => {
+      const transaction = db.transaction(storeName, 'readonly');
+      const store = transaction.objectStore(storeName);
+      let request: IDBRequest<IDBCursorWithValue | null>;
+      const result: { key: IDBValidKey; value: T }[] = [];
+      if (indexName) {
+        const idx = store.index(indexName);
+        request = idx.openCursor(filter);
+      } else {
+        request = store.openCursor(filter);
+      }
+      request.onerror = () => {
+        reject(request.error);
+      };
+      request.onsuccess = (event) => {
+        if (!event.target) return;
+        const cursor: IDBCursorWithValue | null = (event.target as any).result;
+
+        if (cursor) {
+          // Push key and value to the result array
+          result.push({ key: cursor.key, value: cursor.value });
+
+          // Continue to the next record
+          cursor.continue();
+        } else {
+          // Finished iterating over all records
+          resolve(result);
+        }
       };
     });
   };
@@ -203,3 +242,42 @@ export const updateItem =
       };
     });
   };
+
+const getScheme = (db: IDBDatabase) => (storeName: string) => {
+  const transaction = db.transaction(storeName, 'readonly');
+  const objectStore = transaction.objectStore(storeName);
+  const schema = {
+    name: storeName,
+    keyPath: objectStore.keyPath,
+    autoIncrement: objectStore.autoIncrement,
+    indexes: Array.from(objectStore.indexNames).map((indexName) => {
+      const index = objectStore.index(indexName);
+      return {
+        name: index.name,
+        keyPath: index.keyPath,
+        unique: index.unique,
+        multiEntry: index.multiEntry,
+      };
+    }),
+  };
+  return schema;
+};
+
+export const dbDump = (db: IDBDatabase) => () => {
+  const tables = Array.from(db.objectStoreNames);
+  const getKeyValues = getAllKeyValues(db);
+  const tableScheme = getScheme(db);
+  return Promise.all(
+    tables.map(async (table) => ({
+      [table]: await getKeyValues(table),
+    })),
+  )
+    .then((data) => Object.assign({}, ...data))
+    .then((data) => ({
+      db_name: db.name,
+      db_version: db.version,
+      timestamp: Date.now(),
+      schemes: tables.map((table) => tableScheme(table)),
+      data: data,
+    }));
+};

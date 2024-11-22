@@ -8,6 +8,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IKeyItem } from '@/modules/wallet/wallet.repository.ts';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 
+import { ButtonItem } from '@/Components/ButtonItem/ButtonItem.tsx';
 import { Key } from '@/Components/Key/Key.tsx';
 import { Keyset } from '@/Components/Keyset/Keyset.tsx';
 import {
@@ -30,12 +31,10 @@ import {
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
-import classNames from 'classnames';
 import { useState } from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { panelClass } from '../home/style.css.ts';
 import { CreateKeySetForm } from '../keys/Components/CreateKeySetForm.tsx';
-import { buttonListClass } from './style.css.ts';
 
 type IKeySetType =
   | {
@@ -49,7 +48,7 @@ type IKeySetType =
 
 type AccountType = 'multi-signatures' | 'single-key';
 export function CreateAccount() {
-  const [showUsedItems, setShowUsedItems] = useState(false);
+  const [showUsedItems, setShowUsedItems] = useState(true);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedItem, setSelectedItem] = useState<IKeySetType>();
   const [created, setCreated] = useState<IAccount | null>(null);
@@ -500,23 +499,5 @@ export function CreateAccount() {
         </Stack>
       </Card>
     </>
-  );
-}
-
-function ButtonItem({
-  children,
-  selected = false,
-  ...props
-}: React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
-> & { selected?: boolean }) {
-  return (
-    <button
-      {...props}
-      className={classNames(buttonListClass, selected && 'selected')}
-    >
-      {children}
-    </button>
   );
 }

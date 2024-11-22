@@ -3,6 +3,7 @@ import {
   addItem,
   connect,
   createStore,
+  dbDump,
   deleteDatabase,
   deleteItem,
   getAllItems,
@@ -10,6 +11,19 @@ import {
   updateItem,
 } from '@/modules/db/indexeddb';
 import { execInSequence } from '@/utils/helpers';
+import { base64UrlEncodeArr, hash } from '@kadena/cryptography-utils';
+import {
+  Fungible,
+  IAccount,
+  IKeySet,
+  IWatchedAccount,
+} from '../account/account.repository';
+import { IActivity } from '../activity/activity.repository';
+import { IContact } from '../contact/contact.repository';
+import { IHDChainweaver } from '../key-source/key-source.repository';
+import { INetwork } from '../network/network.repository';
+import { ITransaction } from '../transaction/transaction.repository';
+import { IKeySource, IProfile } from '../wallet/wallet.repository';
 
 // since we create the database in the first call we need to make sure another call does not happen
 // while the database is still being created; so I use execInSequence.
@@ -189,12 +203,150 @@ export interface IDBService {
   ) => Promise<void>;
   remove: (storeName: string, key: string) => Promise<void>;
   subscribe: ISubscribe;
+  serializeTables: () => Promise<string>;
 }
 
 const dbChannel = new BroadcastChannel('db-channel');
 const broadcast = (event: EventTypes, storeName: string, data: any[]) => {
   dbChannel.postMessage({ type: event, storeName, data });
 };
+
+type Table<T> = Array<{ key: string; value: T }>;
+export interface IDBBackup {
+  checksum: string;
+  wallet_version: string;
+  db_name: string;
+  db_version: number;
+  timestamp: number;
+  schemes: {
+    name: string;
+    keyPath: string | string[];
+    autoIncrement: boolean;
+    indexes: {
+      name: string;
+      keyPath: string | string[];
+      unique: boolean;
+      multiEntry: boolean;
+    }[];
+  }[];
+  data: {
+    profile: Table<IProfile>;
+    encryptedValue: Table<string>;
+    keySource: Table<IKeySource>;
+    account: Table<IAccount>;
+    'watched-account': Table<IWatchedAccount>;
+    network: Table<INetwork>;
+    fungible: Table<Fungible>;
+    keyset: Table<IKeySet>;
+    transaction: Table<ITransaction>;
+    activity: Table<IActivity>;
+    contact: Table<IContact>;
+  };
+}
+
+const filterData = (data: IDBBackup['data'], profileUUIds?: string[]) => {
+  if (!profileUUIds) {
+    return data;
+  }
+  const filteredData: IDBBackup['data'] = {
+    profile: [],
+    encryptedValue: [],
+    keySource: [],
+    account: [],
+    'watched-account': [],
+    network: [],
+    fungible: [],
+    keyset: [],
+    transaction: [],
+    activity: [],
+    contact: [],
+  };
+  const globalTables = ['contact', 'fungible', 'network'] as const;
+  const withProfileId = [
+    'keySource',
+    'account',
+    'watched-account',
+    'keyset',
+    'transaction',
+    'activity',
+  ] as const;
+  const onlyInsert: {
+    [K in (typeof globalTables)[number]]: Table<
+      IDBBackup['data'][K][0]['value']
+    >;
+  } = Object.assign(
+    {},
+    ...globalTables.map((table) => ({ [table]: data[table] })),
+  );
+  const updateData: {
+    [K in (typeof withProfileId)[number]]: Table<
+      IDBBackup['data'][K][0]['value']
+    >;
+  } = Object.assign(
+    {},
+    ...withProfileId.map((table) => ({
+      [table]: data[table].filter(({ value: { profileId } }) =>
+        profileUUIds.includes(profileId),
+      ),
+    })),
+  );
+  const findEncryptedValue = (key?: string) => {
+    return key
+      ? data.encryptedValue.find(({ key: k }) => k === key)?.value
+      : undefined;
+  };
+  const encryptedValues = profileUUIds.map((uuid) => {
+    const profile = data.profile.find(({ key }) => key === uuid);
+    if (!profile) {
+      return [];
+    }
+    const legacyKeySources: IHDChainweaver[] = data.keySource
+      .map(({ value }) =>
+        value.source === 'HD-chainweaver' &&
+        profileUUIds.includes(value.profileId)
+          ? value
+          : undefined,
+      )
+      .filter((v) => v) as IHDChainweaver[];
+    return [
+      findEncryptedValue(profile.value.secretId),
+      findEncryptedValue(profile.value.securityPhraseId),
+      ...legacyKeySources
+        .map((ks) => [
+          findEncryptedValue(ks.secretId),
+          findEncryptedValue(ks.rootKeyId),
+          ...ks.keys.map(({ secretId }) => findEncryptedValue(secretId)),
+        ])
+        .flat(Infinity),
+    ];
+  });
+  return {
+    onlyInsert,
+    updateData,
+  };
+};
+
+export const importBackup =
+  (db: IDBDatabase) => (backup: IDBBackup, profileUUIds?: string[]) => {
+    const transaction = db.transaction(Object.keys(backup.data), 'readwrite');
+    const tables = Object.keys(backup.data) as Array<keyof IDBBackup['data']>;
+    tables.forEach((table) => {
+      const store = transaction.objectStore(table);
+      const data = backup.data[table];
+      data.forEach(({ key, value }) => {
+        if (profileUUIds && table === 'profile') {
+          if (!profileUUIds.includes(key)) {
+            return;
+          }
+        }
+        store.put(value, key);
+      });
+    });
+    return new Promise<void>((resolve, reject) => {
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+    });
+  };
 
 export const createDbService = () => {
   const listeners: Listener[] = [];
@@ -244,14 +396,36 @@ export const createDbService = () => {
       listeners.forEach((cb) => cb(event, storeName, ...rest));
       broadcast(event, storeName, rest);
     };
+  const getAll = injectDb(getAllItems);
+  const dumpDatabase = injectDb(dbDump);
   return {
-    getAll: injectDb(getAllItems),
+    getAll,
     getOne: injectDb(getOneItem),
     add: injectDb(addItem, notify('add')),
     update: injectDb(updateItem, notify('update')),
     remove: injectDb(deleteItem, notify('delete')),
     subscribe,
+    serializeTables: async () => {
+      const dbData = await dumpDatabase();
+      const { data } = dbData;
+      const checksum = hash(JSON.stringify(data, BufferToBase64UrlReplacer));
+      const backup: IDBBackup = { checksum, wallet_version: '3', ...dbData };
+      return JSON.stringify(backup, BufferToBase64UrlReplacer, 2);
+    },
   };
 };
+
+// eslint-disable-next-line react-refresh/only-export-components
+function BufferToBase64UrlReplacer(_key: string, value: any) {
+  if (value instanceof Uint8Array) {
+    // Convert Uint8Array to Base64Url string
+    return `Uint8Array:${base64UrlEncodeArr(value)}`;
+  }
+  if (value instanceof ArrayBuffer) {
+    // Convert Uint8Array to Base64Url string
+    return `ArrayBuffer:${base64UrlEncodeArr(new Uint8Array(value))}`;
+  }
+  return value;
+}
 
 export const dbService: IDBService = createDbService();

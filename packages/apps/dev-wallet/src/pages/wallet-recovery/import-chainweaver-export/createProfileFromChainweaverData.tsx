@@ -1,18 +1,18 @@
 import { config } from '@/config';
-import { ChainweaverService } from '@/modules/key-source/hd-wallet/chainweaver';
-import {
-  INetwork,
-  networkRepository,
-} from '@/modules/network/network.repository';
-import { ChainId } from '@kadena/client';
-import { kadenaEntropyToMnemonic } from '@kadena/hd-wallet';
 import {
   accountRepository,
   IAccount,
   IKeySet,
-} from '../../modules/account/account.repository';
-import { keySourceManager } from '../../modules/key-source/key-source-manager';
-import { createProfile } from '../../modules/wallet/wallet.service';
+} from '@/modules/account/account.repository';
+import { ChainweaverService } from '@/modules/key-source/hd-wallet/chainweaver';
+import { keySourceManager } from '@/modules/key-source/key-source-manager';
+import {
+  INetwork,
+  networkRepository,
+} from '@/modules/network/network.repository';
+import { createProfile } from '@/modules/wallet/wallet.service';
+import { ChainId } from '@kadena/client';
+import { kadenaEntropyToMnemonic } from '@kadena/hd-wallet';
 
 export async function createProfileFromChainweaverData(
   cwImport: {
