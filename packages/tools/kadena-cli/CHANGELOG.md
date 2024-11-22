@@ -1,5 +1,12 @@
 # @kadena/kadena-cli
 
+## 1.3.7
+
+### Patch Changes
+
+- Updated dependencies \[90a5684]
+  - @kadena/hd-wallet\@0.6.0
+
 ## 1.3.6
 
 ### Patch Changes

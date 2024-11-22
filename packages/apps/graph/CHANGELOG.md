@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 2.0.1
+
+### Patch Changes
+
+- 868c732: Add all files to published package
+
 ## 2.0.0
 
 ### Major Changes
