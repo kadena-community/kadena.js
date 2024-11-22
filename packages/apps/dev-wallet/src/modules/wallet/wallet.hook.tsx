@@ -4,7 +4,6 @@ import { createPrincipal } from '@kadena/client-utils/built-in';
 import { useCallback, useContext } from 'react';
 import {
   accountRepository,
-  Fungible,
   IAccount,
   IKeySet,
 } from '../account/account.repository';
@@ -180,11 +179,11 @@ export const useWallet = () => {
 
   const createAccountByKeyset = async ({
     keyset,
-    fungible,
+    contract,
     alias,
   }: {
     keyset: IKeySet;
-    fungible: Fungible;
+    contract: string;
     alias?: string;
   }) => {
     if (!context.profile || !context.activeNetwork) {
@@ -197,7 +196,7 @@ export const useWallet = () => {
       address: keyset.principal,
       keysetId: keyset.uuid,
       networkUUID: context.activeNetwork.uuid,
-      fungibleId: fungible.uuid,
+      contract,
       chains: [],
       overallBalance: '0',
     };
@@ -207,15 +206,15 @@ export const useWallet = () => {
 
   const createAccountByKey = async ({
     key,
-    fungible,
+    contract,
     alias,
   }: {
     key: IKeyItem;
-    fungible: Fungible;
+    contract: string;
     alias?: string;
   }) => {
     const { profile, activeNetwork } = context;
-    if (!profile || !activeNetwork || !fungible) {
+    if (!profile || !activeNetwork || !contract) {
       throw new Error('Profile or active network not found');
     }
 
@@ -248,7 +247,7 @@ export const useWallet = () => {
       address: keyset.principal,
       keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
-      fungibleId: fungible.uuid,
+      contract,
       chains: [],
       overallBalance: '0',
     };
@@ -259,21 +258,21 @@ export const useWallet = () => {
   };
 
   const createNextAccount = async ({
-    fungible,
+    contract,
     alias,
   }: {
-    fungible: Fungible;
+    contract: string;
     alias?: string;
   }) => {
-    const { accounts } = context;
-    const symbol = fungible.symbol;
+    const { accounts, fungibles } = context;
+    const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
     const filteredAccounts = accounts.filter(
-      (account) => account.fungibleId === fungible.uuid,
+      (account) => account.contract === contract,
     );
 
     const accountAlias =
       alias ||
-      `${fungible.contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
+      `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
     const usedKeys = filteredAccounts.map((account) => {
       const keys = account.keyset?.guard.keys;
       if (keys?.length === 1 && account.keyset?.guard.pred === 'keys-all') {
@@ -289,13 +288,13 @@ export const useWallet = () => {
       await askForPassword();
       return createAccountByKey({
         key: availableKey,
-        fungible,
+        contract,
         alias: accountAlias,
       });
     }
     // If no available key, create a new one
     const key = await createKey(keySource);
-    return createAccountByKey({ key, fungible, alias: accountAlias });
+    return createAccountByKey({ key, contract, alias: accountAlias });
   };
 
   const getContact = (id: string) => {

@@ -1,4 +1,3 @@
-import { Fungible } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
 import { Stack } from '@kadena/kode-ui';
@@ -8,14 +7,14 @@ import { Assets } from '../Assets/Assets';
 
 export function AssetsCard() {
   const { accounts, fungibles, watchAccounts } = useWallet();
-  const [selectedFungible, setSelectedFungible] = useState<Fungible>(
-    fungibles[0],
+  const [selectedContract, setSelectedContract] = useState<string>(
+    fungibles[0].contract,
   );
   const filteredAccounts = accounts.filter(
-    ({ fungibleId }) => fungibleId === selectedFungible.uuid,
+    ({ contract }) => contract === selectedContract,
   );
   const filteredWatchedAccounts = watchAccounts.filter(
-    ({ fungibleId }) => fungibleId === selectedFungible.uuid,
+    ({ contract }) => contract === selectedContract,
   );
   return (
     <Stack className={panelClass} gap={'xl'} flexDirection={'column'}>
@@ -23,12 +22,12 @@ export function AssetsCard() {
         accounts={accounts}
         fungibles={fungibles}
         showAddToken
-        selectedFungible={selectedFungible}
-        setSelectedFungible={setSelectedFungible}
+        selectedContract={selectedContract}
+        setSelectedContract={setSelectedContract}
       />
       <Accounts
         accounts={filteredAccounts}
-        fungible={selectedFungible}
+        contract={selectedContract}
         watchedAccounts={filteredWatchedAccounts}
       />
     </Stack>

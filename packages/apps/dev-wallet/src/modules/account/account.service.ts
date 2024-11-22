@@ -53,14 +53,14 @@ export async function createKAccount({
   profileId,
   networkUUID,
   publicKey,
-  fungibleId,
+  contract = 'coin',
   chains = [],
   alias = '',
 }: {
   profileId: string;
   networkUUID: UUID;
   publicKey: string;
-  fungibleId: UUID;
+  contract: string;
   chains?: Array<{ chainId: ChainId; balance: string }>;
   alias?: string;
 }) {
@@ -81,7 +81,7 @@ export async function createKAccount({
     address: `k:${publicKey}`,
     keysetId: keyset.uuid,
     networkUUID,
-    fungibleId: fungibleId,
+    contract,
     chains,
     overallBalance: chains.reduce(
       (acc, { balance }) => new PactNumber(balance).plus(acc).toDecimal(),
@@ -117,16 +117,10 @@ export const accountDiscovery = (
       keySource: IKeySource,
       profileId: string,
       numberOfKeys = 20,
-      fungibleId?: UUID,
+      contract = 'coin',
     ) => {
       if (keySource.source === 'web-authn') {
         throw new Error('Account discovery not supported for web-authn');
-      }
-      const fungible = fungibleId
-        ? await accountRepository.getFungible(fungibleId)
-        : await accountRepository.getFungibleByContract('coin');
-      if (!fungible) {
-        throw new Error(`Fungible not found for ${fungibleId}`);
       }
       const keySourceService = await keySourceManager.get(keySource.source);
       const accounts: IAccount[] = [];
@@ -144,7 +138,7 @@ export const accountDiscovery = (
           principal,
           network.networkId,
           undefined,
-          fungible.contract,
+          contract,
         )
           .on('chain-result', async (data) => {
             await emit('chain-result')(data as IDiscoveredAccount);
@@ -174,7 +168,7 @@ export const accountDiscovery = (
             uuid: crypto.randomUUID(),
             profileId,
             networkUUID: network.uuid,
-            fungibleId: fungible.uuid,
+            contract,
             keysetId: keyset.uuid,
             keyset,
             address: `k:${key.publicKey}`,
@@ -235,7 +229,7 @@ export const syncAccount = async (account: IAccount | IWatchedAccount) => {
     account.address,
     network.networkId,
     undefined,
-    account.fungibleId,
+    account.contract,
   )
     .execute()
     .catch((error) =>

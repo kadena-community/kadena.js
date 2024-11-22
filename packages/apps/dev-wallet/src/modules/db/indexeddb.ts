@@ -241,12 +241,12 @@ const isExist =
   };
 
 export const updateItem =
-  (db: IDBDatabase, transaction?: IDBTransaction) =>
+  (db: IDBDatabase) =>
   <T>(storeName: string, value: T, key?: string) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
-      const tx = transaction ?? db.transaction(storeName, 'readwrite');
-      const store = tx.objectStore(storeName);
+      const transaction = db.transaction(storeName, 'readwrite');
+      const store = transaction.objectStore(storeName);
       const isDataExist = isExist(db)(storeName, value, key);
       if (!isDataExist) {
         reject(

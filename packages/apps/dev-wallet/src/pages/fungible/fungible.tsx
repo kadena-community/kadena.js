@@ -15,15 +15,12 @@ export function FungiblePage() {
     return <Stack>Contract not found: {contract}</Stack>;
   }
 
-  const balance = accounts.reduce(
-    (acc, { fungibleId: contract, overallBalance }) => {
-      if (contract === asset.contract) {
-        return acc.plus(overallBalance);
-      }
-      return acc;
-    },
-    new PactNumber('0.0'),
-  );
+  const balance = accounts.reduce((acc, { contract, overallBalance }) => {
+    if (contract === asset.contract) {
+      return acc.plus(overallBalance);
+    }
+    return acc;
+  }, new PactNumber('0.0'));
 
   if (!contract) {
     throw new Error('No contract');

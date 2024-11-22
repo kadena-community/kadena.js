@@ -1,6 +1,5 @@
 import {
   accountRepository,
-  Fungible,
   IAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
@@ -30,12 +29,12 @@ import { WatchAccountsDialog } from './WatchAccountDialog';
 
 export function Accounts({
   accounts,
-  fungible,
+  contract = 'coin',
   watchedAccounts,
 }: {
   accounts: Array<IAccount>;
   watchedAccounts: Array<IWatchedAccount>;
-  fungible: Fungible;
+  contract: string;
 }) {
   const [show, setShow] = useState<'owned' | 'watched'>('owned');
   const { createNextAccount, activeNetwork, profile } = useWallet();
@@ -47,13 +46,12 @@ export function Accounts({
       <WatchAccountsDialog
         onWatch={resolve}
         onClose={reject}
-        fungible={fungible}
+        contract={contract}
         networkId={activeNetwork!.networkId}
       />
     ))) as IReceiverAccount[];
     const accountsToWatch: IWatchedAccount[] = accounts.map((account) => ({
       uuid: crypto.randomUUID(),
-      fungibleId: fungible.uuid,
       alias: account.alias ?? '',
       profileId: profile!.uuid,
       address: account.address,
@@ -68,6 +66,7 @@ export function Accounts({
           ),
         },
       },
+      contract,
       networkUUID: activeNetwork!.uuid,
       watched: true,
     }));
@@ -105,13 +104,13 @@ export function Accounts({
           </Stack>
         </Stack>
         <Stack gap={'sm'}>
-          {fungible &&
+          {contract &&
             (show === 'owned' ? (
               <Button
                 startVisual={<MonoAdd />}
                 variant="outlined"
                 isCompact
-                onClick={() => createNextAccount({ fungible })}
+                onClick={() => createNextAccount({ contract })}
               >
                 Next Account
               </Button>
@@ -138,8 +137,8 @@ export function Accounts({
             >
               <Link
                 to={
-                  fungible
-                    ? `/create-account?fungibleId=${fungible.uuid}`
+                  contract
+                    ? `/create-account${contract ? `?contract=${contract}` : ''}`
                     : '/create-account'
                 }
                 className={noStyleLinkClass}

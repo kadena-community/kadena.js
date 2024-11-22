@@ -54,7 +54,7 @@ export function AccountPage() {
   }, [account?.uuid]);
 
   const keyset = account?.keyset;
-  const asset = fungibles.find((f) => f.contract === account?.fungibleId);
+  const asset = fungibles.find((f) => f.contract === account?.contract);
   const [activities = []] = useAsync(getTransferActivities, [
     !isWatchedAccount(account) ? account?.keyset?.uuid : '',
     activeNetwork?.uuid,
@@ -181,7 +181,7 @@ export function AccountPage() {
               size={150}
               value={JSON.stringify({
                 address: account.address,
-                contract: account.fungibleId,
+                contract: account.contract,
                 guard: keyset.guard,
               })}
             />
@@ -198,7 +198,7 @@ export function AccountPage() {
                   variant="code"
                   className={addressBreakClass}
                 >
-                  {account.fungibleId}
+                  {account.contract}
                 </Text>
               </Stack>
               <Stack

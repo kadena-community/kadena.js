@@ -55,7 +55,6 @@ export function AddTokenForm({ isOpen }: { isOpen: boolean }) {
       }
 
       const token = {
-        uuid: crypto.randomUUID(),
         contract,
         symbol,
         title: symbol,

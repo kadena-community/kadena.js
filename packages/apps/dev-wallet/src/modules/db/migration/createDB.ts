@@ -28,10 +28,7 @@ export function createTables(db: IDBDatabase) {
     },
   ]);
   create('network', 'uuid', [{ index: 'networkId', unique: true }]);
-  create('fungible', 'uuid', [
-    { index: 'symbol', unique: true },
-    { index: 'contract', unique: true },
-  ]);
+  create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
   create('keyset', 'uuid', [
     { index: 'profileId' },
     { index: 'principal' },

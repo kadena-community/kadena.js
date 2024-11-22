@@ -83,34 +83,8 @@ export async function createProfileFromChainweaverData(
       keyPairs,
     );
 
-    console.log('processing tokens');
-    // process tokens
-    await Promise.all(
-      tokens.map(async (token) => {
-        try {
-          return await accountRepository.addFungible({
-            uuid: crypto.randomUUID(),
-            chainIds: Array.from(new Array(20)).map(
-              (_, i) => i.toString() as ChainId,
-            ),
-            contract: token.namespace
-              ? `${token.namespace}.${token.name}`
-              : token.name,
-            interface: 'fungible-v2',
-            symbol: token.name === 'coin' ? 'KDA' : token.name,
-            title: token.name,
-          });
-        } catch (e) {
-          // token already exists
-          console.warn(`Skipping... Token ${token.name} already exists`);
-        }
-      }),
-    );
-    console.log('finished processing tokens');
-
-    const coin = await accountRepository.getFungibleByContract('coin');
-
     console.log('processing accounts');
+
     // process accounts
     await Promise.all(
       accounts.map(async (account) => {
@@ -159,7 +133,7 @@ export async function createProfileFromChainweaverData(
           address: account.account,
           keysetId: keySet.uuid,
           networkUUID: dbNetwork!.uuid,
-          fungibleId: coin.uuid,
+          contract: 'coin',
           chains: [],
           overallBalance: '0',
           alias: account.notes || '',
@@ -172,6 +146,30 @@ export async function createProfileFromChainweaverData(
       }),
     );
     console.log('finished processing accounts');
+
+    console.log('processing tokens');
+    // process tokens
+    await Promise.all(
+      tokens.map(async (token) => {
+        try {
+          return await accountRepository.addFungible({
+            chainIds: Array.from(new Array(20)).map(
+              (_, i) => i.toString() as ChainId,
+            ),
+            contract: token.namespace
+              ? `${token.namespace}.${token.name}`
+              : token.name,
+            interface: 'fungible-v2',
+            symbol: token.name === 'coin' ? 'KDA' : token.name,
+            title: token.name,
+          });
+        } catch (e) {
+          // token already exists
+          console.warn(`Skipping... Token ${token.name} already exists`);
+        }
+      }),
+    );
+    console.log('finished processing tokens');
   } catch (e) {
     // TODO: remove added data
     console.warn(`Error while importing: ${e}`);
