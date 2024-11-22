@@ -109,7 +109,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
         continue;
       }
       throw new Error(
-        `There is no migration path for this version ${fromVersion} to ${fromVersion + 1}`,
+        `There is no migration path for version ${fromVersion} to ${fromVersion + 1}`,
       );
     }
   }

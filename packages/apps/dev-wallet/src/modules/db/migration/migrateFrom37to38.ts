@@ -42,7 +42,7 @@ export async function migrateFrom37to38(
       );
     }
   });
-  const v38db = `encryptedValue_v38_${crypto.randomUUID()}`;
+  const v38db = `temp:encryptedValue_v38_${crypto.randomUUID()}`;
   return new Promise<void>((resolve, reject) => {
     const create = createStore(db);
     create(v38db, 'uuid', [{ index: 'profileId' }]);
@@ -78,11 +78,9 @@ export async function migrateFrom37to38(
       reject(oldCursor.error);
     };
   }).then(() => {
-    transaction.objectStore('encryptedValue').name = 'encryptedValue_v37';
+    // We can now delete the old store; but for now I still keep it for debugging and if something goes wrong we can rollback
+    transaction.objectStore('encryptedValue').name =
+      'backup:encryptedValue_v37';
     transaction.objectStore(v38db).name = 'encryptedValue';
-    // // Clean up old store
-    // db.deleteObjectStore(storeName);
-    // db.renameObjectStore('encryptedValue', 'encryptedValue_v37');
-    // db.renameObjectStore('v38db', 'encryptedValue');
   });
 }

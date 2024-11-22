@@ -4,8 +4,7 @@ import { createStore } from '../indexeddb';
 export function createTables(db: IDBDatabase) {
   const create = createStore(db);
   create('profile', 'uuid', [{ index: 'name', unique: true }]);
-  create('encryptedValue');
-  // create('encryptedValue', 'uuid', [{ index: 'profileId' }]);
+  create('encryptedValue', 'uuid', [{ index: 'profileId' }]);
   create('keySource', 'uuid', [{ index: 'profileId' }]);
   create('account', 'uuid', [
     { index: 'address' },
