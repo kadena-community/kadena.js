@@ -2,6 +2,7 @@
 
 import { DistributionForm } from '@/components/DistributionForm/DistributionForm';
 import { FreezeInvestor } from '@/components/FreezeInvestor/FreezeInvestor';
+import { InvestorBalance } from '@/components/InvestorBalance/InvestorBalance';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
@@ -19,7 +20,7 @@ const InvestorPage = () => {
   const [hasOpenDistributeForm, setHasOpenDistributeForm] = useState(false);
   const [hasOpenTransferForm, setHasOpenTransferForm] = useState(false);
   const investorAccount = decodeURIComponent(params.investorAccount as string);
-  const [paused, setPaused] = useState(false);
+  const [frozen, setFrozen] = useState(false);
 
   const handleDistributeTokens = () => {
     setIsRightAsideExpanded(true);
@@ -37,7 +38,7 @@ const InvestorPage = () => {
     });
 
     if (typeof res === 'boolean') {
-      setPaused(res);
+      setFrozen(res);
     }
   };
 
@@ -46,7 +47,7 @@ const InvestorPage = () => {
     init();
   }, []);
 
-  const handlePauseChange = (pausedResult: boolean) => setPaused(pausedResult);
+  const handlePauseChange = (pausedResult: boolean) => setFrozen(pausedResult);
 
   return (
     <>
@@ -77,18 +78,19 @@ const InvestorPage = () => {
 
       <Stack width="100%" flexDirection="column">
         <Heading>Investor: {investorAccount}</Heading>
+        <InvestorBalance investorAccount={investorAccount} />
         <Stack gap="sm">
           <Button
             startVisual={<MonoCompareArrows />}
             onPress={handleTransferTokens}
-            isDisabled={paused}
+            isDisabled={frozen}
           >
             Transfer tokens
           </Button>
           <Button
             startVisual={<MonoAdd />}
             onPress={handleDistributeTokens}
-            isDisabled={paused}
+            isDisabled={frozen}
           >
             Distribute Tokens
           </Button>

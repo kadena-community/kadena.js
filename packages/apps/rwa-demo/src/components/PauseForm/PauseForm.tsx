@@ -8,37 +8,36 @@ import { Button } from '@kadena/kode-ui';
 import type { FC } from 'react';
 
 export const PauseForm: FC = () => {
-  const { isPaused } = useAsset();
+  const { paused } = useAsset();
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
 
   const handlePauseToggle = async () => {
     try {
-      const transaction = await togglePause(false, account!);
-      console.log({ transaction });
-      const signedTransaction = await sign(transaction);
+      const tx = await togglePause(paused, account!);
+      const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
-      console.log({ res });
 
-      addTransaction({
+      const transaction = addTransaction({
         ...res,
         type: 'PAUSE',
         data: { ...res },
       });
 
-      console.log('DONE');
+      await transaction.listener;
     } catch (e: any) {}
   };
 
+  console.log({ paused });
   return (
     <Button
       onPress={handlePauseToggle}
-      startVisual={isPaused ? <MonoPause /> : <MonoPlayArrow />}
+      startVisual={paused ? <MonoPause /> : <MonoPlayArrow />}
     >
-      {isPaused ? 'paused' : 'active'}
+      {paused ? 'paused' : 'active'}
     </Button>
   );
 };

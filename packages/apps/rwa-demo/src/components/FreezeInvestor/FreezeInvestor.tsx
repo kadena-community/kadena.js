@@ -24,16 +24,16 @@ const getVisual = (paused?: boolean) => {
 export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
-  const [paused, setPaused] = useState<boolean | undefined>();
+  const [frozen, setFrozen] = useState<boolean | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleFreeze = async () => {
-    if (paused === undefined) return;
+    if (frozen === undefined) return;
 
     const data = {
       investorAccount: investorAccount,
       agentAccount: account!,
-      pause: !paused,
+      pause: !frozen,
     };
     try {
       setIsLoading(true);
@@ -43,7 +43,6 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
-      console.log(res);
 
       const transaction = addTransaction({
         ...res,
@@ -55,7 +54,7 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
       });
 
       await transaction.listener;
-      setPaused(undefined);
+      setFrozen(undefined);
     } catch (e: any) {}
   };
 
@@ -66,7 +65,7 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
     });
 
     if (typeof res === 'boolean') {
-      setPaused(res);
+      setFrozen(res);
       onChanged(res);
     }
     setIsLoading(false);
@@ -77,10 +76,10 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       fetchData();
     }
-  }, [paused]);
+  }, [frozen]);
 
   return (
-    <Button startVisual={getVisual(paused)} onPress={handleFreeze}>
+    <Button startVisual={getVisual(frozen)} onPress={handleFreeze}>
       Pause Account
     </Button>
   );
