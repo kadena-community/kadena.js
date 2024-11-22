@@ -14,25 +14,30 @@ interface IAccountError {
 
 export interface IAccountContext {
   account?: IWalletAccount;
+  accounts?: IWalletAccount[];
   error?: IAccountError;
   isMounted: boolean;
   login: () => void;
   logout: () => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
   isAgent: boolean;
+  selectAccount: (account: IWalletAccount) => void;
 }
 
 export const AccountContext = createContext<IAccountContext>({
   account: undefined,
+  accounts: undefined,
   isMounted: false,
   login: () => {},
   logout: () => {},
   sign: async () => undefined,
   isAgent: false,
+  selectAccount: () => {},
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
+  const [accounts, setAccounts] = useState<IWalletAccount[]>();
   const [isMounted, setIsMounted] = useState(false);
   const [isAgentState, setIsAgentState] = useState(false);
 
@@ -41,6 +46,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const checkIsAgent = async (account: IWalletAccount) => {
     const resIsAgent = await isAgent({ agent: account.address });
     setIsAgentState(!!resIsAgent);
+  };
+
+  const selectAccount = (account: IWalletAccount) => {
+    setAccount(account);
+    localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
+    router.replace('/');
   };
 
   const login = useCallback(async () => {
@@ -53,12 +64,18 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     if ((response.payload as any).status !== 'accepted') {
       return;
     }
-    const { payload } = await message('GET_STATUS', {
+    const { payload } = (await message('GET_STATUS', {
       name: 'RWA-demo',
-    });
+    })) as { payload: IState };
 
-    const account = (payload as IState).accounts[0] as IWalletAccount;
-    localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
+    if (payload.accounts.length > 1) {
+      setAccounts(payload.accounts);
+      close();
+      return;
+    }
+
+    setAccounts(undefined);
+    setAccount(payload.accounts[0]);
     close();
   }, [router]);
 
@@ -106,7 +123,16 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <AccountContext.Provider
-      value={{ account, login, logout, sign, isMounted, isAgent: isAgentState }}
+      value={{
+        account,
+        accounts,
+        login,
+        logout,
+        sign,
+        isMounted,
+        isAgent: isAgentState,
+        selectAccount,
+      }}
     >
       {children}
     </AccountContext.Provider>

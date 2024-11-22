@@ -1,19 +1,28 @@
 'use client';
 import { useAccount } from '@/hooks/account';
 import { Button } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
 
 const Home = () => {
-  const { login } = useAccount();
-  const router = useRouter();
+  const { login, accounts, selectAccount } = useAccount();
   const handleConnect = async () => {
     await login();
-    router.push('/');
   };
 
   return (
     <div>
       <Button onPress={handleConnect}>Connect</Button>
+
+      {accounts && accounts.length > 1 && (
+        <ul>
+          {accounts.map((account) => (
+            <li key={account.address}>
+              <Button onPress={() => selectAccount(account)}>
+                {account.alias}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
