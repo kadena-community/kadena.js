@@ -78,8 +78,8 @@ export async function migrateFrom37to38(
       reject(oldCursor.error);
     };
   }).then(() => {
-    transaction.objectStore(v38db).name = 'encryptedValue';
     transaction.objectStore('encryptedValue').name = 'encryptedValue_v37';
+    transaction.objectStore(v38db).name = 'encryptedValue';
     // // Clean up old store
     // db.deleteObjectStore(storeName);
     // db.renameObjectStore('encryptedValue', 'encryptedValue_v37');
