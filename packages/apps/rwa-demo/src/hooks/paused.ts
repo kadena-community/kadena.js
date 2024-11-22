@@ -37,8 +37,6 @@ export const usePaused = () => {
       account: account,
     });
 
-    console.log('PAUSED', { res });
-
     if (typeof res === 'boolean') {
       setPaused(res);
     }
@@ -51,26 +49,14 @@ export const usePaused = () => {
 
   useEffect(() => {
     if (!unpausedData?.events?.length) return;
-    if (!unpausedData?.events[0].parameters?.length) return;
 
-    console.log(111, unpausedData?.events[0].parameters);
-
-    const newState = JSON.parse(unpausedData?.events[0].parameters)[0];
-    if (typeof newState === 'boolean') {
-      setPaused(newState);
-    }
+    setPaused(false);
   }, [unpausedData]);
 
   useEffect(() => {
     if (!pausedData?.events?.length) return;
-    if (!pausedData?.events[0].parameters?.length) return;
 
-    console.log(111, pausedData?.events[0].parameters);
-
-    const newState = JSON.parse(pausedData?.events[0].parameters)[0];
-    if (typeof newState === 'boolean') {
-      setPaused(newState);
-    }
+    setPaused(true);
   }, [pausedData]);
 
   return { paused };
