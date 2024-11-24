@@ -1,165 +1,150 @@
-import clsx from 'clsx';
+import { MonoCallToAction } from '@kadena/kode-icons/system';
+import {
+  Card,
+  Cell,
+  Column,
+  ContentHeader,
+  Divider,
+  Row,
+  Stack,
+  Table,
+  TableBody,
+  TableHeader,
+  Text,
+} from '@kadena/kode-ui';
 import { useTransfers } from '../hooks/transfers';
 import { TextEllipsis } from './Text';
 
 export const Transfers = () => {
   const { transfers, pendingTransfers, account } = useTransfers();
 
+  const getAmountStyle = (transfer: any) => {
+    if (!transfer.success) return 'text-default';
+    return transfer.senderAccount === account
+      ? 'text-negative'
+      : 'text-positive';
+  };
+
   return (
-    <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
-      <h3 className="text-2xl font-semibold text-white mb-6 text-center">
-        Transfers
-      </h3>
+    <div className="w-full max-w-[1000px] mx-auto p-6">
+      <Card fullWidth>
+        <ContentHeader
+          heading="Transfers"
+          description="View and manage your pending and completed transfers."
+          icon={<MonoCallToAction />}
+        />
 
-      {/* Pending Transfers Table */}
-      <div className="mb-8">
-        <h4 className="text-xl font-medium text-primary-green mb-4">
-          Pending Transfers
-        </h4>
-        {pendingTransfers?.length ? (
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto border-collapse bg-medium-slate rounded-lg">
-              <thead>
-                <tr className="bg-dark-slate text-white">
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Request Key
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Chain
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Sender
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Receiver
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Amount
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
+        <Divider />
+        {/* Pending Transfers */}
+        <Stack flexDirection="column" gap="md" marginBlockEnd="md">
+          <Text variant="ui" bold>
+            Pending Transfers
+          </Text>
+
+          {pendingTransfers?.length ? (
+            <Table aria-label="Pending Transfers">
+              <TableHeader>
+                <Column>Request Key</Column>
+                <Column>Chain</Column>
+                <Column>Sender</Column>
+                <Column>Receiver</Column>
+                <Column>Amount</Column>
+                <Column>Status</Column>
+              </TableHeader>
+              <TableBody>
                 {pendingTransfers.map((transfer, index) => (
-                  <tr
-                    key={index}
-                    className="border-b border-border-gray last:border-none"
-                  >
-                    <td className="py-2 px-4 text-white break-all">
-                      {transfer.requestKey}
-                    </td>
-                    <td className="py-2 px-4 text-white">{transfer.chainId}</td>
-                    <td className="py-2 px-4 text-white">
+                  <Row key={index}>
+                    <Cell>{transfer.requestKey}</Cell>
+                    <Cell>{transfer.chainId}</Cell>
+                    <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
                         {transfer.senderAccount}
                       </TextEllipsis>
-                    </td>
-                    <td className="py-2 px-4 text-white">
+                    </Cell>
+                    <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
                         {transfer.receiverAccount}
                       </TextEllipsis>
-                    </td>
-                    <td className="py-2 px-4 text-white">{transfer.amount}</td>
-                    <td className="py-2 px-4 text-primary-green">Pending</td>
-                  </tr>
+                    </Cell>
+                    <Cell>
+                      <Text variant="ui" bold>
+                        {transfer.amount}
+                      </Text>
+                    </Cell>
+                    <Cell>
+                      <Text variant="ui" bold>
+                        Pending
+                      </Text>
+                    </Cell>
+                  </Row>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="text-text-secondary">No pending transfers</p>
-        )}
-      </div>
+              </TableBody>
+            </Table>
+          ) : (
+            <Text variant="ui">No pending transfers</Text>
+          )}
+        </Stack>
 
-      {/* Completed Transfers Table */}
-      <div>
-        <h4 className="text-xl font-medium text-primary-green mb-4">
-          Completed Transfers
-        </h4>
-        {transfers?.length ? (
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto border-collapse bg-medium-slate rounded-lg">
-              <thead>
-                <tr className="bg-dark-slate text-white">
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Request Key
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Chain
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Sender
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Receiver
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Amount
-                  </th>
-                  <th className="py-2 px-4 text-left font-semibold whitespace-nowrap">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
+        <Divider />
+        {/* Completed Transfers */}
+        <Stack flexDirection="column" gap="md">
+          <Text variant="ui" bold>
+            Completed Transfers
+          </Text>
+
+          {transfers?.length ? (
+            <Table aria-label="Completed Transfers">
+              <TableHeader>
+                <Column>Request Key</Column>
+                <Column>Chain</Column>
+                <Column>Sender</Column>
+                <Column>Receiver</Column>
+                <Column>Amount</Column>
+                <Column>Status</Column>
+              </TableHeader>
+              <TableBody>
                 {transfers.map((transfer, index) => (
-                  <tr
-                    key={index}
-                    className="border-b border-border-gray last:border-none"
-                  >
-                    <td className="py-2 px-4 text-white break-all">
-                      {transfer.requestKey}
-                    </td>
-                    <td className="py-2 px-4 text-white">{transfer.chainId}</td>
-                    <td className="py-2 px-4 text-white">
+                  <Row key={index}>
+                    <Cell>{transfer.requestKey}</Cell>
+                    <Cell>{transfer.chainId}</Cell>
+                    <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
                         {transfer.senderAccount}
                       </TextEllipsis>
-                    </td>
-                    <td className="py-2 px-4 text-white">
+                    </Cell>
+                    <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
                         {transfer.receiverAccount}
                       </TextEllipsis>
-                    </td>
-                    <td className="py-2 px-4 text-white">
-                      <span
-                        className={clsx({
-                          'text-gray-400': transfer.success == false,
-                          'text-red-400':
-                            transfer.senderAccount === account &&
-                            transfer.success === true,
-                          'text-green-400':
-                            transfer.senderAccount !== account &&
-                            transfer.success === true,
-                        })}
-                      >
-                        {transfer.senderAccount === account
-                          ? `-${transfer.amount}`
-                          : `+${transfer.amount}`}
-                      </span>
-                      {transfer.transactionFeeTransfer && (
-                        <>
-                          <br />
-                          <span className="text-red-400">
+                    </Cell>
+                    <Cell>
+                      <Stack flexDirection="column">
+                        <Text className={getAmountStyle(transfer)}>
+                          {transfer.senderAccount === account
+                            ? `-${transfer.amount}`
+                            : `+${transfer.amount}`}
+                        </Text>
+                        {transfer.transactionFeeTransfer && (
+                          <Text className="text-negative">
                             {`-${transfer.transactionFeeTransfer.amount}`}
-                          </span>
-                        </>
-                      )}
-                    </td>
-                    <td className="py-2 px-4 text-secondary-green">
-                      {transfer.success ? 'Success' : 'Failed'}
-                    </td>
-                  </tr>
+                          </Text>
+                        )}
+                      </Stack>
+                    </Cell>
+                    <Cell>
+                      <Text variant="ui" bold>
+                        {transfer.success ? 'Success' : 'Failed'}
+                      </Text>
+                    </Cell>
+                  </Row>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="text-text-secondary">No completed transfers</p>
-        )}
-      </div>
+              </TableBody>
+            </Table>
+          ) : (
+            <Text variant="ui">No completed transfers</Text>
+          )}
+        </Stack>
+      </Card>
     </div>
   );
 };

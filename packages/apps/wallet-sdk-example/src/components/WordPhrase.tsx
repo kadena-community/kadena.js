@@ -1,3 +1,12 @@
+import { MonoKeyboardArrowRight } from '@kadena/kode-icons/system';
+import {
+  Button,
+  Card,
+  ContentHeader,
+  Divider,
+  Stack,
+  TextField,
+} from '@kadena/kode-ui';
 import { useWalletState } from '../state/wallet';
 import { useMnemonicWords } from '../state/words';
 
@@ -17,24 +26,43 @@ export const WordPhrase = () => {
     wallet.changeMnemonicWords(words).catch(console.error);
   };
 
+  const hasError = !mnemonicWords || mnemonicWords.trim() === '';
+
   return (
-    <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
-      <h3 className="text-2xl font-semibold text-white mb-4">Word Phrase</h3>
-      <div className="flex flex-col gap-4">
-        <input
-          name="mnemonic_phrase"
-          defaultValue={mnemonicWords ?? ''}
-          onBlur={(e) => onChangeMnemonic(e.target.value)}
-          placeholder="Enter or generate mnemonic phrase"
-          className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full focus:outline-none focus:border-primary-green focus:ring-1 focus:ring-primary-green"
+    <>
+      <Card fullWidth>
+        <ContentHeader
+          heading="Word Phrase"
+          description="Manage your wallet's mnemonic phrase. You can either generate a new
+            random phrase or enter an existing one to restore your wallet."
+          icon={<MonoKeyboardArrowRight />}
         />
-        <button
-          onClick={onGenerateMnemonic}
-          className="bg-primary-green text-white font-semibold rounded-md py-2 px-4 hover:bg-secondary-green transition w-full"
-        >
-          Generate Random
-        </button>
-      </div>
-    </div>
+        <Divider />
+        <Stack
+          alignItems="flex-start"
+          flexDirection="column"
+          gap="xs"
+          marginBlockEnd="md"
+          maxWidth="content.maxWidth"
+        ></Stack>
+        <Stack alignItems="stretch" flexDirection="column" gap="xs">
+          <TextField
+            label="Mnemonic Phrase"
+            description="Enter or generate a mnemonic phrase."
+            value={mnemonicWords ?? ''}
+            onValueChange={(e) => onChangeMnemonic(e)}
+            placeholder="Enter or generate mnemonic phrase"
+            variant="default"
+            size="md"
+            fontType="ui"
+            errorMessage={hasError ? 'Mnemonic phrase cannot be empty.' : ''}
+          />
+          <Divider />
+          <Button onPress={onGenerateMnemonic} variant="primary">
+            Generate Random
+          </Button>
+        </Stack>
+      </Card>
+    </>
   );
 };

@@ -1,3 +1,15 @@
+import { MonoAccountBalance } from '@kadena/kode-icons/system';
+import {
+  Button,
+  ContentHeader,
+  Dialog,
+  Divider,
+  Stack,
+  Text,
+  TextareaField,
+} from '@kadena/kode-ui';
+import React from 'react';
+
 interface TransactionModalProps {
   estimatedGas: number | null;
   transactionJSON: string;
@@ -12,40 +24,53 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
   onConfirm,
 }) => {
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50"
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    <Dialog
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size="sm"
     >
-      <div
-        className="p-6 rounded-lg shadow-lg w-full max-w-md mx-auto"
-        style={{
-          backgroundColor: '#1B2330',
-          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
-        }}
-      >
-        <h2 className="text-2xl font-semibold text-white mb-6 text-center">
-          Confirm Transaction
-        </h2>
-        <p className="text-white mb-4 text-center">
-          Estimated Gas Cost: {estimatedGas ?? 'Calculating...'}
-        </p>
-        <textarea
-          className="w-full h-40 p-2 mb-4 bg-gray-800 text-white rounded-md"
-          readOnly
+      <ContentHeader
+        heading="Confirm Transaction"
+        description="Review and confirm your transaction details."
+        icon={<MonoAccountBalance />}
+      />
+
+      <Divider />
+      <Stack flexDirection="column" gap="md" alignItems="center">
+        <Text variant="body">
+          Estimated Gas Cost:{' '}
+          <strong>{estimatedGas ?? 'Calculating...'}</strong>
+        </Text>
+
+        <TextareaField
+          label="Transaction Details"
           value={transactionJSON}
-        ></textarea>
-        <div className="flex justify-around mt-6">
-          <button
-            onClick={onConfirm}
-            className="bg-primary-green text-white font-semibold rounded-md py-2 px-4 hover:bg-secondary-green transition"
-          >
+          isReadOnly
+          size="lg"
+          variant="default"
+          fontType="ui"
+          description="Details of the transaction."
+          placeholder="Transaction details will appear here."
+          rows={6}
+          autoResize={false}
+        />
+
+        <Stack
+          flexDirection="row"
+          gap="md"
+          justifyContent="center"
+          marginBlockStart="lg"
+        >
+          <Button onPress={onConfirm} variant="positive">
             Confirm
-          </button>
-          <button onClick={onClose} className="text-white underline">
+          </Button>
+          <Button onPress={onClose} variant="negative">
             Cancel
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Stack>
+      </Stack>
+    </Dialog>
   );
 };

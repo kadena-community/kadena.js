@@ -1,4 +1,12 @@
 import { ChainId } from '@kadena/client';
+import {
+  Button,
+  Select,
+  SelectItem,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
 import { walletSdk } from '@kadena/wallet-sdk';
 import React, { useCallback, useEffect, useState } from 'react';
 import { getChainIdByNetwork } from '../../actions/host';
@@ -32,17 +40,15 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
   const [registrationPeriod, setRegistrationPeriod] = useState<1 | 2>(1);
   const [status, setStatus] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [availabilityLoading, setAvailabilityLoading] =
-    useState<boolean>(false);
-  const [priceLoading, setPriceLoading] = useState<boolean>(false);
-  const [registering, setRegistering] = useState<boolean>(false);
+  const [availabilityLoading, setAvailabilityLoading] = useState(false);
+  const [priceLoading, setPriceLoading] = useState(false);
+  const [registering, setRegistering] = useState(false);
   const [price, setPrice] = useState<number | null>(null);
 
   const wallet = useWalletState();
   const { selectChain, selectedChain } = wallet;
 
   const validChain = getChainIdByNetwork(wallet.selectedNetwork);
-
   const debouncedName = useDebounce(name, 500);
 
   const checkAvailabilityAndSetPrice = useCallback(async () => {
@@ -148,103 +154,95 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
     return 'Confirm Registration';
   };
 
-  const handleOwnerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const address = e.target.value;
-    setOwner(address);
-
-    if (onOwnerAddressChange) {
-      onOwnerAddressChange(address);
-    }
-  };
-
   return (
-    <div>
-      <p className="text-error-color mt-4">
-        <strong>Network: {wallet.selectedNetwork}</strong>
-      </p>
-      <p className="text-white mb-4">
-        <strong>Current Balance:</strong> {balance} KDA
-      </p>
-      <div className="mb-4">
-        <label className="text-white">Owner Address:</label>
-        <input
-          type="text"
-          value={owner}
-          onChange={handleOwnerChange}
-          className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-          placeholder="Enter your Kadena address"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="text-white">Receiver Address:</label>
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-          placeholder="Enter the receiver address"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="text-white">Chain:</label>
-        <select
-          value={selectedChain ?? validChain}
-          onChange={(e) => selectChain(e.target.value as ChainId)}
-          className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-        >
-          <option value={validChain}>Chain {validChain}</option>
-        </select>
-      </div>
-      <div className="mb-4">
-        <label className="text-white">Registration Period:</label>
-        <select
-          value={registrationPeriod}
-          onChange={(e) =>
-            setRegistrationPeriod(parseInt(e.target.value) as 1 | 2)
-          }
-          className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-        >
-          {Object.keys(PRICE_MAP).map((period) => (
-            <option key={period} value={period}>
-              {period} Year(s)
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="mb-4">
-        <label className="text-white">Name:</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-          placeholder="Enter the name to register"
-        />
-      </div>
+    <Stack flexDirection="column" gap="md">
+      {/* Network Info */}
+      <Text variant="ui" color="default">
+        Network: <strong>{wallet.selectedNetwork}</strong>
+      </Text>
+      <Text variant="ui" color="default">
+        Current Balance: <strong>{balance} KDA</strong>
+      </Text>
+
+      {/* Owner Address */}
+      <TextField
+        label="Owner Address"
+        placeholder="Enter your Kadena address"
+        value={owner}
+        onValueChange={(val) => {
+          setOwner(val);
+          onOwnerAddressChange?.(val);
+        }}
+        size="md"
+      />
+
+      {/* Receiver Address */}
+      <TextField
+        label="Receiver Address"
+        placeholder="Enter the receiver address"
+        value={address}
+        onValueChange={setAddress}
+        size="md"
+      />
+
+      {/* Chain Selector */}
+      <Select
+        label="Chain"
+        selectedKey={selectedChain ?? validChain}
+        onSelectionChange={(key) => selectChain(key as ChainId)}
+        size="md"
+      >
+        <SelectItem key={validChain}>Chain {validChain}</SelectItem>
+      </Select>
+
+      {/* Registration Period */}
+      <Select
+        label="Registration Period"
+        selectedKey={registrationPeriod.toString()}
+        onSelectionChange={(key) =>
+          setRegistrationPeriod(parseInt(key as string) as 1 | 2)
+        }
+        size="md"
+      >
+        {Object.keys(PRICE_MAP).map((period) => (
+          <SelectItem key={period}>{period} Year(s)</SelectItem>
+        ))}
+      </Select>
+
+      {/* Name Input */}
+      <TextField
+        label="Name"
+        placeholder="Enter the name to register"
+        value={name}
+        onValueChange={setName}
+        size="md"
+      />
+
+      {/* Price Info */}
       {price !== null && (
-        <div className="mb-4 text-white">
+        <Text variant="body">
           <strong>Price:</strong> {price} KDA for {registrationPeriod} year(s)
-        </div>
+        </Text>
       )}
-      <button
-        onClick={handleRegister}
-        disabled={
+
+      {/* Register Button */}
+      <Button
+        variant="primary"
+        onPress={handleRegister}
+        isDisabled={
           availabilityLoading ||
           priceLoading ||
           registering ||
           price === null ||
           (price !== null && balance < price)
         }
-        className="bg-primary-green hover:bg-secondary-green text-white font-bold py-2 px-4 rounded w-full"
       >
         {getButtonText()}
-      </button>
-      {status && <p className="text-text-secondary mt-4">{status}</p>}
-      {error && (
-        <p className="text-error-color mt-4">
-          <strong>Error:</strong> {error}
-        </p>
-      )}
-    </div>
+      </Button>
+
+      {/* Status/Error Messages */}
+      {status && <Text variant="body">{status}</Text>}
+      {error && <Text variant="body">{error}</Text>}
+    </Stack>
   );
 };

@@ -1,3 +1,13 @@
+import { MonoAccountBox } from '@kadena/kode-icons';
+import {
+  Button,
+  Card,
+  ContentHeader,
+  Divider,
+  Select,
+  SelectItem,
+  Stack,
+} from '@kadena/kode-ui';
 import { useState } from 'react';
 import { useAccountsBalances } from '../hooks/balances';
 import { useChains } from '../hooks/chains';
@@ -17,39 +27,42 @@ export const Accounts = () => {
 
   const { chains } = useChains(wallet.selectedNetwork);
   const [refreshKey, setRefreshKey] = useState(0);
+
   const handleRegistered = () => setRefreshKey((prev) => prev + 1);
 
-  const handleChainChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedChain = event.target.value as typeof wallet.selectedChain;
-    wallet.selectChain(selectedChain);
+  const handleChainChange = (selectedChainKey: string) => {
+    wallet.selectChain(selectedChainKey as typeof wallet.selectedChain);
   };
 
   return (
-    <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
-      <h3 className="text-2xl font-semibold text-white mb-6 text-center">
-        Accounts
-      </h3>
+    <Card fullWidth>
+      <ContentHeader
+        heading="Accounts"
+        description="Manage your wallet accounts and balances across multiple chains."
+        icon={<MonoAccountBox />}
+      />
 
-      <div className="mb-6">
-        <label htmlFor="chain-selector" className="text-white mr-2">
-          Select Chain:
-        </label>
-
-        <select
-          id="chain-selector"
-          value={wallet.selectedChain}
-          onChange={handleChainChange}
-          className="p-2 rounded-md bg-dark-slate text-white"
+      <Divider />
+      <Stack alignItems="flex-start" flexDirection="column" gap="xs">
+        <Stack
+          flexDirection="row"
+          alignItems="center"
+          gap="sm"
+          marginBlockEnd="md"
         >
-          {chains.map((chain) => (
-            <option key={chain} value={chain}>
-              {chain}
-            </option>
-          ))}
-        </select>
-      </div>
+          <Select
+            label="Chain Selector"
+            onSelectionChange={(key) => handleChainChange(key as string)}
+            selectedKey={wallet.selectedChain}
+            placeholder="Choose a chain"
+            size="md"
+          >
+            {chains.map((chain) => (
+              <SelectItem key={chain}>{chain}</SelectItem>
+            ))}
+          </Select>
+        </Stack>
 
-      <div className="space-y-4 mb-6">
         {wallet.accounts.map((account) => (
           <AccountItem
             key={`account-${account.index}`}
@@ -60,14 +73,12 @@ export const Accounts = () => {
             refreshKey={refreshKey}
           />
         ))}
-      </div>
 
-      <button
-        onClick={() => wallet.generateAccount()}
-        className="w-full bg-primary-green text-white font-semibold py-2 px-4 rounded-md hover:bg-secondary-green transition"
-      >
-        Generate New Account
-      </button>
-    </div>
+        <Divider />
+        <Button onPress={() => wallet.generateAccount()} variant="primary">
+          Generate New Account
+        </Button>
+      </Stack>
+    </Card>
   );
 };

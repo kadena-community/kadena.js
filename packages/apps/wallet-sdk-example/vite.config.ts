@@ -1,3 +1,4 @@
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
@@ -31,7 +32,7 @@ const monorepoPathsRegex = monorepoPackages.map(
 monorepoPackages.push('@kadena/client/fp');
 
 export const config: UserConfig = {
-  plugins: [react()],
+  plugins: [vanillaExtractPlugin(), react()],
   optimizeDeps: {
     // add all monorepo packages to optimizeDeps since they are commonjs
     include: [...monorepoPackages],

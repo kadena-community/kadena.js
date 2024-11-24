@@ -1,3 +1,5 @@
+import { MonoAccountBalance } from '@kadena/kode-icons/system';
+import { Button, ContentHeader, Dialog, Divider, Stack } from '@kadena/kode-ui';
 import React from 'react';
 import { NameRegistrationForm } from './NameRegistrationForm';
 
@@ -17,33 +19,48 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
   balance,
 }) => {
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50"
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+    <Dialog
+      isOpen
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+      size="sm"
     >
-      <div
-        className="p-6 rounded-lg shadow-lg w-full max-w-md mx-auto"
-        style={{
-          backgroundColor: '#1B2330',
-          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
+      {/* Modal Header */}
+      <ContentHeader
+        heading="Register Kadena Name"
+        description="Use this form to register a new Kadena name."
+        icon={<MonoAccountBalance />}
+      />
+
+      <Divider />
+
+      {/* Modal Content */}
+
+      <NameRegistrationForm
+        initialOwner={owner}
+        initialAddress={address}
+        onRegistered={() => {
+          onRegistered?.();
+          onClose();
         }}
+        balance={balance}
+      />
+
+      {/* Buttons */}
+      <Stack
+        flexDirection="row"
+        gap="md"
+        justifyContent="center"
+        marginBlockStart="lg"
       >
-        <h2 className="text-2xl font-semibold text-white mb-6 text-center">
-          Register Kadena Name
-        </h2>
-        <NameRegistrationForm
-          initialOwner={owner}
-          initialAddress={address}
-          onRegistered={() => {
-            onRegistered?.();
-            onClose();
-          }}
-          balance={balance}
-        />
-        <button onClick={onClose} className="mt-4 text-white underline">
+        <Button onPress={onRegistered} variant="positive">
+          Register
+        </Button>
+        <Button onPress={onClose} variant="negative">
           Close
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Stack>
+    </Dialog>
   );
 };
