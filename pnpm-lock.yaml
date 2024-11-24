@@ -1636,24 +1636,45 @@ importers:
       '@kadena/hd-wallet':
         specifier: workspace:*
         version: link:../../libs/hd-wallet
+      '@kadena/kode-icons':
+        specifier: workspace:*
+        version: link:../../libs/kode-icons
+      '@kadena/kode-ui':
+        specifier: workspace:*
+        version: link:../../libs/kode-ui
       '@kadena/wallet-sdk':
         specifier: workspace:*
         version: link:../../libs/wallet-sdk
       '@tanstack/react-query':
         specifier: ^5.32.0
         version: 5.49.2(react@18.3.1)
+      '@types/react-router-dom':
+        specifier: ^5.3.3
+        version: 5.3.3
+      '@vanilla-extract/css':
+        specifier: 1.14.2
+        version: 1.14.2
+      '@vanilla-extract/vite-plugin':
+        specifier: 4.0.7
+        version: 4.0.7(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
       jotai:
         specifier: ^2.10.1
         version: 2.10.1(@types/react@18.3.14)(react@18.3.1)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@14.2.2(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.26.2
+        version: 6.26.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@eslint/js':
         specifier: ^9.11.1
@@ -8138,10 +8159,6 @@ packages:
       react-redux:
         optional: true
 
-  '@remix-run/router@1.17.1':
-    resolution: {integrity: sha512-mCOMec4BKd6BRGBZeSnGiIgwsbLGp3yhVqAD8H+PxiRNEHgDpZb8J1TnrSDlg97t0ySKMQJTHCWBCmBpSmkF6Q==}
-    engines: {node: '>=14.0.0'}
-
   '@remix-run/router@1.19.2':
     resolution: {integrity: sha512-baiMx18+IMuD1yyvOGaHM9QrVUPGGG0jC+z+IPHnRJWUAUvaKuWKyE8gjDj2rzv3sz9zOGoRSPgeBVHRhZnBlA==}
     engines: {node: '>=14.0.0'}
@@ -9640,6 +9657,9 @@ packages:
   '@types/heft-jest@1.0.6':
     resolution: {integrity: sha512-oTVSfKEgvQEaukVq+y57m5UTo2sSh3MxmJWxpcnASPjSi3RUKbKXeNjvmrSnT4D6rF3Cs57u2jfn9JFFKf2hLg==}
 
+  '@types/history@4.7.11':
+    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
+
   '@types/hosted-git-info@3.0.5':
     resolution: {integrity: sha512-Dmngh7U003cOHPhKGyA7LWqrnvcTyILNgNPmNCxlx7j8MIi54iBliiT8XqVLIQ3GchoOjVAyBzNJVyuaJjqokg==}
 
@@ -9828,6 +9848,15 @@ packages:
 
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+
+  '@types/react-router-dom@5.3.3':
+    resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
+
+  '@types/react-router@5.1.20':
+    resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
+
+  '@types/react@18.3.11':
+    resolution: {integrity: sha512-r6QZ069rFTjrEYgFdOck1gK7FLVsgJE7tTz0pQBczlBNUhBNk0MQH4UbnFSwjpQLMkLzgqvBBa+qGpLje16eTQ==}
 
   '@types/react@18.3.14':
     resolution: {integrity: sha512-NzahNKvjNhVjuPBQ+2G7WlxstQ+47kXZNHlUvFakDViuIEfGY926GqhMueQFZ7woG+sPiQKlF36XfrIUVSUfFg==}
@@ -10341,9 +10370,6 @@ packages:
     peerDependencies:
       next: '>=12.1.7'
 
-  '@vanilla-extract/private@1.0.5':
-    resolution: {integrity: sha512-6YXeOEKYTA3UV+RC8DeAjFk+/okoNz/h88R+McnzA2zpaVqTR/Ep+vszkWYlGBcMNO7vEkqbq5nT/JMMvhi+tw==}
-
   '@vanilla-extract/private@1.0.6':
     resolution: {integrity: sha512-ytsG/JLweEjw7DBuZ/0JCN4WAQgM9erfSTdS1NQY778hFQSZ6cfCDEZZ0sgVm4k54uNz6ImKB33AYvSR//fjxw==}
 
@@ -10359,6 +10385,11 @@ packages:
 
   '@vanilla-extract/vite-plugin@4.0.17':
     resolution: {integrity: sha512-qyAEmBcwih7E3lMrcFZX1Ph81TQos1FFyxOu5JmNmu/F/g7HkcCXFV897pNKFmXgED/TzuyrFVcIRimg5pPc9A==}
+    peerDependencies:
+      vite: ^4.0.3 || ^5.0.0
+
+  '@vanilla-extract/vite-plugin@4.0.7':
+    resolution: {integrity: sha512-uRAFWdq5Eq0ybpgW2P0LNOw8eW+MTg/OFo5K0Hsl2cKu/Tu2tabCsBf6vNjfhDrm4jBShHy1wJIVcYxf6sczVQ==}
     peerDependencies:
       vite: ^4.0.3 || ^5.0.0
 
@@ -17723,25 +17754,12 @@ packages:
     resolution: {integrity: sha512-Gvzk7OZpiqKSkxsQvO/mbTN1poglhmAV7gR/DdIrRrSMXraRQQlfikRJOr3Nb9GTMPC5kof948Zy6jJZIFtDvQ==}
     engines: {node: '>=0.10.0'}
 
-  react-router-dom@6.24.1:
-    resolution: {integrity: sha512-U19KtXqooqw967Vw0Qcn5cOvrX5Ejo9ORmOtJMzYWtCT4/WOfFLIZGGsVLxcd9UkBO0mSTZtXqhZBsWlHr7+Sg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      react: '>=16.8'
-      react-dom: '>=16.8'
-
   react-router-dom@6.26.2:
     resolution: {integrity: sha512-z7YkaEW0Dy35T3/QKPYB1LjMK2R1fxnHO8kWpUMTBdfVzZrWOiY9a7CtN8HqdWtDUWd5FY6Dl8HFsqVwH4uOtQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
-
-  react-router@6.24.1:
-    resolution: {integrity: sha512-PTXFXGK2pyXpHzVo3rR9H7ip4lSPZZc0bHG5CARmj65fTT6qG7sTngmb6lcYu1gf3y/8KxORoy9yn59pGpCnpg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      react: '>=16.8'
 
   react-router@6.26.2:
     resolution: {integrity: sha512-tvN1iuT03kHgOFnLPfLJ8V95eijteveqdOSk+srqfePtQvqCExB8eHOYnlilbOcyJyKnYkr1vJvf7YqotAJu1A==}
@@ -21770,7 +21788,7 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-router-dom: 6.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom: 6.26.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -25682,15 +25700,13 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -25750,7 +25766,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -26165,7 +26181,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -27608,8 +27624,6 @@ snapshots:
       reselect: 4.1.8
     optionalDependencies:
       react: 18.3.1
-
-  '@remix-run/router@1.17.1': {}
 
   '@remix-run/router@1.19.2': {}
 
@@ -29485,6 +29499,8 @@ snapshots:
     dependencies:
       '@types/jest': 29.5.13
 
+  '@types/history@4.7.11': {}
+
   '@types/hosted-git-info@3.0.5': {}
 
   '@types/html-minifier-terser@6.1.0': {}
@@ -29682,6 +29698,22 @@ snapshots:
   '@types/react-dom@18.3.0':
     dependencies:
       '@types/react': 18.3.3
+
+  '@types/react-router-dom@5.3.3':
+    dependencies:
+      '@types/history': 4.7.11
+      '@types/react': 18.3.11
+      '@types/react-router': 5.1.20
+
+  '@types/react-router@5.1.20':
+    dependencies:
+      '@types/history': 4.7.11
+      '@types/react': 18.3.11
+
+  '@types/react@18.3.11':
+    dependencies:
+      '@types/prop-types': 15.7.12
+      csstype: 3.1.3
 
   '@types/react@18.3.14':
     dependencies:
@@ -30460,7 +30492,7 @@ snapshots:
   '@vanilla-extract/css@1.14.2':
     dependencies:
       '@emotion/hash': 0.9.1
-      '@vanilla-extract/private': 1.0.5
+      '@vanilla-extract/private': 1.0.6
       chalk: 4.1.2
       css-what: 6.1.0
       cssesc: 3.0.0
@@ -30655,6 +30687,32 @@ snapshots:
       - supports-color
       - terser
 
+  '@vanilla-extract/integration@7.1.7(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)':
+    dependencies:
+      '@babel/core': 7.24.7
+      '@babel/plugin-syntax-typescript': 7.24.7(@babel/core@7.24.7)
+      '@vanilla-extract/babel-plugin-debug-ids': 1.0.6
+      '@vanilla-extract/css': 1.15.3
+      dedent: 1.5.3
+      esbuild: 0.21.5
+      eval: 0.1.8
+      find-up: 5.0.0
+      javascript-stringify: 2.1.0
+      mlly: 1.7.1
+      vite: 5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
+      vite-node: 1.6.0(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
   '@vanilla-extract/next-plugin@2.1.2(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.2(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)':
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
@@ -30758,8 +30816,6 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/private@1.0.5': {}
-
   '@vanilla-extract/private@1.0.6': {}
 
   '@vanilla-extract/recipes@0.5.1(@vanilla-extract/css@1.14.2)':
@@ -30806,6 +30862,22 @@ snapshots:
     dependencies:
       '@vanilla-extract/integration': 7.1.11(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
       vite: 5.3.3(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  '@vanilla-extract/vite-plugin@4.0.7(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))':
+    dependencies:
+      '@vanilla-extract/integration': 7.1.7(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
+      vite: 5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -38104,7 +38176,7 @@ snapshots:
 
   media-query-parser@2.0.2:
     dependencies:
-      '@babel/runtime': 7.24.7
+      '@babel/runtime': 7.25.6
 
   media-typer@0.3.0: {}
 
@@ -40711,24 +40783,12 @@ snapshots:
 
   react-refresh@0.9.0: {}
 
-  react-router-dom@6.24.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@remix-run/router': 1.17.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-router: 6.24.1(react@18.3.1)
-
   react-router-dom@6.26.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@remix-run/router': 1.19.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-router: 6.26.2(react@18.3.1)
-
-  react-router@6.24.1(react@18.3.1):
-    dependencies:
-      '@remix-run/router': 1.17.1
-      react: 18.3.1
 
   react-router@6.26.2(react@18.3.1):
     dependencies:

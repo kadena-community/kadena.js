@@ -1,15 +1,30 @@
 import { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
+import { MonoArrowRight } from '@kadena/kode-icons/system';
+import {
+  Button,
+  Card,
+  ContentHeader,
+  Divider,
+  Select,
+  SelectItem,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
 import { walletSdk } from '@kadena/wallet-sdk';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useChains } from '../hooks/chains';
 import { PendingTransfer, usePendingTransfers } from '../state/pending';
 import { useWalletState } from '../state/wallet';
+import { AlertDialog } from './AlertDialog';
 import { TransactionModal } from './TransactionModal';
 
 export const Transfer = () => {
   const wallet = useWalletState();
   const { addPendingTransfer } = usePendingTransfers();
   const [isCrossChain, setIsCrossChain] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [estimatedGas, setEstimatedGas] = useState<number | null>(null);
@@ -21,6 +36,7 @@ export const Transfer = () => {
     amount: string;
   } | null>(null);
 
+  const navigate = useNavigate();
   const { chains } = useChains(wallet.selectedNetwork);
 
   const prepareTransaction = async (
@@ -39,15 +55,7 @@ export const Transfer = () => {
 
     const transaction = isCrossChain
       ? ({} as IUnsignedCommand)
-      : // ? walletSdk.createCrossChainTransfer({
-        //     amount,
-        //     sender: wallet.account.name,
-        //     receiver: receiverAccount,
-        //     chainId: fromChain,
-        //     toChainId: toChain!,
-        //     networkId: wallet.selectedNetwork,
-        //   })
-        walletSdk.createSimpleTransfer({
+      : walletSdk.createSimpleTransfer({
           amount,
           sender: wallet.account.name,
           receiver: receiverAccount,
@@ -69,7 +77,7 @@ export const Transfer = () => {
     try {
       const signed = await prepareTransaction(receiverAccount, amount);
       if (!signed) {
-        alert('Transaction was not signed');
+        setAlertMessage('Transaction was not signed');
         return;
       }
 
@@ -86,6 +94,11 @@ export const Transfer = () => {
       setError(null);
     } catch (error) {
       setError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to prepare transaction',
+      );
+      setAlertMessage(
         error instanceof Error
           ? error.message
           : 'Failed to prepare transaction',
@@ -115,123 +128,116 @@ export const Transfer = () => {
       addPendingTransfer(pendingTransfer);
       setIsModalOpen(false);
       setSignedTransaction(null);
+      navigate('/transactions');
     } catch (error) {
       console.warn(error);
       setError('Failed to send transaction');
+      setAlertMessage('Failed to send transaction');
+      setSignedTransaction(null);
+      setIsModalOpen(false);
     }
   };
 
   return (
-    <div className="bg-dark-slate p-6 rounded-lg shadow-md w-full mx-auto">
-      <h3 className="text-2xl font-semibold text-white mb-4">Send</h3>
-      <form onSubmit={onSubmitTransfer} className="space-y-4 w-full">
-        <div className="flex flex-col w-full">
-          <label className="text-text-secondary mb-1" htmlFor="from">
-            From
-          </label>
-          <input
-            type="text"
-            defaultValue={wallet.account?.name}
-            disabled
-            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-gray-400 w-full"
-          />
-        </div>
-        <div className="flex flex-col w-full">
-          <label className="text-text-secondary mb-1" htmlFor="to">
-            To
-          </label>
-          <input
-            name="to"
-            placeholder="To"
-            defaultValue={
-              wallet.accounts.find((a) => a.index !== wallet.account?.index)
-                ?.name
-            }
-            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-          />
-        </div>
-        <div className="flex flex-col w-full">
-          <label className="text-text-secondary mb-1" htmlFor="amount">
-            Amount
-          </label>
-          <input
-            name="amount"
-            placeholder="Amount"
-            defaultValue="0.01"
-            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-          />
-        </div>
+    <div className="w-full max-w-[1000px] mx-auto p-6">
+      <Card fullWidth>
+        <ContentHeader
+          heading="Accounts"
+          description="Send funds across acounts."
+          icon={<MonoArrowRight />}
+        />
 
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="crossChain"
-            checked={isCrossChain}
-            onChange={() => setIsCrossChain(!isCrossChain)}
+        <Divider />
+        <Stack flexDirection="column" gap="md">
+          <form onSubmit={onSubmitTransfer}>
+            <Stack flexDirection="column" gap="sm">
+              <TextField
+                label="From"
+                value={wallet.account?.name}
+                isDisabled
+                size="md"
+              />
+              <TextField
+                label="To"
+                name="to"
+                placeholder="Enter recipient account"
+                defaultValue={
+                  wallet.accounts.find((a) => a.index !== wallet.account?.index)
+                    ?.name
+                }
+                size="md"
+              />
+              <TextField
+                label="Amount"
+                name="amount"
+                placeholder="Enter amount"
+                defaultValue="0.01"
+                size="md"
+              />
+              <Stack flexDirection="row" alignItems="center" gap="sm">
+                <input
+                  type="checkbox"
+                  id="crossChain"
+                  checked={isCrossChain}
+                  onChange={() => setIsCrossChain(!isCrossChain)}
+                />
+                <label htmlFor="crossChain">
+                  <Text>Cross-Chain Transfer</Text>
+                </label>
+              </Stack>
+              <Select
+                label={isCrossChain ? 'From Chain' : 'Chain'}
+                onSelectionChange={(key) => wallet.selectChain(key as ChainId)}
+                selectedKey={wallet.selectedChain}
+                placeholder="Select Chain"
+              >
+                {chains.map((chain) => (
+                  <SelectItem key={chain}>{chain}</SelectItem>
+                ))}
+              </Select>
+
+              {isCrossChain && (
+                <Select
+                  label="To Chain"
+                  onSelectionChange={(key) =>
+                    wallet.setSelectedToChain(key as ChainId)
+                  }
+                  selectedKey={wallet.selectedToChain ?? ''}
+                  placeholder="Select Destination Chain"
+                >
+                  {chains.map((chain) => (
+                    <SelectItem key={chain}>{chain}</SelectItem>
+                  ))}
+                </Select>
+              )}
+
+              {error && <Text size="small">{error}</Text>}
+
+              <Divider />
+              <Button type="submit" variant="primary">
+                Send
+              </Button>
+            </Stack>
+          </form>
+        </Stack>
+
+        {isModalOpen && signedTransaction && (
+          <TransactionModal
+            estimatedGas={estimatedGas}
+            transactionJSON={JSON.stringify(signedTransaction, null, 2)}
+            onClose={() => setIsModalOpen(false)}
+            onConfirm={confirmTransaction}
           />
-          <label htmlFor="crossChain" className="text-text-secondary">
-            Cross-Chain Transfer
-          </label>
-        </div>
-
-        <div className="flex flex-col w-full">
-          <label className="text-text-secondary mb-1" htmlFor="chain">
-            {isCrossChain ? 'From Chain' : 'Chain'}
-          </label>
-          <select
-            name="chain"
-            value={wallet.selectedChain}
-            onChange={(e) => wallet.selectChain(e.target.value as ChainId)}
-            className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-          >
-            {chains.map((chain) => (
-              <option key={chain} value={chain}>
-                {chain}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {isCrossChain && (
-          <div className="flex flex-col w-full">
-            <label className="text-text-secondary mb-1" htmlFor="toChain">
-              To Chain
-            </label>
-            <select
-              name="toChain"
-              value={wallet.selectedToChain ?? ''}
-              onChange={(e) =>
-                wallet.setSelectedToChain(e.target.value as ChainId)
-              }
-              className="bg-medium-slate border border-border-gray rounded-md py-2 px-3 text-white w-full"
-            >
-              {chains.map((chain) => (
-                <option key={chain} value={chain}>
-                  {chain}
-                </option>
-              ))}
-            </select>
-          </div>
         )}
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-
-        <button
-          type="submit"
-          className="w-full bg-primary-green text-white font-semibold rounded-md py-2 px-4 hover:bg-secondary-green transition"
-        >
-          Send
-        </button>
-      </form>
-
-      {isModalOpen && signedTransaction && (
-        <TransactionModal
-          estimatedGas={estimatedGas}
-          transactionJSON={JSON.stringify(signedTransaction, null, 2)}
-          onClose={() => setIsModalOpen(false)}
-          onConfirm={confirmTransaction}
-        />
-      )}
+        {alertMessage && (
+          <AlertDialog
+            title="Transaction Alert"
+            message={alertMessage}
+            onClose={() => setAlertMessage(null)}
+          />
+        )}
+      </Card>
     </div>
   );
 };

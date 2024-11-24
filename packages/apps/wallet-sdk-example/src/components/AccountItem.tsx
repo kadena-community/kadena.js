@@ -1,11 +1,12 @@
+import { Badge, Button, Card, Divider, Stack, Text } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { createAndTransferFund } from '../domain/fund';
-
 import { useFund } from '../hooks/fund';
 import { useAddressToName } from '../hooks/kadenaNames/kadenaNamesResolver';
 import type { Account } from '../state/wallet';
 import { useWalletState } from '../state/wallet';
-import { ChainSelectionModal } from './ChainSelector';
+import { AlertDialog } from './AlertDialog';
+import { ChainSelectionModal } from './ChainSelectorModal';
 import { NameRegistrationModal } from './kadenaNames/NameRegistrationModal';
 import { TextEllipsis } from './Text';
 
@@ -28,6 +29,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [chainModalVisible, setChainModalVisible] = useState(false);
   const [selectedChain, setSelectedChain] = useState(wallet.selectedChain);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const { onFundOtherFungible } = useFund();
   const {
     name: resolvedName,
@@ -46,20 +48,26 @@ export const AccountItem: React.FC<AccountItemProps> = ({
   const closeChainModal = () => setChainModalVisible(false);
 
   const onFundAccount = async () => {
-    const result = await createAndTransferFund({
-      account: {
-        name: account.name,
-        publicKeys: [account.publicKey],
-        predicate: 'keys-all',
-      },
-      config: {
-        amount: '20',
-        contract: 'coin',
-        chainId: selectedChain,
-        networkId: wallet.selectedNetwork,
-      },
-    });
-    alert(`Fund transaction submitted: ${result.requestKey}`);
+    try {
+      const result = await createAndTransferFund({
+        account: {
+          name: account.name,
+          publicKeys: [account.publicKey],
+          predicate: 'keys-all',
+        },
+        config: {
+          amount: '20',
+          contract: 'coin',
+          chainId: selectedChain,
+          networkId: wallet.selectedNetwork,
+        },
+      });
+      setAlertMessage(`Fund transaction submitted: ${result.requestKey}`);
+    } catch (error) {
+      setAlertMessage(
+        error instanceof Error ? error.message : 'Failed to fund the account.',
+      );
+    }
   };
 
   const submitModal = () => {
@@ -69,80 +77,89 @@ export const AccountItem: React.FC<AccountItemProps> = ({
 
   return (
     <>
-      <div className="bg-medium-slate p-4 rounded-lg shadow-sm flex flex-col gap-2">
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-text-secondary">Index:</span>
-          <span className="text-white">{account.index}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-text-secondary">Account:</span>
-          <span className="text-white">
+      <Divider />
+      <Card fullWidth>
+        <Stack flexDirection="column" gap="xs">
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text variant="ui" bold>
+              Index:
+            </Text>
+            <Badge size="sm" style="info">
+              {account.index}
+            </Badge>
+          </Stack>
+
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text variant="ui" bold>
+              Account:
+            </Text>
             <TextEllipsis maxLength={15} withCopyButton>
               {account.name}
             </TextEllipsis>
-          </span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-text-secondary">Balance:</span>
-          <span className="text-white">
-            {loadingBalance
-              ? 'Loading...'
-              : accountsBalances[account.name] ?? '0'}
-          </span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-text-secondary">
-            Kadena Name:
-          </span>
-          {nameLoading ? (
-            <p className="text-text-secondary">Loading...</p>
-          ) : resolvedName ? (
-            <p className="text-white">{resolvedName}</p>
-          ) : (
-            <button
-              onClick={openRegisterModal}
-              className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
-            >
-              Register Name
-            </button>
-          )}
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-text-secondary">Fund:</span>
-          <div>
-            <button
-              onClick={openChainModal}
-              className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
-            >
-              Fund
-            </button>
-            <button
-              onClick={onFundOtherFungible}
-              className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
-            >
-              Fund Other
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-text-secondary">Active:</span>
-          {wallet.account?.index === account.index ? (
-            <button
-              disabled
-              className="bg-gray-500 text-white font-semibold py-1 px-3 rounded-md cursor-not-allowed"
-            >
-              Selected
-            </button>
-          ) : (
-            <button
-              onClick={() => wallet.selectAccount(account.index)}
-              className="bg-primary-green text-white font-semibold py-1 px-3 rounded-md hover:bg-secondary-green transition"
-            >
-              Select
-            </button>
-          )}
-        </div>
-      </div>
+          </Stack>
+
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text variant="ui" bold>
+              Balance:
+            </Text>
+            <Badge size="sm" style="info">
+              {loadingBalance
+                ? 'Loading...'
+                : accountsBalances[account.name] ?? '0'}
+            </Badge>
+          </Stack>
+
+          {/* Kadena Name */}
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text variant="ui" bold>
+              Kadena Name:
+            </Text>
+            {nameLoading ? (
+              <Text>Loading...</Text>
+            ) : resolvedName ? (
+              <Text>{resolvedName}</Text>
+            ) : (
+              <Button variant="primary" onPress={openRegisterModal} isCompact>
+                Register Name
+              </Button>
+            )}
+          </Stack>
+
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text variant="ui" bold>
+              Fund:
+            </Text>
+            <Stack flexDirection="row" gap="xs">
+              <Button variant="primary" onPress={openChainModal} isCompact>
+                Fund
+              </Button>
+              <Button variant="info" onPress={onFundOtherFungible} isCompact>
+                Fund Other
+              </Button>
+            </Stack>
+          </Stack>
+
+          <Stack justifyContent="space-between" alignItems="center">
+            <Text variant="ui" bold>
+              Active:
+            </Text>
+            {wallet.account?.index === account.index ? (
+              <Badge size="sm" style="default">
+                Selected
+              </Badge>
+            ) : (
+              <Button
+                variant="primary"
+                onPress={() => wallet.selectAccount(account.index)}
+                isCompact
+              >
+                Select
+              </Button>
+            )}
+          </Stack>
+        </Stack>
+      </Card>
+
       {modalVisible && (
         <NameRegistrationModal
           owner={account.name}
@@ -161,6 +178,15 @@ export const AccountItem: React.FC<AccountItemProps> = ({
           onClose={closeChainModal}
           currentChain={selectedChain}
           submit={submitModal}
+        />
+      )}
+
+      {alertMessage && (
+        <AlertDialog
+          title="Message"
+          message={alertMessage}
+          onClose={() => setAlertMessage(null)}
+          autoClose={true}
         />
       )}
     </>
