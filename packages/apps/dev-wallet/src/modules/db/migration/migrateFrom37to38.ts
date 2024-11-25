@@ -45,6 +45,7 @@ export async function migrateFrom37to38(
   const v38db = `temp:encryptedValue_v38_${crypto.randomUUID()}`;
   return new Promise<void>((resolve, reject) => {
     const create = createStore(db);
+    create('backup', 'uuid');
     create(v38db, 'uuid', [{ index: 'profileId' }]);
     // db.transaction(['encryptedValue', 'encryptedValue_v38'], 'readwrite');
     const oldStore = transaction.objectStore('encryptedValue');

@@ -21,6 +21,7 @@ import { KeysPage } from '@/pages/keys/keys-page';
 import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
+import { AutoBackup } from '@/pages/settings/auto-backup/auto-backup';
 import { ChangePassword } from '@/pages/settings/change-password/change-password';
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
@@ -124,6 +125,7 @@ export const Routes: FC = () => {
             <Route path="/transfer" element={<TransferV2 />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/settings/auto-backup" element={<AutoBackup />} />
             <Route
               path="/account-discovery/:keySourceId"
               element={<AccountDiscovery />}

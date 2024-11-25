@@ -9,29 +9,9 @@ import {
 import { Button, Heading, Stack, Link as UiLink } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { Link } from 'react-router-dom';
+import { isFileSystemAccessSupported } from '../../modules/backup/fileApi';
 import { ProfileNameColorForm } from './components/ProfileNameColorForm';
-
-function downloadJSON(content: string, filename: string) {
-  // Create a Blob with the JSON string
-  const blob = new Blob([content], { type: 'application/json' });
-
-  // Create a link element
-  const link = document.createElement('a');
-
-  // Set the link's href to a URL representing the Blob
-  link.href = URL.createObjectURL(blob);
-
-  // Set the download attribute with the desired filename
-  link.download = filename;
-
-  // Append the link to the body temporarily and trigger the download
-  document.body.appendChild(link);
-  link.click();
-
-  // Clean up: remove the link element and revoke the Blob URL
-  document.body.removeChild(link);
-  URL.revokeObjectURL(link.href);
-}
+import { downloadAsFile } from './utils/download-file';
 
 export function Settings() {
   const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
@@ -67,8 +47,11 @@ export function Settings() {
       <Button
         onClick={async () => {
           const tables = await dbService.serializeTables();
-          console.log('tables', tables);
-          downloadJSON(tables, 'chainweaver-db-backup.json');
+          downloadAsFile(
+            tables,
+            'chainweaver-db-backup.json',
+            'application/json',
+          );
         }}
         variant="outlined"
         startVisual={<MonoDownload />}
@@ -76,11 +59,11 @@ export function Settings() {
         Download Entire Database
       </Button>
       <UiLink
-        href="/settings/change-network"
+        href="/settings/auto-backup"
         component={Link}
         variant="outlined"
         startVisual={<MonoSettingsBackupRestore />}
-        isDisabled
+        isDisabled={!isFileSystemAccessSupported()}
       >
         Set automatic backup
       </UiLink>

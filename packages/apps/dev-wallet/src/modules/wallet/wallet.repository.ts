@@ -43,6 +43,11 @@ export interface IEncryptedValue {
   profileId: string;
 }
 
+export interface IBackup {
+  directoryHandle?: FileSystemDirectoryHandle;
+  lastBackup: number;
+}
+
 const createWalletRepository = ({
   getAll,
   getOne,
@@ -95,6 +100,31 @@ const createWalletRepository = ({
     },
     getAllKeySources: async (): Promise<IKeySource[]> => {
       return getAll('keySource');
+    },
+    addBackupOptions: async (backup: IBackup): Promise<void> => {
+      return add('backup', { ...backup, uuid: 'backup-id' });
+    },
+    updateBackupOptions: async (backup: IBackup): Promise<void> => {
+      return update('backup', { ...backup, uuid: 'backup-id' });
+    },
+    getBackupOptions: async (): Promise<IBackup> => {
+      const backups: IBackup[] = await getAll('backup');
+      return backups[0];
+    },
+    async patchBackupOptions(patch: Partial<IBackup>) {
+      const backups: IBackup[] = await getAll('backup');
+      const backupOptions = backups[0];
+      if (!backupOptions) {
+        await walletRepository.addBackupOptions({
+          lastBackup: 0,
+          ...patch,
+        });
+      } else {
+        await walletRepository.updateBackupOptions({
+          ...backupOptions,
+          ...patch,
+        });
+      }
     },
   };
 };

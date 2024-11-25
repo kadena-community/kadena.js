@@ -58,4 +58,5 @@ export function createTables(db: IDBDatabase) {
     { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
   ]);
   create('contact', 'uuid', [{ index: 'name', unique: true }]);
+  create('backup', 'uuid');
 }
