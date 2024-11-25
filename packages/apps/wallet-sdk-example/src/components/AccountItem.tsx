@@ -137,7 +137,21 @@ export const AccountItem: React.FC<AccountItemProps> = ({
               Fund:
             </Text>
             <Stack flexDirection="row" gap="xs">
-              <Button variant="primary" onPress={openChainModal} isCompact>
+              <Button
+                variant="primary"
+                onPress={() => {
+                  if (
+                    wallet.selectedNetwork !== 'testnet01' &&
+                    wallet.selectedNetwork !== 'testnet05'
+                  ) {
+                    return setAlertMessage(
+                      `Funding can only be done on Testnet(s)`,
+                    );
+                  }
+                  openChainModal();
+                }}
+                isCompact
+              >
                 Fund
               </Button>
               <Button variant="info" onPress={onFundOtherFungible} isCompact>
