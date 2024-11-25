@@ -13,7 +13,6 @@ import { IKeySource, IProfile } from '@/modules/wallet/wallet.repository';
 import { base64UrlEncodeArr, hash } from '@kadena/cryptography-utils';
 import { addItem, dbDump, getAllItems, updateItem } from '../indexeddb';
 
-// eslint-disable-next-line react-refresh/only-export-components
 function BufferToBase64UrlReplacer(_key: string, value: any) {
   if (value instanceof Uint8Array) {
     // Convert Uint8Array to Base64Url string
