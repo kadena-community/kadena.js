@@ -16,14 +16,12 @@ import { useWalletState } from '../state/wallet';
 interface ChainSelectionModalProps {
   onSelect: (chainId: ChainId) => void;
   onClose: () => void;
-  currentChain: ChainId;
   submit: () => void;
 }
 
 export const ChainSelectionModal: React.FC<ChainSelectionModalProps> = ({
   onSelect,
   onClose,
-  currentChain,
   submit,
 }) => {
   const wallet = useWalletState();
@@ -48,7 +46,7 @@ export const ChainSelectionModal: React.FC<ChainSelectionModalProps> = ({
       <Stack flexDirection="column" gap="md" alignItems="stretch">
         <Select
           label="Chain Selector"
-          selectedKey={currentChain}
+          selectedKey={wallet.selectedChain}
           onSelectionChange={(key) => onSelect(key as ChainId)}
           placeholder="Choose a chain"
           size="md"

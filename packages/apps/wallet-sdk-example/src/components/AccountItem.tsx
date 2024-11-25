@@ -1,5 +1,6 @@
 import { Badge, Button, Card, Divider, Stack, Text } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
+import { chainwebHostMap } from '../actions/host';
 import { createAndTransferFund } from '../domain/fund';
 import { useFund } from '../hooks/fund';
 import { useAddressToName } from '../hooks/kadenaNames/kadenaNamesResolver';
@@ -81,8 +82,9 @@ export const AccountItem: React.FC<AccountItemProps> = ({
       ? Number(accountBalanceRaw)
       : 0;
 
-  // Determine the variant based on the account balance
   const badgeVariant = accountBalance > 0 ? 'positive' : 'negative';
+
+  console.log('selectedNetwork: ', wallet.selectedNetwork);
 
   return (
     <>
@@ -140,14 +142,16 @@ export const AccountItem: React.FC<AccountItemProps> = ({
               <Button
                 variant="primary"
                 onPress={() => {
-                  if (
-                    wallet.selectedNetwork !== 'testnet01' &&
-                    wallet.selectedNetwork !== 'testnet05'
-                  ) {
+                  const allowedNetworks = Object.keys(chainwebHostMap).filter(
+                    (network) => network !== 'mainnet01',
+                  );
+
+                  if (!allowedNetworks.includes(wallet.selectedNetwork)) {
                     return setAlertMessage(
                       `Funding can only be done on Testnet(s)`,
                     );
                   }
+
                   openChainModal();
                 }}
                 isCompact
@@ -197,7 +201,6 @@ export const AccountItem: React.FC<AccountItemProps> = ({
         <ChainSelectionModal
           onSelect={setSelectedChain}
           onClose={closeChainModal}
-          currentChain={selectedChain}
           submit={submitModal}
         />
       )}

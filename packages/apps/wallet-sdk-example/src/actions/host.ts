@@ -6,7 +6,7 @@ export type ChainwebHostGenerator = (options: {
   chainId: string;
 }) => string;
 
-const chainwebHostMap: Record<string, string | string[]> = {
+export const chainwebHostMap: Record<string, string | string[]> = {
   mainnet01: 'https://api.chainweb.com',
   testnet04: 'https://api.testnet.chainweb.com',
   testnet05: 'https://api.testnet.chainweb.com',

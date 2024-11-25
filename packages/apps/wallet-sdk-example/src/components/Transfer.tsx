@@ -128,7 +128,7 @@ export const Transfer = () => {
       addPendingTransfer(pendingTransfer);
       setIsModalOpen(false);
       setSignedTransaction(null);
-      navigate('/transactions');
+      navigate('/list');
     } catch (error) {
       console.warn(error);
       setError('Failed to send transaction');
