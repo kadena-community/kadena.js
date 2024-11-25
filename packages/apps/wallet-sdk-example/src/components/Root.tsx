@@ -120,7 +120,7 @@ const MarkdownPage: React.FC = () => {
 
             if (element.name === 'p') {
               return (
-                <Text variant="body" className="my-2">
+                <Text variant="body">
                   {parse(domToString(element.children), options)}
                 </Text>
               );
@@ -138,7 +138,17 @@ const MarkdownPage: React.FC = () => {
               const highlighted = domToString(codeElement.children);
 
               return (
-                <pre className={clsx('hljs', 'overflow-auto')}>
+                <pre
+                  className={clsx('hljs', 'overflow-auto')}
+                  style={{
+                    padding: 5,
+                    borderRadius: 5,
+                    borderColor: 'lightgray',
+                    border: '1px solid lightgray',
+                    marginTop: '2px',
+                    marginBottom: '8px',
+                  }}
+                >
                   <code
                     className={`language-${language} hljs`}
                     dangerouslySetInnerHTML={{ __html: highlighted }}
@@ -151,7 +161,7 @@ const MarkdownPage: React.FC = () => {
               const codeContent = domToString(element.children);
               return (
                 <Text
-                  variant="code"
+                  variant="ui"
                   as="code"
                   className="bg-gray-200 p-1 rounded"
                 >
