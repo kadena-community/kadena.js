@@ -1,9 +1,7 @@
 import { config } from '@/config';
 import {
   addItem,
-  clearStore,
   connect,
-  dbDump,
   deleteDatabase,
   deleteItem,
   getAllItems,
@@ -11,18 +9,8 @@ import {
   updateItem,
 } from '@/modules/db/indexeddb';
 import { execInSequence } from '@/utils/helpers';
-import { base64UrlEncodeArr, hash } from '@kadena/cryptography-utils';
-import {
-  Fungible,
-  IAccount,
-  IKeySet,
-  IWatchedAccount,
-} from '../account/account.repository';
-import { IActivity } from '../activity/activity.repository';
-import { IContact } from '../contact/contact.repository';
-import { INetwork } from '../network/network.repository';
-import { ITransaction } from '../transaction/transaction.repository';
-import { IKeySource, IProfile } from '../wallet/wallet.repository';
+
+import { IDBBackup, importBackup, serializeTables } from './backup/backup';
 import { createTables } from './migration/createDB';
 import { migrateFrom37to38 } from './migration/migrateFrom37to38';
 
@@ -190,83 +178,6 @@ const broadcast = (event: EventTypes, storeName: string, data: any[]) => {
   dbChannel.postMessage({ type: event, storeName, data });
 };
 
-type Table<T> = Array<{ key: string; value: T }>;
-export interface IDBBackup {
-  checksum: string;
-  wallet_version: string;
-  db_name: string;
-  db_version: number;
-  timestamp: number;
-  schemes: {
-    name: string;
-    keyPath: string | string[];
-    autoIncrement: boolean;
-    indexes: {
-      name: string;
-      keyPath: string | string[];
-      unique: boolean;
-      multiEntry: boolean;
-    }[];
-  }[];
-  data: {
-    profile: Table<IProfile>;
-    encryptedValue: Table<{ uuid: string; profileId: string; value: string }>;
-    keySource: Table<IKeySource>;
-    account: Table<IAccount>;
-    'watched-account': Table<IWatchedAccount>;
-    network: Table<INetwork>;
-    fungible: Table<Fungible>;
-    keyset: Table<IKeySet>;
-    transaction: Table<ITransaction>;
-    activity: Table<IActivity>;
-    contact: Table<IContact>;
-  };
-}
-
-export const importBackup =
-  (db: IDBDatabase) => async (backup: IDBBackup, profileUUIds?: string[]) => {
-    const tables = Object.keys(backup.data) as Array<keyof IDBBackup['data']>;
-    const transaction = db.transaction(tables, 'readwrite');
-    const dbProfiles: IProfile[] = await getAllItems(
-      db,
-      transaction,
-    )('profile');
-    if (!dbProfiles.length) {
-      // we can consider this a fresh database
-      if (backup.db_version !== db.version) {
-        // TODO: we can add a migration path here
-        throw new Error(
-          `Database version mismatch: expected ${db.version} but got ${backup.db_version}`,
-        );
-      }
-      await tables.map(async (table) => {
-        const store = transaction.objectStore(table);
-        const data = backup.data[table];
-        await clearStore(db, transaction)(table);
-        Promise.all(
-          data.map(({ key, value }) => {
-            if ('profileId' in value) {
-              if (
-                !profileUUIds ||
-                !profileUUIds.length ||
-                profileUUIds.includes(value.profileId)
-              ) {
-                console.log('adding', key, value);
-                store.add(value);
-              }
-            } else {
-              console.log('adding', key, value);
-              store.add(value);
-            }
-          }),
-        );
-      });
-      return true;
-    }
-
-    throw new Error('Database is not empty');
-  };
-
 export const createDbService = () => {
   const listeners: Listener[] = [];
   const subscribe: ISubscribe = (
@@ -316,7 +227,6 @@ export const createDbService = () => {
       broadcast(event, storeName, rest);
     };
   const getAll = injectDb(getAllItems);
-  const dumpDatabase = injectDb(dbDump);
   return {
     getAll,
     getOne: injectDb(getOneItem),
@@ -324,28 +234,9 @@ export const createDbService = () => {
     update: injectDb(updateItem, notify('update')),
     remove: injectDb(deleteItem, notify('delete')),
     subscribe,
-    serializeTables: async () => {
-      const dbData = await dumpDatabase();
-      const { data } = dbData;
-      const checksum = hash(JSON.stringify(data, BufferToBase64UrlReplacer));
-      const backup: IDBBackup = { checksum, wallet_version: '3', ...dbData };
-      return JSON.stringify(backup, BufferToBase64UrlReplacer, 2);
-    },
+    serializeTables: injectDb((db) => () => serializeTables(db)),
     importBackup: injectDb(importBackup, notify('import')),
   };
 };
-
-// eslint-disable-next-line react-refresh/only-export-components
-function BufferToBase64UrlReplacer(_key: string, value: any) {
-  if (value instanceof Uint8Array) {
-    // Convert Uint8Array to Base64Url string
-    return `Uint8Array:${base64UrlEncodeArr(value)}`;
-  }
-  if (value instanceof ArrayBuffer) {
-    // Convert Uint8Array to Base64Url string
-    return `ArrayBuffer:${base64UrlEncodeArr(new Uint8Array(value))}`;
-  }
-  return value;
-}
 
 export const dbService: IDBService = createDbService();

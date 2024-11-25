@@ -1,7 +1,8 @@
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { dbService, IDBBackup } from '@/modules/db/db.service';
+import { IDBBackup } from '@/modules/db/backup/backup';
+import { dbService } from '@/modules/db/db.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import InitialsAvatar from '@/pages/select-profile/initials';

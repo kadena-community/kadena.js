@@ -11,7 +11,6 @@ import {
   networkRepository,
 } from '@/modules/network/network.repository';
 import { createProfile } from '@/modules/wallet/wallet.service';
-import { ChainId } from '@kadena/client';
 import { kadenaEntropyToMnemonic } from '@kadena/hd-wallet';
 
 export async function createProfileFromChainweaverData(
@@ -153,15 +152,16 @@ export async function createProfileFromChainweaverData(
       tokens.map(async (token) => {
         try {
           return await accountRepository.addFungible({
-            chainIds: Array.from(new Array(20)).map(
-              (_, i) => i.toString() as ChainId,
-            ),
             contract: token.namespace
               ? `${token.namespace}.${token.name}`
               : token.name,
             interface: 'fungible-v2',
             symbol: token.name === 'coin' ? 'KDA' : token.name,
             title: token.name,
+            networkUUIDs: [
+              networks.find((network) => network.networkId === token.network)!
+                .uuid,
+            ],
           });
         } catch (e) {
           // token already exists

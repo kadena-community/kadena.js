@@ -8,7 +8,7 @@ export interface Fungible {
   title: string;
   symbol: string;
   interface: 'fungible-v2';
-  chainIds: ChainId[];
+  networkUUIDs?: UUID[];
 }
 
 export interface IKeySet {
@@ -196,7 +196,6 @@ export const addDefaultFungibles = execInSequence(async () => {
       symbol: 'KDA',
       interface: 'fungible-v2',
       contract: 'coin',
-      chainIds,
     };
     await accountRepository.addFungible(coin);
   }

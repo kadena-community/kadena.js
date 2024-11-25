@@ -1,4 +1,4 @@
-import { IDBBackup } from '@/modules/db/db.service';
+import { IDBBackup } from '@/modules/db/backup/backup';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { browse, readContent } from '@/utils/select-file';
 import { base64UrlDecodeArr } from '@kadena/cryptography-utils';

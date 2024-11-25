@@ -172,11 +172,11 @@ export const getAllKeyValues =
   };
 
 export const getOneItem =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
   <T>(storeName: string, key: string) => {
     return new Promise<T>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readonly');
-      const store = transaction.objectStore(storeName);
+      const tx = transaction ?? db.transaction(storeName, 'readonly');
+      const store = tx.objectStore(storeName);
       const request = store.get(key);
       request.onerror = () => {
         reject(request.error);
@@ -188,7 +188,7 @@ export const getOneItem =
   };
 
 export const addItem =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
   <T>(
     storeName: string,
     value: T,
@@ -196,8 +196,8 @@ export const addItem =
     { noCreationTime = false } = {},
   ) => {
     return new Promise<void>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readwrite');
-      const store = transaction.objectStore(storeName);
+      const tx = transaction ?? db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
       const request = store.add(
         noCreationTime ? value : { ...value, [CREATION_TIME_KEY]: Date.now() },
         key,
@@ -241,12 +241,12 @@ const isExist =
   };
 
 export const updateItem =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
   <T>(storeName: string, value: T, key?: string) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readwrite');
-      const store = transaction.objectStore(storeName);
+      const tx = transaction ?? db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
       const isDataExist = isExist(db)(storeName, value, key);
       if (!isDataExist) {
         reject(
@@ -265,7 +265,7 @@ export const updateItem =
     });
   };
 
-const getScheme = (db: IDBDatabase) => (storeName: string) => {
+export const getScheme = (db: IDBDatabase) => (storeName: string) => {
   const transaction = db.transaction(storeName, 'readonly');
   const objectStore = transaction.objectStore(storeName);
   const schema = {
