@@ -121,7 +121,7 @@ There are two main ways to move Kadena tokens (KDA) between accounts:
 - Transfer coins between accounts on the same chain.
 - Transfer coins between accounts on different chains
 
-The primary different between these two types of transfers is who pays the transaction fee to have the transaction included in a block.
+The primary difference between these two types of transfers is who pays the transaction fee to have the transaction included in a block.
 
 - With same-chain transfers, the sender must pay the transaction fee.
 - With cross-chain transfers, the sender and the recipient must both pay a transaction fee.
