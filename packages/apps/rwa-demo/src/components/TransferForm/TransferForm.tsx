@@ -23,7 +23,12 @@ export const TransferForm: FC<IProps> = ({ onClose }) => {
   const { data: investors } = useGetInvestors();
   const { submit } = useTransferTokens();
 
-  const { register, control, handleSubmit } = useForm<ITransferTokensProps>({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ITransferTokensProps>({
     values: {
       amount: 0,
       investorFromAccount: account?.address!,
@@ -52,6 +57,7 @@ export const TransferForm: FC<IProps> = ({ onClose }) => {
 
   if (!account) return;
 
+  console.log({ errors });
   return (
     <>
       <RightAside isOpen onClose={onClose}>
@@ -61,21 +67,38 @@ export const TransferForm: FC<IProps> = ({ onClose }) => {
             <TextField
               label="Amount"
               type="number"
-              {...register('amount', { required: true, max: balance })}
+              {...register('amount', {
+                required: {
+                  value: true,
+                  message: 'This field is required',
+                },
+                min: {
+                  value: 1,
+                  message: 'The value should be at least 1',
+                },
+                max: {
+                  value: balance,
+                  message: 'The value can not be more than your balance',
+                },
+              })}
+              variant={!!errors.amount?.message ? 'negative' : 'default'}
               description={`max amount tokens: ${balance}`}
-              errorMessage={`max amount tokens: ${balance}`}
+              errorMessage={errors.amount?.message}
             />
 
             <Controller
               name="investorToAccount"
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
                 <Select
                   label="Select an option"
                   items={filteredInvestors}
                   selectedKey={field.value}
+                  variant={
+                    !!errors.investorToAccount?.message ? 'negative' : 'default'
+                  }
                   onSelectionChange={field.onChange}
+                  errorMessage={errors.investorToAccount?.message}
                 >
                   {(item) => (
                     <SelectItem key={item.accountName}>
