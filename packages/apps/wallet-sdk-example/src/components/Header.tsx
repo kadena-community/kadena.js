@@ -1,20 +1,28 @@
-import { MonoContrast } from '@kadena/kode-icons';
+import { MonoContrast, MonoUsb } from '@kadena/kode-icons';
 import {
   NavHeader,
   NavHeaderButton,
   NavHeaderLink,
   NavHeaderLinkList,
+  NavHeaderSelect,
+  SelectItem,
 } from '@kadena/kode-ui';
 import { useTheme } from 'next-themes';
 import { Link, useLocation } from 'react-router-dom';
+import { useWalletState } from '../state/wallet';
 import { KadenaLogo } from './KadenaLogo';
 
 export const Header = () => {
   const location = useLocation();
   const { theme, setTheme } = useTheme();
+  const { selectNetwork, selectedNetwork } = useWalletState();
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const selectChainNetwork = (network: string) => {
+    selectNetwork(network);
   };
 
   return (
@@ -40,7 +48,22 @@ export const Header = () => {
           <Link to="/kadenanames">Kadena Names</Link>
         </NavHeaderLink>
       </NavHeaderLinkList>
-
+      <NavHeaderSelect
+        aria-label="Select Network"
+        onSelectionChange={(key) => selectChainNetwork(key as string)}
+        selectedKey={selectedNetwork}
+        startVisual={<MonoUsb />}
+      >
+        <SelectItem key={'mainnet01'} textValue="Mainnet">
+          Mainnet
+        </SelectItem>
+        <SelectItem key={'testnet04'} textValue="Testnet">
+          Testnet
+        </SelectItem>
+        <SelectItem key={'testnet05'} textValue="Testnet Pact5">
+          Testnet (Pact 5)
+        </SelectItem>
+      </NavHeaderSelect>
       <NavHeaderButton
         endVisual={<MonoContrast />}
         onPress={toggleTheme}

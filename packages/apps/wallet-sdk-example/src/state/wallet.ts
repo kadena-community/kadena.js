@@ -43,7 +43,7 @@ const passwordAtom = atom<null | string>(null);
 export const useWalletState = (initialPassword?: string) => {
   // Persisted state
   const [selectedFungible] = useAtom(selectedFungibleAtom);
-  const [selectedNetwork] = useAtom(selectedNetworkAtom);
+  const [selectedNetwork, selectNetwork] = useAtom(selectedNetworkAtom);
   const [selectedChain, selectChain] = useAtom(selectedChainAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [seed, setSeed] = useAtom(seedAtom);
@@ -139,6 +139,7 @@ export const useWalletState = (initialPassword?: string) => {
     selectedNetwork,
     selectedChain,
     selectedToChain,
+    selectNetwork,
     generateMnemonic,
     selectAccount,
     selectChain,
