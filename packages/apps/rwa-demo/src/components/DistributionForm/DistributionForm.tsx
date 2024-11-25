@@ -26,7 +26,6 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
 
   const onSubmit = async (data: IDistributeTokensProps) => {
     await submit(data);
-
     onClose();
   };
 

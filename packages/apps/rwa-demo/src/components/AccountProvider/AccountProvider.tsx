@@ -1,5 +1,8 @@
 'use client';
+import { getBalance as getBalanceFnc } from '@/services/getBalance';
 import { isAgent } from '@/services/isAgent';
+import { isFrozen } from '@/services/isFrozen';
+import { isInvestor } from '@/services/isInvestor';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useRouter } from 'next/navigation';
@@ -21,7 +24,10 @@ export interface IAccountContext {
   logout: () => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
   isAgent: boolean;
+  isInvestor: boolean;
+  isFrozen: boolean;
   selectAccount: (account: IWalletAccount) => void;
+  getBalance: () => Promise<number>;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -32,7 +38,10 @@ export const AccountContext = createContext<IAccountContext>({
   logout: () => {},
   sign: async () => undefined,
   isAgent: false,
+  isInvestor: false,
+  isFrozen: false,
   selectAccount: () => {},
+  getBalance: async () => 0,
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -40,12 +49,28 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [accounts, setAccounts] = useState<IWalletAccount[]>();
   const [isMounted, setIsMounted] = useState(false);
   const [isAgentState, setIsAgentState] = useState(false);
+  const [isInvestorState, setIsInvestorState] = useState(false);
+  const [isFrozenState, setIsFrozenState] = useState(false);
 
   const router = useRouter();
 
   const checkIsAgent = async (account: IWalletAccount) => {
     const resIsAgent = await isAgent({ agent: account.address });
     setIsAgentState(!!resIsAgent);
+  };
+  const checkIsInvestor = async (account: IWalletAccount) => {
+    const resIsInvestor = await isInvestor({ account });
+    setIsInvestorState(!!resIsInvestor);
+  };
+  const checkIsFrozen = async (account: IWalletAccount) => {
+    const res = await isFrozen({
+      investorAccount: account.address,
+      account: account!,
+    });
+
+    if (typeof res === 'boolean') {
+      setIsFrozenState(res);
+    }
   };
 
   const selectAccount = (account: IWalletAccount) => {
@@ -76,7 +101,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setAccounts(undefined);
     setAccount(payload.accounts[0]);
+    localStorage.setItem(
+      getAccountCookieName(),
+      JSON.stringify(payload.accounts[0]),
+    );
     close();
+    router.replace('/');
   }, [router]);
 
   const logout = useCallback(() => {
@@ -102,11 +132,16 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!account) {
       setIsAgentState(false);
+      setIsInvestorState(false);
       return;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     checkIsAgent(account);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    checkIsInvestor(account);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    checkIsFrozen(account);
   }, [account]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
@@ -121,6 +156,17 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     return payload.transaction;
   };
 
+  const getBalance = async () => {
+    if (!account) return 0;
+    const res = await getBalanceFnc({
+      investorAccount: account.address,
+      account,
+    });
+
+    if (typeof res !== 'number') return 0;
+    return res;
+  };
+
   return (
     <AccountContext.Provider
       value={{
@@ -131,7 +177,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         sign,
         isMounted,
         isAgent: isAgentState,
+        isInvestor: isInvestorState,
+        isFrozen: isFrozenState,
         selectAccount,
+        getBalance,
       }}
     >
       {children}

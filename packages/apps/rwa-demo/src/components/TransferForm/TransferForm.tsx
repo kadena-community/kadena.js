@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks/account';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
@@ -20,15 +21,16 @@ import {
   RightAsideHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
   onClose: () => void;
-  investorAccount: string;
 }
 
-export const TransferForm: FC<IProps> = ({ onClose, investorAccount }) => {
+export const TransferForm: FC<IProps> = ({ onClose }) => {
+  const [balance, setBalance] = useState(0);
+  const { account, getBalance } = useAccount();
   const { data: investors } = useGetInvestors();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -39,14 +41,13 @@ export const TransferForm: FC<IProps> = ({ onClose, investorAccount }) => {
   const { register, control, handleSubmit } = useForm<ITransferTokensProps>({
     values: {
       amount: 0,
-      investorFromAccount: investorAccount,
+      investorFromAccount: account?.address!,
       investorToAccount: '',
     },
   });
 
   const handleSign = async () => {
     const value = textareaRef.current?.value as unknown as IUnsignedCommand;
-    console.log(value);
     await submit(value);
   };
 
@@ -57,8 +58,20 @@ export const TransferForm: FC<IProps> = ({ onClose, investorAccount }) => {
   };
 
   const filteredInvestors = investors.filter(
-    (i) => i.accountName !== investorAccount,
+    (i) => i.accountName !== account?.address,
   );
+
+  const init = async () => {
+    const res = await getBalance();
+    setBalance(res);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    init();
+  }, []);
+
+  if (!account) return;
 
   return (
     <>
@@ -88,7 +101,9 @@ export const TransferForm: FC<IProps> = ({ onClose, investorAccount }) => {
             <TextField
               label="Amount"
               type="number"
-              {...register('amount', { required: true })}
+              {...register('amount', { required: true, max: balance })}
+              description={`max amount tokens: ${balance}`}
+              errorMessage={`max amount tokens: ${balance}`}
             />
 
             <Controller
