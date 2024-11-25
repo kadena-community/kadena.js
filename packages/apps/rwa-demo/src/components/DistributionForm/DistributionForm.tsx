@@ -1,4 +1,6 @@
+import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
+import { useFreeze } from '@/hooks/freeze';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
@@ -9,6 +11,8 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useForm } from 'react-hook-form';
+import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
+import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 
 interface IProps {
   onClose: () => void;
@@ -16,6 +20,8 @@ interface IProps {
 }
 
 export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
+  const { frozen } = useFreeze({ investorAccount });
+  const { paused } = useAsset();
   const { submit } = useDistributeTokens();
   const { register, handleSubmit } = useForm<IDistributeTokensProps>({
     values: {
@@ -41,11 +47,20 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
               {...register('amount', { required: true })}
             />
           </RightAsideContent>
-          <RightAsideFooter>
+          <RightAsideFooter
+            message={
+              <>
+                <InvestorFrozenMessage investorAccount={investorAccount} />
+                <AssetPausedMessage />
+              </>
+            }
+          >
             <Button onPress={onClose} variant="transparent">
               Cancel
             </Button>
-            <Button type="submit">Distribute</Button>
+            <Button isDisabled={frozen || paused} type="submit">
+              Distribute
+            </Button>
           </RightAsideFooter>
         </form>
       </RightAside>

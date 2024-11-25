@@ -5,7 +5,7 @@ import { Button, Stack } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useState } from 'react';
-import { InvestorBalance } from '../InvestorBalance/InvestorBalance';
+import { InvestorInfo } from '../InvestorInfo/InvestorInfo';
 import { TransferForm } from '../TransferForm/TransferForm';
 
 export const InvestorRootPage: FC = () => {
@@ -32,8 +32,8 @@ export const InvestorRootPage: FC = () => {
       )}
 
       <Stack width="100%" flexDirection="column" gap="md">
-        investor: {account.address}
-        <InvestorBalance investorAccount={account.address!} />
+        <InvestorInfo investorAccount={account.address} />
+
         <SideBarBreadcrumbs />
         <Stack gap="sm">
           <Button

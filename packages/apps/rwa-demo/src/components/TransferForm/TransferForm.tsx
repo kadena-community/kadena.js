@@ -1,4 +1,5 @@
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
@@ -12,12 +13,14 @@ import {
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 
 interface IProps {
   onClose: () => void;
 }
 
 export const TransferForm: FC<IProps> = ({ onClose }) => {
+  const { paused } = useAsset();
   const [balance, setBalance] = useState(0);
   const { account, getBalance } = useAccount();
   const { data: investors } = useGetInvestors();
@@ -110,11 +113,13 @@ export const TransferForm: FC<IProps> = ({ onClose }) => {
             />
           </RightAsideContent>
 
-          <RightAsideFooter>
+          <RightAsideFooter message={<AssetPausedMessage />}>
             <Button onPress={onClose} variant="transparent">
               Cancel
             </Button>
-            <Button type="submit">Transfer</Button>
+            <Button isDisabled={paused} type="submit">
+              Transfer
+            </Button>
           </RightAsideFooter>
         </form>
       </RightAside>
