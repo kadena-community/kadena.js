@@ -1,4 +1,4 @@
-import { MonoKeyboardArrowRight } from '@kadena/kode-icons/system';
+import { MonoShortText } from '@kadena/kode-icons/system';
 import {
   Button,
   Card,
@@ -35,7 +35,7 @@ export const WordPhrase = () => {
           heading="Word Phrase"
           description="Manage your wallet's mnemonic phrase. You can either generate a new
             random phrase or enter an existing one to restore your wallet."
-          icon={<MonoKeyboardArrowRight />}
+          icon={<MonoShortText />}
         />
         <Divider />
         <Stack

@@ -1,5 +1,5 @@
 import { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
-import { MonoArrowRight } from '@kadena/kode-icons/system';
+import { MonoAccountTree } from '@kadena/kode-icons/system';
 import {
   Button,
   Card,
@@ -144,7 +144,7 @@ export const Transfer = () => {
         <ContentHeader
           heading="Accounts"
           description="Send funds across acounts."
-          icon={<MonoArrowRight />}
+          icon={<MonoAccountTree />}
         />
 
         <Divider />

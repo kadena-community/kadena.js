@@ -1,4 +1,4 @@
-import { MonoAccountBalance } from '@kadena/kode-icons/system';
+import { MonoCommit } from '@kadena/kode-icons/system';
 import {
   Button,
   ContentHeader,
@@ -34,7 +34,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
       <ContentHeader
         heading="Confirm Transaction"
         description="Review and confirm your transaction details."
-        icon={<MonoAccountBalance />}
+        icon={<MonoCommit />}
       />
 
       <Divider />

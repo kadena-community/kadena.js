@@ -1,4 +1,4 @@
-import { MonoAccountBalance } from '@kadena/kode-icons/system';
+import { MonoShortText } from '@kadena/kode-icons/system';
 import { Button, ContentHeader, Dialog, Divider, Stack } from '@kadena/kode-ui';
 import React from 'react';
 import { NameRegistrationForm } from './NameRegistrationForm';
@@ -30,7 +30,7 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
       <ContentHeader
         heading="Register Kadena Name"
         description="Use this form to register a new Kadena name."
-        icon={<MonoAccountBalance />}
+        icon={<MonoShortText />}
       />
 
       <Divider />
