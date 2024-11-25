@@ -2,7 +2,6 @@
 @tailwind utilities;
 
 
-
 [class^="Form__"] {
   width: 100%;
 }
