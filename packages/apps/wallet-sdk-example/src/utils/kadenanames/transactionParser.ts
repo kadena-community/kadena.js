@@ -1,4 +1,5 @@
 import { ICommandResult } from '@kadena/client';
+
 export function parseChainResponse<T>(
   response: ICommandResult,
   subject: string,

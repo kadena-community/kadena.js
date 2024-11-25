@@ -17,7 +17,7 @@ integrations.
 
 For key generation and signing functionalities, you will need the Kadena HD
 Wallet package. Please refer to the
-[Kadena HD Wallet documentation](https://github.com/kadena-io/kadena.js/tree/master/packages/hdwallet)
+[Kadena HD Wallet documentation](https://github.com/kadena-io/kadena.js/tree/master/packages/libs/hd-wallet)
 for detailed instructions on how to generate keys and sign transactions
 securely.
 
