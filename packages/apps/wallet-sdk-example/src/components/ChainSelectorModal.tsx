@@ -1,4 +1,5 @@
 import { ChainId } from '@kadena/client';
+import { MonoOutgoingMultichainFunds } from '@kadena/kode-icons/system';
 import {
   Button,
   ContentHeader,
@@ -39,7 +40,7 @@ export const ChainSelectionModal: React.FC<ChainSelectionModalProps> = ({
       <ContentHeader
         heading="Select Chain"
         description="Choose a chain for your transactions."
-        icon={<span>🔗</span>}
+        icon={<MonoOutgoingMultichainFunds />}
       />
 
       <Divider />

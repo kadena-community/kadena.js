@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 
-import { MonoAccountTree } from '@kadena/kode-icons';
+import { MonoShortcut } from '@kadena/kode-icons';
 
 import React from 'react';
 import {
@@ -42,7 +42,7 @@ export const KadenaNames: React.FC = () => {
         <ContentHeader
           heading="Accounts"
           description="Kadena Address and Name Lookup."
-          icon={<MonoAccountTree />}
+          icon={<MonoShortcut />}
         />
 
         <Divider />

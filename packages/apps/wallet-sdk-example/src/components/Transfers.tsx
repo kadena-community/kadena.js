@@ -1,4 +1,4 @@
-import { MonoCallToAction } from '@kadena/kode-icons/system';
+import { MonoFormatListBulleted } from '@kadena/kode-icons/system';
 import {
   Card,
   Cell,
@@ -31,7 +31,7 @@ export const Transfers = () => {
         <ContentHeader
           heading="Transfers"
           description="View and manage your pending and completed transfers."
-          icon={<MonoCallToAction />}
+          icon={<MonoFormatListBulleted />}
         />
 
         <Divider />
