@@ -13,6 +13,7 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import { useTransfers } from '../hooks/transfers';
+import { shortenString } from '../utils/kadenanames/transform';
 import { TextEllipsis } from './Text';
 
 export const Transfers = () => {
@@ -55,7 +56,7 @@ export const Transfers = () => {
               <TableBody>
                 {pendingTransfers.map((transfer, index) => (
                   <Row key={index}>
-                    <Cell>{transfer.requestKey}</Cell>
+                    <Cell>{shortenString(transfer.requestKey)}</Cell>
                     <Cell>{transfer.chainId}</Cell>
                     <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
@@ -106,7 +107,7 @@ export const Transfers = () => {
               <TableBody>
                 {transfers.map((transfer, index) => (
                   <Row key={index}>
-                    <Cell>{transfer.requestKey}</Cell>
+                    <Cell>{shortenString(transfer.requestKey)}</Cell>
                     <Cell>{transfer.chainId}</Cell>
                     <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>

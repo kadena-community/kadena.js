@@ -54,11 +54,8 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
         justifyContent="center"
         marginBlockStart="lg"
       >
-        <Button onPress={onRegistered} variant="positive">
-          Register
-        </Button>
         <Button onPress={onClose} variant="negative">
-          Close
+          Cancel
         </Button>
       </Stack>
     </Dialog>
