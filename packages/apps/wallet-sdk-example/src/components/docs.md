@@ -1,8 +1,9 @@
 Welcome to the Example Wallet App! This wallet application leverages the robust
-capabilities of the Kadena Wallet SDK to provide a seamless and secure
-experience for managing your blockchain assets. Designed with user-friendliness
-and advanced functionality in mind, our wallet ensures that you can effortlessly
-interact with the Kadena network while enjoying a feature-rich interface.
+capabilities of **Kadena Wallet SDK** to provide a seamless and secure
+experience for managing your blockchain assets. Designed with UI building blocks
+of **Kadena Kode-UI** with user-friendliness and advanced functionality in mind,
+our wallet ensures that you can effortlessly interact with the Kadena network
+while enjoying a feature-rich interface.
 
 The Kadena Wallet SDK provides a simple and unified interface to integrate
 Kadena blockchain functionalities into your wallet applications. It abstracts
@@ -765,28 +766,11 @@ if (name) {
 
 ---
 
-## Conclusion
-
-The Kadena Wallet SDK offers a comprehensive set of tools to integrate Kadena
-blockchain functionalities into your wallet applications easily. Designed with
-developers in mind, it ensures that even those with intermediate experience can
-build robust wallets without delving into the complexities of blockchain
-interactions.
-
-By providing clear methods with well-defined parameters, the SDK simplifies
-tasks such as transaction creation, account querying, and handling cross-chain
-transfers. With the Kadena Wallet SDK, building wallets on Kadena is as clear as
-day.
-
-For more information and advanced usage, please refer to the SDK documentation
-and explore the various classes and methods provided.
-
----
-
 ## Happy Coding!
 
-With the Kadena Wallet SDK and Kadena HD Wallet, you're well-equipped to build
-powerful and secure wallet applications on the Kadena blockchain. Dive into the
+With the Kadena Wallet SDK, Kadena HD Wallet, ande Kadena Kode-UI you're
+well-equipped to build powerful and secure wallet applications on the Kadena
+blockchain. Please use this example app as a Reference and dive into the
 documentation, explore the features, and start building today!
 
 ---
