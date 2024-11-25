@@ -17,7 +17,7 @@ In simple terms, an **account name** is a unique name on the blockchain that can
 
 ## Defining a keyset
 
-A keyset is a specific type of **guard** that consists of one or public keys and a **predicate** that specifies how many of the keys are required to perform an operation. In JSON, a keyset looks similar to the following example:
+A keyset is a specific type of **guard** that consists of one or more public keys and a **predicate** that specifies how many of the keys are required to perform an operation. In JSON, a keyset looks similar to the following example:
 
 ```json
 {
