@@ -137,6 +137,9 @@ const createAccountRepository = ({
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);
     },
+    updateFungible: async (fungible: Fungible): Promise<void> => {
+      return update('fungible', fungible);
+    },
     getFungible: async (contract: string): Promise<Fungible> => {
       return getOne('fungible', contract);
     },
