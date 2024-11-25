@@ -75,6 +75,15 @@ export const AccountItem: React.FC<AccountItemProps> = ({
     onFundAccount();
   };
 
+  const accountBalanceRaw = accountsBalances[account.name];
+  const accountBalance =
+    accountBalanceRaw !== undefined && accountBalanceRaw !== null
+      ? Number(accountBalanceRaw)
+      : 0;
+
+  // Determine the variant based on the account balance
+  const badgeVariant = accountBalance > 0 ? 'positive' : 'negative';
+
   return (
     <>
       <Divider />
@@ -102,10 +111,8 @@ export const AccountItem: React.FC<AccountItemProps> = ({
             <Text variant="ui" bold>
               Balance:
             </Text>
-            <Badge size="sm" style="info">
-              {loadingBalance
-                ? 'Loading...'
-                : accountsBalances[account.name] ?? '0'}
+            <Badge size="sm" style={badgeVariant}>
+              {loadingBalance ? 'Loading...' : accountBalance.toLocaleString()}
             </Badge>
           </Stack>
 
