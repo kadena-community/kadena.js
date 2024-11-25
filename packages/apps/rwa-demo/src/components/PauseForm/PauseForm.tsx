@@ -6,39 +6,49 @@ import { getClient } from '@/utils/client';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 
 export const PauseForm: FC = () => {
-  const { isPaused } = useAsset();
+  const { paused } = useAsset();
+  const [loading, setLoading] = useState(false);
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
 
   const handlePauseToggle = async () => {
     try {
-      const transaction = await togglePause(false, account!);
-      console.log({ transaction });
-      const signedTransaction = await sign(transaction);
+      setLoading(true);
+      const tx = await togglePause(paused, account!);
+      const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
-      console.log({ res });
 
-      addTransaction({
+      const transaction = addTransaction({
         ...res,
         type: 'PAUSE',
         data: { ...res },
       });
 
-      console.log('DONE');
+      await transaction.listener;
     } catch (e: any) {}
   };
 
+  const showIcon = () => {
+    if (loading) {
+      return <TransactionPendingIcon />;
+    }
+    return paused ? <MonoPause /> : <MonoPlayArrow />;
+  };
+
+  useEffect(() => {
+    setLoading(false);
+  }, [paused]);
+
   return (
-    <Button
-      onPress={handlePauseToggle}
-      startVisual={isPaused ? <MonoPause /> : <MonoPlayArrow />}
-    >
-      {isPaused ? 'paused' : 'active'}
+    <Button onPress={handlePauseToggle} startVisual={showIcon()}>
+      {paused ? 'paused' : 'active'}
     </Button>
   );
 };

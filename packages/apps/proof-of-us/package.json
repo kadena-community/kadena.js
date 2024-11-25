@@ -1,6 +1,6 @@
 {
   "name": "@kadena/proof-of-us",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "private": true,
   "scripts": {
     "build": "pnpm run generate:sdk && next build",
@@ -71,7 +71,7 @@
     "@types/react-dom": "^18.2.25",
     "@types/uuid": "^9.0.8",
     "@vanilla-extract/next-plugin": "2.4.0",
-    "@vanilla-extract/vite-plugin": "4.0.7",
+    "@vanilla-extract/vite-plugin": "4.0.17",
     "@vanilla-extract/webpack-plugin": "2.3.7",
     "@vitest/coverage-v8": "^1.6.0",
     "cache-sh": "^1.2.1",

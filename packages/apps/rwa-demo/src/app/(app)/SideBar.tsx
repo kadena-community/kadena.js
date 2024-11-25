@@ -1,3 +1,4 @@
+import { AssetSwitch } from '@/components/AssetSwitch/AssetSwitch';
 import { useAccount } from '@/hooks/account';
 import {
   MonoApps,
@@ -64,10 +65,13 @@ export const SideBar: FC = () => {
           />
         </>
       }
+      appContext={<AssetSwitch />}
       context={
         <>
           <SideBarItemsInline>
-            <ContextMenu trigger={<Button variant="outlined">Profile</Button>}>
+            <ContextMenu
+              trigger={<Button variant="outlined">{account?.alias}</Button>}
+            >
               <ContextMenuItem
                 endVisual={<MonoLogout />}
                 label="Logout"

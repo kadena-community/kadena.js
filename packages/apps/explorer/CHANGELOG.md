@@ -1,5 +1,12 @@
 # @kadena/explorer
 
+## 0.8.10
+
+### Patch Changes
+
+- Updated dependencies \[868c732]
+  - @kadena/graph\@2.0.1
+
 ## 0.8.9
 
 ### Patch Changes
