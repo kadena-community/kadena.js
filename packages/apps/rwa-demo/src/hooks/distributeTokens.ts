@@ -9,25 +9,25 @@ export const useDistributeTokens = () => {
   const { addTransaction } = useTransactions();
 
   const submit = async (data: IDistributeTokensProps) => {
-    //try {
-    const tx = await distributeTokens(data, account!);
+    try {
+      const tx = await distributeTokens(data, account!);
 
-    console.log(tx);
-    const signedTransaction = await sign(tx);
-    if (!signedTransaction) return;
+      console.log(tx);
+      const signedTransaction = await sign(tx);
+      if (!signedTransaction) return;
 
-    const client = getClient();
-    const res = await client.submit(signedTransaction);
+      const client = getClient();
+      const res = await client.submit(signedTransaction);
 
-    addTransaction({
-      ...res,
-      type: 'DISTRIBUTETOKENS',
-      data: { ...res, ...data },
-    });
+      addTransaction({
+        ...res,
+        type: 'DISTRIBUTETOKENS',
+        data: { ...res, ...data },
+      });
 
-    console.log({ res });
-    console.log('DONE');
-    // } catch (e: any) {}
+      console.log({ res });
+      console.log('DONE');
+    } catch (e: any) {}
   };
 
   return { submit };

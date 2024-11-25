@@ -28,12 +28,26 @@ export const TransactionsContext = createContext<ITransactionsContext>({
   getTransactions: () => [],
 });
 
-const interpretErrorMessage = (result: any, data: ITransaction): string => {
-  if (result.result.error?.message?.includes('Insert: row found for key')) {
-    return `{data.type}: This key already exists`;
+const interpretMessage = (str: string, data?: ITransaction): string => {
+  if (str?.includes('Insert: row found for key')) {
+    return `${data?.type}: This key already exists`;
+  }
+  if (str?.includes('buy gas failed')) {
+    return `This account does not have enough balance to pay for Gas`;
   }
 
-  return `${data.type}: ${result.result.error.message}`;
+  return `${data?.type}: ${str}`;
+};
+
+export const interpretErrorMessage = (
+  result: any,
+  data?: ITransaction,
+): string => {
+  if (typeof result === 'string') {
+    return interpretMessage(result);
+  }
+
+  return interpretMessage(result.result.error?.message!, data);
 };
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {

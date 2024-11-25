@@ -1,28 +1,26 @@
+import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';
-import type { IUnsignedCommand } from '@kadena/client';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
 export const useTransferTokens = () => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
+  const { addNotification } = useNotifications();
 
-  const createTx = async (
-    data: ITransferTokensProps,
-  ): Promise<IUnsignedCommand | undefined> => {
-    const tx = await transferTokens(data, account!);
-
-    return tx;
-  };
-
-  const submit = async (unsignedTransaction: IUnsignedCommand) => {
+  const submit = async (data: ITransferTokensProps) => {
     try {
-      const signedTransaction = await sign(unsignedTransaction);
+      const tx = await transferTokens(data, account!);
+      const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
+
       const client = getClient();
       const res = await client.submit(signedTransaction);
+
+      console.log(1111, res);
 
       addTransaction({
         ...res,
@@ -32,8 +30,14 @@ export const useTransferTokens = () => {
 
       console.log({ res });
       console.log('DONE');
-    } catch (e: any) {}
+    } catch (e: any) {
+      addNotification({
+        intent: 'negative',
+        label: 'there was an error',
+        message: interpretErrorMessage(e.message),
+      });
+    }
   };
 
-  return { submit, createTx };
+  return { submit };
 };
