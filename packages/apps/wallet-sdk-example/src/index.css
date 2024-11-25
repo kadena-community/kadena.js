@@ -2,10 +2,10 @@
 @tailwind utilities;
 
 
-/*
+
 [class^="Form__"] {
   width: 100%;
-} */
+}
 
 [class^="Dialog"] {
   max-height: inherit
