@@ -7,6 +7,7 @@ import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
+import type { IWalletAccount } from './utils';
 
 export interface ITransaction {
   uuid: string;
@@ -60,32 +61,39 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const { activeNetwork } = useNetwork();
 
-  const addListener = useCallback((data: ITransaction) => {
-    return getClient()
-      .listen({
-        requestKey: data.requestKey,
-        chainId: activeNetwork.chainId,
-        networkId: activeNetwork.networkId,
-      })
-      .then((result) => {
-        if (result.result.status === 'failure') {
+  const addListener = useCallback(
+    (data: ITransaction, account: IWalletAccount) => {
+      return getClient()
+        .listen({
+          requestKey: data.requestKey,
+          chainId: activeNetwork.chainId,
+          networkId: activeNetwork.networkId,
+        })
+        .then((result) => {
+          if (result.result.status === 'failure') {
+            addNotification({
+              intent: 'negative',
+              label: 'there was an error',
+              message: interpretErrorMessage(result, data),
+              url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+            });
+          }
+        })
+        .catch((e) => {
           addNotification({
             intent: 'negative',
             label: 'there was an error',
-            message: interpretErrorMessage(result, data),
+            message: JSON.stringify(e),
             url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
           });
-        }
-      })
-      .catch((e) => {
-        addNotification({
-          intent: 'negative',
-          label: 'there was an error',
-          message: JSON.stringify(e),
-          url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+        })
+        .finally(() => {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          store.removeTransaction(account!, data);
         });
-      });
-  }, []);
+    },
+    [],
+  );
 
   const getTransactions = (type: string) => {
     return Object.entries(transactions)
@@ -105,7 +113,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const data = { ...request, uuid: crypto.randomUUID() };
-    data.listener = addListener(data);
+    data.listener = addListener(data, account!);
     setTransactions((v) => {
       return [...v, data];
     });
@@ -128,7 +136,22 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     init();
   }, [account]);
 
-  console.log({ transactions });
+  useEffect(() => {
+    if (!account && !transactions.find((v) => !v.listener)) return;
+
+    setTransactions((v) => {
+      const transactionsWithListeners = v.map((transaction) => {
+        const newTx = { ...transaction };
+        if (newTx.listener) return newTx;
+        newTx.listener = addListener(newTx, account!);
+
+        return newTx;
+      });
+
+      return transactionsWithListeners;
+    });
+  }, [transactions.length, account]);
+
   return (
     <TransactionsContext.Provider
       value={{ transactions, addTransaction, getTransactions }}

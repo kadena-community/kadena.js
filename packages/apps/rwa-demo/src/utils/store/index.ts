@@ -13,6 +13,13 @@ const RWAStore = () => {
     await set(ref(database, `accounts/${account.address}/${data.uuid}`), data);
   };
 
+  const removeTransaction = async (
+    account: IWalletAccount,
+    data: ITransaction,
+  ) => {
+    await set(ref(database, `accounts/${account.address}/${data.uuid}`), null);
+  };
+
   const getAllTransactions = async (
     account: IWalletAccount,
   ): Promise<ITransaction[]> => {
@@ -37,7 +44,12 @@ const RWAStore = () => {
     return () => off(accountRef);
   };
 
-  return { addTransaction, getAllTransactions, listenToAllTransactions };
+  return {
+    addTransaction,
+    removeTransaction,
+    getAllTransactions,
+    listenToAllTransactions,
+  };
 };
 
 export const store = RWAStore();
