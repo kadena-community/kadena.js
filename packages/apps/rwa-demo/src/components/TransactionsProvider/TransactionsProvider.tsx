@@ -96,9 +96,9 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       .filter((val) => val.type === type);
   };
 
-  const addTransaction = (
+  const addTransaction = async (
     request: Omit<ITransaction, 'uuid'>,
-  ): ITransaction => {
+  ): Promise<ITransaction> => {
     if (transactions[request.requestKey]) {
       console.error('requestKey already exists', request.requestKey);
       return transactions[request.requestKey];
@@ -110,7 +110,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       return { ...v, [request.requestKey]: { ...data } };
     });
 
-    store.addTransaction(data);
+    await store.addTransaction(data);
 
     return data;
   };
@@ -126,6 +126,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
   useEffect(() => {
     if (!account) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
   }, [account]);
 

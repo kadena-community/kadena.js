@@ -44,6 +44,8 @@ export interface ILayoutContext {
   setRightAsideOnClose: (value: () => void) => void;
   breadcrumbsRef?: HTMLDivElement | null;
   setBreadcrumbsRef: (value?: HTMLDivElement | null) => void;
+  headerContextRef?: HTMLDivElement | null;
+  setHeaderContextRef: (value?: HTMLDivElement | null) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   isExpanded: true,
@@ -72,6 +74,8 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
     useState<HTMLDivElement | null>(null);
 
   const [breadcrumbsRef, setBreadcrumbsRefState] =
+    useState<HTMLDivElement | null>(null);
+  const [headerContextRef, setHeaderContextRefState] =
     useState<HTMLDivElement | null>(null);
   const [isRightAsideExpanded, setIsRightAsideExpanded] = useState(false);
   const rightAsideOnCloseRef = useRef();
@@ -136,6 +140,9 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setBreadcrumbsRef = (value?: HTMLDivElement | null) => {
     setBreadcrumbsRefState(value ? value : null);
   };
+  const setHeaderContextRef = (value?: HTMLDivElement | null) => {
+    setHeaderContextRefState(value ? value : null);
+  };
   const setRightAsideOnClose = (value?: any) => {
     rightAsideOnCloseRef.current = value;
   };
@@ -166,6 +173,8 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setIsRightAsideExpanded: handleSetRightAsideExpanded,
         breadcrumbsRef,
         setBreadcrumbsRef,
+        headerContextRef,
+        setHeaderContextRef,
         rightAsideOnClose: rightAsideOnCloseRef.current,
         setRightAsideOnClose,
       }}

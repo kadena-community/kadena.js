@@ -1,15 +1,18 @@
-import { IWalletAccount } from '@/components/AccountProvider/utils';
-import { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IWalletAccount } from '@/components/AccountProvider/utils';
+import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { database } from './firebase';
 
 const RWAStore = () => {
   const addTransaction = async (data: ITransaction) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { listener, ...newTransaction } = data;
     const tx = { ...newTransaction.tx };
 
     const promises = tx.sigs.map((sig) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       set(ref(database, `signees/${tx.hash}/${sig.pubKey}`), sig);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       set(ref(database, `accounts/${sig.pubKey}/${tx.hash}`), tx);
     });
     await Promise.all(promises);

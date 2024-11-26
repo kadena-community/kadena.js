@@ -22,6 +22,7 @@ export {
   SideBar,
   SideBarFooter,
   SideBarFooterItem,
+  SideBarHeaderContext,
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
