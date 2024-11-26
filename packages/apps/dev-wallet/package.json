@@ -61,7 +61,7 @@
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@vanilla-extract/esbuild-plugin": "^2.3.5",
-    "@vanilla-extract/vite-plugin": "4.0.7",
+    "@vanilla-extract/vite-plugin": "4.0.17",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
