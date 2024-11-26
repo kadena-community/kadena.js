@@ -45,21 +45,17 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
   useEffect(() => {
     if (tx && resolveRef.current) {
       resolveRef.current(tx);
-      // resolveRef.current = null; // Clean up after resolving
     }
-  }, [tx]); // Dependency on state changes
+  }, [tx]);
 
   const waitForStateChange = () => {
     return new Promise((resolve) => {
-      resolveRef.current = resolve; // Store the resolver
+      resolveRef.current = resolve;
     });
   };
 
   const handlePress = async () => {
-    console.log(1);
     const message = await waitForStateChange();
-    console.log(2, message);
-
     return message;
   };
 
