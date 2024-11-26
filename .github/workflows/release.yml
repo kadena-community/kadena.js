@@ -75,8 +75,8 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t ghcr.io/kadena.js/graph:latest .
-          cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:latest -t ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
+          cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:latest -t ghcr.io/kadena/graph:${GITHUB_SHA::7}
 
       - name: Push Docker Image to GHCR
         run: |
-          docker push ghcr.io/kadena.js/graph:latest
+          docker push ghcr.io/kadena.js/graph:latest && docker push ghcr.io/kadena/graph:${GITHUB_SHA::7}
