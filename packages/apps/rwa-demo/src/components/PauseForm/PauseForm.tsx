@@ -1,3 +1,4 @@
+import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useTransactions } from '@/hooks/transactions';
@@ -5,6 +6,7 @@ import { togglePause } from '@/services/togglePause';
 import { getClient } from '@/utils/client';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
@@ -14,6 +16,7 @@ export const PauseForm: FC = () => {
   const [loading, setLoading] = useState(false);
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
+  const { addNotification } = useNotifications();
 
   const handlePauseToggle = async () => {
     try {
@@ -31,7 +34,14 @@ export const PauseForm: FC = () => {
       });
 
       await transaction.listener;
-    } catch (e: any) {}
+    } catch (e: any) {
+      addNotification({
+        intent: 'negative',
+        label: 'there was an error',
+        message: interpretErrorMessage(e.message),
+      });
+      setLoading(false);
+    }
   };
 
   const showIcon = () => {
