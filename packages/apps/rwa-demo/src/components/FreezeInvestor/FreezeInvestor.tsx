@@ -43,14 +43,9 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount }) => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      addTransaction({
+      await addTransaction({
         ...res,
         type: 'FREEZE-ADDRESS',
-        data: {
-          ...res,
-          ...data,
-        },
-        tx: signedTransaction,
       });
     } catch (e: any) {
       setIsLoading(false);

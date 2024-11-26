@@ -12,18 +12,15 @@ export const useDistributeTokens = () => {
     try {
       const tx = await distributeTokens(data, account!);
 
-      console.log(tx);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      addTransaction({
+      await addTransaction({
         ...res,
         type: 'DISTRIBUTETOKENS',
-        data: { ...res, ...data },
-        tx: signedTransaction,
       });
 
       console.log({ res });

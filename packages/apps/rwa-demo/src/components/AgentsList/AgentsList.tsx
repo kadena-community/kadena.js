@@ -5,14 +5,20 @@ import { removeAgent } from '@/services/removeAgent';
 import { getClient } from '@/utils/client';
 import { MonoDelete } from '@kadena/kode-icons';
 import { Button, Heading } from '@kadena/kode-ui';
-import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
+import {
+  CompactTable,
+  CompactTableFormatters,
+  useNotifications,
+} from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { Confirmation } from '../Confirmation/Confirmation';
+import { interpretErrorMessage } from '../TransactionsProvider/TransactionsProvider';
 
 export const AgentsList: FC = () => {
   const { data } = useGetAgents();
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
+  const { addNotification } = useNotifications();
 
   const handleDelete = async (accountName: any) => {
     try {
@@ -24,16 +30,20 @@ export const AgentsList: FC = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      console.log({ res });
-      addTransaction({
+      await addTransaction({
         ...res,
         type: 'REMOVEAGENT',
-        data: { ...res, ...data },
       });
 
       await client.listen(res);
       console.log('DONE');
-    } catch (e: any) {}
+    } catch (e: any) {
+      addNotification({
+        intent: 'negative',
+        label: 'there was an error',
+        message: interpretErrorMessage(e.message),
+      });
+    }
   };
 
   return (

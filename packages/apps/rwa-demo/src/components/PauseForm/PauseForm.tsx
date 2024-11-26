@@ -25,11 +25,9 @@ export const PauseForm: FC = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      const transaction = addTransaction({
+      const transaction = await addTransaction({
         ...res,
         type: 'PAUSE',
-        data: { ...res },
-        tx: signedTransaction,
       });
 
       await transaction.listener;

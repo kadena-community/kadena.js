@@ -38,11 +38,9 @@ export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
       const res = await client.submit(signedTransaction);
       console.log(res);
 
-      addTransaction({
+      await addTransaction({
         ...res,
         type: 'IDENTITY-REGISTERED',
-        data: { ...res, ...data },
-        tx: signedTransaction,
       });
 
       console.log('DONE');

@@ -1,11 +1,22 @@
 'use client';
-import { SideBarLayout } from '@kadena/kode-ui/patterns';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideHeader,
+  SideBarHeaderContext,
+  SideBarLayout,
+  useLayout,
+} from '@kadena/kode-ui/patterns';
 
+import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
 import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { AssetForm } from '@/components/AssetSwitch/AssetForm';
+import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
+import { useTransactions } from '@/hooks/transactions';
 import { getAsset } from '@/utils/getAsset';
-import { Heading, Link, Stack } from '@kadena/kode-ui';
-import React from 'react';
+import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
+import { Button, Heading, Link, Stack } from '@kadena/kode-ui';
+import React, { useState } from 'react';
 import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
 
@@ -14,6 +25,10 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { transactions } = useTransactions();
+
   if (!getAsset()) {
     return (
       <Stack
@@ -32,20 +47,53 @@ const RootLayout = ({
   }
 
   return (
-    <SideBarLayout
-      logo={
-        <Link href="/">
-          <KLogo height={40} />
-        </Link>
-      }
-      sidebar={<SideBar />}
-    >
-      <Stack width="100%" flexDirection="column" gap="sm">
-        <AssetInfo />
+    <>
+      <SideBarHeaderContext>
+        <Button
+          variant="transparent"
+          startVisual={
+            transactions.length ? (
+              <TransactionPendingIcon />
+            ) : (
+              <MonoAccountBalanceWallet />
+            )
+          }
+          onPress={() => {
+            setOpenTransactionsSide(true);
+            setIsRightAsideExpanded(true);
+          }}
+        />
+      </SideBarHeaderContext>
 
-        {children}
-      </Stack>
-    </SideBarLayout>
+      {isRightAsideExpanded && openTransactionsSide && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setOpenTransactionsSide(false);
+            setIsRightAsideExpanded(false);
+          }}
+        >
+          <RightAsideHeader label="Current transactions" />
+          <RightAsideContent>
+            <ActiveTransactionsList />
+          </RightAsideContent>
+        </RightAside>
+      )}
+      <SideBarLayout
+        logo={
+          <Link href="/">
+            <KLogo height={40} />
+          </Link>
+        }
+        sidebar={<SideBar />}
+      >
+        <Stack width="100%" flexDirection="column" gap="sm">
+          <AssetInfo />
+
+          {children}
+        </Stack>
+      </SideBarLayout>
+    </>
   );
 };
 

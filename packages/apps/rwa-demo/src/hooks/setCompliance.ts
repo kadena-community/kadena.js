@@ -21,11 +21,9 @@ export const useSetCompliance = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      addTransaction({
+      await addTransaction({
         ...res,
         type: 'SETCOMPLIANCE',
-        data: { ...res, ...data },
-        tx: signedTransaction,
       });
 
       console.log({ res });

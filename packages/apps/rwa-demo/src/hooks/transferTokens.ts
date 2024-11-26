@@ -20,11 +20,9 @@ export const useTransferTokens = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      addTransaction({
+      await addTransaction({
         ...res,
         type: 'TRANSFERTOKENS',
-        data: { ...res },
-        tx: signedTransaction,
       });
 
       console.log({ res });

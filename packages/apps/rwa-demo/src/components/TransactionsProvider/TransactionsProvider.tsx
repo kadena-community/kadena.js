@@ -3,30 +3,29 @@ import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
 import { getClient } from '@/utils/client';
 import { store } from '@/utils/store';
-import type { ICommand, ICommandResult } from '@kadena/client';
+import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface ITransaction {
   uuid: string;
-  tx: ICommand;
   requestKey: string;
   type: string;
-  data: Record<string, any>;
   listener?: Promise<void | ICommandResult>;
-  result?: boolean;
 }
 
 export interface ITransactionsContext {
-  transactions: Record<ITransaction['requestKey'], ITransaction>;
-  addTransaction: (request: Omit<ITransaction, 'uuid'>) => ITransaction;
+  transactions: ITransaction[];
+  addTransaction: (
+    request: Omit<ITransaction, 'uuid'>,
+  ) => Promise<ITransaction>;
   getTransactions: (type: string) => ITransaction[];
 }
 
 export const TransactionsContext = createContext<ITransactionsContext>({
-  transactions: {},
-  addTransaction: (request) => {
+  transactions: [],
+  addTransaction: async (request) => {
     return {} as ITransaction;
   },
   getTransactions: () => [],
@@ -57,9 +56,7 @@ export const interpretErrorMessage = (
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { addNotification } = useNotifications();
   const { account } = useAccount();
-  const [transactions, setTransactions] = useState<
-    Record<ITransaction['requestKey'], ITransaction>
-  >({});
+  const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
   const { activeNetwork } = useNetwork();
 
@@ -99,29 +96,30 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const addTransaction = async (
     request: Omit<ITransaction, 'uuid'>,
   ): Promise<ITransaction> => {
-    if (transactions[request.requestKey]) {
+    const foundExistingTransaction = transactions.find(
+      (v) => v.requestKey === request.requestKey,
+    );
+    if (foundExistingTransaction) {
       console.error('requestKey already exists', request.requestKey);
-      return transactions[request.requestKey];
+      return foundExistingTransaction;
     }
 
     const data = { ...request, uuid: crypto.randomUUID() };
     data.listener = addListener(data);
     setTransactions((v) => {
-      return { ...v, [request.requestKey]: { ...data } };
+      return [...v, data];
     });
 
-    await store.addTransaction(data);
+    await store.addTransaction(account!, data);
 
     return data;
   };
 
-  const listenToTransactions = (e) => {
-    console.log('listentotransactions', e);
+  const listenToTransactions = (transactions: ITransaction[]) => {
+    setTransactions(transactions);
   };
 
   const init = async () => {
-    const data = await store.getAllTransactions(account!);
-    console.log({ data });
     store.listenToAllTransactions(account!, listenToTransactions);
   };
   useEffect(() => {
@@ -130,6 +128,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     init();
   }, [account]);
 
+  console.log({ transactions });
   return (
     <TransactionsContext.Provider
       value={{ transactions, addTransaction, getTransactions }}
