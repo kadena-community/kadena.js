@@ -35,145 +35,166 @@ export async function createProfileFromChainweaverData(
 
   // process networks
   const networks = await enrichNetworks(importedNetworks);
-  await Promise.all(
-    networks.map(async (network) => {
-      try {
-        return await networkRepository.addNetwork(network);
-      } catch (e) {
-        // network already exists
-        console.log(`Network already exists: ${network.networkId}`);
-      }
-    }),
-  );
+  const allDbNetworks: Array<INetwork & { imported?: boolean }> =
+    await networkRepository.getAllNetworks();
+  const compatibleNetworks = (
+    await Promise.all(
+      networks.map(async (network) => {
+        const dbNetwork = allDbNetworks.find(
+          (dbNetwork) => dbNetwork.networkId === network.networkId,
+        );
+        if (dbNetwork) {
+          if (dbNetwork.imported) {
+            console.log(
+              `Network ${network.networkId} already imported; skipping`,
+            );
+            return undefined;
+          }
+          dbNetwork.imported = true;
+          return {
+            ...dbNetwork,
+            // to link account to correct network
+            name: network.name,
+            imported: true,
+          };
+        }
+        try {
+          await networkRepository.addNetwork(network);
+          return network;
+        } catch (e) {
+          networkRepository.getNetwork;
+          console.log(`Error adding network ${network.name}; skipping`);
+          return undefined;
+        }
+      }),
+    )
+  ).filter((network) => network !== undefined);
 
   const rootKeyBuffer = new TextEncoder().encode(rootKey);
   console.log('rootKeyBuffer length', rootKeyBuffer.length);
   const rootKeyHash = await crypto.subtle.digest('SHA-256', rootKeyBuffer);
   const mnemonic = await kadenaEntropyToMnemonic(new Uint8Array(rootKeyHash));
 
-  try {
-    // process profile
-    const profile = await createProfile(
-      profileName,
-      password,
-      networks,
-      config.defaultAccentColor,
-      {
-        authMode: 'PASSWORD',
-        rememberPassword: 'session',
-      },
-      mnemonic,
+  // process profile
+  const profile = await createProfile(
+    profileName,
+    password,
+    networks,
+    config.defaultAccentColor,
+    {
+      authMode: 'PASSWORD',
+      rememberPassword: 'session',
+    },
+    mnemonic,
+  );
+  console.log(`new profile with id ${profile.uuid}`);
+  profileId = profile.uuid;
+
+  // process keypairs
+  // two variants:
+  //   1. start with root key and create using indexes (preferred)
+  //   2. only use keypairs
+  const keyManager = (await keySourceManager.get(
+    'HD-chainweaver',
+  )) as ChainweaverService;
+
+  const cwWallet = await keyManager.import(
+    profile.uuid,
+    rootKey,
+    password,
+    keyPairs,
+  );
+
+  console.log('processing accounts');
+
+  // process accounts
+  // this should be in sequence as we need to create keysets first
+  for (let i = 0; i < accounts.length; i++) {
+    const account = accounts[i];
+
+    if (
+      !cwWallet.keys.find((k) => k.publicKey === account.account.split('k:')[1])
+        ?.secretId
+    ) {
+      console.log(
+        `Skipping import of account ${account.account} as it is not in the keypair list. This is an account to be added to address book`,
+      );
+      continue;
+    }
+
+    console.warn(`Network ${account.network} not found`);
+
+    const dbNetwork = compatibleNetworks.find(
+      (network) => network?.name === account.network,
     );
-    console.log(`new profile with id ${profile.uuid}`);
-    profileId = profile.uuid;
 
-    // process keypairs
-    // two variants:
-    //   1. start with root key and create using indexes (preferred)
-    //   2. only use keypairs
-    const keyManager = (await keySourceManager.get(
-      'HD-chainweaver',
-    )) as ChainweaverService;
+    if (dbNetwork === undefined) {
+      // TODO: ask the user for the network with `account.network` name and
+      // ask them to provide a host and networkId
+      console.warn(
+        `Skipping import... Network ${account.network} not found for account ${account.account}.`,
+      );
+      continue;
+    }
 
-    const cwWallet = await keyManager.import(
+    const dbKeySet = await accountRepository.getKeysetByPrincipal(
+      account.account,
       profile.uuid,
-      rootKey,
-      password,
-      keyPairs,
     );
 
-    console.log('processing accounts');
+    const keySet: IKeySet = dbKeySet ?? {
+      guard: {
+        keys: [account.account.split('k:')[1]],
+        pred: 'keys-all',
+      },
+      principal: account.account,
+      profileId: profile.uuid,
+      uuid: crypto.randomUUID(),
+    };
 
-    // process accounts
-    await Promise.all(
-      accounts.map(async (account) => {
-        console.log('account', account);
+    const newAccount: IAccount = {
+      uuid: crypto.randomUUID(),
+      profileId: profile.uuid,
+      address: account.account,
+      keysetId: keySet.uuid,
+      networkUUID: dbNetwork.uuid,
+      contract: 'coin',
+      chains: [],
+      overallBalance: '0',
+      alias: account.notes || '',
+    };
 
-        if (
-          !cwWallet.keys.find(
-            (k) => k.publicKey === account.account.split('k:')[1],
-          )?.secretId
-        ) {
-          console.log(
-            `Skipping import of account ${account.account} as it is not in the keypair list. This is an account to be added to address book`,
-          );
-          return;
-        }
-
-        const keySet: IKeySet = {
-          guard: {
-            keys: [account.account.split('k:')[1]],
-            pred: 'keys-all',
-          },
-          principal: account.account,
-          profileId: profile.uuid,
-          uuid: crypto.randomUUID(),
-        };
-
-        console.warn(`Network ${account.network} not found`);
-
-        const dbNetwork = networks.find(
-          (network) => network.name === account.network,
-        );
-        const networkId = dbNetwork?.uuid;
-
-        if (networkId === undefined) {
-          // TODO: ask the user for the network with `account.network` name and
-          // ask them to provide a host and networkId
-          console.warn(
-            `Skipping import... Network ${account.network} not found for account ${account.account}.`,
-          );
-          return;
-        }
-
-        const newAccount: IAccount = {
-          uuid: crypto.randomUUID(),
-          profileId: profile.uuid,
-          address: account.account,
-          keysetId: keySet.uuid,
-          networkUUID: dbNetwork!.uuid,
-          contract: 'coin',
-          chains: [],
-          overallBalance: '0',
-          alias: account.notes || '',
-        };
-
-        return Promise.all([
-          await accountRepository.addKeyset(keySet),
-          await accountRepository.addAccount(newAccount),
-        ]);
-      }),
-    );
-    console.log('finished processing accounts');
-
-    console.log('processing tokens');
-    // process tokens
-    await Promise.all(
-      tokens.map(async (token) => {
-        try {
-          return await accountRepository.addFungible({
-            contract: token.namespace
-              ? `${token.namespace}.${token.name}`
-              : token.name,
-            interface: 'fungible-v2',
-            symbol: token.name === 'coin' ? 'KDA' : token.name,
-            title: token.name,
-            networkUUIDs: [
-              networks.find((network) => network.networkId === token.network)!
-                .uuid,
-            ],
-          });
-        } catch (e) {
-          // token already exists
-          console.warn(`Skipping... Token ${token.name} already exists`);
-        }
-      }),
-    );
-    console.log('finished processing tokens');
-  } catch (e) {
-    // TODO: remove added data
-    console.warn(`Error while importing: ${e}`);
+    await Promise.all([
+      !dbKeySet ? await accountRepository.addKeyset(keySet) : Promise.resolve(),
+      await accountRepository.addAccount(newAccount),
+    ]);
   }
+  console.log('finished processing accounts');
+
+  console.log('processing tokens');
+  // process tokens
+  await Promise.all(
+    tokens.map(async (token) => {
+      try {
+        return await accountRepository.addFungible({
+          contract: token.namespace
+            ? `${token.namespace}.${token.name}`
+            : token.name,
+          interface: 'fungible-v2',
+          symbol: token.name === 'coin' ? 'KDA' : token.name,
+          title: token.name,
+          networkUUIDs: [
+            networks.find((network) => network.networkId === token.network)!
+              .uuid,
+          ],
+        });
+      } catch (e) {
+        // token already exists
+        console.warn(`Skipping... Token ${token.name} already exists`);
+      }
+    }),
+  );
+  console.log('finished processing tokens');
   console.log('Profile created:', profileId);
   return profileId;
 }

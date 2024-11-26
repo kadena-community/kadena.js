@@ -79,7 +79,7 @@ export const ImportChainweaverExport: React.FC = () => {
 
   const parseAndCreateSelectionOptions = async (data: Inputs) => {
     const cwExport = await readFile(data.exportContents[0] as File);
-    setSelectionOptions(createSelectionOptions(cwExport));
+    setSelectionOptions(createSelectionOptions(JSON.parse(cwExport)));
     setStep('select');
   };
 

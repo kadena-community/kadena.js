@@ -1,5 +1,6 @@
 import { IDBBackup } from '@/modules/db/backup/backup';
 import { IProfile } from '@/modules/wallet/wallet.repository';
+import { validateStructure } from '@/utils/chainweaver/validateStructure';
 import { browse, readContent } from '@/utils/select-file';
 import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoRestore } from '@kadena/kode-icons/system';
@@ -19,24 +20,29 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ILegacyBackup, LegacyImport } from './Components/LegacyImport';
 import { IV3Backup, RecoveredV3 } from './Components/RecoveredV3';
-
-interface ILegacyBackup {
-  scheme: 'legacy';
-  profiles: undefined;
-  data: Record<string, any>;
-}
 
 export function WalletRecovery() {
   const [fileContent, setFileContent] = useState<IV3Backup | ILegacyBackup>();
   const [error, setError] = useState<string | null>(null);
-  if (fileContent && fileContent.scheme === 'v3') {
-    return (
-      <RecoveredV3
-        loadedContent={fileContent}
-        cancel={() => setFileContent(undefined)}
-      />
-    );
+  if (fileContent) {
+    if (fileContent.scheme === 'v3') {
+      return (
+        <RecoveredV3
+          loadedContent={fileContent}
+          cancel={() => setFileContent(undefined)}
+        />
+      );
+    }
+    if (fileContent.scheme === 'legacy') {
+      return (
+        <LegacyImport
+          loadedContent={fileContent}
+          cancel={() => setFileContent(undefined)}
+        />
+      );
+    }
   }
   return (
     <CardFixedContainer>
@@ -98,6 +104,20 @@ export function WalletRecovery() {
                         scheme: 'v3',
                         profiles,
                         data: backup,
+                      });
+                    } else if ('StoreFrontend_Data' in json) {
+                      try {
+                        validateStructure(json);
+                      } catch (e: any) {
+                        setError(
+                          'message' in e ? e.message : JSON.stringify(e),
+                        );
+                        return;
+                      }
+                      setFileContent({
+                        scheme: 'legacy',
+                        profiles: undefined,
+                        data: json,
                       });
                     }
                   } catch (e) {
