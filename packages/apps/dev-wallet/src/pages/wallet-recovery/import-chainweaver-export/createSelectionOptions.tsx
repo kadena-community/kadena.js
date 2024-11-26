@@ -1,3 +1,4 @@
+import { ExportFromChainweaver } from '@/utils/chainweaver/chainweaver';
 import { convertFromChainweaver } from '@/utils/chainweaver/convertFromChainweaver';
 import { forEachKey } from './forEachKey';
 import {
@@ -9,7 +10,9 @@ import {
   OptionType,
 } from './import-chainweaver-export';
 
-export function createSelectionOptions(cwExport: string) {
+export function createSelectionOptions(
+  chainweaverExport: ExportFromChainweaver,
+) {
   let selectionOptions: {
     accounts: OptionType<ImportAccount>[];
     keyPairs: OptionType<ImportKeypair>[];
@@ -30,7 +33,6 @@ export function createSelectionOptions(cwExport: string) {
     selectionOptions = fn(selectionOptions);
   };
 
-  const chainweaverExport = JSON.parse(cwExport);
   const cwData = convertFromChainweaver(chainweaverExport);
 
   forEachKey(cwData.accounts, (network, value) => {

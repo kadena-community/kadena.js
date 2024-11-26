@@ -8,7 +8,7 @@ export interface Fungible {
   title: string;
   symbol: string;
   interface: 'fungible-v2';
-  chainIds: ChainId[];
+  networkUUIDs?: UUID[];
 }
 
 export interface IKeySet {
@@ -137,6 +137,9 @@ const createAccountRepository = ({
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);
     },
+    updateFungible: async (fungible: Fungible): Promise<void> => {
+      return update('fungible', fungible);
+    },
     getFungible: async (contract: string): Promise<Fungible> => {
       return getOne('fungible', contract);
     },
@@ -196,7 +199,6 @@ export const addDefaultFungibles = execInSequence(async () => {
       symbol: 'KDA',
       interface: 'fungible-v2',
       contract: 'coin',
-      chainIds,
     };
     await accountRepository.addFungible(coin);
   }

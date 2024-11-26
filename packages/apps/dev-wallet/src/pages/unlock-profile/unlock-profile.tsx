@@ -1,6 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import {
-  Avatar,
   Button,
   Heading,
   Stack,
@@ -11,6 +10,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
 export function UnlockProfile({ origin }: { origin: string }) {
@@ -74,9 +74,15 @@ export function UnlockProfile({ origin }: { origin: string }) {
           gap="md"
           padding="sm"
           display="inline-flex"
+          alignItems="center"
           className={profileContainer}
         >
-          <Avatar size="md" name={profile.name} /> <Text>{profile.name}</Text>
+          <InitialsAvatar
+            size="large"
+            name={profile.name}
+            accentColor={profile.accentColor}
+          />
+          <Text>{profile.name}</Text>
         </Stack>
         <Heading variant="h5">Unlock your profile</Heading>
         <Text as="p">Enter your password to unlock access</Text>

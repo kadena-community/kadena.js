@@ -12,7 +12,7 @@ export const config = {
   colorList,
   defaultAccentColor: colorList[0],
   DB: {
-    DB_VERSION: 37,
+    DB_VERSION: 38,
     DB_NAME: 'dev-wallet',
     // This should be used carefully, as it will wipe the database on version change
     // I have added this for development purposes, We should remove this and write
@@ -25,5 +25,8 @@ export const config = {
   SESSION: {
     TTL: 30 * 60 * 1000, // 30 minutes
     ENCRYPT_SESSION: false,
+  },
+  BACKUP: {
+    BACKUP_INTERVAL: 1000 * 60 * 60 * 12, // 12 hours
   },
 };

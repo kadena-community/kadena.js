@@ -63,7 +63,7 @@ function parsedCodeToPact(
   const useBreakLine = breakLines && code.args?.length > 1;
   const lineChar = useBreakLine ? '\n' : ' ';
 
-  if (!code.args) return '';
+  if (!code.args) return `(${fn})`;
   const shortenCode = `(${fn}${lineChar}${code.args
     .map((arg) =>
       useBreakLine

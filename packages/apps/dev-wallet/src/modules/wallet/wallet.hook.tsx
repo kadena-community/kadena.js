@@ -7,6 +7,7 @@ import {
   IAccount,
   IKeySet,
 } from '../account/account.repository';
+import { backupDatabase } from '../backup/backup.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
@@ -70,6 +71,7 @@ export const useWallet = () => {
       if (profile) {
         const res = await setProfile(profile);
         channel.postMessage({ action: 'switch-profile', payload: profile });
+        backupDatabase().catch(console.log);
         return res;
       }
       return null;
@@ -82,6 +84,7 @@ export const useWallet = () => {
       await securityService.clearSecurityPhrase();
       await setProfile(undefined);
       channel.postMessage({ action: 'switch-profile', payload: undefined });
+      backupDatabase(true).catch(console.log);
     };
     run();
   }, [setProfile]);

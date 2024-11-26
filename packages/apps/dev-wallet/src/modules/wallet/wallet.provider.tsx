@@ -23,6 +23,7 @@ import {
   accountRepository,
 } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
+import { backupDatabase } from '../backup/backup.service';
 import { IContact, contactRepository } from '../contact/contact.repository';
 import { dbService } from '../db/db.service';
 import { keySourceManager } from '../key-source/key-source-manager';
@@ -247,6 +248,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (event === 'expired' && contextValue.profile) {
         setProfile(undefined);
         channel.postMessage({ action: 'switch-profile', payload: undefined });
+        backupDatabase(true).catch(console.log);
       }
     });
     return () => {
@@ -355,7 +357,15 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // subscribe to db changes and update the context
   useEffect(() => {
-    const unsubscribe = dbService.subscribe((event, storeName, data) => {
+    const unsubscribe = dbService.subscribe(async (event, storeName, data) => {
+      if (event === 'import') {
+        setContextValue(getDefaultContext());
+        await retrieveFungibles();
+        await retrieveNetworks();
+        await retrieveProfileList();
+        await retrieveContacts();
+        setContextValue((ctx) => ({ ...ctx, loaded: true }));
+      }
       const profileId =
         data && typeof data === 'object' && 'profileId' in data
           ? data.profileId

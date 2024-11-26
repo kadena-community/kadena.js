@@ -11,11 +11,15 @@ export const ConfirmDeletion = ({
   onCancel,
   title,
   description,
+  deleteText = 'Delete',
+  cancelText = 'Cancel',
 }: {
   onDelete: () => void;
   onCancel: () => void;
   title: React.ReactNode;
   description: React.ReactNode;
+  deleteText?: string;
+  cancelText?: string;
 }) => (
   <Dialog
     isOpen
@@ -28,10 +32,10 @@ export const ConfirmDeletion = ({
     <DialogContent>{description}</DialogContent>
     <DialogFooter>
       <Button variant="transparent" onClick={onCancel}>
-        Cancel
+        {cancelText}
       </Button>
       <Button onClick={onDelete} variant="negative">
-        Delete
+        {deleteText}
       </Button>
     </DialogFooter>
   </Dialog>
