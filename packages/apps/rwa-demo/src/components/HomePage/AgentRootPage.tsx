@@ -1,5 +1,6 @@
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { MonoAdd } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
@@ -11,6 +12,7 @@ import { PauseForm } from '../PauseForm/PauseForm';
 
 export const AgentRootPage: FC = () => {
   const { isAgent, account } = useAccount();
+  const { paused } = useAsset();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [hasOpenInvestorForm, setHasOpenInvestorForm] = useState(false);
 
@@ -35,7 +37,11 @@ export const AgentRootPage: FC = () => {
       )}
       <Stack gap="sm">
         <PauseForm />
-        <Button startVisual={<MonoAdd />} onPress={handleAddInvestor}>
+        <Button
+          isDisabled={paused}
+          startVisual={<MonoAdd />}
+          onPress={handleAddInvestor}
+        >
           Add Investor
         </Button>
       </Stack>

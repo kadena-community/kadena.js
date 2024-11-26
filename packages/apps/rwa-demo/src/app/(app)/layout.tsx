@@ -1,8 +1,8 @@
 'use client';
 import { SideBarLayout } from '@kadena/kode-ui/patterns';
 
+import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { AssetForm } from '@/components/AssetSwitch/AssetForm';
-import { SupplyCount } from '@/components/SupplyCount/SupplyCount';
 import { getAsset } from '@/utils/getAsset';
 import { Heading, Link, Stack } from '@kadena/kode-ui';
 import React from 'react';
@@ -41,7 +41,8 @@ const RootLayout = ({
       sidebar={<SideBar />}
     >
       <Stack width="100%" flexDirection="column" gap="sm">
-        <SupplyCount />
+        <AssetInfo />
+
         {children}
       </Stack>
     </SideBarLayout>

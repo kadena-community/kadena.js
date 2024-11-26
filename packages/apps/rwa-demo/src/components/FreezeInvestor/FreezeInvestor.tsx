@@ -1,6 +1,6 @@
 import { useAccount } from '@/hooks/account';
+import { useFreeze } from '@/hooks/freeze';
 import { useTransactions } from '@/hooks/transactions';
-import { isFrozen } from '@/services/isFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
@@ -11,20 +11,19 @@ import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPen
 
 interface IProps {
   investorAccount: string;
-  onChanged: (paused: boolean) => void;
 }
 
-const getVisual = (paused?: boolean) => {
-  if (typeof paused !== 'boolean') {
+const getVisual = (frozen: boolean, isLoading: boolean) => {
+  if (isLoading) {
     return <TransactionPendingIcon />;
   }
-  return paused ? <MonoPause /> : <MonoPlayArrow />;
+  return frozen ? <MonoPause /> : <MonoPlayArrow />;
 };
 
-export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
+export const FreezeInvestor: FC<IProps> = ({ investorAccount }) => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
-  const [frozen, setFrozen] = useState<boolean | undefined>();
+  const { frozen } = useFreeze({ investorAccount });
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleFreeze = async () => {
@@ -44,7 +43,7 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      const transaction = addTransaction({
+      addTransaction({
         ...res,
         type: 'FREEZE-ADDRESS',
         data: {
@@ -52,34 +51,17 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
           ...data,
         },
       });
-
-      await transaction.listener;
-      setFrozen(undefined);
-    } catch (e: any) {}
-  };
-
-  const fetchData = async () => {
-    const res = await isFrozen({
-      investorAccount: investorAccount,
-      account: account!,
-    });
-
-    if (typeof res === 'boolean') {
-      setFrozen(res);
-      onChanged(res);
+    } catch (e: any) {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (isLoading) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      fetchData();
-    }
+    setIsLoading(false);
   }, [frozen]);
 
   return (
-    <Button startVisual={getVisual(frozen)} onPress={handleFreeze}>
+    <Button startVisual={getVisual(frozen, isLoading)} onPress={handleFreeze}>
       Pause Account
     </Button>
   );
