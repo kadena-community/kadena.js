@@ -1,3 +1,4 @@
+import { dbService } from '@/modules/db/db.service';
 import {
   MonoDownload,
   MonoPassword,
@@ -8,7 +9,9 @@ import {
 import { Button, Heading, Stack, Link as UiLink } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
 import { Link } from 'react-router-dom';
+import { isFileSystemAccessSupported } from '../../modules/backup/fileApi';
 import { ProfileNameColorForm } from './components/ProfileNameColorForm';
+import { downloadAsFile } from './utils/download-file';
 
 export function Settings() {
   const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
@@ -41,21 +44,26 @@ export function Settings() {
       >
         Change Password
       </UiLink>
-      <UiLink
-        href="/settings/change-network"
-        component={Link}
+      <Button
+        onClick={async () => {
+          const tables = await dbService.serializeTables();
+          downloadAsFile(
+            tables,
+            'chainweaver-db-backup.json',
+            'application/json',
+          );
+        }}
         variant="outlined"
         startVisual={<MonoDownload />}
-        isDisabled
       >
-        Download Backup File
-      </UiLink>
+        Download Entire Database
+      </Button>
       <UiLink
-        href="/settings/change-network"
+        href="/settings/auto-backup"
         component={Link}
         variant="outlined"
         startVisual={<MonoSettingsBackupRestore />}
-        isDisabled
+        isDisabled={!isFileSystemAccessSupported()}
       >
         Set automatic backup
       </UiLink>

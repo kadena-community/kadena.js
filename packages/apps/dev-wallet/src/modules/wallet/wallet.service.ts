@@ -110,15 +110,19 @@ export async function createProfile(
     JSON.stringify({ secretId }),
     'buffer',
   );
-  await walletRepository.addEncryptedValue(secretId, secret);
-  const uuid = crypto.randomUUID();
+  const profileUUID = crypto.randomUUID();
   const encryptedTerm = await kadenaEncrypt(password, securityTerm, 'buffer');
   const securityPhraseId = crypto.randomUUID();
+  await walletRepository.addEncryptedValue(secretId, secret, profileUUID);
 
-  await walletRepository.addEncryptedValue(securityPhraseId, encryptedTerm);
+  await walletRepository.addEncryptedValue(
+    securityPhraseId,
+    encryptedTerm,
+    profileUUID,
+  );
 
   const profile: IProfile = {
-    uuid,
+    uuid: profileUUID,
     name: profileName,
     networks,
     secretId,
@@ -243,8 +247,18 @@ export const changePassword = async (
   }
 
   persistData.push(
-    () => walletRepository.updateEncryptedValue(profile.securityPhraseId, data),
-    () => walletRepository.updateEncryptedValue(profile.secretId, secret),
+    () =>
+      walletRepository.updateEncryptedValue(
+        profile.securityPhraseId,
+        data,
+        profile.uuid,
+      ),
+    () =>
+      walletRepository.updateEncryptedValue(
+        profile.secretId,
+        secret,
+        profile.uuid,
+      ),
   );
 
   // save all data to the db in on place after all the operations are done;

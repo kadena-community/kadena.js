@@ -37,6 +37,17 @@ export interface IProfile {
   );
 }
 
+export interface IEncryptedValue {
+  uuid: string;
+  value: Uint8Array;
+  profileId: string;
+}
+
+export interface IBackup {
+  directoryHandle?: FileSystemDirectoryHandle;
+  lastBackup: number;
+}
+
 const createWalletRepository = ({
   getAll,
   getOne,
@@ -56,20 +67,28 @@ const createWalletRepository = ({
     updateProfile: async (profile: IProfile): Promise<void> => {
       return update('profile', profile, undefined);
     },
-    getEncryptedValue: async (key: string): Promise<Uint8Array> => {
-      return getOne('encryptedValue', key);
+    getEncryptedValue: async (uuid: string): Promise<Uint8Array> => {
+      const { value } = (await getOne<IEncryptedValue>(
+        'encryptedValue',
+        uuid,
+      )) ?? {
+        value: undefined,
+      };
+      return value;
     },
     addEncryptedValue: async (
-      key: string,
+      uuid: string,
       value: string | Uint8Array,
+      profileId: string,
     ): Promise<void> => {
-      return add('encryptedValue', value, key, { noCreationTime: true });
+      return add('encryptedValue', { uuid, value, profileId });
     },
     updateEncryptedValue: async (
-      key: string,
+      uuid: string,
       value: string | Uint8Array,
+      profileId: string,
     ): Promise<void> => {
-      return update('encryptedValue', value, key);
+      return update('encryptedValue', { uuid, value, profileId });
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
       return (
@@ -78,6 +97,34 @@ const createWalletRepository = ({
     },
     getKeySource: async (keySourceId: string): Promise<IKeySource> => {
       return getOne('keySource', keySourceId);
+    },
+    getAllKeySources: async (): Promise<IKeySource[]> => {
+      return getAll('keySource');
+    },
+    addBackupOptions: async (backup: IBackup): Promise<void> => {
+      return add('backup', { ...backup, uuid: 'backup-id' });
+    },
+    updateBackupOptions: async (backup: IBackup): Promise<void> => {
+      return update('backup', { ...backup, uuid: 'backup-id' });
+    },
+    getBackupOptions: async (): Promise<IBackup> => {
+      const backups: IBackup[] = await getAll('backup');
+      return backups[0];
+    },
+    async patchBackupOptions(patch: Partial<IBackup>) {
+      const backups: IBackup[] = await getAll('backup');
+      const backupOptions = backups[0];
+      if (!backupOptions) {
+        await walletRepository.addBackupOptions({
+          lastBackup: 0,
+          ...patch,
+        });
+      } else {
+        await walletRepository.updateBackupOptions({
+          ...backupOptions,
+          ...patch,
+        });
+      }
     },
   };
 };

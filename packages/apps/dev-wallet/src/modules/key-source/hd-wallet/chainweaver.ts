@@ -88,6 +88,7 @@ export function createChainweaverService() {
       await walletRepository.addEncryptedValue(
         rootKeyId,
         encryptedRootKeyBuffer,
+        profileId,
       );
 
       // store keys
@@ -97,6 +98,7 @@ export function createChainweaverService() {
           await walletRepository.addEncryptedValue(
             secretId,
             await kadenaEncrypt(password, Buffer.from(keyPair.private, 'hex')),
+            profileId,
           );
           const key = {
             index: keyPair.index,
@@ -155,7 +157,11 @@ export function createChainweaverService() {
             );
 
             return () =>
-              walletRepository.updateEncryptedValue(key.secretId, newSecretKey);
+              walletRepository.updateEncryptedValue(
+                key.secretId,
+                newSecretKey,
+                keySource.profileId,
+              );
           }),
         );
 
@@ -165,6 +171,7 @@ export function createChainweaverService() {
             walletRepository.updateEncryptedValue(
               keySource.rootKeyId,
               newRootKey,
+              keySource.profileId,
             ),
         ]);
       } catch (e: any) {
@@ -199,7 +206,11 @@ export function createChainweaverService() {
         mnemonic,
         'buffer',
       );
-      await walletRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
+      await walletRepository.addEncryptedValue(
+        rootKeyId,
+        encryptedRootKey,
+        profile.uuid,
+      );
       const keySource: IHDChainweaver = {
         uuid: crypto.randomUUID(),
         profileId,
@@ -279,6 +290,7 @@ export function createChainweaverService() {
       await walletRepository.addEncryptedValue(
         secretId,
         Buffer.from(key.secretKey, 'base64'),
+        keySource.profileId,
       );
       const newKey = {
         publicKey: key.publicKey,
