@@ -18,13 +18,12 @@ export const useDistributeTokens = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      await addTransaction({
+      const transaction = await addTransaction({
         ...res,
         type: 'DISTRIBUTETOKENS',
       });
 
-      console.log({ res });
-      console.log('DONE');
+      return transaction;
     } catch (e: any) {}
   };
 

@@ -27,13 +27,16 @@ const RootLayout = ({
 }>) => {
   const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const { transactions, setTxsButtonRef } = useTransactions();
+  const { transactions, setTxsButtonRef, setTxsAnimationRef } =
+    useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
+  const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!txsButtonRef.current) return;
+    if (!txsButtonRef.current || !transactionAnimationRef.current) return;
     setTxsButtonRef(txsButtonRef.current);
-  }, [txsButtonRef.current]);
+    setTxsAnimationRef(transactionAnimationRef.current);
+  }, [txsButtonRef.current, transactionAnimationRef.current]);
 
   if (!getAsset()) {
     return (
@@ -100,6 +103,8 @@ const RootLayout = ({
           {children}
         </Stack>
       </SideBarLayout>
+
+      <div ref={transactionAnimationRef} />
     </>
   );
 };

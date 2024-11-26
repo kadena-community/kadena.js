@@ -1,4 +1,3 @@
-import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAccount } from '@/hooks/account';
 import { MonoCompareArrows } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
@@ -34,7 +33,6 @@ export const InvestorRootPage: FC = () => {
       <Stack width="100%" flexDirection="column" gap="md">
         <InvestorInfo investorAccount={account.address} />
 
-        <SideBarBreadcrumbs />
         <Stack gap="sm">
           <Button
             startVisual={<MonoCompareArrows />}

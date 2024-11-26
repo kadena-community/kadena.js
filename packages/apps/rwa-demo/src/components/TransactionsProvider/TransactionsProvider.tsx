@@ -24,6 +24,8 @@ export interface ITransactionsContext {
   getTransactions: (type: string) => ITransaction[];
   txsButtonRef?: HTMLButtonElement | null;
   setTxsButtonRef: (value: HTMLButtonElement) => void;
+  txsAnimationRef?: HTMLDivElement | null;
+  setTxsAnimationRef: (value: HTMLDivElement) => void;
 }
 
 export const TransactionsContext = createContext<ITransactionsContext>({
@@ -33,6 +35,7 @@ export const TransactionsContext = createContext<ITransactionsContext>({
   },
   getTransactions: () => [],
   setTxsButtonRef: () => {},
+  setTxsAnimationRef: () => {},
 });
 
 const interpretMessage = (str: string, data?: ITransaction): string => {
@@ -61,7 +64,10 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { addNotification } = useNotifications();
   const { account } = useAccount();
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
-  const [txsButtonRef, setTxsButtonRefData] = useState<HTMLButtonElement>();
+  const [txsAnimationRef, setTxsAnimationRefData] =
+    useState<HTMLDivElement | null>(null);
+  const [txsButtonRef, setTxsButtonRefData] =
+    useState<HTMLButtonElement | null>(null);
 
   const { activeNetwork } = useNetwork();
 
@@ -159,6 +165,9 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const setTxsButtonRef = (ref: HTMLButtonElement) => {
     setTxsButtonRefData(ref);
   };
+  const setTxsAnimationRef = (ref: HTMLDivElement) => {
+    setTxsAnimationRefData(ref);
+  };
 
   return (
     <TransactionsContext.Provider
@@ -168,6 +177,8 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         getTransactions,
         setTxsButtonRef,
         txsButtonRef,
+        setTxsAnimationRef,
+        txsAnimationRef,
       }}
     >
       {children}

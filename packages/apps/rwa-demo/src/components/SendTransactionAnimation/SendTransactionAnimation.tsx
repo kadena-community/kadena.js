@@ -3,15 +3,15 @@ import { MonoWallet } from '@kadena/kode-icons';
 import type { PressEvent } from '@kadena/kode-ui';
 import type { FC, ReactElement } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { animationIconClass } from './styles.css';
-
 interface IProps {
   onPress: (e: PressEvent) => any;
   trigger: ReactElement;
 }
 
 export const SendTransactionAnimation: FC<IProps> = ({ trigger, onPress }) => {
-  const { txsButtonRef } = useTransactions();
+  const { txsButtonRef, txsAnimationRef } = useTransactions();
   const [showAnimation, setShowAnimation] = useState(false);
   const [triggerPos, setTriggerPos] = useState<DOMRect>();
   const [txButtonPos, setTxButtonPos] = useState<DOMRect>();
@@ -51,11 +51,13 @@ export const SendTransactionAnimation: FC<IProps> = ({ trigger, onPress }) => {
 
   return (
     <>
-      <div className={animationIconClass({ showAnimation })} style={style}>
-        <div>
-          <MonoWallet />
-        </div>
-      </div>
+      {txsAnimationRef &&
+        createPortal(
+          <div className={animationIconClass({ showAnimation })} style={style}>
+            <MonoWallet />
+          </div>,
+          txsAnimationRef,
+        )}
 
       <div ref={ref}>
         {React.cloneElement(trigger, {
