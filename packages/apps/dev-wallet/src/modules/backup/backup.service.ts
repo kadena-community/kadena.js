@@ -20,7 +20,7 @@ export async function backupDatabase(force = false) {
   const handle = backup.directoryHandle;
   await saveFile(
     handle,
-    new File([await dbService.serializeTables()], `wallet-backup.json`, {
+    new File([await dbService.serializeTables()], `wallet-backup-${now}.json`, {
       type: 'application/json',
     }),
   );

@@ -92,7 +92,6 @@ export function WalletRecovery() {
                       }
                       return value;
                     });
-                    console.log(json);
                     setFileContent(json);
                     if (json.wallet_version === '3') {
                       const backup: IDBBackup = json;

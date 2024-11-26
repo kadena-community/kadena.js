@@ -36,6 +36,7 @@ export function RecoveredV3({
   loadedContent: IV3Backup;
   cancel: () => void;
 }) {
+  const [error, setError] = useState<string | undefined>();
   const navigate = useNavigate();
   const prompt = usePrompt();
   const { profileList: walletProfiles } = useWallet();
@@ -148,6 +149,11 @@ export function RecoveredV3({
                 </Stack>
               </Notification>
             )}
+          {error && (
+            <Notification intent="negative" role="alert">
+              {error}
+            </Notification>
+          )}
         </Stack>
       </CardContentBlock>
       <CardFooterGroup separated={true}>
@@ -159,10 +165,14 @@ export function RecoveredV3({
             variant="primary"
             isDisabled={selectedProfiles.length < 1}
             onClick={async () => {
-              await dbService.importBackup(
-                loadedContent.data,
-                selectedProfiles,
-              );
+              try {
+                await dbService.importBackup(
+                  loadedContent.data,
+                  selectedProfiles,
+                );
+              } catch (e: any) {
+                setError('message' in e ? e.message : JSON.stringify(e));
+              }
               navigate('/');
             }}
           >

@@ -11,7 +11,7 @@ import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { UUID } from '@/modules/types';
 import { IKeySource, IProfile } from '@/modules/wallet/wallet.repository';
 import { base64UrlEncodeArr, hash } from '@kadena/cryptography-utils';
-import { addItem, dbDump, getAllItems, updateItem } from '../indexeddb';
+import { addItem, dbDump, getAllItems, putItem } from '../indexeddb';
 
 function BufferToBase64UrlReplacer(_key: string, value: any) {
   if (value instanceof Uint8Array) {
@@ -67,23 +67,33 @@ export interface IDBBackup {
   };
 }
 
-const importContacts = async (db: IDBDatabase, table: Table<IContact> = []) => {
-  const transaction = db.transaction('contact', 'readwrite');
+const importContacts = async (
+  db: IDBDatabase,
+  table: Table<IContact> = [],
+  transaction: IDBTransaction,
+) => {
+  const dbContacts = await getAllItems(db, transaction)<IContact>('contact');
   const addOne = addItem(db, transaction);
   await Promise.all(
-    table.map(async ({ value }) =>
-      addOne('contact', value).catch((e) => {
-        console.error(e);
+    table.map(async ({ value }) => {
+      if (
+        dbContacts.find((c) => c.name === value.name || c.uuid === value.uuid)
+      ) {
         console.warn('Skipping contact', value);
-      }),
-    ),
+        return;
+      }
+      return addOne('contact', value);
+    }),
   );
 };
 
 const removeEndSlash = (url: string) => url.replace(/\/$/, '');
 
-const importNetworks = async (db: IDBDatabase, table: Table<INetwork> = []) => {
-  const transaction = db.transaction('network', 'readwrite');
+const importNetworks = async (
+  db: IDBDatabase,
+  table: Table<INetwork>,
+  transaction: IDBTransaction,
+) => {
   const addOne = addItem(db, transaction);
   const updateOne = addItem(db, transaction);
   const getAll = getAllItems(db, transaction);
@@ -97,10 +107,7 @@ const importNetworks = async (db: IDBDatabase, table: Table<INetwork> = []) => {
       );
       if (!existingNetworks.length) {
         networkRemap[value.uuid] = value.uuid;
-        return addOne('network', value).catch((e) => {
-          console.error(e);
-          console.warn('Skipping network', value);
-        });
+        return addOne('network', value);
       }
       const network = existingNetworks[0];
       networkRemap[value.uuid] = network.uuid;
@@ -126,18 +133,90 @@ const importFungibles = async (
   db: IDBDatabase,
   table: Table<Fungible> = [],
   networkRemap: Record<UUID, UUID> = {},
+  transaction: IDBTransaction,
 ) => {
-  const transaction = db.transaction('fungible', 'readwrite');
+  const dbFungibles = await getAllItems(db, transaction)<Fungible>('fungible');
   const addOne = addItem(db, transaction);
   await Promise.all(
     table.map(async ({ value }) => {
       value.networkUUIDs = value.networkUUIDs?.map((id) => networkRemap[id]);
-      return addOne('fungible', value).catch((e) => {
-        console.error(e);
+      if (dbFungibles.find((f) => f.contract === value.contract)) {
         console.warn('Skipping fungible', value);
-      });
+        return;
+      }
+      return addOne('fungible', value);
     }),
   );
+};
+
+const importProfiles = async (
+  db: IDBDatabase,
+  table: Table<IProfile> = [],
+  transaction: IDBTransaction,
+) => {
+  const put = putItem(db, transaction);
+  const dbProfiles = await getAllItems(db, transaction)<IProfile>('profile');
+  const profiles = table.map(({ value }) => {
+    const dbProfile = dbProfiles.find((p) => p.name === value.name);
+    const name = dbProfile
+      ? dbProfile.uuid === value.uuid
+        ? value.name
+        : value.name + `(${value.uuid})`
+      : value.name;
+    return {
+      ...value,
+      name,
+    };
+  });
+  await Promise.all(profiles.map(async (profile) => put('profile', profile)));
+};
+
+const importProfileRelatedTables = async ({
+  backup,
+  profileUUIds,
+  db,
+  transaction,
+  networkRemap,
+}: {
+  backup: IDBBackup;
+  profileUUIds: string[] | undefined;
+  db: IDBDatabase;
+  transaction: IDBTransaction;
+  networkRemap: Record<UUID, UUID>;
+}) => {
+  const profileTables = [
+    'encryptedValue',
+    'keySource',
+    'account',
+    'watched-account',
+    'keyset',
+    'transaction',
+    'activity',
+  ] as const;
+  const put = putItem(db, transaction);
+
+  await profileTables.map(async (table) => {
+    const data = backup.data[table];
+    await Promise.all(
+      data.map(({ value }) => {
+        const profileId = value.profileId;
+        if ('networkUUID' in value) {
+          value.networkUUID = networkRemap[value.networkUUID];
+        }
+        if (profileId) {
+          if (
+            !profileUUIds ||
+            !profileUUIds.length ||
+            profileUUIds.includes(profileId)
+          ) {
+            return put(table, value);
+          }
+        } else {
+          return put(table, value);
+        }
+      }),
+    );
+  });
 };
 
 export const importBackup =
@@ -148,51 +227,24 @@ export const importBackup =
         `Database version mismatch: expected ${db.version} but got ${backup.db_version}; WIP: we need to add a migration path here`,
       );
     }
+    const tables = Object.keys(backup.data) as (keyof IDBBackup['data'])[];
+    const transaction = db.transaction(tables, 'readwrite');
 
-    await importContacts(db, backup.data.contact);
-    const networkRemap = await importNetworks(db, backup.data.network);
-    await importFungibles(db, backup.data.fungible, networkRemap);
-
-    const profileTables = [
-      'profile',
-      'encryptedValue',
-      'keySource',
-      'account',
-      'watched-account',
-      'keyset',
-      'transaction',
-      'activity',
-    ] as const;
-    const transaction = db.transaction(profileTables, 'readwrite');
-    const update = updateItem(db, transaction);
-    await profileTables.map(async (table) => {
-      const data = backup.data[table];
-      return Promise.all(
-        data.map(({ key, value }) => {
-          const profileId =
-            'profileId' in value
-              ? value.profileId
-              : table === 'profile' && 'uuid' in value
-                ? value.uuid
-                : '';
-          if ('networkUUID' in value) {
-            value.networkUUID = networkRemap[value.networkUUID];
-          }
-          if (profileId) {
-            if (
-              !profileUUIds ||
-              !profileUUIds.length ||
-              profileUUIds.includes(profileId)
-            ) {
-              console.log('adding', key, value);
-              return update(table, value);
-            }
-          } else {
-            console.log('adding', key, value);
-            return update(table, value);
-          }
-        }),
-      );
+    await importContacts(db, backup.data.contact, transaction);
+    const networkRemap = await importNetworks(
+      db,
+      backup.data.network,
+      transaction,
+    );
+    await importFungibles(db, backup.data.fungible, networkRemap, transaction);
+    await importProfiles(db, backup.data.profile, transaction);
+    await importProfileRelatedTables({
+      backup,
+      profileUUIds,
+      db,
+      transaction,
+      networkRemap,
     });
+
     return true;
   };

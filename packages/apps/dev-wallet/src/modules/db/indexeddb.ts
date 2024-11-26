@@ -265,6 +265,23 @@ export const updateItem =
     });
   };
 
+export const putItem =
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
+  <T>(storeName: string, value: T, key?: string) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise<void>(async (resolve, reject) => {
+      const tx = transaction ?? db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
+      const request = store.put(value, key);
+      request.onerror = () => {
+        reject(request.error);
+      };
+      request.onsuccess = () => {
+        resolve();
+      };
+    });
+  };
+
 export const getScheme = (db: IDBDatabase) => (storeName: string) => {
   const transaction = db.transaction(storeName, 'readonly');
   const objectStore = transaction.objectStore(storeName);

@@ -1,6 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import {
-  Avatar,
   Button,
   Heading,
   Stack,
