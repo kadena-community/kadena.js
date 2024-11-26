@@ -1,5 +1,12 @@
 # @kadena/graph
 
+## 2.0.2
+
+### Patch Changes
+
+- 2a073ed: Disable `relationJoins` until nix' package for prisma-engines is
+  updated
+
 ## 2.0.1
 
 ### Patch Changes
