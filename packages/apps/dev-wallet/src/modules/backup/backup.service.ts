@@ -1,3 +1,4 @@
+import { config } from '@/config';
 import { dbService } from '../db/db.service';
 import { walletRepository } from '../wallet/wallet.repository';
 import { saveFile } from './fileApi';
@@ -8,7 +9,10 @@ export async function backupDatabase(force = false) {
     throw new Error('Auto backup is not enabled');
   }
 
-  if (!force && backup.lastBackup + 1000 * 60 * 60 * 12 > Date.now()) {
+  if (
+    !force &&
+    backup.lastBackup + config.BACKUP.BACKUP_INTERVAL > Date.now()
+  ) {
     return;
   }
 
