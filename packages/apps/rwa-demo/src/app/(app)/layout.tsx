@@ -16,7 +16,7 @@ import { useTransactions } from '@/hooks/transactions';
 import { getAsset } from '@/utils/getAsset';
 import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
 import { Button, Heading, Link, Stack } from '@kadena/kode-ui';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
 
@@ -27,7 +27,13 @@ const RootLayout = ({
 }>) => {
   const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const { transactions } = useTransactions();
+  const { transactions, setTxsButtonRef } = useTransactions();
+  const txsButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!txsButtonRef.current) return;
+    setTxsButtonRef(txsButtonRef.current);
+  }, [txsButtonRef.current]);
 
   if (!getAsset()) {
     return (
@@ -50,6 +56,7 @@ const RootLayout = ({
     <>
       <SideBarHeaderContext>
         <Button
+          ref={txsButtonRef}
           variant="transparent"
           startVisual={
             transactions.length ? (

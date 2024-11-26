@@ -9,6 +9,7 @@ import { Button } from '@kadena/kode-ui';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
+import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 
 export const PauseForm: FC = () => {
@@ -33,7 +34,7 @@ export const PauseForm: FC = () => {
         type: 'PAUSE',
       });
 
-      await transaction.listener;
+      return transaction;
     } catch (e: any) {
       addNotification({
         intent: 'negative',
@@ -56,8 +57,11 @@ export const PauseForm: FC = () => {
   }, [paused]);
 
   return (
-    <Button onPress={handlePauseToggle} startVisual={showIcon()}>
-      {paused ? 'paused' : 'active'}
-    </Button>
+    <SendTransactionAnimation
+      onPress={handlePauseToggle}
+      trigger={
+        <Button startVisual={showIcon()}>{paused ? 'paused' : 'active'}</Button>
+      }
+    ></SendTransactionAnimation>
   );
 };

@@ -22,6 +22,8 @@ export interface ITransactionsContext {
     request: Omit<ITransaction, 'uuid'>,
   ) => Promise<ITransaction>;
   getTransactions: (type: string) => ITransaction[];
+  txsButtonRef?: HTMLButtonElement | null;
+  setTxsButtonRef: (value: HTMLButtonElement) => void;
 }
 
 export const TransactionsContext = createContext<ITransactionsContext>({
@@ -30,6 +32,7 @@ export const TransactionsContext = createContext<ITransactionsContext>({
     return {} as ITransaction;
   },
   getTransactions: () => [],
+  setTxsButtonRef: () => {},
 });
 
 const interpretMessage = (str: string, data?: ITransaction): string => {
@@ -58,6 +61,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { addNotification } = useNotifications();
   const { account } = useAccount();
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
+  const [txsButtonRef, setTxsButtonRefData] = useState<HTMLButtonElement>();
 
   const { activeNetwork } = useNetwork();
 
@@ -152,9 +156,19 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, [transactions.length, account]);
 
+  const setTxsButtonRef = (ref: HTMLButtonElement) => {
+    setTxsButtonRefData(ref);
+  };
+
   return (
     <TransactionsContext.Provider
-      value={{ transactions, addTransaction, getTransactions }}
+      value={{
+        transactions,
+        addTransaction,
+        getTransactions,
+        setTxsButtonRef,
+        txsButtonRef,
+      }}
     >
       {children}
     </TransactionsContext.Provider>
