@@ -15,7 +15,7 @@ import {
 import { useTheme } from 'next-themes';
 import { Link, useLocation } from 'react-router-dom';
 import { useWalletState } from '../state/wallet';
-import { stickyHeader } from './Header.css';
+import { stickyHeader } from './header.css';
 import { KadenaLogo } from './KadenaLogo';
 
 export const Header = () => {
