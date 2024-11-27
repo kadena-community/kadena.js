@@ -1,5 +1,5 @@
 // this function is called by db service when the database is updated from version 37 to 38
-// here we update the encrypted value model to include the profile id; this will improve db structure for importing/exporting profiles
+// check the change log for more details
 
 import {
   IHDBIP44,
@@ -7,12 +7,18 @@ import {
 } from '@/modules/key-source/key-source.repository';
 import { IKeySource, IProfile } from '@/modules/wallet/wallet.repository';
 import { createStore, getAllItems } from '../indexeddb';
+import { defineSchemeFactory, ExtendedTableName } from './createDB';
 
-// also make this model more consistent with other models
+const changeLog = [
+  'adding profileId to encryptedValue model, this will make it easier to export/import profiles also make this model more consistent with other models',
+  'adding backup table',
+];
 export async function migrateFrom37to38(
   db: IDBDatabase,
   transaction: IDBTransaction,
 ) {
+  console.log('migrating from 37 to 38', 'change log:');
+  changeLog.forEach((log, index) => console.log(index, log));
   const getAll = getAllItems(db, transaction);
   const profileList = await getAll<IProfile>('profile');
   const keySources = await getAll<IKeySource>('keySource');
@@ -42,14 +48,15 @@ export async function migrateFrom37to38(
       );
     }
   });
-  const v38db = `temp:encryptedValue_v38_${crypto.randomUUID()}`;
+  const { defineScheme } = defineSchemeFactory();
+  const encryptedValueTemp: ExtendedTableName = `temp:encryptedValue-v38:${Date.now()}`;
   return new Promise<void>((resolve, reject) => {
     const create = createStore(db);
-    create('backup', 'uuid');
-    create(v38db, 'uuid', [{ index: 'profileId' }]);
+    create(defineScheme('backup', 'uuid'));
+    create(defineScheme(encryptedValueTemp, 'uuid', [{ index: 'profileId' }]));
     // db.transaction(['encryptedValue', 'encryptedValue_v38'], 'readwrite');
     const oldStore = transaction.objectStore('encryptedValue');
-    const newStore = transaction.objectStore(v38db);
+    const newStore = transaction.objectStore(encryptedValueTemp);
     const oldCursor = oldStore.openCursor();
     oldCursor.onsuccess = (event) => {
       if (!event.target) {
@@ -81,7 +88,8 @@ export async function migrateFrom37to38(
   }).then(() => {
     // We can now delete the old store; but for now I still keep it for debugging and if something goes wrong we can rollback
     transaction.objectStore('encryptedValue').name =
-      'backup:encryptedValue_v37';
-    transaction.objectStore(v38db).name = 'encryptedValue';
+      `backup:encryptedValue-v37:${Date.now()}` as ExtendedTableName;
+    transaction.objectStore(encryptedValueTemp).name =
+      'encryptedValue' as ExtendedTableName;
   });
 }

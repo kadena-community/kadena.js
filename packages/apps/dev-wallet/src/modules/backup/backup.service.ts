@@ -6,14 +6,14 @@ import { saveFile } from './fileApi';
 export async function backupDatabase(force = false) {
   const backup = await walletRepository.getBackupOptions();
   if (!backup || !backup.directoryHandle) {
-    throw new Error('Auto backup is not enabled');
+    return false;
   }
 
   if (
     !force &&
     backup.lastBackup + config.BACKUP.BACKUP_INTERVAL > Date.now()
   ) {
-    return;
+    return false;
   }
 
   const now = Date.now();
@@ -25,4 +25,5 @@ export async function backupDatabase(force = false) {
     }),
   );
   await walletRepository.patchBackupOptions({ lastBackup: now });
+  return true;
 }

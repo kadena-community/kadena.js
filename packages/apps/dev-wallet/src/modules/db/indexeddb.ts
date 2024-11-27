@@ -1,16 +1,10 @@
+import { TableScheme } from './migration/createDB';
+
 const CREATION_TIME_KEY = 'creationTime';
 
 export const createStore =
   (db: IDBDatabase) =>
-  (
-    name: string,
-    keyPath?: string,
-    indexes?: Array<{
-      index: string;
-      indexKeyPath?: string | string[];
-      unique?: boolean;
-    }>,
-  ) => {
+  ({ name, keyPath, indexes }: TableScheme) => {
     if (!db.objectStoreNames.contains(name)) {
       const store = db.createObjectStore(
         name,
