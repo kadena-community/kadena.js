@@ -19,7 +19,7 @@ import parse, {
 } from 'html-react-parser';
 import MarkdownIt from 'markdown-it';
 import React, { useEffect, useRef, useState } from 'react';
-import markdownContentRaw from './docs.md?raw';
+import markdownContentRaw from '../docs.md?raw';
 
 export type HeadingElementType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 

@@ -2,19 +2,17 @@ import '@kadena/kode-ui/global';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
+import Header from './components/Header';
 import './global.css.ts';
 
-import { Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import { KadenaNames } from './components/kadenaNames/KadenaNamesResolver';
-import MarkdownPage from './components/Root';
-import { Transfer } from './components/Transfer';
-import { Transfers } from './components/Transfers';
-import { Wallet } from './components/Wallet';
+import { useRoutes } from 'react-router-dom';
+import routes from './routes';
 
 const queryClient = new QueryClient();
 
 function App() {
+  const routing = useRoutes(routes);
+
   return (
     <ThemeProvider
       attribute="class"
@@ -26,14 +24,10 @@ function App() {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <Header />
-        <Routes>
-          <Route path="/" element={<MarkdownPage />} />
-          <Route path="/wallet" element={<Wallet />} />
-          <Route path="/list" element={<Transfers />} />
-          <Route path="/transfer" element={<Transfer />} />
-          <Route path="/kadenanames" element={<KadenaNames />} />
-        </Routes>
+        <>
+          <Header />
+          {routing}
+        </>
       </QueryClientProvider>
     </ThemeProvider>
   );

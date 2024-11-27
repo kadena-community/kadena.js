@@ -13,10 +13,10 @@ import {
   Text,
 } from '@kadena/kode-ui';
 
+import SdkFunctionDisplay from '../components/SdkFunctionDisplayer'; // Demo
+import { TextEllipsis } from '../components/Text';
 import { useTransfers } from '../hooks/transfers';
 import { shortenString } from '../utils/kadenanames/transform';
-import SdkFunctionDisplay from './SdkFunctionDisplayer'; // Demo
-import { TextEllipsis } from './Text';
 
 export const Transfers = () => {
   const { transfers, pendingTransfers, account, functionCalls } =

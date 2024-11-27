@@ -9,13 +9,13 @@ import {
 } from '@kadena/kode-ui';
 import { walletSdk } from '@kadena/wallet-sdk';
 import React, { useCallback, useEffect, useState } from 'react';
-import { getChainIdByNetwork } from '../../actions/host';
 import {
   executeCreateRegisterNameTransaction,
   fetchNameInfo,
   fetchPriceByPeriod,
 } from '../../actions/kadenaNames/kadenaNamesActions';
 import { PRICE_MAP } from '../../constants/kadenaNames/kadenaNamesConstants';
+import { getChainIdByNetwork } from '../../host';
 import { Account, useWalletState } from '../../state/wallet';
 import { useDebounce } from '../../utils/useDebounce';
 

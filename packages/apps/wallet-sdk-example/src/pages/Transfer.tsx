@@ -17,11 +17,11 @@ import { useNavigate } from 'react-router-dom';
 import { useChains } from '../hooks/chains';
 import { PendingTransfer, usePendingTransfers } from '../state/pending';
 
-import SdkFunctionDisplay from './SdkFunctionDisplayer'; // Demo
-import { TransactionModal } from './TransactionModal';
+import SdkFunctionDisplay from '../components/SdkFunctionDisplayer'; // Demo
+import { TransactionModal } from '../components/TransactionModal';
 
+import { AlertDialog } from '../components/AlertDialog';
 import { useWalletState } from '../state/wallet';
-import { AlertDialog } from './AlertDialog';
 
 interface FunctionCall {
   functionName: string;

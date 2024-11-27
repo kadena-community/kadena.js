@@ -3,10 +3,10 @@ import {
   PRICE_MAP,
   VAULT,
 } from '../../constants/kadenaNames/kadenaNamesConstants';
+import { getChainIdByNetwork, getClient } from '../../host';
 import { isNameExpired, transformPactDate } from '../../utils/kadenanames/date';
 import { parseChainResponse } from '../../utils/kadenanames/transactionParser';
 import { addExtentionToName } from '../../utils/kadenanames/transform';
-import { getChainIdByNetwork, getClient } from '../host';
 
 import { getNamespaceModule } from '../../constants/kadenaNames/kadenaNamesConstants';
 

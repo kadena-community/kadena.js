@@ -1,9 +1,9 @@
 import { Badge, Button, Card, Divider, Stack, Text } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
-import { chainwebHostMap } from '../actions/host';
 import { createAndTransferFund } from '../domain/fund';
 import { useFund } from '../hooks/fund';
 import { useAddressToName } from '../hooks/kadenaNames/kadenaNamesResolver';
+import { chainwebHostMap } from '../host';
 import type { Account } from '../state/wallet';
 import { useWalletState } from '../state/wallet';
 import { AlertDialog } from './AlertDialog';
