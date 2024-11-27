@@ -6,6 +6,7 @@ export {
 export { SideBarFooter } from './components/SideBarFooter';
 export { SideBarFooterItem } from './components/SideBarFooterItem';
 export type { ISideBarFooterItemProps } from './components/SideBarFooterItem';
+export { SideBarHeaderContext } from './components/SideBarHeaderContext/SideBarHeaderContext';
 export { SideBarItem } from './components/SideBarItem';
 export type { ISideBarItemProps } from './components/SideBarItem';
 export { SideBarItemsInline } from './components/SideBarItemsInline';

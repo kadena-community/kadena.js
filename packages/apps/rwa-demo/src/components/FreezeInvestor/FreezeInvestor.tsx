@@ -7,6 +7,7 @@ import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 
 interface IProps {
@@ -43,14 +44,11 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount }) => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      addTransaction({
+      const transaction = await addTransaction({
         ...res,
         type: 'FREEZE-ADDRESS',
-        data: {
-          ...res,
-          ...data,
-        },
       });
+      return transaction;
     } catch (e: any) {
       setIsLoading(false);
     }
@@ -61,8 +59,13 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount }) => {
   }, [frozen]);
 
   return (
-    <Button startVisual={getVisual(frozen, isLoading)} onPress={handleFreeze}>
-      Pause Account
-    </Button>
+    <SendTransactionAnimation
+      onPress={handleFreeze}
+      trigger={
+        <Button startVisual={getVisual(frozen, isLoading)}>
+          {frozen ? 'Unfreeze account' : 'Freeze account'}
+        </Button>
+      }
+    ></SendTransactionAnimation>
   );
 };

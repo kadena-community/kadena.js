@@ -37,18 +37,15 @@ export const AddAgentForm: FC<IProps> = ({ onClose }) => {
   const onSubmit = async (data: IAddAgentProps) => {
     try {
       const tx = await addAgent(data, account!);
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      console.log({ res });
-      addTransaction({
+      await addTransaction({
         ...res,
         type: 'ADDAGENT',
-        data: { ...res, ...data },
       });
       console.log('DONE');
     } catch (e: any) {}

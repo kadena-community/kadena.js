@@ -123,7 +123,6 @@ export const useGetAgents = () => {
       })
       .filter((v) => v !== undefined) ?? []) as IRecord[];
 
-    console.log();
     const filteredData = [
       ...filterRemovedRecords([
         ...agentsAdded,

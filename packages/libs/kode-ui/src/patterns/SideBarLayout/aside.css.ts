@@ -81,13 +81,12 @@ export const asideWrapperClass = recipe({
       },
       xxl: {
         position: 'fixed',
-        top: minHeaderHeight,
         width: '370px',
         minWidth: '370px',
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
-        zIndex: 0,
-        height: `calc(100dvh - ${minHeaderHeight})`,
+        zIndex: token('zIndex.overlay'),
+        height: `100dvh`,
       },
     }),
   ],
@@ -155,7 +154,7 @@ export const asideHeaderClass = style([
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    minHeight: '50px',
+    minHeight: minHeaderHeight,
   },
 ]);
 export const asideHeaderCloseButtonWrapperClass = style(responsiveStyle({}));

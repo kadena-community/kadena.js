@@ -44,18 +44,6 @@ export const useGetInvestors = () => {
       return;
     }
 
-    const promises = transactions.map(async (t): Promise<IRecord> => {
-      const result = await t.listener;
-      return {
-        blockHeight: result?.metaData?.blockHeight,
-        chainId: t.data.chainId,
-        requestKey: t.requestKey,
-        accountName: t.data.agent,
-        result: result?.result.status === 'success',
-      } as IRecord;
-    });
-    const promiseResults = await Promise.all(promises);
-
     const agentsAdded: IRecord[] =
       addedData?.events.edges.map((edge: any) => {
         return {
@@ -84,10 +72,7 @@ export const useGetInvestors = () => {
 
     console.log({ agentsAdded, agentsRemoved });
 
-    setInnerData([
-      ...filterRemovedRecords([...agentsAdded, ...agentsRemoved]),
-      ...promiseResults,
-    ]);
+    setInnerData([...filterRemovedRecords([...agentsAdded, ...agentsRemoved])]);
   };
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useTransactions } from '@/hooks/transactions';
@@ -5,8 +6,10 @@ import { togglePause } from '@/services/togglePause';
 import { getClient } from '@/utils/client';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
+import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 
 export const PauseForm: FC = () => {
@@ -14,6 +17,7 @@ export const PauseForm: FC = () => {
   const [loading, setLoading] = useState(false);
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
+  const { addNotification } = useNotifications();
 
   const handlePauseToggle = async () => {
     try {
@@ -25,14 +29,20 @@ export const PauseForm: FC = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      const transaction = addTransaction({
+      const transaction = await addTransaction({
         ...res,
         type: 'PAUSE',
-        data: { ...res },
       });
 
-      await transaction.listener;
-    } catch (e: any) {}
+      return transaction;
+    } catch (e: any) {
+      addNotification({
+        intent: 'negative',
+        label: 'there was an error',
+        message: interpretErrorMessage(e.message),
+      });
+      setLoading(false);
+    }
   };
 
   const showIcon = () => {
@@ -47,8 +57,11 @@ export const PauseForm: FC = () => {
   }, [paused]);
 
   return (
-    <Button onPress={handlePauseToggle} startVisual={showIcon()}>
-      {paused ? 'paused' : 'active'}
-    </Button>
+    <SendTransactionAnimation
+      onPress={handlePauseToggle}
+      trigger={
+        <Button startVisual={showIcon()}>{paused ? 'paused' : 'active'}</Button>
+      }
+    ></SendTransactionAnimation>
   );
 };
