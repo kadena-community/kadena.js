@@ -50,3 +50,17 @@ export {
 } from './SideBarLayout/components/Breadcrumbs';
 
 export type { iRightAsideHeader } from './SideBarLayout/components/RightAside';
+
+export {
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+} from './SectionCard';
+
+export type {
+  ISectionCardBodyProps,
+  ISectionCardContentBlockProps,
+  ISectionCardHeaderProps,
+  ISectionCardProps,
+} from './SectionCard';
