@@ -73,7 +73,7 @@ export const KadenaNames: React.FC = () => {
     <div className="w-full max-w-[1000px] mx-auto p-6">
       <Card fullWidth>
         <ContentHeader
-          heading="Accounts"
+          heading="Simple Account Names"
           description="Kadena Address and Name Lookup."
           icon={<MonoShortcut />}
         />
