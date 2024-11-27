@@ -9,12 +9,19 @@ import {
   TextareaField,
 } from '@kadena/kode-ui';
 import React from 'react';
+import SdkFunctionDisplay from './SdkFunctionDisplayer';
 
 interface TransactionModalProps {
   estimatedGas: number | null;
   transactionJSON: string;
   onClose: () => void;
   onConfirm: () => void;
+  gasFunctionCall?: {
+    // demo
+    functionName: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    functionArgs: any;
+  } | null;
 }
 
 export const TransactionModal: React.FC<TransactionModalProps> = ({
@@ -22,6 +29,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
   transactionJSON,
   onClose,
   onConfirm,
+  gasFunctionCall,
 }) => {
   return (
     <Dialog
@@ -44,6 +52,19 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
           <strong>{estimatedGas ?? 'Calculating...'}</strong>
         </Text>
 
+        {/*
+              This is for Demo purposes, displaying the SDK function used to estimate gas
+            */}
+        {gasFunctionCall && (
+          <>
+            <SdkFunctionDisplay
+              functionName={gasFunctionCall.functionName}
+              functionArgs={gasFunctionCall.functionArgs}
+            />
+            <Divider />
+          </>
+        )}
+
         <TextareaField
           label="Transaction Details"
           value={transactionJSON}
@@ -56,6 +77,8 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
           rows={6}
           autoResize={false}
         />
+
+        <Divider />
 
         <Stack
           flexDirection="row"

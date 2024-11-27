@@ -12,12 +12,15 @@ import {
   TableHeader,
   Text,
 } from '@kadena/kode-ui';
+
 import { useTransfers } from '../hooks/transfers';
 import { shortenString } from '../utils/kadenanames/transform';
+import SdkFunctionDisplay from './SdkFunctionDisplayer'; // Demo
 import { TextEllipsis } from './Text';
 
 export const Transfers = () => {
-  const { transfers, pendingTransfers, account } = useTransfers();
+  const { transfers, pendingTransfers, account, functionCalls } =
+    useTransfers();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getAmountStyle = (transfer: any) => {
@@ -147,6 +150,17 @@ export const Transfers = () => {
           )}
         </Stack>
       </Card>
+
+      {/*
+        This is for Demo purposes, displaying what SDK function is execution for this action
+      */}
+      {functionCalls.map((call, index) => (
+        <SdkFunctionDisplay
+          key={index}
+          functionName={call.functionName}
+          functionArgs={call.functionArgs}
+        />
+      ))}
     </div>
   );
 };

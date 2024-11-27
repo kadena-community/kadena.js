@@ -8,11 +8,12 @@ import {
   SelectItem,
   Stack,
 } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccountsBalances } from '../hooks/balances';
 import { useChains } from '../hooks/chains';
 import { useWalletState } from '../state/wallet';
 import { AccountItem } from './AccountItem';
+import SdkFunctionDisplay from './SdkFunctionDisplayer'; // Demo
 
 export const Accounts = () => {
   const wallet = useWalletState();
@@ -26,6 +27,25 @@ export const Accounts = () => {
     );
 
   const { chains } = useChains(wallet.selectedNetwork);
+
+  /* -- Start demo ---------------*/
+  const [functionCall, setFunctionCall] = useState<{
+    functionName: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    functionArgs: any;
+  }>({
+    functionName: 'walletSdk.getChains',
+    functionArgs: { networkId: wallet.selectedNetwork },
+  });
+
+  useEffect(() => {
+    setFunctionCall({
+      functionName: 'walletSdk.getChains',
+      functionArgs: { networkId: wallet.selectedNetwork },
+    });
+  }, [wallet.selectedNetwork]);
+  /* -- End demo ---------------*/
+
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleRegistered = () => setRefreshKey((prev) => prev + 1);
@@ -62,7 +82,13 @@ export const Accounts = () => {
             ))}
           </Select>
         </Stack>
-
+        {/*
+          This is for Demo purposes, displaying what SDK function is execution for this action
+        */}
+        <SdkFunctionDisplay
+          functionName={functionCall.functionName}
+          functionArgs={functionCall.functionArgs}
+        />
         {wallet.accounts.map((account) => (
           <AccountItem
             key={`account-${account.index}`}

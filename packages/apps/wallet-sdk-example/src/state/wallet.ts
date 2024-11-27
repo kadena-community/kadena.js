@@ -25,6 +25,7 @@ const seedAtom = atomWithStorage<null | EncryptedString>(
   'mmnemonic_seed',
   null,
 );
+const debugModeAtom = atomWithStorage('debugMode', true);
 const selectedChainAtom = atomWithStorage<ChainId>('chain_id', '0');
 const selectedNetworkAtom = atomWithStorage('network_id', 'testnet04');
 const selectedFungibleAtom = atomWithStorage('selected_fungible', 'coin');
@@ -47,6 +48,7 @@ export const useWalletState = (initialPassword?: string) => {
   const [selectedChain, selectChain] = useAtom(selectedChainAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [seed, setSeed] = useAtom(seedAtom);
+  const [debugMode, setDebugMode] = useAtom(debugModeAtom);
   // Temporary state
   const [password, setPassword] = useAtom(passwordAtom);
   const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
@@ -139,6 +141,7 @@ export const useWalletState = (initialPassword?: string) => {
     selectedNetwork,
     selectedChain,
     selectedToChain,
+    debugMode,
     selectNetwork,
     generateMnemonic,
     selectAccount,
@@ -147,5 +150,6 @@ export const useWalletState = (initialPassword?: string) => {
     generateAccount,
     signTransaction,
     setSelectedToChain,
+    setDebugMode,
   };
 };
