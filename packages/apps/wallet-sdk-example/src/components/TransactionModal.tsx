@@ -16,8 +16,8 @@ interface TransactionModalProps {
   transactionJSON: string;
   onClose: () => void;
   onConfirm: () => void;
+  // demo
   gasFunctionCall?: {
-    // demo
     functionName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     functionArgs: any;
@@ -51,10 +51,9 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
           Estimated Gas Cost:{' '}
           <strong>{estimatedGas ?? 'Calculating...'}</strong>
         </Text>
-
         {/*
-              This is for Demo purposes, displaying the SDK function used to estimate gas
-            */}
+          This is for Demo purposes, displaying the SDK function used to estimate gas
+        */}
         {gasFunctionCall && (
           <>
             <SdkFunctionDisplay
