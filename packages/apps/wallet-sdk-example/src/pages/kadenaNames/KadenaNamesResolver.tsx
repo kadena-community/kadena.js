@@ -9,8 +9,8 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 
-import React, { useEffect, useState } from 'react';
-import SdkFunctionDisplay from '../../components/SdkFunctionDisplayer'; // Demo
+import React from 'react';
+import SdkFunctionDisplay from '../../components/SdkFunctionDisplayer';
 import {
   useAddressToName,
   useNameToAddress,
@@ -26,6 +26,9 @@ export const KadenaNames: React.FC = () => {
     loading: nameLoading,
     setAddress,
     address: inputAddress,
+    /* -- Start demo ---------------*/
+    sdkFunctionCall: addressToNameSdkCall,
+    /* -- End demo ---------------*/
   } = useAddressToName(0, wallet.selectedNetwork);
 
   const {
@@ -34,40 +37,10 @@ export const KadenaNames: React.FC = () => {
     loading: addressLoading,
     setName,
     name: inputName,
+    /* -- Start demo ---------------*/
+    sdkFunctionCall: nameToAddressSdkCall,
+    /* -- End demo ---------------*/
   } = useNameToAddress(0, wallet.selectedNetwork);
-
-  //* -- Start demo ---------------*/
-  const [functionCalls, setFunctionCalls] = useState<
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    { functionName: string; functionArgs: any }[]
-  >([]);
-
-  useEffect(() => {
-    const calls = [];
-
-    if (inputAddress) {
-      calls.push({
-        functionName: 'walletSdk.kadenaNames.addressToName',
-        functionArgs: {
-          address: inputAddress,
-          networkId: wallet.selectedNetwork,
-        },
-      });
-    }
-
-    if (inputName) {
-      calls.push({
-        functionName: 'walletSdk.kadenaNames.nameToAddress',
-        functionArgs: {
-          name: inputName,
-          networkId: wallet.selectedNetwork,
-        },
-      });
-    }
-
-    setFunctionCalls(calls);
-  }, [inputAddress, inputName, wallet.selectedNetwork]);
-  /* -- End demo ---------------*/
 
   return (
     <div className="w-full max-w-[1000px] mx-auto p-6">
@@ -81,7 +54,6 @@ export const KadenaNames: React.FC = () => {
         <Divider />
 
         <Stack flexDirection="column" gap="lg">
-          {/* Address to Name */}
           <Stack flexDirection="column" gap="sm">
             <Heading as="h3">Address to Name</Heading>
             <TextField
@@ -104,7 +76,6 @@ export const KadenaNames: React.FC = () => {
             )}
           </Stack>
 
-          {/* Name to Address */}
           <Stack flexDirection="column" gap="sm">
             <Heading as="h3">Name to Address</Heading>
             <TextField
@@ -130,16 +101,23 @@ export const KadenaNames: React.FC = () => {
       </Card>
 
       {/*
-        This is for Demo purposes, displaying what SDK function is execution for this action
+        This is for Demo purposes, displaying the SDK functions used in this component
       */}
       <div>
-        {functionCalls.map((call, index) => (
+        {/* -- Start demo ---------------*/}
+        {addressToNameSdkCall && (
           <SdkFunctionDisplay
-            key={index}
-            functionName={call.functionName}
-            functionArgs={call.functionArgs}
+            functionName={addressToNameSdkCall.functionName}
+            functionArgs={addressToNameSdkCall.functionArgs}
           />
-        ))}
+        )}
+        {nameToAddressSdkCall && (
+          <SdkFunctionDisplay
+            functionName={nameToAddressSdkCall.functionName}
+            functionArgs={nameToAddressSdkCall.functionArgs}
+          />
+        )}
+        {/* -- End demo ---------------*/}
       </div>
     </div>
   );

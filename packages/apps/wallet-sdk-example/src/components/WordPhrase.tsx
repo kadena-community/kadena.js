@@ -16,6 +16,11 @@ export const WordPhrase = () => {
 
   const onGenerateMnemonic = () => {
     const words = wallet.generateMnemonic();
+    /*
+      For demonstration purposes only, the mnemonic is stored locally in this app,
+      which is not secure and should never be implemented this way in a production environment.
+      In production, only the encrypted seed should be stored if necessary, while the mnemonic should be securely kept by the end user.
+    */
     setMnemonicWords(words);
     wallet.changeMnemonicWords(words).catch(console.error);
   };

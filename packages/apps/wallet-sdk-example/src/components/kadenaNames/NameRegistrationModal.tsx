@@ -26,7 +26,6 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
       }}
       size="sm"
     >
-      {/* Modal Header */}
       <ContentHeader
         heading="Register Kadena Name"
         description="Use this form to register a new Kadena name."
@@ -34,8 +33,6 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
       />
 
       <Divider />
-
-      {/* Modal Content */}
 
       <NameRegistrationForm
         initialOwner={owner}
@@ -47,7 +44,6 @@ export const NameRegistrationModal: React.FC<NameRegistrationModalProps> = ({
         balance={balance}
       />
 
-      {/* Buttons */}
       <Stack
         flexDirection="row"
         gap="md"

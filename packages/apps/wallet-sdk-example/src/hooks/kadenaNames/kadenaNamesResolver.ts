@@ -10,6 +10,14 @@ export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  /* -- Start demo ---------------*/
+  const [sdkFunctionCall, setSdkFunctionCall] = useState<{
+    functionName: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    functionArgs: any;
+  } | null>(null);
+  /* -- End demo ---------------*/
+
   useEffect(() => {
     setName(null);
     setError(null);
@@ -24,6 +32,16 @@ export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
     const getName = async () => {
       setLoading(true);
       try {
+        /* -- Start demo ---------------*/
+        setSdkFunctionCall({
+          functionName: 'walletSdk.kadenaNames.addressToName',
+          functionArgs: {
+            address: debouncedAddress,
+            networkId: selectedNetwork,
+          },
+        });
+        /* -- End demo ---------------*/
+
         const result = await walletSdk.kadenaNames.addressToName(
           debouncedAddress,
           selectedNetwork,
@@ -53,7 +71,7 @@ export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
     };
   }, [debouncedAddress, refreshKey, selectedNetwork]);
 
-  return { name, error, loading, setAddress, address };
+  return { name, error, loading, setAddress, address, sdkFunctionCall };
 };
 
 export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
@@ -63,6 +81,14 @@ export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
   const [address, setAddress] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  /* -- Start demo ---------------*/
+  const [sdkFunctionCall, setSdkFunctionCall] = useState<{
+    functionName: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    functionArgs: any;
+  } | null>(null);
+  /* -- End demo ---------------*/
 
   useEffect(() => {
     setAddress(null);
@@ -78,6 +104,15 @@ export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
     const getAddress = async () => {
       setLoading(true);
       try {
+        /* -- Start demo ---------------*/
+        setSdkFunctionCall({
+          functionName: 'walletSdk.kadenaNames.nameToAddress',
+          functionArgs: {
+            name: debouncedName,
+            networkId: selectedNetwork,
+          },
+        });
+        /* -- End demo ---------------*/
         const result = await walletSdk.kadenaNames.nameToAddress(
           debouncedName,
           selectedNetwork,
@@ -107,5 +142,5 @@ export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
     };
   }, [debouncedName, refreshKey, selectedNetwork]);
 
-  return { address, error, loading, setName, name };
+  return { address, error, loading, setName, name, sdkFunctionCall };
 };

@@ -1,3 +1,5 @@
+// src/components/AccountItem.tsx
+
 import { Badge, Button, Card, Divider, Stack, Text } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { createAndTransferFund } from '../domain/fund';
@@ -9,6 +11,7 @@ import { useWalletState } from '../state/wallet';
 import { AlertDialog } from './AlertDialog';
 import { ChainSelectionModal } from './ChainSelectorModal';
 import { NameRegistrationModal } from './kadenaNames/NameRegistrationModal';
+import SdkFunctionDisplay from './SdkFunctionDisplayer'; // Import SdkFunctionDisplay
 import { TextEllipsis } from './Text';
 
 interface AccountItemProps {
@@ -36,11 +39,41 @@ export const AccountItem: React.FC<AccountItemProps> = ({
     name: resolvedName,
     loading: nameLoading,
     setAddress,
+    /* -- Start demo ---------------*/
+    sdkFunctionCall: nameSdkFunctionCall,
+    /* -- End demo ---------------*/
   } = useAddressToName(refreshKey, wallet.selectedNetwork);
+
+  /* -- Start demo ---------------*/
+  const [balanceSdkFunctionCall, setBalanceSdkFunctionCall] = useState<{
+    functionName: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    functionArgs: any;
+  } | null>(null);
+  /* -- End demo ---------------*/
 
   useEffect(() => {
     setAddress(account.name);
   }, [account.name, setAddress, refreshKey]);
+
+  useEffect(() => {
+    /* -- Start demo ---------------*/
+    setBalanceSdkFunctionCall({
+      functionName: 'walletSdk.getAccountDetails',
+      functionArgs: {
+        accountName: account.name,
+        networkId: wallet.selectedNetwork,
+        fungible: wallet.selectedFungible,
+        chainIds: [wallet.selectedChain],
+      },
+    });
+    /* -- End demo ---------------*/
+  }, [
+    account.name,
+    wallet.selectedNetwork,
+    wallet.selectedFungible,
+    wallet.selectedChain,
+  ]);
 
   const openRegisterModal = () => setModalVisible(true);
   const closeRegisterModal = () => setModalVisible(false);
@@ -83,8 +116,6 @@ export const AccountItem: React.FC<AccountItemProps> = ({
       : 0;
 
   const badgeVariant = accountBalance > 0 ? 'positive' : 'negative';
-
-  console.log('selectedNetwork: ', wallet.selectedNetwork);
 
   return (
     <>
@@ -182,6 +213,24 @@ export const AccountItem: React.FC<AccountItemProps> = ({
               </Button>
             )}
           </Stack>
+
+          {/* -- Start demo ---------------*/}
+          {/* Display the SDK function call for getAccountDetails */}
+          {balanceSdkFunctionCall && (
+            <SdkFunctionDisplay
+              functionName={balanceSdkFunctionCall.functionName}
+              functionArgs={balanceSdkFunctionCall.functionArgs}
+            />
+          )}
+
+          {/* Display the SDK function call for addressToName */}
+          {nameSdkFunctionCall && (
+            <SdkFunctionDisplay
+              functionName={nameSdkFunctionCall.functionName}
+              functionArgs={nameSdkFunctionCall.functionArgs}
+            />
+          )}
+          {/* -- End demo ---------------*/}
         </Stack>
       </Card>
 

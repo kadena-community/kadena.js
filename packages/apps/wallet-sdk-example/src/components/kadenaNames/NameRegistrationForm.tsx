@@ -156,7 +156,6 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
 
   return (
     <Stack flexDirection="column" gap="md">
-      {/* Network Info */}
       <Text variant="ui" color="default">
         Network: <strong>{wallet.selectedNetwork}</strong>
       </Text>
@@ -164,7 +163,6 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         Current Balance: <strong>{balance} KDA</strong>
       </Text>
 
-      {/* Owner Address */}
       <TextField
         label="Owner Address"
         placeholder="Enter your Kadena address"
@@ -176,7 +174,6 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         size="md"
       />
 
-      {/* Receiver Address */}
       <TextField
         label="Receiver Address"
         placeholder="Enter the receiver address"
@@ -185,7 +182,6 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         size="md"
       />
 
-      {/* Chain Selector */}
       <Select
         label="Chain"
         selectedKey={selectedChain ?? validChain}
@@ -195,7 +191,6 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         <SelectItem key={validChain}>Chain {validChain}</SelectItem>
       </Select>
 
-      {/* Registration Period */}
       <Select
         label="Registration Period"
         selectedKey={registrationPeriod.toString()}
@@ -209,7 +204,6 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         ))}
       </Select>
 
-      {/* Name Input */}
       <TextField
         label="Name"
         placeholder="Enter the name to register"
@@ -218,14 +212,12 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         size="md"
       />
 
-      {/* Price Info */}
       {price !== null && (
         <Text variant="body">
           <strong>Price:</strong> {price} KDA for {registrationPeriod} year(s)
         </Text>
       )}
 
-      {/* Register Button */}
       <Button
         variant="primary"
         onPress={handleRegister}
@@ -240,7 +232,6 @@ export const NameRegistrationForm: React.FC<NameRegistrationFormProps> = ({
         {getButtonText()}
       </Button>
 
-      {/* Status/Error Messages */}
       {status && <Text variant="body">{status}</Text>}
       {error && <Text variant="body">{error}</Text>}
     </Stack>
