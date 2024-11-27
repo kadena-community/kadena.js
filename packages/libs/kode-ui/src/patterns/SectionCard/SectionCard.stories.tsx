@@ -2,18 +2,18 @@ import { MonoAdd } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Button, Stack } from './../../components';
-import { ISectionCardProps, SectionCard } from './SectionCard';
-import { ISectionCardBody, SectionCardBody } from './SectionCardBody';
+import type { ISectionCardProps } from './SectionCard';
+import { SectionCard } from './SectionCard';
+import type { ISectionCardBodyProps } from './SectionCardBody';
+import { SectionCardBody } from './SectionCardBody';
 import { SectionCardContentBlock } from './SectionCardContentBlock';
-import {
-  SectionCardHeader,
-  type ISectionCardHeaderProps,
-} from './SectionCardHeader';
+import type { ISectionCardHeaderProps } from './SectionCardHeader';
+import { SectionCardHeader } from './SectionCardHeader';
 
 interface IProps
   extends ISectionCardHeaderProps,
     ISectionCardProps,
-    ISectionCardBody {}
+    ISectionCardBodyProps {}
 
 const meta: Meta<IProps> = {
   title: 'Patterns/SectionCard',
@@ -40,9 +40,9 @@ const meta: Meta<IProps> = {
       },
     },
     variant: {
+      options: ['horizontal', 'vertical'],
       control: {
         type: 'select',
-        options: ['horizontal', 'vertical'],
       },
     },
     children: {

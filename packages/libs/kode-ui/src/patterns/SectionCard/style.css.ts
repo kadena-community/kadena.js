@@ -34,7 +34,13 @@ export const headerClass = recipe({
           },
         }),
       ],
-      vertical: {},
+      vertical: {
+        ridTemplateColumns: `2fr 1fr`,
+        gridTemplateAreas: `
+                  "header actions"
+                  "description actions"
+              `,
+      },
     },
   },
 });
@@ -61,6 +67,29 @@ export const cardClass = style([
   }),
 ]);
 
+export const actionsClass = recipe({
+  base: {
+    alignItems: 'flex-start',
+  },
+  variants: {
+    variant: {
+      horizontal: [
+        responsiveStyle({
+          xs: {
+            justifyContent: 'flex-end',
+          },
+          md: {
+            justifyContent: 'flex-start',
+          },
+        }),
+      ],
+      vertical: {
+        justifyContent: 'flex-end',
+      },
+    },
+  },
+});
+
 export const blockClass = recipe({
   base: {
     display: 'grid!important',
@@ -86,7 +115,13 @@ export const blockClass = recipe({
         }),
       ],
 
-      vertical: {},
+      vertical: {
+        gridTemplateColumns: `1fr`,
+        gridTemplateAreas: `
+                  "header"
+                  "body"
+              `,
+      },
     },
   },
 });

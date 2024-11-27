@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import { Stack } from './../../components';
-import { ISectionCardProps } from './SectionCard';
+import type { ISectionCardProps } from './SectionCard';
 import { SectionCardBody } from './SectionCardBody';
 import { SectionCardHeader } from './SectionCardHeader';
 import { blockClass } from './style.css';

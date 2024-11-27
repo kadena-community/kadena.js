@@ -1,9 +1,8 @@
 import type { FC, ReactElement } from 'react';
 import React from 'react';
 import { Heading, Stack, Text } from './../../components';
-import { ISectionCardProps } from './SectionCard';
-import { ISectionCardBody } from './SectionCardBody';
-import { headerClass, headerDescriptionClass } from './style.css';
+import type { ISectionCardProps } from './SectionCard';
+import { actionsClass, headerClass, headerDescriptionClass } from './style.css';
 
 export interface ISectionCardHeaderProps {
   title: string;
@@ -32,7 +31,14 @@ export const SectionCardHeader: FC<ISectionCardHeaderProps> = ({
           </Text>
         </Stack>
       )}
-      {actions && <Stack style={{ gridArea: 'actions' }}>{actions}</Stack>}
+      {actions && (
+        <Stack
+          className={actionsClass({ variant })}
+          style={{ gridArea: 'actions' }}
+        >
+          {actions}
+        </Stack>
+      )}
     </Stack>
   );
 };
