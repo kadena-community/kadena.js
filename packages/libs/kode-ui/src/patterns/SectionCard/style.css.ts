@@ -9,6 +9,7 @@ export const headerClass = recipe({
       gap: 'md',
       alignItems: 'flex-start',
       overflowX: 'hidden',
+      wordBreak: 'break-word',
     }),
     {
       display: 'grid !important',
@@ -100,6 +101,7 @@ export const bodyClass = recipe({
       paddingBlockEnd: 'xl',
       paddingInlineEnd: 'lg',
       gap: 'md',
+      wordBreak: 'break-word',
     }),
     {
       gridArea: 'body',
