@@ -1,7 +1,8 @@
-import { MonoAdd } from '@kadena/kode-icons/system';
+import { MonoAccessAlarm, MonoAdd } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Button, Stack, Text } from './../../components';
+import { getVariants } from './../../storyDecorators';
 import type { ISectionCardProps } from './SectionCard';
 import { SectionCard } from './SectionCard';
 import type { ISectionCardBodyProps } from './SectionCardBody';
@@ -9,6 +10,9 @@ import { SectionCardBody } from './SectionCardBody';
 import { SectionCardContentBlock } from './SectionCardContentBlock';
 import type { ISectionCardHeaderProps } from './SectionCardHeader';
 import { SectionCardHeader } from './SectionCardHeader';
+import { iconWrapperClass } from './style.css';
+
+const intentVariants = getVariants(iconWrapperClass);
 
 interface IProps
   extends ISectionCardHeaderProps,
@@ -27,6 +31,17 @@ const meta: Meta<IProps> = {
     },
   },
   argTypes: {
+    intent: {
+      options: intentVariants.intent,
+      control: {
+        type: 'select',
+      },
+      description: 'intent color',
+      table: {
+        type: { summary: intentVariants.intent.join(' | ') },
+        defaultValue: { summary: 'default' },
+      },
+    },
     title: {
       control: {
         type: 'text',
@@ -39,7 +54,7 @@ const meta: Meta<IProps> = {
         type: 'text',
       },
     },
-    position: {
+    stack: {
       options: ['horizontal', 'vertical'],
       control: {
         type: 'select',
@@ -73,10 +88,10 @@ export const Primary: Story = {
     actions: <Actions />,
     children: 'This is the content for our section',
   },
-  render: ({ position, title, description, children, actions }) => {
+  render: ({ stack, title, description, children, actions, intent }) => {
     return (
       <Stack width="100%" padding="lg">
-        <SectionCard position={position}>
+        <SectionCard stack={stack} intent={intent}>
           <SectionCardContentBlock>
             <SectionCardBody
               title="Content title"
@@ -105,10 +120,89 @@ export const main: Story = {
     actions: <Actions />,
     children: 'This is the content for our section',
   },
-  render: ({ position, title, description, children, actions }) => {
+  render: ({ stack, title, description, children, actions, intent }) => {
     return (
       <Stack width="100%" padding="lg">
-        <SectionCard position={position} variant="main">
+        <SectionCard stack={stack} variant="main" intent={intent}>
+          <SectionCardContentBlock>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
+              {children}
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+            </SectionCardBody>
+            <SectionCardHeader
+              title={title}
+              description={description}
+              actions={actions}
+            />
+          </SectionCardContentBlock>
+        </SectionCard>
+      </Stack>
+    );
+  },
+};
+
+export const withIcon: Story = {
+  name: 'SectionCard card with Icon',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    actions: <Actions />,
+    children: 'This is the content for our section',
+    intent: 'info',
+  },
+  render: ({ stack, title, description, children, actions, intent }) => {
+    return (
+      <Stack width="100%" padding="lg">
+        <SectionCard stack={stack} icon={<MonoAccessAlarm />} intent={intent}>
+          <SectionCardContentBlock>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
+              {children}
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+            </SectionCardBody>
+            <SectionCardHeader
+              title={title}
+              description={description}
+              actions={actions}
+            />
+          </SectionCardContentBlock>
+        </SectionCard>
+      </Stack>
+    );
+  },
+};
+
+export const withIconIsLoading: Story = {
+  name: 'SectionCard loading state',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    actions: <Actions />,
+    children: 'This is the content for our section',
+    intent: 'info',
+  },
+  render: ({ stack, title, description, children, actions, intent }) => {
+    return (
+      <Stack width="100%" padding="lg">
+        <SectionCard
+          stack={stack}
+          icon={<MonoAccessAlarm />}
+          intent={intent}
+          isLoading
+        >
           <SectionCardContentBlock>
             <SectionCardBody
               title="Content title"

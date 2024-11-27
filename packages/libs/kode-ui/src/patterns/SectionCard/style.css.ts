@@ -1,11 +1,24 @@
 import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
+export const extraPaddingClass = recipe({
+  base: {},
+  variants: {
+    variant: {
+      main: {
+        paddingBlockStart: token('spacing.n6'),
+      },
+      base: {},
+    },
+  },
+});
+
 export const headerClass = recipe({
   base: [
     atoms({
       backgroundColor: 'surface.default',
-      paddingInlineStart: 'xl',
-      paddingBlockEnd: 'xl',
+      paddingInlineStart: 'n8',
+      paddingBlockEnd: 'n8',
+      paddingBlockStart: `n8`,
       paddingInlineEnd: 'lg',
       gap: 'md',
       alignItems: 'flex-start',
@@ -16,17 +29,7 @@ export const headerClass = recipe({
     },
   ],
   variants: {
-    variant: {
-      base: {
-        paddingBlockStart: `${token('spacing.xl')}`,
-      },
-      main: [
-        {
-          paddingBlockStart: `${token('spacing.xxl')}`,
-        },
-      ],
-    },
-    position: {
+    stack: {
       horizontal: [
         responsiveStyle({
           xs: {
@@ -38,10 +41,12 @@ export const headerClass = recipe({
           },
           md: {
             gridTemplateColumns: `1fr`,
+            gridTemplateRows: `max-content max-content max-content 1fr`,
             gridTemplateAreas: `
                   "header"
                   "description"
                   "actions"
+                  "fill"
               `,
           },
         }),
@@ -90,6 +95,7 @@ export const bodyClass = recipe({
 
 export const cardClass = style([
   atoms({
+    position: 'relative',
     padding: 'no',
     width: '100%',
   }),
@@ -100,7 +106,7 @@ export const actionsClass = recipe({
     alignItems: 'flex-start',
   },
   variants: {
-    position: {
+    stack: {
       horizontal: [
         responsiveStyle({
           xs: {
@@ -124,7 +130,7 @@ export const blockClass = recipe({
     width: '100%',
   },
   variants: {
-    position: {
+    stack: {
       horizontal: [
         responsiveStyle({
           xs: {
@@ -150,6 +156,43 @@ export const blockClass = recipe({
                   "body"
               `,
       },
+    },
+  },
+});
+
+export const iconWrapperClass = recipe({
+  base: [
+    atoms({
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      borderRadius: 'round',
+      backgroundColor: 'layer.solid',
+      border: 'normal',
+    }),
+    {
+      boxSizing: 'border-box',
+      width: '40px',
+      aspectRatio: '1/1',
+      top: '-20px',
+      left: token('spacing.n8'),
+    },
+  ],
+  variants: {
+    intent: {
+      info: atoms({
+        borderColor: 'semantic.info.default',
+      }),
+      positive: atoms({
+        borderColor: 'semantic.positive.default',
+      }),
+      warning: atoms({
+        borderColor: 'semantic.warning.default',
+      }),
+      negative: atoms({
+        borderColor: 'semantic.negative.default',
+      }),
     },
   },
 });

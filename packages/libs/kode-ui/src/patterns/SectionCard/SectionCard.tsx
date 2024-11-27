@@ -1,21 +1,38 @@
-import type { FC, PropsWithChildren } from 'react';
+import { RecipeVariants } from '@vanilla-extract/recipes';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import { Card } from './../../components';
+import { IconWrapper } from './IconWrapper';
 import { SectionCardContentBlock } from './SectionCardContentBlock';
-import { cardClass } from './style.css';
+import { cardClass, iconWrapperClass } from './style.css';
 
-export interface ISectionCardProps extends PropsWithChildren {
-  position?: 'horizontal' | 'vertical';
+type ContentTypeVariants = NonNullable<RecipeVariants<typeof iconWrapperClass>>;
+
+export interface ISectionCardProps
+  extends PropsWithChildren,
+    ContentTypeVariants {
+  stack?: 'horizontal' | 'vertical';
   variant?: 'main' | 'base';
+  icon?: ReactElement;
+  isLoading?: boolean;
 }
 
 export const SectionCard: FC<ISectionCardProps> = ({
   children,
-  position = 'horizontal',
+  stack = 'horizontal',
   variant = 'base',
+  icon,
+  intent,
+  isLoading = false,
 }) => {
   return (
     <Card className={cardClass}>
+      <IconWrapper
+        icon={icon}
+        intent={intent}
+        variant={variant}
+        isLoading={isLoading}
+      />
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
@@ -23,7 +40,7 @@ export const SectionCard: FC<ISectionCardProps> = ({
         )
           return null;
 
-        return React.cloneElement(child, { ...child.props, position, variant });
+        return React.cloneElement(child, { ...child.props, stack, variant });
       })}
     </Card>
   );
