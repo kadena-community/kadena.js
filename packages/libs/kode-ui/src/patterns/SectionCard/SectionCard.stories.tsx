@@ -226,3 +226,76 @@ export const withIconIsLoading: Story = {
     );
   },
 };
+
+export const reverseBackground: Story = {
+  name: 'SectionCard Reversed background',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    actions: <Actions />,
+    children: 'This is the content for our section',
+    intent: 'info',
+  },
+  render: ({ stack, title, description, children, actions, intent }) => {
+    return (
+      <Stack width="100%" padding="lg">
+        <SectionCard background="reversed" stack={stack}>
+          <SectionCardContentBlock>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
+              {children}
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+            </SectionCardBody>
+            <SectionCardHeader
+              title={title}
+              description={description}
+              actions={actions}
+            />
+          </SectionCardContentBlock>
+        </SectionCard>
+      </Stack>
+    );
+  },
+};
+export const noBackground: Story = {
+  name: 'SectionCard No background',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    actions: <Actions />,
+    children: 'This is the content for our section',
+    intent: 'info',
+  },
+  render: ({ stack, title, description, children, actions, intent }) => {
+    return (
+      <Stack width="100%" padding="lg">
+        <SectionCard background="none" stack={stack}>
+          <SectionCardContentBlock>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
+              {children}
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+            </SectionCardBody>
+            <SectionCardHeader
+              title={title}
+              description={description}
+              actions={actions}
+            />
+          </SectionCardContentBlock>
+        </SectionCard>
+      </Stack>
+    );
+  },
+};

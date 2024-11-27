@@ -8,6 +8,7 @@ export interface ISectionCardBodyProps extends PropsWithChildren {
   title?: string;
   description?: string;
   variant?: ISectionCardProps['variant'];
+  background?: ISectionCardProps['background'];
 }
 
 export const SectionCardBody: FC<ISectionCardBodyProps> = ({
@@ -15,10 +16,11 @@ export const SectionCardBody: FC<ISectionCardBodyProps> = ({
   title,
   description,
   variant,
+  background,
 }) => {
   return (
     <Stack
-      className={bodyClass({ variant })}
+      className={bodyClass({ variant, background })}
       flexDirection="column"
       width="100%"
     >

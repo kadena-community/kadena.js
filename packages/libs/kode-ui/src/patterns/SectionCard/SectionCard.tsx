@@ -16,6 +16,7 @@ export interface ISectionCardProps
   variant?: 'main' | 'base';
   icon?: ReactElement;
   isLoading?: boolean;
+  background?: 'default' | 'reversed' | 'none';
 }
 
 export const SectionCard: FC<ISectionCardProps> = ({
@@ -25,6 +26,7 @@ export const SectionCard: FC<ISectionCardProps> = ({
   icon,
   intent,
   isLoading = false,
+  background = 'default',
 }) => {
   return (
     <Card className={cardClass}>
@@ -41,7 +43,12 @@ export const SectionCard: FC<ISectionCardProps> = ({
         )
           return null;
 
-        return React.cloneElement(child, { ...child.props, stack, variant });
+        return React.cloneElement(child, {
+          ...child.props,
+          stack,
+          variant,
+          background,
+        });
       })}
     </Card>
   );

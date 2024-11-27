@@ -3,7 +3,6 @@ import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 export const headerClass = recipe({
   base: [
     atoms({
-      backgroundColor: 'surface.default',
       paddingInlineStart: 'n8',
       paddingBlockEnd: 'n8',
 
@@ -18,6 +17,11 @@ export const headerClass = recipe({
     },
   ],
   variants: {
+    background: {
+      default: { backgroundColor: token('color.background.surface.default') },
+      reversed: {},
+      none: {},
+    },
     variant: {
       main: {
         paddingBlockStart: token('spacing.n14'),
@@ -77,15 +81,22 @@ export const bodyClass = recipe({
     },
   ],
   variants: {
-    variant: {
-      base: {
-        paddingBlockStart: `${token('spacing.xl')}`,
+    background: {
+      default: {},
+      reversed: {
+        backgroundColor: token('color.background.surface.default'),
       },
+      none: {},
+    },
+    variant: {
       main: [
         {
-          paddingBlockStart: `${token('spacing.xxl')}`,
+          paddingBlockStart: `${token('spacing.n14')}`,
         },
       ],
+      base: {
+        paddingBlockStart: `${token('spacing.n8')}`,
+      },
     },
   },
 });

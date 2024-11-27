@@ -9,12 +9,14 @@ import { blockClass } from './style.css';
 export interface ISectionCardContentBlockProps extends PropsWithChildren {
   stack?: ISectionCardProps['stack'];
   variant?: ISectionCardProps['variant'];
+  background?: ISectionCardProps['background'];
 }
 
 export const SectionCardContentBlock: FC<ISectionCardContentBlockProps> = ({
   children,
   stack,
   variant,
+  background,
 }) => {
   return (
     <Stack className={blockClass({ stack })}>
@@ -27,7 +29,12 @@ export const SectionCardContentBlock: FC<ISectionCardContentBlockProps> = ({
         )
           return null;
 
-        return React.cloneElement(child, { ...child.props, stack, variant });
+        return React.cloneElement(child, {
+          ...child.props,
+          stack,
+          variant,
+          background,
+        });
       })}
     </Stack>
   );
