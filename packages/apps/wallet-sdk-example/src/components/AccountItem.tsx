@@ -1,5 +1,3 @@
-// src/components/AccountItem.tsx
-
 import { Badge, Button, Card, Divider, Stack, Text } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { createAndTransferFund } from '../domain/fund';
