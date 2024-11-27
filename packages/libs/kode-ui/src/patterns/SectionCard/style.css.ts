@@ -78,6 +78,7 @@ export const headerClass = recipe({
           },
           sm: {
             gridTemplateColumns: `2fr 1fr`,
+            gridTemplateRows: `max-content max-content`,
             gridTemplateAreas: `
                   "header actions"
                   "description actions"
