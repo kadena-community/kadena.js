@@ -111,7 +111,11 @@ export const Transfers = () => {
                 {transfers.map((transfer, index) => (
                   <Row key={index}>
                     <Cell>{shortenString(transfer.requestKey)}</Cell>
-                    <Cell>{transfer.chainId}</Cell>
+                    <Cell>
+                      {transfer.isCrossChainTransfer
+                        ? `${transfer.chainId} → ${transfer.targetChainId}`
+                        : transfer.chainId}
+                    </Cell>
                     <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
                         {transfer.senderAccount}
