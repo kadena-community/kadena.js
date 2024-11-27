@@ -4,6 +4,10 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/github.css';
 import React, { useEffect, useRef } from 'react';
 import { useWalletState } from '../state/wallet';
+import {
+  sdkDisplayCode,
+  sdkDisplayContainer,
+} from './sdkFunctionDisplayer.css';
 
 interface SdkFunctionDisplayProps {
   functionName: string;
@@ -29,17 +33,17 @@ const SdkFunctionDisplay: React.FC<SdkFunctionDisplayProps> = ({
     if (codeRef.current) {
       hljs.highlightElement(codeRef.current);
     }
-  }, [codeString]);
+  }, [codeString, debugMode]);
 
   if (!debugMode) return null;
 
   return (
-    <div style={{ marginTop: '20px', width: '100%' }}>
+    <div className={sdkDisplayContainer}>
       <Card fullWidth>
         <Stack flexDirection="column" gap="sm">
           <Text>SDK Function Call</Text>
           <Divider />
-          <pre style={{ margin: 0 }}>
+          <pre className={sdkDisplayCode}>
             <code ref={codeRef} className="language-javascript">
               {codeString}
             </code>
