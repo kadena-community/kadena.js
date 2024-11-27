@@ -11,14 +11,23 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
-import { walletSdk } from '@kadena/wallet-sdk';
-import React, { useState } from 'react';
+import { SimpleCreateTransfer, walletSdk } from '@kadena/wallet-sdk';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useChains } from '../hooks/chains';
 import { PendingTransfer, usePendingTransfers } from '../state/pending';
+
+import SdkFunctionDisplay from './SdkFunctionDisplayer'; // Demo
+import { TransactionModal } from './TransactionModal';
+
 import { useWalletState } from '../state/wallet';
 import { AlertDialog } from './AlertDialog';
-import { TransactionModal } from './TransactionModal';
+
+interface FunctionCall {
+  functionName: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  functionArgs: any;
+}
 
 export const Transfer = () => {
   const wallet = useWalletState();
@@ -36,13 +45,60 @@ export const Transfer = () => {
     amount: string;
   } | null>(null);
 
+  /* -- Start demo ---------------*/
+  const [sdkFunctionCall, setSdkFunctionCall] = useState<FunctionCall | null>(
+    null,
+  );
+  const [gasFunctionCall, setGasFunctionCall] = useState<FunctionCall | null>(
+    null,
+  );
+  /* -- End demo ---------------*/
+
   const navigate = useNavigate();
   const { chains } = useChains(wallet.selectedNetwork);
 
-  const prepareTransaction = async (
-    receiverAccount: string,
-    amount: string,
-  ) => {
+  const [receiverAccount, setReceiverAccount] = useState<string>(
+    wallet.accounts.find((a) => a.index !== wallet.account?.index)?.name || '',
+  );
+  const [amount, setAmount] = useState<string>('0.01');
+
+  /* --- Start Demo purposes --- */
+  useEffect(() => {
+    if (!wallet.account) return;
+
+    const fromChain = wallet.selectedChain;
+
+    if (isCrossChain) {
+      // Cross-chain transfers are not supported yet
+      setSdkFunctionCall({
+        functionName: 'Cross-chain transfers are not supported yet.',
+        functionArgs: null,
+      });
+    } else {
+      const functionName = 'walletSdk.createSimpleTransfer';
+      const functionArgs: SimpleCreateTransfer & { networkId: string } = {
+        amount,
+        sender: wallet.account.name,
+        receiver: receiverAccount,
+        chainId: fromChain,
+        networkId: wallet.selectedNetwork,
+      };
+
+      setSdkFunctionCall({ functionName, functionArgs });
+    }
+
+    setGasFunctionCall(null);
+  }, [
+    wallet.account,
+    amount,
+    receiverAccount,
+    wallet.selectedChain,
+    wallet.selectedNetwork,
+    isCrossChain,
+  ]);
+  /* -- End demo ---------------*/
+
+  const prepareTransaction = async () => {
     if (!wallet.account) return;
     const fromChain = wallet.selectedChain;
     const toChain = isCrossChain ? wallet.selectedToChain : fromChain;
@@ -53,29 +109,36 @@ export const Transfer = () => {
       );
     }
 
-    const transaction = isCrossChain
-      ? ({} as IUnsignedCommand)
-      : walletSdk.createSimpleTransfer({
-          amount,
-          sender: wallet.account.name,
-          receiver: receiverAccount,
-          chainId: fromChain,
-          networkId: wallet.selectedNetwork,
-        });
+    let transaction: IUnsignedCommand;
 
-    return await wallet.signTransaction(transaction);
+    if (isCrossChain) {
+      /* --- Start Demo purposes --- */
+      setSdkFunctionCall({
+        functionName: 'Cross-chain transfers are not supported yet.',
+        functionArgs: null,
+      });
+      /* -- End demo ---------------*/
+      throw new Error('Cross-chain transfers are not supported yet.');
+    } else {
+      const functionArgs: SimpleCreateTransfer & { networkId: string } = {
+        amount,
+        sender: wallet.account.name,
+        receiver: receiverAccount,
+        chainId: fromChain,
+        networkId: wallet.selectedNetwork,
+      };
+
+      transaction = walletSdk.createSimpleTransfer(functionArgs);
+      return await wallet.signTransaction(transaction);
+    }
   };
 
   const onSubmitTransfer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!wallet.account) return;
 
-    const formData = new FormData(e.currentTarget);
-    const receiverAccount = formData.get('to') as string;
-    const amount = formData.get('amount') as string;
-
     try {
-      const signed = await prepareTransaction(receiverAccount, amount);
+      const signed = await prepareTransaction();
       if (!signed) {
         setAlertMessage('Transaction was not signed');
         return;
@@ -86,6 +149,18 @@ export const Transfer = () => {
         wallet.selectedNetwork,
         wallet.selectedChain,
       );
+
+      /* --- Start Demo purposes --- */
+      const newCall = {
+        functionName: 'walletSdk.getGasLimitEstimate',
+        functionArgs: {
+          transaction: '[SIGNED TRANSACTION]',
+          networkId: wallet.selectedNetwork,
+          chainId: wallet.selectedChain,
+        },
+      };
+      setGasFunctionCall(newCall);
+      /* -- End demo ---------------*/
 
       setSignedTransaction(signed);
       setEstimatedGas(gasLimit);
@@ -103,6 +178,11 @@ export const Transfer = () => {
           ? error.message
           : 'Failed to prepare transaction',
       );
+
+      /* -- Start demo ---------------*/
+      setSdkFunctionCall(null);
+      setGasFunctionCall(null);
+      /* -- End demo ---------------*/
     }
   };
 
@@ -128,6 +208,11 @@ export const Transfer = () => {
       addPendingTransfer(pendingTransfer);
       setIsModalOpen(false);
       setSignedTransaction(null);
+
+      /* -- Start demo ---------------*/
+      setSdkFunctionCall(null);
+      setGasFunctionCall(null);
+      /* -- End demo ---------------*/
       navigate('/list');
     } catch (error) {
       console.warn(error);
@@ -142,8 +227,8 @@ export const Transfer = () => {
     <div className="w-full max-w-[1000px] mx-auto p-6">
       <Card fullWidth>
         <ContentHeader
-          heading="Accounts"
-          description="Send funds across acounts."
+          heading="Transfer Funds"
+          description="Send funds across accounts."
           icon={<MonoAccountTree />}
         />
 
@@ -161,17 +246,16 @@ export const Transfer = () => {
                 label="To"
                 name="to"
                 placeholder="Enter recipient account"
-                defaultValue={
-                  wallet.accounts.find((a) => a.index !== wallet.account?.index)
-                    ?.name
-                }
+                value={receiverAccount}
+                onValueChange={(value) => setReceiverAccount(value)}
                 size="md"
               />
               <TextField
                 label="Amount"
                 name="amount"
                 placeholder="Enter amount"
-                defaultValue="0.01"
+                value={amount}
+                onValueChange={(value) => setAmount(value)}
                 size="md"
               />
               <Stack flexDirection="row" alignItems="center" gap="sm">
@@ -227,6 +311,7 @@ export const Transfer = () => {
             transactionJSON={JSON.stringify(signedTransaction, null, 2)}
             onClose={() => setIsModalOpen(false)}
             onConfirm={confirmTransaction}
+            gasFunctionCall={gasFunctionCall}
           />
         )}
 
@@ -238,6 +323,16 @@ export const Transfer = () => {
           />
         )}
       </Card>
+
+      {/*
+        This is for Demo purposes, displaying the SDK function used to create the transaction
+      */}
+      {sdkFunctionCall && (
+        <SdkFunctionDisplay
+          functionName={sdkFunctionCall.functionName}
+          functionArgs={sdkFunctionCall.functionArgs}
+        />
+      )}
     </div>
   );
 };

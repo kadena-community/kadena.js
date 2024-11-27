@@ -1,4 +1,9 @@
-import { MonoContrast, MonoUsb } from '@kadena/kode-icons';
+import {
+  MonoCode,
+  MonoCodeOff,
+  MonoContrast,
+  MonoUsb,
+} from '@kadena/kode-icons';
 import {
   NavHeader,
   NavHeaderButton,
@@ -15,10 +20,15 @@ import { KadenaLogo } from './KadenaLogo';
 export const Header = () => {
   const location = useLocation();
   const { theme, setTheme } = useTheme();
-  const { selectNetwork, selectedNetwork } = useWalletState();
+  const { selectNetwork, selectedNetwork, debugMode, setDebugMode } =
+    useWalletState();
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const toggleDebugMode = () => {
+    setDebugMode(!debugMode);
   };
 
   const selectChainNetwork = (network: string) => {
@@ -67,6 +77,11 @@ export const Header = () => {
       <NavHeaderButton
         endVisual={<MonoContrast />}
         onPress={toggleTheme}
+        aria-label="Toggle Theme"
+      />
+      <NavHeaderButton
+        endVisual={debugMode === true ? <MonoCode /> : <MonoCodeOff />}
+        onPress={toggleDebugMode}
         aria-label="Toggle Theme"
       />
     </NavHeader>

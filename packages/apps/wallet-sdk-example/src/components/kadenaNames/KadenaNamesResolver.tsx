@@ -1,3 +1,4 @@
+import { MonoShortcut } from '@kadena/kode-icons';
 import {
   Card,
   ContentHeader,
@@ -8,14 +9,13 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 
-import { MonoShortcut } from '@kadena/kode-icons';
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   useAddressToName,
   useNameToAddress,
 } from '../../hooks/kadenaNames/kadenaNamesResolver';
 import { useWalletState } from '../../state/wallet';
+import SdkFunctionDisplay from '../SdkFunctionDisplayer'; // Demo
 
 export const KadenaNames: React.FC = () => {
   const wallet = useWalletState();
@@ -35,6 +35,39 @@ export const KadenaNames: React.FC = () => {
     setName,
     name: inputName,
   } = useNameToAddress(0, wallet.selectedNetwork);
+
+  //* -- Start demo ---------------*/
+  const [functionCalls, setFunctionCalls] = useState<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    { functionName: string; functionArgs: any }[]
+  >([]);
+
+  useEffect(() => {
+    const calls = [];
+
+    if (inputAddress) {
+      calls.push({
+        functionName: 'walletSdk.kadenaNames.addressToName',
+        functionArgs: {
+          address: inputAddress,
+          networkId: wallet.selectedNetwork,
+        },
+      });
+    }
+
+    if (inputName) {
+      calls.push({
+        functionName: 'walletSdk.kadenaNames.nameToAddress',
+        functionArgs: {
+          name: inputName,
+          networkId: wallet.selectedNetwork,
+        },
+      });
+    }
+
+    setFunctionCalls(calls);
+  }, [inputAddress, inputName, wallet.selectedNetwork]);
+  /* -- End demo ---------------*/
 
   return (
     <div className="w-full max-w-[1000px] mx-auto p-6">
@@ -95,6 +128,19 @@ export const KadenaNames: React.FC = () => {
           </Stack>
         </Stack>
       </Card>
+
+      {/*
+        This is for Demo purposes, displaying what SDK function is execution for this action
+      */}
+      <div>
+        {functionCalls.map((call, index) => (
+          <SdkFunctionDisplay
+            key={index}
+            functionName={call.functionName}
+            functionArgs={call.functionArgs}
+          />
+        ))}
+      </div>
     </div>
   );
 };
