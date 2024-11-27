@@ -597,6 +597,101 @@ export const tokens = createThemeContract({
          * @dark {@link tokens.kda.foundation.size.n10}
          */
         n10: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n11}
+         * @dark {@link tokens.kda.foundation.size.n11}
+         */
+        n11: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n12}
+         * @dark {@link tokens.kda.foundation.size.n12}
+         */
+        n12: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n13}
+         * @dark {@link tokens.kda.foundation.size.n13}
+         */
+        n13: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n14}
+         * @dark {@link tokens.kda.foundation.size.n14}
+         */
+        n14: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n15}
+         * @dark {@link tokens.kda.foundation.size.n15}
+         */
+        n15: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n16}
+         * @dark {@link tokens.kda.foundation.size.n16}
+         */
+        n16: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n17}
+         * @dark {@link tokens.kda.foundation.size.n17}
+         */
+        n17: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n18}
+         * @dark {@link tokens.kda.foundation.size.n18}
+         */
+        n18: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n19}
+         * @dark {@link tokens.kda.foundation.size.n19}
+         */
+        n19: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n20}
+         * @dark {@link tokens.kda.foundation.size.n20}
+         */
+        n20: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n24}
+         * @dark {@link tokens.kda.foundation.size.n24}
+         */
+        n24: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n25}
+         * @dark {@link tokens.kda.foundation.size.n25}
+         */
+        n25: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n30}
+         * @dark {@link tokens.kda.foundation.size.n30}
+         */
+        n30: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n32}
+         * @dark {@link tokens.kda.foundation.size.n32}
+         */
+        n32: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n35}
+         * @dark {@link tokens.kda.foundation.size.n35}
+         */
+        n35: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n40}
+         * @dark {@link tokens.kda.foundation.size.n40}
+         */
+        n40: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n48}
+         * @dark {@link tokens.kda.foundation.size.n48}
+         */
+        n48: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n56}
+         * @dark {@link tokens.kda.foundation.size.n56}
+         */
+        n56: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n64}
+         * @dark {@link tokens.kda.foundation.size.n64}
+         */
+        n64: '',
       },
       transition: {
         delay: {
@@ -687,67 +782,6 @@ export const tokens = createThemeContract({
          * @dark  `"10000"`
          */
         toast: '',
-      },
-      effect: {
-        shadow: {
-          /**
-           * This is the shadow 1 description
-           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           */
-          level1: '',
-          /**
-           * This is the shadow 2 description
-           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           */
-          level2: '',
-          /**
-           * This is the shadow 3 description updated
-           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           */
-          level3: '',
-        },
-      },
-      icon: {
-        size: {
-          /**
-           * @light {@link tokens.kda.foundation.size.n3}
-           * @dark {@link tokens.kda.foundation.size.n3}
-           */
-          xxs: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n4}
-           * @dark {@link tokens.kda.foundation.size.n4}
-           */
-          xs: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n5}
-           * @dark {@link tokens.kda.foundation.size.n5}
-           */
-          sm: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n6}
-           * @dark {@link tokens.kda.foundation.size.n6}
-           */
-          base: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n8}
-           * @dark {@link tokens.kda.foundation.size.n8}
-           */
-          lg: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n10}
-           * @dark {@link tokens.kda.foundation.size.n10}
-           */
-          xl: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n16}
-           * @dark {@link tokens.kda.foundation.size.n16}
-           */
-          xxl: '',
-        },
       },
       color: {
         accent: {
@@ -5005,6 +5039,67 @@ export const tokens = createThemeContract({
              */
             '@hover': '',
           },
+        },
+      },
+      effect: {
+        shadow: {
+          /**
+           * This is the shadow 1 description
+           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           */
+          level1: '',
+          /**
+           * This is the shadow 2 description
+           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           */
+          level2: '',
+          /**
+           * This is the shadow 3 description updated
+           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           */
+          level3: '',
+        },
+      },
+      icon: {
+        size: {
+          /**
+           * @light {@link tokens.kda.foundation.size.n3}
+           * @dark {@link tokens.kda.foundation.size.n3}
+           */
+          xxs: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n4}
+           * @dark {@link tokens.kda.foundation.size.n4}
+           */
+          xs: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n5}
+           * @dark {@link tokens.kda.foundation.size.n5}
+           */
+          sm: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n6}
+           * @dark {@link tokens.kda.foundation.size.n6}
+           */
+          base: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n8}
+           * @dark {@link tokens.kda.foundation.size.n8}
+           */
+          lg: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n10}
+           * @dark {@link tokens.kda.foundation.size.n10}
+           */
+          xl: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n16}
+           * @dark {@link tokens.kda.foundation.size.n16}
+           */
+          xxl: '',
         },
       },
       layout: {

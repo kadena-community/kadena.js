@@ -1,24 +1,12 @@
 import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
-export const extraPaddingClass = recipe({
-  base: {},
-  variants: {
-    variant: {
-      main: {
-        paddingBlockStart: token('spacing.n6'),
-      },
-      base: {},
-    },
-  },
-});
-
 export const headerClass = recipe({
   base: [
     atoms({
       backgroundColor: 'surface.default',
       paddingInlineStart: 'n8',
       paddingBlockEnd: 'n8',
-      paddingBlockStart: `n8`,
+
       paddingInlineEnd: 'lg',
       gap: 'md',
       alignItems: 'flex-start',
@@ -26,9 +14,18 @@ export const headerClass = recipe({
     {
       display: 'grid !important',
       gridArea: 'header',
+      height: '100%',
     },
   ],
   variants: {
+    variant: {
+      main: {
+        paddingBlockStart: token('spacing.n14'),
+      },
+      base: {
+        paddingBlockStart: token('spacing.n8'),
+      },
+    },
     stack: {
       horizontal: [
         responsiveStyle({
@@ -180,19 +177,66 @@ export const iconWrapperClass = recipe({
     },
   ],
   variants: {
+    isLoading: {
+      true: {
+        border: 'none!important',
+      },
+      false: {},
+    },
     intent: {
-      info: atoms({
-        borderColor: 'semantic.info.default',
-      }),
-      positive: atoms({
-        borderColor: 'semantic.positive.default',
-      }),
-      warning: atoms({
-        borderColor: 'semantic.warning.default',
-      }),
-      negative: atoms({
-        borderColor: 'semantic.negative.default',
-      }),
+      info: [
+        atoms({
+          borderColor: 'semantic.info.default',
+        }),
+      ],
+      positive: [
+        atoms({
+          borderColor: 'semantic.positive.default',
+        }),
+      ],
+      warning: [
+        atoms({
+          borderColor: 'semantic.warning.default',
+        }),
+      ],
+      negative: [
+        atoms({
+          borderColor: 'semantic.negative.default',
+        }),
+      ],
+    },
+  },
+});
+
+export const loadingIconClass = recipe({
+  base: {
+    position: 'absolute',
+
+    width: '40px',
+    aspectRatio: '1/1',
+  },
+  variants: {
+    intent: {
+      info: [
+        {
+          color: token('color.icon.semantic.info.default'),
+        },
+      ],
+      positive: [
+        {
+          color: token('color.icon.semantic.positive.default'),
+        },
+      ],
+      warning: [
+        {
+          color: token('color.icon.semantic.warning.default'),
+        },
+      ],
+      negative: [
+        {
+          color: token('color.icon.semantic.negative.default'),
+        },
+      ],
     },
   },
 });

@@ -2,12 +2,7 @@ import type { FC, ReactElement } from 'react';
 import React from 'react';
 import { Heading, Stack, Text } from './../../components';
 import type { ISectionCardProps } from './SectionCard';
-import {
-  actionsClass,
-  extraPaddingClass,
-  headerClass,
-  headerDescriptionClass,
-} from './style.css';
+import { actionsClass, headerClass, headerDescriptionClass } from './style.css';
 
 export interface ISectionCardHeaderProps {
   title: string;
@@ -25,11 +20,8 @@ export const SectionCardHeader: FC<ISectionCardHeaderProps> = ({
   variant,
 }) => {
   return (
-    <Stack className={headerClass({ stack })} flexDirection="column">
-      <Stack
-        className={extraPaddingClass({ variant })}
-        style={{ gridArea: 'header' }}
-      >
+    <Stack className={headerClass({ stack, variant })} flexDirection="column">
+      <Stack style={{ gridArea: 'header' }}>
         <Heading
           as={variant === 'main' ? 'h2' : 'h3'}
           variant={variant === 'main' ? 'h2' : 'h3'}

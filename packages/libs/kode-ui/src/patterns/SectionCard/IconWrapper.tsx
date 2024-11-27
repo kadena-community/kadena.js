@@ -1,9 +1,9 @@
-import { Mono123 } from '@kadena/kode-icons/system';
 import type { FC } from 'react';
 import React from 'react';
 import { Stack } from './../../components';
-import { ISectionCardProps } from './SectionCard';
-import { iconWrapperClass } from './style.css';
+import { LoaderIcon } from './LoaderIcon';
+import type { ISectionCardProps } from './SectionCard';
+import { iconWrapperClass, loadingIconClass } from './style.css';
 
 interface IIconsProps {
   icon: ISectionCardProps['icon'];
@@ -15,5 +15,10 @@ interface IIconsProps {
 export const IconWrapper: FC<IIconsProps> = ({ icon, intent, isLoading }) => {
   if (!icon) return null;
 
-  return <Stack className={iconWrapperClass({ intent })}>{icon}</Stack>;
+  return (
+    <Stack className={iconWrapperClass({ intent, isLoading })}>
+      {icon}
+      {isLoading && <LoaderIcon className={loadingIconClass({ intent })} />}
+    </Stack>
+  );
 };

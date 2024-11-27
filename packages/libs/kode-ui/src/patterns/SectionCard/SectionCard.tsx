@@ -1,10 +1,11 @@
-import { RecipeVariants } from '@vanilla-extract/recipes';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import { Card } from './../../components';
 import { IconWrapper } from './IconWrapper';
 import { SectionCardContentBlock } from './SectionCardContentBlock';
-import { cardClass, iconWrapperClass } from './style.css';
+import type { iconWrapperClass } from './style.css';
+import { cardClass } from './style.css';
 
 type ContentTypeVariants = NonNullable<RecipeVariants<typeof iconWrapperClass>>;
 

@@ -161,6 +161,25 @@ export const lightThemeValues = {
         n8: tokens.kda.foundation.size.n8,
         n9: tokens.kda.foundation.size.n9,
         n10: tokens.kda.foundation.size.n10,
+        n11: tokens.kda.foundation.size.n11,
+        n12: tokens.kda.foundation.size.n12,
+        n13: tokens.kda.foundation.size.n13,
+        n14: tokens.kda.foundation.size.n14,
+        n15: tokens.kda.foundation.size.n15,
+        n16: tokens.kda.foundation.size.n16,
+        n17: tokens.kda.foundation.size.n17,
+        n18: tokens.kda.foundation.size.n18,
+        n19: tokens.kda.foundation.size.n19,
+        n20: tokens.kda.foundation.size.n20,
+        n24: tokens.kda.foundation.size.n24,
+        n25: tokens.kda.foundation.size.n25,
+        n30: tokens.kda.foundation.size.n30,
+        n32: tokens.kda.foundation.size.n32,
+        n35: tokens.kda.foundation.size.n35,
+        n40: tokens.kda.foundation.size.n40,
+        n48: tokens.kda.foundation.size.n48,
+        n56: tokens.kda.foundation.size.n56,
+        n64: tokens.kda.foundation.size.n64,
       },
       transition: {
         delay: {
@@ -187,24 +206,6 @@ export const lightThemeValues = {
         spinner: '9050',
         sticky: '100',
         toast: '10000',
-      },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
-      icon: {
-        size: {
-          xxs: tokens.kda.foundation.size.n3,
-          xs: tokens.kda.foundation.size.n4,
-          sm: tokens.kda.foundation.size.n5,
-          base: tokens.kda.foundation.size.n6,
-          lg: tokens.kda.foundation.size.n8,
-          xl: tokens.kda.foundation.size.n10,
-          xxl: tokens.kda.foundation.size.n16,
-        },
       },
       color: {
         accent: {
@@ -1306,6 +1307,24 @@ export const lightThemeValues = {
             default: '#a54800',
             '@hover': '#702e00',
           },
+        },
+      },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
+      icon: {
+        size: {
+          xxs: tokens.kda.foundation.size.n3,
+          xs: tokens.kda.foundation.size.n4,
+          sm: tokens.kda.foundation.size.n5,
+          base: tokens.kda.foundation.size.n6,
+          lg: tokens.kda.foundation.size.n8,
+          xl: tokens.kda.foundation.size.n10,
+          xxl: tokens.kda.foundation.size.n16,
         },
       },
       layout: {
