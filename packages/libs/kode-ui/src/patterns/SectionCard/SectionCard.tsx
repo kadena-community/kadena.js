@@ -5,12 +5,14 @@ import { SectionCardContentBlock } from './SectionCardContentBlock';
 import { cardClass } from './style.css';
 
 export interface ISectionCardProps extends PropsWithChildren {
-  variant?: 'horizontal' | 'vertical';
+  position?: 'horizontal' | 'vertical';
+  variant?: 'main' | 'base';
 }
 
 export const SectionCard: FC<ISectionCardProps> = ({
   children,
-  variant = 'horizontal',
+  position = 'horizontal',
+  variant = 'base',
 }) => {
   return (
     <Card className={cardClass}>
@@ -21,7 +23,7 @@ export const SectionCard: FC<ISectionCardProps> = ({
         )
           return null;
 
-        return React.cloneElement(child, { ...child.props, variant });
+        return React.cloneElement(child, { ...child.props, position, variant });
       })}
     </Card>
   );

@@ -7,15 +7,17 @@ import { SectionCardHeader } from './SectionCardHeader';
 import { blockClass } from './style.css';
 
 export interface ISectionCardContentBlockProps extends PropsWithChildren {
+  position?: ISectionCardProps['position'];
   variant?: ISectionCardProps['variant'];
 }
 
 export const SectionCardContentBlock: FC<ISectionCardContentBlockProps> = ({
   children,
+  position,
   variant,
 }) => {
   return (
-    <Stack className={blockClass({ variant })}>
+    <Stack className={blockClass({ position })}>
       {React.Children.map(children, (child) => {
         console.log(child);
         if (
@@ -26,7 +28,7 @@ export const SectionCardContentBlock: FC<ISectionCardContentBlockProps> = ({
         )
           return null;
 
-        return React.cloneElement(child, { ...child.props, variant });
+        return React.cloneElement(child, { ...child.props, position, variant });
       })}
     </Stack>
   );

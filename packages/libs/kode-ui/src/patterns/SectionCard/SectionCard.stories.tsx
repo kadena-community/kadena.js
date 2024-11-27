@@ -1,7 +1,7 @@
 import { MonoAdd } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Button, Stack } from './../../components';
+import { Button, Stack, Text } from './../../components';
 import type { ISectionCardProps } from './SectionCard';
 import { SectionCard } from './SectionCard';
 import type { ISectionCardBodyProps } from './SectionCardBody';
@@ -22,7 +22,7 @@ const meta: Meta<IProps> = {
     docs: {
       description: {
         component:
-          'The card can have multiple sections, a title and content section',
+          'The card can have multiple sections, a title and content section. `Buttons` in the actions prop have to be compact variants',
       },
     },
   },
@@ -39,7 +39,7 @@ const meta: Meta<IProps> = {
         type: 'text',
       },
     },
-    variant: {
+    position: {
       options: ['horizontal', 'vertical'],
       control: {
         type: 'select',
@@ -59,32 +59,73 @@ type Story = StoryObj<IProps>;
 
 const Actions = () => {
   return (
-    <Button variant="outlined" endVisual={<MonoAdd />}>
+    <Button variant="outlined" isCompact endVisual={<MonoAdd />}>
       add
     </Button>
   );
 };
 
 export const Primary: Story = {
-  name: 'SectionCard default',
+  name: 'SectionCard basecard',
   args: {
     title: 'Our section',
     description: <>Our section is awesome</>,
     actions: <Actions />,
     children: 'This is the content for our section',
   },
-  render: ({ variant, title, description, children, actions }) => {
+  render: ({ position, title, description, children, actions }) => {
     return (
       <Stack width="100%" padding="lg">
-        <SectionCard variant={variant}>
+        <SectionCard position={position}>
           <SectionCardContentBlock>
-            <SectionCardBody>{children}</SectionCardBody>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
+              {children}
+            </SectionCardBody>
             <SectionCardHeader
               title={title}
               description={description}
               actions={actions}
             />
             <div>sdfsdf</div>
+          </SectionCardContentBlock>
+        </SectionCard>
+      </Stack>
+    );
+  },
+};
+
+export const main: Story = {
+  name: 'SectionCard mainCard',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    actions: <Actions />,
+    children: 'This is the content for our section',
+  },
+  render: ({ position, title, description, children, actions }) => {
+    return (
+      <Stack width="100%" padding="lg">
+        <SectionCard position={position} variant="main">
+          <SectionCardContentBlock>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
+              {children}
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+              <Text>this is content</Text>
+            </SectionCardBody>
+            <SectionCardHeader
+              title={title}
+              description={description}
+              actions={actions}
+            />
           </SectionCardContentBlock>
         </SectionCard>
       </Stack>

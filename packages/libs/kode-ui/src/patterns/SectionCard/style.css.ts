@@ -1,12 +1,14 @@
-import { atoms, recipe, responsiveStyle, style } from './../../styles';
+import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
 export const headerClass = recipe({
   base: [
     atoms({
       backgroundColor: 'surface.default',
-      padding: 'xl',
+      paddingInlineStart: 'xl',
+      paddingBlockEnd: 'xl',
       paddingInlineEnd: 'lg',
       gap: 'md',
+      alignItems: 'flex-start',
     }),
     {
       display: 'grid !important',
@@ -15,6 +17,16 @@ export const headerClass = recipe({
   ],
   variants: {
     variant: {
+      base: {
+        paddingBlockStart: `${token('spacing.xl')}`,
+      },
+      main: [
+        {
+          paddingBlockStart: `${token('spacing.xxl')}`,
+        },
+      ],
+    },
+    position: {
       horizontal: [
         responsiveStyle({
           xs: {
@@ -50,15 +62,31 @@ export const headerDescriptionClass = style([
   }),
 ]);
 
-export const bodyClass = style([
-  atoms({
-    padding: 'xl',
-    paddingInlineStart: 'lg',
-  }),
-  {
-    gridArea: 'body',
+export const bodyClass = recipe({
+  base: [
+    atoms({
+      paddingInlineStart: 'xl',
+      paddingBlockEnd: 'xl',
+      paddingInlineEnd: 'lg',
+      gap: 'md',
+    }),
+    {
+      gridArea: 'body',
+    },
+  ],
+  variants: {
+    variant: {
+      base: {
+        paddingBlockStart: `${token('spacing.xl')}`,
+      },
+      main: [
+        {
+          paddingBlockStart: `${token('spacing.xxl')}`,
+        },
+      ],
+    },
   },
-]);
+});
 
 export const cardClass = style([
   atoms({
@@ -72,7 +100,7 @@ export const actionsClass = recipe({
     alignItems: 'flex-start',
   },
   variants: {
-    variant: {
+    position: {
       horizontal: [
         responsiveStyle({
           xs: {
@@ -96,7 +124,7 @@ export const blockClass = recipe({
     width: '100%',
   },
   variants: {
-    variant: {
+    position: {
       horizontal: [
         responsiveStyle({
           xs: {

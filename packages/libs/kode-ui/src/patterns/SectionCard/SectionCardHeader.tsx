@@ -8,6 +8,7 @@ export interface ISectionCardHeaderProps {
   title: string;
   description?: ReactElement;
   actions?: ReactElement;
+  position?: ISectionCardProps['position'];
   variant?: ISectionCardProps['variant'];
 }
 
@@ -15,12 +16,19 @@ export const SectionCardHeader: FC<ISectionCardHeaderProps> = ({
   title,
   description,
   actions,
+  position,
   variant,
 }) => {
   return (
-    <Stack className={headerClass({ variant })} flexDirection="column">
+    <Stack
+      className={headerClass({ position, variant })}
+      flexDirection="column"
+    >
       <Stack style={{ gridArea: 'header' }}>
-        <Heading as="h3" variant="h4">
+        <Heading
+          as={variant === 'main' ? 'h2' : 'h3'}
+          variant={variant === 'main' ? 'h2' : 'h3'}
+        >
           {title}
         </Heading>
       </Stack>
@@ -33,7 +41,7 @@ export const SectionCardHeader: FC<ISectionCardHeaderProps> = ({
       )}
       {actions && (
         <Stack
-          className={actionsClass({ variant })}
+          className={actionsClass({ position })}
           style={{ gridArea: 'actions' }}
         >
           {actions}
