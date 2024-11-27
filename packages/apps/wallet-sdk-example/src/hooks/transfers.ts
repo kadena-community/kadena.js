@@ -58,10 +58,14 @@ export const useTransfers = () => {
     if (!transfers || transfers.length === 0) return;
     const controller = new AbortController();
 
+    const incompleteTransfers = transfers.filter(
+      (transfer) => transfer.isCrossChainTransfer && !transfer.continuation,
+    );
+
     /* --- Start Demo purposes --- */
     const functionName = 'walletSdk.subscribeOnCrossChainComplete';
     const functionArgs = {
-      transfers,
+      transfers: incompleteTransfers,
       callback: '() => refetch()',
       options: { signal: controller.signal },
     };
@@ -80,11 +84,15 @@ export const useTransfers = () => {
     });
     /* -- End demo ---------------*/
 
-    walletSdk.subscribeOnCrossChainComplete(transfers, () => refetch(), {
-      signal: controller.signal,
-    });
+    walletSdk.subscribeOnCrossChainComplete(
+      incompleteTransfers,
+      () => refetch(),
+      {
+        signal: controller.signal,
+      },
+    );
     return () => controller.abort();
-  }, [transfers, refetch]);
+  }, [refetch, transfers]);
 
   useEffect(() => {
     if (!pendingTransfers || pendingTransfers.length === 0) return;
