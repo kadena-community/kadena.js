@@ -15,6 +15,7 @@ import {
 import { useTheme } from 'next-themes';
 import { Link, useLocation } from 'react-router-dom';
 import { useWalletState } from '../state/wallet';
+import { stickyHeader } from './Header.css';
 import { KadenaLogo } from './KadenaLogo';
 
 export const Header = () => {
@@ -37,6 +38,7 @@ export const Header = () => {
 
   return (
     <NavHeader
+      className={stickyHeader}
       logo={
         <Link to="/">
           <KadenaLogo height={40} />

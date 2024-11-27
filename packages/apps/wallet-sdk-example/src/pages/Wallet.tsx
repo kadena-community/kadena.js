@@ -1,7 +1,7 @@
 import { Divider } from '@kadena/kode-ui';
+import { Accounts } from '../components/Accounts';
+import { WordPhrase } from '../components/WordPhrase';
 import { useWalletState } from '../state/wallet';
-import { Accounts } from './Accounts';
-import { WordPhrase } from './WordPhrase';
 
 export function Wallet() {
   useWalletState('password');

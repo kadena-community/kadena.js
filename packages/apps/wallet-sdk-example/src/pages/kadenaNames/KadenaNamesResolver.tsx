@@ -10,12 +10,12 @@ import {
 } from '@kadena/kode-ui';
 
 import React, { useEffect, useState } from 'react';
+import SdkFunctionDisplay from '../../components/SdkFunctionDisplayer'; // Demo
 import {
   useAddressToName,
   useNameToAddress,
 } from '../../hooks/kadenaNames/kadenaNamesResolver';
 import { useWalletState } from '../../state/wallet';
-import SdkFunctionDisplay from '../SdkFunctionDisplayer'; // Demo
 
 export const KadenaNames: React.FC = () => {
   const wallet = useWalletState();
