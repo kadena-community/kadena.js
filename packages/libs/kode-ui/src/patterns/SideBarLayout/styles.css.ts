@@ -11,6 +11,32 @@ export const layoutWrapperClass = recipe({
     {
       minHeight: '100%',
     },
+
+    responsiveStyle({
+      xs: {
+        gridTemplateColumns: 'auto',
+        gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
+        gridTemplateAreas: `
+        "sidebarlayout-header"
+        "sidebarlayout-main"
+        "sidebarlayout-footer"
+      `,
+      },
+      md: {
+        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-header"
+        "sidebarlayout-sidebar sidebarlayout-main"
+      `,
+      },
+      xxl: {
+        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-header"
+        "sidebarlayout-sidebar sidebarlayout-main"
+      `,
+      },
+    }),
   ],
   compoundVariants: [
     {
@@ -20,30 +46,11 @@ export const layoutWrapperClass = recipe({
       },
       style: [
         responsiveStyle({
-          xs: {
-            gridTemplateColumns: 'auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
           md: {
             gridTemplateColumns: `${sideBarMinWidth} auto`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
           },
           xxl: {
             gridTemplateColumns: `${sideBarMinWidth} 1fr`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
           },
         }),
       ],
@@ -55,30 +62,11 @@ export const layoutWrapperClass = recipe({
       },
       style: [
         responsiveStyle({
-          xs: {
-            gridTemplateColumns: 'auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
           md: {
             gridTemplateColumns: `${sideBarWidth} auto`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
           },
           xxl: {
             gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(96rem + 377px))`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
           },
         }),
       ],
@@ -91,29 +79,8 @@ export const layoutWrapperClass = recipe({
       },
       style: [
         responsiveStyle({
-          xs: {
-            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
-          md: {
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
-          },
           xxl: {
             gridTemplateColumns: `${sideBarMinWidth} auto calc(${rightAsBarMinWidth} + 20px)`,
-
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main ."
-          `,
           },
         }),
       ],
@@ -126,30 +93,11 @@ export const layoutWrapperClass = recipe({
       },
       style: [
         responsiveStyle({
-          xs: {
-            gridTemplateColumns: 'auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
           md: {
             gridTemplateColumns: `${sideBarWidth} auto`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
           },
           xxl: {
             gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(96rem + 377px)) calc(${rightAsBarMinWidth} + 20px)`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header  sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main ."
-          `,
           },
         }),
       ],
