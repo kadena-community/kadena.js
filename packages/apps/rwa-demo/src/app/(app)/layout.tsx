@@ -99,7 +99,6 @@ const RootLayout = ({
       >
         <Stack width="100%" flexDirection="column" gap="sm">
           <AssetInfo />
-
           {children}
         </Stack>
       </SideBarLayout>

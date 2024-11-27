@@ -4,6 +4,7 @@ export const minHeaderHeight = '60px';
 export const sideBarWidth = '232px';
 export const sideBarMinWidth = '45px';
 export const rightAsBarMinWidth = '370px';
+export const mainFullWidth = '96rem';
 
 export const layoutWrapperClass = recipe({
   base: [
@@ -50,7 +51,7 @@ export const layoutWrapperClass = recipe({
             gridTemplateColumns: `${sideBarMinWidth} auto`,
           },
           xxl: {
-            gridTemplateColumns: `${sideBarMinWidth} 1fr`,
+            gridTemplateColumns: `${sideBarMinWidth} minmax(auto calc(${mainFullWidth} + ${sideBarWidth} - ${sideBarMinWidth} + ${rightAsBarMinWidth}))`,
           },
         }),
       ],
@@ -66,7 +67,7 @@ export const layoutWrapperClass = recipe({
             gridTemplateColumns: `${sideBarWidth} auto`,
           },
           xxl: {
-            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(96rem + 377px))`,
+            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(${mainFullWidth} + ${rightAsBarMinWidth}))`,
           },
         }),
       ],
@@ -79,6 +80,9 @@ export const layoutWrapperClass = recipe({
       },
       style: [
         responsiveStyle({
+          md: {
+            gridTemplateColumns: `${sideBarMinWidth} auto`,
+          },
           xxl: {
             gridTemplateColumns: `${sideBarMinWidth} auto calc(${rightAsBarMinWidth} + 20px)`,
           },
@@ -97,7 +101,7 @@ export const layoutWrapperClass = recipe({
             gridTemplateColumns: `${sideBarWidth} auto`,
           },
           xxl: {
-            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(96rem + 377px)) calc(${rightAsBarMinWidth} + 20px)`,
+            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(${mainFullWidth} + ${sideBarWidth})) calc(${rightAsBarMinWidth} + 20px)`,
           },
         }),
       ],
@@ -117,6 +121,7 @@ export const layoutWrapperClass = recipe({
 
 export const bodyWrapperClass = style({
   minHeight: '100dvh',
+
   backgroundColor: token('color.background.base.default'),
   overflowX: 'hidden',
 });

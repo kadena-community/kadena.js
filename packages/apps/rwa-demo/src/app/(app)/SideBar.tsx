@@ -1,10 +1,12 @@
 import { AssetSwitch } from '@/components/AssetSwitch/AssetSwitch';
 import { useAccount } from '@/hooks/account';
 import {
+  MonoAccountBox,
   MonoApps,
   MonoDarkMode,
   MonoLightMode,
   MonoLogout,
+  MonoNetworkCheck,
 } from '@kadena/kode-icons';
 import {
   Button,
@@ -17,6 +19,7 @@ import {
   SideBarItem,
   SideBarItemsInline,
   SideBar as SideBarLayout,
+  useLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -26,6 +29,7 @@ import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
+  const { isExpanded } = useLayout();
   const { logout, account, isMounted } = useAccount();
   const router = useRouter();
 
@@ -65,19 +69,33 @@ export const SideBar: FC = () => {
           />
         </>
       }
-      appContext={<AssetSwitch />}
+      appContext={
+        <SideBarItem visual={<MonoNetworkCheck />} label="Select Asset">
+          <AssetSwitch showLabel={isExpanded} />
+        </SideBarItem>
+      }
       context={
         <>
           <SideBarItemsInline>
-            <ContextMenu
-              trigger={<Button variant="outlined">{account?.alias}</Button>}
+            <SideBarItem
+              label=""
+              visual={<MonoAccountBox />}
+              onPress={handleLogout}
             >
-              <ContextMenuItem
-                endVisual={<MonoLogout />}
-                label="Logout"
-                onClick={handleLogout}
-              />
-            </ContextMenu>
+              <ContextMenu
+                trigger={
+                  <Button variant="outlined">
+                    {isExpanded ? account?.alias : <MonoAccountBox />}
+                  </Button>
+                }
+              >
+                <ContextMenuItem
+                  endVisual={<MonoLogout />}
+                  label="Logout"
+                  onClick={handleLogout}
+                />
+              </ContextMenu>
+            </SideBarItem>
             <SideBarItem
               visual={theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />}
               onPress={toggleTheme}

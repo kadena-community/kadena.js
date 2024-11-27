@@ -1,5 +1,5 @@
 import { useAsset } from '@/hooks/asset';
-import { MonoSettings } from '@kadena/kode-icons';
+import { MonoSettings, MonoWorkspaces } from '@kadena/kode-icons';
 import {
   Button,
   ContextMenu,
@@ -16,7 +16,9 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { AssetForm } from './AssetForm';
 
-export const AssetSwitch: FC = () => {
+export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
+  showLabel = true,
+}) => {
   const { assets, asset, setAsset } = useAsset();
   const [openSide, setOpenSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
@@ -43,7 +45,15 @@ export const AssetSwitch: FC = () => {
       <ContextMenu
         trigger={
           <Button isCompact variant="outlined">
-            {asset ? asset.name : 'Select an asset'}
+            {showLabel ? (
+              asset ? (
+                asset.name
+              ) : (
+                'Select an asset'
+              )
+            ) : (
+              <MonoWorkspaces />
+            )}
           </Button>
         }
       >
