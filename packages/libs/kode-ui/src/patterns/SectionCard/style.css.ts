@@ -5,10 +5,10 @@ export const headerClass = recipe({
     atoms({
       paddingInlineStart: 'n8',
       paddingBlockEnd: 'n8',
-
       paddingInlineEnd: 'lg',
       gap: 'md',
       alignItems: 'flex-start',
+      overflowX: 'hidden',
     }),
     {
       display: 'grid !important',
@@ -34,7 +34,18 @@ export const headerClass = recipe({
       horizontal: [
         responsiveStyle({
           xs: {
+            gridTemplateColumns: `1fr`,
+            gridTemplateRows: `max-content max-content max-content 1fr`,
+            gridTemplateAreas: `
+                  "header"
+                  "description"
+                  "actions"
+                  "fill"
+              `,
+          },
+          sm: {
             gridTemplateColumns: `2fr 1fr`,
+            gridTemplateRows: `max-content max-content`,
             gridTemplateAreas: `
                   "header actions"
                   "description actions"
@@ -52,13 +63,27 @@ export const headerClass = recipe({
           },
         }),
       ],
-      vertical: {
-        ridTemplateColumns: `2fr 1fr`,
-        gridTemplateAreas: `
+      vertical: [
+        responsiveStyle({
+          xs: {
+            gridTemplateColumns: `1fr`,
+            gridTemplateRows: `max-content max-content max-content 1fr`,
+            gridTemplateAreas: `
+                  "header"
+                  "description"
+                  "actions"
+                  "fill"
+              `,
+          },
+          sm: {
+            gridTemplateColumns: `2fr 1fr`,
+            gridTemplateAreas: `
                   "header actions"
                   "description actions"
               `,
-      },
+          },
+        }),
+      ],
     },
   },
 });
@@ -118,6 +143,9 @@ export const actionsClass = recipe({
       horizontal: [
         responsiveStyle({
           xs: {
+            justifyContent: 'flex-start',
+          },
+          sm: {
             justifyContent: 'flex-end',
           },
           md: {
@@ -125,9 +153,16 @@ export const actionsClass = recipe({
           },
         }),
       ],
-      vertical: {
-        justifyContent: 'flex-end',
-      },
+      vertical: [
+        responsiveStyle({
+          xs: {
+            justifyContent: 'flex-start',
+          },
+          sm: {
+            justifyContent: 'flex-end',
+          },
+        }),
+      ],
     },
   },
 });
@@ -178,6 +213,7 @@ export const iconWrapperClass = recipe({
       borderRadius: 'round',
       backgroundColor: 'layer.solid',
       border: 'normal',
+      borderColor: 'base.default',
     }),
     {
       boxSizing: 'border-box',
@@ -190,7 +226,8 @@ export const iconWrapperClass = recipe({
   variants: {
     isLoading: {
       true: {
-        border: 'none!important',
+        border: `${token('border.normal')} !important`,
+        borderColor: `${token('color.border.base.default')} !important`,
       },
       false: {},
     },

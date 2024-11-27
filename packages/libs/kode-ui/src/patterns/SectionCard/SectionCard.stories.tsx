@@ -155,7 +155,6 @@ export const withIcon: Story = {
     description: <>Our section is awesome</>,
     actions: <Actions />,
     children: 'This is the content for our section',
-    intent: 'info',
   },
   render: ({ stack, title, description, children, actions, intent }) => {
     return (
@@ -234,7 +233,6 @@ export const reverseBackground: Story = {
     description: <>Our section is awesome</>,
     actions: <Actions />,
     children: 'This is the content for our section',
-    intent: 'info',
   },
   render: ({ stack, title, description, children, actions, intent }) => {
     return (
@@ -270,7 +268,6 @@ export const noBackground: Story = {
     description: <>Our section is awesome</>,
     actions: <Actions />,
     children: 'This is the content for our section',
-    intent: 'info',
   },
   render: ({ stack, title, description, children, actions, intent }) => {
     return (
