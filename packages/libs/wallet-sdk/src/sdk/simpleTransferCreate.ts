@@ -1,14 +1,7 @@
 import type { ChainId, ISigner } from '@kadena/client';
-import { Pact, readKeyset } from '@kadena/client';
-import {
-  addKeyset,
-  addSigner,
-  composePactCommand,
-  execution,
-  setMeta,
-} from '@kadena/client/fp';
+import { transferCreateCommand } from '@kadena/client-utils/coin';
 
-interface ICreateSimpleTransferInput {
+export interface ICreateSimpleTransferInput {
   sender: string;
   receiver: string;
   amount: string;
@@ -21,7 +14,6 @@ interface ICreateSimpleTransferInput {
 }
 
 /**
- * @alpha
  * transfer create that only supports `k:` accounts for sender and receiver.
  * Accepts either account name or public key
  */
@@ -46,29 +38,24 @@ export const simpleTransferCreateCommand = ({
   const gasPayerPublicKeys = gasPayer ? gasPayer.publicKeys : [senderPublicKey];
   const gasPayerAccount = gasPayer ? gasPayer.account : senderAccount;
 
-  return composePactCommand(
-    execution(
-      (Pact as any).modules[contract]['transfer-create'](
-        senderAccount,
-        receiverAccount,
-        readKeyset('account-guard'),
-        {
-          decimal: amount,
-        },
-      ),
-    ),
-    addKeyset('account-guard', 'keys-all', receiverPublicKey),
-    addSigner(senderPublicKey, (signFor: any) => [
-      signFor(
-        `${contract as 'coin'}.TRANSFER`,
-        senderAccount,
-        receiverAccount,
-        {
-          decimal: amount,
-        },
-      ),
-    ]),
-    addSigner(gasPayerPublicKeys, (signFor: any) => [signFor('coin.GAS')]),
-    setMeta({ senderAccount: gasPayerAccount, chainId }),
-  );
+  return transferCreateCommand({
+    amount,
+    chainId,
+    contract,
+    gasPayer: {
+      account: gasPayerAccount,
+      publicKeys: gasPayerPublicKeys,
+    },
+    receiver: {
+      account: receiverAccount,
+      keyset: {
+        keys: [receiverPublicKey],
+        pred: 'keys-all',
+      },
+    },
+    sender: {
+      account: senderAccount,
+      publicKeys: [senderPublicKey],
+    },
+  });
 };

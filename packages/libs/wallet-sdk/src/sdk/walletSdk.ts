@@ -5,13 +5,20 @@ import {
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
-import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import type {
+  ChainId,
+  ICommand,
+  ISigner,
+  IUnsignedCommand,
+} from '@kadena/types';
 
 import * as accountService from '../services/accountService.js';
 import { pollRequestKeys } from '../services/chainweb/chainweb.js';
 import { getTransfers } from '../services/graphql/getTransfers.js';
 import { poll } from '../utils/retry.js';
 import { isEmpty, notEmpty } from '../utils/typeUtils.js';
+import type { ICreateCrossChainFinishInput } from './crossChainFinishCreate.js';
+import { crossChainFinishCreateCommand } from './crossChainFinishCreate.js';
 import { exchange } from './exchange.js';
 import type { ChainwebHostGenerator, GraphqlHostGenerator } from './host.js';
 import {
@@ -20,19 +27,18 @@ import {
 } from './host.js';
 import type {
   CreateCrossChainTransfer,
-  CreateFinishCrossChainTransfer,
   CreateTransfer,
   IAccountDetails,
   IChain,
   ITransactionDescriptor,
-  SimpleCreateTransfer,
   Transfer,
 } from './interface.js';
 import { KadenaNames } from './kadenaNames.js';
 import type { ILogTransport, LogLevel } from './logger.js';
 import { Logger } from './logger.js';
 import type { ResponseResult } from './schema.js';
-import { simpleTransferCreateCommand } from './utils-tmp.js';
+import type { ICreateSimpleTransferInput } from './simpleTransferCreate.js';
+import { simpleTransferCreateCommand } from './simpleTransferCreate.js';
 
 export class WalletSDK {
   private _chainwebHostGenerator: ChainwebHostGenerator;
@@ -95,7 +101,7 @@ export class WalletSDK {
 
   /** Create a transfer that only accepts `k:` accounts */
   public createSimpleTransfer(
-    transfer: SimpleCreateTransfer & { networkId: string },
+    transfer: ICreateSimpleTransferInput & { networkId: string },
   ): IUnsignedCommand {
     const command = simpleTransferCreateCommand(transfer)();
     return createTransaction({
@@ -127,10 +133,12 @@ export class WalletSDK {
   }
 
   /** create cross-chain transfer finish */
-  public createFinishCrossChainTransfer(
-    transfer: CreateFinishCrossChainTransfer,
-  ): IUnsignedCommand {
-    return {} as IUnsignedCommand;
+  public async createFinishCrossChainTransfer(
+    transfer: ICreateCrossChainFinishInput,
+    gasPayer: { account: string; publicKeys: ISigner[] },
+  ): Promise<IUnsignedCommand> {
+    const command = await crossChainFinishCreateCommand(transfer, gasPayer);
+    return command;
   }
 
   /** send signed transaction */

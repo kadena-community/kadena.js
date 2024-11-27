@@ -3,7 +3,6 @@ import type {
   createCrossChainCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
-import type { simpleTransferCreateCommand } from './utils-tmp';
 
 interface ITransactionFeeTransfer extends IBaseTransfer {
   /**
@@ -60,10 +59,7 @@ export interface IChain {
   // Will add later: type: 'pact' | 'evm'
 }
 export type Transfer = ISameChainTransfer | ICrossChainTransfer;
-export type CreateFinishCrossChainTransfer = unknown;
-export type SimpleCreateTransfer = Parameters<
-  typeof simpleTransferCreateCommand
->[0];
+
 export type CreateTransfer = Parameters<typeof transferCreateCommand>[0];
 export type CreateCrossChainTransfer = Parameters<
   typeof createCrossChainCommand
