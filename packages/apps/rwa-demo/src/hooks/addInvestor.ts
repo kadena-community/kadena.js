@@ -1,16 +1,16 @@
-import { interpretErrorMessage  } from '@/components/TransactionsProvider/TransactionsProvider';
-import type {ITransaction} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 
 export const useAddInvestor = () => {
-  const { account sign } = useAccount();
+  const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
-  const {addNotification} = useNotifications();
+  const { addNotification } = useNotifications();
 
   const submit = async (
     data: IRegisterIdentityProps,

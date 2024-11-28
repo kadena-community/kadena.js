@@ -1,18 +1,16 @@
-import { interpretErrorMessage  } from '@/components/TransactionsProvider/TransactionsProvider';
-import type {ITransaction} from '@/components/TransactionsProvider/TransactionsProvider';
-import type { IAddAgentProps } from '@/services/addAgent';
-import { addAgent } from '@/services/addAgent';
+import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 
 export const useFreezeInvestor = () => {
-  const { account sign } = useAccount();
+  const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
-  const {addNotification } = useNotifications();
+  const { addNotification } = useNotifications();
 
   const submit = async (
     data: ISetAddressFrozenProps,

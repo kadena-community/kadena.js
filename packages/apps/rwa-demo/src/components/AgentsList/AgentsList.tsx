@@ -29,7 +29,7 @@ export const AgentsList: FC = () => {
     setHasOpenAgentForm(true);
   };
 
-  const handleDelete = async (accountName: string) => {
+  const handleDelete = async (accountName: any) => {
     await submit({ agent: accountName });
   };
 
