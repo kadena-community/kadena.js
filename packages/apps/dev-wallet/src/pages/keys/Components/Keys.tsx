@@ -137,7 +137,15 @@ export function Keys() {
                     ) ? (
                       <ContextMenuItem
                         label="Create specific key"
-                        onClick={() => {}}
+                        onClick={() => {
+                          const index = prompt('Enter index');
+                          if (!index) {
+                            alert('must enter index');
+                            return;
+                          }
+
+                          createKey(keySource, parseInt(index));
+                        }}
                       />
                     ) : (
                       <ContextMenuDivider />
