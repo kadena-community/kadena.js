@@ -258,6 +258,7 @@ export const listNotExpandedClass = style([
 export const headerWrapperClass = recipe({
   base: [
     {
+      maxWidth: '2140px',
       position: 'fixed',
       backgroundColor: token('color.background.base.default'),
       width: '100%',
@@ -270,26 +271,22 @@ export const headerWrapperClass = recipe({
   ],
   variants: {
     sideBarExpanded: {
-      true: {
-        ...responsiveStyle({
-          xs: {
-            paddingInlineStart: token('spacing.md'),
-          },
-          md: {
-            paddingInlineStart: sideBarWidth,
-          },
-        }),
-      },
-      false: {
-        ...responsiveStyle({
-          xs: {
-            paddingInlineStart: token('spacing.md'),
-          },
-          md: {
-            paddingInlineStart: sideBarMinWidth,
-          },
-        }),
-      },
+      true: responsiveStyle({
+        xs: {
+          paddingInlineStart: token('spacing.md'),
+        },
+        md: {
+          paddingInlineStart: sideBarWidth,
+        },
+      }),
+      false: responsiveStyle({
+        xs: {
+          paddingInlineStart: token('spacing.md'),
+        },
+        md: {
+          paddingInlineStart: sideBarMinWidth,
+        },
+      }),
     },
   },
 });
@@ -310,8 +307,8 @@ export const headerClass = style([
       gridTemplateColumns: '1fr 100px',
       gridTemplateRows: '1fr',
       gridTemplateAreas: `
-    "header-crumbs header-rightside"
-  `,
+        "header-crumbs header-rightside"
+      `,
     },
   }),
 ]);

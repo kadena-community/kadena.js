@@ -3,6 +3,8 @@ import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 export const minHeaderHeight = '60px';
 export const sideBarWidth = '232px';
 export const sideBarMinWidth = '45px';
+export const rightAsBarMinWidth = '370px';
+export const mainFullWidth = '96rem';
 
 export const layoutWrapperClass = recipe({
   base: [
@@ -10,99 +12,120 @@ export const layoutWrapperClass = recipe({
     {
       minHeight: '100%',
     },
+
+    responsiveStyle({
+      xs: {
+        gridTemplateColumns: 'auto',
+        gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
+        gridTemplateAreas: `
+        "sidebarlayout-header"
+        "sidebarlayout-main"
+        "sidebarlayout-footer"
+      `,
+      },
+      md: {
+        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-header"
+        "sidebarlayout-sidebar sidebarlayout-main"
+      `,
+      },
+      xxl: {
+        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-header"
+        "sidebarlayout-sidebar sidebarlayout-main"
+      `,
+      },
+    }),
   ],
   compoundVariants: [
     {
       variants: {
-        variant: 'default',
+        isLeftExpanded: false,
+        isRightExpanded: false,
       },
       style: [
         responsiveStyle({
-          xs: {
-            gridTemplateColumns: 'auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
           md: {
             gridTemplateColumns: `${sideBarMinWidth} auto`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
           },
           xxl: {
-            gridTemplateColumns: `${sideBarMinWidth} 1fr`,
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
+            gridTemplateColumns: `${sideBarMinWidth} minmax(auto calc(${mainFullWidth} + ${sideBarWidth} - ${sideBarMinWidth} + ${rightAsBarMinWidth}))`,
+          },
+        }),
+      ],
+    },
+    {
+      variants: {
+        isLeftExpanded: true,
+        isRightExpanded: false,
+      },
+      style: [
+        responsiveStyle({
+          md: {
+            gridTemplateColumns: `${sideBarWidth} auto`,
+          },
+          xxl: {
+            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(${mainFullWidth} + ${rightAsBarMinWidth}))`,
+          },
+        }),
+      ],
+    },
+
+    {
+      variants: {
+        isLeftExpanded: false,
+        isRightExpanded: true,
+      },
+      style: [
+        responsiveStyle({
+          md: {
+            gridTemplateColumns: `${sideBarMinWidth} auto`,
+          },
+          xxl: {
+            gridTemplateColumns: `${sideBarMinWidth} auto calc(${rightAsBarMinWidth} + 20px)`,
+          },
+        }),
+      ],
+    },
+
+    {
+      variants: {
+        isLeftExpanded: true,
+        isRightExpanded: true,
+      },
+      style: [
+        responsiveStyle({
+          md: {
+            gridTemplateColumns: `${sideBarWidth} auto`,
+          },
+          xxl: {
+            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(${mainFullWidth} + ${sideBarWidth})) calc(${rightAsBarMinWidth} + 20px)`,
           },
         }),
       ],
     },
   ],
   variants: {
-    variant: {
-      full: [
-        style({
-          gridTemplateColumns: 'auto',
-          gridTemplateRows: `${minHeaderHeight} 1fr`,
-          gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-          `,
-        }),
-      ],
-      default: [],
+    isLeftExpanded: {
+      false: {},
+      true: {},
+    },
+    isRightExpanded: {
+      true: {},
+      false: {},
     },
   },
 });
 
-export const layoutExpandedWrapperClass = style([
-  responsiveStyle({
-    md: {
-      gridTemplateColumns: `${sideBarWidth} auto`,
-    },
-    xxl: {
-      gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(96rem + 377px))`,
-    },
-  }),
-]);
-
 export const bodyWrapperClass = style({
   minHeight: '100dvh',
+
   backgroundColor: token('color.background.base.default'),
   overflowX: 'hidden',
 });
 
-export const mainClass = recipe({
-  base: {
-    gridArea: 'sidebarlayout-main',
-    display: 'flex',
-    flex: 1,
-  },
-  variants: {
-    variant: {
-      default: [],
-      full: [
-        atoms({
-          width: '100%',
-          color: 'text.base.default',
-          display: 'flex',
-          alignItems: 'center',
-        }),
-        {
-          minHeight: `calc(100vh - ${minHeaderHeight})`,
-          background: 'transparent', // fallback in case radial-gradient is not working
-          backgroundRepeat: 'no-repeat',
-        },
-      ],
-    },
-  },
+export const mainClass = style({
+  gridArea: 'sidebarlayout-main',
 });

@@ -6,7 +6,7 @@ import {
   style,
   token,
 } from './../../styles';
-import { minHeaderHeight } from './styles.css';
+import { minHeaderHeight, rightAsBarMinWidth } from './styles.css';
 
 export const asideWrapperTempClass = recipe({
   base: [
@@ -22,8 +22,8 @@ export const asideWrapperTempClass = recipe({
 
       xxl: {
         display: 'flex',
-        width: '370px',
-        minWidth: '370px',
+        width: rightAsBarMinWidth,
+        minWidth: rightAsBarMinWidth,
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
         zIndex: 0,
@@ -77,12 +77,12 @@ export const asideWrapperClass = recipe({
         zIndex: token('zIndex.overlay'),
       },
       sm: {
-        maxWidth: '370px',
+        maxWidth: rightAsBarMinWidth,
       },
       xxl: {
         position: 'fixed',
-        width: '370px',
-        minWidth: '370px',
+        width: rightAsBarMinWidth,
+        minWidth: rightAsBarMinWidth,
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
         zIndex: token('zIndex.overlay'),
@@ -128,7 +128,8 @@ export const menuBackdropClass = recipe({
         transform: 'translateX(100%)',
       },
       xxl: {
-        display: 'none!important',
+        backdropFilter: 'none',
+        background: 'transparent',
       },
     }),
   ],
