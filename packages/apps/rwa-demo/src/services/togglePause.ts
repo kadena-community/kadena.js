@@ -3,15 +3,15 @@ import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
-export interface IRemoveAgentProps {
-  agent: string;
+export interface ITogglePauseProps {
+  isPaused: boolean;
 }
 
 export const togglePause = async (
-  isPaused: boolean,
+  data: ITogglePauseProps,
   account: IWalletAccount,
 ) => {
-  const func = isPaused ? 'unpause' : 'pause';
+  const func = data.isPaused ? 'unpause' : 'pause';
 
   return Pact.builder
     .execution(`(RWA.${getAsset()}.${func})`)

@@ -1,7 +1,5 @@
-import { useAccount } from '@/hooks/account';
+import { useDeleteInvestor } from '@/hooks/deleteInvestor';
 import { useGetInvestors } from '@/hooks/getInvestors';
-import { deleteIdentity } from '@/services/deleteIdentity';
-import { getClient } from '@/utils/client';
 import { MonoDelete } from '@kadena/kode-icons';
 import { Button, Heading } from '@kadena/kode-ui';
 import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
@@ -10,21 +8,10 @@ import type { FC } from 'react';
 
 export const InvestorList: FC = () => {
   const { data } = useGetInvestors();
-  const { account, sign } = useAccount();
+  const { submit } = useDeleteInvestor();
 
   const handleDelete = async (accountName: any) => {
-    try {
-      const tx = await deleteIdentity({ investor: accountName }, account!);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      await client.listen(res);
-      console.log('DONE');
-    } catch (e: any) {}
+    return await submit({ investor: accountName });
   };
 
   return (

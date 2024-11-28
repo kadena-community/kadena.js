@@ -1,9 +1,6 @@
-import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useGetAgents } from '@/hooks/getAgents';
-import { useTransactions } from '@/hooks/transactions';
-import { removeAgent } from '@/services/removeAgent';
-import { getClient } from '@/utils/client';
+import { useRemoveAgent } from '@/hooks/removeAgent';
 import { MonoDelete, MonoSupportAgent } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import {
@@ -14,21 +11,17 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
   useLayout,
-  useNotifications,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { AddAgentForm } from '../AddAgentForm/AddAgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
-import { interpretErrorMessage } from '../TransactionsProvider/TransactionsProvider';
 
 export const AgentsList: FC = () => {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const { paused } = useAsset();
   const { data } = useGetAgents();
-  const { account, sign } = useAccount();
-  const { addTransaction } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { submit } = useRemoveAgent();
   const [hasOpenAgentForm, setHasOpenAgentForm] = useState(false);
 
   const handleAddAgent = () => {
@@ -37,29 +30,7 @@ export const AgentsList: FC = () => {
   };
 
   const handleDelete = async (accountName: any) => {
-    try {
-      const tx = await removeAgent({ agent: accountName }, account!);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      await addTransaction({
-        ...res,
-        type: 'REMOVEAGENT',
-      });
-
-      await client.listen(res);
-      console.log('DONE');
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    }
+    await submit({ agent: accountName });
   };
 
   return (

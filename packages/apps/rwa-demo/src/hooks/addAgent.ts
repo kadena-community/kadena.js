@@ -1,19 +1,22 @@
+import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
-import type { ITransferTokensProps } from '@/services/transferTokens';
-import { transferTokens } from '@/services/transferTokens';
+import type { IAddAgentProps } from '@/services/addAgent';
+import { addAgent } from '@/services/addAgent';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
-export const useTransferTokens = () => {
+export const useAddAgent = () => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
 
-  const submit = async (data: ITransferTokensProps) => {
+  const submit = async (
+    data: IAddAgentProps,
+  ): Promise<ITransaction | undefined> => {
     try {
-      const tx = await transferTokens(data, account!);
+      const tx = await addAgent(data, account!);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -22,7 +25,7 @@ export const useTransferTokens = () => {
 
       return addTransaction({
         ...res,
-        type: 'TRANSFERTOKENS',
+        type: 'ADDAGENT',
       });
     } catch (e: any) {
       addNotification({
