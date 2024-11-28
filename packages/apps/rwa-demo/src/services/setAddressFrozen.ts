@@ -5,23 +5,25 @@ import { Pact } from '@kadena/client';
 
 export interface ISetAddressFrozenProps {
   investorAccount: string;
-  agentAccount: IWalletAccount;
   pause: boolean;
 }
 
-export const setAddressFrozen = async (data: ISetAddressFrozenProps) => {
+export const setAddressFrozen = async (
+  data: ISetAddressFrozenProps,
+  account: IWalletAccount,
+) => {
   return Pact.builder
     .execution(
       `(RWA.${getAsset()}.set-address-frozen (read-string 'investor) ${data.pause})
       `,
     )
     .addData('investor', data.investorAccount)
-    .addData('agent', data.agentAccount.address)
+    .addData('agent', account.address)
     .setMeta({
-      senderAccount: data.agentAccount.address,
+      senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
-    .addSigner(data.agentAccount.keyset.guard.keys[0], (withCap) => [
+    .addSigner(account.keyset.guard.keys[0], (withCap) => [
       withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'freezer'),
       withCap(`coin.GAS`),
     ])

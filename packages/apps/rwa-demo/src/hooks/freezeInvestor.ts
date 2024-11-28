@@ -1,22 +1,24 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import { interpretErrorMessage  } from '@/components/TransactionsProvider/TransactionsProvider';
+import type {ITransaction} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
+import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
+import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 
-export const useAddAgent = () => {
-  const { account, sign } = useAccount();
+export const useFreezeInvestor = () => {
+  const { account sign } = useAccount();
   const { addTransaction } = useTransactions();
-  const { addNotification } = useNotifications();
+  const {addNotification } = useNotifications();
 
   const submit = async (
-    data: IAddAgentProps,
+    data: ISetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
     try {
-      const tx = await addAgent(data, account!);
+      const tx = await setAddressFrozen(data, account!);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -25,7 +27,7 @@ export const useAddAgent = () => {
 
       return addTransaction({
         ...res,
-        type: 'ADDAGENT',
+        type: 'FREEZE-ADDRESS',
       });
     } catch (e: any) {
       addNotification({

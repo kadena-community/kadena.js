@@ -1,17 +1,17 @@
+import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ISetComplianceProps } from '@/services/setCompliance';
 import { setCompliance } from '@/services/setCompliance';
 import { getClient } from '@/utils/client';
-import { useState } from 'react';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
 export const useSetCompliance = () => {
-  const [error, setError] = useState<string | null>(null);
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
+  const { addNotification } = useNotifications();
 
   const submit = async (data: ISetComplianceProps) => {
-    setError(null);
     try {
       const tx = await setCompliance(data, account!);
 
@@ -21,17 +21,18 @@ export const useSetCompliance = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      await addTransaction({
+      return addTransaction({
         ...res,
         type: 'SETCOMPLIANCE',
       });
-
-      console.log({ res });
-      console.log('DONE');
     } catch (e: any) {
-      setError(e?.message || e);
+      addNotification({
+        intent: 'negative',
+        label: 'there was an error',
+        message: interpretErrorMessage(e.message),
+      });
     }
   };
 
-  return { submit, error };
+  return { submit };
 };

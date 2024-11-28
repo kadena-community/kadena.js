@@ -1,8 +1,5 @@
-import { useAccount } from '@/hooks/account';
-import { useTransactions } from '@/hooks/transactions';
+import { useAddInvestor } from '@/hooks/addInvestor';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
-import { registerIdentity } from '@/services/registerIdentity';
-import { getClient } from '@/utils/client';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -18,9 +15,7 @@ interface IProps {
 }
 
 export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
-  const { account, sign } = useAccount();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { addTransaction } = useTransactions();
+  const { submit } = useAddInvestor();
   const { register, handleSubmit } = useForm<IRegisterIdentityProps>({
     defaultValues: {
       accountName: '',
@@ -28,24 +23,7 @@ export const AddInvestorForm: FC<IProps> = ({ onClose }) => {
   });
 
   const onSubmit = async (data: IRegisterIdentityProps) => {
-    const newData: IRegisterIdentityProps = { ...data, agent: account! };
-    try {
-      const tx = await registerIdentity(newData);
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-      console.log(res);
-
-      await addTransaction({
-        ...res,
-        type: 'IDENTITY-REGISTERED',
-      });
-
-      console.log('DONE');
-    } catch (e: any) {}
-
+    await submit(data);
     onClose();
   };
 
