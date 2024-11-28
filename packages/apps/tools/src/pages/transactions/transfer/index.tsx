@@ -124,7 +124,7 @@ const TransferPage = () => {
                 <a
                   className={notificationLinkStyle}
                   target={'_blank'}
-                  href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
+                  href="https://support.ledger.com/article/7415959614109-zd"
                   rel="noreferrer"
                   key="link-to-ledger-docs"
                 />,
