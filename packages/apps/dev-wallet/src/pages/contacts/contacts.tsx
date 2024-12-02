@@ -94,7 +94,7 @@ export function Contacts() {
                     <Text>
                       <MonoAccountBalanceWallet />
                     </Text>
-                    <Text>{shorten(contact.account.address)}</Text>
+                    <Text>{contact.account.address}</Text>
                   </Stack>
 
                   <ContextMenu

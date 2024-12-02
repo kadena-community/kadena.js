@@ -11,15 +11,36 @@ export function ComboField({
   onChange,
   defaultValue,
   clear,
+  onClose,
+  onOpen,
   ...inputProps
 }: React.ComponentProps<typeof TextField> & {
   children: (props: { value: string; close: () => void }) => ReactNode;
   clear?: ReactNode;
+  onClose?: (value: string) => void;
+  onOpen?: (value: string) => void;
 }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const livePopoverOpen = useRef(isPopoverOpen);
+  livePopoverOpen.current = isPopoverOpen;
   const [text, setText] = useState(value ?? defaultValue ?? '');
   const triggerRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+
+  function closePopover(fromPopover = false) {
+    setIsPopoverOpen(false);
+    if (onClose && isPopoverOpen && !fromPopover) {
+      console.log('calling onClose', text);
+      onClose(text);
+    }
+  }
+
+  function openPopover() {
+    setIsPopoverOpen(true);
+    if (onOpen && !isPopoverOpen) {
+      onOpen(text);
+    }
+  }
 
   useEffect(() => {
     if (value !== undefined && value !== text) {
@@ -29,37 +50,37 @@ export function ComboField({
 
   const content = children({
     value: text,
-    close: () => setIsPopoverOpen(false),
+    close: () => {
+      closePopover(true);
+    },
   });
 
   return (
     <>
-      <div
-        ref={triggerRef}
-        onClick={() => {
-          setIsPopoverOpen(true);
-        }}
-      >
+      <div ref={triggerRef} onClick={openPopover}>
         <TextField
           {...inputProps}
           value={text}
           defaultValue={defaultValue}
           onFocus={() => {
             if (!text) {
-              setIsPopoverOpen(true);
+              openPopover();
             }
           }}
           onBlur={() => {
             setTimeout(() => {
-              setIsPopoverOpen(false);
+              if (livePopoverOpen.current) {
+                closePopover();
+              }
             }, 100);
           }}
           onChange={(event) => {
             const value = event.target.value;
             setText(value);
             if (value) {
-              setIsPopoverOpen(true);
+              openPopover();
             }
+
             if (onChange) {
               onChange(event);
             }
@@ -71,7 +92,7 @@ export function ComboField({
                 <Button
                   variant="transparent"
                   isCompact
-                  onClick={() => setIsPopoverOpen(false)}
+                  onClick={() => closePopover()}
                 >
                   <MonoKeyboardArrowUp />
                 </Button>
@@ -79,7 +100,7 @@ export function ComboField({
                 <Button
                   variant="transparent"
                   isCompact
-                  onClick={() => setIsPopoverOpen(true)}
+                  onClick={() => openPopover()}
                 >
                   <MonoKeyboardArrowDown />
                 </Button>
@@ -91,10 +112,9 @@ export function ComboField({
       {
         <Popover
           state={{
-            isOpen: Boolean(isPopoverOpen && content),
+            isOpen: Boolean(isPopoverOpen),
             close: (...args) => {
-              setIsPopoverOpen(false);
-              console.log('close', args);
+              console.log('close event called', args);
             },
             open: (...args) => {
               console.log('open', args);
@@ -109,7 +129,7 @@ export function ComboField({
           shouldCloseOnInteractOutside={() => {
             return true;
           }}
-          // offset={5}
+          offset={0}
           triggerRef={triggerRef}
           ref={popoverRef}
           isNonModal
