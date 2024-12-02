@@ -1,19 +1,17 @@
 'use client';
-
 import { useAsset } from '@/hooks/asset';
-import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
 const Assets = () => {
-  const { handleSelectAsset } = useAsset();
+  const { getAsset } = useAsset();
   const { uuid } = useParams();
   const asset = useMemo(() => {
-    return handleSelectAsset(uuid);
+    return getAsset(uuid as string);
   }, [uuid]);
 
-  return <>{asset}</>;
+  console.log({ asset });
+  return <pre>{JSON.stringify(asset, null, 2)}</pre>;
 };
 
 export default Assets;
