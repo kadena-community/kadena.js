@@ -67,7 +67,7 @@ export function WalletRecovery() {
             <Heading variant="h5">Backup File</Heading>
             <Text>
               Select this option if you want to use the backup file from
-              Chainweaver. Also use this option when you have the mnemonic
+              Chainweaver. Also use this option when you have the mnemonic{' '}
               <strong>and</strong> the backup file.
             </Text>
             <Button

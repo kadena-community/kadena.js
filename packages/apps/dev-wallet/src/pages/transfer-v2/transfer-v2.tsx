@@ -258,7 +258,6 @@ export function TransferV2() {
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/transfer">
           Transfer
         </SideBarBreadcrumbsItem>

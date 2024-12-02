@@ -180,3 +180,20 @@ export function createSession(
 export const Session = createSession();
 
 export type Session = typeof Session;
+
+export const debounce = <T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number,
+) => {
+  const timer: NodeJS.Timeout | null = null;
+  return (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(fn(...args));
+      }, delay);
+    });
+  };
+};

@@ -154,6 +154,7 @@ const importProfiles = async (
   table: Table<IProfile> = [],
   transaction: IDBTransaction,
 ) => {
+  const fistPartOfUUID = (uuid: string) => uuid.split('-')[0];
   const put = putItem(db, transaction);
   const dbProfiles = await getAllItems(db, transaction)<IProfile>('profile');
   const profiles = table.map(({ value }) => {
@@ -161,7 +162,7 @@ const importProfiles = async (
     const name = dbProfile
       ? dbProfile.uuid === value.uuid
         ? value.name
-        : value.name + `(${value.uuid})`
+        : value.name + `(${fistPartOfUUID(value.uuid)})`
       : value.name;
     return {
       ...value,

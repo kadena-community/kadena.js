@@ -1,5 +1,4 @@
 import {
-  MonoApps,
   MonoCheck,
   MonoContacts,
   MonoContrast,
@@ -12,6 +11,7 @@ import {
   MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
+  MonoWallet,
   MonoWarning,
 } from '@kadena/kode-icons/system';
 
@@ -75,8 +75,8 @@ export const SideBar: FC = () => {
       navigation={
         <>
           <SideBarItem
-            visual={<MonoApps />}
-            label="Dashboard"
+            visual={<MonoWallet />}
+            label="Your Assets"
             component={Link}
             href="/"
           />
@@ -89,17 +89,17 @@ export const SideBar: FC = () => {
           />
 
           <SideBarItem
-            visual={<MonoSignature />}
-            label="Sig Builder"
-            component={Link}
-            href="/sig-builder"
-          />
-
-          <SideBarItem
             visual={<MonoTableRows />}
             label="Transactions"
             component={Link}
             href="/transactions"
+          />
+
+          <SideBarItem
+            visual={<MonoSignature />}
+            label="Sig Builder"
+            component={Link}
+            href="/sig-builder"
           />
 
           <SideBarItem

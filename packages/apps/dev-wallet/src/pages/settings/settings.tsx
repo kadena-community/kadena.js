@@ -1,13 +1,15 @@
+import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { dbService } from '@/modules/db/db.service';
 import {
   MonoDownload,
   MonoPassword,
   MonoPerson,
   MonoRemoveRedEye,
+  MonoSettings,
   MonoSettingsBackupRestore,
 } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Link as UiLink } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { Link } from 'react-router-dom';
 import { isFileSystemAccessSupported } from '../../modules/backup/fileApi';
 import { ProfileNameColorForm } from './components/ProfileNameColorForm';
@@ -17,6 +19,11 @@ export function Settings() {
   const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
   return (
     <Stack flexDirection={'column'} gap={'md'} alignItems={'flex-start'}>
+      <SideBarBreadcrumbs icon={<MonoSettings />} isGlobal>
+        <SideBarBreadcrumbsItem href="/settings">
+          Settings
+        </SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
       <Heading variant="h3">Settings</Heading>
       <ProfileNameColorForm isOpen={isRightAsideExpanded} />
       <Button

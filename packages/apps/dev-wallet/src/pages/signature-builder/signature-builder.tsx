@@ -172,8 +172,7 @@ export function SignatureBuilder() {
 
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+      <SideBarBreadcrumbs icon={<MonoDashboardCustomize />} isGlobal>
         <SideBarBreadcrumbsItem href="/sig-builder">
           Sig Builder
         </SideBarBreadcrumbsItem>

@@ -12,7 +12,6 @@ export const buttonListClass = style([
     border: 'solid 1px transparent',
     cursor: 'pointer',
     flex: 1,
-    minHeight: '50px',
     background: tokens.kda.foundation.color.background.surface.default,
     selectors: {
       '&:hover': {

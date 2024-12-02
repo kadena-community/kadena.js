@@ -13,6 +13,7 @@ import { execInSequence } from '@/utils/helpers';
 import { IDBBackup, importBackup, serializeTables } from './backup/backup';
 import { createTables } from './migration/createDB';
 import { migrateFrom37to38 } from './migration/migrateFrom37to38';
+import { migrateFrom38to39 } from './migration/migrateFrom38to39';
 
 // since we create the database in the first call we need to make sure another call does not happen
 // while the database is still being created; so I use execInSequence.
@@ -93,8 +94,11 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     ) {
       // we need to add a migration path for each version
       if (fromVersion === 37) {
-        console.log('migrating from 37 to 38');
         await migrateFrom37to38(db, result.versionTransaction);
+        continue;
+      }
+      if (fromVersion === 38) {
+        await migrateFrom38to39(db, result.versionTransaction);
         continue;
       }
       throw new Error(

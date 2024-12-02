@@ -51,7 +51,13 @@ const checkContract = async (contract: string, networkId: string) => {
   }
 };
 
-export function AddTokenForm({ isOpen }: { isOpen: boolean }) {
+export function AddTokenForm({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   const { register, handleSubmit } = useForm<TokenForm>({
     defaultValues: {
       contract: '',
@@ -103,7 +109,7 @@ export function AddTokenForm({ isOpen }: { isOpen: boolean }) {
   }
 
   return (
-    <RightAside isOpen={isOpen}>
+    <RightAside isOpen={isOpen} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RightAsideHeader label="Add Asset" />
         <RightAsideContent>
