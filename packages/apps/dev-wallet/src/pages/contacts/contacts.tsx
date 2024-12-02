@@ -7,7 +7,6 @@ import {
   IContact,
 } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { shorten } from '@/utils/helpers';
 import {
   MonoAccountBalanceWallet,
   MonoContacts,
