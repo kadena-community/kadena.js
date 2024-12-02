@@ -48,6 +48,16 @@ const config = {
         destination: '/modules/explorer',
         permanent: true,
       },
+      {
+        source: '/transfer-ledger-create.html',
+        destination: '/transactions/transfer',
+        permanent: true,
+      },
+      {
+        source: '/transfer-ledger-create',
+        destination: '/transactions/transfer',
+        permanent: true,
+      },
     ];
   },
   async headers() {
