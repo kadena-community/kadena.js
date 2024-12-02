@@ -32,6 +32,15 @@ export const addAgent = async (
       keys: [createPubKeyFromAccount(data.accountName)],
       pred: 'keys-all',
     })
+    .addData('roles', [
+      'agent-admin',
+      'supply-modifier',
+      'freezer',
+      'transfer-manager',
+      'recovery',
+      'compliance',
+      'whitelist-manager',
+    ])
 
     .setNetworkId(getNetwork().networkId)
     .createTransaction();

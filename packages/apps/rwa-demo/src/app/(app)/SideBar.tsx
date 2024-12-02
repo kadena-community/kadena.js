@@ -7,6 +7,7 @@ import {
   MonoLightMode,
   MonoLogout,
   MonoNetworkCheck,
+  MonoVpnLock,
 } from '@kadena/kode-icons';
 import {
   Button,
@@ -66,6 +67,12 @@ export const SideBar: FC = () => {
             label="Dashboard"
             component={Link}
             href="/"
+          />
+          <SideBarItem
+            visual={<MonoVpnLock />}
+            label="Assets"
+            component={Link}
+            href="/assets"
           />
         </>
       }

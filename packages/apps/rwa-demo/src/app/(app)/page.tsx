@@ -6,12 +6,11 @@ import { OwnerRootPage } from '@/components/HomePage/OwnerRootPage';
 import { useAccount } from '@/hooks/account';
 
 const Home = () => {
-  const { isAgent, isInvestor } = useAccount();
+  const { isAgent, isInvestor, isOwner } = useAccount();
 
-  console.log('asset', isAgent);
   return (
     <>
-      {!isAgent && <OwnerRootPage />}
+      {isOwner && <OwnerRootPage />}
       {isAgent && <AgentRootPage />}
       {isInvestor && <InvestorRootPage />}
     </>
