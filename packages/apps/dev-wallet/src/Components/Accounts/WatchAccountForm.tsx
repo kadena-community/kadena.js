@@ -1,42 +1,41 @@
 import { IContact } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { IReceiverAccount } from '@/pages/transfer/utils';
+import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import { shorten } from '@/utils/helpers';
 import { MonoAccountBalanceWallet } from '@kadena/kode-icons/system';
+import { Button, Checkbox, Heading, Stack, Text } from '@kadena/kode-ui';
 import {
-  Button,
-  Checkbox,
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  Heading,
-  Stack,
-  Text,
-} from '@kadena/kode-ui';
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+} from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { AccountInput } from '../AccountInput/AccountInput';
 import { ListItem } from '../ListItem/ListItem';
 
-export function WatchAccountsDialog({
-  onClose,
+export function WatchAccountsForm({
   contract,
   networkId,
   onWatch,
+  isOpen,
+  onClose,
 }: {
+  isOpen: boolean;
   contract: string;
   networkId: string;
-  onClose: () => void;
   onWatch: (account: IReceiverAccount[]) => void;
+  onClose: () => void;
 }) {
   const { contacts, fungibles } = useWallet();
   const asset = fungibles.find((f) => f.contract === contract);
   const [account, setAccount] = useState<IReceiverAccount>();
+  const [address, setAddress] = useState('');
   const [selectedContacts, setSelectedContacts] = useState<IContact[]>([]);
   return (
-    <Dialog isOpen onOpenChange={(isOpen) => !isOpen && onClose()} size="sm">
-      <DialogHeader>Watch Account</DialogHeader>
-      <DialogContent>
+    <RightAside isOpen={isOpen} onClose={onClose}>
+      <RightAsideHeader label="Watch Account" />
+      <RightAsideContent>
         <Stack gap={'xl'} flexDirection={'column'}>
           <Heading variant="h6">
             You can watch any account on the network.
@@ -44,6 +43,8 @@ export function WatchAccountsDialog({
           <Stack gap={'md'} flexDirection={'column'}>
             <Heading variant="h6">Enter a {asset?.symbol} Address</Heading>
             <AccountInput
+              address={address}
+              setAddress={setAddress}
               onAccount={setAccount}
               account={account}
               networkId={networkId}
@@ -90,9 +91,9 @@ export function WatchAccountsDialog({
             </Stack>
           )}
         </Stack>
-      </DialogContent>
-      <DialogFooter>
-        <Button variant="transparent" onClick={onClose}>
+      </RightAsideContent>
+      <RightAsideFooter>
+        <Button variant="transparent" onClick={() => onClose()}>
           Cancel
         </Button>
         <Button
@@ -118,8 +119,8 @@ export function WatchAccountsDialog({
         >
           Watch
         </Button>
-      </DialogFooter>
-    </Dialog>
+      </RightAsideFooter>
+    </RightAside>
   );
 }
 
