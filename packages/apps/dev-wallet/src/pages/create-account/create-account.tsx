@@ -140,7 +140,7 @@ export function CreateAccount() {
 
     const account: IAccount = {
       uuid: crypto.randomUUID(),
-      alias: alias || '',
+      alias: alias || aliasDefaultValue,
       profileId: profile.uuid,
       address: keyset.principal,
       keysetId: keyset.uuid,
