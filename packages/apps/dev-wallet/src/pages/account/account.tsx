@@ -110,9 +110,14 @@ export function AccountPage() {
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
       <SideBarBreadcrumbs icon={<MonoWallet />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/">Your Assets</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/">
+          {account.contract}
+        </SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href={`/account/${accountId}`}>
-          Account ({account.alias || account.address})
+          {account.alias
+            ? `${account.alias} (${account.address})`
+            : account.address}
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       <AliasForm show={isRightAsideExpanded} account={account} />

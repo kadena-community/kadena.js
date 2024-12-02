@@ -4,17 +4,19 @@ import { SideBarBreadcrumbs as SideBarBreadcrumbsUI } from '@kadena/kode-ui/patt
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-export const SideBarBreadcrumbs: FC<IBreadcrumbsProps> = ({
-  children,
-  ...props
-}) => {
+export const SideBarBreadcrumbs: FC<
+  IBreadcrumbsProps & { isGlobal?: boolean }
+> = ({ children, isGlobal, ...props }) => {
   const { activeNetwork } = useWallet();
 
   return (
     <SideBarBreadcrumbsUI
       {...props}
       badge={
-        <Badge size="sm" style="highContrast">{`${activeNetwork?.name}`}</Badge>
+        <Badge
+          size="sm"
+          style="highContrast"
+        >{`${isGlobal ? 'Global' : activeNetwork?.name}`}</Badge>
       }
     >
       {React.Children.map(children, (child) => {

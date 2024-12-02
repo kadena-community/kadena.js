@@ -38,8 +38,7 @@ export function Contacts() {
 
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoContacts />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+      <SideBarBreadcrumbs icon={<MonoContacts />} isGlobal>
         <SideBarBreadcrumbsItem href="/contacts">
           Contacts
         </SideBarBreadcrumbsItem>

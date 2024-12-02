@@ -76,7 +76,7 @@ export const SideBar: FC = () => {
         <>
           <SideBarItem
             visual={<MonoWallet />}
-            label="Assets"
+            label="Your Assets"
             component={Link}
             href="/"
           />
@@ -89,17 +89,17 @@ export const SideBar: FC = () => {
           />
 
           <SideBarItem
-            visual={<MonoSignature />}
-            label="Sig Builder"
-            component={Link}
-            href="/sig-builder"
-          />
-
-          <SideBarItem
             visual={<MonoTableRows />}
             label="Transactions"
             component={Link}
             href="/transactions"
+          />
+
+          <SideBarItem
+            visual={<MonoSignature />}
+            label="Sig Builder"
+            component={Link}
+            href="/sig-builder"
           />
 
           <SideBarItem
