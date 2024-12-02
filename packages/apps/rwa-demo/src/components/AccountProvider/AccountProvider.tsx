@@ -3,6 +3,7 @@ import { getBalance as getBalanceFnc } from '@/services/getBalance';
 import { isAgent } from '@/services/isAgent';
 import { isFrozen } from '@/services/isFrozen';
 import { isInvestor } from '@/services/isInvestor';
+import { isOwner } from '@/services/isOwner';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useRouter } from 'next/navigation';
@@ -24,6 +25,7 @@ export interface IAccountContext {
   logout: () => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
   isAgent: boolean;
+  isOwner: boolean;
   isInvestor: boolean;
   isFrozen: boolean;
   selectAccount: (account: IWalletAccount) => void;
@@ -38,6 +40,7 @@ export const AccountContext = createContext<IAccountContext>({
   logout: () => {},
   sign: async () => undefined,
   isAgent: false,
+  isOwner: false,
   isInvestor: false,
   isFrozen: false,
   selectAccount: () => {},
@@ -48,6 +51,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
   const [accounts, setAccounts] = useState<IWalletAccount[]>();
   const [isMounted, setIsMounted] = useState(false);
+  const [isOwnerState, setIsOwnerState] = useState(false);
   const [isAgentState, setIsAgentState] = useState(false);
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
@@ -57,6 +61,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const checkIsAgent = async (account: IWalletAccount) => {
     const resIsAgent = await isAgent({ agent: account.address });
     setIsAgentState(!!resIsAgent);
+  };
+  const checkIsOwner = async (account: IWalletAccount) => {
+    const resIsOwner = await isOwner({ owner: account.address });
+    setIsOwnerState(!!resIsOwner);
   };
   const checkIsInvestor = async (account: IWalletAccount) => {
     const resIsInvestor = await isInvestor({ account });
@@ -132,10 +140,13 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!account) {
       setIsAgentState(false);
+      setIsOwnerState(false);
       setIsInvestorState(false);
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    checkIsOwner(account);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     checkIsAgent(account);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -176,6 +187,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         logout,
         sign,
         isMounted,
+        isOwner: isOwnerState,
         isAgent: isAgentState,
         isInvestor: isInvestorState,
         isFrozen: isFrozenState,
