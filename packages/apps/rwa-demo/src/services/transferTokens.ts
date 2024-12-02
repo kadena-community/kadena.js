@@ -18,7 +18,6 @@ export const transferTokens = async (
   data: ITransferTokensProps,
   account: IWalletAccount,
 ) => {
-  console.log(new PactNumber(data.amount).toPrecision(2));
   return Pact.builder
     .execution(
       `

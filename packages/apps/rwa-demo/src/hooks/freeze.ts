@@ -47,7 +47,6 @@ export const useFreeze = ({ investorAccount }: { investorAccount: string }) => {
   useEffect(() => {
     if (!data?.events?.length) return;
     const params = JSON.parse(data?.events[0].parameters ?? '[]');
-    console.log(params);
     if (params.length < 2 || params[0] !== investorAccount) return;
 
     setFrozen(params[1]);

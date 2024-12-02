@@ -8,7 +8,6 @@ import { useAccount } from '@/hooks/account';
 const Home = () => {
   const { isAgent, isInvestor } = useAccount();
 
-  console.log('asset', isAgent);
   return (
     <>
       {!isAgent && <OwnerRootPage />}
