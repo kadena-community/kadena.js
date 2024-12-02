@@ -22,6 +22,7 @@ export interface IAssetContext {
   paused: boolean;
   setAsset: (asset: IAsset) => void;
   getAsset: (uuid: string) => IAsset | undefined;
+  removeAsset: (uuid: string) => void;
 }
 
 export const AssetContext = createContext<IAssetContext>({
@@ -29,6 +30,7 @@ export const AssetContext = createContext<IAssetContext>({
   paused: false,
   setAsset: () => {},
   getAsset: (uuid: string) => undefined,
+  removeAsset: (uuid: string) => undefined,
 });
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -51,11 +53,13 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const storageListener = (event: StorageEvent | Event) => {
     if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
       return;
+
     getAssets();
   };
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
+    window.dispatchEvent(new Event(selectedKey));
     setAsset(data);
 
     router.replace('/');
@@ -65,6 +69,12 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const getAsset = (uuid: string) => {
     const data = getAssets().find((a) => a.uuid === uuid);
     return data;
+  };
+  const removeAsset = (uuid: string) => {
+    const data = getAssets().filter((a) => a.uuid !== uuid);
+    localStorage.setItem(storageKey, JSON.stringify(data));
+    window.dispatchEvent(new Event(storageKey));
+    setAssets(data);
   };
 
   useEffect(() => {
@@ -88,7 +98,14 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <AssetContext.Provider
-      value={{ asset, assets, setAsset: handleSelectAsset, getAsset, paused }}
+      value={{
+        asset,
+        assets,
+        setAsset: handleSelectAsset,
+        getAsset,
+        removeAsset,
+        paused,
+      }}
     >
       {children}
     </AssetContext.Provider>

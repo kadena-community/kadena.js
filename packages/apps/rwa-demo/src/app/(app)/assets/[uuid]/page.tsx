@@ -10,7 +10,6 @@ const Assets = () => {
     return getAsset(uuid as string);
   }, [uuid]);
 
-  console.log({ asset });
   return <pre>{JSON.stringify(asset, null, 2)}</pre>;
 };
 

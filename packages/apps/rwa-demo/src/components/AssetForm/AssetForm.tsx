@@ -1,7 +1,8 @@
 import { LOCALSTORAGE_ASSETS_KEY } from '@/constants';
+import { useAsset } from '@/hooks/asset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { MonoAdd, MonoEditNote, MonoRemove } from '@kadena/kode-icons';
-import { Button, TextField } from '@kadena/kode-ui';
+import { Button, Step, Stepper, TextField } from '@kadena/kode-ui';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import { useRef, useState } from 'react';
@@ -13,6 +14,7 @@ interface IProps {
 
 export const AssetForm: FC<IProps> = ({ asset }) => {
   const ref = useRef<HTMLInputElement | null>(null);
+  const { removeAsset } = useAsset();
   const { addNotification } = useNotifications();
   const [value, setValue] = useState(asset?.name ?? '');
 
@@ -21,12 +23,7 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
   };
 
   const handleRemove = (data: IAsset) => {
-    const key = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY);
-    const assets = JSON.parse(localStorage.getItem(key) ?? '[]').filter(
-      (a: IAsset) => a.uuid !== data.uuid,
-    );
-    localStorage.setItem(key, JSON.stringify(assets));
-    window.dispatchEvent(new Event(key));
+    removeAsset(data.uuid);
 
     addNotification({
       label: 'Asset removed',
@@ -71,6 +68,17 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
 
   return (
     <form onSubmit={handleSave}>
+      <Stepper direction="horizontal">
+        <Step status="active" active={true}>
+          Namespace
+        </Step>
+        <Step status="inactive" active={false}>
+          Contract
+        </Step>
+        <Step status="inactive" active={false}>
+          Init
+        </Step>
+      </Stepper>
       <TextField
         ref={ref}
         value={value}

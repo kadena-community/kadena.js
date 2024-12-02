@@ -52,6 +52,7 @@ export const AgentsList: FC = () => {
               <Button
                 isDisabled={paused}
                 endVisual={<MonoSupportAgent />}
+                isCompact
                 onClick={handleAddAgent}
                 variant="outlined"
               >

@@ -9,8 +9,8 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
+import { AssetForm } from '@/components/AssetForm/AssetForm';
 import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
-import { AssetForm } from '@/components/AssetSwitch/AssetForm';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useTransactions } from '@/hooks/transactions';
 import { getAsset } from '@/utils/getAsset';
