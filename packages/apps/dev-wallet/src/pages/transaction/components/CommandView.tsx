@@ -154,7 +154,11 @@ export function CommandView({
           </Stack>
         </Stack>
       </Stack>
-      <Signers transaction={transaction} onSign={onSign} />
+      <Signers
+        transaction={transaction}
+        transactionStatus={transaction.status}
+        onSign={onSign}
+      />
     </Stack>
   );
 }

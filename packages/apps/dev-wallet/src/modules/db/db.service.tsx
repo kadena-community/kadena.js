@@ -15,6 +15,11 @@ import { createTables } from './migration/createDB';
 import { migrateFrom37to38 } from './migration/migrateFrom37to38';
 import { migrateFrom38to39 } from './migration/migrateFrom38to39';
 
+const dbChannel = new BroadcastChannel('db-channel');
+const broadcast = (event: EventTypes, storeName: string, data: any[]) => {
+  dbChannel.postMessage({ type: event, storeName, data });
+};
+
 // since we create the database in the first call we need to make sure another call does not happen
 // while the database is still being created; so I use execInSequence.
 const createConnectionPool = (
@@ -59,6 +64,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
   let db = result.db;
   if (result.needsUpgrade) {
+    dbChannel.postMessage({ type: 'migration' });
     const oldVersion = result.oldVersion;
     if (oldVersion === 0) {
       console.log('creating new database');
@@ -136,7 +142,7 @@ const injectDb = <R extends (...args: any[]) => Promise<any>>(
     });
   }) as R;
 
-type EventTypes = 'add' | 'update' | 'delete' | 'import';
+type EventTypes = 'add' | 'update' | 'delete' | 'import' | 'migration';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
 
@@ -177,11 +183,6 @@ export interface IDBService {
   ) => Promise<boolean>;
 }
 
-const dbChannel = new BroadcastChannel('db-channel');
-const broadcast = (event: EventTypes, storeName: string, data: any[]) => {
-  dbChannel.postMessage({ type: event, storeName, data });
-};
-
 export const createDbService = () => {
   const listeners: Listener[] = [];
   const subscribe: ISubscribe = (
@@ -213,6 +214,13 @@ export const createDbService = () => {
       }
     };
   };
+
+  subscribe((event) => {
+    if (event === 'migration') {
+      console.log('migration event received');
+      closeDatabaseConnections();
+    }
+  });
 
   dbChannel.onmessage = (event) => {
     const {

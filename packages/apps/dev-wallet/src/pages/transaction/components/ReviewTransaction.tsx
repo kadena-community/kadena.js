@@ -20,9 +20,11 @@ import { Label, Value } from './helpers.tsx';
 
 export function ReviewTransaction({
   transaction,
+  transactionStatus,
   onSign,
 }: {
   transaction: IUnsignedCommand;
+  transactionStatus: ITransaction['status'];
   onSign: (sig: ITransaction['sigs']) => void;
 }) {
   const { sign } = useWallet();
@@ -161,7 +163,11 @@ export function ReviewTransaction({
               </Stack>
             </Stack>
           </Stack>
-          <Signers transaction={transaction} onSign={onSign} />
+          <Signers
+            transaction={transaction}
+            transactionStatus={transactionStatus}
+            onSign={onSign}
+          />
         </Stack>
       </DialogContent>
       <DialogFooter>

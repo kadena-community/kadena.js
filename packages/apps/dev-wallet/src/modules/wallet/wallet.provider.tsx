@@ -12,7 +12,8 @@ import { useSession } from '@/App/session';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
 import { ISetPhraseResponse, ISetSecurityPhrase } from '@/service-worker/types';
-import { Session, throttle } from '@/utils/session';
+import { throttle } from '@/utils/helpers';
+import { Session } from '@/utils/session';
 import { IClient, createClient } from '@kadena/client';
 import { setGlobalConfig } from '@kadena/client-utils/core';
 import {
@@ -244,8 +245,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = Session.subscribe((event) => {
-      if (event === 'expired' && contextValue.profile) {
+    const unsubscribe = Session.subscribe('expired', () => {
+      if (contextValue.profile) {
         setProfile(undefined);
         channel.postMessage({ action: 'switch-profile', payload: undefined });
         backupDatabase(true).catch(console.log);
@@ -447,7 +448,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!noSession) {
         await session.reset();
       }
-      const networkUUID = contextValue.activeNetwork?.uuid;
+      const networkUUID =
+        profile.selectedNetworkUUID || contextValue.activeNetwork?.uuid;
       await session.set('profileId', profile.uuid);
       const accounts = networkUUID
         ? await accountRepository.getAccountsByProfileId(
@@ -471,12 +473,16 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       if (networkUUID) {
         syncAllAccounts(profile.uuid, networkUUID);
       }
+      const activeNetwork = networkUUID
+        ? await networkRepository.getNetwork(networkUUID)
+        : undefined;
       setContextValue((ctx) => ({
         ...ctx,
         profile,
         accounts,
         keySources,
         keysets,
+        activeNetwork: activeNetwork ?? ctx.activeNetwork,
       }));
       return { profile, accounts, keySources, watchedAccounts };
     },
@@ -486,8 +492,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const setActiveNetwork = useCallback(
     (activeNetwork: INetwork | undefined) => {
       setContextValue((ctx) => ({ ...ctx, activeNetwork }));
+      if (contextValue.profile?.uuid && activeNetwork?.uuid) {
+        walletRepository.patchProfile(contextValue.profile.uuid, {
+          selectedNetworkUUID: activeNetwork.uuid,
+        });
+      }
     },
-    [],
+    [contextValue.profile?.uuid],
   );
 
   useEffect(() => {

@@ -179,6 +179,7 @@ export function TransferV2() {
       return (
         <ReviewTransaction
           transaction={selectedTx}
+          transactionStatus={selectedTx.status}
           onSign={async (sigs) => {
             const updated = {
               ...selectedTx,

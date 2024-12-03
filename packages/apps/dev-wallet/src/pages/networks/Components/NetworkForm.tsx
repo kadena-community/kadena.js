@@ -8,8 +8,16 @@ import {
   pendingClass,
   successClass,
 } from '@/pages/transaction/components/style.css';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 import { MonoCircle, MonoDelete, MonoWarning } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import {
+  Button,
+  Heading,
+  Notification,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -17,7 +25,7 @@ import {
   RightAsideHeader,
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 export type INetworkWithOptionalUuid =
@@ -57,11 +65,11 @@ export const getNewNetwork = (): INetworkWithOptionalUuid => ({
 export function NetworkForm({
   network,
   onClose,
-  onSave: onDone,
+  onSave,
   isOpen,
 }: {
   network: INetworkWithOptionalUuid;
-  onSave: (network: INetworkWithOptionalUuid) => void;
+  onSave: (network: INetworkWithOptionalUuid) => Promise<void>;
   onClose: () => void;
   isOpen: boolean;
 }) {
@@ -79,15 +87,22 @@ export function NetworkForm({
     mode: 'all',
   });
   const { fields, append, remove } = useFieldArray({ control, name: 'hosts' });
+  const [error, setError] = useState<string>();
   async function create(updNetwork: INewNetwork) {
+    setError(undefined);
     const hosts = updNetwork.hosts.map(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ({ isHealthy, nodeVersion, ...host }) => host,
     );
-    onDone({
-      ...updNetwork,
-      hosts,
-    });
+    try {
+      await onSave({
+        ...updNetwork,
+        hosts,
+      });
+    } catch (e) {
+      console.error(e);
+      setError(getErrorMessage(e, 'Error on saving network'));
+    }
   }
 
   useEffect(() => {
@@ -221,6 +236,11 @@ export function NetworkForm({
                 );
               })}
             </Stack>
+            {error !== undefined && (
+              <Notification intent="negative" role="alert">
+                {error}
+              </Notification>
+            )}
           </Stack>
         </RightAsideContent>
         <RightAsideFooter>
