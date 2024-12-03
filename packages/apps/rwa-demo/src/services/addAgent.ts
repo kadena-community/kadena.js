@@ -25,7 +25,7 @@ export const addAgent = async (
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
       withCap(`RWA.${getAsset()}.ONLY-OWNER`, ''),
-      withCap(`coin.GAS`),
+      withCap(`coin.GAS`, ''),
     ])
     .addData('agent', data.accountName)
     .addData('agent_guard', {

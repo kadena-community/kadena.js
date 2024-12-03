@@ -14,6 +14,7 @@ export interface ITransaction {
   requestKey: string;
   type: string;
   listener?: Promise<void | ICommandResult>;
+  result?: ICommandResult['result'];
 }
 
 export interface ITransactionsContext {
