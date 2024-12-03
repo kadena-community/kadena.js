@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { parseGqlTransfers } from '../../services/graphql/getTransfers';
+import { parseGqlTransfers } from '../../services/graphql/transfer.util';
 import type { Transfer } from '../interface';
 
 const TRANSFER_XCHAIN_SEND = [

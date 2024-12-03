@@ -85,6 +85,7 @@ export const useTransfers = () => {
     /* -- End demo ---------------*/
 
     walletSdk.subscribeOnCrossChainComplete(
+      wallet.account?.name ?? '',
       incompleteTransfers,
       () => refetch(),
       {

@@ -1,6 +1,5 @@
 import type { ChainId, ISigner } from '@kadena/client';
 import { createClient, Pact } from '@kadena/client';
-// import {} from '@kadena/client-utils/coin';
 
 /**
  * ICreateCrossChainFinishInput represents a subset of Transfer

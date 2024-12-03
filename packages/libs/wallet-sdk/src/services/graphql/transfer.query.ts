@@ -23,6 +23,72 @@ export const TRANSFER_QUERY = graphql(`
     receiverAccount
     requestKey
     senderAccount
+    moduleName
+    block {
+      hash
+      height
+      creationTime
+    }
+    transaction {
+      cmd {
+        networkId
+        payload {
+          __typename
+          ... on ExecutionPayload {
+            code
+            data
+          }
+          ... on ContinuationPayload {
+            step
+            pactId
+          }
+        }
+        signers {
+          clist {
+            name
+            args
+          }
+        }
+      }
+      result {
+        __typename
+        ... on TransactionResult {
+          goodResult
+          badResult
+          events {
+            edges {
+              node {
+                name
+                parameters
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`);
+
+export const TRANSFER_REQUESTKEY_QUERY = graphql(`
+  query accountTransferRequestKey($requestKey: String!, $accountName: String) {
+    lastBlockHeight
+    transfers(requestKey: $requestKey, accountName: $accountName) {
+      edges {
+        node {
+          ...TransferFields
+        }
+      }
+    }
+  }
+
+  fragment TransferFields on Transfer {
+    amount
+    chainId
+    orderIndex
+    receiverAccount
+    requestKey
+    senderAccount
+    moduleName
     block {
       hash
       height

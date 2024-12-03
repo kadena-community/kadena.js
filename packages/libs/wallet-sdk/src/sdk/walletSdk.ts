@@ -15,6 +15,7 @@ import type {
 import * as accountService from '../services/accountService.js';
 import { pollRequestKeys } from '../services/chainweb/chainweb.js';
 import { getTransfers } from '../services/graphql/getTransfers.js';
+import { pollGraphqlTransfers } from '../services/graphql/pollTransfers.js';
 import { poll } from '../utils/retry.js';
 import { isEmpty, notEmpty } from '../utils/typeUtils.js';
 import type { ICreateCrossChainFinishInput } from './crossChainFinishCreate.js';
@@ -30,6 +31,7 @@ import type {
   CreateTransfer,
   IAccountDetails,
   IChain,
+  ICrossChainTransfer,
   ITransactionDescriptor,
   Transfer,
 } from './interface.js';
@@ -165,11 +167,43 @@ export class WalletSDK {
   }
 
   public subscribeOnCrossChainComplete(
+    accountName: string,
     transfers: ITransactionDescriptor[],
-    callback: (transfer: Transfer) => void,
+    callback: (transfer: ICrossChainTransfer) => void,
     options?: { signal?: AbortSignal },
   ): void {
-    return undefined;
+    const promises = transfers.map(async (transfer) => {
+      return poll(
+        async (signal) => {
+          const result = await pollGraphqlTransfers({
+            accountName: accountName,
+            graphqlUrl: this.getGraphqlUrl({
+              networkId: transfer.networkId,
+            }),
+            logger: this.logger,
+            requestKeys: [transfer.requestKey],
+            signal,
+          });
+          const results = Object.values(result).flat();
+          results.forEach((row) => {
+            if (row.isCrossChainTransfer && row.continuation !== undefined) {
+              callback(row);
+            } else {
+              throw new Error('Cross-chain transfer not complete');
+            }
+          });
+        },
+        {
+          delayMs: 30000,
+          timeoutSeconds: 3600,
+          signal: options?.signal,
+        },
+      );
+    });
+
+    Promise.all(promises).catch((error) => {
+      console.log('error', error);
+    });
   }
 
   public async waitForPendingTransaction(
