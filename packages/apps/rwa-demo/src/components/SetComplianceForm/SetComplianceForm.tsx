@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks/account';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { ISetComplianceProps } from '@/services/setCompliance';
 import { Button, TextField } from '@kadena/kode-ui';
@@ -15,6 +16,7 @@ interface IProps {
 }
 
 export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
+  const { isComplianceOwner } = useAccount();
   const { submit } = useSetCompliance();
   const { register, handleSubmit } = useForm<ISetComplianceProps>({
     defaultValues: {
@@ -28,6 +30,8 @@ export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
 
     onClose();
   };
+
+  if (!isComplianceOwner) return null;
 
   return (
     <>

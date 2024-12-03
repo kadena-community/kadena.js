@@ -2,15 +2,17 @@ import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
-export interface IIsOwnerProps {
+export interface IIsComplianceOwnerProps {
   owner: string;
 }
 
-export const isOwner = async (data: IIsOwnerProps) => {
+export const isComplianceOwner = async (data: IIsComplianceOwnerProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.is-owner (read-string 'owner))`)
+    .execution(
+      `(RWA.max-balance-compliance.is-compliance-owner (read-string 'owner))`,
+    )
     .setMeta({
       senderAccount: data.owner,
       chainId: getNetwork().chainId,

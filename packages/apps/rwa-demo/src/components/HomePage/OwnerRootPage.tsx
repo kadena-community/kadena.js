@@ -2,6 +2,7 @@
 import { AgentsList } from '@/components/AgentsList/AgentsList';
 import { SetComplianceForm } from '@/components/SetComplianceForm/SetComplianceForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { MonoAdd } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
@@ -9,6 +10,7 @@ import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
 export const OwnerRootPage = () => {
+  const { isComplianceOwner } = useAccount();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const { paused } = useAsset();
   const [hasOpenComplianceForm, setHasOpenComplianceForm] = useState(false);
@@ -32,13 +34,15 @@ export const OwnerRootPage = () => {
       )}
 
       <Stack gap="sm">
-        <Button
-          isDisabled={paused}
-          startVisual={<MonoAdd />}
-          onClick={handleComplianceForm}
-        >
-          Set Compliance
-        </Button>
+        {isComplianceOwner && (
+          <Button
+            isDisabled={paused}
+            startVisual={<MonoAdd />}
+            onClick={handleComplianceForm}
+          >
+            Set Compliance
+          </Button>
+        )}
       </Stack>
 
       <AgentsList />
