@@ -16,46 +16,9 @@ import { migrateFrom37to38 } from './migration/migrateFrom37to38';
 import { migrateFrom38to39 } from './migration/migrateFrom38to39';
 
 const dbChannel = new BroadcastChannel('db-channel');
-const broadcast = (event: EventTypes, storeName: string, data: any[]) => {
+const broadcast = (event: EventTypes, storeName?: string, data?: any[]) => {
+  console.log('broadcast', event, storeName, data);
   dbChannel.postMessage({ type: event, storeName, data });
-};
-
-// since we create the database in the first call we need to make sure another call does not happen
-// while the database is still being created; so I use execInSequence.
-const createConnectionPool = (
-  cb: () => Promise<IDBDatabase>,
-  length: number = 1,
-) => {
-  const pool: IDBDatabase[] = [];
-  let turn = 0;
-
-  const createDatabaseConnection = execInSequence(async () => {
-    if (pool.length < length) {
-      const connection = await cb();
-      pool.push(connection);
-      const removeFromPool = () => pool.splice(pool.indexOf(connection), 1);
-      connection.onclose = removeFromPool;
-      const originalClose = connection.close.bind(connection);
-      connection.close = () => {
-        removeFromPool();
-        originalClose();
-      };
-      return connection;
-    }
-    const connection = pool[turn];
-    turn = turn === length - 1 ? 0 : turn + 1;
-    return connection;
-  });
-
-  const closeDatabaseConnections = () => {
-    console.log(`closing ${pool.length} database connections`);
-    pool.forEach((connection) => connection.close());
-    pool.length = 0;
-  };
-  return {
-    createDatabaseConnection,
-    closeDatabaseConnections,
-  };
 };
 
 const { DB_NAME, DB_VERSION } = config.DB;
@@ -64,14 +27,12 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
   let db = result.db;
   if (result.needsUpgrade) {
-    dbChannel.postMessage({ type: 'migration' });
+    broadcast('migration-started');
     const oldVersion = result.oldVersion;
     if (oldVersion === 0) {
       console.log('creating new database');
       createTables(db);
-      return db;
-    }
-    if (oldVersion < 37) {
+    } else if (oldVersion < 37) {
       const confirmed = confirm(
         'You’re using an outdated database version that doesn’t support migration. To continue using the app, all data must be wiped. Do you want to proceed?',
       );
@@ -90,43 +51,44 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
       db = newDb;
 
       createTables(db);
-      return db;
-    }
-
-    for (
-      let fromVersion = oldVersion;
-      fromVersion < DB_VERSION;
-      fromVersion++
-    ) {
-      // we need to add a migration path for each version
-      if (fromVersion === 37) {
-        await migrateFrom37to38(db, result.versionTransaction);
-        continue;
+    } else {
+      for (
+        let fromVersion = oldVersion;
+        fromVersion < DB_VERSION;
+        fromVersion++
+      ) {
+        // we need to add a migration path for each version
+        if (fromVersion === 37) {
+          await migrateFrom37to38(db, result.versionTransaction);
+          continue;
+        }
+        if (fromVersion === 38) {
+          await migrateFrom38to39(db, result.versionTransaction);
+          continue;
+        }
+        if (fromVersion >= 39) {
+          prompt('Database is already at the latest version');
+          continue;
+        }
+        throw new Error(
+          `There is no migration path for version ${fromVersion} to ${fromVersion + 1}`,
+        );
       }
-      if (fromVersion === 38) {
-        await migrateFrom38to39(db, result.versionTransaction);
-        continue;
-      }
-      throw new Error(
-        `There is no migration path for version ${fromVersion} to ${fromVersion + 1}`,
-      );
     }
+    broadcast('migration-finished');
   }
 
   return db;
 });
 
-const createConnection = async () => {
+export const createDatabaseConnection = execInSequence(async () => {
   const result = await connect(DB_NAME, DB_VERSION);
   const db = result.db;
   if (result.needsUpgrade) {
     throw new Error('database needs upgrade; call setupDatabase instead');
   }
   return db;
-};
-
-export const { createDatabaseConnection, closeDatabaseConnections } =
-  createConnectionPool(createConnection);
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const injectDb = <R extends (...args: any[]) => Promise<any>>(
@@ -138,11 +100,18 @@ const injectDb = <R extends (...args: any[]) => Promise<any>>(
     return createDatabaseConnection().then(async (db) => {
       const result = await fn(db)(...args);
       onCall(...args);
+      db.close();
       return result;
     });
   }) as R;
 
-type EventTypes = 'add' | 'update' | 'delete' | 'import' | 'migration';
+type EventTypes =
+  | 'add'
+  | 'update'
+  | 'delete'
+  | 'import'
+  | 'migration-started'
+  | 'migration-finished';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
 
@@ -216,9 +185,11 @@ export const createDbService = () => {
   };
 
   subscribe((event) => {
-    if (event === 'migration') {
+    if (event === 'migration-started') {
       console.log('migration event received');
-      closeDatabaseConnections();
+    }
+    if (event === 'migration-finished') {
+      window.location.reload();
     }
   });
 
@@ -228,7 +199,9 @@ export const createDbService = () => {
       storeName,
       data,
     }: { type: EventTypes; storeName: string; data: any[] } = event.data;
-    listeners.forEach((cb) => cb(type, storeName, ...data));
+    listeners.forEach((cb) =>
+      cb(type, storeName, ...(Array.isArray(data) ? data : [data])),
+    );
   };
 
   const notify =
