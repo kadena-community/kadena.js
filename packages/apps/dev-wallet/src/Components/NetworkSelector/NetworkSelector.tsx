@@ -1,3 +1,4 @@
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   MonoCheck,
@@ -12,7 +13,6 @@ import {
   IButtonProps,
 } from '@kadena/kode-ui';
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export const NetworkSelector: FC<{
   showLabel?: boolean;
@@ -20,7 +20,7 @@ export const NetworkSelector: FC<{
   isCompact?: IButtonProps['isCompact'];
 }> = ({ showLabel = true, variant, isCompact = false }) => {
   const { networks, activeNetwork, setActiveNetwork } = useWallet();
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
 
   const handleNetworkUpdate = (uuid: string) => {
     const network = networks.find((network) => network.uuid === uuid);

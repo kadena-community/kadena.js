@@ -1,3 +1,4 @@
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
@@ -15,7 +16,7 @@ import {
 } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface ChangePasswordForm {
   password: string;
@@ -26,7 +27,7 @@ interface ChangePasswordForm {
 export function ChangePassword() {
   const [currenPassword, setCurrentPassword] = useState('');
   const { askForPassword, profile } = useWallet();
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const {

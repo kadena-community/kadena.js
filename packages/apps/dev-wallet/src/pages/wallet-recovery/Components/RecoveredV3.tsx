@@ -1,3 +1,4 @@
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
@@ -22,7 +23,6 @@ import {
   CardFooterGroup,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export interface IV3Backup {
   scheme: 'v3';
@@ -37,7 +37,7 @@ export function RecoveredV3({
   cancel: () => void;
 }) {
   const [error, setError] = useState<string | undefined>();
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
   const prompt = usePrompt();
   const { profileList: walletProfiles } = useWallet();
   const [bypassAvailableCheck, setBypassAvailableCheck] = useState(false);

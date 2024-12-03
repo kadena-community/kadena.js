@@ -81,14 +81,14 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   return db;
 });
 
-export const createDatabaseConnection = execInSequence(async () => {
+export const createDatabaseConnection = async () => {
   const result = await connect(DB_NAME, DB_VERSION);
   const db = result.db;
   if (result.needsUpgrade) {
     throw new Error('database needs upgrade; call setupDatabase instead');
   }
   return db;
-});
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const injectDb = <R extends (...args: any[]) => Promise<any>>(

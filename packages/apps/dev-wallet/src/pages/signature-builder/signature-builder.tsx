@@ -7,6 +7,7 @@ import {
   IUnsignedCommand,
 } from '@kadena/client';
 
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
@@ -32,7 +33,7 @@ import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { codeArea } from './style.css';
 
 export function SignatureBuilder() {
@@ -48,7 +49,7 @@ export function SignatureBuilder() {
     ISigningRequest['caps']
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload

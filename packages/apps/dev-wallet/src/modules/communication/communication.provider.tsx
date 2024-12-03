@@ -1,3 +1,4 @@
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   FC,
@@ -7,7 +8,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { addTransaction } from '../transaction/transaction.service';
 import { useWallet } from '../wallet/wallet.hook';
 
@@ -58,7 +58,7 @@ export const CommunicationProvider: FC<
   PropsWithChildren<{ setOrigin: (pathname: string) => void }>
 > = ({ setOrigin, children }) => {
   const [requests] = useState(() => new Map<string, Request>());
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
   const { isUnlocked, accounts, profile, networks, activeNetwork } =
     useWallet();
 

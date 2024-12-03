@@ -1,7 +1,7 @@
 import { BootContent } from '@/Components/BootContent/BootContent';
 import { sleep } from '@/utils/helpers';
 import { Stack, Text } from '@kadena/kode-ui';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { addDefaultFungibles } from '../account/account.repository';
 import { addDefaultNetworks } from '../network/network.repository';
 import { setupDatabase } from './db.service';
@@ -28,10 +28,13 @@ export const DatabaseProvider: FC<{
   fallback = <Text>initializing database ...</Text>,
   renderError = renderDefaultError,
 }) => {
+  const setupRef = useRef(false);
   const [initialized, setInitialized] = useState(false);
   const [errorObject, setErrorObject] = useState<Error>();
 
   useEffect(() => {
+    if (setupRef.current) return;
+    setupRef.current = true;
     const setupDataBase = async () => {
       console.log('setting up database');
       const db = await setupDatabase();

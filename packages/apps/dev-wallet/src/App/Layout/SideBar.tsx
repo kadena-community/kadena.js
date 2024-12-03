@@ -39,15 +39,16 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BetaHeader } from '../BetaHeader';
+import { useTheCorrectNavigate } from '../NavigationContext';
 import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;

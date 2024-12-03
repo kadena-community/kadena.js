@@ -222,9 +222,10 @@ interface Guard {
 export const hasSameGuard = (a?: Guard, b?: Guard) => {
   const getKeys = (key: ISigner) =>
     typeof key === 'string' ? key : key.pubKey;
-  const aKeys = a ? a.keys.map(getKeys).sort() : [];
 
+  const aKeys = a ? a.keys.map(getKeys).sort() : [];
   const bKeys = b ? b.keys.map(getKeys).sort() : [];
+
   return (
     aKeys.length === bKeys.length &&
     aKeys.every((key) => bKeys.includes(key)) &&

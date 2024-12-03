@@ -6,6 +6,7 @@ import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useState } from 'react';
 
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import {
@@ -13,7 +14,7 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
@@ -33,7 +34,7 @@ export function TransferV2() {
     profile,
   } = useWallet();
 
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
   const urlActivityId = searchParams.get('activityId');

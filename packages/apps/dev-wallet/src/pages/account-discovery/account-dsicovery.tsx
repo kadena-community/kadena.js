@@ -1,8 +1,9 @@
 import { IKeyItem } from '@/modules/wallet/wallet.repository';
 import { Button, Card, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { IAccount } from '@/modules/account/account.repository';
 import {
@@ -18,7 +19,7 @@ import { MonoKey } from '@kadena/kode-icons/system';
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
   const processRef = useRef<ReturnType<typeof accountDiscovery>>();
   const { profile, keySources, unlockKeySource, activeNetwork } = useWallet();
   const { keySourceId } = useParams();

@@ -1,3 +1,4 @@
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
@@ -10,7 +11,6 @@ import {
   Stack,
 } from '@kadena/kode-ui';
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Profile } from './components/Profile';
 import { profileClass, profileListClass } from './components/style.css';
 
@@ -25,7 +25,7 @@ export const ProfileChanger: FC = () => {
     unlockProfile,
     lockProfile,
   } = useWallet();
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
 
   const handleSelect = async (profile: Pick<IProfile, 'options' | 'uuid'>) => {
     if (profile.options.authMode === 'WEB_AUTHN') {

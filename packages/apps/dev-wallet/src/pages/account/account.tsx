@@ -2,6 +2,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 
 import { fundAccount, syncAccount } from '@/modules/account/account.service';
 
+import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { AccountBalanceDistribution } from '@/Components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { FundOnTestnetButton } from '@/Components/FundOnTestnet/FundOnTestnet';
@@ -25,7 +26,7 @@ import {
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
 import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
@@ -44,7 +45,7 @@ export function AccountPage() {
     accounts.find((account) => account.uuid === accountId) ??
     watchAccounts.find((account) => account.uuid === accountId);
 
-  const navigate = useNavigate();
+  const navigate = useTheCorrectNavigate();
 
   useEffect(() => {
     if (account) {
