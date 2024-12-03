@@ -1,5 +1,4 @@
 import { getClient, getNetwork } from '@/utils/client';
-import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IIsComplianceOwnerProps {

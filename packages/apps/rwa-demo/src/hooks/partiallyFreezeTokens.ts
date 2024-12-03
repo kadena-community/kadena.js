@@ -1,6 +1,5 @@
 import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
-import { distributeTokens } from '@/services/distributeTokens';
 import { partiallyFreezeTokens } from '@/services/partiallyFreezeTokens';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';

@@ -29,6 +29,7 @@ export const useFreeze = ({ investorAccount }: { investorAccount: string }) => {
 
   const init = async () => {
     if (!account) return;
+    console.log('frozen check');
     const res = await isFrozen({
       investorAccount: investorAccount,
       account: account,
@@ -42,7 +43,7 @@ export const useFreeze = ({ investorAccount }: { investorAccount: string }) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [account]);
+  }, [account?.address]);
 
   useEffect(() => {
     if (!data?.events?.length) return;

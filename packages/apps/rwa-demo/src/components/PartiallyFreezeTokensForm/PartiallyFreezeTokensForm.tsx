@@ -1,4 +1,3 @@
-import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useFreeze } from '@/hooks/freeze';
 import { usePartiallyFreezeTokens } from '@/hooks/partiallyFreezeTokens';
