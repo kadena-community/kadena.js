@@ -53,6 +53,7 @@ const InvestorPage = () => {
           >
             Distribute Tokens
           </Button>
+
           <FreezeInvestor investorAccount={investorAccount} />
         </Stack>
       </Stack>

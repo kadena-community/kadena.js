@@ -1,6 +1,6 @@
 import { useAccount } from '@/hooks/account';
-import { useSetCompliance } from '@/hooks/setCompliance';
-import type { ISetComplianceProps } from '@/services/setCompliance';
+import { useSetMaxBalance } from '@/hooks/setMaxBalance';
+import type { ISetMaxBalanceProps } from '@/services/setMaxBalance';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -15,17 +15,16 @@ interface IProps {
   onClose: () => void;
 }
 
-export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
+export const SetMaxBalanceForm: FC<IProps> = ({ onClose }) => {
   const { isComplianceOwner } = useAccount();
-  const { submit } = useSetCompliance();
-  const { register, handleSubmit } = useForm<ISetComplianceProps>({
+  const { submit } = useSetMaxBalance();
+  const { register, handleSubmit } = useForm<ISetMaxBalanceProps>({
     defaultValues: {
       maxBalance: 0,
-      maxSupply: 0,
     },
   });
 
-  const onSubmit = async (data: ISetComplianceProps) => {
+  const onSubmit = async (data: ISetMaxBalanceProps) => {
     await submit(data);
 
     onClose();
@@ -37,24 +36,19 @@ export const SetComplianceForm: FC<IProps> = ({ onClose }) => {
     <>
       <RightAside isOpen onClose={onClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <RightAsideHeader label="Set compliance" />
+          <RightAsideHeader label="Set Max Balance" />
           <RightAsideContent>
             <TextField
               type="number"
               label="Max Balance"
               {...register('maxBalance', { required: true })}
             />
-            <TextField
-              type="number"
-              label="Max Supply"
-              {...register('maxSupply', { required: true })}
-            />
           </RightAsideContent>
           <RightAsideFooter>
             <Button onPress={onClose} variant="transparent">
               Cancel
             </Button>
-            <Button type="submit">Set Compliance</Button>
+            <Button type="submit">Set Max Balance</Button>
           </RightAsideFooter>
         </form>
       </RightAside>

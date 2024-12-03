@@ -45,6 +45,7 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
   useEffect(() => {
     if (tx && resolveRef.current) {
       resolveRef.current(tx);
+      onClose();
     }
   }, [tx]);
 
