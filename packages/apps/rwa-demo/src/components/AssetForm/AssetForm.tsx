@@ -1,12 +1,22 @@
 import { LOCALSTORAGE_ASSETS_KEY } from '@/constants';
 import { useAsset } from '@/hooks/asset';
+import { useCreateContract } from '@/hooks/createContract';
 import { useCreatePrincipalNamespace } from '@/hooks/createPrincipalNamespace';
+import type { IAddContractProps } from '@/services/createContract';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { MonoAdd, MonoEditNote, MonoRemove } from '@kadena/kode-icons';
-import { Button, Step, Stepper, TextField } from '@kadena/kode-ui';
+import {
+  Button,
+  Notification,
+  NotificationHeading,
+  Step,
+  Stepper,
+  TextField,
+} from '@kadena/kode-ui';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import type { IAsset } from '../AssetProvider/AssetProvider';
 
 interface IProps {
@@ -26,53 +36,20 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
   const { addNotification } = useNotifications();
   const [value, setValue] = useState(asset?.name ?? '');
   const { submit } = useCreatePrincipalNamespace();
+  const { submit: submitContract } = useCreateContract();
+  const [namespace, setNamespace] = useState('');
+  const [error, setError] = useState('');
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValue(e.currentTarget.value);
-  };
+  const { register, handleSubmit } = useForm<IAddContractProps>({
+    values: {
+      name: '',
+      namespace,
+    },
+  });
 
-  const handleRemove = (data: IAsset) => {
-    removeAsset(data.uuid);
-
-    addNotification({
-      label: 'Asset removed',
-      intent: 'negative',
-    });
-  };
-
-  const handleSave: FormEventHandler<HTMLFormElement> = () => {
-    const key = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY);
-    const assets = JSON.parse(localStorage.getItem(key) ?? '[]');
-
-    let newAssets = [...assets];
-    if (!asset) {
-      const newAsset = {
-        uuid: crypto.randomUUID(),
-        name: value,
-      };
-      newAssets.push(newAsset);
-
-      addNotification({
-        label: 'Asset added',
-        intent: 'positive',
-      });
-    } else {
-      newAssets = newAssets.map((v) => {
-        if (v.uuid === asset.uuid) {
-          return { ...v, name: value };
-        }
-        return v;
-      });
-
-      addNotification({
-        label: 'Asset Changed',
-        intent: 'positive',
-      });
-    }
-
-    setValue('');
-    localStorage.setItem(key, JSON.stringify(newAssets));
-    window.dispatchEvent(new Event(key));
+  const handleSave = async (data: IAddContractProps) => {
+    console.log({ data });
+    await submitContract(data);
   };
 
   return (
@@ -98,12 +75,29 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
         </Step>
       </Stepper>
 
+      {error && (
+        <Notification role="alert">
+          <NotificationHeading>There was an issue</NotificationHeading>
+          {error}
+        </Notification>
+      )}
+
       {step === STEPS.CREATE_NAMESPACE && (
         <Button
           onPress={async () => {
+            setError('');
             const transaction = await submit();
             if (transaction?.result?.status === 'success') {
+              const ns = (transaction.result.data as string).split('.')[0];
+              if (!ns) {
+                setError(
+                  `no namespace created from result (${transaction.result.data})`,
+                );
+              }
+              setNamespace(ns);
               setStep(STEPS.CREATE_CONTRACT);
+            } else {
+              setError(`no namespace created`);
             }
           }}
         >
@@ -112,26 +106,21 @@ export const AssetForm: FC<IProps> = ({ asset }) => {
       )}
 
       {step === STEPS.CREATE_CONTRACT && (
-        <form onSubmit={handleSave}>
+        <form onSubmit={handleSubmit(handleSave)}>
           <TextField
-            ref={ref}
-            value={value}
+            value={namespace}
+            isDisabled
+            {...register('namespace', { required: true })}
+          />
+          <TextField
             label="New"
-            isRequired
-            onChange={handleChange}
+            {...register('name', { required: true })}
             endAddon={
               <>
                 <Button
                   type="submit"
-                  isDisabled={!value}
                   endVisual={!asset ? <MonoAdd /> : <MonoEditNote />}
                 />
-                {asset?.uuid && (
-                  <Button
-                    onPress={() => handleRemove(asset)}
-                    endVisual={<MonoRemove />}
-                  />
-                )}
               </>
             }
           />
