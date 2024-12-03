@@ -36,7 +36,7 @@ interface ISameChainTransfer extends IBaseTransfer {
   isCrossChainTransfer: false;
 }
 
-interface ICrossChainTransfer extends IBaseTransfer {
+export interface ICrossChainTransfer extends IBaseTransfer {
   isCrossChainTransfer: true;
   targetChainId: ChainId;
   continuation?: {
