@@ -66,10 +66,6 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
           await migrateFrom38to39(db, result.versionTransaction);
           continue;
         }
-        if (fromVersion >= 39) {
-          prompt('Database is already at the latest version');
-          continue;
-        }
         throw new Error(
           `There is no migration path for version ${fromVersion} to ${fromVersion + 1}`,
         );
