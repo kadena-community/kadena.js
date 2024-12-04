@@ -25,6 +25,7 @@ const graphqlHostMap: Record<string, string> = {
 
 export const defaultGraphqlHostGenerator: GraphqlHostGenerator = (options) => {
   if (graphqlHostMap[options.networkId] === undefined) {
+    // eslint-disable-next-line no-console
     console.warn(
       `[defaultGraphqlHostGenerator] Network ${options.networkId} not supported`,
     );
