@@ -1,11 +1,12 @@
 export interface IRecord {
   isRemoved?: boolean;
   blockHeight?: number;
-  chainId: string;
-  requestKey: string;
+  chainId?: string;
+  requestKey?: string;
   accountName: string;
+  alias?: string;
   creationTime: number;
-  result: boolean;
+  result?: boolean;
 }
 
 export const filterRemovedRecords = (arr: IRecord[]): IRecord[] => {

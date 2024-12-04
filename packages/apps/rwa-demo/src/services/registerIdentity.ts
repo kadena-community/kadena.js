@@ -6,6 +6,7 @@ import { Pact } from '@kadena/client';
 export interface IRegisterIdentityProps {
   accountName: string;
   agent: IWalletAccount;
+  alias: string;
 }
 
 const createPubKeyFromAccount = (account: string): string => {

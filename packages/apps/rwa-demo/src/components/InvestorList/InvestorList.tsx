@@ -10,12 +10,10 @@ import {
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
-  useLayout,
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useState } from 'react';
-import { AddInvestorForm } from '../AddInvestorForm/AddInvestorForm';
+import { InvestorForm } from '../InvestorForm/InvestorForm';
 import { FormatFreeze } from '../TableFormatters/FormatFreeze';
 
 export const InvestorList: FC = () => {
@@ -23,8 +21,6 @@ export const InvestorList: FC = () => {
   const router = useRouter();
   const { submit } = useDeleteInvestor();
   const { paused } = useAsset();
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const [hasOpenInvestorForm, setHasOpenInvestorForm] = useState(false);
 
   const handleDelete = async (accountName: any) => {
     return await submit({ investor: accountName });
@@ -33,36 +29,25 @@ export const InvestorList: FC = () => {
     router.push(`/investors/${accountName}`);
   };
 
-  const handleAddInvestor = () => {
-    setIsRightAsideExpanded(true);
-    setHasOpenInvestorForm(true);
-  };
-
   return (
     <>
-      {isRightAsideExpanded && hasOpenInvestorForm && (
-        <AddInvestorForm
-          onClose={() => {
-            setIsRightAsideExpanded(false);
-            setHasOpenInvestorForm(false);
-          }}
-        />
-      )}
-
       <SectionCard stack="vertical">
         <SectionCardContentBlock>
           <SectionCardHeader
             title="Investors"
             actions={
-              <Button
-                isCompact
-                variant="outlined"
-                isDisabled={paused}
-                endVisual={<MonoAdd />}
-                onPress={handleAddInvestor}
-              >
-                Add Investor
-              </Button>
+              <InvestorForm
+                trigger={
+                  <Button
+                    isCompact
+                    variant="outlined"
+                    isDisabled={paused}
+                    endVisual={<MonoAdd />}
+                  >
+                    Add Investor
+                  </Button>
+                }
+              />
             }
           />
 
@@ -70,15 +55,14 @@ export const InvestorList: FC = () => {
             <CompactTable
               fields={[
                 {
-                  label: 'Status',
-                  key: 'result',
-                  width: '10%',
-                  render: CompactTableFormatters.FormatStatus(),
+                  label: 'Name',
+                  key: 'alias',
+                  width: '30%',
                 },
                 {
                   label: 'Account',
                   key: 'accountName',
-                  width: '65%',
+                  width: '35%',
                   render: CompactTableFormatters.FormatAccount(),
                 },
                 {

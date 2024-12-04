@@ -53,6 +53,7 @@ export const useGetInvestors = () => {
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
           creationTime: edge.node.block.creationTime,
+          alias: '',
           result: true,
         } as const;
       }) ?? [];
@@ -66,11 +67,10 @@ export const useGetInvestors = () => {
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
           creationTime: edge.node.block.creationTime,
+          alias: '',
           result: true,
         } as const;
       }) ?? [];
-
-    console.log({ agentsAdded, agentsRemoved });
 
     setInnerData([...filterRemovedRecords([...agentsAdded, ...agentsRemoved])]);
   };

@@ -2,12 +2,14 @@
 
 import { DistributionForm } from '@/components/DistributionForm/DistributionForm';
 import { FreezeInvestor } from '@/components/FreezeInvestor/FreezeInvestor';
+import { InvestorForm } from '@/components/InvestorForm/InvestorForm';
 import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
 import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAsset } from '@/hooks/asset';
 import { useFreeze } from '@/hooks/freeze';
-import { MonoAdd } from '@kadena/kode-icons';
+import { useGetInvestor } from '@/hooks/getInvestor';
+import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useParams } from 'next/navigation';
@@ -21,6 +23,8 @@ const InvestorPage = () => {
   const [hasOpenPartiallyFreezeForm, setHasOpenPartiallyFreezeForm] =
     useState(false);
   const investorAccount = decodeURIComponent(params.investorAccount as string);
+
+  const { data: investor } = useGetInvestor({ account: investorAccount });
   const { frozen } = useFreeze({ investorAccount });
 
   const handleDistributeTokens = () => {
@@ -31,6 +35,8 @@ const InvestorPage = () => {
     setIsRightAsideExpanded(true);
     setHasOpenPartiallyFreezeForm(true);
   };
+
+  if (!investor) return null;
 
   return (
     <>
@@ -60,7 +66,7 @@ const InvestorPage = () => {
       )}
 
       <Stack width="100%" flexDirection="column">
-        <InvestorInfo investorAccount={investorAccount} />
+        <InvestorInfo account={investor} />
         <Stack gap="sm">
           <Button
             startVisual={<MonoAdd />}
@@ -79,6 +85,15 @@ const InvestorPage = () => {
           </Button>
 
           <FreezeInvestor investorAccount={investorAccount} />
+
+          <InvestorForm
+            investor={investor}
+            trigger={
+              <Button isDisabled={paused} endVisual={<MonoEditNote />}>
+                Edit Investor
+              </Button>
+            }
+          />
         </Stack>
       </Stack>
     </>
