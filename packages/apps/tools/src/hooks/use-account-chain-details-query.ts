@@ -13,7 +13,7 @@ interface IParams {
 
 const schema = z.object({
   account: z.string(),
-  balance: z.number(),
+  balance: z.union([z.number(), z.object({ decimal: z.string() })]),
   guard: z.object({
     pred: z.string(),
     keys: z.array(z.string()),
