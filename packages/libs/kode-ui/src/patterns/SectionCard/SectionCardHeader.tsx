@@ -49,8 +49,6 @@ export const SectionCardHeader: FC<ISectionCardHeaderProps> = ({
           {actions}
         </Stack>
       )}
-
-      <Stack style={{ gridArea: 'fill' }} />
     </Stack>
   );
 };
