@@ -33,12 +33,15 @@ import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { codeArea } from './style.css';
 
+const getTxFromUrlHash = () =>
+  window.location.hash ? window.location.hash.substring(1) : undefined;
+
 export function SignatureBuilder() {
-  const urlTransaction = window.location.hash
-    ? window.location.hash.substring(1)
-    : undefined;
+  const [searchParams] = useSearchParams();
+  const urlTransaction = searchParams.get('transaction') || getTxFromUrlHash();
   const [error, setError] = useState<string>();
   const [schema, setSchema] = useState<RequestScheme>();
   const [input, setInput] = useState<string>('');
