@@ -16,7 +16,7 @@ import {
 import classNames from 'classnames';
 import { FC, useMemo } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useTheCorrectNavigate } from '../NavigationContext';
+import { useTheCorrectNavigate } from '../../utils/useTheCorrectNavigate';
 import { SideBar } from './SideBar';
 import {
   isExpandedMainClass,

@@ -107,3 +107,7 @@ export function createEventEmitter<
     },
   };
 }
+
+export function toISOLocalDateTime(time: number) {
+  return new Date(time).toISOString().slice(0, 16);
+}

@@ -1,4 +1,4 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   FC,

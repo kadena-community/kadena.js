@@ -1,5 +1,5 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext.tsx';
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate.tsx';
 import {
   Button,
   Heading,

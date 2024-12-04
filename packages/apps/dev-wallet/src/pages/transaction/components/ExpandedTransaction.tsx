@@ -167,7 +167,7 @@ export function ExpandedTransaction({
                             );
                             const baseUrl = `${window.location.protocol}//${window.location.host}`;
                             navigator.clipboard.writeText(
-                              `${baseUrl}/sig-builder?transaction=${encodedTx}`,
+                              `${baseUrl}/sig-builder#${encodedTx}`,
                             );
                             setShowShareTooltip(true);
                             setTimeout(() => setShowShareTooltip(false), 5000);

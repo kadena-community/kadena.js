@@ -1,7 +1,7 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { MonoMoreHoriz } from '@kadena/kode-icons/system';
 import {
   Button,

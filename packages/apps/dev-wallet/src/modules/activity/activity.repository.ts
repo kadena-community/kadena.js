@@ -18,7 +18,8 @@ export interface TransferData {
   gasPrice: string;
   gasLimit: string;
   type: 'safeTransfer' | 'normalTransfer';
-  ttl: string;
+  ttl: number;
+  creationTime?: number;
 }
 
 export interface IActivity {

@@ -1,4 +1,3 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
@@ -7,6 +6,7 @@ import { dbService } from '@/modules/db/db.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import InitialsAvatar from '@/pages/select-profile/initials';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { MonoConstruction, MonoDoDisturb } from '@kadena/kode-icons/system';
 import {
   Box,

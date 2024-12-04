@@ -2,7 +2,6 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 
 import { fundAccount, syncAccount } from '@/modules/account/account.service';
 
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { AccountBalanceDistribution } from '@/Components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { FundOnTestnetButton } from '@/Components/FundOnTestnet/FundOnTestnet';
@@ -16,6 +15,7 @@ import {
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { ChainId } from '@kadena/client';
 import {
   MonoCreate,

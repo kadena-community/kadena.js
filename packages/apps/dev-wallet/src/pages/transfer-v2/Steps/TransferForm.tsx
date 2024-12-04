@@ -37,9 +37,11 @@ import { linkClass } from '../../transfer/style.css';
 import { AccountItem } from '../Components/AccountItem';
 import { Keyset } from '../Components/keyset';
 import { CHAINS, IReceiver, IReceiverAccount, getTransfers } from '../utils';
-import { labelClass } from './style.css';
 
 import { AccountSearchBox } from '../Components/AccountSearchBox';
+import { CreationTime } from '../Components/CreationTime';
+import { Label } from '../Components/Label';
+import { TTLSelect } from '../Components/TTLSelect';
 
 export interface Transfer {
   fungible: string;
@@ -50,9 +52,10 @@ export interface Transfer {
   gasPrice: string;
   gasLimit: string;
   type: 'safeTransfer' | 'normalTransfer';
-  ttl: string;
+  ttl: number;
   senderAccount?: IAccount;
   totalAmount: number;
+  creationTime?: number;
 }
 
 export type Redistribution = {
@@ -71,12 +74,6 @@ export interface TrG {
   groupId: string;
   txs: ITransaction[];
 }
-
-const Label = ({ children }: { children: React.ReactNode }) => (
-  <Text size="small" className={labelClass}>
-    {children}
-  </Text>
-);
 
 export function TransferForm({
   accountId,
@@ -131,7 +128,7 @@ export function TransferForm({
       gasPrice: '1e-8',
       gasLimit: '2500',
       type: 'normalTransfer',
-      ttl: (2 * 60 * 60).toString(),
+      ttl: 2 * 60 * 60,
       totalAmount: 0,
     },
   });
@@ -183,6 +180,7 @@ export function TransferForm({
             gasLimit: activity.data.transferData.gasLimit,
             type: activity.data.transferData.type,
             ttl: activity.data.transferData.ttl,
+            creationTime: activity.data.transferData.creationTime,
             totalAmount: 0,
           });
           evaluateTransactions();
@@ -843,20 +841,26 @@ export function TransferForm({
               <Heading variant="h5">Meta Data</Heading>
             </Stack>
             <Controller
+              name="creationTime"
+              control={control}
+              render={({ field }) => (
+                <CreationTime
+                  value={field.value}
+                  onChange={(sec) => {
+                    field.onChange(sec);
+                  }}
+                />
+              )}
+            />
+            <Controller
               name="ttl"
               control={control}
               render={({ field }) => (
-                <TextField
-                  aria-label="TTL"
-                  startVisual={<Label>TTL:</Label>}
-                  placeholder="Enter TTL (Timer to live)"
+                <TTLSelect
                   value={field.value}
-                  defaultValue={field.value}
-                  onChange={(e) => {
-                    field.onChange(+e.target.value);
+                  onChange={(value) => {
+                    field.onChange(value);
                   }}
-                  type="number"
-                  size="sm"
                 />
               )}
             />

@@ -6,13 +6,13 @@ import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useState } from 'react';
 
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
@@ -98,6 +98,7 @@ export function TransferV2() {
       network: activeNetwork!,
       profileId: profile.uuid,
       mapKeys,
+      creationTime: data.creationTime,
     });
   }
 
@@ -166,6 +167,7 @@ export function TransferV2() {
         gasPrice: +formData.gasPrice,
         network: activeNetwork!,
         mapKeys,
+        creationTime: formData.creationTime,
       });
     }
   }
@@ -293,7 +295,12 @@ export function TransferV2() {
                     (acc) => acc.uuid === data.accountId,
                   );
                   if (!senderAccount?.keyset?.uuid) return;
-                  const formData = { ...data, senderAccount };
+                  const formData = {
+                    ...data,
+                    senderAccount,
+                    creationTime:
+                      data.creationTime ?? Math.round(Date.now() / 1000),
+                  };
                   const getEmpty = () => ['', []] as [string, ITransaction[]];
                   let redistributionGroup = getEmpty();
 

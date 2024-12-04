@@ -1,8 +1,8 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { DiscoverdAccounts } from '@/Components/AccountInput/DiscoverdAccounts';
 import { accountRepository } from '@/modules/account/account.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import {
   ChainId,
   createTransaction,

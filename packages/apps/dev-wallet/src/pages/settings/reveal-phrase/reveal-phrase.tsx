@@ -1,8 +1,8 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { MonoSettings } from '@kadena/kode-icons/system';
 import { Notification } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';

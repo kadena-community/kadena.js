@@ -41,7 +41,6 @@ import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
 import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
-import { useTheCorrectNavigateRoute } from './NavigationContext';
 
 const Redirect: FC<
   PropsWithChildren<{
@@ -75,16 +74,6 @@ const RouteContext: FC = () => {
   return <Outlet />;
 };
 
-// the useNavigation hook doesn't work correctly in some cases so I did this workaround to fix it
-const CorrectNavigationContext = () => {
-  const { route, navigate } = useTheCorrectNavigateRoute();
-  if (route) {
-    navigate(null);
-    return <Navigate to={route} />;
-  }
-  return <Outlet />;
-};
-
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
   const isLocked = !isUnlocked;
@@ -96,70 +85,65 @@ export const Routes: FC = () => {
         <CommunicationProvider children={<Outlet />} setOrigin={setOrigin} />
       }
     >
-      <Route element={<CorrectNavigationContext />}>
-        <Route element={<RouteContext />}>
-          <Route element={<LayoutMini />}>
-            <Route element={<Redirect if={!isLocked} to={origin} />}>
-              <Route path="/select-profile" element={<SelectProfile />} />
-              <Route path="/create-profile/*" element={<CreateProfile />} />
-              <Route
-                path="/wallet-recovery/recover-from-mnemonic"
-                element={<RecoverFromMnemonic setOrigin={setOrigin} />}
-              />
-              <Route
-                path="/wallet-recovery/import-chainweaver"
-                element={<ImportChainweaverExport />}
-              />
-              <Route path="/wallet-recovery" element={<WalletRecovery />} />
-            </Route>
+      <Route element={<RouteContext />}>
+        <Route element={<LayoutMini />}>
+          <Route element={<Redirect if={!isLocked} to={origin} />}>
+            <Route path="/select-profile" element={<SelectProfile />} />
+            <Route path="/create-profile/*" element={<CreateProfile />} />
+            <Route
+              path="/wallet-recovery/recover-from-mnemonic"
+              element={<RecoverFromMnemonic setOrigin={setOrigin} />}
+            />
+            <Route
+              path="/wallet-recovery/import-chainweaver"
+              element={<ImportChainweaverExport />}
+            />
+            <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
+        </Route>
+        <Route
+          element={
+            <Redirect
+              if={isLocked}
+              to="/select-profile"
+              setOrigin={setOrigin}
+            />
+          }
+        >
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/sig-builder" element={<SignatureBuilder />} />
+            <Route path="/networks" element={<Networks />} />
+            <Route path="/connect/:requestId" element={<Connect />} />
+            <Route path="/key-management/:tab" element={<KeysPage />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/transaction/:groupId" element={<TransactionPage />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/keyset/:keysetId" element={<Keyset />} />
+            <Route path="/fungible/:contract" element={<FungiblePage />} />
+            <Route path="/account/:accountId" element={<AccountPage />} />
+            <Route path="/transfer" element={<TransferV2 />} />
+            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings/auto-backup" element={<AutoBackup />} />
+            <Route
+              path="/account-discovery/:keySourceId"
+              element={<AccountDiscovery />}
+            />
+          </Route>
+        </Route>
+        <Route element={<LayoutMini />}>
+          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
           <Route
-            element={
-              <Redirect
-                if={isLocked}
-                to="/select-profile"
-                setOrigin={setOrigin}
-              />
-            }
-          >
-            <Route element={<Layout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/sig-builder" element={<SignatureBuilder />} />
-              <Route path="/networks" element={<Networks />} />
-              <Route path="/connect/:requestId" element={<Connect />} />
-              <Route path="/key-management/:tab" element={<KeysPage />} />
-              <Route path="/create-account" element={<CreateAccount />} />
-              <Route
-                path="/transaction/:groupId"
-                element={<TransactionPage />}
-              />
-              <Route path="/transactions" element={<Transactions />} />
-              <Route path="/keyset/:keysetId" element={<Keyset />} />
-              <Route path="/fungible/:contract" element={<FungiblePage />} />
-              <Route path="/account/:accountId" element={<AccountPage />} />
-              <Route path="/transfer" element={<TransferV2 />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/settings/auto-backup" element={<AutoBackup />} />
-              <Route
-                path="/account-discovery/:keySourceId"
-                element={<AccountDiscovery />}
-              />
-            </Route>
-          </Route>
-          <Route element={<LayoutMini />}>
-            <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
-            <Route
-              path="/settings/change-password"
-              element={<ChangePassword />}
-            />
-            <Route
-              path="/unlock-profile/:profileId"
-              element={<UnlockProfile origin={origin} />}
-            />
-            <Route path="/ready" element={<Ready />} />
-            <Route path="*" element={<Heading>Not found!</Heading>} />
-          </Route>
+            path="/settings/change-password"
+            element={<ChangePassword />}
+          />
+          <Route
+            path="/unlock-profile/:profileId"
+            element={<UnlockProfile origin={origin} />}
+          />
+          <Route path="/ready" element={<Ready />} />
+          <Route path="*" element={<Heading>Not found!</Heading>} />
         </Route>
       </Route>
     </Route>,

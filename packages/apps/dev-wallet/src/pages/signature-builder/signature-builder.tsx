@@ -7,7 +7,6 @@ import {
   IUnsignedCommand,
 } from '@kadena/client';
 
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { transactionRepository } from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
@@ -18,6 +17,7 @@ import {
   RequestScheme,
   signingRequestToPactCommand,
 } from '@/utils/transaction-scheme';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
@@ -33,12 +33,12 @@ import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { codeArea } from './style.css';
 
 export function SignatureBuilder() {
-  const [searchParams] = useSearchParams();
-  const urlTransaction = searchParams.get('transaction');
+  const urlTransaction = window.location.hash
+    ? window.location.hash.substring(1)
+    : undefined;
   const [error, setError] = useState<string>();
   const [schema, setSchema] = useState<RequestScheme>();
   const [input, setInput] = useState<string>('');

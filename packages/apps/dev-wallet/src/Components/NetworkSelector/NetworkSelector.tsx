@@ -1,5 +1,5 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import {
   MonoCheck,
   MonoSettings,

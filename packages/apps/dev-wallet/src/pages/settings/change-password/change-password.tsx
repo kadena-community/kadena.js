@@ -1,8 +1,8 @@
-import { useTheCorrectNavigate } from '@/App/NavigationContext';
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
 import { changePassword } from '@/modules/wallet/wallet.service';
+import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
 import { createCredential, extractPublicKeyHex } from '@/utils/webAuthn';
 import {
   Button,

@@ -40,8 +40,8 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheCorrectNavigate } from '../../utils/useTheCorrectNavigate';
 import { BetaHeader } from '../BetaHeader';
-import { useTheCorrectNavigate } from '../NavigationContext';
 import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {

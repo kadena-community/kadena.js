@@ -19,17 +19,12 @@ import { ISigner } from '@kadena/client';
 import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { labelClass } from '../Steps/style.css';
+
 import { discoverReceiver, IReceiverAccount } from '../utils';
 import { AccountItem } from './AccountItem';
 import { Keyset } from './keyset';
+import { Label } from './Label';
 import { createAccountBoxClass, popoverClass } from './style.css';
-
-const Label = ({ children }: { children: React.ReactNode }) => (
-  <Text size="small" className={labelClass}>
-    {children}
-  </Text>
-);
 
 const discover = withRaceGuard(debounce(discoverReceiver, 500));
 
