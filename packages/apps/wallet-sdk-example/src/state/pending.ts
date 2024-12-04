@@ -1,6 +1,7 @@
 import { ITransactionDescriptor } from '@kadena/client';
 import { useAtom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
+import { useCallback } from 'react';
 
 export type PendingTransfer = ITransactionDescriptor & {
   receiverAccount: string;
@@ -16,15 +17,21 @@ export const pendingTransfersAtom = atomWithStorage<PendingTransfer[]>(
 export const usePendingTransfers = () => {
   const [pendingTransfers, setPendingTransfers] = useAtom(pendingTransfersAtom);
 
-  const addPendingTransfer = (transfer: PendingTransfer) => {
-    setPendingTransfers((prev) => [...prev, transfer]);
-  };
+  const addPendingTransfer = useCallback(
+    (transfer: PendingTransfer) => {
+      setPendingTransfers((prev) => [...prev, transfer]);
+    },
+    [setPendingTransfers],
+  );
 
-  const removePendingTransfer = (transfer: ITransactionDescriptor) => {
-    setPendingTransfers((prev) =>
-      prev.filter((t) => t.requestKey !== transfer.requestKey),
-    );
-  };
+  const removePendingTransfer = useCallback(
+    (transfer: ITransactionDescriptor) => {
+      setPendingTransfers((prev) =>
+        prev.filter((t) => t.requestKey !== transfer.requestKey),
+      );
+    },
+    [setPendingTransfers],
+  );
 
   return { pendingTransfers, addPendingTransfer, removePendingTransfer };
 };

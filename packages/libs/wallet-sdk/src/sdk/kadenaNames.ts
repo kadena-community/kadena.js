@@ -10,6 +10,8 @@ export class KadenaNames {
 
   public constructor(walletSDK: WalletSDK) {
     this._sdk = walletSDK;
+    this.nameToAddress = this.nameToAddress.bind(this);
+    this.addressToName = this.addressToName.bind(this);
   }
 
   public async nameToAddress(

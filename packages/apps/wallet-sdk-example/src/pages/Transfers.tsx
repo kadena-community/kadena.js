@@ -16,11 +16,12 @@ import {
 import SdkFunctionDisplay from '../components/SdkFunctionDisplayer'; // Demo
 import { TextEllipsis } from '../components/Text';
 import { useTransfers } from '../hooks/transfers';
-import { shortenString } from '../utils/kadenanames/transform';
 
 export const Transfers = () => {
   const { transfers, pendingTransfers, account, functionCalls } =
     useTransfers();
+
+  console.log('Transfers render');
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getAmountStyle = (transfer: any) => {
@@ -58,8 +59,12 @@ export const Transfers = () => {
               </TableHeader>
               <TableBody>
                 {pendingTransfers.map((transfer, index) => (
-                  <Row key={index}>
-                    <Cell>{shortenString(transfer.requestKey)}</Cell>
+                  <Row key={`pending-${index}`}>
+                    <Cell>
+                      <TextEllipsis maxLength={10} withCopyClick>
+                        {transfer.requestKey}
+                      </TextEllipsis>
+                    </Cell>
                     <Cell>{transfer.chainId}</Cell>
                     <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
@@ -109,8 +114,12 @@ export const Transfers = () => {
               </TableHeader>
               <TableBody>
                 {transfers.map((transfer, index) => (
-                  <Row key={index}>
-                    <Cell>{shortenString(transfer.requestKey)}</Cell>
+                  <Row key={`completed-transfer-${index}`}>
+                    <Cell>
+                      <TextEllipsis maxLength={10} withCopyClick>
+                        {transfer.requestKey}
+                      </TextEllipsis>
+                    </Cell>
                     <Cell>
                       {transfer.isCrossChainTransfer
                         ? `${transfer.chainId} → ${transfer.targetChainId}`
@@ -142,7 +151,15 @@ export const Transfers = () => {
                     </Cell>
                     <Cell>
                       <Text variant="ui" bold>
-                        {transfer.success ? 'Success' : 'Failed'}
+                        {transfer.success
+                          ? transfer.isCrossChainTransfer
+                            ? transfer.continuation
+                              ? transfer.continuation.success
+                                ? 'Finished'
+                                : 'Finish failed'
+                              : 'Awaiting completion'
+                            : 'Success'
+                          : 'Failed'}
                       </Text>
                     </Cell>
                   </Row>
@@ -158,12 +175,8 @@ export const Transfers = () => {
       {/*
         This is for Demo purposes, displaying what SDK function is execution for this action
       */}
-      {functionCalls.map((call, index) => (
-        <SdkFunctionDisplay
-          key={index}
-          functionName={call.functionName}
-          functionArgs={call.functionArgs}
-        />
+      {functionCalls.map((data, index) => (
+        <SdkFunctionDisplay key={`display-${index}`} data={data} />
       ))}
     </div>
   );

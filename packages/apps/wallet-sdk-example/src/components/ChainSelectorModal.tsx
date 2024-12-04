@@ -9,8 +9,9 @@ import {
   SelectItem,
   Stack,
 } from '@kadena/kode-ui';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useChains } from '../hooks/chains';
+import { useFunctionTracker } from '../hooks/functionTracker';
 import { useWalletState } from '../state/wallet';
 import SdkFunctionDisplay from './SdkFunctionDisplayer'; // Demo
 
@@ -29,22 +30,11 @@ export const ChainSelectionModal: React.FC<ChainSelectionModalProps> = ({
   const { chains } = useChains(wallet.selectedNetwork);
 
   /* -- Start demo ---------------*/
-  const [functionCall, setFunctionCall] = useState<{
-    functionName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    functionArgs: any;
-  }>({
-    functionName: 'walletSdk.getChains',
-    functionArgs: { networkId: wallet.selectedNetwork },
-  });
-
+  const trackGetChains = useFunctionTracker('walletSdk.getChains');
   useEffect(() => {
-    setFunctionCall({
-      functionName: 'walletSdk.getChains',
-      functionArgs: { networkId: wallet.selectedNetwork },
-    });
+    trackGetChains.setArgs(wallet.selectedNetwork);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet.selectedNetwork]);
-
   /* -- End demo ---------------*/
 
   const handleChainChange = (chainId: ChainId) => {
@@ -93,10 +83,7 @@ export const ChainSelectionModal: React.FC<ChainSelectionModalProps> = ({
         {/*
           This is for Demo purposes, displaying what SDK function is execution for this action
         */}
-        <SdkFunctionDisplay
-          functionName={functionCall.functionName}
-          functionArgs={functionCall.functionArgs}
-        />
+        <SdkFunctionDisplay data={trackGetChains.data} />
       </Dialog>
     </>
   );

@@ -44,12 +44,6 @@ export async function pollGraphqlTransfers({
   requestKeys,
   signal,
 }: IRollGraphqlTransfers) {
-  console.log('pollGraphqlTransfers', {
-    accountName,
-    graphqlUrl,
-    requestKeys,
-  });
-
   const result = await Promise.all(
     requestKeys.map(async (requestKey) => {
       const { transfers: nodes, lastBlockHeight } =
