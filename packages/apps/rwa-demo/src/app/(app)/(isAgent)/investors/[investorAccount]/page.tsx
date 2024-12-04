@@ -89,7 +89,10 @@ const InvestorPage = () => {
           <InvestorForm
             investor={investor}
             trigger={
-              <Button isDisabled={paused} endVisual={<MonoEditNote />}>
+              <Button
+                isDisabled={frozen || paused}
+                endVisual={<MonoEditNote />}
+              >
                 Edit Investor
               </Button>
             }

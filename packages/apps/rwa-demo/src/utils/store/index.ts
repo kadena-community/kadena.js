@@ -103,9 +103,7 @@ const RWAStore = () => {
     return () => off(accountRef);
   };
 
-  const listenToAccounts = (
-    setDataCallback: (aliases: IRegisterIdentityProps[]) => void,
-  ) => {
+  const listenToAccounts = (setDataCallback: (aliases: any[]) => void) => {
     const asset = getAsset();
     if (!asset) return;
 

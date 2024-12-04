@@ -1,5 +1,5 @@
-import { useAddInvestor } from '@/hooks/addInvestor';
-import type { IRegisterIdentityProps } from '@/services/registerIdentity';
+import { useAddAgent } from '@/hooks/addAgent';
+import type { IAddAgentProps } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
@@ -14,22 +14,20 @@ import { cloneElement, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
-  investor?: IRecord;
+  agent?: IRecord;
   onClose?: () => void;
   trigger: ReactElement;
 }
 
-export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
-  const { submit } = useAddInvestor();
+export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
+  const { submit } = useAddAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const { handleSubmit, control } = useForm<
-    Omit<IRegisterIdentityProps, 'agent'>
-  >({
-    values: {
-      accountName: investor?.accountName ?? '',
-      alias: investor?.alias ?? '',
-      alreadyExists: !!investor?.accountName,
+  const { handleSubmit, control } = useForm<IAddAgentProps>({
+    defaultValues: {
+      accountName: agent?.accountName ?? '',
+      alias: agent?.alias ?? '',
+      alreadyExists: !!agent?.accountName,
     },
   });
 
@@ -40,36 +38,35 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
   };
 
   const handleOnClose = () => {
-    console.log(333331);
     setIsOpen(false);
     if (onClose) onClose();
-    // setIsRightAsideExpanded(false);
-    // setRightAsideOnClose(() => {
-    // });
   };
 
-  const onSubmit = async (data: Omit<IRegisterIdentityProps, 'agent'>) => {
+  const onSubmit = async (data: IAddAgentProps) => {
     await submit(data);
     handleOnClose();
   };
 
   useEffect(() => {
-    console.log(isOpen);
+    console.log('agent', isOpen);
   }, [isOpen]);
 
   return (
     <>
       {isRightAsideExpanded && isOpen && (
-        <RightAside isOpen onClose={handleOnClose}>
+        <RightAside
+          isOpen={isRightAsideExpanded && isOpen}
+          onClose={handleOnClose}
+        >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <RightAsideHeader label="Add Investor" />
+            <RightAsideHeader label="Add Agent" />
             <RightAsideContent>
               <Controller
                 name="accountName"
                 control={control}
                 render={({ field }) => (
                   <TextField
-                    isDisabled={!!investor?.accountName}
+                    isDisabled={!!agent?.accountName}
                     label="AccountName"
                     {...field}
                   />
@@ -86,7 +83,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button type="submit">Add Investor</Button>
+              <Button type="submit">Add Agent</Button>
             </RightAsideFooter>
           </form>
         </RightAside>

@@ -47,8 +47,6 @@ export const useGetInvestors = () => {
       return;
     }
 
-    const aliases = await store.getAccounts();
-
     const agentsAdded: IRecord[] =
       addedData?.events.edges.map((edge: any) => {
         return {
@@ -76,6 +74,8 @@ export const useGetInvestors = () => {
           result: true,
         } as const;
       }) ?? [];
+
+    const aliases = await store.getAccounts();
 
     setInnerData(
       setAliasesToAccounts(

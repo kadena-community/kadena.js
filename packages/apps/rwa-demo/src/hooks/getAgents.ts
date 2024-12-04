@@ -8,6 +8,8 @@ import { env } from '@/utils/env';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
+import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
+import { store } from '@/utils/store';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 
@@ -123,16 +125,27 @@ export const useGetAgents = () => {
       })
       .filter((v) => v !== undefined) ?? []) as IRecord[];
 
-    const filteredData = [
-      ...filterRemovedRecords([
-        ...agentsAdded,
-        ...agentsRemoved,
-        ...addedSubscriptionData,
-        ...removedSubscriptionData,
-      ]),
-    ];
+    const aliases = await store.getAccounts();
+    const filteredData = setAliasesToAccounts(
+      [
+        ...filterRemovedRecords([
+          ...agentsAdded,
+          ...agentsRemoved,
+          ...addedSubscriptionData,
+          ...removedSubscriptionData,
+        ]),
+      ],
+      aliases,
+    );
 
     setInnerData(filteredData ?? []);
+  };
+
+  const listenToAccounts = (aliases: IRecord[]) => {
+    console.log({ aliases });
+    setInnerData((v) => {
+      return setAliasesToAccounts([...v], aliases);
+    });
   };
 
   useEffect(() => {
@@ -146,6 +159,12 @@ export const useGetAgents = () => {
     subscriptionRemoveData,
     subscriptionAddData,
   ]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    const off = store.listenToAccounts(listenToAccounts);
+    return off;
+  }, []);
 
   return { data: innerData, error };
 };
