@@ -31,7 +31,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
   const wallet = useWalletState();
   const [modalVisible, setModalVisible] = useState(false);
   const [chainModalVisible, setChainModalVisible] = useState(false);
-  const [selectedChain, setSelectedChain] = useState(wallet.selectedChain);
+  // const [selectedChain, setSelectedChain] = useState(wallet.selectedChain);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const { onFundOtherFungible } = useFund();
 
@@ -84,7 +84,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
         config: {
           amount: '20',
           contract: 'coin',
-          chainId: selectedChain,
+          chainId: wallet.selectedChain,
           networkId: wallet.selectedNetwork,
         },
       });
@@ -234,7 +234,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({
       )}
       {chainModalVisible && (
         <ChainSelectionModal
-          onSelect={setSelectedChain}
+          onSelect={wallet.selectChain}
           onClose={closeChainModal}
           submit={submitModal}
         />
