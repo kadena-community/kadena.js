@@ -17,7 +17,7 @@ import {
   RequestScheme,
   signingRequestToPactCommand,
 } from '@/utils/transaction-scheme';
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
@@ -52,7 +52,7 @@ export function SignatureBuilder() {
     ISigningRequest['caps']
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload

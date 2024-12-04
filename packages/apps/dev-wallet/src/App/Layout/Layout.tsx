@@ -16,7 +16,7 @@ import {
 import classNames from 'classnames';
 import { FC, useMemo } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useTheCorrectNavigate } from '../../utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { SideBar } from './SideBar';
 import {
   isExpandedMainClass,
@@ -27,7 +27,7 @@ import {
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
   const { isExpanded } = useLayout();
 
   const innerLocation = useMemo(

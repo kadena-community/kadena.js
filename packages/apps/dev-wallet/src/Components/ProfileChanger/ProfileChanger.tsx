@@ -1,7 +1,7 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoMoreHoriz } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -25,7 +25,7 @@ export const ProfileChanger: FC = () => {
     unlockProfile,
     lockProfile,
   } = useWallet();
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
 
   const handleSelect = async (profile: Pick<IProfile, 'options' | 'uuid'>) => {
     if (profile.options.authMode === 'WEB_AUTHN') {

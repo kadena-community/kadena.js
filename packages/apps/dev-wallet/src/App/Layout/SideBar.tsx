@@ -40,7 +40,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheCorrectNavigate } from '../../utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { BetaHeader } from '../BetaHeader';
 import { KLogo } from './KLogo';
 
@@ -48,7 +48,7 @@ export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;

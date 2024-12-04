@@ -12,7 +12,7 @@ import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
@@ -34,7 +34,7 @@ export function TransferV2() {
     profile,
   } = useWallet();
 
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
   const urlActivityId = searchParams.get('activityId');

@@ -1,5 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate.tsx';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
 import {
   Button,
   Heading,
@@ -22,7 +22,7 @@ export function UnlockProfile({ origin }: { origin: string }) {
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
   const { profileList, unlockProfile, isUnlocked } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';

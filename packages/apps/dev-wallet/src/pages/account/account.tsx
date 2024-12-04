@@ -15,7 +15,7 @@ import {
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
 import {
   MonoCreate,
@@ -45,7 +45,7 @@ export function AccountPage() {
     accounts.find((account) => account.uuid === accountId) ??
     watchAccounts.find((account) => account.uuid === accountId);
 
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
 
   useEffect(() => {
     if (account) {

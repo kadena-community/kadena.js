@@ -1,5 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import {
   MonoCheck,
   MonoSettings,
@@ -20,7 +20,7 @@ export const NetworkSelector: FC<{
   isCompact?: IButtonProps['isCompact'];
 }> = ({ showLabel = true, variant, isCompact = false }) => {
   const { networks, activeNetwork, setActiveNetwork } = useWallet();
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
 
   const handleNetworkUpdate = (uuid: string) => {
     const network = networks.find((network) => network.uuid === uuid);

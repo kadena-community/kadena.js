@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 
-export const useTheCorrectNavigate = () => {
+export const usePatchedNavigate = () => {
   const navigate = useNavigate();
   const navigateRef = useRef(navigate);
   navigateRef.current = navigate;

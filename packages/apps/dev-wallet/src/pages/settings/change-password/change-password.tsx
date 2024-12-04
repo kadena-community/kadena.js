@@ -2,7 +2,7 @@ import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
 import { changePassword } from '@/modules/wallet/wallet.service';
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { createCredential, extractPublicKeyHex } from '@/utils/webAuthn';
 import {
   Button,
@@ -27,7 +27,7 @@ interface ChangePasswordForm {
 export function ChangePassword() {
   const [currenPassword, setCurrentPassword] = useState('');
   const { askForPassword, profile } = useWallet();
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const {

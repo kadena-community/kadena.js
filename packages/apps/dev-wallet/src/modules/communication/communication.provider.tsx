@@ -1,4 +1,4 @@
-import { useTheCorrectNavigate } from '@/utils/useTheCorrectNavigate';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   FC,
@@ -58,7 +58,7 @@ export const CommunicationProvider: FC<
   PropsWithChildren<{ setOrigin: (pathname: string) => void }>
 > = ({ setOrigin, children }) => {
   const [requests] = useState(() => new Map<string, Request>());
-  const navigate = useTheCorrectNavigate();
+  const navigate = usePatchedNavigate();
   const { isUnlocked, accounts, profile, networks, activeNetwork } =
     useWallet();
 
