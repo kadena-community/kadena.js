@@ -35,13 +35,6 @@ const logLevelMap: Record<
   3: { intent: 'negative', heading: 'Error' },
 };
 
-const triggerTestLogs = () => {
-  walletSdk.logger.debug('This is a debug message');
-  walletSdk.logger.info('This is an info message');
-  walletSdk.logger.warn('This is a warning message');
-  walletSdk.logger.error('This is an error message');
-};
-
 function App() {
   useWalletState('password');
   const routing = useRoutes(routes);
@@ -118,25 +111,6 @@ function App() {
               );
             })}
           </div>
-
-          <button
-            onClick={triggerTestLogs}
-            style={{
-              position: 'fixed',
-              bottom: '20px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              padding: '10px 20px',
-              backgroundColor: '#4A90E2',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              zIndex: 1000,
-            }}
-          >
-            Trigger Test Logs
-          </button>
         </>
       </QueryClientProvider>
     </ThemeProvider>

@@ -35,3 +35,7 @@ button[class^="Button__"][class*="Button_isCompact_false"] > span[class^="Button
 [class*="Divider__"] {
   margin-block: 24px!important;
 }
+
+[class*="Dialog__"] {
+  max-height: inherit!important;
+}
