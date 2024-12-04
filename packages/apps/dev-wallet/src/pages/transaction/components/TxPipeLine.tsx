@@ -53,7 +53,7 @@ export function TxPipeLine({
   contTx?: ITransaction;
   variant: 'tile' | 'expanded' | 'minimized';
   signAll?: () => void;
-  onSubmit?: () => void;
+  onSubmit?: (skipPreflight?: boolean) => void;
   sendDisabled?: boolean;
 }) {
   const showAfterCont = !contTx || variant === 'expanded';
@@ -79,7 +79,7 @@ function TxStatusList({
   showAfterCont,
   tx,
   signAll,
-  onSubmit,
+  onSubmit = () => {},
   sendDisabled,
   contTx,
 }: {
@@ -87,7 +87,7 @@ function TxStatusList({
   showAfterCont: boolean;
   tx: ITransaction;
   signAll?: () => void;
-  onSubmit?: () => void;
+  onSubmit?: (skipPreflight?: boolean) => void;
   sendDisabled?: boolean;
   contTx?: ITransaction | null;
 }) {
@@ -118,7 +118,7 @@ function TxStatusList({
                 : 'Waiting for sign'}
             </Stack>
           </Text>
-          {signedByYou && (
+          {variant === 'expanded' && signedByYou && (
             <Button
               startVisual={<MonoRefresh />}
               isCompact
@@ -166,7 +166,7 @@ function TxStatusList({
           {variant === 'expanded' && (
             <Button
               isCompact
-              onClick={onSubmit}
+              onClick={() => onSubmit()}
               isDisabled={sendDisabled}
               startVisual={<MonoViewInAr />}
             >
@@ -176,7 +176,7 @@ function TxStatusList({
         </Stack>
       ),
     showAfterCont && statusPassed(tx.status, 'preflight') && (
-      <Stack>
+      <Stack gap={'sm'} alignItems={'center'}>
         <Text
           size={textSize}
           className={
@@ -194,16 +194,42 @@ function TxStatusList({
             preflight
           </Stack>
         </Text>
+        {variant === 'expanded' &&
+          tx.status === 'preflight' &&
+          tx.preflight?.result.status === 'failure' && (
+            <Stack>
+              <Button isCompact onClick={() => onSubmit()}>
+                <MonoRefresh />
+              </Button>
+              <Button
+                isCompact
+                variant="transparent"
+                onClick={() => onSubmit(true)}
+              >
+                Skip
+              </Button>
+            </Stack>
+          )}
       </Stack>
     ),
     showAfterCont && statusPassed(tx.status, 'submitted') && (
-      <Stack>
-        <Text size={textSize} className={successClass}>
+      <Stack gap={'sm'} alignItems={'center'}>
+        <Text
+          size={textSize}
+          className={tx.request ? successClass : failureClass}
+        >
           <Stack alignItems={'center'} gap={'xs'}>
-            <MonoCheck />
+            {tx.request ? <MonoCheck /> : <MonoClose />}
             Send
           </Stack>
         </Text>
+        {variant === 'expanded' && !tx.request && (
+          <Stack>
+            <Button isCompact onClick={() => onSubmit(true)}>
+              <MonoRefresh />
+            </Button>
+          </Stack>
+        )}
       </Stack>
     ),
     showAfterCont &&

@@ -118,13 +118,6 @@ function usePassword(profile: IProfile | undefined) {
         if (!unlockOptions.password) {
           return null;
         }
-        const result = await WalletService.unlockProfile(
-          profile.uuid,
-          unlockOptions.password,
-        );
-        if (!result) {
-          throw new Error('Failed to unlock profile');
-        }
         if (profile.options.rememberPassword !== unlockOptions.keepOpen) {
           walletRepository.updateProfile({
             ...profile,
@@ -144,14 +137,17 @@ function usePassword(profile: IProfile | undefined) {
           return (await prompt((resolve, reject) => (
             <UnlockPrompt
               resolve={async (unlockOptions) => {
-                try {
-                  if (storePassword) {
-                    await storeData(unlockOptions);
-                  }
-                  resolve(unlockOptions.password);
-                } catch (e) {
-                  reject(e);
+                const result = await WalletService.unlockProfile(
+                  profile.uuid,
+                  unlockOptions.password,
+                );
+                if (!result) {
+                  throw new Error('Failed to unlock profile');
                 }
+                if (storePassword) {
+                  await storeData(unlockOptions);
+                }
+                resolve(unlockOptions.password);
               }}
               reject={reject}
               showPassword
@@ -165,17 +161,13 @@ function usePassword(profile: IProfile | undefined) {
           return (await prompt((resolve, reject) => (
             <UnlockPrompt
               resolve={async ({ keepOpen }) => {
-                try {
-                  const pass = await WalletService.getWebAuthnPass(profile);
-                  if (!pass) reject('Failed to unlock profile');
-                  const unlockOptions = { password: pass, keepOpen };
-                  if (storePassword) {
-                    await storeData(unlockOptions);
-                  }
-                  resolve(unlockOptions.password);
-                } catch (e) {
-                  reject(e);
+                const pass = await WalletService.getWebAuthnPass(profile);
+                if (!pass) reject('Failed to unlock profile');
+                const unlockOptions = { password: pass, keepOpen };
+                if (storePassword) {
+                  await storeData(unlockOptions);
                 }
+                resolve(unlockOptions.password);
               }}
               reject={reject}
               rememberPassword={profile.options.rememberPassword}

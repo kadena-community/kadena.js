@@ -45,7 +45,7 @@ export function ExpandedTransaction({
   transaction: ITransaction;
   contTx?: ITransaction;
   onSign: (sig: ITransaction['sigs']) => void;
-  onSubmit: () => Promise<ITransaction>;
+  onSubmit: (skipPreflight?: boolean) => Promise<ITransaction>;
   sendDisabled?: boolean;
   showTitle?: boolean;
   isDialog?: boolean;
