@@ -79,4 +79,4 @@ jobs:
 
       - name: Push Docker Image to GHCR
         run: |
-          docker push ghcr.io/kadena.js/graph:latest && docker push ghcr.io/kadena/graph:${GITHUB_SHA::7}
+          docker push ghcr.io/kadena.js/graph:latest && docker push ghcr.io/kadena/graph:preview
