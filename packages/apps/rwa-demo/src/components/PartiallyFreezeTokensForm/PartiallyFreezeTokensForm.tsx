@@ -1,7 +1,7 @@
 import { useAsset } from '@/hooks/asset';
 import { useFreeze } from '@/hooks/freeze';
-import { usePartiallyFreezeTokens } from '@/hooks/partiallyFreezeTokens';
-import type { IPartiallyFreezeTokensProps } from '@/services/partiallyFreezeTokens';
+import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
+import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -31,16 +31,24 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
   const resolveRef = useRef<Function | null>(null);
   const { paused } = useAsset();
 
-  const { submit } = usePartiallyFreezeTokens();
-  const { register, handleSubmit } = useForm<IPartiallyFreezeTokensProps>({
-    values: {
-      amount: 0,
-      investorAccount,
+  const { submit } = useTogglePartiallyFreezeTokens();
+  const { register, handleSubmit } = useForm<ITogglePartiallyFreezeTokensProps>(
+    {
+      values: {
+        amount: 0,
+        investorAccount,
+      },
     },
-  });
+  );
 
-  const onSubmit = async (data: IPartiallyFreezeTokensProps) => {
-    const transaction = await submit(data);
+  const onSubmit = async (data: ITogglePartiallyFreezeTokensProps) => {
+    const freeze = data.amount >= 0;
+
+    const transaction = await submit({
+      ...data,
+      amount: Math.abs(data.amount),
+      freeze,
+    });
     setTx(transaction);
 
     return transaction;
@@ -91,7 +99,7 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
               onPress={handlePress}
               trigger={
                 <Button isDisabled={frozen || paused} type="submit">
-                  Distribute
+                  Freeze / UnFreeze
                 </Button>
               }
             />

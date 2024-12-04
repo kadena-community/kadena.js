@@ -4,23 +4,28 @@ import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
-export interface IPartiallyFreezeTokensProps {
+export interface ITogglePartiallyFreezeTokensProps {
   amount: number;
   investorAccount: string;
+  freeze?: boolean;
 }
 
 const createPubKeyFromAccount = (account: string): string => {
   return account.replace('k:', '').replace('r:', '');
 };
 
-export const partiallyFreezeTokens = async (
-  data: IPartiallyFreezeTokensProps,
+export const togglePartiallyFreezeTokens = async (
+  data: ITogglePartiallyFreezeTokensProps,
   account: IWalletAccount,
 ) => {
+  const func = data.freeze
+    ? 'freeze-partial-tokens'
+    : 'unfreeze-partial-tokens';
+
   return Pact.builder
     .execution(
       `
-       (RWA.${getAsset()}.freeze-partial-tokens (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
+       (RWA.${getAsset()}.${func} (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('agent', account.address)
     .addData('investor', data.investorAccount)
