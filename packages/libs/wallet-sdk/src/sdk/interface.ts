@@ -92,3 +92,21 @@ export interface ITransactionDescriptor {
   chainId: ChainId;
   networkId: string;
 }
+
+export interface INetworkInfo {
+  nodeApiVersion: string;
+  nodeBlockDelay: number;
+  nodeChains: string[];
+  nodeGenesisHeights: [string, number][];
+  nodeGraphHistory: [number, [number, [string, string[]]][]][];
+  nodeHistoricalChains: [number, [number, [string, string[]]][]][];
+  nodeLatestBehaviorHeight: number;
+  nodeNumberOfChains: number;
+  nodePackageVersion: string;
+  nodeServiceDate: string;
+  nodeVersion: string;
+}
+
+export type NodeChainInfo = Pick<INetworkInfo, 'nodeChains' | 'nodeVersion'>;
+
+export type NodeNetworkInfo = Omit<INetworkInfo, 'nodeChains'>;
