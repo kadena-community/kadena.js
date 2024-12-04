@@ -172,6 +172,16 @@ const importProfiles = async (
   await Promise.all(profiles.map(async (profile) => put('profile', profile)));
 };
 
+export const profileTables = [
+  'encryptedValue',
+  'keySource',
+  'account',
+  'watched-account',
+  'keyset',
+  'transaction',
+  'activity',
+] as const;
+
 const importProfileRelatedTables = async ({
   backup,
   profileUUIds,
@@ -185,15 +195,6 @@ const importProfileRelatedTables = async ({
   transaction: IDBTransaction;
   networkRemap: Record<UUID, UUID>;
 }) => {
-  const profileTables = [
-    'encryptedValue',
-    'keySource',
-    'account',
-    'watched-account',
-    'keyset',
-    'transaction',
-    'activity',
-  ] as const;
   const put = putItem(db, transaction);
 
   await profileTables.map(async (table) => {

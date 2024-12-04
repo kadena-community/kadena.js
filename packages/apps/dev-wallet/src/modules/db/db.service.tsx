@@ -87,7 +87,7 @@ export const createDatabaseConnection = async () => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const injectDb = <R extends (...args: any[]) => Promise<any>>(
+export const injectDb = <R extends (...args: any[]) => Promise<any>>(
   fn: (db: IDBDatabase) => R,
   onCall: (...args: Parameters<R>) => void = () => {},
 ) =>
@@ -146,6 +146,10 @@ export interface IDBService {
     backup: IDBBackup,
     profileUUIds?: string[],
   ) => Promise<boolean>;
+  injectDbWithNotify: <R extends (...args: any[]) => Promise<any>>(
+    fn: (db: IDBDatabase) => R,
+    notifyEvent: EventTypes,
+  ) => R;
 }
 
 export const createDbService = () => {
@@ -217,6 +221,10 @@ export const createDbService = () => {
     subscribe,
     serializeTables: injectDb((db) => () => serializeTables(db)),
     importBackup: injectDb(importBackup, notify('import')),
+    injectDbWithNotify: <R extends (...args: any[]) => Promise<any>>(
+      fn: (db: IDBDatabase) => R,
+      notifyEvent: EventTypes,
+    ) => injectDb(fn, notify(notifyEvent) as any),
   };
 };
 
