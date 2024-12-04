@@ -308,3 +308,21 @@ export function parseGqlTransfers(
 
   return mapped.filter(notEmpty);
 }
+
+export function isSameTransfer(transferA: Transfer, transferB: Transfer) {
+  const isSameBaseTransfer =
+    transferA.requestKey === transferB.requestKey &&
+    transferA.chainId === transferB.chainId &&
+    transferA.senderAccount === transferB.senderAccount &&
+    transferA.receiverAccount === transferB.receiverAccount &&
+    transferA.amount === transferB.amount &&
+    transferA.isCrossChainTransfer === transferB.isCrossChainTransfer;
+
+  if (transferA.isCrossChainTransfer && transferB.isCrossChainTransfer) {
+    return (
+      isSameBaseTransfer && transferA.targetChainId === transferB.targetChainId
+    );
+  }
+
+  return isSameBaseTransfer;
+}

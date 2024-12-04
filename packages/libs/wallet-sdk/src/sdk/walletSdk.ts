@@ -14,8 +14,10 @@ import type {
 
 import * as accountService from '../services/accountService.js';
 import { pollRequestKeys } from '../services/chainweb/chainweb.js';
+import { getChainTransfers } from '../services/graphql/getChainTransfers.js';
 import { getTransfers } from '../services/graphql/getTransfers.js';
 import { pollGraphqlTransfers } from '../services/graphql/pollTransfers.js';
+import { isSameTransfer } from '../services/graphql/transfer.util.js';
 import { poll } from '../utils/retry.js';
 import { isEmpty, notEmpty } from '../utils/typeUtils.js';
 import type { ICreateCrossChainFinishInput } from './crossChainFinishCreate.js';
@@ -89,6 +91,7 @@ export class WalletSDK {
     if (!result) {
       this.logger.error(
         'Failed to generate graphql url using graphqlHostGenerator method',
+        { args },
       );
       throw new Error(
         'Failed to generate chainweb url using graphqlHostGenerator method',
@@ -162,16 +165,18 @@ export class WalletSDK {
     accountName: string,
     networkId: string,
     fungible?: string,
-    chainsIds?: ChainId[],
+    chainId?: ChainId,
   ): Promise<Transfer[]> {
     const url = this.getGraphqlUrl({ networkId });
-    const transfers = await getTransfers(url, accountName, fungible);
-    return transfers;
+    if (chainId) {
+      return getChainTransfers(url, accountName, chainId, fungible);
+    }
+    return getTransfers(url, accountName, fungible);
   }
 
   public subscribeOnCrossChainComplete(
     accountName: string,
-    transfers: ITransactionDescriptor[],
+    transfers: ICrossChainTransfer[],
     callback: (transfer: ICrossChainTransfer) => void,
     options?: { signal?: AbortSignal },
   ): void {
@@ -188,13 +193,18 @@ export class WalletSDK {
             signal,
           });
           const results = Object.values(result).flat();
-          results.forEach((row) => {
-            if (row.isCrossChainTransfer && row.continuation !== undefined) {
-              callback(row);
-            } else {
-              throw new Error('Cross-chain transfer not complete');
-            }
-          });
+          const match = results.find((resultTransfer) =>
+            isSameTransfer(transfer, resultTransfer),
+          );
+          if (
+            match &&
+            match.isCrossChainTransfer &&
+            match.continuation !== undefined
+          ) {
+            callback(match);
+          } else {
+            throw new Error('Cross-chain transfer not complete');
+          }
         },
         {
           delayMs: 30000,
@@ -205,7 +215,10 @@ export class WalletSDK {
     });
 
     Promise.all(promises).catch((error) => {
-      this.logger.error(error);
+      this.logger.error(
+        `Error in subscribeOnCrossChainComplete: ${error.message}`,
+        { error },
+      );
     });
   }
 
@@ -308,7 +321,10 @@ export class WalletSDK {
     });
 
     Promise.all(promises).catch((error) => {
-      this.logger.error(error);
+      this.logger.error(
+        `Error in subscribePendingTransactions: ${error.message}`,
+        { error },
+      );
     });
   }
 
@@ -331,7 +347,9 @@ export class WalletSDK {
 
       return accountDetailsList;
     } catch (error) {
-      this.logger.error(`Error in fetching account details: ${error.message}`);
+      this.logger.error(`Error in fetching account details: ${error.message}`, {
+        error,
+      });
       throw new Error(`Failed to get account details for ${accountName}`);
     }
   }
