@@ -11,7 +11,7 @@ import {
   kadenaEncrypt,
 } from '@kadena/hd-wallet';
 import { profileTables } from '../db/backup/backup';
-import { dbService, injectDb } from '../db/db.service';
+import { dbService } from '../db/db.service';
 import { deleteItem, getOneItem } from '../db/indexeddb';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';

@@ -101,6 +101,8 @@ export function Settings() {
         Start Account Discovery
       </UiLink>
       <Button
+        variant="negative"
+        startVisual={<MonoDangerous />}
         onClick={async () => {
           if (!profile) return;
           const answer = await prompt((resolve, reject) => (
@@ -142,8 +144,6 @@ export function Settings() {
               });
           }
         }}
-        variant="outlined"
-        startVisual={<MonoDangerous color="red" />}
       >
         Delete Profile
       </Button>
