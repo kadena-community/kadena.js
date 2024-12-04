@@ -31,13 +31,10 @@ export const useGetInvestor = ({ account }: { account: string }) => {
 
   const initInnerData = async () => {
     const data = await store.getAccount({ account });
-    store.listenToAccount(account, listenToAccount);
-
-    if (!data) return;
 
     setInnerData({
       accountName: account,
-      alias: data.alias,
+      alias: data?.alias,
       creationTime: 0,
     });
   };
@@ -45,6 +42,8 @@ export const useGetInvestor = ({ account }: { account: string }) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData();
+    const off = store.listenToAccount(account, listenToAccount);
+    return off;
   }, [account]);
 
   return { data: innerData };

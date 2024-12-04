@@ -7,6 +7,7 @@ export interface IRegisterIdentityProps {
   accountName: string;
   agent: IWalletAccount;
   alias: string;
+  alreadyExists?: boolean;
 }
 
 const createPubKeyFromAccount = (account: string): string => {

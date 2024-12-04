@@ -46,6 +46,19 @@ const RWAStore = () => {
     return () => off(accountRef);
   };
 
+  const getAccounts = async (): Promise<IRegisterIdentityProps[]> => {
+    const asset = getAsset();
+    if (!asset) return [];
+
+    const snapshot = await get(ref(database, `${asset}/accounts`));
+
+    const data = snapshot.toJSON();
+    if (!data) return [];
+    return Object.entries(data).map(
+      ([key, value]) => value,
+    ) as IRegisterIdentityProps[];
+  };
+
   const getAccount = async ({
     account,
   }: {
@@ -90,6 +103,27 @@ const RWAStore = () => {
     return () => off(accountRef);
   };
 
+  const listenToAccounts = (
+    setDataCallback: (aliases: IRegisterIdentityProps[]) => void,
+  ) => {
+    const asset = getAsset();
+    if (!asset) return;
+
+    const accountRef = ref(database, `${asset}/accounts`);
+    onValue(accountRef, async (snapshot) => {
+      const data = snapshot.toJSON();
+      if (!data) return setDataCallback([]);
+
+      setDataCallback(
+        Object.entries(data).map(
+          ([key, value]) => value,
+        ) as IRegisterIdentityProps[],
+      );
+    });
+
+    return () => off(accountRef);
+  };
+
   return {
     addTransaction,
     removeTransaction,
@@ -98,7 +132,9 @@ const RWAStore = () => {
 
     setAccount,
     getAccount,
+    getAccounts,
     listenToAccount,
+    listenToAccounts,
   };
 };
 

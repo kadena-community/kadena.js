@@ -28,6 +28,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
     values: {
       accountName: investor?.accountName ?? '',
       alias: investor?.alias ?? '',
+      alreadyExists: !!investor?.accountName,
     },
   });
 

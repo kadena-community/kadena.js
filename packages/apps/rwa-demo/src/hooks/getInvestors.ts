@@ -2,9 +2,12 @@ import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventsQuery } from '@/__generated__/sdk';
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import { coreEvents } from '@/services/graph/agent.graph';
+import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
+import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
+import { store } from '@/utils/store';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useTransactions } from './transactions';
@@ -44,6 +47,8 @@ export const useGetInvestors = () => {
       return;
     }
 
+    const aliases = await store.getAccounts();
+
     const agentsAdded: IRecord[] =
       addedData?.events.edges.map((edge: any) => {
         return {
@@ -72,7 +77,18 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
-    setInnerData([...filterRemovedRecords([...agentsAdded, ...agentsRemoved])]);
+    setInnerData(
+      setAliasesToAccounts(
+        [...filterRemovedRecords([...agentsAdded, ...agentsRemoved])],
+        aliases,
+      ),
+    );
+  };
+
+  const listenToAccounts = (aliases: IRegisterIdentityProps[]) => {
+    setInnerData((v) => {
+      return setAliasesToAccounts([...v], aliases);
+    });
   };
 
   useEffect(() => {
@@ -80,6 +96,12 @@ export const useGetInvestors = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(tx);
   }, [transactions, addedData, removedData, removedLoading, addedLoading]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    const off = store.listenToAccounts(listenToAccounts);
+    return off;
+  }, []);
 
   return { data: innerData, error };
 };

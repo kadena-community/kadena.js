@@ -18,7 +18,9 @@ export const useAddInvestor = () => {
   ): Promise<ITransaction | undefined> => {
     const newData: IRegisterIdentityProps = { ...data, agent: account! };
     try {
-      await store.setAccount(data);
+      //if the account is already investor, no need to add it again
+      if (data.alreadyExists) return;
+
       const tx = await registerIdentity(newData);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -37,6 +39,8 @@ export const useAddInvestor = () => {
         label: 'there was an error',
         message: interpretErrorMessage(e.message),
       });
+    } finally {
+      await store.setAccount(data);
     }
   };
 
