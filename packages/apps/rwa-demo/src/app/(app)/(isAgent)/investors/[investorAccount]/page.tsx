@@ -3,6 +3,7 @@
 import { DistributionForm } from '@/components/DistributionForm/DistributionForm';
 import { FreezeInvestor } from '@/components/FreezeInvestor/FreezeInvestor';
 import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
+import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAsset } from '@/hooks/asset';
 import { useFreeze } from '@/hooks/freeze';
@@ -17,12 +18,18 @@ const InvestorPage = () => {
   const { paused } = useAsset();
   const params = useParams();
   const [hasOpenDistributeForm, setHasOpenDistributeForm] = useState(false);
+  const [hasOpenPartiallyFreezeForm, setHasOpenPartiallyFreezeForm] =
+    useState(false);
   const investorAccount = decodeURIComponent(params.investorAccount as string);
   const { frozen } = useFreeze({ investorAccount });
 
   const handleDistributeTokens = () => {
     setIsRightAsideExpanded(true);
     setHasOpenDistributeForm(true);
+  };
+  const handlePartiallyFreezeTokens = () => {
+    setIsRightAsideExpanded(true);
+    setHasOpenPartiallyFreezeForm(true);
   };
 
   return (
@@ -42,6 +49,15 @@ const InvestorPage = () => {
           }}
         />
       )}
+      {isRightAsideExpanded && hasOpenPartiallyFreezeForm && (
+        <PartiallyFreezeTokensForm
+          investorAccount={investorAccount}
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+            setHasOpenPartiallyFreezeForm(false);
+          }}
+        />
+      )}
 
       <Stack width="100%" flexDirection="column">
         <InvestorInfo investorAccount={investorAccount} />
@@ -53,6 +69,15 @@ const InvestorPage = () => {
           >
             Distribute Tokens
           </Button>
+
+          <Button
+            startVisual={<MonoAdd />}
+            onPress={handlePartiallyFreezeTokens}
+            isDisabled={frozen || paused}
+          >
+            Partially freeze tokens
+          </Button>
+
           <FreezeInvestor investorAccount={investorAccount} />
         </Stack>
       </Stack>

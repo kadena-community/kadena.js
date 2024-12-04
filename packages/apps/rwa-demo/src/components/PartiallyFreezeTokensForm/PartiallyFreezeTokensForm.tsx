@@ -1,7 +1,7 @@
 import { useAsset } from '@/hooks/asset';
-import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useFreeze } from '@/hooks/freeze';
-import type { IDistributeTokensProps } from '@/services/distributeTokens';
+import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
+import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -22,21 +22,33 @@ interface IProps {
   investorAccount: string;
 }
 
-export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
+export const PartiallyFreezeTokensForm: FC<IProps> = ({
+  onClose,
+  investorAccount,
+}) => {
   const { frozen } = useFreeze({ investorAccount });
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
   const { paused } = useAsset();
-  const { submit } = useDistributeTokens();
-  const { register, handleSubmit } = useForm<IDistributeTokensProps>({
-    values: {
-      amount: 0,
-      investorAccount,
-    },
-  });
 
-  const onSubmit = async (data: IDistributeTokensProps) => {
-    const transaction = await submit(data);
+  const { submit } = useTogglePartiallyFreezeTokens();
+  const { register, handleSubmit } = useForm<ITogglePartiallyFreezeTokensProps>(
+    {
+      values: {
+        amount: 0,
+        investorAccount,
+      },
+    },
+  );
+
+  const onSubmit = async (data: ITogglePartiallyFreezeTokensProps) => {
+    const freeze = data.amount >= 0;
+
+    const transaction = await submit({
+      ...data,
+      amount: Math.abs(data.amount),
+      freeze,
+    });
     setTx(transaction);
 
     return transaction;
@@ -64,7 +76,7 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
     <>
       <RightAside isOpen onClose={onClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <RightAsideHeader label="Distribute Tokens" />
+          <RightAsideHeader label="Partially Freeze Tokens" />
           <RightAsideContent>
             <TextField
               label="Amount"
@@ -87,7 +99,7 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
               onPress={handlePress}
               trigger={
                 <Button isDisabled={frozen || paused} type="submit">
-                  Distribute
+                  Freeze / UnFreeze
                 </Button>
               }
             />

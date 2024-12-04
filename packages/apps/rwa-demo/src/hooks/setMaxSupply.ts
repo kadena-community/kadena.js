@@ -1,19 +1,19 @@
 import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
-import type { ISetComplianceProps } from '@/services/setCompliance';
-import { setCompliance } from '@/services/setCompliance';
+import type { ISetMaxSupplyProps } from '@/services/setMaxSupply';
+import { setMaxSupply } from '@/services/setMaxSupply';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
-export const useSetCompliance = () => {
+export const useSetMaxSupply = () => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
 
-  const submit = async (data: ISetComplianceProps) => {
+  const submit = async (data: ISetMaxSupplyProps) => {
     try {
-      const tx = await setCompliance(data, account!);
+      const tx = await setMaxSupply(data, account!);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -23,7 +23,7 @@ export const useSetCompliance = () => {
 
       return addTransaction({
         ...res,
-        type: 'SETCOMPLIANCE',
+        type: 'SETMAXBALANCE',
       });
     } catch (e: any) {
       addNotification({

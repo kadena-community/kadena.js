@@ -1,4 +1,5 @@
 import { useAccount } from '@/hooks/account';
+import { useFreeze } from '@/hooks/freeze';
 import { MonoCompareArrows } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import { useLayout } from '@kadena/kode-ui/patterns';
@@ -8,7 +9,8 @@ import { InvestorInfo } from '../InvestorInfo/InvestorInfo';
 import { TransferForm } from '../TransferForm/TransferForm';
 
 export const InvestorRootPage: FC = () => {
-  const { isInvestor, account, isFrozen } = useAccount();
+  const { isInvestor, account } = useAccount();
+  const { frozen } = useFreeze({ investorAccount: account?.address! });
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [hasOpenTransferForm, setHasOpenTransferForm] = useState(false);
 
@@ -37,7 +39,7 @@ export const InvestorRootPage: FC = () => {
           <Button
             startVisual={<MonoCompareArrows />}
             onPress={handleTransferTokens}
-            isDisabled={isFrozen}
+            isDisabled={frozen}
           >
             Transfer tokens
           </Button>
