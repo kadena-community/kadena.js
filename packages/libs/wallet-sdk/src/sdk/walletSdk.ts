@@ -32,7 +32,10 @@ import type {
   IAccountDetails,
   IChain,
   ICrossChainTransfer,
+  INetworkInfo,
   ITransactionDescriptor,
+  NodeChainInfo,
+  NodeNetworkInfo,
   Transfer,
 } from './interface.js';
 import { KadenaNames } from './kadenaNames.js';
@@ -202,7 +205,7 @@ export class WalletSDK {
     });
 
     Promise.all(promises).catch((error) => {
-      console.log('error', error);
+      this.logger.error(error);
     });
   }
 
@@ -256,7 +259,7 @@ export class WalletSDK {
           networkId: tx.networkId,
           chainId: tx.chainId,
         });
-        acc[host] = acc[host] || [];
+        acc[host] = acc[host] !== undefined ? acc[host] : [];
         acc[host].push(tx);
         return acc;
       },
@@ -335,15 +338,23 @@ export class WalletSDK {
 
   public async getChains(networkHost: string): Promise<IChain[]> {
     const res = await fetch(`${networkHost}/info`);
-    const json: {
-      nodeChains: string[];
-      nodeVersion: string;
-    } = await res.json();
-    return json.nodeChains.map((c) => ({ id: c as ChainId }));
+    const json: NodeChainInfo = await res.json();
+
+    const chains = json.nodeChains ?? [];
+    return chains.map((c) => ({ id: c as ChainId }));
   }
 
-  public async getNetworkInfo(networkHost: string): Promise<unknown> {
-    return null;
+  public async getNetworkInfo(networkHost: string): Promise<NodeNetworkInfo> {
+    const res = await fetch(`${networkHost}/info`);
+    const json: INetworkInfo = await res.json();
+
+    const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      nodeChains = [],
+      ...networkInfo
+    }: NodeNetworkInfo & { nodeChains: string[] } = json;
+
+    return networkInfo;
   }
 
   public async getGasLimitEstimate(
