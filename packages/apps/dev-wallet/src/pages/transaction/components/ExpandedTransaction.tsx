@@ -22,8 +22,13 @@ import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
 
 import { shorten } from '@/utils/helpers.ts';
+import { normalizeTx } from '@/utils/normalizeSigs.ts';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
-import { MonoMoreVert, MonoShare } from '@kadena/kode-icons/system';
+import {
+  MonoContentCopy,
+  MonoMoreVert,
+  MonoShare,
+} from '@kadena/kode-icons/system';
 import { useState } from 'react';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
@@ -40,7 +45,7 @@ export function ExpandedTransaction({
   transaction: ITransaction;
   contTx?: ITransaction;
   onSign: (sig: ITransaction['sigs']) => void;
-  onSubmit: () => Promise<ITransaction>;
+  onSubmit: (skipPreflight?: boolean) => Promise<ITransaction>;
   sendDisabled?: boolean;
   showTitle?: boolean;
   isDialog?: boolean;
@@ -48,22 +53,25 @@ export function ExpandedTransaction({
   const { sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
 
-  const copyTransactionAs = (format: 'json' | 'yaml') => () => {
-    const transactionData = {
-      hash: transaction.hash,
-      cmd: transaction.cmd,
-      sigs: transaction.sigs,
+  const copyTransactionAs =
+    (format: 'json' | 'yaml', legacySig = false) =>
+    () => {
+      const tx = {
+        hash: transaction.hash,
+        cmd: transaction.cmd,
+        sigs: transaction.sigs,
+      };
+      const transactionData = legacySig ? normalizeTx(tx) : tx;
+
+      let formattedData: string;
+      if (format === 'json') {
+        formattedData = JSON.stringify(transactionData, null, 2);
+      } else {
+        formattedData = yaml.dump(transactionData);
+      }
+
+      navigator.clipboard.writeText(formattedData);
     };
-
-    let formattedData: string;
-    if (format === 'json') {
-      formattedData = JSON.stringify(transactionData, null, 2);
-    } else {
-      formattedData = yaml.dump(transactionData);
-    }
-
-    navigator.clipboard.writeText(formattedData);
-  };
 
   const signAll = async () => {
     const signedTx = (await sign(transaction)) as IUnsignedCommand | ICommand;
@@ -159,7 +167,7 @@ export function ExpandedTransaction({
                             );
                             const baseUrl = `${window.location.protocol}//${window.location.host}`;
                             navigator.clipboard.writeText(
-                              `${baseUrl}/sig-builder?transaction=${encodedTx}`,
+                              `${baseUrl}/sig-builder#${encodedTx}`,
                             );
                             setShowShareTooltip(true);
                             setTimeout(() => setShowShareTooltip(false), 5000);
@@ -179,12 +187,24 @@ export function ExpandedTransaction({
                         }
                       >
                         <ContextMenuItem
-                          label="Copy as JSON"
+                          label="JSON"
+                          endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json')}
                         />
                         <ContextMenuItem
-                          label="Copy as YAML"
+                          label="YAML"
+                          endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml')}
+                        />
+                        <ContextMenuItem
+                          label="JSON Legacy (v2)"
+                          endVisual={<MonoContentCopy />}
+                          onClick={copyTransactionAs('json', true)}
+                        />
+                        <ContextMenuItem
+                          label="YAML Legacy (v2)"
+                          endVisual={<MonoContentCopy />}
+                          onClick={copyTransactionAs('yaml', true)}
                         />
                       </ContextMenu>
                     </Stack>

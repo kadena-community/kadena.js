@@ -206,10 +206,11 @@ export const addItem =
   };
 
 export const deleteItem =
-  (db: IDBDatabase) => (storeName: string, key: string) => {
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
+  (storeName: string, key: string) => {
     return new Promise<void>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readwrite');
-      const store = transaction.objectStore(storeName);
+      const tx = transaction ?? db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
       const request = store.delete(key);
       request.onerror = () => {
         reject(request.error);

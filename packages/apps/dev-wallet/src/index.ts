@@ -12,9 +12,10 @@ const loadingContent = document.getElementById('loading-content');
 // the entry file for the dev wallet app
 // TODO: we need to do setup app here like service worker, etc
 async function bootstrap() {
+  const mainModule = import('./App/main');
   await registerServiceWorker();
   addBootTheme();
-  import('./App/main').then(async ({ renderApp }) => {
+  mainModule.then(async ({ renderApp }) => {
     if (loadingContent) {
       loadingContent.innerHTML = '';
     }

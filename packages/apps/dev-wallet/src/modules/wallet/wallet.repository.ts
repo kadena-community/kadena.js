@@ -1,6 +1,7 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
 import { SignerScheme } from '@kadena/client';
 import type { INetwork } from '../network/network.repository';
+import { UUID } from '../types';
 
 export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver' | 'web-authn';
 
@@ -24,6 +25,7 @@ export interface IProfile {
   secretId: string;
   securityPhraseId: string;
   accentColor: string;
+  selectedNetworkUUID?: UUID;
   options: {
     rememberPassword: 'never' | 'session' | 'short-time';
   } & (
@@ -66,6 +68,16 @@ const createWalletRepository = ({
     },
     updateProfile: async (profile: IProfile): Promise<void> => {
       return update('profile', profile, undefined);
+    },
+    patchProfile: async (
+      uuid: string,
+      profile: Partial<IProfile>,
+    ): Promise<void> => {
+      const existingProfile = await getOne<IProfile>('profile', uuid);
+      if (!existingProfile) {
+        throw new Error('Profile not found');
+      }
+      return update('profile', { ...existingProfile, ...profile });
     },
     getEncryptedValue: async (uuid: string): Promise<Uint8Array> => {
       const { value } = (await getOne<IEncryptedValue>(

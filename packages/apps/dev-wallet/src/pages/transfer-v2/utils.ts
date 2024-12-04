@@ -362,6 +362,7 @@ export const createTransactions = async ({
   mapKeys,
   gasPrice,
   gasLimit,
+  creationTime,
 }: {
   account: IAccount;
   receivers: IReceiver[];
@@ -372,6 +373,7 @@ export const createTransactions = async ({
   mapKeys: (key: ISigner) => ISigner;
   gasPrice: number;
   gasLimit: number;
+  creationTime: number;
 }) => {
   if (!account || +account.overallBalance < 0 || !network || !profileId) {
     throw new Error('INVALID_INPUTs');
@@ -432,6 +434,7 @@ export const createTransactions = async ({
                 networkId: network.networkId,
                 meta: {
                   chainId,
+                  creationTime,
                 },
               },
             );
@@ -478,6 +481,7 @@ export const createTransactions = async ({
                 chainId: optimal.chainId,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
+                creationTime,
               },
             },
           )();
@@ -527,6 +531,7 @@ export async function createRedistributionTxs({
   network,
   gasLimit,
   gasPrice,
+  creationTime,
 }: {
   redistribution: Array<{ source: ChainId; target: ChainId; amount: string }>;
   account: IAccount;
@@ -534,6 +539,7 @@ export async function createRedistributionTxs({
   network: INetwork;
   gasLimit: number;
   gasPrice: number;
+  creationTime: number;
 }) {
   const groupId = crypto.randomUUID();
   const txs = redistribution.map(async ({ source, target, amount }) => {
@@ -558,6 +564,7 @@ export async function createRedistributionTxs({
           chainId: source,
           gasLimit: gasLimit,
           gasPrice: gasPrice,
+          creationTime,
         },
       },
     );

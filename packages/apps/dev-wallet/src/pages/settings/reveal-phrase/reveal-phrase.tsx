@@ -2,17 +2,17 @@ import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoSettings } from '@kadena/kode-icons/system';
 import { Notification } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export function RevealPhrase() {
   const { decryptSecret, askForPassword, profile } = useWallet();
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
 
   async function decryptMnemonic() {
     setError('');

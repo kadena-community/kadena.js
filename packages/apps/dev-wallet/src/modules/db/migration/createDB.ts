@@ -104,6 +104,7 @@ export function getDBScheme() {
     },
   ]);
   defineScheme('activity', 'uuid', [
+    { index: 'profileId' },
     { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
     { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
   ]);

@@ -16,3 +16,12 @@ export const createAccountBoxClass = style({
   color: tokens.kda.foundation.color.text.semantic.warning.default,
   borderLeft: 'solid 4px',
 });
+
+export const labelClass = style({
+  minWidth: '90px',
+  display: 'flex',
+  background: tokens.kda.foundation.color.background.surface.default,
+  padding: '8px',
+  marginLeft: '-12px',
+  fontWeight: '700',
+});

@@ -2,6 +2,7 @@ import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
 import { changePassword } from '@/modules/wallet/wallet.service';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { createCredential, extractPublicKeyHex } from '@/utils/webAuthn';
 import {
   Button,
@@ -15,7 +16,7 @@ import {
 } from '@kadena/kode-ui';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface ChangePasswordForm {
   password: string;
@@ -26,7 +27,7 @@ interface ChangePasswordForm {
 export function ChangePassword() {
   const [currenPassword, setCurrentPassword] = useState('');
   const { askForPassword, profile } = useWallet();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const {

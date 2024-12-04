@@ -17,6 +17,7 @@ import {
   RequestScheme,
   signingRequestToPactCommand,
 } from '@/utils/transaction-scheme';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoDashboardCustomize } from '@kadena/kode-icons/system';
 import {
@@ -32,12 +33,15 @@ import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { codeArea } from './style.css';
+
+const getTxFromUrlHash = () =>
+  window.location.hash ? window.location.hash.substring(1) : undefined;
 
 export function SignatureBuilder() {
   const [searchParams] = useSearchParams();
-  const urlTransaction = searchParams.get('transaction');
+  const urlTransaction = searchParams.get('transaction') || getTxFromUrlHash();
   const [error, setError] = useState<string>();
   const [schema, setSchema] = useState<RequestScheme>();
   const [input, setInput] = useState<string>('');
@@ -48,7 +52,7 @@ export function SignatureBuilder() {
     ISigningRequest['caps']
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
 
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload

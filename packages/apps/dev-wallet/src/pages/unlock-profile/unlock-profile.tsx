@@ -1,4 +1,5 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
 import {
   Button,
   Heading,
@@ -8,7 +9,7 @@ import {
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
@@ -21,7 +22,7 @@ export function UnlockProfile({ origin }: { origin: string }) {
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
   const { profileList, unlockProfile, isUnlocked } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';

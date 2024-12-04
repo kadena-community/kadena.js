@@ -2,6 +2,7 @@ import { DiscoverdAccounts } from '@/Components/AccountInput/DiscoverdAccounts';
 import { accountRepository } from '@/modules/account/account.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import {
   ChainId,
   createTransaction,
@@ -32,7 +33,7 @@ import {
 import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getAccount, IReceiverAccount } from '../transfer-v2/utils';
 import { card, disabledItemClass, linkClass } from './style.css';
 import { IOptimalTransfer, simpleOptimalTransfer } from './utils';
@@ -58,7 +59,7 @@ export function Transfer() {
   const [optimalTransfers, setOptimalTransfers] = useState<
     Array<IOptimalTransfer>
   >([]);
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
 
   const mapKeys = useCallback(
     (key: ISigner) => {

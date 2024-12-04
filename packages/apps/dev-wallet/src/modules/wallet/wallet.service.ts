@@ -10,6 +10,9 @@ import {
   kadenaDecrypt,
   kadenaEncrypt,
 } from '@kadena/hd-wallet';
+import { profileTables } from '../db/backup/backup';
+import { dbService } from '../db/db.service';
+import { deleteItem, getOneItem } from '../db/indexeddb';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
@@ -266,4 +269,55 @@ export const changePassword = async (
   // TODO: For more reliability, this must be performed as a single transaction, ensuring that if anything goes wrong, the IndexedDB data is rolled back.
   await Promise.all(persistData.map((cb) => cb()));
   await securityService.clearSecurityPhrase();
+};
+
+const deleteProfileTables =
+  (transaction: IDBTransaction, profileId: string) =>
+  (table: (typeof profileTables)[number]) => {
+    return new Promise<void>((resolve, reject) => {
+      const objectStore = transaction.objectStore(table);
+      const index = objectStore.index('profileId');
+      const query = index.openCursor(IDBKeyRange.only(profileId));
+      query.onsuccess = (event) => {
+        const cursor: IDBCursorWithValue | undefined | null = (
+          event.target as any
+        )?.result;
+        if (cursor) {
+          cursor.delete().onerror = () => {
+            reject();
+          }; // Delete the current record
+          cursor.continue(); // Move to the next record
+        } else {
+          resolve();
+        }
+      };
+
+      query.onerror = () => {
+        reject();
+      };
+    });
+  };
+
+export const deleteProfile = async (profileId: string) => {
+  const deleteCb = dbService.injectDbWithNotify(
+    (db) => async () => {
+      const transaction = db.transaction(
+        ['profile', ...profileTables],
+        'readwrite',
+      );
+      const profileStore = await getOneItem(db, transaction)(
+        'profile',
+        profileId,
+      );
+      if (!profileStore) {
+        return;
+      }
+      await deleteItem(db, transaction)('profile', profileId);
+      const deleteProfileTable = deleteProfileTables(transaction, profileId);
+      await Promise.all(profileTables.map(deleteProfileTable));
+      return;
+    },
+    'import',
+  );
+  return deleteCb();
 };
