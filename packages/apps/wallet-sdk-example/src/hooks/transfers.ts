@@ -1,20 +1,21 @@
 import { walletSdk } from '@kadena/wallet-sdk';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { usePendingTransfers } from '../state/pending';
 import { useWalletState } from '../state/wallet';
-
-interface FunctionCall {
-  functionName: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  functionArgs: any;
-}
+import { useFunctionTracker } from './functionTracker';
 
 export const useTransfers = () => {
   const wallet = useWalletState();
   const { pendingTransfers, removePendingTransfer } = usePendingTransfers();
 
-  const [functionCalls, setFunctionCalls] = useState<FunctionCall[]>([]);
+  const trackGetTransfers = useFunctionTracker('walletSdk.getTransfers');
+  const trackSubscribePendingTransactions = useFunctionTracker(
+    'walletSdk.subscribePendingTransactions',
+  );
+  const trackSubscribeOnCrossChainComplete = useFunctionTracker(
+    'walletSdk.subscribeOnCrossChainComplete',
+  );
 
   const {
     data: transfers,
@@ -24,32 +25,19 @@ export const useTransfers = () => {
     queryKey: ['transfers', wallet.account?.name],
     enabled: !!wallet.account?.name,
     queryFn: async () => {
-      /* --- Start Demo purposes --- */
-      const functionName = 'walletSdk.getTransfers';
-      const functionArgs = {
-        accountName: wallet.account?.name ?? '',
-        networkId: wallet.selectedNetwork,
-        fungible: wallet.selectedFungible,
-      };
-
-      setFunctionCalls((prevCalls) => {
-        const exists = prevCalls.some(
-          (call) =>
-            call.functionName === functionName &&
-            JSON.stringify(call.functionArgs) === JSON.stringify(functionArgs),
+      if (!wallet.account?.name) return [];
+      /**
+        Without the tracking of the function, the code would look like:
+        walletSdk.getTransfers(
+          wallet.account.name,
+          wallet.selectedNetwork,
+          wallet.selectedFungible,
         );
-        if (exists) {
-          return prevCalls;
-        } else {
-          return [...prevCalls, { functionName, functionArgs }];
-        }
-      });
-      /* -- End demo ---------------*/
-
-      return walletSdk.getTransfers(
-        functionArgs.accountName,
-        functionArgs.networkId,
-        functionArgs.fungible,
+       */
+      return trackGetTransfers.wrap(walletSdk.getTransfers)(
+        wallet.account.name,
+        wallet.selectedNetwork,
+        wallet.selectedFungible,
       );
     },
   });
@@ -58,68 +46,41 @@ export const useTransfers = () => {
     if (!transfers || transfers.length === 0) return;
     const controller = new AbortController();
 
-    const incompleteTransfers = transfers.filter(
-      (transfer) => transfer.isCrossChainTransfer && !transfer.continuation,
+    const crossChainTransfers = transfers.filter(
+      (transfer) => transfer.isCrossChainTransfer,
+    );
+    const incompleteTransfers = crossChainTransfers.filter(
+      (transfer) => !transfer.continuation,
     );
 
     /* --- Start Demo purposes --- */
-    const functionName = 'walletSdk.subscribeOnCrossChainComplete';
-    const functionArgs = {
+    trackSubscribeOnCrossChainComplete.setArgs({
       transfers: incompleteTransfers,
       callback: '() => refetch()',
       options: { signal: controller.signal },
-    };
-
-    setFunctionCalls((prevCalls) => {
-      const exists = prevCalls.some(
-        (call) =>
-          call.functionName === functionName &&
-          JSON.stringify(call.functionArgs) === JSON.stringify(functionArgs),
-      );
-      if (exists) {
-        return prevCalls;
-      } else {
-        return [...prevCalls, { functionName, functionArgs }];
-      }
     });
-    /* -- End demo ---------------*/
+    /* --- End demo ---------------*/
 
     walletSdk.subscribeOnCrossChainComplete(
       wallet.account?.name ?? '',
       incompleteTransfers,
       () => refetch(),
-      {
-        signal: controller.signal,
-      },
+      { signal: controller.signal },
     );
     return () => controller.abort();
-  }, [refetch, transfers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetch, transfers, wallet.account?.name]);
 
   useEffect(() => {
+    console.log({ pendingTransfers });
     if (!pendingTransfers || pendingTransfers.length === 0) return;
     const controller = new AbortController();
 
-    /* --- Start Demo purposes --- */
-    const functionName = 'walletSdk.subscribePendingTransactions';
-    const functionArgs = {
+    trackSubscribePendingTransactions.setArgs({
       pendingTransfers,
       callback: '(transfer) => { ... }',
       options: { signal: controller.signal },
-    };
-
-    setFunctionCalls((prevCalls) => {
-      const exists = prevCalls.some(
-        (call) =>
-          call.functionName === functionName &&
-          JSON.stringify(call.functionArgs) === JSON.stringify(functionArgs),
-      );
-      if (exists) {
-        return prevCalls;
-      } else {
-        return [...prevCalls, { functionName, functionArgs }];
-      }
     });
-    /* -- End demo ---------------*/
 
     walletSdk.subscribePendingTransactions(
       pendingTransfers,
@@ -131,6 +92,7 @@ export const useTransfers = () => {
       { signal: controller.signal },
     );
     return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingTransfers, refetch, removePendingTransfer]);
 
   return {
@@ -139,6 +101,10 @@ export const useTransfers = () => {
     pendingTransfers,
     account: wallet.account?.name,
     refetch,
-    functionCalls, // demo
+    functionCalls: [
+      trackGetTransfers.data,
+      trackSubscribePendingTransactions.data,
+      trackSubscribeOnCrossChainComplete.data,
+    ], // demo
   };
 };

@@ -7,10 +7,12 @@ import './global.css.ts';
 
 import { useRoutes } from 'react-router-dom';
 import routes from './routes';
+import { useWalletState } from './state/wallet.ts';
 
 const queryClient = new QueryClient();
 
 function App() {
+  useWalletState('password');
   const routing = useRoutes(routes);
 
   return (

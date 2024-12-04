@@ -70,6 +70,14 @@ export class WalletSDK {
       options?.logTransport,
     );
     this.kadenaNames = new KadenaNames(this);
+
+    this.getTransfers = this.getTransfers.bind(this);
+    this.createSimpleTransfer = this.createSimpleTransfer.bind(this);
+    this.createCrossChainTransfer = this.createCrossChainTransfer.bind(this);
+    this.createFinishCrossChainTransfer =
+      this.createFinishCrossChainTransfer.bind(this);
+    this.sendTransaction = this.sendTransaction.bind(this);
+    this.getGasLimitEstimate = this.getGasLimitEstimate.bind(this);
   }
 
   public getChainwebUrl(

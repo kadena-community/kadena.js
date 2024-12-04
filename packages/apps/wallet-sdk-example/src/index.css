@@ -1,25 +1,18 @@
-
 @tailwind utilities;
 
-
-[class^="Form__"] {
+[class^='Form__'] {
   width: 100%;
-}
-
-[class^="Dialog"] {
-  max-height: inherit
 }
 
 textarea {
   width: 100%;
 }
 
-
 /* deze nog fixen */
 .text-negative {
-  color: green
+  color: green;
 }
 
 .text-negative {
-  color: red
+  color: red;
 }

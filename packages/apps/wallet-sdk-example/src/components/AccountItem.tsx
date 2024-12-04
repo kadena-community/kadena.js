@@ -1,6 +1,7 @@
 import { Badge, Button, Card, Divider, Stack, Text } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 import { createAndTransferFund } from '../domain/fund';
+import { useFunctionTracker } from '../hooks/functionTracker';
 import { useFund } from '../hooks/fund';
 import { useAddressToName } from '../hooks/kadenaNames/kadenaNamesResolver';
 import { chainwebHostMap } from '../host';
@@ -33,45 +34,38 @@ export const AccountItem: React.FC<AccountItemProps> = ({
   const [selectedChain, setSelectedChain] = useState(wallet.selectedChain);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const { onFundOtherFungible } = useFund();
+
+  const trackGetAccountDetails = useFunctionTracker(
+    'walletSdk.getAccountDetails',
+  );
+
   const {
     name: resolvedName,
     loading: nameLoading,
     setAddress,
-    /* -- Start demo ---------------*/
-    sdkFunctionCall: nameSdkFunctionCall,
-    /* -- End demo ---------------*/
+    trackAddressToName,
   } = useAddressToName(refreshKey, wallet.selectedNetwork);
-
-  /* -- Start demo ---------------*/
-  const [balanceSdkFunctionCall, setBalanceSdkFunctionCall] = useState<{
-    functionName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    functionArgs: any;
-  } | null>(null);
-  /* -- End demo ---------------*/
 
   useEffect(() => {
     setAddress(account.name);
   }, [account.name, setAddress, refreshKey]);
 
+  /* -- Start demo ---------------*/
   useEffect(() => {
-    /* -- Start demo ---------------*/
-    setBalanceSdkFunctionCall({
-      functionName: 'walletSdk.getAccountDetails',
-      functionArgs: {
-        accountName: account.name,
-        networkId: wallet.selectedNetwork,
-        fungible: wallet.selectedFungible,
-        chainIds: [wallet.selectedChain],
-      },
+    trackGetAccountDetails.setArgs({
+      accountName: account.name,
+      networkId: wallet.selectedNetwork,
+      fungible: wallet.selectedFungible,
+      chainIds: [wallet.selectedChain],
     });
-    /* -- End demo ---------------*/
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     account.name,
     wallet.selectedNetwork,
     wallet.selectedFungible,
     wallet.selectedChain,
   ]);
+  /* -- End demo ---------------*/
 
   const openRegisterModal = () => setModalVisible(true);
   const closeRegisterModal = () => setModalVisible(false);
@@ -214,19 +208,13 @@ export const AccountItem: React.FC<AccountItemProps> = ({
 
           {/* -- Start demo ---------------*/}
           {/* Display the SDK function call for getAccountDetails */}
-          {balanceSdkFunctionCall && (
-            <SdkFunctionDisplay
-              functionName={balanceSdkFunctionCall.functionName}
-              functionArgs={balanceSdkFunctionCall.functionArgs}
-            />
+          {trackGetAccountDetails && (
+            <SdkFunctionDisplay data={trackGetAccountDetails.data} />
           )}
 
           {/* Display the SDK function call for addressToName */}
-          {nameSdkFunctionCall && (
-            <SdkFunctionDisplay
-              functionName={nameSdkFunctionCall.functionName}
-              functionArgs={nameSdkFunctionCall.functionArgs}
-            />
+          {trackAddressToName && (
+            <SdkFunctionDisplay data={trackAddressToName} />
           )}
           {/* -- End demo ---------------*/}
         </Stack>

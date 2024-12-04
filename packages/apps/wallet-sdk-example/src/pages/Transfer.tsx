@@ -11,7 +11,7 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
-import { SimpleCreateTransfer, walletSdk } from '@kadena/wallet-sdk';
+import { walletSdk } from '@kadena/wallet-sdk';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useChains } from '../hooks/chains';
@@ -21,13 +21,16 @@ import SdkFunctionDisplay from '../components/SdkFunctionDisplayer'; // Demo
 import { TransactionModal } from '../components/TransactionModal';
 
 import { AlertDialog } from '../components/AlertDialog';
+import { useFunctionTracker } from '../hooks/functionTracker';
 import { useWalletState } from '../state/wallet';
 
-interface FunctionCall {
-  functionName: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  functionArgs: any;
-}
+type SimpleCreateTransfer = Parameters<
+  typeof walletSdk.createSimpleTransfer
+>[0];
+
+type CrossChainCreateTransfer = Parameters<
+  typeof walletSdk.createCrossChainTransfer
+>[0];
 
 export const Transfer = () => {
   const wallet = useWalletState();
@@ -45,14 +48,14 @@ export const Transfer = () => {
     amount: string;
   } | null>(null);
 
-  /* -- Start demo ---------------*/
-  const [sdkFunctionCall, setSdkFunctionCall] = useState<FunctionCall | null>(
-    null,
+  const trackCreateSimpleTransfer = useFunctionTracker(
+    'walletSdk.createSimpleTransfer',
   );
-  const [gasFunctionCall, setGasFunctionCall] = useState<FunctionCall | null>(
-    null,
+  const trackCreateCrossChainTransfer = useFunctionTracker(
+    'walletSdk.createCrossChainTransfer',
   );
-  /* -- End demo ---------------*/
+  const trackGasEstimate = useFunctionTracker('walletSdk.getGasLimitEstimate');
+  const trackSendTransaction = useFunctionTracker('walletSdk.sendTransaction');
 
   const navigate = useNavigate();
   const { chains } = useChains(wallet.selectedNetwork);
@@ -69,25 +72,34 @@ export const Transfer = () => {
     const fromChain = wallet.selectedChain;
 
     if (isCrossChain) {
-      // Cross-chain transfers are not supported yet
-      setSdkFunctionCall({
-        functionName: 'Cross-chain transfers are not supported yet.',
-        functionArgs: null,
+      trackCreateCrossChainTransfer.setArgs({
+        amount: amount,
+        chainId: fromChain,
+        networkId: wallet.selectedNetwork,
+        receiver: {
+          account: receiverAccount,
+          keyset: {
+            keys: [receiverAccount.split(':')[1]],
+            pred: 'keys-all',
+          },
+        },
+        sender: {
+          account: wallet.account.name,
+          publicKeys: [wallet.account.publicKey],
+        },
+        targetChainId: wallet.selectedToChain,
       });
     } else {
-      const functionName = 'walletSdk.createSimpleTransfer';
-      const functionArgs: SimpleCreateTransfer & { networkId: string } = {
+      trackCreateSimpleTransfer.setArgs({
         amount,
         sender: wallet.account.name,
         receiver: receiverAccount,
         chainId: fromChain,
         networkId: wallet.selectedNetwork,
-      };
-
-      setSdkFunctionCall({ functionName, functionArgs });
+      });
     }
-
-    setGasFunctionCall(null);
+    trackGasEstimate.setArgs(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     wallet.account,
     amount,
@@ -103,6 +115,9 @@ export const Transfer = () => {
     const fromChain = wallet.selectedChain;
     const toChain = isCrossChain ? wallet.selectedToChain : fromChain;
 
+    if (isCrossChain && !toChain) {
+      throw new Error('To chain not set');
+    }
     if (isCrossChain && fromChain === toChain) {
       throw new Error(
         'Cannot perform a cross-chain transfer to the same chain',
@@ -112,13 +127,25 @@ export const Transfer = () => {
     let transaction: IUnsignedCommand;
 
     if (isCrossChain) {
-      /* --- Start Demo purposes --- */
-      setSdkFunctionCall({
-        functionName: 'Cross-chain transfers are not supported yet.',
-        functionArgs: null,
-      });
-      /* -- End demo ---------------*/
-      throw new Error('Cross-chain transfers are not supported yet.');
+      const crossChainTransferArgs: CrossChainCreateTransfer = {
+        amount: amount,
+        chainId: fromChain,
+        networkId: wallet.selectedNetwork,
+        receiver: {
+          account: receiverAccount,
+          keyset: {
+            keys: [receiverAccount.split(':')[1]],
+            pred: 'keys-all',
+          },
+        },
+        sender: {
+          account: wallet.account.name,
+          publicKeys: [wallet.account.publicKey],
+        },
+        targetChainId: toChain!,
+      };
+      transaction = walletSdk.createCrossChainTransfer(crossChainTransferArgs);
+      return await wallet.signTransaction(transaction);
     } else {
       const functionArgs: SimpleCreateTransfer & { networkId: string } = {
         amount,
@@ -144,23 +171,9 @@ export const Transfer = () => {
         return;
       }
 
-      const gasLimit = await walletSdk.getGasLimitEstimate(
-        signed,
-        wallet.selectedNetwork,
-        wallet.selectedChain,
-      );
-
-      /* --- Start Demo purposes --- */
-      const newCall = {
-        functionName: 'walletSdk.getGasLimitEstimate',
-        functionArgs: {
-          transaction: '[SIGNED TRANSACTION]',
-          networkId: wallet.selectedNetwork,
-          chainId: wallet.selectedChain,
-        },
-      };
-      setGasFunctionCall(newCall);
-      /* -- End demo ---------------*/
+      const gasLimit = await trackGasEstimate.wrap(
+        walletSdk.getGasLimitEstimate,
+      )(signed, wallet.selectedNetwork, wallet.selectedChain);
 
       setSignedTransaction(signed);
       setEstimatedGas(gasLimit);
@@ -180,8 +193,9 @@ export const Transfer = () => {
       );
 
       /* -- Start demo ---------------*/
-      setSdkFunctionCall(null);
-      setGasFunctionCall(null);
+      trackGasEstimate.setArgs(null);
+      trackCreateSimpleTransfer.setArgs(null);
+      trackCreateCrossChainTransfer.setArgs(null);
       /* -- End demo ---------------*/
     }
   };
@@ -190,7 +204,7 @@ export const Transfer = () => {
     if (!wallet.account || !signedTransaction || !transactionDetails) return;
 
     try {
-      const result = await walletSdk.sendTransaction(
+      const result = await trackSendTransaction.wrap(walletSdk.sendTransaction)(
         signedTransaction,
         wallet.selectedNetwork,
         wallet.selectedChain,
@@ -210,8 +224,9 @@ export const Transfer = () => {
       setSignedTransaction(null);
 
       /* -- Start demo ---------------*/
-      setSdkFunctionCall(null);
-      setGasFunctionCall(null);
+      trackGasEstimate.setArgs(null);
+      trackCreateSimpleTransfer.setArgs(null);
+      trackCreateCrossChainTransfer.setArgs(null);
       /* -- End demo ---------------*/
       navigate('/list');
     } catch (error) {
@@ -311,7 +326,7 @@ export const Transfer = () => {
             transactionJSON={JSON.stringify(signedTransaction, null, 2)}
             onClose={() => setIsModalOpen(false)}
             onConfirm={confirmTransaction}
-            gasFunctionCall={gasFunctionCall}
+            gasFunctionCall={trackGasEstimate.data}
           />
         )}
 
@@ -327,12 +342,12 @@ export const Transfer = () => {
       {/*
         This is for Demo purposes, displaying the SDK function used to create the transaction
       */}
-      {sdkFunctionCall && (
-        <SdkFunctionDisplay
-          functionName={sdkFunctionCall.functionName}
-          functionArgs={sdkFunctionCall.functionArgs}
-        />
-      )}
+
+      <SdkFunctionDisplay
+        data={
+          trackCreateSimpleTransfer.data || trackCreateCrossChainTransfer.data
+        }
+      />
     </div>
   );
 };

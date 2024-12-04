@@ -27,7 +27,7 @@ export const KadenaNames: React.FC = () => {
     setAddress,
     address: inputAddress,
     /* -- Start demo ---------------*/
-    sdkFunctionCall: addressToNameSdkCall,
+    trackAddressToName,
     /* -- End demo ---------------*/
   } = useAddressToName(0, wallet.selectedNetwork);
 
@@ -38,7 +38,7 @@ export const KadenaNames: React.FC = () => {
     setName,
     name: inputName,
     /* -- Start demo ---------------*/
-    sdkFunctionCall: nameToAddressSdkCall,
+    trackNameToAddress,
     /* -- End demo ---------------*/
   } = useNameToAddress(0, wallet.selectedNetwork);
 
@@ -105,18 +105,8 @@ export const KadenaNames: React.FC = () => {
       */}
       <div>
         {/* -- Start demo ---------------*/}
-        {addressToNameSdkCall && (
-          <SdkFunctionDisplay
-            functionName={addressToNameSdkCall.functionName}
-            functionArgs={addressToNameSdkCall.functionArgs}
-          />
-        )}
-        {nameToAddressSdkCall && (
-          <SdkFunctionDisplay
-            functionName={nameToAddressSdkCall.functionName}
-            functionArgs={nameToAddressSdkCall.functionArgs}
-          />
-        )}
+        {trackAddressToName && <SdkFunctionDisplay data={trackAddressToName} />}
+        {trackNameToAddress && <SdkFunctionDisplay data={trackNameToAddress} />}
         {/* -- End demo ---------------*/}
       </div>
     </div>

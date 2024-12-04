@@ -1,6 +1,7 @@
 import { walletSdk } from '@kadena/wallet-sdk';
 import { useEffect, useState } from 'react';
 import { useDebounce } from '../../utils/useDebounce';
+import { useFunctionTracker } from '../functionTracker';
 
 export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
   const [address, setAddress] = useState<string>('');
@@ -10,13 +11,9 @@ export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  /* -- Start demo ---------------*/
-  const [sdkFunctionCall, setSdkFunctionCall] = useState<{
-    functionName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    functionArgs: any;
-  } | null>(null);
-  /* -- End demo ---------------*/
+  const trackAddressToName = useFunctionTracker(
+    'walletSdk.kadenaNames.addressToName',
+  );
 
   useEffect(() => {
     setName(null);
@@ -32,20 +29,10 @@ export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
     const getName = async () => {
       setLoading(true);
       try {
-        /* -- Start demo ---------------*/
-        setSdkFunctionCall({
-          functionName: 'walletSdk.kadenaNames.addressToName',
-          functionArgs: {
-            address: debouncedAddress,
-            networkId: selectedNetwork,
-          },
-        });
-        /* -- End demo ---------------*/
+        const result = await trackAddressToName.wrap(
+          walletSdk.kadenaNames.addressToName,
+        )(debouncedAddress, selectedNetwork);
 
-        const result = await walletSdk.kadenaNames.addressToName(
-          debouncedAddress,
-          selectedNetwork,
-        );
         if (isCurrent) {
           if (result !== null) {
             setName(result);
@@ -69,9 +56,17 @@ export const useAddressToName = (refreshKey = 0, selectedNetwork: string) => {
     return () => {
       isCurrent = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedAddress, refreshKey, selectedNetwork]);
 
-  return { name, error, loading, setAddress, address, sdkFunctionCall };
+  return {
+    name,
+    error,
+    loading,
+    setAddress,
+    address,
+    trackAddressToName: trackAddressToName.data,
+  };
 };
 
 export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
@@ -82,13 +77,9 @@ export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  /* -- Start demo ---------------*/
-  const [sdkFunctionCall, setSdkFunctionCall] = useState<{
-    functionName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    functionArgs: any;
-  } | null>(null);
-  /* -- End demo ---------------*/
+  const trackNameToAddress = useFunctionTracker(
+    'walletSdk.kadenaNames.nameToAddress',
+  );
 
   useEffect(() => {
     setAddress(null);
@@ -104,19 +95,10 @@ export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
     const getAddress = async () => {
       setLoading(true);
       try {
-        /* -- Start demo ---------------*/
-        setSdkFunctionCall({
-          functionName: 'walletSdk.kadenaNames.nameToAddress',
-          functionArgs: {
-            name: debouncedName,
-            networkId: selectedNetwork,
-          },
-        });
-        /* -- End demo ---------------*/
-        const result = await walletSdk.kadenaNames.nameToAddress(
-          debouncedName,
-          selectedNetwork,
-        );
+        const result = await trackNameToAddress.wrap(
+          walletSdk.kadenaNames.nameToAddress,
+        )(debouncedName, selectedNetwork);
+
         if (isCurrent) {
           if (result !== null) {
             setAddress(result);
@@ -140,7 +122,15 @@ export const useNameToAddress = (refreshKey = 0, selectedNetwork: string) => {
     return () => {
       isCurrent = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedName, refreshKey, selectedNetwork]);
 
-  return { address, error, loading, setName, name, sdkFunctionCall };
+  return {
+    address,
+    error,
+    loading,
+    setName,
+    name,
+    trackNameToAddress: trackNameToAddress.data,
+  };
 };
