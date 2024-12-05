@@ -27,7 +27,7 @@ import { complexityPlugin } from './plugins/complexity';
 import { extensionsPlugin } from './plugins/extensions';
 import { writeSchema } from './utils/write-schema';
 
-if (dotenv.NODE_ENV === 'development') {
+if (dotenv.NODE_ENV !== 'production') {
   writeSchema();
 }
 
@@ -60,7 +60,7 @@ const tracingPlugin: Plugin = {
 
 if (dotenv.SENTRY_DSN) {
   console.log(
-    ` ✔ starting with sentry ${dotenv.NODE_ENV}-${dotenv.ENVIRONMENT}`,
+    ` ✔ starting with Sentry ${dotenv.NODE_ENV}-${dotenv.ENVIRONMENT}`,
   );
   Sentry.init({
     dsn: dotenv.SENTRY_DSN,
@@ -136,7 +136,7 @@ runSystemsCheck()
   .then(() => {
     httpServer.listen(dotenv.PORT, () => {
       console.info(
-        `\nServer is running on http://localhost:${dotenv.PORT}/graphql\n`,
+        `\nServer is running on http://${dotenv.HOST}:${dotenv.PORT}/graphql\n`,
       );
     });
   })

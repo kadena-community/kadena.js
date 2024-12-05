@@ -161,6 +161,25 @@ export const darkThemeValues = {
         n8: tokens.kda.foundation.size.n8,
         n9: tokens.kda.foundation.size.n9,
         n10: tokens.kda.foundation.size.n10,
+        n11: tokens.kda.foundation.size.n11,
+        n12: tokens.kda.foundation.size.n12,
+        n13: tokens.kda.foundation.size.n13,
+        n14: tokens.kda.foundation.size.n14,
+        n15: tokens.kda.foundation.size.n15,
+        n16: tokens.kda.foundation.size.n16,
+        n17: tokens.kda.foundation.size.n17,
+        n18: tokens.kda.foundation.size.n18,
+        n19: tokens.kda.foundation.size.n19,
+        n20: tokens.kda.foundation.size.n20,
+        n24: tokens.kda.foundation.size.n24,
+        n25: tokens.kda.foundation.size.n25,
+        n30: tokens.kda.foundation.size.n30,
+        n32: tokens.kda.foundation.size.n32,
+        n35: tokens.kda.foundation.size.n35,
+        n40: tokens.kda.foundation.size.n40,
+        n48: tokens.kda.foundation.size.n48,
+        n56: tokens.kda.foundation.size.n56,
+        n64: tokens.kda.foundation.size.n64,
       },
       transition: {
         delay: {
@@ -236,12 +255,21 @@ export const darkThemeValues = {
           },
           overlay: {
             default: tokens.kda.foundation.color.neutral['n5@alpha95'],
+            context: {
+              default: tokens.kda.foundation.color.neutral['n5@alpha95'],
+            },
             '@hover': tokens.kda.foundation.color.neutral.n5,
           },
           surface: {
             default: tokens.kda.foundation.color.neutral['n99@alpha6'],
             inverse: {
               default: tokens.kda.foundation.color.neutral['n99@alpha80'],
+            },
+            subtle: {
+              default: tokens.kda.foundation.color.neutral['n0@alpha20'],
+              inverse: {
+                default: tokens.kda.foundation.color.neutral['n99@alpha80'],
+              },
             },
           },
           surfaceHighContrast: {
@@ -523,6 +551,9 @@ export const darkThemeValues = {
             outline: tokens.kda.foundation.color.palette.blue.n60,
             '@focus': tokens.kda.foundation.color.palette.aqua['n20@alpha80'],
           },
+          overlay: {
+            context: tokens.kda.foundation.color.neutral['n20@alpha80'],
+          },
         },
         brand: {
           primary: {
@@ -795,6 +826,8 @@ export const darkThemeValues = {
           'n1@alpha0': '#020e1b00',
           'n1@alpha1': '#020e1b03',
           'n1@alpha3': '#020e1b08',
+          'n1@alpha4': '#020e1b0a',
+          'n1@alpha5': '#020e1b0d',
           'n1@alpha6': '#020e1b0f',
           'n1@alpha10': '#020e1b1a',
           'n1@alpha20': '#020e1b33',
@@ -815,6 +848,8 @@ export const darkThemeValues = {
           'n99@alpha0': '#f5f5f500',
           'n99@alpha1': '#f5f5f503',
           'n99@alpha3': '#f5f5f508',
+          'n99@alpha4': '#f5f5f50a',
+          'n99@alpha5': '#f5f5f50d',
           'n99@alpha6': '#f5f5f50f',
           'n99@alpha10': '#f5f5f51a',
           'n99@alpha20': '#f5f5f533',
@@ -888,8 +923,12 @@ export const darkThemeValues = {
           },
           gray: {
             default: tokens.kda.foundation.color.neutral['n100@alpha40'],
+            lighter: tokens.kda.foundation.color.neutral.n60,
+            bolder: tokens.kda.foundation.color.neutral.n80,
             inverse: {
               default: tokens.kda.foundation.color.neutral['n0@alpha40'],
+              lighter: tokens.kda.foundation.color.neutral.n40,
+              bolder: tokens.kda.foundation.color.neutral.n20,
             },
           },
           brand: {
@@ -1277,12 +1316,6 @@ export const darkThemeValues = {
           level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
-        },
-      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1294,10 +1327,15 @@ export const darkThemeValues = {
           xxl: tokens.kda.foundation.size.n16,
         },
       },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
+        },
+      },
       typography: {
         family: {
           primaryFont: 'Inter',
-          secondaryFont: 'Inter',
           monospaceFont: 'Kode Mono',
         },
         fontSize: {
@@ -1337,12 +1375,6 @@ export const darkThemeValues = {
             medium: '500',
             semiBold: '600',
             bold: '700',
-          },
-          secondaryFont: {
-            regular: '400',
-            medium: '500',
-            bold: '600',
-            black: '700',
           },
           monospaceFont: {
             regular: '400',

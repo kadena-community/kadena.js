@@ -1,14 +1,17 @@
-import React, { useState, FormEvent } from 'react';
-import { Heading , Select, SelectItem} from '@kadena/kode-ui';
-import Layout from '@/components/Layout';
 import Mint from '@/components/MintToken';
+import { Step, Stepper } from '@kadena/kode-ui';
+import React from 'react';
 
-export default function MintTokenPages() {
-  const [tokenFunction, setTokenFunction] = useState("Mint Token")
+const MintTokenPages = () => {
   return (
     <>
-      <title>{tokenFunction}</title>
-      <Mint/>
+      <Stepper direction="horizontal">
+        <Step>Create Token</Step>
+        <Step active>Mint Token</Step>
+      </Stepper>
+      <Mint />
     </>
-);
-}
+  );
+};
+
+export default MintTokenPages;

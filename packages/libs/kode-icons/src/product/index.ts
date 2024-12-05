@@ -1,3 +1,7 @@
+export { default as ChainweaverAlphaKdacolorDark } from './ChainweaverAlphaKdacolorDark';
+export { default as ChainweaverAlphaKdacolorLight } from './ChainweaverAlphaKdacolorLight';
+export { default as ChainweaverAlphaLogoKdacolorDark } from './ChainweaverAlphaLogoKdacolorDark';
+export { default as ChainweaverAlphaLogoKdacolorLight } from './ChainweaverAlphaLogoKdacolorLight';
 export { default as DocsKdacolorDark } from './DocsKdacolorDark';
 export { default as DocsKdacolorLight } from './DocsKdacolorLight';
 export { default as ExplorerKdacolorDark } from './ExplorerKdacolorDark';
@@ -10,8 +14,7 @@ export { default as ProofOfUsKdacolorDark } from './ProofOfUsKdacolorDark';
 export { default as ProofOfUsKdacolorLight } from './ProofOfUsKdacolorLight';
 export { default as SpireKeyKdacolorDark } from './SpireKeyKdacolorDark';
 export { default as SpireKeyKdacolorLight } from './SpireKeyKdacolorLight';
-export { default as SpireKeyKdacolorLogoBlack } from './SpireKeyKdacolorLogoBlack';
-export { default as SpireKeyKdacolorLogoGreen } from './SpireKeyKdacolorLogoGreen';
-export { default as SpireKeyKdacolorLogoWhite } from './SpireKeyKdacolorLogoWhite';
+export { default as SpireKeyLogoKdacolorDark } from './SpireKeyLogoKdacolorDark';
+export { default as SpireKeyLogoKdacolorLight } from './SpireKeyLogoKdacolorLight';
 export { default as ToolsKdacolorDark } from './ToolsKdacolorDark';
 export { default as ToolsKdacolorLight } from './ToolsKdacolorLight';

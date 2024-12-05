@@ -1,5 +1,23 @@
 # Change Log - @kadena/client
 
+## 1.15.0
+
+### Minor Changes
+
+- eccd46e: Add support for testnet05
+
+### Patch Changes
+
+- Updated dependencies \[78e6f88]
+  - @kadena/chainweb-node-client\@0.7.0
+
+## 1.14.0
+
+### Minor Changes
+
+- d07b424: Add `eckoStatus` to `createEckoWalletQuicksign` and
+  `createEckoWalletSign`.
+
 ## 1.13.0
 
 ### Minor Changes

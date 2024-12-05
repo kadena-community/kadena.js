@@ -3,6 +3,10 @@ export { Form, type IFormProps } from './Form';
 
 export { Checkbox, type ICheckboxProps } from './Checkbox/Checkbox';
 export {
+  CheckboxGroup,
+  type ICheckboxGroupProps,
+} from './Checkbox/CheckboxGroup';
+export {
   Combobox,
   ComboboxItem,
   type IComboboxProps,
@@ -12,5 +16,5 @@ export { FormFieldHelpText as FormFieldHelper } from './FormFieldHelpText/FormFi
 export { NumberField, type INumberFieldProps } from './NumberField';
 export { Radio, RadioGroup } from './RadioGroup';
 export { Select, SelectItem, type ISelectProps } from './Select';
-export { TextField, type ITextFieldProps } from './TextField';
 export { TextareaField, type ITextareaFieldProps } from './TextareaField';
+export { TextField, type ITextFieldProps } from './TextField';

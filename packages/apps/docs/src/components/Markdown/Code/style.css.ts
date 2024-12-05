@@ -179,8 +179,8 @@ export const codeTitle = style([
   atoms({
     display: 'none',
     alignItems: 'center',
-    fontFamily: 'secondaryFont',
-    fontWeight: 'secondaryFont.bold',
+    fontFamily: 'primaryFont',
+    fontWeight: 'primaryFont.bold',
     textTransform: 'capitalize',
     padding: 'sm',
     width: '100%',

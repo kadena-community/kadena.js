@@ -17,8 +17,12 @@ import {
 
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
-import { normalizeSigs } from '@/pages/signature-builder/utils/normalizeSigs.ts';
+import { normalizeSigs } from '@/utils/normalizeSigs.ts';
+import { MonoContentCopy, MonoDelete } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
+
+import yaml from 'js-yaml';
+import { statusPassed } from './TxPipeLine.tsx';
 
 const Value: FC<PropsWithChildren<{ className?: string }>> = ({
   children,
@@ -31,9 +35,11 @@ const Value: FC<PropsWithChildren<{ className?: string }>> = ({
 
 export function Signers({
   transaction,
+  transactionStatus,
   onSign,
 }: {
   transaction: IUnsignedCommand;
+  transactionStatus: ITransaction['status'];
   onSign: (sig: ITransaction['sigs']) => void;
 }) {
   const { sign } = useWallet();
@@ -42,6 +48,7 @@ export function Signers({
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
+
   return (
     <Stack flexDirection={'column'} gap={'sm'}>
       <Heading variant="h4">Signers</Heading>
@@ -94,17 +101,20 @@ export function Signers({
                   ))}
               </Stack>
               {!signature && info && (
-                <Button
-                  isCompact
-                  onClick={async () => {
-                    const signed = (await sign(transaction, [
-                      signer.pubKey,
-                    ])) as IUnsignedCommand;
-                    onSign(signed.sigs ?? []);
-                  }}
-                >
-                  Sign
-                </Button>
+                <Stack>
+                  <Button
+                    isCompact
+                    variant="info"
+                    onClick={async () => {
+                      const signed = (await sign(transaction, [
+                        signer.pubKey,
+                      ])) as IUnsignedCommand;
+                      onSign(signed.sigs ?? []);
+                    }}
+                  >
+                    Sign
+                  </Button>
+                </Stack>
               )}
               {!signature && !info && (
                 <form
@@ -117,8 +127,31 @@ export function Signers({
                     let sigObject;
                     if (!signature) return;
                     try {
-                      const json: IUnsignedCommand = JSON.parse(signature);
-                      const sigs = normalizeSigs(json);
+                      const json:
+                        | IUnsignedCommand
+                        | {
+                            pubKey: string;
+                            sig?: string;
+                          } = yaml.load(signature) as
+                        | IUnsignedCommand
+                        | {
+                            pubKey: string;
+                            sig?: string;
+                          };
+
+                      let sigs: Array<{
+                        sig?: string;
+                        pubKey: string;
+                      }> = [];
+                      if ('sig' in json) {
+                        if (!json.pubKey) {
+                          json.pubKey = signer.pubKey;
+                        }
+                        sigs = [json];
+                      } else {
+                        sigs = normalizeSigs(json as IUnsignedCommand);
+                      }
+
                       const extSignature = sigs.find(
                         (item) => item.pubKey === signer.pubKey,
                       );
@@ -138,12 +171,19 @@ export function Signers({
                     onSign(sigs.sigs);
                   }}
                 >
-                  <Stack gap={'sm'} flex={1} flexDirection={'column'}>
-                    <TextareaField
-                      label="Signature or Signed Tx"
-                      name="signature"
-                    />
-                    <Button isCompact type="submit">
+                  <Stack
+                    gap={'sm'}
+                    flex={1}
+                    flexDirection={'column'}
+                    alignItems={'flex-start'}
+                  >
+                    <Stack width="100%">
+                      <TextareaField
+                        label="Signature or Signed Tx"
+                        name="signature"
+                      />
+                    </Stack>
+                    <Button variant="info" isCompact type="submit">
                       Add Signature
                     </Button>
                   </Stack>
@@ -151,7 +191,46 @@ export function Signers({
               )}
               {signature && (
                 <>
-                  <Heading variant="h5">Signature</Heading>
+                  <Stack
+                    justifyContent={'space-between'}
+                    alignItems={'flex-start'}
+                    gap={'sm'}
+                  >
+                    <Heading variant="h5">Signature</Heading>
+                    <Stack gap={'sm'}>
+                      <Button
+                        variant="transparent"
+                        isDisabled={statusPassed(
+                          transactionStatus,
+                          'submitted',
+                        )}
+                        isCompact
+                        onClick={() => {
+                          const sigs = transaction.sigs.map((sig) =>
+                            sig?.pubKey === signer.pubKey && sig.sig
+                              ? { pubKey: sig.pubKey }
+                              : sig,
+                          );
+                          onSign(sigs);
+                        }}
+                      >
+                        <MonoDelete />
+                      </Button>
+                      <Button
+                        isCompact
+                        variant="transparent"
+                        startVisual={<MonoContentCopy />}
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            JSON.stringify({
+                              sig: signature,
+                              pubKey: signer.pubKey,
+                            }),
+                          );
+                        }}
+                      />
+                    </Stack>
+                  </Stack>
                   <Value className={classNames(breakAllClass, codeClass)}>
                     {signature}
                   </Value>

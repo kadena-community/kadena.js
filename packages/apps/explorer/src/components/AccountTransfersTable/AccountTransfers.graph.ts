@@ -12,7 +12,6 @@ export const accountTransfers: DocumentNode = gql`
     node(id: $id) {
       ... on FungibleAccount {
         transfers(first: $first, after: $after, last: $last, before: $before) {
-          totalCount
           pageInfo {
             endCursor
             hasNextPage

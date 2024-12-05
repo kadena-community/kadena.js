@@ -16,6 +16,7 @@ interface ITabProps<T> extends AriaTabProps {
   borderPosition: 'top' | 'bottom';
   onClose?: (item: Node<T>) => void;
   isCompact?: boolean;
+  isDisabled?: boolean;
 }
 
 /**
@@ -28,6 +29,7 @@ export function Tab<T>({
   inverse = false,
   borderPosition = 'bottom',
   isCompact = false,
+  isDisabled = false,
   onClose,
 }: ITabProps<T>): ReactNode {
   const { key, rendered } = item;
@@ -40,7 +42,7 @@ export function Tab<T>({
       className={classNames(
         className,
         tabItemClass({
-          inverse: inverse.toString(),
+          inverse,
           borderPosition,
           size: isCompact ? 'compact' : 'default',
         }),
@@ -53,6 +55,7 @@ export function Tab<T>({
       role="tab"
       data-selected={state.selectedKey === key}
       data-hovered={isHovered || undefined}
+      data-isdisabled={isDisabled}
     >
       {rendered}
       {typeof onClose === 'function' && (

@@ -9,7 +9,7 @@ export const avatarClass = style([
 
     backgroundColor: 'base.default',
     color: 'text.base.default',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
   }),
   {
     borderRadius: '50%',

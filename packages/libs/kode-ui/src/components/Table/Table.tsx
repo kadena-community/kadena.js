@@ -48,7 +48,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
             const alternateRow = index % 2 !== 0;
 
             return (
-              <>
+              <React.Fragment key={headerRow.key}>
                 <TableHeaderRow
                   key={headerRow.key}
                   item={headerRow}
@@ -75,7 +75,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
                 <tr>
                   <td></td>
                 </tr>
-              </>
+              </React.Fragment>
             );
           })}
         </TableRowGroup>

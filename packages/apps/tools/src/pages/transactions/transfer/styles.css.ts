@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 
 export const notificationLinkStyle = style([
   atoms({
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
     textDecoration: 'underline',
     color: 'inherit',
     cursor: 'pointer',
@@ -30,7 +30,7 @@ export const marginBottomOnError = style([atoms({ marginBlockEnd: 'sm' })]);
 export const infoNotificationColor = style([
   atoms({
     textTransform: 'uppercase',
-    fontWeight: 'secondaryFont.black',
+    fontWeight: 'primaryFont.bold',
     color: 'inherit',
   }),
 ]);

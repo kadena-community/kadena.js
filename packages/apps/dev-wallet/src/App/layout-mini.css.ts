@@ -7,28 +7,17 @@ export const headerStyle = style({
   minHeight: minHeaderHeight,
 });
 
-export const mainStyle = style([
+export const containerStyle = style([
   atoms({
-    width: '100%',
-    color: 'text.base.default',
+    padding: 'sm',
     display: 'flex',
     alignItems: 'center',
   }),
   {
-    minHeight: `calc(100vh - ${minHeaderHeight})`,
-    background: 'transparent', // fallback in case radial-gradient is not working
-    backgroundRepeat: 'no-repeat',
-  },
-]);
-
-export const containerStyle = style([
-  atoms({
-    padding: 'sm',
-  }),
-  {
-    width: '474px',
+    width: '500px',
     maxWidth: '100%',
     margin: '0 auto',
     textAlign: 'center',
+    height: '100dvh',
   },
 ]);

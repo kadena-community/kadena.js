@@ -1,5 +1,68 @@
 # @kadena/kadena-cli
 
+## 1.3.7
+
+### Patch Changes
+
+- Updated dependencies \[90a5684]
+  - @kadena/hd-wallet\@0.6.0
+
+## 1.3.6
+
+### Patch Changes
+
+- ca64e67: Fixed malformed json error in tx send
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/hd-wallet\@0.5.0
+  - @kadena/pactjs\@0.4.3
+  - @kadena/pactjs-generator\@1.15.0
+  - @kadena/pactjs-cli\@1.15.0
+
+## 1.3.5
+
+### Patch Changes
+
+- Updated dependencies \[84d9130]
+- Updated dependencies \[b1e488c]
+- Updated dependencies \[84d9130]
+  - @kadena/hd-wallet\@0.5.0
+
+## 1.3.4
+
+### Patch Changes
+
+- Updated dependencies \[eccd46e]
+- Updated dependencies \[eac8c84]
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+  - @kadena/pactjs-cli\@1.15.0
+  - @kadena/pactjs-generator\@1.15.0
+
+## 1.3.3
+
+### Patch Changes
+
+- ad4df92: Fixed error when there is no kadena directory
+
+## 1.3.2
+
+### Patch Changes
+
+- Updated dependencies \[eb82843]
+  - @kadena/client-utils\@0.10.0
+
+## 1.3.1
+
+### Patch Changes
+
+- Updated dependencies \[d07b424]
+  - @kadena/client\@1.14.0
+  - @kadena/client-utils\@0.9.1
+  - @kadena/pactjs-cli\@1.14.0
+  - @kadena/pactjs-generator\@1.14.0
+
 ## 1.3.0
 
 ### Minor Changes

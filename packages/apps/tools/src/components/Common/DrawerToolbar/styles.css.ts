@@ -60,7 +60,7 @@ export const expandedDrawerTitleClass = style([
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
     backgroundColor: 'layer.default',
   }),
   {

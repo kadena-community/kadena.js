@@ -3,9 +3,8 @@ import { BlockTable } from '@/components/BlockTable/BlockTable';
 import { fullWidthClass } from '@/components/globalstyles.css';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
 import { Layout } from '@/components/Layout/Layout';
-import { Media } from '@/components/Layout/media';
 import { StatisticsGrid } from '@/components/StatisticsComponent/StatisticsGrid/StatisticsGrid';
-import { Stack } from '@kadena/kode-ui';
+import { Media, Stack } from '@kadena/kode-ui';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 

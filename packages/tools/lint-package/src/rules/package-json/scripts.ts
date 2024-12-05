@@ -30,7 +30,12 @@ const rule: Rule = ({ dir, pkg }) => {
       'install' in pkg.scripts ||
       'postinstall' in pkg.scripts
     ) {
-      issues.push(['error', 'No `[pre|post]install` scripts are allowed']);
+      if (pkg.bin === undefined) {
+        issues.push([
+          'error',
+          'No `[pre|post]install` scripts are allowed in packages without executables',
+        ]);
+      }
     }
 
     if (typeof pkg.bin !== 'undefined') {

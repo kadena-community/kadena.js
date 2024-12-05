@@ -11,7 +11,6 @@ import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
-import Guard from './guard';
 
 export default builder.node(
   builder.objectRef<IFungibleChainAccount>(FungibleChainAccountName),
@@ -50,7 +49,7 @@ export default builder.node(
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       guard: t.field({
-        type: Guard,
+        type: 'Guard',
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
@@ -61,6 +60,7 @@ export default builder.node(
             });
 
             return {
+              raw: JSON.stringify(accountDetails?.guard),
               keys: accountDetails!.guard.keys,
               predicate: accountDetails!.guard.pred,
             };
@@ -119,36 +119,6 @@ export default builder.node(
             last: args.last,
           }),
         }),
-        async totalCount(parent) {
-          try {
-            return (
-              await Promise.all([
-                await prismaClient.transfer.count({
-                  where: {
-                    senderAccount: parent.accountName,
-                    // NOT: {
-                    //   receiverAccount: parent.accountName,
-                    // },
-                    moduleName: parent.fungibleName,
-                    chainId: parseInt(parent.chainId),
-                  },
-                }),
-                await prismaClient.transfer.count({
-                  where: {
-                    receiverAccount: parent.accountName,
-                    // NOT: {
-                    //   senderAccount: parent.accountName,
-                    // },
-                    moduleName: parent.fungibleName,
-                    chainId: parseInt(parent.chainId),
-                  },
-                }),
-              ])
-            ).reduce((acc, count) => acc + count, 0);
-          } catch (error) {
-            throw normalizeError(error);
-          }
-        },
         async resolve(condition, parent) {
           try {
             return (

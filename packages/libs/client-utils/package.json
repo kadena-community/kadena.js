@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-utils",
-  "version": "0.9.0",
+  "version": "0.11.0",
   "description": "Utility functions build as a wrapper around @kadena/client",
   "repository": {
     "type": "git",
@@ -45,12 +45,14 @@
       "require": "./lib/cjs/marmalade/index.js"
     },
     "./webauthn": {
-      "types": {
-        "import": "./lib/esm/webauthn/index.d.ts",
-        "require": "./lib/cjs/webauthn/index.d.ts"
-      },
+      "types": "./lib/types/webauthn/index.d.ts",
       "import": "./lib/esm/webauthn/index.mjs",
       "require": "./lib/cjs/webauthn/index.js"
+    },
+    "./faucet": {
+      "types": "./lib/types/faucet/index.d.ts",
+      "import": "./lib/esm/faucet/index.mjs",
+      "require": "./lib/cjs/faucet/index.js"
     }
   },
   "typesVersions": {
@@ -71,10 +73,13 @@
         "./lib/types/nodejs/index.d.ts"
       ],
       "marmalade": [
-        "./lib/esm/marmalade/index.d.ts"
+        "./lib/types/marmalade/index.d.ts"
       ],
       "webauthn": [
-        "./lib/esm/webauthn/index.d.ts"
+        "./lib/types/webauthn/index.d.ts"
+      ],
+      "faucet": [
+        "./lib/types/faucet/index.d.ts"
       ]
     }
   },
@@ -91,12 +96,18 @@
     "ae:built-in": "api-extractor run --verbose -c ./config/api-extractor-built-in.json",
     "ae:coin": "api-extractor run --verbose -c ./config/api-extractor-coin.json",
     "ae:core": "api-extractor run --verbose -c ./config/api-extractor-core.json",
-    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && unbuild && pnpm run ae",
+    "build": "pnpm run pactjs:generate:contract && pnpm run pactjs:generate:faucet && pnpm run generate-pipe-type && tsc && unbuild && pnpm run ae",
     "dev:ae": "pnpm run dev:ae:core && pnpm run dev:ae:built-in && pnpm run dev:ae:coin",
     "dev:ae:built-in": "api-extractor run --local --verbose -c ./config/api-extractor-built-in.json",
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",
     "dev:ae:core": "api-extractor run --local --verbose -c ./config/api-extractor-core.json",
-    "dev:postinstall": "pnpm run pactjs:generate:contract",
+    "dev:postinstall": "pnpm run pactjs:generate:contract && pnpm run pactjs:generate:faucet",
+    "faucet:account-details": "TASK=account-details ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:balance": "TASK=balance ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:deploy": "TASK=deploy ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:fund": "TASK=fund ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:fund-create": "TASK=fund-create ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
+    "faucet:transfer": "TASK=transfer ts-node src/scripts/deploy-faucet/deploy-faucet.ts",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -106,7 +117,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-v2.collection-policy-v1 --contract marmalade-v2.policy-manager --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --contract n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --contract marmalade-v2.ledger --contract marmalade-v2.collection-policy-v1 --contract marmalade-v2.policy-manager --contract marmalade-sale.conventional-auction --contract marmalade-sale.dutch-auction --contract n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet  --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact",
+    "pactjs:generate:faucet": "pactjs contract-generate --contract n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
     "test": "vitest run",
     "test:integration": "pnpm run test:integration:setup && vitest run -c ./vitest.integration.config.ts",
     "test:integration:local": "vitest run -c ./vitest.integration.config.ts",
@@ -121,6 +133,7 @@
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "debug": "4.3.4",
+    "dotenv": "~16.4.5",
     "js-yaml": "~4.1.0",
     "ramda": "^0.29.0"
   },

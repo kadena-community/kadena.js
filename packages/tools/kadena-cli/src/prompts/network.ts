@@ -12,7 +12,6 @@ import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import { INVALID_FILE_NAME_ERROR_MSG } from '../constants/global.js';
 import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../constants/networks.js';
 import { services } from '../services/index.js';
-import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { isNotEmptyString, isValidFilename } from '../utils/globalHelpers.js';
 import { getExistingNetworks } from '../utils/helpers.js';
@@ -192,9 +191,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
 const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
   const kadenaDir = services.config.getDirectory();
   const networkDir = getNetworkDirectory();
-  if (networkDir === null || kadenaDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
+
   const isNetworksFolderExists =
     await services.filesystem.directoryExists(networkDir);
   if (

@@ -597,6 +597,101 @@ export const tokens = createThemeContract({
          * @dark {@link tokens.kda.foundation.size.n10}
          */
         n10: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n11}
+         * @dark {@link tokens.kda.foundation.size.n11}
+         */
+        n11: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n12}
+         * @dark {@link tokens.kda.foundation.size.n12}
+         */
+        n12: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n13}
+         * @dark {@link tokens.kda.foundation.size.n13}
+         */
+        n13: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n14}
+         * @dark {@link tokens.kda.foundation.size.n14}
+         */
+        n14: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n15}
+         * @dark {@link tokens.kda.foundation.size.n15}
+         */
+        n15: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n16}
+         * @dark {@link tokens.kda.foundation.size.n16}
+         */
+        n16: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n17}
+         * @dark {@link tokens.kda.foundation.size.n17}
+         */
+        n17: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n18}
+         * @dark {@link tokens.kda.foundation.size.n18}
+         */
+        n18: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n19}
+         * @dark {@link tokens.kda.foundation.size.n19}
+         */
+        n19: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n20}
+         * @dark {@link tokens.kda.foundation.size.n20}
+         */
+        n20: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n24}
+         * @dark {@link tokens.kda.foundation.size.n24}
+         */
+        n24: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n25}
+         * @dark {@link tokens.kda.foundation.size.n25}
+         */
+        n25: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n30}
+         * @dark {@link tokens.kda.foundation.size.n30}
+         */
+        n30: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n32}
+         * @dark {@link tokens.kda.foundation.size.n32}
+         */
+        n32: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n35}
+         * @dark {@link tokens.kda.foundation.size.n35}
+         */
+        n35: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n40}
+         * @dark {@link tokens.kda.foundation.size.n40}
+         */
+        n40: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n48}
+         * @dark {@link tokens.kda.foundation.size.n48}
+         */
+        n48: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n56}
+         * @dark {@link tokens.kda.foundation.size.n56}
+         */
+        n56: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n64}
+         * @dark {@link tokens.kda.foundation.size.n64}
+         */
+        n64: '',
       },
       transition: {
         delay: {
@@ -860,6 +955,13 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha95}
              */
             default: '',
+            context: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n0@alpha95}
+               * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha95}
+               */
+              default: '',
+            },
             /**
              * @light {@link tokens.kda.foundation.color.neutral.n0}
              * @dark {@link tokens.kda.foundation.color.neutral.n5}
@@ -878,6 +980,20 @@ export const tokens = createThemeContract({
                * @dark {@link tokens.kda.foundation.color.neutral.n99@alpha80}
                */
               default: '',
+            },
+            subtle: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n99@alpha3}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0@alpha20}
+               */
+              default: '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.neutral.n99@alpha80}
+                 * @dark {@link tokens.kda.foundation.color.neutral.n99@alpha80}
+                 */
+                default: '',
+              },
             },
           },
           surfaceHighContrast: {
@@ -1842,6 +1958,13 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.aqua.n20@alpha80}
              */
             '@focus': '',
+          },
+          overlay: {
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             */
+            context: '',
           },
         },
         brand: {
@@ -2906,6 +3029,18 @@ export const tokens = createThemeContract({
           'n1@alpha3': '',
           /**
            * [generated]
+           * @light  `"#f5f5f50a"`
+           * @dark  `"#020e1b0a"`
+           */
+          'n1@alpha4': '',
+          /**
+           * [generated]
+           * @light  `"#f5f5f50d"`
+           * @dark  `"#020e1b0d"`
+           */
+          'n1@alpha5': '',
+          /**
+           * [generated]
            * @light  `"#f5f5f50f"`
            * @dark  `"#020e1b0f"`
            */
@@ -3024,6 +3159,18 @@ export const tokens = createThemeContract({
            * @dark  `"#f5f5f508"`
            */
           'n99@alpha3': '',
+          /**
+           * [generated]
+           * @light  `"#020e1b0a"`
+           * @dark  `"#f5f5f50a"`
+           */
+          'n99@alpha4': '',
+          /**
+           * [generated]
+           * @light  `"#020e1b0d"`
+           * @dark  `"#f5f5f50d"`
+           */
+          'n99@alpha5': '',
           /**
            * [generated]
            * @light  `"#020e1b0f"`
@@ -3356,12 +3503,32 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.neutral.n100@alpha40}
              */
             default: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n60}
+             * @dark {@link tokens.kda.foundation.color.neutral.n60}
+             */
+            lighter: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n80}
+             */
+            bolder: '',
             inverse: {
               /**
                * @light {@link tokens.kda.foundation.color.neutral.n0@alpha40}
                * @dark {@link tokens.kda.foundation.color.neutral.n0@alpha40}
                */
               default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n40}
+               * @dark {@link tokens.kda.foundation.color.neutral.n40}
+               */
+              lighter: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n20}
+               * @dark {@link tokens.kda.foundation.color.neutral.n20}
+               */
+              bolder: '',
             },
           },
           brand: {
@@ -4896,20 +5063,6 @@ export const tokens = createThemeContract({
           level3: '',
         },
       },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
-        },
-      },
       icon: {
         size: {
           /**
@@ -4949,6 +5102,20 @@ export const tokens = createThemeContract({
           xxl: '',
         },
       },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
+        },
+      },
       typography: {
         family: {
           /**
@@ -4956,11 +5123,6 @@ export const tokens = createThemeContract({
            * @dark  `"Inter"`
            */
           primaryFont: '',
-          /**
-           * @light  `"Inter"`
-           * @dark  `"Inter"`
-           */
-          secondaryFont: '',
           /**
            * @light  `"Kode Mono"`
            * @dark  `"Kode Mono"`
@@ -5128,28 +5290,6 @@ export const tokens = createThemeContract({
              * @dark  `"700"`
              */
             bold: '',
-          },
-          secondaryFont: {
-            /**
-             * @light  `"400"`
-             * @dark  `"400"`
-             */
-            regular: '',
-            /**
-             * @light  `"500"`
-             * @dark  `"500"`
-             */
-            medium: '',
-            /**
-             * @light  `"600"`
-             * @dark  `"600"`
-             */
-            bold: '',
-            /**
-             * @light  `"700"`
-             * @dark  `"700"`
-             */
-            black: '',
           },
           monospaceFont: {
             /**

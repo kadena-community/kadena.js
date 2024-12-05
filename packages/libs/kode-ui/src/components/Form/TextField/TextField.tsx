@@ -32,6 +32,7 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
   className?: string;
   tag?: string;
   info?: string;
+  step?: string;
   direction?: IFormFieldHeaderProps['direction'];
   /*
    * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
@@ -59,6 +60,7 @@ export function TextFieldBase(
     errorMessage,
     variant = 'default',
     direction = 'row',
+    step,
     ...props
   }: ITextFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
@@ -111,6 +113,7 @@ export function TextFieldBase(
     >
       <input
         {...mergeProps(inputProps, focusProps, hoverProps)}
+        step={step}
         onChange={handleOnChange}
         ref={ref}
         className={classNames(

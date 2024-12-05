@@ -49,7 +49,7 @@ export const StorageKeys: Record<
 };
 
 export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {
-  NETWORK: 'testnet04',
+  NETWORK: 'mainnet01',
   CHAIN_ID: '1',
 };
 
@@ -69,6 +69,7 @@ const walletConnectModal = new WalletConnectModal({
 
 interface IWalletConnectClientContextProviderProps {
   children: ReactNode;
+  disablePolling?: boolean;
 }
 
 /**
@@ -76,7 +77,7 @@ interface IWalletConnectClientContextProviderProps {
  */
 export const WalletConnectClientContextProvider: FC<
   IWalletConnectClientContextProviderProps
-> = ({ children }) => {
+> = ({ disablePolling = false, children }) => {
   const [client, setClient] = useState<Client>();
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
@@ -252,21 +253,23 @@ export const WalletConnectClientContextProvider: FC<
     try {
       setIsInitializing(true);
 
-      const _client = await Client.init({
-        relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
-        projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
-      });
+      if (!disablePolling) {
+        const _client = await Client.init({
+          relayUrl: env('WALLET_CONNECT_RELAY_URL', ''),
+          projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
+        });
 
-      setClient(_client);
-      await subscribeToEvents(_client);
-      await checkPersistedState(_client);
+        setClient(_client);
+        await subscribeToEvents(_client);
+        await checkPersistedState(_client);
+      }
       // eslint-disable-next-line no-useless-catch
     } catch (err) {
       throw err;
     } finally {
       setIsInitializing(false);
     }
-  }, [checkPersistedState, subscribeToEvents]);
+  }, [checkPersistedState, disablePolling, subscribeToEvents]);
 
   useEffect(() => {
     if (!client) {

@@ -1,6 +1,5 @@
-import path from 'node:path';
+import path, { isAbsolute } from 'node:path';
 import { services } from '../../../../services/index.js';
-import { KadenaError } from '../../../../services/service-error.js';
 import { getTxTemplateDirectory } from '../../utils/txHelpers.js';
 
 const transferTemplate = `
@@ -98,9 +97,6 @@ export const defaultTemplates = {
 
 export const writeTemplatesToDisk = async (): Promise<string[]> => {
   const templateFolder = getTxTemplateDirectory();
-  if (templateFolder === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   await services.filesystem.ensureDirectoryExists(templateFolder);
   const templatesAdded = [];
   for (const [name, template] of Object.entries(defaultTemplates)) {
@@ -114,35 +110,53 @@ export const writeTemplatesToDisk = async (): Promise<string[]> => {
   return templatesAdded;
 };
 
-export const getTemplate = async (filename: string): Promise<string> => {
+export const getTemplate = async (
+  filename: string,
+): Promise<{ template: string; path: string; cwd: string }> => {
   const templateFolder = getTxTemplateDirectory();
-  if (templateFolder === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
+  const cwd = process.cwd();
+
   const cwdFile = await services.filesystem.readFile(filename);
   if (cwdFile !== null) {
-    return cwdFile;
+    return {
+      template: cwdFile,
+      path: isAbsolute(filename) ? path.relative(cwd, filename) : filename,
+      cwd,
+    };
   }
+
   const filePath = path.join(templateFolder, filename);
+
   const template = await services.filesystem.readFile(filePath);
   if (template !== null) {
-    return template;
+    return { template, path: filename, cwd: templateFolder };
   }
   throw new Error(`Template "${filename}" not found`);
 };
 
-export const getTemplates = async (): Promise<Record<string, string>> => {
+export const getTemplates = async (): Promise<
+  Array<{ filename: string; template: string; path: string; cwd: string }>
+> => {
   const templateFolder = getTxTemplateDirectory();
-  if (templateFolder === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-  const files = await services.filesystem.readDir(templateFolder);
-  const templates: Record<string, string> = {};
+  const files = (await services.filesystem.readDir(templateFolder)).filter(
+    (file) => file.endsWith('.ktpl'),
+  );
+  const templates: Array<{
+    filename: string;
+    template: string;
+    path: string;
+    cwd: string;
+  }> = [];
+
   for (const file of files) {
-    const template = await getTemplate(file).catch(() => null);
-    if (template !== null) {
-      templates[file] = template;
+    const templateObj = await getTemplate(file).catch(() => null);
+    if (templateObj !== null) {
+      templates.push({
+        filename: file,
+        ...templateObj,
+      });
     }
   }
+
   return templates;
 };

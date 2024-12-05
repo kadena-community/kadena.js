@@ -166,7 +166,6 @@ type FungibleAccountTransactionsConnectionEdge {
 type FungibleAccountTransfersConnection {
   edges: [FungibleAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type FungibleAccountTransfersConnectionEdge {
@@ -228,10 +227,19 @@ type GraphConfiguration {
   minimumBlockHeight: BigInt
 }
 
-"""Guard for an account."""
-type Guard {
+type Guard implements IGuard {
   keys: [String!]!
   predicate: String!
+  raw: String!
+}
+
+"""
+A guard. Has values `keys`, `predicate` to provide backwards compatibility for `KeysetGuard`.
+"""
+interface IGuard {
+  keys: [String!]! @deprecated(reason: "Use `... on KeysetGuard { keys predicate }` instead when working with Keysets")
+  predicate: String! @deprecated(reason: "Use `... on KeysetGuard { keys predicate }` instead when working with Keysets")
+  raw: String!
 }
 
 """The account of the miner that solved a block."""

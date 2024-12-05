@@ -49,7 +49,7 @@ export const uploadImageString = async (
 
   const result = await pinata.pinFileToIPFS(stream, options);
   return {
-    url: `https://ipfs.io/ipfs/${result.IpfsHash}`,
+    url: `${process.env.NEXT_PUBLIC_PINATA_DOMAIN}/ipfs/${result.IpfsHash}`,
     cid: result.IpfsHash,
   };
 };

@@ -239,7 +239,9 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
 export const createToken = <C extends ICreateTokenPolicyConfig>(
   inputs: WithCreateTokenPolicy<C, ICreateTokenInput>,
   config: IClientConfig,
-) =>
-  submitClient<
+) => {
+  fetch('/api/cron').catch(console.log);
+  return submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['create-token']>
   >(config)(createTokenCommand(inputs));
+};

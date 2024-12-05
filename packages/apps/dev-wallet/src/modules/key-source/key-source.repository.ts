@@ -15,7 +15,7 @@ export interface IHDBIP44 {
 export interface IHDChainweaver {
   uuid: string;
   profileId: string;
-  secretId: string;
+  secretId?: string;
   source: 'HD-chainweaver';
   rootKeyId: string;
   keys: Array<{
@@ -42,8 +42,6 @@ export interface HDWalletRepository {
   getKeySource: (id: string) => Promise<KeySourceType>;
   addKeySource: (profile: KeySourceType) => Promise<void>;
   updateKeySource: (profile: KeySourceType) => Promise<void>;
-  getEncryptedValue: (key: string) => Promise<Uint8Array>;
-  addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
 }
 
 const createKeySourceRepository = ({
@@ -60,15 +58,6 @@ const createKeySourceRepository = ({
     },
     updateKeySource: async (keySource: KeySourceType): Promise<void> => {
       return update('keySource', keySource);
-    },
-    getEncryptedValue: async (key: string): Promise<Uint8Array> => {
-      return getOne('encryptedValue', key);
-    },
-    addEncryptedValue: async (
-      key: string,
-      value: string | Uint8Array,
-    ): Promise<void> => {
-      return add('encryptedValue', value, key);
     },
   };
 };

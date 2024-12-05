@@ -1,6 +1,6 @@
 import { pactCommandToSigningRequest } from '../utils/pactCommandToSigningRequest';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-import { connect, isConnected, isInstalled } from './eckoCommon';
+import { checkStatus, connect, isConnected, isInstalled } from './eckoCommon';
 import type { IEckoSignResponse, IEckoSignSingleFunction } from './eckoTypes';
 
 declare global {
@@ -46,6 +46,7 @@ export function createSignWithEckoWallet(): IEckoSignSingleFunction {
   signWithEckoWallet.isInstalled = isInstalled;
   signWithEckoWallet.isConnected = isConnected;
   signWithEckoWallet.connect = connect;
+  signWithEckoWallet.checkStatus = checkStatus;
 
   return signWithEckoWallet;
 }

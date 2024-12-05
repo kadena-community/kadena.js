@@ -1,11 +1,9 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getTransaction } from '@/utils/proofOfUs';
 import { Stack } from '@kadena/kode-ui';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
-import { Button } from '../Button/Button';
 import { ListSignees } from '../ListSignees/ListSignees';
 import { ErrorStatus } from '../Status/ErrorStatus';
 import { LoadingStatus } from '../Status/LoadingStatus';
@@ -92,11 +90,6 @@ export const MintingCheck: FC<IProps> = ({ token }) => {
       {isAttendanceToken ? null : <ListSignees />}
 
       <Stack flex={1} />
-      <Stack>
-        <Link href="/user">
-          <Button>Go to dashboard</Button>
-        </Link>
-      </Stack>
     </Stack>
   );
 };

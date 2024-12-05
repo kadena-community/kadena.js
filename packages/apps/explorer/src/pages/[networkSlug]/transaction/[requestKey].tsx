@@ -58,6 +58,7 @@ const Transaction: React.FC = () => {
         label: 'Something went wrong',
         body: 'Loading of transaction requestkey data failed',
       });
+      setIsLoading(false);
     }
 
     if (data) {
@@ -66,7 +67,7 @@ const Transaction: React.FC = () => {
         setInnerData(data);
       }, 200);
     }
-  }, [loading, data, error]);
+  }, [loading, data, error, setIsLoading]);
 
   return (
     <Layout>

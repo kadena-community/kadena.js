@@ -1,5 +1,101 @@
 # @kadena/proof-of-us
 
+## 0.5.16
+
+### Patch Changes
+
+- Updated dependencies \[2a073ed]
+  - @kadena/graph\@2.0.2
+
+## 0.5.15
+
+### Patch Changes
+
+- Updated dependencies \[868c732]
+  - @kadena/graph\@2.0.1
+
+## 0.5.14
+
+### Patch Changes
+
+- Updated dependencies \[a8204ab]
+- Updated dependencies \[7cefeb1]
+- Updated dependencies \[edcfbe0]
+- Updated dependencies \[8467af0]
+- Updated dependencies \[14e809a]
+- Updated dependencies \[8467af0]
+  - @kadena/graph\@2.0.0
+  - @kadena/kode-ui\@0.19.0
+  - @kadena/client\@1.15.0
+  - @kadena/kode-icons\@0.3.0
+  - @kadena/pactjs\@0.4.3
+
+## 0.5.13
+
+### Patch Changes
+
+- Updated dependencies \[d533d39]
+- Updated dependencies \[de87d1c]
+- Updated dependencies \[94ce674]
+- Updated dependencies \[7d063d6]
+  - @kadena/kode-icons\@0.3.0
+  - @kadena/kode-ui\@0.18.0
+
+## 0.5.12
+
+### Patch Changes
+
+- Updated dependencies \[eccd46e]
+  - @kadena/client\@1.15.0
+  - @kadena/graph\@1.0.14
+
+## 0.5.11
+
+### Patch Changes
+
+- Updated dependencies \[c6d23b8]
+  - @kadena/graph\@1.0.13
+
+## 0.5.10
+
+### Patch Changes
+
+- Updated dependencies \[33fbaae]
+  - @kadena/kode-ui\@0.17.1
+
+## 0.5.9
+
+### Patch Changes
+
+- 0e08d23: Typography fix with rebranding (Primary to Inter)
+- Updated dependencies \[80ac706]
+- Updated dependencies \[5985ccc]
+- Updated dependencies \[767c542]
+- Updated dependencies \[eb82843]
+- Updated dependencies \[0e08d23]
+  - @kadena/kode-ui\@0.17.0
+  - @kadena/graph\@1.0.12
+
+## 0.5.8
+
+### Patch Changes
+
+- Updated dependencies \[0bcccf1]
+- Updated dependencies \[b751065]
+  - @kadena/kode-ui\@0.16.0
+
+## 0.5.7
+
+### Patch Changes
+
+- 73dc734: update the spirekey package
+- Updated dependencies \[ae3dbc7]
+- Updated dependencies \[d07b424]
+- Updated dependencies \[7ef4a06]
+  - @kadena/kode-ui\@0.15.0
+  - @kadena/client\@1.14.0
+  - @kadena/graph\@1.0.11
+
 ## 0.5.6
 
 ### Patch Changes

@@ -1,7 +1,11 @@
 export { kadenaGenKeypairFromSeed } from './kadenaGenKeypairFromSeed.js';
 export { kadenaGetPublic } from './kadenaGetPublic.js';
 export { kadenaKeyPairsFromRandom } from './kadenaKeyPairsFromRandom.js';
-export { kadenaGenMnemonic, kadenaMnemonicToSeed } from './kadenaMnemonic.js';
+export {
+  kadenaEntropyToMnemonic,
+  kadenaGenMnemonic,
+  kadenaMnemonicToSeed,
+} from './kadenaMnemonic.js';
 export {
   kadenaSignWithKeyPair,
   kadenaSignWithSeed,

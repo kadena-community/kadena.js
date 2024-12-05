@@ -1,4 +1,5 @@
 import {
+  atoms,
   ellipsis,
   globalStyle,
   recipe,
@@ -13,24 +14,28 @@ export const selectButtonValue = style({
   flex: 1,
 });
 
-export const selectButtonClass = style({
-  display: 'flex',
-  backgroundColor: token('color.background.input.default'),
-  justifyContent: 'space-between',
-  color: token('color.text.base.default'),
-  flex: 1,
-  overflow: 'hidden',
-  position: 'relative',
-  alignItems: 'center',
-  paddingBlock: 0,
-  paddingInlineStart: token('spacing.md'),
-  paddingInlineEnd: 0,
-  selectors: {
-    '&[data-hovered]': {
-      cursor: 'pointer',
+export const selectButtonClass = style([
+  atoms({
+    paddingBlock: 'no',
+    flex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  }),
+  {
+    display: 'flex',
+    backgroundColor: token('color.background.input.default'),
+    color: token('color.text.base.default'),
+    paddingInlineStart: token('spacing.md'),
+    paddingInlineEnd: 0,
+    selectors: {
+      '&[data-hovered]': {
+        cursor: 'pointer',
+      },
     },
   },
-});
+]);
 
 globalStyle(`${selectButtonClass} > span`, {
   fontFamily: 'unset',

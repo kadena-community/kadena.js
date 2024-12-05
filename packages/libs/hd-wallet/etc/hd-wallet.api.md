@@ -14,13 +14,16 @@ export type EncryptedString = string & {
 // Warning: (ae-forgotten-export) The symbol "BinaryLike" needs to be exported by the entry point index.d.ts
 //
 // @public
-export function kadenaChangePassword(password: BinaryLike, encryptedData: BinaryLike, newPassword: string): Promise<EncryptedString>;
+export function kadenaChangePassword<TEncode extends 'base64' | 'buffer' = 'base64', TReturn = TEncode extends 'base64' ? EncryptedString : Uint8Array>(password: BinaryLike, encryptedData: BinaryLike, newPassword: string, encode?: TEncode): Promise<TReturn>;
 
 // @public
 export function kadenaDecrypt(password: BinaryLike, encryptedData: BinaryLike): Promise<Uint8Array>;
 
 // @public
 export function kadenaEncrypt<TEncode extends 'base64' | 'buffer' = 'base64', TReturn = TEncode extends 'base64' ? EncryptedString : Uint8Array>(password: BinaryLike, message: BinaryLike, encode?: TEncode): Promise<TReturn>;
+
+// @public
+export const kadenaEntropyToMnemonic: (entropy: Uint8Array) => string;
 
 // @public (undocumented)
 export function kadenaGenKeypairFromSeed(password: BinaryLike, seed: EncryptedString, index: number, derivationPathTemplate?: string): Promise<[string, EncryptedString]>;

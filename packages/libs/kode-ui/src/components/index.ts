@@ -12,6 +12,7 @@ export type {
   IDialogProps,
 } from './Dialog';
 export type {
+  ICheckboxGroupProps,
   ICheckboxProps,
   IComboboxProps,
   IFormProps,
@@ -50,6 +51,7 @@ export type { ITableProps } from './Table';
 export type { ITabItemProps, ITabNode, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITextLinkProps } from './TextLink';
+export type { ITileProps } from './Tile';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
 export type { IHeadingProps, ITextProps } from './Typography';
@@ -72,6 +74,7 @@ export {
 export { Divider } from './Divider/Divider';
 export {
   Checkbox,
+  CheckboxGroup,
   Combobox,
   ComboboxItem,
   CopyButton,
@@ -109,10 +112,13 @@ export {
 } from './Notification';
 export { Pagination } from './Pagination';
 export { ProgressCircle } from './ProgressCircle';
+export { Step, Stepper } from './Stepper';
+export type { IStepProps, IStepperProps } from './Stepper';
 export { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';
 export { TextLink } from './TextLink';
+export { Tile } from './Tile';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Heading, Text } from './Typography';
@@ -125,3 +131,16 @@ export { GradientText } from './Typography';
 export type { ITableProps as ITableV1Props } from './TableV1';
 export type { ITreeProps } from './Tree';
 export type { IGradientTextProps } from './Typography';
+
+export {
+  ContextMenu,
+  ContextMenuDivider,
+  ContextMenuItem,
+  IContextMenuDividerProps,
+  IContextMenuItemProps,
+  IContextMenuProps,
+} from './ContextMenu';
+
+export { Media, MediaContextProvider, mediaProviderStyles } from './Media';
+
+export { Popover, PopoverTrigger } from './Popover';

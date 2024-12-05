@@ -1,11 +1,12 @@
 import { IAccount } from '@/modules/account/account.repository';
-import { BuiltInPredicate, ChainId, ISigner } from '@kadena/client';
+import { ChainId, ISigner } from '@kadena/client';
 import {
   safeTransferCreateCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
+import { IReceiverAccount } from '../transfer-v2/utils';
 
 interface IReciverAccount {
   account: string;
@@ -77,6 +78,7 @@ export const getOptimalTransfers = (
     perChain.push({
       ...item,
       amount: fromChain.toString(),
+      balance: item.balance,
       gasLimit: safeLimit,
       gasPrice: item.gasPrice,
     });
@@ -89,77 +91,10 @@ export const getOptimalTransfers = (
   return perChain;
 };
 
-export interface IReceiverAccount {
-  address: string;
-  chains: Array<{ chainId: ChainId; balance: string }>;
-  overallBalance: string;
-  keyset: {
-    guard: {
-      keys: ISigner[];
-      pred: BuiltInPredicate;
-    };
-  };
-}
-
-export const getAccount = (
-  address: string,
-  chainResult: Array<{
-    chainId: ChainId | undefined;
-    result:
-      | {
-          balance: string;
-          guard: { keys: string[]; pred: BuiltInPredicate };
-        }
-      | undefined;
-  }>,
-): IReceiverAccount[] => {
-  const accounts = chainResult.reduce(
-    (acc, data) => {
-      if (
-        !data.chainId ||
-        !data.result ||
-        !data.result.balance ||
-        data.result.balance === '0'
-      )
-        return acc;
-      const key = `${data.result.guard.keys.sort().join(',')}:${data.result.guard.pred}`;
-      if (!acc[key]) {
-        const item: IReceiverAccount = {
-          address,
-          overallBalance: data.result.balance,
-          keyset: { guard: data.result.guard },
-          chains: [
-            {
-              chainId: data.chainId,
-              balance: data.result.balance,
-            },
-          ],
-        };
-        return { ...acc, [key]: item };
-      }
-      return {
-        ...acc,
-        [key]: {
-          ...acc[key],
-          overallBalance: new PactNumber(acc[key]!.overallBalance ?? '0')
-            .plus(data.result.balance)
-            .toDecimal(),
-          chains: acc[key]!.chains!.concat({
-            chainId: data.chainId,
-            balance: data.result.balance,
-          }),
-        },
-      };
-    },
-    {} as Record<string, IReceiverAccount>,
-  );
-
-  return Object.values(accounts);
-};
-
 export interface IOptimalTransfer {
   amount: string;
   chainId: ChainId;
+  balance: string;
   gasLimit: number;
   gasPrice: number;
 }

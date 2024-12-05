@@ -1,6 +1,7 @@
 import { env } from '@/utils/env';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { connect, initSpireKey, type Account } from '@kadena/spirekey-sdk';
+import type { Account } from '@kadena/spirekey-sdk';
+import { connect, initSpireKey } from '@kadena/spirekey-sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -17,7 +18,7 @@ export interface IAccountContext {
 }
 
 export const AccountContext = createContext<IAccountContext>({
-  account: undefined,  
+  account: undefined,
   isMounted: false,
   login: () => {},
   logout: () => {},
@@ -31,14 +32,18 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const chainId = '8';
 
   useEffect(() => {
-    initSpireKey({ hostUrl: env.WALLET_URL, useRAccount: true })
+    initSpireKey({ hostUrl: env.WALLET_URL, useRAccount: true });
   }, []);
 
   const login = useCallback(async () => {
-    const account = await connect(env.NETWORKID, chainId);
-    setIsMounted(true);
-    setAccount(account);
-    localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
+    try {
+      const account = await connect(env.NETWORKID, chainId);
+      setIsMounted(true);
+      setAccount(account);
+      localStorage.setItem(getAccountCookieName(), JSON.stringify(account));
+    } catch (e) {
+      localStorage.removeItem(getAccountCookieName());
+    }
   }, [connect]);
 
   const logout = useCallback(() => {

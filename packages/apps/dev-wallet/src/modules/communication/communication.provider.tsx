@@ -1,3 +1,5 @@
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
+import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   FC,
   PropsWithChildren,
@@ -6,7 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { addTransaction } from '../transaction/transaction.service';
 import { useWallet } from '../wallet/wallet.hook';
 
 type Message = {
@@ -56,8 +58,9 @@ export const CommunicationProvider: FC<
   PropsWithChildren<{ setOrigin: (pathname: string) => void }>
 > = ({ setOrigin, children }) => {
   const [requests] = useState(() => new Map<string, Request>());
-  const navigate = useNavigate();
-  const { isUnlocked, accounts, profile } = useWallet();
+  const navigate = usePatchedNavigate();
+  const { isUnlocked, accounts, profile, networks, activeNetwork } =
+    useWallet();
 
   useEffect(() => {
     console.log('CommunicationProvider mounted', isUnlocked);
@@ -91,7 +94,6 @@ export const CommunicationProvider: FC<
       });
     const handlers = [
       handleRequest('CONNECTION_REQUEST', '/connect'),
-      handleRequest('SIGN_REQUEST', '/sign'),
       handleRequest('PAYMENT_REQUEST', '/payment'),
       handle('GET_STATUS', async () => {
         return {
@@ -100,6 +102,36 @@ export const CommunicationProvider: FC<
             ...(isUnlocked ? { profile, accounts } : {}),
           },
         };
+      }),
+      handle('SIGN_REQUEST', async (data) => {
+        const { id, payload } = data as {
+          id: string;
+          payload: IUnsignedCommand;
+        };
+        console.log('SIGN_REQUEST', id);
+        console.log('payload', payload);
+        const cmd = JSON.parse(payload.cmd) as IPactCommand;
+        const networkUUID =
+          networks.find(({ networkId }) => networkId === cmd.networkId)?.uuid ??
+          activeNetwork?.uuid;
+
+        if (!networkUUID) {
+          throw new Error('Network not found');
+        }
+        if (!profile?.uuid) {
+          throw new Error('Profile not found');
+        }
+
+        await addTransaction({
+          transaction: payload as IUnsignedCommand,
+          profileId: profile?.uuid,
+          networkUUID: networkUUID,
+          groupId: id,
+        });
+        const request = createRequest(data);
+        setOrigin(`transaction/${id}?request=${id}`);
+        navigate(`transaction/${id}?request=${id}`);
+        return request;
       }),
     ];
     return () => {

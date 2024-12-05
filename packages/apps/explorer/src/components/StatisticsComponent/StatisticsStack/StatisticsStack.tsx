@@ -1,11 +1,10 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
-import { Media } from '@/components/Layout/media';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { CONSTANTS } from '@/constants/constants';
 import { useQueryContext } from '@/context/queryContext';
 import { networkInfo } from '@/graphql/queries/network-info.graph';
 import { formatStatisticsData } from '@/services/format';
-import { Stack, Text } from '@kadena/kode-ui';
+import { Media, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
 import { boxClass, overFlowClass } from './statisticsStack.css';

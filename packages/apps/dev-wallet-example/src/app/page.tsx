@@ -1,5 +1,13 @@
 'use client';
 
+import {
+  ChainId,
+  createTransaction,
+  ICommand,
+  IPartialPactCommand,
+} from '@kadena/client';
+import { transferAllCommand } from '@kadena/client-utils/coin';
+import { hash } from 'crypto';
 import { useState } from 'react';
 
 const sleep = (time: number) =>
@@ -9,7 +17,8 @@ const sleep = (time: number) =>
     }, time);
   });
 
-const walletOrigin = () => (window as any).walletUrl || 'http://localhost:4173';
+const walletOrigin = () =>
+  (window as any).walletUrl || 'https://wallet.kadena.io';
 const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';
@@ -40,7 +49,7 @@ const communicate =
   };
 
 let walletGlobal: Window | null = null;
-async function getWalletConnection(page: string = '') {
+async function getWalletConnection(page: string = '', popup = true) {
   if (walletGlobal && !walletGlobal.closed) {
     return {
       message: communicate(window, walletGlobal),
@@ -48,7 +57,11 @@ async function getWalletConnection(page: string = '') {
       close: () => walletGlobal?.close(),
     };
   }
-  const wallet = window.open('', walletName);
+  const wallet = window.open(
+    '',
+    walletName,
+    popup ? 'width=800,height=800' : undefined,
+  );
 
   if (!wallet) {
     throw new Error('POPUP_BLOCKED');
@@ -93,10 +106,31 @@ async function getWalletConnection(page: string = '') {
   };
 }
 
+interface IState {
+  profile: {
+    name: string;
+    accentColor: string;
+    uuid: string;
+  };
+  accounts: Array<{
+    address: string;
+    keyset: {
+      guard: { keys: string[]; pred: 'keys-all' | 'keys-any' | 'keys-2' };
+    };
+    alias: string;
+    contract: string;
+    chains: Array<{ chainId: ChainId; balance: string }>;
+    overallBalance: string;
+  }>;
+}
+
 export default function Home() {
   const [log, setLog] = useState<string[]>([]);
   const [profile, setProfile] = useState<any>(null);
+  const [state, setState] = useState<IState>();
+  const [signedTx, setSignedTx] = useState<ICommand>();
   const accentColor = profile?.accentColor ?? '#3b82f6';
+  const signDisabled = !state || (state && state.accounts.length < 2);
 
   const addLog = (data: unknown) => {
     log.push(JSON.stringify(data));
@@ -113,6 +147,7 @@ export default function Home() {
             This is a simple example of a dApp that uses the Dev Wallet to sign
             transactions.
           </p>
+
           <button
             className="mt-8 px-4 py-2 text-white rounded"
             style={{ backgroundColor: accentColor }}
@@ -131,7 +166,7 @@ export default function Home() {
               });
               addLog(status);
               setProfile((status.payload as any).profile);
-              close();
+              // close();
             }}
           >
             {profile
@@ -153,6 +188,7 @@ export default function Home() {
                 name: appName,
               });
               addLog(response);
+              setState(response.payload as IState);
               // close();
             }}
           >
@@ -160,21 +196,94 @@ export default function Home() {
           </button>
         </div>
         <div>
-          <h2 className="text-2xl font-bold">Log</h2>
-          <ul>
-            {log.map((item, index) => (
-              <li
-                key={index}
+          {state && (
+            <>
+              <h2>Wallet Data</h2>
+              <div>name: {state.profile.name}</div>
+              <h3>Accounts</h3>
+              {
+                <ul>
+                  {state.accounts.map((account, index) => (
+                    <li key={index}>
+                      <div>Address: {account.address}</div>
+                      <div>Alias: {account.alias}</div>
+                      <div>Contract: {account.contract}</div>
+                      <div>overallBalance: {account.overallBalance}</div>
+                      <div>Guard: {JSON.stringify(account.keyset.guard)}</div>
+                    </li>
+                  ))}
+                </ul>
+              }
+            </>
+          )}
+        </div>
+        <button
+          className={`mt-8 px-4 py-2 text-white rounded ${signDisabled ? 'bg-gray-300 text-gray-50' : 'bg-blue-500'}`}
+          disabled={!state || (state && state.accounts.length < 2)}
+          onClick={async () => {
+            if (!state) return;
+            const { message, focus, close } = await getWalletConnection();
+            const tx = transferAllCommand({
+              sender: {
+                account: state.accounts[0].address,
+                publicKeys: state.accounts[0].keyset.guard.keys,
+              },
+              receiver: {
+                account: state.accounts[1].address,
+                keyset: state.accounts[1].keyset.guard,
+              },
+              chainId: state.accounts[0].chains[0].chainId,
+              amount: state.accounts[0].chains[0].balance,
+              contract: state.accounts[0].contract,
+            });
+            focus();
+            const response = await message(
+              'SIGN_REQUEST',
+              createTransaction(tx()) as any,
+            );
+            const payload: {
+              status: 'signed' | 'rejected';
+              transaction?: ICommand;
+            } = response.payload as any;
+            debugger;
+            if (payload && payload.status === 'signed') {
+              setSignedTx(payload.transaction as ICommand);
+            }
+            addLog(response);
+            // close();
+          }}
+        >
+          Transfer balance from account 1 to account 2
+        </button>
+
+        <div
+          style={{
+            width: '80vw',
+            padding: 10,
+            overflow: 'auto',
+          }}
+        >
+          {signedTx && (
+            <>
+              <h2>Signed Transaction</h2>
+              <pre
+                className="bg-gray-50 overflow-auto"
                 style={{
-                  borderTop: '1px solid gray',
-                  marginTop: '10px',
-                  paddingTop: '10px',
+                  width: '100%',
                 }}
               >
-                {item}
-              </li>
-            ))}
-          </ul>
+                {JSON.stringify(
+                  {
+                    cmd: JSON.parse(signedTx.cmd),
+                    hash: signedTx.hash,
+                    sigs: signedTx.sigs,
+                  },
+                  undefined,
+                  2,
+                )}
+              </pre>
+            </>
+          )}
         </div>
       </div>
     </main>

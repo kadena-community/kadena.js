@@ -26,6 +26,7 @@ export const dotenv: {
   NETWORK_STATISTICS_URL: string;
   NODE_ENV: string;
   ENVIRONMENT: string;
+  HOST: string;
   PORT: number;
   PRISMA_LOGGING_ENABLED: boolean;
   PRISMA_LOG_TO_FILE: boolean;
@@ -105,6 +106,7 @@ export const dotenv: {
   ),
   NODE_ENV: or(process.env.NODE_ENV, 'production'),
   ENVIRONMENT: or(process.env.ENVIRONMENT, 'mainnet'),
+  HOST: or(process.env.HOST, 'localhost'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
   PRISMA_LOGGING_ENABLED: or(
     process.env.PRISMA_LOGGING_ENABLED?.toLocaleLowerCase() === 'true',
@@ -124,7 +126,10 @@ export const dotenv: {
     false,
   ),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
-  SENTRY_DSN: or(process.env.SENTRY_DSN, undefined),
+  SENTRY_DSN: or(
+    process.env.SENTRY_DSN,
+    'https://0a574470a6b7100e63deb885e9a81f4b@o4507570953584640.ingest.de.sentry.io/4507571249676368',
+  ),
   SIMULATE_DEFAULT_CHAIN_ID: or(
     process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,
     '0' as ChainId,

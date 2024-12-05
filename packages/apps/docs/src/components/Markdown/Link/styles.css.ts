@@ -4,6 +4,6 @@ import { style } from '@vanilla-extract/css';
 export const linkClass = style([
   atoms({
     color: 'text.brand.primary.default',
-    fontWeight: 'secondaryFont.medium',
+    fontWeight: 'primaryFont.medium',
   }),
 ]);

@@ -10,7 +10,6 @@ import {
 } from '../commands/tx/utils/txHelpers.js';
 
 import { basename } from 'node:path';
-import { getAllAccounts } from '../commands/account/utils/accountHelpers.js';
 import { loadNetworkConfig } from '../commands/networks/utils/networkHelpers.js';
 import { getTemplates } from '../commands/tx/commands/templates/templates.js';
 import { MULTI_SELECT_INSTRUCTIONS } from '../constants/global.js';
@@ -177,18 +176,23 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
 //   });
 // }
 
-export const selectTemplate: IPrompt<string> = async (args) => {
+export const selectTemplate: IPrompt<
+  { template: string; path: string; cwd: string } | string
+> = async (args) => {
   const stdin = args.stdin as string | undefined;
   if (stdin !== undefined && stdin !== '') return '-';
+
   const templates = await getTemplates();
-  const defaultTemplateKeys = Object.keys(templates);
 
   const choices = [
     {
       value: 'filepath',
-      name: 'Select file path',
+      name: 'Enter custom file path',
     },
-    ...defaultTemplateKeys.map((x) => ({ value: x, name: x })),
+    ...templates.map((template) => ({
+      value: template.filename,
+      name: template.filename,
+    })),
   ];
 
   const result = await select({
@@ -197,13 +201,22 @@ export const selectTemplate: IPrompt<string> = async (args) => {
   });
 
   if (result === 'filepath') {
-    const result = await input({
+    const filePathResult = await input({
       message: 'File path:',
     });
-    return result;
+
+    return filePathResult;
   }
 
-  return result;
+  const selectedTemplate = templates.find(
+    (template) => template.filename === result,
+  );
+
+  if (selectedTemplate) {
+    return selectedTemplate;
+  }
+
+  throw new Error(`Template "${result}" not found`);
 };
 
 // aliases in templates need to select aliases for keys and/or accounts
@@ -216,7 +229,7 @@ const promptVariableValue = async (
 ): Promise<string> => {
   if (key.startsWith('account:')) {
     // search for account alias - needs account implementation
-    const accounts = await getAllAccounts().catch(() => []);
+    const accounts = await services.account.list();
 
     const hasAccount = accounts.length > 0;
     let value: string | null = null;
@@ -271,7 +284,7 @@ const promptVariableValue = async (
       0,
     );
     const plainKeys = await services.plainKey.list();
-    const accounts = await getAllAccounts().catch(() => []);
+    const accounts = await services.account.list();
 
     const hasKeys = walletKeysCount > 0 || plainKeys.length > 0;
     const hasAccounts = accounts.length > 0;
@@ -286,7 +299,7 @@ const promptVariableValue = async (
     const accountMatch = variables[`account:${pkName}`];
 
     if (accountMatch) {
-      const accounts = await getAllAccounts().catch(() => []);
+      const accounts = await services.account.list();
       const accountConfig = accounts.find((x) => x.name === accountMatch);
       if (accountConfig) {
         const selection = await select({

@@ -1,15 +1,17 @@
-import type { IUnsignedCommand } from '@kadena/client';
+import type { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
-import { createPactCommandFromStringTemplate } from '@kadena/client-utils';
 import { PactNumber } from '@kadena/pactjs';
 import path from 'path';
+import {
+  createPactCommandFromStringTemplate,
+  createPactCommandFromTemplate,
+} from '../../../services/utils/yaml-converter.js';
 
 import {
   TX_TEMPLATE_FOLDER,
   WORKING_DIRECTORY,
 } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
-import { KadenaError } from '../../../services/service-error.js';
 import type { CommandResult } from '../../../utils/command.util.js';
 import { assertCommandError } from '../../../utils/command.util.js';
 import { createCommand } from '../../../utils/createCommand.js';
@@ -22,10 +24,10 @@ import { fixTemplatePactCommand } from './templates/mapper.js';
 import { writeTemplatesToDisk } from './templates/templates.js';
 
 export const createTransaction = async (
-  template: string,
   variables: Record<string, string>,
+  template: { template: string; path: string; cwd: string } | string,
 ): Promise<IUnsignedCommand> => {
-  // convert decimal-amount to pact decimal
+  // Handle decimal-amount conversion
   const updatedVariables = variables['decimal-amount']
     ? {
         ...variables,
@@ -35,29 +37,35 @@ export const createTransaction = async (
       }
     : variables;
 
-  // create transaction
-  const command = await createPactCommandFromStringTemplate(
-    template,
-    updatedVariables,
-  );
+  let command: IPactCommand | undefined = undefined;
 
-  // Map from legacy or partial template to full IPactCommand
-  // This method could throw an error
+  if (typeof template === 'string') {
+    // stdin
+    command = await createPactCommandFromStringTemplate(
+      template,
+      updatedVariables,
+    );
+  } else if (typeof template === 'object') {
+    const { path, cwd } = template;
+    command = await createPactCommandFromTemplate(path, updatedVariables, cwd);
+  } else {
+    throw new Error('A valid template is required.');
+  }
+
   const fixed = fixTemplatePactCommand(command);
-
   return kadenaCreateTransaction(fixed);
 };
 
 export const createAndWriteTransaction = async (
-  template: string,
   variables: Record<string, string>,
   // eslint-disable-next-line @rushstack/no-new-null
   outFilePath: string | null,
+  template: { template: string; path: string; cwd: string } | string,
 ): Promise<
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
 > => {
   try {
-    const transaction = await createTransaction(template, variables);
+    const transaction = await createTransaction(variables, template);
 
     let filePath: string | null = null;
     if (outFilePath === null) {
@@ -110,10 +118,7 @@ export const createTransactionCommandNew = createCommand(
     globalOptions.outFileJson(),
   ],
   async (option, { values, stdin }) => {
-    if (TX_TEMPLATE_FOLDER === null) {
-      throw new KadenaError('no_kadena_directory');
-    }
-
+    services.config.getDirectory();
     const templatesAdded = await writeTemplatesToDisk();
     if (templatesAdded.length > 0) {
       log.info(
@@ -123,6 +128,7 @@ export const createTransactionCommandNew = createCommand(
       );
     }
     const template = await option.template({ stdin });
+
     const showHoles = await option.holes();
 
     if (showHoles.holes === true) {
@@ -156,10 +162,11 @@ export const createTransactionCommandNew = createCommand(
     }
 
     const result = await createAndWriteTransaction(
-      template.templateConfig.template,
       templateVariables.templateVariables,
       outputFile.outFile,
+      template.template,
     );
+
     assertCommandError(result);
 
     log.output(

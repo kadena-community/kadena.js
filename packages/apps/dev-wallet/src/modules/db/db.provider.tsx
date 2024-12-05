@@ -1,13 +1,22 @@
+import { BootContent } from '@/Components/BootContent/BootContent';
 import { sleep } from '@/utils/helpers';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { Stack, Text } from '@kadena/kode-ui';
+import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { addDefaultFungibles } from '../account/account.repository';
 import { addDefaultNetworks } from '../network/network.repository';
-import { closeDatabaseConnections, setupDatabase } from './db.service';
+import { setupDatabase } from './db.service';
 
 const renderDefaultError = ({ message }: Error) => (
-  <div>
-    DataBase Error happens; <br /> {message}
-  </div>
+  <Stack
+    textAlign="left"
+    justifyContent={'flex-start'}
+    alignItems={'flex-start'}
+  >
+    <Stack flexDirection={'column'} gap={'xxs'}>
+      <Text color="emphasize">DataBase Error!</Text>
+      <Text>{message}</Text>
+    </Stack>
+  </Stack>
 );
 
 export const DatabaseProvider: FC<{
@@ -16,13 +25,16 @@ export const DatabaseProvider: FC<{
   renderError?: (error: Error) => ReactNode;
 }> = ({
   children,
-  fallback = 'initializing database',
+  fallback = <Text>initializing database ...</Text>,
   renderError = renderDefaultError,
 }) => {
+  const setupRef = useRef(false);
   const [initialized, setInitialized] = useState(false);
   const [errorObject, setErrorObject] = useState<Error>();
 
   useEffect(() => {
+    if (setupRef.current) return;
+    setupRef.current = true;
     const setupDataBase = async () => {
       console.log('setting up database');
       const db = await setupDatabase();
@@ -38,31 +50,15 @@ export const DatabaseProvider: FC<{
       }
     };
 
-    const closeConnectionsCallback = () => {
-      if (document.hidden) {
-        // close all connections when app is hidden; since open connections will block other tabs from accessing the database
-        closeDatabaseConnections();
-      }
-    };
-
-    document.addEventListener('visibilitychange', closeConnectionsCallback);
-
     setupDataBase().catch((e) => {
       console.log(e);
       setErrorObject(e);
     });
-
-    return () => {
-      document.removeEventListener(
-        'visibilitychange',
-        closeConnectionsCallback,
-      );
-    };
   }, []);
 
   if (errorObject) {
-    return renderError(errorObject);
+    return <BootContent> {renderError(errorObject)}</BootContent>;
   }
 
-  return initialized ? children : fallback;
+  return initialized ? children : <BootContent>{fallback}</BootContent>;
 };

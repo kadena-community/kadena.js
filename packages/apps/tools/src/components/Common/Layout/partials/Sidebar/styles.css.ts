@@ -60,7 +60,7 @@ export const gridMiniMenuLinkButtonStyle = style([
     border: 'none',
     cursor: 'pointer',
     textAlign: 'left',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
     fontSize: 'sm',
     pointerEvents: 'none',
     width: '100%',
@@ -128,7 +128,7 @@ export const gridItemMenuStyle = style([
 export const subMenuTitleClass = style([
   atoms({
     fontSize: 'sm',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',

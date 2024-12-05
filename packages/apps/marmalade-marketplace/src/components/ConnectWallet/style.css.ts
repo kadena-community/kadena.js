@@ -1,11 +1,11 @@
-import { style, globalStyle } from '@vanilla-extract/css';
 import { tokens } from '@kadena/kode-ui/styles';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const connectWalletContainer = style({
   display: 'flex',
-  alignItems: 'center',  
+  alignItems: 'center',
 });
-  
+
 export const walletButton = style({
   height: '40px',
   borderTopRightRadius: '0',
@@ -15,9 +15,9 @@ export const walletButton = style({
 
 export const selectButton = style({
   display: 'flex',
-  alignItems: 'center',  
+  alignItems: 'center',
   height: '40px',
-  width: '40px',  
+  width: '40px',
   borderTopLeftRadius: '0',
   borderBottomLeftRadius: '0',
 });
@@ -34,8 +34,8 @@ export const contextMenu = style({
   position: 'absolute',
   top: '60px',
   right: '25px',
-  backgroundColor: tokens.kda.foundation.color.background.input.default,      
-  borderRadius: tokens.kda.foundation.radius.sm,  
+  backgroundColor: tokens.kda.foundation.color.background.input.default,
+  borderRadius: tokens.kda.foundation.radius.sm,
   padding: `${tokens.kda.foundation.spacing.n2} 0`,
   zIndex: 1000,
 });
@@ -47,18 +47,20 @@ export const contextMenuItem = style({
   paddingLeft: tokens.kda.foundation.spacing.n4,
   cursor: 'pointer',
   ':hover': {
-    backgroundColor: tokens.kda.foundation.color.background.accent.primary.default,
+    backgroundColor:
+      tokens.kda.foundation.color.background.accent.primary.default,
   },
   ':focus': {
-    backgroundColor: tokens.kda.foundation.color.background.input.inverse['@focus'],
+    backgroundColor:
+      tokens.kda.foundation.color.background.input.inverse['@focus'],
   },
-  fontSize: tokens.kda.foundation.typography.fontSize.sm,  
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
 });
 
 globalStyle(`${contextMenuItem} :hover`, {
-  marginRight: '80px',  
+  marginRight: '80px',
 });
 
 globalStyle(`${contextMenuItem} > span`, {
-  marginRight: tokens.kda.foundation.spacing.n2,  
+  marginRight: tokens.kda.foundation.spacing.n2,
 });

@@ -42,6 +42,7 @@ const Header: FC<IHeaderProps> = () => {
   const { t } = useTranslation('common');
   const { selectedNetwork, networksData, setSelectedNetwork } =
     useWalletConnectClient();
+
   const { pathname } = useRouter();
 
   const { systemTheme, theme, setTheme } = useTheme();

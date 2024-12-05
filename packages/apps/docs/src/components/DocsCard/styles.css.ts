@@ -37,7 +37,7 @@ export const cardClass = style([
 export const docsCardLink = style([
   atoms({
     textDecoration: 'none',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
   }),
   {
     color: tokens.kda.foundation.color.text.base.default,

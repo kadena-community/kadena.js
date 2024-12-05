@@ -2,7 +2,7 @@
 import { localStorageProvider } from '@/utils/localStorageProvider';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-
+import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { ThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
@@ -26,7 +26,16 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
       <ApolloProvider client={client}>
         <AccountProvider>
           <TokenProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider
+              attribute="class"
+              forcedTheme="dark"
+              value={{
+                light: darkThemeClass,
+                dark: darkThemeClass,
+              }}
+            >
+              {children}
+            </ThemeProvider>
           </TokenProvider>
         </AccountProvider>
       </ApolloProvider>

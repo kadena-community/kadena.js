@@ -1,5 +1,77 @@
 # @kadena/graph
 
+## 2.0.2
+
+### Patch Changes
+
+- 2a073ed: Disable `relationJoins` until nix' package for prisma-engines is
+  updated
+
+## 2.0.1
+
+### Patch Changes
+
+- 868c732: Add all files to published package
+
+## 2.0.0
+
+### Major Changes
+
+- a8204ab: BREAKING: removed `totalCount` on any `transfers` connection
+
+  We removed this as it caused performance issues. You can rely on `hasNextPage`
+  and `hasPreviousPage` to determine if there are more pages
+
+### Minor Changes
+
+- 8467af0: Adds improvements to run as stand-alone as well as in Docker
+
+  - adds postinstall script to install the platform specific Prisma engines
+  - adds a Dockerfile to build from NPM deployed @kadena/graph package
+  - adds a Dockerfile to build from source
+
+### Patch Changes
+
+- 8467af0: Add postinstall script to install platform specific binaries
+  - @kadena/chainweb-node-client\@0.7.0
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/pactjs\@0.4.3
+
+## 1.0.14
+
+### Patch Changes
+
+- Updated dependencies \[78e6f88]
+- Updated dependencies \[eccd46e]
+- Updated dependencies \[eac8c84]
+  - @kadena/chainweb-node-client\@0.7.0
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+
+## 1.0.13
+
+### Patch Changes
+
+- c6d23b8: Adds check for statistics /stats endpoint.
+
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies \[eb82843]
+  - @kadena/client-utils\@0.10.0
+
+## 1.0.11
+
+### Patch Changes
+
+- 7ef4a06: Fix issue where missing crosschain transfer would error
+- Updated dependencies \[d07b424]
+  - @kadena/client\@1.14.0
+  - @kadena/client-utils\@0.9.1
+
 ## 1.0.10
 
 ### Patch Changes

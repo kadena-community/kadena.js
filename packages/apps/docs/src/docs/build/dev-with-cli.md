@@ -121,7 +121,7 @@ To configure initial settings:
    kadena config init
    ```
    
-   This command creates the `.kadena` configuration folder location is your current working directory confirmed and adds default network settings to a `networks` subfolder, then prompts you to create a wallet.
+   This command creates the `.kadena` configuration folder location in your current working directory and adds default network settings to a `networks` subfolder, then prompts you to create a wallet.
    For example:
    
    ```bash
@@ -612,7 +612,7 @@ To create a transaction template:
    ```
    
    This transaction uses template variables to construct a transaction. You can learn more about transaction templates and variables in [Construct a transaction](/build/templates#construct-a-transactionh-767926026) and [Template prefixes and input values](/build/templates#template-prefixes-and-input-valuesh1392140091).
-   For more information about using YAML request files for transactions, see [Request YAML file format](/reference/rest-api#request-yaml-file-formath1595040947).
+   For more information about using YAML request files for transactions, see [Formatting API requests in YAML](/reference/rest-api#formatting-api-requests-in-yamlh-1442205183).
 
 3. Save the file as a transaction template by giving it a name with the `.ktpl` file extension and moving the file to the `.kadena/transaction-templates` folder.
    

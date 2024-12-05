@@ -1,10 +1,18 @@
-import { database } from "@/utils/firebase";
-import { BuiltInPredicate, ChainId } from "@kadena/client";
-import { OrderByDirection, collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
-import { useCallback, useEffect, useState } from "react";
-import { IPactDecimal, IPactInt } from "../../../../libs/types/dist/types";
+import { database } from '@/utils/firebase';
+import { BuiltInPredicate, ChainId } from '@kadena/client';
+import {
+  OrderByDirection,
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
+import { useCallback, useEffect, useState } from 'react';
+import { IPactInt } from '../../../../libs/types/dist/types';
 
-export type Sale = {
+export interface Sale {
   status: 'CREATED' | 'WITHDRAWN' | 'SOLD';
   requestKeys: Record<string, string>;
   saleId: string;
@@ -33,27 +41,27 @@ export type Sale = {
   startsAt?: number;
   endsAt?: number;
   startPrice: number;
-  reservePrice?: number
+  reservePrice?: number;
   sellPrice?: number;
   priceInterval?: IPactInt;
-  highestBid?: number
-  highestBidId?: string
-};
+  highestBid?: number;
+  highestBidId?: string;
+}
 
 interface GetSalesProps {
   chainIds?: number[];
   block?: number;
-  state?: "ACTIVE" | "PAST";
+  state?: 'ACTIVE' | 'PAST';
   status?: Sale['status'];
   saleType?: Sale['saleType'];
   limit?: number;
   sort?: {
     field: keyof Sale;
-    direction?: OrderByDirection
-  }[]
+    direction?: OrderByDirection;
+  }[];
 }
 
-export const getSales = (props?: GetSalesProps) => {
+export const useGetSales = (props?: GetSalesProps) => {
   const [data, setData] = useState<Sale[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -62,32 +70,33 @@ export const getSales = (props?: GetSalesProps) => {
     setLoading(true);
     setError(null);
     try {
-
       const constraints = [];
 
-      if (props?.chainIds) constraints.push(where("chainId", "in", props.chainIds));
+      if (props?.chainIds)
+        constraints.push(where('chainId', 'in', props.chainIds));
 
-      if (props?.block) constraints.push(where("block", "==", props.block));
+      if (props?.block) constraints.push(where('block', '==', props.block));
 
-      if (props?.status) constraints.push(where("status", "==", props.status));
+      if (props?.status) constraints.push(where('status', '==', props.status));
 
-      if (props?.state === "ACTIVE") constraints.push(where("endsAt", ">", new Date().getTime()));
+      if (props?.state === 'ACTIVE')
+        constraints.push(where('endsAt', '>', new Date().getTime()));
 
-      if (props?.state === "PAST") constraints.push(where("endsAt", "<", new Date().getTime()));
+      if (props?.state === 'PAST')
+        constraints.push(where('endsAt', '<', new Date().getTime()));
 
-      if (props?.saleType) constraints.push(where("saleType", "==", props.saleType));
+      if (props?.saleType)
+        constraints.push(where('saleType', '==', props.saleType));
 
-      if (props?.sort?.length) props.sort.forEach(sort =>
-        constraints.push(orderBy(sort.field, sort.direction || "asc"))
-      )
+      if (props?.sort?.length)
+        props.sort.forEach((sort) =>
+          constraints.push(orderBy(sort.field, sort.direction || 'asc')),
+        );
 
       if (props?.limit) constraints.push(limit(props.limit));
 
       const querySnapshot = await getDocs(
-        query(
-          collection(database, "sales"),
-          ...constraints
-        )
+        query(collection(database, 'sales'), ...constraints),
       );
       const docs: Sale[] = [];
       querySnapshot.forEach((doc) => {
@@ -95,7 +104,7 @@ export const getSales = (props?: GetSalesProps) => {
       });
       setData(docs);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError(err as Error);
     } finally {
       setLoading(false);

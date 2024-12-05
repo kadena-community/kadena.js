@@ -1,5 +1,5 @@
 import { cardColor, cardHoverColor } from '@/utils/color.ts';
-import { atoms } from '@kadena/kode-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const pageClass = style({
@@ -11,7 +11,8 @@ export const panelClass = style([
     padding: 'md',
   }),
   {
-    background: cardColor,
+    background: tokens.kda.foundation.color.background.surface.default,
+    textAlign: 'start',
   },
 ]);
 
@@ -44,3 +45,8 @@ export const listItemClass = style([
     },
   },
 ]);
+
+export const noStyleLinkClass = style({
+  textDecoration: 'none',
+  color: 'inherit',
+});

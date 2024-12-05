@@ -1,10 +1,5 @@
-import {
-  cardBackgroundColorHover,
-  cardColor,
-  cardColorHover,
-  linkBlockColor,
-} from '@/utils/color.ts';
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { cardColor, linkBlockColor } from '@/utils/color.ts';
+import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const titleClass = style([
@@ -26,17 +21,17 @@ export const cardClass = style([
     borderRadius: 'xs',
     padding: 'md',
     textAlign: 'center',
-    fontFamily: 'secondaryFont',
+    fontFamily: 'primaryFont',
     width: '100%',
   }),
   {
     cursor: 'pointer',
-    backgroundColor: cardColor,
-    border: `1px solid ${cardColor}`,
+    backgroundColor: tokens.kda.foundation.color.background.base['@focus'],
+    border: `solid 1px ${tokens.kda.foundation.color.neutral.n5}`,
     selectors: {
       [`&:hover`]: {
-        backgroundColor: cardBackgroundColorHover,
-        borderColor: cardColorHover,
+        backgroundColor: tokens.kda.foundation.color.background.base['@hover'],
+        border: `solid 1px ${vars.colors.$borderSubtle}`,
       },
     },
   },
@@ -51,11 +46,10 @@ export const imgClass = style([
     borderRadius: 'xxl',
   }),
   {
-    width: '40px',
-    height: '40px',
     backgroundColor: cardColor,
   },
 ]);
+
 export const aliasClass = style([
   atoms({
     fontSize: 'sm',
@@ -66,10 +60,11 @@ export const aliasClass = style([
 
 export const initialsClass = style([
   atoms({
-    fontSize: 'lg',
-    fontWeight: 'secondaryFont.bold',
-    color: 'text.base.default',
+    fontWeight: 'primaryFont.bold',
   }),
+  {
+    color: 'white',
+  },
 ]);
 
 export const linkBlockClass = style([

@@ -9,6 +9,12 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   CI: true
+  # comma separated list of allowed authors for docs PRs
+  ALLOWED_DOCS_AUTHORS: lsgunnlsgunn,
+
+permissions:
+  pull-requests: write
+  contents: write
 
 jobs:
   build:
@@ -23,11 +29,6 @@ jobs:
 
       - name: Runner setup
         uses: ./.github/actions/runner-setup
-
-      - name: Install rust dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install libgtk-3-dev libsoup2.4-dev javascriptcoregtk-4.1
 
       - name: Lint monorepo root
         run: pnpm run lint
@@ -55,9 +56,9 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Runner Setup  
+      - name: Runner Setup
         uses: ./.github/actions/runner-setup
-       
+
       - name: Setup Kadena sandbox
         uses: ./.github/actions/sandbox
 
@@ -79,23 +80,23 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      -  name: Runner Setup  
+      -  name: Runner Setup
          uses: ./.github/actions/runner-setup
-      
+
       -  name: Setup Kadena sandbox
          uses: ./.github/actions/sandbox
-      
-      - name: Build App with NODE_ENV=test    
+
+      - name: Build App with NODE_ENV=test
         uses: ./.github/actions/build-app-e2e
         with:
           app: ${{ matrix.app }}
 
-      - name: Run end-to-end tests    
+      - name: Run end-to-end tests
         uses: ./.github/actions/end-to-end-tests
         with:
           app: ${{ matrix.app }}
 
-      - name: Archive sandbox logs    
+      - name: Archive sandbox logs
         uses: ./.github/actions/archive-logs
         if: always()
         with:
@@ -105,14 +106,14 @@ jobs:
         if: always()
         run: docker compose down
         working-directory: .github/actions/sandbox
-    
+
       - name: Archive volumes
         uses: ./.github/actions/archive-volumes
         if: always()
         with:
           test-object: ${{ matrix.app }}
 
-      - name: Upload Blob Report  
+      - name: Upload Blob Report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -133,13 +134,58 @@ jobs:
           show-progress: false
 
     -  name: Runner Setup
-       uses: ./.github/actions/runner-setup 
-    
+       uses: ./.github/actions/runner-setup
+
     - name: Merge & Publish Report
       uses: ./.github/actions/merge-publish-reports
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
+  auto-approve-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+         fetch-depth: 2
+         show-progress: false
+
+    - name: Check PR author
+      id: check_author
+      run: echo "author=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
+
+    - uses: pnpm/action-setup@v3
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+      with:
+        version: 9
+
+    - uses: actions/setup-node@v4
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+      shell: bash
+      run: pnpm install --filter @kadena-dev/scripts
+
+    - name: Run file check script
+      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+      id: check_files
+      run: |
+        git fetch origin main:refs/remotes/origin/main
+        set +e
+        chmod +x ./packages/tools/scripts/check-changed-files.mjs
+        ./packages/tools/scripts/check-changed-files.mjs
+        echo "exitcode=$?" >> $GITHUB_OUTPUT
+        exit 0
+
+    - name: Approve PR
+      if: steps.check_files.outputs.exitcode == 0 && contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+      uses: hmarr/auto-approve-action@v4
+      with:
+        pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
+        review-message: "Auto approved by [auto-approve-action](https://github.com/kadena-community/kadena.js/blob/main/.github/workflows/ci.yml#L186)"
 
   ci-gate:
     if: always()

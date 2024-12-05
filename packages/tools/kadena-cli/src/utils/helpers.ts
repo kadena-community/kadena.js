@@ -36,9 +36,6 @@ export function handlePromptError(error: unknown): never {
 
 export async function getExistingNetworks(): Promise<ICustomNetworkChoice[]> {
   const networkDir = getNetworkDirectory();
-  if (networkDir === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
 
   await services.filesystem.ensureDirectoryExists(networkDir);
 
@@ -168,25 +165,30 @@ const defaultNetworkSchema = z.object({
 });
 
 export const getDefaultNetworkName = async (): Promise<string | undefined> => {
-  const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
-  if (defaultNetworksSettingsFilePath === null) return;
+  try {
+    const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
 
-  const isDefaultNetworkAvailable = await services.filesystem.fileExists(
-    defaultNetworksSettingsFilePath,
-  );
+    if (defaultNetworksSettingsFilePath === null) return;
 
-  if (!isDefaultNetworkAvailable) return;
+    const isDefaultNetworkAvailable = await services.filesystem.fileExists(
+      defaultNetworksSettingsFilePath,
+    );
 
-  const content = await services.filesystem.readFile(
-    defaultNetworksSettingsFilePath,
-  );
+    if (!isDefaultNetworkAvailable) return;
 
-  const network = content !== null ? load(content) : null;
+    const content = await services.filesystem.readFile(
+      defaultNetworksSettingsFilePath,
+    );
 
-  const parse = defaultNetworkSchema.safeParse(network);
+    const network = content !== null ? load(content) : null;
 
-  if (parse.success) {
-    return parse.data.name;
+    const parse = defaultNetworkSchema.safeParse(network);
+
+    if (parse.success) {
+      return parse.data.name;
+    }
+  } catch (e) {
+    return undefined;
   }
 };
 
@@ -208,3 +210,14 @@ export function handleNoKadenaDirectory(error: unknown): boolean {
   }
   return false;
 }
+
+export const arrayNotEmpty = <T extends unknown>(
+  array: T[],
+): array is [T, ...T[]] => array.length > 0;
+
+/** check against null, undefined, and empty string */
+export const isEmpty = (value: unknown): value is null | undefined | '' =>
+  value === null || value === undefined || value === '';
+
+export const isNotEmpty = <T>(value: T | null | undefined): value is T =>
+  value !== null && value !== undefined;

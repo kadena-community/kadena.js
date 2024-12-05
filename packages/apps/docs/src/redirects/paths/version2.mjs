@@ -116,6 +116,36 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/build/authentication',
+    destination: '/reference/spirekey',
+    permanent: true,
+  },
+  {
+    source: '/build/authentication/register',
+    destination: '/reference/spirekey',
+    permanent: true,
+  },
+  {
+    source: '/build/authentication/integrate',
+    destination: '/reference/spirekey',
+    permanent: true,
+  },
+  {
+    source: '/build/authentication/transactions',
+    destination: '/reference/spirekey',
+    permanent: true,
+  },
+  {
+    source: '/build/authentication/recover',
+    destination: '/reference/spirekey',
+    permanent: true,
+  },
+  {
+    source: '/participate/wallets/spirekey',
+    destination: '/reference/spirekey',
+    permanent: true,
+  },
+  {
     source: '/build/quickstart/:slug',
     destination: '/build/onboard',
     permanent: true,
@@ -377,6 +407,12 @@ export const version2PathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/build/pact/rotatable-wallet',
+    destination: '/build/pact',
+    permanent: true,
+  },
+
+  {
     source: '/pact/intermediate/pact-and-javascript',
     destination: '/build/pact/pact-and-javascript',
     permanent: true,
@@ -454,6 +490,16 @@ export const version2PathUrlRedirects = [
   {
     source: '/chainweb/js-bindings/api',
     destination: '/reference/chainweb-ref/js-bindings',
+    permanent: true,
+  },
+  {
+    source: '/reference/chainweb-api/service-block',
+    destination: '/reference/chainweb-api/full-block',
+    permanent: true,
+  },
+  {
+    source: '/reference/chainweb-api/misc',
+    destination: '/reference/chainweb-api/updates',
     permanent: true,
   },
   {

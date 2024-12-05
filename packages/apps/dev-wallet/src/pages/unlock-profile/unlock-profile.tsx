@@ -1,18 +1,20 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
 import {
-  Avatar,
   Button,
   Heading,
   Stack,
   Text,
   TextField,
+  Link as UiLink,
 } from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
-export function UnlockProfile() {
+export function UnlockProfile({ origin }: { origin: string }) {
   const {
     register,
     handleSubmit,
@@ -20,7 +22,8 @@ export function UnlockProfile() {
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const { profileList, unlockProfile } = useWallet();
+  const navigate = usePatchedNavigate();
+  const { profileList, unlockProfile, isUnlocked } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';
 
@@ -38,6 +41,11 @@ export function UnlockProfile() {
       if (!keySource) {
         throw new Error('No key source found');
       }
+      if (isUnlocked) {
+        navigate('/');
+      } else {
+        navigate(origin);
+      }
     } catch (e) {
       console.log(e);
       setError('password', { type: 'manual', message: incorrectPasswordMsg });
@@ -49,13 +57,33 @@ export function UnlockProfile() {
   return (
     <>
       <AuthCard>
+        <Stack marginBlockEnd={'lg'}>
+          <UiLink
+            variant="outlined"
+            isCompact
+            type="button"
+            onPress={() => {
+              throw new Error('back');
+            }}
+            component={Link}
+            href="/"
+          >
+            Back
+          </UiLink>
+        </Stack>
         <Stack
           gap="md"
           padding="sm"
           display="inline-flex"
+          alignItems="center"
           className={profileContainer}
         >
-          <Avatar size="md" name={profile.name} /> {profile.name}
+          <InitialsAvatar
+            size="large"
+            name={profile.name}
+            accentColor={profile.accentColor}
+          />
+          <Text>{profile.name}</Text>
         </Stack>
         <Heading variant="h5">Unlock your profile</Heading>
         <Text as="p">Enter your password to unlock access</Text>

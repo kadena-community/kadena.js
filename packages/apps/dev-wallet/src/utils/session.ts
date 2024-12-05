@@ -1,105 +1,107 @@
-import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
+import { config } from '@/config';
+import { getErrorMessage } from './getErrorMessage';
+import { createEventEmitter, throttle } from './helpers';
 
-export async function encryptRecord(
-  sessionValue: Record<string, Uint8Array> | null,
-) {
-  if (!sessionValue) return;
-  const encrypted: { key: string; value: string }[] = [];
-  for (const [key, value] of Object.entries(sessionValue)) {
-    encrypted.push({
-      key: await kadenaEncrypt('key', key),
-      value: await kadenaEncrypt(key, value),
-    } as EncryptedRecord[number]);
-  }
-  return encrypted;
-}
+type SessionValue = { expiration?: string; creationDate?: string } & Record<
+  string,
+  unknown
+>;
 
-export type EncryptedRecord = {
-  key: string;
-  value: string;
-}[];
-
-export async function decryptRecord(encrypted: EncryptedRecord) {
-  const decrypted: Record<string, Uint8Array> = {};
-  for (const { key, value } of encrypted) {
-    const decryptedKey = new TextDecoder().decode(
-      await kadenaDecrypt('key', key),
-    );
-    decrypted[decryptedKey] = await kadenaDecrypt(decryptedKey, value);
-  }
-  return decrypted;
-}
-
-const SESSION_PASS = new TextEncoder().encode('7b_ksKD_M4D0jnd7_ZM');
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const throttle = <T extends (...args: any[]) => any>(
-  fn: T,
-  delay: number,
-) => {
-  let lastCall = 0;
-  let lastResult: ReturnType<T>;
-  return (...args: Parameters<T>): ReturnType<T> => {
-    const now = Date.now();
-    if (now - lastCall < delay) return lastResult;
-    lastCall = now;
-    lastResult = fn(...args);
-    return lastResult;
-  };
+const serialization = {
+  serialize: async (session: SessionValue) => JSON.stringify(session),
+  deserialize: async (session: string) => JSON.parse(session) as SessionValue,
 };
+const isExpired = (session: SessionValue) =>
+  Date.now() >= Number(session.expiration);
 
-export function createSession(
-  key: string = 'session',
-  password: Uint8Array = SESSION_PASS,
-  useEncryption = true,
-) {
+export function createSession(key: string = 'session') {
   let loaded = false;
-  let session: { expiration?: string; creationDate?: string } & Record<
-    string,
-    unknown
-  > = {
+  let session: SessionValue = {
     creationDate: `${Date.now()}`,
-    expiration: `${Date.now() + 1000 * 60 * 30}`,
+    expiration: `${Date.now() + config.SESSION.TTL}`,
   };
+
+  const eventEmitter = createEventEmitter<{
+    loaded: SessionValue;
+    renewed: SessionValue;
+    expired: undefined;
+    cleared: undefined;
+  }>();
+
+  let expireTimeout: NodeJS.Timeout | null = null;
+
+  const renewData = async () => {
+    session.expiration = `${Date.now() + config.SESSION.TTL}`;
+    localStorage.setItem('session', await serialization.serialize(session));
+    eventEmitter.emit('renewed', session);
+  };
+
   const renew = async () => {
     // console.log('Renewing session', session);
-    session.expiration = `${Date.now() + 1000 * 60 * 30}`; // 30 minutes
-    localStorage.setItem(
-      'session',
-      useEncryption
-        ? await kadenaEncrypt(password, JSON.stringify(session))
-        : JSON.stringify(session),
-    );
+    if (expireTimeout) {
+      clearTimeout(expireTimeout);
+    }
+    if (isExpired(session)) {
+      localStorage.removeItem(key);
+      eventEmitter.emit('expired', undefined);
+      return;
+    }
+
+    expireTimeout = setTimeout(async () => {
+      if (isExpired(session)) {
+        localStorage.removeItem(key);
+        eventEmitter.emit('expired', undefined);
+      }
+    }, config.SESSION.TTL);
+
+    renewData();
   };
+
   return {
+    ListenToExternalChanges: () => {
+      const listener = async (event: StorageEvent) => {
+        if (event.key === key) {
+          if (event.newValue) {
+            session = await serialization.deserialize(event.newValue);
+            loaded = true;
+          } else {
+            session = {};
+            loaded = false;
+            eventEmitter.emit('cleared', undefined);
+          }
+        }
+      };
+      // Add a storage event listener
+      window.addEventListener('storage', listener);
+      return () => window.removeEventListener('storage', listener);
+    },
     load: async () => {
       const current = localStorage.getItem(key);
 
       if (current) {
         try {
-          session = JSON.parse(
-            useEncryption
-              ? new TextDecoder().decode(await kadenaDecrypt(password, current))
-              : current,
-          );
-          // console.log('Loaded session', session);
-          if (Date.now() > Number(session.expiration)) {
+          session = await serialization.deserialize(current);
+          if (isExpired(session)) {
             throw new Error('Session expired!');
           }
         } catch (e) {
           console.log(
-            e && typeof e === 'object' && `message` in e
-              ? e.message
-              : 'Error loading session',
+            getErrorMessage(e, 'Error loading session from local storage'),
           );
-          console.log('Creating new session');
+          localStorage.removeItem(key);
+          console.log('Resetting session');
+          session = {
+            creationDate: `${Date.now()}`,
+            expiration: `${Date.now() + config.SESSION.TTL}`,
+          };
         }
       }
 
       await renew();
+      eventEmitter.emit('loaded', session);
       loaded = true;
     },
-    renew: throttle(renew, 1000 * 60), // 1 minute
+    renew: throttle(renew, 1000 * 1), // 1 minute
     set: async (key: string, value: unknown) => {
       session[key] = value;
       await renew();
@@ -109,6 +111,7 @@ export function createSession(
       localStorage.removeItem('session');
       session = {};
       loaded = false;
+      eventEmitter.emit('cleared', undefined);
     },
     reset: () => {
       session = {
@@ -117,9 +120,27 @@ export function createSession(
       return renew();
     },
     isLoaded: () => loaded,
+    subscribe: eventEmitter.subscribe,
   };
 }
 
 export const Session = createSession();
 
 export type Session = typeof Session;
+
+export const debounce = <T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number,
+) => {
+  const timer: NodeJS.Timeout | null = null;
+  return (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(fn(...args));
+      }, delay);
+    });
+  };
+};

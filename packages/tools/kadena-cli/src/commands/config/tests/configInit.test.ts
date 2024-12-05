@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { WORKING_DIRECTORY } from '../../../constants/config.js';
-import { services } from '../../../services/index.js';
+import { Services, services } from '../../../services/index.js';
 import { mockPrompts, runCommand } from '../../../utils/test.util.js';
 
 describe('config init', () => {
@@ -14,6 +14,14 @@ describe('config init', () => {
     }
   });
 
+  it('service without kadena dir', async () => {
+    delete process.env.KADENA_DIR;
+    const newServices = new Services();
+    expect(() => newServices.config.getDirectory()).toThrow(
+      'Kadena directory not found. use `kadena config init` to create one.',
+    );
+  });
+
   it('should create a network config', async () => {
     mockPrompts({
       select: {
@@ -21,7 +29,8 @@ describe('config init', () => {
       },
     });
 
-    await runCommand('config init');
+    const output = await runCommand('config init');
+    expect(output.stderr).includes('Created configuration directory:');
     expect(
       await services.filesystem.fileExists(
         path.join(networkPath, 'devnet.yaml'),

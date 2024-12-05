@@ -31,7 +31,7 @@ export const itemClass = style([
 export const titleClass = style([
   atoms({
     width: '100%',
-    fontWeight: 'secondaryFont.bold',
+    fontWeight: 'primaryFont.bold',
   }),
 ]);
 

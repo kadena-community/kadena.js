@@ -23,9 +23,9 @@ interface IProps {
 
 export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
   const label = data.name;
-  const text = `${data.name} | Proof Of Us #devworld2024`;
+  const text = `${data.name} | Proof Of Us`;
   const title = `${data?.name} | Proof Of Us (Powered by Kadena)`;
-  const twitterTitle = `${data?.name} @kadena_io on @devworld_conf #devworldkadena`;
+  const twitterTitle = `${data?.name} @kadena_io `;
   const url = `${process.env.NEXT_PUBLIC_URL}/share/${tokenId}`;
 
   const shareDetails = { url, title, text, label };
@@ -82,6 +82,7 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
   const handleClick = async (): Promise<void> => {
     if (
       navigator &&
+      navigator.maxTouchPoints > 0 &&
       navigator.canShare &&
       (navigator.canShare() || !navigator.canShare())
     ) {

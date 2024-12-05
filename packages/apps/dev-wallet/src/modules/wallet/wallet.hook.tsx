@@ -1,34 +1,44 @@
-import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { defaultAccentColor } from '@/modules/layout/layout.provider.tsx';
-import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
+import { config } from '@/config';
 import { IUnsignedCommand } from '@kadena/client';
-import { useCallback, useContext, useEffect } from 'react';
-import { UnlockPrompt } from '../../Components/UnlockPrompt/UnlockPrompt';
-import * as AccountService from '../account/account.service';
+import { createPrincipal } from '@kadena/client-utils/built-in';
+import { useCallback, useContext } from 'react';
+import {
+  accountRepository,
+  IAccount,
+  IKeySet,
+} from '../account/account.repository';
+import { backupDatabase } from '../backup/backup.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
+import { INetwork } from '../network/network.repository';
+import { securityService } from '../security/security.service';
 import {
+  channel,
   ExtWalletContextType,
   WalletContext,
-  syncAllAccounts,
 } from './wallet.provider';
-import { IKeySource, IProfile } from './wallet.repository';
+import { IKeyItem, IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
 const isUnlocked = (
   ctx: ExtWalletContextType,
 ): ctx is Required<ExtWalletContextType> => {
-  if (!ctx || !ctx.profile || !ctx.profileList || !ctx.keySources) {
+  if (!ctx || !ctx.profile) {
     return false;
   }
   return true;
 };
 
 export const useWallet = () => {
-  const [context, setProfile] = useContext(WalletContext) ?? [];
-  const prompt = usePrompt();
-  if (!context || !setProfile) {
+  const [
+    context,
+    setProfile,
+    setActiveNetwork,
+    syncAllAccounts,
+    askForPassword,
+  ] = useContext(WalletContext) ?? [];
+  if (!context || !setProfile || !askForPassword) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
 
@@ -36,15 +46,17 @@ export const useWallet = () => {
     async (
       profileName: string = 'default',
       password: string,
-      accentColor: string = defaultAccentColor,
+      accentColor: string | undefined,
       options: IProfile['options'],
+      securityPhrase: string | Uint8Array,
     ) => {
       const profile = await WalletService.createProfile(
         profileName,
         password,
         [],
-        accentColor,
+        accentColor ?? config.defaultAccentColor,
         options,
+        securityPhrase,
       );
       return profile;
     },
@@ -53,9 +65,14 @@ export const useWallet = () => {
 
   const unlockProfile = useCallback(
     async (profileId: string, password: string) => {
+      console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
+      await securityService.clearSecurityPhrase();
       if (profile) {
-        return setProfile(profile);
+        const res = await setProfile(profile);
+        channel.postMessage({ action: 'switch-profile', payload: profile });
+        backupDatabase().catch(console.log);
+        return res;
       }
       return null;
     },
@@ -63,101 +80,41 @@ export const useWallet = () => {
   );
 
   const lockProfile = useCallback(() => {
-    setProfile(undefined);
+    const run = async () => {
+      await securityService.clearSecurityPhrase();
+      await setProfile(undefined);
+      channel.postMessage({ action: 'switch-profile', payload: undefined });
+      backupDatabase(true).catch(console.log);
+    };
+    run();
   }, [setProfile]);
 
   const unlockKeySource = useCallback(
     async (keySource: IKeySource) => {
-      const { profile } = context;
-      // for now we use the same password as the profile password
-      // later we have different password for key sources. we need to handle that.
-      // we check the auth mode of the profile and use the appropriate password/web-authn to unlock the key source
-      switch (profile?.options.authMode) {
-        case 'PASSWORD': {
-          const pass = await prompt((resolve, reject) => (
-            <UnlockPrompt resolve={resolve} reject={reject} />
-          ));
-          if (!pass) {
-            throw new Error('Password is required');
-          }
-          const service = (await keySourceManager.get(keySource.source)) as
-            | ChainweaverService
-            | BIP44Service;
+      const password = await askForPassword();
+      console.log('unlockKeySource', keySource, password);
+      if (!password) {
+        throw new Error('Password is required');
+      }
+      const service = (await keySourceManager.get(keySource.source)) as
+        | ChainweaverService
+        | BIP44Service;
 
-          await service.connect(pass as string, keySource as any);
-          break;
-        }
-        case 'WEB_AUTHN': {
-          const credentialId = profile.options.webAuthnCredential;
-          const credential = await retrieveCredential(credentialId);
-          if (!credential) {
-            throw new Error('Failed to retrieve credential');
-          }
-          const keys = await recoverPublicKey(credential);
-          const service = (await keySourceManager.get(keySource.source)) as
-            | ChainweaverService
-            | BIP44Service;
-          for (const key of keys) {
-            try {
-              await service.connect(key, keySource as any);
-              break;
-            } catch (e) {
-              continue;
-            }
-          }
-          if (!service.isConnected()) {
-            throw new Error('Failed to unlock key source');
-          }
-          break;
-        }
-        default: {
-          throw new Error('Unsupported auth mode');
-        }
+      await service.connect(password, keySource as any);
+
+      if (!service.isConnected()) {
+        throw new Error('Failed to unlock key source');
       }
     },
-    [context, prompt],
+    [askForPassword],
   );
 
-  const askForPassword = useCallback(async (): Promise<string | null> => {
-    const { profile } = context;
-    if (!profile) {
-      return null;
+  const lockKeySource = useCallback(async (keySource: IKeySource) => {
+    const service = await keySourceManager.get(keySource.source);
+    if (service) {
+      service.disconnect();
     }
-    // for now we use the same password as the profile password
-    // later we have different password for key sources. we need to handle that.
-    // we check the auth mode of the profile and use the appropriate password/web-authn to unlock the key source
-    switch (profile.options.authMode) {
-      case 'PASSWORD': {
-        const pass = (await prompt((resolve, reject) => (
-          <UnlockPrompt resolve={resolve} reject={reject} />
-        ))) as string;
-        if (!pass) {
-          return null;
-        }
-        const result = await WalletService.unlockProfile(profile.uuid, pass);
-        if (!result) return null;
-        return pass;
-      }
-      case 'WEB_AUTHN': {
-        const credentialId = profile.options.webAuthnCredential;
-        const credential = await retrieveCredential(credentialId);
-        if (!credential) {
-          return null;
-        }
-        const keys = await recoverPublicKey(credential);
-        for (const key of keys) {
-          const result = await WalletService.unlockProfile(profile.uuid, key);
-          if (result) {
-            return key;
-          }
-        }
-        return null;
-      }
-      default: {
-        throw new Error('Unsupported auth mode');
-      }
-    }
-  }, [context, prompt]);
+  }, []);
 
   const sign = useCallback(
     async (
@@ -168,19 +125,23 @@ export const useWallet = () => {
         throw new Error('Wallet in not unlocked');
       }
       if (Array.isArray(TXs)) {
-        return WalletService.sign(
+        const res = await WalletService.sign(
           context.keySources,
           unlockKeySource,
           TXs,
           publicKeys,
         );
+        keySourceManager.disconnect();
+        return res;
       }
-      return WalletService.sign(
+      const res = await WalletService.sign(
         context.keySources,
         unlockKeySource,
         [TXs],
         publicKeys,
       ).then((res) => res[0]);
+      keySourceManager.disconnect();
+      return res;
     },
     [context, unlockKeySource],
   );
@@ -195,9 +156,18 @@ export const useWallet = () => {
     [context],
   );
 
-  const createKey = useCallback(async (keySource: IKeySource) => {
-    return WalletService.createKey(keySource, unlockKeySource);
-  }, []);
+  const createKey = useCallback(
+    async (keySource: IKeySource, index?: number) => {
+      const res = await WalletService.createKey(
+        keySource,
+        unlockKeySource,
+        index,
+      );
+      keySourceManager.disconnect();
+      return res;
+    },
+    [],
+  );
 
   const getPublicKeyData = useCallback(
     (publicKey: string) => {
@@ -217,45 +187,189 @@ export const useWallet = () => {
     [context],
   );
 
-  const createKAccount = useCallback(
-    async (
-      profileId: string,
-      networkId: string,
-      publicKey: string,
-      contract?: string,
-    ) => {
-      return AccountService.createKAccount(
-        profileId,
-        networkId,
-        publicKey,
-        contract,
-      );
-    },
-    [],
-  );
-
-  useEffect(() => {
-    if (context.profile?.uuid) {
-      syncAllAccounts(context.profile?.uuid);
+  const createAccountByKeyset = async ({
+    keyset,
+    contract,
+    alias,
+  }: {
+    keyset: IKeySet;
+    contract: string;
+    alias?: string;
+  }) => {
+    if (!context.profile || !context.activeNetwork) {
+      throw new Error('Profile or active network not found');
     }
-  }, [context.profile]);
+    const account: IAccount = {
+      uuid: crypto.randomUUID(),
+      alias: alias || '',
+      profileId: context.profile.uuid,
+      address: keyset.principal,
+      keysetId: keyset.uuid,
+      networkUUID: context.activeNetwork.uuid,
+      contract,
+      chains: [],
+      overallBalance: '0',
+    };
+
+    await accountRepository.addAccount(account);
+  };
+
+  const createAccountByKey = async ({
+    key,
+    contract,
+    alias,
+  }: {
+    key: IKeyItem;
+    contract: string;
+    alias?: string;
+  }) => {
+    const { profile, activeNetwork } = context;
+    if (!profile || !activeNetwork || !contract) {
+      throw new Error('Profile or active network not found');
+    }
+
+    const guard = {
+      keys: [key.publicKey],
+      pred: 'keys-all' as const,
+    };
+
+    const principal = await createPrincipal({ keyset: guard }, {});
+
+    let keyset = await accountRepository.getKeysetByPrincipal(
+      principal,
+      profile.uuid,
+    );
+
+    if (!keyset) {
+      keyset = {
+        principal: principal,
+        guard: guard,
+        profileId: profile.uuid,
+        uuid: crypto.randomUUID(),
+      };
+      await accountRepository.addKeyset(keyset);
+    }
+
+    const account: IAccount = {
+      uuid: crypto.randomUUID(),
+      alias: alias || '',
+      profileId: profile.uuid,
+      address: keyset.principal,
+      keysetId: keyset.uuid,
+      networkUUID: activeNetwork.uuid,
+      contract,
+      chains: [],
+      overallBalance: '0',
+    };
+
+    await accountRepository.addAccount(account);
+
+    return account;
+  };
+
+  const createNextAccount = async ({
+    contract,
+    alias,
+  }: {
+    contract: string;
+    alias?: string;
+  }) => {
+    const { accounts, fungibles } = context;
+    const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
+    const filteredAccounts = accounts.filter(
+      (account) => account.contract === contract,
+    );
+
+    const accountAlias =
+      alias ||
+      `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
+    const usedKeys = filteredAccounts.map((account) => {
+      const keys = account.keyset?.guard.keys;
+      if (keys?.length === 1 && account.keyset?.guard.pred === 'keys-all') {
+        return keys[0];
+      }
+    });
+    const keySource = context.keySources[0];
+    const availableKey = keySource.keys.find(
+      (key) => !usedKeys.includes(key.publicKey),
+    );
+    if (availableKey) {
+      // prompt for password anyway for account creation even if the key is available.
+      await askForPassword();
+      return createAccountByKey({
+        key: availableKey,
+        contract,
+        alias: accountAlias,
+      });
+    }
+    // If no available key, create a new one
+    const key = await createKey(keySource);
+    return createAccountByKey({ key, contract, alias: accountAlias });
+  };
+
+  const getContact = (id: string) => {
+    return context.contacts.find(
+      (contact) => contact.uuid?.toLowerCase() === id?.toLowerCase(),
+    );
+  };
+
+
+  const createSpecificAccount = async ({
+    contract,
+    index,
+    alias,
+  }: {
+    contract: string;
+    index: number;
+    alias?: string;
+  }) => {
+    const { accounts, fungibles } = context;
+    const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
+    const filteredAccounts = accounts.filter(
+      (account) => account.contract === contract,
+    );
+
+    const accountAlias =
+      alias ||
+      `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
+
+    const keySource = context.keySources[0];
+    const indexKey = await createKey(keySource, index);
+    const availableKey = keySource.keys.find(
+      (ksKey) => ksKey.publicKey === indexKey.publicKey,
+    );
+    if (availableKey) {
+      // prompt for password anyway for account creation even if the key is available.
+      await askForPassword();
+      return createAccountByKey({
+        key: availableKey,
+        contract,
+        alias: accountAlias,
+      });
+    }
+    return createAccountByKey({ key: indexKey, contract, alias: accountAlias });
+  };
 
   return {
+    getContact,
     createProfile,
     unlockProfile,
     createKey,
-    createKAccount,
     sign,
     decryptSecret,
     lockProfile,
     askForPassword,
     getPublicKeyData,
     unlockKeySource,
+    lockKeySource,
+    createNextAccount,
+    createSpecificAccount,
+    createAccountByKeyset,
+    createAccountByKey,
+    setActiveNetwork: (network: INetwork) =>
+      setActiveNetwork ? setActiveNetwork(network) : undefined,
+    syncAllAccounts: () => (syncAllAccounts ? syncAllAccounts() : undefined),
     isUnlocked: isUnlocked(context),
-    profile: context.profile,
-    profileList: context.profileList ?? [],
-    accounts: context.accounts || [],
-    keySources: context.keySources || [],
-    fungibles: context.fungibles || [],
+    ...context,
   };
 };

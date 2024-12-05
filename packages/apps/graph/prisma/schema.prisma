@@ -1,10 +1,11 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["views"]
+  // , "relationJoins"] disabled because nix prisma-engines isn't updated
 }
 
 generator pothos {
-  provider = "prisma-pothos-types"
+  provider      = "prisma-pothos-types"
 }
 
 datasource db {

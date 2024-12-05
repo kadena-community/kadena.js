@@ -1,77 +1,70 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { env } from '@/utils/env';
-import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { sign as signSpireKey } from '@kadena/spirekey-sdk';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAccount } from '../account';
-import { useTransaction } from '../transaction';
+import { useSubmit } from '../submit';
 
 export const useSignToken = () => {
   const {
     updateSignee,
     proofOfUs,
-    hasSigned,
+    signees,
     updateProofOfUs,
     getSignature,
     isInitiator,
   } = useProofOfUs();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
   const { account } = useAccount();
   const router = useRouter();
-  const { transaction } = useTransaction();
-
-  const sign = async () => {
-    const signed = await hasSigned();
-
-    if (!transaction || signed || !proofOfUs) return;
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
-
-    const signature = await getSignature(tx);
-    await updateSignee({ signerStatus: 'success', signature }, true);
-
-    const accountIsInitiator = await isInitiator();
-    await updateProofOfUs({
-      // tx: transaction,
-      status: accountIsInitiator ? 4 : 3,
-    });
-
-    setIsLoading(false);
-    setHasError(false);
-
-    //when the account is not the initiator you want to redirect.
-    //if they are the initiator, you dont, so the app will submit the nft
-    if (accountIsInitiator) return;
-
-    router.replace(
-      `${getReturnHostUrl()}/user/proof-of-us/mint/${tx.hash}?id=${
-        proofOfUs.proofOfUsId
-      }`,
-    );
-  };
-
-  useEffect(() => {
-    if (!proofOfUs) return;
-    sign();
-  }, [transaction, proofOfUs]);
+  const { doSubmit, setIsLoading, isStatusLoading } = useSubmit();
 
   const signToken = async () => {
-    if (!proofOfUs || !account) return;
+    if (!proofOfUs || !account || !signees) return;
+    await updateSignee({ signerStatus: 'signing' }, true);
     setIsLoading(true);
     setHasError(false);
-    const transaction = proofOfUs.tx;
-    await updateSignee({ signerStatus: 'signing' }, true);
 
-    router.push(
-      `${
-        process.env.NEXT_PUBLIC_WALLET_URL
-      }sign#transaction=${transaction}&chainId=${
-        env.CHAINID
-      }&returnUrl=${getReturnUrl()}
-      `,
-    );
+    console.log(proofOfUs.tx);
+    try {
+      setIsLoading(true);
+
+      console.log(22);
+      const { transactions, isReady } = await signSpireKey(
+        [JSON.parse(proofOfUs.tx)],
+        [account],
+      );
+
+      console.log('before');
+      await isReady();
+
+      console.log(transactions);
+      const signature = await getSignature(transactions[0]);
+
+      await updateSignee({ signerStatus: 'success', signature }, true);
+
+      const accountIsInitiator = await isInitiator();
+      await updateProofOfUs({
+        tx: JSON.stringify(transactions[0]),
+        status: 3,
+      });
+
+      if (accountIsInitiator) {
+        await doSubmit();
+      } else {
+        router.replace(
+          `${getReturnHostUrl()}/user/proof-of-us/mint/${transactions[0].hash}?id=${
+            proofOfUs.proofOfUsId
+          }`,
+        );
+      }
+    } catch (e) {
+      setIsLoading(false);
+    }
   };
 
-  return { isLoading, hasError, data, signToken };
+  return { isLoading: isStatusLoading, hasError, data, signToken };
 };

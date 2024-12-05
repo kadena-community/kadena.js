@@ -1,12 +1,17 @@
 import { kadenaDecrypt, kadenaEncrypt, randomBytes } from '@kadena/hd-wallet';
 
 import {
+  kadenaChangePassword,
   kadenaGenKeypair,
   kadenaMnemonicToRootKeypair,
   kadenaSign,
+  legacyKadenaGenKeypair,
 } from '@kadena/hd-wallet/chainweaver';
 
-import { IKeySource } from '@/modules/wallet/wallet.repository';
+import {
+  IKeySource,
+  walletRepository,
+} from '@/modules/wallet/wallet.repository';
 import { IHDChainweaver, keySourceRepository } from '../key-source.repository';
 import { getNextAvailableIndex } from './utils';
 
@@ -47,36 +52,171 @@ export function createChainweaverService() {
     disconnect: () => {
       context = null;
     },
+
     clearCache: () => {
       if (context) {
         context.cache = new Map();
       }
     },
-    register: async (
+
+    import: async (
       profileId: string,
-      mnemonic: string,
+      rootKey: string,
       password: string,
-    ): Promise<IHDChainweaver> => {
-      const encryptedMnemonic = await kadenaEncrypt(
+      keyPairs: { index: number; private: string; public: string }[],
+    ) => {
+      // check if password is correct
+      const checkKeyPair = keyPairs[0];
+
+      const [, publickey] = await legacyKadenaGenKeypair(
         password,
-        mnemonic,
+        Buffer.from(rootKey, 'hex'),
+        0x80000000 + checkKeyPair.index,
+      );
+
+      if (checkKeyPair.public !== Buffer.from(publickey).toString('hex')) {
+        throw new Error('Invalid password');
+      }
+
+      // encrypt legacy rootKey
+      const rootKeyId = crypto.randomUUID();
+      const encryptedRootKeyBuffer = await kadenaEncrypt(
+        password,
+        Buffer.from(rootKey, 'hex'),
         'buffer',
       );
-      const secretId = crypto.randomUUID();
+      await walletRepository.addEncryptedValue(
+        rootKeyId,
+        encryptedRootKeyBuffer,
+        profileId,
+      );
+
+      // store keys
+      const newKeyPairs = await Promise.all(
+        keyPairs.map(async (keyPair) => {
+          const secretId = crypto.randomUUID();
+          await walletRepository.addEncryptedValue(
+            secretId,
+            await kadenaEncrypt(password, Buffer.from(keyPair.private, 'hex')),
+            profileId,
+          );
+          const key = {
+            index: keyPair.index,
+            publicKey: keyPair.public,
+            secretId,
+          };
+          return key;
+        }),
+      );
+
+      // store encrypted rootKey
+      const keySource: IHDChainweaver = {
+        uuid: crypto.randomUUID(),
+        profileId,
+        source: 'HD-chainweaver',
+        keys: newKeyPairs,
+        rootKeyId,
+      };
+      await keySourceRepository.addKeySource(keySource);
+
+      return keySource;
+    },
+
+    changePassword: async (
+      keysetId: string,
+      oldPassword: string,
+      newPassword: string,
+      persist = (cbs: Array<() => Promise<void>>) =>
+        Promise.all(cbs.map((cb) => cb())),
+    ) => {
+      try {
+        const keySource = await keySourceRepository.getKeySource(keysetId);
+        if (keySource.source !== 'HD-chainweaver') {
+          return;
+        }
+        const rootKey = await walletRepository.getEncryptedValue(
+          keySource.rootKeyId,
+        );
+
+        const newRootKey = await kadenaChangePassword(
+          rootKey,
+          oldPassword,
+          newPassword,
+        );
+
+        const newKeys = await Promise.all(
+          keySource.keys.map(async (key) => {
+            const secretKey = await walletRepository.getEncryptedValue(
+              key.secretId,
+            );
+
+            const newSecretKey = await kadenaChangePassword(
+              secretKey,
+              oldPassword,
+              newPassword,
+            );
+
+            return () =>
+              walletRepository.updateEncryptedValue(
+                key.secretId,
+                newSecretKey,
+                keySource.profileId,
+              );
+          }),
+        );
+
+        return await persist([
+          ...newKeys,
+          () =>
+            walletRepository.updateEncryptedValue(
+              keySource.rootKeyId,
+              newRootKey,
+              keySource.profileId,
+            ),
+        ]);
+      } catch (e: any) {
+        const message = 'message' in e ? e.message : JSON.stringify(e);
+        throw new Error(`Error changing password\n${message}`);
+      }
+    },
+
+    register: async (
+      profileId: string,
+      password: string,
+    ): Promise<IHDChainweaver> => {
+      const profile = await walletRepository.getProfile(profileId);
+      if (!profile) {
+        throw new Error('Profile not found');
+      }
+      const encryptedMnemonic = await walletRepository.getEncryptedValue(
+        profile.securityPhraseId,
+      );
+      if (!encryptedMnemonic) {
+        throw new Error('No mnemonic found');
+      }
+      const mnemonic = new TextDecoder().decode(
+        await kadenaDecrypt(password, encryptedMnemonic),
+      );
+      if (!mnemonic) {
+        throw new Error('No mnemonic found');
+      }
       const rootKeyId = crypto.randomUUID();
       const encryptedRootKey = await kadenaMnemonicToRootKeypair(
         password,
         mnemonic,
         'buffer',
       );
-      await keySourceRepository.addEncryptedValue(secretId, encryptedMnemonic);
-      await keySourceRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
+      await walletRepository.addEncryptedValue(
+        rootKeyId,
+        encryptedRootKey,
+        profile.uuid,
+      );
       const keySource: IHDChainweaver = {
         uuid: crypto.randomUUID(),
         profileId,
         source: 'HD-chainweaver',
         keys: [],
-        secretId: secretId,
+        secretId: profile.securityPhraseId,
         rootKeyId,
       };
       await keySourceRepository.addKeySource(keySource);
@@ -85,7 +225,7 @@ export function createChainweaverService() {
     },
 
     connect: async (password: string, keySource: IHDChainweaver) => {
-      const encryptedRootKey = await keySourceRepository.getEncryptedValue(
+      const encryptedRootKey = await walletRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       await kadenaDecrypt(password, encryptedRootKey);
@@ -107,7 +247,7 @@ export function createChainweaverService() {
         throw new Error('Invalid key source');
       }
       const password = await decryptPassword(context);
-      const rootKey = await keySourceRepository.getEncryptedValue(
+      const rootKey = await walletRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       const key = await kadenaGenKeypair(password, rootKey, startIndex);
@@ -120,6 +260,7 @@ export function createChainweaverService() {
     },
 
     createKey: async (keySourceId: string, index?: number) => {
+      console.log('createKey', keySourceId, index);
       if (!context) {
         throw new Error('Wallet not unlocked');
       }
@@ -138,7 +279,7 @@ export function createChainweaverService() {
       }
 
       const password = await decryptPassword(context);
-      const rootKey = await keySourceRepository.getEncryptedValue(
+      const rootKey = await walletRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       const key = context.cache.has(`${keySourceId}-${keyIndex}`)
@@ -146,9 +287,10 @@ export function createChainweaverService() {
         : await kadenaGenKeypair(password, rootKey, keyIndex);
 
       const secretId = crypto.randomUUID();
-      await keySourceRepository.addEncryptedValue(
+      await walletRepository.addEncryptedValue(
         secretId,
         Buffer.from(key.secretKey, 'base64'),
+        keySource.profileId,
       );
       const newKey = {
         publicKey: key.publicKey,
@@ -174,9 +316,7 @@ export function createChainweaverService() {
           .filter((key) => indexes.includes(key.index))
           .map(async (key) => ({
             ...key,
-            secretKey: await keySourceRepository.getEncryptedValue(
-              key.secretId,
-            ),
+            secretKey: await walletRepository.getEncryptedValue(key.secretId),
           })),
       );
 

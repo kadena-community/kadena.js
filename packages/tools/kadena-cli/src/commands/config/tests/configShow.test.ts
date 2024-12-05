@@ -7,6 +7,7 @@ import {
   WALLET_DIR,
 } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
+import { KadenaError } from '../../../services/service-error.js';
 import { runCommand, runCommandJson } from '../../../utils/test.util.js';
 
 describe('config show', () => {
@@ -61,8 +62,9 @@ describe('config show', () => {
   });
 
   it('should return warning message to run "kadena config init" command when there is no configDirectory', async () => {
-    const mockGetDirectory = vi.fn().mockReturnValue(null);
-    services.config.getDirectory = mockGetDirectory;
+    services.config.getDirectory = vi.fn().mockImplementation(() => {
+      throw new KadenaError('no_kadena_directory');
+    });
     const { stderr } = await runCommand('config show');
     expect(stderr).toContain(
       'No kadena directory found. Run the following command to create one:',

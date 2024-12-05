@@ -6,34 +6,32 @@ import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
-import { useTransaction } from '@/hooks/transaction';
-import { env } from '@/utils/env';
-import { getReturnUrl } from '@/utils/getReturnUrl';
+import { ICommand } from '@kadena/client';
 import { Stack } from '@kadena/kode-ui';
+import { sign } from '@kadena/spirekey-sdk';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import type { Dispatch, FC, SetStateAction } from 'react';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
   eventId: string;
   isMinted: boolean;
   handleIsMinted: Dispatch<SetStateAction<boolean>>;
+  hideDashboard?: boolean;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
+  hideDashboard = false,
 }) => {
   const { claim } = useClaimAttendanceToken();
-  const router = useRouter();
   const { account, isMounted, login } = useAccount();
   const { addMintingData, tokens } = useTokens();
-  const { doSubmit, isStatusLoading } = useSubmit();
-  const { transaction } = useTransaction();
+  const { doSubmit, isStatusLoading, setIsLoading } = useSubmit();
 
   const tokenId = useMemo(() => {
     const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
@@ -42,14 +40,12 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   const getProof = (
     data: IProofOfUsTokenMeta,
-    transaction: string,
+    transaction: ICommand,
   ): IProofOfUsData => {
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
-
     const proof: IProofOfUsData = {
       proofOfUsId: data.properties.eventId || '',
       type: 'attendance',
-      requestKey: tx.hash,
+      requestKey: transaction.hash,
       title: data.name,
       isReadyToSign: false,
       mintStatus: 'init',
@@ -66,34 +62,27 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     return proof;
   };
 
-  const createProof = async () => {
-    if (!transaction || !account) return;
-
-    const proof = getProof(data, transaction);
-    await addMintingData(proof);
-    await doSubmit(transaction, proof);
-  };
-
-  useEffect(() => {
-    createProof();
-  }, [account, transaction]);
-
   const handleClaim = async () => {
     const transaction = await claim(eventId);
     if (!transaction || !account) return;
 
-    const bufferedTx = Buffer.from(JSON.stringify(transaction)).toString(
-      'base64',
-    );
+    try {
+      setIsLoading(true);
+      const { transactions, isReady } = await sign([transaction], [account]);
+      await isReady();
 
-    router.push(
-      `${
-        process.env.NEXT_PUBLIC_WALLET_URL
-      }sign#transaction=${bufferedTx}&chainId=${
-        env.CHAINID
-      }&returnUrl=${getReturnUrl()}
-      `,
-    );
+      transactions.map(async (t) => {
+        // should perform check to see if all sigs are present
+        const proof = getProof(data, t as ICommand);
+        await addMintingData(proof);
+        await doSubmit(
+          Buffer.from(JSON.stringify(t)).toString('base64'),
+          proof,
+        );
+      });
+    } catch (e) {
+      setIsLoading(false);
+    }
   };
 
   const startDate = new Date(data.startDate * 1000);
@@ -120,10 +109,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                 {startDate.toLocaleTimeString()} to claim the nft
               </MessageBlock>
               <Stack gap="md">
-                {!isMinted && account && (
+                {!isMinted && account && !hideDashboard && (
                   <Stack>
                     <Link href="/user">
-                      <Button>Go to dashboard</Button>
+                      <Button>Dashboard</Button>
                     </Link>
                   </Stack>
                 )}
@@ -135,10 +124,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           <Stack flexDirection="column" gap="md">
             <MessageBlock title={''}>The event has ended.</MessageBlock>
             <Stack gap="md">
-              {!isMinted && account && (
+              {!isMinted && account && !hideDashboard && (
                 <Stack>
                   <Link href="/user">
-                    <Button>Go to dashboard</Button>
+                    <Button>Dashboard</Button>
                   </Link>
                 </Stack>
               )}
@@ -147,18 +136,18 @@ export const ScanAttendanceEvent: FC<IProps> = ({
         )}
         {showClaimButton && !isMinted && (
           <Stack gap="md">
-            {account && (
+            {account && !hideDashboard && (
               <Link href="/user">
-                <Button>Go to dashboard</Button>
+                <Button>Dashboard</Button>
               </Link>
             )}
-            <Button onPress={handleClaim}>Claim NFT</Button>
+            <Button onPress={handleClaim}>Mint NFT</Button>
           </Stack>
         )}
 
         {!account && isMounted && (
           <Stack width="100%">
-            <Button onClick={login}>Login to mint</Button>
+            <Button onClick={login}>Connect to mint</Button>
           </Stack>
         )}
         {isMinted && (
@@ -168,15 +157,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             </MessageBlock>
 
             <Stack gap="md">
-              <Button>
-                <Link href="/user">Go to dashboard</Link>
-              </Button>
-
-              <Button>
-                <Link href={`/user/proof-of-us/t/${tokenId}`}>
-                  Go to Proof{' '}
-                </Link>
-              </Button>
+              <Link href={`/user/proof-of-us/t/${tokenId}`}>
+                <Button>Go to Proof</Button>
+              </Link>
             </Stack>
           </Stack>
         )}

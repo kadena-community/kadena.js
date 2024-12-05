@@ -19,6 +19,7 @@ export const block: DocumentNode = gql`
         guard {
           keys
           predicate
+          # raw
         }
       }
       neighbors {

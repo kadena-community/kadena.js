@@ -1,5 +1,12 @@
 # @kadena-dev/lint-package
 
+## 0.2.0
+
+### Minor Changes
+
+- 8467af0: Allow packages that expose an executable to have a \[pre|post]
+  install script
+
 ## 0.1.3
 
 ### Patch Changes
