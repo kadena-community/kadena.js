@@ -17,7 +17,11 @@ export const getEventsDocument = (
   },
 ): Apollo.DocumentNode => coreEvents;
 
-export const useFreeze = ({ investorAccount }: { investorAccount: string }) => {
+export const useFreeze = ({
+  investorAccount,
+}: {
+  investorAccount?: string;
+}) => {
   const { account } = useAccount();
   const [frozen, setFrozen] = useState(true);
 
@@ -29,9 +33,8 @@ export const useFreeze = ({ investorAccount }: { investorAccount: string }) => {
 
   const init = async () => {
     if (!account) return;
-    console.log('frozen check');
     const res = await isFrozen({
-      investorAccount: investorAccount,
+      investorAccount: investorAccount!,
       account: account,
     });
 

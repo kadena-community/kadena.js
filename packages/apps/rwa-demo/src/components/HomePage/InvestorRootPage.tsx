@@ -33,7 +33,7 @@ export const InvestorRootPage: FC = () => {
       )}
 
       <Stack width="100%" flexDirection="column" gap="md">
-        <InvestorInfo investorAccount={account.address} />
+        <InvestorInfo account={account} />
 
         <Stack gap="sm">
           <Button

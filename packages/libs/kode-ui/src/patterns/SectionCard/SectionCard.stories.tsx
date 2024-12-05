@@ -112,10 +112,11 @@ export const Primary: Story = {
   },
 };
 
-export const main: Story = {
-  name: 'SectionCard mainCard',
+export const horizontal: Story = {
+  name: 'SectionCard Horizontal',
   args: {
     title: 'Our section',
+    stack: 'vertical',
     description: <>Our section is awesome</>,
     actions: <Actions />,
     children: 'This is the content for our section',

@@ -3,6 +3,7 @@ import { interpretErrorMessage } from '@/components/TransactionsProvider/Transac
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
+import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
@@ -13,10 +14,13 @@ export const useAddInvestor = () => {
   const { addNotification } = useNotifications();
 
   const submit = async (
-    data: IRegisterIdentityProps,
+    data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
     const newData: IRegisterIdentityProps = { ...data, agent: account! };
     try {
+      //if the account is already investor, no need to add it again
+      if (data.alreadyExists) return;
+
       const tx = await registerIdentity(newData);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -35,6 +39,8 @@ export const useAddInvestor = () => {
         label: 'there was an error',
         message: interpretErrorMessage(e.message),
       });
+    } finally {
+      await store.setAccount(data);
     }
   };
 

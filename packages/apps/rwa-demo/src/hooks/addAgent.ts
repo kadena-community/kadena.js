@@ -3,6 +3,7 @@ import { interpretErrorMessage } from '@/components/TransactionsProvider/Transac
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { getClient } from '@/utils/client';
+import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
@@ -16,6 +17,9 @@ export const useAddAgent = () => {
     data: IAddAgentProps,
   ): Promise<ITransaction | undefined> => {
     try {
+      //if the account is already agent, no need to add it again
+      if (data.alreadyExists) return;
+
       const tx = await addAgent(data, account!);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -33,6 +37,8 @@ export const useAddAgent = () => {
         label: 'there was an error',
         message: interpretErrorMessage(e.message),
       });
+    } finally {
+      await store.setAccount(data);
     }
   };
 
