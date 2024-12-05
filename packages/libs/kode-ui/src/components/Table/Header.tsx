@@ -8,16 +8,11 @@ import {
   useTableColumnHeader,
   useTableHeaderRow,
 } from 'react-aria';
-import { ITableProps, Stack } from '..';
+import type { ITableProps } from '..';
+import { Stack } from '..';
 
 import { MonoExpandLess, MonoExpandMore } from '@kadena/kode-icons/system';
-import classNames from 'classnames';
-import {
-  columnHeader,
-  defaultHeader,
-  headerBase,
-  subtleHeader,
-} from './Table.css';
+import { columnHeader, headerBase } from './Table.css';
 
 interface ITableHeaderRowProps<T> {
   item: GridNode<T>;

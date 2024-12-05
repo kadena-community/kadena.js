@@ -13,22 +13,32 @@ export const tableWrapper = style({
   overflowX: 'auto',
 });
 
-export const table = style([
-  {
-    color: token('color.text.base.default'),
-    borderCollapse: 'collapse',
-    borderSpacing: 0,
+export const table = style({
+  color: token('color.text.base.default'),
+  borderCollapse: 'collapse',
+  borderSpacing: 0,
+});
+
+export const tableVariants = recipe({
+  base: {},
+  variants: {
+    variant: {
+      default: {},
+      open: {
+        borderCollapse: 'separate',
+      },
+    },
   },
-]);
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
 const openHeader = style([
   atoms({
-    backgroundColor: 'surface.default',
-    color: 'text.base.@init',
-    paddingBlock: 'n3',
-    paddingInline: 'n4',
-    border: 'hairline',
+    backgroundColor: 'transparent',
   }),
+  {},
 ]);
 
 export const headerBase = recipe({
@@ -112,6 +122,7 @@ export const baseCell = style([
 export const columnHeader = recipe({
   base: [
     baseCell,
+
     {
       textAlign: 'left',
       selectors: {
@@ -129,39 +140,69 @@ export const columnHeader = recipe({
       default: {},
       open: [
         atoms({
-          paddingBlock: 'n3',
-          paddingInline: 'n4',
+          backgroundColor: 'surface.default',
+          color: 'text.base.@init',
+          border: 'hairline',
         }),
+        {
+          borderInlineWidth: '0!important',
+          paddingBlock: token('spacing.n3'),
+          paddingInline: token('spacing.n4'),
+          selectors: {
+            '&:first-child': {
+              borderStartStartRadius: `${token('radius.sm')}!important`,
+              borderEndStartRadius: `${token('radius.sm')}!important`,
+              borderInlineStartWidth: '1px!important',
+            },
+            '&:last-child': {
+              borderStartEndRadius: `${token('radius.sm')}!important`,
+              borderEndEndRadius: `${token('radius.sm')}!important`,
+              borderInlineEndWidth: '1px!important',
+            },
+          },
+        },
       ],
     },
   },
 });
 
-globalStyle(`${headerBase()} th:first-of-type `, {
-  borderTopLeftRadius: token('radius.sm'),
-  borderBottomLeftRadius: token('radius.sm'),
-});
+globalStyle(
+  `${table}:not([data-variant="open"]) ${headerBase()} th:first-of-type `,
+  {
+    borderTopLeftRadius: token('radius.sm'),
+    borderBottomLeftRadius: token('radius.sm'),
+  },
+);
 
-globalStyle(`${headerBase()} th:last-of-type`, {
-  borderTopRightRadius: token('radius.sm'),
-  borderBottomRightRadius: token('radius.sm'),
-});
+globalStyle(
+  `${table}:not([data-variant="open"]) ${headerBase()} th:last-of-type`,
+  {
+    borderTopRightRadius: token('radius.sm'),
+    borderBottomRightRadius: token('radius.sm'),
+  },
+);
 
-globalStyle(`${tableRow} td:first-of-type`, {
-  borderInlineStart: '4px solid transparent',
-  borderTopLeftRadius: token('size.n2'),
-  borderBottomLeftRadius: token('size.n2'),
-});
+globalStyle(
+  `${table}:not([data-variant="open"]) ${tableRow} td:first-of-type`,
+  {
+    borderInlineStart: '4px solid transparent',
+    borderTopLeftRadius: token('size.n2'),
+    borderBottomLeftRadius: token('size.n2'),
+  },
+);
 
-globalStyle(`${tableRow} td:last-of-type`, {
+globalStyle(`${table}:not([data-variant="open"]) ${tableRow} td:last-of-type`, {
   borderInlineEnd: '4px solid transparent',
   borderTopRightRadius: token('size.n2'),
   borderBottomRightRadius: token('size.n2'),
 });
 
-globalStyle(`${table} tbody[data-isstriped="true"] tr:nth-child(even)`, {
-  backgroundColor: token('color.background.surface.default'),
-});
+globalStyle(
+  `${table}:not([data-variant="open"]) tbody[data-isstriped="true"] tr:nth-child(even)`,
+  {
+    backgroundColor: token('color.background.surface.default'),
+  },
+);
 
 export const tableRowContent = style({
   display: 'flex',
@@ -199,8 +240,31 @@ export const tableDataCell = recipe({
       open: [
         atoms({
           paddingBlock: 'n3',
+          paddingInline: 'n4',
+          border: 'hairline',
+          backgroundColor: 'layer.default',
         }),
+        {
+          backdropFilter: 'blur(18px)',
+          borderInlineWidth: '0!important',
+          selectors: {
+            '&:first-child': {
+              borderStartStartRadius: `${token('radius.sm')}!important`,
+              borderEndStartRadius: `${token('radius.sm')}!important`,
+              borderInlineStartWidth: `${token('border.width.hairline')}!important`,
+            },
+            '&:last-child': {
+              borderStartEndRadius: `${token('radius.sm')}!important`,
+              borderEndEndRadius: `${token('radius.sm')}!important`,
+              borderInlineEndWidth: `${token('border.width.hairline')}!important`,
+            },
+          },
+        },
       ],
     },
   },
+});
+
+export const spacerClass = style({
+  height: token('spacing.n2'),
 });

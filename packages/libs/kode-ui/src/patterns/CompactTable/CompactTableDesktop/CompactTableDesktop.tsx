@@ -28,11 +28,10 @@ export const CompactTableDesktop: FC<IProps> = ({
 }) => {
   return (
     <Stack
-      padding="sm"
       width="100%"
       flexDirection="column"
       gap="sm"
-      className={tableBorderClass}
+      className={tableBorderClass({ variant })}
     >
       <Table
         aria-label={label}

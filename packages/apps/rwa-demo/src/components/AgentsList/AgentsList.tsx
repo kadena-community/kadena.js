@@ -58,6 +58,7 @@ export const AgentsList: FC = () => {
           />
           <SectionCardBody>
             <CompactTable
+              variant="open"
               fields={[
                 {
                   label: 'Name',

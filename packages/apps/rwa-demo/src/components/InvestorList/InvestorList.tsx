@@ -53,6 +53,7 @@ export const InvestorList: FC = () => {
 
           <SectionCardBody>
             <CompactTable
+              variant="open"
               fields={[
                 {
                   label: 'Name',

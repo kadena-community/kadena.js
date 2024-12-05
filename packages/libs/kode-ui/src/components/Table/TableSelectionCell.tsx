@@ -8,7 +8,7 @@ import { Checkbox } from '../Form';
 import { boxClass, iconClass } from '../Form/RadioGroup/Radio.css';
 import { RadioGroup } from '../Form/RadioGroup/RadioGroup';
 import type { ITableRowProps } from './Body';
-import { ITableProps } from './Table';
+import type { ITableProps } from './Table';
 import { selectorCell, tableDataCell } from './Table.css';
 
 interface ITableSelectionCell<T> {

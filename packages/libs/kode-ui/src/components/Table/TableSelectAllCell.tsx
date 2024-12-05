@@ -9,7 +9,7 @@ import {
 import type { ICheckboxProps } from '../Form';
 import { Checkbox } from '../Form';
 import type { ITableRowProps } from './Body';
-import { ITableProps } from './Table';
+import type { ITableProps } from './Table';
 import { selectorCell, tableDataCell } from './Table.css';
 
 interface ITableSelectAllCellProps<T> {

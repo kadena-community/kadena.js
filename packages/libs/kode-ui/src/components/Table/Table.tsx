@@ -8,7 +8,7 @@ import { useTableState } from 'react-stately';
 
 import { TableCell, TableRow } from './Body';
 import { TableColumnHeader, TableHeaderRow } from './Header';
-import { table, tableWrapper } from './Table.css';
+import { table, tableVariants, tableWrapper } from './Table.css';
 import { TableSelectAllCell } from './TableSelectAllCell';
 import { TableSelectionCell } from './TableSelectionCell';
 
@@ -38,10 +38,16 @@ export function Table<T extends object>(props: ITableProps<T>) {
     <div className={tableWrapper} ref={scrollRef}>
       <table
         {...gridProps}
-        className={classNames(table, props.className, {
-          striped: props.isStriped,
-          compact: props.isCompact,
-        })}
+        data-variant={props.variant}
+        className={classNames(
+          table,
+          tableVariants({ variant: props.variant }),
+          props.className,
+          {
+            striped: props.isStriped,
+            compact: props.isCompact,
+          },
+        )}
         ref={ref}
       >
         <TableRowGroup type="thead">

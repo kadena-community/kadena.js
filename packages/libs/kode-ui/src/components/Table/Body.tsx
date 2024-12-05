@@ -10,8 +10,8 @@ import {
   useTableCell,
   useTableRow,
 } from 'react-aria';
-import { ITableProps } from './Table';
-import { tableDataCell, tableRow } from './Table.css';
+import type { ITableProps } from './Table';
+import { spacerClass, tableDataCell, tableRow } from './Table.css';
 
 export interface ITableRowProps<T> {
   item: GridNode<T>;
@@ -39,16 +39,19 @@ export function TableRow<T extends object>({
   const { isHovered, hoverProps } = useHover({ isDisabled: false });
 
   return (
-    <tr
-      className={tableRow}
-      {...mergeProps(rowProps, focusProps, hoverProps)}
-      data-focused={isFocusVisible || undefined}
-      data-hovered={isHovered || undefined}
-      data-selected={isSelected || undefined}
-      ref={ref}
-    >
-      {children}
-    </tr>
+    <>
+      {variant === 'open' && <tr className={spacerClass} />}
+      <tr
+        className={tableRow}
+        {...mergeProps(rowProps, focusProps, hoverProps)}
+        data-focused={isFocusVisible || undefined}
+        data-hovered={isHovered || undefined}
+        data-selected={isSelected || undefined}
+        ref={ref}
+      >
+        {children}
+      </tr>
+    </>
   );
 }
 
