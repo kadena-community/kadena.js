@@ -19,7 +19,6 @@ export function useFunctionTracker(name: string) {
         setArgs(args);
         const response = fn(...args);
         Promise.resolve(response).then((data) => setResponse({ data }));
-        console.log('track wrap', name, args, response);
         return response;
       };
     },

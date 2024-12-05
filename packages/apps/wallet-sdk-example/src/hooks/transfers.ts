@@ -72,7 +72,6 @@ export const useTransfers = () => {
   }, [refetch, transfers, wallet.account?.name]);
 
   useEffect(() => {
-    console.log({ pendingTransfers });
     if (!pendingTransfers || pendingTransfers.length === 0) return;
     const controller = new AbortController();
 

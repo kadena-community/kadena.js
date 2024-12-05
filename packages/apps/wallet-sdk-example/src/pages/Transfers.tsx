@@ -21,8 +21,6 @@ export const Transfers = () => {
   const { transfers, pendingTransfers, account, functionCalls } =
     useTransfers();
 
-  console.log('Transfers render');
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getAmountStyle = (transfer: any) => {
     if (!transfer.success) return 'text-default';
