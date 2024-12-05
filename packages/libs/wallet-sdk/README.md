@@ -836,6 +836,22 @@ if (name) {
 
 ---
 
+### **Introduction Text for Wallet SDK Documentation**
+
+To explore the capabilities of the Kadena Wallet SDK in action, check out the
+[Wallet SDK Example App](https://github.com/kadena-community/kadena.js/tree/feat/wallet-sdk-interface/packages/apps/wallet-sdk-example).
+This example app demonstrates every function available in the SDK. It
+highlights:
+
+- **Usage Examples**: See how each function is implemented with real-time code
+  execution.
+- **Code Previews**: A code highlighter showcases the function being called, the
+  code executed, and its response.
+- **Interactive Learning**: Learn the SDK features step-by-step while seeing the
+  immediate effects.
+
+---
+
 ## Happy Coding!
 
 With the Kadena Wallet SDK and Kadena HD Wallet, you're well-equipped to build
