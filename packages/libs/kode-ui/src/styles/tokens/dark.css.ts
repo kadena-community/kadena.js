@@ -207,6 +207,19 @@ export const darkThemeValues = {
         sticky: '100',
         toast: '10000',
       },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
+        },
+      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n50,
@@ -448,6 +461,12 @@ export const darkThemeValues = {
           },
           skeleton: {
             default: tokens.kda.foundation.color.neutral['n20@alpha80'],
+          },
+          table: {
+            row: {
+              default: tokens.kda.foundation.color.background.layer.default,
+              '@hover': tokens.kda.foundation.color.neutral['n10@alpha80'],
+            },
           },
         },
         border: {
@@ -1309,13 +1328,6 @@ export const darkThemeValues = {
           },
         },
       },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
-        },
-      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -1325,12 +1337,6 @@ export const darkThemeValues = {
           lg: tokens.kda.foundation.size.n8,
           xl: tokens.kda.foundation.size.n10,
           xxl: tokens.kda.foundation.size.n16,
-        },
-      },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
         },
       },
       typography: {

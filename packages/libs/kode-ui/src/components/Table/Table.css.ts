@@ -244,7 +244,7 @@ export const tableDataCell = recipe({
           border: 'hairline',
         }),
         {
-          backgroundColor: token('color.background.layer.default'),
+          backgroundColor: token('color.background.table.row.default'),
           backdropFilter: 'blur(18px)',
           borderInlineWidth: '0!important',
           selectors: {
@@ -259,7 +259,7 @@ export const tableDataCell = recipe({
               borderInlineEndWidth: `${token('border.width.hairline')}!important`,
             },
             [`${tableRow}[data-hovered] &`]: {
-              backgroundColor: token('color.neutral.n1@alpha80'),
+              backgroundColor: token('color.background.table.row.@hover'),
             },
           },
         },

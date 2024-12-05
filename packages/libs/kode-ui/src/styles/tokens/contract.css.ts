@@ -783,6 +783,42 @@ export const tokens = createThemeContract({
          */
         toast: '',
       },
+      effect: {
+        shadow: {
+          /**
+           * This is the shadow 1 description
+           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           */
+          level1: '',
+          /**
+           * This is the shadow 2 description
+           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           */
+          level2: '',
+          /**
+           * This is the shadow 3 description updated
+           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           */
+          level3: '',
+        },
+      },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
+        },
+      },
       color: {
         accent: {
           /**
@@ -1592,6 +1628,20 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.neutral.n20@alpha80}
              */
             default: '',
+          },
+          table: {
+            row: {
+              /**
+               * @light {@link tokens.kda.foundation.color.background.layer.default}
+               * @dark {@link tokens.kda.foundation.color.background.layer.default}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n1@alpha80}
+               * @dark {@link tokens.kda.foundation.color.neutral.n10@alpha80}
+               */
+              '@hover': '',
+            },
           },
         },
         border: {
@@ -5041,28 +5091,6 @@ export const tokens = createThemeContract({
           },
         },
       },
-      effect: {
-        shadow: {
-          /**
-           * This is the shadow 1 description
-           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           */
-          level1: '',
-          /**
-           * This is the shadow 2 description
-           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           */
-          level2: '',
-          /**
-           * This is the shadow 3 description updated
-           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           */
-          level3: '',
-        },
-      },
       icon: {
         size: {
           /**
@@ -5100,20 +5128,6 @@ export const tokens = createThemeContract({
            * @dark {@link tokens.kda.foundation.size.n16}
            */
           xxl: '',
-        },
-      },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
         },
       },
       typography: {
