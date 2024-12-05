@@ -221,10 +221,11 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build Docker Image
+        id: docker-build-image-dev
         run: |
-          docker build -t ghcr.io/kadena.js/graph:latest .
           cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:dev -t ghcr.io/kadena/graph:${GITHUB_SHA::7}
 
       - name: Push Docker Image to GHCR
+        if: steps.docker-build-image-dev.conclusion == 'success'
         run: |
           docker push ghcr.io/kadena.js/graph:dev && docker push ghcr.io/kadena/graph:${GITHUB_SHA::7}

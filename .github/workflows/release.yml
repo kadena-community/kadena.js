@@ -29,6 +29,13 @@ jobs:
           show-progress: false
           token: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
 
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            graph:
+              - 'packages/apps/graph/**'
+
       - name: Runner setup
         uses: ./.github/actions/runner-setup
 
@@ -72,11 +79,29 @@ jobs:
           username: ${{ vars.GHCR_USER }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Build Docker Image
+      - name: Build Docker Image for `:latest`
+        id: docker-build-graph-latest
+        # only run when `changesets` has published for `@kadena/graph`
+        if: steps.changesets.outputs.published == 'true' && contains(steps.changesets.outputs.publishedPackages, '@kadena/graph')
         run: |
-          docker build -t ghcr.io/kadena.js/graph:latest .
-          cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:latest -t ghcr.io/kadena/graph:preview
+          cd packages/apps/graph && docker compose build graphql -t ghcr.io/kadena/graph:latest -t ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
 
-      - name: Push Docker Image to GHCR
+      - name: Push Docker Image to GHCR for `:latest`
+        # only publish when above is success
+        if: steps.docker-build-graph-latest.conclusion == 'success'
         run: |
-          docker push ghcr.io/kadena.js/graph:latest && docker push ghcr.io/kadena/graph:preview
+          docker push ghcr.io/kadena.js/graph:latest && docker push ghcr.io/kadena/graph:latest && docker push ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
+
+      - name: Build Docker Image `:preview`
+        id: docker-build-graph-preview
+        # no need to publish when `:latest` is publishing
+        if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.filter.outputs.graph == 'true'
+        # only run when `packages/apps/graph/**` has changes
+        run: |
+          cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:preview -t ghcr.io/kadena/graph:${GITHUB_SHA::7}
+
+      - name: Push Docker Image to GHCR for `:preview`
+        if: steps.docker-build-graph-preview.conclusion == 'success'
+        run: |
+          docker push ghcr.io/kadena/graph:preview && docker push ghcr.io/kadena/graph:${GITHUB_SHA::7}
+
