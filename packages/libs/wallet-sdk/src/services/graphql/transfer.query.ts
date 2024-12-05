@@ -55,10 +55,23 @@ export const TRANSFER_FIELDS_FRAGMENT = graphql(`
 `);
 
 export const ACCOUNT_TRANSFER_QUERY = graphql(`
-  query accountTransfers($accountName: String!, $fungibleName: String) {
+  query accountTransfers(
+    $accountName: String!
+    $fungibleName: String
+    $first: Int
+    $last: Int
+    $before: String
+    $after: String
+  ) {
     lastBlockHeight
     fungibleAccount(accountName: $accountName, fungibleName: $fungibleName) {
-      transfers(first: 100) {
+      transfers(first: $first, last: $last, before: $before, after: $after) {
+        pageInfo {
+          startCursor
+          endCursor
+          hasNextPage
+          hasPreviousPage
+        }
         edges {
           node {
             ...TransferFields
@@ -78,6 +91,9 @@ export const ACCOUNT_CHAIN_TRANSFER_QUERY = graphql(`
     $chainId: String
     $fungibleName: String
     $first: Int
+    $last: Int
+    $before: String
+    $after: String
   ) {
     lastBlockHeight
     transfers(
@@ -85,7 +101,16 @@ export const ACCOUNT_CHAIN_TRANSFER_QUERY = graphql(`
       chainId: $chainId
       fungibleName: $fungibleName
       first: $first
+      last: $last
+      before: $before
+      after: $after
     ) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
       edges {
         node {
           ...TransferFields
@@ -102,6 +127,12 @@ export const TRANSFER_REQUESTKEY_QUERY = graphql(`
   query accountTransferRequestKey($requestKey: String!, $accountName: String) {
     lastBlockHeight
     transfers(requestKey: $requestKey, accountName: $accountName) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
       edges {
         node {
           ...TransferFields

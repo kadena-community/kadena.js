@@ -29,16 +29,17 @@ import {
   defaultGraphqlHostGenerator,
 } from './host.js';
 import type {
-  CreateCrossChainTransfer,
-  CreateTransfer,
   IAccountDetails,
   IChain,
+  ICreateCrossChainTransfer,
+  ICreateTransfer,
   ICrossChainTransfer,
   INetworkInfo,
+  INodeChainInfo,
+  INodeNetworkInfo,
   ITransactionDescriptor,
-  NodeChainInfo,
-  NodeNetworkInfo,
-  Transfer,
+  ITransferOptions,
+  ITransferResponse,
 } from './interface.js';
 import { KadenaNames } from './kadenaNames.js';
 import type { ILogTransport, LogLevel } from './logger.js';
@@ -128,7 +129,7 @@ export class WalletSDK {
 
   /** create transfer that accepts any kind of account (requires keys/pred) */
   public createTransfer(
-    transfer: CreateTransfer & { networkId: string },
+    transfer: ICreateTransfer & { networkId: string },
   ): IUnsignedCommand {
     const command = transferCreateCommand(transfer)();
     return createTransaction({
@@ -139,7 +140,7 @@ export class WalletSDK {
 
   /** create cross-chain transfer */
   public createCrossChainTransfer(
-    transfer: CreateCrossChainTransfer & { networkId: string },
+    transfer: ICreateCrossChainTransfer & { networkId: string },
   ): IUnsignedCommand {
     const command = createCrossChainCommand(transfer)();
     return createTransaction({
@@ -170,16 +171,13 @@ export class WalletSDK {
   }
 
   public async getTransfers(
-    accountName: string,
-    networkId: string,
-    fungible?: string,
-    chainId?: ChainId,
-  ): Promise<Transfer[]> {
-    const url = this.getGraphqlUrl({ networkId });
-    if (chainId) {
-      return getChainTransfers(url, accountName, chainId, fungible);
+    options: ITransferOptions,
+  ): Promise<ITransferResponse> {
+    const url = this.getGraphqlUrl({ networkId: options.networkId });
+    if (options.chainId) {
+      return getChainTransfers(url, options);
     }
-    return getTransfers(url, accountName, fungible);
+    return getTransfers(url, options);
   }
 
   public subscribeOnCrossChainComplete(
@@ -355,22 +353,21 @@ export class WalletSDK {
 
       return accountDetailsList;
     } catch (error) {
-      this.logger.error(`Error in fetching account details: ${error.message}`, {
-        error,
-      });
-      throw new Error(`Failed to get account details for ${accountName}`);
+      throw new Error(
+        `Failed to get account details for "${accountName}": ${error.message}`,
+      );
     }
   }
 
   public async getChains(networkHost: string): Promise<IChain[]> {
     const res = await fetch(`${networkHost}/info`);
-    const json: NodeChainInfo = await res.json();
+    const json: INodeChainInfo = await res.json();
 
     const chains = json.nodeChains ?? [];
     return chains.map((c) => ({ id: c as ChainId }));
   }
 
-  public async getNetworkInfo(networkHost: string): Promise<NodeNetworkInfo> {
+  public async getNetworkInfo(networkHost: string): Promise<INodeNetworkInfo> {
     const res = await fetch(`${networkHost}/info`);
     const json: INetworkInfo = await res.json();
 
@@ -378,7 +375,7 @@ export class WalletSDK {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       nodeChains = [],
       ...networkInfo
-    }: NodeNetworkInfo & { nodeChains: string[] } = json;
+    }: INodeNetworkInfo & { nodeChains: string[] } = json;
 
     return networkInfo;
   }

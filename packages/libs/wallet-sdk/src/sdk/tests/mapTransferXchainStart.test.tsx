@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { parseGqlTransfers } from '../../services/graphql/transfer.util';
-import type { Transfer } from '../interface';
+import type { ITransfer } from '../interface';
 
 const TRANSFER_XCHAIN_SEND = [
   {
@@ -282,7 +282,7 @@ describe('getTransfers', () => {
           success: true,
           token: 'coin',
         },
-      } as Transfer,
+      } as ITransfer,
     ]);
   });
 });
