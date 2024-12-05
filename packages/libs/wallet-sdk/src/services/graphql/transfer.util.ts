@@ -1,6 +1,6 @@
 import type { ChainId } from '@kadena/types';
 import type { TransferFieldsFragment } from '../../gql/graphql';
-import type { Transfer } from '../../sdk/interface';
+import type { ITransfer } from '../../sdk/interface';
 import { parsePactNumber } from '../../utils/pact.util';
 import { safeJsonParse } from '../../utils/string.util';
 import { isEmpty, notEmpty } from '../../utils/typeUtils';
@@ -150,7 +150,7 @@ const getCrossChainTransferFinish = (transfer: GqlTransferParsed) => {
 const mapBaseTransfer = (
   gqlTransfer: GqlTransferParsed,
   lastBlockHeight: number,
-): Transfer => {
+): ITransfer => {
   return {
     amount: gqlTransfer.amount,
     chainId: String(gqlTransfer.chainId) as ChainId,
@@ -175,13 +175,13 @@ export const gqlTransferToTransfer = (
   _accountName: string,
   lastBlockHeight: number,
   fungibleName?: string,
-): Transfer | null => {
+): ITransfer | null => {
   const gqlTransfer = parseTransfer(rawGqlTransfer, fungibleName);
   const xChainStart = getCrossChainTransferStart(gqlTransfer);
   const xChainFinish = getCrossChainTransferFinish(gqlTransfer);
 
   if (xChainStart) {
-    const result: Transfer = {
+    const result: ITransfer = {
       ...mapBaseTransfer(gqlTransfer, lastBlockHeight),
       isCrossChainTransfer: true,
       targetChainId: xChainStart.targetChainId,
@@ -221,7 +221,7 @@ export function parseGqlTransfers(
   lastBlockHeight: number,
   accountName: string,
   fungibleName?: string,
-): Transfer[] {
+): ITransfer[] {
   const grouped = nodes.reduce(
     (acc, node) => {
       const key = node.requestKey;
@@ -262,7 +262,7 @@ export function parseGqlTransfers(
         fungibleName,
       );
       if (!transactionFeeTransfer) return [];
-      const transfer: Transfer = {
+      const transfer: ITransfer = {
         ...transactionFeeTransfer,
         receiverAccount: String(transferCap[1]),
         // Could technically be different from the value used in payload.code
@@ -302,14 +302,14 @@ export function parseGqlTransfers(
               isBulkTransfer: transfers.length > 1,
             }
           : undefined,
-      } as Transfer;
+      } as ITransfer;
     });
   });
 
   return mapped.filter(notEmpty);
 }
 
-export function isSameTransfer(transferA: Transfer, transferB: Transfer) {
+export function isSameTransfer(transferA: ITransfer, transferB: ITransfer) {
   const isSameBaseTransfer =
     transferA.requestKey === transferB.requestKey &&
     transferA.chainId === transferB.chainId &&

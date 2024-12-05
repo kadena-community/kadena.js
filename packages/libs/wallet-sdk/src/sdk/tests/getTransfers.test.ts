@@ -3,13 +3,14 @@ import { walletSdk } from '../walletSdk.js';
 
 describe('getTransfers', () => {
   test('runs', async () => {
-    const result = await walletSdk.getTransfers(
-      'k:2017fee3fb15cfe840e5ed34bf101cc7d5579ffdd20dea09e32fd77c1757f946',
-      'testnet04',
-    );
+    const result = await walletSdk.getTransfers({
+      accountName:
+        'k:2017fee3fb15cfe840e5ed34bf101cc7d5579ffdd20dea09e32fd77c1757f946',
+      networkId: 'testnet04',
+    });
     // console.log(result);
 
-    const transfer = result.filter(
+    const transfer = result.transfers.filter(
       (x) => x.requestKey === 'FVw93gHbAURTTI74-gbwvTY8AQFA7pd9mfr6obB8SMY',
     );
     console.log(transfer);
@@ -56,7 +57,7 @@ describe('getTransfers', () => {
       },
     ]);
 
-    const transfer2 = result.filter(
+    const transfer2 = result.transfers.filter(
       (x) => x.requestKey === 'KeasLpaJQUUAB_ROeHChuv-yW8hmM0NlMKM1ht5nb1k',
     );
     console.log('transfer2', transfer2);

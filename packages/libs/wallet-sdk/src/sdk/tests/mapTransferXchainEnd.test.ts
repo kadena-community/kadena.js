@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { parseGqlTransfers } from '../../services/graphql/transfer.util';
-import type { Transfer } from '../interface';
+import type { ITransfer } from '../interface';
 
 const GQL_TRANSFER_XCHAIN_FINISH = [
   {
@@ -175,7 +175,7 @@ describe('getTransfers', () => {
           requestKey: 'UXkFsj8hFBZ4wNZBqw12HZ7mSlpHqyrg1VP2nfSdR4k',
           success: true,
         },
-      } as Transfer,
+      } as ITransfer,
     ]);
   });
 });

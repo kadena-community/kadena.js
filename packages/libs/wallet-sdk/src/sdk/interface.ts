@@ -58,10 +58,31 @@ export interface IChain {
   id: ChainId;
   // Will add later: type: 'pact' | 'evm'
 }
-export type Transfer = ISameChainTransfer | ICrossChainTransfer;
+export type ITransfer = ISameChainTransfer | ICrossChainTransfer;
 
-export type CreateTransfer = Parameters<typeof transferCreateCommand>[0];
-export type CreateCrossChainTransfer = Parameters<
+export interface ITransferOptions {
+  accountName: string;
+  networkId: string;
+  fungibleName?: string;
+  chainId?: ChainId;
+  first?: number;
+  after?: string;
+  before?: string;
+  last?: number;
+}
+
+export interface ITransferResponse {
+  transfers: ITransfer[];
+  pageInfo: {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor: string | null;
+    endCursor: string | null;
+  };
+}
+
+export type ICreateTransfer = Parameters<typeof transferCreateCommand>[0];
+export type ICreateCrossChainTransfer = Parameters<
   typeof createCrossChainCommand
 >[0];
 export interface IAccountDetails {
@@ -107,6 +128,6 @@ export interface INetworkInfo {
   nodeVersion: string;
 }
 
-export type NodeChainInfo = Pick<INetworkInfo, 'nodeChains' | 'nodeVersion'>;
+export type INodeChainInfo = Pick<INetworkInfo, 'nodeChains' | 'nodeVersion'>;
 
-export type NodeNetworkInfo = Omit<INetworkInfo, 'nodeChains'>;
+export type INodeNetworkInfo = Omit<INetworkInfo, 'nodeChains'>;

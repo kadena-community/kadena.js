@@ -1,5 +1,5 @@
 import { createClient, fetchExchange } from '@urql/core';
-import type { Transfer } from '../../sdk/interface';
+import type { ITransfer } from '../../sdk/interface';
 import type { Logger } from '../../sdk/logger';
 import { TRANSFER_REQUESTKEY_QUERY } from './transfer.query';
 import type { GqlTransfer } from './transfer.util';
@@ -60,6 +60,6 @@ export async function pollGraphqlTransfers({
       }
       return acc;
     },
-    {} as Record<string, Transfer[]>,
+    {} as Record<string, ITransfer[]>,
   );
 }
