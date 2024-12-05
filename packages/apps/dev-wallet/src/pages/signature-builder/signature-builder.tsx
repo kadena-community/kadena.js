@@ -34,6 +34,8 @@ import classNames from 'classnames';
 import yaml from 'js-yaml';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { QRCode } from './qr-code';
+import { QRScanner } from './scanner';
 import { codeArea } from './style.css';
 
 const getTxFromUrlHash = () =>
@@ -54,6 +56,11 @@ export function SignatureBuilder() {
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = usePatchedNavigate();
 
+  // QR Related code
+  const [showQR, setShowQR] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+
+  // End QR Related code
   const exec =
     pactCommand && pactCommand.payload && 'exec' in pactCommand.payload
       ? pactCommand.payload.exec
@@ -205,12 +212,26 @@ export function SignatureBuilder() {
           </Notification>
         )}
         <Box>
-          <Box>
-            {['PactCommand', 'quickSignRequest'].includes(schema!) && (
+          {['PactCommand', 'quickSignRequest'].includes(schema!) && (
+            <Stack gap="md">
               <Button onPress={reviewTransaction}>Review Transaction</Button>
-            )}
-          </Box>
+              <Button onPress={() => setShowQR(!showQR)}>Show QR</Button>
+              <Button onPress={() => setShowScanner(!showScanner)}>
+                Scan QR
+              </Button>
+            </Stack>
+          )}
         </Box>
+        {showQR && (
+          <Box>
+            <QRCode payload={JSON.stringify(unsignedTx)} />
+          </Box>
+        )}
+        {showScanner && (
+          <Box>
+            <QRScanner onScanned={(data) => console.log('woop woop', data)} />
+          </Box>
+        )}
       </Stack>
     </>
   );
