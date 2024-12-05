@@ -32,8 +32,6 @@ export function TableHeaderRow<T extends object>({
   const ref = useRef(null);
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
-  console.log({ variant });
-
   return (
     <tr
       className={headerBase({ variant, subtleHeader: isSubtle })}
