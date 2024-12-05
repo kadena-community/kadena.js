@@ -839,7 +839,7 @@ if (name) {
 ### **Introduction Text for Wallet SDK Documentation**
 
 To explore the capabilities of the Kadena Wallet SDK in action, check out the
-[Wallet SDK Example App](https://github.com/kadena-community/kadena.js/tree/feat/wallet-sdk-interface/packages/apps/wallet-sdk-example).
+[Wallet SDK Example App](https://github.com/kadena-community/kadena.js/tree/main/packages/apps/wallet-sdk-example).
 This example app demonstrates every function available in the SDK. It
 highlights:
 
