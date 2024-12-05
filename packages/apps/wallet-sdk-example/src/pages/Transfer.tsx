@@ -345,7 +345,9 @@ export const Transfer = () => {
 
       <SdkFunctionDisplay
         data={
-          trackCreateSimpleTransfer.data || trackCreateCrossChainTransfer.data
+          isCrossChain
+            ? trackCreateCrossChainTransfer.data
+            : trackCreateSimpleTransfer.data
         }
       />
     </div>
