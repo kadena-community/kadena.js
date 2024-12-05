@@ -1,5 +1,3 @@
-<!-- genericHeader start -->
-
 # @kadena/wallet-sdk
 
 # Kadena Wallet SDK Documentation
@@ -155,6 +153,11 @@ const transactionDescriptor = await walletSdk.sendTransaction(
   'testnet04',
   '1',
 );
+
+console.log(
+  'Transaction sent with request key:',
+  transactionDescriptor.requestKey,
+);
 ```
 
 #### `createTransfer`
@@ -207,6 +210,11 @@ const transactionDescriptor = await walletSdk.sendTransaction(
   signedTransaction,
   'testnet04',
   '1',
+);
+
+console.log(
+  'Transaction sent with request key:',
+  transactionDescriptor.requestKey,
 );
 ```
 
@@ -262,6 +270,11 @@ const transactionDescriptor = await walletSdk.sendTransaction(
   'testnet04',
   '0', // Source chain ID
 );
+
+console.log(
+  'Cross-chain transaction sent with request key:',
+  transactionDescriptor.requestKey,
+);
 ```
 
 #### `createFinishCrossChainTransfer`
@@ -272,7 +285,10 @@ complete the transfer on the target chain.
 **Method Signature:**
 
 ```typescript
-createFinishCrossChainTransfer(transfer: CreateFinishCrossChainTransfer): IUnsignedCommand;
+createFinishCrossChainTransfer(
+  transfer: ICreateCrossChainFinishInput,
+  gasPayer: { account: string; publicKeys: ISigner[] },
+): Promise<IUnsignedCommand>;
 ```
 
 **Parameters:**
@@ -286,25 +302,35 @@ createFinishCrossChainTransfer(transfer: CreateFinishCrossChainTransfer): IUnsig
   - `networkId`: `string` - The network ID.
   - `receiver`: `string` - Receiver's account name.
   - `receiverGuard`: `IGuard` - Optional guard for the receiver's account.
+- `gasPayer`: An object containing:
+  - `account`: `string` - The account that will pay for the gas fees.
+  - `publicKeys`: `ISigner[]` - The public keys associated with the gas payer's
+    account.
 
 **Returns:**
 
-- `IUnsignedCommand`: An unsigned transaction command ready to be signed and
-  sent.
+- `Promise<IUnsignedCommand>`: An unsigned transaction command ready to be
+  signed and sent.
 
 **Example:**
 
 ```typescript
-const unsignedTransaction = walletSdk.createFinishCrossChainTransfer({
-  proof: 'spvProofString',
-  requestKey: 'initialRequestKey',
-  fromChainId: '0',
-  toChainId: '1',
-  networkId: 'testnet04',
-  receiver: 'receiverAccount',
-  // Optional receiver guard
-  // receiverGuard: { keys: ['receiverPublicKey'], pred: 'keys-all' },
-});
+const unsignedTransaction = await walletSdk.createFinishCrossChainTransfer(
+  {
+    proof: 'spvProofString',
+    requestKey: 'initialRequestKey',
+    fromChainId: '0',
+    toChainId: '1',
+    networkId: 'testnet04',
+    receiver: 'receiverAccount',
+    // Optional receiver guard
+    // receiverGuard: { keys: ['receiverPublicKey'], pred: 'keys-all' },
+  },
+  {
+    account: 'gasPayerAccount',
+    publicKeys: ['gasPayerPublicKey1', 'gasPayerPublicKey2'],
+  },
+);
 
 // Sign the transaction
 // const signedTransaction = signTransaction(unsignedTransaction);
@@ -314,6 +340,11 @@ const transactionDescriptor = await walletSdk.sendTransaction(
   signedTransaction,
   'testnet04',
   '1', // Target chain ID
+);
+
+console.log(
+  'Finishing cross-chain transaction sent with request key:',
+  transactionDescriptor.requestKey,
 );
 ```
 
@@ -372,7 +403,7 @@ getTransfers(
   accountName: string,
   networkId: string,
   fungible?: string,
-  chainsIds?: ChainId[],
+  chainId?: ChainId,
 ): Promise<Transfer[]>;
 ```
 
@@ -382,7 +413,7 @@ getTransfers(
   `'k:accountPublicKey'`).
 - `networkId`: `string` - The network ID.
 - `fungible?`: `string` - Optional fungible token name (defaults to `'coin'`).
-- `chainsIds?`: `ChainId[]` - Optional list of chain IDs to query.
+- `chainId?`: `ChainId` - Optional chain ID to filter transfers.
 
 **Returns:**
 
@@ -412,18 +443,20 @@ Subscribes to cross-chain transfer completion events.
 
 ```typescript
 subscribeOnCrossChainComplete(
-  transfers: ITransactionDescriptor[],
-  callback: (transfer: Transfer) => void,
+  accountName: string,
+  transfers: ICrossChainTransfer[],
+  callback: (transfer: ICrossChainTransfer) => void,
   options?: { signal?: AbortSignal },
 ): void;
 ```
 
 **Parameters:**
 
-- `transfers`: `ITransactionDescriptor[]` - An array of transaction descriptors
-  representing the cross-chain transfers to monitor.
-- `callback`: `(transfer: Transfer) => void` - A function to call when a
-  transfer completes.
+- `accountName`: `string` - The account name associated with the transfers.
+- `transfers`: `ICrossChainTransfer[]` - An array of cross-chain transfer
+  objects to monitor.
+- `callback`: `(transfer: ICrossChainTransfer) => void` - A function to call
+  when a transfer completes.
 - `options?`: `{ signal?: AbortSignal }` - Optional settings, including an
   `AbortSignal` to cancel the subscription.
 
@@ -431,7 +464,8 @@ subscribeOnCrossChainComplete(
 
 ```typescript
 walletSdk.subscribeOnCrossChainComplete(
-  [crossChainTransactionDescriptor],
+  'senderAccount',
+  [crossChainTransfer1, crossChainTransfer2],
   (transfer) => {
     console.log('Cross-chain transfer completed:', transfer);
   },
@@ -487,7 +521,12 @@ subscribePendingTransactions(
     transaction: ITransactionDescriptor,
     result: ResponseResult,
   ) => void,
-  options?: { signal?: AbortSignal },
+  options?: {
+    signal?: AbortSignal;
+    confirmationDepth?: number;
+    timeoutSeconds?: number;
+    intervalMs?: number;
+  },
 ): void;
 ```
 
@@ -498,8 +537,14 @@ subscribePendingTransactions(
 - `callback`:
   `(transaction: ITransactionDescriptor, result: ResponseResult) => void` - A
   function to call when a transaction status updates.
-- `options?`: `{ signal?: AbortSignal }` - Optional settings, including an
-  `AbortSignal`.
+- `options?`:
+  - `signal?: AbortSignal` - Optional signal to abort the subscription.
+  - `confirmationDepth?: number` - Optional number of confirmations to wait for
+    (default is `1`).
+  - `timeoutSeconds?: number` - Optional timeout in seconds (default is `60` or
+    based on `confirmationDepth`).
+  - `intervalMs?: number` - Optional polling interval in milliseconds (default
+    is `1000`).
 
 **Example:**
 
@@ -515,6 +560,11 @@ walletSdk.subscribePendingTransactions(
         result.error,
       );
     }
+  },
+  {
+    confirmationDepth: 2,
+    timeoutSeconds: 300,
+    intervalMs: 2000,
   },
 );
 ```
@@ -608,13 +658,12 @@ chains.forEach((chain) => {
 
 ### `getNetworkInfo`
 
-Retrieves network information. _(Note: Currently returns `null` as this method
-is a placeholder for future implementation.)_
+Retrieves network information.
 
 **Method Signature:**
 
 ```typescript
-getNetworkInfo(networkHost: string): Promise<unknown>;
+getNetworkInfo(networkHost: string): Promise<NodeNetworkInfo>;
 ```
 
 **Parameters:**
@@ -623,7 +672,7 @@ getNetworkInfo(networkHost: string): Promise<unknown>;
 
 **Returns:**
 
-- `Promise<unknown>`: A promise that resolves to network information.
+- `Promise<NodeNetworkInfo>`: A promise that resolves to network information.
 
 **Example:**
 
@@ -785,24 +834,6 @@ if (name) {
   console.log('No name found for the given address.');
 }
 ```
-
----
-
-## Conclusion
-
-The Kadena Wallet SDK offers a comprehensive set of tools to integrate Kadena
-blockchain functionalities into your wallet applications easily. Designed with
-developers in mind, it ensures that even those with intermediate experience can
-build robust wallets without delving into the complexities of blockchain
-interactions.
-
-By providing clear methods with well-defined parameters, the SDK simplifies
-tasks such as transaction creation, account querying, and handling cross-chain
-transfers. With the Kadena Wallet SDK, building wallets on Kadena is as clear as
-day.
-
-For more information and advanced usage, please refer to the SDK documentation
-and explore the various classes and methods provided.
 
 ---
 

@@ -164,7 +164,6 @@ export class WalletSDK {
     networkId: string,
     chainId: ChainId,
   ): Promise<ITransactionDescriptor> {
-    // const parsed = JSON.parse(transaction.cmd); // unused
     const host = this.getChainwebUrl({ networkId, chainId });
     const result = await createClient(() => host).submitOne(transaction);
     return result;
@@ -174,7 +173,7 @@ export class WalletSDK {
     options: ITransferOptions,
   ): Promise<ITransferResponse> {
     const url = this.getGraphqlUrl({ networkId: options.networkId });
-    if (options.chainId) {
+    if (options.chainId !== undefined) {
       return getChainTransfers(url, options);
     }
     return getTransfers(url, options);
