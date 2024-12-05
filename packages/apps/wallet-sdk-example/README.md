@@ -1,8 +1,8 @@
 # Wallet SDK Example App
 
 The Wallet SDK Example App is a comprehensive showcase of the features and
-capabilities of the
-[Kadena Wallet SDK](https://github.com/kadena-community/kadena.js/tree/feat/wallet-sdk-interface/packages/libs/wallet-sdk).
+capabilities of the 
+[Kadena Wallet SDK](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/wallet-sdk).
 This app is designed to provide developers with an interactive platform to
 explore, understand, and experiment with every function of the SDK.
 
