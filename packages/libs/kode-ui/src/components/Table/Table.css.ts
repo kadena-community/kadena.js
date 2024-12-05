@@ -242,9 +242,9 @@ export const tableDataCell = recipe({
           paddingBlock: 'n3',
           paddingInline: 'n4',
           border: 'hairline',
-          backgroundColor: 'layer.default',
         }),
         {
+          backgroundColor: token('color.background.layer.default'),
           backdropFilter: 'blur(18px)',
           borderInlineWidth: '0!important',
           selectors: {
@@ -257,6 +257,9 @@ export const tableDataCell = recipe({
               borderStartEndRadius: `${token('radius.sm')}!important`,
               borderEndEndRadius: `${token('radius.sm')}!important`,
               borderInlineEndWidth: `${token('border.width.hairline')}!important`,
+            },
+            [`${tableRow}[data-hovered] &`]: {
+              backgroundColor: token('color.neutral.n1@alpha80'),
             },
           },
         },

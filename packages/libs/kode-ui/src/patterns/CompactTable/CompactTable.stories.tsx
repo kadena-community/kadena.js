@@ -26,7 +26,7 @@ const meta: Meta<ICompactTableProps> = {
     },
     variant: {
       control: {
-        type: 'select',
+        type: 'radio',
       },
       options: ['default', 'open'],
     },
@@ -79,10 +79,11 @@ export const Primary: Story = {
   args: {
     isLoading: false,
   },
-  render: ({ isLoading }) => {
+  render: ({ isLoading, variant }) => {
     return (
       <MediaContextProvider>
         <CompactTable
+          variant={variant}
           isLoading={isLoading}
           fields={[
             {
@@ -113,10 +114,11 @@ export const FormatLink: Story = {
   args: {
     isLoading: false,
   },
-  render: ({ isLoading }) => {
+  render: ({ isLoading, variant }) => {
     return (
       <MediaContextProvider>
         <CompactTable
+          variant={variant}
           isLoading={isLoading}
           fields={[
             {
@@ -150,10 +152,11 @@ export const FormatStatus: Story = {
   args: {
     isLoading: false,
   },
-  render: ({ isLoading }) => {
+  render: ({ isLoading, variant }) => {
     return (
       <MediaContextProvider>
         <CompactTable
+          variant={variant}
           isLoading={isLoading}
           fields={[
             {
@@ -193,10 +196,11 @@ export const FormatMultiStepTx: Story = {
   args: {
     isLoading: false,
   },
-  render: ({ isLoading }) => {
+  render: ({ isLoading, variant }) => {
     return (
       <MediaContextProvider>
         <CompactTable
+          variant={variant}
           isLoading={isLoading}
           fields={[
             {
@@ -236,10 +240,11 @@ export const FormatAmount: Story = {
   args: {
     isLoading: false,
   },
-  render: ({ isLoading }) => {
+  render: ({ isLoading, variant }) => {
     return (
       <MediaContextProvider>
         <CompactTable
+          variant={variant}
           isLoading={isLoading}
           fields={[
             {
@@ -280,10 +285,11 @@ export const FormatWithkeyArray: Story = {
   args: {
     isLoading: false,
   },
-  render: ({ isLoading }) => {
+  render: ({ isLoading, variant }) => {
     return (
       <MediaContextProvider>
         <CompactTable
+          variant={variant}
           isLoading={isLoading}
           fields={[
             {
@@ -317,13 +323,14 @@ export const FormatWithAction: Story = {
   args: {
     isLoading: false,
   },
-  render: ({ isLoading }) => {
+  render: ({ isLoading, variant }) => {
     const callAction = (value: any) => {
       alert(value);
     };
     return (
       <MediaContextProvider>
         <CompactTable
+          variant={variant}
           isLoading={isLoading}
           fields={[
             {

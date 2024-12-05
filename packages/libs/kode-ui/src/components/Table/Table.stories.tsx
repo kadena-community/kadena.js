@@ -73,6 +73,12 @@ const meta: Meta<typeof Table> = {
       },
       options: ['single', 'multiple', 'none'],
     },
+    variant: {
+      control: {
+        type: 'radio',
+      },
+      options: ['default', 'open'],
+    },
   },
 };
 
