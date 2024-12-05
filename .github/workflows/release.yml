@@ -98,10 +98,6 @@ jobs:
         if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.filter.outputs.graph == 'true'
         # only run when `packages/apps/graph/**` has changes
         run: |
-          cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:preview -t ghcr.io/kadena/graph:${GITHUB_SHA::7}
-
-      - name: Push Docker Image to GHCR for `:preview`
-        if: steps.docker-build-graph-preview.conclusion == 'success'
-        run: |
-          docker push ghcr.io/kadena/graph:preview && docker push ghcr.io/kadena/graph:${GITHUB_SHA::7}
-
+          cd packages/apps/graph && \
+          docker compose build graphql-source --push --build-arg -t=ghcr.io/kadena/graph:preview
+          docker compose build graphql --push --build-arg -t=ghcr.io/kadena/graph:${GITHUB_SHA::7}

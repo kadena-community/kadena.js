@@ -223,9 +223,6 @@ jobs:
       - name: Build Docker Image
         id: docker-build-image-dev
         run: |
-          cd packages/apps/graph && docker compose build graphql-source -t ghcr.io/kadena/graph:dev -t ghcr.io/kadena/graph:${GITHUB_SHA::7}
-
-      - name: Push Docker Image to GHCR
-        if: steps.docker-build-image-dev.conclusion == 'success'
-        run: |
-          docker push ghcr.io/kadena.js/graph:dev && docker push ghcr.io/kadena/graph:${GITHUB_SHA::7}
+          cd packages/apps/graph && \
+          docker compose build graphql-source --push --build-arg -t=ghcr.io/kadena/graph:dev && \
+          docker compose build graphql --push --build-arg -t=ghcr.io/kadena/graph:${GITHUB_SHA::7}
