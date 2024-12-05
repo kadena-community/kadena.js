@@ -12,7 +12,7 @@ integrations.
 
 For key generation and signing functionalities, you will need the Kadena HD
 Wallet package. Please refer to the
-[Kadena HD Wallet documentation](https://github.com/kadena-io/kadena.js/tree/master/packages/hdwallet)
+[Kadena HD Wallet documentation](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/hd-wallet)
 for detailed instructions on how to generate keys and sign transactions
 securely.
 
@@ -46,7 +46,6 @@ securely.
   - [Kadena Names Service](#kadena-names-service)
     - [`nameToAddress`](#nametoaddress)
     - [`addressToName`](#addresstoname)
-- [Conclusion](#conclusion)
 - [Additional Resources](#additional-resources)
 
 ---
