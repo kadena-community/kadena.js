@@ -8,12 +8,14 @@ import { Checkbox } from '../Form';
 import { boxClass, iconClass } from '../Form/RadioGroup/Radio.css';
 import { RadioGroup } from '../Form/RadioGroup/RadioGroup';
 import type { ITableRowProps } from './Body';
+import { ITableProps } from './Table';
 import { selectorCell, tableDataCell } from './Table.css';
 
 interface ITableSelectionCell<T> {
   cell: GridNode<T>;
   state: ITableRowProps<T>['state'];
   selectionMode?: 'single' | 'multiple' | 'none';
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 const Dot = ({ className }: { className: string }) => (
@@ -41,6 +43,7 @@ export function TableSelectionCell<T>({
   cell,
   state,
   selectionMode,
+  variant,
 }: ITableSelectionCell<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
   const { gridCellProps } = useTableCell({ node: cell }, state, ref);

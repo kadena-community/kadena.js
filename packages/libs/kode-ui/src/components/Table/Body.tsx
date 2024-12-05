@@ -10,6 +10,7 @@ import {
   useTableCell,
   useTableRow,
 } from 'react-aria';
+import { ITableProps } from './Table';
 import { tableDataCell, tableRow } from './Table.css';
 
 export interface ITableRowProps<T> {
@@ -17,12 +18,14 @@ export interface ITableRowProps<T> {
   state: TableState<T> | TreeGridState<T>;
   children: ReactNode;
   selectionMode: TableProps<T>['selectionMode'];
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 export function TableRow<T extends object>({
   item,
   children,
   state,
+  variant,
 }: ITableRowProps<T>) {
   const ref = useRef(null);
   const { rowProps, isSelected } = useTableRow(
@@ -52,11 +55,13 @@ export function TableRow<T extends object>({
 interface ITableCellProps<T> {
   cell: GridNode<T>;
   state: TableState<T>;
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 export function TableCell<T extends object>({
   cell,
   state,
+  variant = 'default',
 }: ITableCellProps<T>) {
   const ref = useRef(null);
   const { gridCellProps } = useTableCell({ node: cell }, state, ref);
@@ -65,7 +70,7 @@ export function TableCell<T extends object>({
   return (
     <td
       {...mergeProps(gridCellProps, focusProps)}
-      className={tableDataCell}
+      className={tableDataCell({ variant })}
       data-focused={isFocusVisible || undefined}
       ref={ref}
     >

@@ -18,6 +18,7 @@ export interface ITableProps<T>
     Omit<ComponentProps<'table'>, 'children'> {
   isStriped?: boolean;
   isCompact?: boolean;
+  variant?: 'default' | 'open';
 }
 
 export function Table<T extends object>(props: ITableProps<T>) {
@@ -50,6 +51,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
             return (
               <React.Fragment key={headerRow.key}>
                 <TableHeaderRow
+                  variant={props.variant}
                   key={headerRow.key}
                   item={headerRow}
                   state={state}
@@ -58,6 +60,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
                   {[...headerRow.childNodes].map((column) =>
                     column.props?.isSelectionCell ? (
                       <TableSelectAllCell
+                        variant={props.variant}
                         key={column.key}
                         column={column}
                         state={state}
@@ -65,6 +68,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
                       />
                     ) : (
                       <TableColumnHeader
+                        variant={props.variant}
                         key={column.key}
                         column={column}
                         state={state}
@@ -82,6 +86,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
         <TableRowGroup isStriped={props.isStriped} type="tbody">
           {[...collection.body.childNodes].map((row) => (
             <TableRow
+              variant={props.variant}
               key={row.key}
               item={row}
               state={state}
@@ -90,6 +95,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
               {[...row.childNodes].map((cell) =>
                 cell.props.isSelectionCell ? (
                   <TableSelectionCell
+                    variant={props.variant}
                     key={cell.key}
                     cell={cell}
                     state={state}
@@ -97,6 +103,7 @@ export function Table<T extends object>(props: ITableProps<T>) {
                   />
                 ) : (
                   <TableCell
+                    variant={props.variant}
                     key={cell.key}
                     cell={cell}
                     state={state}

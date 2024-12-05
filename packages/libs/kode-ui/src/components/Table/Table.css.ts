@@ -1,5 +1,7 @@
 import {
+  atoms,
   globalStyle,
+  recipe,
   style,
   styleVariants,
   token,
@@ -19,24 +21,62 @@ export const table = style([
   },
 ]);
 
-export const headerBase = style([
-  {
-    borderRadius: token('radius.sm'),
-    borderBlockEnd: token('color.border.base.default'),
-    color: token('color.text.base.inverse.default'),
-    backgroundColor: token('color.background.base.inverse.default'),
-  },
-  uiSmallBold,
+const openHeader = style([
+  atoms({
+    backgroundColor: 'surface.default',
+    color: 'text.base.@init',
+    paddingBlock: 'n3',
+    paddingInline: 'n4',
+    border: 'hairline',
+  }),
 ]);
 
-export const subtleHeader = style({
-  color: token('color.text.base.default'),
-  backgroundColor: token('color.background.base.@hover'),
-});
-
-export const defaultHeader = style({
-  color: token('color.text.base.inverse.default'),
-  backgroundColor: token('color.background.base.inverse.default'),
+export const headerBase = recipe({
+  defaultVariants: {
+    variant: 'default',
+  },
+  base: [
+    {
+      borderRadius: token('radius.sm'),
+      borderBlockEnd: token('color.border.base.default'),
+    },
+    uiSmallBold,
+  ],
+  variants: {
+    subtleHeader: {
+      false: {
+        color: token('color.text.base.default'),
+        backgroundColor: token('color.background.base.@hover'),
+      },
+      true: {
+        color: token('color.text.base.inverse.default'),
+        backgroundColor: token('color.background.base.inverse.default'),
+      },
+    },
+    variant: {
+      default: {
+        color: token('color.text.base.inverse.default'),
+        backgroundColor: token('color.background.base.inverse.default'),
+      },
+      open: [],
+    },
+  },
+  compoundVariants: [
+    {
+      variants: {
+        subtleHeader: true,
+        variant: 'open',
+      },
+      style: openHeader,
+    },
+    {
+      variants: {
+        subtleHeader: false,
+        variant: 'open',
+      },
+      style: openHeader,
+    },
+  ],
 });
 
 export const tableRow = style([
@@ -69,27 +109,40 @@ export const baseCell = style([
   },
 ]);
 
-export const columnHeader = style([
-  baseCell,
-  {
-    textAlign: 'left',
-    selectors: {
-      '&[data-multi-column]': {
-        textAlign: 'center',
-      },
-      '&[data-sortable]': {
-        cursor: 'pointer',
+export const columnHeader = recipe({
+  base: [
+    baseCell,
+    {
+      textAlign: 'left',
+      selectors: {
+        '&[data-multi-column]': {
+          textAlign: 'center',
+        },
+        '&[data-sortable]': {
+          cursor: 'pointer',
+        },
       },
     },
+  ],
+  variants: {
+    variant: {
+      default: {},
+      open: [
+        atoms({
+          paddingBlock: 'n3',
+          paddingInline: 'n4',
+        }),
+      ],
+    },
   },
-]);
+});
 
-globalStyle(`${headerBase} th:first-of-type `, {
+globalStyle(`${headerBase()} th:first-of-type `, {
   borderTopLeftRadius: token('radius.sm'),
   borderBottomLeftRadius: token('radius.sm'),
 });
 
-globalStyle(`${headerBase} th:last-of-type`, {
+globalStyle(`${headerBase()} th:last-of-type`, {
   borderTopRightRadius: token('radius.sm'),
   borderBottomRightRadius: token('radius.sm'),
 });
@@ -138,4 +191,16 @@ const dataCell = style({
   },
 });
 
-export const tableDataCell = style([baseCell, dataCell]);
+export const tableDataCell = recipe({
+  base: [baseCell, dataCell],
+  variants: {
+    variant: {
+      default: {},
+      open: [
+        atoms({
+          paddingBlock: 'n3',
+        }),
+      ],
+    },
+  },
+});

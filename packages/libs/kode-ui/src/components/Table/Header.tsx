@@ -8,7 +8,7 @@ import {
   useTableColumnHeader,
   useTableHeaderRow,
 } from 'react-aria';
-import { Stack } from '..';
+import { ITableProps, Stack } from '..';
 
 import { MonoExpandLess, MonoExpandMore } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
@@ -24,6 +24,7 @@ interface ITableHeaderRowProps<T> {
   state: TableState<T>;
   children: ReactNode;
   isSubtle?: boolean;
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 export function TableHeaderRow<T extends object>({
@@ -31,16 +32,16 @@ export function TableHeaderRow<T extends object>({
   state,
   children,
   isSubtle = false,
+  variant = 'default',
 }: ITableHeaderRowProps<T>) {
   const ref = useRef(null);
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
+  console.log({ variant });
+
   return (
     <tr
-      className={classNames(headerBase, {
-        [subtleHeader]: isSubtle,
-        [defaultHeader]: !isSubtle,
-      })}
+      className={headerBase({ variant, subtleHeader: isSubtle })}
       {...rowProps}
       ref={ref}
     >
@@ -65,11 +66,13 @@ interface ITableColumnHeaderProps<T> {
   column: GridNode<T>;
   state: TableState<T>;
   isSubtle?: boolean;
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 export function TableColumnHeader<T extends object>({
   column,
   state,
+  variant,
 }: ITableColumnHeaderProps<T>) {
   const ref = useRef(null);
   const { columnHeaderProps } = useTableColumnHeader(
@@ -87,7 +90,7 @@ export function TableColumnHeader<T extends object>({
     <th
       {...mergeProps(columnHeaderProps, focusProps)}
       colSpan={column.colspan}
-      className={columnHeader}
+      className={columnHeader({ variant })}
       style={{
         width: getWidthStyle(column.props.width),
         minWidth: getWidthStyle(column.props.minWidth),

@@ -24,6 +24,12 @@ const meta: Meta<ICompactTableProps> = {
     isLoading: {
       type: 'boolean',
     },
+    variant: {
+      control: {
+        type: 'select',
+      },
+      options: ['default', 'open'],
+    },
   },
 };
 
@@ -342,6 +348,42 @@ export const FormatWithAction: Story = {
                   <Button startVisual={<MonoDelete />} onPress={callAction} />
                 ),
               }),
+            },
+          ]}
+          data={data}
+        />
+      </MediaContextProvider>
+    );
+  },
+};
+
+export const OpenStyle: Story = {
+  name: 'Open style variant',
+  args: {
+    variant: 'open',
+    isLoading: false,
+  },
+  render: ({ isLoading, variant }) => {
+    return (
+      <MediaContextProvider>
+        <CompactTable
+          variant={variant}
+          isLoading={isLoading}
+          fields={[
+            {
+              label: 'Height',
+              key: 'node.block.height',
+              width: '15%',
+            },
+            {
+              label: 'RequestKey',
+              key: 'node.requestKey',
+              width: '40%',
+            },
+            {
+              label: 'Parameters',
+              key: 'node.parameters',
+              width: '45%',
             },
           ]}
           data={data}

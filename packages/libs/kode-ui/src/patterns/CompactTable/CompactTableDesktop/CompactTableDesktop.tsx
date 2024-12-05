@@ -24,6 +24,7 @@ export const CompactTableDesktop: FC<IProps> = ({
   fields,
   label = 'Table',
   isLoading = false,
+  variant = 'default',
 }) => {
   return (
     <Stack
@@ -33,7 +34,12 @@ export const CompactTableDesktop: FC<IProps> = ({
       gap="sm"
       className={tableBorderClass}
     >
-      <Table aria-label={label} isStriped className={tableClass}>
+      <Table
+        aria-label={label}
+        isStriped
+        className={tableClass}
+        variant={variant}
+      >
         <TableHeader>
           {fields.map((field, idx) => (
             <Column key={`${field.key.toString()}${idx}`} width={field.width}>

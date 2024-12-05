@@ -109,6 +109,37 @@ export const Primary: Story = {
   },
 };
 
+export const OpenStyle: Story = {
+  name: 'Openstyle Table',
+  args: {
+    isStriped: false,
+    isCompact: false,
+    variant: 'open',
+  },
+  render: (args) => {
+    return (
+      <Table {...args} aria-label="Example static collection table">
+        <TableHeader>
+          {columns.map((column) => (
+            <Column key={column.key} isRowHeader={column.isRowHeader}>
+              {column.name}
+            </Column>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {rows.map((row) => (
+            <Row key={row.id}>
+              <Cell>{row.name}</Cell>
+              <Cell>{row.type}</Cell>
+              <Cell>{row.date}</Cell>
+            </Row>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  },
+};
+
 export const Striped: Story = {
   name: 'Striped Table',
   render: () => {
