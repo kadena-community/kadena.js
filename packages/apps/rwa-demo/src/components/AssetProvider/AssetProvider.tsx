@@ -3,12 +3,14 @@ import {
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import { useAccount } from '@/hooks/account';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
 import {
   getAssetMaxSupplyBalance,
   IGetAssetMaxSupplyBalanceResult,
 } from '@/services/getAssetMaxSupplyBalance';
+import { supply as supplyService } from '@/services/supply';
 import { getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { useRouter } from 'next/navigation';
@@ -27,17 +29,18 @@ export interface IAssetContext {
   assets: IAsset[];
   paused: boolean;
   setAsset: (asset: IAsset) => void;
-  getAsset: (uuid: string) => IAsset | undefined;
+  getAsset: (uuid: string) => Promise<IAsset | undefined>;
 }
 
 export const AssetContext = createContext<IAssetContext>({
   assets: [],
   paused: false,
   setAsset: () => {},
-  getAsset: (uuid: string) => undefined,
+  getAsset: async () => undefined,
 });
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { account } = useAccount();
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [asset, setAsset] = useState<IAsset>();
@@ -69,9 +72,16 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     router.refresh();
   };
 
-  const getAsset = (uuid: string) => {
+  const getAsset = async (uuid: string): Promise<IAsset | undefined> => {
     const data = getAssets().find((a) => a.uuid === uuid);
-    return data;
+    const extraAssetData = await getAssetMaxSupplyBalance();
+
+    const supplyResult = (await supplyService({
+      account: account!,
+    })) as number;
+
+    if (!data) return;
+    return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };
   };
 
   useEffect(() => {
@@ -87,7 +97,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const loadAssetData = async () => {
     const data = await getAssetMaxSupplyBalance();
-    setAsset((old) => ({ ...old, ...data }));
+    if (!asset) return;
+    setAsset({ ...asset, ...data });
   };
 
   useEffect(() => {

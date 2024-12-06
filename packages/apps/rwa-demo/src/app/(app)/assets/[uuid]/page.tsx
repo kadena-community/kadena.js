@@ -1,16 +1,23 @@
 'use client';
+import { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { useAsset } from '@/hooks/asset';
 import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const Assets = () => {
   const { getAsset } = useAsset();
+  const [asset, setAsset] = useState<IAsset | undefined>();
   const { uuid } = useParams();
-  const asset = useMemo(() => {
-    return getAsset(uuid as string);
+
+  const initData = async (uuid: string) => {
+    const data = await getAsset(uuid);
+    setAsset(data);
+  };
+
+  useEffect(() => {
+    initData(uuid as string);
   }, [uuid]);
 
-  console.log({ asset });
   return <pre>{JSON.stringify(asset, null, 2)}</pre>;
 };
 
