@@ -5,8 +5,14 @@ const localConfig = defineConfig({
   test: {
     exclude: ['src/**/*.int.test.ts'],
     coverage: {
+      exclude: ['src/gql/*.ts'],
       provider: 'v8',
-      thresholds: {},
+      thresholds: {
+        lines: 75,
+        functions: 75,
+        branches: 75,
+        statements: 75,
+      },
     },
   },
 });
