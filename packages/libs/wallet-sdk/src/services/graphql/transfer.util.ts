@@ -172,7 +172,7 @@ const mapBaseTransfer = (
 
 export const gqlTransferToTransfer = (
   rawGqlTransfer: GqlTransfer,
-  _accountName: string,
+  accountName: string,
   lastBlockHeight: number,
   fungibleName?: string,
 ): ITransfer | null => {

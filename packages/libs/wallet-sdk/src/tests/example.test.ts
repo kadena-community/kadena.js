@@ -16,7 +16,6 @@ describe('example test', () => {
     const password = '12345678';
     const seed = await kadenaMnemonicToSeed(password, mnemonic);
     const [publicKey] = await kadenaGenKeypairFromSeed(password, seed, 0);
-    console.log('PublicKey:', publicKey);
     const [publicKey2] = await kadenaGenKeypairFromSeed(password, seed, 1);
 
     const chainId = '0' as ChainId;
