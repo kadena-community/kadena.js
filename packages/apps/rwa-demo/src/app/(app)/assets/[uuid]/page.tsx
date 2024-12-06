@@ -25,5 +25,4 @@ const Assets = () => {
 
   return <pre>{JSON.stringify(asset, null, 2)}</pre>;
 };
-
 export default Assets;
