@@ -20,8 +20,6 @@ const InvestorPage = () => {
   const { paused } = useAsset();
   const params = useParams();
   const [hasOpenDistributeForm, setHasOpenDistributeForm] = useState(false);
-  const [hasOpenPartiallyFreezeForm, setHasOpenPartiallyFreezeForm] =
-    useState(false);
   const investorAccount = decodeURIComponent(params.investorAccount as string);
 
   const { data: investor } = useGetInvestor({ account: investorAccount });
@@ -30,10 +28,6 @@ const InvestorPage = () => {
   const handleDistributeTokens = () => {
     setIsRightAsideExpanded(true);
     setHasOpenDistributeForm(true);
-  };
-  const handlePartiallyFreezeTokens = () => {
-    setIsRightAsideExpanded(true);
-    setHasOpenPartiallyFreezeForm(true);
   };
 
   if (!investor) return null;
@@ -55,15 +49,6 @@ const InvestorPage = () => {
           }}
         />
       )}
-      {isRightAsideExpanded && hasOpenPartiallyFreezeForm && (
-        <PartiallyFreezeTokensForm
-          investorAccount={investorAccount}
-          onClose={() => {
-            setIsRightAsideExpanded(false);
-            setHasOpenPartiallyFreezeForm(false);
-          }}
-        />
-      )}
 
       <Stack width="100%" flexDirection="column">
         <InvestorInfo account={investor} />
@@ -76,13 +61,14 @@ const InvestorPage = () => {
             Distribute Tokens
           </Button>
 
-          <Button
-            startVisual={<MonoAdd />}
-            onPress={handlePartiallyFreezeTokens}
-            isDisabled={frozen || paused}
-          >
-            Partially freeze tokens
-          </Button>
+          <PartiallyFreezeTokensForm
+            investorAccount={investorAccount}
+            trigger={
+              <Button startVisual={<MonoAdd />} isDisabled={frozen || paused}>
+                Partially freeze tokens
+              </Button>
+            }
+          />
 
           <FreezeInvestor investorAccount={investorAccount} />
 

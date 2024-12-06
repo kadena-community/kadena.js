@@ -3,21 +3,23 @@ import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
-export interface IIsFrozenProps {
+export interface IGetBalanceProps {
   investorAccount: string;
   account: IWalletAccount;
 }
 
-export const isFrozen = async (data: IIsFrozenProps) => {
+export const getFrozenTokens = async (data: IGetBalanceProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.address-frozen (read-string 'investor))`)
+    .execution(
+      `(RWA.${getAsset()}.get-frozen-tokens (read-string 'user-address))`,
+    )
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,
     })
-    .addData('investor', data.investorAccount)
+    .addData('user-address', data.investorAccount)
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 
