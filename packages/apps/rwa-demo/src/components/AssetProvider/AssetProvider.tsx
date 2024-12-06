@@ -4,6 +4,11 @@ import {
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
 import { usePaused } from '@/hooks/paused';
+import { useSupply } from '@/hooks/supply';
+import {
+  getAssetMaxSupplyBalance,
+  IGetAssetMaxSupplyBalanceResult,
+} from '@/services/getAssetMaxSupplyBalance';
 import { getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { useRouter } from 'next/navigation';
@@ -11,9 +16,10 @@ import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
-export interface IAsset {
+export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;
   name: string;
+  supply: number;
 }
 
 export interface IAssetContext {
@@ -40,6 +46,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused();
+  const { data: supply } = useSupply();
 
   const getAssets = (): IAsset[] => {
     const result = localStorage.getItem(storageKey);
@@ -56,7 +63,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
-    setAsset(data);
+    setAsset((old) => ({ ...old, ...data }));
 
     router.replace('/');
     router.refresh();
@@ -78,6 +85,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
+  const loadAssetData = async () => {
+    const data = await getAssetMaxSupplyBalance();
+    setAsset((old) => ({ ...old, ...data }));
+  };
+
   useEffect(() => {
     const asset = getFullAsset();
     setAsset(asset);
@@ -85,6 +97,17 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
   }, []);
+
+  useEffect(() => {
+    if (!asset) return;
+
+    setAsset({ ...asset, supply });
+  }, [asset?.name, supply]);
+
+  useEffect(() => {
+    if (!asset) return;
+    loadAssetData();
+  }, [asset?.uuid]);
 
   return (
     <AssetContext.Provider

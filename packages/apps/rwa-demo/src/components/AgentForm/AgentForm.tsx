@@ -1,7 +1,7 @@
-import { useAddAgent } from '@/hooks/addAgent';
-import type { IAddAgentProps } from '@/services/addAgent';
+import { useEditAgent } from '@/hooks/editAgent';
+import { AGENTROLES, type IAddAgentProps } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
-import { Button, TextField } from '@kadena/kode-ui';
+import { Button, CheckboxGroup, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -20,16 +20,31 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { submit } = useAddAgent();
+  const { submit } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const { handleSubmit, control } = useForm<IAddAgentProps>({
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { isValid },
+    reset,
+  } = useForm<IAddAgentProps>({
     defaultValues: {
       accountName: agent?.accountName ?? '',
       alias: agent?.alias ?? '',
       alreadyExists: !!agent?.accountName,
+      roles: [],
     },
   });
+
+  useEffect(() => {
+    reset({
+      accountName: agent?.accountName,
+      alias: agent?.alias,
+      alreadyExists: !!agent?.accountName,
+    });
+  }, [agent?.accountName]);
 
   const handleOpen = () => {
     setIsRightAsideExpanded(true);
@@ -59,11 +74,14 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
           onClose={handleOnClose}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <RightAsideHeader label="Add Agent" />
+            <RightAsideHeader
+              label={agent?.accountName ? 'Edit Agent' : 'Add Agent'}
+            />
             <RightAsideContent>
               <Controller
                 name="accountName"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
                   <TextField
                     isDisabled={!!agent?.accountName}
@@ -78,12 +96,34 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                 control={control}
                 render={({ field }) => <TextField label="Alias" {...field} />}
               />
+
+              <CheckboxGroup
+                onChange={(e) => console.log(e)}
+                direction="column"
+                label="Roles"
+                name="roles"
+              >
+                {Object.entries(AGENTROLES).map(([key, val]) => {
+                  return (
+                    <label key={key}>
+                      <input
+                        type="checkbox"
+                        value={key}
+                        {...register('roles')}
+                      />
+                      {val}
+                    </label>
+                  );
+                })}
+              </CheckboxGroup>
             </RightAsideContent>
             <RightAsideFooter>
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button type="submit">Add Agent</Button>
+              <Button isDisabled={!isValid} type="submit">
+                {agent?.accountName ? 'Edit Agent' : 'Add Agent'}
+              </Button>
             </RightAsideFooter>
           </form>
         </RightAside>

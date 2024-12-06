@@ -3,11 +3,22 @@ import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
+export const AGENTROLES = {
+  AGENTADMIN: 'agent-admin',
+  SUPPLYMODIFIER: 'supply-modifier',
+  FREEZER: 'freezer',
+  TRANSFERMANAGER: 'transfer-manager',
+  RECOVERY: 'recovery',
+  COMPLIANCE: 'compliance',
+  WHITELISTMANAGER: 'whitelist-manager',
+} as const;
+
 export interface IAddAgentProps {
   accountName: string;
   agent: IWalletAccount;
   alias: string;
   alreadyExists?: boolean;
+  roles: (keyof typeof AGENTROLES)[];
 }
 
 const createPubKeyFromAccount = (account: string): string => {
@@ -35,15 +46,10 @@ export const addAgent = async (
       keys: [createPubKeyFromAccount(data.accountName)],
       pred: 'keys-all',
     })
-    .addData('roles', [
-      'agent-admin',
-      'supply-modifier',
-      'freezer',
-      'transfer-manager',
-      'recovery',
-      'compliance',
-      'whitelist-manager',
-    ])
+    .addData(
+      'roles',
+      data.roles.map((val) => AGENTROLES[val]),
+    )
 
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
