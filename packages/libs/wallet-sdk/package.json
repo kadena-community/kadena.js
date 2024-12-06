@@ -42,7 +42,6 @@
     "valibot": "^0.42.1"
   },
   "devDependencies": {
-    "msw": "2.2.14",
     "@graphql-codegen/cli": "5.0.2",
     "@graphql-codegen/client-preset": "^4.4.0",
     "@graphql-typed-document-node/core": "^3.2.0",
@@ -53,7 +52,7 @@
     "@kadena/hd-wallet": "workspace:*",
     "@kadena/types": "workspace:*",
     "@microsoft/api-extractor": "^7.43.1",
-    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-inject": "^5.0.5",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -64,6 +63,7 @@
     "@vitest/coverage-v8": "^1.6.0",
     "cpy-cli": "^5.0.0",
     "eslint": "^8.45.0",
+    "msw": "^2.2.14",
     "prettier": "~3.2.5",
     "rollup": "^4.17.2",
     "rollup-plugin-polyfill-node": "^0.13.0",
