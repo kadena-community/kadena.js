@@ -87,6 +87,57 @@ describe('exchange.getEthvmDevTokenInfo', () => {
     expect(body.query).toContain('query getCoinGeckoTokenMarketDataByIds');
   });
 
+  it('should assign undefined when data entries are null', async () => {
+    const tokensWithNullData: Token[] = ['kadena', 'ethereum'];
+
+    const mockNullDataResponse = {
+      data: {
+        getCoinGeckoTokenMarketDataByIds: [null, null],
+      },
+    };
+
+    global.fetch = vi.fn().mockResolvedValueOnce({
+      json: vi.fn().mockResolvedValueOnce(mockNullDataResponse),
+    } as unknown as Response);
+
+    const result =
+      await exchange.getEthvmDevTokenInfo<Token>(tokensWithNullData);
+
+    const expected: Record<Token, IEthvmDevTokenInfo | undefined> = {
+      ethereum: {
+        circulatingSupply: undefined,
+        currentPrice: undefined,
+        high24h: undefined,
+        low24h: undefined,
+        maxSupply: undefined,
+        totalSupply: undefined,
+      },
+      kadena: {
+        circulatingSupply: undefined,
+        currentPrice: undefined,
+        high24h: undefined,
+        low24h: undefined,
+        maxSupply: undefined,
+        totalSupply: undefined,
+      },
+    };
+
+    expect(result).toEqual(expected);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+
+    const fetchCall = (global.fetch as unknown as Mock).mock.calls[0];
+    expect(fetchCall[0]).toBe('https://api-v2.ethvm.dev/');
+    expect(fetchCall[1]).toMatchObject({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const body = JSON.parse(fetchCall[1].body);
+    expect(body.operationName).toBeNull();
+    expect(body.variables).toEqual({ tokens: tokensWithNullData });
+    expect(body.query).toContain('query getCoinGeckoTokenMarketDataByIds');
+  });
+
   it('should return undefined for each token when API call fails', async () => {
     global.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
 
