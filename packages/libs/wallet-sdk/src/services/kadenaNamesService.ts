@@ -75,7 +75,10 @@ export async function addressToName(
   return kdnResolver(address, networkId, networkHost, 'name');
 }
 
-function parseChainResponse<T>(response: ICommandResult, subject: string): T {
+export function parseChainResponse<T>(
+  response: ICommandResult,
+  subject: string,
+): T {
   if (response.result?.status === 'success') {
     return response.result.data as T;
   } else if (response.result?.status === 'failure') {

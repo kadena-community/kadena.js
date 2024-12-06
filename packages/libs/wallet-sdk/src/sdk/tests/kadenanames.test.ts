@@ -1,8 +1,10 @@
-// kadenaNames.test.ts
-
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import {
+  ensureKdaExtension,
+  parseChainResponse,
+} from '../../services/kadenaNamesService';
 import { walletSdk } from '../walletSdk.js';
 
 const server = setupServer();
@@ -77,6 +79,97 @@ function getLocalUrl(networkId: string, chainId: string): string {
 
   return `${host}/api/v1/local`;
 }
+
+describe('ensureKdaExtension', () => {
+  it('should append .kda if not already present', () => {
+    const result = ensureKdaExtension('example');
+    expect(result).toBe('example.kda');
+  });
+
+  it('should not append .kda if already present', () => {
+    const result = ensureKdaExtension('example.kda');
+    expect(result).toBe('example.kda');
+  });
+
+  it('should handle uppercase names and append .kda', () => {
+    const result = ensureKdaExtension('EXAMPLE');
+    expect(result).toBe('example.kda');
+  });
+});
+
+describe('parseChainResponse', () => {
+  it('should return data on success', () => {
+    const response = {
+      result: {
+        status: 'success',
+        data: 'mockData',
+      },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = parseChainResponse<string>(response as any, 'address');
+    expect(result).toBe('mockData');
+  });
+
+  it('should throw an error on failure with a detailed message', () => {
+    const response = {
+      result: {
+        status: 'failure',
+        error: {
+          message: 'An error occurred',
+        },
+      },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(() => parseChainResponse(response as any, 'address')).toThrow(
+      'Failed to retrieve address: {"message":"An error occurred"}',
+    );
+  });
+
+  it('should throw an unknown error when no status is present', () => {
+    const response = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(() => parseChainResponse(response as any, 'address')).toThrow(
+      'Failed to retrieve address: Unknown error',
+    );
+  });
+});
+
+describe('parseChainResponse', () => {
+  it('should return data on success', () => {
+    const response = {
+      result: {
+        status: 'success',
+        data: 'mockData',
+      },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = parseChainResponse<string>(response as any, 'address');
+    expect(result).toBe('mockData');
+  });
+
+  it('should throw an error on failure with a detailed message', () => {
+    const response = {
+      result: {
+        status: 'failure',
+        error: {
+          message: 'An error occurred',
+        },
+      },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(() => parseChainResponse(response as any, 'address')).toThrow(
+      'Failed to retrieve address: {"message":"An error occurred"}',
+    );
+  });
+
+  it('should throw an unknown error when no status is present', () => {
+    const response = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(() => parseChainResponse(response as any, 'address')).toThrow(
+      'Failed to retrieve address: Unknown error',
+    );
+  });
+});
 
 describe('KadenaNames', () => {
   describe('nameToAddress', () => {
