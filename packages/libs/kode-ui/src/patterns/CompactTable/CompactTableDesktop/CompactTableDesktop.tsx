@@ -24,16 +24,21 @@ export const CompactTableDesktop: FC<IProps> = ({
   fields,
   label = 'Table',
   isLoading = false,
+  variant = 'default',
 }) => {
   return (
     <Stack
-      padding="sm"
       width="100%"
       flexDirection="column"
       gap="sm"
-      className={tableBorderClass}
+      className={tableBorderClass({ variant })}
     >
-      <Table aria-label={label} isStriped className={tableClass}>
+      <Table
+        aria-label={label}
+        isStriped
+        className={tableClass}
+        variant={variant}
+      >
         <TableHeader>
           {fields.map((field, idx) => (
             <Column key={`${field.key.toString()}${idx}`} width={field.width}>

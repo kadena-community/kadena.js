@@ -10,6 +10,7 @@ const Assets = () => {
   return (
     <>
       <CompactTable
+        variant="open"
         fields={[
           {
             key: 'uuid',
