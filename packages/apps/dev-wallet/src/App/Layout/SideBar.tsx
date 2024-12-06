@@ -1,4 +1,5 @@
 import {
+  MonoApps,
   MonoCheck,
   MonoContacts,
   MonoContrast,
@@ -115,6 +116,12 @@ export const SideBar: FC = () => {
             label="Contacts"
             component={Link}
             href="/contacts"
+          />
+          <SideBarItem
+            visual={<MonoApps />}
+            label="Plugins"
+            component={Link}
+            href="/plugins"
           />
         </>
       }

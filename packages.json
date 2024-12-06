@@ -72,6 +72,12 @@
     "path": "packages/apps/dev-wallet-example"
   },
   {
+    "name": "@kadena/dev-wallet-plugin",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/dev-wallet-plugin"
+  },
+  {
     "name": "@kadena/docs",
     "version": "0.8.0",
     "private": true,

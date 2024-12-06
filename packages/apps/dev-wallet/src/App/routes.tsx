@@ -21,6 +21,7 @@ import { FungiblePage } from '@/pages/fungible/fungible';
 import { KeysPage } from '@/pages/keys/keys-page';
 import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
+import { Plugins } from '@/pages/plugins/plugins';
 import { Ready } from '@/pages/ready/ready';
 import { AutoBackup } from '@/pages/settings/auto-backup/auto-backup';
 import { ChangePassword } from '@/pages/settings/change-password/change-password';
@@ -134,6 +135,7 @@ export const Routes: FC = () => {
             <Route path="/settings/auto-backup" element={<AutoBackup />} />
             <Route path="/settings/export-data" element={<ExportData />} />
             <Route path="/settings/import-data" element={<ImportData />} />
+            <Route path="/plugins" element={<Plugins />} />
             <Route
               path="/account-discovery/:keySourceId"
               element={<AccountDiscovery />}
