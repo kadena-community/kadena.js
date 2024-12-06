@@ -37,9 +37,9 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
   const { paused } = useAsset();
-  const [isOpen, setIsOpen] = useState(false);
   const [tokenBalance, setTokenBalance] = useState(0);
   const [frozenData, setFrozenData] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
   const { submit } = useTogglePartiallyFreezeTokens();
@@ -129,13 +129,17 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
               <Controller
                 name="amount"
                 control={control}
-                rules={{ required: true, max: tokenBalance - frozenData }}
+                rules={{
+                  required: true,
+                  min: -frozenData,
+                  max: tokenBalance - frozenData,
+                }}
                 render={({ field }) => (
                   <TextField
                     label="Amount"
                     {...field}
                     errorMessage={errors.amount?.message}
-                    description={`max amount: ${tokenBalance - frozenData}`}
+                    description={`max amount: ${tokenBalance - frozenData} | min amount: ${-frozenData}`}
                   />
                 )}
               />

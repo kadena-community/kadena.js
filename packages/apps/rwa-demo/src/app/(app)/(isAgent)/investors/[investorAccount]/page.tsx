@@ -11,24 +11,16 @@ import { useFreeze } from '@/hooks/freeze';
 import { useGetInvestor } from '@/hooks/getInvestor';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
+import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
 
 const InvestorPage = () => {
-  const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
   const { paused } = useAsset();
   const params = useParams();
-  const [hasOpenDistributeForm, setHasOpenDistributeForm] = useState(false);
   const investorAccount = decodeURIComponent(params.investorAccount as string);
 
   const { data: investor } = useGetInvestor({ account: investorAccount });
   const { frozen } = useFreeze({ investorAccount });
-
-  const handleDistributeTokens = () => {
-    setIsRightAsideExpanded(true);
-    setHasOpenDistributeForm(true);
-  };
 
   if (!investor) return null;
 
@@ -40,26 +32,17 @@ const InvestorPage = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      {isRightAsideExpanded && hasOpenDistributeForm && (
-        <DistributionForm
-          investorAccount={investorAccount}
-          onClose={() => {
-            setIsRightAsideExpanded(false);
-            setHasOpenDistributeForm(false);
-          }}
-        />
-      )}
-
       <Stack width="100%" flexDirection="column">
         <InvestorInfo account={investor} />
         <Stack gap="sm">
-          <Button
-            startVisual={<MonoAdd />}
-            onPress={handleDistributeTokens}
-            isDisabled={frozen || paused}
-          >
-            Distribute Tokens
-          </Button>
+          <DistributionForm
+            investorAccount={investorAccount}
+            trigger={
+              <Button startVisual={<MonoAdd />} isDisabled={frozen || paused}>
+                Distribute Tokens
+              </Button>
+            }
+          />
 
           <PartiallyFreezeTokensForm
             investorAccount={investorAccount}

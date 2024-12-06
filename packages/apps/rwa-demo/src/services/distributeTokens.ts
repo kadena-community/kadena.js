@@ -6,7 +6,7 @@ import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
 export interface IDistributeTokensProps {
-  amount: number;
+  amount: string;
   investorAccount: string;
 }
 
