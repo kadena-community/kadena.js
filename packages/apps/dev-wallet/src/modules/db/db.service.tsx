@@ -2,7 +2,6 @@ import { config } from '@/config';
 import {
   addItem,
   connect,
-  deleteDatabase,
   deleteItem,
   getAllItems,
   getOneItem,
@@ -11,15 +10,8 @@ import {
 import { execInSequence } from '@/utils/helpers';
 
 import { IDBBackup, importBackup, serializeTables } from './backup/backup';
-import { createTables } from './migration/createDB';
-import { migrateFrom37to38 } from './migration/migrateFrom37to38';
-import { migrateFrom38to39 } from './migration/migrateFrom38to39';
-
-const dbChannel = new BroadcastChannel('db-channel');
-const broadcast = (event: EventTypes, storeName?: string, data?: any[]) => {
-  console.log('broadcast', event, storeName, data);
-  dbChannel.postMessage({ type: event, storeName, data });
-};
+import { broadcast, dbChannel, EventTypes } from './db-channel';
+import { migration } from './migration/migration';
 
 const { DB_NAME, DB_VERSION } = config.DB;
 
@@ -28,49 +20,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   let db = result.db;
   if (result.needsUpgrade) {
     broadcast('migration-started');
-    const oldVersion = result.oldVersion;
-    if (oldVersion === 0) {
-      console.log('creating new database');
-      createTables(db);
-    } else if (oldVersion < 37) {
-      const confirmed = confirm(
-        'You’re using an outdated database version that doesn’t support migration. To continue using the app, all data must be wiped. Do you want to proceed?',
-      );
-      if (!confirmed) {
-        throw new Error('OUTDATED_DATABASE: database needs upgrade');
-      }
-
-      console.log(
-        'Attempting to delete database because it is too old to be migrated',
-      );
-      db.close();
-      console.log('deleting database');
-      await deleteDatabase(DB_NAME);
-      console.log('creating new database');
-      const { db: newDb } = await connect(DB_NAME, DB_VERSION);
-      db = newDb;
-
-      createTables(db);
-    } else {
-      for (
-        let fromVersion = oldVersion;
-        fromVersion < DB_VERSION;
-        fromVersion++
-      ) {
-        // we need to add a migration path for each version
-        if (fromVersion === 37) {
-          await migrateFrom37to38(db, result.versionTransaction);
-          continue;
-        }
-        if (fromVersion === 38) {
-          await migrateFrom38to39(db, result.versionTransaction);
-          continue;
-        }
-        throw new Error(
-          `There is no migration path for version ${fromVersion} to ${fromVersion + 1}`,
-        );
-      }
-    }
+    db = await migration(result);
     broadcast('migration-finished');
   }
 
@@ -101,13 +51,6 @@ export const injectDb = <R extends (...args: any[]) => Promise<any>>(
     });
   }) as R;
 
-type EventTypes =
-  | 'add'
-  | 'update'
-  | 'delete'
-  | 'import'
-  | 'migration-started'
-  | 'migration-finished';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
 

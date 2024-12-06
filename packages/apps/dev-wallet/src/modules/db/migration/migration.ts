@@ -1,0 +1,64 @@
+import { config } from '@/config';
+import { connect, deleteDatabase } from '../indexeddb';
+import { createTables } from './createDB';
+import { migrateFrom37to38 } from './migrateFrom37to38';
+import { migrateFrom38to39 } from './migrateFrom38to39';
+import { migrateFrom39to40 } from './migrateFrom39to40';
+
+const { DB_NAME, DB_VERSION } = config.DB;
+
+const migrationMap = {
+  37: migrateFrom37to38,
+  38: migrateFrom38to39,
+  39: migrateFrom39to40,
+};
+
+export async function migration(result: {
+  db: IDBDatabase;
+  oldVersion: number;
+  versionTransaction: IDBTransaction;
+}) {
+  let { db } = result;
+  const oldVersion = result.oldVersion;
+  if (oldVersion === 0) {
+    console.log('creating new database');
+    createTables(db);
+  } else if (oldVersion < 37) {
+    const confirmed = confirm(
+      'You’re using an outdated database version that doesn’t support migration. To continue using the app, all data must be wiped. Do you want to proceed?',
+    );
+    if (!confirmed) {
+      throw new Error('OUTDATED_DATABASE: database needs upgrade');
+    }
+
+    console.log(
+      'Attempting to delete database because it is too old to be migrated',
+    );
+    db.close();
+    console.log('deleting database');
+    await deleteDatabase(DB_NAME);
+    console.log('creating new database');
+    const { db: newDb } = await connect(DB_NAME, DB_VERSION);
+    db = newDb;
+
+    createTables(db);
+  } else {
+    for (
+      let fromVersion = oldVersion;
+      fromVersion < DB_VERSION;
+      fromVersion++
+    ) {
+      const migrationPath =
+        migrationMap[fromVersion as keyof typeof migrationMap];
+      // we need to add a migration path for each version
+      if (migrationPath) {
+        await migrationPath(db, result.versionTransaction);
+        continue;
+      }
+      throw new Error(
+        `There is no migration path for version ${fromVersion} to ${fromVersion + 1}`,
+      );
+    }
+  }
+  return db;
+}
