@@ -1,5 +1,6 @@
 import { useEditAgent } from '@/hooks/editAgent';
-import { AGENTROLES, type IAddAgentProps } from '@/services/addAgent';
+import type { IAddAgentProps } from '@/services/addAgent';
+import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { Button, CheckboxGroup, TextField } from '@kadena/kode-ui';
 import {
@@ -53,6 +54,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   };
 
   const handleOnClose = () => {
+    setIsRightAsideExpanded(false);
     setIsOpen(false);
     if (onClose) onClose();
   };
@@ -61,10 +63,6 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     await submit(data);
     handleOnClose();
   };
-
-  useEffect(() => {
-    console.log('agent', isOpen);
-  }, [isOpen]);
 
   return (
     <>

@@ -29,6 +29,6 @@ export const getAssetMaxSupplyBalance =
       ? ({
           maxBalance: data['max-balance-per-investor'],
           maxSupply: data['max-supply'],
-        } as IResult)
+        } as IGetAssetMaxSupplyBalanceResult)
       : { maxBalance: -1, maxSupply: -1 };
   };

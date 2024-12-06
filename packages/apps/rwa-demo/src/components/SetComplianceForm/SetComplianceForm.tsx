@@ -1,6 +1,7 @@
-import { useAddInvestor } from '@/hooks/addInvestor';
-import type { IRegisterIdentityProps } from '@/services/registerIdentity';
-import type { IRecord } from '@/utils/filterRemovedRecords';
+import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
+import { useSetCompliance } from '@/hooks/setCompliance';
+import type { ISetComplianceProps } from '@/services/setCompliance';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -14,22 +15,20 @@ import { cloneElement, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
-  investor?: IRecord;
   onClose?: () => void;
   trigger: ReactElement;
 }
 
-export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
-  const { submit } = useAddInvestor();
-  const [isOpen, setIsOpen] = useState(false);
+export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
+  const { isComplianceOwner } = useAccount();
+  const { submit } = useSetCompliance();
+  const { asset } = useAsset();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const { handleSubmit, control } = useForm<
-    Omit<IRegisterIdentityProps, 'agent'>
-  >({
-    values: {
-      accountName: investor?.accountName ?? '',
-      alias: investor?.alias ?? '',
-      alreadyExists: !!investor?.accountName,
+  const [isOpen, setIsOpen] = useState(false);
+  const { handleSubmit, reset, control } = useForm<ISetComplianceProps>({
+    defaultValues: {
+      maxBalance: `${asset?.maxBalance ?? 0}`,
+      maxSupply: `${asset?.maxSupply ?? 0}`,
     },
   });
 
@@ -45,45 +44,51 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
     if (onClose) onClose();
   };
 
-  const onSubmit = async (data: Omit<IRegisterIdentityProps, 'agent'>) => {
+  const onSubmit = async (data: ISetComplianceProps) => {
     await submit(data);
+
     handleOnClose();
   };
 
   useEffect(() => {
-    console.log(isOpen);
-  }, [isOpen]);
+    reset({
+      maxSupply: `${asset?.maxSupply}`,
+      maxBalance: `${asset?.maxBalance}`,
+    });
+  }, [asset?.maxBalance, asset?.maxSupply]);
+
+  if (!isComplianceOwner) return null;
 
   return (
     <>
       {isRightAsideExpanded && isOpen && (
         <RightAside isOpen onClose={handleOnClose}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <RightAsideHeader label="Add Investor" />
+            <RightAsideHeader label="Set Compliance" />
             <RightAsideContent>
               <Controller
-                name="accountName"
+                name="maxBalance"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
-                  <TextField
-                    isDisabled={!!investor?.accountName}
-                    label="AccountName"
-                    {...field}
-                  />
+                  <TextField type="number" label="Max Balance" {...field} />
                 )}
               />
 
               <Controller
-                name="alias"
+                name="maxSupply"
                 control={control}
-                render={({ field }) => <TextField label="Alias" {...field} />}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField type="number" label="Max Supply" {...field} />
+                )}
               />
             </RightAsideContent>
             <RightAsideFooter>
-              <Button onPress={handleOnClose} variant="transparent">
+              <Button onPress={onClose} variant="transparent">
                 Cancel
               </Button>
-              <Button type="submit">Add Investor</Button>
+              <Button type="submit">Set Compliance</Button>
             </RightAsideFooter>
           </form>
         </RightAside>

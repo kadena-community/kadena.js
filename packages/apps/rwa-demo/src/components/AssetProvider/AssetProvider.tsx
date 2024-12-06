@@ -6,10 +6,8 @@ import {
 import { useAccount } from '@/hooks/account';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import {
-  getAssetMaxSupplyBalance,
-  IGetAssetMaxSupplyBalanceResult,
-} from '@/services/getAssetMaxSupplyBalance';
+import type { IGetAssetMaxSupplyBalanceResult } from '@/services/getAssetMaxSupplyBalance';
+import { getAssetMaxSupplyBalance } from '@/services/getAssetMaxSupplyBalance';
 import { supply as supplyService } from '@/services/supply';
 import { getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
@@ -117,6 +115,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!asset) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     loadAssetData();
   }, [asset?.uuid]);
 

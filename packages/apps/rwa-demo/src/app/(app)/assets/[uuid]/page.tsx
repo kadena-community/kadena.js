@@ -1,8 +1,8 @@
 'use client';
-import { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { useAsset } from '@/hooks/asset';
 import { useParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Assets = () => {
   const { getAsset } = useAsset();
@@ -15,6 +15,7 @@ const Assets = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initData(uuid as string);
   }, [uuid]);
 

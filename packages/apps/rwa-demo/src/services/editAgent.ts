@@ -2,7 +2,8 @@ import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
-import { AGENTROLES, IAddAgentProps } from './addAgent';
+import type { IAddAgentProps } from './addAgent';
+import { AGENTROLES } from './addAgent';
 
 export const editAgent = async (
   data: IAddAgentProps,
