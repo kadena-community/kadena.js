@@ -142,7 +142,6 @@ export const useGetAgents = () => {
   };
 
   const listenToAccounts = (aliases: IRecord[]) => {
-    console.log({ aliases });
     setInnerData((v) => {
       return setAliasesToAccounts([...v], aliases);
     });

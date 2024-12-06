@@ -18,7 +18,6 @@ export const useEditAgent = () => {
     data: IAddAgentProps,
   ): Promise<ITransaction | undefined> => {
     try {
-      console.log(9, { data });
       const tx = data.alreadyExists
         ? await editAgent(data, account!)
         : await addAgent(data, account!);

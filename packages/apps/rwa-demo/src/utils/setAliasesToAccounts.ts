@@ -1,5 +1,4 @@
 export const setAliasesToAccounts = (accounts: any[], aliases: any[]) => {
-  console.log();
   return accounts.map((account) => {
     const alias = aliases.find(
       ({ accountName }) => accountName === account.accountName,

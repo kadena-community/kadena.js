@@ -95,12 +95,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                 render={({ field }) => <TextField label="Alias" {...field} />}
               />
 
-              <CheckboxGroup
-                onChange={(e) => console.log(e)}
-                direction="column"
-                label="Roles"
-                name="roles"
-              >
+              <CheckboxGroup direction="column" label="Roles" name="roles">
                 {Object.entries(AGENTROLES).map(([key, val]) => {
                   return (
                     <label key={key}>

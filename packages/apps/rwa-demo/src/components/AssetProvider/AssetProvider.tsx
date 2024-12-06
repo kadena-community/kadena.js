@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
+import { IWalletAccount } from '../AccountProvider/utils';
 
 export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;
@@ -27,7 +28,10 @@ export interface IAssetContext {
   assets: IAsset[];
   paused: boolean;
   setAsset: (asset: IAsset) => void;
-  getAsset: (uuid: string) => Promise<IAsset | undefined>;
+  getAsset: (
+    uuid: string,
+    account: IWalletAccount,
+  ) => Promise<IAsset | undefined>;
 }
 
 export const AssetContext = createContext<IAssetContext>({
@@ -70,13 +74,18 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     router.refresh();
   };
 
-  const getAsset = async (uuid: string): Promise<IAsset | undefined> => {
+  const getAsset = async (
+    uuid: string,
+    account: IWalletAccount,
+  ): Promise<IAsset | undefined> => {
     const data = getAssets().find((a) => a.uuid === uuid);
     const extraAssetData = await getAssetMaxSupplyBalance();
 
     const supplyResult = (await supplyService({
       account: account!,
     })) as number;
+
+    console.log({ account, supplyResult });
 
     if (!data) return;
     return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };
@@ -95,8 +104,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const loadAssetData = async () => {
     const data = await getAssetMaxSupplyBalance();
-    if (!asset) return;
-    setAsset({ ...asset, ...data });
+
+    setAsset((old) => old && { ...old, ...data });
   };
 
   useEffect(() => {
@@ -110,7 +119,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!asset) return;
 
-    setAsset({ ...asset, supply });
+    setAsset((old) => old && { ...old, supply });
   }, [asset?.name, supply]);
 
   useEffect(() => {

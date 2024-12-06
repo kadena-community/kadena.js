@@ -50,10 +50,6 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
     handleOnClose();
   };
 
-  useEffect(() => {
-    console.log(isOpen);
-  }, [isOpen]);
-
   return (
     <>
       {isRightAsideExpanded && isOpen && (

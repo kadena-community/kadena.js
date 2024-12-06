@@ -60,7 +60,6 @@ export const TransferForm: FC<IProps> = ({ onClose }) => {
 
   if (!account) return;
 
-  console.log({ errors });
   return (
     <>
       <RightAside isOpen onClose={onClose}>
