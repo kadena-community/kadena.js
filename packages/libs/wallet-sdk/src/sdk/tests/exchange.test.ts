@@ -1,7 +1,7 @@
 import type { Mock } from 'vitest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { exchange } from '../exchange';
-import type { IEthvmDevTokenInfo } from '../interface';
+import { exchange } from '../exchange.js';
+import type { IEthvmDevTokenInfo } from '../interface.js';
 
 type Token = 'kadena' | 'ethereum';
 

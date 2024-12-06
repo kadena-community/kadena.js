@@ -13,6 +13,7 @@
     "Bart Huijgen <bart@kadena.io>",
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
+  "type": "module",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",

@@ -1,6 +1,6 @@
 import type { ChainId } from '@kadena/types';
 import { describe, expect, it, vi } from 'vitest';
-import { simpleTransferCreateCommand } from '../simpleTransferCreate';
+import { simpleTransferCreateCommand } from '../simpleTransferCreate.js';
 
 vi.useFakeTimers();
 

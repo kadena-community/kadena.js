@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { notEmpty } from '../typeUtils';
+import { notEmpty } from '../typeUtils.js';
 
 describe('notEmpty function', () => {
   it('returns true for non-null and non-undefined values', () => {

@@ -4,7 +4,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import {
   ensureKdaExtension,
   parseChainResponse,
-} from '../../services/kadenaNamesService';
+} from '../../services/kadenaNamesService.js';
 import { walletSdk } from '../walletSdk.js';
 
 const server = setupServer();

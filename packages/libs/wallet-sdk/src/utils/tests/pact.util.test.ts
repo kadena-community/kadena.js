@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parsePactNumber } from '../pact.util';
+import { parsePactNumber } from '../pact.util.js';
 
 describe('parsePactNumber', () => {
   it('should return the number when input is a number', () => {

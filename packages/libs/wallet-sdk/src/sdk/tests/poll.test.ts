@@ -7,7 +7,7 @@ import {
   kadenaMnemonicToSeed,
   kadenaSignWithSeed,
 } from '@kadena/hd-wallet';
-import { walletSdk } from '../walletSdk';
+import { walletSdk } from '../walletSdk.js';
 
 describe('example test', () => {
   test(

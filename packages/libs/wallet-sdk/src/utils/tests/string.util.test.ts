@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { safeJsonParse } from '../string.util';
+import { safeJsonParse } from '../string.util.js';
 
 interface IUser {
   name: string;

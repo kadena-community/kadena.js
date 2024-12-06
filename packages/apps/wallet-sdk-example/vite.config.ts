@@ -25,6 +25,7 @@ const monorepoPackages = getMonorepoPackagesFromPackageJson();
 
 monorepoPackages.push('@kadena/client-utils');
 monorepoPackages.push('@kadena/cryptography-utils');
+monorepoPackages.push('@kadena/pactjs');
 
 const monorepoPathsRegex = monorepoPackages.map(
   (pkg) => new RegExp(`${pkg.replace('@kadena/', '')}`),

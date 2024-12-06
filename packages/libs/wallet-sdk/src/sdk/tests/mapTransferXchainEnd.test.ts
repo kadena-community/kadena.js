@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { parseGqlTransfers } from '../../services/graphql/transfer.util';
-import type { ITransfer } from '../interface';
+import { parseGqlTransfers } from '../../services/graphql/transfer.util.js';
+import type { ITransfer } from '../interface.js';
 
 const GQL_TRANSFER_XCHAIN_FINISH = [
   {

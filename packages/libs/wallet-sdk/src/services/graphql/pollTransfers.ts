@@ -1,9 +1,9 @@
 import { createClient, fetchExchange } from '@urql/core';
-import type { ITransfer } from '../../sdk/interface';
-import type { Logger } from '../../sdk/logger';
-import { TRANSFER_REQUESTKEY_QUERY } from './transfer.query';
-import type { GqlTransfer } from './transfer.util';
-import { parseGqlTransfers } from './transfer.util';
+import type { ITransfer } from '../../sdk/interface.js';
+import type { Logger } from '../../sdk/logger.js';
+import { TRANSFER_REQUESTKEY_QUERY } from './transfer.query.js';
+import type { GqlTransfer } from './transfer.util.js';
+import { parseGqlTransfers } from './transfer.util.js';
 
 interface IRollGraphqlTransfers {
   graphqlUrl: string;

@@ -1,8 +1,8 @@
 import * as v from 'valibot';
-import type { Logger } from '../../sdk/logger';
-import type { PollResponse, ResponseResult } from '../../sdk/schema';
-import { pollResponseSchema } from '../../sdk/schema';
-import { notEmpty } from '../../utils/typeUtils';
+import type { Logger } from '../../sdk/logger.js';
+import type { PollResponse, ResponseResult } from '../../sdk/schema.js';
+import { pollResponseSchema } from '../../sdk/schema.js';
+import { notEmpty } from '../../utils/typeUtils.js';
 
 interface IPollRequestKeysOptions {
   chainwebUrl: string;

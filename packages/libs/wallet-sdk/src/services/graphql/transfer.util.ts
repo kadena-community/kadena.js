@@ -1,9 +1,9 @@
 import type { ChainId } from '@kadena/types';
-import type { TransferFieldsFragment } from '../../gql/graphql';
-import type { ITransfer } from '../../sdk/interface';
-import { parsePactNumber } from '../../utils/pact.util';
-import { safeJsonParse } from '../../utils/string.util';
-import { isEmpty, notEmpty } from '../../utils/typeUtils';
+import type { TransferFieldsFragment } from '../../gql/graphql.js';
+import type { ITransfer } from '../../sdk/interface.js';
+import { parsePactNumber } from '../../utils/pact.util.js';
+import { safeJsonParse } from '../../utils/string.util.js';
+import { isEmpty, notEmpty } from '../../utils/typeUtils.js';
 
 export type GqlTransfer = TransferFieldsFragment & {
   crossChainTransfer?: TransferFieldsFragment | null;
