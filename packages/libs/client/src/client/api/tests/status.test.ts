@@ -18,7 +18,7 @@ afterAll(() => server.close());
 
 const post = (
   path: string,
-  response: string | Record<string, unknown>,
+  response: string | Record<string, unknown> | Response,
   status = 200,
   wait?: number,
 ): ReturnType<typeof http.post> =>
@@ -142,5 +142,49 @@ describe('pollStatus', () => {
       'key-1': { reqKey: 'key-1' },
       'key-2': { reqKey: 'key-2' },
     });
+  });
+
+  it('calls onResult call back after each request key is fetched', async () => {
+    const responses = [
+      {},
+      { 'key-1': { reqKey: 'key-1' } },
+      {},
+      { 'key-2': { reqKey: 'key-2' } },
+    ];
+
+    server.resetHandlers(
+      post('http://test-blockchain-host.com/api/v1/poll', responses[0]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[1]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[2]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[3]),
+    );
+
+    const hostUrl = 'http://test-blockchain-host.com';
+
+    const requestKeys = ['key-1', 'key-2'];
+
+    const onResult = vi.fn();
+
+    await pollStatus(hostUrl, requestKeys, { interval: 10, onResult });
+    expect(onResult).toBeCalledTimes(2);
+    expect(onResult.mock.calls[0]).toEqual(['key-1', { reqKey: 'key-1' }]);
+    expect(onResult.mock.calls[1]).toEqual(['key-2', { reqKey: 'key-2' }]);
+  });
+  it('calls onPoll call back with error if the request fails', async () => {
+    server.resetHandlers(
+      post('http://test-blockchain-host.com/api/v1/poll', {}),
+    );
+
+    const onPoll = vi.fn();
+
+    const hostUrl = 'http://test-blockchain-host.com';
+
+    const requestKeys = ['key-1', 'key-2'];
+
+    await expect(
+      pollStatus(hostUrl, requestKeys, { interval: 10, timeout: 20, onPoll }),
+    ).rejects.toEqual(new Error('TIME_OUT_REJECT'));
+
+    expect(onPoll.mock.calls.at(-1)[1] instanceof Error).toBe(true);
   });
 });

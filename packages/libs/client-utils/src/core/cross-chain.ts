@@ -28,7 +28,11 @@ import {
 } from './utils/helpers';
 
 const requestSpvProof =
-  (targetChainId: ChainId, client: IClient, onPoll: (id: string) => void) =>
+  (
+    targetChainId: ChainId,
+    client: IClient,
+    onPoll: (id: string | undefined, error: any) => void,
+  ) =>
   ([txDesc, txResult]: [ITransactionDescriptor, ICommandResult]) => {
     return client
       .pollCreateSpv(txDesc, targetChainId, {

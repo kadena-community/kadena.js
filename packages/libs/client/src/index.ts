@@ -15,6 +15,7 @@ export type * from './interfaces/IPactCommand';
 export type * from './interfaces/ISigningRequest';
 
 export {
+  ClientRequestInit,
   ICommandResult,
   IPollResponse,
   IPreflightResult,
