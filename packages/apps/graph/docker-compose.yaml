@@ -3,7 +3,7 @@ services:
     image: kadena/devnet
     ports:
       - '4000:4000'
-    env_file: .env
+    # env_file: .env
     environment:
       - NODE_ENV=production
     build:
@@ -16,7 +16,7 @@ services:
     image: kadena/devnet
     ports:
       - '4000:4000'
-    env_file: .env
+    # env_file: .env
     environment:
       - NODE_ENV=production
     build:
