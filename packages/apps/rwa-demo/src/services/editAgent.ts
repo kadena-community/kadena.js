@@ -1,28 +1,31 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
-import { PactNumber } from '@kadena/pactjs';
+import type { IAddAgentProps } from './addAgent';
+import { AGENTROLES } from './addAgent';
 
-export interface ISetMaxBalanceProps {
-  maxBalance: number;
-}
-
-export const setMaxBalance = async (
-  data: ISetMaxBalanceProps,
+export const editAgent = async (
+  data: IAddAgentProps,
   account: IWalletAccount,
 ) => {
   return Pact.builder
     .execution(
-      ` (RWA.max-balance-compliance.set-max-balance ${new PactNumber(data.maxBalance).toPactDecimal().decimal})`,
+      `(RWA.${getAsset()}.update-agent-roles (read-string 'agent) (read-msg 'roles))`,
     )
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.max-balance-compliance.ONLY-OWNER`),
+      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'agent-admin'),
       withCap(`coin.GAS`),
     ])
+    .addData('agent', data.accountName)
+    .addData(
+      'roles',
+      data.roles.map((val) => AGENTROLES[val]),
+    )
 
     .setNetworkId(getNetwork().networkId)
     .createTransaction();

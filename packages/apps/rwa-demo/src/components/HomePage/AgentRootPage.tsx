@@ -2,6 +2,7 @@ import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBread
 import { useAccount } from '@/hooks/account';
 import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
+import { AgentsList } from '../AgentsList/AgentsList';
 import { InvestorList } from '../InvestorList/InvestorList';
 import { PauseForm } from '../PauseForm/PauseForm';
 
@@ -18,6 +19,7 @@ export const AgentRootPage: FC = () => {
         <PauseForm />
       </Stack>
       <InvestorList />
+      <AgentsList />
     </Stack>
   );
 };

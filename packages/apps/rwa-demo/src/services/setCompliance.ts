@@ -3,17 +3,18 @@ import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
-export interface ISetMaxSupplyProps {
-  maxSupply: number;
+export interface ISetComplianceProps {
+  maxBalance: string;
+  maxSupply: string;
 }
 
-export const setMaxSupply = async (
-  data: ISetMaxSupplyProps,
+export const setCompliance = async (
+  data: ISetComplianceProps,
   account: IWalletAccount,
 ) => {
   return Pact.builder
     .execution(
-      `(RWA.max-balance-compliance.set-max-supply ${new PactNumber(data.maxSupply).toPactDecimal().decimal})`,
+      ` (RWA.max-balance-compliance.set-max-balance-and-max-supply ${new PactNumber(data.maxSupply).toPactDecimal().decimal} ${new PactNumber(data.maxBalance).toPactDecimal().decimal})`,
     )
     .setMeta({
       senderAccount: account.address,

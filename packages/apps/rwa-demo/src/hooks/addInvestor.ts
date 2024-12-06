@@ -27,7 +27,6 @@ export const useAddInvestor = () => {
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
-      console.log(res);
 
       return addTransaction({
         ...res,

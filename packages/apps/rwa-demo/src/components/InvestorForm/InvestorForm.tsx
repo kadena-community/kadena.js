@@ -10,7 +10,7 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
-import { cloneElement, useEffect, useState } from 'react';
+import { cloneElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
@@ -40,22 +40,15 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
   };
 
   const handleOnClose = () => {
-    console.log(333331);
+    setIsRightAsideExpanded(false);
     setIsOpen(false);
     if (onClose) onClose();
-    // setIsRightAsideExpanded(false);
-    // setRightAsideOnClose(() => {
-    // });
   };
 
   const onSubmit = async (data: Omit<IRegisterIdentityProps, 'agent'>) => {
     await submit(data);
     handleOnClose();
   };
-
-  useEffect(() => {
-    console.log(isOpen);
-  }, [isOpen]);
 
   return (
     <>

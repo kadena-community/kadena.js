@@ -24,6 +24,8 @@ export const AssetInfo: FC = () => {
             </Stack>
           )}
         </Button>
+        <div>maxSupply: {asset.maxSupply}</div>
+        <div>maxBalance: {asset.maxBalance}</div>
         <SupplyCount />
       </Stack>
     </Stack>

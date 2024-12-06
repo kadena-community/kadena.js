@@ -10,6 +10,8 @@ export interface ISupplyProps {
 export const supply = async (data: ISupplyProps) => {
   const client = getClient();
 
+  if (!data.account) return;
+
   const transaction = Pact.builder
     .execution(`(RWA.${getAsset()}.supply)`)
     .setMeta({

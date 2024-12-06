@@ -5,7 +5,7 @@ import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
 export interface ITogglePartiallyFreezeTokensProps {
-  amount: number;
+  amount: string;
   investorAccount: string;
   freeze?: boolean;
 }

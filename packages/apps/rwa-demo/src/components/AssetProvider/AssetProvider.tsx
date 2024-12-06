@@ -4,16 +4,22 @@ import {
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
 import { usePaused } from '@/hooks/paused';
+import { useSupply } from '@/hooks/supply';
+import type { IGetAssetMaxSupplyBalanceResult } from '@/services/getAssetMaxSupplyBalance';
+import { getAssetMaxSupplyBalance } from '@/services/getAssetMaxSupplyBalance';
+import { supply as supplyService } from '@/services/supply';
 import { getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { useRouter } from 'next/navigation';
 
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
+import type { IWalletAccount } from '../AccountProvider/utils';
 
-export interface IAsset {
+export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;
   name: string;
+  supply: number;
 }
 
 export interface IAssetContext {
@@ -21,14 +27,17 @@ export interface IAssetContext {
   assets: IAsset[];
   paused: boolean;
   setAsset: (asset: IAsset) => void;
-  getAsset: (uuid: string) => IAsset | undefined;
+  getAsset: (
+    uuid: string,
+    account: IWalletAccount,
+  ) => Promise<IAsset | undefined>;
 }
 
 export const AssetContext = createContext<IAssetContext>({
   assets: [],
   paused: false,
   setAsset: () => {},
-  getAsset: (uuid: string) => undefined,
+  getAsset: async () => undefined,
 });
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -40,6 +49,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused();
+  const { data: supply } = useSupply();
 
   const getAssets = (): IAsset[] => {
     const result = localStorage.getItem(storageKey);
@@ -56,15 +66,25 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
-    setAsset(data);
+    setAsset((old) => ({ ...old, ...data }));
 
     router.replace('/');
     router.refresh();
   };
 
-  const getAsset = (uuid: string) => {
+  const getAsset = async (
+    uuid: string,
+    account: IWalletAccount,
+  ): Promise<IAsset | undefined> => {
     const data = getAssets().find((a) => a.uuid === uuid);
-    return data;
+    const extraAssetData = await getAssetMaxSupplyBalance();
+
+    const supplyResult = (await supplyService({
+      account: account!,
+    })) as number;
+
+    if (!data) return;
+    return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };
   };
 
   useEffect(() => {
@@ -78,6 +98,12 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
+  const loadAssetData = async () => {
+    const data = await getAssetMaxSupplyBalance();
+
+    setAsset((old) => old && { ...old, ...data });
+  };
+
   useEffect(() => {
     const asset = getFullAsset();
     setAsset(asset);
@@ -85,6 +111,18 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
   }, []);
+
+  useEffect(() => {
+    if (!asset) return;
+
+    setAsset((old) => old && { ...old, supply });
+  }, [asset?.name, supply]);
+
+  useEffect(() => {
+    if (!asset) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    loadAssetData();
+  }, [asset?.uuid]);
 
   return (
     <AssetContext.Provider

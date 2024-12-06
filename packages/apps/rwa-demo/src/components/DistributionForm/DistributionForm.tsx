@@ -1,39 +1,68 @@
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useFreeze } from '@/hooks/freeze';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
+import { getBalance } from '@/services/getBalance';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
+  useLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import type { FC, ReactElement } from 'react';
+import { cloneElement, useEffect, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
-  onClose: () => void;
+  onClose?: () => void;
   investorAccount: string;
+  trigger: ReactElement;
 }
 
-export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
+export const DistributionForm: FC<IProps> = ({
+  onClose,
+  investorAccount,
+  trigger,
+}) => {
+  const { account } = useAccount();
+  const { asset } = useAsset();
   const { frozen } = useFreeze({ investorAccount });
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
   const { paused } = useAsset();
   const { submit } = useDistributeTokens();
-  const { register, handleSubmit } = useForm<IDistributeTokensProps>({
+  const [tokenBalance, setTokenBalance] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid, errors },
+  } = useForm<IDistributeTokensProps>({
     values: {
-      amount: 0,
+      amount: '0',
       investorAccount,
     },
   });
+
+  const handleOpen = () => {
+    setIsRightAsideExpanded(true);
+    setIsOpen(true);
+    if (trigger.props.onPress) trigger.props.onPress();
+  };
+
+  const handleOnClose = () => {
+    setIsRightAsideExpanded(false);
+    setIsOpen(false);
+    if (onClose) onClose();
+  };
 
   const onSubmit = async (data: IDistributeTokensProps) => {
     const transaction = await submit(data);
@@ -45,7 +74,7 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
   useEffect(() => {
     if (tx && resolveRef.current) {
       resolveRef.current(tx);
-      onClose();
+      handleOnClose();
     }
   }, [tx]);
 
@@ -60,40 +89,74 @@ export const DistributionForm: FC<IProps> = ({ onClose, investorAccount }) => {
     return message;
   };
 
+  const init = async () => {
+    const res = await getBalance({ investorAccount, account: account! });
+
+    if (typeof res === 'number') {
+      setTokenBalance(res);
+    }
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    init();
+  }, []);
+
+  const maxAmount = (asset?.maxSupply ?? 0) - tokenBalance;
   return (
     <>
-      <RightAside isOpen onClose={onClose}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <RightAsideHeader label="Distribute Tokens" />
-          <RightAsideContent>
-            <TextField
-              label="Amount"
-              type="number"
-              {...register('amount', { required: true })}
-            />
-          </RightAsideContent>
-          <RightAsideFooter
-            message={
-              <>
-                <InvestorFrozenMessage investorAccount={investorAccount} />
-                <AssetPausedMessage />
-              </>
-            }
-          >
-            <Button onPress={onClose} variant="transparent">
-              Cancel
-            </Button>
-            <SendTransactionAnimation
-              onPress={handlePress}
-              trigger={
-                <Button isDisabled={frozen || paused} type="submit">
-                  Distribute
-                </Button>
+      {isRightAsideExpanded && isOpen && (
+        <RightAside isOpen onClose={handleOnClose}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <RightAsideHeader label="Distribute Tokens" />
+            <RightAsideContent>
+              <Controller
+                name="amount"
+                control={control}
+                rules={{
+                  required: true,
+                  min: 0,
+                  max: maxAmount,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    type="number"
+                    label="Amount"
+                    {...field}
+                    errorMessage={errors.amount?.message}
+                    description={`max amount: ${maxAmount} `}
+                  />
+                )}
+              />
+            </RightAsideContent>
+            <RightAsideFooter
+              message={
+                <>
+                  <InvestorFrozenMessage investorAccount={investorAccount} />
+                  <AssetPausedMessage />
+                </>
               }
-            />
-          </RightAsideFooter>
-        </form>
-      </RightAside>
+            >
+              <Button onPress={handleOnClose} variant="transparent">
+                Cancel
+              </Button>
+              <SendTransactionAnimation
+                onPress={handlePress}
+                trigger={
+                  <Button
+                    isDisabled={frozen || paused || !isValid}
+                    type="submit"
+                  >
+                    Distribute
+                  </Button>
+                }
+              />
+            </RightAsideFooter>
+          </form>
+        </RightAside>
+      )}
+
+      {cloneElement(trigger, { ...trigger.props, onPress: handleOpen })}
     </>
   );
 };

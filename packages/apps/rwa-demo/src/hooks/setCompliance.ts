@@ -1,19 +1,19 @@
 import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
-import type { ISetMaxBalanceProps } from '@/services/setMaxBalance';
-import { setMaxBalance } from '@/services/setMaxBalance';
+import type { ISetComplianceProps } from '@/services/setCompliance';
+import { setCompliance } from '@/services/setCompliance';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
-export const useSetMaxBalance = () => {
+export const useSetCompliance = () => {
   const { account, sign } = useAccount();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
 
-  const submit = async (data: ISetMaxBalanceProps) => {
+  const submit = async (data: ISetComplianceProps) => {
     try {
-      const tx = await setMaxBalance(data, account!);
+      const tx = await setCompliance(data, account!);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
