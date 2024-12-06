@@ -47,7 +47,6 @@ export function Transactions() {
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/transactions">
           Transactions
         </SideBarBreadcrumbsItem>

@@ -107,13 +107,12 @@ export const TxContainer = React.memo(
       };
 
     const onSubmit = useCallback(
-      async (tx: ITransaction) => {
+      async (tx: ITransaction, skipPreflight = false) => {
         const result = await transactionService.submitTransaction(
           tx,
           client,
-          // (updatedTx) => {
-          //   // setLocalTransaction(updatedTx);
-          // },
+          undefined,
+          skipPreflight,
         );
         if (onUpdate) onUpdate(result);
 
@@ -128,7 +127,9 @@ export const TxContainer = React.memo(
         transaction={localTransaction}
         contTx={contTx}
         onSign={onExpandedSign(localTransaction)}
-        onSubmit={() => onSubmit(localTransaction)}
+        onSubmit={(skipPreflight = false) =>
+          onSubmit(localTransaction, skipPreflight)
+        }
         sendDisabled={sendDisabled}
         showTitle={as === 'tile' || isDialog}
         isDialog={isDialog}

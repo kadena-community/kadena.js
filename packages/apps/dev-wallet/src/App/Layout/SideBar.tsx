@@ -1,5 +1,4 @@
 import {
-  MonoApps,
   MonoCheck,
   MonoContacts,
   MonoContrast,
@@ -12,6 +11,7 @@ import {
   MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
+  MonoWallet,
   MonoWarning,
 } from '@kadena/kode-icons/system';
 
@@ -39,7 +39,8 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { BetaHeader } from '../BetaHeader';
 import { KLogo } from './KLogo';
 
@@ -47,7 +48,7 @@ export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -75,8 +76,8 @@ export const SideBar: FC = () => {
       navigation={
         <>
           <SideBarItem
-            visual={<MonoApps />}
-            label="Dashboard"
+            visual={<MonoWallet />}
+            label="Your Assets"
             component={Link}
             href="/"
           />
@@ -89,17 +90,17 @@ export const SideBar: FC = () => {
           />
 
           <SideBarItem
-            visual={<MonoSignature />}
-            label="Sig Builder"
-            component={Link}
-            href="/sig-builder"
-          />
-
-          <SideBarItem
             visual={<MonoTableRows />}
             label="Transactions"
             component={Link}
             href="/transactions"
+          />
+
+          <SideBarItem
+            visual={<MonoSignature />}
+            label="Sig Builder"
+            component={Link}
+            href="/sig-builder"
           />
 
           <SideBarItem

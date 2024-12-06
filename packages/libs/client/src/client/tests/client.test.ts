@@ -1,8 +1,25 @@
+import type * as ChainWebNodeClient from '@kadena/chainweb-node-client';
+import { local } from '@kadena/chainweb-node-client';
 import type { ChainId } from '@kadena/types';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { createClient } from '../client';
+
+// Hack to spy on exported function
+vi.mock('@kadena/chainweb-node-client', async (importOriginal) => {
+  const mod: typeof ChainWebNodeClient = await importOriginal();
+  const local = vi.fn().mockImplementation(mod.local);
+  return { ...mod, local };
+});
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -139,10 +156,12 @@ describe('client', () => {
 
   describe('local', () => {
     it('uses the hostApiGenerator function to generate hostUrl for local request', async () => {
+      const expectedResponse = {
+        reqKey: 'test-key',
+        result: 'test-result',
+      };
       server.resetHandlers(
-        post('http://example.org/mainnet01/1/api/v1/local', {
-          reqKey: 'test-key',
-        }),
+        post('http://example.org/mainnet01/1/api/v1/local', expectedResponse),
       );
 
       const { local } = createClient(hostApiGenerator);
@@ -156,7 +175,8 @@ describe('client', () => {
         sigs: [{ sig: 'test-sig' }],
       };
 
-      await local(body);
+      const res = await local(body);
+      expect(res).toEqual(expectedResponse);
     });
   });
 
@@ -289,6 +309,57 @@ describe('client', () => {
 
       expect(result).toEqual(response[2]);
     });
+
+    it('returns a list if input is list of requests', async () => {
+      const response = [
+        // first /poll
+        {},
+        // second /poll
+        {},
+        // third /poll
+        {
+          'test-key-1': { reqKey: 'test-key-1' },
+          'test-key-2': { reqKey: 'test-key-2' },
+        },
+      ];
+
+      server.resetHandlers(
+        post('http://example.org/mainnet01/1/api/v1/send', {
+          requestKeys: ['test-key-1', 'test-key-2'],
+        }),
+        post('http://example.org/mainnet01/1/api/v1/poll', response[0]),
+        post('http://example.org/mainnet01/1/api/v1/poll', response[1]),
+        post('http://example.org/mainnet01/1/api/v1/poll', response[2]),
+      );
+
+      const { submit, pollStatus } = createClient(hostApiGenerator);
+
+      const networkId = 'mainnet01';
+      const chainId = '1';
+
+      const body = [
+        {
+          cmd: JSON.stringify({ networkId, meta: { chainId } }),
+          hash: 'hash',
+          sigs: [{ sig: 'test-sig' }],
+        },
+        {
+          cmd: JSON.stringify({ networkId, meta: { chainId } }),
+          hash: 'hash',
+          sigs: [{ sig: 'test-sig' }],
+        },
+      ];
+
+      const transactionDescriptor = await submit(body);
+
+      expect(transactionDescriptor.length).toEqual(2);
+
+      const result = await pollStatus(transactionDescriptor, {
+        interval: 10,
+      });
+
+      expect(result).toEqual(response[2]);
+    });
   });
 
   describe('getStatus', () => {
@@ -309,6 +380,31 @@ describe('client', () => {
       });
 
       expect(result).toEqual({});
+    });
+
+    it('calls /poll endpoint once to get the status of the list of requests ', async () => {
+      server.resetHandlers(
+        post(
+          'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact/api/v1/poll',
+          { 'test-key-1': 'result1', 'test-key-2': 'result2' },
+        ),
+      );
+
+      const { getStatus } = createClient();
+
+      const result = await getStatus([
+        {
+          requestKey: 'test-key-1',
+          chainId: '0',
+          networkId: 'testnet04',
+        },
+        { requestKey: 'test-key-2', chainId: '0', networkId: 'testnet04' },
+      ]);
+
+      expect(result).toEqual({
+        'test-key-1': 'result1',
+        'test-key-2': 'result2',
+      });
     });
   });
 
@@ -379,6 +475,138 @@ describe('client', () => {
       );
 
       expect(result).toEqual('proof');
+    });
+  });
+
+  describe('preflight', () => {
+    it('uses local request and add preflight=true and signatureVerification=true', async () => {
+      const expectedResponse = {
+        reqKey: 'test-key',
+        result: 'test-result',
+      };
+      server.resetHandlers(
+        post(
+          'http://example.org/mainnet01/1/api/v1/local?preflight=true&signatureVerification=true',
+          expectedResponse,
+        ),
+      );
+
+      const { preflight } = createClient(hostApiGenerator);
+
+      const networkId = 'mainnet01';
+      const chainId = '1';
+
+      const body = {
+        cmd: JSON.stringify({ networkId, meta: { chainId } }),
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
+      };
+
+      expect(await preflight(body)).toEqual(expectedResponse);
+    });
+  });
+  describe('signatureVerification', () => {
+    it('uses local request and add preflight=false and signatureVerification=true', async () => {
+      const expectedResponse = {
+        reqKey: 'test-key',
+        result: 'test-result',
+      };
+      server.resetHandlers(
+        post(
+          'http://example.org/mainnet01/1/api/v1/local?preflight=false&signatureVerification=true',
+          expectedResponse,
+        ),
+      );
+
+      const { signatureVerification } = createClient(hostApiGenerator);
+
+      const networkId = 'mainnet01';
+      const chainId = '1';
+
+      const body = {
+        cmd: JSON.stringify({ networkId, meta: { chainId } }),
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
+      };
+
+      expect(await signatureVerification(body)).toEqual(expectedResponse);
+    });
+  });
+
+  describe('dirtyRead', () => {
+    it('uses local request and add preflight=false and signatureVerification=false', async () => {
+      const expectedResponse = {
+        reqKey: 'test-key',
+        result: 'test-result',
+      };
+      server.resetHandlers(
+        post(
+          'http://example.org/mainnet01/1/api/v1/local?preflight=false&signatureVerification=false',
+          expectedResponse,
+        ),
+      );
+
+      const { dirtyRead } = createClient(hostApiGenerator);
+
+      const networkId = 'mainnet01';
+      const chainId = '1';
+
+      const body = {
+        cmd: JSON.stringify({ networkId, meta: { chainId } }),
+        hash: 'hash',
+        sigs: [{ sig: 'test-sig' }],
+      };
+
+      expect(await dirtyRead(body)).toEqual(expectedResponse);
+    });
+  });
+
+  describe('runPact', () => {
+    beforeAll(() => {
+      vi.useFakeTimers().setSystemTime(new Date('2023-07-31'));
+    });
+
+    afterAll(() => {
+      vi.useRealTimers();
+    });
+
+    it('create a complete pact command from the input and send it to the chain', async () => {
+      const { runPact } = createClient(hostApiGenerator);
+      const mockResponse = {};
+
+      server.resetHandlers(
+        http.post(
+          'http://example.org/mainnet01/1/api/v1/local?preflight=false&signatureVerification=false',
+          () => HttpResponse.json(mockResponse),
+          { once: true },
+        ),
+      );
+
+      const result = await runPact(
+        '(+ 1 1)',
+        { testData: 'testData' },
+        {
+          networkId: 'mainnet01',
+          chainId: '1',
+        },
+      );
+
+      expect(result).toStrictEqual(mockResponse);
+
+      expect(local).toBeCalledWith(
+        {
+          cmd: '{"payload":{"exec":{"code":"(+ 1 1)","data":{"testData":"testData"}}},"nonce":"kjs:nonce:1690761600000","signers":[]}',
+          hash: '4KHg5lsf4zxOXsaqbvNIJlVPKXDtuzi3xiSlRUnqBJQ',
+          sigs: [],
+        },
+        'http://example.org/mainnet01/1',
+        {
+          preflight: false,
+          signatureVerification: false,
+          chainId: '1',
+          networkId: 'mainnet01',
+        },
+      );
     });
   });
 });

@@ -67,8 +67,8 @@ export function createChainweaverService() {
     ) => {
       // check if password is correct
       const checkKeyPair = keyPairs[0];
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [__private, publickey] = await legacyKadenaGenKeypair(
+
+      const [, publickey] = await legacyKadenaGenKeypair(
         password,
         Buffer.from(rootKey, 'hex'),
         0x80000000 + checkKeyPair.index,

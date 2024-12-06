@@ -1,3 +1,4 @@
+import { useRightAside } from '@/App/Layout/useRightAside';
 import {
   accountRepository,
   IAccount,
@@ -5,7 +6,7 @@ import {
 } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
-import { IReceiverAccount } from '@/pages/transfer/utils';
+import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import {
   MonoAdd,
   MonoMoreVert,
@@ -23,9 +24,8 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AccountItem } from '../AccountItem/AccountItem';
-import { usePrompt } from '../PromptProvider/Prompt';
 import { accountTypeClass, listClass, noStyleLinkClass } from './style.css';
-import { WatchAccountsDialog } from './WatchAccountDialog';
+import { WatchAccountsForm } from './WatchAccountForm';
 
 export function Accounts({
   accounts,
@@ -38,18 +38,11 @@ export function Accounts({
 }) {
   const [show, setShow] = useState<'owned' | 'watched'>('owned');
   const { createNextAccount, activeNetwork, profile } = useWallet();
-  const prompt = usePrompt();
+  const [isWatchAccountExpanded, expandWatchAccount, closeWatchAccount] =
+    useRightAside();
   const accountsToShow = show === 'owned' ? accounts : watchedAccounts;
 
-  const onWatch = async () => {
-    const accounts = (await prompt((resolve, reject) => (
-      <WatchAccountsDialog
-        onWatch={resolve}
-        onClose={reject}
-        contract={contract}
-        networkId={activeNetwork!.networkId}
-      />
-    ))) as IReceiverAccount[];
+  const onWatch = async (accounts: IReceiverAccount[]) => {
     const accountsToWatch: IWatchedAccount[] = accounts.map((account) => ({
       uuid: crypto.randomUUID(),
       alias: account.alias ?? '',
@@ -79,6 +72,13 @@ export function Accounts({
 
   return (
     <Stack flexDirection={'column'}>
+      <WatchAccountsForm
+        onClose={closeWatchAccount}
+        isOpen={isWatchAccountExpanded}
+        onWatch={onWatch}
+        contract={contract}
+        networkId={activeNetwork!.networkId}
+      />
       <Stack justifyContent={'space-between'}>
         <Stack gap={'sm'}>
           <Stack
@@ -119,7 +119,9 @@ export function Accounts({
                 startVisual={<MonoRemoveRedEye />}
                 variant="outlined"
                 isCompact
-                onClick={() => onWatch()}
+                onClick={() => {
+                  expandWatchAccount();
+                }}
               >
                 Watch Account
               </Button>

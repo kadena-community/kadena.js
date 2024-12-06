@@ -24,6 +24,9 @@ export type ChainwebChainId = (typeof CHAINS)[number];
 export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'testnet05' | 'development';
 
 // @alpha (undocumented)
+export type ClientRequestInit = Omit<RequestInit, 'method' | 'body'>;
+
+// @alpha (undocumented)
 export function convertIUnsignedTransactionToNoSig(transaction: IUnsignedCommand): ICommand;
 
 // @alpha
@@ -86,7 +89,7 @@ export interface ILocalCommandResult {
 }
 
 // @alpha (undocumented)
-export interface ILocalOptions {
+export interface ILocalOptions extends ClientRequestInit {
     // (undocumented)
     preflight?: boolean;
     // (undocumented)
@@ -153,7 +156,7 @@ export interface ISPVRequestBody {
 }
 
 // @alpha
-export function listen(requestBody: IListenRequestBody, apiHost: string): Promise<ICommandResult>;
+export function listen(requestBody: IListenRequestBody, apiHost: string, requestInit?: ClientRequestInit): Promise<ICommandResult>;
 
 // @alpha (undocumented)
 export type ListenResponse = ICommandResult;
@@ -162,7 +165,7 @@ export type ListenResponse = ICommandResult;
 export function local<T extends ILocalOptions>(requestBody: LocalRequestBody, apiHost: string, options?: T): Promise<LocalResponse<T>>;
 
 // @alpha
-export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, }: {
+export function localRaw(requestBody: LocalRequestBody, apiHost: string, { preflight, signatureVerification, ...requestInit }: ILocalOptions & {
     signatureVerification: boolean;
     preflight: boolean;
 }): Promise<IPreflightResult | ICommandResult>;
@@ -191,22 +194,133 @@ export function parseResponse<T>(response: Response): Promise<T>;
 export function parseResponseTEXT(response: Response): Promise<string>;
 
 // @alpha
-export function poll(requestBody: IPollRequestBody, apiHost: string, confirmationDepth?: number): Promise<IPollResponse>;
+export function poll(requestBody: IPollRequestBody, apiHost: string, confirmationDepth?: number, requestInit?: ClientRequestInit): Promise<IPollResponse>;
 
 // @alpha
-export function send(requestBody: ISendRequestBody, apiHost: string): Promise<SendResponse>;
+export function send(requestBody: ISendRequestBody, apiHost: string, requestInit?: ClientRequestInit): Promise<SendResponse>;
 
 // @alpha
 export type SendResponse = IRequestKeys;
 
 // @alpha
-export function spv(requestBody: ISPVRequestBody, apiHost: string): Promise<SPVResponse | Response>;
+export function spv(requestBody: ISPVRequestBody, apiHost: string, requestInit?: ClientRequestInit): Promise<SPVResponse | Response>;
 
 // @alpha
 export type SPVResponse = SPVProof;
 
 // @alpha
-export function stringifyAndMakePOSTRequest<T>(body: T): object;
+export function stringifyAndMakePOSTRequest<T>(body: T, requestInit?: ClientRequestInit): {
+    headers: {
+        'Content-Type': string;
+    } | {
+        length: number;
+        toString(): string;
+        toLocaleString(): string;
+        pop(): [string, string] | undefined;
+        push(...items: [string, string][]): number;
+        concat(...items: ConcatArray<[string, string]>[]): [string, string][];
+        concat(...items: ([string, string] | ConcatArray<[string, string]>)[]): [string, string][];
+        join(separator?: string | undefined): string;
+        reverse(): [string, string][];
+        shift(): [string, string] | undefined;
+        slice(start?: number | undefined, end?: number | undefined): [string, string][];
+        sort(compareFn?: ((a: [string, string], b: [string, string]) => number) | undefined): [string, string][];
+        splice(start: number, deleteCount?: number | undefined): [string, string][];
+        splice(start: number, deleteCount: number, ...items: [string, string][]): [string, string][];
+        unshift(...items: [string, string][]): number;
+        indexOf(searchElement: [string, string], fromIndex?: number | undefined): number;
+        lastIndexOf(searchElement: [string, string], fromIndex?: number | undefined): number;
+        every<S extends [string, string]>(predicate: (value: [string, string], index: number, array: [string, string][]) => value is S, thisArg?: any): this is S[];
+        every(predicate: (value: [string, string], index: number, array: [string, string][]) => unknown, thisArg?: any): boolean;
+        some(predicate: (value: [string, string], index: number, array: [string, string][]) => unknown, thisArg?: any): boolean;
+        forEach(callbackfn: (value: [string, string], index: number, array: [string, string][]) => void, thisArg?: any): void;
+        map<U>(callbackfn: (value: [string, string], index: number, array: [string, string][]) => U, thisArg?: any): U[];
+        filter<S_1 extends [string, string]>(predicate: (value: [string, string], index: number, array: [string, string][]) => value is S_1, thisArg?: any): S_1[];
+        filter(predicate: (value: [string, string], index: number, array: [string, string][]) => unknown, thisArg?: any): [string, string][];
+        reduce(callbackfn: (previousValue: [string, string], currentValue: [string, string], currentIndex: number, array: [string, string][]) => [string, string]): [string, string];
+        reduce(callbackfn: (previousValue: [string, string], currentValue: [string, string], currentIndex: number, array: [string, string][]) => [string, string], initialValue: [string, string]): [string, string];
+        reduce<U_1>(callbackfn: (previousValue: U_1, currentValue: [string, string], currentIndex: number, array: [string, string][]) => U_1, initialValue: U_1): U_1;
+        reduceRight(callbackfn: (previousValue: [string, string], currentValue: [string, string], currentIndex: number, array: [string, string][]) => [string, string]): [string, string];
+        reduceRight(callbackfn: (previousValue: [string, string], currentValue: [string, string], currentIndex: number, array: [string, string][]) => [string, string], initialValue: [string, string]): [string, string];
+        reduceRight<U_2>(callbackfn: (previousValue: U_2, currentValue: [string, string], currentIndex: number, array: [string, string][]) => U_2, initialValue: U_2): U_2;
+        find<S_2 extends [string, string]>(predicate: (value: [string, string], index: number, obj: [string, string][]) => value is S_2, thisArg?: any): S_2 | undefined;
+        find(predicate: (value: [string, string], index: number, obj: [string, string][]) => unknown, thisArg?: any): [string, string] | undefined;
+        findIndex(predicate: (value: [string, string], index: number, obj: [string, string][]) => unknown, thisArg?: any): number;
+        fill(value: [string, string], start?: number | undefined, end?: number | undefined): [string, string][];
+        copyWithin(target: number, start: number, end?: number | undefined): [string, string][];
+        entries(): IterableIterator<[number, [string, string]]>;
+        keys(): IterableIterator<number>;
+        values(): IterableIterator<[string, string]>;
+        includes(searchElement: [string, string], fromIndex?: number | undefined): boolean;
+        flatMap<U_3, This = undefined>(callback: (this: This, value: [string, string], index: number, array: [string, string][]) => U_3 | readonly U_3[], thisArg?: This | undefined): U_3[];
+        flat<A, D extends number = 1>(this: A, depth?: D | undefined): FlatArray<A, D>[];
+        [Symbol.iterator](): IterableIterator<[string, string]>;
+        [Symbol.unscopables]: {
+            [x: number]: boolean | undefined;
+            length?: boolean | undefined;
+            toString?: boolean | undefined;
+            toLocaleString?: boolean | undefined;
+            pop?: boolean | undefined;
+            push?: boolean | undefined;
+            concat?: boolean | undefined;
+            join?: boolean | undefined;
+            reverse?: boolean | undefined;
+            shift?: boolean | undefined;
+            slice?: boolean | undefined;
+            sort?: boolean | undefined;
+            splice?: boolean | undefined;
+            unshift?: boolean | undefined;
+            indexOf?: boolean | undefined;
+            lastIndexOf?: boolean | undefined;
+            every?: boolean | undefined;
+            some?: boolean | undefined;
+            forEach?: boolean | undefined;
+            map?: boolean | undefined;
+            filter?: boolean | undefined;
+            reduce?: boolean | undefined;
+            reduceRight?: boolean | undefined;
+            find?: boolean | undefined;
+            findIndex?: boolean | undefined;
+            fill?: boolean | undefined;
+            copyWithin?: boolean | undefined;
+            entries?: boolean | undefined;
+            keys?: boolean | undefined;
+            values?: boolean | undefined;
+            includes?: boolean | undefined;
+            flatMap?: boolean | undefined;
+            flat?: boolean | undefined;
+            [Symbol.iterator]?: boolean | undefined;
+            readonly [Symbol.unscopables]?: boolean | undefined;
+            at?: boolean | undefined;
+        };
+        at(index: number): [string, string] | undefined;
+        'Content-Type': string;
+    } | {
+        'Content-Type': string;
+    } | {
+        append(name: string, value: string): void;
+        delete(name: string): void;
+        get(name: string): string | null;
+        getSetCookie(): string[];
+        has(name: string): boolean;
+        set(name: string, value: string): void;
+        forEach(callbackfn: (value: string, key: string, parent: Headers) => void, thisArg?: any): void;
+        'Content-Type': string;
+    };
+    method: string;
+    body: string;
+    cache?: RequestCache | undefined;
+    credentials?: RequestCredentials | undefined;
+    integrity?: string | undefined;
+    keepalive?: boolean | undefined;
+    mode?: RequestMode | undefined;
+    priority?: RequestPriority | undefined;
+    redirect?: RequestRedirect | undefined;
+    referrer?: string | undefined;
+    referrerPolicy?: ReferrerPolicy | undefined;
+    signal?: AbortSignal | null | undefined;
+    window?: null | undefined;
+};
 
 // (No @packageDocumentation comment for this package)
 

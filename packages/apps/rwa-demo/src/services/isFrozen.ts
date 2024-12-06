@@ -12,7 +12,7 @@ export const isFrozen = async (data: IIsFrozenProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.is-frozen (read-string 'investor))`)
+    .execution(`(RWA.${getAsset()}.address-frozen (read-string 'investor))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

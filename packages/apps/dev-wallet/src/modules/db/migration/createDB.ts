@@ -1,12 +1,57 @@
 import { createStore } from '../indexeddb';
 
-// create all objects stores for fresh start
-export function createTables(db: IDBDatabase) {
-  const create = createStore(db);
-  create('profile', 'uuid', [{ index: 'name', unique: true }]);
-  create('encryptedValue', 'uuid', [{ index: 'profileId' }]);
-  create('keySource', 'uuid', [{ index: 'profileId' }]);
-  create('account', 'uuid', [
+type TableName =
+  | 'profile'
+  | 'encryptedValue'
+  | 'keySource'
+  | 'account'
+  | 'watched-account'
+  | 'network'
+  | 'fungible'
+  | 'keyset'
+  | 'transaction'
+  | 'activity'
+  | 'contact'
+  | 'backup';
+
+export type ExtendedTableName =
+  | TableName
+  | `backup:${TableName}-v${number}:${number}`
+  | `temp:${TableName}-v${number}:${number}`;
+
+export interface TableScheme {
+  name: ExtendedTableName;
+  keyPath: string;
+  indexes?: {
+    index: string;
+    indexKeyPath?: string | string[];
+    unique?: boolean;
+  }[];
+}
+
+export const defineSchemeFactory = () => {
+  const dbScheme: {
+    [key: string]: TableScheme;
+  } = {};
+  return {
+    defineScheme: (
+      name: TableScheme['name'],
+      keyPath: TableScheme['keyPath'],
+      indexes?: TableScheme['indexes'],
+    ) => {
+      dbScheme[name] = { name, keyPath, indexes };
+      return dbScheme[name];
+    },
+    getScheme: () => dbScheme,
+  };
+};
+
+export function getDBScheme() {
+  const { defineScheme, getScheme } = defineSchemeFactory();
+  defineScheme('profile', 'uuid', [{ index: 'name', unique: true }]);
+  defineScheme('encryptedValue', 'uuid', [{ index: 'profileId' }]);
+  defineScheme('keySource', 'uuid', [{ index: 'profileId' }]);
+  defineScheme('account', 'uuid', [
     { index: 'address' },
     { index: 'keysetId' },
     { index: 'profileId' },
@@ -16,8 +61,13 @@ export function createTables(db: IDBDatabase) {
       indexKeyPath: ['keysetId', 'contract', 'networkUUID'],
       unique: true,
     },
+    {
+      index: 'unique-alias',
+      indexKeyPath: ['profileId', 'networkUUID', 'contract', 'alias'],
+      unique: true,
+    },
   ]);
-  create('watched-account', 'uuid', [
+  defineScheme('watched-account', 'uuid', [
     { index: 'address' },
     { index: 'profileId' },
     { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
@@ -27,9 +77,9 @@ export function createTables(db: IDBDatabase) {
       unique: true,
     },
   ]);
-  create('network', 'uuid', [{ index: 'networkId', unique: true }]);
-  create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
-  create('keyset', 'uuid', [
+  defineScheme('network', 'uuid', [{ index: 'networkId', unique: true }]);
+  defineScheme('fungible', 'contract', [{ index: 'symbol', unique: true }]);
+  defineScheme('keyset', 'uuid', [
     { index: 'profileId' },
     { index: 'principal' },
     {
@@ -38,7 +88,7 @@ export function createTables(db: IDBDatabase) {
       unique: true,
     },
   ]);
-  create('transaction', 'uuid', [
+  defineScheme('transaction', 'uuid', [
     { index: 'hash' },
     { index: 'profileId' },
     { index: 'groupId' },
@@ -53,10 +103,19 @@ export function createTables(db: IDBDatabase) {
       indexKeyPath: ['profileId', 'networkUUID', 'status'],
     },
   ]);
-  create('activity', 'uuid', [
+  defineScheme('activity', 'uuid', [
+    { index: 'profileId' },
     { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
     { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
   ]);
-  create('contact', 'uuid', [{ index: 'name', unique: true }]);
-  create('backup', 'uuid');
+  defineScheme('contact', 'uuid', [{ index: 'name', unique: true }]);
+  defineScheme('backup', 'uuid');
+  return getScheme();
+}
+
+// create all objects stores for fresh start
+export function createTables(db: IDBDatabase) {
+  const create = createStore(db);
+  const dbScheme = getDBScheme();
+  Object.values(dbScheme).map((tableScheme) => create(tableScheme));
 }

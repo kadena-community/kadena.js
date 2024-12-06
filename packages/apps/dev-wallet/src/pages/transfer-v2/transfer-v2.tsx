@@ -12,8 +12,9 @@ import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
@@ -33,7 +34,7 @@ export function TransferV2() {
     profile,
   } = useWallet();
 
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
   const urlActivityId = searchParams.get('activityId');
@@ -97,6 +98,7 @@ export function TransferV2() {
       network: activeNetwork!,
       profileId: profile.uuid,
       mapKeys,
+      creationTime: data.creationTime,
     });
   }
 
@@ -165,6 +167,7 @@ export function TransferV2() {
         gasPrice: +formData.gasPrice,
         network: activeNetwork!,
         mapKeys,
+        creationTime: formData.creationTime,
       });
     }
   }
@@ -179,6 +182,7 @@ export function TransferV2() {
       return (
         <ReviewTransaction
           transaction={selectedTx}
+          transactionStatus={selectedTx.status}
           onSign={async (sigs) => {
             const updated = {
               ...selectedTx,
@@ -258,7 +262,6 @@ export function TransferV2() {
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href="/transfer">
           Transfer
         </SideBarBreadcrumbsItem>
@@ -292,7 +295,12 @@ export function TransferV2() {
                     (acc) => acc.uuid === data.accountId,
                   );
                   if (!senderAccount?.keyset?.uuid) return;
-                  const formData = { ...data, senderAccount };
+                  const formData = {
+                    ...data,
+                    senderAccount,
+                    creationTime:
+                      data.creationTime ?? Math.round(Date.now() / 1000),
+                  };
                   const getEmpty = () => ['', []] as [string, ITransaction[]];
                   let redistributionGroup = getEmpty();
 

@@ -11,6 +11,7 @@ import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { getBalanceFromChain } from '../utils/balance';
 import type { FormData } from './sign-form';
 import { defaultValues } from './sign-form';
 
@@ -59,7 +60,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
           senderAccountChains.data.map((item) => ({
             chainId: item.chainId,
             data: item.data
-              ? `${item.data.balance.toFixed(4)} KDA`
+              ? `${getBalanceFromChain(item.data.balance).toFixed(4)} KDA`
               : NON_EXISTING_ACCOUNT_ON_CHAIN,
           })),
         );
@@ -72,10 +73,13 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
   const watchAmount = watch('amount');
 
   const invalidAmount =
-    senderDataQuery.data && senderDataQuery.data.balance < watchAmount;
+    senderDataQuery.data &&
+    getBalanceFromChain(senderDataQuery.data.balance) <= watchAmount;
 
   const invalidAmountMessage = senderDataQuery.data
-    ? `Cannot send more than ${senderDataQuery.data.balance.toFixed(4)} KDA.`
+    ? `Cannot send more than ${getBalanceFromChain(
+        senderDataQuery.data.balance,
+      ).toFixed(4)} KDA.`
     : '';
 
   if (isLedger && !isConnected) {
@@ -145,7 +149,9 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
         {senderDataQuery.isFetching ? (
           <Text>{t('fetching-data')}</Text>
         ) : senderDataQuery.data ? (
-          <Text>{senderDataQuery.data?.balance.toFixed(4)} KDA</Text>
+          <Text>
+            {getBalanceFromChain(senderDataQuery.data?.balance).toFixed(4)} KDA
+          </Text>
         ) : (
           <Text>{t('No funds on selected chain.')}</Text>
         )}

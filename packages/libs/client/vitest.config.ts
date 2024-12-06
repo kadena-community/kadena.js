@@ -11,6 +11,7 @@ const localConfig = defineConfig({
         'src/interfaces/IPactCommand.ts',
         'src/interfaces/ISigningRequest.ts',
         'src/interfaces/type-utilities.ts',
+        'src/signing/eckoWallet/eckoTypes.ts',
       ],
       provider: 'v8',
       thresholds: {

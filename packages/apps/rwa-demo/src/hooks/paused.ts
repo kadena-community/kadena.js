@@ -46,7 +46,7 @@ export const usePaused = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [account]);
+  }, [account?.address]);
 
   useEffect(() => {
     if (!unpausedData?.events?.length) return;

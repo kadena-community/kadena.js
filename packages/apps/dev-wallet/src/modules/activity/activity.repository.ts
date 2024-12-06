@@ -1,4 +1,4 @@
-import { IReceiverAccount } from '@/pages/transfer/utils';
+import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import { ChainId } from '@kadena/client';
 import { dbService, IDBService } from '../db/db.service';
 import { UUID } from '../types';
@@ -18,7 +18,8 @@ export interface TransferData {
   gasPrice: string;
   gasLimit: string;
   type: 'safeTransfer' | 'normalTransfer';
-  ttl: string;
+  ttl: number;
+  creationTime?: number;
 }
 
 export interface IActivity {

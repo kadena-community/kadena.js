@@ -1,76 +1,77 @@
 import { Keyset } from '@/pages/transfer-v2/Components/keyset';
-import { discoverReceiver } from '@/pages/transfer-v2/utils';
-import { DiscoverdAccounts } from '@/pages/transfer/components/DiscoverdAccounts';
-import { IReceiverAccount } from '@/pages/transfer/utils';
+import { discoverReceiver, IReceiverAccount } from '@/pages/transfer-v2/utils';
+
 import {
   MonoAccountBalanceWallet,
   MonoLoading,
 } from '@kadena/kode-icons/system';
 import { Button, Notification, Stack, TextField } from '@kadena/kode-ui';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { KeySetDialog } from '../KeysetDialog/KeySetDialog';
+import { DiscoverdAccounts } from './DiscoverdAccounts';
 
 export function AccountInput({
   networkId,
   contract,
   onAccount,
   account,
+  address,
+  setAddress,
 }: {
   networkId: string;
   contract: string;
-  account?: IReceiverAccount;
-  onAccount: (account: IReceiverAccount) => void;
+  account: IReceiverAccount | undefined;
+  address: string;
+  setAddress: (address: string) => void;
+  onAccount: (account?: IReceiverAccount) => void;
 }) {
-  const [address, setAddress] = useState(account?.address || '');
+  console.log('AccountInput', account);
   const [discoveredAccounts, setDiscoveredAccounts] = useState<
-    IReceiverAccount[]
-  >([]);
+    IReceiverAccount[] | undefined
+  >(undefined);
   const [needToAddKeys, setNeedToAddKeys] = useState(false);
   const [showKeysetDialog, setShowKeysetDialog] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [discovering, setDiscovering] = useState(false);
-  const selectedAccount =
-    discoveredAccounts.length === 1 ? discoveredAccounts[0] : undefined;
-
-  useEffect(() => {
-    if (account?.address) {
-      setAddress(account.address);
-      handleDiscover(account.address);
-    }
-  }, [account?.address]);
+  const [discovering, setDiscovering] = useState<string | undefined>(undefined);
 
   const handleDiscover = async (addressArg?: string) => {
+    console.log('handleDiscover', addressArg, discovering);
     const innerAddress = typeof addressArg === 'string' ? addressArg : address;
     try {
-      if (!innerAddress) {
+      if (
+        !innerAddress ||
+        innerAddress === discovering ||
+        innerAddress === account?.address
+      ) {
         return;
       }
-      setDiscovering(true);
+      setDiscovering(innerAddress);
       setNeedToAddKeys(false);
+      setDiscoveredAccounts(undefined);
+      onAccount(undefined);
       const accounts = await discoverReceiver(
         innerAddress,
         networkId,
         contract,
         (key) => key,
       );
-      setDiscovering(false);
+      if (accounts.length === 1) {
+        onAccount(accounts[0]);
+      }
       if (accounts.length > 1) {
         setDiscoveredAccounts(accounts);
-        return;
       }
       if (accounts.length === 0) {
         setNeedToAddKeys(true);
-        return;
       }
-      setDiscoveredAccounts(accounts);
-      onAccount(accounts[0]);
+      setDiscovering(undefined);
     } catch (e: any) {
       setError(e && e.message ? e : JSON.stringify(e));
     }
   };
 
   return (
-    <Stack flexDirection={'column'}>
+    <Stack flexDirection={'column'} gap={'md'}>
       {showKeysetDialog && (
         <KeySetDialog
           close={() => setShowKeysetDialog(false)}
@@ -78,49 +79,54 @@ export function AccountInput({
             setShowKeysetDialog(false);
             setNeedToAddKeys(false);
             const account: IReceiverAccount = {
-              address,
+              address: address,
               keyset: { guard },
               chains: [],
               overallBalance: '0.0',
             };
-            setDiscoveredAccounts([account]);
             onAccount(account);
           }}
           isOpen
         />
       )}
-      {discoveredAccounts.length >= 2 && (
-        <DiscoverdAccounts
-          accounts={discoveredAccounts}
-          onSelect={(account: IReceiverAccount) => {
-            setDiscoveredAccounts([account]);
-            onAccount(account);
+      <Stack flexDirection={'column'}>
+        <TextField
+          aria-label="Account"
+          key={'account-input'}
+          startVisual={
+            <Stack gap={'sm'}>
+              <MonoAccountBalanceWallet />
+            </Stack>
+          }
+          description={
+            discovering ? (
+              <Stack>
+                <MonoLoading /> Discovering...
+              </Stack>
+            ) : (
+              error?.message
+            )
+          }
+          value={address}
+          onChange={(e) => {
+            const newAddress = e.target.value;
+            setAddress(newAddress);
+            if (account && newAddress !== account?.address) {
+              onAccount(undefined);
+            }
+          }}
+          autoFocus={false}
+          onFocusChange={(isFocused) => {
+            if (!isFocused && !account) {
+              console.log('onBlur called', address);
+              handleDiscover(address);
+            }
           }}
         />
-      )}
-      <TextField
-        aria-label="Account"
-        startVisual={
-          <Stack gap={'sm'}>
-            <MonoAccountBalanceWallet />
-          </Stack>
-        }
-        description={
-          discovering ? (
-            <Stack>
-              <MonoLoading /> Discovering...
-            </Stack>
-          ) : (
-            error?.message
-          )
-        }
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        onBlur={() => handleDiscover()}
-      />
-      {selectedAccount && selectedAccount.keyset.guard && (
-        <Keyset guard={selectedAccount.keyset.guard} />
-      )}
+        {account && account.keyset.guard && (
+          <Keyset guard={account.keyset.guard} />
+        )}
+      </Stack>
       {needToAddKeys && (
         <Notification role="status" intent="info">
           The address is not recognized. Please add the public key to the
@@ -135,6 +141,17 @@ export function AccountInput({
             </Button>
           </Stack>
         </Notification>
+      )}
+      {discoveredAccounts && discoveredAccounts.length >= 2 && (
+        <DiscoverdAccounts
+          accounts={discoveredAccounts}
+          onSelect={(account: IReceiverAccount) => {
+            setDiscoveredAccounts(undefined);
+            onAccount(account);
+          }}
+          onClosed={() => setDiscoveredAccounts(undefined)}
+          inline
+        />
       )}
     </Stack>
   );

@@ -1,16 +1,10 @@
+import { TableScheme } from './migration/createDB';
+
 const CREATION_TIME_KEY = 'creationTime';
 
 export const createStore =
   (db: IDBDatabase) =>
-  (
-    name: string,
-    keyPath?: string,
-    indexes?: Array<{
-      index: string;
-      indexKeyPath?: string | string[];
-      unique?: boolean;
-    }>,
-  ) => {
+  ({ name, keyPath, indexes }: TableScheme) => {
     if (!db.objectStoreNames.contains(name)) {
       const store = db.createObjectStore(
         name,
@@ -212,10 +206,11 @@ export const addItem =
   };
 
 export const deleteItem =
-  (db: IDBDatabase) => (storeName: string, key: string) => {
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
+  (storeName: string, key: string) => {
     return new Promise<void>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readwrite');
-      const store = transaction.objectStore(storeName);
+      const tx = transaction ?? db.transaction(storeName, 'readwrite');
+      const store = tx.objectStore(storeName);
       const request = store.delete(key);
       request.onerror = () => {
         reject(request.error);

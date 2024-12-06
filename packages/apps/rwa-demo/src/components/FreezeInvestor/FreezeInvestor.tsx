@@ -1,6 +1,7 @@
 import { useFreeze } from '@/hooks/freeze';
 import { useFreezeInvestor } from '@/hooks/freezeInvestor';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
+import type { IButtonProps } from '@kadena/kode-ui';
 import { Button } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +10,9 @@ import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPen
 
 interface IProps {
   investorAccount: string;
+  isCompact?: IButtonProps['isCompact'];
+  variant?: IButtonProps['variant'];
+  iconOnly?: boolean;
 }
 
 const getVisual = (frozen: boolean, isLoading: boolean) => {
@@ -18,7 +22,12 @@ const getVisual = (frozen: boolean, isLoading: boolean) => {
   return frozen ? <MonoPause /> : <MonoPlayArrow />;
 };
 
-export const FreezeInvestor: FC<IProps> = ({ investorAccount }) => {
+export const FreezeInvestor: FC<IProps> = ({
+  investorAccount,
+  iconOnly,
+  isCompact,
+  variant,
+}) => {
   const { frozen } = useFreeze({ investorAccount });
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { submit } = useFreezeInvestor();
@@ -42,12 +51,18 @@ export const FreezeInvestor: FC<IProps> = ({ investorAccount }) => {
     setIsLoading(false);
   }, [frozen]);
 
+  const label = iconOnly ? '' : frozen ? 'Unfreeze account' : 'Freeze account';
+
   return (
     <SendTransactionAnimation
       onPress={handleFreeze}
       trigger={
-        <Button startVisual={getVisual(frozen, isLoading)}>
-          {frozen ? 'Unfreeze account' : 'Freeze account'}
+        <Button
+          startVisual={getVisual(frozen, isLoading)}
+          isCompact={isCompact}
+          variant={variant}
+        >
+          {label}
         </Button>
       }
     ></SendTransactionAnimation>

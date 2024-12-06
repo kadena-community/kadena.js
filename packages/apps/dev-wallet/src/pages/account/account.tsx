@@ -15,6 +15,7 @@ import {
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
 import {
   MonoCreate,
@@ -25,7 +26,7 @@ import {
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
 import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
@@ -44,7 +45,7 @@ export function AccountPage() {
     accounts.find((account) => account.uuid === accountId) ??
     watchAccounts.find((account) => account.uuid === accountId);
 
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
 
   useEffect(() => {
     if (account) {
@@ -110,9 +111,14 @@ export function AccountPage() {
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
       <SideBarBreadcrumbs icon={<MonoWallet />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/">Your Assets</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href="/">
+          {account.contract}
+        </SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href={`/account/${accountId}`}>
-          Account ({account.alias || account.address})
+          {account.alias
+            ? `${account.alias} (${account.address})`
+            : account.address}
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       <AliasForm show={isRightAsideExpanded} account={account} />

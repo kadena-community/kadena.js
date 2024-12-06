@@ -14,15 +14,37 @@ type CommandJson = Array<
   | undefined
 >;
 
+type CommandJsonNew = Array<string | null | undefined>;
+
 const sigScheme = (
-  sigs: SigData | CommandSigData | CommandJson,
-): 'SigData' | 'CommandSigData' | 'CommandJson' | 'unknown' => {
+  sigs: SigData | CommandSigData | CommandJson | CommandJsonNew,
+):
+  | 'SigData'
+  | 'CommandSigData'
+  | 'CommandJson'
+  | 'CommandJsonNew'
+  | 'unknown' => {
   if (Array.isArray(sigs)) {
-    if (sigs.every((item) => item && 'pubKey' in item)) {
+    if (
+      sigs.every((item) => item && typeof item === 'object' && 'pubKey' in item)
+    ) {
       return 'CommandSigData';
     }
     if (
-      sigs.every((item) => item === null || item === undefined || 'sig' in item)
+      sigs.every(
+        (item) =>
+          item === null || item === undefined || typeof item === 'string',
+      )
+    ) {
+      return 'CommandJsonNew';
+    }
+    if (
+      sigs.every(
+        (item) =>
+          item === null ||
+          item === undefined ||
+          (typeof item === 'object' && 'sig' in item),
+      )
     ) {
       return 'CommandJson';
     }
@@ -54,6 +76,14 @@ export function normalizeSigs(
     const normalizedSigs = cmd.signers.map(({ pubKey }) => {
       const item = sigs.find((s) => s.pubKey === pubKey);
       return item && item.sig ? { sig: item.sig, pubKey } : { pubKey };
+    });
+    return normalizedSigs;
+  }
+  if (scheme === 'CommandJsonNew') {
+    const sigs = tx.sigs as unknown as CommandJsonNew;
+    const normalizedSigs = cmd.signers.map(({ pubKey }, index) => {
+      const item = sigs[index];
+      return item ? { sig: item, pubKey } : { pubKey };
     });
     return normalizedSigs;
   }

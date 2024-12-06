@@ -41,4 +41,40 @@ describe('retry', () => {
 
     await expect(promise).rejects.toEqual(new Error('TIME_OUT_REJECT'));
   });
+
+  it('it should abort the process if abortSignal is called', async () => {
+    const abortController = new AbortController();
+    const task = vi.fn(
+      withCounter((idx) => {
+        if (idx === 2) {
+          abortController.abort();
+          return Promise.resolve(true);
+        }
+        return Promise.reject(new Error('its not ready'));
+      }),
+    );
+    const runTask = retry(task, abortController.signal);
+
+    const promise = runTask({ interval: 10, timeout: 200 });
+
+    await expect(promise).rejects.toEqual(new Error('ABORTED'));
+  });
+
+  it('it should abort the process if abortSignal is alredy aborted', async () => {
+    const abortController = new AbortController();
+    abortController.abort();
+    const task = vi.fn(
+      withCounter((idx) => {
+        if (idx === 2) {
+          return Promise.resolve(true);
+        }
+        return Promise.reject(new Error('its not ready'));
+      }),
+    );
+    const runTask = retry(task, abortController.signal);
+
+    const promise = runTask({ interval: 10, timeout: 200 });
+
+    await expect(promise).rejects.toEqual(new Error('ABORTED'));
+  });
 });

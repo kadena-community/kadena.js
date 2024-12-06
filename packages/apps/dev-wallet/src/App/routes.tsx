@@ -1,12 +1,12 @@
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import {
+  createBrowserRouter,
+  createMemoryRouter,
+  createRoutesFromElements,
   Navigate,
   Outlet,
   Route,
   RouterProvider,
-  createBrowserRouter,
-  createMemoryRouter,
-  createRoutesFromElements,
   useLocation,
 } from 'react-router-dom';
 
@@ -39,8 +39,8 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { Layout } from './Layout/Layout';
 import { LayoutMini } from './layout-mini';
+import { Layout } from './Layout/Layout';
 
 const Redirect: FC<
   PropsWithChildren<{

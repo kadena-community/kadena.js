@@ -23,7 +23,7 @@ export const useSetCompliance = () => {
 
       return addTransaction({
         ...res,
-        type: 'SETCOMPLIANCE',
+        type: 'SETMAXBALANCE',
       });
     } catch (e: any) {
       addNotification({

@@ -6,6 +6,7 @@ import { dbService } from '@/modules/db/db.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import InitialsAvatar from '@/pages/select-profile/initials';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoConstruction, MonoDoDisturb } from '@kadena/kode-icons/system';
 import {
   Box,
@@ -22,7 +23,6 @@ import {
   CardFooterGroup,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export interface IV3Backup {
   scheme: 'v3';
@@ -37,7 +37,7 @@ export function RecoveredV3({
   cancel: () => void;
 }) {
   const [error, setError] = useState<string | undefined>();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
   const prompt = usePrompt();
   const { profileList: walletProfiles } = useWallet();
   const [bypassAvailableCheck, setBypassAvailableCheck] = useState(false);

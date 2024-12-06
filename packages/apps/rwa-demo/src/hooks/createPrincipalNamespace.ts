@@ -15,15 +15,11 @@ export const useCreatePrincipalNamespace = () => {
     try {
       const tx = await createPrincipalNamespace({ owner: account! });
 
-      console.log({ tx, cmd: JSON.parse(tx.cmd) });
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
-
-      console.log(res);
 
       const data = await client.listen(res);
 

@@ -40,9 +40,7 @@ const Assets = () => {
           }}
         >
           <RightAsideHeader label="Assets" />
-          <RightAsideContent>
-            <AssetForm />
-          </RightAsideContent>
+          <RightAsideContent></RightAsideContent>
         </RightAside>
       )}
       <SectionCard stack="vertical">
@@ -51,17 +49,13 @@ const Assets = () => {
             title="Assts"
             description={<>List of all your selected contracts</>}
             actions={
-              <Button
-                onPress={() => {
-                  setIsRightAsideExpanded(true);
-                  setOpenSide(true);
-                }}
-                variant="outlined"
-                isCompact
-                endVisual={<MonoAdd />}
-              >
-                Add Asset
-              </Button>
+              <AssetForm
+                trigger={
+                  <Button variant="outlined" isCompact endVisual={<MonoAdd />}>
+                    Add Asset
+                  </Button>
+                }
+              />
             }
           />
           <SectionCardBody>
@@ -89,7 +83,13 @@ const Assets = () => {
                     trigger: (
                       <Confirmation
                         onPress={handleDelete}
-                        trigger={<Button startVisual={<MonoDelete />} />}
+                        trigger={
+                          <Button
+                            isCompact
+                            variant="outlined"
+                            startVisual={<MonoDelete />}
+                          />
+                        }
                       >
                         Are you sure you want to remove this asset?
                       </Confirmation>

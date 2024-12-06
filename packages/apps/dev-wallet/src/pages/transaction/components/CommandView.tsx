@@ -1,6 +1,6 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
-import { shorten } from '@/utils/helpers';
+import { shorten, toISOLocalDateTime } from '@/utils/helpers';
 import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
 import { MonoTextSnippet } from '@kadena/kode-icons/system';
@@ -114,16 +114,16 @@ export function CommandView({
             <Label>Creation time</Label>
             <Value>
               {command.meta.creationTime} (
-              {new Date(command.meta.creationTime! * 1000).toLocaleString()})
+              {toISOLocalDateTime(command.meta.creationTime! * 1000)})
             </Value>
           </Stack>
           <Stack gap={'sm'}>
             <Label>TTL</Label>
             <Value>
               {command.meta.ttl} (
-              {new Date(
+              {toISOLocalDateTime(
                 (command.meta.ttl! + command.meta.creationTime!) * 1000,
-              ).toLocaleString()}
+              )}
               )
             </Value>
           </Stack>
@@ -154,7 +154,11 @@ export function CommandView({
           </Stack>
         </Stack>
       </Stack>
-      <Signers transaction={transaction} onSign={onSign} />
+      <Signers
+        transaction={transaction}
+        transactionStatus={transaction.status}
+        onSign={onSign}
+      />
     </Stack>
   );
 }

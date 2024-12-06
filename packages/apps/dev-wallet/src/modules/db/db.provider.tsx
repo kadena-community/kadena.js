@@ -1,10 +1,10 @@
 import { BootContent } from '@/Components/BootContent/BootContent';
 import { sleep } from '@/utils/helpers';
 import { Stack, Text } from '@kadena/kode-ui';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { addDefaultFungibles } from '../account/account.repository';
 import { addDefaultNetworks } from '../network/network.repository';
-import { closeDatabaseConnections, setupDatabase } from './db.service';
+import { setupDatabase } from './db.service';
 
 const renderDefaultError = ({ message }: Error) => (
   <Stack
@@ -28,10 +28,13 @@ export const DatabaseProvider: FC<{
   fallback = <Text>initializing database ...</Text>,
   renderError = renderDefaultError,
 }) => {
+  const setupRef = useRef(false);
   const [initialized, setInitialized] = useState(false);
   const [errorObject, setErrorObject] = useState<Error>();
 
   useEffect(() => {
+    if (setupRef.current) return;
+    setupRef.current = true;
     const setupDataBase = async () => {
       console.log('setting up database');
       const db = await setupDatabase();
@@ -47,26 +50,10 @@ export const DatabaseProvider: FC<{
       }
     };
 
-    const closeConnectionsCallback = () => {
-      if (document.hidden) {
-        // close all connections when app is hidden; since open connections will block other tabs from accessing the database
-        closeDatabaseConnections();
-      }
-    };
-
-    document.addEventListener('visibilitychange', closeConnectionsCallback);
-
     setupDataBase().catch((e) => {
       console.log(e);
       setErrorObject(e);
     });
-
-    return () => {
-      document.removeEventListener(
-        'visibilitychange',
-        closeConnectionsCallback,
-      );
-    };
   }, []);
 
   if (errorObject) {

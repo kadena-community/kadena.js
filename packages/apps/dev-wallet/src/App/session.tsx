@@ -25,8 +25,10 @@ export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
   const [loaded, setLoaded] = useState(false);
   useLayoutEffect(() => {
     const events = ['visibilitychange', 'touchstart', 'keydown', 'click'];
+    let removeListener = () => {};
     const run = async () => {
       await Session.load();
+      removeListener = Session.ListenToExternalChanges();
       // console.log('Session is loaded', Session.get('profileId'));
       events.forEach((event) => {
         document.addEventListener(event, Session.renew);
@@ -39,6 +41,7 @@ export const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
       events.forEach((event) => {
         document.removeEventListener(event, Session.renew);
       });
+      removeListener();
     };
   }, []);
 

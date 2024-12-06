@@ -8,7 +8,6 @@ export interface IIsOwnerProps {
 
 export const isOwner = async (data: IIsOwnerProps) => {
   const client = getClient();
-  console.log({ data });
 
   const transaction = Pact.builder
     .execution(`(RWA.${getAsset()}.is-owner (read-string 'owner))`)

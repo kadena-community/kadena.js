@@ -138,6 +138,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
       network: activeNetwork!,
       redistribution,
       mapKeys,
+      creationTime: Math.round(Date.now() / 1000),
     });
 
     onRedistribution(groupId);

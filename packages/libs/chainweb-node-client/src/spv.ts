@@ -1,4 +1,5 @@
 import type { ISPVRequestBody, SPVResponse } from './interfaces/PactAPI';
+import type { ClientRequestInit } from './local';
 import { parseResponseTEXT } from './parseResponseTEXT';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import { fetch } from './utils/fetch';
@@ -14,8 +15,9 @@ import { fetch } from './utils/fetch';
 export async function spv(
   requestBody: ISPVRequestBody,
   apiHost: string,
+  requestInit?: ClientRequestInit,
 ): Promise<SPVResponse | Response> {
-  const request = stringifyAndMakePOSTRequest(requestBody);
+  const request = stringifyAndMakePOSTRequest(requestBody, requestInit);
   const spvUrl = new URL(`${apiHost}/spv`);
 
   const response = await fetch(spvUrl.toString(), request);

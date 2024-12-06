@@ -5,7 +5,7 @@ import {
 } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
-import { IReceiverAccount } from '@/pages/transfer/utils';
+import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -35,6 +35,7 @@ export function ContactForm({
 }) {
   const { activeNetwork } = useWallet();
   const [error, setError] = useState<string | null>(null);
+  const [address, setAddress] = useState<string>(input?.account.address ?? '');
   const {
     register,
     control,
@@ -51,7 +52,7 @@ export function ContactForm({
   });
 
   useEffect(() => {
-    reset({ ...input, discoverdAccount: { address: input?.account.address } });
+    reset({ ...input, discoverdAccount: undefined });
   }, [input, reset]);
 
   const createContact = async ({
@@ -129,6 +130,8 @@ export function ContactForm({
                   return (
                     <Stack flexDirection={'column'} gap={'sm'}>
                       <AccountInput
+                        address={address}
+                        setAddress={setAddress}
                         account={field.value}
                         networkId={activeNetwork.networkId}
                         contract={'coin'}

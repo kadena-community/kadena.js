@@ -15,7 +15,8 @@ import {
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { FC, useMemo } from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { SideBar } from './SideBar';
 import {
   isExpandedMainClass,
@@ -26,7 +27,7 @@ import {
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
   const { isExpanded } = useLayout();
 
   const innerLocation = useMemo(
