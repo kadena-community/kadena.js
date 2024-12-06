@@ -1,4 +1,4 @@
-import { walletSdk } from '@kadena/wallet-sdk';
+import { ICrossChainTransfer, walletSdk } from '@kadena/wallet-sdk';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { usePendingTransfers } from '../state/pending';
@@ -55,7 +55,7 @@ export const useTransfers = () => {
 
     const crossChainTransfers = transfers.filter(
       (transfer) => transfer.isCrossChainTransfer,
-    );
+    ) as ICrossChainTransfer[];
     const incompleteTransfers = crossChainTransfers.filter(
       (transfer) => !transfer.continuation,
     );
