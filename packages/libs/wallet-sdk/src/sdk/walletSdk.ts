@@ -48,6 +48,9 @@ import type { ResponseResult } from './schema.js';
 import type { ICreateSimpleTransferInput } from './simpleTransferCreate.js';
 import { simpleTransferCreateCommand } from './simpleTransferCreate.js';
 
+/**
+ * @public
+ */
 export class WalletSDK {
   private _chainwebHostGenerator: ChainwebHostGenerator;
   private _graphqlHostGenerator: GraphqlHostGenerator;
@@ -393,4 +396,7 @@ export class WalletSDK {
   }
 }
 
+/**
+ * @public
+ */
 export const walletSdk = new WalletSDK();

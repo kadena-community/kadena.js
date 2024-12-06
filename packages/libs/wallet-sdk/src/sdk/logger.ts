@@ -4,6 +4,10 @@ interface ILogObject {
   data?: Record<string, unknown>;
   timestamp: number;
 }
+
+/**
+ * @public
+ */
 export type ILogTransport = (log: ILogObject) => void;
 
 const LOG_LEVELS = {
@@ -13,6 +17,9 @@ const LOG_LEVELS = {
   ERROR: 3,
 };
 
+/**
+ * @public
+ */
 export type LogLevel = keyof typeof LOG_LEVELS;
 
 export class Logger {

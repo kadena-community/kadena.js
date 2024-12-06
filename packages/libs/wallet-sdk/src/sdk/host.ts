@@ -1,8 +1,14 @@
+/**
+ * @public
+ */
 export type ChainwebHostGenerator = (options: {
   networkId: string;
   chainId: string;
 }) => string;
 
+/**
+ * @public
+ */
 export type GraphqlHostGenerator = (options: { networkId: string }) => string;
 
 const chainwebHostMap: Record<string, string | string[]> = {

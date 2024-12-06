@@ -36,6 +36,9 @@ interface ISameChainTransfer extends IBaseTransfer {
   isCrossChainTransfer: false;
 }
 
+/**
+ * @public
+ */
 export interface ICrossChainTransfer extends IBaseTransfer {
   isCrossChainTransfer: true;
   targetChainId: ChainId;
@@ -45,6 +48,9 @@ export interface ICrossChainTransfer extends IBaseTransfer {
   };
 }
 
+/**
+ * @public
+ */
 export interface IEthvmDevTokenInfo {
   currentPrice?: number;
   maxSupply?: number;
@@ -54,12 +60,22 @@ export interface IEthvmDevTokenInfo {
   high24h?: number;
 }
 
+/**
+ * @public
+ */
 export interface IChain {
   id: ChainId;
   // Will add later: type: 'pact' | 'evm'
 }
+
+/**
+ * @public
+ */
 export type ITransfer = ISameChainTransfer | ICrossChainTransfer;
 
+/**
+ * @public
+ */
 export interface ITransferOptions {
   accountName: string;
   networkId: string;
@@ -71,6 +87,9 @@ export interface ITransferOptions {
   last?: number;
 }
 
+/**
+ * @public
+ */
 export interface ITransferResponse {
   transfers: ITransfer[];
   pageInfo: {
@@ -81,14 +100,29 @@ export interface ITransferResponse {
   };
 }
 
+/**
+ * @public
+ */
 export type ICreateTransfer = Parameters<typeof transferCreateCommand>[0];
+
+/**
+ * @public
+ */
 export type ICreateCrossChainTransfer = Parameters<
   typeof createCrossChainCommand
 >[0];
+
+/**
+ * @public
+ */
 export interface IAccountDetails {
   chainId: string;
   accountDetails: IAccountDetailsResult | null;
 }
+
+/**
+ * @public
+ */
 export interface IAccountDetailsResult {
   guard: IGuard;
   account: string;
@@ -99,21 +133,38 @@ export interface IAccountDetailsResult {
       };
 }
 
+/**
+ * @public
+ */
 export interface IGuard {
   keys: string[];
   pred: string;
 }
+/**
+ * @public
+ */
 export interface ITransaction {
   requestKey: string;
   chainId: ChainId;
 }
+
+/**
+ * @public
+ */
 export type RequestKey = string;
+
+/**
+ * @public
+ */
 export interface ITransactionDescriptor {
   requestKey: string;
   chainId: ChainId;
   networkId: string;
 }
 
+/**
+ * @public
+ */
 export interface INetworkInfo {
   nodeApiVersion: string;
   nodeBlockDelay: number;
@@ -128,6 +179,12 @@ export interface INetworkInfo {
   nodeVersion: string;
 }
 
+/**
+ * @public
+ */
 export type INodeChainInfo = Pick<INetworkInfo, 'nodeChains' | 'nodeVersion'>;
 
+/**
+ * @public
+ */
 export type INodeNetworkInfo = Omit<INetworkInfo, 'nodeChains'>;
