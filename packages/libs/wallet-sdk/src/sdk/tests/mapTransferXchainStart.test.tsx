@@ -254,7 +254,7 @@ describe('getTransfers', () => {
         networkId: 'testnet04',
         block: {
           creationTime: new Date('2024-09-12T10:00:58.767Z'),
-          blockDepthEstimate: 0,
+          blockDepthEstimate: -4638181,
           hash: 'PSjGxqGz-R9oM06MxXZKTKhNT79DlzZSCwE7842y20E',
           height: 4638178,
         },
@@ -265,7 +265,7 @@ describe('getTransfers', () => {
         transactionFeeTransfer: {
           amount: 0.00000619,
           block: {
-            blockDepthEstimate: 0,
+            blockDepthEstimate: -4638181,
             creationTime: new Date('2024-09-12T10:00:58.767Z'),
             hash: 'PSjGxqGz-R9oM06MxXZKTKhNT79DlzZSCwE7842y20E',
             height: 4638178,

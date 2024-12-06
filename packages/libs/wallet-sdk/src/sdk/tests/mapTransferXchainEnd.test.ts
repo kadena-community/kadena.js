@@ -167,7 +167,7 @@ describe('getTransfers', () => {
         networkId: 'testnet04',
         block: {
           creationTime: new Date('2024-09-12T10:09:18.577Z'),
-          blockDepthEstimate: 0,
+          blockDepthEstimate: -4638197,
           hash: 'i4jeD4i8SFI6STZBMoh5p2mYBwFOlnaJBB-HzYCHZLE',
           height: 4638194,
         },

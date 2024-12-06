@@ -294,15 +294,16 @@ export function parseGqlTransfers(
             fungibleName,
           )
         : null;
-      return {
-        ...base,
-        transactionFeeTransfer: transactionFeeBase
-          ? {
-              ...transactionFeeBase,
-              isBulkTransfer: transfers.length > 1,
-            }
-          : undefined,
-      } as ITransfer;
+      if (transactionFeeBase) {
+        return {
+          ...base,
+          transactionFeeTransfer: {
+            ...transactionFeeBase,
+            isBulkTransfer: transfers.length > 1,
+          },
+        } as ITransfer;
+      }
+      return base;
     });
   });
 
