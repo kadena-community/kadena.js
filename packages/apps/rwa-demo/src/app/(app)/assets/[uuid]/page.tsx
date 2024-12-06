@@ -1,5 +1,5 @@
 'use client';
-import { IWalletAccount } from '@/components/AccountProvider/utils';
+import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';

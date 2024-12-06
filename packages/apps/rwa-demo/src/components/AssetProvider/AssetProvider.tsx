@@ -3,7 +3,6 @@ import {
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
-import { useAccount } from '@/hooks/account';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
 import type { IGetAssetMaxSupplyBalanceResult } from '@/services/getAssetMaxSupplyBalance';
@@ -15,7 +14,7 @@ import { useRouter } from 'next/navigation';
 
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
-import { IWalletAccount } from '../AccountProvider/utils';
+import type { IWalletAccount } from '../AccountProvider/utils';
 
 export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;
@@ -42,7 +41,6 @@ export const AssetContext = createContext<IAssetContext>({
 });
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { account } = useAccount();
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [asset, setAsset] = useState<IAsset>();
@@ -84,8 +82,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const supplyResult = (await supplyService({
       account: account!,
     })) as number;
-
-    console.log({ account, supplyResult });
 
     if (!data) return;
     return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };

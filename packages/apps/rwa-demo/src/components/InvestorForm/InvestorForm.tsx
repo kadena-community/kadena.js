@@ -10,7 +10,7 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
-import { cloneElement, useEffect, useState } from 'react';
+import { cloneElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
