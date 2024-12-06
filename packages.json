@@ -262,5 +262,11 @@
     "version": "0.0.2",
     "private": true,
     "path": "packages/e2e/e2e-tools"
+  },
+  {
+    "name": "wallet-sdk-example-app",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/wallet-sdk-example"
   }
 ]
