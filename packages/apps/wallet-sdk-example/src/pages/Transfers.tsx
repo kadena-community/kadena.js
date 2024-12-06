@@ -63,7 +63,11 @@ export const Transfers = () => {
                         {transfer.requestKey}
                       </TextEllipsis>
                     </Cell>
-                    <Cell>{transfer.chainId}</Cell>
+                    <Cell>
+                      {transfer.toChain
+                        ? `${transfer.chainId} → ${transfer.toChain}`
+                        : transfer.chainId}
+                    </Cell>
                     <Cell>
                       <TextEllipsis maxLength={15} withCopyButton>
                         {transfer.senderAccount}

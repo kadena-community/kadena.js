@@ -1,4 +1,4 @@
-import { ITransactionDescriptor } from '@kadena/client';
+import { ChainId, ITransactionDescriptor } from '@kadena/client';
 import { useAtom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { useCallback } from 'react';
@@ -7,6 +7,7 @@ export type PendingTransfer = ITransactionDescriptor & {
   receiverAccount: string;
   senderAccount: string;
   amount: string;
+  toChain?: ChainId;
 };
 
 export const pendingTransfersAtom = atomWithStorage<PendingTransfer[]>(

@@ -127,6 +127,8 @@ export const Transfer = () => {
     let transaction: IUnsignedCommand;
 
     if (isCrossChain) {
+      // This logic assumes `receiverAccount` is always a k: account
+      // TODO: support non-k: accounts
       const crossChainTransferArgs: CrossChainCreateTransfer = {
         amount: amount,
         chainId: fromChain,
@@ -217,6 +219,7 @@ export const Transfer = () => {
         senderAccount: wallet.account.name,
         receiverAccount: transactionDetails.receiverAccount,
         amount: transactionDetails.amount,
+        toChain: wallet.selectedToChain ?? undefined,
       };
 
       addPendingTransfer(pendingTransfer);
