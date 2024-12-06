@@ -154,10 +154,20 @@ export class WalletSDK {
 
   /** create cross-chain transfer finish */
   public async createFinishCrossChainTransfer(
-    transfer: ICreateCrossChainFinishInput,
+    transfer: Omit<ICreateCrossChainFinishInput, 'host'>,
     gasPayer: { account: string; publicKeys: ISigner[] },
   ): Promise<IUnsignedCommand> {
-    const command = await crossChainFinishCreateCommand(transfer, gasPayer);
+    const host = this.getChainwebUrl({
+      chainId: transfer.chainId,
+      networkId: transfer.networkId,
+    });
+    const command = await crossChainFinishCreateCommand(
+      {
+        ...transfer,
+        host,
+      },
+      gasPayer,
+    );
     return command;
   }
 

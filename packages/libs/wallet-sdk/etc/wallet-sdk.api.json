@@ -2050,8 +2050,21 @@
                 },
                 {
                   "kind": "Reference",
+                  "text": "Omit",
+                  "canonicalReference": "!Omit:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": "<"
+                },
+                {
+                  "kind": "Reference",
                   "text": "ICreateCrossChainFinishInput",
                   "canonicalReference": "@kadena/wallet-sdk!~ICreateCrossChainFinishInput:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": ", 'host'>"
                 },
                 {
                   "kind": "Content",
@@ -2099,8 +2112,8 @@
               ],
               "isStatic": false,
               "returnTypeTokenRange": {
-                "startIndex": 7,
-                "endIndex": 11
+                "startIndex": 10,
+                "endIndex": 14
               },
               "releaseTag": "Public",
               "isProtected": false,
@@ -2110,15 +2123,15 @@
                   "parameterName": "transfer",
                   "parameterTypeTokenRange": {
                     "startIndex": 1,
-                    "endIndex": 2
+                    "endIndex": 5
                   },
                   "isOptional": false
                 },
                 {
                   "parameterName": "gasPayer",
                   "parameterTypeTokenRange": {
-                    "startIndex": 3,
-                    "endIndex": 6
+                    "startIndex": 6,
+                    "endIndex": 9
                   },
                   "isOptional": false
                 }

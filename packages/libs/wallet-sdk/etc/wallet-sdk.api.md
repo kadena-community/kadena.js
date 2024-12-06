@@ -209,7 +209,7 @@ export class WalletSDK {
         networkId: string;
     }): IUnsignedCommand;
     // Warning: (ae-forgotten-export) The symbol "ICreateCrossChainFinishInput" needs to be exported by the entry point index.d.ts
-    createFinishCrossChainTransfer(transfer: ICreateCrossChainFinishInput, gasPayer: {
+    createFinishCrossChainTransfer(transfer: Omit<ICreateCrossChainFinishInput, 'host'>, gasPayer: {
         account: string;
         publicKeys: ISigner_2[];
     }): Promise<IUnsignedCommand>;
