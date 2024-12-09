@@ -53,13 +53,18 @@ Below are some common use cases for the `@kadena/hd-wallet` library.
 
 ## Key Concepts
 
-- **Mnemonic Phrase**: A human-readable set of words used to generate a seed.
-- **Seed**: A binary representation of the mnemonic, which can be used to derive
-  private and public keys.
+- **Mnemonic Phrase**: A human-readable set of words derived from entropy,
+  designed to make cryptographic keys easier to back up and restore. It serves
+  as a representation of the underlying entropy.
+- **Seed**: A binary value derived from the mnemonic phrase (using a hashing
+  algorithm, optionally with a passphrase). The seed is used to derive the
+  master private key. It cannot be converted back to the mnemonic or entropy.
 - **Derivation Path**: A structured way to derive multiple key pairs from a
   single master seed.
 - **SLIP-0010**: The standard used for key derivation, ensuring compatibility
   with other systems.
+- [KIP-0026 (draft)](https://github.com/Takadenoshi/KIPs/blob/kip-0026/kip-0026.md)
+  Key Derivation and Mnemonic encoding methods for Kadena
 
 ## High-Level Steps
 
