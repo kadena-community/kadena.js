@@ -61,9 +61,10 @@ Below are some common use cases for the `@kadena/hd-wallet` library.
   master private key. It cannot be converted back to the mnemonic or entropy.
 - **Derivation Path**: A structured way to derive multiple key pairs from a
   single master seed.
-- **SLIP-0010**: The standard used for key derivation, ensuring compatibility
-  with other systems.
-- [KIP-0026 (draft)](https://github.com/Takadenoshi/KIPs/blob/kip-0026/kip-0026.md)
+- **[SLIP-0010](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/hd-wallet/docs/decisions/0001-use-slip10-for-private-key-generation.md)**:
+  The standard used for key derivation, ensuring compatibility with other
+  systems.
+- **[KIP-0026 (draft)](https://github.com/Takadenoshi/KIPs/blob/kip-0026/kip-0026.md)**
   Key Derivation and Mnemonic encoding methods for Kadena
 
 ## High-Level Steps
@@ -93,12 +94,17 @@ console.log(mnemonic); // Outputs a 12-word mnemonic phrase
 You can also generate a mnemonic phrase from a specific entropy value using the
 following function:
 
+> **IMPORTANT**  
+> This isn't necessarily the same mnemonic from which the entropy was generated
+
 ```javascript
 import { kadenaEntropyToMnemonic } from '@kadena/hd-wallet';
 
-const entropy = Uint8Array.from([0x00, 0x01, 0x02, 0x03]);
+const entropy = Uint8Array.from([
+  163, 41, 221, 226, 205, 60, 81, 126, 184, 28, 50, 202, 148, 255, 178, 6,
+]);
 const mnemonic = kadenaEntropyToMnemonic(entropy);
-console.log(mnemonic); // Outputs a mnemonic based on the provided entropy
+console.log(mnemonic); // Outputs: "permit exclude judge omit shallow satisfy there main skin pony uncle arrive"
 ```
 
 ### 3. Mnemonic to Seed Conversion
@@ -110,11 +116,13 @@ password.
 ```javascript
 import { kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 
-const mnemonic = 'your_mnemonic_here';
-const password = 'your_password';
+const mnemonic =
+  'permit exclude judge omit shallow satisfy there main skin pony uncle arrive';
+const password = 'secret';
 
 const seed = await kadenaMnemonicToSeed(password, mnemonic);
-console.log(seed); // Outputs the encrypted seed
+console.log(seed); // Outputs the encrypted seed, this can be different every time due to included salt
+// Output: "VmVDaFBDT2RtTVU2YXJPbll3dW8zUT09LjdHZUhqQkg5ZUlBdjRhWXouRjN2cTBOdHpGeW1aSEdkaW01ZDZQZ3kvZzl0ZytyUS9FZkdtMElvTWY1aHRDcVV1UCthTXIyWGtJZXVYSjZDUVRsQXdZREdTUTZZekRVTDVnK0lnaWRIYmhPRDB0TlNhWkxldHFnL3lOdVU9"
 ```
 
 ### 4. Key Pair Generation from Seed
@@ -158,8 +166,8 @@ console.log(keyPairs); // Outputs an array of random key pairs
 
 ### 6. Public Key Retrieval
 
-You can retrieve the public key directly from the encrypted seed without needing
-to access the private key. This is useful for read-only operations.
+You can retrieve the public key directly from the encrypted seed without the
+need to access the private key. This is useful for read-only operations.
 
 ```javascript
 import { kadenaGetPublic } from '@kadena/hd-wallet';
@@ -177,11 +185,8 @@ pair.
 ```javascript
 import { kadenaSignWithKeyPair } from '@kadena/hd-wallet';
 
-const signature = await kadenaSignWithKeyPair(
-  password,
-  publicKey,
-  privateKey,
-)(txHash);
+const signFn = kadenaSignWithKeyPair(password, publicKey, privateKey);
+const signature = await signFn(txHash);
 console.log(signature); // Outputs the transaction signature
 ```
 
@@ -207,7 +212,7 @@ const isValid = kadenaVerify(txHash, publicKey, signature.sig);
 console.log(isValid); // Outputs true if the signature is valid
 ```
 
-## Legacy Chainweaver Support
+## Legacy Chainweaver (version 2) Support
 
 For backward compatibility with the legacy Chainweaver wallet, use the following
 functions. These functions allow integration with older systems while
@@ -345,7 +350,8 @@ and signing functionalities directly. Here’s a simple flow for implementation:
 
 ### Key Derivation Path
 
-The Kadena wallet uses the standard derivation path:
+The Kadena wallet uses the standard derivation path
+([SLIP-0010](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/hd-wallet/docs/decisions/0001-use-slip10-for-private-key-generation.md)):
 
 ```
 m'/44'/626'/<index>'
