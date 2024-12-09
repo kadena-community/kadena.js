@@ -5,24 +5,23 @@ import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import {
   IAccount,
-  IKeySet,
+  IGuard,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { withRaceGuard } from '@/utils/promise-utils';
 import { debounce } from '@/utils/session';
-import { ISigner } from '@kadena/client';
 import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { isKeysetGuard } from '@/modules/account/guards';
+import { Guard } from '../../../Components/Guard/Guard';
 import { discoverReceiver, IReceiverAccount } from '../utils';
 import { AccountItem } from './AccountItem';
-import { Keyset } from './keyset';
 import { Label } from './Label';
 import { createAccountBoxClass, popoverClass } from './style.css';
 
@@ -49,7 +48,6 @@ export function AccountSearchBox({
 }) {
   const prompt = usePrompt();
   const [value, setValue] = useState<string>(selectedAccount?.address || '');
-  const { getPublicKeyData } = useWallet();
   const [discovering, setDiscoveringValue] = useState(false);
   const [popoverIsOpen, setPopoverIsOpen] = useState(false);
   const liveIsOpen = useRef(popoverIsOpen);
@@ -70,40 +68,17 @@ export function AccountSearchBox({
     }
   }
 
-  const mapKeys = useCallback(
-    (key: ISigner) => {
-      if (typeof key === 'object') return key;
-      const info = getPublicKeyData(key);
-      if (info && info.scheme) {
-        return {
-          pubKey: key,
-          scheme: info.scheme,
-        };
-      }
-      if (key.startsWith('WEBAUTHN')) {
-        return {
-          pubKey: key,
-          scheme: 'WebAuthn' as const,
-        };
-      }
-      return key;
-    },
-    [getPublicKeyData],
-  );
-
   function onSelectHandel(account?: IReceiverAccount) {
     onSelect(account);
     if (account) {
       setValue(account.address);
       if (
-        !discoverdAccount?.find((acc) =>
-          hasSameGuard(acc.keyset.guard, account.keyset.guard),
-        )
+        !discoverdAccount?.find((acc) => hasSameGuard(acc.guard, account.guard))
       ) {
         const address = account.address;
 
         setDiscoveredAccounts([]);
-        discover(address, network.networkId, contract, mapKeys)
+        discover(address, network.networkId, contract)
           .then((discovered) => {
             setDiscoveredAccounts(discovered);
           })
@@ -119,51 +94,54 @@ export function AccountSearchBox({
     const hasTerm = searchAccount(search);
     const myAccounts = accounts
       .filter((account) =>
-        searchAccount(search)({
-          address: account.address,
-          alias: account.alias,
-          keysetAlias: account.keyset?.alias,
-          keys: account.keyset?.guard?.keys,
-        }),
+        searchAccount(search)(
+          account.address,
+          account.alias,
+          account.guard.principal,
+          ...(isKeysetGuard(account.guard) ? account.guard.keys : []),
+        ),
       )
       .map((account) => ({
         address: account.address,
         alias: account.alias,
         overallBalance: account.overallBalance,
-        keyset: account.keyset!,
+        guard: account.guard,
         chains: account.chains,
       }));
 
     const filteredWatchedAccounts = watchedAccounts
       .filter((account) =>
-        hasTerm({
-          address: account.address,
-          alias: account.alias,
-          keys: account.keyset?.guard?.keys,
-        }),
+        hasTerm(
+          account.address,
+          account.alias,
+          ...(isKeysetGuard(account.guard) ? account.guard.keys : []),
+        ),
       )
       .map((account) => ({
         address: account.address,
         alias: account.alias,
         overallBalance: account.overallBalance,
-        keyset: account.keyset!,
+        guard: account.guard,
         chains: account.chains,
       }));
 
     const filteredContacts = contacts
       .filter((contact) => {
-        return hasTerm({
-          address: contact.account.address,
-          alias: contact.name,
-          keys: contact.account.keyset?.keys,
-        });
+        return hasTerm(
+          contact.account.address,
+          contact.name,
+          contact.account.guard.principal,
+          ...(isKeysetGuard(contact.account.guard)
+            ? contact.account.guard.keys
+            : []),
+        );
       })
       .map((account) => ({
         address: account.account.address,
         alias: account.name,
         overallBalance: '0',
         chains: [],
-        keyset: { guard: account.account.keyset! },
+        guard: account.account.guard,
       }));
 
     const filteredDiscoveredAccounts =
@@ -180,7 +158,7 @@ export function AccountSearchBox({
         allAccounts.findIndex(
           (t) =>
             t.address === account.address &&
-            hasSameGuard(account.keyset.guard, t.keyset.guard),
+            hasSameGuard(account.guard, t.guard),
         ) === index,
     );
 
@@ -203,7 +181,7 @@ export function AccountSearchBox({
     if (accounts.length > 1 && selectedAccount) {
       const result = accounts.find((account) => {
         selectedAccount.address === account.address &&
-          hasSameGuard(selectedAccount.keyset.guard, account.keyset.guard);
+          hasSameGuard(selectedAccount.guard, account.guard);
       });
       if (!result) {
         onSelectHandel(undefined);
@@ -278,7 +256,7 @@ export function AccountSearchBox({
           setValue(address);
           setDiscovering(true);
           setDiscoveredAccounts([]);
-          discover(address, network.networkId, contract, mapKeys)
+          discover(address, network.networkId, contract)
             .then((discovered) => {
               setDiscovering(false);
               setDiscoveredAccounts(discovered);
@@ -297,12 +275,12 @@ export function AccountSearchBox({
           const hasTerm = searchAccount(search);
           const myAccount = accounts
             .filter((account) =>
-              hasTerm({
-                address: account.address,
-                alias: account.alias,
-                keysetAlias: account.keyset?.alias,
-                keys: account.keyset?.guard?.keys,
-              }),
+              hasTerm(
+                account.address,
+                account.alias,
+                account.guard.principal,
+                ...(isKeysetGuard(account.guard) ? account.guard.keys : []),
+              ),
             )
             .map((account) => (
               <ButtonItem
@@ -311,7 +289,7 @@ export function AccountSearchBox({
                     address: account.address,
                     alias: account.alias,
                     overallBalance: account.overallBalance,
-                    keyset: account.keyset!,
+                    guard: account.guard,
                     chains: account.chains,
                   });
                   close();
@@ -324,10 +302,7 @@ export function AccountSearchBox({
                     alignItems={'center'}
                     width="100%"
                   >
-                    <AccountItem
-                      account={account}
-                      keyset={account.keyset?.guard}
-                    />
+                    <AccountItem account={account} guard={account.guard} />
                   </Stack>
                 </Text>
               </ButtonItem>
@@ -335,11 +310,12 @@ export function AccountSearchBox({
 
           const filteredWatchedAccounts = watchedAccounts
             .filter((account) =>
-              hasTerm({
-                address: account.address,
-                alias: account.alias,
-                keys: account.keyset?.guard?.keys,
-              }),
+              hasTerm(
+                account.address,
+                account.alias,
+                account.guard.principal,
+                ...(isKeysetGuard(account.guard) ? account.guard.keys : []),
+              ),
             )
             .map((account) => (
               <ButtonItem
@@ -348,7 +324,7 @@ export function AccountSearchBox({
                     address: account.address,
                     alias: account.alias,
                     overallBalance: account.overallBalance,
-                    keyset: account.keyset,
+                    guard: account.guard,
                     chains: account.chains,
                   });
                   close();
@@ -361,10 +337,7 @@ export function AccountSearchBox({
                     alignItems={'center'}
                     width="100%"
                   >
-                    <AccountItem
-                      account={account}
-                      keyset={account.keyset.guard}
-                    />
+                    <AccountItem account={account} guard={account.guard} />
                   </Stack>
                 </Text>
               </ButtonItem>
@@ -372,11 +345,14 @@ export function AccountSearchBox({
 
           const filteredContacts = contacts
             .filter((contact) => {
-              return hasTerm({
-                address: contact.account.address,
-                alias: contact.name,
-                keys: contact.account.keyset?.keys,
-              });
+              return hasTerm(
+                contact.account.address,
+                contact.name,
+                contact.account.guard.principal,
+                ...(isKeysetGuard(contact.account.guard)
+                  ? contact.account.guard.keys
+                  : []),
+              );
             })
             .map((account) => (
               <ButtonItem
@@ -386,7 +362,7 @@ export function AccountSearchBox({
                     alias: account.name,
                     overallBalance: '0',
                     chains: [],
-                    keyset: { guard: account.account.keyset! },
+                    guard: account.account.guard!,
                   });
                   close();
                 }}
@@ -404,7 +380,7 @@ export function AccountSearchBox({
                         alias: account.name,
                         overallBalance: 'N/A',
                       }}
-                      keyset={account.account.keyset}
+                      guard={account.account.guard}
                     />
                   </Stack>
                 </Text>
@@ -427,7 +403,7 @@ export function AccountSearchBox({
                 >
                   <AccountItem
                     account={account}
-                    keyset={account.keyset.guard}
+                    guard={account.guard}
                     chains={account.chains}
                   />
                 </Stack>
@@ -465,11 +441,11 @@ export function AccountSearchBox({
                     close();
                     const guard = (await prompt((resolve, reject) => (
                       <KeySetDialog close={reject} onDone={resolve} isOpen />
-                    ))) as IKeySet['guard'];
+                    ))) as IGuard;
                     if (guard) {
                       onSelectHandel({
                         address: value,
-                        keyset: { guard },
+                        guard: guard,
                         chains: [],
                         overallBalance: '0.0',
                       });
@@ -538,7 +514,7 @@ export function AccountSearchBox({
           ) : (
             ''
           )}
-          <Keyset guard={selectedAccount.keyset.guard} />
+          <Guard guard={selectedAccount.guard} />
         </Stack>
       )}
       {discovering && (
@@ -552,21 +528,10 @@ export function AccountSearchBox({
 
 const searchAccount =
   (search: string) =>
-  ({
-    address,
-    alias,
-    keysetAlias,
-    keys = [],
-  }: {
-    address: string;
-    alias?: string;
-    keysetAlias?: string;
-    keys?: string[];
-  }) => {
+  (...items: Array<string | undefined>) => {
     const term = search.toLowerCase().trim().replace(/\s+/g, '');
-
     if (
-      [address, alias, keysetAlias, ...keys].find((value) =>
+      items.find((value) =>
         value?.toLocaleLowerCase().replace(/\s+/g, '').includes(term),
       )
     ) {

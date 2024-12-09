@@ -1,39 +1,49 @@
 import { IAccount } from '@/modules/account/account.repository';
-import { ChainId, ISigner } from '@kadena/client';
+import { isKeysetGuard } from '@/modules/account/guards';
+import { ChainId, IPartialPactCommand, ISigner } from '@kadena/client';
 import {
   safeTransferCreateCommand,
+  transferCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
 import { IReceiverAccount } from '../transfer-v2/utils';
 
-interface IReciverAccount {
-  account: string;
-  keyset: {
-    keys: ISigner[];
-    pred: 'keys-all' | 'keys-2' | 'keys-any';
-  };
-  publicKeys: ISigner[];
-}
-
 export const estimateTransferGas = async (
   from: { account: string; publicKeys: ISigner[] },
-  to: IReciverAccount,
+  to: IReceiverAccount,
   chainId: ChainId,
   networkId: string,
   isSafeTransfer: boolean,
 ) => {
-  const transferFn = isSafeTransfer
-    ? safeTransferCreateCommand
-    : transferCreateCommand;
-
-  const tx = transferFn({
+  const transferData = {
     sender: from,
-    receiver: to,
     chainId,
     amount: '0.0001',
-  })({ networkId });
+  };
+
+  let tx: () => IPartialPactCommand;
+  if (isKeysetGuard(to.guard)) {
+    const transferFn = isSafeTransfer
+      ? safeTransferCreateCommand
+      : transferCreateCommand;
+    tx = transferFn({
+      ...transferData,
+      receiver: {
+        account: to.address,
+        keyset: {
+          keys: to.guard.keys,
+          pred: to.guard.pred,
+        },
+      },
+    })({ networkId });
+  } else {
+    tx = transferCommand({
+      ...transferData,
+      receiver: to.address,
+    })({ networkId });
+  }
   const { gasLimit = Infinity, gasPrice = Infinity } = await estimateGas(tx);
   return { gasLimit, gasPrice };
 };
@@ -123,13 +133,9 @@ export async function findOptimalTransfer(
       ...(await estimateTransferGas(
         {
           account: senderAccount.address,
-          publicKeys: senderAccount.keyset!.guard.keys.map(mapKeys),
+          publicKeys: senderAccount.guard.keys.map(mapKeys),
         },
-        {
-          account: receiverAccount.address,
-          keyset: receiverAccount.keyset.guard,
-          publicKeys: receiverAccount.keyset.guard.keys.map(mapKeys),
-        },
+        receiverAccount,
         data.chainId,
         networkId,
         isSafeTransfer,

@@ -1,6 +1,6 @@
-import { Keyset } from '@/pages/transfer-v2/Components/keyset';
 import { discoverReceiver, IReceiverAccount } from '@/pages/transfer-v2/utils';
 
+import { Guard } from '@/Components/Guard/Guard';
 import {
   MonoAccountBalanceWallet,
   MonoLoading,
@@ -53,7 +53,6 @@ export function AccountInput({
         innerAddress,
         networkId,
         contract,
-        (key) => key,
       );
       if (accounts.length === 1) {
         onAccount(accounts[0]);
@@ -80,7 +79,7 @@ export function AccountInput({
             setNeedToAddKeys(false);
             const account: IReceiverAccount = {
               address: address,
-              keyset: { guard },
+              guard,
               chains: [],
               overallBalance: '0.0',
             };
@@ -123,9 +122,7 @@ export function AccountInput({
             }
           }}
         />
-        {account && account.keyset.guard && (
-          <Keyset guard={account.keyset.guard} />
-        )}
+        {account && account.guard && <Guard guard={account.guard} />}
       </Stack>
       {needToAddKeys && (
         <Notification role="status" intent="info">

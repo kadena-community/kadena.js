@@ -1,4 +1,4 @@
-import { Keyset } from '@/pages/transfer-v2/Components/keyset';
+import { Guard } from '@/Components/Guard/Guard';
 import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import { MonoAttachMoney, MonoLink } from '@kadena/kode-icons/system';
 import {
@@ -79,7 +79,7 @@ export const DiscoverdAccounts: FC<{
                   justifyContent={'flex-end'}
                   alignItems={'center'}
                 >
-                  <Keyset guard={account.keyset.guard} />
+                  <Guard guard={account.guard} />
                   <Stack>
                     <Button
                       isCompact

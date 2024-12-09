@@ -1,4 +1,4 @@
-import { discoverAccount } from '@kadena/client-utils/coin';
+import { discoverAccount, IDiscoveredAccount } from '@kadena/client-utils/coin';
 import {
   dirtyReadClient,
   WithEmitter,
@@ -10,6 +10,7 @@ import { keySourceManager } from '../key-source/key-source-manager';
 import {
   accountRepository,
   IAccount,
+  IGuard,
   IKeySet,
   IWatchedAccount,
 } from './account.repository';
@@ -17,7 +18,6 @@ import {
 import {
   createSignWithKeypair,
   createTransaction,
-  ISigner,
   type BuiltInPredicate,
   type ChainId,
 } from '@kadena/client';
@@ -35,8 +35,9 @@ import * as transactionService from '@/modules/transaction/transaction.service';
 import { execution } from '@kadena/client/fp';
 import { INetwork, networkRepository } from '../network/network.repository';
 import { UUID } from '../types';
+import { isKeysetGuard } from './guards';
 
-export type IDiscoveredAccount = {
+export type IWalletDiscoveredAccount = {
   chainId: ChainId;
   result:
     | undefined
@@ -44,6 +45,7 @@ export type IDiscoveredAccount = {
         account: string;
         balance: string;
         guard: {
+          principal: string;
           keys: string[];
           pred: BuiltInPredicate;
         };
@@ -81,6 +83,11 @@ export async function createKAccount({
     profileId: profileId,
     address: `k:${publicKey}`,
     keysetId: keyset.uuid,
+    guard: {
+      pred: 'keys-all',
+      keys: [publicKey],
+      principal: `k:${publicKey}`,
+    },
     networkUUID,
     contract,
     chains,
@@ -100,12 +107,12 @@ export const accountDiscovery = (
   withEmitter as unknown as WithEmitter<
     [
       { event: 'key-retrieved'; data: IKeyItem },
-      { event: 'chain-result'; data: IDiscoveredAccount },
+      { event: 'chain-result'; data: IWalletDiscoveredAccount },
       {
         event: 'query-done';
         data: Array<{
           key: IKeyItem;
-          chainResult: IDiscoveredAccount[];
+          chainResult: IWalletDiscoveredAccount[];
         }>;
       },
       { event: 'accounts-saved'; data: IAccount[] },
@@ -135,16 +142,29 @@ export const accountDiscovery = (
         }
         await emit('key-retrieved')(key);
         const principal = `k:${key.publicKey}`;
-        const chainResult = (await discoverAccount(
+        const chainResult = await discoverAccount(
           principal,
           network.networkId,
           undefined,
           contract,
         )
           .on('chain-result', async (data) => {
-            await emit('chain-result')(data as IDiscoveredAccount);
+            await emit('chain-result')({
+              chainId: data.chainId,
+              result: data.result
+                ? {
+                    ...data.result,
+                    guard: data.result.details.guard
+                      ? {
+                          ...data.result.details.guard,
+                          principal: data.result.principal,
+                        }
+                      : undefined,
+                  }
+                : undefined,
+            });
           })
-          .execute()) as IDiscoveredAccount[];
+          .execute();
 
         if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
           const availableKeyset = await accountRepository.getKeysetByPrincipal(
@@ -171,18 +191,23 @@ export const accountDiscovery = (
             networkUUID: network.uuid,
             contract,
             keysetId: keyset.uuid,
-            keyset,
+            guard: {
+              keys: [key.publicKey],
+              pred: 'keys-all',
+              principal,
+            },
             address: `k:${key.publicKey}`,
             chains: chainResult
               .filter(({ result }) => Boolean(result))
               .map(({ chainId, result }) => ({
-                chainId,
-                balance: result!.balance || '0',
+                chainId: chainId!,
+                balance:
+                  new PactNumber(result!.details.balance).toDecimal() || '0.0',
               })),
             overallBalance: chainResult.reduce(
               (acc, { result }) =>
-                result?.balance
-                  ? new PactNumber(result.balance).plus(acc).toDecimal()
+                result!.details.balance
+                  ? new PactNumber(result.details.balance).plus(acc).toDecimal()
                   : acc,
               '0',
             ),
@@ -214,54 +239,49 @@ export const accountDiscovery = (
     },
 );
 
-interface Guard {
-  keys: ISigner[];
-  pred: BuiltInPredicate;
-}
-
-export const hasSameGuard = (a?: Guard, b?: Guard) => {
-  const getKeys = (key: ISigner) =>
-    typeof key === 'string' ? key : key.pubKey;
-
-  const aKeys = a ? a.keys.map(getKeys).sort() : [];
-  const bKeys = b ? b.keys.map(getKeys).sort() : [];
-
-  return (
-    aKeys.length === bKeys.length &&
-    aKeys.every((key) => bKeys.includes(key)) &&
-    a?.pred === b?.pred
-  );
+export const hasSameGuard = (a?: IGuard, b?: IGuard) => {
+  return a?.principal === b?.principal;
 };
 
 export const syncAccount = async (account: IAccount | IWatchedAccount) => {
   const network = await networkRepository.getNetwork(account.networkUUID);
   const patch: Partial<IAccount | IWatchedAccount> = {};
 
-  const chainResult = (await discoverAccount(
+  const chainResult = await discoverAccount(
     account.address,
     network.networkId,
     undefined,
     account.contract,
   )
     .execute()
-    .catch((error) =>
-      console.error('DISCOVERY ERROR', error),
-    )) as IDiscoveredAccount[];
+    .catch((error) => {
+      console.error('DISCOVERY ERROR', error);
+      return [] as {
+        result: IDiscoveredAccount | undefined;
+        chainId: ChainId | undefined;
+      }[];
+    });
 
   const filteredResult = chainResult.filter(
     ({ result }) =>
-      Boolean(result) && hasSameGuard(result?.guard, account.keyset?.guard),
+      Boolean(result) &&
+      hasSameGuard(
+        { ...result?.details.guard, principal: result?.principal },
+        account.guard,
+      ),
   );
 
   patch.chains = filteredResult.map(({ chainId, result }) => ({
-    chainId,
-    balance: result!.balance ? new PactNumber(result!.balance).toString() : '0',
+    chainId: chainId!,
+    balance: result!.details.balance
+      ? new PactNumber(result!.details.balance).toString()
+      : '0',
   }));
 
   patch.overallBalance = filteredResult.reduce(
     (acc, { result }) =>
-      result?.balance
-        ? new PactNumber(result.balance).plus(acc).toDecimal()
+      result?.details.balance
+        ? new PactNumber(result.details.balance).plus(acc).toDecimal()
         : acc,
     '0',
   );
@@ -311,16 +331,19 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
 // TODO: update this to work with both testnet04 and testnet05
 export async function fundAccount({
   address,
-  keyset,
+  guard,
   profileId,
   network,
   chainId,
-}: Pick<IAccount, 'address' | 'keyset' | 'profileId'> & {
+}: Pick<IAccount, 'address' | 'guard' | 'profileId'> & {
   chainId: ChainId;
   network: INetwork;
 }) {
-  if (!keyset) {
-    throw new Error('No keyset found');
+  if (!guard) {
+    throw new Error('No guard found');
+  }
+  if (!isKeysetGuard(guard)) {
+    throw new Error('Guard is not a keyset guard');
   }
   if (!network.faucetContract) {
     throw new Error(`No faucet contract in ${network.networkId}`);
@@ -360,7 +383,7 @@ export async function fundAccount({
       })
     : fundNewAccountOnTestnetCommand({
         account: address,
-        keyset: keyset?.guard,
+        keyset: guard,
         signerKeys: [randomKeyPair.publicKey],
         amount: 20,
         chainId: chainId as ChainId,

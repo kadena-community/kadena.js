@@ -1,8 +1,9 @@
 import { Key } from '@/Components/Key/Key';
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
-import { IKeySet } from '@/modules/account/account.repository';
+import { IKeysetGuard } from '@/modules/account/account.repository';
 import { Label } from '@/pages/transaction/components/helpers';
 import { BuiltInPredicate } from '@kadena/client';
+import { createPrincipal } from '@kadena/client-utils/built-in';
 import { MonoAdd, MonoDelete } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -35,7 +36,7 @@ export function KeySetDialog({
 }: {
   isOpen: boolean;
   close: () => void;
-  onDone: (keyset: IKeySet['guard']) => void;
+  onDone: (keyset: IKeysetGuard) => void;
 }) {
   const { control, getValues, setValue, handleSubmit } = useForm<IKeysetForm>({
     defaultValues: {
@@ -51,9 +52,19 @@ export function KeySetDialog({
   };
 
   async function onSubmit(data: IKeysetForm) {
+    const principal = await createPrincipal(
+      {
+        keyset: {
+          keys: addedKeys,
+          pred: data.predicate,
+        },
+      },
+      {},
+    );
     onDone({
       keys: addedKeys,
       pred: data.predicate,
+      principal,
     });
   }
 

@@ -2,7 +2,7 @@ import { DiscoverdAccounts } from '@/Components/AccountInput/DiscoverdAccounts';
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
 import { KeySetDialog } from '@/Components/KeysetDialog/KeySetDialog';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { IAccount, IKeySet } from '@/modules/account/account.repository';
+import { IAccount, IKeysetGuard } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -35,9 +35,9 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { linkClass } from '../../transfer/style.css';
 import { AccountItem } from '../Components/AccountItem';
-import { Keyset } from '../Components/keyset';
 import { CHAINS, IReceiver, IReceiverAccount, getTransfers } from '../utils';
 
+import { Guard } from '../../../Components/Guard/Guard';
 import { AccountSearchBox } from '../Components/AccountSearchBox';
 import { CreationTime } from '../Components/CreationTime';
 import { Label } from '../Components/Label';
@@ -167,14 +167,17 @@ export function TransferForm({
           (a) => a.uuid === activity.data.transferData.accountId,
         );
         if (activity && account) {
+          const receivers = activity.data.transferData.receivers.map(
+            (receiver) => ({
+              ...receiver,
+              chunks: [],
+            }),
+          );
           reset({
             fungible: account.contract,
             accountId: activity.data.transferData.accountId,
             chain: activity.data.transferData.chain,
-            receivers: activity.data.transferData.receivers.map((receiver) => ({
-              ...receiver,
-              chunks: [],
-            })),
+            receivers,
             gasPayer: activity.data.transferData.gasPayer,
             gasPrice: activity.data.transferData.gasPrice,
             gasLimit: activity.data.transferData.gasLimit,
@@ -343,8 +346,8 @@ export function TransferForm({
                         </SelectItem>
                       ))}
                   </Select>
-                  {senderAccount?.keyset && (
-                    <Keyset guard={senderAccount.keyset.guard} />
+                  {senderAccount?.guard && (
+                    <Guard guard={senderAccount.guard} />
                   )}
                 </Stack>
               )}
@@ -687,7 +690,7 @@ export function TransferForm({
                                               isOpen
                                             />
                                           ),
-                                        )) as IKeySet['guard'];
+                                        )) as IKeysetGuard;
                                         if (guard) {
                                           setValue(
                                             `receivers.${index}.discoveredAccounts`,
@@ -696,7 +699,7 @@ export function TransferForm({
                                                 address: getValues(
                                                   `receivers.${index}.address`,
                                                 ),
-                                                keyset: { guard },
+                                                guard,
                                                 chains: [],
                                                 overallBalance: '0.0',
                                               },

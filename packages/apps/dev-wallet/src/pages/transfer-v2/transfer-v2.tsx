@@ -159,7 +159,7 @@ export function TransferV2() {
     redistribution: Redistribution[],
   ) {
     if (redistribution.length > 0) {
-      if (!formData.senderAccount || !formData.senderAccount.keyset) return;
+      if (!formData.senderAccount) return;
       return createRedistributionTxs({
         account: formData.senderAccount,
         redistribution,
@@ -294,7 +294,7 @@ export function TransferV2() {
                   const senderAccount = allAccounts.find(
                     (acc) => acc.uuid === data.accountId,
                   );
-                  if (!senderAccount?.keyset?.uuid) return;
+                  if (!senderAccount?.keysetId) return;
                   const formData = {
                     ...data,
                     senderAccount,
@@ -335,7 +335,7 @@ export function TransferV2() {
                         },
                       },
                     },
-                    keysetId: senderAccount.keyset?.uuid,
+                    keysetId: senderAccount.keysetId,
                     networkUUID: activeNetwork!.uuid,
                     profileId: profile?.uuid ?? '',
                     status: 'Initiated',

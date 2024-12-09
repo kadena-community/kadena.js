@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { IAccount } from '@/modules/account/account.repository';
 import {
-  IDiscoveredAccount,
+  IWalletDiscoveredAccount,
   accountDiscovery,
 } from '@/modules/account/account.service';
 import { keySourceManager } from '@/modules/key-source/key-source-manager';
@@ -28,7 +28,7 @@ export function AccountDiscovery() {
     'idle' | 'discovering' | 'finished'
   >('idle');
   const [discoveredAccounts, setDiscoveredAccounts] = useState<
-    Array<IDiscoveredAccount | undefined>
+    Array<IWalletDiscoveredAccount | undefined>
   >([]);
   const [accounts, setAccounts] = useState<IAccount[]>();
 
@@ -52,7 +52,7 @@ export function AccountDiscovery() {
       .on('key-retrieved', (data: IKeyItem) => {
         setKey(data);
       })
-      .on('chain-result', (data: IDiscoveredAccount) => {
+      .on('chain-result', (data: IWalletDiscoveredAccount) => {
         setDiscoveredAccounts((prev) => [...prev, data]);
       });
     const accounts = await processRef.current.executeTo('query-done');
@@ -68,7 +68,7 @@ export function AccountDiscovery() {
     (data) => data?.result,
   ) as Array<{
     chainId: ChainId;
-    result: Exclude<IDiscoveredAccount['result'], undefined>;
+    result: Exclude<IWalletDiscoveredAccount['result'], undefined>;
   }>;
 
   return (
@@ -161,8 +161,8 @@ export function AccountDiscovery() {
                     </Stack>
 
                     <Stack gap={'md'}>
-                      <Text>{account.keyset?.guard.pred}:</Text>
-                      {account.keyset?.guard.keys.map((key) => (
+                      <Text>{account.guard.pred}:</Text>
+                      {account.guard.keys.map((key) => (
                         <Stack gap={'xs'} alignItems={'center'}>
                           <Text>
                             <MonoKey />

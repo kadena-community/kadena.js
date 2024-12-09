@@ -50,15 +50,7 @@ export function Accounts({
       address: account.address,
       chains: account.chains,
       overallBalance: account.overallBalance,
-      keyset: {
-        ...account.keyset,
-        guard: {
-          ...account.keyset.guard,
-          keys: account.keyset.guard.keys.map((key) =>
-            typeof key === 'string' ? key : key.pubKey,
-          ),
-        },
-      },
+      guard: account.guard,
       contract,
       networkUUID: activeNetwork!.uuid,
       watched: true,

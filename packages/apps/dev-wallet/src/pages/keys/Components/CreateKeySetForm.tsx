@@ -3,6 +3,7 @@ import {
   accountRepository,
   IKeySet,
 } from '@/modules/account/account.repository';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { BuiltInPredicate } from '@kadena/client';
@@ -67,9 +68,12 @@ export function CreateKeySetForm({
 
   const flattenContactKeys =
     contacts
-      .filter((contact) => contact.account.keyset)
+      // TODO: use keysetRef guard as well
+      .filter((contact) => isKeysetGuard(contact.account.guard))
       .map((contact) =>
-        contact.account.keyset!.keys.map((key) => ({ key, contact })),
+        isKeysetGuard(contact.account.guard)
+          ? contact.account.guard.keys.map((key) => ({ key, contact }))
+          : [],
       )
       .flat() ?? [];
   const [addedKeys, setAddedKeys] = useState<string[]>([]);

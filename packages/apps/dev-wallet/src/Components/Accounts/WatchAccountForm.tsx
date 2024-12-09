@@ -107,7 +107,7 @@ export function WatchAccountsForm({
                   chains: [],
                   overallBalance: '0.0',
                   address: data.account.address,
-                  keyset: { guard: data.account.keyset! },
+                  guard: data.account.guard,
                 };
                 return acc;
               }),

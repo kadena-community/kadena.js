@@ -1,28 +1,24 @@
 import {
   accountRepository,
   IAccount,
+  IGuard,
 } from '@/modules/account/account.repository';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { INetwork } from '@/modules/network/network.repository';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import {
-  BuiltInPredicate,
-  ChainId,
-  createTransaction,
-  ISigner,
-  IUnsignedCommand,
-} from '@kadena/client';
+import { ChainId, createTransaction, ISigner } from '@kadena/client';
 import {
   createCrossChainCommand,
   discoverAccount,
+  IDiscoveredAccount,
   safeTransferCreateCommand,
-  transferAllCommand,
+  transferCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
-import { estimateGas } from '@kadena/client-utils/core';
-import { composePactCommand, setMeta } from '@kadena/client/fp';
+import { composePactCommand } from '@kadena/client/fp';
 import { PactNumber } from '@kadena/pactjs';
 
 export interface IReceiverAccount {
@@ -30,45 +26,41 @@ export interface IReceiverAccount {
   address: string;
   chains: Array<{ chainId: ChainId; balance: string }>;
   overallBalance: string;
-  keyset: {
-    guard: {
-      keys: ISigner[];
-      pred: BuiltInPredicate;
-    };
-  };
+  guard: IGuard;
 }
 
 export const getAccount = (
   address: string,
   chainResult: Array<{
     chainId: ChainId | undefined;
-    result:
-      | {
-          balance: string;
-          guard: { keys: string[]; pred: BuiltInPredicate };
-        }
-      | undefined;
+    result: IDiscoveredAccount | undefined;
   }>,
 ): IReceiverAccount[] => {
   const accounts = chainResult.reduce(
     (acc, data) => {
+      const { details, principal } = data.result ?? {};
+      const balance = new PactNumber(details?.balance ?? '0').toDecimal();
       if (
         !data.chainId ||
         !data.result ||
-        !data.result.balance ||
-        data.result.balance === '0'
+        !details ||
+        !details.balance ||
+        balance === '0.0'
       )
         return acc;
-      const key = `${data.result.guard.keys.sort().join(',')}:${data.result.guard.pred}`;
+      if (!principal) {
+        return acc;
+      }
+      const key = principal;
       if (!acc[key]) {
         const item: IReceiverAccount = {
           address,
-          overallBalance: new PactNumber(data.result.balance).toString(),
-          keyset: { guard: data.result.guard },
+          overallBalance: new PactNumber(details.balance).toString(),
+          guard: { ...details.guard, principal },
           chains: [
             {
               chainId: data.chainId,
-              balance: data.result.balance,
+              balance: balance,
             },
           ],
         };
@@ -79,11 +71,11 @@ export const getAccount = (
         [key]: {
           ...acc[key],
           overallBalance: new PactNumber(acc[key]!.overallBalance ?? '0')
-            .plus(new PactNumber(data.result.balance))
+            .plus(new PactNumber(details.balance))
             .toDecimal(),
           chains: acc[key]!.chains!.concat({
             chainId: data.chainId,
-            balance: data.result.balance,
+            balance: balance,
           }),
         },
       };
@@ -293,7 +285,6 @@ export const discoverReceiver = async (
   receiver: string,
   networkId: string,
   contract: string,
-  mapKeys: (key: ISigner) => ISigner,
 ) => {
   const result = await discoverAccount(
     receiver,
@@ -302,17 +293,11 @@ export const discoverReceiver = async (
     contract,
   ).execute();
 
-  const rec = getAccount(
-    receiver,
-    result as Array<{
-      chainId: ChainId;
-      result: { balance: string; guard: any };
-    }>,
-  );
+  const rec = getAccount(receiver, result);
 
   if (rec.length === 0) {
     console.log('Receiver not found!');
-    const [fromDb] = await accountRepository.getAccountByAddress(receiver);
+    const [fromDb] = await accountRepository.getAccountsByAddress(receiver);
     if (fromDb) {
       console.log('Receiver found in DB');
       rec.push(fromDb);
@@ -322,19 +307,14 @@ export const discoverReceiver = async (
         address: receiver,
         overallBalance: '0',
         chains: [],
-        keyset: {
-          guard: {
-            pred: 'keys-all' as const,
-            keys: [receiver.split('k:')[1]],
-          },
+        guard: {
+          pred: 'keys-all' as const,
+          keys: [receiver.split('k:')[1]],
+          principal: receiver,
         },
       });
     }
   }
-
-  rec.forEach((r) => {
-    r.keyset.guard.keys = r.keyset.guard.keys.map(mapKeys);
-  });
 
   return rec;
 };
@@ -349,7 +329,6 @@ export interface IReceiver {
   }[];
   discoveredAccounts: IReceiverAccount[];
   discoveryStatus: 'not-started' | 'in-progress' | 'done';
-  transferMax?: boolean;
 }
 
 export const createTransactions = async ({
@@ -378,113 +357,70 @@ export const createTransactions = async ({
   if (!account || +account.overallBalance < 0 || !network || !profileId) {
     throw new Error('INVALID_INPUTs');
   }
+
+  if (!isKeysetGuard(account.guard)) {
+    throw new Error('Sender Account guard is not a keyset guard');
+  }
+
   const groupId = crypto.randomUUID();
   const txs = await Promise.all(
-    receivers.map(async (receiverAccount) => {
-      if (
-        !receiverAccount ||
-        !receiverAccount.address ||
-        receiverAccount.discoveredAccounts.length === 0
-      ) {
-        console.log(`Receiver not found, ${JSON.stringify(receiverAccount)}`);
-        throw new Error(
-          `Receiver not found, ${JSON.stringify(receiverAccount)}`,
-        );
-      }
+    receivers
+      .map((receiverAccount) => {
+        if (
+          !receiverAccount ||
+          !receiverAccount.address ||
+          receiverAccount.discoveredAccounts.length === 0
+        ) {
+          console.log(`Receiver not found, ${JSON.stringify(receiverAccount)}`);
+          throw new Error(
+            `Receiver not found, ${JSON.stringify(receiverAccount)}`,
+          );
+        }
 
-      if (receiverAccount.discoveredAccounts.length > 1) {
-        throw new Error(
-          `Multiple accounts found with the same address (${receiverAccount.address}), resolve manually`,
-        );
-      }
-      const discoveredAccount = receiverAccount.discoveredAccounts[0];
+        if (receiverAccount.discoveredAccounts.length > 1) {
+          throw new Error(
+            `Multiple accounts found with the same address (${receiverAccount.address}), resolve manually`,
+          );
+        }
+        const discoveredAccount = receiverAccount.discoveredAccounts[0];
+        const receiverGuard = discoveredAccount.guard;
 
-      let commands: [
-        IUnsignedCommand,
-        {
-          type: 'transfer';
-          data: {
-            amount: string;
-            totalAmount: string;
-            chainId: ChainId;
-            receiver: string;
-          };
-        },
-      ][];
-      if (receiverAccount.transferMax) {
-        commands = await Promise.all(
-          account.chains.map(async ({ chainId, balance }) => {
-            const amount = balance.toString().includes('.')
-              ? `${balance}`
-              : `${balance}.0`;
-            const command = composePactCommand(
-              transferAllCommand({
-                sender: {
-                  account: account.address,
-                  publicKeys: account.keyset!.guard.keys.map(mapKeys),
-                },
-                receiver: {
-                  account: discoveredAccount.address,
-                  keyset: discoveredAccount.keyset.guard,
-                },
-                amount,
-                chainId,
-              }),
-              {
-                networkId: network.networkId,
-                meta: {
-                  chainId,
-                  creationTime,
-                },
-              },
-            );
-
-            const gas = await estimateGas(command);
-
-            return [
-              createTransaction(composePactCommand(command, setMeta(gas))()),
-              {
-                type: 'transfer',
-                data: {
-                  amount: amount,
-                  totalAmount: receiverAccount.amount,
-                  chainId: chainId,
-                  receiver: receiverAccount.address,
-                },
-              },
-            ] as const;
-          }),
-        );
-      } else {
-        const transferFn = isSafeTransfer
+        const transferCreateFn = isSafeTransfer
           ? safeTransferCreateCommand
           : transferCreateCommand;
 
-        commands = receiverAccount.chunks.map((optimal) => {
-          const command = composePactCommand(
-            transferFn({
-              amount: optimal.amount,
-              contract: contract,
-              chainId: optimal.chainId,
-              sender: {
-                account: account.address,
-                publicKeys: account.keyset!.guard.keys.map(mapKeys),
-              },
-              receiver: {
-                account: receiverAccount.address,
-                keyset: discoveredAccount.keyset.guard,
-              },
-            }),
-            {
-              networkId: network.networkId,
-              meta: {
-                chainId: optimal.chainId,
-                gasLimit: gasLimit,
-                gasPrice: gasPrice,
-                creationTime,
-              },
+        return receiverAccount.chunks.map((optimal) => {
+          const inputs = {
+            amount: optimal.amount,
+            contract: contract,
+            chainId: optimal.chainId,
+            sender: {
+              account: account.address,
+              publicKeys: account.guard.keys.map(mapKeys),
             },
-          )();
+          };
+          const transferCmd = isKeysetGuard(receiverGuard)
+            ? transferCreateFn({
+                ...inputs,
+                receiver: {
+                  account: receiverAccount.address,
+                  keyset: receiverGuard,
+                },
+              })
+            : transferCommand({
+                ...inputs,
+                receiver: receiverAccount.address,
+              });
+
+          const command = composePactCommand(transferCmd, {
+            networkId: network.networkId,
+            meta: {
+              chainId: optimal.chainId,
+              gasLimit: gasLimit,
+              gasPrice: gasPrice,
+              creationTime,
+            },
+          })();
           return [
             createTransaction(command),
             {
@@ -498,28 +434,28 @@ export const createTransactions = async ({
             },
           ] as const;
         });
-      }
+      })
+      .map(async (commands) => {
+        // const partiallySignedCommands = await sign(commands);
 
-      // const partiallySignedCommands = await sign(commands);
+        console.log('commands', commands);
 
-      console.log('commands', commands);
-
-      return await Promise.all(
-        commands.map(([tx, purpose]) => {
-          const transaction: ITransaction = {
-            ...tx,
-            uuid: crypto.randomUUID(),
-            status: 'initiated',
-            profileId,
-            networkUUID: network.uuid,
-            groupId,
-            purpose,
-          };
-          transactionRepository.addTransaction(transaction);
-          return transaction;
-        }),
-      );
-    }),
+        return await Promise.all(
+          commands.map(([tx, purpose]) => {
+            const transaction: ITransaction = {
+              ...tx,
+              uuid: crypto.randomUUID(),
+              status: 'initiated',
+              profileId,
+              networkUUID: network.uuid,
+              groupId,
+              purpose,
+            };
+            transactionRepository.addTransaction(transaction);
+            return transaction;
+          }),
+        );
+      }),
   );
   return [groupId, txs.flat()] as [string, ITransaction[]];
 };
@@ -547,11 +483,11 @@ export async function createRedistributionTxs({
       createCrossChainCommand({
         sender: {
           account: account.address,
-          publicKeys: account.keyset!.guard.keys.map(mapKeys),
+          publicKeys: account.guard.keys.map(mapKeys),
         },
         receiver: {
           account: account.address,
-          keyset: account.keyset!.guard,
+          keyset: account.guard,
         },
         amount: amount,
         targetChainId: target,

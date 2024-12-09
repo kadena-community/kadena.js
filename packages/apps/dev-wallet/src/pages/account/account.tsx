@@ -12,6 +12,7 @@ import {
   accountRepository,
   isWatchedAccount,
 } from '@/modules/account/account.repository';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useAsync } from '@/utils/useAsync';
@@ -27,6 +28,7 @@ import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { getGuardInfo } from '../../Components/Guard/Guard';
 import { noStyleLinkClass, panelClass } from '../home/style.css';
 import { linkClass } from '../transfer/style.css';
 import { ActivityTable } from './Components/ActivityTable';
@@ -54,10 +56,10 @@ export function AccountPage() {
     }
   }, [account?.uuid]);
 
-  const keyset = account?.keyset;
+  const accountGuard = account?.guard;
   const asset = fungibles.find((f) => f.contract === account?.contract);
   const [activities = []] = useAsync(getTransferActivities, [
-    !isWatchedAccount(account) ? account?.keyset?.uuid : '',
+    !isWatchedAccount(account) ? account?.keysetId : '',
     activeNetwork?.uuid,
   ]);
 
@@ -70,7 +72,7 @@ export function AccountPage() {
       })),
     [chains],
   );
-  if (!account || !keyset || !asset) {
+  if (!account || !accountGuard || !asset) {
     return null;
   }
 
@@ -78,17 +80,17 @@ export function AccountPage() {
     if ('watched' in account && account.watched) {
       throw new Error('Can not fund watched account');
     }
-    if (!keyset || !('principal' in keyset)) {
+    if (!isKeysetGuard(account.guard)) {
       throw new Error('No keyset found');
     }
     if (!activeNetwork) {
       throw new Error('No active network found');
     }
     const fundTx = await fundAccount({
-      address: account?.address ?? keyset.principal,
+      address: account?.address ?? account.guard.principal,
       chainId,
-      keyset,
-      profileId: keyset?.profileId,
+      guard: account.guard,
+      profileId: account.profileId,
       network: activeNetwork,
     });
 
@@ -107,6 +109,8 @@ export function AccountPage() {
   };
   const isOwnedAccount =
     !isWatchedAccount(account) && account.profileId === profile?.uuid;
+
+  const guardInfo = getGuardInfo(accountGuard);
 
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
@@ -188,7 +192,7 @@ export function AccountPage() {
               value={JSON.stringify({
                 address: account.address,
                 contract: account.contract,
-                guard: keyset.guard,
+                guard: account.guard,
               })}
             />
             <Stack
@@ -218,29 +222,49 @@ export function AccountPage() {
                 </Text>
               </Stack>
               <Stack flexDirection={'column'} gap={'sm'}>
-                <Text>Predicate</Text>
+                <Text>GuardType</Text>
                 <Text color="emphasize" variant="code">
-                  {keyset.guard.pred}
+                  {guardInfo.type}
                 </Text>
               </Stack>
-              <Stack flexDirection={'column'} gap={'sm'}>
-                <Text>Keys</Text>
-                {keyset.guard.keys.map((key) => (
-                  <Stack
-                    key={key}
-                    gap="sm"
-                    alignItems={'center'}
-                    className={addressBreakClass}
-                  >
-                    <Text>
-                      <MonoKey />
-                    </Text>
-                    <Text variant="code" color="emphasize">
-                      {key}
+              {isKeysetGuard(account.guard) && (
+                <>
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <Text>Predicate</Text>
+                    <Text color="emphasize" variant="code">
+                      {account.guard.pred}
                     </Text>
                   </Stack>
-                ))}
-              </Stack>
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <Text>Keys</Text>
+                    {account.guard.keys.map((key) => (
+                      <Stack
+                        key={key}
+                        gap="sm"
+                        alignItems={'center'}
+                        className={addressBreakClass}
+                      >
+                        <Text>
+                          <MonoKey />
+                        </Text>
+                        <Text variant="code" color="emphasize">
+                          {key}
+                        </Text>
+                      </Stack>
+                    ))}
+                  </Stack>
+                </>
+              )}
+              {!isKeysetGuard(account.guard) && (
+                <>
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <Text>Guard Principal</Text>
+                    <Text color="emphasize" variant="code">
+                      {account.guard.principal}
+                    </Text>
+                  </Stack>
+                </>
+              )}
             </Stack>
           </Stack>
         </TabItem>

@@ -1,4 +1,5 @@
 import { AccountInput } from '@/Components/AccountInput/AccountInput';
+import { isKeysetGuard } from '@/modules/account/guards';
 import {
   contactRepository,
   IContact,
@@ -63,15 +64,14 @@ export function ContactForm({
       setError('Please select an account');
       return;
     }
+    if (!isKeysetGuard(discoverdAccount.guard)) {
+      setError('only Keyset is valid for contact');
+      return;
+    }
     const account: IContact['account'] = {
       address: discoverdAccount.address,
       contract: 'coin',
-      keyset: {
-        keys: discoverdAccount.keyset.guard.keys.map((item) =>
-          typeof item === 'string' ? item : item.pubKey,
-        ),
-        pred: discoverdAccount.keyset.guard.pred,
-      },
+      guard: discoverdAccount.guard,
       networkUUID: activeNetwork!.uuid,
     };
     const contact = {

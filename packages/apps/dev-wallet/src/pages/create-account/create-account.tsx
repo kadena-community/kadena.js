@@ -73,11 +73,11 @@ export function CreateAccount() {
 
   const getSingleKeyAccount = (key: string) =>
     filteredAccounts.find((account) => {
-      const keys = account.keyset?.guard.keys;
+      const keys = account.guard.keys;
       if (
         keys?.length === 1 &&
         keys[0] === key &&
-        account.keyset?.guard.pred === 'keys-all'
+        account.guard.pred === 'keys-all'
       ) {
         return account;
       }
@@ -100,6 +100,7 @@ export function CreateAccount() {
       profileId: profile.uuid,
       address: keyset.principal,
       keysetId: keyset.uuid,
+      guard: { ...keyset.guard, principal: keyset.principal },
       networkUUID: activeNetwork.uuid,
       contract,
       chains: [],
@@ -143,6 +144,10 @@ export function CreateAccount() {
       alias: alias || aliasDefaultValue,
       profileId: profile.uuid,
       address: keyset.principal,
+      guard: {
+        ...guard,
+        principal: keyset.principal,
+      },
       keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
       contract,
