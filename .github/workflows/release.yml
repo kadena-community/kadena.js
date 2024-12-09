@@ -82,8 +82,8 @@ jobs:
         run: |
           cd packages/apps/graph && \
           docker compose build graphql --push --build-arg \
-          -t ghcr.io/kadena/graph:latest \
-          -t ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest') \
+          -t=ghcr.io/kadena/graph:latest \
+          -t=ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest') \
           -t=ghcr.io/kadena-community/graph:${GITHUB_SHA::7}
 
       - name: Build Docker Image `:preview`
