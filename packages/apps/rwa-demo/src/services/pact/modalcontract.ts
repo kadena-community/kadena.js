@@ -1,7 +1,13 @@
-export const getContract = ({ name, namespace }) => `(namespace (read-msg 'ns))
+import { IAddContractProps } from '../createContract';
 
-(module ${name} GOV
-  "${name} descriptions"
+export const getContract = ({
+  contractName,
+  owner,
+  namespace,
+}: IAddContractProps) => `(namespace (read-msg 'ns))
+
+(module ${contractName} GOV
+  "${contractName} descriptions"
 
   (defcap GOV () (enforce-keyset "RWA.rwa-admin-keyset"))
 
@@ -12,7 +18,7 @@ export const getContract = ({ name, namespace }) => `(namespace (read-msg 'ns))
   (implements RWA.identity-registry-storage-v1)
 
   (use fungible-v2 [account-details])
-
+  (use burn-wallet)
 
 ;; acts like a tokenStorage.sol
   (defschema token-info

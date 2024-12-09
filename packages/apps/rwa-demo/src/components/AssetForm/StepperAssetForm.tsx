@@ -40,6 +40,7 @@ export const StepperAssetForm: FC<IProps> = () => {
     formState: { isValid },
   } = useForm<IAddContractProps>({
     values: {
+      contractName: '',
       owner: '',
       complianceOwner: '',
       namespace,
@@ -47,6 +48,7 @@ export const StepperAssetForm: FC<IProps> = () => {
   });
 
   const handleSave = async (data: IAddContractProps) => {
+    console.log(22);
     await submitContract(data);
   };
 
@@ -113,6 +115,15 @@ export const StepperAssetForm: FC<IProps> = () => {
           />
 
           <Controller
+            name="contractName"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextField label="Contract Name" {...field} />
+            )}
+          />
+
+          <Controller
             name="owner"
             control={control}
             rules={{ required: true }}
@@ -127,14 +138,13 @@ export const StepperAssetForm: FC<IProps> = () => {
               <TextField label="Compliance Owner" {...field} />
             )}
           />
+          <Stack>
+            <Button isDisabled={!isValid} type="submit">
+              Create the contract
+            </Button>
+          </Stack>
         </form>
       )}
-
-      <Stack>
-        <Button isDisabled={!isValid} type="submit">
-          Create the contract
-        </Button>
-      </Stack>
     </>
   );
 };

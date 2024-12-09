@@ -4,6 +4,7 @@ import { Pact } from '@kadena/client';
 import { getContract } from './pact/modalcontract';
 
 export interface IAddContractProps {
+  contractName: string;
   owner: string;
   complianceOwner: string;
   namespace: string;
