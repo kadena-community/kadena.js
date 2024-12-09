@@ -97,6 +97,6 @@ jobs:
         # only run when `packages/apps/graph/**` has changes
         run: |
           cd packages/apps/graph && \
-          docker compose build graphql-source --push --build-arg \
+          docker compose build graphql --push --build-arg \
           -t=ghcr.io/kadena-community/graph:preview \
           -t=ghcr.io/kadena-community/graph:${GITHUB_SHA::7}
