@@ -1,5 +1,17 @@
 # @kadena/kode-ui
 
+## 0.20.0
+
+### Minor Changes
+
+- 5c5c747: add context section in the sidebar layout header
+- 4c684a2: add the SectionCard Component
+- dbd9076: add an extra styling variant to the table component
+
+### Patch Changes
+
+- f35e30c: fix in the sidebar header layout
+
 ## 0.19.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @kadena/hd-wallet
 
+## 0.6.1
+
+### Patch Changes
+
+- 8615d09: Improved documentation in readme
+
 ## 0.6.0
 
 ### Minor Changes
