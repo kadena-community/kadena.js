@@ -12,7 +12,7 @@ export const config = {
   colorList,
   defaultAccentColor: colorList[0],
   DB: {
-    DB_VERSION: 40,
+    DB_VERSION: 41,
     DB_NAME: 'dev-wallet',
   },
   ACCOUNTS: {

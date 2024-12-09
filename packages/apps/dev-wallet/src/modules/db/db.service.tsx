@@ -11,6 +11,7 @@ import { execInSequence } from '@/utils/helpers';
 
 import { IDBBackup, importBackup, serializeTables } from './backup/backup';
 import { broadcast, dbChannel, EventTypes } from './db-channel';
+import { ExtendedTableName } from './migration/createDB';
 import { migration } from './migration/migration';
 
 const { DB_NAME, DB_VERSION } = config.DB;
@@ -20,7 +21,12 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   let db = result.db;
   if (result.needsUpgrade) {
     broadcast('migration-started');
-    db = await migration(result);
+    try {
+      db = await migration(result);
+    } catch (e) {
+      result.versionTransaction.abort();
+      throw e;
+    }
     broadcast('migration-finished');
   }
 
@@ -66,23 +72,23 @@ export interface ISubscribe {
 }
 export interface IDBService {
   getAll: <T>(
-    storeName: string,
+    storeName: ExtendedTableName,
     filter?: string | string[] | IDBKeyRange | undefined,
     indexName?: string | undefined,
   ) => Promise<T[]>;
-  getOne: <T>(storeName: string, key: string) => Promise<T>;
+  getOne: <T>(storeName: ExtendedTableName, key: string) => Promise<T>;
   add: <T>(
-    storeName: string,
+    storeName: ExtendedTableName,
     value: T,
     key?: string | undefined,
     options?: { noCreationTime: boolean },
   ) => Promise<void>;
   update: <T>(
-    storeName: string,
+    storeName: ExtendedTableName,
     value: T,
     key?: string | undefined,
   ) => Promise<void>;
-  remove: (storeName: string, key: string) => Promise<void>;
+  remove: (storeName: ExtendedTableName, key: string) => Promise<void>;
   subscribe: ISubscribe;
   serializeTables: () => Promise<string>;
   importBackup: (
