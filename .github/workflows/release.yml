@@ -84,13 +84,11 @@ jobs:
         # only run when `changesets` has published for `@kadena/graph`
         if: steps.changesets.outputs.published == 'true' && contains(steps.changesets.outputs.publishedPackages, '@kadena/graph')
         run: |
-          cd packages/apps/graph && docker compose build graphql -t ghcr.io/kadena/graph:latest -t ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
-
-      - name: Push Docker Image to GHCR for `:latest`
-        # only publish when above is success
-        if: steps.docker-build-graph-latest.conclusion == 'success'
-        run: |
-          docker push ghcr.io/kadena.js/graph:latest && docker push ghcr.io/kadena/graph:latest && docker push ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
+          cd packages/apps/graph && \
+          docker compose build graphql --push --build-arg \
+          -t ghcr.io/kadena/graph:latest \
+          -t ghcr.io/kadena/graph:$(npm view @kadena/graph --json |jq '."dist-tags".latest') \
+          -t=ghcr.io/kadena-community/graph:${GITHUB_SHA::7}
 
       - name: Build Docker Image `:preview`
         id: docker-build-graph-preview
@@ -99,5 +97,6 @@ jobs:
         # only run when `packages/apps/graph/**` has changes
         run: |
           cd packages/apps/graph && \
-          docker compose build graphql-source --push --build-arg -t=ghcr.io/kadena-community/graph:preview
-          docker compose build graphql --push --build-arg -t=ghcr.io/kadena-community/graph:${GITHUB_SHA::7}
+          docker compose build graphql-source --push --build-arg \
+          -t=ghcr.io/kadena-community/graph:preview \
+          -t=ghcr.io/kadena-community/graph:${GITHUB_SHA::7}
