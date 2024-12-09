@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
+import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 
 export const AgentsList: FC = () => {
   const { paused } = useAsset();
@@ -63,13 +64,19 @@ export const AgentsList: FC = () => {
                 {
                   label: 'Name',
                   key: 'alias',
-                  width: '30%',
+                  width: '20%',
                 },
                 {
                   label: 'Account',
                   key: 'accountName',
-                  width: '50%',
+                  width: '20%',
                   render: CompactTableFormatters.FormatAccount(),
+                },
+                {
+                  label: 'Roles',
+                  key: 'accountName',
+                  width: '40%',
+                  render: FormatAgentRoles(),
                 },
                 {
                   label: '',

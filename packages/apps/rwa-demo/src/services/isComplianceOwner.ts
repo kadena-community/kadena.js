@@ -5,13 +5,15 @@ export interface IIsComplianceOwnerProps {
   owner: string;
 }
 
+//@TODO: break this up in seperate owners:
+// only checking the RWA.max-balance-compliance owner.
+// not checking the RWA.supply-limit-compliance
+// atm I make them the same
 export const isComplianceOwner = async (data: IIsComplianceOwnerProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(
-      `(RWA.max-balance-compliance.is-compliance-owner (read-string 'owner))`,
-    )
+    .execution(`(RWA.max-balance-compliance.is-owner (read-string 'owner))`)
     .setMeta({
       senderAccount: data.owner,
       chainId: getNetwork().chainId,

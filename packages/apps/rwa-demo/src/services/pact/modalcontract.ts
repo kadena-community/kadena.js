@@ -18,7 +18,7 @@ export const getContract = ({
   (implements RWA.identity-registry-storage-v1)
 
   (use fungible-v2 [account-details])
-  (use burn-wallet)
+  (use RWA.burn-wallet)
 
 ;; acts like a tokenStorage.sol
   (defschema token-info
@@ -27,7 +27,7 @@ export const getContract = ({
     decimals:integer
     kadenaID:string
     version:string
-    compliance:[module{compliance-v1}]
+    compliance:[module{RWA.compliance-v1}]
     paused:bool
     supply:decimal
     owner-guard:guard
@@ -114,13 +114,13 @@ export const getContract = ({
     true
   )
 
-  (defcap IDENTITY-REGISTRY-ADDED:bool (identity-registry:module{identity-registry-v1})
+  (defcap IDENTITY-REGISTRY-ADDED:bool (identity-registry:module{RWA.identity-registry-v1})
     @doc "Event emitted when an identity registry is added."
     @event
     true
   )
 
-  (defcap COMPLIANCE-ADDED:bool (compliance:module{compliance-v1})
+  (defcap COMPLIANCE-ADDED:bool (compliance:module{RWA.compliance-v1})
     @doc "Event emitted when a compliance contract is added."
     @event
     true
@@ -328,12 +328,12 @@ export const getContract = ({
     (with-read token "" {"version" := version } version)
   )
 
-  (defun identity-registry:module{identity-registry-v1} ()
+  (defun identity-registry:module{RWA.identity-registry-v1} ()
     @doc "Return the associated identity registry."
     (with-read token "" {"identity-registry" := identity-registry } identity-registry)
   )
 
-  (defun compliance:[module{compliance-v1}] ()
+  (defun compliance:[module{RWA.compliance-v1}] ()
     @doc "Return the compliance contract."
     (with-read token "" {"compliance" := compliance } compliance)
   )
@@ -605,7 +605,7 @@ export const getContract = ({
 
   (defun mint-internal (to:string amount:decimal)
     (with-read token "" {
-      "compliance":= compliance-l:[module{compliance-v1}]
+      "compliance":= compliance-l:[module{RWA.compliance-v1}]
       }
       (map (lambda (compliance:module{RWA.compliance-v1})
           (compliance::created TOKEN-ID to amount)
