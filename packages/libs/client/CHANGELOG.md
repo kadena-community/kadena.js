@@ -1,5 +1,17 @@
 # Change Log - @kadena/client
 
+## 1.16.0
+
+### Minor Changes
+
+- 5e9bfd0: Support for passing a request init object to client functions
+
+### Patch Changes
+
+- 1f46bee: Add a default value `null` for the proof
+- Updated dependencies \[5e9bfd0]
+  - @kadena/chainweb-node-client\@0.8.0
+
 ## 1.15.0
 
 ### Minor Changes
