@@ -227,6 +227,14 @@ export function AccountPage() {
                   {guardInfo.type}
                 </Text>
               </Stack>
+
+              <Stack flexDirection={'column'} gap={'sm'}>
+                <Text>Guard Principal</Text>
+                <Text color="emphasize" variant="code">
+                  {account.guard.principal}
+                </Text>
+              </Stack>
+
               {isKeysetGuard(account.guard) && (
                 <>
                   <Stack flexDirection={'column'} gap={'sm'}>
@@ -252,16 +260,6 @@ export function AccountPage() {
                         </Text>
                       </Stack>
                     ))}
-                  </Stack>
-                </>
-              )}
-              {!isKeysetGuard(account.guard) && (
-                <>
-                  <Stack flexDirection={'column'} gap={'sm'}>
-                    <Text>Guard Principal</Text>
-                    <Text color="emphasize" variant="code">
-                      {account.guard.principal}
-                    </Text>
                   </Stack>
                 </>
               )}

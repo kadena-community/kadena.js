@@ -40,17 +40,7 @@ export const getAccount = (
     (acc, data) => {
       const { details, principal } = data.result ?? {};
       const balance = new PactNumber(details?.balance ?? '0').toDecimal();
-      if (
-        !data.chainId ||
-        !data.result ||
-        !details ||
-        !details.balance ||
-        balance === '0.0'
-      )
-        return acc;
-      if (!principal) {
-        return acc;
-      }
+      if (!data.chainId || !data.result || !details || !principal) return acc;
       const key = principal;
       if (!acc[key]) {
         const item: IReceiverAccount = {
@@ -292,6 +282,8 @@ export const discoverReceiver = async (
     undefined,
     contract,
   ).execute();
+
+  console.log('result', result);
 
   const rec = getAccount(receiver, result);
 

@@ -8,6 +8,7 @@ import {
   isUserGuard,
 } from '@/modules/account/guards';
 import { Stack, Text } from '@kadena/kode-ui';
+import { ellipsis } from '@kadena/kode-ui/styles';
 import { Keyset } from './keyset';
 
 export function getGuardInfo(guard: IGuard) {
@@ -64,8 +65,9 @@ export const Guard = ({ guard }: { guard: IGuard }) => {
       paddingInline={'sm'}
       marginBlock={'xs'}
     >
-      <Text size="smallest">
-        {type}:{value}
+      <Text size="smallest" className={ellipsis}>
+        {type}
+        {value ? `: ${value}` : ''}
       </Text>
     </Stack>
   );
