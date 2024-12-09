@@ -215,4 +215,4 @@ jobs:
         run: |
           cd packages/apps/graph && \
           docker compose build graphql --push --build-arg \
-          -t=ghcr.io/kadena-community/graph:dev,ghcr.io/kadena-community/graph:${GITHUB_SHA::7}
+          -t=ghcr.io/kadena-community/graphql:dev,ghcr.io/kadena-community/graphql:${GITHUB_SHA::7}
