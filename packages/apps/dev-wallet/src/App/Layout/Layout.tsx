@@ -85,6 +85,7 @@ export const Layout: FC = () => {
             mainContainerClass,
             isExpanded ? isExpandedMainClass : isNotExpandedClass,
           )}
+          flex={1}
         >
           <Outlet />
         </Stack>

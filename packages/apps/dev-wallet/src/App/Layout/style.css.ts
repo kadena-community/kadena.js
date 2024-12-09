@@ -20,9 +20,11 @@ export const mainContainerClass = style({
   flexDirection: 'column',
   maxWidth: '100vw',
   width: '100%',
+  minHeight: 'calc(100vh - 120px)',
   '@media': {
     'screen and (min-width: 768px)': {
       maxWidth: contentWidth,
+      minHeight: 'calc(100vh - 60px)',
     },
   },
 });

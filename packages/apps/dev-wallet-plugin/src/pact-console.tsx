@@ -9,7 +9,7 @@ import {
 import { Stack, Text } from '@kadena/kode-ui';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
 import classNames from 'classnames';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { hostUrlGenerator, INetwork } from './network';
 import { badgeClass, inputClass } from './style.css';
 
@@ -17,13 +17,7 @@ document.documentElement.classList.add(darkThemeClass);
 
 export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 
-export function PactConsole() {
-  const queryString = window.location.search;
-  const { networks } = useMemo(() => {
-    const config = new URLSearchParams(queryString).get('config');
-    if (!config) return { networks: [] };
-    return JSON.parse(config) as { networks: INetwork[] };
-  }, [queryString]);
+export function PactConsole({ networks }: { networks: INetwork[] }) {
   const [counter, setCounter] = useState<number>(0);
   const [command, setCommand] = useState<string>('');
   const [chainId, setChainId] = useState<ChainId>('0');
@@ -108,17 +102,21 @@ export function PactConsole() {
                 </Text>
                 <Text
                   size="small"
-                  className={classNames(badgeClass, 'network')}
+                  className={classNames(badgeClass, 'network', 'disabled')}
                 >
                   <Stack paddingInlineStart={'xs'} paddingInlineEnd={'lg'}>
                     {log.networkId}
                   </Stack>
                 </Text>
-                <Text size="small" className={classNames(badgeClass, 'chain')}>
+                <Text
+                  size="small"
+                  className={classNames(badgeClass, 'chain', 'disabled')}
+                >
                   <Stack paddingInlineStart={'xs'} paddingInlineEnd={'lg'}>
                     {log.chainId}
                   </Stack>
                 </Text>
+                <Text>{'>'}</Text>
                 <Text variant="code" size="small">
                   {log.command}
                 </Text>

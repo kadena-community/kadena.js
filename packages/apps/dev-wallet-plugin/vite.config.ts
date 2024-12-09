@@ -31,7 +31,6 @@ const monorepoPathsRegex = monorepoPackages.map(
 monorepoPackages.push('@kadena/client/fp');
 
 export const config: UserConfig = {
-  base: '/hosted-plugins/pact-console/',
   plugins: [
     react(),
     tsconfigPaths({ root: './' }),
@@ -59,14 +58,10 @@ export const config: UserConfig = {
     ssr: false,
     minify: false,
     sourcemap: 'hidden',
-    rollupOptions: {
-      input: {
-        html: 'index.html',
-        main: 'src/index.ts', // your main app entry point
-      },
-      output: {
-        minifyInternalExports: false,
-      },
+    lib: {
+      entry: 'src/plugin.tsx', // The entry point of your library
+      name: 'pact-console', // The global variable name for UMD/IIFE builds
+      fileName: (format) => `pact-console.${format}.js`, // File name template
     },
     commonjsOptions: {
       // add all monorepo packages path regex to commonjsOptions since they are commonjs

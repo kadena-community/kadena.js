@@ -16,7 +16,7 @@ export const pluginIconClass = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#fff',
+  color: tokens.kda.foundation.color.neutral.n1,
   textDecoration: 'none',
   fontWeight: 'bold',
 });

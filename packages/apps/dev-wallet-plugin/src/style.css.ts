@@ -34,6 +34,9 @@ export const badgeClass = style({
     '&.chain': {
       width: '30px',
     },
+    '&.disabled': {
+      opacity: 0.6,
+    },
   },
 });
 

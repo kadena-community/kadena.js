@@ -18,7 +18,6 @@
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/dev-wallet-plugin": "workspace:*",
     "@kadena/hd-wallet": "workspace:*",
     "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",

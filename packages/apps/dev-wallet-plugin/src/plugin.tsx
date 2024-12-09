@@ -1,12 +1,16 @@
 import '@kadena/kode-ui/global';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { INetwork } from './network';
 import { PactConsole } from './pact-console';
 
-export function renderApp() {
-  ReactDOM.createRoot(document.getElementById('plugin-root')!).render(
+export function createApp(
+  domElement: HTMLElement,
+  config: { networks: INetwork[] },
+) {
+  ReactDOM.createRoot(domElement).render(
     <React.StrictMode>
-      <PactConsole />
+      <PactConsole networks={config.networks} />
     </React.StrictMode>,
   );
 }
