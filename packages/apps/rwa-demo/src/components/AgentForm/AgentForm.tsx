@@ -1,5 +1,4 @@
 import { useEditAgent } from '@/hooks/editAgent';
-import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
@@ -22,9 +21,9 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { data: userAgentRolesData } = useGetAgentRoles({
-    agent: agent?.accountName,
-  });
+  // const { data: userAgentRolesData } = useGetAgentRoles({
+  //   agent: agent?.accountName,
+  // });
   const { submit } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();

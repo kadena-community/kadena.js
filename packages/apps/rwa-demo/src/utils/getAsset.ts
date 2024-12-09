@@ -27,7 +27,7 @@ export const getFullAsset = (): IAsset | undefined => {
 export const getAsset = (): string => {
   const asset = getFullAsset();
   if (!asset) {
-    throw new Error('no asset found');
+    return '';
   }
   return `${asset.namespace}.${asset.contractName}`;
 };

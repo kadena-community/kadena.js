@@ -12,7 +12,7 @@ export const getBalance = async (data: IGetBalanceProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.get-balance (read-string 'account))`)
+    .execution(`(${getAsset()}.get-balance (read-string 'account))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

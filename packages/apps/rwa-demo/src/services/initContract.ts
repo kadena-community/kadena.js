@@ -1,8 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
-import { IAddContractProps } from './createContract';
-import { getContract } from './pact/modalcontract';
+import type { IAddContractProps } from './createContract';
 
 const createPubKeyFromAccount = (account: string): string => {
   return account.replace('k:', '').replace('r:', '');

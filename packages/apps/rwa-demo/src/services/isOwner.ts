@@ -24,8 +24,10 @@ export const isOwner = async (data: IIsOwnerProps) => {
     signatureVerification: false,
   });
 
-  return true;
   console.log({ result });
+  return true;
+  //TODO: fix contract
+  // console.log({ result });
 
-  return result.status === 'success' ? result.data : undefined;
+  // return result.status === 'success' ? result.data : undefined;
 };

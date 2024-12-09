@@ -35,6 +35,7 @@ export interface IAssetContext {
     contractName: string;
     namespace: string;
   }) => IAsset | undefined;
+  addExistingAsset: (name: string) => IAsset | undefined;
   removeAsset: (uuid: string) => void;
   getAsset: (
     uuid: string,
@@ -47,6 +48,7 @@ export const AssetContext = createContext<IAssetContext>({
   paused: false,
   setAsset: () => {},
   addAsset: () => undefined,
+  addExistingAsset: () => undefined,
   removeAsset: (uuid: string) => undefined,
   getAsset: async () => undefined,
 });
@@ -129,6 +131,15 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     return asset;
   };
 
+  const addExistingAsset = (name: string) => {
+    const nameArray = name.split('.');
+    if (nameArray.length !== 2) {
+      throw new Error('asset contract not valid format');
+    }
+
+    return addAsset({ namespace: nameArray[0], contractName: nameArray[1] });
+  };
+
   useEffect(() => {
     getAssets();
     window.addEventListener(storageKey, storageListener);
@@ -147,12 +158,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    const asset = getFullAsset();
-    setAsset(asset);
-    if (asset) {
-      return;
-    }
-  }, []);
+    if (asset) return;
+    const innerAsset = getFullAsset();
+    setAsset(innerAsset);
+    router.refresh();
+  }, [asset, assets]);
 
   useEffect(() => {
     if (!asset) return;
@@ -173,6 +183,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         assets,
         setAsset: handleSelectAsset,
         addAsset,
+        addExistingAsset,
         getAsset,
         removeAsset,
         paused,

@@ -1,7 +1,5 @@
-import {
-  interpretErrorMessage,
-  type ITransaction,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IAddContractProps } from '@/services/createContract';
 import { createContract } from '@/services/createContract';
 import { getClient } from '@/utils/client';
@@ -19,8 +17,6 @@ export const useCreateContract = () => {
   ): Promise<ITransaction | undefined> => {
     try {
       const tx = await createContract(data, account!);
-
-      console.log({ tx, cmd: JSON.parse(tx.cmd) });
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;

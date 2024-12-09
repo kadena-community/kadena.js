@@ -1,10 +1,6 @@
-import { IAddContractProps } from '../createContract';
+import type { IAddContractProps } from '../createContract';
 
-export const getContract = ({
-  contractTokenId,
-  contractName,
-  namespace,
-}: IAddContractProps) => `
+export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (namespace "${namespace}")
 
 

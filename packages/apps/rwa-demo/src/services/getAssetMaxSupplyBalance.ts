@@ -6,17 +6,6 @@ export interface IGetAssetMaxSupplyBalanceResult {
   maxBalance: number;
 }
 
-export const getAssetMaxSupplyBalance =
-  async (): Promise<IGetAssetMaxSupplyBalanceResult> => {
-    const maxBalanceResult = await getMaxBalance();
-    const maxSupplyResult = await getMaxSupply();
-
-    return {
-      maxBalance: maxBalanceResult,
-      maxSupply: maxSupplyResult,
-    };
-  };
-
 export const getMaxBalance = async (): Promise<number> => {
   const client = getClient();
 
@@ -58,3 +47,14 @@ export const getMaxSupply = async (): Promise<number> => {
 
   return result.status === 'success' ? data : -1;
 };
+
+export const getAssetMaxSupplyBalance =
+  async (): Promise<IGetAssetMaxSupplyBalanceResult> => {
+    const maxBalanceResult = await getMaxBalance();
+    const maxSupplyResult = await getMaxSupply();
+
+    return {
+      maxBalance: maxBalanceResult,
+      maxSupply: maxSupplyResult,
+    };
+  };

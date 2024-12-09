@@ -17,6 +17,7 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import type { IAsset } from '../AssetProvider/AssetProvider';
+import { AddExistingAssetForm } from './AddExistingAssetForm';
 
 interface IProps {
   asset?: IAsset;
@@ -66,7 +67,7 @@ export const StepperAssetForm: FC<IProps> = () => {
   };
 
   return (
-    <>
+    <Stack width="100%" flexDirection="column" alignItems="center">
       <Stepper direction="horizontal">
         <Step
           status={step >= STEPS.CREATE_NAMESPACE ? 'active' : 'inactive'}
@@ -96,26 +97,30 @@ export const StepperAssetForm: FC<IProps> = () => {
       )}
 
       {step === STEPS.CREATE_NAMESPACE && (
-        <Button
-          onPress={async () => {
-            setError('');
-            const transaction = await submit();
-            if (transaction?.result?.status === 'success') {
-              const ns = (transaction.result.data as string).split('.')[0];
-              if (!ns) {
-                setError(
-                  `no namespace created from result (${transaction.result.data})`,
-                );
+        <Stack flexDirection="column" gap="sm">
+          <AddExistingAssetForm />
+          <Button
+            variant="outlined"
+            onPress={async () => {
+              setError('');
+              const transaction = await submit();
+              if (transaction?.result?.status === 'success') {
+                const ns = (transaction.result.data as string).split('.')[0];
+                if (!ns) {
+                  setError(
+                    `no namespace created from result (${transaction.result.data})`,
+                  );
+                }
+                setNamespace(ns);
+                setStep(STEPS.CREATE_CONTRACT);
+              } else {
+                setError(`no namespace created`);
               }
-              setNamespace(ns);
-              setStep(STEPS.CREATE_CONTRACT);
-            } else {
-              setError(`no namespace created`);
-            }
-          }}
-        >
-          Create Namespace
-        </Button>
+            }}
+          >
+            Start New Asset
+          </Button>
+        </Stack>
       )}
       {step === STEPS.INIT_CONTRACT && (
         <Button
@@ -192,6 +197,6 @@ export const StepperAssetForm: FC<IProps> = () => {
           </Stack>
         </form>
       )}
-    </>
+    </Stack>
   );
 };
