@@ -1,5 +1,18 @@
 # @kadena/kadena-cli
 
+## 1.3.8
+
+### Patch Changes
+
+- Updated dependencies \[5e9bfd0]
+- Updated dependencies \[8615d09]
+- Updated dependencies \[1f46bee]
+  - @kadena/client\@1.16.0
+  - @kadena/hd-wallet\@0.6.1
+  - @kadena/client-utils\@0.11.1
+  - @kadena/pactjs-cli\@1.16.0
+  - @kadena/pactjs-generator\@1.16.0
+
 ## 1.3.7
 
 ### Patch Changes

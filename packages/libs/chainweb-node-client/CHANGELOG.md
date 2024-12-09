@@ -1,5 +1,11 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.8.0
+
+### Minor Changes
+
+- 5e9bfd0: Support for passing a request init object to client functions
+
 ## 0.7.0
 
 ### Minor Changes
