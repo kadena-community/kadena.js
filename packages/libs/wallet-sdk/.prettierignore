@@ -1,0 +1,9 @@
+etc
+dist
+lib
+temp
+**/*.md
+!README.md
+tsdoc-metadata.json
+coverage/*
+src/gql/*
