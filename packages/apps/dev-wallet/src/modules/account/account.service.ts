@@ -17,6 +17,7 @@ import {
 import {
   createSignWithKeypair,
   createTransaction,
+  ISigner,
   type BuiltInPredicate,
   type ChainId,
 } from '@kadena/client';
@@ -213,10 +214,21 @@ export const accountDiscovery = (
     },
 );
 
-const hasSameGuard = (a?: IKeySet['guard'], b?: IKeySet['guard']) => {
+interface Guard {
+  keys: ISigner[];
+  pred: BuiltInPredicate;
+}
+
+export const hasSameGuard = (a?: Guard, b?: Guard) => {
+  const getKeys = (key: ISigner) =>
+    typeof key === 'string' ? key : key.pubKey;
+
+  const aKeys = a ? a.keys.map(getKeys).sort() : [];
+  const bKeys = b ? b.keys.map(getKeys).sort() : [];
+
   return (
-    a?.keys.length === b?.keys.length &&
-    a?.keys.every((key) => b?.keys.includes(key)) &&
+    aKeys.length === bKeys.length &&
+    aKeys.every((key) => bKeys.includes(key)) &&
     a?.pred === b?.pred
   );
 };

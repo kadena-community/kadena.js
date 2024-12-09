@@ -9,6 +9,7 @@ import {
   headerExpandedClass,
   headerWrapperClass,
   menuMenuIconClass,
+  rightsideWrapperClass,
 } from '../sidebar.css';
 import { Button } from './../../../components/Button';
 import { Stack } from './../../../components/Layout';
@@ -22,7 +23,13 @@ interface IProps extends PropsWithChildren {
 
 export const SideBarHeader: FC<IProps> = ({ logo }) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const { isExpanded, handleToggleExpand, setBreadcrumbsRef } = useLayout();
+  const contextRef = useRef<HTMLDivElement | null>(null);
+  const {
+    isExpanded,
+    handleToggleExpand,
+    setBreadcrumbsRef,
+    setHeaderContextRef,
+  } = useLayout();
   const handleExpand = (e: PressEvent) => {
     if (handleToggleExpand) {
       handleToggleExpand(e);
@@ -34,9 +41,10 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
   };
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current || !contextRef.current) return;
     setBreadcrumbsRef(ref.current);
-  }, [ref.current]);
+    setHeaderContextRef(contextRef.current);
+  }, [ref.current, contextRef.current]);
 
   return (
     <header className={headerWrapperClass({ sideBarExpanded: isExpanded })}>
@@ -62,6 +70,7 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
           </Stack>
         </Media>
         <Stack className={crumbsWrapperClass} ref={ref}></Stack>
+        <Stack className={rightsideWrapperClass} ref={contextRef}></Stack>
       </Stack>
     </header>
   );

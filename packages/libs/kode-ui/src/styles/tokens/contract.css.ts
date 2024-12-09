@@ -597,6 +597,101 @@ export const tokens = createThemeContract({
          * @dark {@link tokens.kda.foundation.size.n10}
          */
         n10: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n11}
+         * @dark {@link tokens.kda.foundation.size.n11}
+         */
+        n11: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n12}
+         * @dark {@link tokens.kda.foundation.size.n12}
+         */
+        n12: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n13}
+         * @dark {@link tokens.kda.foundation.size.n13}
+         */
+        n13: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n14}
+         * @dark {@link tokens.kda.foundation.size.n14}
+         */
+        n14: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n15}
+         * @dark {@link tokens.kda.foundation.size.n15}
+         */
+        n15: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n16}
+         * @dark {@link tokens.kda.foundation.size.n16}
+         */
+        n16: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n17}
+         * @dark {@link tokens.kda.foundation.size.n17}
+         */
+        n17: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n18}
+         * @dark {@link tokens.kda.foundation.size.n18}
+         */
+        n18: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n19}
+         * @dark {@link tokens.kda.foundation.size.n19}
+         */
+        n19: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n20}
+         * @dark {@link tokens.kda.foundation.size.n20}
+         */
+        n20: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n24}
+         * @dark {@link tokens.kda.foundation.size.n24}
+         */
+        n24: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n25}
+         * @dark {@link tokens.kda.foundation.size.n25}
+         */
+        n25: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n30}
+         * @dark {@link tokens.kda.foundation.size.n30}
+         */
+        n30: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n32}
+         * @dark {@link tokens.kda.foundation.size.n32}
+         */
+        n32: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n35}
+         * @dark {@link tokens.kda.foundation.size.n35}
+         */
+        n35: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n40}
+         * @dark {@link tokens.kda.foundation.size.n40}
+         */
+        n40: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n48}
+         * @dark {@link tokens.kda.foundation.size.n48}
+         */
+        n48: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n56}
+         * @dark {@link tokens.kda.foundation.size.n56}
+         */
+        n56: '',
+        /**
+         * @light {@link tokens.kda.foundation.size.n64}
+         * @dark {@link tokens.kda.foundation.size.n64}
+         */
+        n64: '',
       },
       transition: {
         delay: {
@@ -710,43 +805,18 @@ export const tokens = createThemeContract({
           level3: '',
         },
       },
-      icon: {
-        size: {
+      layout: {
+        content: {
           /**
-           * @light {@link tokens.kda.foundation.size.n3}
-           * @dark {@link tokens.kda.foundation.size.n3}
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
            */
-          xxs: '',
+          minWidth: '',
           /**
-           * @light {@link tokens.kda.foundation.size.n4}
-           * @dark {@link tokens.kda.foundation.size.n4}
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
            */
-          xs: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n5}
-           * @dark {@link tokens.kda.foundation.size.n5}
-           */
-          sm: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n6}
-           * @dark {@link tokens.kda.foundation.size.n6}
-           */
-          base: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n8}
-           * @dark {@link tokens.kda.foundation.size.n8}
-           */
-          lg: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n10}
-           * @dark {@link tokens.kda.foundation.size.n10}
-           */
-          xl: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n16}
-           * @dark {@link tokens.kda.foundation.size.n16}
-           */
-          xxl: '',
+          maxWidth: '',
         },
       },
       color: {
@@ -1558,6 +1628,20 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.neutral.n20@alpha80}
              */
             default: '',
+          },
+          table: {
+            row: {
+              /**
+               * @light {@link tokens.kda.foundation.color.background.layer.default}
+               * @dark {@link tokens.kda.foundation.color.background.layer.default}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n1@alpha80}
+               * @dark {@link tokens.kda.foundation.color.neutral.n10@alpha80}
+               */
+              '@hover': '',
+            },
           },
         },
         border: {
@@ -5007,18 +5091,43 @@ export const tokens = createThemeContract({
           },
         },
       },
-      layout: {
-        content: {
+      icon: {
+        size: {
           /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
+           * @light {@link tokens.kda.foundation.size.n3}
+           * @dark {@link tokens.kda.foundation.size.n3}
            */
-          minWidth: '',
+          xxs: '',
           /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
+           * @light {@link tokens.kda.foundation.size.n4}
+           * @dark {@link tokens.kda.foundation.size.n4}
            */
-          maxWidth: '',
+          xs: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n5}
+           * @dark {@link tokens.kda.foundation.size.n5}
+           */
+          sm: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n6}
+           * @dark {@link tokens.kda.foundation.size.n6}
+           */
+          base: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n8}
+           * @dark {@link tokens.kda.foundation.size.n8}
+           */
+          lg: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n10}
+           * @dark {@link tokens.kda.foundation.size.n10}
+           */
+          xl: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n16}
+           * @dark {@link tokens.kda.foundation.size.n16}
+           */
+          xxl: '',
         },
       },
       typography: {

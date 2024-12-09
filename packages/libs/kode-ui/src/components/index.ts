@@ -142,3 +142,5 @@ export {
 } from './ContextMenu';
 
 export { Media, MediaContextProvider, mediaProviderStyles } from './Media';
+
+export { Popover, PopoverTrigger } from './Popover';

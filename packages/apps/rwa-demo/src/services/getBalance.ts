@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getClient, getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IGetBalanceProps {
@@ -11,7 +12,7 @@ export const getBalance = async (data: IGetBalanceProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.mvp-token.getBalance (read-string 'account))`)
+    .execution(`(RWA.${getAsset()}.get-balance (read-string 'account))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

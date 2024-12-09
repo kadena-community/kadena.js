@@ -1,7 +1,7 @@
+import { useRightAside } from '@/App/Layout/useRightAside';
 import { Fungible, IAccount } from '@/modules/account/account.repository';
 import { MonoWallet } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
 import classNames from 'classnames';
 import { useMemo } from 'react';
@@ -21,7 +21,8 @@ export function Assets({
   fungibles: Fungible[];
   showAddToken?: boolean;
 }) {
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const [isAssetFormExpanded, expandAssetForm, closeAssetForm] =
+    useRightAside();
   const assets = useMemo(() => {
     return fungibles.map((item) => {
       const acs = accounts.filter((a) => a.contract === item.contract);
@@ -37,7 +38,7 @@ export function Assets({
 
   return (
     <>
-      <AddTokenForm isOpen={isRightAsideExpanded} />
+      <AddTokenForm isOpen={isAssetFormExpanded} onClose={closeAssetForm} />
       <Stack flexDirection={'column'} gap={'md'}>
         <Stack
           flexDirection={'row'}
@@ -50,7 +51,7 @@ export function Assets({
               variant="outlined"
               isCompact
               onPress={() => {
-                setIsRightAsideExpanded(true);
+                expandAssetForm();
               }}
             >
               Add new asset

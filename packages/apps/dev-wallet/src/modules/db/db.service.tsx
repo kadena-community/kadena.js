@@ -2,8 +2,6 @@ import { config } from '@/config';
 import {
   addItem,
   connect,
-  createStore,
-  deleteDatabase,
   deleteItem,
   getAllItems,
   getOneItem,
@@ -11,125 +9,25 @@ import {
 } from '@/modules/db/indexeddb';
 import { execInSequence } from '@/utils/helpers';
 
-// since we create the database in the first call we need to make sure another call does not happen
-// while the database is still being created; so I use execInSequence.
-const createConnectionPool = (
-  cb: () => Promise<IDBDatabase>,
-  length: number = 1,
-) => {
-  const pool: IDBDatabase[] = [];
-  let turn = 0;
+import { IDBBackup, importBackup, serializeTables } from './backup/backup';
+import { broadcast, dbChannel, EventTypes } from './db-channel';
+import { migration } from './migration/migration';
 
-  const createDatabaseConnection = execInSequence(async () => {
-    if (pool.length < length) {
-      const connection = await cb();
-      pool.push(connection);
-      const removeFromPool = () => pool.splice(pool.indexOf(connection), 1);
-      connection.onclose = removeFromPool;
-      const originalClose = connection.close.bind(connection);
-      connection.close = () => {
-        removeFromPool();
-        originalClose();
-      };
-      return connection;
-    }
-    const connection = pool[turn];
-    turn = turn === length - 1 ? 0 : turn + 1;
-    return connection;
-  });
-
-  const closeDatabaseConnections = () => {
-    console.log(`closing ${pool.length} database connections`);
-    pool.forEach((connection) => connection.close());
-    pool.length = 0;
-  };
-  return {
-    createDatabaseConnection,
-    closeDatabaseConnections,
-  };
-};
-
-const { DB_NAME, DB_VERSION, DB_WIPE_ON_VERSION_CHANGE } = config.DB;
+const { DB_NAME, DB_VERSION } = config.DB;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
   let db = result.db;
   if (result.needsUpgrade) {
-    if (import.meta.env.DEV || DB_WIPE_ON_VERSION_CHANGE) {
-      console.log(
-        'in development we delete the database if schema is changed for now since we are still in early stage of development',
-      );
-      db.close();
-      console.log('deleting database');
-      await deleteDatabase(DB_NAME);
-      console.log('creating new database');
-      const { db: newDb } = await connect(DB_NAME, DB_VERSION);
-      db = newDb;
-    }
-    // NOTE: If you change the schema, you need to update the upgrade method
-    // below to migrate the data. the current version just creates the database
-    const create = createStore(db);
-    create('profile', 'uuid', [{ index: 'name', unique: true }]);
-    create('encryptedValue');
-    create('keySource', 'uuid', [{ index: 'profileId' }]);
-    create('account', 'uuid', [
-      { index: 'address' },
-      { index: 'keysetId' },
-      { index: 'profileId' },
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
-      {
-        index: 'unique-account',
-        indexKeyPath: ['keysetId', 'contract', 'networkUUID'],
-        unique: true,
-      },
-    ]);
-    create('watched-account', 'uuid', [
-      { index: 'address' },
-      { index: 'profileId' },
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
-      {
-        index: 'unique-account',
-        indexKeyPath: ['profileId', 'contract', 'address', 'networkUUID'],
-        unique: true,
-      },
-    ]);
-    create('network', 'uuid', [{ index: 'networkId', unique: true }]);
-    create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
-    create('keyset', 'uuid', [
-      { index: 'profileId' },
-      { index: 'principal' },
-      {
-        index: 'unique-keyset',
-        indexKeyPath: ['profileId', 'principal'],
-        unique: true,
-      },
-    ]);
-    create('transaction', 'uuid', [
-      { index: 'hash' },
-      { index: 'profileId' },
-      { index: 'groupId' },
-      { index: 'network', indexKeyPath: ['profileId', 'networkUUID'] },
-      {
-        index: 'unique-tx',
-        indexKeyPath: ['profileId', 'networkUUID', 'hash'],
-        unique: true,
-      },
-      {
-        index: 'network-status',
-        indexKeyPath: ['profileId', 'networkUUID', 'status'],
-      },
-    ]);
-    create('activity', 'uuid', [
-      { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
-      { index: 'keyset-network', indexKeyPath: ['keysetId', 'networkUUID'] },
-    ]);
-    create('contact', 'uuid', [{ index: 'name', unique: true }]);
+    broadcast('migration-started');
+    db = await migration(result);
+    broadcast('migration-finished');
   }
 
   return db;
 });
 
-const createConnection = async () => {
+export const createDatabaseConnection = async () => {
   const result = await connect(DB_NAME, DB_VERSION);
   const db = result.db;
   if (result.needsUpgrade) {
@@ -138,11 +36,8 @@ const createConnection = async () => {
   return db;
 };
 
-export const { createDatabaseConnection, closeDatabaseConnections } =
-  createConnectionPool(createConnection);
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const injectDb = <R extends (...args: any[]) => Promise<any>>(
+export const injectDb = <R extends (...args: any[]) => Promise<any>>(
   fn: (db: IDBDatabase) => R,
   onCall: (...args: Parameters<R>) => void = () => {},
 ) =>
@@ -151,11 +46,11 @@ const injectDb = <R extends (...args: any[]) => Promise<any>>(
     return createDatabaseConnection().then(async (db) => {
       const result = await fn(db)(...args);
       onCall(...args);
+      db.close();
       return result;
     });
   }) as R;
 
-type EventTypes = 'add' | 'update' | 'delete';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
 
@@ -189,12 +84,16 @@ export interface IDBService {
   ) => Promise<void>;
   remove: (storeName: string, key: string) => Promise<void>;
   subscribe: ISubscribe;
+  serializeTables: () => Promise<string>;
+  importBackup: (
+    backup: IDBBackup,
+    profileUUIds?: string[],
+  ) => Promise<boolean>;
+  injectDbWithNotify: <R extends (...args: any[]) => Promise<any>>(
+    fn: (db: IDBDatabase) => R,
+    notifyEvent: EventTypes,
+  ) => R;
 }
-
-const dbChannel = new BroadcastChannel('db-channel');
-const broadcast = (event: EventTypes, storeName: string, data: any[]) => {
-  dbChannel.postMessage({ type: event, storeName, data });
-};
 
 export const createDbService = () => {
   const listeners: Listener[] = [];
@@ -228,29 +127,47 @@ export const createDbService = () => {
     };
   };
 
+  subscribe((event) => {
+    if (event === 'migration-started') {
+      console.log('migration event received');
+    }
+    if (event === 'migration-finished') {
+      window.location.reload();
+    }
+  });
+
   dbChannel.onmessage = (event) => {
     const {
       type,
       storeName,
       data,
     }: { type: EventTypes; storeName: string; data: any[] } = event.data;
-    listeners.forEach((cb) => cb(type, storeName, ...data));
+    listeners.forEach((cb) =>
+      cb(type, storeName, ...(Array.isArray(data) ? data : [data])),
+    );
   };
 
   const notify =
     (event: EventTypes) =>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (storeName: string, ...rest: any[]) => {
+    (storeName: string | any, ...rest: any[]) => {
       listeners.forEach((cb) => cb(event, storeName, ...rest));
       broadcast(event, storeName, rest);
     };
+  const getAll = injectDb(getAllItems);
   return {
-    getAll: injectDb(getAllItems),
+    getAll,
     getOne: injectDb(getOneItem),
     add: injectDb(addItem, notify('add')),
     update: injectDb(updateItem, notify('update')),
     remove: injectDb(deleteItem, notify('delete')),
     subscribe,
+    serializeTables: injectDb((db) => () => serializeTables(db)),
+    importBackup: injectDb(importBackup, notify('import')),
+    injectDbWithNotify: <R extends (...args: any[]) => Promise<any>>(
+      fn: (db: IDBDatabase) => R,
+      notifyEvent: EventTypes,
+    ) => injectDb(fn, notify(notifyEvent) as any),
   };
 };
 

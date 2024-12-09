@@ -1,6 +1,7 @@
 import {
   MonoAccountTree,
   MonoControlPointDuplicate,
+  MonoInsertDriveFile,
   MonoLightMode,
   MonoWallet,
   MonoWifiTethering,
@@ -26,6 +27,7 @@ import {
 } from './components/RightAside';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
+import { SideBarHeaderContext } from './components/SideBarHeaderContext/SideBarHeaderContext';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarTree } from './components/SideBarTree';
@@ -350,6 +352,9 @@ export const Primary: IStory = {
   render: () => {
     return (
       <LayoutProvider>
+        <SideBarHeaderContext>
+          <Button variant="transparent" startVisual={<MonoInsertDriveFile />} />
+        </SideBarHeaderContext>
         <SideBarBreadcrumbs icon={<MonoAccountTree />}>
           <SideBarBreadcrumbsItem href="/accounts">
             He-man

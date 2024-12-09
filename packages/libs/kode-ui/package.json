@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kode-ui",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "A react component library built on Kadena's Kode Design System",
   "repository": {
     "type": "git",
@@ -148,7 +148,7 @@
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
-    "@vanilla-extract/vite-plugin": "4.0.7",
+    "@vanilla-extract/vite-plugin": "4.0.17",
     "@vanilla-extract/webpack-plugin": "2.3.7",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",

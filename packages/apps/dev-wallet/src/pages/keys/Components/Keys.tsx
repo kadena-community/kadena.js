@@ -18,10 +18,22 @@ import { useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../../home/style.css.ts';
 import { AddKeySourceForm } from './AddKeySourceForm.tsx';
+import { AddSpecificKey } from './AddSpecificKey.tsx';
 
 export function Keys() {
   const { keySources, profile, askForPassword, createKey } = useWallet();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const [asideTarget, setAsideTarget] = useState<
+    'add-key-source' | 'add-specific-key'
+  >();
+  const showKeySourceForm = () => {
+    setAsideTarget('add-key-source');
+    setIsRightAsideExpanded(true);
+  };
+  const showAddSpecificKeyForm = () => {
+    setAsideTarget('add-specific-key');
+    setIsRightAsideExpanded(true);
+  };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState<string | null>(null);
   const { createHDWallet } = useHDWallet();
@@ -54,7 +66,7 @@ export function Keys() {
   return (
     <>
       <AddKeySourceForm
-        isOpen={isRightAsideExpanded}
+        isOpen={isRightAsideExpanded && asideTarget === 'add-key-source'}
         close={() => setIsRightAsideExpanded(false)}
         onSave={async (sourcesToInstall) => {
           setIsRightAsideExpanded(false);
@@ -93,7 +105,7 @@ export function Keys() {
             variant="outlined"
             isCompact
             onPress={() => {
-              setIsRightAsideExpanded(true);
+              showKeySourceForm();
             }}
           >
             Add key Source
@@ -107,6 +119,12 @@ export function Keys() {
               flexDirection={'column'}
               className={panelClass}
             >
+              <AddSpecificKey
+                keySource={keySource}
+                isOpen={
+                  isRightAsideExpanded && asideTarget === 'add-specific-key'
+                }
+              />
               <Stack
                 gap={'lg'}
                 justifyContent={'space-between'}
@@ -137,7 +155,9 @@ export function Keys() {
                     ) ? (
                       <ContextMenuItem
                         label="Create specific key"
-                        onClick={() => {}}
+                        onClick={() => {
+                          showAddSpecificKeyForm();
+                        }}
                       />
                     ) : (
                       <ContextMenuDivider />

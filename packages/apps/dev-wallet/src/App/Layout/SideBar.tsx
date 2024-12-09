@@ -1,6 +1,4 @@
 import {
-  MonoApps,
-  MonoBackupTable,
   MonoCheck,
   MonoContacts,
   MonoContrast,
@@ -13,6 +11,7 @@ import {
   MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
+  MonoWallet,
   MonoWarning,
 } from '@kadena/kode-icons/system';
 
@@ -20,9 +19,9 @@ import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
+import InitialsAvatar from '@/pages/select-profile/initials';
 import { getInitials } from '@/utils/get-initials';
 import {
-  Avatar,
   Button,
   ContextMenu,
   ContextMenuDivider,
@@ -40,7 +39,8 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { BetaHeader } from '../BetaHeader';
 import { KLogo } from './KLogo';
 
@@ -48,7 +48,7 @@ export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -76,8 +76,8 @@ export const SideBar: FC = () => {
       navigation={
         <>
           <SideBarItem
-            visual={<MonoApps />}
-            label="Dashboard"
+            visual={<MonoWallet />}
+            label="Your Assets"
             component={Link}
             href="/"
           />
@@ -90,17 +90,17 @@ export const SideBar: FC = () => {
           />
 
           <SideBarItem
-            visual={<MonoSignature />}
-            label="Sig Builder"
-            component={Link}
-            href="/sig-builder"
-          />
-
-          <SideBarItem
             visual={<MonoTableRows />}
             label="Transactions"
             component={Link}
             href="/transactions"
+          />
+
+          <SideBarItem
+            visual={<MonoSignature />}
+            label="Sig Builder"
+            component={Link}
+            href="/sig-builder"
           />
 
           <SideBarItem
@@ -115,13 +115,6 @@ export const SideBar: FC = () => {
             label="Contacts"
             component={Link}
             href="/contacts"
-          />
-
-          <SideBarItem
-            visual={<MonoBackupTable />}
-            label="Backup"
-            component={Link}
-            href="/backup-recovery-phrase/write-down"
           />
         </>
       }
@@ -152,9 +145,10 @@ export const SideBar: FC = () => {
                     isCompact
                     variant={isExpanded ? 'outlined' : 'transparent'}
                     startVisual={
-                      <Avatar
+                      <InitialsAvatar
                         name={getInitials(profile!.name)}
-                        color={'category1'}
+                        accentColor={profile!.accentColor}
+                        size="small"
                       />
                     }
                   >
@@ -169,7 +163,7 @@ export const SideBar: FC = () => {
                 >
                   <Heading variant="h6">Switch Profile</Heading>
                 </Stack>
-                {profileList.map((prf, index) => (
+                {profileList.map((prf) => (
                   <ContextMenuItem
                     key={prf.uuid}
                     endVisual={
@@ -182,9 +176,10 @@ export const SideBar: FC = () => {
                     label={
                       (
                         <Stack gap="sm">
-                          <Avatar
-                            color={('category' + ((index + 1) % 8)) as any}
-                            name={getInitials(prf.name)}
+                          <InitialsAvatar
+                            name={getInitials(prf!.name)}
+                            accentColor={prf!.accentColor}
+                            size="small"
                           />
                           <Text>{prf.name}</Text>
                         </Stack>
@@ -208,7 +203,7 @@ export const SideBar: FC = () => {
                 <ContextMenuItem
                   endVisual={<MonoSettings />}
                   label="Settings"
-                  isDisabled
+                  onClick={() => navigate('/settings')}
                 />
                 <ContextMenuItem
                   endVisual={<MonoLogout />}

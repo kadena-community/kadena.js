@@ -1,0 +1,37 @@
+@tailwind utilities;
+
+[class^='Form__'] {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+}
+
+/* deze nog fixen */
+.text-negative {
+  color: green;
+}
+
+.text-negative {
+  color: red;
+}
+
+button[class^='Button__'] > span[class^='Button__'] {
+  margin-inline-start: 16px !important;
+  margin-inline-end: 16px !important;
+}
+
+button[class^='Button__'][class*='Button_isCompact_false'] {
+  margin-top: 20px;
+}
+
+button[class^='Button__'][class*='Button_isCompact_false']
+  > span[class^='Button__'] {
+  margin-inline-start: 24px !important;
+  margin-inline-end: 24px !important;
+}
+
+[class*='Divider__'] {
+  margin-block: 24px !important;
+}

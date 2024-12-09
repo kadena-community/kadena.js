@@ -1,6 +1,6 @@
 {
   "name": "@kadena/marmalade-marketplace",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "private": true,
   "browser": {
     "fs": false
@@ -55,7 +55,7 @@
     "@types/webpack-env": "^1.18.5",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
-    "@vanilla-extract/vite-plugin": "4.0.7",
+    "@vanilla-extract/vite-plugin": "4.0.17",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^1.6.0",
     "dotenv": "~16.4.5",

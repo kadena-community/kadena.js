@@ -1,20 +1,18 @@
 export interface IRecord {
   isRemoved?: boolean;
   blockHeight?: number;
-  chainId: string;
-  requestKey: string;
+  chainId?: string;
+  requestKey?: string;
   accountName: string;
-  creationTime: string;
-  result: boolean;
+  alias?: string;
+  creationTime: number;
+  result?: boolean;
 }
 
 export const filterRemovedRecords = (arr: IRecord[]): IRecord[] => {
   return arr
     .sort((a, b) => {
-      if (
-        new Date(a.creationTime).getTime() < new Date(b.creationTime).getTime()
-      )
-        return -1;
+      if (a.creationTime < b.creationTime) return -1;
       return 1;
     })
     .reduce((acc: IRecord[], val: IRecord) => {

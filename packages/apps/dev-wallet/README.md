@@ -32,3 +32,10 @@ need to enable _developer mode_ and select _load unpacked_)
 
 The app is packages as a Tauri app; check
 [dev-wallet-desktop](../dev-wallet-desktop/).
+
+### Contributing
+
+[Contributing](CONTRIBUTING.md)
+[- Architecture](CONTRIBUTING.md#architecture)
+[- ERD](CONTRIBUTING.md#erd)
+```

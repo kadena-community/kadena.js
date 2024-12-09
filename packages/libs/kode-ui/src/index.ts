@@ -109,6 +109,8 @@ export {
   NotificationHeading,
   NumberField,
   Pagination,
+  Popover,
+  PopoverTrigger,
   ProductIcon,
   ProgressCircle,
   Radio,

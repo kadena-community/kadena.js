@@ -7,7 +7,6 @@ import {
   IContact,
 } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { shorten } from '@/utils/helpers';
 import {
   MonoAccountBalanceWallet,
   MonoContacts,
@@ -39,8 +38,7 @@ export function Contacts() {
 
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoContacts />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+      <SideBarBreadcrumbs icon={<MonoContacts />} isGlobal>
         <SideBarBreadcrumbsItem href="/contacts">
           Contacts
         </SideBarBreadcrumbsItem>
@@ -94,7 +92,7 @@ export function Contacts() {
                     <Text>
                       <MonoAccountBalanceWallet />
                     </Text>
-                    <Text>{shorten(contact.account.address)}</Text>
+                    <Text>{contact.account.address}</Text>
                   </Stack>
 
                   <ContextMenu

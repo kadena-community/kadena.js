@@ -1,3 +1,4 @@
+import { DiscoverdAccounts } from '@/Components/AccountInput/DiscoverdAccounts';
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
 import { KeySetDialog } from '@/Components/KeysetDialog/KeySetDialog';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
@@ -6,14 +7,12 @@ import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
-import { shorten } from '@/utils/helpers';
+import { formatList, shorten } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
-import { ChainId, ISigner } from '@kadena/client';
+import { ChainId } from '@kadena/client';
 import { MonoCopyAll, MonoDelete } from '@kadena/kode-icons/system';
 import {
   Button,
-  Combobox,
-  ComboboxItem,
   Heading,
   Notification,
   Radio,
@@ -34,13 +33,15 @@ import {
   useState,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { DiscoverdAccounts } from '../../transfer/components/DiscoverdAccounts';
 import { linkClass } from '../../transfer/style.css';
-import { IReceiverAccount } from '../../transfer/utils';
 import { AccountItem } from '../Components/AccountItem';
 import { Keyset } from '../Components/keyset';
-import { CHAINS, IReceiver, discoverReceiver, getTransfers } from '../utils';
-import { labelClass } from './style.css';
+import { CHAINS, IReceiver, IReceiverAccount, getTransfers } from '../utils';
+
+import { AccountSearchBox } from '../Components/AccountSearchBox';
+import { CreationTime } from '../Components/CreationTime';
+import { Label } from '../Components/Label';
+import { TTLSelect } from '../Components/TTLSelect';
 
 export interface Transfer {
   fungible: string;
@@ -51,9 +52,10 @@ export interface Transfer {
   gasPrice: string;
   gasLimit: string;
   type: 'safeTransfer' | 'normalTransfer';
-  ttl: string;
+  ttl: number;
   senderAccount?: IAccount;
   totalAmount: number;
+  creationTime?: number;
 }
 
 export type Redistribution = {
@@ -73,12 +75,6 @@ export interface TrG {
   txs: ITransaction[];
 }
 
-const Label = ({ children }: { children: React.ReactNode }) => (
-  <Text size="small" className={labelClass}>
-    {children}
-  </Text>
-);
-
 export function TransferForm({
   accountId,
   onSubmit,
@@ -93,9 +89,10 @@ export function TransferForm({
   const {
     accounts: allAccounts,
     fungibles,
-    getPublicKeyData,
     activeNetwork,
     profile,
+    watchAccounts,
+    contacts,
   } = useWallet();
   const prompt = usePrompt();
   const [, , AdvancedMode] = useShow(true);
@@ -131,7 +128,7 @@ export function TransferForm({
       gasPrice: '1e-8',
       gasLimit: '2500',
       type: 'normalTransfer',
-      ttl: (2 * 60 * 60).toString(),
+      ttl: 2 * 60 * 60,
       totalAmount: 0,
     },
   });
@@ -151,6 +148,12 @@ export function TransferForm({
     () =>
       allAccounts.filter((account) => account.contract === watchFungibleType),
     [allAccounts, watchFungibleType],
+  );
+
+  const filteredWatchedAccounts = useMemo(
+    () =>
+      watchAccounts.filter((account) => account.contract === watchFungibleType),
+    [watchAccounts, watchFungibleType],
   );
 
   useEffect(() => {
@@ -177,6 +180,7 @@ export function TransferForm({
             gasLimit: activity.data.transferData.gasLimit,
             type: activity.data.transferData.type,
             ttl: activity.data.transferData.ttl,
+            creationTime: activity.data.transferData.creationTime,
             totalAmount: 0,
           });
           evaluateTransactions();
@@ -267,27 +271,6 @@ export function TransferForm({
 
   const senderChain = watch('chain');
 
-  const mapKeys = useCallback(
-    (key: ISigner) => {
-      if (typeof key === 'object') return key;
-      const info = getPublicKeyData(key);
-      if (info && info.scheme) {
-        return {
-          pubKey: key,
-          scheme: info.scheme,
-        };
-      }
-      if (key.startsWith('WEBAUTHN')) {
-        return {
-          pubKey: key,
-          scheme: 'WebAuthn' as const,
-        };
-      }
-      return key;
-    },
-    [getPublicKeyData],
-  );
-
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       {accountToResolve && (
@@ -299,6 +282,7 @@ export function TransferForm({
             ]);
             setAccountToResolve(undefined);
           }}
+          onClosed={() => setAccountToResolve(undefined)}
         />
       )}
 
@@ -391,9 +375,9 @@ export function TransferForm({
                                 <AutoBadge />
                                 {chains.length ? (
                                   <Chain
-                                    chainId={chains
-                                      .map((chain) => chain.chainId)
-                                      .join(' , ')}
+                                    chainId={formatList(
+                                      chains.map((c) => +c.chainId),
+                                    )}
                                   />
                                 ) : null}
                                 (balance: {senderAccount?.overallBalance})
@@ -523,131 +507,47 @@ export function TransferForm({
                               render={({ field }) => {
                                 return (
                                   <Stack flexDirection={'column'}>
-                                    <Combobox
-                                      // label={index === 0 ? 'Account' : undefined}
-                                      aria-label="Receiver Address"
-                                      inputValue={field.value ?? ''}
-                                      placeholder="Select ot enter an address"
-                                      startVisual={<Label>Address:</Label>}
-                                      onInputChange={(value) => {
-                                        console.log('value', value);
-                                        field.onChange(value || '');
-                                        setValue(
+                                    <AccountSearchBox
+                                      accounts={filteredAccounts.filter(
+                                        (account) =>
+                                          account.address !==
+                                          senderAccount?.address,
+                                      )}
+                                      watchedAccounts={filteredWatchedAccounts}
+                                      contacts={contacts}
+                                      network={activeNetwork!}
+                                      contract={watchFungibleType}
+                                      selectedAccount={
+                                        getValues(
                                           `receivers.${index}.discoveredAccounts`,
-                                          [],
-                                        );
-                                        setValue(
-                                          `receivers.${index}.discoveryStatus`,
-                                          'not-started',
-                                        );
-                                      }}
-                                      onBlur={async () => {
-                                        const address = getValues(
-                                          `receivers.${index}.address`,
-                                        );
-                                        if (!address) return;
-                                        if (
-                                          getValues(
-                                            `receivers.${index}.discoveryStatus`,
-                                          ) === 'done'
-                                        ) {
-                                          return;
-                                        }
-                                        setValue(
-                                          `receivers.${index}.discoveryStatus`,
-                                          'in-progress',
-                                        );
-                                        const discoveredAccounts =
-                                          await discoverReceiver(
-                                            address,
-                                            activeNetwork!.networkId,
-                                            getValues('fungible'),
-                                            mapKeys,
+                                        )[0]
+                                      }
+                                      onSelect={(account) => {
+                                        if (account) {
+                                          field.onChange(account.address);
+                                          setValue(
+                                            `receivers.${index}.discoveredAccounts`,
+                                            [account],
                                           );
-
-                                        setValue(
-                                          `receivers.${index}.discoveredAccounts`,
-                                          discoveredAccounts,
-                                        );
-                                        setValue(
-                                          `receivers.${index}.discoveryStatus`,
-                                          'done',
-                                        );
+                                          setValue(
+                                            `receivers.${index}.discoveryStatus`,
+                                            'done',
+                                          );
+                                        } else {
+                                          setValue(`receivers.${index}`, {
+                                            amount: getValues(
+                                              `receivers.${index}.amount`,
+                                            ),
+                                            address: '',
+                                            chain: '',
+                                            chunks: getValues(
+                                              `receivers.${index}.chunks`,
+                                            ),
+                                            discoveredAccounts: [],
+                                            discoveryStatus: 'not-started',
+                                          });
+                                        }
                                         forceRender((prev) => prev + 1);
-                                      }}
-                                      size="sm"
-                                      onSelectionChange={(value) => {
-                                        console.log('value', value);
-                                        field.onChange(value || '');
-                                        setValue(
-                                          `receivers.${index}.discoveredAccounts`,
-                                          [],
-                                        );
-                                        setValue(
-                                          `receivers.${index}.discoveryStatus`,
-                                          'not-started',
-                                        );
-                                      }}
-                                      allowsCustomValue
-                                    >
-                                      {filteredAccounts
-                                        .filter(
-                                          (account) =>
-                                            account.address !==
-                                            senderAccount?.address,
-                                          // &&
-                                          //   !watchReceivers.some(
-                                          //     (receiver, i) =>
-                                          //       i !== index &&
-                                          //       receiver.address === account.address,
-                                          //   ),
-                                        )
-                                        .map((account) => (
-                                          <ComboboxItem
-                                            key={account.address}
-                                            textValue={account.address}
-                                          >
-                                            <AccountItem account={account} />
-                                          </ComboboxItem>
-                                        ))}
-                                    </Combobox>
-
-                                    <Controller
-                                      name={`receivers.${index}.discoveryStatus`}
-                                      control={control}
-                                      render={({ field }) => {
-                                        const discoveryStatus = field.value;
-                                        const discoveredAccounts = getValues(
-                                          `receivers.${index}.discoveredAccounts`,
-                                        );
-                                        return (
-                                          <>
-                                            {discoveryStatus ===
-                                              'in-progress' && (
-                                              <Stack
-                                                paddingInline={'md'}
-                                                marginBlock={'xs'}
-                                              >
-                                                <Text
-                                                  variant="code"
-                                                  size="smallest"
-                                                >
-                                                  Discovering...
-                                                </Text>
-                                              </Stack>
-                                            )}
-                                            {discoveryStatus === 'done' &&
-                                              discoveredAccounts.length ===
-                                                1 && (
-                                                <Keyset
-                                                  guard={
-                                                    discoveredAccounts[0].keyset
-                                                      .guard
-                                                  }
-                                                />
-                                              )}
-                                          </>
-                                        );
                                       }}
                                     />
                                   </Stack>
@@ -721,9 +621,11 @@ export function TransferForm({
                                                 <AutoBadge />
                                                 {rec.chunks.length > 0 && (
                                                   <Chain
-                                                    chainId={rec.chunks
-                                                      .map((c) => c.chainId)
-                                                      .join(' , ')}
+                                                    chainId={formatList(
+                                                      rec.chunks.map(
+                                                        (c) => +c.chainId,
+                                                      ),
+                                                    )}
                                                   />
                                                 )}
                                               </Stack>
@@ -939,20 +841,26 @@ export function TransferForm({
               <Heading variant="h5">Meta Data</Heading>
             </Stack>
             <Controller
+              name="creationTime"
+              control={control}
+              render={({ field }) => (
+                <CreationTime
+                  value={field.value}
+                  onChange={(sec) => {
+                    field.onChange(sec);
+                  }}
+                />
+              )}
+            />
+            <Controller
               name="ttl"
               control={control}
               render={({ field }) => (
-                <TextField
-                  aria-label="TTL"
-                  startVisual={<Label>TTL:</Label>}
-                  placeholder="Enter TTL (Timer to live)"
+                <TTLSelect
                   value={field.value}
-                  defaultValue={field.value}
-                  onChange={(e) => {
-                    field.onChange(+e.target.value);
+                  onChange={(value) => {
+                    field.onChange(value);
                   }}
-                  type="number"
-                  size="sm"
                 />
               )}
             />

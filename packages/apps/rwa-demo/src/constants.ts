@@ -1,4 +1,6 @@
 export const ACCOUNT_COOKIE_NAME = 'spirekey';
+export const LOCALSTORAGE_ASSETS_KEY = 'assets';
+export const LOCALSTORAGE_ASSETS_SELECTED_KEY = 'selected_asset';
 
 // todo: this is temporary for devnet
 export const ADMIN = {

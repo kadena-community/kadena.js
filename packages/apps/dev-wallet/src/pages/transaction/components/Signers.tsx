@@ -18,8 +18,11 @@ import {
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { normalizeSigs } from '@/utils/normalizeSigs.ts';
-import { MonoContentCopy } from '@kadena/kode-icons/system';
+import { MonoContentCopy, MonoDelete } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
+
+import yaml from 'js-yaml';
+import { statusPassed } from './TxPipeLine.tsx';
 
 const Value: FC<PropsWithChildren<{ className?: string }>> = ({
   children,
@@ -32,9 +35,11 @@ const Value: FC<PropsWithChildren<{ className?: string }>> = ({
 
 export function Signers({
   transaction,
+  transactionStatus,
   onSign,
 }: {
   transaction: IUnsignedCommand;
+  transactionStatus: ITransaction['status'];
   onSign: (sig: ITransaction['sigs']) => void;
 }) {
   const { sign } = useWallet();
@@ -127,7 +132,12 @@ export function Signers({
                         | {
                             pubKey: string;
                             sig?: string;
-                          } = JSON.parse(signature);
+                          } = yaml.load(signature) as
+                        | IUnsignedCommand
+                        | {
+                            pubKey: string;
+                            sig?: string;
+                          };
 
                       let sigs: Array<{
                         sig?: string;
@@ -187,19 +197,39 @@ export function Signers({
                     gap={'sm'}
                   >
                     <Heading variant="h5">Signature</Heading>
-                    <Button
-                      isCompact
-                      variant="transparent"
-                      startVisual={<MonoContentCopy />}
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          JSON.stringify({
-                            sig: signature,
-                            pubKey: signer.pubKey,
-                          }),
-                        );
-                      }}
-                    />
+                    <Stack gap={'sm'}>
+                      <Button
+                        variant="transparent"
+                        isDisabled={statusPassed(
+                          transactionStatus,
+                          'submitted',
+                        )}
+                        isCompact
+                        onClick={() => {
+                          const sigs = transaction.sigs.map((sig) =>
+                            sig?.pubKey === signer.pubKey && sig.sig
+                              ? { pubKey: sig.pubKey }
+                              : sig,
+                          );
+                          onSign(sigs);
+                        }}
+                      >
+                        <MonoDelete />
+                      </Button>
+                      <Button
+                        isCompact
+                        variant="transparent"
+                        startVisual={<MonoContentCopy />}
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            JSON.stringify({
+                              sig: signature,
+                              pubKey: signer.pubKey,
+                            }),
+                          );
+                        }}
+                      />
+                    </Stack>
                   </Stack>
                   <Value className={classNames(breakAllClass, codeClass)}>
                     {signature}

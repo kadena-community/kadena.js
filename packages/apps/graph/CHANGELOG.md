@@ -1,5 +1,28 @@
 # @kadena/graph
 
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies \[5e9bfd0]
+- Updated dependencies \[1f46bee]
+  - @kadena/chainweb-node-client\@0.8.0
+  - @kadena/client\@1.16.0
+  - @kadena/client-utils\@0.11.1
+
+## 2.0.2
+
+### Patch Changes
+
+- 2a073ed: Disable `relationJoins` until nix' package for prisma-engines is
+  updated
+
+## 2.0.1
+
+### Patch Changes
+
+- 868c732: Add all files to published package
+
 ## 2.0.0
 
 ### Major Changes

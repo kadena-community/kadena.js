@@ -13,7 +13,12 @@ import { fetch } from './utils/fetch';
 /**
  * @alpha
  */
-export interface ILocalOptions {
+export type ClientRequestInit = Omit<RequestInit, 'method' | 'body'>;
+
+/**
+ * @alpha
+ */
+export interface ILocalOptions extends ClientRequestInit {
   preflight?: boolean;
   signatureVerification?: boolean;
 }
@@ -41,7 +46,11 @@ export async function local<T extends ILocalOptions>(
   apiHost: string,
   options?: T,
 ): Promise<LocalResponse<T>> {
-  const { signatureVerification = true, preflight = true } = options ?? {};
+  const {
+    signatureVerification = true,
+    preflight = true,
+    ...requestInit
+  } = options ?? {};
 
   if (!signatureVerification) {
     requestBody = convertIUnsignedTransactionToNoSig(requestBody);
@@ -51,6 +60,7 @@ export async function local<T extends ILocalOptions>(
   const result = await localRaw(body, apiHost, {
     preflight,
     signatureVerification,
+    ...requestInit,
   });
 
   return parsePreflight(result);
@@ -72,9 +82,13 @@ export async function localRaw(
   {
     preflight,
     signatureVerification,
-  }: { signatureVerification: boolean; preflight: boolean },
+    ...requestInit
+  }: ILocalOptions & {
+    signatureVerification: boolean;
+    preflight: boolean;
+  },
 ): Promise<IPreflightResult | ICommandResult> {
-  const request = stringifyAndMakePOSTRequest(requestBody);
+  const request = stringifyAndMakePOSTRequest(requestBody, requestInit);
   const localUrlWithQueries = new URL(`${apiHost}/api/v1/local`);
 
   localUrlWithQueries.searchParams.append('preflight', preflight.toString());

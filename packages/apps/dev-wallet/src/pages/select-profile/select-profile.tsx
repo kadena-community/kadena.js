@@ -97,12 +97,12 @@ export function SelectProfile() {
       </Stack>
       <Stack flexDirection="column" className={linkBlockClass}>
         <Heading as="h6">Own a wallet?</Heading>
-        <Link to="/import-wallet" className={linkClass}>
-          Setup a profile by wallet recovery
+        <Link to="/wallet-recovery" className={linkClass}>
+          Recover your wallet
         </Link>
-        <Link to="/import-chainweaver" className={linkClass}>
+        {/* <Link to="/import-chainweaver" className={linkClass}>
           Import from Chainweaver file
-        </Link>
+        </Link> */}
       </Stack>
     </Box>
   );

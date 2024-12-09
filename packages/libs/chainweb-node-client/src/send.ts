@@ -1,4 +1,5 @@
 import type { ISendRequestBody, SendResponse } from './interfaces/PactAPI';
+import type { ClientRequestInit } from './local';
 import { parseResponse } from './parseResponse';
 import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 import { fetch } from './utils/fetch';
@@ -16,8 +17,9 @@ import { fetch } from './utils/fetch';
 export async function send(
   requestBody: ISendRequestBody,
   apiHost: string,
+  requestInit?: ClientRequestInit,
 ): Promise<SendResponse> {
-  const request = stringifyAndMakePOSTRequest(requestBody);
+  const request = stringifyAndMakePOSTRequest(requestBody, requestInit);
   const sendUrl = new URL(`${apiHost}/api/v1/send`);
 
   const response = await fetch(sendUrl.toString(), request);

@@ -89,11 +89,15 @@ export async function kadenaDecrypt(
  * @throws Throws an error if the old password is empty, new password is incorrect empty passwords are empty, or if encryption with the new password fails.
  * @public
  */
-export async function kadenaChangePassword(
+export async function kadenaChangePassword<
+  TEncode extends 'base64' | 'buffer' = 'base64',
+  TReturn = TEncode extends 'base64' ? EncryptedString : Uint8Array,
+>(
   password: BinaryLike,
   encryptedData: BinaryLike,
   newPassword: string,
-): Promise<EncryptedString> {
+  encode: TEncode = 'base64' as TEncode,
+): Promise<TReturn> {
   if (typeof password !== 'string' || typeof newPassword !== 'string') {
     throw new Error('The old and new passwords must be strings.');
   }
@@ -119,7 +123,7 @@ export async function kadenaChangePassword(
   }
 
   try {
-    return kadenaEncrypt(newPassword, decryptedPrivateKey);
+    return kadenaEncrypt(newPassword, decryptedPrivateKey, encode);
   } catch (error) {
     throw new Error(
       `Failed to encrypt the private key with the new password: ${error.message}`,

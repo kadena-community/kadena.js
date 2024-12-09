@@ -21,6 +21,7 @@ export interface NetworkRepository {
   getEnabledNetworkList: () => Promise<INetwork[]>;
   getAllNetworks: () => Promise<INetwork[]>;
   getNetwork: (uuid: UUID) => Promise<INetwork>;
+  getNetworkByNetworkId: (uuid: string) => Promise<INetwork>;
   addNetwork: (network: INetwork) => Promise<void>;
   updateNetwork: (network: INetwork) => Promise<void>;
   deleteNetwork: (uuid: UUID) => Promise<void>;
@@ -45,6 +46,14 @@ const createNetworkRepository = ({
 
     getNetwork: async (uuid: UUID): Promise<INetwork> => {
       return getOne('network', uuid);
+    },
+    getNetworkByNetworkId: async (networkId: string): Promise<INetwork> => {
+      const networks = await getAll<INetwork>(
+        'network',
+        networkId,
+        'networkId',
+      );
+      return networks[0];
     },
     addNetwork: async (network: INetwork): Promise<void> => {
       await add('network', {

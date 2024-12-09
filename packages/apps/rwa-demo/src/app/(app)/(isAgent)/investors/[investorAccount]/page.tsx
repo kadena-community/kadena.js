@@ -2,45 +2,27 @@
 
 import { DistributionForm } from '@/components/DistributionForm/DistributionForm';
 import { FreezeInvestor } from '@/components/FreezeInvestor/FreezeInvestor';
+import { InvestorForm } from '@/components/InvestorForm/InvestorForm';
+import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
+import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { useAccount } from '@/hooks/account';
-import { isFrozen } from '@/services/isFrozen';
-import { MonoAdd } from '@kadena/kode-icons';
-import { Button, Heading, Stack } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
+import { useAsset } from '@/hooks/asset';
+import { useFreeze } from '@/hooks/freeze';
+import { useGetInvestor } from '@/hooks/getInvestor';
+import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
+import { Button, Stack } from '@kadena/kode-ui';
+import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 const InvestorPage = () => {
-  const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
-  const { account } = useAccount();
+  const { paused } = useAsset();
   const params = useParams();
-  const [hasOpenDistributeForm, setHasOpenDistributeForm] = useState(false);
   const investorAccount = decodeURIComponent(params.investorAccount as string);
-  const [paused, setPaused] = useState(false);
 
-  const handleDistributeTokens = () => {
-    setIsRightAsideExpanded(true);
-    setHasOpenDistributeForm(true);
-  };
+  const { data: investor } = useGetInvestor({ account: investorAccount });
+  const { frozen } = useFreeze({ investorAccount });
 
-  const init = async () => {
-    const res = await isFrozen({
-      investorAccount: investorAccount,
-      account: account!,
-    });
-
-    if (typeof res === 'boolean') {
-      setPaused(res);
-    }
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, []);
-
-  const handlePauseChange = (pausedResult: boolean) => setPaused(pausedResult);
+  if (!investor) return null;
 
   return (
     <>
@@ -50,29 +32,39 @@ const InvestorPage = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      {isRightAsideExpanded && hasOpenDistributeForm && (
-        <DistributionForm
-          investorAccount={investorAccount}
-          onClose={() => {
-            setIsRightAsideExpanded(false);
-            setHasOpenDistributeForm(false);
-          }}
-        />
-      )}
-
       <Stack width="100%" flexDirection="column">
-        <Heading>Investor: {investorAccount}</Heading>
+        <InvestorInfo account={investor} />
         <Stack gap="sm">
-          <Button
-            startVisual={<MonoAdd />}
-            onPress={handleDistributeTokens}
-            isDisabled={paused}
-          >
-            Distribute Tokens
-          </Button>
-          <FreezeInvestor
+          <DistributionForm
             investorAccount={investorAccount}
-            onChanged={handlePauseChange}
+            trigger={
+              <Button startVisual={<MonoAdd />} isDisabled={frozen || paused}>
+                Distribute Tokens
+              </Button>
+            }
+          />
+
+          <PartiallyFreezeTokensForm
+            investorAccount={investorAccount}
+            trigger={
+              <Button startVisual={<MonoAdd />} isDisabled={frozen || paused}>
+                Partially freeze tokens
+              </Button>
+            }
+          />
+
+          <FreezeInvestor investorAccount={investorAccount} />
+
+          <InvestorForm
+            investor={investor}
+            trigger={
+              <Button
+                isDisabled={frozen || paused}
+                endVisual={<MonoEditNote />}
+              >
+                Edit Investor
+              </Button>
+            }
           />
         </Stack>
       </Stack>

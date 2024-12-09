@@ -1,87 +1,70 @@
-import { useAccount } from '@/hooks/account';
-import { useTransactions } from '@/hooks/transactions';
-import { isFrozen } from '@/services/isFrozen';
-import { setAddressFrozen } from '@/services/setAddressFrozen';
-import { getClient } from '@/utils/client';
+import { useFreeze } from '@/hooks/freeze';
+import { useFreezeInvestor } from '@/hooks/freezeInvestor';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
+import type { IButtonProps } from '@kadena/kode-ui';
 import { Button } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 
 interface IProps {
   investorAccount: string;
-  onChanged: (paused: boolean) => void;
+  isCompact?: IButtonProps['isCompact'];
+  variant?: IButtonProps['variant'];
+  iconOnly?: boolean;
 }
 
-const getVisual = (paused?: boolean) => {
-  if (typeof paused !== 'boolean') {
+const getVisual = (frozen: boolean, isLoading: boolean) => {
+  if (isLoading) {
     return <TransactionPendingIcon />;
   }
-  return paused ? <MonoPause /> : <MonoPlayArrow />;
+  return frozen ? <MonoPause /> : <MonoPlayArrow />;
 };
 
-export const FreezeInvestor: FC<IProps> = ({ investorAccount, onChanged }) => {
-  const { account, sign } = useAccount();
-  const { addTransaction } = useTransactions();
-  const [paused, setPaused] = useState<boolean | undefined>();
+export const FreezeInvestor: FC<IProps> = ({
+  investorAccount,
+  iconOnly,
+  isCompact,
+  variant,
+}) => {
+  const { frozen } = useFreeze({ investorAccount });
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { submit } = useFreezeInvestor();
 
   const handleFreeze = async () => {
-    if (paused === undefined) return;
+    if (frozen === undefined) return;
 
     const data = {
       investorAccount: investorAccount,
-      agentAccount: account!,
-      pause: !paused,
+      pause: !frozen,
     };
     try {
       setIsLoading(true);
-      const tx = await setAddressFrozen(data);
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-      console.log(res);
-
-      const transaction = addTransaction({
-        ...res,
-        type: 'FREEZE-ADDRESS',
-        data: {
-          ...res,
-          ...data,
-        },
-      });
-
-      await transaction.listener;
-      setPaused(undefined);
-    } catch (e: any) {}
-  };
-
-  const fetchData = async () => {
-    const res = await isFrozen({
-      investorAccount: investorAccount,
-      account: account!,
-    });
-
-    if (typeof res === 'boolean') {
-      setPaused(res);
-      onChanged(res);
+      return await submit(data);
+    } catch (e: any) {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (isLoading) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      fetchData();
-    }
-  }, [paused]);
+    setIsLoading(false);
+  }, [frozen]);
+
+  const label = iconOnly ? '' : frozen ? 'Unfreeze account' : 'Freeze account';
 
   return (
-    <Button startVisual={getVisual(paused)} onPress={handleFreeze}>
-      Pause Account
-    </Button>
+    <SendTransactionAnimation
+      onPress={handleFreeze}
+      trigger={
+        <Button
+          startVisual={getVisual(frozen, isLoading)}
+          isCompact={isCompact}
+          variant={variant}
+        >
+          {label}
+        </Button>
+      }
+    ></SendTransactionAnimation>
   );
 };

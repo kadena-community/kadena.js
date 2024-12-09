@@ -258,6 +258,7 @@ export const listNotExpandedClass = style([
 export const headerWrapperClass = recipe({
   base: [
     {
+      maxWidth: '2140px',
       position: 'fixed',
       backgroundColor: token('color.background.base.default'),
       width: '100%',
@@ -270,47 +271,44 @@ export const headerWrapperClass = recipe({
   ],
   variants: {
     sideBarExpanded: {
-      true: {
-        ...responsiveStyle({
-          xs: {
-            paddingInlineStart: token('spacing.md'),
-          },
-          md: {
-            paddingInlineStart: sideBarWidth,
-          },
-        }),
-      },
-      false: {
-        ...responsiveStyle({
-          xs: {
-            paddingInlineStart: token('spacing.md'),
-          },
-          md: {
-            paddingInlineStart: sideBarMinWidth,
-          },
-        }),
-      },
+      true: responsiveStyle({
+        xs: {
+          paddingInlineStart: token('spacing.md'),
+        },
+        md: {
+          paddingInlineStart: sideBarWidth,
+        },
+      }),
+      false: responsiveStyle({
+        xs: {
+          paddingInlineStart: token('spacing.md'),
+        },
+        md: {
+          paddingInlineStart: sideBarMinWidth,
+        },
+      }),
     },
   },
 });
 export const headerClass = style([
   atoms({
     display: 'grid',
+    marginInlineEnd: 'sm',
   }),
 
   responsiveStyle({
     xs: {
-      gridTemplateColumns: `50px 1fr 50px`,
+      gridTemplateColumns: `50px 1fr 100px 50px`,
       gridTemplateAreas: `
-    "header-logo header-crumbs header-toggle"
+    "header-logo header-crumbs  header-rightside header-toggle"
   `,
     },
     md: {
-      gridTemplateColumns: '1fr',
+      gridTemplateColumns: '1fr 100px',
       gridTemplateRows: '1fr',
       gridTemplateAreas: `
-    "header-crumbs"
-  `,
+        "header-crumbs header-rightside"
+      `,
     },
   }),
 ]);
@@ -318,6 +316,12 @@ export const headerClass = style([
 export const crumbsWrapperClass = style([
   {
     gridArea: 'header-crumbs',
+  },
+]);
+export const rightsideWrapperClass = style([
+  {
+    gridArea: 'header-rightside',
+    justifyContent: 'flex-end',
   },
 ]);
 

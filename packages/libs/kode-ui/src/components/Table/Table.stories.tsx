@@ -73,6 +73,12 @@ const meta: Meta<typeof Table> = {
       },
       options: ['single', 'multiple', 'none'],
     },
+    variant: {
+      control: {
+        type: 'radio',
+      },
+      options: ['default', 'open'],
+    },
   },
 };
 
@@ -109,11 +115,46 @@ export const Primary: Story = {
   },
 };
 
+export const OpenStyle: Story = {
+  name: 'Openstyle Table',
+  args: {
+    isStriped: false,
+    isCompact: false,
+    variant: 'open',
+  },
+  render: (args) => {
+    return (
+      <Table {...args} aria-label="Example static collection table">
+        <TableHeader>
+          {columns.map((column) => (
+            <Column key={column.key} isRowHeader={column.isRowHeader}>
+              {column.name}
+            </Column>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {rows.map((row) => (
+            <Row key={row.id}>
+              <Cell>{row.name}</Cell>
+              <Cell>{row.type}</Cell>
+              <Cell>{row.date}</Cell>
+            </Row>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  },
+};
+
 export const Striped: Story = {
   name: 'Striped Table',
-  render: () => {
+  render: (args) => {
     return (
-      <Table aria-label="Example static striped collection table" isStriped>
+      <Table
+        {...args}
+        aria-label="Example static striped collection table"
+        isStriped
+      >
         <TableHeader columns={columns}>
           {(column) => (
             <Column isRowHeader={column.isRowHeader}>{column.name}</Column>
@@ -135,9 +176,14 @@ export const Striped: Story = {
 
 export const Compact: Story = {
   name: 'Compact Table',
-  render: () => {
+  render: (args) => {
     return (
-      <Table aria-label="Example compact data table" isStriped isCompact>
+      <Table
+        {...args}
+        aria-label="Example compact data table"
+        isStriped
+        isCompact
+      >
         <TableHeader columns={columns}>
           {(column) => (
             <Column isRowHeader={column.isRowHeader}>{column.name}</Column>
@@ -159,9 +205,9 @@ export const Compact: Story = {
 
 export const Link: Story = {
   name: 'Link Table',
-  render: () => {
+  render: (args) => {
     return (
-      <Table aria-label="Example link data table">
+      <Table {...args} aria-label="Example link data table">
         <TableHeader columns={columns}>
           {(column) => (
             <Column isRowHeader={column.isRowHeader}>{column.name}</Column>
@@ -187,7 +233,7 @@ export const Sorting: Story = {
    * feature. Reference react-aria docs for more advanced examples:
    * https://react-spectrum.adobe.com/react-aria/useTable.html#sorting.
    */
-  render: () => {
+  render: (args) => {
     const [items, setItems] = useState(rows);
     const [sortDescriptor, setSortDescriptor] = useState({});
 
@@ -212,6 +258,7 @@ export const Sorting: Story = {
 
     return (
       <Table
+        {...args}
         aria-label="Example sortable data table"
         sortDescriptor={sortDescriptor}
         onSortChange={sort}
@@ -239,9 +286,9 @@ export const Sorting: Story = {
 
 export const FixedWidth: Story = {
   name: 'Table with Fixed column width',
-  render: () => {
+  render: (args) => {
     return (
-      <Table aria-label="Example table with nested columns">
+      <Table {...args} aria-label="Example table with nested columns">
         <TableHeader>
           <Column isRowHeader width="100">
             100px
@@ -277,9 +324,9 @@ export const FixedWidth: Story = {
 
 export const NestedHeader: Story = {
   name: 'Table with Nested Columns',
-  render: () => {
+  render: (args) => {
     return (
-      <Table aria-label="Example table with nested columns">
+      <Table {...args} aria-label="Example table with nested columns">
         <TableHeader>
           <Column title="Name">
             <Column isRowHeader>First Name</Column>

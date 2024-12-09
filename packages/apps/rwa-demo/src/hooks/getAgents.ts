@@ -1,12 +1,17 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
-import { useEventsQuery } from '@/__generated__/sdk';
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  useEventsQuery,
+  useEventSubscriptionSubscription,
+} from '@/__generated__/sdk';
 import { coreEvents } from '@/services/graph/agent.graph';
+import { env } from '@/utils/env';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
+import { getAsset } from '@/utils/getAsset';
+import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
+import { store } from '@/utils/store';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { useTransactions } from './transactions';
 
 export type EventQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
@@ -18,42 +23,47 @@ export const getEventsDocument = (
   },
 ): Apollo.DocumentNode => coreEvents;
 
+export const getEventsSubscription = (
+  variables: EventQueryVariables = {
+    qualifiedName: '',
+  },
+): Apollo.DocumentNode => coreEvents;
+
 export const useGetAgents = () => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
-  const { getTransactions, transactions } = useTransactions();
   const {
     loading: addedLoading,
     data: addedData,
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.mvp-token.AGENT-ADDED',
+      qualifiedName: `RWA.${getAsset()}.AGENT-ADDED`,
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: 'RWA.mvp-token.AGENT-REMOVED',
+      qualifiedName: `RWA.${getAsset()}.AGENT-REMOVED`,
     },
   });
 
-  const initInnerData = async (transactions: ITransaction[]) => {
+  const { data: subscriptionAddData } = useEventSubscriptionSubscription({
+    variables: {
+      qualifiedName: `RWA.${getAsset()}.AGENT-ADDED`,
+    },
+  });
+
+  const { data: subscriptionRemoveData } = useEventSubscriptionSubscription({
+    variables: {
+      qualifiedName: `RWA.${getAsset()}.AGENT-REMOVED`,
+    },
+  });
+
+  const initInnerData = async () => {
     if (addedLoading || removedLoading) {
       setInnerData([]);
       return;
     }
-
-    const promises = transactions.map(async (t): Promise<IRecord> => {
-      const result = await t.listener;
-      return {
-        blockHeight: result?.metaData?.blockHeight,
-        chainId: t.data.chainId,
-        requestKey: t.requestKey,
-        accountName: t.data.agent,
-        result: result?.result.status === 'success',
-      } as IRecord;
-    });
-    const promiseResults = await Promise.all(promises);
 
     const agentsAdded: IRecord[] =
       addedData?.events.edges.map((edge: any) => {
@@ -63,7 +73,7 @@ export const useGetAgents = () => {
           chainId: edge.node.chainId,
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
-          creationTime: edge.node.block.creationTime,
+          creationTime: new Date(edge.node.block.creationTime).getTime(),
           result: true,
         } as const;
       }) ?? [];
@@ -76,22 +86,84 @@ export const useGetAgents = () => {
           chainId: edge.node.chainId,
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
-          creationTime: edge.node.block.creationTime,
+          creationTime: new Date(edge.node.block.creationTime).getTime(),
           result: true,
         } as const;
       }) ?? [];
 
-    setInnerData([
-      ...filterRemovedRecords([...agentsAdded, ...agentsRemoved]),
-      ...promiseResults,
-    ]);
+    //listen to add events
+    const addedSubscriptionData = (subscriptionAddData?.events
+      ?.map((val) => {
+        const params = JSON.parse(val.parameters ?? '[]');
+        if (params.length) {
+          return {
+            isRemoved: false,
+            result: true,
+            accountName: params[0] as string,
+            chainId: env.CHAINID,
+            requestKey: '',
+            creationTime: Date.now(),
+          };
+        }
+      })
+      .filter((v) => v !== undefined) ?? []) as IRecord[];
+
+    //listen to remove events
+    const removedSubscriptionData: IRecord[] = (subscriptionRemoveData?.events
+      ?.map((val) => {
+        const params = JSON.parse(val.parameters ?? '[]');
+        if (params.length) {
+          return {
+            isRemoved: true,
+            result: true,
+            accountName: params[0] as string,
+            chainId: env.CHAINID,
+            requestKey: '',
+            creationTime: Date.now(),
+          };
+        }
+      })
+      .filter((v) => v !== undefined) ?? []) as IRecord[];
+
+    const aliases = await store.getAccounts();
+    const filteredData = setAliasesToAccounts(
+      [
+        ...filterRemovedRecords([
+          ...agentsAdded,
+          ...agentsRemoved,
+          ...addedSubscriptionData,
+          ...removedSubscriptionData,
+        ]),
+      ],
+      aliases,
+    );
+
+    setInnerData(filteredData ?? []);
+  };
+
+  const listenToAccounts = (aliases: IRecord[]) => {
+    setInnerData((v) => {
+      return setAliasesToAccounts([...v], aliases);
+    });
   };
 
   useEffect(() => {
-    const tx = getTransactions('ADDAGENT');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData(tx);
-  }, [transactions, addedData, removedData, removedLoading, addedLoading]);
+    initInnerData();
+  }, [
+    addedData,
+    removedData,
+    removedLoading,
+    addedLoading,
+    subscriptionRemoveData,
+    subscriptionAddData,
+  ]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    const off = store.listenToAccounts(listenToAccounts);
+    return off;
+  }, []);
 
   return { data: innerData, error };
 };

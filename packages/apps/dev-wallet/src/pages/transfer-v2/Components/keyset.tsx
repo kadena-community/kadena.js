@@ -12,7 +12,7 @@ export const Keyset = ({
     flexWrap="wrap"
     flexDirection={'row'}
     gap="md"
-    paddingInline={'md'}
+    paddingInline={'sm'}
     marginBlock={'xs'}
   >
     <Text size="smallest">{guard.pred}:</Text>

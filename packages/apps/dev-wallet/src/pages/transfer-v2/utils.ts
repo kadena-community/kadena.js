@@ -8,6 +8,7 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import {
+  BuiltInPredicate,
   ChainId,
   createTransaction,
   ISigner,
@@ -23,7 +24,75 @@ import {
 import { estimateGas } from '@kadena/client-utils/core';
 import { composePactCommand, setMeta } from '@kadena/client/fp';
 import { PactNumber } from '@kadena/pactjs';
-import { getAccount, IReceiverAccount } from '../transfer/utils';
+
+export interface IReceiverAccount {
+  alias?: string;
+  address: string;
+  chains: Array<{ chainId: ChainId; balance: string }>;
+  overallBalance: string;
+  keyset: {
+    guard: {
+      keys: ISigner[];
+      pred: BuiltInPredicate;
+    };
+  };
+}
+
+export const getAccount = (
+  address: string,
+  chainResult: Array<{
+    chainId: ChainId | undefined;
+    result:
+      | {
+          balance: string;
+          guard: { keys: string[]; pred: BuiltInPredicate };
+        }
+      | undefined;
+  }>,
+): IReceiverAccount[] => {
+  const accounts = chainResult.reduce(
+    (acc, data) => {
+      if (
+        !data.chainId ||
+        !data.result ||
+        !data.result.balance ||
+        data.result.balance === '0'
+      )
+        return acc;
+      const key = `${data.result.guard.keys.sort().join(',')}:${data.result.guard.pred}`;
+      if (!acc[key]) {
+        const item: IReceiverAccount = {
+          address,
+          overallBalance: new PactNumber(data.result.balance).toString(),
+          keyset: { guard: data.result.guard },
+          chains: [
+            {
+              chainId: data.chainId,
+              balance: data.result.balance,
+            },
+          ],
+        };
+        return { ...acc, [key]: item };
+      }
+      return {
+        ...acc,
+        [key]: {
+          ...acc[key],
+          overallBalance: new PactNumber(acc[key]!.overallBalance ?? '0')
+            .plus(new PactNumber(data.result.balance))
+            .toDecimal(),
+          chains: acc[key]!.chains!.concat({
+            chainId: data.chainId,
+            balance: data.result.balance,
+          }),
+        },
+      };
+    },
+    {} as Record<string, IReceiverAccount>,
+  );
+
+  return Object.values(accounts);
+};
 
 export const CHAINS: ChainId[] = [
   '0',
@@ -247,7 +316,7 @@ export const discoverReceiver = async (
     if (fromDb) {
       console.log('Receiver found in DB');
       rec.push(fromDb);
-    } else if (receiver.startsWith('k:')) {
+    } else if (receiver.startsWith('k:') && receiver.length === 66) {
       console.log("Add K account to receiver's list");
       rec.push({
         address: receiver,
@@ -293,6 +362,7 @@ export const createTransactions = async ({
   mapKeys,
   gasPrice,
   gasLimit,
+  creationTime,
 }: {
   account: IAccount;
   receivers: IReceiver[];
@@ -303,6 +373,7 @@ export const createTransactions = async ({
   mapKeys: (key: ISigner) => ISigner;
   gasPrice: number;
   gasLimit: number;
+  creationTime: number;
 }) => {
   if (!account || +account.overallBalance < 0 || !network || !profileId) {
     throw new Error('INVALID_INPUTs');
@@ -363,6 +434,7 @@ export const createTransactions = async ({
                 networkId: network.networkId,
                 meta: {
                   chainId,
+                  creationTime,
                 },
               },
             );
@@ -409,6 +481,7 @@ export const createTransactions = async ({
                 chainId: optimal.chainId,
                 gasLimit: gasLimit,
                 gasPrice: gasPrice,
+                creationTime,
               },
             },
           )();
@@ -458,6 +531,7 @@ export async function createRedistributionTxs({
   network,
   gasLimit,
   gasPrice,
+  creationTime,
 }: {
   redistribution: Array<{ source: ChainId; target: ChainId; amount: string }>;
   account: IAccount;
@@ -465,6 +539,7 @@ export async function createRedistributionTxs({
   network: INetwork;
   gasLimit: number;
   gasPrice: number;
+  creationTime: number;
 }) {
   const groupId = crypto.randomUUID();
   const txs = redistribution.map(async ({ source, target, amount }) => {
@@ -489,6 +564,7 @@ export async function createRedistributionTxs({
           chainId: source,
           gasLimit: gasLimit,
           gasPrice: gasPrice,
+          creationTime,
         },
       },
     );

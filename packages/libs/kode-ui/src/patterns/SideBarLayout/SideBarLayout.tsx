@@ -6,12 +6,7 @@ import { useLayout } from './components/LayoutProvider';
 import { NotificationSlot } from './components/NotificationSlot/NotificationSlot';
 import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
-import {
-  bodyWrapperClass,
-  layoutExpandedWrapperClass,
-  layoutWrapperClass,
-  mainClass,
-} from './styles.css';
+import { bodyWrapperClass, layoutWrapperClass, mainClass } from './styles.css';
 import type { ISideBarLayoutLocation } from './types';
 
 export interface ISideBarLayout extends PropsWithChildren {
@@ -59,13 +54,16 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
         className={bodyWrapperClass}
       >
         <Stack
-          className={classNames(layoutWrapperClass({ variant }), {
-            [layoutExpandedWrapperClass]: isExpanded,
-          })}
+          className={classNames(
+            layoutWrapperClass({
+              isRightExpanded: isRightAsideExpanded ?? false,
+              isLeftExpanded: isExpanded ?? false,
+            }),
+          )}
         >
           <SideBarHeader logo={logo} />
           {sidebar}
-          <main className={mainClass({ variant })}>
+          <main className={mainClass}>
             <Stack width="100%" flexDirection="column" marginInlineEnd="sm">
               {topBanner && (
                 <Stack

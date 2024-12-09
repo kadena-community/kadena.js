@@ -1,12 +1,31 @@
-import { atoms, style, tokens } from './../../../styles';
+import { atoms, recipe, style, tokens } from './../../../styles';
 
-export const sectionClass = style([
-  atoms({
-    padding: 'n6',
-    backgroundColor: 'base.default',
-    marginBlockEnd: 'md',
-  }),
-]);
+export const sectionClass = recipe({
+  base: [
+    atoms({
+      marginBlockEnd: 'n2',
+    }),
+  ],
+  variants: {
+    variant: {
+      default: [
+        atoms({
+          padding: 'n6',
+          backgroundColor: 'base.default',
+        }),
+      ],
+      open: [
+        atoms({
+          paddingBlock: 'n3',
+          paddingInline: 'n4',
+          border: 'hairline',
+          borderRadius: 'sm',
+          backgroundColor: 'layer.default',
+        }),
+      ],
+    },
+  },
+});
 
 export const headerClass = style([
   atoms({

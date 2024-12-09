@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/kode-ui/styles';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const authCard = style([
@@ -7,7 +7,7 @@ export const authCard = style([
     borderRadius: '1px',
     textAlign: 'left',
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    border: `1px solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
 

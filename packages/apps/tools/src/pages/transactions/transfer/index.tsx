@@ -24,7 +24,7 @@ import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/ri
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
-import { MonoHelp } from '@kadena/kode-icons/system';
+import { MonoHelp, MonoWarning } from '@kadena/kode-icons/system';
 
 const TransferPage = () => {
   const router = useRouter();
@@ -111,6 +111,30 @@ const TransferPage = () => {
             </div>
           </Notification>
         ) : null}
+
+        <Notification
+          intent="warning"
+          role="alert"
+          type="inlineStacked"
+          icon={<MonoWarning />}
+          isDismissable
+        >
+          <div>
+            <Trans
+              i18nKey="common:ledger-info-warning"
+              components={[
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href="https://kadena-community.github.io/kadena-transfer-js/ledger.html"
+                  rel="noreferrer"
+                  key="link-to-ledger-docs"
+                />,
+              ]}
+            />
+          </div>
+        </Notification>
+
         <Notification
           intent="info"
           role="alert"
@@ -124,7 +148,7 @@ const TransferPage = () => {
                 <a
                   className={notificationLinkStyle}
                   target={'_blank'}
-                  href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
+                  href="https://support.ledger.com/article/7415959614109-zd"
                   rel="noreferrer"
                   key="link-to-ledger-docs"
                 />,

@@ -7,6 +7,7 @@ import {
   IAccount,
   IKeySet,
 } from '../account/account.repository';
+import { backupDatabase } from '../backup/backup.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
@@ -70,6 +71,7 @@ export const useWallet = () => {
       if (profile) {
         const res = await setProfile(profile);
         channel.postMessage({ action: 'switch-profile', payload: profile });
+        backupDatabase().catch(console.log);
         return res;
       }
       return null;
@@ -82,6 +84,7 @@ export const useWallet = () => {
       await securityService.clearSecurityPhrase();
       await setProfile(undefined);
       channel.postMessage({ action: 'switch-profile', payload: undefined });
+      backupDatabase(true).catch(console.log);
     };
     run();
   }, [setProfile]);
@@ -153,11 +156,18 @@ export const useWallet = () => {
     [context],
   );
 
-  const createKey = useCallback(async (keySource: IKeySource) => {
-    const res = await WalletService.createKey(keySource, unlockKeySource);
-    keySourceManager.disconnect();
-    return res;
-  }, []);
+  const createKey = useCallback(
+    async (keySource: IKeySource, index?: number) => {
+      const res = await WalletService.createKey(
+        keySource,
+        unlockKeySource,
+        index,
+      );
+      keySourceManager.disconnect();
+      return res;
+    },
+    [],
+  );
 
   const getPublicKeyData = useCallback(
     (publicKey: string) => {
@@ -303,6 +313,43 @@ export const useWallet = () => {
     );
   };
 
+
+  const createSpecificAccount = async ({
+    contract,
+    index,
+    alias,
+  }: {
+    contract: string;
+    index: number;
+    alias?: string;
+  }) => {
+    const { accounts, fungibles } = context;
+    const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
+    const filteredAccounts = accounts.filter(
+      (account) => account.contract === contract,
+    );
+
+    const accountAlias =
+      alias ||
+      `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
+
+    const keySource = context.keySources[0];
+    const indexKey = await createKey(keySource, index);
+    const availableKey = keySource.keys.find(
+      (ksKey) => ksKey.publicKey === indexKey.publicKey,
+    );
+    if (availableKey) {
+      // prompt for password anyway for account creation even if the key is available.
+      await askForPassword();
+      return createAccountByKey({
+        key: availableKey,
+        contract,
+        alias: accountAlias,
+      });
+    }
+    return createAccountByKey({ key: indexKey, contract, alias: accountAlias });
+  };
+
   return {
     getContact,
     createProfile,
@@ -316,6 +363,7 @@ export const useWallet = () => {
     unlockKeySource,
     lockKeySource,
     createNextAccount,
+    createSpecificAccount,
     createAccountByKeyset,
     createAccountByKey,
     setActiveNetwork: (network: INetwork) =>

@@ -11,8 +11,7 @@ export function KeysPage() {
 
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoKey />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+      <SideBarBreadcrumbs icon={<MonoKey />} isGlobal>
         <SideBarBreadcrumbsItem href="/key-management/keys">
           Manage Your Keys
         </SideBarBreadcrumbsItem>
