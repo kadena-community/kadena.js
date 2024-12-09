@@ -14,14 +14,14 @@ export const togglePause = async (
   const func = data.isPaused ? 'unpause' : 'pause';
 
   return Pact.builder
-    .execution(`(RWA.${getAsset()}.${func})`)
+    .execution(`(${getAsset()}.${func})`)
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addData('agent', account.address)
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'freezer'),
+      withCap(`${getAsset()}.ONLY-AGENT`, 'freezer'),
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)

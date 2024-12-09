@@ -11,7 +11,7 @@ export const isPaused = async (data: IIsPausedProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.paused)`)
+    .execution(`(${getAsset()}.paused)`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

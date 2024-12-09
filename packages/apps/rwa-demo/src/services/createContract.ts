@@ -20,7 +20,7 @@ export const createContract = async (
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
-      gasLimit: 100000,
+      gasLimit: 150000,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [])
     .setNetworkId(getNetwork().networkId)

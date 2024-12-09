@@ -1,5 +1,7 @@
+import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useCreatePrincipalNamespace } from '@/hooks/createPrincipalNamespace';
+import { useInitContract } from '@/hooks/initContract';
 import type { IAddContractProps } from '@/services/createContract';
 import {
   Button,
@@ -10,6 +12,7 @@ import {
   Stepper,
   TextField,
 } from '@kadena/kode-ui';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -23,16 +26,21 @@ const STEPS = {
   CREATE_NAMESPACE: 0,
   CREATE_CONTRACT: 1,
   INIT_CONTRACT: 2,
+  DONE: 3,
 } as const;
 
 export const StepperAssetForm: FC<IProps> = () => {
-  const [step, setStep] = useState<number>(STEPS.CREATE_CONTRACT);
+  const [contractData, setContractData] = useState<
+    IAddContractProps | undefined
+  >();
+  const [step, setStep] = useState<number>(STEPS.CREATE_NAMESPACE);
+  const { addAsset, setAsset } = useAsset();
   const { submit } = useCreatePrincipalNamespace();
+  const { submit: submitInit } = useInitContract();
   const { submit: submitContract } = useCreateContract();
-  const [namespace, setNamespace] = useState(
-    'n_413afb3246992ade57f52e1a6e44b5454f8b6cca',
-  );
+  const [namespace, setNamespace] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -40,16 +48,21 @@ export const StepperAssetForm: FC<IProps> = () => {
     formState: { isValid },
   } = useForm<IAddContractProps>({
     values: {
-      contractName: '',
-      owner: '',
-      complianceOwner: '',
+      contractName: 'asd',
+      owner:
+        'k:9f6a3e6ed941c9abe2c9d12afea3fe55644282c2392fe7e9571e3822d21db229',
+      complianceOwner:
+        'k:9f6a3e6ed941c9abe2c9d12afea3fe55644282c2392fe7e9571e3822d21db229',
       namespace,
     },
   });
 
   const handleSave = async (data: IAddContractProps) => {
-    console.log(22);
-    await submitContract(data);
+    setContractData(data);
+    const tx = await submitContract(data);
+    if (tx?.result?.status === 'success') {
+      setStep(STEPS.INIT_CONTRACT);
+    }
   };
 
   return (
@@ -102,6 +115,40 @@ export const StepperAssetForm: FC<IProps> = () => {
           }}
         >
           Create Namespace
+        </Button>
+      )}
+      {step === STEPS.INIT_CONTRACT && (
+        <Button
+          onPress={async () => {
+            setError('');
+            const transaction = await submitInit(contractData);
+
+            if (transaction?.result?.status === 'success' && contractData) {
+              setStep(STEPS.DONE);
+              const asset = addAsset({
+                contractName: contractData.contractName,
+                namespace: contractData.namespace,
+              });
+              if (!asset) return;
+              setAsset(asset);
+              router.push('/assets');
+            } else {
+              setError(`init failed`);
+            }
+          }}
+        >
+          Init Contract
+        </Button>
+      )}
+
+      {step === STEPS.DONE && (
+        <Button
+          onPress={async () => {
+            router.replace('/assets');
+            router.refresh();
+          }}
+        >
+          DONE
         </Button>
       )}
 

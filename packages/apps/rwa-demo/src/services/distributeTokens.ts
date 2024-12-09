@@ -21,7 +21,7 @@ export const distributeTokens = async (
   return Pact.builder
     .execution(
       `
-       (RWA.${getAsset()}.mint (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset()}.mint (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('agent', account.address)
     .addData('investor', data.investorAccount)
@@ -34,15 +34,10 @@ export const distributeTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'supply-modifier'),
-      withCap(
-        `RWA.${getAsset()}.TRANSFER`,
-        env.ZEROADDRESS,
-        data.investorAccount,
-        {
-          decimal: data.amount,
-        },
-      ),
+      withCap(`${getAsset()}.ONLY-AGENT`, 'supply-modifier'),
+      withCap(`${getAsset()}.TRANSFER`, env.ZEROADDRESS, data.investorAccount, {
+        decimal: data.amount,
+      }),
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)

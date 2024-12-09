@@ -1,4 +1,7 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  type ITransaction,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IAddContractProps } from '@/services/createContract';
 import { createContract } from '@/services/createContract';
 import { getClient } from '@/utils/client';
@@ -15,7 +18,6 @@ export const useCreateContract = () => {
     data: IAddContractProps,
   ): Promise<ITransaction | undefined> => {
     try {
-      console.log(111);
       const tx = await createContract(data, account!);
 
       console.log({ tx, cmd: JSON.parse(tx.cmd) });
@@ -46,6 +48,3 @@ export const useCreateContract = () => {
 
   return { submit };
 };
-function interpretErrorMessage(message: any): string | undefined {
-  throw new Error('Function not implemented.');
-}

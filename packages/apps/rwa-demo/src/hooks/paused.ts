@@ -23,12 +23,12 @@ export const usePaused = () => {
 
   const { data: pausedData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.PAUSED`,
+      qualifiedName: `${getAsset()}.PAUSED`,
     },
   });
   const { data: unpausedData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.UNPAUSED`,
+      qualifiedName: `${getAsset()}.UNPAUSED`,
     },
   });
 

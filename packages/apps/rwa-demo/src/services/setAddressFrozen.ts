@@ -14,7 +14,7 @@ export const setAddressFrozen = async (
 ) => {
   return Pact.builder
     .execution(
-      `(RWA.${getAsset()}.set-address-frozen (read-string 'investor) ${data.pause})
+      `(${getAsset()}.set-address-frozen (read-string 'investor) ${data.pause})
       `,
     )
     .addData('investor', data.investorAccount)
@@ -24,7 +24,7 @@ export const setAddressFrozen = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'freezer'),
+      withCap(`${getAsset()}.ONLY-AGENT`, 'freezer'),
       withCap(`coin.GAS`),
     ])
 

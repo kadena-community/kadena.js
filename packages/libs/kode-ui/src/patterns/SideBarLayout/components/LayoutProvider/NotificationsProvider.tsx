@@ -51,7 +51,11 @@ export const NotificationsProvider: FC<INotificationsProvider> = ({
       message: notification.message!,
     };
 
-    setNotifications((v) => [...v, notificationProps]);
+    setNotifications((oldValue) => {
+      if (oldValue.find((n) => n.message === notification.message))
+        return [...oldValue];
+      return [...oldValue, notificationProps];
+    });
   };
 
   return (

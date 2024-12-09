@@ -27,5 +27,7 @@ export const isComplianceOwner = async (data: IIsComplianceOwnerProps) => {
     signatureVerification: false,
   });
 
+  console.log({ result });
+
   return result.status === 'success' ? result.data : undefined;
 };

@@ -14,7 +14,7 @@ export const getAgentRoles = async (
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.get-agent-roles (read-string 'agent))`)
+    .execution(`(${getAsset()}.get-agent-roles (read-string 'agent))`)
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,

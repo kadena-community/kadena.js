@@ -46,7 +46,7 @@ const Assets = () => {
       <SectionCard stack="vertical">
         <SectionCardContentBlock>
           <SectionCardHeader
-            title="Assts"
+            title="Assets"
             description={<>List of all your selected contracts</>}
             actions={
               <AssetForm
@@ -62,18 +62,13 @@ const Assets = () => {
             <CompactTable
               fields={[
                 {
-                  key: 'uuid',
-                  label: 'id',
-                  width: '40%',
+                  key: 'contractName',
+                  label: 'name',
+                  width: '90%',
                   render: CompactTableFormatters.FormatLink({
                     linkComponent: Link,
                     url: '/assets/:value',
                   }),
-                },
-                {
-                  key: 'name',
-                  label: 'name',
-                  width: '50%',
                 },
                 {
                   label: '',

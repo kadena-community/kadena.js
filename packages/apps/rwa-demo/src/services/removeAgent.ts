@@ -12,13 +12,13 @@ export const removeAgent = async (
   account: IWalletAccount,
 ) => {
   return Pact.builder
-    .execution(`(RWA.${getAsset()}.remove-agent (read-string 'agent))`)
+    .execution(`(${getAsset()}.remove-agent (read-string 'agent))`)
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-OWNER`, ''),
+      withCap(`${getAsset()}.ONLY-OWNER`, ''),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.agent)

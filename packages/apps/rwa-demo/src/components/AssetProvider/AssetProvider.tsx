@@ -18,7 +18,8 @@ import type { IWalletAccount } from '../AccountProvider/utils';
 
 export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;
-  name: string;
+  contractName: string;
+  namespace: string;
   supply: number;
 }
 
@@ -27,6 +28,13 @@ export interface IAssetContext {
   assets: IAsset[];
   paused: boolean;
   setAsset: (asset: IAsset) => void;
+  addAsset: ({
+    contractName,
+    namespace,
+  }: {
+    contractName: string;
+    namespace: string;
+  }) => IAsset | undefined;
   removeAsset: (uuid: string) => void;
   getAsset: (
     uuid: string,
@@ -38,6 +46,7 @@ export const AssetContext = createContext<IAssetContext>({
   assets: [],
   paused: false,
   setAsset: () => {},
+  addAsset: () => undefined,
   removeAsset: (uuid: string) => undefined,
   getAsset: async () => undefined,
 });
@@ -97,6 +106,29 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     setAssets(data);
   };
 
+  const addAsset = ({
+    contractName,
+    namespace = 'RWA',
+  }: {
+    contractName: string;
+    namespace: string;
+  }) => {
+    const asset: IAsset = {
+      uuid: crypto.randomUUID(),
+      supply: -1,
+      maxSupply: -1,
+      maxBalance: -1,
+      contractName,
+      namespace,
+    };
+
+    const data = [...getAssets(), asset];
+    localStorage.setItem(storageKey, JSON.stringify(data));
+    window.dispatchEvent(new Event(storageKey));
+    setAssets(data);
+    return asset;
+  };
+
   useEffect(() => {
     getAssets();
     window.addEventListener(storageKey, storageListener);
@@ -126,7 +158,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!asset) return;
 
     setAsset((old) => old && { ...old, supply });
-  }, [asset?.name, supply]);
+  }, [asset?.contractName, supply]);
 
   useEffect(() => {
     if (!asset) return;
@@ -140,6 +172,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         asset,
         assets,
         setAsset: handleSelectAsset,
+        addAsset,
         getAsset,
         removeAsset,
         paused,

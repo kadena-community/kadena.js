@@ -12,9 +12,7 @@ export const getFrozenTokens = async (data: IGetBalanceProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(
-      `(RWA.${getAsset()}.get-frozen-tokens (read-string 'user-address))`,
-    )
+    .execution(`(${getAsset()}.get-frozen-tokens (read-string 'user-address))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

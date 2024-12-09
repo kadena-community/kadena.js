@@ -22,7 +22,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
           <Button isCompact variant="outlined">
             {showLabel ? (
               asset ? (
-                asset.name
+                asset.contractName
               ) : (
                 'Select an asset'
               )
@@ -36,7 +36,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
           <ContextMenuItem
             onClick={() => setAsset(ass)}
             key={ass.uuid}
-            label={ass.name}
+            label={ass.contractName}
           />
         ))}
         <ContextMenuDivider />

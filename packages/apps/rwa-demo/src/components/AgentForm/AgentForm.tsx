@@ -22,7 +22,9 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { data } = useGetAgentRoles({ agent: agent?.accountName });
+  const { data: userAgentRolesData } = useGetAgentRoles({
+    agent: agent?.accountName,
+  });
   const { submit } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
@@ -63,6 +65,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   };
 
   const onSubmit = async (data: IAddAgentProps) => {
+    console.log({ data });
     await submit(data);
     handleOnClose();
   };
@@ -103,7 +106,6 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                   return (
                     <label key={key}>
                       <input
-                        checked={data.indexOf(val) >= 0}
                         type="checkbox"
                         value={key}
                         {...register('roles')}

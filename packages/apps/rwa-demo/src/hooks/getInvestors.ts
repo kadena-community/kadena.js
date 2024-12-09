@@ -31,13 +31,13 @@ export const useGetInvestors = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.IDENTITY-REGISTERED`,
+      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.IDENTITY-REMOVED`,
+      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
     },
   });
 

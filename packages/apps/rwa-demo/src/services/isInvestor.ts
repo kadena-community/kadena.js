@@ -11,7 +11,7 @@ export const isInvestor = async (data: IIsInvestorProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.contains-identity (read-string 'investor))`)
+    .execution(`(${getAsset()}.contains-identity (read-string 'investor))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

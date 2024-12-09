@@ -23,7 +23,7 @@ export const useSupply = () => {
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.SUPPLY`,
+      qualifiedName: `${getAsset()}.SUPPLY`,
     },
   });
 

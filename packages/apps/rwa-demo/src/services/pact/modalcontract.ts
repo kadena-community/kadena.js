@@ -1,10 +1,13 @@
 import { IAddContractProps } from '../createContract';
 
 export const getContract = ({
+  contractTokenId,
   contractName,
-  owner,
   namespace,
-}: IAddContractProps) => `(namespace (read-msg 'ns))
+}: IAddContractProps) => `
+(namespace "${namespace}")
+
+
 
 (module ${contractName} GOV
   "${contractName} descriptions"
@@ -67,7 +70,7 @@ export const getContract = ({
   (defconst MINIMUM-PRECISION 1
     "Minimum allowed precision for coin transactions")
 
-  (defconst TOKEN-ID "${namespace}.${name}")
+  (defconst TOKEN-ID "${namespace}.${contractName}")
 
   (defconst AGENT-ADMIN:string 'agent-admin )
   (defconst SUPPLY-MODIFIER:string 'supply-modifier )
@@ -162,12 +165,19 @@ export const getContract = ({
     true
   )
 
+  (defcap ROLE_UPDATED:bool (user-address:string roles:[string])
+    @doc ""
+    @event
+    true
+  )
+
   ;; grant caps
-  (defcap INTERNAL () true)
-  (defcap MINT () true)
-  (defcap BURN () true)
-  (defcap FORCED-TRANSFER () true )
-  (defcap UPDATE-SUPPLY () true )
+
+  (defcap INTERNAL:bool () true)
+  (defcap MINT:bool () true)
+  (defcap BURN:bool () true)
+  (defcap FORCED-TRANSFER:bool () true )
+  (defcap UPDATE-SUPPLY:bool () true )
 
   ;; agent caps
 
@@ -299,7 +309,7 @@ export const getContract = ({
   true)
 
   (defun init (name:string symbol:string decimals:integer kadenaID:string version:string compliances:[module{RWA.compliance-v1}] paused:bool owner-guard:guard)
-    @doc "Initiates token with supplied informations"
+    @doc "Initiates token with supplied informations and owner guard"
     (with-capability (GOV)
       (insert token "" {
         "name": name,
@@ -343,11 +353,6 @@ export const getContract = ({
     (with-read token "" {"paused" := paused } paused)
   )
 
-  (defun is-frozen:bool (user-address:string)
-    @doc "check "
-    (with-read users user-address {"frozen":= frozen} frozen)
-  )
-
   (defun address-frozen:bool (user-address:string)
     @doc "Check if a user address is frozen."
     (with-read users user-address {
@@ -360,9 +365,10 @@ export const getContract = ({
     @doc "Return the number of frozen tokens for a user."
     (with-read users user-address {
       "frozen" := frozen,
-      "balance" := balance
+      "amount-frozen":= amount-frozen,
+      "balance":= balance
       }
-      (if frozen balance 0.0)
+      (if frozen 0.0 amount-frozen)
   ))
 
   ;; Setters
@@ -457,8 +463,6 @@ export const getContract = ({
         "frozen":= frozen,
         "amount-frozen":= amount-frozen
       }
-      (enforce (not frozen) "Account is frozen")
-      (enforce (> amount-frozen amount) "amount exceeds frozen amount")
       (unfreeze-partial-tokens-internal user-address amount)
     ) )
   )
@@ -475,23 +479,25 @@ export const getContract = ({
 
   (defun forced-transfer:bool (from:string to:string amount:decimal)
     @doc "Force transfer tokens from one address to another."
-    (only-agent TRANSFER-MANAGER)
     (with-capability (FORCED-TRANSFER from to amount)
       (with-capability (TRANSFER from to amount)
+        (only-agent TRANSFER-MANAGER)
         (transfer-internal from to amount)
     ))
   )
 
   (defun mint :string (to:string amount:decimal)
-    @doc ""
-    (only-agent SUPPLY-MODIFIER)
+    @doc "Mints amount of token to a user's address"
+    (enforce-unit amount)
     (with-capability (MINT)
+      (only-agent SUPPLY-MODIFIER)
       (mint-internal to amount)
     )
   )
 
   (defun burn:bool (user-address:string amount:decimal)
     @doc "Burn tokens from a user's address according to destroy rules in compliance"
+    (enforce-unit amount)
     (with-read token "" {
       "compliance":=compliance-l
       }
@@ -517,6 +523,7 @@ export const getContract = ({
     @doc "Perform batch transfer of tokens."
     (map (lambda (idx:integer)
       (with-capability (TRANSFER from (at idx to-list) (at idx amounts))
+        (enforce-unfrozen from)
         (transfer-internal from (at idx to-list) (at idx amounts))
       )
     ) (enumerate 0 (- (length to-list) 1))
@@ -618,7 +625,7 @@ export const getContract = ({
           (update-supply amount)
         )
       )
-      ""
+      "Token Minted"
     )
   )
 
@@ -684,7 +691,7 @@ export const getContract = ({
     }
     (require-capability (INTERNAL))
       (enforce (not frozen) "Account is frozen")
-      (enforce (> balance (+ amount-frozen amount)) "frozen amount exceeds balance")
+      (enforce (>= balance (+ amount-frozen amount)) "frozen amount exceeds balance")
       (update users user-address {"amount-frozen": (+ amount-frozen amount)})
       (emit-event (TOKENS-FROZEN user-address  (+ amount-frozen amount)))
       ""
@@ -699,7 +706,7 @@ export const getContract = ({
     }
     (require-capability (INTERNAL))
       (enforce (not frozen) "Account is frozen")
-      (enforce (> balance (+ amount-frozen amount)) "frozen amount exceeds balance")
+      (enforce (<= amount amount-frozen) "amount exceeds frozen balance")
       (update users user-address {"amount-frozen": (- amount-frozen amount)})
       (emit-event (TOKENS-FROZEN user-address (- amount-frozen amount)))
       ""
@@ -784,6 +791,20 @@ export const getContract = ({
         ))
   )
 
+  (defun enforce-unfrozen-amount:bool
+    ( account:string
+      amount:decimal
+    )
+    (with-read users account
+      { "frozen" := frozen,
+        "amount-frozen" := amount-frozen,
+        "balance" := balance
+      }
+      (enforce (not frozen) "Account is frozen")
+      (enforce (>= (- balance amount-frozen) amount) "Insufficient funds")
+    )
+  )
+
 
   (defun transfer:string
     ( sender:string
@@ -792,6 +813,7 @@ export const getContract = ({
     )
     @doc "Transfer AMOUNT of token from sender to receiver"
     (enforce-unfrozen sender)
+    (enforce-unfrozen-amount sender amount)
     (enforce-contains-identity receiver)
     (with-capability (TRANSFER sender receiver amount)
       (transfer-internal sender receiver amount)
@@ -800,7 +822,7 @@ export const getContract = ({
 
   (defun enforce-unfrozen (sender:string)
     @doc "Fail if sender is frozen"
-    (let ((frozen:bool (is-frozen sender)))
+    (let ((frozen:bool (address-frozen sender)))
       (enforce (not frozen) "frozen sender")
     )
   )
@@ -944,7 +966,7 @@ export const getContract = ({
   )
 
   (defun is-owner (account:string)
-    @doc ""
+    @doc "Check if an account is an owner"
     (with-read token "" {
         "owner-guard":= owner-guard
       } (= account (create-principal owner-guard))
@@ -952,23 +974,33 @@ export const getContract = ({
   )
 
   (defun only-agent:bool (role:string)
+    @doc "Verifies that the agent is signing for the capability"
     (with-capability (ONLY-AGENT role)
       true
     )
   )
 
   (defun only-owner:bool (role:string)
+    @doc "Verifies that the owner is signing for the capability"
     (with-capability (ONLY-OWNER role)
       true
     )
   )
 
   (defun update-agent-roles:bool (agent:string roles:[string])
-    @doc "Check if an address is an agent."
+    @doc "Update agent roles"
     (only-agent AGENT-ADMIN)
     (verify-agent-roles roles)
     (update agents agent
       { 'roles: roles }
+    )
+  )
+
+  (defun get-agent-roles:bool (agent:string)
+    @doc "Return agent roles"
+    (with-read agents agent
+      { 'roles:= roles }
+      roles
     )
   )
 
@@ -1098,4 +1130,29 @@ export const getContract = ({
     ""
   )
 )
+
+;; token
+(create-table token)
+(create-table users)
+
+;; agents
+(create-table agents)
+
+;; investors
+(create-table identities)
+
+
+  ; (defcap WHEN-NOT-PAUSED ()
+  ;   @doc "check if token is not paused"
+  ; )
+  ;
+  ; (defcap WHEN-PAUSED ()
+  ;   @doc "check if token is paused"
+  ; )
+;; doesn't have erc-20's approve feature
+;; implemented partial functions
+;; changing the way agents were used using data field
+;; set roles in agent
+;; wanted to review frontend and see if certain features were possible with graphql (still exploring but want to sit with Travis?)
+(RWA.token-mapper.add-token-ref ${namespace}.${contractName}.TOKEN-ID ${namespace}.${contractName})
 `;

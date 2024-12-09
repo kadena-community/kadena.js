@@ -19,7 +19,7 @@
     "@apollo/client": "~3.9.11",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@hookform/resolvers": "^3.2.0",
-    "@kadena/client": "^1.15.0",
+    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/graph": "workspace:*",
     "@kadena/kode-icons": "workspace:*",

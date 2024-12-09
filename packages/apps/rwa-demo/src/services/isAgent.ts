@@ -10,7 +10,7 @@ export const isAgent = async (data: IIsAgentProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.is-agent (read-string 'agent))`)
+    .execution(`(${getAsset()}.is-agent (read-string 'agent))`)
     .setMeta({
       senderAccount: data.agent,
       chainId: getNetwork().chainId,
