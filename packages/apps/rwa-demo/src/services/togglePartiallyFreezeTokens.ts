@@ -25,7 +25,7 @@ export const togglePartiallyFreezeTokens = async (
   return Pact.builder
     .execution(
       `
-       (RWA.${getAsset()}.${func} (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset()}.${func} (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('agent', account.address)
     .addData('investor', data.investorAccount)
@@ -38,7 +38,7 @@ export const togglePartiallyFreezeTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'freezer'),
+      withCap(`${getAsset()}.ONLY-AGENT`, 'freezer'),
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)

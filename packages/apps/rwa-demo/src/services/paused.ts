@@ -11,7 +11,7 @@ export const paused = async () => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.paused)`)
+    .execution(`(${getAsset()}.paused)`)
     .setMeta({
       senderAccount: ADMIN.account,
       chainId: getNetwork().chainId,

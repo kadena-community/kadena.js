@@ -14,7 +14,8 @@ export const setCompliance = async (
 ) => {
   return Pact.builder
     .execution(
-      ` (RWA.max-balance-compliance.set-max-balance-and-max-supply ${new PactNumber(data.maxSupply).toPactDecimal().decimal} ${new PactNumber(data.maxBalance).toPactDecimal().decimal})`,
+      `(RWA.max-balance-compliance.set-max-balance ${new PactNumber(data.maxBalance).toPactDecimal().decimal})
+      (RWA.supply-limit-compliance.set-supply-limit ${new PactNumber(data.maxSupply).toPactDecimal().decimal})`,
     )
     .setMeta({
       senderAccount: account.address,
@@ -22,6 +23,7 @@ export const setCompliance = async (
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
       withCap(`RWA.max-balance-compliance.ONLY-OWNER`),
+      withCap(`RWA.supply-limit-compliance.ONLY-OWNER`),
       withCap(`coin.GAS`),
     ])
 

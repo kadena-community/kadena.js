@@ -9,7 +9,7 @@ export const AssetInfo: FC = () => {
   if (!asset) return;
   return (
     <Stack width="100%" flexDirection="column">
-      <Heading as="h3">{asset.name}</Heading>
+      <Heading as="h3">{asset.contractName}</Heading>
       <Stack width="100%" alignItems="center" gap="md">
         <Button isDisabled>
           {paused ? (

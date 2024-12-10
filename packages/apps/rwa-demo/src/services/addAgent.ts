@@ -31,15 +31,15 @@ export const addAgent = async (
 ) => {
   return Pact.builder
     .execution(
-      `(RWA.${getAsset()}.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
+      `(${getAsset()}.add-agent (read-string 'agent) (read-keyset 'agent_guard))`,
     )
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(account.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-OWNER`, ''),
-      withCap(`coin.GAS`),
+      withCap(`${getAsset()}.ONLY-OWNER`, ''),
+      withCap(`coin.GAS`, ''),
     ])
     .addData('agent', data.accountName)
     .addData('agent_guard', {

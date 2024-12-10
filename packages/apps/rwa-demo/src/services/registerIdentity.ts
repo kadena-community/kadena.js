@@ -17,8 +17,8 @@ const createPubKeyFromAccount = (account: string): string => {
 export const registerIdentity = async (data: IRegisterIdentityProps) => {
   return Pact.builder
     .execution(
-      `(RWA.${getAsset()}.register-identity (read-string 'investor) (read-string 'agent) 1)
-      (RWA.${getAsset()}.create-account (read-string 'investor) (read-keyset 'investor-keyset))
+      `(${getAsset()}.register-identity (read-string 'investor) (read-string 'agent) 1)
+      (${getAsset()}.create-account (read-string 'investor) (read-keyset 'investor-keyset))
       `,
     )
     .addData('investor-keyset', {
@@ -32,7 +32,7 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       chainId: getNetwork().chainId,
     })
     .addSigner(data.agent.keyset.guard.keys[0], (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'whitelist-manager'),
+      withCap(`${getAsset()}.ONLY-AGENT`, 'whitelist-manager'),
       withCap(`coin.GAS`),
     ])
 

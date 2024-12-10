@@ -21,9 +21,13 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
+  // const { data: userAgentRolesData } = useGetAgentRoles({
+  //   agent: agent?.accountName,
+  // });
   const { submit } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+
   const {
     handleSubmit,
     control,
@@ -60,6 +64,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   };
 
   const onSubmit = async (data: IAddAgentProps) => {
+    console.log({ data });
     await submit(data);
     handleOnClose();
   };

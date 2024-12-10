@@ -37,25 +37,25 @@ export const useGetAgents = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.AGENT-ADDED`,
+      qualifiedName: `${getAsset()}.AGENT-ADDED`,
     },
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.AGENT-REMOVED`,
+      qualifiedName: `${getAsset()}.AGENT-REMOVED`,
     },
   });
 
   const { data: subscriptionAddData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.AGENT-ADDED`,
+      qualifiedName: `{getAsset()}.AGENT-ADDED`,
     },
   });
 
   const { data: subscriptionRemoveData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.AGENT-REMOVED`,
+      qualifiedName: `${getAsset()}.AGENT-REMOVED`,
     },
   });
 

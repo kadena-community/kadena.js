@@ -3,20 +3,23 @@ import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
-export interface IIsPausedProps {
-  account: IWalletAccount;
+export interface IGetAgentRolesProps {
+  agent: string;
 }
 
-export const isPaused = async (data: IIsPausedProps) => {
+export const getAgentRoles = async (
+  data: IGetAgentRolesProps,
+  account: IWalletAccount,
+): Promise<string[]> => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.paused)`)
+    .execution(`(${getAsset()}.get-agent-roles (read-string 'agent))`)
     .setMeta({
-      senderAccount: data.account.address,
+      senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
-    .addData('agent', data.account.address)
+    .addData('agent', data.agent)
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 
@@ -25,5 +28,7 @@ export const isPaused = async (data: IIsPausedProps) => {
     signatureVerification: false,
   });
 
-  return result.status === 'success' ? result.data : undefined;
+  return result.status === 'success'
+    ? (result.data as string[])
+    : ([] as string[]);
 };

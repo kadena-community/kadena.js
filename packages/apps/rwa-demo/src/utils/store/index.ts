@@ -5,6 +5,8 @@ import { get, off, onValue, ref, set } from 'firebase/database';
 import { getAsset } from '../getAsset';
 import { database } from './firebase';
 
+const getAssetFolder = () => getAsset().replace('.', '');
+
 const RWAStore = () => {
   const addTransaction = async (
     account: IWalletAccount,
@@ -47,7 +49,7 @@ const RWAStore = () => {
   };
 
   const getAccounts = async (): Promise<IRegisterIdentityProps[]> => {
-    const asset = getAsset();
+    const asset = getAssetFolder();
     if (!asset) return [];
 
     const snapshot = await get(ref(database, `${asset}/accounts`));
@@ -64,7 +66,7 @@ const RWAStore = () => {
   }: {
     account: string;
   }): Promise<IRegisterIdentityProps | undefined> => {
-    const asset = getAsset();
+    const asset = getAssetFolder();
     if (!asset) return;
 
     const snapshot = await get(ref(database, `${asset}/accounts/${account}`));
@@ -76,12 +78,13 @@ const RWAStore = () => {
     accountName,
     alias,
   }: Omit<IRegisterIdentityProps, 'agent'>) => {
-    const asset = getAsset();
+    const asset = getAssetFolder();
+    console.log({ asset });
     if (!asset) return;
 
     await set(ref(database, `${asset}/accounts/${accountName}`), {
       accountName,
-      alias,
+      alias: alias ?? '',
     });
   };
 
@@ -89,7 +92,7 @@ const RWAStore = () => {
     account: string,
     setDataCallback: (account: IRegisterIdentityProps) => void,
   ) => {
-    const asset = getAsset();
+    const asset = getAssetFolder();
     if (!asset) return;
 
     const accountRef = ref(database, `${asset}/accounts/${account}`);
@@ -104,7 +107,7 @@ const RWAStore = () => {
   };
 
   const listenToAccounts = (setDataCallback: (aliases: any[]) => void) => {
-    const asset = getAsset();
+    const asset = getAssetFolder();
     if (!asset) return;
 
     const accountRef = ref(database, `${asset}/accounts`);

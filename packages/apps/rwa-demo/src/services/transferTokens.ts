@@ -21,7 +21,7 @@ export const transferTokens = async (
   return Pact.builder
     .execution(
       `
-       (RWA.${getAsset()}.transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset()}.transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('investorFrom', data.investorFromAccount)
     .addData('investorTo', data.investorToAccount)
@@ -31,7 +31,7 @@ export const transferTokens = async (
     })
     .addSigner(createPubKeyFromAccount(data.investorFromAccount), (withCap) => [
       withCap(
-        `RWA.${getAsset()}.TRANSFER`,
+        `${getAsset()}.TRANSFER`,
         data.investorFromAccount,
         data.investorToAccount,
         {

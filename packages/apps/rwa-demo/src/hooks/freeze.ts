@@ -27,7 +27,7 @@ export const useFreeze = ({
 
   const { data } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `RWA.${getAsset()}.ADDRESS-FROZEN`,
+      qualifiedName: `${getAsset()}.ADDRESS-FROZEN`,
     },
   });
 

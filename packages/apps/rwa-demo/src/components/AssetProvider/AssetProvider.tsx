@@ -18,7 +18,8 @@ import type { IWalletAccount } from '../AccountProvider/utils';
 
 export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;
-  name: string;
+  contractName: string;
+  namespace: string;
   supply: number;
 }
 
@@ -27,6 +28,15 @@ export interface IAssetContext {
   assets: IAsset[];
   paused: boolean;
   setAsset: (asset: IAsset) => void;
+  addAsset: ({
+    contractName,
+    namespace,
+  }: {
+    contractName: string;
+    namespace: string;
+  }) => IAsset | undefined;
+  addExistingAsset: (name: string) => IAsset | undefined;
+  removeAsset: (uuid: string) => void;
   getAsset: (
     uuid: string,
     account: IWalletAccount,
@@ -37,6 +47,9 @@ export const AssetContext = createContext<IAssetContext>({
   assets: [],
   paused: false,
   setAsset: () => {},
+  addAsset: () => undefined,
+  addExistingAsset: () => undefined,
+  removeAsset: (uuid: string) => undefined,
   getAsset: async () => undefined,
 });
 
@@ -61,11 +74,13 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const storageListener = (event: StorageEvent | Event) => {
     if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
       return;
+
     getAssets();
   };
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
+    window.dispatchEvent(new Event(selectedKey));
     setAsset((old) => ({ ...old, ...data }));
 
     router.replace('/');
@@ -86,6 +101,44 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!data) return;
     return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };
   };
+  const removeAsset = (uuid: string) => {
+    const data = getAssets().filter((a) => a.uuid !== uuid);
+    localStorage.setItem(storageKey, JSON.stringify(data));
+    window.dispatchEvent(new Event(storageKey));
+    setAssets(data);
+  };
+
+  const addAsset = ({
+    contractName,
+    namespace = 'RWA',
+  }: {
+    contractName: string;
+    namespace: string;
+  }) => {
+    const asset: IAsset = {
+      uuid: crypto.randomUUID(),
+      supply: -1,
+      maxSupply: -1,
+      maxBalance: -1,
+      contractName,
+      namespace,
+    };
+
+    const data = [...getAssets(), asset];
+    localStorage.setItem(storageKey, JSON.stringify(data));
+    window.dispatchEvent(new Event(storageKey));
+    setAssets(data);
+    return asset;
+  };
+
+  const addExistingAsset = (name: string) => {
+    const nameArray = name.split('.');
+    if (nameArray.length !== 2) {
+      throw new Error('asset contract not valid format');
+    }
+
+    return addAsset({ namespace: nameArray[0], contractName: nameArray[1] });
+  };
 
   useEffect(() => {
     getAssets();
@@ -105,18 +158,17 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    const asset = getFullAsset();
-    setAsset(asset);
-    if (asset) {
-      return;
-    }
-  }, []);
+    if (asset) return;
+    const innerAsset = getFullAsset();
+    setAsset(innerAsset);
+    router.refresh();
+  }, [asset, assets]);
 
   useEffect(() => {
     if (!asset) return;
 
     setAsset((old) => old && { ...old, supply });
-  }, [asset?.name, supply]);
+  }, [asset?.contractName, supply]);
 
   useEffect(() => {
     if (!asset) return;
@@ -126,7 +178,16 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <AssetContext.Provider
-      value={{ asset, assets, setAsset: handleSelectAsset, getAsset, paused }}
+      value={{
+        asset,
+        assets,
+        setAsset: handleSelectAsset,
+        addAsset,
+        addExistingAsset,
+        getAsset,
+        removeAsset,
+        paused,
+      }}
     >
       {children}
     </AssetContext.Provider>

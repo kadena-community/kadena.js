@@ -13,7 +13,7 @@ export const supply = async (data: ISupplyProps) => {
   if (!data.account) return;
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.supply)`)
+    .execution(`(${getAsset()}.supply)`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

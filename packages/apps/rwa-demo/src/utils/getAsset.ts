@@ -26,6 +26,8 @@ export const getFullAsset = (): IAsset | undefined => {
 
 export const getAsset = (): string => {
   const asset = getFullAsset();
-
-  return asset?.name ?? '';
+  if (!asset) {
+    return '';
+  }
+  return `${asset.namespace}.${asset.contractName}`;
 };
