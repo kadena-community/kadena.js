@@ -13,7 +13,6 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -43,7 +42,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const { submit: submitContract } = useCreateContract();
   const [namespace, setNamespace] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter();
 
   const {
     handleSubmit,

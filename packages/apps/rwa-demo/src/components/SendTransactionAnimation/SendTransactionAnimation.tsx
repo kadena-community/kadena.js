@@ -42,7 +42,7 @@ export const SendTransactionAnimation: FC<IProps> = ({ trigger, onPress }) => {
   const style = {
     left: `${triggerPos?.x}px`,
     top: `${triggerPos?.y}px`,
-    transition: 'left 2s ease-out, top 2s ease-in',
+    transition: 'left 1s ease-out, top 1s ease-in',
   };
   if (showAnimation) {
     style.left = `${txButtonPos?.x}px`;

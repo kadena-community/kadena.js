@@ -18,7 +18,7 @@ export const animationIconClass = recipe({
   variants: {
     showAnimation: {
       true: {
-        animation: `${scale} 2s ease-in-out`,
+        animation: `${scale} 1s ease-in-out`,
       },
       false: {},
     },
