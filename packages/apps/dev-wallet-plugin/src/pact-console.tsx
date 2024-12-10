@@ -60,38 +60,31 @@ export function PactConsole({ sessionId }: { sessionId: string }) {
   useLayoutEffect(() => {
     const listener = (event: KeyboardEvent) => {
       switch (event.key) {
-        case 'ArrowUp':
-          console.log('Up arrow key pressed!');
-          const lastCommand = commandHistory.list[commandHistory.pointer];
-          console.log(
-            'commandHistory.pointer',
-            commandHistory.pointer,
-            lastCommand,
-            commandHistory.list,
-          );
+        case 'ArrowUp': {
+          const pointer = Math.max(0, commandHistory.pointer - 1);
+          const lastCommand = commandHistory.list[pointer];
           setCommand(lastCommand);
           setCommandHistory((history) => ({
             ...history,
-            pointer: Math.max(0, history.pointer - 1),
+            pointer,
           }));
           break;
-        case 'ArrowDown':
-          console.log('Down arrow key pressed!');
-          const nextCommand = commandHistory.list[commandHistory.pointer];
-          console.log(
-            'commandHistory.pointer',
-            commandHistory.pointer,
-            nextCommand,
-            commandHistory.list,
+        }
+        case 'ArrowDown': {
+          const pointer = Math.min(
+            commandHistory.list.length - 1,
+            commandHistory.pointer + 1,
           );
+          const nextCommand = commandHistory.list[pointer];
           setCommand(nextCommand);
           setCommandHistory((history) => ({
             ...history,
-            pointer: Math.min(history.list.length - 1, history.pointer + 1),
+            pointer,
           }));
 
           // Add your logic for the down key here
           break;
+        }
       }
     };
     document.addEventListener('keydown', listener);
@@ -163,7 +156,7 @@ export function PactConsole({ sessionId }: { sessionId: string }) {
             setCounter((counter) => counter + 1);
             setCommandHistory((history) => ({
               list: [...history.list, command],
-              pointer: history.list.length,
+              pointer: history.list.length + 1,
             }));
             setCommand('');
             setLogs((logs) => [

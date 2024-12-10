@@ -11,7 +11,7 @@ export const inputClass = style({
   width: '100%',
   border: 'none',
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
-  fontSize: tokens.kda.foundation.typography.fontSize.md,
+  fontSize: 14,
   backgroundColor: tokens.kda.foundation.color.neutral.n1,
   color: tokens.kda.foundation.color.neutral.n90,
   caretShape: 'block',
