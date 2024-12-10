@@ -11,6 +11,7 @@ export const inputClass = style({
   width: '100%',
   border: 'none',
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.md,
   backgroundColor: tokens.kda.foundation.color.neutral.n1,
   color: tokens.kda.foundation.color.neutral.n90,
   caretShape: 'block',
@@ -19,7 +20,7 @@ export const inputClass = style({
 export const badgeClass = style({
   backgroundColor: tokens.kda.foundation.color.neutral.n100,
   color: tokens.kda.foundation.color.neutral.n1,
-  fontWeight: 'bold',
+  fontWeight: 'normal',
   border: 'none',
   borderRadius: '2px',
   fontSize: '12px',
@@ -29,10 +30,10 @@ export const badgeClass = style({
   alignItems: 'center',
   selectors: {
     '&.network': {
-      width: '80px',
+      width: '90px',
     },
     '&.chain': {
-      width: '30px',
+      width: '40px',
     },
     '&.disabled': {
       opacity: 0.6,
