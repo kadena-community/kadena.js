@@ -4,7 +4,6 @@ import { MonoPause, MonoPlayArrow, MonoVpnLock } from '@kadena/kode-icons';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { CopyButton } from '../CopyButton/CopyButton';
-import { SupplyCount } from '../SupplyCount/SupplyCount';
 
 export const AssetInfo: FC = () => {
   const { paused, asset } = useAsset();
@@ -18,9 +17,7 @@ export const AssetInfo: FC = () => {
         <CopyButton
           value={`${env.URL}/assets/create/${asset?.namespace}/${asset?.contractName}`}
         />
-      </Stack>
-      <Stack width="100%" alignItems="center" gap="md">
-        <Button isDisabled>
+        <Button isCompact variant="transparent" isDisabled>
           {paused ? (
             <Stack gap="sm" alignItems="center">
               <MonoPause />
@@ -33,9 +30,6 @@ export const AssetInfo: FC = () => {
             </Stack>
           )}
         </Button>
-        <div>maxSupply: {asset.maxSupply}</div>
-        <div>maxBalance: {asset.maxBalance}</div>
-        <SupplyCount />
       </Stack>
     </Stack>
   );

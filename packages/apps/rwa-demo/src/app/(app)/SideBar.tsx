@@ -3,6 +3,7 @@ import { useAccount } from '@/hooks/account';
 import {
   MonoAccountBox,
   MonoApps,
+  MonoAttachMoney,
   MonoDarkMode,
   MonoLightMode,
   MonoLogout,
@@ -32,7 +33,8 @@ import { KLogo } from './KLogo';
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
-  const { logout, account, isMounted, isAgent, isOwner } = useAccount();
+  const { logout, account, isMounted, isAgent, isOwner, isComplianceOwner } =
+    useAccount();
   const router = useRouter();
 
   const toggleTheme = (): void => {
@@ -76,6 +78,14 @@ export const SideBar: FC = () => {
               label="Agents"
               component={Link}
               href="/agents"
+            />
+          )}
+          {(isAgent || isOwner || isComplianceOwner) && (
+            <SideBarItem
+              visual={<MonoAttachMoney />}
+              label="Investors"
+              component={Link}
+              href="/investors"
             />
           )}
 
