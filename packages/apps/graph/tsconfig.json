@@ -2,6 +2,7 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "types": [".kadena/pactjs-generated", "node"],
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "target": "ES2020",
     "outDir": "dist",

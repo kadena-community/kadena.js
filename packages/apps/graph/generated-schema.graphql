@@ -205,7 +205,6 @@ type FungibleChainAccountTransactionsConnectionEdge {
 type FungibleChainAccountTransfersConnection {
   edges: [FungibleChainAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type FungibleChainAccountTransfersConnectionEdge {
@@ -698,7 +697,6 @@ type TransactionResultEventsConnectionEdge {
 type TransactionResultTransfersConnection {
   edges: [TransactionResultTransfersConnectionEdge]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type TransactionResultTransfersConnectionEdge {
