@@ -1,5 +1,4 @@
 'use client';
-import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { MonoAdd } from '@kadena/kode-icons';
@@ -12,8 +11,6 @@ export const ComplianceOwnerRootPage = () => {
 
   return (
     <Stack width="100%" flexDirection="column" gap="md">
-      <SideBarBreadcrumbs />
-
       <Stack gap="sm">
         {isComplianceOwner && (
           <>

@@ -1,8 +1,6 @@
-import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAccount } from '@/hooks/account';
 import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import { AgentsList } from '../AgentsList/AgentsList';
 import { InvestorList } from '../InvestorList/InvestorList';
 import { PauseForm } from '../PauseForm/PauseForm';
 
@@ -14,12 +12,10 @@ export const AgentRootPage: FC = () => {
   return (
     <Stack width="100%" flexDirection="column" gap="md">
       agent: {account?.address}
-      <SideBarBreadcrumbs />
       <Stack gap="sm">
         <PauseForm />
       </Stack>
       <InvestorList />
-      <AgentsList />
     </Stack>
   );
 };

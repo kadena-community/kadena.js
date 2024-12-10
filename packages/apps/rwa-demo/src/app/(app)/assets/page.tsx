@@ -2,8 +2,9 @@
 
 import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
+import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAsset } from '@/hooks/asset';
-import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
+import { MonoAdd, MonoDelete, MonoFindInPage } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import {
   CompactTable,
@@ -15,22 +16,31 @@ import {
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
+  SideBarBreadcrumbsItem,
   useLayout,
 } from '@kadena/kode-ui/patterns';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const Assets = () => {
   const { assets, removeAsset } = useAsset();
   const [openSide, setOpenSide] = useState(false);
+  const router = useRouter();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
   const handleDelete = (value: any) => {
     removeAsset(value);
   };
 
+  const handleLink = async (uuid: any) => {
+    router.push(`/assets/${uuid}`);
+  };
+
   return (
     <>
+      <SideBarBreadcrumbs>
+        <SideBarBreadcrumbsItem href="/assets">Assets</SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
       {isRightAsideExpanded && openSide && (
         <RightAside
           isOpen
@@ -64,10 +74,21 @@ const Assets = () => {
                 {
                   key: 'contractName',
                   label: 'name',
-                  width: '90%',
-                  render: CompactTableFormatters.FormatLink({
-                    linkComponent: Link,
-                    url: '/assets/:value',
+                  width: '80%',
+                },
+                {
+                  label: '',
+                  key: 'uuid',
+                  width: '10%',
+                  render: CompactTableFormatters.FormatActions({
+                    trigger: (
+                      <Button
+                        isCompact
+                        variant="outlined"
+                        startVisual={<MonoFindInPage />}
+                        onPress={handleLink}
+                      />
+                    ),
                   }),
                 },
                 {
