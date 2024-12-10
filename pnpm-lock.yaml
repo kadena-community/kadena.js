@@ -402,7 +402,7 @@ importers:
         specifier: 4.0.17
         version: 4.0.17(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))
       '@vitejs/plugin-react-swc':
-        specifier: ^3.3.2
+        specifier: ^3.2.2
         version: 3.7.0(@swc/helpers@0.5.11)(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))
       chokidar-cli:
         specifier: ^3.0.0
@@ -423,7 +423,7 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
       vite:
-        specifier: ^5.2.11
+        specifier: ^5.4.8
         version: 5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
       vite-plugin-static-copy:
         specifier: ^1.0.0
