@@ -59,12 +59,11 @@ export const SendTransactionAnimation: FC<IProps> = ({ trigger, onPress }) => {
           txsAnimationRef,
         )}
 
-      <div ref={ref}>
-        {React.cloneElement(trigger, {
-          ...trigger.props,
-          onPress: handlePress,
-        })}
-      </div>
+      {React.cloneElement(trigger, {
+        ...trigger.props,
+        ref,
+        onPress: handlePress,
+      })}
     </>
   );
 };
