@@ -10,6 +10,7 @@ import { SupplyCount } from '@/components/SupplyCount/SupplyCount';
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
+import { useFreeze } from '@/hooks/freeze';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import {
@@ -21,6 +22,7 @@ import {
 
 const Home = () => {
   const { isInvestor, isComplianceOwner, account } = useAccount();
+  const { frozen } = useFreeze({ investorAccount: account?.address });
   const { paused, asset } = useAsset();
 
   return (
@@ -66,7 +68,7 @@ const Home = () => {
                 <TransferForm
                   trigger={
                     <AssetAction
-                      isDisabled={paused || !isInvestor}
+                      isDisabled={paused || frozen || !isInvestor}
                       icon={<MonoAdd />}
                       label="Transfer tokens"
                     />

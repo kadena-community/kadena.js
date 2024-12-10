@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { useState } from 'react';
@@ -7,6 +8,7 @@ import { PauseForm } from './PauseForm';
 
 export const PauseAssetAction = () => {
   const { paused } = useAsset();
+  const { isAgent } = useAccount();
   const [loading, setLoading] = useState(false);
 
   const showIcon = () => {
@@ -19,7 +21,13 @@ export const PauseAssetAction = () => {
   return (
     <PauseForm
       handleSetIsLoading={setLoading}
-      trigger={<AssetAction icon={showIcon()} label="Contract is active" />}
+      trigger={
+        <AssetAction
+          isDisabled={!isAgent}
+          icon={showIcon()}
+          label="Contract is active"
+        />
+      }
     />
   );
 };
