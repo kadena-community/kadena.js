@@ -1,4 +1,3 @@
-import type { IPactModules, PactReturnType } from '@kadena/client';
 import { execution } from '@kadena/client/fp';
 
 import { queryAllChainsClient } from '../core/client-helpers';
