@@ -19,17 +19,19 @@ type Message = {
 };
 
 type RequestType =
+  | 'GET_STATUS'
   | 'CONNECTION_REQUEST'
   | 'SIGN_REQUEST'
   | 'PAYMENT_REQUEST'
-  | 'UNLOCK_REQUEST';
+  | 'UNLOCK_REQUEST'
+  | 'GET_NETWORK_LIST';
 type Request = Message & {
   resolve: (data: unknown) => void;
   reject: (error: unknown) => void;
 };
 
 const handle = (
-  type: string,
+  type: RequestType,
   handler: (
     message: Message,
   ) => Promise<{ payload: unknown } | { error: unknown }>,
@@ -39,9 +41,12 @@ const handle = (
       const payload = await handler(event.data);
       event.source.postMessage(
         { id: event.data.id, type: event.data.type, ...payload },
-        { targetOrigin: event.origin },
+        // TODO: use sessionId of plugins, since 'null' happens for the iframe plugins that we need more proper handling
+        { targetOrigin: event.origin === 'null' ? '*' : event.origin },
       );
-      window.opener.focus();
+      if (window.opener && event.origin && event.origin !== 'null') {
+        window.opener.focus();
+      }
     }
   };
   window.addEventListener('message', cb);
@@ -101,6 +106,11 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
             isUnlocked: isUnlocked,
             ...(isUnlocked ? { profile, accounts } : {}),
           },
+        };
+      }),
+      handle('GET_NETWORK_LIST', async () => {
+        return {
+          payload: isUnlocked ? networks : [],
         };
       }),
       handle('SIGN_REQUEST', async (data) => {

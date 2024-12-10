@@ -45,7 +45,7 @@ export const config: UserConfig = {
         // other plugins should be hosted in their own domain; we might later create a plugin registry and host them there.
         {
           src: 'node_modules/@kadena/dev-wallet-plugin/dist/*',
-          dest: './hosted-plugins/pact-console/',
+          dest: './hosted-plugins/pact-remote-console/',
         },
       ],
     }),

@@ -1,9 +1,9 @@
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { getInitials } from '@/utils/get-initials';
 import { MonoApps } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
+import { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
 import { pluginContainerClass, pluginIconClass } from './style.css';
@@ -11,33 +11,46 @@ import { pluginContainerClass, pluginIconClass } from './style.css';
 type Plugin = {
   id: string;
   name: string;
-  src: string;
-  style: string;
+  shortName: string;
+  registry: string;
   description: string;
+  permissions: ['network-list'];
 };
 
 const pluginList: Plugin[] = [
   {
-    id: 'pact-console',
-    name: 'Pact Console',
-    src: '/hosted-plugins/pact-console/pact-console.es.js',
-    style: '/hosted-plugins/pact-console/style.css',
+    id: 'pact-remote-console',
+    registry: '/hosted-plugins',
+    name: 'Pact Remote Console',
+    shortName: 'Pact Console',
     description:
-      'A console for interacting with the Pact remotely on different networks.',
+      'A console for interacting remotely with Pact on different networks (read-only)',
+    permissions: ['network-list'],
   },
 ];
 
-const getDoc = (
-  plugin: Plugin,
-  config: Record<string, unknown>,
-) => `<!doctype html>
+function escapeHTML(input: string) {
+  return input
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+const getDoc = (plugin: Plugin, sessionId: string) => {
+  const id = escapeHTML(plugin.id);
+  const host = escapeHTML(plugin.registry);
+  const src = `${host}/${id}/${id}.es.js`;
+  const style = `${host}/${id}/style.css`;
+  return `
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kadena Dev Wallet Plugin</title>
-    <link rel="stylesheet" href="${plugin.style}" />
-    <link rel="modulepreload" crossorigin href="${plugin.src}" />
+    <link rel="stylesheet" href="${style}" />
+    <link rel="modulepreload" crossorigin href="${src}" />
     </head>
     <body class="boot">
     <div id="plugin-root"></div>
@@ -45,21 +58,24 @@ const getDoc = (
       window.process =  window.process || { env: { NODE_ENV: 'production' } };
     </script>
     <script type="module">
-      import { createApp } from '${plugin.src}';
-      createApp(document.getElementById('plugin-root'), ${JSON.stringify(config)});
+      import { createApp } from '${src}';
+      createApp(document.getElementById('plugin-root'), { sessionId: '${sessionId}' });
     </script>
   </body>
-</html>
-`;
+</html>`;
+};
 
 export function Plugins() {
   const [searchParams] = useSearchParams();
-  const { networks } = useWallet();
   const pluginId = searchParams.get('plugin-id') as
     | null
     | keyof typeof pluginList;
 
   const plugin = pluginList.find((p) => p.id === pluginId);
+  const sessionId = useMemo(
+    () => `${pluginId?.toString()}:${crypto.randomUUID()}`,
+    [pluginId],
+  );
 
   if (plugin) {
     return (
@@ -90,7 +106,7 @@ export function Plugins() {
           <iframe
             sandbox="allow-scripts allow-forms"
             style={{ border: 'none', width: '100%', height: '100%' }}
-            srcDoc={getDoc(plugin, { networks })}
+            srcDoc={getDoc(plugin, sessionId)}
           />
         </Stack>
       </Stack>
@@ -108,7 +124,7 @@ export function Plugins() {
       </Text>
       <Divider />
       <Stack flexWrap="wrap" gap={'md'}>
-        {pluginList.map(({ name, id }) => (
+        {pluginList.map(({ name, shortName, id }) => (
           <Link to={`/plugins?plugin-id=${id}`} className={noStyleLinkClass}>
             <Stack
               alignItems={'center'}
@@ -117,7 +133,7 @@ export function Plugins() {
               gap={'xs'}
             >
               <div className={pluginIconClass}>
-                {getInitials(name).toUpperCase()}
+                {getInitials(shortName).toUpperCase()}
               </div>
               <Text bold size="smallest">
                 {name}

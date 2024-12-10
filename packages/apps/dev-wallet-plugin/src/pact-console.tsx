@@ -9,7 +9,8 @@ import {
 import { Stack, Text } from '@kadena/kode-ui';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
 import classNames from 'classnames';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { communicate } from './communicate';
 import { hostUrlGenerator, INetwork } from './network';
 import { badgeClass, inputClass } from './style.css';
 
@@ -17,12 +18,17 @@ document.documentElement.classList.add(darkThemeClass);
 
 export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 
-export function PactConsole({ networks }: { networks: INetwork[] }) {
+export function PactConsole({ sessionId }: { sessionId: string }) {
+  const message = useMemo(
+    () => communicate(window, window.parent, 'pact-remote-console', sessionId),
+    [sessionId],
+  );
+  const [networks, setNetworks] = useState<INetwork[]>([]);
   const [counter, setCounter] = useState<number>(0);
   const [command, setCommand] = useState<string>('');
   const [chainId, setChainId] = useState<ChainId>('0');
   const [networkId, setNetwork] = useState<string>(
-    networks[0].networkId ?? 'testnet04',
+    networks.length ? networks[0].networkId : 'testnet04',
   );
   const [commandHistory, setCommandHistory] = useState<{
     list: string[];
@@ -37,6 +43,14 @@ export function PactConsole({ networks }: { networks: INetwork[] }) {
       result: string;
     }>
   >([]);
+
+  useEffect(() => {
+    const networkList = async () => {
+      const response = await message('GET_NETWORK_LIST');
+      setNetworks(response.payload);
+    };
+    networkList();
+  }, [message, sessionId]);
 
   useEffect(() => {
     // configure client-utils to use the networks provided

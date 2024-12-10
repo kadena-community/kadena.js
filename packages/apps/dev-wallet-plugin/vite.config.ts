@@ -60,8 +60,8 @@ export const config: UserConfig = {
     sourcemap: 'hidden',
     lib: {
       entry: 'src/plugin.tsx', // The entry point of your library
-      name: 'pact-console', // The global variable name for UMD/IIFE builds
-      fileName: (format) => `pact-console.${format}.js`, // File name template
+      name: 'pact-remote-console', // The global variable name for UMD/IIFE builds
+      fileName: (format) => `pact-remote-console.${format}.js`, // File name template
     },
     commonjsOptions: {
       // add all monorepo packages path regex to commonjsOptions since they are commonjs
