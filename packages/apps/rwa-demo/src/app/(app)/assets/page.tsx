@@ -1,6 +1,6 @@
 'use client';
 
-import { AssetForm } from '@/components/AssetForm/AssetForm';
+import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { useAsset } from '@/hooks/asset';
 import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
@@ -49,7 +49,7 @@ const Assets = () => {
             title="Assets"
             description={<>List of all your selected contracts</>}
             actions={
-              <AssetForm
+              <AssetFormScreen
                 trigger={
                   <Button variant="outlined" isCompact endVisual={<MonoAdd />}>
                     Add Asset

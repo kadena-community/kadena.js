@@ -9,7 +9,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
-import { StepperAssetForm } from '@/components/AssetForm/StepperAssetForm';
+import { AssetStepperForm } from '@/components/AssetForm/AssetStepperForm';
 import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useAccount } from '@/hooks/account';
@@ -58,7 +58,7 @@ const RootLayout = ({
       >
         <div>
           <Heading>Add new asset</Heading>
-          <StepperAssetForm />
+          <AssetStepperForm />
         </div>
       </Stack>
     );

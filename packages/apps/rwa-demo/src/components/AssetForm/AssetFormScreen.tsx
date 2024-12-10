@@ -7,7 +7,7 @@ import {
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import type { IAsset } from '../AssetProvider/AssetProvider';
-import { StepperAssetForm } from './StepperAssetForm';
+import { AssetStepperForm } from './AssetStepperForm';
 
 interface IProps {
   asset?: IAsset;
@@ -15,7 +15,7 @@ interface IProps {
   onClose?: () => void;
 }
 
-export const AssetForm: FC<IProps> = ({ trigger, onClose }) => {
+export const AssetFormScreen: FC<IProps> = ({ trigger, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
@@ -40,7 +40,7 @@ export const AssetForm: FC<IProps> = ({ trigger, onClose }) => {
         >
           <RightAsideHeader label="Add Asset" />
           <RightAsideContent>
-            <StepperAssetForm />
+            <AssetStepperForm />
           </RightAsideContent>
         </RightAside>
       )}

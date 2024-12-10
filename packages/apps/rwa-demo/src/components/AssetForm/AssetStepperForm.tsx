@@ -10,6 +10,7 @@ import {
   Stack,
   Step,
   Stepper,
+  Text,
   TextField,
 } from '@kadena/kode-ui';
 import { useRouter } from 'next/navigation';
@@ -30,7 +31,7 @@ const STEPS = {
   DONE: 3,
 } as const;
 
-export const StepperAssetForm: FC<IProps> = () => {
+export const AssetStepperForm: FC<IProps> = () => {
   const [contractData, setContractData] = useState<
     IAddContractProps | undefined
   >();
@@ -99,6 +100,9 @@ export const StepperAssetForm: FC<IProps> = () => {
       {step === STEPS.CREATE_NAMESPACE && (
         <Stack flexDirection="column" gap="sm">
           <AddExistingAssetForm />
+          <Stack width="100%" justifyContent="center">
+            <Text bold>or</Text>
+          </Stack>
           <Button
             variant="outlined"
             onPress={async () => {
