@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-describe('convertFromChainweaver', () => {
+describe('pact-remote-console', () => {
+  // TODO: Add tests
   it('test', () => {
-    expect(() => {
-      true;
-    }).toBeTruthy();
+    expect(() => true).toBe(true);
   });
 });
