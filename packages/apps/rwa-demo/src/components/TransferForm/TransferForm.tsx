@@ -34,7 +34,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isValid, errors },
   } = useForm<ITransferTokensProps>({
     values: {
       amount: 0,
@@ -65,6 +65,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
   );
 
   const init = async () => {
+    if (!account) return;
     const res = await getBalance();
     setBalance(res);
   };
@@ -72,7 +73,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, []);
+  }, [account?.address]);
 
   if (!account) return;
 
@@ -108,6 +109,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="investorToAccount"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
                   <Select
                     label="Select an option"
@@ -133,7 +135,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button isDisabled={paused} type="submit">
+              <Button isDisabled={paused || !isValid} type="submit">
                 Transfer
               </Button>
             </RightAsideFooter>

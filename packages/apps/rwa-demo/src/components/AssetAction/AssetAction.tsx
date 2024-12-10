@@ -21,7 +21,7 @@ export const AssetAction: FC<IProps> = ({
       <Tile
         isDisabled={isDisabled}
         as={onPress ? 'button' : 'div'}
-        onClick={onPress}
+        onClick={!isDisabled ? onPress : () => {}}
       >
         <Stack
           width="100%"
