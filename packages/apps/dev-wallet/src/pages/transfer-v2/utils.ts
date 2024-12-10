@@ -1,8 +1,4 @@
-import {
-  accountRepository,
-  IAccount,
-  IGuard,
-} from '@/modules/account/account.repository';
+import { accountRepository } from '@/modules/account/account.repository';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { INetwork } from '@/modules/network/network.repository';
 import {
@@ -20,14 +16,7 @@ import {
 } from '@kadena/client-utils/coin';
 import { composePactCommand } from '@kadena/client/fp';
 import { PactNumber } from '@kadena/pactjs';
-
-export interface IReceiverAccount {
-  alias?: string;
-  address: string;
-  chains: Array<{ chainId: ChainId; balance: string }>;
-  overallBalance: string;
-  guard: IGuard;
-}
+import { IRetrievedAccount } from '../../modules/account/IRetrievedAccount';
 
 export const getAccount = (
   address: string,
@@ -35,7 +24,7 @@ export const getAccount = (
     chainId: ChainId | undefined;
     result: IDiscoveredAccount | undefined;
   }>,
-): IReceiverAccount[] => {
+): IRetrievedAccount[] => {
   const accounts = chainResult.reduce(
     (acc, data) => {
       const { details, principal } = data.result ?? {};
@@ -43,7 +32,7 @@ export const getAccount = (
       if (!data.chainId || !data.result || !details || !principal) return acc;
       const key = principal;
       if (!acc[key]) {
-        const item: IReceiverAccount = {
+        const item: IRetrievedAccount = {
           address,
           overallBalance: new PactNumber(details.balance).toString(),
           guard: { ...details.guard, principal },
@@ -70,7 +59,7 @@ export const getAccount = (
         },
       };
     },
-    {} as Record<string, IReceiverAccount>,
+    {} as Record<string, IRetrievedAccount>,
   );
 
   return Object.values(accounts);
@@ -319,7 +308,7 @@ export interface IReceiver {
     chainId: ChainId;
     amount: string;
   }[];
-  discoveredAccounts: IReceiverAccount[];
+  discoveredAccounts: IRetrievedAccount[];
   discoveryStatus: 'not-started' | 'in-progress' | 'done';
 }
 
@@ -335,7 +324,7 @@ export const createTransactions = async ({
   gasLimit,
   creationTime,
 }: {
-  account: IAccount;
+  account: IRetrievedAccount;
   receivers: IReceiver[];
   isSafeTransfer: boolean;
   network: INetwork;
@@ -353,6 +342,8 @@ export const createTransactions = async ({
   if (!isKeysetGuard(account.guard)) {
     throw new Error('Sender Account guard is not a keyset guard');
   }
+
+  const guard = account.guard;
 
   const groupId = crypto.randomUUID();
   const txs = await Promise.all(
@@ -388,7 +379,7 @@ export const createTransactions = async ({
             chainId: optimal.chainId,
             sender: {
               account: account.address,
-              publicKeys: account.guard.keys.map(mapKeys),
+              publicKeys: guard.keys.map(mapKeys),
             },
           };
           const transferCmd = isKeysetGuard(receiverGuard)
@@ -460,26 +451,32 @@ export async function createRedistributionTxs({
   gasLimit,
   gasPrice,
   creationTime,
+  profileId,
 }: {
   redistribution: Array<{ source: ChainId; target: ChainId; amount: string }>;
-  account: IAccount;
+  account: IRetrievedAccount;
   mapKeys: (key: ISigner) => ISigner;
   network: INetwork;
   gasLimit: number;
   gasPrice: number;
   creationTime: number;
+  profileId: string;
 }) {
+  if (!isKeysetGuard(account.guard)) {
+    throw new Error('Sender Account guard is not a keyset guard');
+  }
+  const guard = account.guard;
   const groupId = crypto.randomUUID();
   const txs = redistribution.map(async ({ source, target, amount }) => {
     const command = composePactCommand(
       createCrossChainCommand({
         sender: {
           account: account.address,
-          publicKeys: account.guard.keys.map(mapKeys),
+          publicKeys: guard.keys.map(mapKeys),
         },
         receiver: {
           account: account.address,
-          keyset: account.guard,
+          keyset: guard,
         },
         amount: amount,
         targetChainId: target,
@@ -500,7 +497,7 @@ export async function createRedistributionTxs({
     const transaction: ITransaction = {
       ...tx,
       uuid: crypto.randomUUID(),
-      profileId: account.profileId,
+      profileId: profileId,
       networkUUID: network.uuid,
       status: 'initiated',
       groupId,

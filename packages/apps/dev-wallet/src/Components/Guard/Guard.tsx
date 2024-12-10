@@ -12,6 +12,7 @@ import { ellipsis } from '@kadena/kode-ui/styles';
 import { Keyset } from './keyset';
 
 export function getGuardInfo(guard: IGuard) {
+  if (!guard) return { type: '', value: '' };
   if (isKeysetGuard(guard)) {
     return {
       type: 'KeysetGuard',
@@ -51,6 +52,8 @@ export function getGuardInfo(guard: IGuard) {
 }
 
 export const Guard = ({ guard }: { guard: IGuard }) => {
+  if (!guard) return null;
+
   if (isKeysetGuard(guard)) {
     return <Keyset guard={guard} />;
   }

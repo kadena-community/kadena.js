@@ -19,8 +19,10 @@ import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useEffect, useRef, useState } from 'react';
 
 import { isKeysetGuard } from '@/modules/account/guards';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Guard } from '../../../Components/Guard/Guard';
-import { discoverReceiver, IReceiverAccount } from '../utils';
+import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
+import { discoverReceiver } from '../utils';
 import { AccountItem } from './AccountItem';
 import { Label } from './Label';
 import { createAccountBoxClass, popoverClass } from './style.css';
@@ -42,8 +44,8 @@ export function AccountSearchBox({
   watchedAccounts?: IWatchedAccount[];
   network: INetwork;
   contract: string;
-  onSelect: (account?: IReceiverAccount) => void;
-  selectedAccount?: IReceiverAccount;
+  onSelect: (account?: IRetrievedAccount) => void;
+  selectedAccount?: IRetrievedAccount;
   onDiscoveryChange?: (discovering: boolean) => void;
 }) {
   const prompt = usePrompt();
@@ -53,7 +55,10 @@ export function AccountSearchBox({
   const liveIsOpen = useRef(popoverIsOpen);
   liveIsOpen.current = popoverIsOpen;
   const [discoverdAccount, setDiscoveredAccounts] =
-    useState<IReceiverAccount[]>();
+    useState<IRetrievedAccount[]>();
+
+  const { fungibles } = useWallet();
+  const asset = fungibles.find((f) => f.contract === contract);
 
   useEffect(() => {
     if (selectedAccount) {
@@ -68,7 +73,7 @@ export function AccountSearchBox({
     }
   }
 
-  function onSelectHandel(account?: IReceiverAccount) {
+  function onSelectHandel(account?: IRetrievedAccount) {
     onSelect(account);
     if (account) {
       setValue(account.address);
@@ -89,7 +94,10 @@ export function AccountSearchBox({
     }
   }
 
-  function getFilteredAccounts(search: string, extra: IReceiverAccount[] = []) {
+  function getFilteredAccounts(
+    search: string,
+    extra: IRetrievedAccount[] = [],
+  ) {
     // if (discovering) return [];
     const hasTerm = searchAccount(search);
     const myAccounts = accounts
@@ -169,7 +177,7 @@ export function AccountSearchBox({
 
   function checkAccount(
     search: string,
-    accounts: IReceiverAccount[] = getFilteredAccounts(search),
+    accounts: IRetrievedAccount[] = getFilteredAccounts(search),
   ) {
     if (accounts.length === 1) {
       const account = accounts[0];
@@ -506,15 +514,26 @@ export function AccountSearchBox({
         }}
       </ComboField>
       {!discovering && selectedAccount && (
-        <Stack gap={'sm'} alignItems={'center'} paddingInlineStart={'sm'}>
-          {selectedAccount?.alias ? (
-            <Text size="smallest" bold color="emphasize">
-              {selectedAccount.alias}
-            </Text>
-          ) : (
-            ''
-          )}
-          <Guard guard={selectedAccount.guard} />
+        <Stack
+          gap={'sm'}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+        >
+          <Stack gap={'sm'} alignItems={'center'}>
+            {selectedAccount?.alias ? (
+              <Stack paddingInlineStart={'sm'}>
+                <Text size="smallest" bold color="emphasize">
+                  {selectedAccount.alias}
+                </Text>
+              </Stack>
+            ) : (
+              ''
+            )}
+            <Guard guard={selectedAccount.guard} />
+          </Stack>
+          <Text size="smallest" color="inherit">
+            {`${selectedAccount.overallBalance} ${asset?.symbol || contract}`}
+          </Text>
         </Stack>
       )}
       {discovering && (

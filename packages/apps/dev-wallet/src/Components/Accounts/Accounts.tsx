@@ -4,9 +4,9 @@ import {
   IAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
-import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import {
   MonoAdd,
   MonoMoreVert,
@@ -42,7 +42,7 @@ export function Accounts({
     useRightAside();
   const accountsToShow = show === 'owned' ? accounts : watchedAccounts;
 
-  const onWatch = async (accounts: IReceiverAccount[]) => {
+  const onWatch = async (accounts: IRetrievedAccount[]) => {
     const accountsToWatch: IWatchedAccount[] = accounts.map((account) => ({
       uuid: crypto.randomUUID(),
       alias: account.alias ?? '',

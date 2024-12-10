@@ -1,12 +1,12 @@
 import { AccountInput } from '@/Components/AccountInput/AccountInput';
 import { isKeysetGuard } from '@/modules/account/guards';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import {
   contactRepository,
   IContact,
 } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
-import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -20,7 +20,7 @@ import { Controller, useForm } from 'react-hook-form';
 interface IContactFormData {
   name: string;
   email: string;
-  discoverdAccount?: IReceiverAccount;
+  discoverdAccount?: IRetrievedAccount;
 }
 
 export function ContactForm({

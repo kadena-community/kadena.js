@@ -29,8 +29,7 @@ import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getGuardInfo } from '../../Components/Guard/Guard';
-import { noStyleLinkClass, panelClass } from '../home/style.css';
-import { linkClass } from '../transfer/style.css';
+import { linkClass, noStyleLinkClass, panelClass } from '../home/style.css';
 import { ActivityTable } from './Components/ActivityTable';
 import { AliasForm } from './Components/AliasForm';
 import { Redistribute } from './Components/Redistribute';
@@ -59,7 +58,8 @@ export function AccountPage() {
   const accountGuard = account?.guard;
   const asset = fungibles.find((f) => f.contract === account?.contract);
   const [activities = []] = useAsync(getTransferActivities, [
-    !isWatchedAccount(account) ? account?.keysetId : '',
+    account?.profileId,
+    accountGuard,
     activeNetwork?.uuid,
   ]);
 

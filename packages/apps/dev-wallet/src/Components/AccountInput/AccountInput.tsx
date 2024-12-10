@@ -1,4 +1,5 @@
-import { discoverReceiver, IReceiverAccount } from '@/pages/transfer-v2/utils';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
+import { discoverReceiver } from '@/pages/transfer-v2/utils';
 
 import { Guard } from '@/Components/Guard/Guard';
 import {
@@ -20,14 +21,14 @@ export function AccountInput({
 }: {
   networkId: string;
   contract: string;
-  account: IReceiverAccount | undefined;
+  account: IRetrievedAccount | undefined;
   address: string;
   setAddress: (address: string) => void;
-  onAccount: (account?: IReceiverAccount) => void;
+  onAccount: (account?: IRetrievedAccount) => void;
 }) {
   console.log('AccountInput', account);
   const [discoveredAccounts, setDiscoveredAccounts] = useState<
-    IReceiverAccount[] | undefined
+    IRetrievedAccount[] | undefined
   >(undefined);
   const [needToAddKeys, setNeedToAddKeys] = useState(false);
   const [showKeysetDialog, setShowKeysetDialog] = useState(false);
@@ -77,7 +78,7 @@ export function AccountInput({
           onDone={(guard) => {
             setShowKeysetDialog(false);
             setNeedToAddKeys(false);
-            const account: IReceiverAccount = {
+            const account: IRetrievedAccount = {
               address: address,
               guard,
               chains: [],
@@ -142,7 +143,7 @@ export function AccountInput({
       {discoveredAccounts && discoveredAccounts.length >= 2 && (
         <DiscoverdAccounts
           accounts={discoveredAccounts}
-          onSelect={(account: IReceiverAccount) => {
+          onSelect={(account: IRetrievedAccount) => {
             setDiscoveredAccounts(undefined);
             onAccount(account);
           }}

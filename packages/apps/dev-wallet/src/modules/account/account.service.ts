@@ -206,7 +206,7 @@ export const accountDiscovery = (
               })),
             overallBalance: chainResult.reduce(
               (acc, { result }) =>
-                result!.details.balance
+                result && result.details.balance
                   ? new PactNumber(result.details.balance).plus(acc).toDecimal()
                   : acc,
               '0',

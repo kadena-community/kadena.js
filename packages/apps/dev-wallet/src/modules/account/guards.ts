@@ -88,25 +88,25 @@ export type Guard =
   | PactGuard;
 
 export function isKeysetGuard(guard: Guard): guard is KeysetGuard {
-  return (guard as KeysetGuard).keys !== undefined;
+  return !!guard && (guard as KeysetGuard).keys !== undefined;
 }
 
 export function isKeysetRefGuard(guard: Guard): guard is KeysetRefGuard {
-  return (guard as KeysetRefGuard).keysetref !== undefined;
+  return !!guard && (guard as KeysetRefGuard).keysetref !== undefined;
 }
 
 export function isUserGuard(guard: Guard): guard is UserGuard {
-  return (guard as UserGuard).fun !== undefined;
+  return !!guard && (guard as UserGuard).fun !== undefined;
 }
 
 export function isCapabilityGuard(guard: Guard): guard is CapabilityGuard {
-  return (guard as CapabilityGuard).cgName !== undefined;
+  return !!guard && (guard as CapabilityGuard).cgName !== undefined;
 }
 
 export function isModuleGuard(guard: Guard): guard is ModuleGuard {
-  return (guard as ModuleGuard).moduleName !== undefined;
+  return !!guard && (guard as ModuleGuard).moduleName !== undefined;
 }
 
 export function isPactGuard(guard: Guard): guard is PactGuard {
-  return (guard as PactGuard).pactId !== undefined;
+  return !!guard && (guard as PactGuard).pactId !== undefined;
 }

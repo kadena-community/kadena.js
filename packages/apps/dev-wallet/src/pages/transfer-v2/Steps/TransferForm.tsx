@@ -2,11 +2,11 @@ import { DiscoverdAccounts } from '@/Components/AccountInput/DiscoverdAccounts';
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
 import { KeySetDialog } from '@/Components/KeysetDialog/KeySetDialog';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { IAccount, IKeysetGuard } from '@/modules/account/account.repository';
+import { IKeysetGuard } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { panelClass } from '@/pages/home/style.css';
+import { linkClass, panelClass } from '@/pages/home/style.css';
 import { formatList, shorten } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
@@ -33,11 +33,9 @@ import {
   useState,
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { linkClass } from '../../transfer/style.css';
-import { AccountItem } from '../Components/AccountItem';
-import { CHAINS, IReceiver, IReceiverAccount, getTransfers } from '../utils';
+import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
+import { CHAINS, IReceiver, getTransfers } from '../utils';
 
-import { Guard } from '../../../Components/Guard/Guard';
 import { AccountSearchBox } from '../Components/AccountSearchBox';
 import { CreationTime } from '../Components/CreationTime';
 import { Label } from '../Components/Label';
@@ -46,6 +44,7 @@ import { TTLSelect } from '../Components/TTLSelect';
 export interface Transfer {
   fungible: string;
   accountId: string;
+  senderAccount: IRetrievedAccount;
   chain: ChainId | '';
   receivers: IReceiver[];
   gasPayer: string;
@@ -53,7 +52,6 @@ export interface Transfer {
   gasLimit: string;
   type: 'safeTransfer' | 'normalTransfer';
   ttl: number;
-  senderAccount?: IAccount;
   totalAmount: number;
   creationTime?: number;
 }
@@ -113,6 +111,7 @@ export function TransferForm({
     defaultValues: {
       fungible: urlAccount?.contract ?? fungibles[0].contract,
       accountId: accountId ?? '',
+      senderAccount: accountId ? urlAccount : undefined,
       chain: '',
       receivers: [
         {
@@ -173,17 +172,19 @@ export function TransferForm({
               chunks: [],
             }),
           );
+          const transferData = activity.data.transferData;
           reset({
             fungible: account.contract,
-            accountId: activity.data.transferData.accountId,
-            chain: activity.data.transferData.chain,
+            accountId: transferData.accountId,
+            senderAccount: transferData.senderAccount,
+            chain: transferData.chain,
             receivers,
-            gasPayer: activity.data.transferData.gasPayer,
-            gasPrice: activity.data.transferData.gasPrice,
-            gasLimit: activity.data.transferData.gasLimit,
-            type: activity.data.transferData.type,
-            ttl: activity.data.transferData.ttl,
-            creationTime: activity.data.transferData.creationTime,
+            gasPayer: transferData.gasPayer,
+            gasPrice: transferData.gasPrice,
+            gasLimit: transferData.gasLimit,
+            type: transferData.type,
+            ttl: transferData.ttl,
+            creationTime: transferData.creationTime,
             totalAmount: 0,
           });
           evaluateTransactions();
@@ -193,11 +194,7 @@ export function TransferForm({
     run();
   }, [activityId, reset, allAccounts, accountId]);
 
-  const senderAccountId = watch('accountId');
-  const senderAccount = useMemo(
-    () => filteredAccounts.find((account) => account.uuid === senderAccountId),
-    [filteredAccounts, senderAccountId],
-  );
+  const senderAccount = watch('senderAccount');
 
   const chains = useMemo(
     () => senderAccount?.chains ?? [],
@@ -279,7 +276,7 @@ export function TransferForm({
       {accountToResolve && (
         <DiscoverdAccounts
           accounts={accountToResolve.account.discoveredAccounts}
-          onSelect={(account: IReceiverAccount) => {
+          onSelect={(account: IRetrievedAccount) => {
             setValue(`receivers.${accountToResolve.index}.discoveredAccounts`, [
               account,
             ]);
@@ -324,6 +321,31 @@ export function TransferForm({
               )}
             />
             <Controller
+              name={`senderAccount`}
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => {
+                return (
+                  <Stack flexDirection={'column'}>
+                    <AccountSearchBox
+                      accounts={filteredAccounts.filter(
+                        (account) => account.address,
+                      )}
+                      watchedAccounts={filteredWatchedAccounts}
+                      contacts={contacts}
+                      network={activeNetwork!}
+                      contract={watchFungibleType}
+                      selectedAccount={field.value}
+                      onSelect={withEvaluate((account) => {
+                        field.onChange(account);
+                        forceRender((prev) => prev + 1);
+                      })}
+                    />
+                  </Stack>
+                );
+              }}
+            />
+            {/* <Controller
               name="accountId"
               control={control}
               rules={{ required: true }}
@@ -351,7 +373,7 @@ export function TransferForm({
                   )}
                 </Stack>
               )}
-            />
+            /> */}
             <AdvancedMode>
               <Stack flex={1}>
                 <Controller

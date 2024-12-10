@@ -1,6 +1,6 @@
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { IContact } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import { shorten } from '@/utils/helpers';
 import { MonoAccountBalanceWallet } from '@kadena/kode-icons/system';
 import { Button, Checkbox, Heading, Stack, Text } from '@kadena/kode-ui';
@@ -24,12 +24,12 @@ export function WatchAccountsForm({
   isOpen: boolean;
   contract: string;
   networkId: string;
-  onWatch: (account: IReceiverAccount[]) => void;
+  onWatch: (account: IRetrievedAccount[]) => void;
   onClose: () => void;
 }) {
   const { contacts, fungibles } = useWallet();
   const asset = fungibles.find((f) => f.contract === contract);
-  const [account, setAccount] = useState<IReceiverAccount>();
+  const [account, setAccount] = useState<IRetrievedAccount>();
   const [address, setAddress] = useState('');
   const [selectedContacts, setSelectedContacts] = useState<IContact[]>([]);
   return (
@@ -102,7 +102,7 @@ export function WatchAccountsForm({
             const accounts = [
               account,
               ...selectedContacts.map((data) => {
-                const acc: IReceiverAccount = {
+                const acc: IRetrievedAccount = {
                   alias: data.name,
                   chains: [],
                   overallBalance: '0.0',
@@ -111,7 +111,7 @@ export function WatchAccountsForm({
                 };
                 return acc;
               }),
-            ].filter(Boolean) as IReceiverAccount[];
+            ].filter(Boolean) as IRetrievedAccount[];
             onWatch(accounts);
             onClose();
           }}
