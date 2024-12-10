@@ -40,7 +40,7 @@ export const AssetFormScreen: FC<IProps> = ({ trigger, onClose }) => {
         >
           <RightAsideHeader label="Add Asset" />
           <RightAsideContent>
-            <AssetStepperForm />
+            <AssetStepperForm handleDone={handleOnClose} />
           </RightAsideContent>
         </RightAside>
       )}

@@ -22,6 +22,7 @@ import { AddExistingAssetForm } from './AddExistingAssetForm';
 
 interface IProps {
   asset?: IAsset;
+  handleDone?: () => void;
 }
 
 const STEPS = {
@@ -31,7 +32,7 @@ const STEPS = {
   DONE: 3,
 } as const;
 
-export const AssetStepperForm: FC<IProps> = () => {
+export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const [contractData, setContractData] = useState<
     IAddContractProps | undefined
   >();
@@ -140,24 +141,13 @@ export const AssetStepperForm: FC<IProps> = () => {
               });
               if (!asset) return;
               setAsset(asset);
-              router.push('/assets');
+              if (handleDone) handleDone();
             } else {
               setError(`init failed`);
             }
           }}
         >
           Init Contract
-        </Button>
-      )}
-
-      {step === STEPS.DONE && (
-        <Button
-          onPress={async () => {
-            router.replace('/assets');
-            router.refresh();
-          }}
-        >
-          DONE
         </Button>
       )}
 
