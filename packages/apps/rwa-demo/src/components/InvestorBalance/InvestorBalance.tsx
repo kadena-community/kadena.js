@@ -6,6 +6,7 @@ import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import type { IWalletAccount } from '../AccountProvider/utils';
+import { MaxInvestorBalanceCheck } from './MaxInvestorBalanceCheck';
 
 interface IProps {
   investorAccount: string;
@@ -47,14 +48,16 @@ export const InvestorBalance: FC<IProps> = ({
 
   if (short) {
     return (
-      <>
+      <Stack alignItems="center" gap="xs">
+        <MaxInvestorBalanceCheck balance={data} />
         {data} (<MonoFilterTiltShift /> {frozenData})
-      </>
+      </Stack>
     );
   }
 
   return (
-    <Stack>
+    <Stack alignItems="center" gap="xs">
+      <MaxInvestorBalanceCheck balance={data} />
       investorBalance: {data} (<MonoFilterTiltShift /> {frozenData})
     </Stack>
   );
