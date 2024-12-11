@@ -108,6 +108,17 @@ export function createEventEmitter<
   };
 }
 
+const padStart = (n: number) => (str: string | number) =>
+  str.toString().padStart(n, '0');
+
+const twoDigitPad = padStart(2);
+
 export function toISOLocalDateTime(time: number) {
-  return new Date(time).toISOString().slice(0, 16);
+  const date = new Date(time);
+  const year = date.getFullYear();
+  const mm = twoDigitPad(date.getMonth() + 1);
+  const dd = twoDigitPad(date.getDate());
+  const hh = twoDigitPad(date.getHours());
+  const min = twoDigitPad(date.getMinutes());
+  return `${year}-${mm}-${dd}T${hh}:${min}`;
 }
