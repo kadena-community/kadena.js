@@ -1,6 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 
 export const AGENTROLES = {
@@ -37,7 +38,7 @@ export const addAgent = async (
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
-    .addSigner(account.keyset.guard.keys[0], (withCap) => [
+    .addSigner(getPubkeyFromAccount(account), (withCap) => [
       withCap(`${getAsset()}.ONLY-OWNER`, ''),
       withCap(`coin.GAS`, ''),
     ])

@@ -14,6 +14,7 @@ export const useSetCompliance = () => {
   const submit = async (data: ISetComplianceProps) => {
     try {
       const tx = await setCompliance(data, account!);
+      console.log({ tx });
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;

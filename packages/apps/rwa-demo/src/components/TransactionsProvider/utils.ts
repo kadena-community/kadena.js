@@ -1,21 +1,10 @@
-import type { ChainId } from '@kadena/client';
+import type { IWalletAccount } from '../AccountProvider/utils';
 
 interface ResponseType {
   id: string;
   type: string;
   payload: unknown;
   error: unknown;
-}
-
-export interface IWalletAccount {
-  address: string;
-  keyset: {
-    guard: { keys: string[]; pred: 'keys-all' | 'keys-any' | 'keys-2' };
-  };
-  alias: string;
-  contract: string;
-  chains: Array<{ chainId: ChainId; balance: string }>;
-  overallBalance: string;
 }
 
 export interface IState {

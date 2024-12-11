@@ -1,6 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
@@ -39,7 +40,9 @@ export const transferTokens = async (
         },
       ),
     ])
-    .addSigner(account.keyset.guard.keys[0], (withCap) => [withCap(`coin.GAS`)])
+    .addSigner(getPubkeyFromAccount(account), (withCap) => [
+      withCap(`coin.GAS`),
+    ])
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

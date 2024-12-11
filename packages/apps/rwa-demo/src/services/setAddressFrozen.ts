@@ -1,6 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 
 export interface ISetAddressFrozenProps {
@@ -23,7 +24,7 @@ export const setAddressFrozen = async (
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
-    .addSigner(account.keyset.guard.keys[0], (withCap) => [
+    .addSigner(getPubkeyFromAccount(account), (withCap) => [
       withCap(`${getAsset()}.ONLY-AGENT`, 'freezer'),
       withCap(`coin.GAS`),
     ])

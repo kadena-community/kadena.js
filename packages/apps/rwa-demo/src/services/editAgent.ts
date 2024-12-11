@@ -1,6 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import type { IAddAgentProps } from './addAgent';
 import { AGENTROLES } from './addAgent';
@@ -17,7 +18,7 @@ export const editAgent = async (
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
-    .addSigner(account.keyset.guard.keys[0], (withCap) => [
+    .addSigner(getPubkeyFromAccount(account), (withCap) => [
       withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'agent-admin'),
       withCap(`coin.GAS`),
     ])

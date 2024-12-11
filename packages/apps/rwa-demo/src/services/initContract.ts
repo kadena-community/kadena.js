@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import { getNetwork } from '@/utils/client';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import type { IAddContractProps } from './createContract';
 
@@ -30,7 +31,7 @@ export const initContract = async (
       gasLimit: 150000,
     })
 
-    .addSigner(account.keyset.guard.keys[0], (withCap) => [])
+    .addSigner(getPubkeyFromAccount(account), (withCap) => [])
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

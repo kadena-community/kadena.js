@@ -7,7 +7,7 @@ import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
-import type { IWalletAccount } from './utils';
+import type { IWalletAccount } from '../AccountProvider/utils';
 
 export interface ITransaction {
   uuid: string;
