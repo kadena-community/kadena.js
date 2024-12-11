@@ -103,5 +103,5 @@ export const useGetInvestors = () => {
     return off;
   }, []);
 
-  return { data: innerData, error };
+  return { data: innerData, error, isLoading: removedLoading || addedLoading };
 };

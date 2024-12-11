@@ -19,7 +19,7 @@ export interface IAddAgentProps {
   agent: IWalletAccount;
   alias: string;
   alreadyExists?: boolean;
-  roles: (keyof typeof AGENTROLES)[];
+  roles: string[];
 }
 
 const createPubKeyFromAccount = (account: string): string => {
@@ -47,10 +47,7 @@ export const addAgent = async (
       keys: [createPubKeyFromAccount(data.accountName)],
       pred: 'keys-all',
     })
-    .addData(
-      'roles',
-      data.roles.map((val) => AGENTROLES[val]),
-    )
+    .addData('roles', data.roles)
 
     .setNetworkId(getNetwork().networkId)
     .createTransaction();

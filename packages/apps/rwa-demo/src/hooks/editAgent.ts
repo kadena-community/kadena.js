@@ -21,6 +21,9 @@ export const useEditAgent = () => {
       const tx = data.alreadyExists
         ? await editAgent(data, account!)
         : await addAgent(data, account!);
+
+      console.log({ tx });
+
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 

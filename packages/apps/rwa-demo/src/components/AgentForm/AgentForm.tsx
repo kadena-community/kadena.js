@@ -1,4 +1,5 @@
 import { useEditAgent } from '@/hooks/editAgent';
+import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
@@ -21,9 +22,9 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  // const { data: userAgentRolesData } = useGetAgentRoles({
-  //   agent: agent?.accountName,
-  // });
+  const { data: userAgentRolesData } = useGetAgentRoles({
+    agent: agent?.accountName,
+  });
   const { submit } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
@@ -39,7 +40,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
       accountName: agent?.accountName ?? '',
       alias: agent?.alias ?? '',
       alreadyExists: !!agent?.accountName,
-      roles: [],
+      roles: userAgentRolesData,
     },
   });
 
@@ -48,8 +49,9 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
       accountName: agent?.accountName,
       alias: agent?.alias,
       alreadyExists: !!agent?.accountName,
+      roles: userAgentRolesData,
     });
-  }, [agent?.accountName]);
+  }, [agent?.accountName, userAgentRolesData]);
 
   const handleOpen = () => {
     setIsRightAsideExpanded(true);
@@ -64,7 +66,10 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   };
 
   const onSubmit = async (data: IAddAgentProps) => {
-    console.log({ data });
+    if (typeof data.roles === 'boolean') {
+      return;
+    }
+
     await submit(data);
     handleOnClose();
   };
@@ -106,7 +111,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                     <label key={key}>
                       <input
                         type="checkbox"
-                        value={key}
+                        value={val}
                         {...register('roles')}
                       />
                       {val}

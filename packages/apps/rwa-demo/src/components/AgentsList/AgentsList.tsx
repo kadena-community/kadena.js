@@ -1,6 +1,7 @@
 import { useAsset } from '@/hooks/asset';
 import { useGetAgents } from '@/hooks/getAgents';
 import { useRemoveAgent } from '@/hooks/removeAgent';
+import { loadingData } from '@/utils/loadingData';
 import {
   MonoDelete,
   MonoFindInPage,
@@ -23,7 +24,7 @@ import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 
 export const AgentsList: FC = () => {
   const { paused } = useAsset();
-  const { data } = useGetAgents();
+  const { data, isLoading } = useGetAgents();
   const { submit } = useRemoveAgent();
   const router = useRouter();
 
@@ -59,6 +60,7 @@ export const AgentsList: FC = () => {
           />
           <SectionCardBody>
             <CompactTable
+              isLoading={isLoading}
               variant="open"
               fields={[
                 {
@@ -115,7 +117,7 @@ export const AgentsList: FC = () => {
                   }),
                 },
               ]}
-              data={data}
+              data={isLoading ? loadingData : data}
             />
           </SectionCardBody>
         </SectionCardContentBlock>
