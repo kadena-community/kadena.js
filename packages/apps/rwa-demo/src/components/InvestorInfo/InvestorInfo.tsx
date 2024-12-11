@@ -1,10 +1,10 @@
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useFreeze } from '@/hooks/freeze';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
-import type { IWalletAccount } from '../AccountProvider/utils';
 import { InvestorBalance } from '../InvestorBalance/InvestorBalance';
 
 interface IProps {

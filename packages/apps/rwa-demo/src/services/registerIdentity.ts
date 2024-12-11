@@ -1,6 +1,7 @@
-import type { IWalletAccount } from '@/components/AccountProvider/utils';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 
 export interface IRegisterIdentityProps {
@@ -31,7 +32,7 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       senderAccount: data.agent.address,
       chainId: getNetwork().chainId,
     })
-    .addSigner(data.agent.keyset.guard.keys[0], (withCap) => [
+    .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
       withCap(`${getAsset()}.ONLY-AGENT`, 'whitelist-manager'),
       withCap(`coin.GAS`),
     ])

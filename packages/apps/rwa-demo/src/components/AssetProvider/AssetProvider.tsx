@@ -10,11 +10,10 @@ import { getAssetMaxSupplyBalance } from '@/services/getAssetMaxSupplyBalance';
 import { supply as supplyService } from '@/services/supply';
 import { getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
-import { useRouter } from 'next/navigation';
 
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
-import type { IWalletAccount } from '../AccountProvider/utils';
 
 export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;
@@ -54,8 +53,6 @@ export const AssetContext = createContext<IAssetContext>({
 });
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
-  const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [asset, setAsset] = useState<IAsset>();
   const [assets, setAssets] = useState<IAsset[]>([]);
   const storageKey = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY) ?? '';
@@ -81,10 +78,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
     window.dispatchEvent(new Event(selectedKey));
-    setAsset((old) => ({ ...old, ...data }));
 
-    router.replace('/');
-    router.refresh();
+    window.location.href = '/';
   };
 
   const getAsset = async (
@@ -172,8 +167,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     if (asset) return;
     const innerAsset = getFullAsset();
     setAsset(innerAsset);
-    router.refresh();
-  }, [asset, assets]);
+  }, [asset?.namespace, asset?.contractName]);
 
   useEffect(() => {
     if (!asset) return;

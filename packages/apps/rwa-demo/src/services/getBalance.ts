@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/components/AccountProvider/utils';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';

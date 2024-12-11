@@ -1,8 +1,8 @@
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
-import type { IWalletAccount } from '../AccountProvider/utils';
 
 interface IProps {
   account: IRecord | IWalletAccount;

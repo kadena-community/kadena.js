@@ -1,5 +1,6 @@
-import type { IWalletAccount } from '@/components/AccountProvider/utils';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { getContract } from './pact/modalcontract';
 
@@ -31,7 +32,7 @@ export const createContract = async (
     )
     .addData('ns', data.namespace)
     .addData('keyset', {
-      keys: [account.keyset.guard.keys[0]],
+      keys: [getPubkeyFromAccount(account)],
       pred: 'keys-all',
     })
     .setMeta({
@@ -39,7 +40,7 @@ export const createContract = async (
       chainId: getNetwork().chainId,
       gasLimit: 150000,
     })
-    .addSigner(account.keyset.guard.keys[0], (withCap) => [])
+    .addSigner(getPubkeyFromAccount(account), (withCap) => [])
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

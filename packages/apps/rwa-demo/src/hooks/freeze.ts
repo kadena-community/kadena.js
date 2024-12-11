@@ -1,6 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IWalletAccount } from '@/components/AccountProvider/utils';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { isFrozen } from '@/services/isFrozen';
 import { getAsset } from '@/utils/getAsset';

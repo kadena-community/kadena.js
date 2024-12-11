@@ -2,11 +2,13 @@
 
 import { AssetAction } from '@/components/AssetAction/AssetAction';
 import { ComplianceRule } from '@/components/ComplianceRule/ComplianceRule';
+import { ContractDetails } from '@/components/ContractDetails/ContractDetails';
+import { contractDetailWrapperClass } from '@/components/ContractDetails/style.css';
 import { InvestorBalance } from '@/components/InvestorBalance/InvestorBalance';
 import { PauseAssetAction } from '@/components/PauseForm/PauseAssetAction';
 import { SetComplianceForm } from '@/components/SetComplianceForm/SetComplianceForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { SupplyCount } from '@/components/SupplyCount/SupplyCount';
+import { SupplyCountContractDetails } from '@/components/SupplyCountContractDetails/SupplyCountContractDetails';
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
@@ -37,13 +39,26 @@ const Home = () => {
               description={<>All you need to know about the contract</>}
             />
             <SectionCardBody>
-              {asset?.contractName}
-              {asset?.namespace}
-              <SupplyCount />
+              <Stack width="100%" className={contractDetailWrapperClass}>
+                <ContractDetails label="Name" value={asset?.contractName} />
+                <ContractDetails label="Namespace" value={asset?.namespace} />
+                <ContractDetails
+                  label="Total token supply"
+                  value={<SupplyCountContractDetails />}
+                />
 
-              {isInvestor && (
-                <InvestorBalance investorAccount={account!.address} />
-              )}
+                {isInvestor && (
+                  <ContractDetails
+                    label="Investor balance"
+                    value={
+                      <InvestorBalance
+                        investorAccount={account!.address}
+                        short
+                      />
+                    }
+                  />
+                )}
+              </Stack>
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>

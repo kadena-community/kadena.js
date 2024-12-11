@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/components/AccountProvider/utils';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { get, off, onValue, ref, set } from 'firebase/database';

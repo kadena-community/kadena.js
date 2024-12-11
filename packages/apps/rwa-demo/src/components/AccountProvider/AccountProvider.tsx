@@ -10,7 +10,8 @@ import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
-import type { IState, IWalletAccount } from './utils';
+import type { IWalletAccount } from './AccountType';
+import type { IState } from './utils';
 import { getWalletConnection } from './utils';
 
 interface IAccountError {
