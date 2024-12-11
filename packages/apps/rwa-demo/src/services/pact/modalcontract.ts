@@ -8,7 +8,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (module ${contractName} GOV
   "${contractName} descriptions"
 
-  (defcap GOV () (enforce-keyset "RWA.rwa-admin-keyset"))
+  (defcap GOV () (enforce-keyset "${namespace}.${contractName}-admin-keyset"))
 
   (implements fungible-v2)
   (implements RWA.real-world-asset-v1)

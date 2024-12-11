@@ -11,11 +11,19 @@ export const initContract = async (
   data: IAddContractProps,
   account: IWalletAccount,
 ) => {
+  const keysetname = `${data.namespace}.${data.contractName}-admin-keyset`;
+
   return Pact.builder
     .execution(
-      `(${data.namespace}.${data.contractName}.init "${data.contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard "RWA.rwa-admin-keyset"))`,
+      `(namespace (read-string 'ns)) (define-keyset (read-msg 'keyset-name) (read-keyset 'ks))
+      ${data.namespace}.${data.contractName}.init "${data.contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard (read-msg 'keyset-name))`,
     )
-
+    .addData('ns', data.namespace)
+    .addData('keyset-name', keysetname)
+    .addData('ks', {
+      keys: [createPubKeyFromAccount(data.owner)],
+      pred: 'keys-all',
+    })
     .addData('owner_guard', {
       keys: [createPubKeyFromAccount(data.owner)],
       pred: 'keys-all',
