@@ -21,7 +21,6 @@ export const InvestorInfo: FC<IProps> = ({ account }) => {
   const { frozen } = useFreeze({ investorAccount: accountName });
 
   if (!account) return null;
-
   return (
     <Stack width="100%" flexDirection="column">
       <Heading as="h3">

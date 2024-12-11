@@ -10,9 +10,9 @@ import {
   Stack,
   Step,
   Stepper,
+  Text,
   TextField,
 } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -21,6 +21,7 @@ import { AddExistingAssetForm } from './AddExistingAssetForm';
 
 interface IProps {
   asset?: IAsset;
+  handleDone?: () => void;
 }
 
 const STEPS = {
@@ -30,7 +31,7 @@ const STEPS = {
   DONE: 3,
 } as const;
 
-export const StepperAssetForm: FC<IProps> = () => {
+export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const [contractData, setContractData] = useState<
     IAddContractProps | undefined
   >();
@@ -41,7 +42,6 @@ export const StepperAssetForm: FC<IProps> = () => {
   const { submit: submitContract } = useCreateContract();
   const [namespace, setNamespace] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter();
 
   const {
     handleSubmit,
@@ -99,6 +99,9 @@ export const StepperAssetForm: FC<IProps> = () => {
       {step === STEPS.CREATE_NAMESPACE && (
         <Stack flexDirection="column" gap="sm">
           <AddExistingAssetForm />
+          <Stack width="100%" justifyContent="center">
+            <Text bold>or</Text>
+          </Stack>
           <Button
             variant="outlined"
             onPress={async () => {
@@ -136,24 +139,13 @@ export const StepperAssetForm: FC<IProps> = () => {
               });
               if (!asset) return;
               setAsset(asset);
-              router.push('/assets');
+              if (handleDone) handleDone();
             } else {
               setError(`init failed`);
             }
           }}
         >
           Init Contract
-        </Button>
-      )}
-
-      {step === STEPS.DONE && (
-        <Button
-          onPress={async () => {
-            router.replace('/assets');
-            router.refresh();
-          }}
-        >
-          DONE
         </Button>
       )}
 
