@@ -1,5 +1,21 @@
 # @kadena/graph
 
+## 2.0.4
+
+### Patch Changes
+
+- 629766c: You can now query the version of the running instance with
+
+  ```gql
+  query config {
+    graphConfiguration {
+      version
+    }
+  }
+  ```
+
+- 629766c: Fix issue with pagination on transfers
+
 ## 2.0.3
 
 ### Patch Changes
