@@ -16,7 +16,6 @@ import {
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
-import { ReviewTransaction } from '../transaction/components/ReviewTransaction';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
 import {
@@ -88,6 +87,7 @@ export function TransferV2() {
       account: data.senderAccount,
       contract: data.fungible,
       gasLimit: +data.gasLimit,
+      gasPayer: data.gasPayer || data.senderAccount,
       gasPrice: +data.gasPrice,
       receivers: data.receivers,
       isSafeTransfer: data.type === 'safeTransfer',
@@ -161,6 +161,7 @@ export function TransferV2() {
       if (!formData.senderAccount) return;
       return createRedistributionTxs({
         account: formData.senderAccount,
+        gasPayer: formData.gasPayer || formData.senderAccount,
         redistribution,
         gasLimit: +formData.gasLimit,
         gasPrice: +formData.gasPrice,
@@ -173,32 +174,6 @@ export function TransferV2() {
   }
 
   const renderSignStep = () => {
-    if (
-      txGroups.redistribution.txs.length === 0 &&
-      txGroups.transfer.txs.length === 1 &&
-      null === undefined // bypass for now
-    ) {
-      const selectedTx = txGroups.transfer.txs[0];
-      return (
-        <ReviewTransaction
-          transaction={selectedTx}
-          transactionStatus={selectedTx.status}
-          onSign={async (sigs) => {
-            const updated = {
-              ...selectedTx,
-              sigs,
-              status: sigs.every((data) => data?.sig)
-                ? !statusPassed(selectedTx.status, 'signed')
-                  ? 'signed'
-                  : selectedTx.status
-                : selectedTx.status,
-            } as ITransaction;
-            await transactionRepository.updateTransaction(updated);
-            reloadTxs();
-          }}
-        />
-      );
-    }
     const reTxs = txGroups.redistribution.txs;
     const submitIsDisabled =
       reTxs.length > 0 && reTxs.some((tx) => !tx.continuation?.done);
@@ -291,24 +266,16 @@ export function TransferV2() {
                 accountId={accountId}
                 activityId={urlActivityId}
                 onSubmit={async (data, redistribution) => {
-                  const senderAccount = data.senderAccount;
-                  if (!isKeysetGuard(senderAccount.guard)) return;
-                  const formData = {
-                    ...data,
-                    senderAccount,
-                    creationTime:
-                      data.creationTime ?? Math.round(Date.now() / 1000),
-                  };
+                  if (!isKeysetGuard(data.senderAccount.guard)) return;
                   const getEmpty = () => ['', []] as [string, ITransaction[]];
                   let redistributionGroup = getEmpty();
 
                   if (redistribution.length > 0) {
                     redistributionGroup =
-                      (await createRedistribution(formData, redistribution)) ??
+                      (await createRedistribution(data, redistribution)) ??
                       getEmpty();
                   }
-                  const txGroup =
-                    (await createTransaction(formData)) ?? getEmpty();
+                  const txGroup = (await createTransaction(data)) ?? getEmpty();
                   const updatedTxGroups = {
                     redistribution: {
                       groupId: redistributionGroup[0] ?? '',
@@ -333,7 +300,7 @@ export function TransferV2() {
                         },
                       },
                     },
-                    account: senderAccount,
+                    account: data.senderAccount,
                     networkUUID: activeNetwork!.uuid,
                     profileId: profile?.uuid ?? '',
                     status: 'Initiated',

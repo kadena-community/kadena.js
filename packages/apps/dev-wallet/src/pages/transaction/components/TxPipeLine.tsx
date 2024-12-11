@@ -6,17 +6,20 @@ import { syncTransactionStatus } from '@/modules/transaction/transaction.service
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { normalizeSigs } from '@/utils/normalizeSigs';
+import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
   MonoCheck,
   MonoClose,
+  MonoCloudSync,
   MonoLoading,
   MonoPauseCircle,
   MonoRefresh,
+  MonoShare,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
 import { Button, Stack, Text } from '@kadena/kode-ui';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { failureClass, pendingClass, successClass } from './style.css';
 
 export const steps: TransactionStatus[] = [
@@ -97,6 +100,7 @@ function TxStatusList({
   const signedByYou = !signers.find(
     (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
   );
+  const [copied, setCopied] = useState(false);
   const statusList = [
     variant !== 'minimized' && (
       <Stack justifyContent={'space-between'}>
@@ -113,21 +117,46 @@ function TxStatusList({
           <Text size={textSize} className={pendingClass}>
             <Stack alignItems={'center'} gap={'xs'}>
               <MonoPauseCircle />
-              {signedByYou
-                ? 'Waiting for external signatures'
-                : 'Waiting for sign'}
+              {signedByYou ? 'add external signatures' : 'Waiting for sign'}
             </Stack>
           </Text>
+
           {variant === 'expanded' && signedByYou && (
-            <Button
-              startVisual={<MonoRefresh />}
-              isCompact
-              onClick={() => {
-                syncTransactionStatus(tx, client);
-              }}
-            >
-              Sync With Chain
-            </Button>
+            <Stack gap={'sm'}>
+              <Button
+                startVisual={<MonoCloudSync />}
+                isCompact
+                variant="outlined"
+                onClick={() => {
+                  syncTransactionStatus(tx, client);
+                }}
+              >
+                query chain
+              </Button>
+              <Button
+                startVisual={<MonoShare />}
+                isCompact
+                onClick={() => {
+                  const encodedTx = base64UrlEncodeArr(
+                    new TextEncoder().encode(
+                      JSON.stringify({
+                        hash: tx.hash,
+                        cmd: tx.cmd,
+                        sigs: tx.sigs,
+                      }),
+                    ),
+                  );
+                  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+                  navigator.clipboard.writeText(
+                    `${baseUrl}/sig-builder#${encodedTx}`,
+                  );
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+              >
+                {copied ? 'copied' : 'Share'}
+              </Button>
+            </Stack>
           )}
           {variant === 'expanded' && !signedByYou && (
             <Stack>

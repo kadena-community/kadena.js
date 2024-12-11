@@ -322,9 +322,11 @@ export const createTransactions = async ({
   mapKeys,
   gasPrice,
   gasLimit,
+  gasPayer,
   creationTime,
 }: {
   account: IRetrievedAccount;
+  gasPayer: IRetrievedAccount;
   receivers: IReceiver[];
   isSafeTransfer: boolean;
   network: INetwork;
@@ -343,7 +345,12 @@ export const createTransactions = async ({
     throw new Error('Sender Account guard is not a keyset guard');
   }
 
+  if (!isKeysetGuard(gasPayer.guard)) {
+    throw new Error('gasPayer Account guard is not a keyset guard');
+  }
+
   const guard = account.guard;
+  const gasPayerGuard = gasPayer.guard;
 
   const groupId = crypto.randomUUID();
   const txs = await Promise.all(
@@ -380,6 +387,10 @@ export const createTransactions = async ({
             sender: {
               account: account.address,
               publicKeys: guard.keys.map(mapKeys),
+            },
+            gasPayer: {
+              account: gasPayer.address,
+              publicKeys: gasPayerGuard.keys.map(mapKeys),
             },
           };
           const transferCmd = isKeysetGuard(receiverGuard)
@@ -446,6 +457,7 @@ export const createTransactions = async ({
 export async function createRedistributionTxs({
   redistribution,
   account,
+  gasPayer,
   mapKeys,
   network,
   gasLimit,
@@ -455,6 +467,7 @@ export async function createRedistributionTxs({
 }: {
   redistribution: Array<{ source: ChainId; target: ChainId; amount: string }>;
   account: IRetrievedAccount;
+  gasPayer: IRetrievedAccount;
   mapKeys: (key: ISigner) => ISigner;
   network: INetwork;
   gasLimit: number;
@@ -465,7 +478,11 @@ export async function createRedistributionTxs({
   if (!isKeysetGuard(account.guard)) {
     throw new Error('Sender Account guard is not a keyset guard');
   }
+  if (!isKeysetGuard(gasPayer.guard)) {
+    throw new Error('gasPayer Account guard is not a keyset guard');
+  }
   const guard = account.guard;
+  const gasPayerGuard = gasPayer.guard;
   const groupId = crypto.randomUUID();
   const txs = redistribution.map(async ({ source, target, amount }) => {
     const command = composePactCommand(
@@ -477,6 +494,10 @@ export async function createRedistributionTxs({
         receiver: {
           account: account.address,
           keyset: guard,
+        },
+        gasPayer: {
+          account: gasPayer.address,
+          publicKeys: gasPayerGuard.keys.map(mapKeys),
         },
         amount: amount,
         targetChainId: target,

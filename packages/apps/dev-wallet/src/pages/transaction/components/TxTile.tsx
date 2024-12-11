@@ -1,7 +1,9 @@
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 
 import {
+  MonoCheck,
   MonoOpenInFull,
+  MonoShare,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
@@ -9,8 +11,18 @@ import { Button, Stack, Text } from '@kadena/kode-ui';
 
 import { IPactCommand } from '@kadena/client';
 
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { normalizeSigs } from '@/utils/normalizeSigs';
+import { shortenPactCode } from '@/utils/parsedCodeToPact';
+import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
+import { useMemo, useState } from 'react';
 import { Value } from './helpers';
-import { codeClass, txTileClass, txTileContentClass } from './style.css';
+import {
+  codeClass,
+  successClass,
+  txTileClass,
+  txTileContentClass,
+} from './style.css';
 import { TxPipeLine } from './TxPipeLine';
 
 export const TxTile = ({
@@ -29,6 +41,28 @@ export const TxTile = ({
   sendDisabled?: boolean;
 }) => {
   const command: IPactCommand = JSON.parse(tx.cmd);
+  const { getPublicKeyData } = useWallet();
+  const signers = useMemo(() => normalizeSigs(tx), [tx]);
+  const signedByYou = !signers.find(
+    (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
+  );
+  const [shareClicked, setCopyClick] = useState(false);
+
+  function shareTx() {
+    const encodedTx = base64UrlEncodeArr(
+      new TextEncoder().encode(
+        JSON.stringify({
+          hash: tx.hash,
+          cmd: tx.cmd,
+          sigs: tx.sigs,
+        }),
+      ),
+    );
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    navigator.clipboard.writeText(`${baseUrl}/sig-builder#${encodedTx}`);
+    setCopyClick(true);
+    setTimeout(() => setCopyClick(false), 5000);
+  }
 
   return (
     <Stack
@@ -39,7 +73,7 @@ export const TxTile = ({
     >
       <Stack flexDirection={'column'} gap={'sm'} flex={1}>
         <TxPipeLine tx={tx} variant="tile" contTx={contTx} />
-        {tx.status === 'initiated' && (
+        {tx.status === 'initiated' && !signedByYou && (
           <>
             {'exec' in command.payload && (
               <>
@@ -52,7 +86,7 @@ export const TxTile = ({
                 >
                   <Value className={codeClass}>
                     <span title={command.payload.exec.code}>
-                      {command.payload.exec.code}
+                      {shortenPactCode(command.payload.exec.code)}
                     </span>
                   </Value>
                 </Stack>
@@ -70,6 +104,28 @@ export const TxTile = ({
               </>
             )}
           </>
+        )}
+        {tx.status === 'initiated' && signedByYou && (
+          <Stack
+            gap={'sm'}
+            flexDirection={'column'}
+            overflow="auto"
+            flex={1}
+            className={txTileContentClass}
+          >
+            <Stack>
+              <Text size={'smallest'} className={successClass}>
+                <Stack alignItems={'center'} gap={'xs'}>
+                  <MonoCheck />
+                  Signed by you
+                </Stack>
+              </Text>
+            </Stack>
+            <Value className={codeClass}>
+              You have signed this transaction, share the tx with others to
+              sign;
+            </Value>
+          </Stack>
         )}
         {tx.status === 'signed' && (
           <>
@@ -90,11 +146,19 @@ export const TxTile = ({
       </Stack>
       <Stack justifyContent={'space-between'} alignItems={'center'}>
         <Stack alignItems={'center'}>
-          {tx.status === 'initiated' && (
+          {tx.status === 'initiated' && !signedByYou && (
             <Button isCompact onClick={onSign} variant="outlined">
               <Stack gap={'sm'} alignItems={'center'}>
                 <MonoSignature scale={0.5} />
                 Sign
+              </Stack>
+            </Button>
+          )}
+          {tx.status === 'initiated' && signedByYou && (
+            <Button isCompact variant="outlined" onClick={shareTx}>
+              <Stack gap={'sm'} alignItems={'center'}>
+                <MonoShare />
+                {shareClicked ? 'Copied!' : 'Share'}
               </Stack>
             </Button>
           )}

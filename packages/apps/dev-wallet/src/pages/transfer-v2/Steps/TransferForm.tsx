@@ -7,7 +7,7 @@ import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { linkClass, panelClass } from '@/pages/home/style.css';
-import { formatList, shorten } from '@/utils/helpers';
+import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
 import { MonoCopyAll, MonoDelete } from '@kadena/kode-icons/system';
@@ -47,13 +47,13 @@ export interface Transfer {
   senderAccount: IRetrievedAccount;
   chain: ChainId | '';
   receivers: IReceiver[];
-  gasPayer: string;
+  gasPayer: IRetrievedAccount;
   gasPrice: string;
   gasLimit: string;
   type: 'safeTransfer' | 'normalTransfer';
   ttl: number;
   totalAmount: number;
-  creationTime?: number;
+  creationTime: number;
 }
 
 export type Redistribution = {
@@ -123,7 +123,7 @@ export function TransferForm({
           discoveryStatus: 'not-started',
         },
       ],
-      gasPayer: '',
+      gasPayer: undefined,
       gasPrice: '1e-8',
       gasLimit: '2500',
       type: 'normalTransfer',
@@ -173,7 +173,7 @@ export function TransferForm({
             }),
           );
           const transferData = activity.data.transferData;
-          reset({
+          const dataToReset: Transfer = {
             fungible: account.contract,
             accountId: transferData.accountId,
             senderAccount: transferData.senderAccount,
@@ -186,7 +186,8 @@ export function TransferForm({
             ttl: transferData.ttl,
             creationTime: transferData.creationTime,
             totalAmount: 0,
-          });
+          };
+          reset(dataToReset);
           evaluateTransactions();
         }
       }
@@ -214,7 +215,7 @@ export function TransferForm({
     const receivers = getValues('receivers');
     const gasPrice = getValues('gasPrice');
     const gasLimit = getValues('gasLimit');
-    const gasPayer = getValues('gasPayer');
+    const gasPayer = getValues('gasPayer') || getValues('senderAccount');
     const selectedChain = getValues('chain');
     const totalAmount = receivers.reduce(
       (acc, receiver) => acc + +receiver.amount,
@@ -228,7 +229,7 @@ export function TransferForm({
         chains.filter(
           (chain) => !selectedChain || chain.chainId === selectedChain,
         ),
-        !gasPayer || gasPayer === senderAccount?.address
+        !gasPayer || gasPayer.address === senderAccount?.address
           ? new PactNumber(gasPrice).times(gasLimit).toDecimal()
           : '0',
         receivers.map((receiver) => ({
@@ -266,7 +267,14 @@ export function TransferForm({
   async function onSubmitForm(data: Transfer) {
     console.log('data', data);
     if (!senderAccount || !profile) return;
-    onSubmit(data, redistribution);
+    onSubmit(
+      {
+        ...data,
+        gasPayer: data.gasPayer || data.senderAccount,
+        creationTime: data.creationTime ?? Date.now() / 1000,
+      },
+      redistribution,
+    );
   }
 
   const senderChain = watch('chain');
@@ -790,36 +798,32 @@ export function TransferForm({
             </Stack>
             <Stack flexDirection="column" gap="sm">
               <Controller
-                name="gasPayer"
+                name={`gasPayer`}
                 control={control}
-                render={({ field }) => (
-                  <Select
-                    aria-label="Gas Payer"
-                    startVisual={<Label>Gas Payer:</Label>}
-                    placeholder="Select the gas payer"
-                    size="sm"
-                    selectedKey={field.value}
-                    onSelectionChange={withEvaluate(field.onChange)}
-                  >
-                    {[
-                      ...(senderAccount
-                        ? [
-                            <SelectItem key={''}>
-                              <Stack flexDirection="row" gap="sm">
-                                <AutoBadge />
-                                {shorten(senderAccount?.address, 10)}{' '}
-                              </Stack>
-                            </SelectItem>,
-                          ]
-                        : []),
-                      ...filteredAccounts.map((account) => (
-                        <SelectItem key={account.address}>
-                          {shorten(account.address, 10)}
-                        </SelectItem>
-                      )),
-                    ]}
-                  </Select>
-                )}
+                render={({ field }) => {
+                  return (
+                    <Stack flexDirection={'column'}>
+                      <AccountSearchBox
+                        accounts={filteredAccounts.filter(
+                          (account) => account.address,
+                        )}
+                        watchedAccounts={filteredWatchedAccounts}
+                        contacts={contacts}
+                        network={activeNetwork!}
+                        contract={watchFungibleType}
+                        selectedAccount={
+                          field.value === undefined
+                            ? getValues('senderAccount')
+                            : field.value
+                        }
+                        onSelect={withEvaluate((account) => {
+                          field.onChange(account ?? null);
+                          forceRender((prev) => prev + 1);
+                        })}
+                      />
+                    </Stack>
+                  );
+                }}
               />
               <Controller
                 name="gasPrice"

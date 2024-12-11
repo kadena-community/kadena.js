@@ -15,12 +15,12 @@ export interface TransferData {
     discoveryStatus: 'not-started' | 'in-progress' | 'done';
     transferMax?: boolean;
   }>;
-  gasPayer: string;
+  gasPayer: IRetrievedAccount;
   gasPrice: string;
   gasLimit: string;
   type: 'safeTransfer' | 'normalTransfer';
   ttl: number;
-  creationTime?: number;
+  creationTime: number;
 }
 
 export interface IActivity {

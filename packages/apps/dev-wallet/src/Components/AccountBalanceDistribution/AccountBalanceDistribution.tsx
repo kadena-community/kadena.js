@@ -134,6 +134,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     );
     const [groupId] = await createRedistributionTxs({
       account: account as IRetrievedAccount,
+      gasPayer: account as IRetrievedAccount,
       gasLimit,
       gasPrice,
       network: activeNetwork!,
