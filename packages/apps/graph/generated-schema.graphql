@@ -224,6 +224,9 @@ type GasLimitEstimation {
 type GraphConfiguration {
   """The lowest block-height that is indexed in this endpoint."""
   minimumBlockHeight: BigInt
+
+  """The version of the @kadena/graph package."""
+  version: String!
 }
 
 type Guard implements IGuard {

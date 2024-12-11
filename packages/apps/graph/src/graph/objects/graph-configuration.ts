@@ -1,4 +1,4 @@
-import packageJson from '../../../package.json';
+import { dotenv } from '@utils/dotenv';
 import { builder } from '../builder';
 
 export default builder.objectType('GraphConfiguration', {
@@ -12,7 +12,7 @@ export default builder.objectType('GraphConfiguration', {
     version: t.field({
       type: 'String',
       description: 'The version of the @kadena/graph package.',
-      resolve: () => packageJson.version,
+      resolve: () => dotenv.KADENA_GRAPH_VERSION,
     }),
   }),
 });
