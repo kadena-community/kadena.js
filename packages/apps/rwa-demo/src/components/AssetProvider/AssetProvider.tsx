@@ -12,9 +12,9 @@ import { getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { useRouter } from 'next/navigation';
 
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
-import type { IWalletAccount } from '../AccountProvider/utils';
 
 export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
   uuid: string;

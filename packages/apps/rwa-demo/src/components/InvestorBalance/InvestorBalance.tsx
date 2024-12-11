@@ -1,3 +1,4 @@
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useAccount } from '@/hooks/account';
 import { getBalance } from '@/services/getBalance';
 import { getFrozenTokens } from '@/services/getFrozenTokens';
@@ -5,7 +6,6 @@ import { MonoFilterTiltShift } from '@kadena/kode-icons';
 import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import type { IWalletAccount } from '../AccountProvider/utils';
 import { MaxInvestorBalanceCheck } from './MaxInvestorBalanceCheck';
 
 interface IProps {

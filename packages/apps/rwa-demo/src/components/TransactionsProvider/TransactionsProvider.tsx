@@ -1,4 +1,5 @@
 'use client';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
 import { getClient } from '@/utils/client';
@@ -7,7 +8,6 @@ import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
-import type { IWalletAccount } from '../AccountProvider/utils';
 
 export interface ITransaction {
   uuid: string;
