@@ -61,11 +61,6 @@ export function getDBScheme() {
       indexKeyPath: ['keysetId', 'contract', 'networkUUID'],
       unique: true,
     },
-    {
-      index: 'unique-alias',
-      indexKeyPath: ['profileId', 'networkUUID', 'contract', 'alias'],
-      unique: true,
-    },
   ]);
   defineScheme('watched-account', 'uuid', [
     { index: 'address' },
