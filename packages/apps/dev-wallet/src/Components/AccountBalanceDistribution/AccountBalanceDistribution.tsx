@@ -3,6 +3,7 @@ import {
   isWatchedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
@@ -132,13 +133,14 @@ export const AccountBalanceDistribution: FC<IProps> = ({
       '0',
     );
     const [groupId] = await createRedistributionTxs({
-      account: account as IAccount,
+      account: account as IRetrievedAccount,
       gasLimit,
       gasPrice,
       network: activeNetwork!,
       redistribution,
       mapKeys,
       creationTime: Math.round(Date.now() / 1000),
+      profileId: account.profileId,
     });
 
     onRedistribution(groupId);

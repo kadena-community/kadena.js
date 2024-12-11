@@ -22,8 +22,10 @@ const InvestorPage = () => {
   return (
     <>
       <SideBarBreadcrumbs>
+        <SideBarBreadcrumbsItem href="/agents">Agents</SideBarBreadcrumbsItem>
+
         <SideBarBreadcrumbsItem href={`/agents/${agentAccount}`}>
-          Agent
+          {agent.alias}
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 

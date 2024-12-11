@@ -124,10 +124,21 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       namespace,
     };
 
-    const data = [...getAssets(), asset];
-    localStorage.setItem(storageKey, JSON.stringify(data));
-    window.dispatchEvent(new Event(storageKey));
-    setAssets(data);
+    //check if the asset is already there?
+    const allAssets = getAssets();
+    if (
+      !allAssets.find(
+        (a) =>
+          a.namespace === asset.namespace &&
+          a.contractName === asset.contractName,
+      )
+    ) {
+      const data = [...allAssets, asset];
+      localStorage.setItem(storageKey, JSON.stringify(data));
+      window.dispatchEvent(new Event(storageKey));
+      setAssets(data);
+    }
+
     return asset;
   };
 

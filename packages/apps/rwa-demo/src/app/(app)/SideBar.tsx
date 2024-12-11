@@ -3,10 +3,12 @@ import { useAccount } from '@/hooks/account';
 import {
   MonoAccountBox,
   MonoApps,
+  MonoAttachMoney,
   MonoDarkMode,
   MonoLightMode,
   MonoLogout,
   MonoNetworkCheck,
+  MonoSupportAgent,
   MonoVpnLock,
 } from '@kadena/kode-icons';
 import {
@@ -31,7 +33,8 @@ import { KLogo } from './KLogo';
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useLayout();
-  const { logout, account, isMounted } = useAccount();
+  const { logout, account, isMounted, isAgent, isOwner, isComplianceOwner } =
+    useAccount();
   const router = useRouter();
 
   const toggleTheme = (): void => {
@@ -68,6 +71,24 @@ export const SideBar: FC = () => {
             component={Link}
             href="/"
           />
+
+          {(isOwner || isAgent) && (
+            <SideBarItem
+              visual={<MonoSupportAgent />}
+              label="Agents"
+              component={Link}
+              href="/agents"
+            />
+          )}
+          {(isAgent || isOwner || isComplianceOwner) && (
+            <SideBarItem
+              visual={<MonoAttachMoney />}
+              label="Investors"
+              component={Link}
+              href="/investors"
+            />
+          )}
+
           <SideBarItem
             visual={<MonoVpnLock />}
             label="Assets"

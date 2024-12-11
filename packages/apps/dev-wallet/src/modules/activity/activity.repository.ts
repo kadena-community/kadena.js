@@ -1,16 +1,17 @@
-import { IReceiverAccount } from '@/pages/transfer-v2/utils';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { ChainId } from '@kadena/client';
 import { dbService, IDBService } from '../db/db.service';
 import { UUID } from '../types';
 
 export interface TransferData {
   accountId: string;
+  senderAccount: IRetrievedAccount;
   chain: ChainId | '';
   receivers: Array<{
     amount: string;
     address: string;
     chain: ChainId | '';
-    discoveredAccounts: IReceiverAccount[];
+    discoveredAccounts: IRetrievedAccount[];
     discoveryStatus: 'not-started' | 'in-progress' | 'done';
     transferMax?: boolean;
   }>;
@@ -26,7 +27,7 @@ export interface IActivity {
   uuid: string;
   profileId: string;
   networkUUID: UUID;
-  keysetId: string;
+  account: IRetrievedAccount;
   type: 'Transfer';
   status: 'Initiated' | 'InProgress' | 'Success' | 'Failure';
   data: {
@@ -60,16 +61,6 @@ const createActivityRepository = ({
         'activity',
         IDBKeyRange.only([profileId, networkUUID]),
         'profile-network',
-      );
-    },
-    getKeysetActivities: async (
-      keysetId: string,
-      networkUUID: UUID,
-    ): Promise<IActivity[]> => {
-      return getAll(
-        'activity',
-        IDBKeyRange.only([keysetId, networkUUID]),
-        'keyset-network',
       );
     },
     addActivity: async (activity: IActivity): Promise<void> => {

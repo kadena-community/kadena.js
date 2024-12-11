@@ -1,6 +1,7 @@
-import { Keyset } from '@/pages/transfer-v2/Components/keyset';
-import { discoverReceiver, IReceiverAccount } from '@/pages/transfer-v2/utils';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
+import { discoverReceiver } from '@/pages/transfer-v2/utils';
 
+import { Guard } from '@/Components/Guard/Guard';
 import {
   MonoAccountBalanceWallet,
   MonoLoading,
@@ -20,14 +21,14 @@ export function AccountInput({
 }: {
   networkId: string;
   contract: string;
-  account: IReceiverAccount | undefined;
+  account: IRetrievedAccount | undefined;
   address: string;
   setAddress: (address: string) => void;
-  onAccount: (account?: IReceiverAccount) => void;
+  onAccount: (account?: IRetrievedAccount) => void;
 }) {
   console.log('AccountInput', account);
   const [discoveredAccounts, setDiscoveredAccounts] = useState<
-    IReceiverAccount[] | undefined
+    IRetrievedAccount[] | undefined
   >(undefined);
   const [needToAddKeys, setNeedToAddKeys] = useState(false);
   const [showKeysetDialog, setShowKeysetDialog] = useState(false);
@@ -53,7 +54,6 @@ export function AccountInput({
         innerAddress,
         networkId,
         contract,
-        (key) => key,
       );
       if (accounts.length === 1) {
         onAccount(accounts[0]);
@@ -78,9 +78,9 @@ export function AccountInput({
           onDone={(guard) => {
             setShowKeysetDialog(false);
             setNeedToAddKeys(false);
-            const account: IReceiverAccount = {
+            const account: IRetrievedAccount = {
               address: address,
-              keyset: { guard },
+              guard,
               chains: [],
               overallBalance: '0.0',
             };
@@ -123,9 +123,7 @@ export function AccountInput({
             }
           }}
         />
-        {account && account.keyset.guard && (
-          <Keyset guard={account.keyset.guard} />
-        )}
+        {account && account.guard && <Guard guard={account.guard} />}
       </Stack>
       {needToAddKeys && (
         <Notification role="status" intent="info">
@@ -145,7 +143,7 @@ export function AccountInput({
       {discoveredAccounts && discoveredAccounts.length >= 2 && (
         <DiscoverdAccounts
           accounts={discoveredAccounts}
-          onSelect={(account: IReceiverAccount) => {
+          onSelect={(account: IRetrievedAccount) => {
             setDiscoveredAccounts(undefined);
             onAccount(account);
           }}

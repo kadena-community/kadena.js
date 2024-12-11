@@ -1,5 +1,5 @@
-import { Keyset } from '@/pages/transfer-v2/Components/keyset';
-import { IReceiverAccount } from '@/pages/transfer-v2/utils';
+import { Guard } from '@/Components/Guard/Guard';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { MonoAttachMoney, MonoLink } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -13,8 +13,8 @@ import { FC, ReactNode } from 'react';
 import { discoverdAccountClass } from './style.css';
 
 export const DiscoverdAccounts: FC<{
-  accounts: IReceiverAccount[];
-  onSelect: (selected: IReceiverAccount) => void;
+  accounts: IRetrievedAccount[];
+  onSelect: (selected: IRetrievedAccount) => void;
   onClosed: () => void;
   inline?: boolean;
 }> = ({ accounts, onSelect, onClosed, inline }) => {
@@ -79,7 +79,7 @@ export const DiscoverdAccounts: FC<{
                   justifyContent={'flex-end'}
                   alignItems={'center'}
                 >
-                  <Keyset guard={account.keyset.guard} />
+                  <Guard guard={account.guard} />
                   <Stack>
                     <Button
                       isCompact

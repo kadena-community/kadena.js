@@ -1,5 +1,5 @@
 import { cardColor, cardHoverColor } from '@/utils/color.ts';
-import { atoms, tokens } from '@kadena/kode-ui/styles';
+import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const pageClass = style({
@@ -49,4 +49,18 @@ export const listItemClass = style([
 export const noStyleLinkClass = style({
   textDecoration: 'none',
   color: 'inherit',
+});
+
+export const linkClass = style({
+  color: vars.colors.$positiveSurface,
+  background: 'transparent',
+  textAlign: 'left',
+  border: 'none',
+  padding: 0,
+  cursor: 'pointer',
+  selectors: {
+    [`&:hover`]: {
+      textDecoration: 'underline',
+    },
+  },
 });

@@ -1,4 +1,4 @@
-import { TableScheme } from './migration/createDB';
+import { ExtendedTableName, TableScheme } from './migration/createDB';
 
 const CREATION_TIME_KEY = 'creationTime';
 
@@ -101,7 +101,7 @@ const sortByCreationDate = <T>(a: T, b: T) => {
 export const getAllItems =
   (db: IDBDatabase, versionTransaction?: IDBTransaction) =>
   <T>(
-    storeName: string,
+    storeName: ExtendedTableName,
     filter?: string[] | string | IDBKeyRange,
     indexName?: string,
   ) => {
@@ -129,7 +129,7 @@ export const getAllItems =
 export const getAllKeyValues =
   (db: IDBDatabase) =>
   <T>(
-    storeName: string,
+    storeName: ExtendedTableName,
     filter?: string[] | string | IDBKeyRange,
     indexName?: string,
   ) => {
@@ -167,7 +167,7 @@ export const getAllKeyValues =
 
 export const getOneItem =
   (db: IDBDatabase, transaction?: IDBTransaction) =>
-  <T>(storeName: string, key: string) => {
+  <T>(storeName: ExtendedTableName, key: string) => {
     return new Promise<T>((resolve, reject) => {
       const tx = transaction ?? db.transaction(storeName, 'readonly');
       const store = tx.objectStore(storeName);
@@ -184,7 +184,7 @@ export const getOneItem =
 export const addItem =
   (db: IDBDatabase, transaction?: IDBTransaction) =>
   <T>(
-    storeName: string,
+    storeName: ExtendedTableName,
     value: T,
     key?: string,
     { noCreationTime = false } = {},
@@ -207,7 +207,7 @@ export const addItem =
 
 export const deleteItem =
   (db: IDBDatabase, transaction?: IDBTransaction) =>
-  (storeName: string, key: string) => {
+  (storeName: ExtendedTableName, key: string) => {
     return new Promise<void>((resolve, reject) => {
       const tx = transaction ?? db.transaction(storeName, 'readwrite');
       const store = tx.objectStore(storeName);
@@ -222,11 +222,11 @@ export const deleteItem =
   };
 
 const isExist =
-  (db: IDBDatabase) =>
-  async <T>(storeName: string, value: T, key?: string) => {
-    const transaction = db.transaction(storeName, 'readonly');
-    const store = transaction.objectStore(storeName);
-    const isDataExist = await getOneItem(db)(
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
+  async <T>(storeName: ExtendedTableName, value: T, key?: string) => {
+    const tx = transaction ?? db.transaction(storeName, 'readonly');
+    const store = tx.objectStore(storeName);
+    const isDataExist = await getOneItem(db, tx)(
       storeName,
       key ?? (value[store.keyPath! as keyof T] as string),
     )
@@ -237,12 +237,12 @@ const isExist =
 
 export const updateItem =
   (db: IDBDatabase, transaction?: IDBTransaction) =>
-  <T>(storeName: string, value: T, key?: string) => {
+  <T>(storeName: ExtendedTableName, value: T, key?: string) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
       const tx = transaction ?? db.transaction(storeName, 'readwrite');
       const store = tx.objectStore(storeName);
-      const isDataExist = isExist(db)(storeName, value, key);
+      const isDataExist = isExist(db, tx)(storeName, value, key);
       if (!isDataExist) {
         reject(
           new Error(
@@ -262,7 +262,7 @@ export const updateItem =
 
 export const putItem =
   (db: IDBDatabase, transaction?: IDBTransaction) =>
-  <T>(storeName: string, value: T, key?: string) => {
+  <T>(storeName: ExtendedTableName, value: T, key?: string) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
       const tx = transaction ?? db.transaction(storeName, 'readwrite');
@@ -277,28 +277,29 @@ export const putItem =
     });
   };
 
-export const getScheme = (db: IDBDatabase) => (storeName: string) => {
-  const transaction = db.transaction(storeName, 'readonly');
-  const objectStore = transaction.objectStore(storeName);
-  const schema = {
-    name: storeName,
-    keyPath: objectStore.keyPath,
-    autoIncrement: objectStore.autoIncrement,
-    indexes: Array.from(objectStore.indexNames).map((indexName) => {
-      const index = objectStore.index(indexName);
-      return {
-        name: index.name,
-        keyPath: index.keyPath,
-        unique: index.unique,
-        multiEntry: index.multiEntry,
-      };
-    }),
+export const getScheme =
+  (db: IDBDatabase) => (storeName: ExtendedTableName) => {
+    const transaction = db.transaction(storeName, 'readonly');
+    const objectStore = transaction.objectStore(storeName);
+    const schema = {
+      name: storeName,
+      keyPath: objectStore.keyPath,
+      autoIncrement: objectStore.autoIncrement,
+      indexes: Array.from(objectStore.indexNames).map((indexName) => {
+        const index = objectStore.index(indexName);
+        return {
+          name: index.name,
+          keyPath: index.keyPath,
+          unique: index.unique,
+          multiEntry: index.multiEntry,
+        };
+      }),
+    };
+    return schema;
   };
-  return schema;
-};
 
 export const dbDump = (db: IDBDatabase) => () => {
-  const tables = Array.from(db.objectStoreNames);
+  const tables = Array.from(db.objectStoreNames) as ExtendedTableName[];
   const getKeyValues = getAllKeyValues(db);
   const tableScheme = getScheme(db);
   return Promise.all(
@@ -317,7 +318,8 @@ export const dbDump = (db: IDBDatabase) => () => {
 };
 
 export const clearStore =
-  (db: IDBDatabase, transaction?: IDBTransaction) => (storeName: string) => {
+  (db: IDBDatabase, transaction?: IDBTransaction) =>
+  (storeName: ExtendedTableName) => {
     return new Promise<void>((resolve, reject) => {
       const tx = transaction ?? db.transaction(storeName, 'readwrite');
       const store = tx.objectStore(storeName);

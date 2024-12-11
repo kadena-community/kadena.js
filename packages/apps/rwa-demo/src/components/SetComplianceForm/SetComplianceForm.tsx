@@ -1,4 +1,3 @@
-import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { ISetComplianceProps } from '@/services/setCompliance';
@@ -20,7 +19,6 @@ interface IProps {
 }
 
 export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
-  const { isComplianceOwner } = useAccount();
   const { submit } = useSetCompliance();
   const { asset } = useAsset();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
@@ -56,8 +54,6 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
       maxBalance: `${asset?.maxBalance}`,
     });
   }, [asset?.maxBalance, asset?.maxSupply]);
-
-  if (!isComplianceOwner) return null;
 
   return (
     <>

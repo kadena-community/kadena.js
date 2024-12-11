@@ -156,6 +156,11 @@ export async function createProfileFromChainweaverData(
       uuid: crypto.randomUUID(),
       profileId: profile.uuid,
       address: account.account,
+      guard: {
+        keys: [account.account.split('k:')[1]],
+        pred: 'keys-all',
+        principal: account.account,
+      },
       keysetId: keySet.uuid,
       networkUUID: dbNetwork.uuid,
       contract: 'coin',

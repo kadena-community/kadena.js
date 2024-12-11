@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { InvestorForm } from '../InvestorForm/InvestorForm';
 import { FormatFreeze } from '../TableFormatters/FormatFreeze';
+import { FormatInvestorBalance } from '../TableFormatters/FormatInvestorBalance';
 
 export const InvestorList: FC = () => {
   const { data } = useGetInvestors();
@@ -67,15 +68,21 @@ export const InvestorList: FC = () => {
                   render: CompactTableFormatters.FormatAccount(),
                 },
                 {
+                  label: 'Balance',
+                  key: 'accountName',
+                  width: '20%',
+                  render: FormatInvestorBalance(),
+                },
+                {
                   label: '',
                   key: 'accountName',
-                  width: '10%',
+                  width: '5%',
                   render: FormatFreeze(),
                 },
                 {
                   label: '',
                   key: 'accountName',
-                  width: '8%',
+                  width: '5%',
                   render: CompactTableFormatters.FormatActions({
                     trigger: (
                       <Button
@@ -90,7 +97,7 @@ export const InvestorList: FC = () => {
                 {
                   label: '',
                   key: 'accountName',
-                  width: '7%',
+                  width: '5%',
                   render: CompactTableFormatters.FormatActions({
                     trigger: (
                       <Button

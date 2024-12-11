@@ -2,6 +2,19 @@ import { IDBService, dbService } from '@/modules/db/db.service';
 import { execInSequence } from '@/utils/helpers';
 import { BuiltInPredicate, ChainId } from '@kadena/client';
 import { UUID } from '../types';
+import { Guard, KeysetGuard, KeysetRefGuard } from './guards';
+
+export type IGuard = Guard & {
+  principal: string;
+};
+
+export type IKeysetGuard = KeysetGuard & {
+  principal: string;
+};
+
+export type IKeysetRefGuard = KeysetRefGuard & {
+  principal: string;
+};
 
 export interface Fungible {
   contract: string; // unique identifier
@@ -27,35 +40,21 @@ export interface IAccount {
   networkUUID: UUID;
   profileId: string;
   contract: string;
-  keysetId: string;
   address: string;
   overallBalance: string;
   chains: Array<{
     chainId: ChainId;
     balance: string;
   }>;
-  keyset?: IKeySet;
+  guard: IKeysetGuard;
+  keysetId: string;
   alias?: string;
   syncTime?: number;
 }
 
-export type IWatchedAccount = Omit<IAccount, 'keysetId' | 'keyset'> & {
-  keyset: {
-    guard: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
-  };
+export type IWatchedAccount = Omit<IAccount, 'guard' | 'keysetId'> & {
+  guard: IGuard;
   watched: true;
-};
-
-const deleteKey = <Key extends string, T extends Partial<Record<Key, unknown>>>(
-  obj: T,
-  key: Key,
-) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { [key]: toBeDeleted, ...rest } = obj;
-  return rest;
 };
 
 const createAccountRepository = ({
@@ -68,11 +67,6 @@ const createAccountRepository = ({
   const getKeyset = async (id: string): Promise<IKeySet> => {
     return getOne('keyset', id);
   };
-
-  const appendKeyset = async (account: IAccount) => ({
-    ...account,
-    keyset: await getKeyset(account.keysetId),
-  });
   const actions = {
     async getKeysetByPrincipal(
       principal: string,
@@ -97,26 +91,25 @@ const createAccountRepository = ({
       return keysets;
     },
     addAccount: async (account: IAccount): Promise<void> => {
-      return add('account', deleteKey(account, 'keyset' as const));
+      return add('account', account);
     },
 
     updateAccount: async (account: IAccount): Promise<void> => {
-      return update('account', deleteKey(account, 'keyset'));
+      return update('account', account);
     },
     deleteAccount: async (uuid: string): Promise<void> => {
       return remove('account', uuid);
     },
-    getAccount: async (id: string) => {
-      const account: IAccount = await getOne('account', id);
-      return appendKeyset(account);
+    getAccount: async (id: string): Promise<IAccount> => {
+      return getOne('account', id);
     },
-    getAccountByAddress: async (address: string) => {
+    getAccountsByAddress: async (address: string) => {
       const account: Array<IAccount> = await getAll(
         'account',
         address,
         'address',
       );
-      return Promise.all(account.map(appendKeyset));
+      return account;
     },
     getAccountByKeyset: async (keysetId: string) => {
       const accounts: IAccount[] = await getAll(
@@ -132,7 +125,7 @@ const createAccountRepository = ({
         IDBKeyRange.only([profileId, networkUUID]),
         'profile-network',
       );
-      return Promise.all(accounts.map(appendKeyset));
+      return accounts;
     },
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);

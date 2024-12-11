@@ -3,6 +3,10 @@ import type { IWalletAccount } from '@/components/AccountProvider/utils';
 import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
+import {
+  SideBarBreadcrumbs,
+  SideBarBreadcrumbsItem,
+} from '@kadena/kode-ui/patterns';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -23,6 +27,16 @@ const Assets = () => {
     initData(uuid as string, account);
   }, [uuid, account?.address]);
 
-  return <pre>{JSON.stringify(asset, null, 2)}</pre>;
+  return (
+    <>
+      <SideBarBreadcrumbs>
+        <SideBarBreadcrumbsItem href="/assets">Assets</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem href={`/assets/${asset?.uuid}`}>
+          Assets
+        </SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
+      <pre>{JSON.stringify(asset, null, 2)}</pre>
+    </>
+  );
 };
 export default Assets;

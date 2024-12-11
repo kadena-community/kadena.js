@@ -3,8 +3,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Box, Heading, Stack } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import { Link, useParams } from 'react-router-dom';
-import { listClass, panelClass } from '../home/style.css';
-import { linkClass } from '../transfer/style.css';
+import { linkClass, listClass, panelClass } from '../home/style.css';
 
 export function FungiblePage() {
   const { contract } = useParams<{ contract: string }>();
