@@ -12,6 +12,7 @@ import { isSignedCommand } from '@kadena/pactjs';
 import React, { useCallback, useEffect } from 'react';
 
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { normalizeSigs } from '@/utils/normalizeSigs';
 import { TxContainer } from './TxContainer';
 import { statusPassed, steps } from './TxPipeLine';
 
@@ -29,7 +30,7 @@ export const TxList = React.memo(
     onDone?: () => void;
     onSign?: (tx: ICommand) => void;
   }) => {
-    const { sign, client } = useWallet();
+    const { sign, client, getPublicKeyData } = useWallet();
     const [transactions, setTransactions] = React.useState<ITransaction[]>([]);
 
     useEffect(() => {
@@ -109,6 +110,13 @@ export const TxList = React.memo(
       console.log(result);
     };
 
+    const signedByYou = (tx: ITransaction) => {
+      const signers = normalizeSigs(tx);
+      return !signers.find(
+        (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
+      );
+    };
+
     return (
       <Stack flexDirection={'column'} gap={'lg'}>
         <Stack flexDirection={'row'} flexWrap="wrap" gap="md">
@@ -141,18 +149,27 @@ export const TxList = React.memo(
               </Stack>
             ))}
         </Stack>
+        {!showExpanded && !transactions.every((tx) => signedByYou(tx)) && (
+          <Stack gap={'sm'} flexDirection={'column'}>
+            <Text>You can sign all transactions at once.</Text>
+            <Stack>
+              <Button isCompact onClick={signAll}>
+                <Stack>
+                  <MonoSignature scale={0.5} />
+                  Sign All Transactions
+                </Stack>
+              </Button>
+            </Stack>
+          </Stack>
+        )}
         {!showExpanded &&
+          transactions.every((tx) => signedByYou(tx)) &&
           !transactions.every((tx) => statusPassed(tx.status, 'signed')) && (
             <Stack gap={'sm'} flexDirection={'column'}>
-              <Text>You can sign all transactions at once.</Text>
-              <Stack>
-                <Button isCompact onClick={signAll}>
-                  <Stack>
-                    <MonoSignature scale={0.5} />
-                    Sign All Transactions
-                  </Stack>
-                </Button>
-              </Stack>
+              <Text>
+                There is no action at the moment; share the transactions with
+                other signers to sign
+              </Text>
             </Stack>
           )}
         {!showExpanded &&

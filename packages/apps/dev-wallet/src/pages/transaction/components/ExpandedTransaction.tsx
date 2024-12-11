@@ -14,7 +14,7 @@ import {
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
 
-import { codeClass } from './style.css.ts';
+import { codeClass, txDetailsClass, txExpandedWrapper } from './style.css.ts';
 
 import { CopyButton } from '@/Components/CopyButton/CopyButton.tsx';
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
@@ -29,6 +29,7 @@ import {
   MonoMoreVert,
   MonoShare,
 } from '@kadena/kode-icons/system';
+import classNames from 'classnames';
 import { useState } from 'react';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
@@ -92,12 +93,11 @@ export function ExpandedTransaction({
         </Stack>
       </Title>
       <Content>
-        <Stack gap={'lg'} width="100%">
+        <Stack gap={'lg'} width="100%" className={txExpandedWrapper}>
           <Stack
             gap={'lg'}
             flexDirection={'column'}
             style={{
-              flexBasis: '260px',
               minWidth: '260px',
             }}
             className={panelClass}
@@ -118,10 +118,7 @@ export function ExpandedTransaction({
             flex={1}
             gap={'xxl'}
             flexDirection={'column'}
-            className={panelClass}
-            style={{
-              maxWidth: 'calc(100% - 285px)',
-            }}
+            className={classNames(panelClass, txDetailsClass)}
           >
             {statusPassed(transaction.status, 'success') &&
               (!transaction.continuation?.autoContinue ||

@@ -119,3 +119,21 @@ export const txMinimizedClass = style({
   paddingLeft: '5px',
   border: `1px solid ${tokens.kda.foundation.color.border.base.default}`,
 });
+
+export const txExpandedWrapper = style({
+  flexDirection: 'column',
+  '@media': {
+    'screen and (min-width: 1024px)': {
+      flexDirection: 'row',
+    },
+  },
+});
+
+export const txDetailsClass = style({
+  maxWidth: '100%',
+  '@media': {
+    'screen and (min-width: 1024px)': {
+      maxWidth: 'calc(100% - 285px)',
+    },
+  },
+});
