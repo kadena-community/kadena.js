@@ -32,7 +32,7 @@ export const createContract = async (
     )
     .addData('ns', data.namespace)
     .addData('keyset', {
-      keys: [account.keyset.guard.keys[0]],
+      keys: [getPubkeyFromAccount(account)],
       pred: 'keys-all',
     })
     .setMeta({
