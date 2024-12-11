@@ -16,7 +16,7 @@ export const ComplianceRule: FC<IProps> = ({ label, value }) => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Stack gap="sm">
+      <Stack gap="sm" alignItems="center">
         <MonoArrowRightAlt />
         <Text>{label}</Text>
       </Stack>
