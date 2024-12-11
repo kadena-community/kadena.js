@@ -29,6 +29,7 @@ const keysToCamel = <T extends Record<string, unknown>>(obj: T) => {
     {} as Record<string, unknown>,
   );
 };
+
 interface ITransferQueryConditions {
   select?: Record<string, boolean>;
   take: number;
@@ -48,343 +49,220 @@ interface ITransferQueryConditions {
 const isDev = dotenv.NODE_ENV !== 'production';
 const log = isDev ? console.log : () => {};
 
-const getTransfers = async (
+export const getTransfers = async (
   accountName: string,
   fungibleName: string,
-  condition?: ITransferQueryConditions,
+  condition: ITransferQueryConditions,
 ) => {
-  // The query with the pagination cursor is composed separately
-  // as Prisma rightfully does not allow dynamic statements in sql queries
-  if (!condition?.cursor) {
-    log('no condition');
-    if (condition !== undefined && condition.take > 0) {
-      log('take positive, "first page"');
-      return prismaClient.$queryRaw`
-  SELECT
-    "block" AS "block_hash",
-    "requestkey" AS "request_key",
-    "chainid" AS "chain_id",
-    "height" AS "height",
-    "idx" AS "order_index",
-    "modulename" AS "module_name",
-    "modulehash" AS "module_hash",
-    "from_acct" AS "sender_account",
-    "to_acct" AS "receiver_account",
-    "amount" AS "amount"
-  FROM
-    (
-      (
-        SELECT
-          *
-        FROM
-          transfers
-        WHERE
-          "from_acct" = ${accountName}
-          AND "modulename" = ${fungibleName}
-        ORDER BY
-          "height" DESC,
-          "chainid" DESC,
-          "requestkey" DESC,
-          "idx" DESC
-        LIMIT
-          ${condition?.take}
-      )
-      UNION
-      ALL (
-        SELECT
-          *
-        FROM
-          transfers
-        WHERE
-          "to_acct" = ${accountName}
-          AND "modulename" = ${fungibleName}
-        ORDER BY
-          "height" DESC,
-          "chainid" DESC,
-          "requestkey" DESC,
-          "idx" DESC
-        LIMIT
-          ${condition?.take}
-      )
-      OFFSET ${condition?.skip}
-      LIMIT
-        ${condition?.take}
-    ) AS T0
-  ORDER BY
-    "height" DESC,
-    "chainid" DESC,
-    "requestkey" DESC,
-    "idx" DESC
-;
-  `;
-    } else if (condition !== undefined && condition.take < 0) {
-      log('take negative, "last page"');
-      return prismaClient.$queryRaw`
-  SELECT
-    "block" AS "block_hash",
-    "requestkey" AS "request_key",
-    "chainid" AS "chain_id",
-    "height" AS "height",
-    "idx" AS "order_index",
-    "modulename" AS "module_name",
-    "modulehash" AS "module_hash",
-    "from_acct" AS "sender_account",
-    "to_acct" AS "receiver_account",
-    "amount" AS "amount"
-  FROM
-    (
-      (
-        SELECT
-          *
-        FROM
-          transfers
-        WHERE
-          "from_acct" = ${accountName}
-          AND "modulename" = ${fungibleName}
-        ORDER BY
-          "height" ASC,
-          "chainid" ASC,
-          "requestkey" ASC,
-          "idx" ASC
-        LIMIT
-          ${condition?.take * -1}
-      )
-      UNION
-      ALL (
-        SELECT
-          *
-        FROM
-          transfers
-        WHERE
-          "to_acct" = ${accountName}
-          AND "modulename" = ${fungibleName}
-        ORDER BY
-          "height" ASC,
-          "chainid" ASC,
-          "requestkey" ASC,
-          "idx" ASC
-        LIMIT
-          ${condition?.take * -1}
-      )
-      OFFSET ${condition?.skip}
-      LIMIT
-        ${condition?.take * -1}
-    ) AS T0
-  ORDER BY
-    "height" DESC,
-    "chainid" DESC,
-    "requestkey" DESC,
-    "idx" DESC
-;
-`;
+  try {
+    // Handle cases without a cursor
+    if (!condition.cursor) {
+      log('no cursor condition');
+      log('skip', condition?.skip);
+      log('take', condition?.take);
+
+      if (condition && (condition.take === 0 || condition.take === undefined)) {
+        // use default value for take
+        condition.take = 20;
+      }
+
+      if (condition !== undefined && condition.take > 0) {
+        // First page: just fetch top `take` results from both directions in DESC order
+        log('take positive, "first page"');
+
+        const result = await prismaClient.$queryRaw`
+        	WITH results AS (
+            (
+              SELECT *
+              FROM "transfers"
+              WHERE "modulename" = ${fungibleName}
+                AND "from_acct" = ${accountName}
+              ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+            )
+            UNION ALL
+            (
+              SELECT *
+              FROM "transfers"
+              WHERE "modulename" = ${fungibleName}
+                AND "to_acct" = ${accountName}
+              ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+            )
+          )
+          SELECT
+            "block" AS "block_hash",
+            "requestkey" AS "request_key",
+            "chainid" AS "chain_id",
+            "height" AS "height",
+            "idx" AS "order_index",
+            "modulename" AS "module_name",
+            "modulehash" AS "module_hash",
+            "from_acct" AS "sender_account",
+            "to_acct" AS "receiver_account",
+            "amount" AS "amount"
+          FROM results
+          ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+          OFFSET ${condition.skip}
+          LIMIT ${condition.take}
+          ;
+        `;
+
+        return result;
+      } else if (condition !== undefined && condition.take < 0) {
+        // Last page: fetch bottom `-take` results in ascending order, then reorder DESC
+        log('take negative, "last page"');
+        const positiveTake = -condition.take;
+
+        const result = await prismaClient.$queryRaw`
+          WITH results AS (
+            (
+              SELECT *
+              FROM "transfers"
+              WHERE "modulename" = ${fungibleName}
+                AND "from_acct" = ${accountName}
+              ORDER BY "height" ASC, "chainid" ASC, "requestkey" ASC, "idx" ASC
+              LIMIT ${positiveTake}
+            )
+            UNION ALL
+            (
+              SELECT *
+              FROM "transfers"
+              WHERE "modulename" = ${fungibleName}
+                AND "to_acct" = ${accountName}
+              ORDER BY "height" ASC, "chainid" ASC, "requestkey" ASC, "idx" ASC
+              LIMIT ${positiveTake}
+            )
+          )
+          SELECT
+            "block" AS "block_hash",
+            "requestkey" AS "request_key",
+            "chainid" AS "chain_id",
+            "height" AS "height",
+            "idx" AS "order_index",
+            "modulename" AS "module_name",
+            "modulehash" AS "module_hash",
+            "from_acct" AS "sender_account",
+            "to_acct" AS "receiver_account",
+            "amount" AS "amount"
+          FROM results
+          ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+          OFFSET ${condition.skip}
+          LIMIT ${positiveTake}
+          ;
+        `;
+
+        return result;
+      }
+
+      return [];
     }
-  } else if (condition.take >= 0) {
-    const { blockHash, chainId, orderIndex, moduleHash, requestKey } =
-      condition.cursor.blockHash_chainId_orderIndex_moduleHash_requestKey!;
-    log('condition positive, page forward');
-    log(`Condition: ${JSON.stringify(condition, null, 2)}`);
-    return prismaClient.$queryRaw`
-  SELECT
-    "block" AS "block_hash",
-    "requestkey" AS "request_key",
-    "chainid" AS "chain_id",
-    "height" AS "height",
-    "idx" AS "order_index",
-    "modulename" AS "module_name",
-    "modulehash" AS "module_hash",
-    "from_acct" AS "sender_account",
-    "to_acct" AS "receiver_account",
-    "amount" AS "amount"
-  FROM
-    (
-      (
-        SELECT
-          *
-        FROM
-          transfers
-        WHERE
-          "from_acct" = ${accountName}
-          AND "modulename" = ${fungibleName}
-          AND ("height", "chainid", "requestkey", "idx") <= (
-            SELECT
-              "height",
-              "chainid",
-              "requestkey",
-              "idx"
-            FROM
-              "transfers"
-            WHERE
-              (
-                block,
-                chainid,
-                idx,
-                modulehash,
-                requestkey
-              ) = (
-                ${blockHash},
-                ${chainId},
-                ${orderIndex},
-                ${moduleHash},
-                ${requestKey}
-              )
-          )
-        ORDER BY
-          "height" DESC,
-          "chainid" DESC,
-          "requestkey" DESC,
-          "idx" DESC
-        LIMIT
-          ${condition?.take}
-      )
-      UNION
-      ALL (
-        SELECT
-          *
-        FROM
-          transfers
-        WHERE
-          "to_acct" = ${accountName}
-          AND "modulename" = ${fungibleName}
-          AND ("height","chainid", "requestkey", "idx") <= (
-            SELECT
-              "height",
-              "chainid",
-              "requestkey",
-              "idx"
-            FROM
-              "transfers"
-            WHERE
-              (
-                block,
-                chainid,
-                idx,
-                modulehash,
-                requestkey
-              ) = (
-                ${blockHash},
-                ${chainId},
-                ${orderIndex},
-                ${moduleHash},
-                ${requestKey}
-              )
-          )
-        ORDER BY
-          "height" DESC,
-          "chainid" ASC,
-          "requestkey" ASC,
-          "idx" DESC
-        LIMIT
-          ${condition?.take}
-      )
-      OFFSET ${condition?.skip}
-      LIMIT ${condition?.take}
-    ) AS T0
-  ORDER BY
-    "height" DESC,
-    "chainid" DESC,
-    "requestkey" DESC,
-    "idx" DESC
-;
-`;
-  } else {
+
+    // Handle cases with a cursor
     const { blockHash, chainId, orderIndex, moduleHash, requestKey } =
       condition.cursor.blockHash_chainId_orderIndex_moduleHash_requestKey!;
 
-    log('condition is negative, page back');
-    log(`Condition: ${JSON.stringify(condition, null, 2)}`);
+    if (condition.take >= 0) {
+      // Forward pagination with cursor (take > 0)
+      log('condition positive, next page forward');
+      log('cursor', condition.cursor);
 
-    const res = await prismaClient.$queryRaw`
-  WITH target AS (
-    SELECT
-      "height",
-      "chainid",
-      "requestkey",
-      "idx"
-    FROM
-      "transfers"
-    WHERE
-      ("block", "chainid", "idx", "modulehash", "requestkey") = (
-        ${blockHash},
-        ${chainId},
-        ${orderIndex},
-        ${moduleHash},
-        ${requestKey}
-      )
-  )
-
-  SELECT
-    "block" AS "block_hash",
-    "requestkey" AS "request_key",
-    "chainid" AS "chain_id",
-    "height" AS "height",
-    "idx" AS "order_index",
-    "modulename" AS "module_name",
-    "modulehash" AS "module_hash",
-    "from_acct" AS "sender_account",
-    "to_acct" AS "receiver_account",
-    "amount" AS "amount",
-    -- "row_number",
-    "is_fungible"
-  FROM
-    (
-    SELECT
-      *,
-      "modulename" = ${fungibleName} AS "is_fungible"
-    FROM
-    (
-      (
+      const result = await prismaClient.$queryRaw`
+        WITH cursor_row AS (
+          SELECT "height","chainid","requestkey","idx"
+          FROM "transfers"
+          WHERE (block, chainid, idx, modulehash, requestkey) = (
+            ${blockHash}, ${chainId}, ${orderIndex}, ${moduleHash}, ${requestKey}
+          )
+        ),
+       results AS (
+            (
+              SELECT *
+              FROM "transfers"
+              WHERE "modulename" = ${fungibleName}
+                AND "from_acct" = ${accountName}
+                AND ("height","chainid","requestkey","idx") <=
+                  (SELECT "height","chainid","requestkey","idx" FROM cursor_row)
+              ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+              LIMIT ${condition.take}
+            )
+            UNION ALL
+            (
+              SELECT *
+              FROM "transfers"
+              WHERE "modulename" = ${fungibleName}
+                AND "to_acct" = ${accountName}
+                AND ("height","chainid","requestkey","idx") <=
+                  (SELECT "height","chainid","requestkey","idx" FROM cursor_row)
+              ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+              LIMIT ${condition.take}
+            )
+          )
         SELECT
-          *
-        FROM
-          "transfers"
-        WHERE
-          "from_acct" = ${accountName}
-        ORDER BY
-          "height" ASC,
-          "chainid" ASC,
-          "requestkey" ASC,
-          "idx" ASC
-      ) UNION ALL
-      (
-        SELECT
-          *
-        FROM
-          "transfers"
-        WHERE
-          "to_acct" = ${accountName}
-        ORDER BY
-          "height" ASC,
-          "chainid" ASC,
-          "requestkey" ASC,
-          "idx" ASC
-      )
-     ) as "t0"
-     WHERE
-      (
-        (
-          "height",
-          "chainid",
-          "requestkey",
-          "idx"
-        ) >= (
-          ( SELECT "height" from target as "height" ),
-          ( SELECT "chainid" from target as "chainid" ),
-          ( SELECT "requestkey" from target as "requestkey" ),
-          ( SELECT "idx" from target as "idx" )
+          "block" AS "block_hash",
+          "requestkey" AS "request_key",
+          "chainid" AS "chain_id",
+          "height" AS "height",
+          "idx" AS "order_index",
+          "modulename" AS "module_name",
+          "modulehash" AS "module_hash",
+          "from_acct" AS "sender_account",
+          "to_acct" AS "receiver_account",
+          "amount" AS "amount"
+        FROM results
+        WHERE ("height","chainid","requestkey","idx") <= (
+          SELECT "height","chainid","requestkey","idx" FROM cursor_row
         )
-      )
-      OFFSET ${condition?.skip}
-      LIMIT ${condition?.take * -1}
-    ) AS "t0"
-  WHERE "is_fungible" = true
-  ORDER BY
-    "height" DESC,
-    "chainid" DESC,
-    "requestkey" DESC,
-    "idx" DESC
-  ;
-  `;
-    return res;
+        ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+        OFFSET ${condition.skip}
+        LIMIT ${condition.take};
+      `;
+
+      return result;
+    } else {
+      // Backward pagination with cursor (take < 0)
+      const positiveTake = -condition.take;
+      log('condition is negative, page back, take:', positiveTake);
+      log('condition', condition);
+
+      const result = await prismaClient.$queryRaw`
+        WITH cursor_row AS (
+          SELECT "height","chainid","requestkey","idx"
+          FROM "transfers"
+          WHERE (block, chainid, idx, modulehash, requestkey) = (
+            ${blockHash}, ${chainId}, ${orderIndex}, ${moduleHash}, ${requestKey}
+          )
+        )
+        SELECT
+          "block" AS "block_hash",
+          "requestkey" AS "request_key",
+          "chainid" AS "chain_id",
+          "height" AS "height",
+          "idx" AS "order_index",
+          "modulename" AS "module_name",
+          "modulehash" AS "module_hash",
+          "from_acct" AS "sender_account",
+          "to_acct" AS "receiver_account",
+          "amount" AS "amount"
+         FROM (
+          SELECT *
+          FROM "transfers"
+          WHERE "modulename" = ${fungibleName}
+            AND ("from_acct" = ${accountName} OR "to_acct" = ${accountName})
+            AND ("height","chainid","requestkey","idx") >= (
+              SELECT "height","chainid","requestkey","idx" FROM cursor_row
+            )
+          ORDER BY "height" ASC, "chainid" ASC, "requestkey" ASC, "idx" ASC
+          OFFSET ${condition.skip}
+          LIMIT ${positiveTake}
+        ) as t0
+        ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
+;
+      `;
+
+      return result;
+    }
+  } catch (error) {
+    console.error(error);
+    throw normalizeError(error);
   }
 };
 

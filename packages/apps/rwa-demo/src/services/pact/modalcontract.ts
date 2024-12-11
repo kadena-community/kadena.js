@@ -8,7 +8,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (module ${contractName} GOV
   "${contractName} descriptions"
 
-  (defcap GOV () (enforce-keyset "RWA.rwa-admin-keyset"))
+  (defcap GOV () (enforce-keyset "${namespace}.admin-keyset"))
 
   (implements fungible-v2)
   (implements RWA.real-world-asset-v1)
@@ -1151,4 +1151,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 ;; set roles in agent
 ;; wanted to review frontend and see if certain features were possible with graphql (still exploring but want to sit with Travis?)
 (RWA.token-mapper.add-token-ref ${namespace}.${contractName}.TOKEN-ID ${namespace}.${contractName})
+
+
+(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard "${namespace}.admin-keyset"))
 `;

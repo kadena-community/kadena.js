@@ -200,3 +200,21 @@ jobs:
         uses: re-actors/alls-green@release/v1
         with:
           jobs: ${{ toJSON(needs) }}
+
+  docker-build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker Image
+        id: docker-build-image-dev
+        run: |
+          cd packages/apps/graph && \
+          docker compose build graphql --push --build-arg \
+          -t=ghcr.io/kadena-community/graphql:dev,ghcr.io/kadena-community/graphql:${GITHUB_SHA::7}

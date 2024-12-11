@@ -1,3 +1,4 @@
+import { dotenv } from '@utils/dotenv';
 import { builder } from '../builder';
 
 export default builder.objectType('GraphConfiguration', {
@@ -7,6 +8,11 @@ export default builder.objectType('GraphConfiguration', {
       type: 'BigInt',
       nullable: true,
       description: 'The lowest block-height that is indexed in this endpoint.',
+    }),
+    version: t.field({
+      type: 'String',
+      description: 'The version of the @kadena/graph package.',
+      resolve: () => dotenv.KADENA_GRAPH_VERSION,
     }),
   }),
 });

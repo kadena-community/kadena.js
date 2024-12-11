@@ -4,11 +4,14 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+interface IProps {
+  handleDone?: () => void;
+}
 interface IAddExistingAssetProps {
   name: string;
 }
 
-export const AddExistingAssetForm: FC = () => {
+export const AddExistingAssetForm: FC<IProps> = ({ handleDone }) => {
   const router = useRouter();
   const { addExistingAsset } = useAsset();
   const {
@@ -26,6 +29,7 @@ export const AddExistingAssetForm: FC = () => {
     if (!asset) return;
 
     router.refresh();
+    if (handleDone) handleDone();
   };
 
   return (
