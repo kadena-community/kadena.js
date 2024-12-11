@@ -25,7 +25,7 @@ export const PauseAssetAction = () => {
         <AssetAction
           isDisabled={!isAgent}
           icon={showIcon()}
-          label="Contract is active"
+          label={paused ? 'Contract is paused' : 'Contract is active'}
         />
       }
     />
