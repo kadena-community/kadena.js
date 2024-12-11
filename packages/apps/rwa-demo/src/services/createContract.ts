@@ -15,8 +15,25 @@ export const createContract = async (
   account: IWalletAccount,
 ) => {
   return Pact.builder
-    .execution(getContract(data))
+    .execution(
+      `
+      (define-namespace (ns.create-principal-namespace (read-keyset 'keyset))
+        (read-keyset 'keyset)
+        (read-keyset 'keyset)
+      )
+      (namespace (ns.create-principal-namespace (read-keyset 'keyset)))
+      (let ((keyset-name:string (format "{}.{}" [(ns.create-principal-namespace (read-keyset 'keyset)) 'admin-keyset]) ))
+        (define-keyset keyset-name (read-keyset 'keyset))
+        (enforce-keyset keyset-name)
+        keyset-name
+      )
+      ${getContract(data)}`,
+    )
     .addData('ns', data.namespace)
+    .addData('keyset', {
+      keys: [account.keyset.guard.keys[0]],
+      pred: 'keys-all',
+    })
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
@@ -26,3 +43,15 @@ export const createContract = async (
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };
+
+// (define-namespace (ns.create-principal-namespace (read-keyset 'keyset))
+//     (read-keyset 'keyset)
+//     (read-keyset 'keyset)
+//   )
+//   (namespace (ns.create-principal-namespace (read-keyset 'keyset)))
+
+//       (let ((keyset-name:string (format "{}.{}" [(ns.create-principal-namespace (read-keyset 'keyset)) 'admin-keyset]) ))
+//     (define-keyset keyset-name (read-keyset 'keyset))
+//     (enforce-keyset keyset-name)
+//     keyset-name
+//   )

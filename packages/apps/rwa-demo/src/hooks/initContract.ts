@@ -20,8 +20,6 @@ export const useInitContract = () => {
     try {
       const tx = await initContract(data, account!);
 
-      console.log({ tx, cmd: JSON.parse(tx.cmd) });
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
