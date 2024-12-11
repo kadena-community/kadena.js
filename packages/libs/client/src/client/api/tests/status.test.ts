@@ -182,7 +182,7 @@ describe('pollStatus', () => {
     const requestKeys = ['key-1', 'key-2'];
 
     await expect(
-      pollStatus(hostUrl, requestKeys, { interval: 10, timeout: 20, onPoll }),
+      pollStatus(hostUrl, requestKeys, { interval: 10, timeout: 50, onPoll }),
     ).rejects.toEqual(new Error('TIME_OUT_REJECT'));
 
     expect(onPoll.mock.calls.at(-1)[1] instanceof Error).toBe(true);

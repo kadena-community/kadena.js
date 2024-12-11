@@ -27,7 +27,7 @@ import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isFileSystemAccessSupported } from '../../modules/backup/fileApi';
-import { linkClass } from '../transfer/style.css';
+import { linkClass } from '../home/style.css';
 import { ProfileNameColorForm } from './components/ProfileNameColorForm';
 import { downloadAsFile } from './utils/download-file';
 

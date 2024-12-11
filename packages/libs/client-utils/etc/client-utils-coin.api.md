@@ -56,22 +56,36 @@ export const details: (account: string, networkId: string, chainId: ChainId, hos
 export const discoverAccount: (account: string, networkId: string, host?: IClientConfig['host'], contract?: string) => IEmitterWrapper<[{
 event: "query-result";
 data: {
-result: any;
+result: IDiscoveredAccount;
 chainId: ChainId_2 | undefined;
 }[];
 }], [{
 event: "chain-result";
 data: {
-result: any;
+result: IDiscoveredAccount;
 chainId: ChainId_2;
 };
 }], Promise<{
-result: any;
+result: IDiscoveredAccount;
 chainId: ChainId_2 | undefined;
 }[]>>;
 
 // @alpha (undocumented)
 export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<any>;
+
+// @alpha (undocumented)
+export interface IDiscoveredAccount {
+    // (undocumented)
+    details: {
+        account: string;
+        balance: number | {
+            decimal: string;
+        };
+        guard: any;
+    };
+    // (undocumented)
+    principal: string;
+}
 
 // Warning: (ae-forgotten-export) The symbol "ISafeTransferInput" needs to be exported by the entry point index.d.ts
 //

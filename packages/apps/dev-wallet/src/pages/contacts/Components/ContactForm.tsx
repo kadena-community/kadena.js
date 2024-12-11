@@ -1,11 +1,12 @@
 import { AccountInput } from '@/Components/AccountInput/AccountInput';
+import { isKeysetGuard } from '@/modules/account/guards';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import {
   contactRepository,
   IContact,
 } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { labelBoldClass } from '@/pages/transaction/components/style.css';
-import { IReceiverAccount } from '@/pages/transfer-v2/utils';
 import { Button, Notification, Stack, Text, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -19,7 +20,7 @@ import { Controller, useForm } from 'react-hook-form';
 interface IContactFormData {
   name: string;
   email: string;
-  discoverdAccount?: IReceiverAccount;
+  discoverdAccount?: IRetrievedAccount;
 }
 
 export function ContactForm({
@@ -63,15 +64,14 @@ export function ContactForm({
       setError('Please select an account');
       return;
     }
+    if (!isKeysetGuard(discoverdAccount.guard)) {
+      setError('only Keyset is valid for contact');
+      return;
+    }
     const account: IContact['account'] = {
       address: discoverdAccount.address,
       contract: 'coin',
-      keyset: {
-        keys: discoverdAccount.keyset.guard.keys.map((item) =>
-          typeof item === 'string' ? item : item.pubKey,
-        ),
-        pred: discoverdAccount.keyset.guard.pred,
-      },
+      guard: discoverdAccount.guard,
       networkUUID: activeNetwork!.uuid,
     };
     const contact = {

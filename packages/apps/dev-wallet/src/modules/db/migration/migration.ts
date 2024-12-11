@@ -4,6 +4,7 @@ import { createTables } from './createDB';
 import { migrateFrom37to38 } from './migrateFrom37to38';
 import { migrateFrom38to39 } from './migrateFrom38to39';
 import { migrateFrom39to40 } from './migrateFrom39to40';
+import { migrateFrom40to41 } from './migrateFrom40to41';
 
 const { DB_NAME, DB_VERSION } = config.DB;
 
@@ -11,6 +12,7 @@ const migrationMap = {
   37: migrateFrom37to38,
   38: migrateFrom38to39,
   39: migrateFrom39to40,
+  40: migrateFrom40to41,
 };
 
 export async function migration(result: {

@@ -50,4 +50,15 @@ describe('addSigner', () => {
       signers: [{ pubKey: 'key', address: 'address', scheme: 'ED25519' }],
     });
   });
+
+  it('sets the scheme to WebAuthn if public key starts with WEBAUTHN', () => {
+    expect(addSigner('WEBAUTHN-a-public-key')()).toEqual({
+      signers: [
+        {
+          pubKey: 'WEBAUTHN-a-public-key',
+          scheme: 'WebAuthn',
+        },
+      ],
+    });
+  });
 });

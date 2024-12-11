@@ -44,9 +44,11 @@ export const addSigner: IAddSigner = ((
   return (cmd: IPartialPactCommand) =>
     patchCommand(cmd, {
       signers: signers.map((item) => {
+        const isWhenAuthnKey =
+          typeof item === 'string' && item.startsWith('WEBAUTHN');
         const {
           pubKey,
-          scheme = 'ED25519',
+          scheme = isWhenAuthnKey ? 'WebAuthn' : 'ED25519',
           address = undefined,
         } = typeof item === 'object' ? item : { pubKey: item };
         return {

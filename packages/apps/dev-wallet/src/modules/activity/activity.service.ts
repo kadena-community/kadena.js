@@ -1,18 +1,22 @@
 import { PactNumber } from '@kadena/pactjs';
+import { IGuard } from '../account/account.repository';
+import { hasSameGuard } from '../account/account.service';
 import { UUID } from '../types';
 import { activityRepository } from './activity.repository';
 
 export async function getTransferActivities(
-  keysetId?: string,
+  profileId?: string,
+  guard?: IGuard,
   networkUUID?: UUID,
 ) {
-  console.log('getTransferActivities', keysetId, networkUUID);
-  if (!keysetId || !networkUUID) return [];
+  if (!guard || !networkUUID || !profileId) return [];
   return activityRepository
-    .getKeysetActivities(keysetId, networkUUID)
+    .getAllActivities(profileId, networkUUID)
     .then((activities) =>
       activities
-        .filter((a) => a.type === 'Transfer')
+        .filter(
+          (a) => a.type === 'Transfer' && hasSameGuard(a.account.guard, guard),
+        )
         .map((a) => ({
           ...a,
           data: {

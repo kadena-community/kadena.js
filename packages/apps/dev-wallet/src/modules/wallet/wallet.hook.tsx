@@ -204,6 +204,7 @@ export const useWallet = () => {
       alias: alias || '',
       profileId: context.profile.uuid,
       address: keyset.principal,
+      guard: { ...keyset.guard, principal: keyset.principal },
       keysetId: keyset.uuid,
       networkUUID: context.activeNetwork.uuid,
       contract,
@@ -255,6 +256,10 @@ export const useWallet = () => {
       alias: alias || '',
       profileId: profile.uuid,
       address: keyset.principal,
+      guard: {
+        ...guard,
+        principal: keyset.principal,
+      },
       keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
       contract,
@@ -284,8 +289,8 @@ export const useWallet = () => {
       alias ||
       `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
     const usedKeys = filteredAccounts.map((account) => {
-      const keys = account.keyset?.guard.keys;
-      if (keys?.length === 1 && account.keyset?.guard.pred === 'keys-all') {
+      const keys = account.guard.keys;
+      if (keys?.length === 1 && account.guard.pred === 'keys-all') {
         return keys[0];
       }
     });
@@ -312,7 +317,6 @@ export const useWallet = () => {
       (contact) => contact.uuid?.toLowerCase() === id?.toLowerCase(),
     );
   };
-
 
   const createSpecificAccount = async ({
     contract,

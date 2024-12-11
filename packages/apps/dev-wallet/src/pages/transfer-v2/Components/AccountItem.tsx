@@ -1,16 +1,15 @@
-import { IAccount } from '@/modules/account/account.repository';
+import { IAccount, IGuard } from '@/modules/account/account.repository';
 import { formatList, shorten } from '@/utils/helpers';
-import { BuiltInPredicate, ISigner } from '@kadena/client';
 import { MonoLink } from '@kadena/kode-icons/system';
 import { Stack, Text } from '@kadena/kode-ui';
 import { FC } from 'react';
-import { Keyset } from './keyset';
+import { Guard } from '../../../Components/Guard/Guard';
 import { balanceClass } from './style.css';
 export const AccountItem: FC<{
   account: Pick<IAccount, 'alias' | 'address' | 'overallBalance'>;
   chains?: IAccount['chains'];
-  keyset?: { keys: ISigner[]; pred: BuiltInPredicate };
-}> = ({ keyset, account, chains }) => (
+  guard?: IGuard;
+}> = ({ guard, account, chains }) => (
   <Stack
     flex={1}
     justifyContent={'space-between'}
@@ -32,7 +31,7 @@ export const AccountItem: FC<{
       )}
     </Stack>
     <Stack gap={'sm'} alignItems={'center'}>
-      {keyset && <Keyset guard={keyset} />}
+      {guard && <Guard guard={guard} />}
       <Text size="smallest" color="inherit" className={balanceClass}>
         Balance: {account.overallBalance}
       </Text>

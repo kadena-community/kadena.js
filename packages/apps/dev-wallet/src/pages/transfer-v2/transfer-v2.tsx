@@ -7,6 +7,7 @@ import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
 import { useCallback, useEffect, useState } from 'react';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import {
   ITransaction,
@@ -27,12 +28,7 @@ import {
 import { createRedistributionTxs, createTransactions } from './utils';
 
 export function TransferV2() {
-  const {
-    accounts: allAccounts,
-    getPublicKeyData,
-    activeNetwork,
-    profile,
-  } = useWallet();
+  const { getPublicKeyData, activeNetwork, profile } = useWallet();
 
   const navigate = usePatchedNavigate();
   const [searchParams] = useSearchParams();
@@ -158,8 +154,11 @@ export function TransferV2() {
     formData: Required<Transfer>,
     redistribution: Redistribution[],
   ) {
+    if (!profile?.uuid) {
+      throw new Error('Profile not found');
+    }
     if (redistribution.length > 0) {
-      if (!formData.senderAccount || !formData.senderAccount.keyset) return;
+      if (!formData.senderAccount) return;
       return createRedistributionTxs({
         account: formData.senderAccount,
         redistribution,
@@ -168,6 +167,7 @@ export function TransferV2() {
         network: activeNetwork!,
         mapKeys,
         creationTime: formData.creationTime,
+        profileId: profile.uuid,
       });
     }
   }
@@ -291,10 +291,8 @@ export function TransferV2() {
                 accountId={accountId}
                 activityId={urlActivityId}
                 onSubmit={async (data, redistribution) => {
-                  const senderAccount = allAccounts.find(
-                    (acc) => acc.uuid === data.accountId,
-                  );
-                  if (!senderAccount?.keyset?.uuid) return;
+                  const senderAccount = data.senderAccount;
+                  if (!isKeysetGuard(senderAccount.guard)) return;
                   const formData = {
                     ...data,
                     senderAccount,
@@ -335,7 +333,7 @@ export function TransferV2() {
                         },
                       },
                     },
-                    keysetId: senderAccount.keyset?.uuid,
+                    account: senderAccount,
                     networkUUID: activeNetwork!.uuid,
                     profileId: profile?.uuid ?? '',
                     status: 'Initiated',

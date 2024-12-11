@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { dbService } from './db.service';
+import { ExtendedTableName } from './migration/createDB';
 
-export function useSubscribe<T>(table: string, uuid: string | undefined) {
+export function useSubscribe<T>(
+  table: ExtendedTableName,
+  uuid: string | undefined,
+) {
   const [state, setState] = useState<T>();
 
   useEffect(() => {
