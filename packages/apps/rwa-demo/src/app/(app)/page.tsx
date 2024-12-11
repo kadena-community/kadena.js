@@ -42,8 +42,10 @@ const Home = () => {
               <Stack width="100%" className={contractDetailWrapperClass}>
                 <ContractDetails label="Name" value={asset?.contractName} />
                 <ContractDetails label="Namespace" value={asset?.namespace} />
-
-                <SupplyCountContractDetails />
+                <ContractDetails
+                  label="Total token supply"
+                  value={<SupplyCountContractDetails />}
+                />
 
                 {isInvestor && (
                   <ContractDetails

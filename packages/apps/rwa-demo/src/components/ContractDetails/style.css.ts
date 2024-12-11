@@ -6,7 +6,9 @@ export const contractDetailWrapperClass = style([
     width: '100%',
     flexWrap: 'wrap',
   }),
-  {},
+  {
+    rowGap: token('spacing.lg'),
+  },
 ]);
 export const contractDetailsClass = style([
   atoms({}),
@@ -22,6 +24,9 @@ export const contractDetailsHeaderClass = style([
 ]);
 export const contractDetailsBodyClass = style([
   atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
     color: 'text.base.default',
   }),
   {},
