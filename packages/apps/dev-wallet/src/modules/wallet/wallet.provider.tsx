@@ -75,7 +75,6 @@ function usePassword(profile: IProfile | undefined) {
   profileRef.current = profile;
   const prompt = usePrompt();
   const getPassword = useCallback(async () => {
-    debugger;
     const phrase = await securityService.getSecurityPhrase(
       Session.get('sessionId') as string,
     );
