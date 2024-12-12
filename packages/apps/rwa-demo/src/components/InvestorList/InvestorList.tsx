@@ -1,6 +1,7 @@
 import { useAsset } from '@/hooks/asset';
 import { useDeleteInvestor } from '@/hooks/deleteInvestor';
 import { useGetInvestors } from '@/hooks/getInvestors';
+import { loadingData } from '@/utils/loadingData';
 import { MonoAdd, MonoDelete, MonoFindInPage } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import {
@@ -18,7 +19,7 @@ import { FormatFreeze } from '../TableFormatters/FormatFreeze';
 import { FormatInvestorBalance } from '../TableFormatters/FormatInvestorBalance';
 
 export const InvestorList: FC = () => {
-  const { data } = useGetInvestors();
+  const { data, isLoading } = useGetInvestors();
   const router = useRouter();
   const { submit } = useDeleteInvestor();
   const { paused } = useAsset();
@@ -52,8 +53,10 @@ export const InvestorList: FC = () => {
             }
           />
 
+          {isLoading.toString()}
           <SectionCardBody>
             <CompactTable
+              isLoading={isLoading}
               variant="open"
               fields={[
                 {
@@ -110,7 +113,7 @@ export const InvestorList: FC = () => {
                   }),
                 },
               ]}
-              data={data}
+              data={isLoading ? loadingData : data}
             />
           </SectionCardBody>
         </SectionCardContentBlock>

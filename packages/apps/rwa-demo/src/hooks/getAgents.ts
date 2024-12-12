@@ -165,5 +165,5 @@ export const useGetAgents = () => {
     return off;
   }, []);
 
-  return { data: innerData, error };
+  return { data: innerData, error, isLoading: addedLoading || removedLoading };
 };

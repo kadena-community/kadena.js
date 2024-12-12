@@ -12,21 +12,18 @@ export const editAgent = async (
 ) => {
   return Pact.builder
     .execution(
-      `(RWA.${getAsset()}.update-agent-roles (read-string 'agent) (read-msg 'roles))`,
+      `(${getAsset()}.update-agent-roles (read-string 'agent) (read-msg 'roles))`,
     )
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`RWA.${getAsset()}.ONLY-AGENT`, 'agent-admin'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.accountName)
-    .addData(
-      'roles',
-      data.roles.map((val) => AGENTROLES[val]),
-    )
+    .addData('roles', data.roles)
 
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
