@@ -23,7 +23,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { isInvestor, isComplianceOwner, account } = useAccount();
+  const { isInvestor, isComplianceOwner, account, isAgent } = useAccount();
   const { frozen } = useFreeze({ investorAccount: account?.address });
   const { paused, asset } = useAsset();
 
@@ -101,7 +101,7 @@ const Home = () => {
               description={<></>}
               actions={
                 <>
-                  {!isComplianceOwner && (
+                  {(isComplianceOwner || isAgent) && (
                     <SetComplianceForm
                       trigger={
                         <Button
@@ -128,6 +128,10 @@ const Home = () => {
                   <ComplianceRule
                     value={asset.maxBalance}
                     label="Max balance"
+                  />
+                  <ComplianceRule
+                    value={`${asset.maxInvestors} (${asset.investorCount})`}
+                    label="Max Investors"
                   />
                 </>
               )}

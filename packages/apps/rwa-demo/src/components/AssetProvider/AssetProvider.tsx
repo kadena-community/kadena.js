@@ -5,7 +5,7 @@ import {
 } from '@/constants';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import type { IGetAssetMaxSupplyBalanceResult } from '@/services/getAssetMaxSupplyBalance';
+import type { IComplianceProps } from '@/services/getAssetMaxSupplyBalance';
 import { getAssetMaxSupplyBalance } from '@/services/getAssetMaxSupplyBalance';
 import { supply as supplyService } from '@/services/supply';
 import { getFullAsset } from '@/utils/getAsset';
@@ -15,7 +15,7 @@ import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
-export interface IAsset extends IGetAssetMaxSupplyBalanceResult {
+export interface IAsset extends IComplianceProps {
   uuid: string;
   contractName: string;
   namespace: string;
@@ -115,6 +115,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       supply: -1,
       maxSupply: -1,
       maxBalance: -1,
+      maxInvestors: -1,
+      investorCount: 0,
       contractName,
       namespace,
     };

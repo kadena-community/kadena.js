@@ -7,15 +7,16 @@ import { PactNumber } from '@kadena/pactjs';
 import { AGENTROLES } from './addAgent';
 
 export interface ISetComplianceProps {
-  maxBalance: string;
   maxSupply: string;
+  maxBalance: string;
+  maxInvestors: string;
+  investorCount: string;
 }
 
 export const setCompliance = async (
   data: ISetComplianceProps,
   account: IWalletAccount,
 ) => {
-  console.log({ data, account });
   return Pact.builder
     .execution(
       `
@@ -23,7 +24,7 @@ export const setCompliance = async (
     )
     .addData('compliance-parameters', {
       'supply-limit': new PactNumber(data.maxSupply).toPactDecimal(),
-      'max-investors': new PactNumber('10').toPactInteger(),
+      'max-investors': new PactNumber(data.maxInvestors).toPactInteger(),
       'max-balance-per-investor': new PactNumber(
         data.maxBalance,
       ).toPactDecimal(),
