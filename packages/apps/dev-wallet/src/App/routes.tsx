@@ -23,6 +23,7 @@ import { Networks } from '@/pages/networks/networks';
 import { Ready } from '@/pages/ready/ready';
 import { AutoBackup } from '@/pages/settings/auto-backup/auto-backup';
 import { ChangePassword } from '@/pages/settings/change-password/change-password';
+import { ExportData } from '@/pages/settings/export-data/export-data';
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
@@ -126,6 +127,7 @@ export const Routes: FC = () => {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/auto-backup" element={<AutoBackup />} />
+            <Route path="/settings/export-data" element={<ExportData />} />
             <Route
               path="/account-discovery/:keySourceId"
               element={<AccountDiscovery />}

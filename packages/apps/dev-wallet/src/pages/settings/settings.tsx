@@ -7,6 +7,7 @@ import { deleteProfile } from '@/modules/wallet/wallet.service';
 import { getErrorMessage } from '@/utils/getErrorMessage';
 import {
   MonoDangerous,
+  MonoDataset,
   MonoDownload,
   MonoPassword,
   MonoPerson,
@@ -74,6 +75,14 @@ export function Settings() {
         startVisual={<MonoPassword />}
       >
         Change Password
+      </UiLink>
+      <UiLink
+        href="/settings/export-data"
+        component={Link}
+        variant="outlined"
+        startVisual={<MonoDataset />}
+      >
+        Export Data
       </UiLink>
       <Button
         onClick={downloadBackup}

@@ -141,3 +141,9 @@ export async function kadenaDecrypt(
 
   throw new Error('Decryption failed');
 }
+
+export const unit8arrayToString = (unit8array: Uint8Array) =>
+  new TextDecoder().decode(unit8array);
+
+export const stringToUint8Array = (str: string) =>
+  new TextEncoder().encode(str);

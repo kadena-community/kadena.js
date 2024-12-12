@@ -1,6 +1,7 @@
 export interface ISetSecurityPhrase {
   action: 'setSecurityPhrase';
   payload: {
+    sessionEntropy: string;
     keepPolicy: 'session' | 'short-time' | 'never';
     phrase: string;
     ttl?: number;
@@ -9,10 +10,14 @@ export interface ISetSecurityPhrase {
 
 export interface IGetSecurityPhrase {
   action: 'getSecurityPhrase';
+  payload: {
+    sessionEntropy: string;
+  };
 }
 
 export interface IClearSecurityPhrase {
   action: 'clearSecurityPhrase';
+  payload?: undefined;
 }
 
 export interface ISetPhraseResponse {

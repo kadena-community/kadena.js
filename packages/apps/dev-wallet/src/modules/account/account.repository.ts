@@ -119,13 +119,18 @@ const createAccountRepository = ({
       );
       return accounts;
     },
-    async getAccountsByProfileId(profileId: string, networkUUID: UUID) {
-      const accounts: Array<IAccount> = await getAll(
-        'account',
-        IDBKeyRange.only([profileId, networkUUID]),
-        'profile-network',
-      );
-      return accounts;
+    async getAccountsByProfileId(
+      profileId: string,
+      networkUUID?: UUID,
+    ): Promise<IAccount[]> {
+      if (networkUUID) {
+        return getAll(
+          'account',
+          IDBKeyRange.only([profileId, networkUUID]),
+          'profile-network',
+        );
+      }
+      return getAll('account', profileId, 'profileId');
     },
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);
@@ -167,13 +172,18 @@ const createAccountRepository = ({
       await actions.updateWatchedAccount(updatedAccount);
       return updatedAccount;
     },
-    async getWatchedAccountsByProfileId(profileId: string, networkUUID: UUID) {
-      const accounts: Array<IWatchedAccount> = await getAll(
-        'watched-account',
-        IDBKeyRange.only([profileId, networkUUID]),
-        'profile-network',
-      );
-      return accounts;
+    async getWatchedAccountsByProfileId(
+      profileId: string,
+      networkUUID?: UUID,
+    ): Promise<IWatchedAccount[]> {
+      if (networkUUID) {
+        return getAll(
+          'watched-account',
+          IDBKeyRange.only([profileId, networkUUID]),
+          'profile-network',
+        );
+      }
+      return getAll('watched-account', profileId, 'profileId');
     },
   };
   return actions;

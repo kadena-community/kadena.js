@@ -6,26 +6,19 @@ import {
 import { sendMessageToServiceWorker } from '@/utils/service-worker-com';
 import { fallbackSecurityService } from './fallback.service';
 
-async function setSecurityPhrase({
-  phrase,
-  keepPolicy,
-  ttl,
-}: {
-  phrase: string;
-  keepPolicy: ISetSecurityPhrase['payload']['keepPolicy'];
-  ttl?: number;
-}) {
+async function setSecurityPhrase(payload: ISetSecurityPhrase['payload']) {
   const { result } = (await sendMessageToServiceWorker({
     action: 'setSecurityPhrase',
-    payload: { phrase, keepPolicy, ttl },
+    payload,
   })) as ISetPhraseResponse;
 
   return { result };
 }
 
-async function getSecurityPhrase() {
+async function getSecurityPhrase(sessionEntropy: string) {
   const { phrase } = (await sendMessageToServiceWorker({
     action: 'getSecurityPhrase',
+    payload: { sessionEntropy },
   })) as IGetPhraseResponse;
   return phrase;
 }
