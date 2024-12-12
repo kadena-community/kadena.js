@@ -27,6 +27,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     defaultValues: {
       maxBalance: `${asset?.maxBalance ?? 0}`,
       maxSupply: `${asset?.maxSupply ?? 0}`,
+      maxInvestors: `${asset?.maxInvestors ?? 0}`,
     },
   });
 
@@ -52,8 +53,9 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     reset({
       maxSupply: `${asset?.maxSupply}`,
       maxBalance: `${asset?.maxBalance}`,
+      maxInvestors: `${asset?.maxInvestors}`,
     });
-  }, [asset?.maxBalance, asset?.maxSupply]);
+  }, [asset?.maxBalance, asset?.maxSupply, asset?.maxInvestors]);
 
   return (
     <>
@@ -77,6 +79,18 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
                 rules={{ required: true }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Supply" {...field} />
+                )}
+              />
+              <Controller
+                name="maxInvestors"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField
+                    type="number"
+                    label="Max Investors Count"
+                    {...field}
+                  />
                 )}
               />
             </RightAsideContent>

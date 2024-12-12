@@ -10,7 +10,7 @@ export const isOwner = async (data: IIsOwnerProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.${getAsset()}.is-owner (read-string 'owner))`)
+    .execution(`(describe-keyset (${getAsset()}.get-owner-guard))`)
     .setMeta({
       senderAccount: data.owner,
       chainId: getNetwork().chainId,
