@@ -12,10 +12,12 @@ export const FormatAgentRoles = () => {
     const allRoles: string[] = useMemo(() => {
       return Object.entries(AGENTROLES).map(([key, value]) => value as string);
     }, [AGENTROLES]);
-    const { data: roles } = useGetAgentRoles({ agent: value as string });
+    const { getAll: getAllAgentRoles } = useGetAgentRoles({
+      agent: value as string,
+    });
 
     const renderValue = (value: string) => {
-      return roles.indexOf(value) >= 0 ? <MonoCheck /> : null;
+      return getAllAgentRoles().indexOf(value) >= 0 ? <MonoCheck /> : null;
     };
 
     return (

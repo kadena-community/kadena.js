@@ -1,4 +1,6 @@
 'use client';
+import type { IAgentHookProps } from '@/hooks/getAgentRoles';
+import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { getBalance as getBalanceFnc } from '@/services/getBalance';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
@@ -33,6 +35,7 @@ export interface IAccountContext {
   isFrozen: boolean;
   selectAccount: (account: IWalletAccount) => void;
   getBalance: () => Promise<number>;
+  accountRoles: IAgentHookProps;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -49,6 +52,16 @@ export const AccountContext = createContext<IAccountContext>({
   isFrozen: false,
   selectAccount: () => {},
   getBalance: async () => 0,
+  accountRoles: {
+    getAll: () => [],
+    isAgentAdmin: () => false,
+    isSupplyModifier: () => false,
+    isFreezer: () => false,
+    isTransferManager: () => false,
+    isRecoveryManager: () => false,
+    isComplianceManager: () => false,
+    isWhitelistManager: () => false,
+  },
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -60,6 +73,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAgentState, setIsAgentState] = useState(false);
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
+  const accountRoles = useGetAgentRoles({ agent: account?.address });
 
   const router = useRouter();
 
@@ -208,6 +222,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         isFrozen: isFrozenState,
         selectAccount,
         getBalance,
+        accountRoles,
       }}
     >
       {children}

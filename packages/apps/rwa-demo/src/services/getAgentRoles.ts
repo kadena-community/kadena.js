@@ -1,4 +1,3 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
@@ -9,14 +8,13 @@ export interface IGetAgentRolesProps {
 
 export const getAgentRoles = async (
   data: IGetAgentRolesProps,
-  account: IWalletAccount,
 ): Promise<string[]> => {
   const client = getClient();
 
+  console.log({ data });
   const transaction = Pact.builder
     .execution(`(${getAsset()}.get-agent-roles (read-string 'agent))`)
     .setMeta({
-      senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addData('agent', data.agent)
@@ -27,6 +25,7 @@ export const getAgentRoles = async (
     preflight: false,
     signatureVerification: false,
   });
+  console.log({ result });
 
   return result.status === 'success'
     ? (result.data as string[])

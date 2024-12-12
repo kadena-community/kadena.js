@@ -23,10 +23,11 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { isInvestor, isComplianceOwner, account, isAgent } = useAccount();
+  const { isInvestor, isComplianceOwner, account, accountRoles } = useAccount();
   const { frozen } = useFreeze({ investorAccount: account?.address });
   const { paused, asset } = useAsset();
 
+  console.log({ accountRoles: accountRoles.getAll() });
   return (
     <>
       <SideBarBreadcrumbs />
@@ -101,7 +102,7 @@ const Home = () => {
               description={<></>}
               actions={
                 <>
-                  {(isComplianceOwner || isAgent) && (
+                  {accountRoles.isComplianceManager() && (
                     <SetComplianceForm
                       trigger={
                         <Button

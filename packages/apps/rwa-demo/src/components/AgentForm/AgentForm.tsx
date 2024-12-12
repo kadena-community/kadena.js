@@ -22,7 +22,7 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { data: userAgentRolesData } = useGetAgentRoles({
+  const { getAll: getAllAgentRoles } = useGetAgentRoles({
     agent: agent?.accountName,
   });
   const { submit } = useEditAgent();
@@ -40,7 +40,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
       accountName: agent?.accountName ?? '',
       alias: agent?.alias ?? '',
       alreadyExists: !!agent?.accountName,
-      roles: userAgentRolesData,
+      roles: getAllAgentRoles(),
     },
   });
 
@@ -49,9 +49,9 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
       accountName: agent?.accountName,
       alias: agent?.alias,
       alreadyExists: !!agent?.accountName,
-      roles: userAgentRolesData,
+      roles: getAllAgentRoles(),
     });
-  }, [agent?.accountName, userAgentRolesData]);
+  }, [agent?.accountName, getAllAgentRoles()]);
 
   const handleOpen = () => {
     setIsRightAsideExpanded(true);
