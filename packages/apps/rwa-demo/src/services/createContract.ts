@@ -35,6 +35,14 @@ export const createContract = async (
       keys: [getPubkeyFromAccount(account)],
       pred: 'keys-all',
     })
+    .addData('owner_guard', {
+      keys: [getPubkeyFromAccount(account)],
+      pred: 'keys-all',
+    })
+    .addData('compliance-owner', {
+      keys: [getPubkeyFromAccount(account)],
+      pred: 'keys-all',
+    })
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
