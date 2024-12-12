@@ -1,4 +1,5 @@
 import { getClient, getNetwork } from '@/utils/client';
+import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IGetAssetMaxSupplyBalanceResult {
@@ -10,7 +11,7 @@ export const getMaxBalance = async (): Promise<number> => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.max-balance-compliance.get-max-balance)`)
+    .execution(`(${getAsset()}.max-balance-per-investor)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })
@@ -31,7 +32,7 @@ export const getMaxSupply = async (): Promise<number> => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(RWA.supply-limit-compliance.get-supply-limit)`)
+    .execution(`(${getAsset()}.supply-limit)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })

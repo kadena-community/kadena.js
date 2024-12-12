@@ -3,18 +3,18 @@ import type { IAddContractProps } from '../createContract';
 export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (namespace "${namespace}")
 
-
-
 (module ${contractName} GOV
-  "${contractName} descriptions"
+  "${contractName} contract descriptions"
 
-  (defcap GOV () (enforce-keyset "${namespace}.admin-keyset"))
+  (defconst GOV-KEYSET:string "${namespace}.admin-keyset")
+  (defcap GOV () (enforce-keyset GOV-KEYSET))
 
   (implements fungible-v2)
   (implements RWA.real-world-asset-v1)
   (implements RWA.agent-role-v1)
   (implements RWA.identity-registry-v1)
   (implements RWA.identity-registry-storage-v1)
+  (implements RWA.compliance-compatible-v1)
 
   (use fungible-v2 [account-details])
   (use RWA.burn-wallet)
@@ -52,8 +52,22 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     active:bool
   )
 
+  (defschema compliance-info-schema
+    max-balance-per-investor:decimal
+    supply-limit:decimal
+    max-investors:integer
+    investor-count:integer
+  )
+
+  (defschema compliance-input
+    max-balance-per-investor:decimal
+    supply-limit:decimal
+    max-investors:integer
+  )
+
   (deftable token:{token-info})
   (deftable users:{user-info})
+  (deftable compliance-parameters:{compliance-info-schema})
 
   ;; agent management
   (deftable agents:{agent-schema})
@@ -63,7 +77,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   ;; defconsts
 
-  (defconst MINIMUM-PRECISION 1
+  (defconst MINIMUM-PRECISION 0
     "Minimum allowed precision for coin transactions")
 
   (defconst TOKEN-ID "${namespace}.${contractName}")
@@ -104,6 +118,76 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     ISSUERS-REGISTRY-MANAGER
     TOKEN-INFO-MANAGER
   ])
+
+  ;; compliance-compatible functions
+
+  (defun set-max-balance-per-investor (max-balance-per-investor:decimal)
+    (only-agent AGENT-ADMIN)
+    (update compliance-parameters "" {
+      "max-balance-per-investor": max-balance-per-investor
+      }
+    )
+  )
+
+  (defun set-supply-limit (supply-limit:decimal)
+    (only-agent AGENT-ADMIN)
+    (update compliance-parameters "" {
+      "supply-limit": supply-limit
+      }
+    )
+  )
+
+  (defun set-max-investors (max-investors:decimal)
+    (only-agent AGENT-ADMIN)
+    (update compliance-parameters "" {
+      "max-investors": max-investors
+      }
+    )
+  )
+
+  (defun set-compliance-parameters ()
+    (only-agent AGENT-ADMIN)
+
+    (let ((compliance-params:object{compliance-input} (read-msg 'compliance-parameters )))
+      (update compliance-parameters ""
+        compliance-params
+      )
+    )
+  )
+
+  (defun max-balance-per-investor:decimal ()
+    (with-read compliance-parameters "" {
+      "max-balance-per-investor":= max-balance-per-investor
+    } max-balance-per-investor)
+  )
+
+  (defun supply-limit:decimal ()
+    (with-read compliance-parameters "" {
+      "supply-limit":= supply-limit
+    } supply-limit)
+  )
+
+  (defun max-investors:integer ()
+    (with-read compliance-parameters "" {
+      "max-investors":= max-investors
+    } max-investors)
+  )
+
+  (defun investor-count:integer ()
+    (with-read compliance-parameters "" {
+        "investor-count":= ct
+      } ct)
+  )
+
+  (defun add-investor-count:integer ()
+    (with-read compliance-parameters "" {
+      "investor-count":= ct
+    }
+      (update compliance-parameters "" {
+        "investor-count": (+ 1 ct)
+      })
+    )
+  )
 
   ;; @events
 
@@ -318,7 +402,16 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
         "supply": 0.0,
         "owner-guard": owner-guard
       })
+      (insert compliance-parameters ""
+        {
+          "max-balance-per-investor": 0.0
+         ,"supply-limit": 0.0
+         ,"max-investors": 0
+         ,"investor-count": 0
+        }
+      )
     )
+
     (emit-event (UPDATED-TOKEN-INFORMATION name symbol 0 version kadenaID ))
   )
 
@@ -654,6 +747,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       amount:decimal
     )
     @doc "Transfer AMOUNT of token from sender to receiver"
+    (enforce-unit amount)
     (debit sender amount)
     (credit receiver amount)
     (with-read token "" {
@@ -767,10 +861,15 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       amount:decimal
     )
     (require-capability (CREDIT account))
-    (with-read users account
+    (with-default-read users account
+      {"balance": -1.0}
       { "balance" := balance}
-        (update users account
-          { "balance" : (+ balance amount)})
+      (update users account
+        { "balance" : (+ balance amount)})
+        (if (= balance -1.0)
+          (add-investor-count)
+          "Credit successful"
+        )
     )
   )
 
@@ -961,14 +1060,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun is-owner (account:string)
-    @doc "Check if an account is an owner"
-    (with-read token "" {
-        "owner-guard":= owner-guard
-      } (= account (create-principal owner-guard))
-    )
-  )
-
   (defun only-agent:bool (role:string)
     @doc "Verifies that the agent is signing for the capability"
     (with-capability (ONLY-AGENT role)
@@ -983,16 +1074,28 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
+  (defun get-owner-guard:guard ()
+    (with-read token "" {
+      "owner-guard":= owner-guard
+      } owner-guard)
+  )
+
   (defun update-agent-roles:bool (agent:string roles:[string])
     @doc "Update agent roles"
-    (only-agent AGENT-ADMIN)
+    (install-capability (ONLY-OWNER ""))
+    (install-capability (ONLY-AGENT AGENT-ADMIN))
+
+    (if (try false (only-owner ""))
+      true
+      (only-agent AGENT-ADMIN))
     (verify-agent-roles roles)
     (update agents agent
       { 'roles: roles }
     )
+    true
   )
 
-  (defun get-agent-roles:bool (agent:string)
+  (defun get-agent-roles:[string] (agent:string)
     @doc "Return agent roles"
     (with-read agents agent
       { 'roles:= roles }
@@ -1001,11 +1104,13 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun verify-agent-roles (roles:[string])
+    (if (= (length roles) 0)
+      true
     (map (lambda (idx:integer)
       (contains (at idx roles) AGENT-ROLES)
       )
     (enumerate 0 (- (length roles) 1)))
-  )
+  ))
 
   (defun register-identity:bool (user-address:string identity:string country:integer)
     @doc "Register an identity contract corresponding to a user address.                               \
@@ -1130,6 +1235,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 ;; token
 (create-table token)
 (create-table users)
+(create-table compliance-parameters)
 
 ;; agents
 (create-table agents)
@@ -1150,11 +1256,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 ;; changing the way agents were used using data field
 ;; set roles in agent
 ;; wanted to review frontend and see if certain features were possible with graphql (still exploring but want to sit with Travis?)
-(RWA.token-mapper.add-token-ref ${namespace}.${contractName}.TOKEN-ID ${namespace}.${contractName})
-
+(RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
 
 (${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard "${namespace}.admin-keyset"))
-;; TODO compliance not working
-;; (RWA.max-balance-compliance.init (read-keyset 'compliance-owner))
-;; (RWA.supply-limit-compliance.init (read-keyset 'compliance-owner))
 `;
