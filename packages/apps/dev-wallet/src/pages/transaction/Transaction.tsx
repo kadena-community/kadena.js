@@ -24,7 +24,6 @@ export const TransactionPage = () => {
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href={`/transactions`}>
           Transactions
         </SideBarBreadcrumbsItem>

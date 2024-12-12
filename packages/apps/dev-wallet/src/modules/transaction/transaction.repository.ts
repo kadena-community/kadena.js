@@ -64,7 +64,7 @@ export type ITransaction = {
 export interface TransactionRepository {
   getTransactionList: (
     profileId: string,
-    networkUUID: UUID,
+    networkUUID?: UUID,
     status?: TransactionStatus,
   ) => Promise<ITransaction[]>;
   getTransaction: (uuid: string) => Promise<ITransaction>;
@@ -90,7 +90,7 @@ const createTransactionRepository = ({
   return {
     getTransactionList: async (
       profileId: string,
-      networkUUID: UUID,
+      networkUUID?: UUID,
       status?: TransactionStatus,
     ): Promise<ITransaction[]> => {
       if (status) {
@@ -100,11 +100,14 @@ const createTransactionRepository = ({
           'network-status',
         );
       }
-      return getAll(
-        'transaction',
-        IDBKeyRange.only([profileId, networkUUID]),
-        'network',
-      );
+      if (networkUUID) {
+        return getAll(
+          'transaction',
+          IDBKeyRange.only([profileId, networkUUID]),
+          'network',
+        );
+      }
+      return getAll('transaction', profileId, 'profileId');
     },
     getTransaction: async (uuid: string): Promise<ITransaction> => {
       return getOne('transaction', uuid);
