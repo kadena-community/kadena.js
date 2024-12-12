@@ -1,4 +1,4 @@
-export const ACCOUNT_COOKIE_NAME = 'spirekey';
+export const ACCOUNT_COOKIE_NAME = 'rwa';
 export const LOCALSTORAGE_ASSETS_KEY = 'assets';
 export const LOCALSTORAGE_ASSETS_SELECTED_KEY = 'selected_asset';
 

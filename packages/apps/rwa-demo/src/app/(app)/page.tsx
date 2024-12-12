@@ -23,7 +23,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { isInvestor, isComplianceOwner, account } = useAccount();
+  const { isInvestor, isComplianceOwner, isOwner, account } = useAccount();
   const { frozen } = useFreeze({ investorAccount: account?.address });
   const { paused, asset } = useAsset();
 
