@@ -1154,6 +1154,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
 
 (${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard "${namespace}.admin-keyset"))
-(RWA.max-balance-compliance.init (read-keyset 'compliance-owner))
-(RWA.supply-limit-compliance.init (read-keyset 'compliance-owner))
+;; TODO compliance not working
+;; (RWA.max-balance-compliance.init (read-keyset 'compliance-owner))
+;; (RWA.supply-limit-compliance.init (read-keyset 'compliance-owner))
 `;

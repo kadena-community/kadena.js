@@ -42,10 +42,8 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   } = useForm<IAddContractProps>({
     values: {
       contractName: '',
-      owner:
-        'k:9f6a3e6ed941c9abe2c9d12afea3fe55644282c2392fe7e9571e3822d21db229',
-      complianceOwner:
-        'k:9f6a3e6ed941c9abe2c9d12afea3fe55644282c2392fe7e9571e3822d21db229',
+      owner: '',
+      complianceOwner: '',
       namespace: namespace ?? '',
     },
   });
@@ -55,22 +53,22 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
     reset({
       contractName: '',
-      owner:
-        'k:9f6a3e6ed941c9abe2c9d12afea3fe55644282c2392fe7e9571e3822d21db229',
-      complianceOwner:
-        'k:9f6a3e6ed941c9abe2c9d12afea3fe55644282c2392fe7e9571e3822d21db229',
+      owner: '',
+      complianceOwner: '',
       namespace,
     });
   }, [namespace]);
 
   const handleSave = async (data: IAddContractProps) => {
     setError('');
+
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
       return;
     }
 
     const tx = await submitContract(data);
+    console.log(555, tx);
     if (tx?.result?.status === 'success') {
       setStep(STEPS.DONE);
       const asset = addAsset({
@@ -79,7 +77,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       });
       if (!asset) return;
       setAsset(asset);
-      router.push('/assets');
+      window.location.href = '/';
     }
   };
 
@@ -127,7 +125,9 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
             name="namespace"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <TextField isDisabled {...field} />}
+            render={({ field }) => (
+              <TextField label="Namespace" isDisabled {...field} />
+            )}
           />
 
           <Controller
