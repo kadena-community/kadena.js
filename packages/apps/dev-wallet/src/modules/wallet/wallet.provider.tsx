@@ -75,7 +75,10 @@ function usePassword(profile: IProfile | undefined) {
   profileRef.current = profile;
   const prompt = usePrompt();
   const getPassword = useCallback(async () => {
-    const phrase = await securityService.getSecurityPhrase();
+    debugger;
+    const phrase = await securityService.getSecurityPhrase(
+      Session.get('sessionId') as string,
+    );
     return phrase;
   }, []);
 
@@ -87,6 +90,7 @@ function usePassword(profile: IProfile | undefined) {
       const { result } = (await securityService.setSecurityPhrase({
         phrase: password,
         keepPolicy,
+        sessionEntropy: Session.get('sessionId') as string,
       })) as ISetPhraseResponse;
       if (result !== 'success') {
         throw new Error('Failed to set password');

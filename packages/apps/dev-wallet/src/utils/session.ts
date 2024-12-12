@@ -1,11 +1,13 @@
 import { config } from '@/config';
+import { UUID } from '@/modules/types';
 import { getErrorMessage } from './getErrorMessage';
 import { createEventEmitter, throttle } from './helpers';
 
-type SessionValue = { expiration?: string; creationDate?: string } & Record<
-  string,
-  unknown
->;
+type SessionValue = {
+  expiration?: string;
+  creationDate?: string;
+  sessionId?: UUID;
+} & Record<string, unknown>;
 
 const serialization = {
   serialize: async (session: SessionValue) => JSON.stringify(session),
@@ -19,6 +21,7 @@ export function createSession(key: string = 'session') {
   let session: SessionValue = {
     creationDate: `${Date.now()}`,
     expiration: `${Date.now() + config.SESSION.TTL}`,
+    sessionId: crypto.randomUUID(),
   };
 
   const eventEmitter = createEventEmitter<{
@@ -93,6 +96,7 @@ export function createSession(key: string = 'session') {
           session = {
             creationDate: `${Date.now()}`,
             expiration: `${Date.now() + config.SESSION.TTL}`,
+            sessionId: crypto.randomUUID(),
           };
         }
       }
@@ -106,7 +110,7 @@ export function createSession(key: string = 'session') {
       session[key] = value;
       await renew();
     },
-    get: (key: string) => session[key],
+    get: (key: keyof SessionValue) => session[key],
     clear: () => {
       localStorage.removeItem('session');
       session = {};
@@ -116,6 +120,7 @@ export function createSession(key: string = 'session') {
     reset: () => {
       session = {
         creationDate: `${Date.now()}`,
+        sessionId: crypto.randomUUID(),
       };
       return renew();
     },
