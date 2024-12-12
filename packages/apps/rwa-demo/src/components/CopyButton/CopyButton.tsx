@@ -18,7 +18,6 @@ export const CopyButton: FC<IProps> = ({ value }) => {
     navigator.clipboard.writeText(value);
 
     setTimeout(() => {
-      console.log(111);
       setIsPressed(false);
     }, 3000);
   };

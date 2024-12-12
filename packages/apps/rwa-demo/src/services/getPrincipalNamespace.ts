@@ -32,11 +32,11 @@ export const getPrincipalNamespace = async (
     signatureVerification: false,
   });
 
-  console.log(11, { result });
-  if (result.status !== 'success') return;
+  const resultData =
+    result.status !== 'success' ? (result.error as any).message : result.data;
 
   const regex = /n_[a-f0-9]{40}/;
-  const match = (result.data as string).match(regex);
+  const match = (resultData as string).match(regex);
   if (match) {
     return match[0];
   }
