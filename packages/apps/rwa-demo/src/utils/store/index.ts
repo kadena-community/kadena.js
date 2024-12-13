@@ -79,7 +79,6 @@ const RWAStore = () => {
     alias,
   }: Omit<IRegisterIdentityProps, 'agent'>) => {
     const asset = getAssetFolder();
-    console.log({ asset });
     if (!asset) return;
 
     await set(ref(database, `${asset}/accounts/${accountName}`), {

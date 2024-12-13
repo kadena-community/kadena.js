@@ -22,8 +22,6 @@ export const useEditAgent = () => {
         ? await editAgent(data, account!)
         : await addAgent(data, account!);
 
-      console.log({ tx });
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 

@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useGetAgents } from '@/hooks/getAgents';
 import { useRemoveAgent } from '@/hooks/removeAgent';
@@ -24,6 +25,7 @@ import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 
 export const AgentsList: FC = () => {
   const { paused } = useAsset();
+  const { accountRoles } = useAccount();
   const { data, isLoading } = useGetAgents();
   const { submit } = useRemoveAgent();
   const router = useRouter();
@@ -36,6 +38,8 @@ export const AgentsList: FC = () => {
     router.push(`/agents/${accountName}`);
   };
 
+  const isDisabled = paused || !accountRoles.isAgentAdmin();
+
   return (
     <>
       <SectionCard stack="vertical">
@@ -47,7 +51,7 @@ export const AgentsList: FC = () => {
               <AgentForm
                 trigger={
                   <Button
-                    isDisabled={paused}
+                    isDisabled={isDisabled}
                     isCompact
                     endVisual={<MonoSupportAgent />}
                     variant="outlined"
@@ -105,6 +109,7 @@ export const AgentsList: FC = () => {
                         onPress={handleDelete}
                         trigger={
                           <Button
+                            isDisabled={isDisabled}
                             isCompact
                             variant="outlined"
                             startVisual={<MonoDelete />}

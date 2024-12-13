@@ -35,7 +35,7 @@ export const setCompliance = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.COMPLIANCE),
       withCap(`coin.GAS`),
     ])
 

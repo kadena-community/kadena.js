@@ -27,7 +27,6 @@ const Home = () => {
   const { frozen } = useFreeze({ investorAccount: account?.address });
   const { paused, asset } = useAsset();
 
-  console.log({ accountRoles: accountRoles.getAll() });
   return (
     <>
       <SideBarBreadcrumbs />

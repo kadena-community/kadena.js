@@ -3,6 +3,7 @@
 import { AgentForm } from '@/components/AgentForm/AgentForm';
 import { AgentInfo } from '@/components/AgentInfo/AgentInfo';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useGetAgent } from '@/hooks/getAgent';
 import { MonoEditNote } from '@kadena/kode-icons';
@@ -12,6 +13,7 @@ import { useParams } from 'next/navigation';
 
 const InvestorPage = () => {
   const { paused } = useAsset();
+  const { accountRoles } = useAccount();
   const params = useParams();
   const agentAccount = decodeURIComponent(params.agentAccount as string);
 
@@ -19,6 +21,7 @@ const InvestorPage = () => {
 
   if (!agent) return null;
 
+  const isDisabled = paused || !accountRoles.isAgentAdmin();
   return (
     <>
       <SideBarBreadcrumbs>
@@ -35,7 +38,7 @@ const InvestorPage = () => {
           <AgentForm
             agent={agent}
             trigger={
-              <Button isDisabled={paused} endVisual={<MonoEditNote />}>
+              <Button isDisabled={isDisabled} endVisual={<MonoEditNote />}>
                 Edit Agent
               </Button>
             }
