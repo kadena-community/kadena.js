@@ -1,26 +1,44 @@
-import { transactionRepository } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useRequests } from '@/modules/communication/communication.provider';
-import { useAsync } from '@/utils/useAsync';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { TxList } from './components/TxList';
 
 export const TransactionPage = () => {
+  const navigate = usePatchedNavigate();
   const { groupId } = useParams();
+  const { profile } = useWallet();
   const [searchParam] = useSearchParams();
   const requestId = searchParam.get('request');
   const requests = useRequests();
-  const [txs = []] = useAsync(
-    (gid) =>
-      gid
-        ? transactionRepository.getTransactionsByGroup(gid)
-        : Promise.resolve([]),
-    [groupId],
-  );
+  const [txs = [], setTxList] = useState<ITransaction[]>();
+
+  useEffect(() => {
+    const run = async () => {
+      if (profile?.uuid && groupId) {
+        const list = await transactionRepository.getTransactionsByGroup(
+          groupId,
+          profile.uuid,
+        );
+        if (!list || list.length === 0) {
+          navigate('/transactions');
+        }
+        setTxList(list);
+      }
+    };
+    run();
+  }, [groupId, navigate, profile?.uuid]);
+
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>

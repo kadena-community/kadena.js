@@ -1,3 +1,4 @@
+import { useGlobalState } from '@/App/providers/globalState';
 import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import { config } from '@/config';
@@ -31,11 +32,8 @@ type Inputs = {
   accentColor: string;
 };
 
-export function RecoverFromMnemonic({
-  setOrigin,
-}: {
-  setOrigin: (pathname: string) => void;
-}) {
+export function RecoverFromMnemonic() {
+  const { setOrigin } = useGlobalState();
   const [step, setStep] = useState<'import' | 'set-password'>('import');
   const { profileList } = useWallet();
   const {

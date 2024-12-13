@@ -1,5 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Badge, IBreadcrumbsProps } from '@kadena/kode-ui';
+import { Badge, IBreadcrumbsProps, Stack } from '@kadena/kode-ui';
 import { SideBarBreadcrumbs as SideBarBreadcrumbsUI } from '@kadena/kode-ui/patterns';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
@@ -13,10 +13,12 @@ export const SideBarBreadcrumbs: FC<
     <SideBarBreadcrumbsUI
       {...props}
       badge={
-        <Badge
-          size="sm"
-          style="highContrast"
-        >{`${isGlobal ? 'Global' : activeNetwork?.name}`}</Badge>
+        <Stack paddingInlineEnd={'sm'}>
+          <Badge
+            size="sm"
+            style="highContrast"
+          >{`${isGlobal ? 'Global' : activeNetwork?.name}`}</Badge>
+        </Stack>
       }
     >
       {React.Children.map(children, (child) => {

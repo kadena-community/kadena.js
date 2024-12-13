@@ -11,7 +11,7 @@ export async function migrateFrom42to43(
   db: IDBDatabase,
   transaction: IDBTransaction,
 ) {
-  console.log('migrating from 42 to 43', 'change log:');
+  console.log('change log:');
   changeLog.forEach((log, index) => console.log(index, log));
   const update = putItem(db, transaction);
   const allContacts = await getAllItems(db, transaction)<IContact>('contact');

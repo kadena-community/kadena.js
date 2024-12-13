@@ -69,7 +69,10 @@ export interface TransactionRepository {
   ) => Promise<ITransaction[]>;
   getTransaction: (uuid: string) => Promise<ITransaction>;
   getTransactionByHash: (hash: string) => Promise<ITransaction>;
-  getTransactionsByGroup: (groupId: string) => Promise<ITransaction[]>;
+  getTransactionsByGroup: (
+    groupId: string,
+    profileId: string,
+  ) => Promise<ITransaction[]>;
   getTransactionByHashNetworkProfile: (
     profileId: string,
     networkUUID: UUID,
@@ -133,8 +136,14 @@ const createTransactionRepository = ({
     },
     getTransactionsByGroup: async (
       groupId: string,
+      profileId: string,
     ): Promise<ITransaction[]> => {
-      return getAll('transaction', groupId, 'groupId');
+      const txs: ITransaction[] = await getAll(
+        'transaction',
+        groupId,
+        'groupId',
+      );
+      return txs.filter((tx) => tx.profileId === profileId);
     },
     addTransaction: async (transaction: ITransaction): Promise<void> => {
       console.log('addTransaction', transaction);

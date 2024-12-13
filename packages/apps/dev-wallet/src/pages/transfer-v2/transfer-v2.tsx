@@ -44,12 +44,14 @@ export function TransferV2() {
               groupId: activity.data.txGroups.redistribution.groupId,
               txs: await transactionRepository.getTransactionsByGroup(
                 activity.data.txGroups.redistribution.groupId,
+                profile?.uuid ?? '',
               ),
             },
             transfer: {
               groupId: activity.data.txGroups.transfer.groupId,
               txs: await transactionRepository.getTransactionsByGroup(
                 activity.data.txGroups.transfer.groupId,
+                profile?.uuid ?? '',
               ),
             },
           };
@@ -109,12 +111,14 @@ export function TransferV2() {
     if (txGroups.redistribution.groupId) {
       const txs = await transactionRepository.getTransactionsByGroup(
         txGroups.redistribution.groupId,
+        profile?.uuid ?? '',
       );
       upd.redistribution = { groupId: txGroups.redistribution.groupId, txs };
     }
     if (txGroups.transfer.groupId) {
       const txs = await transactionRepository.getTransactionsByGroup(
         txGroups.transfer.groupId,
+        profile?.uuid ?? '',
       );
       upd.transfer = { groupId: txGroups.transfer.groupId, txs };
     }

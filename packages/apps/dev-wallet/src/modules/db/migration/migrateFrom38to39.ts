@@ -14,7 +14,7 @@ export async function migrateFrom38to39(
   db: IDBDatabase,
   transaction: IDBTransaction,
 ) {
-  console.log('migrating from 38 to 39', 'change log:');
+  console.log('change log:');
   changeLog.forEach((log, index) => console.log(index, log));
   const create = createStore(db);
   const accountTemp: ExtendedTableName = `temp:account-v39:${Date.now()}`;

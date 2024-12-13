@@ -27,7 +27,7 @@ import {
 import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { getGuardInfo } from '../../Components/Guard/Guard';
 import { linkClass, noStyleLinkClass, panelClass } from '../home/style.css';
 import { ActivityTable } from './Components/ActivityTable';
@@ -73,7 +73,7 @@ export function AccountPage() {
     [chains],
   );
   if (!account || !accountGuard || !asset) {
-    return null;
+    return <Navigate to="/" />;
   }
 
   const fundAccountHandler = async (chainId: ChainId) => {

@@ -8,7 +8,7 @@ import {
 } from '@kadena/kode-icons/system';
 import { Button, Notification, Stack, TextField } from '@kadena/kode-ui';
 import { useState } from 'react';
-import { KeySetDialog } from '../KeysetDialog/KeySetDialog';
+import { KeySetForm } from '../KeySetForm/KeySetForm';
 import { DiscoverdAccounts } from './DiscoverdAccounts';
 
 export function AccountInput({
@@ -73,7 +73,7 @@ export function AccountInput({
   return (
     <Stack flexDirection={'column'} gap={'md'}>
       {showKeysetDialog && (
-        <KeySetDialog
+        <KeySetForm
           close={() => setShowKeysetDialog(false)}
           onDone={(guard) => {
             setShowKeysetDialog(false);

@@ -9,6 +9,7 @@ import {
   MonoDangerous,
   MonoDataset,
   MonoDownload,
+  MonoListAlt,
   MonoPassword,
   MonoPerson,
   MonoRemoveRedEye,
@@ -83,6 +84,14 @@ export function Settings() {
         startVisual={<MonoDataset />}
       >
         Export Data
+      </UiLink>
+      <UiLink
+        href="/settings/import-data"
+        component={Link}
+        variant="outlined"
+        startVisual={<MonoListAlt />}
+      >
+        Import Data
       </UiLink>
       <Button
         onClick={downloadBackup}

@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { useSession } from '@/App/session';
+import { useSession } from '@/App/providers/session';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
 import { ISetPhraseResponse, ISetSecurityPhrase } from '@/service-worker/types';

@@ -240,7 +240,13 @@ export const accountDiscovery = (
 );
 
 export const hasSameGuard = (a?: IGuard, b?: IGuard) => {
-  return a?.principal === b?.principal;
+  if (a?.principal && b?.principal) {
+    return a?.principal === b?.principal;
+  }
+  if (a && b && isKeysetGuard(a) && isKeysetGuard(b)) {
+    return a.keys.every((key) => b.keys.includes(key)) && a.pred === b.pred;
+  }
+  return false;
 };
 
 export const syncAccount = async (account: IAccount | IWatchedAccount) => {

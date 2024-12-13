@@ -47,7 +47,7 @@ export interface IAccount {
     balance: string;
   }>;
   guard: IKeysetGuard;
-  keysetId: string;
+  keysetId?: string;
   alias?: string;
   syncTime?: number;
 }

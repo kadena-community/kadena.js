@@ -17,7 +17,7 @@ export async function migrateFrom37to38(
   db: IDBDatabase,
   transaction: IDBTransaction,
 ) {
-  console.log('migrating from 37 to 38', 'change log:');
+  console.log('change log:');
   changeLog.forEach((log, index) => console.log(index, log));
   const getAll = getAllItems(db, transaction);
   const profileList = await getAll<IProfile>('profile');

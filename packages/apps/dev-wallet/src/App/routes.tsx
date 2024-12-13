@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 import {
   createBrowserRouter,
   createMemoryRouter,
@@ -24,6 +24,7 @@ import { Ready } from '@/pages/ready/ready';
 import { AutoBackup } from '@/pages/settings/auto-backup/auto-backup';
 import { ChangePassword } from '@/pages/settings/change-password/change-password';
 import { ExportData } from '@/pages/settings/export-data/export-data';
+import { ImportData } from '@/pages/settings/import-data/import-data';
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
@@ -42,6 +43,7 @@ import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
 import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
+import { useGlobalState } from './providers/globalState';
 
 const Redirect: FC<
   PropsWithChildren<{
@@ -54,7 +56,9 @@ const Redirect: FC<
 
   if (condition) {
     if (setOrigin) {
-      setOrigin(location.pathname);
+      setOrigin(
+        `${location.pathname}${location.hash ? location.hash : ''}${location.search ? location.search : ''}`,
+      );
     }
     return <Navigate to={to} replace />;
   }
@@ -78,22 +82,18 @@ const RouteContext: FC = () => {
 export const Routes: FC = () => {
   const { isUnlocked } = useWallet();
   const isLocked = !isUnlocked;
-  const [origin, setOrigin] = useState('/');
+  const { origin, setOrigin } = useGlobalState();
 
   const routes = createRoutesFromElements(
-    <Route
-      element={
-        <CommunicationProvider children={<Outlet />} setOrigin={setOrigin} />
-      }
-    >
+    <Route element={<CommunicationProvider children={<Outlet />} />}>
       <Route element={<RouteContext />}>
         <Route element={<LayoutMini />}>
-          <Route element={<Redirect if={!isLocked} to={origin} />}>
+          <Route element={<Redirect if={isUnlocked} to={origin} />}>
             <Route path="/select-profile" element={<SelectProfile />} />
             <Route path="/create-profile/*" element={<CreateProfile />} />
             <Route
               path="/wallet-recovery/recover-from-mnemonic"
-              element={<RecoverFromMnemonic setOrigin={setOrigin} />}
+              element={<RecoverFromMnemonic />}
             />
             <Route
               path="/wallet-recovery/import-chainweaver"
@@ -128,6 +128,7 @@ export const Routes: FC = () => {
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/auto-backup" element={<AutoBackup />} />
             <Route path="/settings/export-data" element={<ExportData />} />
+            <Route path="/settings/import-data" element={<ImportData />} />
             <Route
               path="/account-discovery/:keySourceId"
               element={<AccountDiscovery />}

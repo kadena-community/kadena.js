@@ -58,7 +58,7 @@ export function getDBScheme() {
     { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
     {
       index: 'unique-account',
-      indexKeyPath: ['keysetId', 'contract', 'networkUUID'],
+      indexKeyPath: ['profileId', 'guard.principal', 'contract', 'networkUUID'],
       unique: true,
     },
   ]);
