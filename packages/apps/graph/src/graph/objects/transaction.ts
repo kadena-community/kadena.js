@@ -4,6 +4,7 @@ import { getMempoolTransactionStatus } from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
+import { getPaths } from 'graphql-query-path';
 import { builder } from '../builder';
 import { signersLoader } from '../data-loaders/signers';
 import TransactionCommand from './transaction-command';
@@ -42,7 +43,11 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       async resolve(parent, args, context, info) {
         try {
           let signers: Signer[] = [];
-          if (!nullishOrEmpty(parent.blockHash)) {
+
+          if (
+            getPaths(info).includes('/transaction/cmd/signers/') &&
+            !nullishOrEmpty(parent.blockHash)
+          ) {
             signers = await signersLoader.load({
               blockHash: parent.blockHash,
               requestKey: parent.requestKey,
