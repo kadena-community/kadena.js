@@ -1,4 +1,4 @@
-import { useAsset } from '@/hooks/asset';
+import { useAddInvestor } from '@/hooks/addInvestor';
 import { useDeleteInvestor } from '@/hooks/deleteInvestor';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { loadingData } from '@/utils/loadingData';
@@ -21,8 +21,8 @@ import { FormatInvestorBalance } from '../TableFormatters/FormatInvestorBalance'
 export const InvestorList: FC = () => {
   const { data, isLoading } = useGetInvestors();
   const router = useRouter();
-  const { submit } = useDeleteInvestor();
-  const { paused } = useAsset();
+  const { submit, isAllowed: isDeleteInvestorAllowed } = useDeleteInvestor();
+  const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
 
   const handleDelete = async (accountName: any) => {
     return await submit({ investor: accountName });
@@ -43,7 +43,7 @@ export const InvestorList: FC = () => {
                   <Button
                     isCompact
                     variant="outlined"
-                    isDisabled={paused}
+                    isDisabled={!isAddInvestorAllowed}
                     endVisual={<MonoAdd />}
                   >
                     Add Investor
@@ -105,6 +105,7 @@ export const InvestorList: FC = () => {
                     trigger: (
                       <Button
                         isCompact
+                        isDisabled={!isDeleteInvestorAllowed}
                         variant="outlined"
                         startVisual={<MonoDelete />}
                         onPress={handleDelete}

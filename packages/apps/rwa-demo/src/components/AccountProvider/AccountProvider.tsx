@@ -53,8 +53,11 @@ export const AccountContext = createContext<IAccountContext>({
   selectAccount: () => {},
   getBalance: async () => 0,
   accountRoles: {
+    isMounted: false,
     getAll: () => [],
-    isAgentAdmin: () => false,
+    isAgentAdmin: () => {
+      return false;
+    },
     isSupplyModifier: () => false,
     isFreezer: () => false,
     isTransferManager: () => false,
@@ -158,9 +161,13 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         localStorage.removeItem(getAccountCookieName());
       }
     }
-
-    setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (accountRoles.isMounted) {
+      setIsMounted(true);
+    }
+  }, [accountRoles.isMounted]);
 
   useEffect(() => {
     if (!account) {

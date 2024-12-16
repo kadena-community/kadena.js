@@ -20,7 +20,9 @@ interface IProps {
 }
 
 export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
-  const { submit } = useAddInvestor();
+  const { submit, isAllowed } = useAddInvestor({
+    investorAccount: investor?.accountName,
+  });
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const { handleSubmit, control } = useForm<
@@ -55,7 +57,9 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
       {isRightAsideExpanded && isOpen && (
         <RightAside isOpen onClose={handleOnClose}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <RightAsideHeader label="Add Investor" />
+            <RightAsideHeader
+              label={investor?.accountName ? 'Edit Investor' : 'Add Investor'}
+            />
             <RightAsideContent>
               <Controller
                 name="accountName"
@@ -79,7 +83,9 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button type="submit">Add Investor</Button>
+              <Button isDisabled={!isAllowed} type="submit">
+                {investor?.accountName ? 'Edit Investor' : 'Add Investor'}
+              </Button>
             </RightAsideFooter>
           </form>
         </RightAside>

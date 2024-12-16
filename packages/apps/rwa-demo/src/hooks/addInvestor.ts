@@ -5,13 +5,23 @@ import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
 import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
+import { useFreeze } from './freeze';
 import { useTransactions } from './transactions';
 
-export const useAddInvestor = () => {
-  const { account, sign } = useAccount();
+export const useAddInvestor = ({
+  investorAccount,
+}: {
+  investorAccount?: string;
+}) => {
+  const { frozen } = useFreeze({ investorAccount });
+  const { paused } = useAsset();
+  const { account, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
@@ -43,5 +53,14 @@ export const useAddInvestor = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(
+      ((!!investorAccount && !frozen) || frozen) &&
+        !paused &&
+        accountRoles.isWhitelistManager(),
+    );
+  }, [frozen, paused, account?.address, isMounted, investorAccount]);
+
+  return { submit, isAllowed };
 };

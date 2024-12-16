@@ -19,7 +19,7 @@ interface IProps {
 }
 
 export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
-  const { submit } = useSetCompliance();
+  const { submit, isAllowed } = useSetCompliance();
   const { asset } = useAsset();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [isOpen, setIsOpen] = useState(false);
@@ -98,7 +98,9 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Button onPress={onClose} variant="transparent">
                 Cancel
               </Button>
-              <Button type="submit">Set Compliance</Button>
+              <Button isDisabled={!isAllowed} type="submit">
+                Set Compliance
+              </Button>
             </RightAsideFooter>
           </form>
         </RightAside>

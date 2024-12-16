@@ -4,13 +4,17 @@ import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
 import { useTransactions } from './transactions';
 
 export const useFreezeInvestor = () => {
-  const { account, sign } = useAccount();
+  const { account, sign, isMounted, accountRoles } = useAccount();
+  const { paused } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (
     data: ISetAddressFrozenProps,
@@ -36,5 +40,10 @@ export const useFreezeInvestor = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(!paused && !accountRoles.isFreezer());
+  }, [paused, account?.address, isMounted, accountRoles]);
+
+  return { submit, isAllowed };
 };

@@ -3,13 +3,19 @@ import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
+import { useFreeze } from './freeze';
 import { useTransactions } from './transactions';
 
 export const useTransferTokens = () => {
-  const { account, sign } = useAccount();
+  const { account, sign, isMounted, isInvestor } = useAccount();
+  const { frozen } = useFreeze({ investorAccount: account?.address });
+  const { paused } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (data: ITransferTokensProps) => {
     try {
@@ -33,5 +39,10 @@ export const useTransferTokens = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(!frozen && !paused && isInvestor);
+  }, [paused, isMounted, isInvestor, frozen]);
+
+  return { submit, isAllowed };
 };

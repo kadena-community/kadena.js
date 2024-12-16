@@ -4,13 +4,15 @@ import type { ITogglePauseProps } from '@/services/togglePause';
 import { togglePause } from '@/services/togglePause';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
 export const useTogglePause = () => {
-  const { account, sign } = useAccount();
+  const { account, sign, isMounted, accountRoles } = useAccount();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (
     data: ITogglePauseProps,
@@ -36,5 +38,10 @@ export const useTogglePause = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(accountRoles.isFreezer());
+  }, [account?.address, isMounted, accountRoles]);
+
+  return { submit, isAllowed };
 };

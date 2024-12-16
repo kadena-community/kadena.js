@@ -3,13 +3,24 @@ import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { distributeTokens } from '@/services/distributeTokens';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
+import { useFreeze } from './freeze';
 import { useTransactions } from './transactions';
 
-export const useDistributeTokens = () => {
-  const { account, sign } = useAccount();
+export const useDistributeTokens = ({
+  investorAccount,
+}: {
+  investorAccount: string;
+}) => {
+  const { frozen } = useFreeze({ investorAccount });
+  const { paused } = useAsset();
+
+  const { account, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (data: IDistributeTokensProps) => {
     try {
@@ -34,5 +45,10 @@ export const useDistributeTokens = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(!frozen && !paused && accountRoles.isSupplyModifier());
+  }, [frozen, paused, account?.address, isMounted]);
+
+  return { submit, isAllowed };
 };

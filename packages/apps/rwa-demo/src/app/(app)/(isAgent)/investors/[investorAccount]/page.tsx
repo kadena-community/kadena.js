@@ -6,24 +6,34 @@ import { InvestorForm } from '@/components/InvestorForm/InvestorForm';
 import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
 import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { useAsset } from '@/hooks/asset';
-import { useFreeze } from '@/hooks/freeze';
+import { useAddInvestor } from '@/hooks/addInvestor';
+import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestor } from '@/hooks/getInvestor';
+import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useParams } from 'next/navigation';
 
 const InvestorPage = () => {
-  const { paused } = useAsset();
   const params = useParams();
   const investorAccount = decodeURIComponent(params.investorAccount as string);
+  const { isAllowed: isPartiallyFreezeTokensAllowed } =
+    useTogglePartiallyFreezeTokens({
+      investorAccount,
+    });
+
+  const { isAllowed: isDistributeTokensAllowed } = useDistributeTokens({
+    investorAccount,
+  });
+
+  const { isAllowed: isEditInvestorAllowed } = useAddInvestor({
+    investorAccount,
+  });
 
   const { data: investor } = useGetInvestor({ account: investorAccount });
-  const { frozen } = useFreeze({ investorAccount });
 
   if (!investor) return null;
-
   return (
     <>
       <SideBarBreadcrumbs>
@@ -38,7 +48,10 @@ const InvestorPage = () => {
           <DistributionForm
             investorAccount={investorAccount}
             trigger={
-              <Button startVisual={<MonoAdd />} isDisabled={frozen || paused}>
+              <Button
+                startVisual={<MonoAdd />}
+                isDisabled={!isDistributeTokensAllowed}
+              >
                 Distribute Tokens
               </Button>
             }
@@ -47,7 +60,10 @@ const InvestorPage = () => {
           <PartiallyFreezeTokensForm
             investorAccount={investorAccount}
             trigger={
-              <Button startVisual={<MonoAdd />} isDisabled={frozen || paused}>
+              <Button
+                startVisual={<MonoAdd />}
+                isDisabled={!isPartiallyFreezeTokensAllowed}
+              >
                 Partially freeze tokens
               </Button>
             }
@@ -59,7 +75,7 @@ const InvestorPage = () => {
             investor={investor}
             trigger={
               <Button
-                isDisabled={frozen || paused}
+                isDisabled={!isEditInvestorAllowed}
                 endVisual={<MonoEditNote />}
               >
                 Edit Investor

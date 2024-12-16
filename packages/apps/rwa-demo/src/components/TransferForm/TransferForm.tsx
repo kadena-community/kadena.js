@@ -1,5 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { useAsset } from '@/hooks/asset';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
@@ -22,13 +21,12 @@ interface IProps {
 }
 
 export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
-  const { paused } = useAsset();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [balance, setBalance] = useState(0);
   const { account, getBalance } = useAccount();
   const { data: investors } = useGetInvestors();
-  const { submit } = useTransferTokens();
+  const { submit, isAllowed } = useTransferTokens();
 
   const {
     register,
@@ -135,7 +133,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button isDisabled={paused || !isValid} type="submit">
+              <Button isDisabled={!isAllowed || !isValid} type="submit">
                 Transfer
               </Button>
             </RightAsideFooter>

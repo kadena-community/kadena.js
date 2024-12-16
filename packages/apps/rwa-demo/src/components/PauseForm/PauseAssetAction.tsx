@@ -1,5 +1,5 @@
-import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
+import { useTogglePause } from '@/hooks/togglePause';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { useState } from 'react';
 import { AssetAction } from '../AssetAction/AssetAction';
@@ -8,8 +8,8 @@ import { PauseForm } from './PauseForm';
 
 export const PauseAssetAction = () => {
   const { paused } = useAsset();
-  const { accountRoles } = useAccount();
   const [loading, setLoading] = useState(false);
+  const { isAllowed } = useTogglePause();
 
   const showIcon = () => {
     if (loading) {
@@ -23,7 +23,7 @@ export const PauseAssetAction = () => {
       handleSetIsLoading={setLoading}
       trigger={
         <AssetAction
-          isDisabled={!accountRoles.isFreezer()}
+          isDisabled={!isAllowed}
           icon={showIcon()}
           label={paused ? 'Contract is paused' : 'Contract is active'}
         />

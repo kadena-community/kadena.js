@@ -30,7 +30,7 @@ export const FreezeInvestor: FC<IProps> = ({
 }) => {
   const { frozen } = useFreeze({ investorAccount });
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { submit } = useFreezeInvestor();
+  const { submit, isAllowed } = useFreezeInvestor();
 
   const handleFreeze = async () => {
     if (frozen === undefined) return;
@@ -59,6 +59,7 @@ export const FreezeInvestor: FC<IProps> = ({
       trigger={
         <Button
           startVisual={getVisual(frozen, isLoading)}
+          isDisabled={!isAllowed}
           isCompact={isCompact}
           variant={variant}
         >

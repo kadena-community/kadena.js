@@ -12,7 +12,8 @@ import { SupplyCountContractDetails } from '@/components/SupplyCountContractDeta
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
-import { useFreeze } from '@/hooks/freeze';
+import { useSetCompliance } from '@/hooks/setCompliance';
+import { useTransferTokens } from '@/hooks/transferTokens';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import {
@@ -23,9 +24,10 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { isInvestor, isComplianceOwner, account, accountRoles } = useAccount();
-  const { frozen } = useFreeze({ investorAccount: account?.address });
-  const { paused, asset } = useAsset();
+  const { isInvestor, account } = useAccount();
+  const { asset } = useAsset();
+  const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
+  const { isAllowed: isTransferTokensAllowed } = useTransferTokens();
 
   return (
     <>
@@ -73,7 +75,7 @@ const Home = () => {
                 <SetComplianceForm
                   trigger={
                     <AssetAction
-                      isDisabled={paused || !isComplianceOwner}
+                      isDisabled={!isSetComplianceAllowed}
                       icon={<MonoAdd />}
                       label=" Set Compliance"
                     />
@@ -83,7 +85,7 @@ const Home = () => {
                 <TransferForm
                   trigger={
                     <AssetAction
-                      isDisabled={paused || frozen || !isInvestor}
+                      isDisabled={!isTransferTokensAllowed}
                       icon={<MonoAdd />}
                       label="Transfer tokens"
                     />
@@ -101,20 +103,18 @@ const Home = () => {
               description={<></>}
               actions={
                 <>
-                  {accountRoles.isComplianceManager() && (
-                    <SetComplianceForm
-                      trigger={
-                        <Button
-                          isCompact
-                          variant="outlined"
-                          isDisabled={paused}
-                          endVisual={<MonoEditNote />}
-                        >
-                          Edit rules
-                        </Button>
-                      }
-                    />
-                  )}
+                  <SetComplianceForm
+                    trigger={
+                      <Button
+                        isCompact
+                        variant="outlined"
+                        isDisabled={!isSetComplianceAllowed}
+                        endVisual={<MonoEditNote />}
+                      >
+                        Edit rules
+                      </Button>
+                    }
+                  />
                 </>
               }
             />

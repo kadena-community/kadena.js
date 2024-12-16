@@ -16,10 +16,10 @@ export const isPaused = async (data: IIsPausedProps) => {
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,
     })
-    .addData('agent', data.account.address)
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 
+  console.log('paused', { transaction });
   const { result } = await client.local(transaction, {
     preflight: false,
     signatureVerification: false,
