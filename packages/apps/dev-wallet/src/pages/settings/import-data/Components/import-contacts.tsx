@@ -182,7 +182,6 @@ export function ImportContacts({
     if (!importedContacts) return;
     const contacts: IContact[] = importedContacts
       .map((acc) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { name, email, address, guard, uuid } = acc;
         return {
           uuid,
