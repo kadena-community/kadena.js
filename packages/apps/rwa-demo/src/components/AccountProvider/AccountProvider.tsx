@@ -55,7 +55,9 @@ export const AccountContext = createContext<IAccountContext>({
   accountRoles: {
     isMounted: false,
     getAll: () => [],
-    isAgentAdmin: () => false,
+    isAgentAdmin: () => {
+      return false;
+    },
     isSupplyModifier: () => false,
     isFreezer: () => false,
     isTransferManager: () => false,

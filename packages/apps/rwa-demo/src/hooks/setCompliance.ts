@@ -3,13 +3,17 @@ import type { ISetComplianceProps } from '@/services/setCompliance';
 import { setCompliance } from '@/services/setCompliance';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
 import { useTransactions } from './transactions';
 
 export const useSetCompliance = () => {
-  const { account, sign } = useAccount();
+  const { account, sign, isMounted, accountRoles } = useAccount();
+  const { paused } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (data: ISetComplianceProps) => {
     try {
@@ -34,5 +38,10 @@ export const useSetCompliance = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(!paused && accountRoles.isComplianceManager());
+  }, [paused, account?.address, isMounted]);
+
+  return { submit, isAllowed };
 };

@@ -6,13 +6,17 @@ import { editAgent } from '@/services/editAgent';
 import { getClient } from '@/utils/client';
 import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
 import { useTransactions } from './transactions';
 
 export const useEditAgent = () => {
-  const { account, sign } = useAccount();
+  const { account, sign, isMounted, accountRoles, isOwner } = useAccount();
+  const { paused } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (
     data: IAddAgentProps,
@@ -21,9 +25,6 @@ export const useEditAgent = () => {
       const tx = data.alreadyExists
         ? await editAgent(data, account!)
         : await addAgent(data, account!);
-
-      console.log({ tx });
-      console.log(JSON.parse(tx.cmd));
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -46,5 +47,10 @@ export const useEditAgent = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(!paused && accountRoles.isAgentAdmin());
+  }, [paused, account?.address, isMounted, isOwner, accountRoles]);
+
+  return { submit, isAllowed };
 };
