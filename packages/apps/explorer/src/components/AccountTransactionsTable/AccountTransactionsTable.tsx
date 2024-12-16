@@ -80,7 +80,6 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
       setPage={handlePageChange}
       pageSize={pageSize}
       pageInfo={innerData.node!.transactions.pageInfo}
-      totalCount={innerData.node!.transactions.totalCount}
       isLoading={isLoading}
       label="Keys table"
       fields={[
@@ -92,11 +91,10 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
           render: CompactTableFormatters.FormatStatus(),
         },
         {
-          label: 'Sender',
-          key: 'cmd.meta.sender',
+          label: 'Height',
+          key: 'result.block.height',
           variant: 'code',
-          width: '25%',
-          render: FormatLinkWrapper({ url: '/account/:value' }),
+          width: '10%',
         },
         {
           label: 'RequestKey',
@@ -109,7 +107,7 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
           label: 'Code Preview',
           key: 'cmd.payload.code',
           variant: 'code',
-          width: '40%',
+          width: '55%',
           render: CompactTableFormatters.FormatJsonParse(),
         },
       ]}
