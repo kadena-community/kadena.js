@@ -3,6 +3,7 @@ import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { dbService } from '@/modules/db/db.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { walletRepository } from '@/modules/wallet/wallet.repository';
 import { deleteProfile } from '@/modules/wallet/wallet.service';
 import { getErrorMessage } from '@/utils/getErrorMessage';
 import {
@@ -13,9 +14,11 @@ import {
   MonoPassword,
   MonoPerson,
   MonoRemoveRedEye,
+  MonoRocketLaunch,
   MonoSelectAll,
   MonoSettings,
-  MonoSettingsBackupRestore,
+  MonoToggleOff,
+  MonoToggleOn,
 } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -28,8 +31,12 @@ import {
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { isFileSystemAccessSupported } from '../../modules/backup/fileApi';
 import { linkClass } from '../home/style.css';
+import {
+  failureClass,
+  successClass,
+} from '../transaction/components/style.css';
+import { AutoBackup } from './auto-backup/auto-backup';
 import { ProfileNameColorForm } from './components/ProfileNameColorForm';
 import { downloadAsFile } from './utils/download-file';
 
@@ -101,15 +108,6 @@ export function Settings() {
         Download Entire Database
       </Button>
       <UiLink
-        href="/settings/auto-backup"
-        component={Link}
-        variant="outlined"
-        startVisual={<MonoSettingsBackupRestore />}
-        isDisabled={!isFileSystemAccessSupported()}
-      >
-        Set automatic backup
-      </UiLink>
-      <UiLink
         href={`/account-discovery/${keySources[0].uuid}`}
         component={Link}
         variant="outlined"
@@ -118,9 +116,30 @@ export function Settings() {
       >
         Start Account Discovery
       </UiLink>
+      <AutoBackup />
       <Button
-        variant="negative"
-        startVisual={<MonoDangerous />}
+        startVisual={<MonoRocketLaunch />}
+        endVisual={
+          profile?.showExperimentalFeatures ? (
+            <MonoToggleOn className={successClass} fontSize={40} />
+          ) : (
+            <MonoToggleOff fontSize={40} />
+          )
+        }
+        variant="outlined"
+        onClick={() => {
+          if (profile?.uuid) {
+            walletRepository.patchProfile(profile.uuid, {
+              showExperimentalFeatures: !profile.showExperimentalFeatures,
+            });
+          }
+        }}
+      >
+        Experimental Features
+      </Button>
+      <Button
+        variant="outlined"
+        startVisual={<MonoDangerous className={failureClass} />}
         onClick={async () => {
           if (!profile) return;
           const answer = await prompt((resolve, reject) => (

@@ -26,6 +26,7 @@ export interface IProfile {
   securityPhraseId: string;
   accentColor: string;
   selectedNetworkUUID?: UUID;
+  showExperimentalFeatures?: boolean;
   options: {
     rememberPassword: 'never' | 'session' | 'short-time';
   } & (

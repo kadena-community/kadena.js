@@ -23,7 +23,6 @@ import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
 import { Plugins } from '@/pages/plugins/plugins';
 import { Ready } from '@/pages/ready/ready';
-import { AutoBackup } from '@/pages/settings/auto-backup/auto-backup';
 import { ChangePassword } from '@/pages/settings/change-password/change-password';
 import { ExportData } from '@/pages/settings/export-data/export-data';
 import { ImportData } from '@/pages/settings/import-data/import-data';
@@ -82,7 +81,7 @@ const RouteContext: FC = () => {
 };
 
 export const Routes: FC = () => {
-  const { isUnlocked } = useWallet();
+  const { isUnlocked, profile } = useWallet();
   const isLocked = !isUnlocked;
   const { origin, setOrigin } = useGlobalState();
 
@@ -132,10 +131,18 @@ export const Routes: FC = () => {
             <Route path="/transfer" element={<Transfer />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/settings/auto-backup" element={<AutoBackup />} />
             <Route path="/settings/export-data" element={<ExportData />} />
             <Route path="/settings/import-data" element={<ImportData />} />
-            <Route path="/plugins" element={<Plugins />} />
+            <Route
+              element={
+                <Redirect
+                  if={!profile || !profile.showExperimentalFeatures}
+                  to="/"
+                />
+              }
+            >
+              <Route path="/plugins" element={<Plugins />} />
+            </Route>
             <Route
               path="/account-discovery/:keySourceId"
               element={<AccountDiscovery />}

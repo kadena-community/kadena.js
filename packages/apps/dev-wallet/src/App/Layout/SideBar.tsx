@@ -1,9 +1,9 @@
 import {
-  MonoApps,
   MonoCheck,
   MonoContacts,
   MonoContrast,
   MonoDarkMode,
+  MonoExtension,
   MonoKey,
   MonoLightMode,
   MonoLogout,
@@ -117,12 +117,14 @@ export const SideBar: FC = () => {
             component={Link}
             href="/contacts"
           />
-          <SideBarItem
-            visual={<MonoApps />}
-            label="Plugins"
-            component={Link}
-            href="/plugins"
-          />
+          {profile?.showExperimentalFeatures && (
+            <SideBarItem
+              visual={<MonoExtension />}
+              label="Plugins"
+              component={Link}
+              href="/plugins"
+            />
+          )}
         </>
       }
       context={
