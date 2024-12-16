@@ -22,6 +22,7 @@ interface ISafeTransferCreateInput {
       keys: ISigner[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
+    keysToSignWith?: ISigner[];
   };
   amount: string;
   gasPayer?: { account: string; publicKeys: ISigner[] };
@@ -99,7 +100,13 @@ export const safeTransferCreateCommand = ({
       contract,
     }),
     partialTransferCommand({
-      sender: { account: receiver.account, publicKeys: receiver.keyset.keys },
+      sender: {
+        account: receiver.account,
+        publicKeys:
+          receiver.keysToSignWith && receiver.keysToSignWith.length
+            ? receiver.keysToSignWith
+            : receiver.keyset.keys,
+      },
       amount: smallAmount,
       receiver: sender,
       contract,

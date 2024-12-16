@@ -11,8 +11,7 @@ export interface TransferData {
     amount: string;
     address: string;
     chain: ChainId | '';
-    discoveredAccounts: IRetrievedAccount[];
-    discoveryStatus: 'not-started' | 'in-progress' | 'done';
+    discoveredAccount: IRetrievedAccount;
     transferMax?: boolean;
   }>;
   gasPayer: IRetrievedAccount;

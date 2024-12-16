@@ -1,8 +1,4 @@
-import { DiscoverdAccounts } from '@/Components/AccountInput/DiscoverdAccounts';
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
-import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
-import { usePrompt } from '@/Components/PromptProvider/Prompt';
-import { IKeysetGuard } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -34,7 +30,7 @@ import {
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
-import { CHAINS, IReceiver, getTransfers } from '../utils';
+import { IReceiver, getAvailableChains, getTransfers } from '../utils';
 
 import { AccountSearchBox } from '../Components/AccountSearchBox';
 import { CreationTime } from '../Components/CreationTime';
@@ -92,12 +88,7 @@ export function TransferForm({
     watchAccounts,
     contacts,
   } = useWallet();
-  const prompt = usePrompt();
   const [, , AdvancedMode] = useShow(true);
-  const [accountToResolve, setAccountToResolve] = useState<{
-    account: ITransfer['receivers'][number];
-    index: number;
-  }>();
   const urlAccount = allAccounts.find((account) => account.uuid === accountId);
   const {
     control,
@@ -119,8 +110,7 @@ export function TransferForm({
           address: '',
           chain: '',
           chunks: [],
-          discoveredAccounts: [],
-          discoveryStatus: 'not-started',
+          discoveredAccount: undefined,
         },
       ],
       gasPayer: undefined,
@@ -235,6 +225,7 @@ export function TransferForm({
         receivers.map((receiver) => ({
           amount: receiver.amount,
           chainId: receiver.chain,
+          availableChains: getAvailableChains(receiver.discoveredAccount),
         })),
       );
       setValue(
@@ -281,19 +272,6 @@ export function TransferForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
-      {accountToResolve && (
-        <DiscoverdAccounts
-          accounts={accountToResolve.account.discoveredAccounts}
-          onSelect={(account: IRetrievedAccount) => {
-            setValue(`receivers.${accountToResolve.index}.discoveredAccounts`, [
-              account,
-            ]);
-            setAccountToResolve(undefined);
-          }}
-          onClosed={() => setAccountToResolve(undefined)}
-        />
-      )}
-
       <Stack flexDirection="column" gap="md" flex={1} width="100%">
         <Stack gap="sm" flexDirection={'column'}>
           <Heading variant="h2">Transfer</Heading>
@@ -336,6 +314,7 @@ export function TransferForm({
                 return (
                   <Stack flexDirection={'column'}>
                     <AccountSearchBox
+                      isSenderAccount
                       accounts={filteredAccounts.filter(
                         (account) => account.address,
                       )}
@@ -345,6 +324,7 @@ export function TransferForm({
                       contract={watchFungibleType}
                       selectedAccount={field.value}
                       onSelect={withEvaluate((account) => {
+                        console.log('senderAccount', account);
                         field.onChange(account);
                         forceRender((prev) => prev + 1);
                       })}
@@ -353,35 +333,6 @@ export function TransferForm({
                 );
               }}
             />
-            {/* <Controller
-              name="accountId"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Stack flex={1} flexDirection={'column'}>
-                  <Select
-                    aria-label="Address"
-                    startVisual={<Label>Address:</Label>}
-                    // label="Account"
-                    placeholder="Select and address"
-                    size="sm"
-                    selectedKey={field.value}
-                    onSelectionChange={withEvaluate(field.onChange)}
-                  >
-                    {filteredAccounts
-                      .filter(({ overallBalance }) => +overallBalance > 0)
-                      .map((account) => (
-                        <SelectItem key={account.uuid}>
-                          <AccountItem account={account} />
-                        </SelectItem>
-                      ))}
-                  </Select>
-                  {senderAccount?.guard && (
-                    <Guard guard={senderAccount.guard} />
-                  )}
-                </Stack>
-              )}
-            /> */}
             <AdvancedMode>
               <Stack flex={1}>
                 <Controller
@@ -435,12 +386,6 @@ export function TransferForm({
                 />
               </Stack>
             </AdvancedMode>
-
-            {/* <Stack flex={1}>
-          {senderAccount && (
-            <Text>Available Balance: {senderAccount?.overallBalance}</Text>
-          )}
-        </Stack> */}
           </Stack>
         </Stack>
 
@@ -452,7 +397,8 @@ export function TransferForm({
               <>
                 {watchReceivers.map((__, index) => {
                   const rec = getValues(`receivers.${index}`);
-                  const availableChains = ['', ...CHAINS].filter((ch) => {
+                  const chainList = getAvailableChains(rec.discoveredAccount);
+                  const availableChains = ['', ...chainList].filter((ch) => {
                     // if the receiver is not the sender, then transfer is allowed from any chain
                     if (rec.address !== senderAccount?.address) {
                       return true;
@@ -506,14 +452,7 @@ export function TransferForm({
                                     address: rec.address,
                                     chain: '',
                                     chunks: [],
-                                    discoveredAccounts:
-                                      rec.discoveryStatus === 'done'
-                                        ? rec.discoveredAccounts
-                                        : [],
-                                    discoveryStatus:
-                                      rec.discoveryStatus === 'done'
-                                        ? 'done'
-                                        : 'not-started',
+                                    discoveredAccount: rec.discoveredAccount,
                                   } as ITransfer['receivers'][number];
                                   list.splice(index + 1, 0, newItem);
                                   setValue('receivers', list);
@@ -550,21 +489,15 @@ export function TransferForm({
                                       contacts={contacts}
                                       network={activeNetwork!}
                                       contract={watchFungibleType}
-                                      selectedAccount={
-                                        getValues(
-                                          `receivers.${index}.discoveredAccounts`,
-                                        )[0]
-                                      }
+                                      selectedAccount={getValues(
+                                        `receivers.${index}.discoveredAccount`,
+                                      )}
                                       onSelect={(account) => {
                                         if (account) {
                                           field.onChange(account.address);
                                           setValue(
-                                            `receivers.${index}.discoveredAccounts`,
-                                            [account],
-                                          );
-                                          setValue(
-                                            `receivers.${index}.discoveryStatus`,
-                                            'done',
+                                            `receivers.${index}.discoveredAccount`,
+                                            account,
                                           );
                                         } else {
                                           setValue(`receivers.${index}`, {
@@ -576,8 +509,7 @@ export function TransferForm({
                                             chunks: getValues(
                                               `receivers.${index}.chunks`,
                                             ),
-                                            discoveredAccounts: [],
-                                            discoveryStatus: 'not-started',
+                                            discoveredAccount: undefined,
                                           });
                                         }
                                         forceRender((prev) => prev + 1);
@@ -623,9 +555,10 @@ export function TransferForm({
                                       // label={index === 0 ? 'Chain' : undefined}
                                       placeholder="Select a chain"
                                       description={
-                                        rec.chain &&
-                                        redistribution.find(
-                                          (r) => r.target === rec.chain,
+                                        rec.chunks.find(({ chainId }) =>
+                                          redistribution.find(
+                                            (r) => r.target === chainId,
+                                          ),
                                         )
                                           ? `This will trigger balance redistribution`
                                           : ''
@@ -679,72 +612,6 @@ export function TransferForm({
                               the both chains manually
                             </Notification>
                           )}
-                          {rec.discoveredAccounts.length > 1 && (
-                            <Notification role="alert" intent="warning">
-                              <Stack gap="sm">
-                                <span>
-                                  more than one account found with this address,
-                                  please resolve the ambiguity{' '}
-                                  <button
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      setAccountToResolve({
-                                        account: rec,
-                                        index: index,
-                                      });
-                                    }}
-                                  >
-                                    Select correct
-                                  </button>
-                                </span>
-                              </Stack>
-                            </Notification>
-                          )}
-                          {rec.discoveryStatus === 'done' &&
-                            rec.discoveredAccounts.length === 0 && (
-                              <Notification role="alert" intent="warning">
-                                <Stack gap="sm">
-                                  <span>
-                                    This account is not found on the blockchain
-                                    or address book. Please check the address
-                                    and try again. or add missing guard by
-                                    clicking on{' '}
-                                    <button
-                                      onClick={async (e) => {
-                                        e.preventDefault();
-                                        const guard = (await prompt(
-                                          (resolve, reject) => (
-                                            <KeySetForm
-                                              close={reject}
-                                              onDone={resolve}
-                                              isOpen
-                                            />
-                                          ),
-                                        )) as IKeysetGuard;
-                                        if (guard) {
-                                          setValue(
-                                            `receivers.${index}.discoveredAccounts`,
-                                            [
-                                              {
-                                                address: getValues(
-                                                  `receivers.${index}.address`,
-                                                ),
-                                                guard,
-                                                chains: [],
-                                                overallBalance: '0.0',
-                                              },
-                                            ],
-                                          );
-                                          forceRender((prev) => prev + 1);
-                                        }
-                                      }}
-                                    >
-                                      Add account guard
-                                    </button>
-                                  </span>
-                                </Stack>
-                              </Notification>
-                            )}
                         </Stack>
 
                         {error && (
@@ -768,8 +635,7 @@ export function TransferForm({
                                   address: '',
                                   chain: '',
                                   chunks: [],
-                                  discoveredAccounts: [],
-                                  discoveryStatus: 'not-started',
+                                  discoveredAccount: undefined,
                                 },
                               ]);
                             }}
@@ -804,6 +670,7 @@ export function TransferForm({
                   return (
                     <Stack flexDirection={'column'}>
                       <AccountSearchBox
+                        isSenderAccount
                         accounts={filteredAccounts.filter(
                           (account) => account.address,
                         )}
@@ -817,7 +684,8 @@ export function TransferForm({
                             : field.value
                         }
                         onSelect={withEvaluate((account) => {
-                          field.onChange(account ?? null);
+                          console.log('gasPayer', account);
+                          field.onChange(account ? { ...account } : null);
                           forceRender((prev) => prev + 1);
                         })}
                       />

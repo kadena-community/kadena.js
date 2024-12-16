@@ -24,7 +24,11 @@ import {
   TransferForm,
   TrG,
 } from './Steps/TransferForm';
-import { createRedistributionTxs, createTransactions } from './utils';
+import {
+  createRedistributionTxs,
+  createTransactions,
+  IReceiver,
+} from './utils';
 
 export function Transfer() {
   const { getPublicKeyData, activeNetwork, profile } = useWallet();
@@ -95,7 +99,6 @@ export function Transfer() {
       isSafeTransfer: data.type === 'safeTransfer',
       network: activeNetwork!,
       profileId: profile.uuid,
-      mapKeys,
       creationTime: data.creationTime,
     });
   }
@@ -170,7 +173,6 @@ export function Transfer() {
         gasLimit: +formData.gasLimit,
         gasPrice: +formData.gasPrice,
         network: activeNetwork!,
-        mapKeys,
         creationTime: formData.creationTime,
         profileId: profile.uuid,
       });
@@ -271,6 +273,16 @@ export function Transfer() {
                 activityId={urlActivityId}
                 onSubmit={async (data, redistribution) => {
                   if (!isKeysetGuard(data.senderAccount.guard)) return;
+                  if (
+                    !data.receivers.every(
+                      (receiver) => receiver.discoveredAccount,
+                    )
+                  ) {
+                    throw new Error('Discovered account not found');
+                  }
+                  const receivers = data.receivers as Array<
+                    Required<IReceiver>
+                  >;
                   const getEmpty = () => ['', []] as [string, ITransaction[]];
                   let redistributionGroup = getEmpty();
 
@@ -294,7 +306,10 @@ export function Transfer() {
                   const activityId = crypto.randomUUID();
                   await activityRepository.addActivity({
                     data: {
-                      transferData: data,
+                      transferData: {
+                        ...data,
+                        receivers,
+                      },
                       txGroups: {
                         transfer: {
                           groupId: updatedTxGroups.transfer.groupId,

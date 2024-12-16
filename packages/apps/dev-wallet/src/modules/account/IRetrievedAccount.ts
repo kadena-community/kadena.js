@@ -7,4 +7,5 @@ export interface IRetrievedAccount {
   chains: Array<{ chainId: ChainId; balance: string }>;
   overallBalance: string;
   guard: IGuard;
+  keysToSignWith?: string[];
 }
