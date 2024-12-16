@@ -1,6 +1,6 @@
 import { DiscoverdAccounts } from '@/Components/AccountInput/DiscoverdAccounts';
 import { AutoBadge, Chain } from '@/Components/Badge/Badge';
-import { KeySetDialog } from '@/Components/KeysetDialog/KeySetDialog';
+import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { IKeysetGuard } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
@@ -714,7 +714,7 @@ export function TransferForm({
                                         e.preventDefault();
                                         const guard = (await prompt(
                                           (resolve, reject) => (
-                                            <KeySetDialog
+                                            <KeySetForm
                                               close={reject}
                                               onDone={resolve}
                                               isOpen

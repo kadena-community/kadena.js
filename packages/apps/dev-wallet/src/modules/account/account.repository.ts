@@ -47,14 +47,14 @@ export interface IAccount {
     balance: string;
   }>;
   guard: IKeysetGuard;
-  keysetId: string;
+  keysetId?: string;
   alias?: string;
   syncTime?: number;
 }
 
 export type IWatchedAccount = Omit<IAccount, 'guard' | 'keysetId'> & {
   guard: IGuard;
-  watched: true;
+  watched: boolean;
 };
 
 const createAccountRepository = ({
@@ -210,5 +210,5 @@ export const addDefaultFungibles = execInSequence(async () => {
 export const isWatchedAccount = (
   account: IWatchedAccount | IAccount | undefined,
 ): account is IWatchedAccount => {
-  return Boolean(account && 'watched' in account && account.watched);
+  return Boolean(account && 'watched' in account);
 };

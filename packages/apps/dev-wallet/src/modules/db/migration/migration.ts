@@ -7,6 +7,7 @@ import { migrateFrom39to40 } from './migrateFrom39to40';
 import { migrateFrom40to41 } from './migrateFrom40to41';
 import { migrateFrom41to42 } from './migrateFrom41to42';
 import { migrateFrom42to43 } from './migrateFrom42to43';
+import { migrateFrom43to44 } from './migrateFrom43to44';
 
 const { DB_NAME, DB_VERSION } = config.DB;
 
@@ -17,6 +18,7 @@ const migrationMap = {
   40: migrateFrom40to41,
   41: migrateFrom41to42,
   42: migrateFrom42to43,
+  43: migrateFrom43to44,
 };
 
 export async function migration(result: {
@@ -58,6 +60,7 @@ export async function migration(result: {
         migrationMap[fromVersion as keyof typeof migrationMap];
       // we need to add a migration path for each version
       if (migrationPath) {
+        console.log(`migrating from ${fromVersion} to ${fromVersion + 1}`);
         await migrationPath(db, result.versionTransaction);
         continue;
       }

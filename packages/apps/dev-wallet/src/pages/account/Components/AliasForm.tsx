@@ -1,6 +1,7 @@
 import {
   accountRepository,
   IAccount,
+  isWatchedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { Button, Stack, TextField } from '@kadena/kode-ui';
@@ -24,7 +25,7 @@ export function AliasForm({
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if ('watched' in account && account.watched) {
+    if (isWatchedAccount(account)) {
       accountRepository.updateWatchedAccount({
         ...(account as IWatchedAccount),
         alias: aliasVal,

@@ -17,7 +17,7 @@ export const AccountItem: FC<{
     paddingInlineEnd={'sm'}
   >
     <Stack gap={'sm'}>
-      <Text color="inherit" size="smallest">
+      <Text size="smallest">
         {account.alias
           ? `${account.alias} (${shorten(account.address, 10)})`
           : shorten(account.address, 10)}
@@ -32,7 +32,7 @@ export const AccountItem: FC<{
     </Stack>
     <Stack gap={'sm'} alignItems={'center'}>
       {guard && <Guard guard={guard} />}
-      <Text size="smallest" color="inherit" className={balanceClass}>
+      <Text size="smallest" className={balanceClass}>
         Balance: {account.overallBalance}
       </Text>
     </Stack>

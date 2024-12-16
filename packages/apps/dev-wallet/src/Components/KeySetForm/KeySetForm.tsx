@@ -17,7 +17,7 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ListItem } from '../ListItem/ListItem';
 
@@ -29,14 +29,16 @@ interface IKeysetForm {
   alias: string;
 }
 
-export function KeySetDialog({
+export function KeySetForm({
   isOpen,
   close,
   onDone,
+  variant = 'dialog',
 }: {
   isOpen: boolean;
   close: () => void;
   onDone: (keyset: IKeysetGuard) => void;
+  variant?: 'dialog' | 'inline';
 }) {
   const { control, getValues, setValue, handleSubmit } = useForm<IKeysetForm>({
     defaultValues: {
@@ -45,6 +47,8 @@ export function KeySetDialog({
     },
   });
 
+  const [pending, setPending] = useState(false);
+
   const [addedKeys, setAddedKeys] = useState<string[]>([]);
   const addKey = (key: string) => {
     if (addedKeys.includes(key)) return;
@@ -52,6 +56,7 @@ export function KeySetDialog({
   };
 
   async function onSubmit(data: IKeysetForm) {
+    setPending(true);
     const principal = await createPrincipal(
       {
         keyset: {
@@ -66,25 +71,37 @@ export function KeySetDialog({
       pred: data.predicate,
       principal,
     });
+    setPending(false);
   }
 
+  const Content: FC<PropsWithChildren> = ({ children }) => {
+    if (variant === 'dialog') {
+      return (
+        <Dialog
+          isOpen={isOpen}
+          size="sm"
+          onOpenChange={(open) => {
+            if (!open) {
+              close();
+            }
+          }}
+        >
+          {children}
+        </Dialog>
+      );
+    }
+    return <Stack flexDirection={'column'}>{children}</Stack>;
+  };
+
   return (
-    <Dialog
-      isOpen={isOpen}
-      size="sm"
-      onOpenChange={(open) => {
-        if (!open) {
-          close();
-        }
-      }}
-    >
+    <Content>
       <form className={displayContentsClass} onSubmit={handleSubmit(onSubmit)}>
-        <DialogHeader>Create Key Set</DialogHeader>
+        {variant === 'dialog' && <DialogHeader>Create Key Set</DialogHeader>}
         <DialogContent>
           <Stack flexDirection={'column'} gap={'xxxl'}>
             <Stack flexDirection={'column'} gap={'lg'}>
               <Stack flexDirection={'column'} gap={'sm'} flex={1}>
-                <Label bold>External Key</Label>
+                <Label bold>Key</Label>
                 <Stack gap={'sm'}>
                   <Controller
                     name="externalKey"
@@ -141,44 +158,38 @@ export function KeySetDialog({
                     </ListItem>
                   ))}
                 </Stack>
+                <Stack flexDirection={'column'} gap={'sm'} flex={1}>
+                  <Controller
+                    control={control}
+                    name="predicate"
+                    render={({ field }) => (
+                      <Select
+                        label={'Predicate'}
+                        selectedKey={field.value}
+                        onSelectionChange={(val) => {
+                          field.onChange(val);
+                        }}
+                      >
+                        <SelectItem key="keys-all" textValue="keys-all">
+                          keys-all
+                        </SelectItem>
+                        <SelectItem key="keys-any" textValue="keys-any">
+                          keys-any
+                        </SelectItem>
+                        <SelectItem key="keys-2" textValue="keys-2">
+                          keys-2
+                        </SelectItem>
+                      </Select>
+                    )}
+                  />
+                </Stack>
               </Stack>
-              <Stack flexDirection={'column'} gap={'xl'}></Stack>
             </Stack>
-            <Stack flexDirection={'column'} gap={'md'} overflow="auto"></Stack>
           </Stack>
         </DialogContent>
         <DialogFooter>
           <Stack width="100%" flex={1} flexDirection={'column'}>
-            <Stack
-              justifyContent={'space-between'}
-              gap={'md'}
-              marginBlockStart={'lg'}
-            >
-              <Stack flexDirection={'column'} gap={'sm'} flex={1}>
-                <Controller
-                  control={control}
-                  name="predicate"
-                  render={({ field }) => (
-                    <Select
-                      label={'Predicate'}
-                      selectedKey={field.value}
-                      onSelectionChange={(val) => {
-                        field.onChange(val);
-                      }}
-                    >
-                      <SelectItem key="keys-all" textValue="keys-all">
-                        keys-all
-                      </SelectItem>
-                      <SelectItem key="keys-any" textValue="keys-any">
-                        keys-any
-                      </SelectItem>
-                      <SelectItem key="keys-2" textValue="keys-2">
-                        keys-2
-                      </SelectItem>
-                    </Select>
-                  )}
-                />
-              </Stack>
+            <Stack justifyContent={'space-between'} gap={'md'}>
               <Stack
                 gap={'md'}
                 justifyContent={'flex-end'}
@@ -190,7 +201,8 @@ export function KeySetDialog({
                 <Button
                   variant="primary"
                   type="submit"
-                  isDisabled={addedKeys.length < 1}
+                  isDisabled={addedKeys.length < 1 || pending}
+                  isLoading={pending}
                 >
                   Confirm
                 </Button>
@@ -199,6 +211,6 @@ export function KeySetDialog({
           </Stack>
         </DialogFooter>
       </form>
-    </Dialog>
+    </Content>
   );
 }

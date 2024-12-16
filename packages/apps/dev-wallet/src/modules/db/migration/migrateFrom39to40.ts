@@ -12,7 +12,7 @@ export async function migrateFrom39to40(
   db: IDBDatabase,
   transaction: IDBTransaction,
 ) {
-  console.log('migrating from 39 to 40', 'change log:');
+  console.log('change log:');
   changeLog.forEach((log, index) => console.log(index, log));
   const create = createStore(db);
   const activityTemp: ExtendedTableName = `temp:activity-v40:${Date.now()}`;

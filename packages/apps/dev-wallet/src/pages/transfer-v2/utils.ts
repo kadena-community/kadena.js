@@ -272,18 +272,13 @@ export const discoverReceiver = async (
     contract,
   ).execute();
 
-  console.log('result', result);
-
   const rec = getAccount(receiver, result);
 
   if (rec.length === 0) {
-    console.log('Receiver not found!');
     const [fromDb] = await accountRepository.getAccountsByAddress(receiver);
     if (fromDb) {
-      console.log('Receiver found in DB');
       rec.push(fromDb);
     } else if (receiver.startsWith('k:') && receiver.length === 66) {
-      console.log("Add K account to receiver's list");
       rec.push({
         address: receiver,
         overallBalance: '0',

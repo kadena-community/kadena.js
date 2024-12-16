@@ -13,7 +13,7 @@ export async function migrateFrom40to41(
   db: IDBDatabase,
   transaction: IDBTransaction,
 ) {
-  console.log('migrating from 40 to 41', 'change log:');
+  console.log('change log:');
   changeLog.forEach((log, index) => console.log(index, log));
   const update = putItem(db, transaction);
   const allAccounts = await getAllItems(db, transaction)<IAccount>('account');

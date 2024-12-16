@@ -1,6 +1,6 @@
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ComboField } from '@/Components/ComboField/ComboField';
-import { KeySetDialog } from '@/Components/KeysetDialog/KeySetDialog';
+import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import {
@@ -448,7 +448,7 @@ export function AccountSearchBox({
                     e.preventDefault();
                     close();
                     const guard = (await prompt((resolve, reject) => (
-                      <KeySetDialog close={reject} onDone={resolve} isOpen />
+                      <KeySetForm close={reject} onDone={resolve} isOpen />
                     ))) as IGuard;
                     if (guard) {
                       onSelectHandel({
@@ -531,7 +531,7 @@ export function AccountSearchBox({
             )}
             <Guard guard={selectedAccount.guard} />
           </Stack>
-          <Text size="smallest" color="inherit">
+          <Text size="smallest">
             {`${selectedAccount.overallBalance} ${asset?.symbol || contract}`}
           </Text>
         </Stack>

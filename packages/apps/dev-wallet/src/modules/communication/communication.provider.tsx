@@ -1,3 +1,4 @@
+import { useGlobalState } from '@/App/providers/globalState';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
@@ -54,9 +55,8 @@ export const useRequests = () => {
   return requests;
 };
 
-export const CommunicationProvider: FC<
-  PropsWithChildren<{ setOrigin: (pathname: string) => void }>
-> = ({ setOrigin, children }) => {
+export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { setOrigin } = useGlobalState();
   const [requests] = useState(() => new Map<string, Request>());
   const navigate = usePatchedNavigate();
   const { isUnlocked, accounts, profile, networks, activeNetwork } =

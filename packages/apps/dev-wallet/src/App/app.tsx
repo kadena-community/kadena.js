@@ -4,8 +4,9 @@ import { MediaContextProvider, useTheme } from '@kadena/kode-ui';
 import { LayoutProvider } from '@kadena/kode-ui/patterns';
 import { useEffect } from 'react';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
+import { GlobalStateProvider } from './providers/globalState';
+import { SessionProvider } from './providers/session';
 import { Routes } from './routes';
-import { SessionProvider } from './session';
 
 function Providers({ children }: { children: React.ReactNode }) {
   useTheme();
@@ -15,20 +16,22 @@ function Providers({ children }: { children: React.ReactNode }) {
     }
   }, []);
   return (
-    <MediaContextProvider>
-      <LayoutProvider>
-        <SessionProvider>
-          <PromptProvider>
-            <DatabaseProvider>
-              <WalletProvider>
-                {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
-                <PromptProvider>{children}</PromptProvider>
-              </WalletProvider>
-            </DatabaseProvider>
-          </PromptProvider>
-        </SessionProvider>
-      </LayoutProvider>
-    </MediaContextProvider>
+    <GlobalStateProvider>
+      <MediaContextProvider>
+        <LayoutProvider>
+          <SessionProvider>
+            <PromptProvider>
+              <DatabaseProvider>
+                <WalletProvider>
+                  {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
+                  <PromptProvider>{children}</PromptProvider>
+                </WalletProvider>
+              </DatabaseProvider>
+            </PromptProvider>
+          </SessionProvider>
+        </LayoutProvider>
+      </MediaContextProvider>
+    </GlobalStateProvider>
   );
 }
 

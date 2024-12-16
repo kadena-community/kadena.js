@@ -1,4 +1,4 @@
-import { IKeysetGuard, IKeysetRefGuard } from '../account/account.repository';
+import { IGuard } from '../account/account.repository';
 import { dbService, IDBService } from '../db/db.service';
 import { UUID } from '../types';
 
@@ -7,10 +7,8 @@ export interface IContact {
   name: string;
   email?: string;
   account: {
-    networkUUID: UUID;
     address: string;
-    contract: string;
-    guard: IKeysetGuard | IKeysetRefGuard;
+    guard: IGuard;
   };
 }
 

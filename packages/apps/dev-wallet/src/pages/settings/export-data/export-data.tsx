@@ -15,8 +15,11 @@ import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { downloadAsFile } from '../utils/download-file';
 
-const toCSV = (header: string[], data: string[][]) => {
-  return [header.join('\t'), ...data.map((row) => row.join('\t'))].join('\n');
+const toCSV = (table: string, header: string[], data: string[][]) => {
+  return [
+    [table, ...header].join('\t'),
+    ...data.map((row, index) => [index + 1, ...row].join('\t')),
+  ].join('\n');
 };
 
 export function ExportData() {
@@ -37,36 +40,46 @@ export function ExportData() {
     const transactions =
       await transactionRepository.getTransactionList(profileId);
     const header = ['networkId', 'hash', 'cmd', 'sigs', 'status', 'result'];
-    const data = transactions.map((tx) => [
-      networks.find((n) => n.uuid === tx.networkUUID)?.networkId ?? '',
-      tx.hash,
-      tx.cmd,
-      JSON.stringify(tx.sigs),
-      tx.status,
-      tx.result ? JSON.stringify(tx.result) : '',
-    ]);
-    downloadAsFile(toCSV(header, data), 'transactions.csv', 'text/csv');
+    const data = transactions
+      .reverse()
+      .map((tx) => [
+        networks.find((n) => n.uuid === tx.networkUUID)?.networkId ?? '',
+        tx.hash,
+        tx.cmd,
+        JSON.stringify(tx.sigs),
+        tx.status,
+        tx.result ? JSON.stringify(tx.result) : '',
+      ]);
+    downloadAsFile(
+      toCSV('transaction', header, data),
+      'transactions.csv',
+      'text/csv',
+    );
   }
 
   async function exportAccounts() {
     const accounts = await accountRepository.getAccountsByProfileId(profileId);
     const header = [
       'networkId',
+      'contract',
       'alias',
       'address',
       'guard',
       'chains',
       'total-balance',
     ];
-    const data = accounts.map((account) => [
-      networks.find((n) => n.uuid === account.networkUUID)?.networkId ?? '',
-      account.alias ?? '',
-      account.address,
-      JSON.stringify(account.guard),
-      JSON.stringify(account.chains),
-      account.overallBalance,
-    ]);
-    downloadAsFile(toCSV(header, data), 'accounts.csv', 'text/csv');
+    const data = accounts
+      .reverse()
+      .map((account) => [
+        networks.find((n) => n.uuid === account.networkUUID)?.networkId ?? '',
+        account.contract,
+        account.alias ?? '',
+        account.address,
+        JSON.stringify(account.guard),
+        JSON.stringify(account.chains),
+        account.overallBalance,
+      ]);
+    downloadAsFile(toCSV('account', header, data), 'accounts.csv', 'text/csv');
   }
 
   async function exportWatchedAccounts() {
@@ -74,33 +87,43 @@ export function ExportData() {
       await accountRepository.getWatchedAccountsByProfileId(profileId);
     const header = [
       'networkId',
+      'contract',
       'alias',
       'address',
       'guard',
       'chains',
       'total-balance',
     ];
-    const data = accounts.map((account) => [
-      networks.find((n) => n.uuid === account.networkUUID)?.networkId ?? '',
-      account.alias ?? '',
-      account.address,
-      JSON.stringify(account.guard),
-      JSON.stringify(account.chains),
-      account.overallBalance,
-    ]);
-    downloadAsFile(toCSV(header, data), 'watched-accounts.csv', 'text/csv');
+    const data = accounts
+      .reverse()
+      .map((account) => [
+        networks.find((n) => n.uuid === account.networkUUID)?.networkId ?? '',
+        account.contract,
+        account.alias ?? '',
+        account.address,
+        JSON.stringify(account.guard),
+        JSON.stringify(account.chains),
+        account.overallBalance,
+      ]);
+    downloadAsFile(
+      toCSV('watched-account', header, data),
+      'watched-accounts.csv',
+      'text/csv',
+    );
   }
 
   async function exportContacts() {
     const contacts = await contactRepository.getContactsList();
-    const header = ['name', 'email', 'account-address', 'account-guard'];
-    const data = contacts.map((contact) => [
-      contact.name,
-      contact.email ?? '',
-      contact.account.address,
-      JSON.stringify(contact.account.guard),
-    ]);
-    downloadAsFile(toCSV(header, data), 'contacts.csv', 'text/csv');
+    const header = ['name', 'email', 'address', 'guard'];
+    const data = contacts
+      .reverse()
+      .map((contact) => [
+        contact.name,
+        contact.email ?? '',
+        contact.account.address,
+        JSON.stringify(contact.account.guard),
+      ]);
+    downloadAsFile(toCSV('contact', header, data), 'contacts.csv', 'text/csv');
   }
   return (
     <Stack flexDirection={'column'} gap={'md'} alignItems={'flex-start'}>

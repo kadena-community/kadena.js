@@ -70,9 +70,7 @@ export function ContactForm({
     }
     const account: IContact['account'] = {
       address: discoverdAccount.address,
-      contract: 'coin',
       guard: discoverdAccount.guard,
-      networkUUID: activeNetwork!.uuid,
     };
     const contact = {
       ...data,
