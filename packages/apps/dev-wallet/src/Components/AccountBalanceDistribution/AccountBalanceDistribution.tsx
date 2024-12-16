@@ -9,7 +9,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   createRedistributionTxs,
   processRedistribute,
-} from '@/pages/transfer-v2/utils';
+} from '@/pages/transfer/utils';
 import { ChainId, ISigner } from '@kadena/client';
 import { Button, Notification, Stack, Text } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';

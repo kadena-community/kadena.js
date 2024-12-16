@@ -14,8 +14,8 @@ import {
   pendingClass,
   successClass,
 } from '@/pages/transaction/components/style.css';
-import { AccountItem } from '@/pages/transfer-v2/Components/AccountItem';
-import { discoverReceiver } from '@/pages/transfer-v2/utils';
+import { AccountItem } from '@/pages/transfer/Components/AccountItem';
+import { discoverReceiver } from '@/pages/transfer/utils';
 import {
   MonoBackHand,
   MonoCheck,

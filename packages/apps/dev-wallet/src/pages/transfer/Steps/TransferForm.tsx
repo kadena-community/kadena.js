@@ -41,7 +41,7 @@ import { CreationTime } from '../Components/CreationTime';
 import { Label } from '../Components/Label';
 import { TTLSelect } from '../Components/TTLSelect';
 
-export interface Transfer {
+export interface ITransfer {
   fungible: string;
   accountId: string;
   senderAccount: IRetrievedAccount;
@@ -65,7 +65,7 @@ export type Redistribution = {
 interface TransferFormProps {
   accountId?: string | null;
   activityId?: string | null;
-  onSubmit: (formData: Transfer, redistribution: Redistribution[]) => void;
+  onSubmit: (formData: ITransfer, redistribution: Redistribution[]) => void;
 }
 
 export interface TrG {
@@ -95,7 +95,7 @@ export function TransferForm({
   const prompt = usePrompt();
   const [, , AdvancedMode] = useShow(true);
   const [accountToResolve, setAccountToResolve] = useState<{
-    account: Transfer['receivers'][number];
+    account: ITransfer['receivers'][number];
     index: number;
   }>();
   const urlAccount = allAccounts.find((account) => account.uuid === accountId);
@@ -107,7 +107,7 @@ export function TransferForm({
     getValues,
     handleSubmit,
     formState,
-  } = useForm<Transfer>({
+  } = useForm<ITransfer>({
     defaultValues: {
       fungible: urlAccount?.contract ?? fungibles[0].contract,
       accountId: accountId ?? '',
@@ -173,7 +173,7 @@ export function TransferForm({
             }),
           );
           const transferData = activity.data.transferData;
-          const dataToReset: Transfer = {
+          const dataToReset: ITransfer = {
             fungible: account.contract,
             accountId: transferData.accountId,
             senderAccount: transferData.senderAccount,
@@ -264,7 +264,7 @@ export function TransferForm({
     [evaluateTransactions],
   );
 
-  async function onSubmitForm(data: Transfer) {
+  async function onSubmitForm(data: ITransfer) {
     console.log('data', data);
     if (!senderAccount || !profile) return;
     onSubmit(
@@ -514,7 +514,7 @@ export function TransferForm({
                                       rec.discoveryStatus === 'done'
                                         ? 'done'
                                         : 'not-started',
-                                  } as Transfer['receivers'][number];
+                                  } as ITransfer['receivers'][number];
                                   list.splice(index + 1, 0, newItem);
                                   setValue('receivers', list);
                                   evaluateTransactions();

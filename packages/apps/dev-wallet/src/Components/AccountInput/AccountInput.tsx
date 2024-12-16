@@ -1,5 +1,5 @@
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
-import { discoverReceiver } from '@/pages/transfer-v2/utils';
+import { discoverReceiver } from '@/pages/transfer/utils';
 
 import { Guard } from '@/Components/Guard/Guard';
 import {

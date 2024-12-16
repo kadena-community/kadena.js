@@ -19,14 +19,14 @@ import { useSearchParams } from 'react-router-dom';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
 import {
+  ITransfer,
   Redistribution,
-  TrG,
-  Transfer,
   TransferForm,
+  TrG,
 } from './Steps/TransferForm';
 import { createRedistributionTxs, createTransactions } from './utils';
 
-export function TransferV2() {
+export function Transfer() {
   const { getPublicKeyData, activeNetwork, profile } = useWallet();
 
   const navigate = usePatchedNavigate();
@@ -83,7 +83,7 @@ export function TransferV2() {
     transfer: { groupId: '', txs: [] },
   });
 
-  function createTransaction(data: Required<Transfer>) {
+  function createTransaction(data: Required<ITransfer>) {
     if (!data.senderAccount || !profile) return;
     return createTransactions({
       account: data.senderAccount,
@@ -155,7 +155,7 @@ export function TransferV2() {
   );
 
   function createRedistribution(
-    formData: Required<Transfer>,
+    formData: Required<ITransfer>,
     redistribution: Redistribution[],
   ) {
     if (!profile?.uuid) {

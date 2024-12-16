@@ -30,7 +30,7 @@ import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transactions } from '@/pages/transactions/transactions';
-import { TransferV2 } from '@/pages/transfer-v2/transfer-v2';
+import { Transfer } from '@/pages/transfer/transfer';
 import { ImportChainweaverExport } from '@/pages/wallet-recovery/import-chainweaver-export/import-chainweaver-export';
 import { RecoverFromMnemonic } from '@/pages/wallet-recovery/recover-from-mnemonic/recover-from-mnemonic';
 import { WalletRecovery } from '@/pages/wallet-recovery/wallet-recovery';
@@ -123,7 +123,7 @@ export const Routes: FC = () => {
             <Route path="/keyset/:keysetId" element={<Keyset />} />
             <Route path="/fungible/:contract" element={<FungiblePage />} />
             <Route path="/account/:accountId" element={<AccountPage />} />
-            <Route path="/transfer" element={<TransferV2 />} />
+            <Route path="/transfer" element={<Transfer />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/auto-backup" element={<AutoBackup />} />
