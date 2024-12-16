@@ -1,7 +1,6 @@
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
-import { useFreeze } from '@/hooks/freeze';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { getBalance } from '@/services/getBalance';
 import { Button, TextField } from '@kadena/kode-ui';
@@ -33,11 +32,9 @@ export const DistributionForm: FC<IProps> = ({
 }) => {
   const { account } = useAccount();
   const { asset } = useAsset();
-  const { frozen } = useFreeze({ investorAccount });
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
-  const { paused } = useAsset();
-  const { submit } = useDistributeTokens();
+  const { submit, isAllowed } = useDistributeTokens({ investorAccount });
   const [tokenBalance, setTokenBalance] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
@@ -143,10 +140,7 @@ export const DistributionForm: FC<IProps> = ({
               <SendTransactionAnimation
                 onPress={handlePress}
                 trigger={
-                  <Button
-                    isDisabled={frozen || paused || !isValid}
-                    type="submit"
-                  >
+                  <Button isDisabled={!isAllowed || !isValid} type="submit">
                     Distribute
                   </Button>
                 }

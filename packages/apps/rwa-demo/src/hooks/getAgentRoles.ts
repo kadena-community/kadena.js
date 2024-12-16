@@ -3,6 +3,7 @@ import { getAgentRoles } from '@/services/getAgentRoles';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface IAgentHookProps {
+  isMounted: boolean;
   getAll: () => string[];
   isAgentAdmin: () => boolean;
   isSupplyModifier: () => boolean;
@@ -19,10 +20,12 @@ export const useGetAgentRoles = ({
   agent?: string;
 }): IAgentHookProps => {
   const [innerData, setInnerData] = useState<string[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
 
   const initInnerData = async (agentArg: string) => {
     const data = await getAgentRoles({ agent: agentArg });
     setInnerData(data);
+    setIsMounted(true);
   };
 
   useEffect(() => {
@@ -67,6 +70,7 @@ export const useGetAgentRoles = ({
   }, [innerData]);
 
   return {
+    isMounted,
     getAll,
     isAgentAdmin,
     isSupplyModifier,

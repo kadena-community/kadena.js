@@ -1,3 +1,5 @@
+import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { useFreeze } from '@/hooks/freeze';
 import { useFreezeInvestor } from '@/hooks/freezeInvestor';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
@@ -28,6 +30,8 @@ export const FreezeInvestor: FC<IProps> = ({
   isCompact,
   variant,
 }) => {
+  const { accountRoles } = useAccount();
+  const { paused } = useAsset();
   const { frozen } = useFreeze({ investorAccount });
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { submit } = useFreezeInvestor();
@@ -59,6 +63,7 @@ export const FreezeInvestor: FC<IProps> = ({
       trigger={
         <Button
           startVisual={getVisual(frozen, isLoading)}
+          isDisabled={paused || !accountRoles.isFreezer()}
           isCompact={isCompact}
           variant={variant}
         >

@@ -3,13 +3,23 @@ import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartial
 import { togglePartiallyFreezeTokens } from '@/services/togglePartiallyFreezeTokens';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
+import { useFreeze } from './freeze';
 import { useTransactions } from './transactions';
 
-export const useTogglePartiallyFreezeTokens = () => {
-  const { account, sign } = useAccount();
+export const useTogglePartiallyFreezeTokens = ({
+  investorAccount,
+}: {
+  investorAccount: string;
+}) => {
+  const { frozen } = useFreeze({ investorAccount });
+  const { paused } = useAsset();
+  const { account, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (data: ITogglePartiallyFreezeTokensProps) => {
     try {
@@ -34,5 +44,10 @@ export const useTogglePartiallyFreezeTokens = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(!frozen && !paused && accountRoles.isFreezer());
+  }, [frozen, paused, account?.address, isMounted]);
+
+  return { submit, isAllowed };
 };

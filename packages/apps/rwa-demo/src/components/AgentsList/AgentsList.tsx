@@ -17,6 +17,7 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
@@ -27,12 +28,15 @@ export const AgentsList: FC = () => {
   const { accountRoles, isOwner } = useAccount();
   const { data, isLoading } = useGetAgents();
   const { submit } = useRemoveAgent();
+  const router = useRouter();
 
   const handleDelete = async (accountName: any) => {
     await submit({ agent: accountName });
   };
 
-  const handleLink = async (accountName: any) => {};
+  const handleLink = async (accountName: any) => {
+    router.push(`/agents/${accountName}`);
+  };
 
   const isDisabled = paused || (!accountRoles.isAgentAdmin() && !isOwner);
 

@@ -4,13 +4,17 @@ import type { IDeleteIdentityProps } from '@/services/deleteIdentity';
 import { deleteIdentity } from '@/services/deleteIdentity';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
 import { useTransactions } from './transactions';
 
 export const useDeleteInvestor = () => {
-  const { account, sign } = useAccount();
+  const { account, sign, accountRoles, isMounted } = useAccount();
+  const { paused } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (
     data: IDeleteIdentityProps,
@@ -40,5 +44,10 @@ export const useDeleteInvestor = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(!paused && accountRoles.isWhitelistManager());
+  }, [paused, account?.address, isMounted]);
+
+  return { submit, isAllowed };
 };

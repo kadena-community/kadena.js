@@ -1,6 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { useAsset } from '@/hooks/asset';
-import { useFreeze } from '@/hooks/freeze';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
 import { getBalance } from '@/services/getBalance';
 import { getFrozenTokens } from '@/services/getFrozenTokens';
@@ -32,17 +30,19 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { frozen } = useFreeze({ investorAccount });
   const { account } = useAccount();
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
-  const { paused } = useAsset();
+
   const [tokenBalance, setTokenBalance] = useState(0);
   const [frozenData, setFrozenData] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
-  const { submit } = useTogglePartiallyFreezeTokens();
+  const { submit, isAllowed: isPartiallyFreezeTokensAllowed } =
+    useTogglePartiallyFreezeTokens({
+      investorAccount,
+    });
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -159,7 +159,7 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
                 onPress={handlePress}
                 trigger={
                   <Button
-                    isDisabled={frozen || paused || !isValid}
+                    isDisabled={!isPartiallyFreezeTokensAllowed || !isValid}
                     type="submit"
                   >
                     Freeze / UnFreeze
