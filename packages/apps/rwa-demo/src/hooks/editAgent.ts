@@ -17,30 +17,34 @@ export const useEditAgent = () => {
   const submit = async (
     data: IAddAgentProps,
   ): Promise<ITransaction | undefined> => {
-    try {
-      const tx = data.alreadyExists
-        ? await editAgent(data, account!)
-        : await addAgent(data, account!);
+    //try {
+    console.log(11111);
+    const tx = data.alreadyExists
+      ? await editAgent(data, account!)
+      : await addAgent(data, account!);
 
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
+    console.log({ tx });
+    console.log(JSON.parse(tx.cmd));
 
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
+    const signedTransaction = await sign(tx);
+    if (!signedTransaction) return;
 
-      return addTransaction({
-        ...res,
-        type: 'ADDAGENT',
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    } finally {
-      await store.setAccount(data);
-    }
+    const client = getClient();
+    const res = await client.submit(signedTransaction);
+
+    return addTransaction({
+      ...res,
+      type: 'ADDAGENT',
+    });
+    // } catch (e: any) {
+    //   addNotification({
+    //     intent: 'negative',
+    //     label: 'there was an error',
+    //     message: interpretErrorMessage(e.message),
+    //   });
+    // } finally {
+    //   await store.setAccount(data);
+    // }
   };
 
   return { submit };

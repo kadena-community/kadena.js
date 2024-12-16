@@ -25,7 +25,7 @@ import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 
 export const AgentsList: FC = () => {
   const { paused } = useAsset();
-  const { accountRoles } = useAccount();
+  const { accountRoles, isOwner } = useAccount();
   const { data, isLoading } = useGetAgents();
   const { submit } = useRemoveAgent();
   const router = useRouter();
@@ -38,7 +38,7 @@ export const AgentsList: FC = () => {
     router.push(`/agents/${accountName}`);
   };
 
-  const isDisabled = paused || !accountRoles.isAgentAdmin();
+  const isDisabled = paused || (!accountRoles.isAgentAdmin() && !isOwner);
 
   return (
     <>

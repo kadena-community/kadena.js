@@ -31,7 +31,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const { paused } = useAsset();
-  const { accountRoles } = useAccount();
+  const { accountRoles, isOwner } = useAccount();
 
   const {
     handleSubmit,
@@ -78,7 +78,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     handleOnClose();
   };
 
-  const isDisabled = paused || !accountRoles.isAgentAdmin();
+  const isDisabled = paused || (!accountRoles.isAgentAdmin() && !isOwner);
   return (
     <>
       {isRightAsideExpanded && isOpen && (
