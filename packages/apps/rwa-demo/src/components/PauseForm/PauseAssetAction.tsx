@@ -8,7 +8,7 @@ import { PauseForm } from './PauseForm';
 
 export const PauseAssetAction = () => {
   const { paused } = useAsset();
-  const { isAgent } = useAccount();
+  const { accountRoles } = useAccount();
   const [loading, setLoading] = useState(false);
 
   const showIcon = () => {
@@ -23,7 +23,7 @@ export const PauseAssetAction = () => {
       handleSetIsLoading={setLoading}
       trigger={
         <AssetAction
-          isDisabled={!isAgent}
+          isDisabled={!accountRoles.isFreezer()}
           icon={showIcon()}
           label={paused ? 'Contract is paused' : 'Contract is active'}
         />

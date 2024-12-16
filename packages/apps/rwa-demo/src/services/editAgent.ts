@@ -12,7 +12,7 @@ export const editAgent = async (
 ) => {
   return Pact.builder
     .execution(
-      `(${getAsset()}.update-agent-roles (read-string 'agent) (read-msg 'roles))`,
+      `(${getAsset()}.update-agent-roles (read-string 'updated-agent) (read-msg 'roles))`,
     )
     .setMeta({
       senderAccount: account.address,
@@ -22,7 +22,8 @@ export const editAgent = async (
       withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
-    .addData('agent', data.accountName)
+    .addData('agent', account.address)
+    .addData('updated-agent', data.accountName)
     .addData('roles', data.roles)
 
     .setNetworkId(getNetwork().networkId)

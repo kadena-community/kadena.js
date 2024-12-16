@@ -23,6 +23,7 @@ export const useEditAgent = () => {
         : await addAgent(data, account!);
 
       console.log({ tx });
+      console.log(JSON.parse(tx.cmd));
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;

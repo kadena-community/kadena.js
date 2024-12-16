@@ -12,7 +12,6 @@ export const getPrincipalNamespace = async (
 ) => {
   const client = getClient();
 
-  console.log({ data });
   const transaction = Pact.builder
     .execution(
       `(namespace (ns.create-principal-namespace (read-keyset 'keyset)))`,

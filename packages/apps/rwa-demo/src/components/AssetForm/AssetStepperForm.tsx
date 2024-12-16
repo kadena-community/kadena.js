@@ -68,7 +68,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     }
 
     const tx = await submitContract(data);
-    console.log(555, tx);
     if (tx?.result?.status === 'success') {
       setStep(STEPS.DONE);
       const asset = addAsset({

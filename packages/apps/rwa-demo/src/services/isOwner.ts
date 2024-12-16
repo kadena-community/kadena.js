@@ -12,7 +12,6 @@ export const isOwner = async (data: IIsOwnerProps) => {
   const transaction = Pact.builder
     .execution(`(describe-keyset (${getAsset()}.get-owner-guard))`)
     .setMeta({
-      senderAccount: data.owner,
       chainId: getNetwork().chainId,
     })
     .addData('owner', data.owner)
@@ -24,7 +23,7 @@ export const isOwner = async (data: IIsOwnerProps) => {
     signatureVerification: false,
   });
 
-  console.log({ result });
+  console.log(22, { result });
   return true;
   //TODO: fix contract
   // console.log({ result });

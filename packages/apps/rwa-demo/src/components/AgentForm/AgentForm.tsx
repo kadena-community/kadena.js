@@ -1,3 +1,5 @@
+import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import type { IAddAgentProps } from '@/services/addAgent';
@@ -28,6 +30,8 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   const { submit } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { paused } = useAsset();
+  const { accountRoles, isOwner } = useAccount();
 
   const {
     handleSubmit,
@@ -74,6 +78,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     handleOnClose();
   };
 
+  const isDisabled = paused || (!accountRoles.isAgentAdmin() && !isOwner);
   return (
     <>
       {isRightAsideExpanded && isOpen && (
@@ -124,7 +129,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button isDisabled={!isValid} type="submit">
+              <Button isDisabled={!isValid || isDisabled} type="submit">
                 {agent?.accountName ? 'Edit Agent' : 'Add Agent'}
               </Button>
             </RightAsideFooter>

@@ -11,7 +11,6 @@ export const getAgentRoles = async (
 ): Promise<string[]> => {
   const client = getClient();
 
-  console.log({ data });
   const transaction = Pact.builder
     .execution(`(${getAsset()}.get-agent-roles (read-string 'agent))`)
     .setMeta({
@@ -25,7 +24,6 @@ export const getAgentRoles = async (
     preflight: false,
     signatureVerification: false,
   });
-  console.log({ result });
 
   return result.status === 'success'
     ? (result.data as string[])

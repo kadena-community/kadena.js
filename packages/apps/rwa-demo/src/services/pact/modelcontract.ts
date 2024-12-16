@@ -122,7 +122,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   ;; compliance-compatible functions
 
   (defun set-max-balance-per-investor (max-balance-per-investor:decimal)
-    (only-agent AGENT-ADMIN)
+    (only-agent COMPLIANCE)
     (update compliance-parameters "" {
       "max-balance-per-investor": max-balance-per-investor
       }
@@ -130,7 +130,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun set-supply-limit (supply-limit:decimal)
-    (only-agent AGENT-ADMIN)
+    (only-agent COMPLIANCE)
     (update compliance-parameters "" {
       "supply-limit": supply-limit
       }
@@ -138,7 +138,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun set-max-investors (max-investors:decimal)
-    (only-agent AGENT-ADMIN)
+    (only-agent COMPLIANCE)
     (update compliance-parameters "" {
       "max-investors": max-investors
       }
@@ -146,8 +146,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun set-compliance-parameters ()
-    (only-agent AGENT-ADMIN)
-
+    (only-agent COMPLIANCE)
     (let ((compliance-params:object{compliance-input} (read-msg 'compliance-parameters )))
       (update compliance-parameters ""
         compliance-params

@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useGetAgents } from '@/hooks/getAgents';
 import { useRemoveAgent } from '@/hooks/removeAgent';
@@ -16,7 +17,6 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
@@ -24,17 +24,17 @@ import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 
 export const AgentsList: FC = () => {
   const { paused } = useAsset();
+  const { accountRoles, isOwner } = useAccount();
   const { data, isLoading } = useGetAgents();
   const { submit } = useRemoveAgent();
-  const router = useRouter();
 
   const handleDelete = async (accountName: any) => {
     await submit({ agent: accountName });
   };
 
-  const handleLink = async (accountName: any) => {
-    router.push(`/agents/${accountName}`);
-  };
+  const handleLink = async (accountName: any) => {};
+
+  const isDisabled = paused || (!accountRoles.isAgentAdmin() && !isOwner);
 
   return (
     <>
@@ -47,7 +47,7 @@ export const AgentsList: FC = () => {
               <AgentForm
                 trigger={
                   <Button
-                    isDisabled={paused}
+                    isDisabled={isDisabled}
                     isCompact
                     endVisual={<MonoSupportAgent />}
                     variant="outlined"
@@ -105,6 +105,7 @@ export const AgentsList: FC = () => {
                         onPress={handleDelete}
                         trigger={
                           <Button
+                            isDisabled={isDisabled}
                             isCompact
                             variant="outlined"
                             startVisual={<MonoDelete />}
