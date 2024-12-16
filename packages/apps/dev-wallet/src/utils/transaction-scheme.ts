@@ -5,14 +5,18 @@ export type RequestScheme =
   | 'invalid'
   | 'quickSignRequest'
   | 'signingRequest'
-  | 'PactCommand';
+  | 'PactCommand'
+  | 'base64';
 
-export function determineSchema(input: string): RequestScheme {
+export function determineSchema(
+  input: string,
+  triedBase64: boolean = false,
+): RequestScheme {
   try {
     // TODO: pase YAML as well
     const json: any = yaml.load(input);
     if (!json || typeof json !== 'object') {
-      return 'invalid';
+      throw new Error('Invalid JSON');
     }
     if ('cmd' in json) {
       JSON.parse(json.cmd);
@@ -25,7 +29,20 @@ export function determineSchema(input: string): RequestScheme {
       return 'PactCommand';
     }
   } catch (e) {
-    return 'invalid';
+    try {
+      if (triedBase64) {
+        return 'invalid';
+      }
+      console.log('try base64');
+      if (
+        determineSchema(Buffer.from(input, 'base64').toString(), true) !==
+        'invalid'
+      ) {
+        return 'base64';
+      }
+    } catch (e) {
+      return 'invalid';
+    }
   }
   return 'invalid';
 }
