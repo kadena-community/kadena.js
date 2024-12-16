@@ -9,7 +9,7 @@ import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import { ChainId, createTransaction, ISigner } from '@kadena/client';
+import { ChainId, createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
   discoverAccount,

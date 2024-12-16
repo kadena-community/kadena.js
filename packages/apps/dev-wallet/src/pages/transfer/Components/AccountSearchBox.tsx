@@ -18,7 +18,7 @@ import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useEffect, useRef, useState } from 'react';
 
-import { KeySelector } from '@/Components/Guard/keyselector';
+import { KeySelector } from '@/Components/Guard/KeySelector';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Guard } from '../../../Components/Guard/Guard';

@@ -1,10 +1,8 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
-import { ISigner } from '@kadena/client';
-
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { isKeysetGuard } from '@/modules/account/guards';
@@ -31,7 +29,7 @@ import {
 } from './utils';
 
 export function Transfer() {
-  const { getPublicKeyData, activeNetwork, profile } = useWallet();
+  const { activeNetwork, profile } = useWallet();
 
   const navigate = usePatchedNavigate();
   const [searchParams] = useSearchParams();
@@ -135,27 +133,6 @@ export function Transfer() {
     }
     setTxGroups(upd);
   };
-
-  const mapKeys = useCallback(
-    (key: ISigner) => {
-      if (typeof key === 'object') return key;
-      const info = getPublicKeyData(key);
-      if (info && info.scheme) {
-        return {
-          pubKey: key,
-          scheme: info.scheme,
-        };
-      }
-      if (key.startsWith('WEBAUTHN')) {
-        return {
-          pubKey: key,
-          scheme: 'WebAuthn' as const,
-        };
-      }
-      return key;
-    },
-    [getPublicKeyData],
-  );
 
   function createRedistribution(
     formData: Required<ITransfer>,

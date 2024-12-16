@@ -10,11 +10,11 @@ import {
   createRedistributionTxs,
   processRedistribute,
 } from '@/pages/transfer/utils';
-import { ChainId, ISigner } from '@kadena/client';
+import { ChainId } from '@kadena/client';
 import { Button, Notification, Stack, Text } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import type { FC, PropsWithChildren } from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ChainList } from './components/ChainList';
 import { divideChains, processChainAccounts } from './processChainAccounts';
@@ -36,7 +36,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
   account,
   onRedistribution,
 }) => {
-  const { activeNetwork, getPublicKeyData, profile } = useWallet();
+  const { activeNetwork, profile } = useWallet();
   const [availableBalance, setAvailableBalance] = useState(overallBalance);
   const chainLists = useMemo(() => {
     const enrichedChains = processChainAccounts(
@@ -97,27 +97,6 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     return redistribution.length;
   }
 
-  const mapKeys = useCallback(
-    (key: ISigner) => {
-      if (typeof key === 'object') return key;
-      const info = getPublicKeyData(key);
-      if (info && info.scheme) {
-        return {
-          pubKey: key,
-          scheme: info.scheme,
-        };
-      }
-      if (key.startsWith('WEBAUTHN')) {
-        return {
-          pubKey: key,
-          scheme: 'WebAuthn' as const,
-        };
-      }
-      return key;
-    },
-    [getPublicKeyData],
-  );
-
   async function onSubmit(data: { chains: typeof flatChains }) {
     if (isWatchedAccount(account)) return;
     const chainBalance = data.chains.map((chain) => ({
@@ -139,7 +118,6 @@ export const AccountBalanceDistribution: FC<IProps> = ({
       gasPrice,
       network: activeNetwork!,
       redistribution,
-      mapKeys,
       creationTime: Math.round(Date.now() / 1000),
       profileId: account.profileId,
     });
