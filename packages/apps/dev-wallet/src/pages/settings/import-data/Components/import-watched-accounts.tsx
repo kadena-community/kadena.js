@@ -314,7 +314,7 @@ export function ImportWatchedAccounts({
                           gap={'sm'}
                           className={successClass}
                         >
-                          <MonoWarning /> Saved!
+                          <MonoCheck /> Saved!
                         </Stack>
                       )}
                       {account.verify === 'error' && (

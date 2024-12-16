@@ -321,9 +321,9 @@ export function ImportContacts({
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
-                          className={pendingClass}
+                          className={successClass}
                         >
-                          <MonoWarning /> Saved!
+                          <MonoCheck /> Saved!
                         </Stack>
                       )}
                       {contact.verify === 'error' && (
