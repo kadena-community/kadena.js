@@ -40,6 +40,9 @@ export function AccountSearchBox({
   selectedAccount,
   onDiscoveryChange,
   isSenderAccount,
+  errorMessage,
+  isInvalid,
+  hideKeySelector,
 }: {
   accounts?: IAccount[];
   contacts?: IContact[];
@@ -50,6 +53,9 @@ export function AccountSearchBox({
   selectedAccount?: IRetrievedAccount;
   onDiscoveryChange?: (discovering: boolean) => void;
   isSenderAccount?: boolean;
+  errorMessage?: string;
+  isInvalid?: boolean;
+  hideKeySelector?: boolean;
 }) {
   const prompt = usePrompt();
   const [showDisabled, setShowDisabled] = useState(false);
@@ -252,6 +258,8 @@ export function AccountSearchBox({
         description={getDescription()}
         type="text"
         size="sm"
+        isInvalid={isInvalid}
+        errorMessage={errorMessage}
         info={selectedAccount?.alias ? `Alias: ${selectedAccount.alias}` : ''}
         onOpen={() => {
           setPopoverIsOpen(true);
@@ -567,7 +575,7 @@ export function AccountSearchBox({
             ) : (
               ''
             )}
-            {needToSelectKeys(selectedAccount.guard) ? (
+            {!hideKeySelector && needToSelectKeys(selectedAccount.guard) ? (
               <KeySelector
                 guard={selectedAccount.guard}
                 selectedKeys={selectedAccount.keysToSignWith ?? []}

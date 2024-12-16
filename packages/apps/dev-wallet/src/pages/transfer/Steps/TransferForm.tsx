@@ -30,7 +30,12 @@ import {
 } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
-import { IReceiver, getAvailableChains, getTransfers } from '../utils';
+import {
+  IReceiver,
+  getAvailableChains,
+  getTransfers,
+  needToSelectKeys,
+} from '../utils';
 
 import { AccountSearchBox } from '../Components/AccountSearchBox';
 import { CreationTime } from '../Components/CreationTime';
@@ -68,6 +73,27 @@ export interface TrG {
   groupId: string;
   txs: ITransaction[];
 }
+
+const validateAccount =
+  (isSender = true, selectKeys = true) =>
+  (account?: IRetrievedAccount) => {
+    if (!account) return 'Please select an account';
+    if (selectKeys && needToSelectKeys(account.guard)) {
+      if (!account.keysToSignWith || !account.keysToSignWith.length) {
+        return 'Please select the keys to sign with';
+      }
+      if (
+        account.guard.pred === 'keys-2' &&
+        account.keysToSignWith.length < 2
+      ) {
+        return 'Please select 2 keys to sign with';
+      }
+    }
+    if (isSender && new PactNumber(account.overallBalance).lte(0)) {
+      return 'The account has no balance';
+    }
+    return true;
+  };
 
 export function TransferForm({
   accountId,
@@ -122,7 +148,7 @@ export function TransferForm({
     },
   });
 
-  console.log('formState.errors', formState.errors);
+  console.log('formState', formState);
   const [redistribution, setRedistribution] = useState(
     [] as {
       source: ChainId;
@@ -232,6 +258,8 @@ export function TransferForm({
         'receivers',
         receivers.map((receiver, index) => ({
           ...receiver,
+          address:
+            receiver.address || receiver.discoveredAccount?.address || '',
           chunks: transfers[index].chunks,
         })),
       );
@@ -290,7 +318,7 @@ export function TransferForm({
               name="fungible"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => (
+              render={({ field, fieldState: { error } }) => (
                 <Select
                   // label="Token"
                   aria-label="Asset"
@@ -299,6 +327,8 @@ export function TransferForm({
                   size="sm"
                   selectedKey={field.value}
                   onSelectionChange={withEvaluate(field.onChange)}
+                  errorMessage={'Please select an asset'}
+                  isInvalid={!!error}
                 >
                   {fungibles.map((f) => (
                     <SelectItem key={f.contract}>{f.symbol}</SelectItem>
@@ -309,8 +339,10 @@ export function TransferForm({
             <Controller
               name={`senderAccount`}
               control={control}
-              rules={{ required: true }}
-              render={({ field }) => {
+              rules={{
+                validate: validateAccount(),
+              }}
+              render={({ field, fieldState: { error } }) => {
                 return (
                   <Stack flexDirection={'column'}>
                     <AccountSearchBox
@@ -328,6 +360,10 @@ export function TransferForm({
                         field.onChange(account);
                         forceRender((prev) => prev + 1);
                       })}
+                      errorMessage={
+                        error?.message || 'Please check the account'
+                      }
+                      isInvalid={!!error}
                     />
                   </Stack>
                 );
@@ -473,10 +509,12 @@ export function TransferForm({
                             justifyContent={'flex-start'}
                           >
                             <Controller
-                              name={`receivers.${index}.address`}
+                              name={`receivers.${index}.discoveredAccount`}
                               control={control}
-                              rules={{ required: true }}
-                              render={({ field }) => {
+                              rules={{
+                                validate: validateAccount(false, false),
+                              }}
+                              render={({ field, fieldState: { error } }) => {
                                 return (
                                   <Stack flexDirection={'column'}>
                                     <AccountSearchBox
@@ -485,19 +523,25 @@ export function TransferForm({
                                           account.address !==
                                           senderAccount?.address,
                                       )}
+                                      hideKeySelector={
+                                        getValues('type') !== 'safeTransfer'
+                                      }
                                       watchedAccounts={filteredWatchedAccounts}
                                       contacts={contacts}
                                       network={activeNetwork!}
                                       contract={watchFungibleType}
-                                      selectedAccount={getValues(
-                                        `receivers.${index}.discoveredAccount`,
-                                      )}
+                                      selectedAccount={field.value}
+                                      errorMessage={
+                                        error?.message ||
+                                        'Please check the account'
+                                      }
+                                      isInvalid={!!error}
                                       onSelect={(account) => {
                                         if (account) {
-                                          field.onChange(account.address);
+                                          field.onChange(account);
                                           setValue(
-                                            `receivers.${index}.discoveredAccount`,
-                                            account,
+                                            `receivers.${index}.address`,
+                                            account.address,
                                           );
                                         } else {
                                           setValue(`receivers.${index}`, {
@@ -526,7 +570,7 @@ export function TransferForm({
                                 min: 0,
                                 required: true,
                               }}
-                              render={({ field }) => (
+                              render={({ field, fieldState: { error } }) => (
                                 <TextField
                                   aria-label="Amount"
                                   onChange={(e) => {
@@ -540,6 +584,8 @@ export function TransferForm({
                                   size="sm"
                                   type="number"
                                   step="1"
+                                  isInvalid={!!error}
+                                  errorMessage={'Please enter a valid amount'}
                                 />
                               )}
                             />
@@ -666,7 +712,13 @@ export function TransferForm({
               <Controller
                 name={`gasPayer`}
                 control={control}
-                render={({ field }) => {
+                rules={{
+                  validate: (value) =>
+                    validateAccount()(
+                      value === undefined ? getValues('senderAccount') : value,
+                    ),
+                }}
+                render={({ field, fieldState: { error } }) => {
                   return (
                     <Stack flexDirection={'column'}>
                       <AccountSearchBox
@@ -688,6 +740,10 @@ export function TransferForm({
                           field.onChange(account ? { ...account } : null);
                           forceRender((prev) => prev + 1);
                         })}
+                        errorMessage={
+                          error?.message || 'Please check the account'
+                        }
+                        isInvalid={!!error}
                       />
                     </Stack>
                   );
@@ -696,7 +752,8 @@ export function TransferForm({
               <Controller
                 name="gasPrice"
                 control={control}
-                render={({ field }) => (
+                rules={{ required: true, min: 0 }}
+                render={({ field, fieldState: { error } }) => (
                   <TextField
                     aria-label="Gas Price"
                     startVisual={<Label>Gas Price:</Label>}
@@ -711,13 +768,16 @@ export function TransferForm({
                     defaultValue="0.00000001"
                     type="number"
                     step="0.00000001"
+                    isInvalid={!!error}
+                    errorMessage={'Please enter a valid gas price'}
                   />
                 )}
               />
               <Controller
                 name="gasLimit"
                 control={control}
-                render={({ field }) => (
+                rules={{ required: true, min: 0 }}
+                render={({ field, fieldState: { error } }) => (
                   <TextField
                     aria-label="Enter gas limit"
                     placeholder="Enter gas limit"
@@ -730,6 +790,8 @@ export function TransferForm({
                     size="sm"
                     defaultValue="2500"
                     type="number"
+                    isInvalid={!!error}
+                    errorMessage={'Please enter a valid gas limit'}
                   />
                 )}
               />
@@ -787,6 +849,7 @@ export function TransferForm({
                   onChange={(value) => {
                     console.log('value', value);
                     field.onChange(value);
+                    forceRender((prev) => prev + 1);
                   }}
                 >
                   <Radio value="normalTransfer">
@@ -817,6 +880,12 @@ export function TransferForm({
             />
           </AdvancedMode>
         </Stack>
+        {!formState.isValid && formState.isSubmitted && (
+          <Notification role="alert" intent="negative">
+            Invalid Data, Please check the inputs (
+            {Object.keys(formState.errors).join(', ')})
+          </Notification>
+        )}
         <Stack justifyContent={'flex-start'} gap="sm" marginBlockStart={'lg'}>
           <Button type="submit">Create Transactions</Button>
         </Stack>

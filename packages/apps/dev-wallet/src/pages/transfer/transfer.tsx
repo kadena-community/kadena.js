@@ -224,7 +224,7 @@ export function Transfer() {
           Transfer
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Stack flexDirection={'column'} width="100%">
+      <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
         <Stepper direction="horizontal">
           <Step
             icon={<MonoSwapHoriz />}
