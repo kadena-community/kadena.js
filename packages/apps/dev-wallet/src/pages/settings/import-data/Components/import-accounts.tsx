@@ -72,7 +72,7 @@ export function ImportAccounts({
     useState<IImportedAccount[]>();
 
   const profileId = profile?.uuid as UUID;
-  const networkId = activeNetwork?.uuid as UUID;
+  const networkId = activeNetwork?.networkId as string;
 
   const importData = useCallback(
     async function importData() {
@@ -323,9 +323,9 @@ export function ImportAccounts({
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
-                          className={pendingClass}
+                          className={successClass}
                         >
-                          <MonoWarning /> Saved!
+                          <MonoCheck /> Saved!
                         </Stack>
                       )}
                       {account.verify === 'error' && (

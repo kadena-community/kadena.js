@@ -7,6 +7,7 @@ import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { ImportAccounts } from './Components/import-accounts';
+import { ImportContacts } from './Components/import-contacts';
 import { ImportWatchedAccounts } from './Components/import-watched-accounts';
 
 const csvToTable = (csv: string) => {
@@ -126,7 +127,7 @@ export function ImportData() {
         <ImportWatchedAccounts content={fileContent} />
       )}
       {selectedType === 'contact' && fileContent && (
-        <Text>Not implemented yet!</Text>
+        <ImportContacts content={fileContent} />
       )}
     </Stack>
   );

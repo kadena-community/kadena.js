@@ -12,6 +12,7 @@ import {
   IAccount,
   IGuard,
   IKeySet,
+  isWatchedAccount,
   IWatchedAccount,
 } from './account.repository';
 
@@ -292,7 +293,7 @@ export const syncAccount = async (account: IAccount | IWatchedAccount) => {
     '0',
   );
   patch.syncTime = Date.now();
-  if ('watched' in account && account.watched) {
+  if (isWatchedAccount(account)) {
     return accountRepository.patchWatchedAccount(account.uuid, patch);
   }
   return accountRepository.patchAccount(
@@ -321,7 +322,7 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
 
   await Promise.all(
     accountsToSync.map((account) =>
-      'watched' in account
+      isWatchedAccount(account)
         ? accountRepository.patchWatchedAccount(account.uuid, { syncTime: now })
         : accountRepository.patchAccount(account.uuid, { syncTime: now }),
     ),

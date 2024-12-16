@@ -77,7 +77,7 @@ export function AccountPage() {
   }
 
   const fundAccountHandler = async (chainId: ChainId) => {
-    if ('watched' in account && account.watched) {
+    if (isWatchedAccount(account)) {
       throw new Error('Can not fund watched account');
     }
     if (!isKeysetGuard(account.guard)) {

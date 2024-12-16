@@ -1,12 +1,12 @@
 import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
-import {
-  accountRepository,
-  IAccount,
-  IGuard,
-  IWatchedAccount,
-} from '@/modules/account/account.repository';
+import { IGuard } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
+import {
+  contactRepository,
+  IContact,
+} from '@/modules/contact/contact.repository';
 import { UUID } from '@/modules/types';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
@@ -16,6 +16,7 @@ import {
 } from '@/pages/transaction/components/style.css';
 import { AccountItem } from '@/pages/transfer-v2/Components/AccountItem';
 import { discoverReceiver } from '@/pages/transfer-v2/utils';
+import { createPrincipal } from '@kadena/client-utils/built-in';
 import {
   MonoBackHand,
   MonoCheck,
@@ -35,18 +36,13 @@ const parseJSON = (json: string) => {
   }
 };
 
-interface IImportedAccount {
+interface IImportedContact {
   uuid: UUID;
-  networkUUID: UUID | undefined;
-  networkId: string;
-  profileId: UUID;
-  contract: string;
-  alias: string;
+  name: string;
+  email?: string;
   address: string;
-  guard: IGuard | undefined;
-  chains: IAccount['chains'] | undefined;
-  overallBalance: string;
-  watched: true;
+  guard: IGuard;
+  overallBalance?: string;
   verify:
     | 'pending'
     | 'verified'
@@ -59,7 +55,7 @@ interface IImportedAccount {
   discoveredResult?: IRetrievedAccount[];
 }
 
-export function ImportWatchedAccounts({
+export function ImportContacts({
   content,
 }: {
   content: {
@@ -68,9 +64,17 @@ export function ImportWatchedAccounts({
     data: string[][];
   };
 }) {
-  const { profile, activeNetwork, networks } = useWallet();
-  const [importedAccounts, setImportedAccounts] =
-    useState<IImportedAccount[]>();
+  const { profile, activeNetwork } = useWallet();
+
+  const updateItem = (index: number, data: IImportedContact) =>
+    setImportedContacts((acc = []) => {
+      const newAccounts = [...acc];
+      newAccounts[index] = data;
+      return newAccounts;
+    });
+
+  const [importedContacts, setImportedContacts] =
+    useState<IImportedContact[]>();
 
   const profileId = profile?.uuid as UUID;
   const networkId = activeNetwork?.networkId as string;
@@ -79,85 +83,83 @@ export function ImportWatchedAccounts({
     async function importData() {
       if (!content || !networkId || !profileId) return;
       const { data } = content;
-
-      const accounts: IImportedAccount[] = data
+      const contacts: IImportedContact[] = data
         .map((row) => {
-          const [
-            networkId,
-            contract,
-            alias,
-            address,
-            guard,
-            chains,
-            overallBalance,
-          ] = row;
+          const [name, email, address, guard] = row;
 
           return {
             uuid: crypto.randomUUID(),
-            watched: true as const,
-            networkUUID: networks.find((n) => n.networkId === networkId)?.uuid,
-            networkId,
-            profileId,
-            contract,
-            alias,
+            name,
+            email,
             address,
             guard: parseJSON(guard),
-            chains: parseJSON(chains),
-            overallBalance,
             verify: 'pending' as const,
           };
         })
-        .filter((account) => account.address);
+        .filter((contact) => contact.address);
 
-      setImportedAccounts(accounts);
+      setImportedContacts(contacts);
 
-      for (const [index, account] of accounts.entries()) {
+      for (const [index, contact] of contacts.entries()) {
         const chainData = await discoverReceiver(
-          account.address,
-          account.networkId,
-          account.contract,
+          contact.address,
+          networkId,
+          'coin',
         );
-        account.discoveredResult = chainData;
+        contact.discoveredResult = chainData;
         console.log('chainData', chainData);
         if (!chainData.length) {
-          account.verify = 'not-found';
+          if (isKeysetGuard(contact.guard)) {
+            const principal = await createPrincipal(
+              { keyset: contact.guard },
+              {},
+            );
+            if (
+              !contact.guard.principal ||
+              contact.guard.principal === principal
+            ) {
+              contact.guard.principal = principal;
+              contact.verify = 'verified';
+            } else {
+              contact.verify = 'not-found';
+            }
+          } else {
+            contact.verify = 'not-found';
+          }
         }
         if (chainData.length === 1) {
           if (
-            !account.guard ||
-            !Object.keys(account.guard).length ||
-            hasSameGuard(account.guard, chainData[0].guard)
+            !contact.guard ||
+            !Object.keys(contact.guard).length ||
+            hasSameGuard(contact.guard, chainData[0].guard)
           ) {
-            account.verify = 'verified';
-            account.guard = chainData[0].guard;
-            account.overallBalance = chainData[0].overallBalance;
-            account.chains = chainData[0].chains;
+            contact.verify = 'verified';
+            contact.guard = chainData[0].guard;
+            contact.overallBalance = chainData[0].overallBalance;
+            // TODO: we don't store this data in the contact; if we decide to add them we can use these data as well
+            // contact.chains = chainData[0].chains;
           } else {
-            account.verify = 'different-guard';
+            contact.verify = 'different-guard';
           }
         }
         if (chainData.length > 1) {
           const correct = chainData.find((chain) =>
-            hasSameGuard(account.guard, chain.guard),
+            hasSameGuard(contact.guard, chain.guard),
           );
           if (correct) {
-            account.verify = 'verified';
-            account.guard = correct.guard;
-            account.overallBalance = correct.overallBalance;
-            account.chains = correct.chains;
+            contact.verify = 'verified';
+            contact.guard = correct.guard;
+            contact.overallBalance = correct.overallBalance;
+            // contact.chains = correct.chains;
           } else {
-            account.verify = 'several-accounts';
+            contact.verify = 'several-accounts';
           }
         }
 
-        setImportedAccounts((acc = []) => {
-          const newAccounts = [...acc];
-          newAccounts[index] = account;
-          return newAccounts;
-        });
+        updateItem(index, contact);
       }
     },
-    [content, networkId, networks, profileId],
+    [content, networkId, profileId],
   );
 
   useEffect(() => {
@@ -172,76 +174,76 @@ export function ImportWatchedAccounts({
     );
   }
 
-  const allVerified = importedAccounts?.every(
+  const allVerified = importedContacts?.every(
     (account) => account.verify === 'verified',
   );
 
-  function saveImportedAccounts() {
-    if (!importedAccounts) return;
-    const accounts: IWatchedAccount[] = importedAccounts
+  function saveImportedContacts() {
+    if (!importedContacts) return;
+    const contacts: IContact[] = importedContacts
       .map((acc) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { discoveredResult, verify, ...account } = acc;
-        return account;
+        const { name, email, address, guard, uuid } = acc;
+        return {
+          uuid,
+          name,
+          email,
+          account: {
+            address,
+            guard,
+          },
+        };
       })
-      .filter((acc) => acc) as IWatchedAccount[];
+      .filter((acc) => acc) as IContact[];
 
-    accounts.map((account, index) =>
-      accountRepository
-        .addWatchedAccount(account)
+    contacts.map((account, index) =>
+      contactRepository
+        .addContact(account)
         .then(() => {
           console.log('saved', account);
-          importedAccounts[index].verify = 'saved';
-          setImportedAccounts((acc = []) => {
-            const newAccounts = [...acc];
-            newAccounts[index] = importedAccounts[index];
-            return newAccounts;
-          });
+          importedContacts[index].verify = 'saved';
+          updateItem(index, importedContacts[index]);
         })
         .catch(() => {
           console.log('error', account);
-          importedAccounts[index].verify = 'error';
-          setImportedAccounts((acc = []) => {
-            const newAccounts = [...acc];
-            newAccounts[index] = importedAccounts[index];
-            return newAccounts;
-          });
+          importedContacts[index].verify = 'error';
+          updateItem(index, importedContacts[index]);
         }),
     );
   }
 
   return (
     <Stack flexDirection={'column'} gap={'md'} alignItems={'flex-start'}>
-      {!importedAccounts && <Text>Loading...</Text>}
-      {importedAccounts && (
+      {!importedContacts && <Text>Loading...</Text>}
+      {importedContacts && (
         <Stack gap="md" flexDirection={'column'}>
-          <Heading variant="h5">Accounts to Discover</Heading>
+          <Heading variant="h5">Contacts to Discover</Heading>
           {allVerified && (
             <Notification intent="positive" role="status">
-              All accounts are verified you can now save them{' '}
+              All contact are verified you can now save them{' '}
             </Notification>
           )}
           {!allVerified && (
             <Text>
-              Please wait till we verify the account with the blockchain
+              Please wait till we verify the contacts guard with the blockchain
             </Text>
           )}
 
           <Stack gap={'sm'}>
-            <Button isDisabled={!allVerified} onPress={saveImportedAccounts}>
+            <Button isDisabled={!allVerified} onPress={saveImportedContacts}>
               Save
             </Button>
           </Stack>
 
           <Stack gap="xs" flexDirection={'column'}>
-            {importedAccounts.map((account, index) => (
+            {importedContacts.map((contact, index) => (
               <Stack
                 flexDirection={'column'}
                 gap={'sm'}
-                key={account.address}
+                key={contact.name}
                 className={
-                  account.verify === 'several-accounts' ||
-                  account.verify === 'not-found'
+                  contact.verify === 'several-accounts' ||
+                  contact.verify === 'not-found'
                     ? needActionClass
                     : ''
                 }
@@ -253,7 +255,14 @@ export function ImportWatchedAccounts({
                     paddingBlock={'xs'}
                     paddingInline={'md'}
                   >
-                    <AccountItem account={account} guard={account.guard} />
+                    <AccountItem
+                      account={{
+                        address: contact.address,
+                        alias: contact.name,
+                        overallBalance: contact.overallBalance ?? 'N/A',
+                      }}
+                      guard={contact.guard}
+                    />
                   </Stack>
 
                   <Stack
@@ -263,7 +272,7 @@ export function ImportWatchedAccounts({
                     alignItems={'center'}
                   >
                     <Text size="small">
-                      {account.verify === 'pending' && (
+                      {contact.verify === 'pending' && (
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
@@ -272,7 +281,7 @@ export function ImportWatchedAccounts({
                           <MonoLoading /> Checking
                         </Stack>
                       )}
-                      {account.verify === 'verified' && (
+                      {contact.verify === 'verified' && (
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
@@ -281,7 +290,7 @@ export function ImportWatchedAccounts({
                           <MonoCheck /> verified
                         </Stack>
                       )}
-                      {account.verify === 'several-accounts' && (
+                      {contact.verify === 'several-accounts' && (
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
@@ -290,7 +299,7 @@ export function ImportWatchedAccounts({
                           <MonoBackHand /> Warning
                         </Stack>
                       )}
-                      {account.verify === 'not-found' && (
+                      {contact.verify === 'not-found' && (
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
@@ -299,7 +308,7 @@ export function ImportWatchedAccounts({
                           <MonoWarning /> Not Found
                         </Stack>
                       )}
-                      {account.verify === 'different-guard' && (
+                      {contact.verify === 'different-guard' && (
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
@@ -308,35 +317,35 @@ export function ImportWatchedAccounts({
                           <MonoStop /> Different Guard
                         </Stack>
                       )}
-                      {account.verify === 'saved' && (
+                      {contact.verify === 'saved' && (
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
-                          className={successClass}
+                          className={pendingClass}
                         >
                           <MonoWarning /> Saved!
                         </Stack>
                       )}
-                      {account.verify === 'error' && (
+                      {contact.verify === 'error' && (
                         <Stack
                           alignItems={'center'}
                           gap={'sm'}
-                          className={failureClass}
+                          className={pendingClass}
                         >
-                          <MonoWarning /> Error (duplicate)
+                          <MonoWarning /> Skipped (duplicate)
                         </Stack>
                       )}
                     </Text>
                   </Stack>
                 </Stack>
-                {account.verify === 'several-accounts' && (
+                {contact.verify === 'several-accounts' && (
                   <Stack gap="xs" flexDirection={'column'}>
                     <Text>
-                      {account.discoveredResult?.length} accounts found with the
+                      {contact.discoveredResult?.length} accounts found with the
                       same address; select one of them.
                     </Text>
                     <Stack gap="xs" flexDirection={'column'}>
-                      {account.discoveredResult?.map((acc) => (
+                      {contact.discoveredResult?.map((acc) => (
                         <Stack key={acc.address} gap={'xs'}>
                           <Stack
                             flex={1}
@@ -351,16 +360,10 @@ export function ImportWatchedAccounts({
                               isCompact
                               variant="outlined"
                               onClick={() => {
-                                account.guard = acc.guard;
-                                account.overallBalance = acc.overallBalance;
-                                account.chains = acc.chains;
-                                account.verify = 'verified';
-                                account.discoveredResult = [acc];
-                                setImportedAccounts((accounts = []) => {
-                                  const newAccounts = [...accounts];
-                                  newAccounts[index] = account;
-                                  return newAccounts;
-                                });
+                                contact.guard = acc.guard;
+                                contact.verify = 'verified';
+                                contact.discoveredResult = [acc];
+                                updateItem(index, contact);
                               }}
                             >
                               Select
@@ -371,7 +374,7 @@ export function ImportWatchedAccounts({
                     </Stack>
                   </Stack>
                 )}
-                {account.verify === 'not-found' && (
+                {contact.verify === 'not-found' && (
                   <Stack gap="xs" flexDirection={'column'}>
                     <Text>
                       No account found with the address; please check the
@@ -383,13 +386,9 @@ export function ImportWatchedAccounts({
                       close={() => {}}
                       variant="inline"
                       onDone={(keyset) => {
-                        account.guard = keyset;
-                        account.verify = 'verified';
-                        setImportedAccounts((accounts = []) => {
-                          const newAccounts = [...accounts];
-                          newAccounts[index] = account;
-                          return newAccounts;
-                        });
+                        contact.guard = keyset;
+                        contact.verify = 'verified';
+                        updateItem(index, contact);
                       }}
                     />
                   </Stack>

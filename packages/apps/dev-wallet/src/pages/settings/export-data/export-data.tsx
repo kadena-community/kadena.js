@@ -114,7 +114,7 @@ export function ExportData() {
 
   async function exportContacts() {
     const contacts = await contactRepository.getContactsList();
-    const header = ['name', 'email', 'account-address', 'account-guard'];
+    const header = ['name', 'email', 'address', 'guard'];
     const data = contacts
       .reverse()
       .map((contact) => [
