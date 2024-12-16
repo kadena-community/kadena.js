@@ -1,11 +1,15 @@
-import { accountRepository } from '@/modules/account/account.repository';
+import {
+  accountRepository,
+  IGuard,
+  IKeysetGuard,
+} from '@/modules/account/account.repository';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { INetwork } from '@/modules/network/network.repository';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
-import { ChainId, createTransaction, ISigner } from '@kadena/client';
+import { ChainId, createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
   discoverAccount,
@@ -167,10 +171,24 @@ export function getTransfers(
   receivers: Array<{
     amount: string;
     chainId: ChainId | '';
+    availableChains?: ChainId[];
   }>,
 ) {
+  const sortedInputChains = chains.sort(
+    (a, b) => Number(b.balance) - Number(a.balance),
+  );
   const sortedChains = receivers
-    .map((data, index) => ({ ...data, index }))
+    .map((data, index) => ({
+      ...data,
+      chainId: data.chainId
+        ? data.chainId
+        : data.availableChains && data.availableChains.length !== 20
+          ? sortedInputChains.find((c) =>
+              data.availableChains?.includes(c.chainId),
+            )?.chainId ?? data.availableChains[0]
+          : '',
+      index,
+    }))
     .sort((a, b) => (a.chainId && b.chainId ? 0 : b.chainId ? -1 : 1));
 
   const fixedChain = sortedChains.filter(({ chainId }) => chainId);
@@ -303,8 +321,7 @@ export interface IReceiver {
     chainId: ChainId;
     amount: string;
   }[];
-  discoveredAccounts: IRetrievedAccount[];
-  discoveryStatus: 'not-started' | 'in-progress' | 'done';
+  discoveredAccount?: IRetrievedAccount;
 }
 
 export const createTransactions = async ({
@@ -314,7 +331,6 @@ export const createTransactions = async ({
   network,
   contract,
   profileId,
-  mapKeys,
   gasPrice,
   gasLimit,
   gasPayer,
@@ -327,7 +343,6 @@ export const createTransactions = async ({
   network: INetwork;
   contract: string;
   profileId: string;
-  mapKeys: (key: ISigner) => ISigner;
   gasPrice: number;
   gasLimit: number;
   creationTime: number;
@@ -344,9 +359,6 @@ export const createTransactions = async ({
     throw new Error('gasPayer Account guard is not a keyset guard');
   }
 
-  const guard = account.guard;
-  const gasPayerGuard = gasPayer.guard;
-
   const groupId = crypto.randomUUID();
   const txs = await Promise.all(
     receivers
@@ -354,7 +366,7 @@ export const createTransactions = async ({
         if (
           !receiverAccount ||
           !receiverAccount.address ||
-          receiverAccount.discoveredAccounts.length === 0
+          !receiverAccount.discoveredAccount
         ) {
           console.log(`Receiver not found, ${JSON.stringify(receiverAccount)}`);
           throw new Error(
@@ -362,12 +374,7 @@ export const createTransactions = async ({
           );
         }
 
-        if (receiverAccount.discoveredAccounts.length > 1) {
-          throw new Error(
-            `Multiple accounts found with the same address (${receiverAccount.address}), resolve manually`,
-          );
-        }
-        const discoveredAccount = receiverAccount.discoveredAccounts[0];
+        const discoveredAccount = receiverAccount.discoveredAccount;
         const receiverGuard = discoveredAccount.guard;
 
         const transferCreateFn = isSafeTransfer
@@ -381,11 +388,11 @@ export const createTransactions = async ({
             chainId: optimal.chainId,
             sender: {
               account: account.address,
-              publicKeys: guard.keys.map(mapKeys),
+              publicKeys: getKeysToSignWith(account),
             },
             gasPayer: {
               account: gasPayer.address,
-              publicKeys: gasPayerGuard.keys.map(mapKeys),
+              publicKeys: getKeysToSignWith(gasPayer),
             },
           };
           const transferCmd = isKeysetGuard(receiverGuard)
@@ -394,6 +401,9 @@ export const createTransactions = async ({
                 receiver: {
                   account: receiverAccount.address,
                   keyset: receiverGuard,
+                  keysToSignWith: getKeysToSignWith(
+                    receiverAccount.discoveredAccount,
+                  ),
                 },
               })
             : transferCommand({
@@ -449,11 +459,23 @@ export const createTransactions = async ({
   return [groupId, txs.flat()] as [string, ITransaction[]];
 };
 
+const getKeysToSignWith = (account?: IRetrievedAccount) => {
+  if (!account) {
+    return [];
+  }
+  if (!isKeysetGuard(account.guard)) {
+    return [];
+  }
+
+  return account.keysToSignWith && account.keysToSignWith.length
+    ? account.keysToSignWith
+    : account.guard.keys;
+};
+
 export async function createRedistributionTxs({
   redistribution,
   account,
   gasPayer,
-  mapKeys,
   network,
   gasLimit,
   gasPrice,
@@ -463,7 +485,6 @@ export async function createRedistributionTxs({
   redistribution: Array<{ source: ChainId; target: ChainId; amount: string }>;
   account: IRetrievedAccount;
   gasPayer: IRetrievedAccount;
-  mapKeys: (key: ISigner) => ISigner;
   network: INetwork;
   gasLimit: number;
   gasPrice: number;
@@ -477,14 +498,13 @@ export async function createRedistributionTxs({
     throw new Error('gasPayer Account guard is not a keyset guard');
   }
   const guard = account.guard;
-  const gasPayerGuard = gasPayer.guard;
   const groupId = crypto.randomUUID();
   const txs = redistribution.map(async ({ source, target, amount }) => {
     const command = composePactCommand(
       createCrossChainCommand({
         sender: {
           account: account.address,
-          publicKeys: guard.keys.map(mapKeys),
+          publicKeys: getKeysToSignWith(account),
         },
         receiver: {
           account: account.address,
@@ -492,7 +512,7 @@ export async function createRedistributionTxs({
         },
         gasPayer: {
           account: gasPayer.address,
-          publicKeys: gasPayerGuard.keys.map(mapKeys),
+          publicKeys: getKeysToSignWith(gasPayer),
         },
         amount: amount,
         targetChainId: target,
@@ -525,3 +545,24 @@ export async function createRedistributionTxs({
   });
   return [groupId, await Promise.all(txs)] as [string, ITransaction[]];
 }
+
+export function getAvailableChains(account: IRetrievedAccount | undefined) {
+  const chainList =
+    account?.guard &&
+    isKeysetGuard(account.guard) &&
+    account.guard.principal === account.address
+      ? CHAINS
+      : account
+        ? account.chains.map((c) => c.chainId)
+        : [];
+
+  return chainList;
+}
+
+export const needToSelectKeys = (guard: IGuard): guard is IKeysetGuard => {
+  if (!isKeysetGuard(guard)) return false;
+  if (guard.pred === 'keys-all') return false;
+  if (guard.keys.length === 1) return false;
+  if (guard.keys.length <= 2 && guard.pred === 'keys-2') return false;
+  return true;
+};

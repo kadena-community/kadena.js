@@ -1,10 +1,8 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
-import { ISigner } from '@kadena/client';
-
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { isKeysetGuard } from '@/modules/account/guards';
@@ -19,15 +17,19 @@ import { useSearchParams } from 'react-router-dom';
 import { TxList } from '../transaction/components/TxList';
 import { statusPassed } from '../transaction/components/TxPipeLine';
 import {
+  ITransfer,
   Redistribution,
-  TrG,
-  Transfer,
   TransferForm,
+  TrG,
 } from './Steps/TransferForm';
-import { createRedistributionTxs, createTransactions } from './utils';
+import {
+  createRedistributionTxs,
+  createTransactions,
+  IReceiver,
+} from './utils';
 
-export function TransferV2() {
-  const { getPublicKeyData, activeNetwork, profile } = useWallet();
+export function Transfer() {
+  const { activeNetwork, profile } = useWallet();
 
   const navigate = usePatchedNavigate();
   const [searchParams] = useSearchParams();
@@ -83,7 +85,7 @@ export function TransferV2() {
     transfer: { groupId: '', txs: [] },
   });
 
-  function createTransaction(data: Required<Transfer>) {
+  function createTransaction(data: Required<ITransfer>) {
     if (!data.senderAccount || !profile) return;
     return createTransactions({
       account: data.senderAccount,
@@ -95,7 +97,6 @@ export function TransferV2() {
       isSafeTransfer: data.type === 'safeTransfer',
       network: activeNetwork!,
       profileId: profile.uuid,
-      mapKeys,
       creationTime: data.creationTime,
     });
   }
@@ -133,29 +134,8 @@ export function TransferV2() {
     setTxGroups(upd);
   };
 
-  const mapKeys = useCallback(
-    (key: ISigner) => {
-      if (typeof key === 'object') return key;
-      const info = getPublicKeyData(key);
-      if (info && info.scheme) {
-        return {
-          pubKey: key,
-          scheme: info.scheme,
-        };
-      }
-      if (key.startsWith('WEBAUTHN')) {
-        return {
-          pubKey: key,
-          scheme: 'WebAuthn' as const,
-        };
-      }
-      return key;
-    },
-    [getPublicKeyData],
-  );
-
   function createRedistribution(
-    formData: Required<Transfer>,
+    formData: Required<ITransfer>,
     redistribution: Redistribution[],
   ) {
     if (!profile?.uuid) {
@@ -170,7 +150,6 @@ export function TransferV2() {
         gasLimit: +formData.gasLimit,
         gasPrice: +formData.gasPrice,
         network: activeNetwork!,
-        mapKeys,
         creationTime: formData.creationTime,
         profileId: profile.uuid,
       });
@@ -245,7 +224,7 @@ export function TransferV2() {
           Transfer
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Stack flexDirection={'column'} width="100%">
+      <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
         <Stepper direction="horizontal">
           <Step
             icon={<MonoSwapHoriz />}
@@ -271,6 +250,16 @@ export function TransferV2() {
                 activityId={urlActivityId}
                 onSubmit={async (data, redistribution) => {
                   if (!isKeysetGuard(data.senderAccount.guard)) return;
+                  if (
+                    !data.receivers.every(
+                      (receiver) => receiver.discoveredAccount,
+                    )
+                  ) {
+                    throw new Error('Discovered account not found');
+                  }
+                  const receivers = data.receivers as Array<
+                    Required<IReceiver>
+                  >;
                   const getEmpty = () => ['', []] as [string, ITransaction[]];
                   let redistributionGroup = getEmpty();
 
@@ -294,7 +283,10 @@ export function TransferV2() {
                   const activityId = crypto.randomUUID();
                   await activityRepository.addActivity({
                     data: {
-                      transferData: data,
+                      transferData: {
+                        ...data,
+                        receivers,
+                      },
                       txGroups: {
                         transfer: {
                           groupId: updatedTxGroups.transfer.groupId,

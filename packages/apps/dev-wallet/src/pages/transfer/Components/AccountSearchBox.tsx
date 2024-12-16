@@ -18,11 +18,12 @@ import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { useEffect, useRef, useState } from 'react';
 
+import { KeySelector } from '@/Components/Guard/KeySelector';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Guard } from '../../../Components/Guard/Guard';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
-import { discoverReceiver } from '../utils';
+import { discoverReceiver, needToSelectKeys } from '../utils';
 import { AccountItem } from './AccountItem';
 import { Label } from './Label';
 import { createAccountBoxClass, popoverClass } from './style.css';
@@ -38,6 +39,10 @@ export function AccountSearchBox({
   onSelect,
   selectedAccount,
   onDiscoveryChange,
+  isSenderAccount,
+  errorMessage,
+  isInvalid,
+  hideKeySelector,
 }: {
   accounts?: IAccount[];
   contacts?: IContact[];
@@ -47,8 +52,13 @@ export function AccountSearchBox({
   onSelect: (account?: IRetrievedAccount) => void;
   selectedAccount?: IRetrievedAccount;
   onDiscoveryChange?: (discovering: boolean) => void;
+  isSenderAccount?: boolean;
+  errorMessage?: string;
+  isInvalid?: boolean;
+  hideKeySelector?: boolean;
 }) {
   const prompt = usePrompt();
+  const [showDisabled, setShowDisabled] = useState(false);
   const [value, setValue] = useState<string>(selectedAccount?.address || '');
   const [discovering, setDiscoveringValue] = useState(false);
   const [popoverIsOpen, setPopoverIsOpen] = useState(false);
@@ -73,7 +83,21 @@ export function AccountSearchBox({
     }
   }
 
+  const isDisabledAccount = (account?: IRetrievedAccount) => {
+    if (isSenderAccount && account) {
+      if (!isKeysetGuard(account?.guard)) {
+        return true;
+      }
+      if (!account?.overallBalance || +account.overallBalance === 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   function onSelectHandel(account?: IRetrievedAccount) {
+    if (isDisabledAccount(account)) return;
+
     onSelect(account);
     if (account) {
       setValue(account.address);
@@ -234,6 +258,8 @@ export function AccountSearchBox({
         description={getDescription()}
         type="text"
         size="sm"
+        isInvalid={isInvalid}
+        errorMessage={errorMessage}
         info={selectedAccount?.alias ? `Alias: ${selectedAccount.alias}` : ''}
         onOpen={() => {
           setPopoverIsOpen(true);
@@ -290,8 +316,10 @@ export function AccountSearchBox({
                 ...(isKeysetGuard(account.guard) ? account.guard.keys : []),
               ),
             )
+            .filter((account) => showDisabled || !isDisabledAccount(account))
             .map((account) => (
               <ButtonItem
+                disabled={isDisabledAccount(account)}
                 onClick={() => {
                   onSelectHandel({
                     address: account.address,
@@ -325,8 +353,10 @@ export function AccountSearchBox({
                 ...(isKeysetGuard(account.guard) ? account.guard.keys : []),
               ),
             )
+            .filter((account) => showDisabled || !isDisabledAccount(account))
             .map((account) => (
               <ButtonItem
+                disabled={isDisabledAccount(account)}
                 onClick={() => {
                   onSelectHandel({
                     address: account.address,
@@ -362,8 +392,10 @@ export function AccountSearchBox({
                   : []),
               );
             })
+            .filter(() => showDisabled || !isSenderAccount)
             .map((account) => (
               <ButtonItem
+                disabled={isSenderAccount}
                 onClick={() => {
                   onSelectHandel({
                     address: account.account.address,
@@ -442,6 +474,7 @@ export function AccountSearchBox({
                 </Stack>
 
                 <Button
+                  isDisabled={isSenderAccount}
                   variant="outlined"
                   isCompact
                   onClick={async (e) => {
@@ -507,7 +540,20 @@ export function AccountSearchBox({
               flexDirection={'column'}
               padding={'sm'}
               className={popoverClass}
+              gap={'md'}
             >
+              <Stack gap={'md'} alignItems={'center'}>
+                <Heading variant="h6">Select one account</Heading>
+                {isSenderAccount && (
+                  <Button
+                    onClick={() => setShowDisabled((v) => !v)}
+                    variant="transparent"
+                    isCompact
+                  >
+                    {showDisabled ? 'hide disabled' : 'show disabled'}
+                  </Button>
+                )}
+              </Stack>
               {sections}
             </Stack>
           ) : null;
@@ -529,7 +575,20 @@ export function AccountSearchBox({
             ) : (
               ''
             )}
-            <Guard guard={selectedAccount.guard} />
+            {!hideKeySelector && needToSelectKeys(selectedAccount.guard) ? (
+              <KeySelector
+                guard={selectedAccount.guard}
+                selectedKeys={selectedAccount.keysToSignWith ?? []}
+                onSelect={(keys) => {
+                  onSelectHandel({
+                    ...selectedAccount,
+                    keysToSignWith: keys,
+                  });
+                }}
+              />
+            ) : (
+              <Guard guard={selectedAccount.guard} />
+            )}
           </Stack>
           <Text size="smallest">
             {`${selectedAccount.overallBalance} ${asset?.symbol || contract}`}

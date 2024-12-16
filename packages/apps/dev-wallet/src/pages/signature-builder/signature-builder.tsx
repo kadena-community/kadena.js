@@ -81,7 +81,13 @@ export function SignatureBuilder() {
 
   function processSig(inputData: string) {
     setInput(inputData);
-    const schema = determineSchema(inputData);
+    let schema = determineSchema(inputData);
+    if (schema === 'base64') {
+      inputData = Buffer.from(inputData, 'base64').toString();
+      schema = determineSchema(inputData);
+      setInput(inputData);
+    }
+
     switch (schema) {
       case 'quickSignRequest': {
         const parsed = yaml.load(inputData) as IUnsignedCommand;
