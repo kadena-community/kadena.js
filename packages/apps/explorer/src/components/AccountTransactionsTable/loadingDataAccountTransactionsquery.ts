@@ -9,7 +9,6 @@ export const loadingData: AccountTransactionsQuery = {
         hasPreviousPage: false,
         startCursor: '',
       },
-      totalCount: 0,
       edges: Array(6).fill({
         node: {
           hash: '',

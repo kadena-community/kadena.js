@@ -71,7 +71,7 @@ export const getTransfers = async (
         log('take positive, "first page"');
 
         const result = await prismaClient.$queryRaw`
-        	WITH results AS (
+          WITH results AS (
             (
               SELECT *
               FROM "transfers"
@@ -266,6 +266,203 @@ export const getTransfers = async (
   }
 };
 
+export const getTransactions = async (accountName: string, condition: any) => {
+  try {
+    if (!condition.cursor) {
+      log('no cursor condition');
+      log('skip', condition?.skip);
+      log('take', condition?.take);
+
+      if (condition && (condition.take === 0 || condition.take === undefined)) {
+        condition.take = 20;
+      }
+
+      if (condition !== undefined && condition.take > 0) {
+        log('take positive, "first page"');
+
+        const result = await prismaClient.$queryRaw`
+          SELECT badresult AS "bad_result",
+            block AS "block_hash",
+            chainid AS "chain_id",
+            code,
+            continuation,
+            creationtime AS "creation_time",
+            data,
+            gas,
+            gaslimit AS "gas_limit",
+            gasprice AS "gas_price",
+            goodresult AS "good_result",
+            height,
+            logs,
+            metadata,
+            nonce,
+            num_events AS "event_count",
+            pactid AS "pact_id",
+            proof,
+            requestkey AS "request_key",
+            rollback,
+            sender AS "sender_account",
+            step,
+            ttl,
+            txid AS "transaction_id"
+          FROM "transactions"
+          WHERE "sender" = ${accountName}
+          ORDER BY "height" DESC, "creationtime" DESC
+          OFFSET ${condition.skip}
+          LIMIT ${condition.take}
+        `;
+
+        return result;
+      } else if (condition !== undefined && condition.take < 0) {
+        log('take negative, "last page"');
+        const positiveTake = -condition.take;
+
+        const result = await prismaClient.$queryRaw`
+          SELECT badresult AS "bad_result",
+            block AS "block_hash",
+            chainid AS "chain_id",
+            code,
+            continuation,
+            creationtime AS "creation_time",
+            data,
+            gas,
+            gaslimit AS "gas_limit",
+            gasprice AS "gas_price",
+            goodresult AS "good_result",
+            height,
+            logs,
+            metadata,
+            nonce,
+            num_events AS "event_count",
+            pactid AS "pact_id",
+            proof,
+            requestkey AS "request_key",
+            rollback,
+            sender AS "sender_account",
+            step,
+            ttl,
+            txid AS "transaction_id"
+          FROM "transactions"
+          WHERE "sender" = ${accountName}
+          ORDER BY "height" ASC, "creationtime" ASC
+          OFFSET ${condition.skip}
+          LIMIT ${positiveTake}
+        `;
+
+        return result;
+      }
+
+      return [];
+    }
+
+    const { blockHash, requestKey } = condition.cursor.blockHash_requestKey;
+
+    if (condition.take >= 0) {
+      log('condition positive, next page forward');
+      log('cursor', condition.cursor);
+
+      const result = await prismaClient.$queryRaw`
+        WITH cursor_row AS (
+          SELECT "height", "creationtime"
+          FROM "transactions"
+          WHERE (block, requestkey) = (
+            ${blockHash}, ${requestKey}
+          )
+        )
+        SELECT badresult AS "bad_result",
+          block AS "block_hash",
+          chainid AS "chain_id",
+          code,
+          continuation,
+          creationtime AS "creation_time",
+          data,
+          gas,
+          gaslimit AS "gas_limit",
+          gasprice AS "gas_price",
+          goodresult AS "good_result",
+          height,
+          logs,
+          metadata,
+          nonce,
+          num_events AS "event_count",
+          pactid AS "pact_id",
+          proof,
+          requestkey AS "request_key",
+          rollback,
+          sender AS "sender_account",
+          step,
+          ttl,
+          txid AS "transaction_id"
+        FROM "transactions"
+        WHERE "sender" = ${accountName}
+          AND ("height", "creationtime") <= (
+            SELECT "height", "creationtime" FROM cursor_row
+          )
+        ORDER BY "height" DESC, "creationtime" DESC
+        OFFSET ${condition.skip}
+        LIMIT ${condition.take}
+      `;
+
+      return result;
+    } else {
+      const positiveTake = -condition.take;
+      log('condition is negative, page back, take:', positiveTake);
+      log('condition', condition);
+
+      const result = await prismaClient.$queryRaw`
+        WITH cursor_row AS (
+          SELECT "height", "creationtime"
+          FROM "transactions"
+          WHERE (block, requestkey) = (
+            ${blockHash}, ${requestKey}
+          )
+        )
+        SELECT badresult AS "bad_result",
+          block AS "block_hash",
+          chainid AS "chain_id",
+          code,
+          continuation,
+          creationtime AS "creation_time",
+          data,
+          gas,
+          gaslimit AS "gas_limit",
+          gasprice AS "gas_price",
+          goodresult AS "good_result",
+          height,
+          logs,
+          metadata,
+          nonce,
+          num_events AS "event_count",
+          pactid AS "pact_id",
+          proof,
+          requestkey AS "request_key",
+          rollback,
+          sender AS "sender_account",
+          step,
+          ttl,
+          txid AS "transaction_id"
+        FROM (
+          SELECT *
+          FROM "transactions"
+          WHERE "sender" = ${accountName}
+            AND ("height", "creationtime") >= (
+              SELECT "height", "creationtime" FROM cursor_row
+            )
+          ORDER BY "height" ASC, "creationtime" ASC
+          OFFSET ${condition.skip}
+          LIMIT ${positiveTake}
+        ) as t0
+        ORDER BY "height" DESC, "creationtime" DESC
+      `;
+
+      return result;
+    }
+  } catch (error) {
+    console.error(error);
+    throw normalizeError(error);
+  }
+};
+
 export default builder.node(
   builder.objectRef<IFungibleAccount>(FungibleAccountName),
   {
@@ -370,26 +567,33 @@ export default builder.node(
         }),
 
         async totalCount(parent) {
-          try {
-            return await prismaClient.transaction.count({
-              where: {
-                senderAccount: parent.accountName,
-              },
-            });
-          } catch (error) {
-            throw normalizeError(error);
-          }
+          return prismaClient.transaction.count({
+            where: {
+              senderAccount: parent.accountName,
+            },
+          });
+          // return prismaClient.$queryRaw`
+          //   SELECT COUNT(*) as "totalCount"
+          //   FROM "transactions"
+          //   WHERE "sender" = ${parent.accountName}
+          // `;
         },
 
-        async resolve(query, parent) {
+        async resolve(condition, parent) {
           try {
-            return await prismaClient.transaction.findMany({
-              ...query,
-              where: {
-                senderAccount: parent.accountName,
-              },
-              orderBy: [{ height: 'desc' }, { creationTime: 'desc' }],
-            });
+            // return await prismaClient.transaction.findMany({
+            //   ...condition,
+            //   where: {
+            //     senderAccount: parent.accountName,
+            //   },
+            //   orderBy: [{ height: 'desc' }, { creationTime: 'desc' }],
+            // });
+
+            const result = (
+              (await getTransactions(parent.accountName, condition)) as any
+            ).map(keysToCamel);
+
+            return result;
           } catch (error) {
             throw normalizeError(error);
           }
