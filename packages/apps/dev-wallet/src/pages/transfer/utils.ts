@@ -186,7 +186,7 @@ export function getTransfers(
           ? sortedInputChains.find((c) =>
               data.availableChains?.includes(c.chainId),
             )?.chainId ?? data.availableChains[0]
-          : undefined,
+          : '',
       index,
     }))
     .sort((a, b) => (a.chainId && b.chainId ? 0 : b.chainId ? -1 : 1));
