@@ -13,18 +13,21 @@ export function ComboField({
   clear,
   onClose,
   onOpen,
+  onSubmit,
   ...inputProps
 }: React.ComponentProps<typeof TextField> & {
   children: (props: { value: string; close: () => void }) => ReactNode;
   clear?: ReactNode;
   onClose?: (value: string) => void;
   onOpen?: (value: string) => void;
+  onSubmit?: (value: string) => void;
 }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const livePopoverOpen = useRef(isPopoverOpen);
   livePopoverOpen.current = isPopoverOpen;
   const [text, setText] = useState(value ?? defaultValue ?? '');
   const triggerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
   function closePopover(fromPopover = false) {
@@ -37,6 +40,9 @@ export function ComboField({
 
   function openPopover() {
     setIsPopoverOpen(true);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
     if (onOpen && !isPopoverOpen) {
       onOpen(text);
     }
@@ -57,9 +63,10 @@ export function ComboField({
 
   return (
     <>
-      <div ref={triggerRef} onClick={openPopover}>
+      <div ref={triggerRef} onClick={openPopover} style={{ flex: 1 }}>
         <TextField
           {...inputProps}
+          ref={inputRef}
           value={text}
           defaultValue={defaultValue}
           onFocus={() => {
@@ -73,6 +80,11 @@ export function ComboField({
                 closePopover();
               }
             }, 100);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && onSubmit) {
+              onSubmit(text);
+            }
           }}
           onChange={(event) => {
             const value = event.target.value;

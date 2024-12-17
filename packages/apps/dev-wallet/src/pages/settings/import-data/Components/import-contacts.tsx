@@ -384,7 +384,8 @@ export function ImportContacts({
                       isOpen
                       close={() => {}}
                       variant="inline"
-                      onDone={(keyset) => {
+                      onChange={(keyset) => {
+                        if (!keyset) return;
                         contact.guard = keyset;
                         contact.verify = 'verified';
                         updateItem(index, contact);

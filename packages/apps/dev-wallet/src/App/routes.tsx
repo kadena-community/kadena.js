@@ -13,6 +13,7 @@ import {
 import { CommunicationProvider } from '@/modules/communication/communication.provider';
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { AccountPage } from '@/pages/account/account';
+import { MigrateAccount } from '@/pages/account/migrate-account/migrate-account';
 import { Connect } from '@/pages/connect/connect';
 import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccount } from '@/pages/create-account/create-account';
@@ -122,6 +123,10 @@ export const Routes: FC = () => {
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
             <Route path="/fungible/:contract" element={<FungiblePage />} />
+            <Route
+              path="/account/:accountId/migrate"
+              element={<MigrateAccount />}
+            />
             <Route path="/account/:accountId" element={<AccountPage />} />
             <Route path="/transfer" element={<Transfer />} />
             <Route path="/contacts" element={<Contacts />} />

@@ -1,10 +1,11 @@
+import { useRightAside } from '@/App/Layout/useRightAside';
 import { Key } from '@/Components/Key/Key';
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
-import { IKeysetGuard } from '@/modules/account/account.repository';
+import { IKeySet, IKeysetGuard } from '@/modules/account/account.repository';
 import { Label } from '@/pages/transaction/components/helpers';
 import { BuiltInPredicate } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
-import { MonoAdd, MonoDelete } from '@kadena/kode-icons/system';
+import { MonoDelete } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
@@ -15,59 +16,78 @@ import {
   SelectItem,
   Stack,
   Text,
-  TextField,
 } from '@kadena/kode-ui';
-import { FC, PropsWithChildren, useState } from 'react';
+import { RightAside } from '@kadena/kode-ui/patterns';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { KeySearchBox } from '../KeySearchBox/KeySearchBox';
 import { ListItem } from '../ListItem/ListItem';
+import { KeysetList } from './keyset-list';
 
 interface IKeysetForm {
-  existingKey: string;
-  externalKey: string;
-  contactKey: string;
+  publicKey: string;
   predicate: BuiltInPredicate;
-  alias: string;
 }
 
 export function KeySetForm({
   isOpen,
   close,
-  onDone,
+  onChange,
+  keyset,
   variant = 'dialog',
+  LiveForm = false,
+  filteredKeysets = [],
 }: {
   isOpen: boolean;
   close: () => void;
-  onDone: (keyset: IKeysetGuard) => void;
+  onChange: (keyset?: IKeysetGuard & { alias?: string }) => void;
+  keyset?: IKeysetGuard;
   variant?: 'dialog' | 'inline';
+  LiveForm?: boolean;
+  filteredKeysets?: Array<IKeySet & { used: boolean }>;
 }) {
   const { control, getValues, setValue, handleSubmit } = useForm<IKeysetForm>({
     defaultValues: {
-      externalKey: '',
+      publicKey: '',
       predicate: 'keys-all',
     },
   });
 
+  const [isKeysetListExpanded, expandKeysetList, closeKeysetList] =
+    useRightAside();
+
+  useEffect(() => {
+    if (keyset) {
+      setAddedKeys(keyset.keys);
+      setValue('predicate', keyset.pred);
+    }
+  }, [keyset]);
+
   const [pending, setPending] = useState(false);
 
   const [addedKeys, setAddedKeys] = useState<string[]>([]);
-  const addKey = (key: string) => {
-    if (addedKeys.includes(key)) return;
-    setAddedKeys([key, ...addedKeys]);
+  const newKeyList = (key: string) => {
+    if (addedKeys.includes(key)) return addedKeys;
+    return [key, ...addedKeys];
   };
 
-  async function onSubmit(data: IKeysetForm) {
+  async function onSubmit(data: IKeysetForm, keys = addedKeys) {
+    if (!keys.length) {
+      onChange(undefined);
+      return;
+    }
     setPending(true);
     const principal = await createPrincipal(
       {
         keyset: {
-          keys: addedKeys,
+          keys: keys,
           pred: data.predicate,
         },
       },
       {},
     );
-    onDone({
-      keys: addedKeys,
+    onChange({
+      keys: keys,
       pred: data.predicate,
       principal,
     });
@@ -95,46 +115,71 @@ export function KeySetForm({
 
   return (
     <Content>
-      <form className={displayContentsClass} onSubmit={handleSubmit(onSubmit)}>
+      <RightAside isOpen={isKeysetListExpanded}>
+        <KeysetList
+          keysets={filteredKeysets}
+          flexDirection={'column'}
+          onSelect={(keyset) => {
+            onChange({
+              ...keyset.guard,
+              principal: keyset.principal,
+              alias: keyset.alias,
+            });
+            closeKeysetList();
+          }}
+        />
+      </RightAside>
+      <form
+        className={displayContentsClass}
+        onSubmit={handleSubmit((data) => onSubmit(data))}
+      >
         {variant === 'dialog' && <DialogHeader>Create Key Set</DialogHeader>}
         <DialogContent>
           <Stack flexDirection={'column'} gap={'xxxl'}>
             <Stack flexDirection={'column'} gap={'lg'}>
               <Stack flexDirection={'column'} gap={'sm'} flex={1}>
-                <Label bold>Key</Label>
+                <Stack
+                  justifyContent={'space-between'}
+                  gap={'sm'}
+                  alignItems={'center'}
+                >
+                  <Label bold>Key</Label>
+                  {variant === 'inline' && (
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      onClick={() => expandKeysetList()}
+                    >
+                      existing keysets
+                    </Button>
+                  )}
+                </Stack>
                 <Stack gap={'sm'}>
                   <Controller
-                    name="externalKey"
+                    name="publicKey"
                     control={control}
-                    render={({ field }) => (
+                    render={() => (
                       <>
-                        <TextField
-                          onChange={(e) => field.onChange(e.target.value)}
-                          value={field.value}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              addKey(getValues('externalKey'));
-                              setValue('externalKey', '');
+                        <KeySearchBox
+                          onSelect={(data) => {
+                            const keys = newKeyList(data.publicKey);
+                            setAddedKeys(keys);
+                            setValue('publicKey', '');
+                            if (LiveForm) {
+                              onSubmit(getValues(), keys);
                             }
                           }}
                         />
-                        <Button
-                          variant="outlined"
-                          onPress={() => {
-                            addKey(getValues('externalKey'));
-                            setValue('externalKey', '');
-                          }}
-                          isDisabled={!field.value}
-                        >
-                          <MonoAdd />
-                        </Button>
                       </>
                     )}
                   />
                 </Stack>
                 <Stack flexDirection={'column'}>
-                  {addedKeys.length === 0 && <Text>No keys added yet!</Text>}
+                  {addedKeys.length === 0 && (
+                    <Stack marginBlock={'sm'}>
+                      <Text size="smallest">No keys added yet!</Text>
+                    </Stack>
+                  )}
                   {addedKeys.map((key) => (
                     <ListItem key={key}>
                       <Stack
@@ -149,7 +194,13 @@ export function KeySetForm({
                           variant="transparent"
                           isCompact
                           onPress={() => {
+                            const updatedKeys = addedKeys.filter(
+                              (k) => k !== key,
+                            );
                             setAddedKeys(addedKeys.filter((k) => k !== key));
+                            if (LiveForm) {
+                              onSubmit(getValues(), updatedKeys);
+                            }
                           }}
                         >
                           <MonoDelete />
@@ -168,6 +219,9 @@ export function KeySetForm({
                         selectedKey={field.value}
                         onSelectionChange={(val) => {
                           field.onChange(val);
+                          if (LiveForm) {
+                            onSubmit(getValues());
+                          }
                         }}
                       >
                         <SelectItem key="keys-all" textValue="keys-all">
@@ -187,29 +241,35 @@ export function KeySetForm({
             </Stack>
           </Stack>
         </DialogContent>
-        <DialogFooter>
-          <Stack width="100%" flex={1} flexDirection={'column'}>
-            <Stack justifyContent={'space-between'} gap={'md'}>
-              <Stack
-                gap={'md'}
-                justifyContent={'flex-end'}
-                alignItems={'flex-end'}
-              >
-                <Button variant="outlined" onPress={() => close()} type="reset">
-                  Cancel
-                </Button>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  isDisabled={addedKeys.length < 1 || pending}
-                  isLoading={pending}
+        {!LiveForm && (
+          <DialogFooter>
+            <Stack width="100%" flex={1} flexDirection={'column'}>
+              <Stack justifyContent={'space-between'} gap={'md'}>
+                <Stack
+                  gap={'md'}
+                  justifyContent={'flex-end'}
+                  alignItems={'flex-end'}
                 >
-                  Confirm
-                </Button>
+                  <Button
+                    variant="outlined"
+                    onPress={() => close()}
+                    type="reset"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    isDisabled={addedKeys.length < 1 || pending}
+                    isLoading={pending}
+                  >
+                    Confirm
+                  </Button>
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
-        </DialogFooter>
+          </DialogFooter>
+        )}
       </form>
     </Content>
   );

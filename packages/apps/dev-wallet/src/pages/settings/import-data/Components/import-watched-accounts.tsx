@@ -382,7 +382,7 @@ export function ImportWatchedAccounts({
                       isOpen
                       close={() => {}}
                       variant="inline"
-                      onDone={(keyset) => {
+                      onChange={(keyset) => {
                         account.guard = keyset;
                         account.verify = 'verified';
                         setImportedAccounts((accounts = []) => {

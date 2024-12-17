@@ -1,6 +1,11 @@
-import { discoverAccount, IDiscoveredAccount } from '@kadena/client-utils/coin';
+import {
+  discoverAccount,
+  IDiscoveredAccount,
+  transferAllCommand,
+} from '@kadena/client-utils/coin';
 import {
   dirtyReadClient,
+  estimateGas,
   WithEmitter,
   withEmitter,
 } from '@kadena/client-utils/core';
@@ -33,7 +38,12 @@ import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';
 
 import { config } from '@/config';
 import * as transactionService from '@/modules/transaction/transaction.service';
-import { execution } from '@kadena/client/fp';
+import {
+  composePactCommand,
+  execution,
+  setMeta,
+  setNetworkId,
+} from '@kadena/client/fp';
 import { INetwork, networkRepository } from '../network/network.repository';
 import { UUID } from '../types';
 import { isKeysetGuard } from './guards';
@@ -420,4 +430,55 @@ export async function fundAccount({
   await transactionRepository.updateTransaction(updatedTransaction);
 
   return updatedTransaction;
+}
+
+export async function createMigrateAccountTransactions(
+  source: IAccount,
+  target: IAccount,
+  ownedKeys: string[],
+) {
+  const network = await networkRepository.getNetwork(target.networkUUID);
+  const transactions = await Promise.all(
+    source.chains.map(async (chain) => {
+      const sender = {
+        account: source.address,
+        publicKeys:
+          source.guard.pred === 'keys-any' && ownedKeys.length
+            ? ownedKeys
+            : source.guard.pred === 'keys-2' && ownedKeys.length >= 2
+              ? ownedKeys
+              : source.guard.keys,
+      };
+      const command = transferAllCommand({
+        sender,
+        receiver: {
+          account: target.address,
+          keyset: target.guard,
+        },
+        gasPayer: sender,
+        chainId: chain.chainId,
+        contract: source.contract,
+        amount: chain.balance,
+      });
+      const gas = await estimateGas(command);
+      const updatedCommand = composePactCommand(
+        command,
+        setNetworkId(network.networkId),
+        setMeta({ ...gas }),
+      );
+      return createTransaction(updatedCommand());
+    }),
+  );
+  const groupId = crypto.randomUUID();
+  await Promise.all(
+    transactions.map(async (tx) => {
+      transactionService.addTransaction({
+        transaction: tx,
+        profileId: source.profileId,
+        networkUUID: source.networkUUID,
+        groupId,
+      });
+    }),
+  );
+  return groupId;
 }

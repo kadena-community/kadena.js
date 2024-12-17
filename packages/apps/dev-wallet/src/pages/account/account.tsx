@@ -24,7 +24,15 @@ import {
   MonoRemoveRedEye,
   MonoWallet,
 } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, TabItem, Tabs, Text } from '@kadena/kode-ui';
+import {
+  Button,
+  Heading,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+  Link as UiLink,
+} from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
@@ -337,7 +345,13 @@ export function AccountPage() {
                       a newly created account with a new keyset, even though the
                       keyset guard for this account cannot be changed.
                     </Text>
-                    <Button variant="outlined">Migrate</Button>
+                    <UiLink
+                      variant="outlined"
+                      href={`/account/${accountId}/migrate`}
+                      component={Link}
+                    >
+                      Migrate
+                    </UiLink>
                   </Stack>
                   <Stack
                     flexDirection={'column'}

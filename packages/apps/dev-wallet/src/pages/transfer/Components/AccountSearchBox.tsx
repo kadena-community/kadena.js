@@ -481,7 +481,7 @@ export function AccountSearchBox({
                     e.preventDefault();
                     close();
                     const guard = (await prompt((resolve, reject) => (
-                      <KeySetForm close={reject} onDone={resolve} isOpen />
+                      <KeySetForm close={reject} onChange={resolve} isOpen />
                     ))) as IGuard;
                     if (guard) {
                       onSelectHandel({
