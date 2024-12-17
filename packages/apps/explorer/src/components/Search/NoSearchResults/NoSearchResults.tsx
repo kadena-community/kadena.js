@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import React from 'react';
 
 interface NoSearchResultsProps {
-  type: 'requestKey' | 'accountName' | 'blockhash';
+  type?: 'requestKey' | 'accountName' | 'blockhash';
   value?: string;
 }
 
