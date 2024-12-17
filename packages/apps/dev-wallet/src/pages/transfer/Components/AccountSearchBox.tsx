@@ -253,7 +253,7 @@ export function AccountSearchBox({
     <Stack flexDirection={'column'}>
       <ComboField
         aria-label="Receiver Address"
-        placeholder="Select ot enter an address"
+        placeholder="Select or Enter an address"
         startVisual={<Label>Address:</Label>}
         description={getDescription()}
         type="text"
