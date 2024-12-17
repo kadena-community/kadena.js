@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Transaction, Transfer } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { getFungibleChainAccount } from '@services/account-service';
 import {
@@ -20,14 +21,30 @@ import {
   FungibleChainAccountName,
 } from '../types/graphql-types';
 
-const keysToCamel = <T extends Record<string, unknown>>(obj: T) => {
-  return Object.keys(obj).reduce(
-    (acc, key) => {
-      acc[key.replace(/_(\w)/g, (m, p1) => p1.toUpperCase())] = obj[key];
-      return acc;
-    },
-    {} as Record<string, unknown>,
-  );
+type SnakeToCamel<S extends string> = S extends `${infer Head}_${infer Tail}`
+  ? `${Head}${Capitalize<SnakeToCamel<Tail>>}`
+  : S;
+
+type CamelCasedProperties<T> =
+  T extends Array<infer U>
+    ? Array<CamelCasedProperties<U>>
+    : T extends object
+      ? {
+          [K in keyof T as K extends string
+            ? SnakeToCamel<K>
+            : K]: CamelCasedProperties<T[K]>;
+        }
+      : T;
+
+type ConvertKeysToCamelCase = <T extends object>(
+  obj: T,
+) => CamelCasedProperties<T>;
+
+const keysToCamel: ConvertKeysToCamelCase = (obj) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    acc[key.replace(/_(\w)/g, (m, p1) => p1.toUpperCase())] = (obj as any)[key];
+    return acc;
+  }, {} as any);
 };
 
 interface ITransferQueryConditions {
@@ -53,7 +70,7 @@ export const getTransfers = async (
   accountName: string,
   fungibleName: string,
   condition: ITransferQueryConditions,
-) => {
+): Promise<Transfer[]> => {
   try {
     // Handle cases without a cursor
     if (!condition.cursor) {
@@ -70,8 +87,8 @@ export const getTransfers = async (
         // First page: just fetch top `take` results from both directions in DESC order
         log('take positive, "first page"');
 
-        const result = await prismaClient.$queryRaw`
-        	WITH results AS (
+        const result = (await prismaClient.$queryRaw`
+          WITH results AS (
             (
               SELECT *
               FROM "transfers"
@@ -104,7 +121,7 @@ export const getTransfers = async (
           OFFSET ${condition.skip}
           LIMIT ${condition.take}
           ;
-        `;
+        `) as Transfer[];
 
         return result;
       } else if (condition !== undefined && condition.take < 0) {
@@ -112,7 +129,7 @@ export const getTransfers = async (
         log('take negative, "last page"');
         const positiveTake = -condition.take;
 
-        const result = await prismaClient.$queryRaw`
+        const result = (await prismaClient.$queryRaw`
           WITH results AS (
             (
               SELECT *
@@ -148,7 +165,7 @@ export const getTransfers = async (
           OFFSET ${condition.skip}
           LIMIT ${positiveTake}
           ;
-        `;
+        `) as Transfer[];
 
         return result;
       }
@@ -165,7 +182,7 @@ export const getTransfers = async (
       log('condition positive, next page forward');
       log('cursor', condition.cursor);
 
-      const result = await prismaClient.$queryRaw`
+      const result = (await prismaClient.$queryRaw`
         WITH cursor_row AS (
           SELECT "height","chainid","requestkey","idx"
           FROM "transfers"
@@ -214,7 +231,7 @@ export const getTransfers = async (
         ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
         OFFSET ${condition.skip}
         LIMIT ${condition.take};
-      `;
+      `) as Transfer[];
 
       return result;
     } else {
@@ -223,7 +240,7 @@ export const getTransfers = async (
       log('condition is negative, page back, take:', positiveTake);
       log('condition', condition);
 
-      const result = await prismaClient.$queryRaw`
+      const result = (await prismaClient.$queryRaw`
         WITH cursor_row AS (
           SELECT "height","chainid","requestkey","idx"
           FROM "transfers"
@@ -256,7 +273,217 @@ export const getTransfers = async (
         ) as t0
         ORDER BY "height" DESC, "chainid" DESC, "requestkey" DESC, "idx" DESC
 ;
-      `;
+      `) as Transfer[];
+
+      return result;
+    }
+  } catch (error) {
+    console.error(error);
+    throw normalizeError(error);
+  }
+};
+
+export const getTransactions = async (
+  accountName: string,
+  condition: {
+    cursor?: {
+      blockHash_requestKey?: { blockHash: string; requestKey: string };
+    };
+    take: number;
+    skip: number;
+  },
+): Promise<Transaction[]> => {
+  try {
+    if (!condition.cursor) {
+      log('no cursor condition');
+      log('skip', condition?.skip);
+      log('take', condition?.take);
+
+      if (condition && (condition.take === 0 || condition.take === undefined)) {
+        condition.take = 20;
+      }
+
+      if (condition !== undefined && condition.take > 0) {
+        log('take positive, "first page"');
+
+        const result = (await prismaClient.$queryRaw`
+          SELECT badresult AS "bad_result",
+            block AS "block_hash",
+            chainid AS "chain_id",
+            code,
+            continuation,
+            creationtime AS "creation_time",
+            data,
+            gas,
+            gaslimit AS "gas_limit",
+            gasprice AS "gas_price",
+            goodresult AS "good_result",
+            height,
+            logs,
+            metadata,
+            nonce,
+            num_events AS "event_count",
+            pactid AS "pact_id",
+            proof,
+            requestkey AS "request_key",
+            rollback,
+            sender AS "sender_account",
+            step,
+            ttl,
+            txid AS "transaction_id"
+          FROM "transactions"
+          WHERE "sender" = ${accountName}
+          ORDER BY "height" DESC, "creationtime" DESC
+          OFFSET ${condition.skip}
+          LIMIT ${condition.take}
+        `) as Transaction[];
+
+        return result;
+      } else if (condition !== undefined && condition.take < 0) {
+        log('take negative, "last page"');
+        const positiveTake = -condition.take;
+
+        const result = (await prismaClient.$queryRaw`
+          SELECT badresult AS "bad_result",
+            block AS "block_hash",
+            chainid AS "chain_id",
+            code,
+            continuation,
+            creationtime AS "creation_time",
+            data,
+            gas,
+            gaslimit AS "gas_limit",
+            gasprice AS "gas_price",
+            goodresult AS "good_result",
+            height,
+            logs,
+            metadata,
+            nonce,
+            num_events AS "event_count",
+            pactid AS "pact_id",
+            proof,
+            requestkey AS "request_key",
+            rollback,
+            sender AS "sender_account",
+            step,
+            ttl,
+            txid AS "transaction_id"
+          FROM "transactions"
+          WHERE "sender" = ${accountName}
+          ORDER BY "height" ASC, "creationtime" ASC
+          OFFSET ${condition.skip}
+          LIMIT ${positiveTake}
+        `) as Transaction[];
+
+        return result;
+      }
+
+      return [];
+    }
+
+    if (!condition.cursor.blockHash_requestKey) {
+      throw new Error('cursor is missing blockHash_requestKey');
+    }
+
+    const { blockHash, requestKey } = condition.cursor.blockHash_requestKey;
+
+    if (condition.take >= 0) {
+      log('condition positive, next page forward');
+      log('cursor', condition.cursor);
+
+      const result = (await prismaClient.$queryRaw`
+        WITH cursor_row AS (
+          SELECT "height", "creationtime"
+          FROM "transactions"
+          WHERE (block, requestkey) = (
+            ${blockHash}, ${requestKey}
+          )
+        )
+        SELECT badresult AS "bad_result",
+          block AS "block_hash",
+          chainid AS "chain_id",
+          code,
+          continuation,
+          creationtime AS "creation_time",
+          data,
+          gas,
+          gaslimit AS "gas_limit",
+          gasprice AS "gas_price",
+          goodresult AS "good_result",
+          height,
+          logs,
+          metadata,
+          nonce,
+          num_events AS "event_count",
+          pactid AS "pact_id",
+          proof,
+          requestkey AS "request_key",
+          rollback,
+          sender AS "sender_account",
+          step,
+          ttl,
+          txid AS "transaction_id"
+        FROM "transactions"
+        WHERE "sender" = ${accountName}
+          AND ("height", "creationtime") <= (
+            SELECT "height", "creationtime" FROM cursor_row
+          )
+        ORDER BY "height" DESC, "creationtime" DESC
+        OFFSET ${condition.skip}
+        LIMIT ${condition.take}
+      `) as Transaction[];
+
+      return result;
+    } else {
+      const positiveTake = -condition.take;
+      log('condition is negative, page back, take:', positiveTake);
+      log('condition', condition);
+
+      const result = (await prismaClient.$queryRaw`
+        WITH cursor_row AS (
+          SELECT "height", "creationtime"
+          FROM "transactions"
+          WHERE (block, requestkey) = (
+            ${blockHash}, ${requestKey}
+          )
+        )
+        SELECT badresult AS "bad_result",
+          block AS "block_hash",
+          chainid AS "chain_id",
+          code,
+          continuation,
+          creationtime AS "creation_time",
+          data,
+          gas,
+          gaslimit AS "gas_limit",
+          gasprice AS "gas_price",
+          goodresult AS "good_result",
+          height,
+          logs,
+          metadata,
+          nonce,
+          num_events AS "event_count",
+          pactid AS "pact_id",
+          proof,
+          requestkey AS "request_key",
+          rollback,
+          sender AS "sender_account",
+          step,
+          ttl,
+          txid AS "transaction_id"
+        FROM (
+          SELECT *
+          FROM "transactions"
+          WHERE "sender" = ${accountName}
+            AND ("height", "creationtime") >= (
+              SELECT "height", "creationtime" FROM cursor_row
+            )
+          ORDER BY "height" ASC, "creationtime" ASC
+          OFFSET ${condition.skip}
+          LIMIT ${positiveTake}
+        ) as t0
+        ORDER BY "height" DESC, "creationtime" DESC
+      `) as Transaction[];
 
       return result;
     }
@@ -370,26 +597,33 @@ export default builder.node(
         }),
 
         async totalCount(parent) {
-          try {
-            return await prismaClient.transaction.count({
-              where: {
-                senderAccount: parent.accountName,
-              },
-            });
-          } catch (error) {
-            throw normalizeError(error);
-          }
+          return prismaClient.transaction.count({
+            where: {
+              senderAccount: parent.accountName,
+            },
+          });
+          // return prismaClient.$queryRaw`
+          //   SELECT COUNT(*) as "totalCount"
+          //   FROM "transactions"
+          //   WHERE "sender" = ${parent.accountName}
+          // `;
         },
 
-        async resolve(query, parent) {
+        async resolve(condition, parent) {
           try {
-            return await prismaClient.transaction.findMany({
-              ...query,
-              where: {
-                senderAccount: parent.accountName,
-              },
-              orderBy: [{ height: 'desc' }, { creationTime: 'desc' }],
-            });
+            // return await prismaClient.transaction.findMany({
+            //   ...condition,
+            //   where: {
+            //     senderAccount: parent.accountName,
+            //   },
+            //   orderBy: [{ height: 'desc' }, { creationTime: 'desc' }],
+            // });
+
+            const result = (
+              (await getTransactions(parent.accountName, condition)) as any
+            ).map(keysToCamel);
+
+            return result;
           } catch (error) {
             throw normalizeError(error);
           }
@@ -410,12 +644,12 @@ export default builder.node(
         async resolve(condition, parent) {
           try {
             const result = (
-              (await getTransfers(
+              await getTransfers(
                 parent.accountName,
                 parent.fungibleName,
                 condition,
-              )) as any
-            ).map(keysToCamel);
+              )
+            ).map(keysToCamel) as any;
 
             return result;
           } catch (error) {

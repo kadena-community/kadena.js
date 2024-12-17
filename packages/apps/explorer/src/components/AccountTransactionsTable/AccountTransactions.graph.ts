@@ -17,7 +17,6 @@ export const accountTransactions: DocumentNode = gql`
           last: $last
           before: $before
         ) {
-          totalCount
           pageInfo {
             endCursor
             hasNextPage
@@ -28,10 +27,6 @@ export const accountTransactions: DocumentNode = gql`
             node {
               hash
               cmd {
-                meta {
-                  sender
-                  chainId
-                }
                 payload {
                   ... on ExecutionPayload {
                     code
@@ -40,7 +35,6 @@ export const accountTransactions: DocumentNode = gql`
               }
               result {
                 ... on TransactionResult {
-                  badResult
                   goodResult
                   block {
                     height
