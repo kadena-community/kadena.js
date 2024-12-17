@@ -7,7 +7,7 @@ export interface ITableField {
   variant?: 'body' | 'code';
   align?: 'start' | 'end' | 'center';
   label: string;
-  key: string | string[];
+  key?: string | string[];
   render?: FC<{ value: string }> | FC<{ value: string }>[];
   isLoading?: boolean;
   loaderVariant?: ILoadingVariants;

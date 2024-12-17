@@ -2,11 +2,7 @@ import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgents } from '@/hooks/getAgents';
 import { useRemoveAgent } from '@/hooks/removeAgent';
 import { loadingData } from '@/utils/loadingData';
-import {
-  MonoDelete,
-  MonoFindInPage,
-  MonoSupportAgent,
-} from '@kadena/kode-icons';
+import { MonoDelete, MonoSupportAgent } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import {
   CompactTable,
@@ -16,24 +12,19 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
 import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
+import { FormatEditAgent } from '../TableFormatters/FormatEditAgent';
 
 export const AgentsList: FC = () => {
   const { isAllowed: isEditAgentAllowed } = useEditAgent();
   const { data, isLoading } = useGetAgents();
   const { submit, isAllowed: isRemoveAgentAllowed } = useRemoveAgent();
-  const router = useRouter();
 
   const handleDelete = async (accountName: any) => {
     await submit({ agent: accountName });
-  };
-
-  const handleLink = async (accountName: any) => {
-    router.push(`/agents/${accountName}`);
   };
 
   return (
@@ -82,18 +73,9 @@ export const AgentsList: FC = () => {
                 },
                 {
                   label: '',
-                  key: 'accountName',
+                  key: '',
                   width: '8%',
-                  render: CompactTableFormatters.FormatActions({
-                    trigger: (
-                      <Button
-                        isCompact
-                        variant="outlined"
-                        startVisual={<MonoFindInPage />}
-                        onPress={handleLink}
-                      />
-                    ),
-                  }),
+                  render: FormatEditAgent(),
                 },
                 {
                   label: '',

@@ -22,8 +22,10 @@ export interface IFieldCellProps {
  */
 export const getItem = (
   item: IFieldCellProps['item'],
-  key: string | [],
+  key?: string | [],
 ): any => {
+  if (!key) return item;
+
   if (typeof key === 'string') {
     const keyArr = key.split('.');
     const value = keyArr.reduce((acc, val) => {
