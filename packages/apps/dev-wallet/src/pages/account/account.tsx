@@ -299,6 +299,32 @@ export function AccountPage() {
           {activities.length > 0 && <ActivityTable activities={activities} />}
         </TabItem>
 
+        <TabItem key="transfers" title="Transfers ↗">
+          <WindowOpen
+            link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
+          />
+          View transfers on{' '}
+          <a
+            href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
+            target="_blank"
+          >
+            {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
+          </a>
+        </TabItem>
+
+        <TabItem key="transactions" title="Transactions ↗">
+          <WindowOpen
+            link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
+          />
+          View transactions where this account was the sender on{' '}
+          <a
+            href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
+            target="_blank"
+          >
+            {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
+          </a>
+        </TabItem>
+
         <TabItem key="settings" title="Settings">
           <Stack flexDirection={'column'} gap={'xxl'}>
             <Stack
@@ -382,3 +408,8 @@ export function AccountPage() {
     </Stack>
   );
 }
+
+const WindowOpen: React.FC<{ link: string }> = ({ link }) => {
+  window.open(link, '_blank');
+  return null;
+};
