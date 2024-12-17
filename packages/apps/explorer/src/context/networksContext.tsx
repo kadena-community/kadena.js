@@ -206,7 +206,7 @@ const NetworkContextProvider = (props: {
     localStorage.setItem(selectedNetworkKey, JSON.stringify(network));
     Cookies.set(selectedNetworkKey, network.slug);
 
-    window.location.href = `/${networkSlug}`;
+    window.location.href = `/${networkSlug}/${router.asPath.split('/').slice(2).join('/')}`;
   };
 
   const removeNetwork = (paramNetwork: INetwork): void => {

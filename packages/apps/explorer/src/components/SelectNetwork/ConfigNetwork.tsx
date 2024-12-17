@@ -10,6 +10,7 @@ import {
   Dialog,
   DialogContent,
   Form,
+  Heading,
   Select,
   SelectItem,
   Stack,
@@ -299,6 +300,18 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               )}
             </CardFooter>
           </Form>
+          <Stack flexDirection={'column'} gap="sm">
+            <Heading as="h3">Navigating to the Explorer</Heading>
+            <Text>
+              You can pass <code>networkId</code> as querystring parameter. This
+              allows Wallets or dApps to choose a specific network.
+            </Text>
+            <Text>
+              For example, if you want to navigate to the account with the
+              networkId <code>testnet04</code>, you can use the following URL:
+              `https://explorer.kadena.io/account/k:2da46f2cc21e219c68a2f18d1a454c10606d52b18d8574913aacb2ea6b6b7251?networkId=testnet04#Transactions`
+            </Text>
+          </Stack>
         </DialogContent>
       )}
     </Dialog>
