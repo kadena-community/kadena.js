@@ -44,7 +44,7 @@ const Block: React.FC = () => {
   };
 
   const blockQueryVariables = {
-    hash: router.query.hash as string,
+    hash: router.query.blockhash as string,
     transactions: {
       first: 1,
       last: 1,
@@ -59,7 +59,7 @@ const Block: React.FC = () => {
   const { loading, data, error } = useBlockQuery({
     variables: blockQueryVariables,
 
-    skip: !router.query.hash,
+    skip: !router.query.blockhash,
   });
 
   useEffect(() => {
@@ -88,7 +88,9 @@ const Block: React.FC = () => {
     return (
       <Layout layout="full">
         <LayoutBody>
-          <NoSearchResults />
+          {!Array.isArray(router.query.blockhash) && (
+            <NoSearchResults type="blockhash" value={router.query.blockhash} />
+          )}
         </LayoutBody>
       </Layout>
     );
@@ -214,7 +216,7 @@ const Block: React.FC = () => {
             }
             key="Transactions"
           >
-            <BlockTransactions hash={router.query.hash as string} />
+            <BlockTransactions hash={router.query.blockhash as string} />
           </TabItem>
         </Tabs>
       </LayoutBody>

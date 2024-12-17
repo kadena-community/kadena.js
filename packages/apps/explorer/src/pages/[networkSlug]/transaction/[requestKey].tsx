@@ -119,7 +119,9 @@ const Transaction: React.FC = () => {
           </LayoutBody>
         </>
       ) : (
-        <NoSearchResults />
+        !Array.isArray(router.query.requestKey) && (
+          <NoSearchResults type="requestKey" value={router.query.requestKey} />
+        )
       )}
     </Layout>
   );
