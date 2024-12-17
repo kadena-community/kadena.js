@@ -73,7 +73,6 @@
     "dotenv": "~16.4.5",
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
-    "graphql-query-path": "^1.1.2",
     "graphql-scalars": "~1.23.0",
     "graphql-ws": "^5.16.0",
     "graphql-yoga": "~5.3.0",

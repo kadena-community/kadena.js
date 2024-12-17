@@ -11,7 +11,6 @@ export const loadingData: AccountTransactionsQuery = {
         hasPreviousPage: false,
         startCursor: '',
       },
-      totalCount: 0,
       edges: [
         {
           node: {
@@ -23,10 +22,6 @@ export const loadingData: AccountTransactionsQuery = {
               goodResult: '',
             },
             cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
               payload: {
                 code: '',
               },
@@ -43,10 +38,6 @@ export const loadingData: AccountTransactionsQuery = {
               goodResult: '',
             },
             cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
               payload: {
                 code: '',
               },
@@ -63,10 +54,6 @@ export const loadingData: AccountTransactionsQuery = {
               goodResult: '',
             },
             cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
               payload: {
                 code: '',
               },
@@ -83,10 +70,6 @@ export const loadingData: AccountTransactionsQuery = {
               goodResult: '',
             },
             cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
               payload: {
                 code: '',
               },
@@ -103,10 +86,6 @@ export const loadingData: AccountTransactionsQuery = {
               goodResult: '',
             },
             cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
               payload: {
                 code: '',
               },
@@ -123,10 +102,6 @@ export const loadingData: AccountTransactionsQuery = {
               goodResult: '',
             },
             cmd: {
-              meta: {
-                sender: '',
-                chainId: 0,
-              },
               payload: {
                 code: '',
               },
