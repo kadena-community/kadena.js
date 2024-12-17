@@ -129,9 +129,13 @@ export function MigrateAccount() {
   }
 
   return (
-    <Stack gap={'lg'} flexDirection={'column'}>
+    <Stack gap={'lg'} flexDirection={'column'} marginBlockEnd={'md'}>
       {!groupId && (
-        <Stack style={{ maxWidth: '670px', width: '100%' }}>
+        <Stack
+          style={{ maxWidth: '670px', width: '100%' }}
+          flexDirection={'column'}
+          gap={'lg'}
+        >
           <Card fullWidth>
             <Stack flexDirection={'column'} gap={'xxl'}>
               <Heading variant="h3">Migrate Account</Heading>
@@ -192,27 +196,27 @@ export function MigrateAccount() {
                 </Stack>
               )}
             </Stack>
-            <Stack gap="sm">
-              <Button variant="transparent" isDisabled={loading}>
-                Cancel
-              </Button>
-              <Button
-                isDisabled={
-                  !keysetGuard || hasSameGuard(sourceAccount.guard, keysetGuard)
-                }
-                isLoading={loading}
-                onClick={async () => {
-                  if (keysetGuard) {
-                    setLoading(true);
-                    const target = await createAccountByKeyset(keysetGuard);
-                    await migrateTo(target);
-                  }
-                }}
-              >
-                Migrate account
-              </Button>
-            </Stack>
           </Card>
+          <Stack gap="sm">
+            <Button variant="transparent" isDisabled={loading}>
+              Cancel
+            </Button>
+            <Button
+              isDisabled={
+                !keysetGuard || hasSameGuard(sourceAccount.guard, keysetGuard)
+              }
+              isLoading={loading}
+              onClick={async () => {
+                if (keysetGuard) {
+                  setLoading(true);
+                  const target = await createAccountByKeyset(keysetGuard);
+                  await migrateTo(target);
+                }
+              }}
+            >
+              Migrate account
+            </Button>
+          </Stack>
         </Stack>
       )}
       {groupId && (
