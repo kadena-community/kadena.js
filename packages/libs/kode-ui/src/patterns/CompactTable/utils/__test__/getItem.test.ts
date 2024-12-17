@@ -9,6 +9,13 @@ describe('getItem', () => {
       hasThePower: true,
     },
   };
+  it('should return the whole item, if the key is empty', () => {
+    const result = getItem(item, '');
+    expect(result).toEqual(item);
+
+    const result2 = getItem(item);
+    expect(result2).toEqual(item);
+  });
   it('should return the correct value if the key is found', () => {
     const result = getItem(item, 'props.pet');
     expect(result).toEqual('Cringer');

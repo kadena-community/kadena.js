@@ -42,7 +42,7 @@ export const useFreezeInvestor = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!paused && !accountRoles.isFreezer());
+    setIsAllowed(!paused && accountRoles.isFreezer());
   }, [paused, account?.address, isMounted, accountRoles]);
 
   return { submit, isAllowed };
