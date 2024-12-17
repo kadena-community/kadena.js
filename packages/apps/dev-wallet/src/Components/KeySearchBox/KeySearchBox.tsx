@@ -47,6 +47,7 @@ export function KeySearchBox({ onSelect }: { onSelect: (key: IKey) => void }) {
   return (
     <Stack flex={1}>
       <ComboField
+        placeholder="Select or Enter a public key"
         onSubmit={(value) => {
           onSelect({
             publicKey: value,
