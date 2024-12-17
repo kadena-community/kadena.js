@@ -1,28 +1,30 @@
-import {
-  accountRepository,
-  IAccount,
-  IKeysetGuard,
-} from '@/modules/account/account.repository.ts';
-
+import { IAccount } from '@/modules/account/account.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
-import { KeySetForm } from '@/Components/KeySetForm/KeySetForm.tsx';
-
-import { Button, Card, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import {
+  Button,
+  Card,
+  Heading,
+  Notification,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 
 import { Chain } from '@/Components/Badge/Badge';
 import {
   createMigrateAccountTransactions,
   hasSameGuard,
 } from '@/modules/account/account.service';
+import { isKeysetGuard } from '@/modules/account/guards';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import {
   ITransaction,
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { panelClass } from '@/pages/home/style.css';
 import { TxList } from '@/pages/transaction/components/TxList';
+import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
 import { formatList, shorten } from '@/utils/helpers';
-import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Label } from '../../transaction/components/helpers';
@@ -30,67 +32,32 @@ import { Label } from '../../transaction/components/helpers';
 export function MigrateAccount() {
   const { accountId } = useParams();
   const [sourceAccount, setSourceAccount] = useState<IAccount | null>(null);
-  const [targetAccount, setTargetAccount] = useState<IAccount | null>(null);
-  const [keysetGuard, setKeysetGuard] = useState<IKeysetGuard>();
-  const [alias, setAlias] = useState<string | null>(null);
+  const [targetAccount, setTargetAccount] = useState<IRetrievedAccount | null>(
+    null,
+  );
   const {
     profile,
     activeNetwork,
-    fungibles,
-    keysets,
+    contacts,
     accounts,
+    watchAccounts,
     getPublicKeyData,
   } = useWallet();
   const [loading, setLoading] = useState(false);
   const [groupId, setGroupId] = useState<string | null>(null);
   const [txs, setTxs] = useState<ITransaction[]>([]);
-  const navigate = usePatchedNavigate();
-  const contract = sourceAccount?.contract;
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (accountId) {
       const account = accounts.find((a) => a.uuid === accountId);
       if (account && !sourceAccount) {
         setSourceAccount(account);
-        setKeysetGuard(account.guard);
-        setAlias(account.alias ? `Migrated ${account.alias}` : '');
       }
     }
   }, [accountId, accounts, sourceAccount]);
 
-  const filteredAccounts = accounts.filter(
-    (account) => account.contract === contract,
-  );
-
-  const symbol =
-    fungibles.find((f) => f.contract === contract)?.symbol ?? contract;
-
-  const aliasDefaultValue = contract
-    ? `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`
-    : '';
-
-  const createAccountByKeyset = async (keyset: IKeysetGuard) => {
-    if (!profile || !activeNetwork || !contract) {
-      throw new Error('Profile or active network not found');
-    }
-    const account: IAccount = {
-      uuid: crypto.randomUUID(),
-      alias: alias || aliasDefaultValue,
-      profileId: profile.uuid,
-      address: keyset.principal,
-      guard: keyset,
-      networkUUID: activeNetwork.uuid,
-      contract,
-      chains: [],
-      overallBalance: '0',
-    };
-
-    await accountRepository.addAccount(account);
-    setTargetAccount(account);
-    return account;
-  };
-
-  const migrateTo = async (target: IAccount) => {
+  const migrateTo = async (target: IRetrievedAccount) => {
     if (!profile) {
       throw new Error('Profile not found');
     }
@@ -113,16 +80,6 @@ export function MigrateAccount() {
       setGroupId(groupId);
     }
   };
-
-  const filteredKeysets = keysets
-    .filter((keyset) => keyset.guard.keys.length >= 2)
-    .map((keyset) => ({
-      ...keyset,
-      used: Boolean(
-        filteredAccounts.find((account) => account.keysetId === keyset.uuid),
-      ),
-    }))
-    .sort((a) => (a.used ? 1 : -1));
 
   if (!sourceAccount) {
     return null;
@@ -152,50 +109,30 @@ export function MigrateAccount() {
                 />
               </Stack>
 
-              <Stack flexDirection={'column'} gap={'sm'}>
-                <Heading variant="h4">Create Target Account</Heading>
-                <Text>
-                  You can modify the guard and create a new account to transfer
-                  all {symbol} to that
-                </Text>
-              </Stack>
-              <Stack flexDirection={'column'} gap={'xxl'}>
-                <TextField
-                  label="Alias"
-                  defaultValue={aliasDefaultValue}
-                  value={alias || aliasDefaultValue}
-                  onChange={(e) => setAlias(e.target.value)}
-                />
-
-                <KeySetForm
-                  isOpen
-                  close={() => {}}
-                  variant="inline"
-                  keyset={keysetGuard}
-                  onChange={(data) => {
-                    if (!data) {
-                      setKeysetGuard(undefined);
-                      return;
-                    }
-                    const { alias: keysetAlias, ...keyset } = data;
-                    setKeysetGuard(keyset);
-                    if (keysetAlias && !alias) {
-                      setAlias(keysetAlias);
-                    }
-                  }}
-                  filteredKeysets={filteredKeysets}
-                  LiveForm
-                />
-              </Stack>
-              {keysetGuard && (
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Label bold>Address:</Label>
-                  <Text variant="code">
-                    {shorten(keysetGuard.principal, 26)}
-                  </Text>
-                </Stack>
-              )}
+              <AccountSearchBox
+                accounts={accounts}
+                watchedAccounts={watchAccounts}
+                contacts={contacts}
+                contract={sourceAccount.contract}
+                network={activeNetwork!}
+                onSelect={(account) => {
+                  setTargetAccount(account ?? null);
+                }}
+              />
             </Stack>
+            {targetAccount && !isKeysetGuard(targetAccount.guard) && (
+              <Notification intent="negative" role="alert">
+                Only keyset accounts are supported
+              </Notification>
+            )}
+
+            {targetAccount &&
+              hasSameGuard(sourceAccount.guard, targetAccount.guard) &&
+              sourceAccount.address === targetAccount.address && (
+                <Notification intent="negative" role="alert">
+                  You need to select a different account
+                </Notification>
+              )}
           </Card>
           <Stack gap="sm">
             <Button variant="transparent" isDisabled={loading}>
@@ -203,14 +140,16 @@ export function MigrateAccount() {
             </Button>
             <Button
               isDisabled={
-                !keysetGuard || hasSameGuard(sourceAccount.guard, keysetGuard)
+                !targetAccount ||
+                !isKeysetGuard(targetAccount.guard) ||
+                (hasSameGuard(sourceAccount.guard, targetAccount.guard) &&
+                  sourceAccount.address === targetAccount.address)
               }
               isLoading={loading}
               onClick={async () => {
-                if (keysetGuard) {
+                if (targetAccount) {
                   setLoading(true);
-                  const target = await createAccountByKeyset(keysetGuard);
-                  await migrateTo(target);
+                  await migrateTo(targetAccount);
                 }
               }}
             >
@@ -221,6 +160,11 @@ export function MigrateAccount() {
       )}
       {groupId && (
         <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
+          {done && (
+            <Notification intent="positive" role="alert">
+              All done!
+            </Notification>
+          )}
           <Stack flexDirection={'column'} gap={'sm'}>
             <Heading>Transactions</Heading>
             {txs.length === 0 && <Text>No transactions</Text>}
@@ -234,7 +178,7 @@ export function MigrateAccount() {
               if (!targetAccount) {
                 throw new Error('Target account not found');
               }
-              navigate(`/account/${targetAccount.uuid}`);
+              setDone(true);
             }}
             txIds={txs.map((tx) => tx.uuid)}
             showExpanded={txs.length === 1}

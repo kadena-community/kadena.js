@@ -47,6 +47,7 @@ import {
 import { INetwork, networkRepository } from '../network/network.repository';
 import { UUID } from '../types';
 import { isKeysetGuard } from './guards';
+import { IRetrievedAccount } from './IRetrievedAccount';
 
 export type IWalletDiscoveredAccount = {
   chainId: ChainId;
@@ -434,10 +435,14 @@ export async function fundAccount({
 
 export async function createMigrateAccountTransactions(
   source: IAccount,
-  target: IAccount,
+  target: IRetrievedAccount,
   ownedKeys: string[],
 ) {
-  const network = await networkRepository.getNetwork(target.networkUUID);
+  if (!isKeysetGuard(target.guard)) {
+    throw new Error('Target guard is not a keyset guard');
+  }
+  const targetGuard = target.guard;
+  const network = await networkRepository.getNetwork(source.networkUUID);
   const transactions = await Promise.all(
     source.chains.map(async (chain) => {
       const sender = {
@@ -453,7 +458,7 @@ export async function createMigrateAccountTransactions(
         sender,
         receiver: {
           account: target.address,
-          keyset: target.guard,
+          keyset: targetGuard,
         },
         gasPayer: sender,
         chainId: chain.chainId,
