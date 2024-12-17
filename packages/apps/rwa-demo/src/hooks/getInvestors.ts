@@ -3,7 +3,6 @@ import {
   useEventsQuery,
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import { coreEvents } from '@/services/graph/agent.graph';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
@@ -13,7 +12,6 @@ import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
 import { store } from '@/utils/store';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { useTransactions } from './transactions';
 
 export type EventQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
@@ -27,7 +25,6 @@ export const getEventsDocument = (
 
 export const useGetInvestors = () => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
-  const { getTransactions, transactions } = useTransactions();
   const {
     loading: addedLoading,
     data: addedData,
@@ -138,18 +135,9 @@ export const useGetInvestors = () => {
   };
 
   useEffect(() => {
+    if (removedLoading || addedLoading) return;
     //const tx = getTransactions('IDENTITY-REGISTERED');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-
-    if (removedLoading || addedLoading) return;
-
-    console.log([
-      addedData?.events.edges.length,
-      removedData?.events.edges.length,
-      addedSubscriptionData?.events?.length,
-      removedSubscriptionData?.events?.length,
-    ]);
-
     initInnerData();
   }, [
     removedLoading,

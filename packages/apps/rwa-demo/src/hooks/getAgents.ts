@@ -91,7 +91,6 @@ export const useGetAgents = () => {
         } as const;
       }) ?? [];
 
-    console.log({ subscriptionAddData });
     //listen to add events
     const addedSubscriptionData = (subscriptionAddData?.events
       ?.map((val) => {
