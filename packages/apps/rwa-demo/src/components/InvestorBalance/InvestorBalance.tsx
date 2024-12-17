@@ -20,9 +20,10 @@ export const InvestorBalance: FC<IProps> = ({
   const { account } = useAccount();
   const [data, setData] = useState(0);
   const [frozenData, setFrozenData] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   const init = async (account: IWalletAccount, investorAccount: string) => {
-    if (!account || !investorAccount) return;
+    if (!account || !investorAccount || isMounted) return;
     const res = await getBalance({ investorAccount, account: account! });
 
     if (typeof res === 'number') {
@@ -37,6 +38,7 @@ export const InvestorBalance: FC<IProps> = ({
     if (typeof frozenRes === 'number') {
       setFrozenData(frozenRes);
     }
+    setIsMounted(true);
   };
 
   useEffect(() => {

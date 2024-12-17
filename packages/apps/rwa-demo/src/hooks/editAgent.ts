@@ -49,7 +49,7 @@ export const useEditAgent = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!paused && accountRoles.isAgentAdmin());
+    setIsAllowed(!paused && (accountRoles.isAgentAdmin() || isOwner));
   }, [paused, account?.address, isMounted, isOwner, accountRoles]);
 
   return { submit, isAllowed };

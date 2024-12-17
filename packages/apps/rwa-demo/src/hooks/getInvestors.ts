@@ -1,5 +1,8 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
-import { useEventsQuery } from '@/__generated__/sdk';
+import {
+  useEventsQuery,
+  useEventSubscriptionSubscription,
+} from '@/__generated__/sdk';
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import { coreEvents } from '@/services/graph/agent.graph';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
@@ -41,7 +44,19 @@ export const useGetInvestors = () => {
     },
   });
 
-  const initInnerData = async (transactions: ITransaction[]) => {
+  const { data: addedSubscriptionData } = useEventSubscriptionSubscription({
+    variables: {
+      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
+    },
+  });
+
+  const { data: removedSubscriptionData } = useEventSubscriptionSubscription({
+    variables: {
+      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
+    },
+  });
+
+  const initInnerData = async () => {
     if (addedLoading || removedLoading) {
       setInnerData([]);
       return;
@@ -75,11 +90,42 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
+    const agentsSubscriptionAdded: IRecord[] =
+      addedSubscriptionData?.events?.map((edge: any) => {
+        const params = JSON.parse(edge.parameters);
+        return {
+          isRemoved: false,
+          accountName: params[0],
+          alias: '',
+          creationTime: Date.now(),
+          result: true,
+        } as IRecord;
+      }) ?? [];
+
+    const agentsSubscriptionRemoved: IRecord[] =
+      removedSubscriptionData?.events?.map((edge: any) => {
+        const params = JSON.parse(edge.parameters);
+        return {
+          isRemoved: true,
+          accountName: params[0],
+          alias: '',
+          creationTime: Date.now(),
+          result: true,
+        } as IRecord;
+      }) ?? [];
+
     const aliases = await store.getAccounts();
 
     setInnerData(
       setAliasesToAccounts(
-        [...filterRemovedRecords([...agentsAdded, ...agentsRemoved])],
+        [
+          ...filterRemovedRecords([
+            ...agentsAdded,
+            ...agentsRemoved,
+            ...agentsSubscriptionAdded,
+            ...agentsSubscriptionRemoved,
+          ]),
+        ],
         aliases,
       ),
     );
@@ -92,10 +138,27 @@ export const useGetInvestors = () => {
   };
 
   useEffect(() => {
-    const tx = getTransactions('IDENTITY-REGISTERED');
+    //const tx = getTransactions('IDENTITY-REGISTERED');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData(tx);
-  }, [transactions, addedData, removedData, removedLoading, addedLoading]);
+
+    if (removedLoading || addedLoading) return;
+
+    console.log([
+      addedData?.events.edges.length,
+      removedData?.events.edges.length,
+      addedSubscriptionData?.events?.length,
+      removedSubscriptionData?.events?.length,
+    ]);
+
+    initInnerData();
+  }, [
+    removedLoading,
+    addedLoading,
+    addedData?.events.edges.length ?? 0,
+    removedData?.events.edges.length ?? 0,
+    addedSubscriptionData?.events?.length ?? 0,
+    removedSubscriptionData?.events?.length ?? 0,
+  ]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

@@ -43,7 +43,7 @@ export const useRemoveAgent = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!paused && accountRoles.isAgentAdmin());
+    setIsAllowed(!paused && (accountRoles.isAgentAdmin() || isOwner));
   }, [paused, account?.address, isMounted, isOwner]);
 
   return { submit, isAllowed };

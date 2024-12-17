@@ -24,8 +24,6 @@ export const useCreateContract = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      console.log(res);
-
       const dataResult = await client.listen(res);
 
       return addTransaction({

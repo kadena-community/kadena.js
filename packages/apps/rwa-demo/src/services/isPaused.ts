@@ -19,7 +19,6 @@ export const isPaused = async (data: IIsPausedProps) => {
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 
-  console.log('paused', { transaction });
   const { result } = await client.local(transaction, {
     preflight: false,
     signatureVerification: false,

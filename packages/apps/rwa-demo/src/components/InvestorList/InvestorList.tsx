@@ -52,8 +52,6 @@ export const InvestorList: FC = () => {
               />
             }
           />
-
-          {isLoading.toString()}
           <SectionCardBody>
             <CompactTable
               isLoading={isLoading}
