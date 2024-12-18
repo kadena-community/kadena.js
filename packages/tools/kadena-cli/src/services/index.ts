@@ -14,6 +14,7 @@ import type { IPactJSService } from './pactjs/pactjs.service.js';
 import { PactJSService } from './pactjs/pactjs.service.js';
 import type { IPlainKeyService } from './plain-key/plainkey.service.js';
 import { PlainKeyService } from './plain-key/plainkey.service.js';
+import { SpireKeyService } from './spirekey/spirekey.service.js';
 import type { IWalletService } from './wallet/wallet.service.js';
 import { WalletService } from './wallet/wallet.service.js';
 
@@ -28,6 +29,7 @@ export class Services {
   public wallet: IWalletService;
   public pactjs: IPactJSService;
   public account: IAccountService;
+  public spirekey: SpireKeyService;
   public location?: string;
 
   public constructor(options?: IServiceOptions) {
@@ -37,6 +39,7 @@ export class Services {
     this.wallet = new WalletService(this);
     this.pactjs = new PactJSService(this);
     this.account = new AccountService(this);
+    this.spirekey = new SpireKeyService(this);
   }
 }
 

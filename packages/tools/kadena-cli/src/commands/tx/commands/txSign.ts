@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 import { createCommand } from '../../../utils/createCommand.js';
 import { signWithKeypair } from '../utils/txSignWithKeypair.js';
+import { signWithSpireKey } from '../utils/txSignWithSpirekey.js';
 import { signWithWallet } from '../utils/txSignWithWallet.js';
 import { options } from './txSignOptions.js';
 
@@ -22,6 +23,9 @@ export const createSignCommand: (program: Command, version: string) => void =
       }
       if (signMethod.txSignWith === 'keyPair') {
         return signWithKeypair(option, values, stdin);
+      }
+      if (signMethod.txSignWith === 'spireKey') {
+        return signWithSpireKey(option, values, stdin);
       }
     },
   );
