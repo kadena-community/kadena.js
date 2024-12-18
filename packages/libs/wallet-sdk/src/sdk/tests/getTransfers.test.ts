@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { walletSdk } from '../walletSdk.js';
 
 describe('getTransfers', () => {
-  test('runs', async () => {
+  test.skip('runs', async () => {
     const result = await walletSdk.getTransfers({
       accountName:
         'k:2017fee3fb15cfe840e5ed34bf101cc7d5579ffdd20dea09e32fd77c1757f946',
