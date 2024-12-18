@@ -173,6 +173,10 @@ export function getTransfers(
     chainId: ChainId | '';
     availableChains?: ChainId[];
   }>,
+  sameAddressReceivers: Array<{
+    amount: string;
+    chainId: ChainId;
+  }> = [],
 ) {
   const sortedInputChains = chains.sort(
     (a, b) => Number(b.balance) - Number(a.balance),
@@ -191,10 +195,43 @@ export function getTransfers(
     }))
     .sort((a, b) => (a.chainId && b.chainId ? 0 : b.chainId ? -1 : 1));
 
+  const sortedChainsForSameAddress = sameAddressReceivers.map(
+    (data, index) => ({
+      ...data,
+      chainId: data.chainId,
+      index,
+    }),
+  );
+
   const fixedChain = sortedChains.filter(({ chainId }) => chainId);
   const dynamicChain = sortedChains.filter(({ chainId }) => !chainId);
-  const chainBalance = CHAINS.map((ch) => ({
+
+  const demandForSameAddress = CHAINS.map((ch) => ({
     balance: chains.find((c) => c.chainId === ch)?.balance ?? '0.0',
+    chainId: ch,
+    demand: sortedChainsForSameAddress
+      .filter((r) => r.chainId === ch)
+      .reduce((acc, r) => acc.plus(r.amount), new PactNumber(0))
+      .toDecimal(),
+  }));
+
+  const [balancesAfterSameAddress, crossChainForSameAddress] =
+    processRedistribute(demandForSameAddress, reservedGas, '0');
+
+  const balancesAfter = balancesAfterSameAddress.map((b) => {
+    const xchain = crossChainForSameAddress.find((c) => c.target === b.chainId);
+    if (!xchain) return b;
+    return {
+      ...b,
+      balance: new PactNumber(b.balance)
+        .minus(xchain.amount)
+        .minus(reservedGas)
+        .toDecimal(),
+    };
+  });
+
+  const chainBalance = CHAINS.map((ch) => ({
+    balance: balancesAfter.find((c) => c.chainId === ch)?.balance ?? '0.0',
     chainId: ch,
     demand: sortedChains
       .filter((r) => r.chainId === ch)
@@ -222,8 +259,6 @@ export function getTransfers(
     if (new PactNumber(item!.balance).isLessThan(0)) {
       throw new Error('insufficient fund');
     }
-
-    console.log('item!.balance', item!.balance);
   });
   const fixedTransfers = fixedChain.map((item) => ({
     ...item,
@@ -259,7 +294,7 @@ export function getTransfers(
       leftAmount = leftAmount.minus(safeBalance);
       chunks.push({
         chainId: item.chainId,
-        amount: fromChain.toString(),
+        amount: fromChain.toDecimal(),
       });
       item.balance = fromChain.minus(item.balance).negated().toDecimal();
     }
@@ -275,7 +310,11 @@ export function getTransfers(
     (a, b) => a.index - b.index,
   );
 
-  return [merged, redistributionRequests] as const;
+  return [merged, redistributionRequests, crossChainForSameAddress] as [
+    typeof merged,
+    typeof redistributionRequests,
+    typeof crossChainForSameAddress,
+  ];
 }
 
 export const discoverReceiver = async (
@@ -321,6 +360,7 @@ export interface IReceiver {
     chainId: ChainId;
     amount: string;
   }[];
+  xchain?: boolean;
   discoveredAccount?: IRetrievedAccount;
 }
 

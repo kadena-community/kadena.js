@@ -140,7 +140,7 @@ export function TransferForm({
         },
       ],
       gasPayer: undefined,
-      gasPrice: '1e-8',
+      gasPrice: '0.00000001',
       gasLimit: '2500',
       type: 'normalTransfer',
       ttl: 2 * 60 * 60,
@@ -156,7 +156,10 @@ export function TransferForm({
       amount: string;
     }[],
   );
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{
+    target: 'from' | `receivers.${number}` | 'gas' | 'meta' | 'general';
+    message: string;
+  }>();
   const watchFungibleType = watch('fungible');
 
   const filteredAccounts = useMemo(
@@ -212,11 +215,21 @@ export function TransferForm({
   }, [activityId, reset, allAccounts, accountId]);
 
   const senderAccount = watch('senderAccount');
+  const receivers = watch('receivers');
 
-  const chains = useMemo(
-    () => senderAccount?.chains ?? [],
-    [senderAccount?.chains],
-  );
+  const chains = useMemo(() => {
+    if (!senderAccount) return [];
+    const usedChains = receivers
+      .filter((rec) => rec.address === senderAccount.address && rec.chain)
+      .flatMap(({ chain }) => chain);
+    return senderAccount.chains.filter(
+      (chain) => !usedChains.includes(chain.chainId),
+    );
+  }, [senderAccount?.chains, receivers]);
+
+  const overallBalance = chains
+    .reduce((acc, { balance }) => acc.plus(balance), new PactNumber(0))
+    .toDecimal();
 
   // console.log(watchReceivers);
   // const watchReceivers = watch('receivers');
@@ -239,35 +252,90 @@ export function TransferForm({
     );
     setValue('totalAmount', totalAmount);
     setRedistribution([]);
-    setError(null);
+    setError(undefined);
+    const usedChains = receivers
+      .filter((rec) => rec.address === senderAccount.address && rec.chain)
+      .flatMap(({ chain }) => chain);
+    const availableChains = senderAccount.chains.filter(
+      (chain) => !usedChains.includes(chain.chainId),
+    );
+
+    const allChainsSet = receivers.every((receiver, index) => {
+      if (receiver.address === senderAccount.address && !receiver.chain) {
+        setError({
+          target: `receivers.${index}`,
+          message:
+            'Please select the target chain. Auto mode is not available when the receiver is the sender',
+        });
+        return false;
+      }
+      return true;
+    });
+
+    if (!allChainsSet) return;
+
+    const receiversWithIndex = receivers.map((receiver, index) => ({
+      receiver,
+      index,
+    }));
+
+    const otherReceiversWithIndex = receiversWithIndex.filter(
+      ({ receiver: rec }) => rec.address !== senderAccount.address,
+    );
+
     try {
-      const [transfers, redistributionRequest] = getTransfers(
-        chains.filter(
+      const sameAddressReceivers = receiversWithIndex
+        .filter(({ receiver: rec }) => rec.address === senderAccount.address)
+        .map(({ receiver, index }) => ({
+          index,
+          amount: receiver.amount,
+          chainId: receiver.chain as ChainId,
+        }));
+      const otherReceivers = otherReceiversWithIndex.map(
+        ({ receiver, index }) => ({
+          index,
+          amount: receiver.amount,
+          chainId: receiver.chain,
+          availableChains: getAvailableChains(receiver.discoveredAccount),
+        }),
+      );
+      const [transfers, redistributionRequest, xchain] = getTransfers(
+        availableChains.filter(
           (chain) => !selectedChain || chain.chainId === selectedChain,
         ),
         !gasPayer || gasPayer.address === senderAccount?.address
           ? new PactNumber(gasPrice).times(gasLimit).toDecimal()
           : '0',
-        receivers.map((receiver) => ({
-          amount: receiver.amount,
-          chainId: receiver.chain,
-          availableChains: getAvailableChains(receiver.discoveredAccount),
-        })),
+        otherReceivers,
+        sameAddressReceivers,
       );
-      setValue(
-        'receivers',
-        receivers.map((receiver, index) => ({
+
+      const updatedReceivers = receiversWithIndex.map(({ receiver, index }) => {
+        if (receiver.address === senderAccount.address) {
+          return {
+            ...receiver,
+            xchain: true,
+            address:
+              receiver.address || receiver.discoveredAccount?.address || '',
+          };
+        }
+        const idx = otherReceivers.findIndex((r) => r.index === index);
+        return {
           ...receiver,
           address:
             receiver.address || receiver.discoveredAccount?.address || '',
-          chunks: transfers[index].chunks,
-        })),
-      );
-      setRedistribution(redistributionRequest);
+          chunks: transfers[idx].chunks,
+        };
+      });
+
+      setValue('receivers', updatedReceivers);
+      setRedistribution([...xchain, ...redistributionRequest]);
     } catch (e) {
-      setError(
-        'message' in (e as Error) ? (e as Error).message : JSON.stringify(e),
-      );
+      setError({
+        target: 'general',
+        message:
+          'message' in (e as Error) ? (e as Error).message : JSON.stringify(e),
+      });
     }
   }, [chains, getValues, senderAccount, setValue]);
 
@@ -285,12 +353,22 @@ export function TransferForm({
 
   async function onSubmitForm(data: ITransfer) {
     console.log('data', data);
-    if (!senderAccount || !profile) return;
+    if (
+      !profile ||
+      !formState.isValid ||
+      !!error ||
+      !senderAccount ||
+      new PactNumber(totalAmount).gte(overallBalance) ||
+      new PactNumber(totalAmount).lte(0)
+    ) {
+      return;
+    }
+
     onSubmit(
       {
         ...data,
         gasPayer: data.gasPayer || data.senderAccount,
-        creationTime: data.creationTime ?? Date.now() / 1000,
+        creationTime: data.creationTime ?? Math.floor(Date.now() / 1000),
       },
       redistribution,
     );
@@ -347,9 +425,7 @@ export function TransferForm({
                   <Stack flexDirection={'column'}>
                     <AccountSearchBox
                       isSenderAccount
-                      accounts={filteredAccounts.filter(
-                        (account) => account.address,
-                      )}
+                      accounts={filteredAccounts}
                       watchedAccounts={filteredWatchedAccounts}
                       contacts={contacts}
                       network={activeNetwork!}
@@ -400,7 +476,7 @@ export function TransferForm({
                                     )}
                                   />
                                 ) : null}
-                                (balance: {senderAccount?.overallBalance})
+                                (balance: {overallBalance})
                               </Stack>
                             </SelectItem>,
                             ...chains.map((chain) => (
@@ -440,10 +516,21 @@ export function TransferForm({
                       return true;
                     }
                     // if the receiver is the sender, then the chains should be selected manually
-                    if (!ch || !senderChain) return false;
+                    if (!ch) return false;
+
+                    if (!senderChain && chains.length === 1) {
+                      return ch !== chains[0].chainId;
+                    }
 
                     // source and target chain should not be the same
                     return ch !== senderChain;
+                  });
+                  console.log('availableChains', {
+                    chainList,
+                    availableChains,
+                    senderChain,
+                    rec,
+                    senderAccount,
                   });
                   return (
                     <Fragment key={index}>
@@ -518,11 +605,7 @@ export function TransferForm({
                                 return (
                                   <Stack flexDirection={'column'}>
                                     <AccountSearchBox
-                                      accounts={filteredAccounts.filter(
-                                        (account) =>
-                                          account.address !==
-                                          senderAccount?.address,
-                                      )}
+                                      accounts={filteredAccounts}
                                       hideKeySelector={
                                         getValues('type') !== 'safeTransfer'
                                       }
@@ -601,6 +684,7 @@ export function TransferForm({
                                       // label={index === 0 ? 'Chain' : undefined}
                                       placeholder="Select a chain"
                                       description={
+                                        rec.xchain ||
                                         rec.chunks.find(({ chainId }) =>
                                           redistribution.find(
                                             (r) => r.target === chainId,
@@ -608,6 +692,15 @@ export function TransferForm({
                                         )
                                           ? `This will trigger balance redistribution`
                                           : ''
+                                      }
+                                      errorMessage={
+                                        error &&
+                                        error.target === `receivers.${index}` &&
+                                        error.message
+                                      }
+                                      isInvalid={
+                                        error &&
+                                        error.target === `receivers.${index}`
                                       }
                                       size="sm"
                                       selectedKey={field.value}
@@ -651,22 +744,7 @@ export function TransferForm({
                               </Stack>
                             </AdvancedMode>
                           </Stack>
-                          {!availableChains.length && (
-                            <Notification role="alert" intent="negative">
-                              the receiver is the same as sender, therefor you
-                              can not use automatic chain selection, please set
-                              the both chains manually
-                            </Notification>
-                          )}
                         </Stack>
-
-                        {error && (
-                          <Notification role="alert" intent="negative">
-                            Total amount ({totalAmount}) is more than the
-                            available balance, please check your input, also you
-                            should consider the gas fee
-                          </Notification>
-                        )}
                       </Stack>
                       {index === watchReceivers.length - 1 && (
                         <Stack>
@@ -723,9 +801,7 @@ export function TransferForm({
                     <Stack flexDirection={'column'}>
                       <AccountSearchBox
                         isSenderAccount
-                        accounts={filteredAccounts.filter(
-                          (account) => account.address,
-                        )}
+                        accounts={filteredAccounts}
                         watchedAccounts={filteredWatchedAccounts}
                         contacts={contacts}
                         network={activeNetwork!}
@@ -760,14 +836,27 @@ export function TransferForm({
                     placeholder="Enter gas price"
                     value={field.value}
                     onChange={(e) => {
-                      field.onChange(e.target.value);
+                      if (!e.target.value) {
+                        field.onChange('');
+                        return;
+                      }
+                      try {
+                        const val = new PactNumber(e.target.value);
+                        if (val.lt(0)) {
+                          throw new Error('negative value');
+                        }
+                        const newValue =
+                          val.toString() +
+                          (e.target.value.endsWith('.') ? '.' : '');
+                        field.onChange(newValue);
+                      } catch (e) {
+                        // console.log('error', e);
+                      }
                       // evaluateTransactions();
                     }}
                     onBlur={evaluateTransactions}
                     size="sm"
                     defaultValue="0.00000001"
-                    type="number"
-                    step="0.00000001"
                     isInvalid={!!error}
                     errorMessage={'Please enter a valid gas price'}
                   />
@@ -784,12 +873,23 @@ export function TransferForm({
                     startVisual={<Label>Gas Limit:</Label>}
                     value={field.value}
                     onChange={(e) => {
-                      field.onChange(e.target.value);
+                      if (!e.target.value) {
+                        field.onChange('');
+                        return;
+                      }
+                      try {
+                        const val = new PactNumber(e.target.value);
+                        if (val.lt(0)) {
+                          throw new Error('negative value');
+                        }
+                        field.onChange(val.toInteger());
+                      } catch (e) {
+                        // console.log('error', e);
+                      }
                     }}
                     onBlur={evaluateTransactions}
                     size="sm"
                     defaultValue="2500"
-                    type="number"
                     isInvalid={!!error}
                     errorMessage={'Please enter a valid gas limit'}
                   />
@@ -880,14 +980,38 @@ export function TransferForm({
             />
           </AdvancedMode>
         </Stack>
-        {!formState.isValid && formState.isSubmitted && (
+        {(error || !formState.isValid) && formState.isSubmitted && (
           <Notification role="alert" intent="negative">
-            Invalid Data, Please check the inputs (
-            {Object.keys(formState.errors).join(', ')})
+            Invalid Data, Please check the input(s) (
+            {[...Object.keys(formState.errors), error?.target.split('.')[0]]
+              .filter(Boolean)
+              .join(', ')}
+            )
           </Notification>
         )}
-        <Stack justifyContent={'flex-start'} gap="sm" marginBlockStart={'lg'}>
-          <Button type="submit">Create Transactions</Button>
+        <Stack
+          alignItems={'flex-start'}
+          gap="lg"
+          marginBlockStart={'lg'}
+          flexDirection={'column'}
+        >
+          {!!error && error.target === 'general' && (
+            <Notification role="alert" intent="negative">
+              {error.message}
+            </Notification>
+          )}
+          <Button
+            type="submit"
+            // isDisabled={
+            //   !formState.isValid ||
+            //   !!error ||
+            //   !senderAccount ||
+            //   new PactNumber(totalAmount).gte(overallBalance) ||
+            //   new PactNumber(totalAmount).lte(0)
+            // }
+          >
+            Create Transactions
+          </Button>
         </Stack>
       </Stack>
     </form>

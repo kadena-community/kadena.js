@@ -31,7 +31,7 @@ export function BackupMnemonic({
     <>
       {step === 'start' && (
         <Stack flexDirection={'column'} gap="md">
-          <Stack flexDirection={'column'}>
+          <Stack flexDirection={'column'} gap="md">
             <Heading as="h4">Write your recovery phrase down</Heading>
             <Text>
               Make sure no one is watching you; consider some malware might take
