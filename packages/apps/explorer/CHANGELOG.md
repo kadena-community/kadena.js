@@ -1,5 +1,24 @@
 # @kadena/explorer
 
+## 0.9.0
+
+### Minor Changes
+
+- 7a6f1ac: Various QoL improvements for Explorer
+
+  - show specific messages when account, block or transactions are not found
+    (this can be extended to show the search query on other networks)
+  - when switching networks, the url will be preserved
+  - added logic to use `?networkId=<networkid>` in query string parameter to
+    improve navigating from external sources
+
+### Patch Changes
+
+- ee8e99b: Remove AccountName column from Transactions when querying for a
+  specific account
+- Updated dependencies \[ee8e99b]
+  - @kadena/graph\@2.0.5
+
 ## 0.8.13
 
 ### Patch Changes

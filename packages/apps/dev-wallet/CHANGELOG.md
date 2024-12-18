@@ -1,5 +1,16 @@
 # @kadena/dev-wallet
 
+## 0.5.0
+
+### Minor Changes
+
+- 7a6f1ac: Adds links to explorer.kadena.io for Transfers and Transactions
+
+### Patch Changes
+
+- Updated dependencies \[1cba919]
+  - @kadena/client-utils\@0.12.0
+
 ## 0.4.6
 
 ### Patch Changes
