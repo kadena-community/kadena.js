@@ -72,10 +72,20 @@ jobs:
       - name: Log in GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Get version_id from GHCR for `@kadena/graph` latest version on NPM
+        id: npm-ghcr-version-id
+        run: |
+          latest_tag=$(npm view @kadena/graph --json | jq -r '."dist-tags".latest')
+          version_id=$(gh api "orgs/kadena-community/packages/container/graphql/versions" | \
+            jq --arg tag "$latest_tag" -r '.[] | select(.metadata.container.tags | index($tag)) | .id')
+          echo "::set-output name=version_id::$version_id"
+
+
       - name: Build Docker Image for `:latest`
         id: docker-build-graph-latest
-        # only run when `changesets` has published for `@kadena/graph`
-        if: steps.changesets.outputs.published == 'true' && contains(steps.changesets.outputs.publishedPackages, '@kadena/graph')
+        # only run when npm-ghcr-version-id is empty
+        # when it's not empty, the image is already built
+        if: steps.npm-ghcr-version-id.outputs.version_id == ''
         run: |
           cd packages/apps/graph && \
           docker compose build graphql --push --build-arg \
