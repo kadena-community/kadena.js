@@ -1,5 +1,12 @@
 # @kadena/kadena-cli
 
+## 1.3.9
+
+### Patch Changes
+
+- Updated dependencies \[1cba919]
+  - @kadena/client-utils\@0.12.0
+
 ## 1.3.8
 
 ### Patch Changes

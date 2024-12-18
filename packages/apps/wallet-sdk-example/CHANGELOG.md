@@ -1,5 +1,11 @@
 # wallet-sdk-example-app
 
+## 0.0.3
+
+### Patch Changes
+
+- @kadena/wallet-sdk\@0.1.1
+
 ## 0.0.2
 
 ### Patch Changes
