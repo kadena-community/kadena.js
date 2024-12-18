@@ -16,6 +16,7 @@ import {
   MonoSelectAll,
   MonoSettings,
   MonoSettingsBackupRestore,
+  MonoWifiTethering,
 } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -61,6 +62,14 @@ export function Settings() {
       >
         Change Name or Color
       </Button>
+      <UiLink
+        href="/networks"
+        component={Link}
+        variant="outlined"
+        startVisual={<MonoWifiTethering />}
+      >
+        Networks
+      </UiLink>
       <UiLink
         href="/settings/reveal-phrase"
         component={Link}

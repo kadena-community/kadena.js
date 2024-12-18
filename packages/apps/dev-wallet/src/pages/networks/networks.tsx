@@ -37,8 +37,7 @@ export function Networks() {
 
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoWifiTethering />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+      <SideBarBreadcrumbs icon={<MonoWifiTethering />} isGlobal>
         <SideBarBreadcrumbsItem href="/networks">
           Networks
         </SideBarBreadcrumbsItem>
