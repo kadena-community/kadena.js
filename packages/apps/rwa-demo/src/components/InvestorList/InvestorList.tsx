@@ -1,8 +1,7 @@
 import { useAddInvestor } from '@/hooks/addInvestor';
-import { useDeleteInvestor } from '@/hooks/deleteInvestor';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { loadingData } from '@/utils/loadingData';
-import { MonoAdd, MonoDelete, MonoFindInPage } from '@kadena/kode-icons';
+import { MonoAdd, MonoFindInPage } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import {
   CompactTable,
@@ -15,18 +14,15 @@ import {
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { InvestorForm } from '../InvestorForm/InvestorForm';
+import { FormatDeleteInvestor } from '../TableFormatters/FormatDeleteInvestor';
 import { FormatFreeze } from '../TableFormatters/FormatFreeze';
 import { FormatInvestorBalance } from '../TableFormatters/FormatInvestorBalance';
 
 export const InvestorList: FC = () => {
   const { data, isLoading } = useGetInvestors();
   const router = useRouter();
-  const { submit, isAllowed: isDeleteInvestorAllowed } = useDeleteInvestor();
   const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
 
-  const handleDelete = async (accountName: any) => {
-    return await submit({ investor: accountName });
-  };
   const handleLink = async (accountName: any) => {
     router.push(`/investors/${accountName}`);
   };
@@ -99,17 +95,7 @@ export const InvestorList: FC = () => {
                   label: '',
                   key: 'accountName',
                   width: '5%',
-                  render: CompactTableFormatters.FormatActions({
-                    trigger: (
-                      <Button
-                        isCompact
-                        isDisabled={!isDeleteInvestorAllowed}
-                        variant="outlined"
-                        startVisual={<MonoDelete />}
-                        onPress={handleDelete}
-                      />
-                    ),
-                  }),
+                  render: FormatDeleteInvestor(),
                 },
               ]}
               data={isLoading ? loadingData : data}
