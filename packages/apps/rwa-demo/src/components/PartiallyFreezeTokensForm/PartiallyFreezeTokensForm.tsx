@@ -1,7 +1,7 @@
 import { useAccount } from '@/hooks/account';
+import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
 import { getBalance } from '@/services/getBalance';
-import { getFrozenTokens } from '@/services/getFrozenTokens';
 import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
@@ -35,7 +35,8 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
   const resolveRef = useRef<Function | null>(null);
 
   const [tokenBalance, setTokenBalance] = useState(0);
-  const [frozenData, setFrozenData] = useState(0);
+
+  const { data: frozenData } = useGetFrozenTokens({ investorAccount });
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
@@ -102,15 +103,6 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
 
     if (typeof res === 'number') {
       setTokenBalance(res);
-    }
-
-    const frozenRes = await getFrozenTokens({
-      investorAccount,
-      account: account!,
-    });
-
-    if (typeof frozenRes === 'number') {
-      setFrozenData(frozenRes);
     }
   };
 

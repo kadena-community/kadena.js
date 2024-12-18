@@ -1,7 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useAccount } from '@/hooks/account';
+import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { getBalance } from '@/services/getBalance';
-import { getFrozenTokens } from '@/services/getFrozenTokens';
 import { MonoFilterTiltShift } from '@kadena/kode-icons';
 import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -19,7 +19,7 @@ export const InvestorBalance: FC<IProps> = ({
 }) => {
   const { account } = useAccount();
   const [data, setData] = useState(0);
-  const [frozenData, setFrozenData] = useState(0);
+  const { data: frozenData } = useGetFrozenTokens({ investorAccount });
   const [isMounted, setIsMounted] = useState(false);
 
   const init = async (account: IWalletAccount, investorAccount: string) => {
@@ -30,14 +30,6 @@ export const InvestorBalance: FC<IProps> = ({
       setData(res);
     }
 
-    const frozenRes = await getFrozenTokens({
-      investorAccount,
-      account: account!,
-    });
-
-    if (typeof frozenRes === 'number') {
-      setFrozenData(frozenRes);
-    }
     setIsMounted(true);
   };
 

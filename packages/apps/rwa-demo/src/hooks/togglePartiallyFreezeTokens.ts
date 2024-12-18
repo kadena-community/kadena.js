@@ -47,7 +47,7 @@ export const useTogglePartiallyFreezeTokens = ({
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!frozen && !paused && accountRoles.isFreezer());
-  }, [frozen, paused, account?.address, isMounted]);
+  }, [frozen, paused, account?.address, isMounted, accountRoles]);
 
   return { submit, isAllowed };
 };

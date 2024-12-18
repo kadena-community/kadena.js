@@ -61,14 +61,7 @@ export const useAddInvestor = ({
         !paused &&
         accountRoles.isWhitelistManager(),
     );
-  }, [
-    frozen,
-    paused,
-    account?.address,
-    isMounted,
-    investorAccount,
-    accountRoles,
-  ]);
+  }, [frozen, paused, isMounted, investorAccount, accountRoles]);
 
   return { submit, isAllowed };
 };

@@ -48,7 +48,7 @@ export const useDistributeTokens = ({
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!frozen && !paused && accountRoles.isSupplyModifier());
-  }, [frozen, paused, account?.address, isMounted]);
+  }, [frozen, paused, account?.address, isMounted, accountRoles]);
 
   return { submit, isAllowed };
 };

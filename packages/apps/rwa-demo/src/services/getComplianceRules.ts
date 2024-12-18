@@ -93,7 +93,7 @@ export const getMaxInvestors = async (): Promise<number> => {
   return result.status === 'success' ? data : -1;
 };
 
-export const getAssetMaxSupplyBalance = async (): Promise<IComplianceProps> => {
+export const getComplianceRules = async (): Promise<IComplianceProps> => {
   const maxBalanceResult = await getMaxBalance();
   const maxSupplyResult = await getMaxSupply();
   const investorCount = await getInvestorCount();

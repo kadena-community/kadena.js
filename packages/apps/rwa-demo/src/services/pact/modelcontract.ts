@@ -151,6 +151,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       (update compliance-parameters ""
         compliance-params
       )
+       (emit-event (SET-COMPLIANCE-PARAMETERS (read-msg 'compliance-parameters )))  
     )
   )
 
@@ -208,6 +209,18 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
+  (defschema schema-set-compliance-parameters
+    supply-limit: decimal
+    max-investors: integer
+    max-balance-per-investor: decimal
+  )
+
+  (defcap SET-COMPLIANCE-PARAMETERS:bool (compliance:object{schema-set-compliance-parameters})
+    @doc "Event emitted when a compliance parameters is updated."
+    @event
+    true
+  )
+
   (defcap RECOVERY-SUCCESS:bool (lost-wallet:string new-wallet:string investor-kadenaID:string)
     @doc "Event emitted when a recovery process is successful."
     @event
@@ -259,6 +272,19 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defcap BURN:bool () true)
   (defcap FORCED-TRANSFER:bool () true )
   (defcap UPDATE-SUPPLY:bool () true )
+
+
+  (defcap ONLY-AGENT:bool (role:string)
+    @doc "Capability that can be required to validate if an address is an agent"
+    @managed
+    (with-read agents (read-string 'agent) {
+      "guard":= guard,
+      "roles":= roles
+      }
+      (contains role roles)
+      (enforce-guard guard)
+    )
+  )
 
   ;; agent caps
 
