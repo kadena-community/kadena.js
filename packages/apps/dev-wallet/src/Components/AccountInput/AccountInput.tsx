@@ -75,7 +75,8 @@ export function AccountInput({
       {showKeysetDialog && (
         <KeySetForm
           close={() => setShowKeysetDialog(false)}
-          onDone={(guard) => {
+          onChange={(guard) => {
+            if (!guard) return;
             setShowKeysetDialog(false);
             setNeedToAddKeys(false);
             const account: IRetrievedAccount = {

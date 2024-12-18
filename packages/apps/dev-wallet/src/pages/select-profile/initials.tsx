@@ -5,18 +5,22 @@ const InitialsAvatar = ({
   name,
   accentColor,
   size,
+  onClick,
 }: {
   name: string;
   accentColor: string;
   size?: 'small' | 'medium' | 'large';
+  onClick?: () => void;
 }) => {
   const initials = getInitials(name || 'default');
 
   return (
     <div
       className={imgClass}
+      onClick={onClick}
       style={{
         backgroundColor: accentColor,
+        ...(onClick ? { cursor: 'pointer' } : {}),
         ...(size === 'small'
           ? { width: 25, height: 25 }
           : { width: 40, height: 40 }),

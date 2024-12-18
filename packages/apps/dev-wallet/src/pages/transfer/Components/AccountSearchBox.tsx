@@ -253,7 +253,7 @@ export function AccountSearchBox({
     <Stack flexDirection={'column'}>
       <ComboField
         aria-label="Receiver Address"
-        placeholder="Select ot enter an address"
+        placeholder="Select or Enter an address"
         startVisual={<Label>Address:</Label>}
         description={getDescription()}
         type="text"
@@ -481,7 +481,7 @@ export function AccountSearchBox({
                     e.preventDefault();
                     close();
                     const guard = (await prompt((resolve, reject) => (
-                      <KeySetForm close={reject} onDone={resolve} isOpen />
+                      <KeySetForm close={reject} onChange={resolve} isOpen />
                     ))) as IGuard;
                     if (guard) {
                       onSelectHandel({

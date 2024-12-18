@@ -25,7 +25,6 @@ import {
 import {
   RightAside,
   RightAsideContent,
-  RightAsideFooter,
   RightAsideHeader,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
@@ -53,8 +52,6 @@ export function CreateKeySetForm({
     useForm<IKeysetForm>({
       defaultValues: {
         existingKey: '',
-        externalKey: '',
-        contactKey: '',
         predicate: 'keys-all',
         alias: '',
       },
@@ -63,7 +60,13 @@ export function CreateKeySetForm({
   const { keySources, createKey, profile, keysets, contacts } = useWallet();
 
   const flattenKeys = keySources
-    .map((keySource) => keySource.keys.map((key) => ({ key, keySource })))
+    .map((keySource) =>
+      keySource.keys.map((key) => ({
+        key: key.publicKey,
+        source: keySource.source,
+        id: key.index,
+      })),
+    )
     .flat();
 
   const flattenContactKeys =
@@ -72,7 +75,11 @@ export function CreateKeySetForm({
       .filter((contact) => isKeysetGuard(contact.account.guard))
       .map((contact) =>
         isKeysetGuard(contact.account.guard)
-          ? contact.account.guard.keys.map((key) => ({ key, contact }))
+          ? contact.account.guard.keys.map((key) => ({
+              key,
+              id: contact.name,
+              source: 'contacts',
+            }))
           : [],
       )
       .flat() ?? [];
@@ -81,6 +88,8 @@ export function CreateKeySetForm({
     if (addedKeys.includes(key)) return;
     setAddedKeys([key, ...addedKeys]);
   };
+
+  const allKeys = [...flattenKeys, ...flattenContactKeys];
 
   async function createKeySet(data: IKeysetForm) {
     try {
@@ -127,9 +136,9 @@ export function CreateKeySetForm({
 
   return (
     <RightAside isOpen={isOpen}>
-      <form onSubmit={handleSubmit(createKeySet)}>
-        <RightAsideHeader label="Add keys to keyset" />
-        <RightAsideContent>
+      <RightAsideHeader label="Add keys to keyset" />
+      <RightAsideContent>
+        <form onSubmit={handleSubmit(createKeySet)}>
           <Stack width="100%" flexDirection="column" gap="md">
             <Stack flexDirection={'column'} gap={'lg'} flex={1}>
               <Heading variant="h5">
@@ -148,6 +157,7 @@ export function CreateKeySetForm({
                           onInputChange={(val) => {
                             field.onChange(val);
                           }}
+                          allowsCustomValue
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
@@ -156,29 +166,26 @@ export function CreateKeySetForm({
                             }
                           }}
                         >
-                          {flattenKeys.map(({ key, keySource }) => (
-                            <ComboboxItem
-                              key={key.publicKey}
-                              textValue={key.publicKey}
-                            >
+                          {allKeys.map(({ key, source, id }) => (
+                            <ComboboxItem key={key} textValue={key}>
                               <Stack
                                 gap={'sm'}
                                 justifyContent={'space-between'}
                               >
                                 <Stack gap={'sm'}>
+                                  <Badge size="sm">{source}</Badge>
+                                  <Text color="inherit">
+                                    {id !== undefined
+                                      ? shorten(id.toString())
+                                      : ''}
+                                  </Text>
+                                </Stack>
+                                <Stack gap={'sm'}>
                                   <Text color="inherit">
                                     <MonoKey />
                                   </Text>
                                   <Text color="inherit">
-                                    {shorten(key.publicKey, 12)}
-                                  </Text>
-                                </Stack>
-                                <Stack gap={'sm'}>
-                                  <Badge size="sm">{keySource.source}</Badge>
-                                  <Text color="inherit">
-                                    {key.index !== undefined
-                                      ? shorten(key.index.toString())
-                                      : ''}
+                                    {shorten(key, 12)}
                                   </Text>
                                 </Stack>
                               </Stack>
@@ -190,97 +197,6 @@ export function CreateKeySetForm({
                           onPress={() => {
                             addKey(getValues('existingKey'));
                             setValue('existingKey', '');
-                          }}
-                          isDisabled={!field.value}
-                        >
-                          <MonoAdd />
-                        </Button>
-                      </>
-                    )}
-                  />
-                </Stack>
-              </Stack>
-              <Stack flexDirection={'column'} gap={'sm'}>
-                <Heading variant="h6">Choose from your contacts keys</Heading>
-                <Stack gap={'sm'}>
-                  <Controller
-                    name="contactKey"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <Combobox
-                          inputValue={field.value}
-                          onInputChange={(val) => {
-                            field.onChange(val);
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              addKey(getValues('contactKey'));
-                              setValue('contactKey', '');
-                            }
-                          }}
-                        >
-                          {flattenContactKeys.map(({ key, contact }) => (
-                            <ComboboxItem key={key} textValue={key}>
-                              <Stack
-                                gap={'sm'}
-                                justifyContent={'space-between'}
-                              >
-                                <Stack gap={'sm'}>
-                                  <Text color="inherit">
-                                    <MonoKey />
-                                  </Text>
-                                  <Text color="inherit">
-                                    {shorten(key, 12)}
-                                  </Text>
-                                </Stack>
-                                <Stack gap={'sm'}>
-                                  <Badge size="sm">{contact.name}</Badge>
-                                </Stack>
-                              </Stack>
-                            </ComboboxItem>
-                          ))}
-                        </Combobox>
-                        <Button
-                          variant="outlined"
-                          onPress={() => {
-                            addKey(getValues('contactKey'));
-                            setValue('contactKey', '');
-                          }}
-                          isDisabled={!field.value}
-                        >
-                          <MonoAdd />
-                        </Button>
-                      </>
-                    )}
-                  />
-                </Stack>
-              </Stack>
-              <Stack flexDirection={'column'} gap={'sm'}>
-                <Heading variant="h6">Add external public key</Heading>
-                <Stack gap={'sm'}>
-                  <Controller
-                    name="externalKey"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <TextField
-                          onChange={(e) => field.onChange(e.target.value)}
-                          value={field.value}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              addKey(getValues('externalKey'));
-                              setValue('externalKey', '');
-                            }
-                          }}
-                        />
-                        <Button
-                          variant="outlined"
-                          onPress={() => {
-                            addKey(getValues('externalKey'));
-                            setValue('externalKey', '');
                           }}
                           isDisabled={!field.value}
                         >
@@ -406,21 +322,20 @@ export function CreateKeySetForm({
               {addedKeys.length >= 2 && `Selected Keys: ${addedKeys.length}`}
             </Stack>
           </Stack>
-        </RightAsideContent>
-
-        <RightAsideFooter>
-          <Button variant="outlined" onPress={() => close()} type="reset">
-            Cancel
-          </Button>
-          <Button
-            variant="primary"
-            type="submit"
-            isDisabled={addedKeys.length < 2}
-          >
-            Save
-          </Button>
-        </RightAsideFooter>
-      </form>
+          <Stack gap="md" justifyContent="flex-end">
+            <Button variant="outlined" onPress={() => close()} type="reset">
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              type="submit"
+              isDisabled={addedKeys.length < 2}
+            >
+              Save
+            </Button>
+          </Stack>
+        </form>
+      </RightAsideContent>
     </RightAside>
   );
 }

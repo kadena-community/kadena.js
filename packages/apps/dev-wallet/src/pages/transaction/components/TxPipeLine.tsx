@@ -51,12 +51,14 @@ export function TxPipeLine({
   signAll,
   onSubmit,
   sendDisabled,
+  onPreflight,
 }: {
   tx: ITransaction;
   contTx?: ITransaction;
   variant: 'tile' | 'expanded' | 'minimized';
   signAll?: () => void;
   onSubmit?: (skipPreflight?: boolean) => void;
+  onPreflight?: () => void;
   sendDisabled?: boolean;
 }) {
   const showAfterCont = !contTx || variant === 'expanded';
@@ -69,6 +71,7 @@ export function TxPipeLine({
           tx,
           signAll,
           onSubmit,
+          onPreflight,
           sendDisabled,
           contTx,
         }}
@@ -85,12 +88,14 @@ function TxStatusList({
   onSubmit = () => {},
   sendDisabled,
   contTx,
+  onPreflight = () => {},
 }: {
   variant: 'tile' | 'expanded' | 'minimized';
   showAfterCont: boolean;
   tx: ITransaction;
   signAll?: () => void;
   onSubmit?: (skipPreflight?: boolean) => void;
+  onPreflight?: () => void;
   sendDisabled?: boolean;
   contTx?: ITransaction | null;
 }) {
@@ -189,17 +194,17 @@ function TxStatusList({
           <Text size={textSize} className={pendingClass}>
             <Stack alignItems={'center'} gap={'xs'}>
               <MonoPauseCircle />
-              {sendDisabled ? 'Send is pending' : 'Ready to send'}
+              {sendDisabled ? 'Transaction is pending' : 'Ready to preflight'}
             </Stack>
           </Text>
           {variant === 'expanded' && (
             <Button
               isCompact
-              onClick={() => onSubmit()}
+              onClick={() => onPreflight()}
               isDisabled={sendDisabled}
               startVisual={<MonoViewInAr />}
             >
-              Send transaction
+              Preflight transaction
             </Button>
           )}
         </Stack>
@@ -227,7 +232,7 @@ function TxStatusList({
           tx.status === 'preflight' &&
           tx.preflight?.result.status === 'failure' && (
             <Stack>
-              <Button isCompact onClick={() => onSubmit()}>
+              <Button isCompact onClick={() => onPreflight()}>
                 <MonoRefresh />
               </Button>
               <Button
@@ -241,6 +246,29 @@ function TxStatusList({
           )}
       </Stack>
     ),
+    showAfterCont &&
+      variant !== 'tile' &&
+      tx.status === 'preflight' &&
+      tx.preflight?.result.status === 'success' && (
+        <Stack flexDirection={'column'} gap={'md'}>
+          <Text size={textSize} className={pendingClass}>
+            <Stack alignItems={'center'} gap={'xs'}>
+              <MonoPauseCircle />
+              Ready to send
+            </Stack>
+          </Text>
+          {variant === 'expanded' && (
+            <Button
+              isCompact
+              onClick={() => onSubmit()}
+              isDisabled={sendDisabled}
+              startVisual={<MonoViewInAr />}
+            >
+              Send transaction
+            </Button>
+          )}
+        </Stack>
+      ),
     showAfterCont && statusPassed(tx.status, 'submitted') && (
       <Stack gap={'sm'} alignItems={'center'}>
         <Text

@@ -121,6 +121,19 @@ export const TxContainer = React.memo(
       [client, onUpdate],
     );
 
+    const onPreflight = useCallback(
+      async (tx: ITransaction) => {
+        const result = await transactionService.preflightTransaction(
+          tx,
+          client,
+        );
+        if (onUpdate) onUpdate(result);
+
+        return result;
+      },
+      [client, onUpdate],
+    );
+
     if (!localTransaction) return null;
     const renderExpanded = (isDialog = false) => (
       <ExpandedTransaction
@@ -130,6 +143,7 @@ export const TxContainer = React.memo(
         onSubmit={(skipPreflight = false) =>
           onSubmit(localTransaction, skipPreflight)
         }
+        onPreflight={() => onPreflight(localTransaction)}
         sendDisabled={sendDisabled}
         showTitle={as === 'tile' || isDialog}
         isDialog={isDialog}
@@ -161,6 +175,7 @@ export const TxContainer = React.memo(
                 onSign(localTransaction);
               }}
               onSubmit={() => onSubmit(localTransaction)}
+              onPreflight={() => onPreflight(localTransaction)}
               onView={async () => {
                 setExpandedModal(true);
               }}

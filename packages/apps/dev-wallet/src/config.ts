@@ -16,7 +16,8 @@ export const config = {
     DB_NAME: 'dev-wallet',
   },
   ACCOUNTS: {
-    SYNC_INTERVAL: 5 * 60 * 1000, // 5 minutes
+    // this need to be more intelligent; for now, we just set it to 5 seconds
+    SYNC_INTERVAL: 5 * 1000, // 5 seconds
   },
   SESSION: {
     TTL: 30 * 60 * 1000, // 30 minutes

@@ -42,11 +42,13 @@ export function ExpandedTransaction({
   onSubmit,
   showTitle,
   isDialog,
+  onPreflight,
 }: {
   transaction: ITransaction;
   contTx?: ITransaction;
   onSign: (sig: ITransaction['sigs']) => void;
   onSubmit: (skipPreflight?: boolean) => Promise<ITransaction>;
+  onPreflight: () => Promise<ITransaction>;
   sendDisabled?: boolean;
   showTitle?: boolean;
   isDialog?: boolean;
@@ -111,6 +113,7 @@ export function ExpandedTransaction({
               variant={'expanded'}
               signAll={signAll}
               onSubmit={onSubmit}
+              onPreflight={onPreflight}
               sendDisabled={sendDisabled}
             />
           </Stack>

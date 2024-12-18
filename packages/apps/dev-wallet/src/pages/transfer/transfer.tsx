@@ -1,7 +1,15 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Divider, Heading, Stack, Step, Stepper, Text } from '@kadena/kode-ui';
+import {
+  Divider,
+  Heading,
+  Notification,
+  Stack,
+  Step,
+  Stepper,
+  Text,
+} from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
@@ -63,8 +71,11 @@ export function Transfer() {
               statusPassed(tx.status, 'success') ||
               statusPassed(tx.status, 'failure'),
           );
+          const transferSucceed = loadedTxGroups.transfer.txs.every((tx) =>
+            statusPassed(tx.status, 'success'),
+          );
           if (transferIsDone) {
-            setStep('summary');
+            setStep(transferSucceed ? 'success' : 'failure');
           } else {
             setStep('sign');
           }
@@ -74,7 +85,7 @@ export function Transfer() {
     run();
   }, [accountId, urlActivityId]);
 
-  const [step, setStep] = useState<'transfer' | 'sign' | 'result' | 'summary'>(
+  const [step, setStep] = useState<'transfer' | 'sign' | 'success' | 'failure'>(
     'transfer',
   );
   const [txGroups, setTxGroups] = useState<{
@@ -128,8 +139,13 @@ export function Transfer() {
         statusPassed(tx.status, 'success') ||
         statusPassed(tx.status, 'failure'),
     );
+    const transferSucceed = upd.transfer.txs.every((tx) =>
+      statusPassed(tx.status, 'success'),
+    );
     if (transferIsDone) {
-      setStep('result');
+      setStep(transferSucceed ? 'success' : 'failure');
+    } else {
+      setStep('sign');
     }
     setTxGroups(upd);
   };
@@ -236,7 +252,18 @@ export function Transfer() {
             Transfer
           </Step>
           <Step active={step === 'sign'}>Transactions</Step>
-          <Step active={step === 'result'}>Result</Step>
+          <Step
+            active={step === 'success' || step === 'failure'}
+            status={
+              !(step === 'success' || step === 'failure')
+                ? undefined
+                : step === 'success'
+                  ? 'valid'
+                  : 'error'
+            }
+          >
+            Result
+          </Step>
         </Stepper>
         {step === 'transfer' && (
           <Stack justifyContent={'center'}>
@@ -311,8 +338,21 @@ export function Transfer() {
             </Stack>
           </Stack>
         )}
-        {(step === 'sign' || step === 'result' || step === 'summary') &&
-          renderSignStep()}
+        {step === 'success' && (
+          <Stack marginBlock={'lg'}>
+            <Notification role="status" intent="positive">
+              Transfer is done!
+            </Notification>
+          </Stack>
+        )}
+        {step === 'failure' && (
+          <Stack marginBlock={'lg'}>
+            <Notification role="status" intent="negative">
+              Transfer is failed!
+            </Notification>
+          </Stack>
+        )}
+        {step !== 'transfer' && renderSignStep()}
       </Stack>
     </>
   );
