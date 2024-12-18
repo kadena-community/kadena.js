@@ -232,7 +232,7 @@ function TxStatusList({
           tx.status === 'preflight' &&
           tx.preflight?.result.status === 'failure' && (
             <Stack>
-              <Button isCompact onClick={() => onSubmit()}>
+              <Button isCompact onClick={() => onPreflight()}>
                 <MonoRefresh />
               </Button>
               <Button
