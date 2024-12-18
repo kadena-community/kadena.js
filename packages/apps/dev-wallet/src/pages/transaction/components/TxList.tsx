@@ -110,6 +110,19 @@ export const TxList = React.memo(
       console.log(result);
     };
 
+    const onPreflightAll = async () => {
+      const onPreflight = async (tx: ITransaction) => {
+        return transactionService.preflightTransaction(tx, client);
+      };
+
+      const txs = await Promise.all(
+        txIds.map(transactionRepository.getTransaction),
+      );
+      const result = await Promise.all(txs.map(onPreflight));
+      result.forEach(updateTx);
+      console.log(result);
+    };
+
     const signedByYou = (tx: ITransaction) => {
       const signers = normalizeSigs(tx);
       return !signers.find(
@@ -176,6 +189,21 @@ export const TxList = React.memo(
           !sendDisabled &&
           transactions.every((tx) => statusPassed(tx.status, 'signed')) &&
           transactions.find((tx) => tx.status === 'signed') && (
+            <Stack flexDirection={'column'} gap={'sm'}>
+              <Text>
+                All transactions are signed. Now you can call preflight
+              </Text>
+              <Stack>
+                <Button isCompact onPress={() => onPreflightAll()}>
+                  Preflight transactions
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+        {!showExpanded &&
+          !sendDisabled &&
+          transactions.every((tx) => statusPassed(tx.status, 'preflight')) &&
+          transactions.find((tx) => tx.status === 'preflight') && (
             <Stack flexDirection={'column'} gap={'sm'}>
               <Text>
                 All transactions are signed. Now you can send them to the

@@ -30,6 +30,7 @@ export const TxTile = ({
   contTx,
   onSign,
   onSubmit,
+  onPreflight,
   onView,
   sendDisabled,
 }: {
@@ -37,6 +38,7 @@ export const TxTile = ({
   contTx?: ITransaction;
   onSign: () => void;
   onSubmit: () => Promise<ITransaction>;
+  onPreflight: () => Promise<ITransaction>;
   onView: () => void;
   sendDisabled?: boolean;
 }) => {
@@ -138,7 +140,7 @@ export const TxTile = ({
               paddingBlockEnd={'sm'}
             >
               <Text size="small">
-                The transaction is Signed; you can now sent to to the blockchain
+                The transaction is Signed; you can now call preflight
               </Text>
             </Stack>
           </>
@@ -164,12 +166,22 @@ export const TxTile = ({
           )}
           {tx.status === 'signed' && !sendDisabled && (
             <Button isCompact variant="outlined">
-              <Stack gap={'sm'} alignItems={'center'} onClick={onSubmit}>
+              <Stack gap={'sm'} alignItems={'center'} onClick={onPreflight}>
                 <MonoViewInAr />
-                Send
+                Preflight
               </Stack>
             </Button>
           )}
+          {tx.status === 'preflight' &&
+            tx.preflight.result.status === 'success' &&
+            !sendDisabled && (
+              <Button isCompact variant="outlined">
+                <Stack gap={'sm'} alignItems={'center'} onClick={onSubmit}>
+                  <MonoViewInAr />
+                  Send
+                </Stack>
+              </Button>
+            )}
         </Stack>
         <Button variant="outlined" isCompact onClick={onView}>
           <Stack gap={'sm'} alignItems={'center'}>

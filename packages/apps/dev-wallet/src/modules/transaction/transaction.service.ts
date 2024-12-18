@@ -186,6 +186,50 @@ export async function syncTransactionStatus(
   return tx;
 }
 
+export const preflightTransaction = async (
+  tx: ITransaction,
+  client: IClient,
+): Promise<ITransaction> => {
+  if ('result' in tx && tx.result?.result?.status === 'success') {
+    return tx;
+  }
+  return client
+    .preflight({
+      cmd: tx.cmd,
+      sigs: tx.sigs,
+      hash: tx.hash,
+    } as ICommand)
+    .then(async (result) => {
+      console.log('preflight', result);
+      const updatedTx = {
+        ...tx,
+        status: 'preflight',
+        preflight: result,
+        request: undefined,
+      } as ITransaction;
+      await transactionRepository.updateTransaction(updatedTx);
+      return updatedTx;
+    })
+    .catch(async (e) => {
+      console.error(e);
+      const updatedTx = {
+        ...tx,
+        status: 'preflight',
+        preflight: {
+          result: {
+            status: 'failure',
+            error: e.message ? JSON.stringify(e) : 'UNKNOWN_ERROR',
+          },
+        },
+        request: undefined,
+      };
+      await transactionRepository.updateTransaction(
+        updatedTx as unknown as ITransaction,
+      );
+      throw e;
+    });
+};
+
 export const submitTransaction = async (
   tx: ITransaction,
   client: IClient,
@@ -196,7 +240,12 @@ export const submitTransaction = async (
     return tx;
   }
   let updatedTx = { ...tx };
-  if (!skipPreflight) {
+  if (
+    !skipPreflight &&
+    (tx.status === 'signed' ||
+      (tx.status === 'preflight' &&
+        (!tx.preflight || tx.preflight.result.status === 'failure')))
+  ) {
     updatedTx = await client
       .preflight({
         cmd: tx.cmd,
