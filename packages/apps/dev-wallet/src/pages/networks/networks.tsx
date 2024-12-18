@@ -1,11 +1,14 @@
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { networkRepository } from '@/modules/network/network.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
+import { dbService } from '@/modules/db/db.service';
+import {
+  INetwork,
+  networkRepository,
+} from '@/modules/network/network.repository';
 import { MonoWifiTethering } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
   getNewNetwork,
@@ -14,15 +17,27 @@ import {
 } from './Components/NetworkForm';
 
 export function Networks() {
-  const { networks } = useWallet();
+  const [networks, setNetworks] = useState<INetwork[]>([]);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
 
+  useEffect(() => {
+    const fetchNetworks = async () => {
+      const networks = await networkRepository.getAllNetworks();
+      setNetworks(networks);
+    };
+    fetchNetworks();
+    return dbService.subscribe((type, store) => {
+      if (store === 'network' && ['add', 'update', 'delete'].includes(type)) {
+        fetchNetworks();
+      }
+    });
+  });
+
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoWifiTethering />}>
-        <SideBarBreadcrumbsItem href="/">Dashboard</SideBarBreadcrumbsItem>
+      <SideBarBreadcrumbs icon={<MonoWifiTethering />} isGlobal>
         <SideBarBreadcrumbsItem href="/networks">
           Networks
         </SideBarBreadcrumbsItem>
