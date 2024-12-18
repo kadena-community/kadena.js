@@ -82,7 +82,10 @@ export const useDeleteInvestor = ({
     //when there is a balance of tokens on this investor,we are not allowed to remove it
     if (investorAccount) {
       const result =
-        !paused && accountRoles.isWhitelistManager() && balance === 0;
+        !paused &&
+        accountRoles.isWhitelistManager() &&
+        balance !== undefined &&
+        balance <= 0;
       setIsAllowed(result);
       if (!result) {
         setNotAllowedReason(

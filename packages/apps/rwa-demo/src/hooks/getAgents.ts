@@ -49,7 +49,7 @@ export const useGetAgents = () => {
 
   const { data: subscriptionAddData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `{getAsset()}.AGENT-ADDED`,
+      qualifiedName: `${getAsset()}.AGENT-ADDED`,
     },
   });
 

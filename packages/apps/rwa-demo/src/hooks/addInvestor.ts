@@ -55,12 +55,20 @@ export const useAddInvestor = ({
 
   useEffect(() => {
     if (!isMounted) return;
+
     setIsAllowed(
       ((!!investorAccount && !frozen) || frozen) &&
         !paused &&
         accountRoles.isWhitelistManager(),
     );
-  }, [frozen, paused, account?.address, isMounted, investorAccount]);
+  }, [
+    frozen,
+    paused,
+    account?.address,
+    isMounted,
+    investorAccount,
+    accountRoles,
+  ]);
 
   return { submit, isAllowed };
 };

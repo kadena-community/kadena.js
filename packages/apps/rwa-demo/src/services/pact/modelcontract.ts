@@ -250,6 +250,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
+
+
   ;; grant caps
 
   (defcap INTERNAL:bool () true)
@@ -1101,6 +1103,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (update agents agent
       { 'roles: roles }
     )
+    (emit-event (ROLE_UPDATED agent roles))
     true
   )
 
