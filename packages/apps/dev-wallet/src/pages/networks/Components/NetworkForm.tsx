@@ -9,7 +9,13 @@ import {
   successClass,
 } from '@/pages/transaction/components/style.css';
 import { getErrorMessage } from '@/utils/getErrorMessage';
-import { MonoCircle, MonoDelete, MonoWarning } from '@kadena/kode-icons/system';
+import {
+  MonoCircle,
+  MonoDelete,
+  MonoToggleOff,
+  MonoToggleOn,
+  MonoWarning,
+} from '@kadena/kode-icons/system';
 import {
   Button,
   Heading,
@@ -26,7 +32,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 export type INetworkWithOptionalUuid =
   | (Omit<INetwork, 'uuid'> & {
@@ -38,6 +44,7 @@ interface INewNetwork {
   uuid: UUID | undefined;
   networkId: string;
   name: string;
+  disabled: boolean;
   hosts: {
     url: string;
     submit: boolean;
@@ -51,6 +58,7 @@ interface INewNetwork {
 export const getNewNetwork = (): INetworkWithOptionalUuid => ({
   uuid: undefined,
   networkId: '',
+  disabled: false,
   name: '',
   hosts: [
     {
@@ -151,6 +159,27 @@ export function NetworkForm({
               defaultValue={getValues('name')}
               {...register('name')}
             />
+            <Controller
+              control={control}
+              name="disabled"
+              render={({ field }) => (
+                <Stack>
+                  <Button
+                    variant="outlined"
+                    onClick={() => field.onChange(!field.value)}
+                    endVisual={
+                      field.value ? (
+                        <MonoToggleOff fontSize={36} />
+                      ) : (
+                        <MonoToggleOn fontSize={36} className={successClass} />
+                      )
+                    }
+                  >
+                    Active
+                  </Button>
+                </Stack>
+              )}
+            />
             <Stack
               gap="md"
               justifyContent={'space-between'}
@@ -235,6 +264,7 @@ export function NetworkForm({
                   </Stack>
                 );
               })}
+              {}
             </Stack>
             {error !== undefined && (
               <Notification intent="negative" role="alert">
