@@ -31,6 +31,7 @@ import {
   TabItem,
   Tabs,
   Text,
+  TextLink,
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
@@ -136,7 +137,7 @@ export function AccountPage() {
       <AliasForm show={isRightAsideExpanded} account={account} />
       <Stack flexDirection={'column'} gap={'sm'}>
         <Stack gap={'sm'} alignItems={'center'}>
-          <Heading variant="h3">{account.alias || '{ No Alias }'}</Heading>
+          <Heading variant="h3">{account.alias}</Heading>
         </Stack>
 
         <Stack justifyContent={'space-between'}>
@@ -312,12 +313,13 @@ export function AccountPage() {
             link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
           />
           View transfers on{' '}
-          <a
+          <TextLink
             href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
             target="_blank"
+            style={{ wordBreak: 'break-all' }}
           >
             {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
-          </a>
+          </TextLink>
         </TabItem>
 
         <TabItem key="transactions" title="Transactions ↗">
@@ -325,12 +327,13 @@ export function AccountPage() {
             link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
           />
           View transactions where this account was the sender on{' '}
-          <a
+          <TextLink
             href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
             target="_blank"
+            style={{ wordBreak: 'break-all' }}
           >
             {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
-          </a>
+          </TextLink>
         </TabItem>
 
         <TabItem key="settings" title="Settings">
