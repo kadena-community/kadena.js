@@ -1,8 +1,9 @@
 import { toISOLocalDateTime } from '@/utils/helpers';
-import { TextField } from '@kadena/kode-ui';
+import { Badge, Stack, TextField } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 import { Label } from './Label';
 import { Seconds } from './TTLSelect';
+import { hideInMobileClass } from './style.css';
 
 export function CreationTime({
   value,
@@ -20,6 +21,9 @@ export function CreationTime({
       clearInterval(timer);
     };
   }, []);
+  const timeZone =
+    Intl?.DateTimeFormat?.()?.resolvedOptions?.().timeZone || undefined;
+
   return (
     <TextField
       aria-label="Valid From"
@@ -31,6 +35,13 @@ export function CreationTime({
           : toISOLocalDateTime(defaultTime)
       }
       defaultValue={toISOLocalDateTime(defaultTime)}
+      endAddon={
+        timeZone ? (
+          <Stack paddingInlineEnd={'sm'} className={hideInMobileClass}>
+            <Badge size="sm">{timeZone}</Badge>
+          </Stack>
+        ) : undefined
+      }
       onChange={(e) => {
         console.log('e.target.value', new Date(e.target.value));
         onChange(Math.round(new Date(e.target.value).getTime() / 1000));

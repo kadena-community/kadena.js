@@ -25,3 +25,11 @@ export const labelClass = style({
   marginLeft: '-12px',
   fontWeight: '700',
 });
+
+export const hideInMobileClass = style({
+  '@media': {
+    '(max-width: 460px)': {
+      display: 'none',
+    },
+  },
+});
