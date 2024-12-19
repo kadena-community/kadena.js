@@ -32,6 +32,7 @@ import {
   TabItem,
   Tabs,
   Text,
+  TextLink,
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
@@ -121,6 +122,11 @@ export function AccountPage() {
 
   const guardInfo = getGuardInfo(accountGuard);
 
+  const explorerLink =
+    account.chains.length > 0
+      ? `https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}`
+      : '';
+
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
       <SideBarBreadcrumbs icon={<MonoWallet />}>
@@ -201,11 +207,7 @@ export function AccountPage() {
                 ? 'This account has not been mined on-chain yet'
                 : ''
             }
-            href={
-              account.chains.length > 0
-                ? `https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`
-                : ''
-            }
+            href={explorerLink ? `${explorerLink}#Transfers` : ''}
           >
             <Button
               variant="outlined"
@@ -332,6 +334,22 @@ export function AccountPage() {
           )}
           {activities.length > 0 && <ActivityTable activities={activities} />}
         </TabItem>
+        <TabItem key="transfers" title="Transfers ↗">
+          {explorerLink && (
+            <>
+              <WindowOpen link={`${explorerLink}#Transfers`} />
+              View transfers on{' '}
+              <TextLink
+                href={`${explorerLink}#Transfers`}
+                target="_blank"
+                style={{ wordBreak: 'break-all' }}
+              >
+                {`${explorerLink}#Transfers`}
+              </TextLink>
+            </>
+          )}
+          {!explorerLink && <Text>No transfers yet</Text>}
+        </TabItem>
         <TabItem key="settings" title="Settings">
           <Stack flexDirection={'column'} gap={'xxl'}>
             <Stack
@@ -421,3 +439,8 @@ export function AccountPage() {
     </Stack>
   );
 }
+
+const WindowOpen: React.FC<{ link: string }> = ({ link }) => {
+  window.open(link, '_blank');
+  return null;
+};
