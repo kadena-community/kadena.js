@@ -13,6 +13,10 @@ globalStyle(`${tableClass} td > span`, {
   whiteSpace: 'nowrap',
 });
 
+globalStyle(`${tableClass} td > span:not(:has(button))`, {
+  contain: 'inline-size',
+});
+
 export const tableBorderClass = recipe({
   base: {},
   variants: {
