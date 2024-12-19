@@ -14,7 +14,7 @@ import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
 import { ISetPhraseResponse, ISetSecurityPhrase } from '@/service-worker/types';
 import { throttle } from '@/utils/helpers';
 import { Session } from '@/utils/session';
-import { IClient, createClient } from '@kadena/client';
+import { IClient, INetworkOptions, createClient } from '@kadena/client';
 import { setGlobalConfig } from '@kadena/client-utils/core';
 import {
   Fungible,
@@ -43,7 +43,7 @@ export type ExtWalletContextType = {
   keySources: IKeySource[];
   fungibles: Fungible[];
   loaded: boolean;
-  activeNetwork: INetwork | undefined;
+  activeNetwork: (INetwork & { isHealthy?: boolean }) | undefined;
   networks: INetwork[];
   client: IClient;
   contacts: IContact[];
@@ -227,6 +227,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     getDefaultContext(),
   );
 
+  const networkHostFunctionRef =
+    useRef<({ networkId, chainId }: INetworkOptions) => string>();
+
   useEffect(() => {
     channel.onmessage = (event) => {
       const { action, payload } = event.data;
@@ -237,6 +240,39 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       // channel.close();
     };
+  }, []);
+
+  // check network health
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setContextValue((ctx) => {
+        const hostUrl = networkHostFunctionRef.current;
+        if (hostUrl && ctx.activeNetwork) {
+          try {
+            hostUrl({ networkId: ctx.activeNetwork.networkId, chainId: '0' });
+            if (ctx.activeNetwork.isHealthy === true) return ctx;
+            return {
+              ...ctx,
+              activeNetwork: {
+                ...ctx.activeNetwork,
+                isHealthy: true,
+              },
+            };
+          } catch (e) {
+            if (ctx.activeNetwork.isHealthy === false) return ctx;
+            return {
+              ...ctx,
+              activeNetwork: {
+                ...ctx.activeNetwork,
+                isHealthy: false,
+              },
+            };
+          }
+        }
+        return ctx;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -262,7 +298,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     setContextValue((ctx) => ({
       ...ctx,
       networks,
-      activeNetwork: ctx.activeNetwork ?? networks.find((n) => n.default),
+      activeNetwork:
+        ctx.activeNetwork &&
+        (!networks.length ||
+          networks.find((n) => n.uuid === ctx.activeNetwork?.uuid))
+          ? ctx.activeNetwork
+          : networks.find((n) => n.default),
     }));
 
     return networks;
@@ -575,6 +616,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       );
     });
     const getHostUrl = hostUrlGenerator(filteredNetworks);
+
+    networkHostFunctionRef.current = getHostUrl;
 
     setGlobalConfig({
       host: getHostUrl,

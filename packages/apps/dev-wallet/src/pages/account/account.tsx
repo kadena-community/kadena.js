@@ -21,6 +21,7 @@ import { ChainId } from '@kadena/client';
 import {
   MonoCreate,
   MonoKey,
+  MonoOpenInNew,
   MonoRemoveRedEye,
   MonoWallet,
 } from '@kadena/kode-icons/system';
@@ -31,7 +32,6 @@ import {
   TabItem,
   Tabs,
   Text,
-  TextLink,
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
@@ -187,9 +187,34 @@ export function AccountPage() {
               href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
               target="_blank"
             >
-              <Button variant="outlined">Buy KDA</Button>
+              <Button variant="outlined" endVisual={<MonoOpenInNew />}>
+                Buy KDA
+              </Button>
             </a>
           )}
+
+          <a
+            className={linkClass}
+            target="_blank"
+            title={
+              !account.chains.length
+                ? 'This account has not been mined on-chain yet'
+                : ''
+            }
+            href={
+              account.chains.length > 0
+                ? `https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`
+                : ''
+            }
+          >
+            <Button
+              variant="outlined"
+              endVisual={<MonoOpenInNew />}
+              isDisabled={!account.chains.length}
+            >
+              Open in explorer
+            </Button>
+          </a>
         </Stack>
       )}
       <Tabs>
@@ -307,35 +332,6 @@ export function AccountPage() {
           )}
           {activities.length > 0 && <ActivityTable activities={activities} />}
         </TabItem>
-
-        <TabItem key="transfers" title="Transfers ↗">
-          <WindowOpen
-            link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
-          />
-          View transfers on{' '}
-          <TextLink
-            href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
-            target="_blank"
-            style={{ wordBreak: 'break-all' }}
-          >
-            {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
-          </TextLink>
-        </TabItem>
-
-        <TabItem key="transactions" title="Transactions ↗">
-          <WindowOpen
-            link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
-          />
-          View transactions where this account was the sender on{' '}
-          <TextLink
-            href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
-            target="_blank"
-            style={{ wordBreak: 'break-all' }}
-          >
-            {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
-          </TextLink>
-        </TabItem>
-
         <TabItem key="settings" title="Settings">
           <Stack flexDirection={'column'} gap={'xxl'}>
             <Stack
@@ -425,8 +421,3 @@ export function AccountPage() {
     </Stack>
   );
 }
-
-const WindowOpen: React.FC<{ link: string }> = ({ link }) => {
-  window.open(link, '_blank');
-  return null;
-};

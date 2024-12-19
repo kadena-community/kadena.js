@@ -1,8 +1,4 @@
-import {
-  discoverAccount,
-  IDiscoveredAccount,
-  transferAllCommand,
-} from '@kadena/client-utils/coin';
+import { discoverAccount, transferAllCommand } from '@kadena/client-utils/coin';
 import {
   dirtyReadClient,
   estimateGas,
@@ -273,12 +269,13 @@ export const syncAccount = async (account: IAccount | IWatchedAccount) => {
   )
     .execute()
     .catch((error) => {
-      console.error('DISCOVERY ERROR', error);
-      return [] as {
-        result: IDiscoveredAccount | undefined;
-        chainId: ChainId | undefined;
-      }[];
+      console.log('DISCOVERY_ERROR', error);
+      return undefined;
     });
+
+  if (!chainResult) {
+    return account;
+  }
 
   const filteredResult = chainResult.filter(
     ({ result }) =>

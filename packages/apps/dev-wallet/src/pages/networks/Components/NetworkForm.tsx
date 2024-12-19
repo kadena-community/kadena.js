@@ -115,7 +115,7 @@ export function NetworkForm({
 
   useEffect(() => {
     reset(network ?? getNewNetwork());
-  }, [network.uuid]);
+  }, [network, reset]);
 
   const hosts = watch('hosts');
   const networkId = watch('networkId');
