@@ -8,8 +8,6 @@ interface IProps {
 }
 
 export const ActiveTransaction: FC<IProps> = ({ transaction }) => {
-  console.log({ transaction });
-
   return (
     <li>
       <Tile>

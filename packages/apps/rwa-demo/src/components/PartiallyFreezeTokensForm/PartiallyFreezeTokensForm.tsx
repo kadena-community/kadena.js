@@ -95,19 +95,6 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
     return message;
   };
 
-  // const init = async () => {
-  //   const res = await getBalance({ investorAccount, account: account! });
-
-  //   if (typeof res === 'number') {
-  //     setTokenBalance(res);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  //   init();
-  // }, []);
-
   return (
     <>
       {isRightAsideExpanded && isOpen && (

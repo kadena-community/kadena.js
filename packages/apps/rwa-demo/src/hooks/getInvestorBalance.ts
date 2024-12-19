@@ -40,14 +40,11 @@ export const useGetInvestorBalance = ({
     init();
   }, [account?.address, investorAccount]);
 
-  console.log(`${getAsset()}.MINT-INVESTOR`, subscriptionData?.events);
   useEffect(() => {
-    console.log({ subscriptionData });
     if (!subscriptionData?.events?.length) return;
 
     subscriptionData.events?.map((event) => {
       const params = JSON.parse(event.parameters ?? '[]');
-      console.log({ params });
       if (params[0] === investorAccount && params.length === 2) {
         setData(parseInt(params[1]));
       }

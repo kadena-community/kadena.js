@@ -24,8 +24,6 @@ interface IProps {
   trigger: ReactElement;
 }
 
-//MINT_INVESTOR
-
 export const DistributionForm: FC<IProps> = ({
   onClose,
   investorAccount,

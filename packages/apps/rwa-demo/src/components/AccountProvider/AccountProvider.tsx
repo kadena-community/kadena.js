@@ -81,7 +81,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     investorAccount: account?.address,
     account,
   });
-  console.log('balance provider', balance);
 
   const router = useRouter();
 

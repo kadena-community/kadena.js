@@ -54,7 +54,6 @@ export const useGetFrozenTokens = ({
     subscriptionData.events?.map((event) => {
       const params = JSON.parse(event.parameters ?? '[]');
       if (params[0] === investorAccount && params.length === 2) {
-        console.log(parseInt(params[1]));
         setData(parseInt(params[1]));
       }
     });
