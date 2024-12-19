@@ -269,22 +269,18 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defcap INTERNAL:bool () true)
   (defcap MINT:bool () true)
+  (defcap RECONCILE:bool (to:string amount:decimal) 
+    @doc "Event emitted when there are tokens minted to an investor"
+    @event
+    true
+  )
+
+  
+
+
   (defcap BURN:bool () true)
   (defcap FORCED-TRANSFER:bool () true )
   (defcap UPDATE-SUPPLY:bool () true )
-
-
-  (defcap ONLY-AGENT:bool (role:string)
-    @doc "Capability that can be required to validate if an address is an agent"
-    @managed
-    (with-read agents (read-string 'agent) {
-      "guard":= guard,
-      "roles":= roles
-      }
-      (contains role roles)
-      (enforce-guard guard)
-    )
-  )
 
   ;; agent caps
 
@@ -740,6 +736,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       (enforce-contains-identity to)
       (with-capability (TRANSFER (zero-address) to amount)
         (credit to amount)
+        
         (with-capability (UPDATE-SUPPLY)
           (update-supply amount)
         )

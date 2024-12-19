@@ -1,7 +1,7 @@
 'use client';
 import type { IAgentHookProps } from '@/hooks/getAgentRoles';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
-import { getBalance as getBalanceFnc } from '@/services/getBalance';
+import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
 import { isFrozen } from '@/services/isFrozen';
@@ -34,7 +34,7 @@ export interface IAccountContext {
   isInvestor: boolean;
   isFrozen: boolean;
   selectAccount: (account: IWalletAccount) => void;
-  getBalance: () => Promise<number>;
+  balance: number;
   accountRoles: IAgentHookProps;
 }
 
@@ -51,7 +51,7 @@ export const AccountContext = createContext<IAccountContext>({
   isInvestor: false,
   isFrozen: false,
   selectAccount: () => {},
-  getBalance: async () => 0,
+  balance: 0,
   accountRoles: {
     isMounted: false,
     getAll: () => [],
@@ -77,6 +77,11 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
   const accountRoles = useGetAgentRoles({ agent: account?.address });
+  const { data: balance } = useGetInvestorBalance({
+    investorAccount: account?.address,
+    account,
+  });
+  console.log('balance provider', balance);
 
   const router = useRouter();
 
@@ -202,17 +207,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     return payload.transaction;
   };
 
-  const getBalance = async () => {
-    if (!account) return 0;
-    const res = await getBalanceFnc({
-      investorAccount: account.address,
-      account,
-    });
-
-    if (typeof res !== 'number') return 0;
-    return res;
-  };
-
   return (
     <AccountContext.Provider
       value={{
@@ -228,7 +222,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         isInvestor: isInvestorState,
         isFrozen: isFrozenState,
         selectAccount,
-        getBalance,
+        balance,
         accountRoles,
       }}
     >
