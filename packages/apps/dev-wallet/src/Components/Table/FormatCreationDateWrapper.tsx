@@ -1,17 +1,9 @@
-import { IPactCommand } from '@kadena/client';
-import { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
-import type { FC } from 'react';
+import { toISOLocalDateTime } from '@/utils/helpers';
 
-type IProps = Exclude<ICompactTableFormatterProps, 'value'> & {
-  value: string;
-};
-
-export const FormatCreationDateWrapper: () => FC<IProps> =
+export const FormatCreationDateWrapper =
   () =>
-  ({ value }) => {
-    const date = new Date(
-      ((JSON.parse(value) as IPactCommand).meta.creationTime || 0) * 1000,
-    ).toLocaleString();
-
-    return date;
+  ({ value }: { value: string | string[] }) => {
+    const times =
+      typeof value === 'string' || typeof value === 'number' ? [value] : value;
+    return times.map((time) => toISOLocalDateTime(+time * 1000)).join('\n');
   };

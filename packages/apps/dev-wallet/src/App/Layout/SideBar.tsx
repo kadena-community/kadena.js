@@ -91,9 +91,9 @@ export const SideBar: FC = () => {
 
           <SideBarItem
             visual={<MonoTableRows />}
-            label="Transactions"
+            label="Activities"
             component={Link}
-            href="/transactions"
+            href="/activities"
           />
 
           <SideBarItem

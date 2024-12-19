@@ -3,8 +3,8 @@ import {
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { hashStyle } from '@/pages/activities/style.css';
 import { noStyleLinkClass } from '@/pages/home/style.css';
-import { hashStyle } from '@/pages/transactions/style.css';
 import { MonoContentCopy } from '@kadena/kode-icons/system';
 import { Button, Stack, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
