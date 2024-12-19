@@ -11,7 +11,7 @@ import {
   useLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
-import { cloneElement, useEffect, useState } from 'react';
+import { cloneElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 
@@ -23,8 +23,7 @@ interface IProps {
 export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const [balance, setBalance] = useState(0);
-  const { account, getBalance } = useAccount();
+  const { account, balance } = useAccount();
   const { data: investors } = useGetInvestors();
   const { submit, isAllowed } = useTransferTokens();
 
@@ -61,17 +60,6 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
   const filteredInvestors = investors.filter(
     (i) => i.accountName !== account?.address,
   );
-
-  const init = async () => {
-    if (!account) return;
-    const res = await getBalance();
-    setBalance(res);
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, [account?.address]);
 
   if (!account) return;
 

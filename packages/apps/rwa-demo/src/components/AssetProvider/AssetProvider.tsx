@@ -1,17 +1,20 @@
 'use client';
+import type { Exact, Scalars } from '@/__generated__/sdk';
+import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import {
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import type { IComplianceProps } from '@/services/getAssetMaxSupplyBalance';
-import { getAssetMaxSupplyBalance } from '@/services/getAssetMaxSupplyBalance';
+import type { IComplianceProps } from '@/services/getComplianceRules';
+import { getComplianceRules } from '@/services/getComplianceRules';
+import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
-import { getFullAsset } from '@/utils/getAsset';
+import { getAsset as getAssetUtil, getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
-
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
@@ -52,6 +55,16 @@ export const AssetContext = createContext<IAssetContext>({
   getAsset: async () => undefined,
 });
 
+export type EventQueryVariables = Exact<{
+  qualifiedName: Scalars['String']['input'];
+}>;
+
+export const getEventsDocument = (
+  variables: EventQueryVariables = {
+    qualifiedName: '',
+  },
+): Apollo.DocumentNode => coreEvents;
+
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
   const [assets, setAssets] = useState<IAsset[]>([]);
@@ -60,6 +73,13 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused();
   const { data: supply } = useSupply();
+  const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
+    {
+      variables: {
+        qualifiedName: `${getAssetUtil()}.SET-COMPLIANCE-PARAMETERS`,
+      },
+    },
+  );
 
   const getAssets = (): IAsset[] => {
     const result = localStorage.getItem(storageKey);
@@ -87,7 +107,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     account: IWalletAccount,
   ): Promise<IAsset | undefined> => {
     const data = getAssets().find((a) => a.uuid === uuid);
-    const extraAssetData = await getAssetMaxSupplyBalance();
+    const extraAssetData = await getComplianceRules();
 
     const supplyResult = (await supplyService({
       account: account!,
@@ -160,7 +180,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const loadAssetData = async () => {
-    const data = await getAssetMaxSupplyBalance();
+    const data = await getComplianceRules();
 
     setAsset((old) => old && { ...old, ...data });
   };
@@ -176,6 +196,29 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setAsset((old) => old && { ...old, supply });
   }, [asset?.contractName, supply]);
+
+  useEffect(() => {
+    if (
+      complianceSubscriptionData?.events?.length &&
+      complianceSubscriptionData.events[0].parameters
+    ) {
+      const params = JSON.parse(
+        complianceSubscriptionData.events[0].parameters,
+      );
+
+      const data = params[0];
+
+      setAsset(
+        (old) =>
+          old && {
+            ...old,
+            maxSupply: data['supply-limit'],
+            maxBalance: data['max-balance-per-investor'],
+            maxInvestors: data['max-investors'].int,
+          },
+      );
+    }
+  }, [complianceSubscriptionData]);
 
   useEffect(() => {
     if (!asset) return;

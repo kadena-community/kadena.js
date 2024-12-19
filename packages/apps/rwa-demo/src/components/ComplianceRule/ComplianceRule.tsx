@@ -21,7 +21,7 @@ export const ComplianceRule: FC<IProps> = ({ label, value }) => {
         <Text>{label}</Text>
       </Stack>
       <Badge style="positive" size="sm">
-        {`${value.toString()} tokens`}
+        {`${value.toString()}`}
       </Badge>
     </Stack>
   );

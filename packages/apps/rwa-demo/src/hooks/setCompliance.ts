@@ -41,7 +41,7 @@ export const useSetCompliance = () => {
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!paused && accountRoles.isComplianceManager());
-  }, [paused, account?.address, isMounted]);
+  }, [paused, account?.address, isMounted, accountRoles]);
 
   return { submit, isAllowed };
 };

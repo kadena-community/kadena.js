@@ -8,7 +8,7 @@ export interface IGetBalanceProps {
   account: IWalletAccount;
 }
 
-export const getBalance = async (data: IGetBalanceProps) => {
+export const getInvestorBalance = async (data: IGetBalanceProps) => {
   const client = getClient();
 
   const transaction = Pact.builder

@@ -1,7 +1,6 @@
 import { useAccount } from '@/hooks/account';
+import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
-import { getBalance } from '@/services/getBalance';
-import { getFrozenTokens } from '@/services/getFrozenTokens';
 import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
@@ -30,12 +29,11 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { account } = useAccount();
+  const { balance } = useAccount();
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
 
-  const [tokenBalance, setTokenBalance] = useState(0);
-  const [frozenData, setFrozenData] = useState(0);
+  const { data: frozenData } = useGetFrozenTokens({ investorAccount });
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
@@ -97,28 +95,6 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
     return message;
   };
 
-  const init = async () => {
-    const res = await getBalance({ investorAccount, account: account! });
-
-    if (typeof res === 'number') {
-      setTokenBalance(res);
-    }
-
-    const frozenRes = await getFrozenTokens({
-      investorAccount,
-      account: account!,
-    });
-
-    if (typeof frozenRes === 'number') {
-      setFrozenData(frozenRes);
-    }
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, []);
-
   return (
     <>
       {isRightAsideExpanded && isOpen && (
@@ -132,14 +108,14 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
                 rules={{
                   required: true,
                   min: -frozenData,
-                  max: tokenBalance - frozenData,
+                  max: balance - frozenData,
                 }}
                 render={({ field }) => (
                   <TextField
                     label="Amount"
                     {...field}
                     errorMessage={errors.amount?.message}
-                    description={`max amount: ${tokenBalance - frozenData} | min amount: ${-frozenData}`}
+                    description={`max amount: ${balance - frozenData} | min amount: ${-frozenData}`}
                   />
                 )}
               />

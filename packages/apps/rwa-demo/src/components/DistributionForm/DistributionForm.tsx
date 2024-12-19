@@ -2,7 +2,6 @@ import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
-import { getBalance } from '@/services/getBalance';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -30,12 +29,11 @@ export const DistributionForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { account } = useAccount();
+  const { balance } = useAccount();
   const { asset } = useAsset();
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
   const { submit, isAllowed } = useDistributeTokens({ investorAccount });
-  const [tokenBalance, setTokenBalance] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const {
@@ -86,20 +84,7 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  const init = async () => {
-    const res = await getBalance({ investorAccount, account: account! });
-
-    if (typeof res === 'number') {
-      setTokenBalance(res);
-    }
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, []);
-
-  const maxAmount = (asset?.maxSupply ?? 0) - tokenBalance;
+  const maxAmount = (asset?.maxSupply ?? 0) - balance;
   return (
     <>
       {isRightAsideExpanded && isOpen && (
