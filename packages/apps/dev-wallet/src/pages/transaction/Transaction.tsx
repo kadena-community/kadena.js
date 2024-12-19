@@ -16,54 +16,48 @@ import { TxList } from './components/TxList';
 
 export const TransactionPage = () => {
   const navigate = usePatchedNavigate();
-  const { groupId } = useParams();
+  const { transactionId } = useParams();
   const { profile } = useWallet();
   const [searchParam] = useSearchParams();
   const requestId = searchParam.get('request');
   const requests = useRequests();
-  const [txs = [], setTxList] = useState<ITransaction[]>();
+  const [tx, setTx] = useState<ITransaction>();
 
   useEffect(() => {
     const run = async () => {
-      if (profile?.uuid && groupId) {
-        const list = await transactionRepository.getTransactionsByGroup(
-          groupId,
-          profile.uuid,
-        );
-        if (!list || list.length === 0) {
-          navigate('/transactions');
+      if (profile?.uuid && transactionId) {
+        const tx = await transactionRepository.getTransaction(transactionId);
+        if (!tx || tx.profileId !== profile.uuid) {
+          navigate('/activities');
         }
-        setTxList(list);
+        setTx(tx);
       }
     };
     run();
-  }, [groupId, navigate, profile?.uuid]);
+  }, [transactionId, navigate, profile?.uuid]);
 
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
         <SideBarBreadcrumbsItem href={`/transactions`}>
-          Transactions
+          Activities
         </SideBarBreadcrumbsItem>
-        <SideBarBreadcrumbsItem href={`/transactions/${groupId}`}>
-          Transaction Group
+        <SideBarBreadcrumbsItem href={`/transaction/${transactionId}`}>
+          Transaction
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
       <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
         <Stack flexDirection={'column'} gap={'sm'}>
-          <Heading>Transactions</Heading>
-          {txs.length === 0 && <Text>No transactions</Text>}
-          {txs.length >= 2 && (
-            <Text>This is a group of {txs.length} Transactions</Text>
-          )}
+          <Heading>Transaction</Heading>
+          {!tx && <Text>No transaction</Text>}
         </Stack>
         <TxList
           onDone={() => {
             console.log('done');
           }}
-          txIds={txs.map((tx) => tx.uuid)}
-          showExpanded={txs.length === 1}
+          txIds={tx ? [tx.uuid] : []}
+          showExpanded={true}
           onSign={(tx) => {
             if (requestId) {
               const request = requests.get(requestId);

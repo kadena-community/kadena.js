@@ -14,6 +14,7 @@ import { CommunicationProvider } from '@/modules/communication/communication.pro
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { AccountPage } from '@/pages/account/account';
 import { MigrateAccount } from '@/pages/account/migrate-account/migrate-account';
+import { ActivitiesPage } from '@/pages/activities/activities';
 import { Connect } from '@/pages/connect/connect';
 import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccount } from '@/pages/create-account/create-account';
@@ -30,7 +31,6 @@ import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { TransactionPage } from '@/pages/transaction/Transaction';
-import { Transactions } from '@/pages/transactions/transactions';
 import { Transfer } from '@/pages/transfer/transfer';
 import { ImportChainweaverExport } from '@/pages/wallet-recovery/import-chainweaver-export/import-chainweaver-export';
 import { RecoverFromMnemonic } from '@/pages/wallet-recovery/recover-from-mnemonic/recover-from-mnemonic';
@@ -119,8 +119,11 @@ export const Routes: FC = () => {
             <Route path="/connect/:requestId" element={<Connect />} />
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccount />} />
-            <Route path="/transaction/:groupId" element={<TransactionPage />} />
-            <Route path="/transactions" element={<Transactions />} />
+            <Route
+              path="/transaction/:transactionId"
+              element={<TransactionPage />}
+            />
+            <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
             <Route path="/fungible/:contract" element={<FungiblePage />} />
             <Route

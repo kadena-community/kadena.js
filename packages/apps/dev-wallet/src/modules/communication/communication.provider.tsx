@@ -122,15 +122,15 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
           throw new Error('Profile not found');
         }
 
-        await addTransaction({
+        const tx = await addTransaction({
           transaction: payload as IUnsignedCommand,
           profileId: profile?.uuid,
           networkUUID: networkUUID,
           groupId: id,
         });
         const request = createRequest(data);
-        setOrigin(`transaction/${id}?request=${id}`);
-        navigate(`transaction/${id}?request=${id}`);
+        setOrigin(`transaction/${tx.uuid}?request=${id}`);
+        navigate(`transaction/${tx.uuid}?request=${id}`);
         return request;
       }),
     ];
