@@ -8,10 +8,14 @@ import {
 } from '@kadena/client';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { transactionRepository } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { normalizeTx } from '@/utils/normalizeSigs';
+import { browse, readContent } from '@/utils/select-file';
 import {
   determineSchema,
   RequestScheme,
@@ -32,7 +36,7 @@ import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
-import { useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { codeArea } from './style.css';
 
@@ -45,11 +49,17 @@ export function SignatureBuilder() {
   const [error, setError] = useState<string>();
   const [schema, setSchema] = useState<RequestScheme>();
   const [input, setInput] = useState<string>('');
+  const [fileContent, setFileContent] = useState<any>();
   const [pactCommand, setPactCommand] = useState<IPartialPactCommand>();
   const [unsignedTx, setUnsignedTx] = useState<IUnsignedCommand>();
   const [signed, setSignedTx] = useState<IUnsignedCommand>();
   const [capsWithoutSigners, setCapsWithoutSigners] = useState<
     ISigningRequest['caps']
+  >([]);
+  const [groupId] = useState<string>(crypto.randomUUID());
+  const [transactions, setTransactions] = useState<ITransaction[]>([]);
+  const [existingTransactions, setExistingTransactions] = useState<
+    ITransaction[]
   >([]);
   const { profile, activeNetwork, networks, setActiveNetwork } = useWallet();
   const navigate = usePatchedNavigate();
@@ -75,11 +85,27 @@ export function SignatureBuilder() {
     if (urlTransaction) {
       const data = new TextDecoder().decode(base64UrlDecodeArr(urlTransaction));
       setInput(data);
-      processSig(data);
+      processSigData(data);
+      addTransactionToGroup(groupId);
     }
   }, [urlTransaction]);
 
-  function processSig(inputData: string) {
+  useEffect(() => {
+    async function addTransaction() {
+      if (unsignedTx && profile) {
+        await addTransactionToGroup(groupId);
+        setTransactions(
+          await transactionRepository.getTransactionsByGroup(
+            groupId,
+            profile.uuid,
+          ),
+        );
+      }
+    }
+    addTransaction();
+  }, [unsignedTx]);
+
+  function processSigData(inputData: string) {
     setInput(inputData);
     let schema = determineSchema(inputData);
     if (schema === 'base64') {
@@ -121,10 +147,36 @@ export function SignatureBuilder() {
     setSchema(schema);
   }
 
-  const reviewTransaction = async () => {
+  const removeTransactionToAdd = async (tx: ITransaction) => {
+    if (!profile) return;
+
+    // remove transaction from existingTransactions
+    if (
+      existingTransactions.find((item) => item.uuid === tx.uuid) !== undefined
+    ) {
+      setExistingTransactions((prev) =>
+        prev.filter((item) => item.uuid !== tx.uuid),
+      );
+    }
+
+    // remove transaction from group
+    if (transactions.find((item) => item.uuid === tx.uuid) !== undefined) {
+      await transactionRepository.deleteTransaction(tx.uuid);
+      setTransactions(
+        await transactionRepository.getTransactionsByGroup(
+          groupId,
+          profile.uuid,
+        ),
+      );
+    }
+  };
+
+  const addTransactionToGroup = async (groupId: string) => {
     if (!unsignedTx || !profile || !activeNetwork) return;
+
     const command: IPactCommand = JSON.parse(unsignedTx.cmd);
     let networkUUID = activeNetwork.uuid;
+
     if (command.networkId && activeNetwork.networkId !== command.networkId) {
       const network = networks.filter(
         ({ networkId }) => networkId === command.networkId,
@@ -132,7 +184,7 @@ export function SignatureBuilder() {
       if (network.length === 0) {
         setError(
           command.networkId === 'mainnet01'
-            ? 'MANNET_IS_DISABLED: Mainnet is disabled since the wallet is not fully tested; you can try other networks'
+            ? 'MAINNET_IS_DISABLED: Mainnet is disabled since the wallet is not fully tested; you can try other networks'
             : 'NETWORK_NOT_FOUND: This network is not found',
         );
         throw new Error('Network not found');
@@ -144,7 +196,6 @@ export function SignatureBuilder() {
       // switch network
       setActiveNetwork(network[0]);
     }
-    const groupId = crypto.randomUUID();
 
     // check if transaction already exists
     const tx = await transactionRepository.getTransactionByHashNetworkProfile(
@@ -162,12 +213,23 @@ export function SignatureBuilder() {
             pubKey?: string;
           }>),
         );
+
         await transactionRepository.updateTransaction({
           ...tx,
           sigs: updatedTx.sigs,
         });
+
+        if (
+          existingTransactions.find((item) => item.uuid === tx.uuid) ===
+          undefined
+        ) {
+          setExistingTransactions((prev) => [...prev, tx]);
+        }
       }
-      navigate(`/transaction/${tx.groupId}`);
+      setPactCommand(undefined);
+      setUnsignedTx(undefined);
+      setCapsWithoutSigners([]);
+      setInput('');
       return;
     }
 
@@ -177,6 +239,14 @@ export function SignatureBuilder() {
       networkUUID: networkUUID,
       groupId,
     });
+
+    setPactCommand(undefined);
+    setUnsignedTx(undefined);
+    setCapsWithoutSigners([]);
+    setInput('');
+  };
+
+  const reviewTransaction = () => {
     navigate(`/transaction/${groupId}`);
   };
 
@@ -189,17 +259,20 @@ export function SignatureBuilder() {
       </SideBarBreadcrumbs>
 
       <Stack flexDirection={'column'} gap={'md'} width="100%">
-        <Heading as="h4">Paste SigData, CommandSigData, or Payload</Heading>
+        <Heading as="h4">
+          Paste or Upload SigData, CommandSigData, or Payload
+        </Heading>
         <textarea
           value={input}
           className={classNames(codeArea)}
           onChange={(e) => {
             e.preventDefault();
             setError(undefined);
-            processSig(e.target.value);
+            processSigData(e.target.value);
           }}
         />
-        <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
+
+        <Box>{schema && <Text>{`Schema: ${schema}`}</Text>} </Box>
         {schema === 'signingRequest' && (
           <Notification intent="info" role="status">
             SigningRequest is not supported yet, We are working on it.
@@ -210,12 +283,137 @@ export function SignatureBuilder() {
             {error}
           </Notification>
         )}
+
+        {/* <Box>
+          <Button
+            variant="outlined"
+            onClick={async () => {
+              setError(undefined);
+              setFileContent(undefined);
+              const file = await browse(true);
+              if (file && file instanceof File) {
+                const content = await readContent(file);
+                try {
+                  const json = JSON.parse(content, (_key, value) => {
+                    if (typeof value !== 'string') return value;
+                    if (value.startsWith('Uint8Array:')) {
+                      const base64Url = value.split('Uint8Array:')[1];
+                      return base64UrlDecodeArr(base64Url);
+                    }
+                    if (value.startsWith('ArrayBuffer:')) {
+                      const base64Url = value.split('ArrayBuffer:')[1];
+                      return base64UrlDecodeArr(base64Url).buffer;
+                    }
+                    return value;
+                  });
+                  setFileContent(json);
+                } catch (e) {
+                  setError('Invalid file format');
+                }
+              }
+            }}
+          >
+            Add From File(s)
+          </Button>
+        </Box> */}
+
+        <Box>
+          {transactions.length > 0 && (
+            <>
+              <Text>Transactions to review</Text>
+              <Box>
+                <ul>
+                  {transactions.map((tx) => (
+                    <li>
+                      <ul>
+                        <li>
+                          <Text>Hash: {tx.hash}</Text>
+                        </li>
+                        <li>
+                          <Text>
+                            Code: {JSON.parse(tx.cmd).payload.exec.code}
+                          </Text>
+                        </li>
+                        <li>
+                          <Text>Code: {tx.groupId}</Text>
+                        </li>
+                        <li>
+                          <Button
+                            isCompact
+                            variant="outlined"
+                            onPress={() => removeTransactionToAdd(tx)}
+                          >
+                            Discard
+                          </Button>
+                        </li>
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
+            </>
+          )}
+        </Box>
+
         <Box>
           <Box>
-            {['PactCommand', 'quickSignRequest'].includes(schema!) && (
-              <Button onPress={reviewTransaction}>Review Transaction</Button>
-            )}
+            {transactions.length > 0 &&
+              ['PactCommand', 'quickSignRequest'].includes(schema!) && (
+                <Button onPress={reviewTransaction}>
+                  Review Transaction(s)
+                </Button>
+              )}
           </Box>
+        </Box>
+
+        <Box>
+          {existingTransactions.length > 0 && (
+            <>
+              <Text>
+                These transactions already exist, the will not be added to the
+                current group
+              </Text>
+              <Box>
+                <ul>
+                  {existingTransactions.map((tx) => (
+                    <li>
+                      <ul>
+                        <li>
+                          <Text>Hash: {tx.hash}</Text>
+                        </li>
+                        <li>
+                          <Text>
+                            Code: {JSON.parse(tx.cmd).payload.exec.code}
+                          </Text>
+                        </li>
+                        <li>
+                          <Text>Code: {tx.groupId}</Text>
+                        </li>
+                        <li>
+                          <Button
+                            isCompact
+                            variant="outlined"
+                            onPress={() => removeTransactionToAdd(tx)}
+                          >
+                            Discard
+                          </Button>{' '}
+                          <Button
+                            isCompact
+                            variant="outlined"
+                            onPress={() =>
+                              navigate(`/transaction/${tx.groupId}`)
+                            }
+                          >
+                            Open Transaction
+                          </Button>
+                        </li>
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
+            </>
+          )}
         </Box>
       </Stack>
     </>

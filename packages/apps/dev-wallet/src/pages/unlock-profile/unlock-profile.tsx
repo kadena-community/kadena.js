@@ -100,6 +100,7 @@ export function UnlockProfile({ origin }: { origin: string }) {
               })}
               isInvalid={!isValid && !!errors.password}
               errorMessage={errors.password?.message}
+              autoFocus
             />
           </div>
           <Stack flexDirection="column" gap="md">

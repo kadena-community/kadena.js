@@ -74,6 +74,7 @@ export const UnlockPrompt: React.FC<{
               type="password"
               {...register('password')}
               label="Password"
+              autoFocus
             />
           )}
           {storePassword && (
