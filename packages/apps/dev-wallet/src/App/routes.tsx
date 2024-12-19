@@ -29,6 +29,7 @@ import { ImportData } from '@/pages/settings/import-data/import-data';
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
+import { TransactionGroupPage } from '@/pages/transaction-group/TransactionGroup';
 import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transactions } from '@/pages/transactions/transactions';
 import { Transfer } from '@/pages/transfer/transfer';
@@ -120,6 +121,10 @@ export const Routes: FC = () => {
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/transaction/:groupId" element={<TransactionPage />} />
+            <Route
+              path="/transaction-group/:groupId"
+              element={<TransactionGroupPage />}
+            />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
             <Route path="/fungible/:contract" element={<FungiblePage />} />

@@ -6,7 +6,8 @@ export type RequestScheme =
   | 'quickSignRequest'
   | 'signingRequest'
   | 'PactCommand'
-  | 'base64';
+  | 'base64'
+  | 'Array';
 
 export function determineSchema(
   input: string,
