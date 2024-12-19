@@ -136,7 +136,6 @@ export const useGetInvestors = () => {
 
   useEffect(() => {
     if (removedLoading || addedLoading) return;
-    //const tx = getTransactions('IDENTITY-REGISTERED');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData();
   }, [

@@ -18,8 +18,7 @@ const createPubKeyFromAccount = (account: string): string => {
 export const registerIdentity = async (data: IRegisterIdentityProps) => {
   return Pact.builder
     .execution(
-      `(${getAsset()}.register-identity (read-string 'investor) (read-string 'agent) 1)
-      (${getAsset()}.create-account (read-string 'investor) (read-keyset 'investor-keyset))
+      `(${getAsset()}.register-identity (read-string 'investor) (read-keyset 'investor-keyset) (read-string 'agent) 1)
       `,
     )
     .addData('investor-keyset', {

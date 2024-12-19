@@ -119,6 +119,18 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     TOKEN-INFO-MANAGER
   ])
 
+  (defschema schema-set-compliance-parameters
+    supply-limit:decimal
+    max-investors:integer
+    max-balance-per-investor:decimal
+  )
+
+  (defcap SET-COMPLIANCE-PARAMETERS:bool (compliance:object{schema-set-compliance-parameters})
+    @doc "Event emitted when a compliance parameters is updated."
+    @event
+    true
+  )
+
   ;; compliance-compatible functions
 
   (defun set-max-balance-per-investor (max-balance-per-investor:decimal)
@@ -151,7 +163,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       (update compliance-parameters ""
         compliance-params
       )
-       (emit-event (SET-COMPLIANCE-PARAMETERS (read-msg 'compliance-parameters )))  
+      (emit-event (SET-COMPLIANCE-PARAMETERS compliance-params))
     )
   )
 
@@ -209,18 +221,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defschema schema-set-compliance-parameters
-    supply-limit: decimal
-    max-investors: integer
-    max-balance-per-investor: decimal
-  )
-
-  (defcap SET-COMPLIANCE-PARAMETERS:bool (compliance:object{schema-set-compliance-parameters})
-    @doc "Event emitted when a compliance parameters is updated."
-    @event
-    true
-  )
-
   (defcap RECOVERY-SUCCESS:bool (lost-wallet:string new-wallet:string investor-kadenaID:string)
     @doc "Event emitted when a recovery process is successful."
     @event
@@ -257,27 +257,16 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap ROLE_UPDATED:bool (user-address:string roles:[string])
-    @doc ""
+  (defcap AGENT-ROLES-UPDATED:bool (user-address:string roles:[string])
+    @doc "Event emitted when agent role is updated"
     @event
     true
   )
-
-
 
   ;; grant caps
 
   (defcap INTERNAL:bool () true)
   (defcap MINT:bool () true)
-  (defcap RECONCILE:bool (to:string amount:decimal) 
-    @doc "Event emitted when there are tokens minted to an investor"
-    @event
-    true
-  )
-
-  
-
-
   (defcap BURN:bool () true)
   (defcap FORCED-TRANSFER:bool () true )
   (defcap UPDATE-SUPPLY:bool () true )
@@ -343,7 +332,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap IDENTITY-REGISTERED:bool (investor-address:string identity:string)
+  (defcap IDENTITY-REGISTERED:bool (investor-address:string investor-guard:guard identity:string)
     @doc "This event is emitted when an Identity is registered into the Identity Registry.             \
     \ The event is emitted by the 'register-identity' function.                                        \
     \ \`investor-address\` is the address of the investor's wallet.                                       \
@@ -591,11 +580,12 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun forced-transfer:bool (from:string to:string amount:decimal)
     @doc "Force transfer tokens from one address to another."
-    (with-capability (FORCED-TRANSFER from to amount)
+    (with-capability (FORCED-TRANSFER)
       (with-capability (TRANSFER from to amount)
         (only-agent TRANSFER-MANAGER)
         (transfer-internal from to amount)
     ))
+    true
   )
 
   (defun mint :string (to:string amount:decimal)
@@ -645,11 +635,14 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defun batch-forced-transfer:bool (from-list:[string] to-list:[string] amounts:[decimal])
     @doc "Perform batch forced transfer of tokens."
       (only-agent TRANSFER-MANAGER)
-      (map (lambda (idx:integer)
-        (with-capability (TRANSFER (at idx from-list) (at idx to-list) (at idx amounts))
-          (transfer-internal (at idx from-list) (at idx to-list) (at idx amounts))
+      (with-capability (FORCED-TRANSFER)
+        (map (lambda (idx:integer)
+          (with-capability (TRANSFER (at idx from-list) (at idx to-list) (at idx amounts))
+
+            (transfer-internal (at idx from-list) (at idx to-list) (at idx amounts))
+          )
         )
-      ) (enumerate 0 (- (length from-list) 1)) ) true
+        ) (enumerate 0 (- (length from-list) 1)) ) true
   )
 
   (defun batch-mint:bool (to-list:[string] amounts:[decimal])
@@ -667,21 +660,23 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defun batch-burn:bool (user-addresses:[string] amounts:[decimal])
     @doc "Burn tokens from multiple addresses."
     (only-agent SUPPLY-MODIFIER)
-    (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
-      (burn-internal (at idx user-addresses) (at idx amounts))
+    (with-capability (BURN)
+      (map (lambda (idx:integer)
+      (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
+        (burn-internal (at idx user-addresses) (at idx amounts))
+      )
+      ) (enumerate 0 (- (length user-addresses) 1)) ) true
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
   )
 
-  (defun batch-register-identity:bool (user-addresses:[string] identities:[string] countries:[integer])
+  (defun batch-register-identity:bool (user-addresses:[string] user-guards:[guard] identities:[string] countries:[integer])
     @doc "Allows batch registration of identities.                                                     \
     \ Requires that none of the users has an identity contract already registered.                   \
     \ Only a wallet set as agent of the smart contract can call this function.                       \
     \ Emits \`IDENTITY-REGISTERED\` events for each user address in the batch."
     (only-agent WHITELIST-MANAGER)
     (map (lambda (idx:integer)
-      (register-identity-internal (at idx user-addresses) (at idx identities) (at idx countries))
+      (register-identity-internal (at idx user-addresses) (at idx user-guards) (at idx identities) (at idx countries))
     ) (enumerate 0 (- (length user-addresses) 1)) ) true
   )
 
@@ -736,7 +731,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       (enforce-contains-identity to)
       (with-capability (TRANSFER (zero-address) to amount)
         (credit to amount)
-        
         (with-capability (UPDATE-SUPPLY)
           (update-supply amount)
         )
@@ -851,14 +845,25 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     @managed amount TRANSFER-mgr
 
     (if (try false (enforce-guard (at 'guard (read users sender))))
-      true
+      true ;; user signed for the transaction
+      ;;else
       (if (try false (require-capability (MINT)))
+        ;; mint is in action
         true
+        ;;else
         (if (try false (require-capability (BURN)))
+          ;;burn is in action
           true
+          ;; else
           (if (try false (require-capability (FORCED-TRANSFER)))
+          ;; forced-transfer is in action
+          ;; else fail
+          true
+          (enforce false "TRANSFER failed")
         )
-    )))
+        )
+      )
+    )
 
     (enforce (!= sender "") "valid sender")
     (enforce (!= sender receiver) "same sender and receiver")
@@ -891,18 +896,18 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (with-default-read users account
       {"balance": -1.0}
       { "balance" := balance}
-    (if (= balance -1.0)
-      (update users account
-        { "balance" : amount})
-      (update users account
-        { "balance" : (+ balance amount)})
-    )
-    (if (= account (zero-address))
-      "Credit to Zero Address"
       (if (= balance -1.0)
-        [(add-investor-count)]
-        "Credit successful"
+        (update users account
+          { "balance" : amount})
+        (update users account
+          { "balance" : (+ balance amount)})
       )
+      (if (= account (zero-address))
+        "Credit to Zero Address"
+        (if (= balance -1.0)
+          (add-investor-count)
+          "Credit successful"
+        )
       )
     )
   )
@@ -1118,7 +1123,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     @doc "Update agent roles"
     (install-capability (ONLY-OWNER ""))
     (install-capability (ONLY-AGENT AGENT-ADMIN))
-
     (if (try false (only-owner ""))
       true
       (only-agent AGENT-ADMIN))
@@ -1126,7 +1130,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (update agents agent
       { 'roles: roles }
     )
-    (emit-event (ROLE_UPDATED agent roles))
+    (emit-event (AGENT-ROLES-UPDATED agent roles))
     true
   )
 
@@ -1147,23 +1151,31 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (enumerate 0 (- (length roles) 1)))
   ))
 
-  (defun register-identity:bool (user-address:string identity:string country:integer)
+  (defun register-identity:bool (user-address:string user-guard:guard identity:string country:integer)
     @doc "Register an identity contract corresponding to a user address.                               \
     \ Requires that the user doesn't have an identity contract already registered.                    \
     \ Only a wallet set as agent of the smart contract can call this function.                        \
     \ Emits an \`IDENTITY-REGISTERED\` event."
     (only-agent WHITELIST-MANAGER)
-    (register-identity-internal user-address identity country)
+    (register-identity-internal user-address user-guard identity country)
   )
 
-  (defun register-identity-internal:bool (user-address:string identity:string country:integer)
+  (defun register-identity-internal:bool (user-address:string user-guard:guard identity:string country:integer)
     @doc "Register an identity contract corresponding to a user address.                               \
     \ Requires that the user doesn't have an identity contract already registered.                    \
     \ Only a wallet set as agent of the smart contract can call this function.                        \
     \ Emits an \`IDENTITY-REGISTERED\` event."
     (is-principal user-address)
     (write identities user-address { "kadenaID":identity, "country":country, "active":true })
-    (emit-event (IDENTITY-REGISTERED user-address identity))
+    (with-default-read users user-address
+      { "balance": -2.0 }
+      { "balance":=balance }
+      (if (= balance -2.0)
+        (create-account user-address user-guard)
+        ""
+      )
+    )
+    (emit-event (IDENTITY-REGISTERED user-address user-guard identity))
   )
 
 
@@ -1301,6 +1313,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 ;; set roles in agent
 ;; wanted to review frontend and see if certain features were possible with graphql (still exploring but want to sit with Travis?)
 (RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
+
 
 
 (${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard "${namespace}.admin-keyset"))
