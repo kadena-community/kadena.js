@@ -45,7 +45,7 @@ export const useGetAgentRoles = ({
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.ROLE_UPDATED`,
+      qualifiedName: `${getAsset()}.AGENT-ROLES-UPDATED`,
     },
   });
 
