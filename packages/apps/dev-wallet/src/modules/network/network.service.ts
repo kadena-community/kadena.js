@@ -46,7 +46,7 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
     console.log('Error while checking networks', er),
   );
   return ({ networkId, chainId }: INetworkOptions) => {
-    if (Date.now() - lastCheckTime > 30000) {
+    if (Date.now() - lastCheckTime > 10000) {
       checkNetworks().catch((er) =>
         console.log('Error while checking networks', er),
       );

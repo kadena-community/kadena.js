@@ -48,6 +48,7 @@ export function Networks() {
           isOpen={isRightAsideExpanded}
           onClose={() => {
             setIsRightAsideExpanded(false);
+            setSelectedNetwork(getNewNetwork());
           }}
           onSave={async (updNetwork) => {
             if (updNetwork.uuid) {
@@ -59,6 +60,7 @@ export function Networks() {
               });
             }
             setIsRightAsideExpanded(false);
+            setSelectedNetwork(getNewNetwork());
           }}
           network={selectedNetwork}
         />

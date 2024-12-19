@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from 'react';
 import { KeySelector } from '@/Components/Guard/KeySelector';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { PactNumber } from '@kadena/pactjs';
 import { Guard } from '../../../Components/Guard/Guard';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
 import { discoverReceiver, needToSelectKeys } from '../utils';
@@ -88,7 +89,10 @@ export function AccountSearchBox({
       if (!isKeysetGuard(account?.guard)) {
         return true;
       }
-      if (!account?.overallBalance || +account.overallBalance === 0) {
+      if (
+        !account?.overallBalance ||
+        new PactNumber(account.overallBalance).lte(0)
+      ) {
         return true;
       }
     }
@@ -542,7 +546,11 @@ export function AccountSearchBox({
               className={popoverClass}
               gap={'md'}
             >
-              <Stack gap={'md'} alignItems={'center'}>
+              <Stack
+                gap={'md'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+              >
                 <Heading variant="h6">Select one account</Heading>
                 {isSenderAccount && (
                   <Button
