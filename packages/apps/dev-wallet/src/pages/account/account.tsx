@@ -165,7 +165,7 @@ export function AccountPage() {
         )}
       </Stack>
       {isOwnedAccount && (
-        <Stack gap="md" alignItems={'center'}>
+        <Stack gap="md" alignItems={'center'} flexWrap="wrap">
           <Link
             to={`/transfer?accountId=${account.uuid}`}
             className={noStyleLinkClass}

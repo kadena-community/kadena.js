@@ -165,7 +165,9 @@ function usePassword(profile: IProfile | undefined) {
             <UnlockPrompt
               resolve={async ({ keepOpen }) => {
                 const pass = await WalletService.getWebAuthnPass(profile);
-                if (!pass) reject('Failed to unlock profile');
+                if (!pass) {
+                  throw new Error('Failed to unlock profile');
+                }
                 const unlockOptions = { password: pass, keepOpen };
                 if (storePassword) {
                   await storeData(unlockOptions);

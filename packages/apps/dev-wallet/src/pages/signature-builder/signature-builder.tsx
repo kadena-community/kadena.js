@@ -167,17 +167,17 @@ export function SignatureBuilder() {
           sigs: updatedTx.sigs,
         });
       }
-      navigate(`/transaction/${tx.groupId}`);
+      navigate(`/transaction/${tx.uuid}`);
       return;
     }
 
-    await transactionService.addTransaction({
+    const newTx = await transactionService.addTransaction({
       transaction: unsignedTx,
       profileId: profile.uuid,
       networkUUID: networkUUID,
       groupId,
     });
-    navigate(`/transaction/${groupId}`);
+    navigate(`/transaction/${newTx.uuid}`);
   };
 
   return (
