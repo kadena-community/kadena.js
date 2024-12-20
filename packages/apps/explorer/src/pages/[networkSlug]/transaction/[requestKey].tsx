@@ -70,7 +70,7 @@ const Transaction: React.FC = () => {
   }, [loading, data, error, setIsLoading]);
 
   return (
-    <Layout>
+    <Layout layout="full">
       {innerData && innerData.transaction ? (
         <>
           <LayoutHeader>
@@ -120,7 +120,12 @@ const Transaction: React.FC = () => {
         </>
       ) : (
         !Array.isArray(router.query.requestKey) && (
-          <NoSearchResults type="requestKey" value={router.query.requestKey} />
+          <LayoutBody>
+            <NoSearchResults
+              type="requestKey"
+              value={router.query.requestKey}
+            />
+          </LayoutBody>
         )
       )}
     </Layout>
