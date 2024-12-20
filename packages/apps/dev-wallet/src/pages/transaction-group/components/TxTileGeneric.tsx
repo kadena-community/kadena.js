@@ -9,6 +9,7 @@ import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { Value } from './helpers';
 import {
   codeClass,
+  failureClass,
   successClass,
   txTileClass,
   txTileContentClass,
@@ -19,9 +20,11 @@ export const TxTileGeneric = ({
   tx,
   contTx,
   buttons,
+  subtexts,
 }: {
   tx: ITransaction;
   contTx?: ITransaction;
+  subtexts?: React.FC[];
   buttons: {
     label: string;
     onClick: () => void;
@@ -51,13 +54,8 @@ export const TxTileGeneric = ({
                   flex={1}
                   className={txTileContentClass}
                 >
-                  <Stack>
-                    <Text size={'smallest'} className={successClass}>
-                      <Stack alignItems={'center'} gap={'xs'}>
-                        <MonoCheck />
-                        Already present in wallet
-                      </Stack>
-                    </Text>
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    {subtexts && subtexts.map((SubText) => <SubText />)}
                   </Stack>
 
                   <Value className={codeClass}>

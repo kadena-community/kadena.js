@@ -1,7 +1,10 @@
 // create a file input element
-function createFileInput(types?: string[]) {
+function createFileInput(multiple: boolean, types: string[] = []) {
   const input: HTMLInputElement = document.createElement('input');
   input.setAttribute('type', 'file');
+  if (multiple) {
+    input.setAttribute('multiple', 'multiple');
+  }
   if (types && types.length) {
     input.setAttribute('accept', types.join(', '));
   }
@@ -13,7 +16,7 @@ export function browse(
   multiple = false,
   types?: string[],
 ): Promise<FileList | File | null> {
-  const input: HTMLInputElement = createFileInput(types);
+  const input: HTMLInputElement = createFileInput(true, types);
   input.click(); // fire click event
   return new Promise<FileList | File | null>((resolve) => {
     input.onchange = function (event) {
