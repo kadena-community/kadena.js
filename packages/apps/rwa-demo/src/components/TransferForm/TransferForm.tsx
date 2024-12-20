@@ -1,4 +1,5 @@
 import { useAccount } from '@/hooks/account';
+import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
@@ -26,6 +27,9 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
   const { account, balance } = useAccount();
   const { data: investors } = useGetInvestors();
   const { submit, isAllowed } = useTransferTokens();
+  const { data: frozenAmount } = useGetFrozenTokens({
+    investorAccount: account?.address!,
+  });
 
   const {
     register,
@@ -63,6 +67,8 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
 
   if (!account) return;
 
+  const maxAmount = balance - frozenAmount;
+
   return (
     <>
       {isRightAsideExpanded && isOpen && (
@@ -83,12 +89,13 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
                     message: 'The value should be at least 1',
                   },
                   max: {
-                    value: balance,
-                    message: 'The value can not be more than your balance',
+                    value: maxAmount,
+                    message:
+                      'The value can not be more than your balance ( - frozen tokens)',
                   },
                 })}
                 variant={errors.amount?.message ? 'negative' : 'default'}
-                description={`max amount tokens: ${balance}`}
+                description={`max amount tokens: ${maxAmount}`}
                 errorMessage={errors.amount?.message}
               />
 
