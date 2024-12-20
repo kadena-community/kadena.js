@@ -20,7 +20,7 @@ export const useTogglePartiallyFreezeTokens = ({
   const { frozen } = useFreeze({ investorAccount });
   const { paused } = useAsset();
   const { account, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -50,8 +50,20 @@ export const useTogglePartiallyFreezeTokens = ({
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!frozen && !paused && accountRoles.isFreezer());
-  }, [frozen, paused, account?.address, isMounted, accountRoles]);
+    setIsAllowed(
+      !frozen &&
+        !paused &&
+        accountRoles.isFreezer() &&
+        !isActiveAccountChangeTx,
+    );
+  }, [
+    frozen,
+    paused,
+    account?.address,
+    isMounted,
+    accountRoles,
+    isActiveAccountChangeTx,
+  ]);
 
   return { submit, isAllowed };
 };

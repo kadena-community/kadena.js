@@ -110,7 +110,6 @@ export const useGetInvestors = () => {
     const investorsSubscriptionAdded: IRecord[] =
       addedSubscriptionData?.events?.map((edge: any) => {
         const params = JSON.parse(edge.parameters);
-        console.log('added', { params });
         return {
           isRemoved: false,
           accountName: params[0],

@@ -7,7 +7,13 @@ import { store } from '@/utils/store';
 import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 export interface ITxType {
   name: keyof typeof TXTYPES;
@@ -60,6 +66,7 @@ export interface ITransactionsContext {
   setTxsButtonRef: (value: HTMLButtonElement) => void;
   txsAnimationRef?: HTMLDivElement | null;
   setTxsAnimationRef: (value: HTMLDivElement) => void;
+  isActiveAccountChangeTx: boolean; //checks if the agentroles for this user are being changed. if so, stop all permissions until the tx is resolved
 }
 
 export const TransactionsContext = createContext<ITransactionsContext>({
@@ -70,6 +77,7 @@ export const TransactionsContext = createContext<ITransactionsContext>({
   getTransactions: () => [],
   setTxsButtonRef: () => {},
   setTxsAnimationRef: () => {},
+  isActiveAccountChangeTx: false,
 });
 
 const interpretMessage = (str: string, data?: ITransaction): string => {
@@ -132,7 +140,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
           });
         })
         .finally(() => {
-          console.log(data);
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           store.removeTransaction(data);
         });
@@ -208,6 +215,12 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, [transactions.length, account]);
 
+  const isActiveAccountChangeTx: boolean = useMemo(() => {
+    if (!account?.address) return false;
+    const txs = getTransactions(TXTYPES.ADDAGENT);
+    return !!txs.find((tx) => tx.accounts.indexOf(account.address) >= 0);
+  }, [getTransactions(TXTYPES.ADDAGENT), account?.address]);
+
   const setTxsButtonRef = (ref: HTMLButtonElement) => {
     setTxsButtonRefData(ref);
   };
@@ -225,6 +238,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         txsButtonRef,
         setTxsAnimationRef,
         txsAnimationRef,
+        isActiveAccountChangeTx,
       }}
     >
       {children}

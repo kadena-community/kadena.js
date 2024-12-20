@@ -14,7 +14,7 @@ import { useTransactions } from './transactions';
 export const useSetCompliance = () => {
   const { account, sign, isMounted, accountRoles } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -44,8 +44,16 @@ export const useSetCompliance = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!paused && accountRoles.isComplianceManager());
-  }, [paused, account?.address, isMounted, accountRoles]);
+    setIsAllowed(
+      !paused && accountRoles.isComplianceManager() && !isActiveAccountChangeTx,
+    );
+  }, [
+    paused,
+    account?.address,
+    isMounted,
+    accountRoles,
+    isActiveAccountChangeTx,
+  ]);
 
   return { submit, isAllowed };
 };

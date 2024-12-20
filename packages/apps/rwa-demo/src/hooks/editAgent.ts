@@ -17,7 +17,7 @@ import { useTransactions } from './transactions';
 export const useEditAgent = () => {
   const { account, sign, isMounted, accountRoles, isOwner } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -38,7 +38,7 @@ export const useEditAgent = () => {
       return addTransaction({
         ...res,
         type: TXTYPES.ADDAGENT,
-        accounts: [account?.address!, data.accountName],
+        accounts: [data.accountName],
       });
     } catch (e: any) {
       addNotification({
@@ -53,8 +53,20 @@ export const useEditAgent = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!paused && (accountRoles.isAgentAdmin() || isOwner));
-  }, [paused, account?.address, isMounted, isOwner, accountRoles]);
+
+    setIsAllowed(
+      !paused &&
+        !isActiveAccountChangeTx &&
+        (accountRoles.isAgentAdmin() || isOwner),
+    );
+  }, [
+    paused,
+    account?.address,
+    isMounted,
+    isOwner,
+    accountRoles,
+    isActiveAccountChangeTx,
+  ]);
 
   return { submit, isAllowed };
 };

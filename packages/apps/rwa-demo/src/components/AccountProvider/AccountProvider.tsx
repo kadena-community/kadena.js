@@ -76,11 +76,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAgentState, setIsAgentState] = useState(false);
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
-  const accountRoles = useGetAgentRoles({ agent: account?.address });
+  const { ...accountRoles } = useGetAgentRoles({
+    agent: account?.address,
+  });
   const { data: balance } = useGetInvestorBalance({
     investorAccount: account?.address,
   });
-
   const router = useRouter();
 
   const checkIsAgent = async (account: IWalletAccount) => {

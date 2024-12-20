@@ -19,7 +19,7 @@ export const useDeleteInvestor = ({
 }) => {
   const { account, sign, accountRoles, isMounted, balance } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
   const [notAllowedReason, setNotAllowedReason] = useState('');
@@ -70,8 +70,10 @@ export const useDeleteInvestor = ({
       return;
     }
 
-    setIsAllowed(!paused && accountRoles.isWhitelistManager());
-  }, [paused, account?.address, isMounted, balance]);
+    setIsAllowed(
+      !paused && accountRoles.isWhitelistManager() && !isActiveAccountChangeTx,
+    );
+  }, [paused, account?.address, isMounted, balance, isActiveAccountChangeTx]);
 
   return { submit, isAllowed, notAllowedReason };
 };

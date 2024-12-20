@@ -15,7 +15,7 @@ import { useTransactions } from './transactions';
 export const useRemoveAgent = () => {
   const { account, sign, isMounted, accountRoles, isOwner } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -47,8 +47,13 @@ export const useRemoveAgent = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!paused && (accountRoles.isAgentAdmin() || isOwner));
-  }, [paused, account?.address, isMounted, isOwner]);
+
+    setIsAllowed(
+      !paused &&
+        !isActiveAccountChangeTx &&
+        (accountRoles.isAgentAdmin() || isOwner),
+    );
+  }, [paused, account?.address, isMounted, isOwner, isActiveAccountChangeTx]);
 
   return { submit, isAllowed };
 };

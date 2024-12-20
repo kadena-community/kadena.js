@@ -13,7 +13,7 @@ import { useTransactions } from './transactions';
 
 export const useTogglePause = () => {
   const { account, sign, isMounted, accountRoles } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -44,8 +44,8 @@ export const useTogglePause = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(accountRoles.isFreezer());
-  }, [account?.address, isMounted, accountRoles]);
+    setIsAllowed(accountRoles.isFreezer() && !isActiveAccountChangeTx);
+  }, [account?.address, isMounted, accountRoles, isActiveAccountChangeTx]);
 
   return { submit, isAllowed };
 };
