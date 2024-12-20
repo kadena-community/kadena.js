@@ -1,5 +1,5 @@
-import { useAccount } from '@/hooks/account';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
+import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
 import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
@@ -29,7 +29,9 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { balance } = useAccount();
+  const { data: balance } = useGetInvestorBalance({
+    investorAccount,
+  });
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
 

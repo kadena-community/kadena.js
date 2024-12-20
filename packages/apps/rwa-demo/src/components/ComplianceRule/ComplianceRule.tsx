@@ -1,6 +1,9 @@
 import { MonoArrowRightAlt } from '@kadena/kode-icons';
 import { Badge, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
+import { useEffect } from 'react';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { complianceRuleClass } from './style.css';
 
 interface IProps {
@@ -9,6 +12,8 @@ interface IProps {
 }
 
 export const ComplianceRule: FC<IProps> = ({ label, value }) => {
+  useEffect(() => {}, []);
+
   return (
     <Stack
       className={complianceRuleClass}
@@ -20,9 +25,12 @@ export const ComplianceRule: FC<IProps> = ({ label, value }) => {
         <MonoArrowRightAlt />
         <Text>{label}</Text>
       </Stack>
-      <Badge style="positive" size="sm">
-        {`${value.toString()}`}
-      </Badge>
+      <Stack alignItems="center" gap="sm">
+        <TransactionTypeSpinner type={TXTYPES.SETCOMPLIANCE} />
+        <Badge style="positive" size="sm">
+          {`${value.toString()}`}
+        </Badge>
+      </Stack>
     </Stack>
   );
 };

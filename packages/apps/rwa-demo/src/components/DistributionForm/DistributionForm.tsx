@@ -84,7 +84,7 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  const maxAmount = (asset?.maxSupply ?? 0) - balance;
+  const maxAmount = (asset?.maxBalance ?? 0) - balance;
   return (
     <>
       {isRightAsideExpanded && isOpen && (

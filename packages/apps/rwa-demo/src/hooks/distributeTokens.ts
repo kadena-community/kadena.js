@@ -1,4 +1,7 @@
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { distributeTokens } from '@/services/distributeTokens';
 import { getClient } from '@/utils/client';
@@ -18,7 +21,7 @@ export const useDistributeTokens = ({
   const { paused } = useAsset();
 
   const { account, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -34,7 +37,8 @@ export const useDistributeTokens = ({
 
       return addTransaction({
         ...res,
-        type: 'DISTRIBUTETOKENS',
+        type: TXTYPES.DISTRIBUTETOKENS,
+        accounts: [investorAccount],
       });
     } catch (e: any) {
       addNotification({
@@ -47,8 +51,20 @@ export const useDistributeTokens = ({
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!frozen && !paused && accountRoles.isSupplyModifier());
-  }, [frozen, paused, account?.address, isMounted, accountRoles]);
+    setIsAllowed(
+      !frozen &&
+        !paused &&
+        accountRoles.isSupplyModifier() &&
+        !isActiveAccountChangeTx,
+    );
+  }, [
+    frozen,
+    paused,
+    account?.address,
+    isMounted,
+    accountRoles,
+    isActiveAccountChangeTx,
+  ]);
 
   return { submit, isAllowed };
 };

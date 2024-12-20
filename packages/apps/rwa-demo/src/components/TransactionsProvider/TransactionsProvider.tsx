@@ -7,13 +7,52 @@ import { store } from '@/utils/store';
 import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+export interface ITxType {
+  name: keyof typeof TXTYPES;
+  overall?: boolean;
+}
+
+export const TXTYPES: Record<
+  | 'SETCOMPLIANCE'
+  | 'ADDINVESTOR'
+  | 'DELETEINVESTOR'
+  | 'ADDAGENT'
+  | 'REMOVEAGENT'
+  | 'CREATECONTRACT'
+  | 'FREEZEINVESTOR'
+  | 'DISTRIBUTETOKENS'
+  | 'PARTIALLYFREEZETOKENS'
+  | 'TRANSFERTOKENS'
+  | 'PAUSECONTRACT',
+  ITxType
+> = {
+  SETCOMPLIANCE: { name: 'SETCOMPLIANCE', overall: true },
+  ADDINVESTOR: { name: 'ADDINVESTOR', overall: true },
+  DELETEINVESTOR: { name: 'DELETEINVESTOR', overall: true },
+  ADDAGENT: { name: 'ADDAGENT', overall: true },
+  REMOVEAGENT: { name: 'REMOVEAGENT', overall: true },
+  PAUSECONTRACT: { name: 'PAUSECONTRACT', overall: true },
+  FREEZEINVESTOR: { name: 'FREEZEINVESTOR', overall: true },
+  CREATECONTRACT: { name: 'CREATECONTRACT', overall: true },
+  DISTRIBUTETOKENS: { name: 'DISTRIBUTETOKENS', overall: true },
+  PARTIALLYFREEZETOKENS: { name: 'PARTIALLYFREEZETOKENS', overall: true },
+  TRANSFERTOKENS: { name: 'TRANSFERTOKENS', overall: true },
+} as const;
 
 export interface ITransaction {
   uuid: string;
   requestKey: string;
-  type: string;
+  type: ITxType;
   listener?: Promise<void | ICommandResult>;
+  accounts: string[];
   result?: ICommandResult['result'];
 }
 
@@ -22,11 +61,12 @@ export interface ITransactionsContext {
   addTransaction: (
     request: Omit<ITransaction, 'uuid'>,
   ) => Promise<ITransaction>;
-  getTransactions: (type: string) => ITransaction[];
+  getTransactions: (type: ITxType | ITxType[]) => ITransaction[];
   txsButtonRef?: HTMLButtonElement | null;
   setTxsButtonRef: (value: HTMLButtonElement) => void;
   txsAnimationRef?: HTMLDivElement | null;
   setTxsAnimationRef: (value: HTMLDivElement) => void;
+  isActiveAccountChangeTx: boolean; //checks if the agentroles for this user are being changed. if so, stop all permissions until the tx is resolved
 }
 
 export const TransactionsContext = createContext<ITransactionsContext>({
@@ -37,6 +77,7 @@ export const TransactionsContext = createContext<ITransactionsContext>({
   getTransactions: () => [],
   setTxsButtonRef: () => {},
   setTxsAnimationRef: () => {},
+  isActiveAccountChangeTx: false,
 });
 
 const interpretMessage = (str: string, data?: ITransaction): string => {
@@ -100,17 +141,23 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         })
         .finally(() => {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          store.removeTransaction(account!, data);
+          store.removeTransaction(data);
         });
     },
     [],
   );
 
-  const getTransactions = (type: string) => {
-    return Object.entries(transactions)
-      .map(([key, val]) => val)
-      .filter((val) => val.type === type);
-  };
+  const getTransactions = useCallback(
+    (type: ITxType | ITxType[]) => {
+      if (!Array.isArray(type)) {
+        return transactions.filter((val) => val.type.name === type.name);
+      }
+      return transactions.filter((val) =>
+        type.find((t) => t.name === val.type.name),
+      );
+    },
+    [transactions],
+  );
 
   const addTransaction = async (
     request: Omit<ITransaction, 'uuid'>,
@@ -129,17 +176,22 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       return [...v, data];
     });
 
-    await store.addTransaction(account!, data);
+    await store.addTransaction(data);
 
     return data;
   };
 
   const listenToTransactions = (transactions: ITransaction[]) => {
-    setTransactions(transactions);
+    const filteredTransactions = transactions.filter(
+      (transaction) =>
+        transaction.type.overall ||
+        transaction.accounts.indexOf(account?.address!) >= 0,
+    );
+    setTransactions(filteredTransactions);
   };
 
   const init = async () => {
-    store.listenToAllTransactions(account!, listenToTransactions);
+    store.listenToTransactions(listenToTransactions);
   };
   useEffect(() => {
     if (!account) return;
@@ -163,6 +215,12 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, [transactions.length, account]);
 
+  const isActiveAccountChangeTx: boolean = useMemo(() => {
+    if (!account?.address) return false;
+    const txs = getTransactions(TXTYPES.ADDAGENT);
+    return !!txs.find((tx) => tx.accounts.indexOf(account.address) >= 0);
+  }, [getTransactions(TXTYPES.ADDAGENT), account?.address]);
+
   const setTxsButtonRef = (ref: HTMLButtonElement) => {
     setTxsButtonRefData(ref);
   };
@@ -180,6 +238,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         txsButtonRef,
         setTxsAnimationRef,
         txsAnimationRef,
+        isActiveAccountChangeTx,
       }}
     >
       {children}

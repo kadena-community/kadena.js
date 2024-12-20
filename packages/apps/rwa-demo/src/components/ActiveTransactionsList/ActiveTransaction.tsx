@@ -1,5 +1,4 @@
-import { env } from '@/utils/env';
-import { Tile } from '@kadena/kode-ui';
+import { Heading, maskValue, Stack, Tile } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
@@ -11,13 +10,14 @@ export const ActiveTransaction: FC<IProps> = ({ transaction }) => {
   return (
     <li>
       <Tile>
-        <a
-          href={`https://explorer.kadena.io/${env.NETWORKID}/transaction/${transaction.requestKey}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {transaction.requestKey}
-        </a>
+        <Stack flexDirection="column" width="100%" gap="md">
+          {transaction.type.name}
+
+          <Heading as="h6">Accounts</Heading>
+          {transaction.accounts?.map((account) => (
+            <li key={account}>{maskValue(account)}</li>
+          ))}
+        </Stack>
       </Tile>
     </li>
   );

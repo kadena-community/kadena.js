@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
@@ -19,7 +22,7 @@ export const useAddInvestor = ({
   const { frozen } = useFreeze({ investorAccount });
   const { paused } = useAsset();
   const { account, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -40,7 +43,8 @@ export const useAddInvestor = ({
 
       return addTransaction({
         ...res,
-        type: 'IDENTITY-REGISTERED',
+        type: TXTYPES.ADDINVESTOR,
+        accounts: [account?.address!, data.accountName],
       });
     } catch (e: any) {
       addNotification({
@@ -59,9 +63,17 @@ export const useAddInvestor = ({
     setIsAllowed(
       ((!!investorAccount && !frozen) || frozen) &&
         !paused &&
-        accountRoles.isWhitelistManager(),
+        accountRoles.isWhitelistManager() &&
+        !isActiveAccountChangeTx,
     );
-  }, [frozen, paused, isMounted, investorAccount, accountRoles]);
+  }, [
+    frozen,
+    paused,
+    isMounted,
+    investorAccount,
+    accountRoles,
+    isActiveAccountChangeTx,
+  ]);
 
   return { submit, isAllowed };
 };

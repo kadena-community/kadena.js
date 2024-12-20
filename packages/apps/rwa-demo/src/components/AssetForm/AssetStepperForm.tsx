@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 import { AddExistingAssetForm } from './AddExistingAssetForm';
 
 interface IProps {
@@ -32,6 +33,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const { data: namespace } = useGetPrincipalNamespace();
   const { submit: submitContract } = useCreateContract();
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const {
@@ -42,8 +44,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   } = useForm<IAddContractProps>({
     values: {
       contractName: '',
-      owner: '',
-      complianceOwner: '',
       namespace: namespace ?? '',
     },
   });
@@ -53,23 +53,22 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
     reset({
       contractName: '',
-      owner: '',
-      complianceOwner: '',
       namespace,
     });
   }, [namespace]);
 
   const handleSave = async (data: IAddContractProps) => {
     setError('');
-
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
       return;
     }
 
+    setIsLoading(true);
     const tx = await submitContract(data);
     if (tx?.result?.status === 'success') {
       setStep(STEPS.DONE);
+      setIsLoading(false);
       const asset = addAsset({
         contractName: data.contractName,
         namespace: data.namespace,
@@ -119,44 +118,35 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       )}
 
       {step === STEPS.CREATE_CONTRACT && (
-        <form onSubmit={handleSubmit(handleSave)}>
-          <Controller
-            name="namespace"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <TextField label="Namespace" isDisabled {...field} />
-            )}
-          />
+        <form onSubmit={handleSubmit(handleSave)} style={{ width: '100%' }}>
+          <Stack flexDirection="column" gap="sm" width="100%">
+            <Controller
+              name="namespace"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <TextField label="Namespace" isDisabled {...field} />
+              )}
+            />
 
-          <Controller
-            name="contractName"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <TextField label="Contract Name" {...field} />
-            )}
-          />
+            <Controller
+              name="contractName"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <TextField label="Contract Name" {...field} />
+              )}
+            />
 
-          <Controller
-            name="owner"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => <TextField label="Owner" {...field} />}
-          />
-
-          <Controller
-            name="complianceOwner"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <TextField label="Compliance Owner" {...field} />
-            )}
-          />
-          <Stack>
-            <Button isDisabled={!isValid} type="submit">
-              Create the contract
-            </Button>
+            <Stack width="100%" justifyContent="center" alignItems="center">
+              {isLoading ? (
+                <TransactionPendingIcon />
+              ) : (
+                <Button isDisabled={!isValid || isLoading} type="submit">
+                  Create the contract
+                </Button>
+              )}
+            </Stack>
           </Stack>
         </form>
       )}

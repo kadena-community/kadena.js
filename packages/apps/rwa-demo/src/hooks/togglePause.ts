@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ITogglePauseProps } from '@/services/togglePause';
 import { togglePause } from '@/services/togglePause';
 import { getClient } from '@/utils/client';
@@ -10,7 +13,7 @@ import { useTransactions } from './transactions';
 
 export const useTogglePause = () => {
   const { account, sign, isMounted, accountRoles } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -27,7 +30,8 @@ export const useTogglePause = () => {
 
       return addTransaction({
         ...res,
-        type: 'PAUSE',
+        type: TXTYPES.PAUSECONTRACT,
+        accounts: [account?.address!],
       });
     } catch (e: any) {
       addNotification({
@@ -40,8 +44,8 @@ export const useTogglePause = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(accountRoles.isFreezer());
-  }, [account?.address, isMounted, accountRoles]);
+    setIsAllowed(accountRoles.isFreezer() && !isActiveAccountChangeTx);
+  }, [account?.address, isMounted, accountRoles, isActiveAccountChangeTx]);
 
   return { submit, isAllowed };
 };

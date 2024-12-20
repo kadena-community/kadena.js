@@ -1,17 +1,27 @@
 import { useAsset } from '@/hooks/asset';
 import { useTogglePause } from '@/hooks/togglePause';
+import { useTransactions } from '@/hooks/transactions';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AssetAction } from '../AssetAction/AssetAction';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 import { PauseForm } from './PauseForm';
 
 export const PauseAssetAction = () => {
   const { paused } = useAsset();
   const [loading, setLoading] = useState(false);
   const { isAllowed } = useTogglePause();
+  const { getTransactions } = useTransactions();
+  const transactions = useMemo(() => {
+    return getTransactions(TXTYPES.PAUSECONTRACT);
+  }, [getTransactions]);
 
   const showIcon = () => {
+    if (transactions.length) {
+      return <TransactionTypeSpinner type={TXTYPES.PAUSECONTRACT} />;
+    }
     if (loading) {
       return <TransactionPendingIcon />;
     }

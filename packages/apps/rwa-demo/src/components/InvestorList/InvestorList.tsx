@@ -17,6 +17,8 @@ import { InvestorForm } from '../InvestorForm/InvestorForm';
 import { FormatDeleteInvestor } from '../TableFormatters/FormatDeleteInvestor';
 import { FormatFreeze } from '../TableFormatters/FormatFreeze';
 import { FormatInvestorBalance } from '../TableFormatters/FormatInvestorBalance';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 export const InvestorList: FC = () => {
   const { data, isLoading } = useGetInvestors();
@@ -49,6 +51,9 @@ export const InvestorList: FC = () => {
             }
           />
           <SectionCardBody>
+            <TransactionTypeSpinner
+              type={[TXTYPES.ADDINVESTOR, TXTYPES.DELETEINVESTOR]}
+            />
             <CompactTable
               isLoading={isLoading}
               variant="open"

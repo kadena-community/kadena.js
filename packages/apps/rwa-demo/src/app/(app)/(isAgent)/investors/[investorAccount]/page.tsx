@@ -6,6 +6,8 @@ import { InvestorForm } from '@/components/InvestorForm/InvestorForm';
 import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
 import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { TXTYPES } from '@/components/TransactionsProvider/TransactionsProvider';
+import { TransactionTypeSpinner } from '@/components/TransactionTypeSpinner/TransactionTypeSpinner';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestor } from '@/hooks/getInvestor';
@@ -49,7 +51,13 @@ const InvestorPage = () => {
             investorAccount={investorAccount}
             trigger={
               <Button
-                startVisual={<MonoAdd />}
+                startVisual={
+                  <TransactionTypeSpinner
+                    type={TXTYPES.DISTRIBUTETOKENS}
+                    account={investorAccount}
+                    fallbackIcon={<MonoAdd />}
+                  />
+                }
                 isDisabled={!isDistributeTokensAllowed}
               >
                 Distribute Tokens
@@ -61,7 +69,13 @@ const InvestorPage = () => {
             investorAccount={investorAccount}
             trigger={
               <Button
-                startVisual={<MonoAdd />}
+                startVisual={
+                  <TransactionTypeSpinner
+                    type={TXTYPES.PARTIALLYFREEZETOKENS}
+                    account={investorAccount}
+                    fallbackIcon={<MonoAdd />}
+                  />
+                }
                 isDisabled={!isPartiallyFreezeTokensAllowed}
               >
                 Partially freeze tokens

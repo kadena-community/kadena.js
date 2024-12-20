@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IDeleteIdentityProps } from '@/services/deleteIdentity';
 import { deleteIdentity } from '@/services/deleteIdentity';
 import { getClient } from '@/utils/client';
@@ -16,7 +19,7 @@ export const useDeleteInvestor = ({
 }) => {
   const { account, sign, accountRoles, isMounted, balance } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
   const [notAllowedReason, setNotAllowedReason] = useState('');
@@ -33,12 +36,10 @@ export const useDeleteInvestor = ({
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      await client.listen(res);
-      console.log('DONE');
-
       return addTransaction({
         ...res,
-        type: 'DELETEINVESTOR',
+        type: TXTYPES.DELETEINVESTOR,
+        accounts: [account?.address!],
       });
     } catch (e: any) {
       addNotification({
@@ -69,8 +70,10 @@ export const useDeleteInvestor = ({
       return;
     }
 
-    setIsAllowed(!paused && accountRoles.isWhitelistManager());
-  }, [paused, account?.address, isMounted, balance]);
+    setIsAllowed(
+      !paused && accountRoles.isWhitelistManager() && !isActiveAccountChangeTx,
+    );
+  }, [paused, account?.address, isMounted, balance, isActiveAccountChangeTx]);
 
   return { submit, isAllowed, notAllowedReason };
 };

@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRemoveAgentProps } from '@/services/removeAgent';
 import { removeAgent } from '@/services/removeAgent';
 import { getClient } from '@/utils/client';
@@ -12,7 +15,7 @@ import { useTransactions } from './transactions';
 export const useRemoveAgent = () => {
   const { account, sign, isMounted, accountRoles, isOwner } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -30,7 +33,8 @@ export const useRemoveAgent = () => {
 
       return addTransaction({
         ...res,
-        type: 'REMOVEAGENT',
+        type: TXTYPES.REMOVEAGENT,
+        accounts: [account?.address!, data.agent],
       });
     } catch (e: any) {
       addNotification({
@@ -43,8 +47,13 @@ export const useRemoveAgent = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!paused && (accountRoles.isAgentAdmin() || isOwner));
-  }, [paused, account?.address, isMounted, isOwner]);
+
+    setIsAllowed(
+      !paused &&
+        !isActiveAccountChangeTx &&
+        (accountRoles.isAgentAdmin() || isOwner),
+    );
+  }, [paused, account?.address, isMounted, isOwner, isActiveAccountChangeTx]);
 
   return { submit, isAllowed };
 };

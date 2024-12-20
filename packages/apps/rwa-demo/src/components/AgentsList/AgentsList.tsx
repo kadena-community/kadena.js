@@ -17,6 +17,8 @@ import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
 import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 import { FormatEditAgent } from '../TableFormatters/FormatEditAgent';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 export const AgentsList: FC = () => {
   const { isAllowed: isEditAgentAllowed } = useEditAgent();
@@ -50,6 +52,9 @@ export const AgentsList: FC = () => {
             }
           />
           <SectionCardBody>
+            <TransactionTypeSpinner
+              type={[TXTYPES.ADDAGENT, TXTYPES.REMOVEAGENT]}
+            />
             <CompactTable
               isLoading={isLoading}
               variant="open"

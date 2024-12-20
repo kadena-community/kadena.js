@@ -6,6 +6,8 @@ import { Button, Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { InvestorBalance } from '../InvestorBalance/InvestorBalance';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   account: IRecord | IWalletAccount;
@@ -28,17 +30,23 @@ export const InvestorInfo: FC<IProps> = ({ account }) => {
       </Heading>
       <Stack width="100%" alignItems="center" gap="md">
         <Button isDisabled>
-          {frozen ? (
-            <Stack gap="sm" alignItems="center">
-              <MonoPause />
-              frozen
-            </Stack>
-          ) : (
-            <Stack gap="sm" alignItems="center">
-              <MonoPlayArrow />
-              active
-            </Stack>
-          )}
+          <TransactionTypeSpinner
+            type={TXTYPES.FREEZEINVESTOR}
+            account={accountName}
+            fallbackIcon={
+              frozen ? (
+                <Stack gap="sm" alignItems="center">
+                  <MonoPause />
+                  frozen
+                </Stack>
+              ) : (
+                <Stack gap="sm" alignItems="center">
+                  <MonoPlayArrow />
+                  active
+                </Stack>
+              )
+            }
+          />
         </Button>
 
         <InvestorBalance investorAccount={accountName} />
