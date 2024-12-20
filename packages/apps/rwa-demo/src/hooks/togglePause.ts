@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ITogglePauseProps } from '@/services/togglePause';
 import { togglePause } from '@/services/togglePause';
 import { getClient } from '@/utils/client';
@@ -27,7 +30,8 @@ export const useTogglePause = () => {
 
       return addTransaction({
         ...res,
-        type: 'PAUSE',
+        type: TXTYPES.PAUSECONTRACT,
+        accounts: [account?.address!],
       });
     } catch (e: any) {
       addNotification({

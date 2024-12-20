@@ -79,7 +79,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const accountRoles = useGetAgentRoles({ agent: account?.address });
   const { data: balance } = useGetInvestorBalance({
     investorAccount: account?.address,
-    account,
   });
 
   const router = useRouter();

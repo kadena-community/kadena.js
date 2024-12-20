@@ -1,6 +1,5 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getInvestorBalance } from '@/services/getInvestorBalance';
 import { getAsset } from '@/utils/getAsset';
 import { useEffect, useState } from 'react';
@@ -11,10 +10,8 @@ export type EventSubscriptionQueryVariables = Exact<{
 
 export const useGetInvestorBalance = ({
   investorAccount,
-  account,
 }: {
   investorAccount?: string;
-  account?: IWalletAccount;
 }) => {
   const [data, setData] = useState(0);
   const { data: subscriptionData } = useEventSubscriptionSubscription({
@@ -24,10 +21,9 @@ export const useGetInvestorBalance = ({
   });
 
   const init = async () => {
-    if (!account || !investorAccount) return;
+    if (!investorAccount) return;
     const res = await getInvestorBalance({
       investorAccount,
-      account: account!,
     });
 
     if (typeof res === 'number') {
@@ -38,7 +34,7 @@ export const useGetInvestorBalance = ({
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [account?.address, investorAccount]);
+  }, [investorAccount]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

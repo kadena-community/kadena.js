@@ -1,4 +1,3 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { get, off, onValue, ref, set } from 'firebase/database';
@@ -8,40 +7,39 @@ import { database } from './firebase';
 const getAssetFolder = () => getAsset().replace('.', '');
 
 const RWAStore = () => {
-  const addTransaction = async (
-    account: IWalletAccount,
-    data: ITransaction,
-  ) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { listener, ...newTransaction } = data;
-    await set(ref(database, `accounts/${account.address}/${data.uuid}`), data);
+  const addTransaction = async (data: ITransaction) => {
+    const asset = getAssetFolder();
+
+    await set(ref(database, `${asset}/transactions/${data.uuid}`), data);
   };
 
-  const removeTransaction = async (
-    account: IWalletAccount,
-    data: ITransaction,
-  ) => {
-    await set(ref(database, `accounts/${account.address}/${data.uuid}`), null);
+  const removeTransaction = async (data: ITransaction) => {
+    const asset = getAssetFolder();
+    await set(ref(database, `${asset}/transactions/${data.uuid}`), null);
   };
 
-  const getAllTransactions = async (
-    account: IWalletAccount,
-  ): Promise<ITransaction[]> => {
-    if (!account) return [];
-    const snapshot = await get(ref(database, `accounts/${account.address}`));
+  const getOverallTransactions = async (): Promise<ITransaction[]> => {
+    const asset = getAssetFolder();
+    const snapshot = await get(ref(database, `${asset}/transactions`));
 
-    const data = snapshot.toJSON();
+    const data = snapshot.toJSON() as ITransaction;
+
     if (!data) return [];
-    return Object.entries(data).map(([key, value]) => value);
+    return Object.entries(data).map(([key, value]) => {
+      if (!value.accounts) return value;
+      const accounts = Object.entries(value.accounts).map(([_, v]) => v);
+      return { ...value, accounts };
+    });
   };
 
-  const listenToAllTransactions = (
-    account: IWalletAccount,
+  //TODO: this needs to be more efficient
+  const listenToTransactions = (
     setDataCallback: (transactions: ITransaction[]) => void,
   ) => {
-    const accountRef = ref(database, `accounts/${account.address}`);
+    const asset = getAssetFolder();
+    const accountRef = ref(database, `${asset}/transactions`);
     onValue(accountRef, async (snapshot) => {
-      const data = await getAllTransactions(account);
+      const data = await getOverallTransactions();
       setDataCallback(data);
     });
 
@@ -127,8 +125,7 @@ const RWAStore = () => {
   return {
     addTransaction,
     removeTransaction,
-    getAllTransactions,
-    listenToAllTransactions,
+    listenToTransactions,
 
     setAccount,
     getAccount,

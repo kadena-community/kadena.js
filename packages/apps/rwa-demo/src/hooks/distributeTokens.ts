@@ -1,4 +1,7 @@
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { distributeTokens } from '@/services/distributeTokens';
 import { getClient } from '@/utils/client';
@@ -34,7 +37,8 @@ export const useDistributeTokens = ({
 
       return addTransaction({
         ...res,
-        type: 'DISTRIBUTETOKENS',
+        type: TXTYPES.DISTRIBUTETOKENS,
+        accounts: [investorAccount],
       });
     } catch (e: any) {
       addNotification({

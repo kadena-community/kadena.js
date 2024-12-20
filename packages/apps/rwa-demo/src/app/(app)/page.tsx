@@ -1,6 +1,7 @@
 'use client';
 
 import { AssetAction } from '@/components/AssetAction/AssetAction';
+import { TransferAssetAction } from '@/components/AssetAction/TransferAssetAction';
 import { ComplianceRule } from '@/components/ComplianceRule/ComplianceRule';
 import { ContractDetails } from '@/components/ContractDetails/ContractDetails';
 import { contractDetailWrapperClass } from '@/components/ContractDetails/style.css';
@@ -13,7 +14,6 @@ import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
-import { useTransferTokens } from '@/hooks/transferTokens';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import {
@@ -27,7 +27,6 @@ const Home = () => {
   const { isInvestor, account } = useAccount();
   const { asset } = useAsset();
   const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
-  const { isAllowed: isTransferTokensAllowed } = useTransferTokens();
 
   return (
     <>
@@ -82,15 +81,7 @@ const Home = () => {
                   }
                 />
 
-                <TransferForm
-                  trigger={
-                    <AssetAction
-                      isDisabled={!isTransferTokensAllowed}
-                      icon={<MonoAdd />}
-                      label="Transfer tokens"
-                    />
-                  }
-                />
+                <TransferForm trigger={<TransferAssetAction />} />
               </Stack>
             </SectionCardBody>
           </SectionCardContentBlock>

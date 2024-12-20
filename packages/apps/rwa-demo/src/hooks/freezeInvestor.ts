@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
@@ -29,7 +32,8 @@ export const useFreezeInvestor = () => {
 
       return addTransaction({
         ...res,
-        type: 'FREEZE-ADDRESS',
+        type: TXTYPES.FREEZEINVESTOR,
+        accounts: [data.investorAccount],
       });
     } catch (e: any) {
       addNotification({

@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IDeleteIdentityProps } from '@/services/deleteIdentity';
 import { deleteIdentity } from '@/services/deleteIdentity';
 import { getClient } from '@/utils/client';
@@ -33,12 +36,10 @@ export const useDeleteInvestor = ({
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
-      await client.listen(res);
-      console.log('DONE');
-
       return addTransaction({
         ...res,
-        type: 'DELETEINVESTOR',
+        type: TXTYPES.DELETEINVESTOR,
+        accounts: [account?.address!],
       });
     } catch (e: any) {
       addNotification({

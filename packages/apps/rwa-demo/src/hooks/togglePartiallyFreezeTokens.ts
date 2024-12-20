@@ -1,4 +1,7 @@
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { togglePartiallyFreezeTokens } from '@/services/togglePartiallyFreezeTokens';
 import { getClient } from '@/utils/client';
@@ -33,7 +36,8 @@ export const useTogglePartiallyFreezeTokens = ({
 
       return addTransaction({
         ...res,
-        type: 'PARTIALLYFREEZETOKENS',
+        type: TXTYPES.PARTIALLYFREEZETOKENS,
+        accounts: [data.investorAccount],
       });
     } catch (e: any) {
       addNotification({

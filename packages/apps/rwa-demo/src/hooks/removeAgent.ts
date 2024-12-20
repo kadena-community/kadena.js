@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRemoveAgentProps } from '@/services/removeAgent';
 import { removeAgent } from '@/services/removeAgent';
 import { getClient } from '@/utils/client';
@@ -30,7 +33,8 @@ export const useRemoveAgent = () => {
 
       return addTransaction({
         ...res,
-        type: 'REMOVEAGENT',
+        type: TXTYPES.REMOVEAGENT,
+        accounts: [account?.address!, data.agent],
       });
     } catch (e: any) {
       addNotification({

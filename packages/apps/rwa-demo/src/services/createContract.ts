@@ -6,8 +6,6 @@ import { getContract } from './pact/modelcontract';
 
 export interface IAddContractProps {
   contractName: string;
-  owner: string;
-  complianceOwner: string;
   namespace: string;
 }
 

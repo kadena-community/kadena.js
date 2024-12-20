@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { editAgent } from '@/services/editAgent';
@@ -34,7 +37,8 @@ export const useEditAgent = () => {
 
       return addTransaction({
         ...res,
-        type: 'ADDAGENT',
+        type: TXTYPES.ADDAGENT,
+        accounts: [account?.address!, data.accountName],
       });
     } catch (e: any) {
       addNotification({

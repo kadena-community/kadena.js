@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IAddContractProps } from '@/services/createContract';
 import { createContract } from '@/services/createContract';
 import { getClient } from '@/utils/client';
@@ -28,7 +31,8 @@ export const useCreateContract = () => {
 
       return addTransaction({
         ...res,
-        type: 'CREATEPRINCIPALNAMESPACE',
+        type: TXTYPES.CREATECONTRACT,
+        accounts: [account?.address!],
         result: dataResult.result,
       });
     } catch (e: any) {

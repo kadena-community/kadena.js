@@ -1,4 +1,7 @@
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ISetComplianceProps } from '@/services/setCompliance';
 import { setCompliance } from '@/services/setCompliance';
 import { getClient } from '@/utils/client';
@@ -27,7 +30,8 @@ export const useSetCompliance = () => {
 
       return addTransaction({
         ...res,
-        type: 'SETMAXBALANCE',
+        type: TXTYPES.SETCOMPLIANCE,
+        accounts: [account?.address!],
       });
     } catch (e: any) {
       addNotification({

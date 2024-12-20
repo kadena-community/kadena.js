@@ -3,25 +3,17 @@ import {
   useEventsQuery,
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
-import { coreEvents } from '@/services/graph/agent.graph';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
 import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
 import { store } from '@/utils/store';
-import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 
 export type EventQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
 }>;
-
-export const getEventsDocument = (
-  variables: EventQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
 
 export const useGetInvestors = () => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
@@ -59,7 +51,7 @@ export const useGetInvestors = () => {
       return;
     }
 
-    const agentsAdded: IRecord[] =
+    const investorsAdded: IRecord[] =
       addedData?.events.edges.map((edge: any) => {
         return {
           isRemoved: false,
@@ -73,7 +65,7 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
-    const agentsRemoved: IRecord[] =
+    const investorsRemoved: IRecord[] =
       removedData?.events.edges.map((edge: any) => {
         return {
           isRemoved: true,
@@ -87,42 +79,11 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
-    const agentsSubscriptionAdded: IRecord[] =
-      addedSubscriptionData?.events?.map((edge: any) => {
-        const params = JSON.parse(edge.parameters);
-        return {
-          isRemoved: false,
-          accountName: params[0],
-          alias: '',
-          creationTime: Date.now(),
-          result: true,
-        } as IRecord;
-      }) ?? [];
-
-    const agentsSubscriptionRemoved: IRecord[] =
-      removedSubscriptionData?.events?.map((edge: any) => {
-        const params = JSON.parse(edge.parameters);
-        return {
-          isRemoved: true,
-          accountName: params[0],
-          alias: '',
-          creationTime: Date.now(),
-          result: true,
-        } as IRecord;
-      }) ?? [];
-
     const aliases = await store.getAccounts();
 
     setInnerData(
       setAliasesToAccounts(
-        [
-          ...filterRemovedRecords([
-            ...agentsAdded,
-            ...agentsRemoved,
-            ...agentsSubscriptionAdded,
-            ...agentsSubscriptionRemoved,
-          ]),
-        ],
+        [...filterRemovedRecords([...investorsAdded, ...investorsRemoved])],
         aliases,
       ),
     );
@@ -143,6 +104,54 @@ export const useGetInvestors = () => {
     addedLoading,
     addedData?.events.edges.length ?? 0,
     removedData?.events.edges.length ?? 0,
+  ]);
+
+  const addSubscriptionData = async () => {
+    const investorsSubscriptionAdded: IRecord[] =
+      addedSubscriptionData?.events?.map((edge: any) => {
+        const params = JSON.parse(edge.parameters);
+        console.log('added', { params });
+        return {
+          isRemoved: false,
+          accountName: params[0],
+          alias: '',
+          creationTime: Date.now(),
+          result: true,
+        } as IRecord;
+      }) ?? [];
+
+    const investorsSubscriptionRemoved: IRecord[] =
+      removedSubscriptionData?.events?.map((edge: any) => {
+        const params = JSON.parse(edge.parameters);
+        return {
+          isRemoved: true,
+          accountName: params[0],
+          alias: '',
+          creationTime: Date.now(),
+          result: true,
+        } as IRecord;
+      }) ?? [];
+
+    const aliases = await store.getAccounts();
+
+    setInnerData((oldValues) =>
+      setAliasesToAccounts(
+        [
+          ...filterRemovedRecords([
+            ...oldValues,
+            ...investorsSubscriptionRemoved,
+            ...investorsSubscriptionAdded,
+          ]),
+        ],
+        aliases,
+      ),
+    );
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    addSubscriptionData();
+  }, [
     addedSubscriptionData?.events?.length ?? 0,
     removedSubscriptionData?.events?.length ?? 0,
   ]);

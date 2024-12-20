@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
@@ -40,7 +43,8 @@ export const useAddInvestor = ({
 
       return addTransaction({
         ...res,
-        type: 'IDENTITY-REGISTERED',
+        type: TXTYPES.ADDINVESTOR,
+        accounts: [account?.address!, data.accountName],
       });
     } catch (e: any) {
       addNotification({

@@ -7,6 +7,8 @@ import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 interface IProps {
   investorAccount: string;
@@ -58,7 +60,13 @@ export const FreezeInvestor: FC<IProps> = ({
       onPress={handleFreeze}
       trigger={
         <Button
-          startVisual={getVisual(frozen, isLoading)}
+          startVisual={
+            <TransactionTypeSpinner
+              type={TXTYPES.FREEZEINVESTOR}
+              account={investorAccount}
+              fallbackIcon={getVisual(frozen, isLoading)}
+            />
+          }
           isDisabled={!isAllowed}
           isCompact={isCompact}
           variant={variant}
