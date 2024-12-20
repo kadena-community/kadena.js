@@ -194,7 +194,6 @@ export type FungibleAccountTransfersConnection = {
   __typename?: 'FungibleAccountTransfersConnection';
   edges: Array<FungibleAccountTransfersConnectionEdge>;
   pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
 };
 
 export type FungibleAccountTransfersConnectionEdge = {
@@ -253,7 +252,6 @@ export type FungibleChainAccountTransfersConnection = {
   __typename?: 'FungibleChainAccountTransfersConnection';
   edges: Array<FungibleChainAccountTransfersConnectionEdge>;
   pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
 };
 
 export type FungibleChainAccountTransfersConnectionEdge = {
@@ -276,6 +274,8 @@ export type GraphConfiguration = {
   __typename?: 'GraphConfiguration';
   /** The lowest block-height that is indexed in this endpoint. */
   minimumBlockHeight?: Maybe<Scalars['BigInt']['output']>;
+  /** The version of the @kadena/graph package. */
+  version: Scalars['String']['output'];
 };
 
 export type Guard = IGuard & {
@@ -919,7 +919,6 @@ export type TransactionResultTransfersConnection = {
   __typename?: 'TransactionResultTransfersConnection';
   edges: Array<Maybe<TransactionResultTransfersConnectionEdge>>;
   pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
 };
 
 export type TransactionResultTransfersConnectionEdge = {
@@ -972,6 +971,13 @@ export type EventSubscriptionSubscriptionVariables = Exact<{
 export type EventSubscriptionSubscription = { __typename?: 'Subscription', events?: Array<{ __typename?: 'Event', parameters?: string | null }> | null };
 
 export type CoreEventsFieldsFragment = { __typename?: 'Event', chainId: any, requestKey: string, parameters?: string | null, block: { __typename?: 'Block', height: any, creationTime: any } };
+
+export type TransactionSubscriptionVariables = Exact<{
+  requestKey: Scalars['String']['input'];
+}>;
+
+
+export type TransactionSubscription = { __typename?: 'Subscription', transaction?: { __typename?: 'Transaction', result: { __typename?: 'TransactionMempoolInfo' } | { __typename?: 'TransactionResult', badResult?: string | null, goodResult?: string | null } } | null };
 
 export const CoreEventsFieldsFragmentDoc = gql`
     fragment CoreEventsFields on Event {
@@ -1058,3 +1064,38 @@ export function useEventSubscriptionSubscription(baseOptions: Apollo.Subscriptio
       }
 export type EventSubscriptionSubscriptionHookResult = ReturnType<typeof useEventSubscriptionSubscription>;
 export type EventSubscriptionSubscriptionResult = Apollo.SubscriptionResult<EventSubscriptionSubscription>;
+export const TransactionDocument = gql`
+    subscription transaction($requestKey: String!) {
+  transaction(requestKey: $requestKey) {
+    result {
+      ... on TransactionResult {
+        badResult
+        goodResult
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useTransactionSubscription__
+ *
+ * To run a query within a React component, call `useTransactionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTransactionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransactionSubscription({
+ *   variables: {
+ *      requestKey: // value for 'requestKey'
+ *   },
+ * });
+ */
+export function useTransactionSubscription(baseOptions: Apollo.SubscriptionHookOptions<TransactionSubscription, TransactionSubscriptionVariables> & ({ variables: TransactionSubscriptionVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<TransactionSubscription, TransactionSubscriptionVariables>(TransactionDocument, options);
+      }
+export type TransactionSubscriptionHookResult = ReturnType<typeof useTransactionSubscription>;
+export type TransactionSubscriptionResult = Apollo.SubscriptionResult<TransactionSubscription>;
