@@ -2,8 +2,9 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
-import { getClient } from '@/utils/client';
+import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { store } from '@/utils/store';
+import { useApolloClient } from '@apollo/client';
 import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
@@ -51,7 +52,7 @@ export interface ITransaction {
   uuid: string;
   requestKey: string;
   type: ITxType;
-  listener?: Promise<void | ICommandResult>;
+  listener?: any;
   accounts: string[];
   result?: ICommandResult['result'];
 }
@@ -103,6 +104,7 @@ export const interpretErrorMessage = (
 };
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
+  const client = useApolloClient();
   const { addNotification } = useNotifications();
   const { account } = useAccount();
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -115,34 +117,38 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const addListener = useCallback(
     (data: ITransaction, account: IWalletAccount) => {
-      return getClient()
-        .listen({
-          requestKey: data.requestKey,
-          chainId: activeNetwork.chainId,
-          networkId: activeNetwork.networkId,
-        })
-        .then((result) => {
-          if (result.result.status === 'failure') {
+      const r = client.subscribe({
+        query: transactionsQuery,
+        variables: { requestKey: data.requestKey },
+      });
+
+      r.subscribe(
+        (nextData: any) => {
+          if (nextData?.errors?.length !== undefined) {
             addNotification({
               intent: 'negative',
               label: 'there was an error',
-              message: interpretErrorMessage(result, data),
+              message: JSON.stringify(nextData?.errors),
               url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
             });
+            return;
           }
-        })
-        .catch((e) => {
+        },
+        (errorData) => {
           addNotification({
             intent: 'negative',
             label: 'there was an error',
-            message: JSON.stringify(e),
+            message: JSON.stringify(errorData),
             url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
           });
-        })
-        .finally(() => {
+        },
+        () => {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           store.removeTransaction(data);
-        });
+        },
+      );
+
+      return true;
     },
     [],
   );

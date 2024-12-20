@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "generate": "pactjs contract-generate --contract \"RWA.agent-role\" --chain 0 --network development --api \"http://localhost:8080/chainweb/0.0/development/chain/0/pact\"",
-    "generate:sdk": "cache-sh -i \"{codegen-sdk.yml,./node_modules/@kadena/graph/generated-schema.graphql,src/**/*.graph.ts,src/__generated__/**}\" -- graphql-codegen --config codegen-sdk.yml",
+    "generate:sdk": "graphql-codegen --config codegen-sdk.yml",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:src": "eslint src",
