@@ -1,8 +1,9 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import { MonoAdd } from '@kadena/kode-icons';
-import { Box, Heading, Stack } from '@kadena/kode-ui';
+import { Box, Checkbox, Heading, Stack } from '@kadena/kode-ui';
 import { tokens } from '@kadena/kode-ui/styles';
+import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import {
@@ -18,8 +19,18 @@ import {
 export function SelectProfile() {
   const { profileList, unlockProfile } = useWallet();
   const [params] = useSearchParams();
+  const [openSecModule, setOpenSecModule] = useState(false);
 
   const redirect = params.get('redirect');
+  const qs = new URLSearchParams();
+  if (redirect) {
+    qs.set('redirect', redirect);
+  }
+  if (openSecModule) {
+    qs.set('openSecModule', 'true');
+  }
+
+  const searchParam = qs.toString();
 
   return (
     <Box width="100%">
@@ -46,7 +57,7 @@ export function SelectProfile() {
               onClick={async () => {
                 const pass = await getWebAuthnPass(profile);
                 if (pass) {
-                  await unlockProfile(profile.uuid, pass);
+                  await unlockProfile(profile.uuid, pass, openSecModule);
                 }
               }}
             >
@@ -62,7 +73,7 @@ export function SelectProfile() {
           ) : (
             <Link
               key={profile.uuid}
-              to={`/unlock-profile/${profile.uuid}${redirect ? `?redirect=${redirect}` : ''}`}
+              to={`/unlock-profile/${profile.uuid}${searchParam ? `?${searchParam}` : ''}`}
               style={{ textDecoration: 'none' }}
               className={cardClass}
             >
@@ -94,15 +105,22 @@ export function SelectProfile() {
             <div className={aliasClass}>Add new profile</div>
           </Stack>
         </Link>
+        {profileList.length > 0 && (
+          <Stack width="100%" marginBlock={'md'}>
+            <Checkbox
+              isSelected={openSecModule}
+              onChange={(isSelected) => setOpenSecModule(isSelected)}
+            >
+              Open Security module at login
+            </Checkbox>
+          </Stack>
+        )}
       </Stack>
       <Stack flexDirection="column" className={linkBlockClass}>
         <Heading as="h6">Own a wallet?</Heading>
         <Link to="/wallet-recovery" className={linkClass}>
           Recover your wallet
         </Link>
-        {/* <Link to="/import-chainweaver" className={linkClass}>
-          Import from Chainweaver file
-        </Link> */}
       </Stack>
     </Box>
   );

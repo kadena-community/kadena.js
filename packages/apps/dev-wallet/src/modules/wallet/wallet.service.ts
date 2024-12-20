@@ -189,7 +189,7 @@ export const getWebAuthnPass = async (
   if (!credential) {
     throw new Error('Failed to retrieve credential');
   }
-  const keys = await recoverPublicKey(credential);
+  const keys: string[] = await recoverPublicKey(credential);
   for (const key of keys) {
     const result = await unlockProfile(profile.uuid, key);
     if (result) {

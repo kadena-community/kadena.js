@@ -1,7 +1,7 @@
 import {
-  MonoKey,
   MonoLightMode,
-  MonoWifiTethering,
+  MonoSwapHoriz,
+  MonoWallet,
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 
@@ -54,15 +54,15 @@ export const Layout: FC = () => {
             <SideBarFooterItem
               href="/"
               component={Link}
-              visual={<MonoWifiTethering />}
-              label="Profile"
+              visual={<MonoWallet />}
+              label="Your Assets"
             />
 
             <SideBarFooterItem
-              href="/key-management/keys"
+              href="/transfer"
               component={Link}
-              visual={<MonoKey />}
-              label="Keys"
+              visual={<MonoSwapHoriz />}
+              label="transfer"
             />
 
             <SideBarFooterItem

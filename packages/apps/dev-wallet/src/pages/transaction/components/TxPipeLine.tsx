@@ -4,6 +4,7 @@ import {
 } from '@/modules/transaction/transaction.repository';
 import { syncTransactionStatus } from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 import { shorten } from '@/utils/helpers';
 import { normalizeSigs } from '@/utils/normalizeSigs';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
@@ -18,7 +19,7 @@ import {
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
-import { Button, Stack, Text } from '@kadena/kode-ui';
+import { Button, Notification, Stack, Text } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { failureClass, pendingClass, successClass } from './style.css';
 
@@ -56,7 +57,7 @@ export function TxPipeLine({
   tx: ITransaction;
   contTx?: ITransaction;
   variant: 'tile' | 'expanded' | 'minimized';
-  signAll?: () => void;
+  signAll?: () => Promise<void>;
   onSubmit?: (skipPreflight?: boolean) => void;
   onPreflight?: () => void;
   sendDisabled?: boolean;
@@ -93,7 +94,7 @@ function TxStatusList({
   variant: 'tile' | 'expanded' | 'minimized';
   showAfterCont: boolean;
   tx: ITransaction;
-  signAll?: () => void;
+  signAll?: () => Promise<void>;
   onSubmit?: (skipPreflight?: boolean) => void;
   onPreflight?: () => void;
   sendDisabled?: boolean;
@@ -106,6 +107,24 @@ function TxStatusList({
     (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
   );
   const [copied, setCopied] = useState(false);
+  const [signError, setSignError] = useState<string | null>(null);
+
+  const copyTx = () => {
+    const encodedTx = base64UrlEncodeArr(
+      new TextEncoder().encode(
+        JSON.stringify({
+          hash: tx.hash,
+          cmd: tx.cmd,
+          sigs: tx.sigs,
+        }),
+      ),
+    );
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    navigator.clipboard.writeText(`${baseUrl}/sig-builder#${encodedTx}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const statusList = [
     variant !== 'minimized' && (
       <Stack justifyContent={'space-between'}>
@@ -138,40 +157,45 @@ function TxStatusList({
               >
                 query chain
               </Button>
-              <Button
-                startVisual={<MonoShare />}
-                isCompact
-                onClick={() => {
-                  const encodedTx = base64UrlEncodeArr(
-                    new TextEncoder().encode(
-                      JSON.stringify({
-                        hash: tx.hash,
-                        cmd: tx.cmd,
-                        sigs: tx.sigs,
-                      }),
-                    ),
-                  );
-                  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-                  navigator.clipboard.writeText(
-                    `${baseUrl}/sig-builder#${encodedTx}`,
-                  );
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 2000);
-                }}
-              >
+              <Button startVisual={<MonoShare />} isCompact onClick={copyTx}>
                 {copied ? 'copied' : 'Share'}
               </Button>
             </Stack>
           )}
           {variant === 'expanded' && !signedByYou && (
-            <Stack>
-              <Button
-                isCompact
-                onClick={() => signAll!()}
-                startVisual={<MonoSignature />}
-              >
-                Sign all possible signers
-              </Button>
+            <Stack flexDirection={'column'} gap={'sm'}>
+              {signError && (
+                <Notification intent="negative" role="alert">
+                  {signError}
+                </Notification>
+              )}
+              <Stack gap={'sm'}>
+                <Button
+                  isCompact
+                  onClick={() => {
+                    if (signAll) {
+                      signAll().catch((e) => {
+                        const errorMessage = getErrorMessage(
+                          e,
+                          "Couldn't sign transaction",
+                        );
+                        setSignError(errorMessage);
+                      });
+                    }
+                  }}
+                  startVisual={<MonoSignature />}
+                >
+                  Sign Tx
+                </Button>
+                <Button
+                  variant="outlined"
+                  startVisual={<MonoShare />}
+                  isCompact
+                  onClick={copyTx}
+                >
+                  {copied ? 'copied' : 'Share'}
+                </Button>
+              </Stack>
             </Stack>
           )}
         </Stack>

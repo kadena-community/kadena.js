@@ -4,8 +4,15 @@ import {
   IUnsignedCommand,
   parseAsPactValue,
 } from '@kadena/client';
-import { Button, Heading, Stack, Text, TextareaField } from '@kadena/kode-ui';
-import { FC, PropsWithChildren } from 'react';
+import {
+  Button,
+  Heading,
+  Notification,
+  Stack,
+  Text,
+  TextareaField,
+} from '@kadena/kode-ui';
+import { FC, PropsWithChildren, useState } from 'react';
 import {
   breakAllClass,
   codeClass,
@@ -20,6 +27,7 @@ import { normalizeSigs } from '@/utils/normalizeSigs.ts';
 import { MonoContentCopy, MonoDelete } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 
+import { getErrorMessage } from '@/utils/getErrorMessage.ts';
 import yaml from 'js-yaml';
 import { statusPassed } from './TxPipeLine.tsx';
 
@@ -48,6 +56,7 @@ export const RenderSigner = ({
     (sig) => sig?.pubKey === signer.pubKey && sig.sig,
   )?.sig;
   const info = getPublicKeyData(signer.pubKey);
+  const [error, setError] = useState<string>();
   return (
     <>
       <Stack gap={'sm'}>
@@ -127,14 +136,24 @@ export const RenderSigner = ({
       )}
       {!signature && info && (
         <Stack>
+          {error && (
+            <Notification intent="negative" role="alert">
+              {error}
+            </Notification>
+          )}
           <Button
             isCompact
             variant="primary"
             onClick={async () => {
-              const signed = (await sign(transaction, [
-                signer.pubKey,
-              ])) as IUnsignedCommand;
-              onSign(signed.sigs ?? []);
+              try {
+                error && setError(undefined);
+                const signed = (await sign(transaction, [
+                  signer.pubKey,
+                ])) as IUnsignedCommand;
+                onSign(signed.sigs ?? []);
+              } catch (e) {
+                setError(getErrorMessage(e, "Couldn't sign transaction"));
+              }
             }}
           >
             Sign

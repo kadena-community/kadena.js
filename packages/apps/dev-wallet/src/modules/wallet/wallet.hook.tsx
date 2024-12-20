@@ -1,4 +1,5 @@
 import { config } from '@/config';
+import { Session } from '@/utils/session';
 import { IUnsignedCommand } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { useCallback, useContext } from 'react';
@@ -64,7 +65,7 @@ export const useWallet = () => {
   );
 
   const unlockProfile = useCallback(
-    async (profileId: string, password: string) => {
+    async (profileId: string, password: string, openSecurityModule = false) => {
       console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
       await securityService.clearSecurityPhrase();
@@ -72,6 +73,14 @@ export const useWallet = () => {
         const res = await setProfile(profile);
         channel.postMessage({ action: 'switch-profile', payload: profile });
         backupDatabase().catch(console.log);
+        if (openSecurityModule) {
+          console.log('openSecurityModule');
+          await securityService.setSecurityPhrase({
+            sessionEntropy: Session.get('sessionId') as string,
+            phrase: password,
+            keepPolicy: 'session',
+          });
+        }
         return res;
       }
       return null;
