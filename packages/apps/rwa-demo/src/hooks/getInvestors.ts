@@ -25,12 +25,14 @@ export const useGetInvestors = () => {
     variables: {
       qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
     },
+    fetchPolicy: 'no-cache',
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
       qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
     },
+    fetchPolicy: 'no-cache',
   });
 
   const { data: addedSubscriptionData } = useEventSubscriptionSubscription({

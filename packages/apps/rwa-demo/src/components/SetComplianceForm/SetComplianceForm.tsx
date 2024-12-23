@@ -23,7 +23,12 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
   const { asset } = useAsset();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [isOpen, setIsOpen] = useState(false);
-  const { handleSubmit, reset, control } = useForm<ISetComplianceProps>({
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { isValid },
+  } = useForm<ISetComplianceProps>({
     defaultValues: {
       maxBalance: `${asset?.maxBalance ?? 0}`,
       maxSupply: `${asset?.maxSupply ?? 0}`,
@@ -67,7 +72,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxBalance"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: true, min: 0 }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Balance" {...field} />
                 )}
@@ -76,7 +81,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxSupply"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: true, min: 0 }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Supply" {...field} />
                 )}
@@ -84,7 +89,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxInvestors"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: true, min: 0 }}
                 render={({ field }) => (
                   <TextField
                     type="number"
@@ -98,7 +103,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Button onPress={onClose} variant="transparent">
                 Cancel
               </Button>
-              <Button isDisabled={!isAllowed} type="submit">
+              <Button isDisabled={!isAllowed || !isValid} type="submit">
                 Set Compliance
               </Button>
             </RightAsideFooter>

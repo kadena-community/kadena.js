@@ -15,6 +15,7 @@ import { cloneElement, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
+import { NoComplianceMessage } from '../NoComplianceMessage/NoComplianceMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
@@ -106,7 +107,7 @@ export const DistributionForm: FC<IProps> = ({
                     label="Amount"
                     {...field}
                     errorMessage={errors.amount?.message}
-                    description={`max amount: ${maxAmount} `}
+                    description={`max amount: ${maxAmount < 0 ? 0 : maxAmount} `}
                   />
                 )}
               />
@@ -116,6 +117,7 @@ export const DistributionForm: FC<IProps> = ({
                 <>
                   <InvestorFrozenMessage investorAccount={investorAccount} />
                   <AssetPausedMessage />
+                  <NoComplianceMessage />
                 </>
               }
             >
