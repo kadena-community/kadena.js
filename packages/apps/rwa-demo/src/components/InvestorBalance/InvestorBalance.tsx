@@ -22,6 +22,7 @@ export const InvestorBalance: FC<IProps> = ({
   });
   const { data: frozenData } = useGetFrozenTokens({ investorAccount });
 
+  const cleanedBalance = balance < 0 ? 0 : balance;
   if (short) {
     return (
       <Stack alignItems="center" gap="xs">
@@ -33,15 +34,15 @@ export const InvestorBalance: FC<IProps> = ({
           ]}
           account={investorAccount}
         />
-        <MaxInvestorBalanceCheck balance={balance} />
-        {balance} (<MonoFilterTiltShift /> {frozenData})
+        <MaxInvestorBalanceCheck balance={cleanedBalance} />
+        {cleanedBalance} (<MonoFilterTiltShift /> {frozenData})
       </Stack>
     );
   }
 
   return (
     <Stack alignItems="center" gap="xs">
-      <MaxInvestorBalanceCheck balance={balance} />
+      <MaxInvestorBalanceCheck balance={cleanedBalance} />
       investorBalance:{' '}
       <TransactionTypeSpinner
         type={[
@@ -51,7 +52,7 @@ export const InvestorBalance: FC<IProps> = ({
         ]}
         account={investorAccount}
       />
-      {balance} (<MonoFilterTiltShift /> {frozenData})
+      {cleanedBalance} (<MonoFilterTiltShift /> {frozenData})
     </Stack>
   );
 };

@@ -39,12 +39,14 @@ export const useGetAgents = () => {
     variables: {
       qualifiedName: `${getAsset()}.AGENT-ADDED`,
     },
+    fetchPolicy: 'no-cache',
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
       qualifiedName: `${getAsset()}.AGENT-REMOVED`,
     },
+    fetchPolicy: 'no-cache',
   });
 
   const { data: subscriptionAddData } = useEventSubscriptionSubscription({

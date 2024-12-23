@@ -10,7 +10,10 @@ const RWAStore = () => {
   const addTransaction = async (data: ITransaction) => {
     const asset = getAssetFolder();
 
-    await set(ref(database, `${asset}/transactions/${data.uuid}`), data);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { listener, ...newData } = data;
+
+    await set(ref(database, `${asset}/transactions/${data.uuid}`), newData);
   };
 
   const removeTransaction = async (data: ITransaction) => {

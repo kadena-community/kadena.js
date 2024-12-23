@@ -113,15 +113,15 @@ const Home = () => {
               {asset && (
                 <>
                   <ComplianceRule
-                    value={asset.maxSupply}
+                    value={`${asset.maxSupply < 0 ? 0 : asset.maxSupply} tokens`}
                     label="Supply limit"
                   />
                   <ComplianceRule
-                    value={asset.maxBalance}
+                    value={`${asset.maxBalance < 0 ? 0 : asset.maxBalance} tokens`}
                     label="Max balance"
                   />
                   <ComplianceRule
-                    value={`${asset.maxInvestors} (${asset.investorCount})`}
+                    value={`${asset.maxInvestors < 0 ? 0 : asset.maxInvestors} (${asset.investorCount}) investors`}
                     label="Max Investors"
                   />
                 </>
