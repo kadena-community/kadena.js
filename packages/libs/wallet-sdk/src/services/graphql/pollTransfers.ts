@@ -33,7 +33,10 @@ export async function queryTransferRequestKey(
 
   return {
     transfers: nodes ?? [],
-    lastBlockHeight: (result.data?.lastBlockHeight ?? null) as number | null,
+    lastBlockHeight:
+      typeof result.data?.lastBlockHeight === 'number'
+        ? BigInt(result.data?.lastBlockHeight)
+        : null,
   };
 }
 
@@ -48,7 +51,7 @@ export async function pollGraphqlTransfers({
     requestKeys.map(async (requestKey) => {
       const { transfers: nodes, lastBlockHeight } =
         await queryTransferRequestKey(graphqlUrl, accountName, requestKey);
-      return parseGqlTransfers(nodes, lastBlockHeight ?? 0, accountName);
+      return parseGqlTransfers(nodes, lastBlockHeight ?? BigInt(0));
     }),
   );
 

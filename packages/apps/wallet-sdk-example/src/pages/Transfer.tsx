@@ -24,8 +24,8 @@ import { AlertDialog } from '../components/AlertDialog';
 import { useFunctionTracker } from '../hooks/functionTracker';
 import { useWalletState } from '../state/wallet';
 
-type SimpleCreateTransfer = Parameters<
-  typeof walletSdk.createSimpleTransfer
+type createTransferCreateCommand = Parameters<
+  typeof walletSdk.createTransferCreateCommand
 >[0];
 
 type CrossChainCreateTransfer = Parameters<
@@ -48,8 +48,8 @@ export const Transfer = () => {
     amount: string;
   } | null>(null);
 
-  const trackCreateSimpleTransfer = useFunctionTracker(
-    'walletSdk.createSimpleTransfer',
+  const trackCreateTransferCreateCommand = useFunctionTracker(
+    'walletSdk.createTransferCreateCommand',
   );
   const trackCreateCrossChainTransfer = useFunctionTracker(
     'walletSdk.createCrossChainTransfer',
@@ -90,7 +90,7 @@ export const Transfer = () => {
         targetChainId: wallet.selectedToChain,
       });
     } else {
-      trackCreateSimpleTransfer.setArgs({
+      trackCreateTransferCreateCommand.setArgs({
         amount,
         sender: wallet.account.name,
         receiver: receiverAccount,
@@ -123,6 +123,9 @@ export const Transfer = () => {
         'Cannot perform a cross-chain transfer to the same chain',
       );
     }
+    if (!receiverAccount.startsWith('k:')) {
+      throw new Error('Receiver account must be a k: account');
+    }
 
     let transaction: IUnsignedCommand;
 
@@ -149,15 +152,21 @@ export const Transfer = () => {
       transaction = walletSdk.createCrossChainTransfer(crossChainTransferArgs);
       return await wallet.signTransaction(transaction);
     } else {
-      const functionArgs: SimpleCreateTransfer & { networkId: string } = {
+      const functionArgs: createTransferCreateCommand = {
         amount,
         sender: wallet.account.name,
-        receiver: receiverAccount,
+        receiver: {
+          account: receiverAccount,
+          keyset: {
+            keys: [receiverAccount.split(':')[1]],
+            pred: 'keys-all',
+          },
+        },
         chainId: fromChain,
         networkId: wallet.selectedNetwork,
       };
 
-      transaction = walletSdk.createSimpleTransfer(functionArgs);
+      transaction = walletSdk.createTransferCreateCommand(functionArgs);
       return await wallet.signTransaction(transaction);
     }
   };
@@ -196,7 +205,7 @@ export const Transfer = () => {
 
       /* -- Start demo ---------------*/
       trackGasEstimate.setArgs(null);
-      trackCreateSimpleTransfer.setArgs(null);
+      trackCreateTransferCreateCommand.setArgs(null);
       trackCreateCrossChainTransfer.setArgs(null);
       /* -- End demo ---------------*/
     }
@@ -228,7 +237,7 @@ export const Transfer = () => {
 
       /* -- Start demo ---------------*/
       trackGasEstimate.setArgs(null);
-      trackCreateSimpleTransfer.setArgs(null);
+      trackCreateTransferCreateCommand.setArgs(null);
       trackCreateCrossChainTransfer.setArgs(null);
       /* -- End demo ---------------*/
       navigate('/list');
@@ -350,7 +359,7 @@ export const Transfer = () => {
         data={
           isCrossChain
             ? trackCreateCrossChainTransfer.data
-            : trackCreateSimpleTransfer.data
+            : trackCreateTransferCreateCommand.data
         }
       />
     </div>

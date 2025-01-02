@@ -29,7 +29,7 @@ async function fetchChainTransfers(
     return {
       transfers: [],
       pageInfo: { hasNextPage: false, hasPreviousPage: false },
-      lastBlockHeight: 0,
+      lastBlockHeight: BigInt(0),
     };
   }
 
@@ -40,7 +40,7 @@ async function fetchChainTransfers(
   return {
     transfers: nodes,
     pageInfo: result.data.transfers.pageInfo,
-    lastBlockHeight: (result.data.lastBlockHeight ?? null) as number | null,
+    lastBlockHeight: (result.data.lastBlockHeight ?? null) as bigint | null,
   };
 }
 
@@ -54,10 +54,10 @@ export async function getChainTransfers(
     pageInfo,
     lastBlockHeight,
   } = await fetchChainTransfers(graphqlUrl, options);
+  console.log('nodes>>', nodes);
   const transfers = parseGqlTransfers(
     nodes,
-    lastBlockHeight ?? 0,
-    options.accountName,
+    lastBlockHeight ?? BigInt(0),
     options.fungibleName,
   );
   return {
