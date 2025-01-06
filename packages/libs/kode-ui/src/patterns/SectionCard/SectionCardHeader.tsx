@@ -45,6 +45,7 @@ export const SectionCardHeader: FC<ISectionCardHeaderProps> = ({
         <Stack
           className={actionsClass({ stack })}
           style={{ gridArea: 'actions' }}
+          gap="xs"
         >
           {actions}
         </Stack>

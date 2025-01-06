@@ -1,6 +1,7 @@
 import { FormatAccount } from './FormatAccount';
 import { FormatActions } from './FormatActions';
 import { FormatAmount } from './FormatAmount';
+import { FormatCheckbox } from './FormatCheckbox';
 import { FormatDefault } from './FormatDefault';
 import { FormatJsonParse } from './FormatJsonParse';
 import { FormatLink } from './FormatLink';
@@ -22,6 +23,7 @@ export const CompactTableFormatters = {
   FormatJsonParse,
   FormatStatus,
   FormatLinkWrapper,
+  FormatCheckbox,
 } as const;
 
 export { ICompactTableFormatterLinkProps, ICompactTableFormatterProps };
