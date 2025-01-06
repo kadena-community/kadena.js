@@ -1,18 +1,16 @@
+import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import { checkAllowedFileTypes } from '@/utils/checkAllowedFileTypes';
 import { csvFileToArray } from '@/utils/csvFileToArray';
 import { Stack } from '@kadena/kode-ui';
-import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
-import type { DragEventHandler } from 'react';
+import type { DragEventHandler, FC } from 'react';
 import { useState } from 'react';
 import { wrapperClass } from './style.css';
 
-export interface ICSVAccount {
-  account: string;
-  alias: string;
+interface IProps {
+  onResult: (values: []) => void;
 }
 
-export const DragNDropCSV = () => {
-  const [accounts, setAccounts] = useState<ICSVAccount[]>([]);
+export const DragNDropCSV: FC<IProps> = ({ onResult }) => {
   const [isHover, setIsHover] = useState(false);
 
   const handleDrop: DragEventHandler<HTMLDivElement> = (event) => {
@@ -27,7 +25,8 @@ export const DragNDropCSV = () => {
         fileReader.readAsText(file);
 
         fileReader.onload = function () {
-          setAccounts(csvFileToArray<ICSVAccount>(fileReader.result as string));
+          const arr = csvFileToArray<ICSVAccount>(fileReader.result as string);
+          onResult(arr as any);
         };
 
         fileReader.onerror = function () {
@@ -61,25 +60,6 @@ export const DragNDropCSV = () => {
       >
         Drop CSV file header
       </Stack>
-
-      <CompactTable
-        fields={[
-          {
-            key: 'select',
-            label: '',
-            width: '20%',
-            render: CompactTableFormatters.FormatCheckbox({ name: 'select' }),
-          },
-          {
-            key: 'account',
-            label: 'Account',
-            width: '40%',
-            render: CompactTableFormatters.FormatAccount(),
-          },
-          { key: 'alias', label: 'Alias', width: '40%' },
-        ]}
-        data={accounts}
-      />
     </>
   );
 };

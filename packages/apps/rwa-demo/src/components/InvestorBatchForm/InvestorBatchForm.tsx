@@ -1,7 +1,9 @@
-import type { IRegisterIdentityProps } from '@/services/registerIdentity';
-
+import { useBatchAddInvestors } from '@/hooks/batchAddInvestors';
+import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import { Button } from '@kadena/kode-ui';
 import {
+  CompactTable,
+  CompactTableFormatters,
   RightAside,
   RightAsideContent,
   RightAsideFooter,
@@ -24,6 +26,8 @@ export interface IRegisterIdentityBatchProps {
 
 export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [accounts, setAccounts] = useState<ICSVAccount[]>([]);
+  const { submit } = useBatchAddInvestors();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const { handleSubmit } = useForm<IRegisterIdentityBatchProps>({
     defaultValues: {
@@ -43,21 +47,25 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
     if (onClose) onClose();
   };
 
-  const onSubmit = async (data: IRegisterIdentityBatchProps) => {
+  const onSubmit = async () => {
     const d = document.querySelectorAll('#select');
 
-    const filled = [].filter.call(d, function (el) {
-      return el.checked;
-    });
+    const filled: string[] = [].filter
+      .call(d, function (el: HTMLInputElement) {
+        return el.checked;
+      })
+      .map((el: HTMLInputElement) => el.value);
 
-    [].map.call(filled, function (el) {
-      console.log(el.value);
-    });
+    const data = accounts.filter(
+      (account) => filled.indexOf(account.account) > -1,
+    );
 
-    console.log(12, { data });
-    console.log(filled);
-    //await submit(data);
-    //handleOnClose();
+    await submit({ accounts: data });
+    handleOnClose();
+  };
+
+  const handleResult = (accounts: ICSVAccount[]) => {
+    setAccounts(accounts);
   };
 
   return (
@@ -67,7 +75,30 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Batch add investors" />
             <RightAsideContent>
-              <DragNDropCSV />
+              <DragNDropCSV onResult={handleResult} />
+
+              {accounts.length > 0 && (
+                <CompactTable
+                  fields={[
+                    {
+                      key: 'account',
+                      label: '',
+                      width: '20%',
+                      render: CompactTableFormatters.FormatCheckbox({
+                        name: 'select',
+                      }),
+                    },
+                    {
+                      key: 'account',
+                      label: 'Account',
+                      width: '40%',
+                      render: CompactTableFormatters.FormatAccount(),
+                    },
+                    { key: 'alias', label: 'Alias', width: '40%' },
+                  ]}
+                  data={accounts}
+                />
+              )}
             </RightAsideContent>
             <RightAsideFooter>
               <Button onPress={handleOnClose} variant="transparent">
