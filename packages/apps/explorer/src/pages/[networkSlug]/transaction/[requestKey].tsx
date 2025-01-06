@@ -70,7 +70,7 @@ const Transaction: React.FC = () => {
   }, [loading, data, error, setIsLoading]);
 
   return (
-    <Layout layout="full">
+    <Layout>
       {innerData && innerData.transaction ? (
         <>
           <LayoutHeader>
