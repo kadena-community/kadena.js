@@ -1,6 +1,5 @@
 import { useAsset } from '@/hooks/asset';
 import { Button, Stack, TextField } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -12,9 +11,7 @@ interface IAddExistingAssetProps {
 }
 
 export const AddExistingAssetForm: FC<IProps> = ({ handleDone }) => {
-  const router = useRouter();
-
-  const { addAsset, setAsset, addExistingAsset } = useAsset();
+  const { setAsset, addExistingAsset } = useAsset();
   const {
     handleSubmit,
     control,
