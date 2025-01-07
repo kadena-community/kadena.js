@@ -11,6 +11,7 @@ import {
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
 import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
+import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useAccount } from '@/hooks/account';
 import { useTransactions } from '@/hooks/transactions';
@@ -90,6 +91,7 @@ const RootLayout = ({
         topBanner={
           <Stack width="100%" gap="xs" flexDirection="column">
             <DemoBanner />
+            <GraphOnlineBanner />
           </Stack>
         }
         logo={
