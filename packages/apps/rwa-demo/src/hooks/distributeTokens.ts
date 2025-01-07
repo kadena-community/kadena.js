@@ -18,7 +18,7 @@ export const useDistributeTokens = ({
   investorAccount: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
-  const { paused } = useAsset();
+  const { paused, asset } = useAsset();
 
   const { account, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
@@ -50,12 +50,14 @@ export const useDistributeTokens = ({
   };
 
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isMounted || !asset) return;
     setIsAllowed(
       !frozen &&
         !paused &&
         accountRoles.isSupplyModifier() &&
-        !isActiveAccountChangeTx,
+        !isActiveAccountChangeTx &&
+        ((asset.maxSupply >= 0 && asset.supply < asset.maxSupply) ||
+          asset.maxSupply < 0),
     );
   }, [
     frozen,
@@ -64,6 +66,7 @@ export const useDistributeTokens = ({
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };
