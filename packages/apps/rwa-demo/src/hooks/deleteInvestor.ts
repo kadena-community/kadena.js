@@ -64,12 +64,7 @@ export const useDeleteInvestor = ({
         accountRoles.isWhitelistManager() &&
         balance !== undefined &&
         balance <= 0;
-      console.log({
-        result,
-        paused,
-        role: accountRoles.isWhitelistManager(),
-        balance,
-      });
+
       setIsAllowed(result);
       if (!result) {
         setNotAllowedReason(
