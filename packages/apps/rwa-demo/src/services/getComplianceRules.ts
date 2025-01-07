@@ -1,3 +1,4 @@
+import { INFINITE_COMPLIANCE } from '@/constants';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
@@ -27,7 +28,7 @@ export const getMaxBalance = async (): Promise<number> => {
 
   const data = (result as any).data as any;
 
-  return result.status === 'success' ? data : -1;
+  return result.status === 'success' ? data : INFINITE_COMPLIANCE;
 };
 
 export const getMaxSupply = async (): Promise<number> => {
@@ -48,7 +49,7 @@ export const getMaxSupply = async (): Promise<number> => {
 
   const data = (result as any).data as any;
 
-  return result.status === 'success' ? data : -1;
+  return result.status === 'success' ? data : INFINITE_COMPLIANCE;
 };
 
 export const getInvestorCount = async (): Promise<number> => {
@@ -69,7 +70,7 @@ export const getInvestorCount = async (): Promise<number> => {
 
   const data = (result as any).data as any;
 
-  return result.status === 'success' ? data : -1;
+  return result.status === 'success' ? data : INFINITE_COMPLIANCE;
 };
 
 export const getMaxInvestors = async (): Promise<number> => {
@@ -90,7 +91,7 @@ export const getMaxInvestors = async (): Promise<number> => {
 
   const data = (result as any).data as any;
 
-  return result.status === 'success' ? data : -1;
+  return result.status === 'success' ? data : INFINITE_COMPLIANCE;
 };
 
 export const getComplianceRules = async (): Promise<IComplianceProps> => {

@@ -107,7 +107,9 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button type="submit">Add investors</Button>
+              <Button isDisabled={accounts.length === 0} type="submit">
+                Add investors
+              </Button>
             </RightAsideFooter>
           </form>
         </RightAside>

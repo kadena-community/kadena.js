@@ -1,3 +1,4 @@
+import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { MonoWarning } from '@kadena/kode-icons';
 import { token } from '@kadena/kode-ui/styles';
@@ -12,7 +13,7 @@ export const MaxInvestorBalanceCheck: FC<IProps> = ({ balance }) => {
 
   if (!asset) return null;
 
-  if (asset?.maxBalance < balance)
+  if (asset?.maxBalance < balance && asset?.maxBalance > INFINITE_COMPLIANCE)
     return (
       <MonoWarning
         style={{ color: token('color.icon.semantic.warning.default') }}

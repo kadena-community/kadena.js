@@ -18,6 +18,8 @@ export const FormatDeleteInvestor = () => {
       investorAccount,
     });
 
+    console.log(notAllowedReason);
+
     const handleDelete = async () => {
       await submit({ investor: investorAccount });
     };
@@ -34,7 +36,7 @@ export const FormatDeleteInvestor = () => {
           />
         }
       >
-        Are you sure you want to delete this agent?
+        Are you sure you want to delete this investor?
       </Confirmation>
     );
   };
