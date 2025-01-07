@@ -18,8 +18,6 @@ export const FormatDeleteInvestor = () => {
       investorAccount,
     });
 
-    console.log(notAllowedReason);
-
     const handleDelete = async () => {
       await submit({ investor: investorAccount });
     };

@@ -88,6 +88,9 @@ const interpretMessage = (str: string, data?: ITransaction): string => {
   if (str?.includes('buy gas failed')) {
     return `This account does not have enough balance to pay for Gas`;
   }
+  if (str?.includes('exceeds max investor')) {
+    return `The maximum amount of investors has been reached`;
+  }
 
   return `${data?.type}: ${str}`;
 };
@@ -124,11 +127,20 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       r.subscribe(
         (nextData: any) => {
-          if (nextData?.errors?.length !== undefined) {
+          if (
+            nextData?.errors?.length !== undefined ||
+            nextData?.data?.transaction?.result.badResult
+          ) {
             addNotification({
               intent: 'negative',
               label: 'there was an error',
-              message: JSON.stringify(nextData?.errors),
+              message: interpretErrorMessage(
+                nextData?.errors
+                  ? JSON.stringify(nextData?.errors)
+                  : JSON.parse(
+                      nextData?.data.transaction?.result.badResult ?? '{}',
+                    ).message,
+              ),
               url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
             });
             return;
