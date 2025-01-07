@@ -13,6 +13,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+import { InvestorBatchForm } from '../InvestorBatchForm/InvestorBatchForm';
 import { InvestorForm } from '../InvestorForm/InvestorForm';
 import { FormatDeleteInvestor } from '../TableFormatters/FormatDeleteInvestor';
 import { FormatFreeze } from '../TableFormatters/FormatFreeze';
@@ -36,18 +37,32 @@ export const InvestorList: FC = () => {
           <SectionCardHeader
             title="Investors"
             actions={
-              <InvestorForm
-                trigger={
-                  <Button
-                    isCompact
-                    variant="outlined"
-                    isDisabled={!isAddInvestorAllowed}
-                    endVisual={<MonoAdd />}
-                  >
-                    Add Investor
-                  </Button>
-                }
-              />
+              <>
+                <InvestorBatchForm
+                  trigger={
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      isDisabled={!isAddInvestorAllowed}
+                      endVisual={<MonoAdd />}
+                    >
+                      Batch add investors
+                    </Button>
+                  }
+                />
+                <InvestorForm
+                  trigger={
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      isDisabled={!isAddInvestorAllowed}
+                      endVisual={<MonoAdd />}
+                    >
+                      Add Investor
+                    </Button>
+                  }
+                />
+              </>
             }
           />
           <SectionCardBody>

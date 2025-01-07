@@ -19,7 +19,6 @@ export const FormatDeleteInvestor = () => {
     });
 
     const handleDelete = async () => {
-      console.log('submit');
       await submit({ investor: investorAccount });
     };
     return (
