@@ -125,6 +125,25 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     max-balance-per-investor:decimal
   )
 
+  (defschema account-balance-change
+    @doc "For use in RECONCILE events"
+    account:string
+    previous:decimal
+    current:decimal
+  )
+
+  (defcap RECONCILE:bool
+    ( amount:decimal
+      sender:object{account-balance-change}
+      receiver:object{account-balance-change}
+    )
+    @doc " For accounting via events. \
+         \ sender = {account: '', previous: 0.0, current: 0.0} for mint \
+         \ receiver = {account: '', previous: 0.0, current: 0.0} for burn"
+    @event
+    true
+  )
+
   (defcap SET-COMPLIANCE-PARAMETERS:bool (compliance:object{schema-set-compliance-parameters})
     @doc "Event emitted when a compliance parameters is updated."
     @event
@@ -192,11 +211,23 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun add-investor-count:string ()
+    (require-capability (INTERNAL))
     (with-read compliance-parameters "" {
       "investor-count":= ct
     }
       (update compliance-parameters "" {
         "investor-count": (+ 1 ct)
+      })
+    )
+  )
+
+  (defun remove-investor-count:string ()
+    (require-capability (INTERNAL))
+    (with-read compliance-parameters "" {
+      "investor-count":= ct
+    }
+      (update compliance-parameters "" {
+        "investor-count": (- ct 1)
       })
     )
   )
@@ -550,6 +581,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun freeze-partial-tokens:string (user-address:string amount:decimal)
     @doc "Freeze a specific amount of a user's tokens."
+   (enforce (> amount 0.0) "Positive amount")
    (only-agent FREEZER)
    (with-capability (INTERNAL)
     (freeze-partial-tokens-internal user-address amount)
@@ -558,6 +590,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun unfreeze-partial-tokens:string (user-address:string amount:decimal)
     @doc "Unfreeze a specific amount of a user's tokens."
+    (enforce (> amount 0.0) "Positive amount")
     (with-capability (INTERNAL)
       (only-agent FREEZER)
       (with-read users user-address {
@@ -684,38 +717,34 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     @doc "Freeze or unfreeze multiple addresses."
     (only-agent FREEZER)
     (map (lambda (idx:integer)
-    (set-address-frozen-internal (at idx user-addresses) freeze)
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
-  )
-
-  (defun batch-freeze-partial-tokens-internal:bool (user-addresses:[string] amounts:[decimal] )
-    @doc "Freeze a portion of tokens for multiple addresses."
-    (only-agent FREEZER)
-    (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
-      (freeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      (with-capability (INTERNAL)
+        (set-address-frozen-internal (at idx user-addresses) (at idx freeze))
+        )
+        )(enumerate 0 (- (length user-addresses) 1))
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
+    true
   )
 
   (defun batch-freeze-partial-tokens:bool (user-addresses:[string] amounts:[decimal] )
     @doc "Unfreeze a portion of tokens for multiple addresses."
     (only-agent FREEZER)
     (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
+    (with-capability (INTERNAL)
       (freeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+    ) ) (enumerate 0 (- (length user-addresses) 1))
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
+    true
   )
 
   (defun batch-unfreeze-partial-tokens:bool (user-addresses:[string] amounts:[decimal] )
     @doc "Unfreeze a portion of tokens for multiple addresses."
     (only-agent FREEZER)
     (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
-      (unfreeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      (with-capability (INTERNAL)
+          (unfreeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      ) ) (enumerate 0 (- (length user-addresses) 1))
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
+    true
   )
 
   ;; internal functions
@@ -730,7 +759,14 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       )
       (enforce-contains-identity to)
       (with-capability (TRANSFER (zero-address) to amount)
-        (credit to amount)
+        (let
+          (
+            (receiver (credit to amount))
+            (sender:object{account-balance-change}
+              {'account: "", 'previous: 0.0, 'current: 0.0})
+          )
+          (emit-event (RECONCILE amount sender receiver))
+        )
         (with-capability (UPDATE-SUPPLY)
           (update-supply amount)
         )
@@ -752,7 +788,13 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
           ) compliance-l
         )
         (with-capability (TRANSFER user-address (zero-address) amount)
-          (debit user-address amount)
+        (let
+            (
+              (sender (debit user-address amount))
+              (receiver:object{account-balance-change}
+                {'account: "", 'previous: 0.0, 'current: 0.0})
+            )
+          (emit-event (RECONCILE amount sender receiver)))
           (credit (zero-address) (zero-guard) amount)
           (with-capability (UPDATE-SUPPLY)
             (update-supply (- amount))
@@ -769,8 +811,12 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
     @doc "Transfer AMOUNT of token from sender to receiver"
     (enforce-unit amount)
-    (debit sender amount)
-    (credit receiver amount)
+    (let
+      ( (sender (debit sender amount))
+        (receiver (credit receiver amount))
+      )
+      (emit-event (RECONCILE amount sender receiver))
+    )
     (with-read token "" {
        "compliance":= compliance-l
       ,"paused":=paused
@@ -795,12 +841,13 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun freeze-partial-tokens-internal:string (user-address:string amount:decimal)
+    (require-capability (INTERNAL))
+
     (with-read users user-address {
       "balance":= balance,
       "frozen":= frozen,
       "amount-frozen":= amount-frozen
     }
-    (require-capability (INTERNAL))
       (enforce (not frozen) "Account is frozen")
       (enforce (>= balance (+ amount-frozen amount)) "frozen amount exceeds balance")
       (update users user-address {"amount-frozen": (+ amount-frozen amount)})
@@ -810,12 +857,12 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun unfreeze-partial-tokens-internal:string (user-address:string amount:decimal)
+    (require-capability (INTERNAL))
     (with-read users user-address {
       "balance":= balance,
       "frozen":= frozen,
       "amount-frozen":= amount-frozen
     }
-    (require-capability (INTERNAL))
       (enforce (not frozen) "Account is frozen")
       (enforce (<= amount amount-frozen) "amount exceeds frozen balance")
       (update users user-address {"amount-frozen": (- amount-frozen amount)})
@@ -888,31 +935,29 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   ; ----------------------------------------------------------------------
   ; Functionality
 
-  (defun credit:string
+  (defun credit:object{account-balance-change}
     ( account:string
       amount:decimal
     )
     (require-capability (CREDIT account))
     (with-default-read users account
-      {"balance": -1.0}
-      { "balance" := balance}
-      (if (= balance -1.0)
-        (update users account
-          { "balance" : amount})
-        (update users account
-          { "balance" : (+ balance amount)})
-      )
+      { "balance": 0.0 }
+      { "balance":= balance}
       (if (= account (zero-address))
         "Credit to Zero Address"
-        (if (= balance -1.0)
-          (add-investor-count)
-          "Credit successful"
+        (if (= balance 0.0)
+          (with-capability (INTERNAL)
+            (add-investor-count)
+          )
+          "already existing investor"
         )
       )
-    )
-  )
+    (update users account
+      { "balance" : (+ balance amount)})
+      {'account: account, 'previous: balance, 'current: (+ balance amount)}
+  ))
 
-  (defun debit:string
+  (defun debit:object{account-balance-change}
     ( account:string
       amount:decimal
     )
@@ -920,10 +965,20 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (with-read users account
       { "balance" := balance }
       (enforce (<= amount balance) "Insufficient funds")
+      (if (= account (zero-address))
+        "Debit to Zero Address"
+        (if (= (- balance amount) 0.0)
+          (with-capability (INTERNAL)
+            (remove-investor-count)
+          )
+          "already existing investor"
+        )
+      )
       (update users account
         { "balance" : (- balance amount) }
-        ))
-  )
+      )
+     {'account: account, 'previous: balance, 'current: (- balance amount)}
+  ))
 
   (defun enforce-unfrozen-amount:bool
     ( account:string
@@ -1005,7 +1060,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun enforce-unit:bool (amount:decimal)
     @doc "Enforce minimum precision allowed for coin transactions"
-
     (enforce
       (= (floor amount MINIMUM-PRECISION)
         amount)
@@ -1020,7 +1074,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (enforce-contains-identity account)
     (validate-principal guard account)
     (insert users account {
-      "balance" : -1.0,
+      "balance" : 0.0,
       "guard" : guard,
       "frozen" : false,
       "account": account,
@@ -1313,7 +1367,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 ;; set roles in agent
 ;; wanted to review frontend and see if certain features were possible with graphql (still exploring but want to sit with Travis?)
 (RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
-
 
 
 (${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard "${namespace}.admin-keyset"))
