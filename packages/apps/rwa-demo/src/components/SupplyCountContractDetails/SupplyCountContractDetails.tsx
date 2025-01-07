@@ -1,3 +1,4 @@
+import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { MonoWarning } from '@kadena/kode-icons';
 import { Stack } from '@kadena/kode-ui';
@@ -9,7 +10,7 @@ export const SupplyCountContractDetails: FC = () => {
 
   if (!asset) return null;
 
-  if (asset.supply > asset.maxSupply && asset.maxSupply > -1)
+  if (asset.supply > asset.maxSupply && asset.maxSupply > INFINITE_COMPLIANCE)
     return (
       <Stack alignItems="center" gap="xs">
         <MonoWarning

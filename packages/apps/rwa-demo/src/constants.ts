@@ -1,6 +1,7 @@
 export const ACCOUNT_COOKIE_NAME = 'rwa';
 export const LOCALSTORAGE_ASSETS_KEY = 'assets';
 export const LOCALSTORAGE_ASSETS_SELECTED_KEY = 'selected_asset';
+export const INFINITE_COMPLIANCE = -1;
 
 // todo: this is temporary for devnet
 export const ADMIN = {

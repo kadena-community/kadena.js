@@ -1,3 +1,4 @@
+import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
@@ -85,7 +86,7 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  let maxAmount = -1;
+  let maxAmount = INFINITE_COMPLIANCE;
   if ((asset?.maxBalance ?? 0) >= 0) {
     maxAmount = (asset?.maxBalance ?? 0) - balance;
   }

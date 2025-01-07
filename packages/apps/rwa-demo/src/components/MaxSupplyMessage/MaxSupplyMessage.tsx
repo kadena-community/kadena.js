@@ -1,3 +1,4 @@
+import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { Notification } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -6,7 +7,8 @@ export const MaxSupplyMessage: FC = () => {
   const { asset } = useAsset();
 
   if (!asset) return;
-  const isMaxReached = asset.maxSupply <= asset.supply && asset.maxSupply > -1;
+  const isMaxReached =
+    asset.maxSupply <= asset.supply && asset.maxSupply > INFINITE_COMPLIANCE;
   if (!isMaxReached) return;
 
   return (

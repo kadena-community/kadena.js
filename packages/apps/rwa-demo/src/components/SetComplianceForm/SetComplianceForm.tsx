@@ -1,3 +1,4 @@
+import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { ISetComplianceProps } from '@/services/setCompliance';
@@ -72,7 +73,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxBalance"
                 control={control}
-                rules={{ required: true, min: -1 }}
+                rules={{ required: true, min: INFINITE_COMPLIANCE }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Balance" {...field} />
                 )}
@@ -81,7 +82,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxSupply"
                 control={control}
-                rules={{ required: true, min: -1 }}
+                rules={{ required: true, min: INFINITE_COMPLIANCE }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Supply" {...field} />
                 )}
@@ -89,7 +90,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxInvestors"
                 control={control}
-                rules={{ required: true, min: -1 }}
+                rules={{ required: true, min: INFINITE_COMPLIANCE }}
                 render={({ field }) => (
                   <TextField
                     type="number"

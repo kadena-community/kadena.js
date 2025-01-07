@@ -3,6 +3,7 @@ import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import {
+  INFINITE_COMPLIANCE,
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
@@ -132,10 +133,10 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }) => {
     const asset: IAsset = {
       uuid: crypto.randomUUID(),
-      supply: -1,
-      maxSupply: -1,
-      maxBalance: -1,
-      maxInvestors: -1,
+      supply: INFINITE_COMPLIANCE,
+      maxSupply: INFINITE_COMPLIANCE,
+      maxBalance: INFINITE_COMPLIANCE,
+      maxInvestors: INFINITE_COMPLIANCE,
       investorCount: 0,
       contractName,
       namespace,
