@@ -2,6 +2,7 @@ import {
   interpretErrorMessage,
   TXTYPES,
 } from '@/components/TransactionsProvider/TransactionsProvider';
+import { INFINITE_COMPLIANCE } from '@/constants';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { distributeTokens } from '@/services/distributeTokens';
 import { getClient } from '@/utils/client';
@@ -56,8 +57,12 @@ export const useDistributeTokens = ({
         !paused &&
         accountRoles.isSupplyModifier() &&
         !isActiveAccountChangeTx &&
-        ((asset.maxSupply >= 0 && asset.supply < asset.maxSupply) ||
-          asset.maxSupply < 0),
+        ((asset.maxSupply > INFINITE_COMPLIANCE &&
+          asset.supply < asset.maxSupply) ||
+          asset.maxSupply === INFINITE_COMPLIANCE) &&
+        ((asset.maxInvestors > INFINITE_COMPLIANCE &&
+          asset.maxInvestors > asset.investorCount) ||
+          asset.maxInvestors === INFINITE_COMPLIANCE),
     );
   }, [
     frozen,
