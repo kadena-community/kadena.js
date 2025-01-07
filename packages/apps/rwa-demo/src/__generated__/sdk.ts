@@ -972,6 +972,11 @@ export type EventSubscriptionSubscription = { __typename?: 'Subscription', event
 
 export type CoreEventsFieldsFragment = { __typename?: 'Event', chainId: any, requestKey: string, parameters?: string | null, block: { __typename?: 'Block', height: any, creationTime: any } };
 
+export type NetworkInfoQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NetworkInfoQuery = { __typename?: 'Query', networkInfo?: { __typename?: 'NetworkInfo', apiVersion: string } | null };
+
 export type TransactionSubscriptionVariables = Exact<{
   requestKey: Scalars['String']['input'];
 }>;
@@ -1064,6 +1069,45 @@ export function useEventSubscriptionSubscription(baseOptions: Apollo.Subscriptio
       }
 export type EventSubscriptionSubscriptionHookResult = ReturnType<typeof useEventSubscriptionSubscription>;
 export type EventSubscriptionSubscriptionResult = Apollo.SubscriptionResult<EventSubscriptionSubscription>;
+export const NetworkInfoDocument = gql`
+    query networkInfo {
+  networkInfo {
+    apiVersion
+  }
+}
+    `;
+
+/**
+ * __useNetworkInfoQuery__
+ *
+ * To run a query within a React component, call `useNetworkInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNetworkInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNetworkInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNetworkInfoQuery(baseOptions?: Apollo.QueryHookOptions<NetworkInfoQuery, NetworkInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NetworkInfoQuery, NetworkInfoQueryVariables>(NetworkInfoDocument, options);
+      }
+export function useNetworkInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NetworkInfoQuery, NetworkInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NetworkInfoQuery, NetworkInfoQueryVariables>(NetworkInfoDocument, options);
+        }
+export function useNetworkInfoSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<NetworkInfoQuery, NetworkInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<NetworkInfoQuery, NetworkInfoQueryVariables>(NetworkInfoDocument, options);
+        }
+export type NetworkInfoQueryHookResult = ReturnType<typeof useNetworkInfoQuery>;
+export type NetworkInfoLazyQueryHookResult = ReturnType<typeof useNetworkInfoLazyQuery>;
+export type NetworkInfoSuspenseQueryHookResult = ReturnType<typeof useNetworkInfoSuspenseQuery>;
+export type NetworkInfoQueryResult = Apollo.QueryResult<NetworkInfoQuery, NetworkInfoQueryVariables>;
 export const TransactionDocument = gql`
     subscription transaction($requestKey: String!) {
   transaction(requestKey: $requestKey) {
