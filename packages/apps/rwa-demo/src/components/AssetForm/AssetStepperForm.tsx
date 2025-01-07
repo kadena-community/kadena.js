@@ -61,6 +61,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     setError('');
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
+      setIsLoading(false);
       return;
     }
 
@@ -68,7 +69,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     const tx = await submitContract(data);
     if (tx?.result?.status === 'success') {
       setStep(STEPS.DONE);
-      setIsLoading(false);
       const asset = addAsset({
         contractName: data.contractName,
         namespace: data.namespace,
@@ -77,6 +77,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       setAsset(asset);
       window.location.href = '/';
     }
+    setIsLoading(false);
   };
 
   return (
@@ -123,7 +124,9 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
             <Controller
               name="namespace"
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: true,
+              }}
               render={({ field }) => (
                 <TextField label="Namespace" isDisabled {...field} />
               )}
@@ -132,7 +135,13 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
             <Controller
               name="contractName"
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: true,
+                pattern: {
+                  value: /^\S*$/gi,
+                  message: 'no spaces allowed',
+                },
+              }}
               render={({ field }) => (
                 <TextField label="Contract Name" {...field} />
               )}

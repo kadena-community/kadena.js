@@ -91,6 +91,9 @@ const interpretMessage = (str: string, data?: ITransaction): string => {
   if (str?.includes('exceeds max investor')) {
     return `The maximum amount of investors has been reached`;
   }
+  if (str?.includes('PactDuplicateTableError')) {
+    return `This already exists`;
+  }
 
   return `${data?.type}: ${str}`;
 };
