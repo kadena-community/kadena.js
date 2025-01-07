@@ -12,7 +12,7 @@ export const MaxInvestorBalanceCheck: FC<IProps> = ({ balance }) => {
 
   if (!asset) return null;
 
-  if (asset?.maxBalance < balance)
+  if (asset?.maxBalance < balance && asset?.maxBalance > -1)
     return (
       <MonoWarning
         style={{ color: token('color.icon.semantic.warning.default') }}

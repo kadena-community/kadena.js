@@ -72,7 +72,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxBalance"
                 control={control}
-                rules={{ required: true, min: 0 }}
+                rules={{ required: true, min: -1 }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Balance" {...field} />
                 )}
@@ -81,7 +81,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxSupply"
                 control={control}
-                rules={{ required: true, min: 0 }}
+                rules={{ required: true, min: -1 }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Supply" {...field} />
                 )}
@@ -89,7 +89,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxInvestors"
                 control={control}
-                rules={{ required: true, min: 0 }}
+                rules={{ required: true, min: -1 }}
                 render={({ field }) => (
                   <TextField
                     type="number"

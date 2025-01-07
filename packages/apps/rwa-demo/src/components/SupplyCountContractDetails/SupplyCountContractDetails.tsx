@@ -9,7 +9,7 @@ export const SupplyCountContractDetails: FC = () => {
 
   if (!asset) return null;
 
-  if (asset.supply > asset.maxSupply)
+  if (asset.supply > asset.maxSupply && asset.maxSupply > -1)
     return (
       <Stack alignItems="center" gap="xs">
         <MonoWarning

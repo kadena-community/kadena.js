@@ -10,6 +10,7 @@ import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useGetInvestorBalance } from './getInvestorBalance';
 import { useTransactions } from './transactions';
 
 export const useDeleteInvestor = ({
@@ -17,7 +18,9 @@ export const useDeleteInvestor = ({
 }: {
   investorAccount?: string;
 }) => {
-  const { account, sign, accountRoles, isMounted, balance } = useAccount();
+  useGetInvestorBalance;
+  const { account, sign, accountRoles, isMounted } = useAccount();
+  const { data: balance } = useGetInvestorBalance({ investorAccount });
   const { paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
@@ -61,6 +64,12 @@ export const useDeleteInvestor = ({
         accountRoles.isWhitelistManager() &&
         balance !== undefined &&
         balance <= 0;
+      console.log({
+        result,
+        paused,
+        role: accountRoles.isWhitelistManager(),
+        balance,
+      });
       setIsAllowed(result);
       if (!result) {
         setNotAllowedReason(
