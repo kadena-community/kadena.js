@@ -6,6 +6,7 @@ import {
 import type { IBatchRegisterIdentityProps } from '@/services/batchRegisterIdentity';
 import { batchRegisterIdentity } from '@/services/batchRegisterIdentity';
 import { getClient } from '@/utils/client';
+import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
@@ -26,7 +27,6 @@ export const useBatchAddInvestors = () => {
     try {
       const tx = await batchRegisterIdentity(newData);
 
-      console.log(JSON.parse(tx.cmd));
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -48,7 +48,8 @@ export const useBatchAddInvestors = () => {
         message: interpretErrorMessage(e.message),
       });
     } finally {
-      //await store.setAccount(data);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      await store.setAllAccounts(data);
     }
   };
 

@@ -3,7 +3,6 @@ import type { ICompactTableFormatterProps } from './types';
 
 export const FormatCheckbox = ({ name }: { name: string }) => {
   const Component = ({ value }: ICompactTableFormatterProps) => {
-    console.log(333, { value });
     return (
       <input
         type="checkbox"

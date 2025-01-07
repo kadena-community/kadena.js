@@ -1,4 +1,5 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { getAsset } from '../getAsset';
@@ -88,6 +89,12 @@ const RWAStore = () => {
     });
   };
 
+  const setAllAccounts = async ({ accounts }: { accounts: ICSVAccount[] }) => {
+    return accounts.map((account) =>
+      setAccount({ accountName: account.account, alias: account.alias }),
+    );
+  };
+
   const listenToAccount = (
     account: string,
     setDataCallback: (account: IRegisterIdentityProps) => void,
@@ -131,6 +138,7 @@ const RWAStore = () => {
     listenToTransactions,
 
     setAccount,
+    setAllAccounts,
     getAccount,
     getAccounts,
     listenToAccount,

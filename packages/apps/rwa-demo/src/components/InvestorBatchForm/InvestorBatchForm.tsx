@@ -75,7 +75,10 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Batch add investors" />
             <RightAsideContent>
-              <DragNDropCSV onResult={handleResult} />
+              <DragNDropCSV
+                onResult={handleResult}
+                resultSchema={{ alias: 'string', account: 'string' }}
+              />
 
               {accounts.length > 0 && (
                 <CompactTable

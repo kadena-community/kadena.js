@@ -38,6 +38,7 @@ export const batchRegisterIdentity = async (
       'investors',
       data.accounts.map((account) => account.account),
     )
+    .addData('agent', data.agent.address)
     .addData(
       'agents',
       data.accounts.map(() => ''),
