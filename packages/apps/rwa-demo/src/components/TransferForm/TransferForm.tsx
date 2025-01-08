@@ -1,4 +1,5 @@
 import { useAccount } from '@/hooks/account';
+import { useForcedTransferTokens } from '@/hooks/forcedTransferTokens';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useGetInvestors } from '@/hooks/getInvestors';
@@ -43,9 +44,11 @@ export const TransferForm: FC<IProps> = ({
   const { account } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
   const { data: investors } = useGetInvestors();
+  const { submit: forcedSubmit, isAllowed: isForcedAllowed } =
+    useForcedTransferTokens();
   const { submit, isAllowed } = useTransferTokens();
   const { data: frozenAmount } = useGetFrozenTokens({
-    investorAccount: investorAccount,
+    investorAccount,
   });
 
   const {
@@ -56,7 +59,7 @@ export const TransferForm: FC<IProps> = ({
   } = useForm<ITransferTokensProps>({
     values: {
       amount: 0,
-      investorFromAccount: account?.address!,
+      investorFromAccount: investorAccount,
       investorToAccount: '',
       isForced,
     },
@@ -75,16 +78,19 @@ export const TransferForm: FC<IProps> = ({
   };
 
   const onSubmit = async (data: ITransferTokensProps) => {
-    await submit(data);
+    if (data.isForced) {
+      await forcedSubmit(data);
+    } else {
+      await submit(data);
+    }
     handleOnClose();
   };
 
   const filteredInvestors = investors.filter(
-    (i) => i.accountName !== account?.address,
+    (i) => i.accountName !== investorAccount,
   );
 
   if (!account) return;
-
   const maxAmount = isForced ? balance : balance - frozenAmount;
 
   return (
@@ -156,7 +162,12 @@ export const TransferForm: FC<IProps> = ({
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button isDisabled={!isAllowed || !isValid} type="submit">
+              <Button
+                isDisabled={
+                  (isForced ? !isForcedAllowed : !isAllowed) || !isValid
+                }
+                type="submit"
+              >
                 Transfer
               </Button>
             </RightAsideFooter>

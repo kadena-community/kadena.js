@@ -2,19 +2,17 @@ import {
   interpretErrorMessage,
   TXTYPES,
 } from '@/components/TransactionsProvider/TransactionsProvider';
+import { forcedTransferTokens } from '@/services/forcedTransferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
-import { transferTokens } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
-import { useFreeze } from './freeze';
 import { useTransactions } from './transactions';
 
-export const useTransferTokens = () => {
-  const { account, sign, isMounted, isInvestor } = useAccount();
-  const { frozen } = useFreeze({ investorAccount: account?.address });
+export const useForcedTransferTokens = () => {
+  const { account, sign, isMounted, accountRoles } = useAccount();
   const { paused } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
@@ -22,7 +20,7 @@ export const useTransferTokens = () => {
 
   const submit = async (data: ITransferTokensProps) => {
     try {
-      const tx = await transferTokens(data, account!);
+      const tx = await forcedTransferTokens(data, account!);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -45,8 +43,8 @@ export const useTransferTokens = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(!frozen && !paused && isInvestor);
-  }, [paused, isMounted, isInvestor, frozen]);
+    setIsAllowed(!paused && accountRoles.isTransferManager());
+  }, [paused, isMounted, accountRoles]);
 
   return { submit, isAllowed };
 };

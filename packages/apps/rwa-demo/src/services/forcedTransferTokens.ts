@@ -26,8 +26,7 @@ export const forcedTransferTokens = async (
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
-    .addSigner(createPubKeyFromAccount(data.investorFromAccount), (withCap) => [
-      withCap(`${getAsset()}.FORCED-TRANSFER`),
+    .addSigner(createPubKeyFromAccount(account.address), (withCap) => [
       withCap(`${getAsset()}.ONLY-AGENT`, 'transfer-manager'),
       withCap(
         `${getAsset()}.TRANSFER`,
