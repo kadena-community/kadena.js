@@ -6,6 +6,7 @@ import {
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
+import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
@@ -22,8 +23,11 @@ export const useFreezeInvestor = () => {
   const submit = async (
     data: ISetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
+    if (!account) return;
     try {
       const tx = await setAddressFrozen(data, account!);
+      await store.setFrozenMessage(data);
+
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 

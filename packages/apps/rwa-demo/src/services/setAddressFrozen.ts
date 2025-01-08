@@ -7,6 +7,7 @@ import { Pact } from '@kadena/client';
 export interface ISetAddressFrozenProps {
   investorAccount: string;
   pause: boolean;
+  message?: string;
 }
 
 export const setAddressFrozen = async (

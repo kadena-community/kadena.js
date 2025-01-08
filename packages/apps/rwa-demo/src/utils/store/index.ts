@@ -1,6 +1,7 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
+import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { getAsset } from '../getAsset';
 import { database } from './firebase';
@@ -59,7 +60,7 @@ const RWAStore = () => {
     const data = snapshot.toJSON();
     if (!data) return [];
     return Object.entries(data).map(
-      ([key, value]) => value,
+      ([key, value]) => value.account,
     ) as IRegisterIdentityProps[];
   };
 
@@ -71,7 +72,9 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    const snapshot = await get(ref(database, `${asset}/accounts/${account}`));
+    const snapshot = await get(
+      ref(database, `${asset}/accounts/${account}/account`),
+    );
 
     return snapshot.toJSON() as IRegisterIdentityProps;
   };
@@ -83,7 +86,7 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    await set(ref(database, `${asset}/accounts/${accountName}`), {
+    await set(ref(database, `${asset}/accounts/${accountName}/account`), {
       accountName,
       alias: alias ?? '',
     });
@@ -102,7 +105,7 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    const accountRef = ref(database, `${asset}/accounts/${account}`);
+    const accountRef = ref(database, `${asset}/accounts/${account}/account`);
     onValue(accountRef, async (snapshot) => {
       const data = snapshot.toJSON();
 
@@ -124,12 +127,35 @@ const RWAStore = () => {
 
       setDataCallback(
         Object.entries(data).map(
-          ([key, value]) => value,
+          ([key, value]) => value.account,
         ) as IRegisterIdentityProps[],
       );
     });
 
     return () => off(accountRef);
+  };
+
+  const getFrozenMessage = async (
+    account: string,
+  ): Promise<string | undefined> => {
+    const asset = getAssetFolder();
+    if (!asset) return;
+
+    const snapshot = await get(
+      ref(database, `${asset}/accounts/${account}/frozenMessage`),
+    );
+
+    return snapshot.toJSON() as any;
+  };
+
+  const setFrozenMessage = async (data: ISetAddressFrozenProps) => {
+    const asset = getAssetFolder();
+    if (!asset || !data.message) return;
+
+    await set(
+      ref(database, `${asset}/accounts/${data.investorAccount}/frozenMessage`),
+      data.message,
+    );
   };
 
   return {
@@ -143,6 +169,8 @@ const RWAStore = () => {
     getAccounts,
     listenToAccount,
     listenToAccounts,
+    setFrozenMessage,
+    getFrozenMessage,
   };
 };
 
