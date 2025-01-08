@@ -1,9 +1,18 @@
 import { useAccount } from '@/hooks/account';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
+import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
-import { Button, Select, SelectItem, TextField } from '@kadena/kode-ui';
+import {
+  Button,
+  Notification,
+  NotificationHeading,
+  Select,
+  SelectItem,
+  Stack,
+  TextField,
+} from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -14,21 +23,30 @@ import {
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { IWalletAccount } from '../AccountProvider/AccountType';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 
 interface IProps {
   onClose?: () => void;
   trigger: ReactElement;
+  isForced?: boolean;
+  investorAccount: string;
 }
 
-export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
+export const TransferForm: FC<IProps> = ({
+  onClose,
+  trigger,
+  isForced = false,
+  investorAccount,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const { account, balance } = useAccount();
+  const { account } = useAccount();
+  const { data: balance } = useGetInvestorBalance({ investorAccount });
   const { data: investors } = useGetInvestors();
   const { submit, isAllowed } = useTransferTokens();
   const { data: frozenAmount } = useGetFrozenTokens({
-    investorAccount: account?.address!,
+    investorAccount: investorAccount,
   });
 
   const {
@@ -41,6 +59,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
       amount: 0,
       investorFromAccount: account?.address!,
       investorToAccount: '',
+      isForced,
     },
   });
 
@@ -67,7 +86,7 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
 
   if (!account) return;
 
-  const maxAmount = balance - frozenAmount;
+  const maxAmount = isForced ? balance : balance - frozenAmount;
 
   return (
     <>
@@ -76,6 +95,16 @@ export const TransferForm: FC<IProps> = ({ onClose, trigger }) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Transfer Tokens" />
             <RightAsideContent>
+              {isForced && (
+                <Stack width="100%" marginBlockEnd="md">
+                  <Notification role="status" intent="warning">
+                    <NotificationHeading>Warning</NotificationHeading>
+                    This is a forced transfer (partial frozen tokens can also be
+                    transfered)
+                  </Notification>
+                </Stack>
+              )}
+              <input type="hidden" {...register('isForced', {})} />
               <TextField
                 label="Amount"
                 type="number"

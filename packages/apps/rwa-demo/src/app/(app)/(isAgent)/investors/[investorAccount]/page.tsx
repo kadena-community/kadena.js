@@ -8,6 +8,8 @@ import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensFor
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { TXTYPES } from '@/components/TransactionsProvider/TransactionsProvider';
 import { TransactionTypeSpinner } from '@/components/TransactionTypeSpinner/TransactionTypeSpinner';
+import { TransferForm } from '@/components/TransferForm/TransferForm';
+import { useAccount } from '@/hooks/account';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestor } from '@/hooks/getInvestor';
@@ -19,6 +21,7 @@ import { useParams } from 'next/navigation';
 
 const InvestorPage = () => {
   const params = useParams();
+  const { accountRoles } = useAccount();
   const investorAccount = decodeURIComponent(params.investorAccount as string);
   const { isAllowed: isPartiallyFreezeTokensAllowed } =
     useTogglePartiallyFreezeTokens({
@@ -47,6 +50,13 @@ const InvestorPage = () => {
       <Stack width="100%" flexDirection="column">
         <InvestorInfo account={investor} />
         <Stack gap="sm">
+          {accountRoles.isTransferManager() && (
+            <TransferForm
+              investorAccount={investorAccount}
+              isForced={true}
+              trigger={<Button variant="warning">Forced transfer</Button>}
+            />
+          )}
           <DistributionForm
             investorAccount={investorAccount}
             trigger={

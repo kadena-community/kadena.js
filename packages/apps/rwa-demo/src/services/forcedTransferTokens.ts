@@ -4,27 +4,22 @@ import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-
-export interface ITransferTokensProps {
-  amount: number;
-  investorFromAccount: string;
-  investorToAccount: string;
-  isForced?: boolean;
-}
+import type { ITransferTokensProps } from './transferTokens';
 
 const createPubKeyFromAccount = (account: string): string => {
   return account.replace('k:', '').replace('r:', '');
 };
 
-export const transferTokens = async (
+export const forcedTransferTokens = async (
   data: ITransferTokensProps,
   account: IWalletAccount,
 ) => {
   return Pact.builder
     .execution(
       `
-       (${getAsset()}.transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset()}.forced-transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
     )
+    .addData('agent', account.address)
     .addData('investorFrom', data.investorFromAccount)
     .addData('investorTo', data.investorToAccount)
     .setMeta({
@@ -32,6 +27,8 @@ export const transferTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(createPubKeyFromAccount(data.investorFromAccount), (withCap) => [
+      withCap(`${getAsset()}.FORCED-TRANSFER`),
+      withCap(`${getAsset()}.ONLY-AGENT`, 'transfer-manager'),
       withCap(
         `${getAsset()}.TRANSFER`,
         data.investorFromAccount,

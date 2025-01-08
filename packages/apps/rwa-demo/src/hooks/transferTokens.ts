@@ -2,6 +2,7 @@ import {
   interpretErrorMessage,
   TXTYPES,
 } from '@/components/TransactionsProvider/TransactionsProvider';
+import { forcedTransferTokens } from '@/services/forcedTransferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';
@@ -22,7 +23,9 @@ export const useTransferTokens = () => {
 
   const submit = async (data: ITransferTokensProps) => {
     try {
-      const tx = await transferTokens(data, account!);
+      const tx = data.isForced
+        ? await forcedTransferTokens(data, account!)
+        : await transferTokens(data, account!);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
