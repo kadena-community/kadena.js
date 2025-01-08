@@ -1,7 +1,6 @@
 'use client';
 
 import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAccount } from '@/hooks/account';
@@ -35,7 +34,7 @@ const Assets = () => {
     removeAsset(value);
   };
 
-  const handleLink = async (assetProp: IAsset) => {
+  const handleLink = async (assetProp: any) => {
     const asset = await getAsset(assetProp.uuid, account!);
     if (!asset) {
       addNotification({
