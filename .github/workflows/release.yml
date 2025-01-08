@@ -78,8 +78,7 @@ jobs:
           latest_tag=$(npm view @kadena/graph --json | jq -r '."dist-tags".latest')
           version_id=$(gh api "orgs/kadena-community/packages/container/graphql/versions" | \
             jq --arg tag "$latest_tag" -r '.[] | select(.metadata.container.tags | index($tag)) | .id')
-          echo "::set-output name=version_id::$version_id"
-
+          echo "version_id=$version_id" >> $GITHUB_OUTPUT
 
       - name: Build Docker Image for `:latest`
         id: docker-build-graph-latest
