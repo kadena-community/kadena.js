@@ -1,5 +1,6 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
+import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { get, off, onValue, ref, set } from 'firebase/database';
@@ -150,11 +151,24 @@ const RWAStore = () => {
 
   const setFrozenMessage = async (data: ISetAddressFrozenProps) => {
     const asset = getAssetFolder();
-    if (!asset || !data.message) return;
+    if (!asset) return;
 
     await set(
       ref(database, `${asset}/accounts/${data.investorAccount}/frozenMessage`),
       data.message,
+    );
+  };
+
+  const setFrozenMessages = async (data: IBatchSetAddressFrozenProps) => {
+    const asset = getAssetFolder();
+    if (!asset) return;
+
+    return data.investorAccounts.map((account) =>
+      setFrozenMessage({
+        investorAccount: account,
+        pause: data.pause,
+        message: data.message,
+      }),
     );
   };
 
@@ -170,6 +184,7 @@ const RWAStore = () => {
     listenToAccount,
     listenToAccounts,
     setFrozenMessage,
+    setFrozenMessages,
     getFrozenMessage,
   };
 };

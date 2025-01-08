@@ -21,7 +21,7 @@ export const InvestorFrozenMessage: FC<IProps> = ({ investorAccount }) => {
   };
 
   useEffect(() => {
-    if (!frozen || !isInvestor || !account) return;
+    if (!isInvestor || !account) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
