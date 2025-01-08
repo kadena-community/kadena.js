@@ -55,7 +55,6 @@ export const useFreeze = ({
 
   useEffect(() => {
     if (!data?.events?.length) return;
-    console.log({ events: data?.events });
 
     data?.events?.map((evt) => {
       const params = JSON.parse(evt.parameters ?? '[]');
