@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
+import { useGetInvestorBalance } from './getInvestorBalance';
 import { useTransactions } from './transactions';
 
 export const useDistributeTokens = ({
@@ -22,6 +23,7 @@ export const useDistributeTokens = ({
   const { paused, asset } = useAsset();
 
   const { account, sign, accountRoles, isMounted } = useAccount();
+  const { data: investorBalance } = useGetInvestorBalance({ investorAccount });
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -62,7 +64,8 @@ export const useDistributeTokens = ({
           asset.maxSupply === INFINITE_COMPLIANCE) &&
         ((asset.maxInvestors > INFINITE_COMPLIANCE &&
           asset.maxInvestors > asset.investorCount) ||
-          asset.maxInvestors === INFINITE_COMPLIANCE),
+          asset.maxInvestors === INFINITE_COMPLIANCE ||
+          investorBalance > 0),
     );
   }, [
     frozen,
@@ -72,6 +75,7 @@ export const useDistributeTokens = ({
     accountRoles,
     isActiveAccountChangeTx,
     asset,
+    investorBalance,
   ]);
 
   return { submit, isAllowed };

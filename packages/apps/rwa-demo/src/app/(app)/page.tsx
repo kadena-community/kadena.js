@@ -81,7 +81,10 @@ const Home = () => {
                   }
                 />
 
-                <TransferForm trigger={<TransferAssetAction />} />
+                <TransferForm
+                  investorAccount={account?.address!}
+                  trigger={<TransferAssetAction />}
+                />
               </Stack>
             </SectionCardBody>
           </SectionCardContentBlock>

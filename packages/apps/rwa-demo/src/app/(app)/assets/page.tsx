@@ -3,6 +3,7 @@
 import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { MonoAdd, MonoDelete, MonoFindInPage } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
@@ -18,22 +19,32 @@ import {
   SectionCardHeader,
   SideBarBreadcrumbsItem,
   useLayout,
+  useNotifications,
 } from '@kadena/kode-ui/patterns';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const Assets = () => {
-  const { assets, removeAsset } = useAsset();
+  const { account } = useAccount();
+  const { assets, removeAsset, setAsset, getAsset } = useAsset();
+  const { addNotification } = useNotifications();
   const [openSide, setOpenSide] = useState(false);
-  const router = useRouter();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
 
   const handleDelete = (value: any) => {
     removeAsset(value);
   };
 
-  const handleLink = async (uuid: any) => {
-    router.push(`/assets/${uuid}`);
+  const handleLink = async (assetProp: any) => {
+    const asset = await getAsset(assetProp.uuid, account!);
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset is not found',
+      });
+      return;
+    }
+    setAsset(asset);
+    window.location.href = '/';
   };
 
   return (
@@ -78,7 +89,7 @@ const Assets = () => {
                 },
                 {
                   label: '',
-                  key: 'uuid',
+                  key: '',
                   width: '10%',
                   render: CompactTableFormatters.FormatActions({
                     trigger: (
