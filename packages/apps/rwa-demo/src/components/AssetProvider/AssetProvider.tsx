@@ -7,6 +7,7 @@ import {
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
 import type { IComplianceProps } from '@/services/getComplianceRules';
@@ -24,6 +25,7 @@ export interface IAsset extends IComplianceProps {
   contractName: string;
   namespace: string;
   supply: number;
+  investorCount: number;
 }
 
 export interface IAssetContext {
@@ -74,6 +76,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused();
   const { data: supply } = useSupply();
+  const { data: investorCount } = useGetInvestorCount();
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
       variables: {
@@ -185,6 +188,10 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setAsset((old) => old && { ...old, ...data });
   };
+
+  useEffect(() => {
+    setAsset((old) => old && { ...old, investorCount });
+  }, [investorCount]);
 
   useEffect(() => {
     if (asset) return;
