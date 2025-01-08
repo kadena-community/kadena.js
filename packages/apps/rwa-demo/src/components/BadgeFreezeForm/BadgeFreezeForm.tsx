@@ -22,12 +22,10 @@ interface IProps {
   isDisabled: boolean;
   handleReset: UseFormReset<{
     select: [];
-    message: string;
   }>;
   handleSubmit: UseFormHandleSubmit<
     {
       select: [];
-      message: string;
     },
     undefined
   >;

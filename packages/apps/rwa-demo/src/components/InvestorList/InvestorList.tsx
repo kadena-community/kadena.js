@@ -38,11 +38,9 @@ export const InvestorList: FC = () => {
     formState: { isDirty },
   } = useForm<{
     select: [];
-    message: '';
   }>({
     defaultValues: {
       select: [],
-      message: '',
     },
   });
 
