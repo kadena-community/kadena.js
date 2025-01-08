@@ -6,6 +6,7 @@ import {
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import { batchSetAddressFrozen } from '@/services/batchSetAddressFrozen';
 import { getClient } from '@/utils/client';
+import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
@@ -24,7 +25,10 @@ export const useBatchFreezeInvestors = () => {
   ): Promise<ITransaction | undefined> => {
     try {
       const tx = await batchSetAddressFrozen(data, account!);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      await store.setFrozenMessages(data);
       const signedTransaction = await sign(tx);
+
       if (!signedTransaction) return;
 
       const client = getClient();

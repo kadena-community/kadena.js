@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { BadgeFreezeForm } from '../BadgeFeezeForm/BadgeFeezeForm';
+import { BadgeFreezeForm } from '../BadgeFreezeForm/BadgeFreezeForm';
 import { InvestorBatchForm } from '../InvestorBatchForm/InvestorBatchForm';
 import { InvestorForm } from '../InvestorForm/InvestorForm';
 import { FormatCheckbox } from '../TableFormatters/FormatCheckbox';

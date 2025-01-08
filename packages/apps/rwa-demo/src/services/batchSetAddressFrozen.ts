@@ -7,6 +7,7 @@ import { Pact } from '@kadena/client';
 export interface IBatchSetAddressFrozenProps {
   investorAccounts: string[];
   pause: boolean;
+  message?: string;
 }
 
 export const batchSetAddressFrozen = async (
