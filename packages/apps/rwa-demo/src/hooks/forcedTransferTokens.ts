@@ -30,7 +30,11 @@ export const useForcedTransferTokens = () => {
       return addTransaction({
         ...res,
         type: TXTYPES.TRANSFERTOKENS,
-        accounts: [data.investorFromAccount, data.investorToAccount],
+        accounts: [
+          account?.address!,
+          data.investorFromAccount,
+          data.investorToAccount,
+        ],
       });
     } catch (e: any) {
       addNotification({
