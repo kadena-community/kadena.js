@@ -11,9 +11,9 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:src": "eslint src",
     "start": "next start",
-    "test": "echo ''",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest --coverage"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@apollo/client": "~3.9.11",
