@@ -12,8 +12,6 @@ const mocks = vi.hoisted(() => {
   };
 });
 
-vi.mock('./../env');
-
 describe('client utils', () => {
   beforeEach(() => {
     global.fetch = mocks.fetch;

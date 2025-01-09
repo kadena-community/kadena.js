@@ -36,6 +36,7 @@ export default mergeConfig(
           'src/__mocks__/**/*.ts',
           'src/config/**/*',
           'src/constants/**/*',
+          'src/services/**/*',
           'src/components/**/index.ts',
           'src/**/*.css.ts',
           'src/**/*.md',
