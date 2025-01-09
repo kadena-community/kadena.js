@@ -59,7 +59,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
   const handleSave = async (data: IAddContractProps) => {
     setError('');
-    console.log({ data });
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
       setIsLoading(false);

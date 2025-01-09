@@ -20,6 +20,12 @@ export default mergeConfig(
       environment: 'happy-dom',
       coverage: {
         provider: 'v8',
+        thresholds: {
+          lines: 3,
+          functions: 3,
+          branches: 3,
+          statements: 3,
+        },
         exclude: [
           'src/**/*.tsx',
           'src/**/*.d.ts',
