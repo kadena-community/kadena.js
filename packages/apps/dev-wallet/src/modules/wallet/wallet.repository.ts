@@ -1,4 +1,5 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
+import { PasswordKeepPolicy } from '@/service-worker/types';
 import { SignerScheme } from '@kadena/client';
 import type { INetwork } from '../network/network.repository';
 import { UUID } from '../types';
@@ -27,7 +28,7 @@ export interface IProfile {
   accentColor: string;
   selectedNetworkUUID?: UUID;
   options: {
-    rememberPassword: 'never' | 'session' | 'short-time';
+    rememberPassword: PasswordKeepPolicy;
   } & (
     | {
         authMode: 'PASSWORD';

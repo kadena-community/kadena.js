@@ -1,9 +1,8 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import { MonoAdd } from '@kadena/kode-icons';
-import { Box, Checkbox, Heading, Stack } from '@kadena/kode-ui';
+import { Box, Heading, Stack } from '@kadena/kode-ui';
 import { tokens } from '@kadena/kode-ui/styles';
-import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import InitialsAvatar from './initials';
 import {
@@ -19,15 +18,11 @@ import {
 export function SelectProfile() {
   const { profileList, unlockProfile } = useWallet();
   const [params] = useSearchParams();
-  const [openSecModule, setOpenSecModule] = useState(false);
 
   const redirect = params.get('redirect');
   const qs = new URLSearchParams();
   if (redirect) {
     qs.set('redirect', redirect);
-  }
-  if (openSecModule) {
-    qs.set('openSecModule', 'true');
   }
 
   const searchParam = qs.toString();
@@ -57,7 +52,7 @@ export function SelectProfile() {
               onClick={async () => {
                 const pass = await getWebAuthnPass(profile);
                 if (pass) {
-                  await unlockProfile(profile.uuid, pass, openSecModule);
+                  await unlockProfile(profile.uuid, pass);
                 }
               }}
             >
@@ -105,16 +100,6 @@ export function SelectProfile() {
             <div className={aliasClass}>Add new profile</div>
           </Stack>
         </Link>
-        {profileList.length > 0 && (
-          <Stack width="100%" marginBlock={'md'}>
-            <Checkbox
-              isSelected={openSecModule}
-              onChange={(isSelected) => setOpenSecModule(isSelected)}
-            >
-              Open Security module at login
-            </Checkbox>
-          </Stack>
-        )}
       </Stack>
       <Stack flexDirection="column" className={linkBlockClass}>
         <Heading as="h6">Own a wallet?</Heading>

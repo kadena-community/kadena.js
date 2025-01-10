@@ -11,7 +11,11 @@ import {
 import { useSession } from '@/App/providers/session';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
-import { ISetPhraseResponse, ISetSecurityPhrase } from '@/service-worker/types';
+import {
+  ISetPhraseResponse,
+  ISetSecurityPhrase,
+  PasswordKeepPolicy,
+} from '@/service-worker/types';
 import { throttle } from '@/utils/helpers';
 import { Session } from '@/utils/session';
 import { IClient, INetworkOptions, createClient } from '@kadena/client';
@@ -76,7 +80,7 @@ function usePassword(profile: IProfile | undefined) {
   const prompt = usePrompt();
   const getPassword = useCallback(async () => {
     const phrase = await securityService.getSecurityPhrase(
-      Session.get('sessionId') as string,
+      (await Session.get('sessionId')) as string,
     );
     return phrase;
   }, []);
@@ -89,7 +93,7 @@ function usePassword(profile: IProfile | undefined) {
       const { result } = (await securityService.setSecurityPhrase({
         phrase: password,
         keepPolicy,
-        sessionEntropy: Session.get('sessionId') as string,
+        sessionEntropy: (await Session.get('sessionId')) as string,
       })) as ISetPhraseResponse;
       if (result !== 'success') {
         throw new Error('Failed to set password');
@@ -116,7 +120,7 @@ function usePassword(profile: IProfile | undefined) {
       }
       const storeData = async (unlockOptions: {
         password: string;
-        keepOpen: 'session' | 'short-time' | 'never';
+        keepOpen: PasswordKeepPolicy;
       }) => {
         if (!unlockOptions.password) {
           return null;
@@ -236,7 +240,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     channel.onmessage = (event) => {
       const { action, payload } = event.data;
       if (action === 'switch-profile') {
-        setProfile(payload);
+        setProfile(payload, true);
       }
     };
     return () => {
@@ -485,10 +489,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       if (!noSession) {
         await session.reset();
+        await session.set('profileId', profile.uuid);
       }
       const networkUUID =
         profile.selectedNetworkUUID || contextValue.activeNetwork?.uuid;
-      await session.set('profileId', profile.uuid);
       const accounts = networkUUID
         ? await accountRepository.getAccountsByProfileId(
             profile.uuid,
@@ -542,7 +546,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const loadSession = async () => {
       if (!session.isLoaded()) return;
-      const profileId = session.get('profileId') as string | undefined;
+      const profileId = (await session.get('profileId')) as string | undefined;
       if (profileId) {
         const profile = await walletRepository.getProfile(profileId);
         await setProfile(profile, true);

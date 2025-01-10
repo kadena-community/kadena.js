@@ -110,7 +110,17 @@ export function createSession(key: string = 'session') {
       session[key] = value;
       await renew();
     },
-    get: (key: keyof SessionValue) => session[key],
+    get: async (key: keyof SessionValue) => {
+      const sessionValue = localStorage.getItem('session');
+      if (!sessionValue) {
+        return undefined;
+      }
+      const data = await serialization.deserialize(sessionValue);
+      if (!data) {
+        return undefined;
+      }
+      return data[key];
+    },
     clear: () => {
       localStorage.removeItem('session');
       session = {};
