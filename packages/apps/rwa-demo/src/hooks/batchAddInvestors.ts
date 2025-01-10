@@ -57,7 +57,7 @@ export const useBatchAddInvestors = () => {
     if (!isMounted) return;
 
     setIsAllowed(
-      !paused && accountRoles.isWhitelistManager() && !isActiveAccountChangeTx,
+      !paused && accountRoles.isAgentAdmin() && !isActiveAccountChangeTx,
     );
   }, [paused, isMounted, accountRoles, isActiveAccountChangeTx]);
 

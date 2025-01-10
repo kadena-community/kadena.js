@@ -11,12 +11,8 @@ export interface IAgentHookProps {
   isMounted: boolean;
   getAll: () => string[];
   isAgentAdmin: () => boolean;
-  isSupplyModifier: () => boolean;
   isFreezer: () => boolean;
   isTransferManager: () => boolean;
-  isRecoveryManager: () => boolean;
-  isComplianceManager: () => boolean;
-  isWhitelistManager: () => boolean;
 }
 
 export type EventQueryVariables = Exact<{
@@ -81,11 +77,6 @@ export const useGetAgentRoles = ({
   const isAgentAdmin = useCallback(() => {
     return innerData.indexOf(AGENTROLES.AGENTADMIN) >= 0;
   }, [innerData]);
-
-  const isSupplyModifier = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.SUPPLYMODIFIER) >= 0;
-  }, [innerData]);
-
   const isFreezer = useCallback(() => {
     return innerData.indexOf(AGENTROLES.FREEZER) >= 0;
   }, [innerData]);
@@ -94,27 +85,11 @@ export const useGetAgentRoles = ({
     return innerData.indexOf(AGENTROLES.TRANSFERMANAGER) >= 0;
   }, [innerData]);
 
-  const isRecoveryManager = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.RECOVERY) >= 0;
-  }, [innerData]);
-
-  const isComplianceManager = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.COMPLIANCE) >= 0;
-  }, [innerData]);
-
-  const isWhitelistManager = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.WHITELISTMANAGER) >= 0;
-  }, [innerData]);
-
   return {
     isMounted,
     getAll,
     isAgentAdmin,
-    isSupplyModifier,
     isFreezer,
     isTransferManager,
-    isRecoveryManager,
-    isComplianceManager,
-    isWhitelistManager,
   };
 };

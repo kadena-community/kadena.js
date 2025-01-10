@@ -25,6 +25,8 @@ export const getAgentRoles = async (
     signatureVerification: false,
   });
 
+  console.log({ roles: result });
+
   return result.status === 'success'
     ? (result.data as string[])
     : ([] as string[]);
