@@ -87,8 +87,8 @@ export const DistributionForm: FC<IProps> = ({
   };
 
   let maxAmount = INFINITE_COMPLIANCE;
-  if ((asset?.maxBalance ?? 0) >= 0) {
-    maxAmount = (asset?.maxBalance ?? 0) - balance;
+  if ((asset?.maxBalance.value ?? 0) >= 0) {
+    maxAmount = (asset?.maxBalance.value ?? 0) - balance;
   }
 
   return (

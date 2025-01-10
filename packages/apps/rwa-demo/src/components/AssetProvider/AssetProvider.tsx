@@ -137,9 +137,18 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const asset: IAsset = {
       uuid: crypto.randomUUID(),
       supply: INFINITE_COMPLIANCE,
-      maxSupply: INFINITE_COMPLIANCE,
-      maxBalance: INFINITE_COMPLIANCE,
-      maxInvestors: INFINITE_COMPLIANCE,
+      maxSupply: {
+        isActive: false,
+        value: INFINITE_COMPLIANCE,
+      },
+      maxBalance: {
+        isActive: false,
+        value: INFINITE_COMPLIANCE,
+      },
+      maxInvestors: {
+        isActive: false,
+        value: INFINITE_COMPLIANCE,
+      },
       investorCount: 0,
       contractName,
       namespace,
@@ -214,15 +223,25 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         complianceSubscriptionData.events[0].parameters,
       );
 
+      console.log(complianceSubscriptionData);
       const data = params[0];
 
       setAsset(
         (old) =>
           old && {
             ...old,
-            maxSupply: data['supply-limit'],
-            maxBalance: data['max-balance-per-investor'],
-            maxInvestors: data['max-investors'].int,
+            maxSupply: {
+              ...old.maxSupply,
+              value: data['supply-limit'],
+            },
+            maxBalance: {
+              ...old.maxBalance,
+              value: data['max-balance-per-investor'],
+            },
+            maxInvestors: {
+              ...old.maxInvestors,
+              value: data['max-investors'].int,
+            },
           },
       );
     }

@@ -116,15 +116,15 @@ const Home = () => {
               {asset && (
                 <>
                   <ComplianceRule
-                    value={`${asset.maxSupply < 0 ? 'no limit' : asset.maxSupply} tokens`}
+                    value={`${asset.maxSupply.value < 0 ? 'no limit' : asset.maxSupply.value} tokens`}
                     label="Supply limit"
                   />
                   <ComplianceRule
-                    value={`${asset.maxBalance < 0 ? 'no limit' : asset.maxBalance} tokens`}
+                    value={`${asset.maxBalance.value < 0 ? 'no limit' : asset.maxBalance.value} tokens`}
                     label="Max balance"
                   />
                   <ComplianceRule
-                    value={`${asset.maxInvestors < 0 ? 'no limit' : asset.maxInvestors} (${asset.investorCount}) investors`}
+                    value={`${asset.maxInvestors.value < 0 ? 'no limit' : asset.maxInvestors.value} (${asset.investorCount}) investors`}
                     label="Max Investors"
                   />
                 </>

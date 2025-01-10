@@ -31,9 +31,9 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     formState: { isValid },
   } = useForm<ISetComplianceProps>({
     defaultValues: {
-      maxBalance: `${asset?.maxBalance ?? 0}`,
-      maxSupply: `${asset?.maxSupply ?? 0}`,
-      maxInvestors: `${asset?.maxInvestors ?? 0}`,
+      maxBalance: `${asset?.maxBalance.value ?? 0}`,
+      maxSupply: `${asset?.maxSupply.value ?? 0}`,
+      maxInvestors: `${asset?.maxInvestors.value ?? 0}`,
     },
   });
 
@@ -57,11 +57,15 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
 
   useEffect(() => {
     reset({
-      maxSupply: `${asset?.maxSupply}`,
-      maxBalance: `${asset?.maxBalance}`,
-      maxInvestors: `${asset?.maxInvestors}`,
+      maxSupply: `${asset?.maxSupply.value}`,
+      maxBalance: `${asset?.maxBalance.value}`,
+      maxInvestors: `${asset?.maxInvestors.value}`,
     });
-  }, [asset?.maxBalance, asset?.maxSupply, asset?.maxInvestors]);
+  }, [
+    asset?.maxBalance.value,
+    asset?.maxSupply.value,
+    asset?.maxInvestors.value,
+  ]);
 
   return (
     <>
