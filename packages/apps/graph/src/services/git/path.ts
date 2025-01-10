@@ -1,3 +1,4 @@
+import { isDefined } from '@utils/isDefined';
 import {
   mkdirSync,
   readdirSync,
@@ -52,7 +53,7 @@ export async function flattenFolder(
       // if file, rename to include parent folder name
       if (basePath === currentPath) continue;
       const relativePath = currentPath.replace(basePath, '');
-      const folderChain = relativePath.split('/').filter(Boolean).join('.');
+      const folderChain = relativePath.split('/').filter(isDefined).join('.');
       const newFilePath = join(
         basePath,
         `${basename(folderChain)}.${basename(file)}`,

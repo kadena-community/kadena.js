@@ -134,7 +134,6 @@ export interface ITransactionResult {
   goodResult: string | null;
   height: bigint;
   logs: string | null;
-  metadata: string | null;
   eventCount: bigint | null;
   transactionId: bigint | null;
 }

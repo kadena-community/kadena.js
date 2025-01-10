@@ -18,7 +18,6 @@ import {
   BigIntResolver,
   DateTimeResolver,
   NonNegativeFloatResolver,
-  PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
@@ -57,10 +56,6 @@ interface IDefaultTypesExtension {
       Output: Date;
     };
     Decimal: {
-      Input: number;
-      Output: number;
-    };
-    PositiveFloat: {
       Input: number;
       Output: number;
     };
@@ -183,7 +178,6 @@ const SCALARS = [
   ['BigInt', BigIntResolver],
   ['DateTime', DateTimeResolver],
   ['Decimal', NonNegativeFloatResolver],
-  ['PositiveFloat', PositiveFloatResolver],
 ] as const;
 
 // add the custom scalars

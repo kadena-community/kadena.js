@@ -36,16 +36,11 @@ const TransactionResult = builder.objectType('TransactionResult', {
         'The transaction result when it was successful. Formatted as raw JSON.',
       nullable: true,
     }),
-    height: t.expose('height', {
-      description: 'The height of the block this transaction belongs to.',
-      type: 'BigInt',
-    }),
     logs: t.exposeString('logs', {
       description:
         'Identifier to retrieve the logs for the execution of the transaction.',
       nullable: true,
     }),
-    metadata: t.exposeString('metadata', { nullable: true }),
     eventCount: t.expose('eventCount', { type: 'BigInt', nullable: true }),
     transactionId: t.expose('transactionId', {
       type: 'BigInt',

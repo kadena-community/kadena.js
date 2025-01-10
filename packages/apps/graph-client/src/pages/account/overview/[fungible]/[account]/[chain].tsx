@@ -199,7 +199,7 @@ const ChainAccount: React.FC = () => {
                     </Cell>
                     <Cell>
                       {
-                        fungibleChainAccountData.fungibleChainAccount
+                        fungibleChainAccountData.fungibleChainAccount[0]
                           .fungibleName
                       }
                     </Cell>
@@ -209,7 +209,7 @@ const ChainAccount: React.FC = () => {
                       <strong>Balance</strong>
                     </Cell>
                     <Cell>
-                      {fungibleChainAccountData.fungibleChainAccount.balance}
+                      {fungibleChainAccountData.fungibleChainAccount[0].balance}
                     </Cell>
                   </Row>
                   <Row>
@@ -218,7 +218,7 @@ const ChainAccount: React.FC = () => {
                     </Cell>
                     <Cell>
                       {
-                        fungibleChainAccountData.fungibleChainAccount.guard
+                        fungibleChainAccountData.fungibleChainAccount[0].guard
                           .predicate
                       }
                     </Cell>
@@ -228,7 +228,10 @@ const ChainAccount: React.FC = () => {
                       <strong>Guard Keys</strong>
                     </Cell>
                     <Cell>
-                      {fungibleChainAccountData.fungibleChainAccount.guard.keys}
+                      {
+                        fungibleChainAccountData.fungibleChainAccount[0].guard
+                          .keys
+                      }
                     </Cell>
                   </Row>
                 </TableBody>
@@ -244,7 +247,7 @@ const ChainAccount: React.FC = () => {
                     chainId={router.query.chain as string}
                     truncateColumns={true}
                     transfers={
-                      fungibleChainAccountData.fungibleChainAccount
+                      fungibleChainAccountData.fungibleChainAccount[0]
                         .transfers as FungibleChainAccountTransfersConnection
                     }
                   />
@@ -258,7 +261,7 @@ const ChainAccount: React.FC = () => {
                     }`}
                     truncateColumns={true}
                     transactions={
-                      fungibleChainAccountData.fungibleChainAccount
+                      fungibleChainAccountData.fungibleChainAccount[0]
                         .transactions as FungibleChainAccountTransactionsConnection
                     }
                   />

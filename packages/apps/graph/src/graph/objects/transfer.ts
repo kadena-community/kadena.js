@@ -12,10 +12,7 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
   fields: (t) => ({
     // database fields
     amount: t.expose('amount' as never, { type: 'Decimal' }),
-    blockHash: t.exposeString('blockHash'),
-    chainId: t.expose('chainId', { type: 'BigInt' }),
     senderAccount: t.exposeString('senderAccount'),
-    height: t.expose('height', { type: 'BigInt' }),
     orderIndex: t.expose('orderIndex', {
       type: 'BigInt',
       description:

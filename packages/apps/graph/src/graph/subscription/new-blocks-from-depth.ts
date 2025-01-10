@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { CHAINS } from '@kadena/chainweb-node-client';
 import type { Block } from '@prisma/client';
 import { createBlockDepthMap } from '@services/depth-service';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
@@ -18,7 +19,7 @@ builder.subscriptionField('newBlocksFromDepth', (t) =>
         },
       }),
       chainIds: t.arg.stringList({
-        required: true,
+        defaultValue: [...CHAINS],
         validate: {
           minLength: 1,
           items: {
@@ -29,7 +30,7 @@ builder.subscriptionField('newBlocksFromDepth', (t) =>
     },
     nullable: true,
     subscribe: (__root, args, context) =>
-      iteratorFn(args.chainIds, args.minimumDepth, context),
+      iteratorFn(args.chainIds as string[], args.minimumDepth, context),
     resolve: (parent) => parent,
   }),
 );

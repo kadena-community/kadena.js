@@ -4,11 +4,19 @@ import { gql } from '@apollo/client';
 export const CORE_TRANSFER_FIELDS: DocumentNode = gql`
   fragment CoreTransferFields on Transfer {
     amount
-    chainId
     senderAccount
-    height
     requestKey
     receiverAccount
+    transaction {
+      hash
+      result {
+        ... on TransactionResult {
+          block {
+            height
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -17,7 +25,9 @@ export const ALL_TRANSFER_FIELDS: DocumentNode = gql`
 
   fragment AllTransferFields on Transfer {
     ...CoreTransferFields
-    blockHash
+    block {
+      hash
+    }
     id
     moduleHash
     moduleName

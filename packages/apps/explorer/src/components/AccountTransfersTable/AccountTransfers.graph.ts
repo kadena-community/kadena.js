@@ -20,13 +20,21 @@ export const accountTransfers: DocumentNode = gql`
           }
           edges {
             node {
-              requestKey
-              blockHash
+              transaction {
+                cmd {
+                  meta {
+                    chainId
+                  }
+                }
+                hash
+              }
+              block {
+                hash
+                height
+              }
               amount
-              chainId
               receiverAccount
               senderAccount
-              height
             }
           }
         }

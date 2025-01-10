@@ -12,10 +12,8 @@ import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 
 import { dotenv } from '@utils/dotenv';
-import type {
-  IFungibleAccount,
-  IFungibleChainAccount,
-} from '../types/graphql-types';
+import { isDefined } from '@utils/isDefined';
+import type { IFungibleAccount } from '../types/graphql-types';
 import {
   FungibleAccountName,
   FungibleChainAccountName,
@@ -320,7 +318,6 @@ export const getTransactions = async (
             goodresult AS "good_result",
             height,
             logs,
-            metadata,
             nonce,
             num_events AS "event_count",
             pactid AS "pact_id",
@@ -357,7 +354,6 @@ export const getTransactions = async (
             goodresult AS "good_result",
             height,
             logs,
-            metadata,
             nonce,
             num_events AS "event_count",
             pactid AS "pact_id",
@@ -412,7 +408,6 @@ export const getTransactions = async (
           goodresult AS "good_result",
           height,
           logs,
-          metadata,
           nonce,
           num_events AS "event_count",
           pactid AS "pact_id",
@@ -460,7 +455,6 @@ export const getTransactions = async (
           goodresult AS "good_result",
           height,
           logs,
-          metadata,
           nonce,
           num_events AS "event_count",
           pactid AS "pact_id",
@@ -546,9 +540,7 @@ export default builder.node(
                   });
                 }),
               )
-            ).filter(
-              (chainAccount) => chainAccount !== null,
-            ) as IFungibleChainAccount[];
+            ).filter(isDefined);
           } catch (error) {
             throw normalizeError(error);
           }

@@ -30,11 +30,11 @@ type Block implements Node {
 
   """The proof of work hash."""
   powHash: String!
-  target: Decimal!
+  target: String!
 
   """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
-  weight: Decimal!
+  weight: String!
 }
 
 type BlockEventsConnection {
@@ -105,7 +105,6 @@ type Event implements Node {
   """The height of the block where the event was emitted."""
   height: BigInt!
   id: ID!
-  incrementedId: Int!
   moduleName: String!
   name: String!
 
@@ -113,7 +112,6 @@ type Event implements Node {
   The order index of this event, in the case that there are multiple events in one transaction.
   """
   orderIndex: BigInt!
-  parameterText: String!
   parameters: String
 
   """
@@ -244,14 +242,6 @@ interface IGuard {
   raw: String!
 }
 
-"""The account of the miner that solved a block."""
-type MinerKey implements Node {
-  block: Block!
-  blockHash: String!
-  id: ID!
-  key: String!
-}
-
 """Information about the network."""
 type NetworkInfo {
   """The version of the API."""
@@ -374,9 +364,6 @@ type PageInfo {
   startCursor: String
 }
 
-"""Floats that will have a value greater than 0."""
-scalar PositiveFloat
-
 type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
@@ -387,7 +374,7 @@ type Query {
     before: String
 
     """Default: all chains"""
-    chainIds: [String!]
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
     first: Int
     last: Int
     minimumDepth: Int!
@@ -399,7 +386,7 @@ type Query {
     before: String
 
     """Default: all chains"""
-    chainIds: [String!]
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
     endHeight: Int
     first: Int
     last: Int
@@ -414,7 +401,7 @@ type Query {
     before: String
 
     """Default: all chains"""
-    chainIds: [String!]
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
 
     """Retrieve blocks from completed heights only. Default: true"""
     completedHeights: Boolean = true
@@ -425,9 +412,9 @@ type Query {
 
   """
   Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
-         
+  
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-         
+  
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
   events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, maxHeight: Int, minHeight: Int, minimumDepth: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
@@ -435,7 +422,7 @@ type Query {
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
   """
-  fungibleAccount(accountName: String!, fungibleName: String): FungibleAccount
+  fungibleAccount(accountName: String!, fungibleName: String = "coin"): FungibleAccount
 
   """Retrieve an account by public key."""
   fungibleAccountsByPublicKey(fungibleName: String, publicKey: String!): [FungibleAccount!]!
@@ -443,7 +430,7 @@ type Query {
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String): FungibleChainAccount
+  fungibleChainAccount(accountName: String!, chainIds: [String!]! = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], fungibleName: String = "coin"): [FungibleChainAccount!]
 
   """Retrieve a chain account by public key."""
   fungibleChainAccountsByPublicKey(chainId: String!, fungibleName: String, publicKey: String!): [FungibleChainAccount!]!
@@ -602,10 +589,10 @@ type Subscription {
   events(chainId: String, minimumDepth: Int, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
-  newBlocks(chainIds: [String!]): [Block!]
+  newBlocks(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]): [Block!]
 
   """Subscribe to new blocks from a specific depth."""
-  newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
+  newBlocksFromDepth(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], minimumDepth: Int!): [Block!]
 
   """Listen for a transaction by request key."""
   transaction(chainId: String, requestKey: String!): Transaction
@@ -676,12 +663,8 @@ type TransactionResult {
   """The transaction result when it was successful. Formatted as raw JSON."""
   goodResult: String
 
-  """The height of the block this transaction belongs to."""
-  height: BigInt!
-
   """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
-  metadata: String
   transactionId: BigInt
   transfers(after: String, before: String, first: Int, last: Int): TransactionResultTransfersConnection!
 }
@@ -716,15 +699,12 @@ type TransactionSignature {
 type Transfer implements Node {
   amount: Decimal!
   block: Block!
-  blockHash: String!
-  chainId: BigInt!
   creationTime: DateTime!
 
   """
   The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.
   """
   crossChainTransfer: Transfer
-  height: BigInt!
   id: ID!
   moduleHash: String!
   moduleName: String!

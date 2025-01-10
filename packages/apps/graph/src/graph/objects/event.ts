@@ -12,7 +12,6 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
   select: {},
   fields: (t) => ({
     // database fields
-    incrementedId: t.exposeInt('id'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     height: t.expose('height', {
       type: 'BigInt',
@@ -25,7 +24,6 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
     }),
     moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),
-    parameterText: t.exposeString('parameterText'),
     parameters: t.string({
       nullable: true,
       select: {

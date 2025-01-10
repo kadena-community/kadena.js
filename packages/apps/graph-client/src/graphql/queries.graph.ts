@@ -5,7 +5,6 @@ import {
   ALL_FUNGIBLE_CHAIN_ACCOUNT_FIELDS,
   CORE_FUNGIBLE_CHAIN_ACCOUNT_FIELDS,
 } from './fields/fungible-chain-account.graph';
-import { CORE_MINER_KEY_FIELDS } from './fields/miner-key.graph';
 import { ALL_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/non-fungible-account.graph';
 import { CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS } from './fields/non-fungible-chain-account.graph';
 import { CORE_TRANSACTION_FIELDS } from './fields/transaction.graph';
@@ -17,7 +16,6 @@ import { gql } from '@apollo/client';
 export const getBlockFromHash: DocumentNode = gql`
   ${ALL_BLOCK_FIELDS}
   ${CORE_TRANSACTION_FIELDS}
-  ${CORE_MINER_KEY_FIELDS}
 
   query getBlockFromHash(
     $hash: String!
@@ -136,7 +134,7 @@ export const getFungibleChainAccount: DocumentNode = gql`
     fungibleChainAccount(
       fungibleName: $fungibleName
       accountName: $accountName
-      chainId: $chainId
+      chainIds: [$chainId]
     ) {
       ...AllFungibleChainAccountFields
       transactions {
