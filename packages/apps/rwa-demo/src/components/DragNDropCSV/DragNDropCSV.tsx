@@ -1,7 +1,7 @@
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import { checkAllowedFileTypes } from '@/utils/checkAllowedFileTypes';
 import { csvFileToArray } from '@/utils/csvFileToArray';
-import { objectNotValidSchema } from '@/utils/objectNotValidSchema';
+import { objectValidSchema } from '@/utils/objectValidSchema';
 import { Stack } from '@kadena/kode-ui';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { DragEventHandler, FC } from 'react';
@@ -31,7 +31,7 @@ export const DragNDropCSV: FC<IProps> = ({ onResult, resultSchema }) => {
         fileReader.onload = function () {
           const arr = csvFileToArray<ICSVAccount>(fileReader.result as string);
 
-          if (!arr.find(objectNotValidSchema(resultSchema))) {
+          if (!arr.find(objectValidSchema(resultSchema))) {
             addNotification({
               intent: 'negative',
               label: 'the CSV has the wrong schema',
