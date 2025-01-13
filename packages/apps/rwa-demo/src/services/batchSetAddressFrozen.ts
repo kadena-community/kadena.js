@@ -3,6 +3,7 @@ import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
+import { AGENTROLES } from './addAgent';
 
 export interface IBatchSetAddressFrozenProps {
   investorAccounts: string[];
@@ -30,7 +31,7 @@ export const batchSetAddressFrozen = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, 'freezer'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.FREEZER),
       withCap(`coin.GAS`),
     ])
 

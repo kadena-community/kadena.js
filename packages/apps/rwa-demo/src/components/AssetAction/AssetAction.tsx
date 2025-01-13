@@ -17,7 +17,7 @@ export const AssetAction: FC<IProps> = ({
   onPress,
 }) => {
   return (
-    <Stack width="100%" className={assetActionWrapper}>
+    <Stack className={assetActionWrapper}>
       <Tile
         isDisabled={isDisabled}
         as={onPress ? 'button' : 'div'}

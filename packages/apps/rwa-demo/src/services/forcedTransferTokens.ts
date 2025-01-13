@@ -4,6 +4,7 @@ import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import { AGENTROLES } from './addAgent';
 import type { ITransferTokensProps } from './transferTokens';
 
 const createPubKeyFromAccount = (account: string): string => {
@@ -27,7 +28,7 @@ export const forcedTransferTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(createPubKeyFromAccount(account.address), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, 'transfer-manager'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.TRANSFERMANAGER),
       withCap(
         `${getAsset()}.TRANSFER`,
         data.investorFromAccount,

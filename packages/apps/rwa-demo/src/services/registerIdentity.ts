@@ -3,6 +3,7 @@ import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
+import { AGENTROLES } from './addAgent';
 
 export interface IRegisterIdentityProps {
   accountName: string;
@@ -32,7 +33,7 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, 'whitelist-manager'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
 
