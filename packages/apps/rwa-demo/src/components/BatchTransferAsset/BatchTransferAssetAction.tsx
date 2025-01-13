@@ -3,6 +3,7 @@ import { MonoAdd } from '@kadena/kode-icons';
 import type { ITileProps } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { AssetAction } from '../AssetAction/AssetAction';
+import { BatchTransferAssetForm } from './BatchTransferAssetForm';
 
 interface IProps {
   onPress?: ITileProps['onClick'];
@@ -11,11 +12,14 @@ interface IProps {
 export const BatchTransferAssetAction: FC<IProps> = ({ onPress }) => {
   const { isAllowed: isTransferTokensAllowed } = useBatchTransferTokens();
   return (
-    <AssetAction
-      onPress={onPress}
-      isDisabled={!isTransferTokensAllowed}
-      icon={<MonoAdd />}
-      label="Batch Transfer tokens"
+    <BatchTransferAssetForm
+      trigger={
+        <AssetAction
+          isDisabled={!isTransferTokensAllowed}
+          icon={<MonoAdd />}
+          label="Batch Transfer tokens"
+        />
+      }
     />
   );
 };

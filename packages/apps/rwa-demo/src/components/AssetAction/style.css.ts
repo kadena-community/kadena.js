@@ -4,10 +4,10 @@ import { globalStyle } from '@vanilla-extract/css';
 export const assetActionWrapper = style([
   {
     flex: '33%',
-    aspectRatio: '1/1',
     maxWidth: '150px',
+    aspectRatio: '1/1',
     textAlign: 'center',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
   },
 ]);
 
