@@ -24,9 +24,10 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { isInvestor, account } = useAccount();
   const { asset } = useAsset();
-  const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
+  const { isInvestor, account } = useAccount();
+  const { isAllowed: isSetComplianceAllowed, toggleComplianceRule } =
+    useSetCompliance();
 
   return (
     <>
@@ -116,16 +117,25 @@ const Home = () => {
               {asset && (
                 <>
                   <ComplianceRule
+                    isActive={asset.maxSupply.isActive}
+                    ruleKey={asset.maxSupply.key}
                     value={`${asset.maxSupply.value < 0 ? 'no limit' : asset.maxSupply.value} tokens`}
                     label="Supply limit"
+                    onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
+                    isActive={asset.maxBalance.isActive}
+                    ruleKey={asset.maxBalance.key}
                     value={`${asset.maxBalance.value < 0 ? 'no limit' : asset.maxBalance.value} tokens`}
                     label="Max balance"
+                    onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
+                    isActive={asset.maxInvestors.isActive}
+                    ruleKey={asset.maxInvestors.key}
                     value={`${asset.maxInvestors.value < 0 ? 'no limit' : asset.maxInvestors.value} (${asset.investorCount}) investors`}
                     label="Max Investors"
+                    onToggle={toggleComplianceRule}
                   />
                 </>
               )}

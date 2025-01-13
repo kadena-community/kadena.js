@@ -1,7 +1,7 @@
 import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
-import type { ISetComplianceProps } from '@/services/setCompliance';
+import type { ISetComplianceParametersProps } from '@/services/setComplianceParameters';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -29,7 +29,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     reset,
     control,
     formState: { isValid },
-  } = useForm<ISetComplianceProps>({
+  } = useForm<ISetComplianceParametersProps>({
     defaultValues: {
       maxBalance: `${asset?.maxBalance.value ?? 0}`,
       maxSupply: `${asset?.maxSupply.value ?? 0}`,
@@ -49,7 +49,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     if (onClose) onClose();
   };
 
-  const onSubmit = async (data: ISetComplianceProps) => {
+  const onSubmit = async (data: ISetComplianceParametersProps) => {
     await submit(data);
 
     handleOnClose();

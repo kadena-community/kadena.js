@@ -140,14 +140,17 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       maxSupply: {
         isActive: false,
         value: INFINITE_COMPLIANCE,
+        key: 'RWA.supply-limit-compliance',
       },
       maxBalance: {
         isActive: false,
         value: INFINITE_COMPLIANCE,
+        key: 'RWA.max-balance-compliance',
       },
       maxInvestors: {
         isActive: false,
         value: INFINITE_COMPLIANCE,
+        key: 'RWA.max-investors-compliance',
       },
       investorCount: 0,
       contractName,
