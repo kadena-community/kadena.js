@@ -4,7 +4,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (namespace "${namespace}")
 
 (module ${contractName} GOV
-  "${contractName} contract descriptions"
+  "${contractName} descriptions"
 
   (defconst GOV-KEYSET:string "${namespace}.admin-keyset")
   (defcap GOV () (enforce-keyset GOV-KEYSET))

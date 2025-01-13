@@ -58,12 +58,8 @@ export const AccountContext = createContext<IAccountContext>({
     isAgentAdmin: () => {
       return false;
     },
-    isSupplyModifier: () => false,
     isFreezer: () => false,
     isTransferManager: () => false,
-    isRecoveryManager: () => false,
-    isComplianceManager: () => false,
-    isWhitelistManager: () => false,
   },
 });
 

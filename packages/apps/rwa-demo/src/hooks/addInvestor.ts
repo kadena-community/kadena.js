@@ -63,7 +63,7 @@ export const useAddInvestor = ({
     setIsAllowed(
       ((!!investorAccount && !frozen) || frozen) &&
         !paused &&
-        accountRoles.isWhitelistManager() &&
+        accountRoles.isAgentAdmin() &&
         !isActiveAccountChangeTx,
     );
   }, [

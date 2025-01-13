@@ -61,7 +61,7 @@ export const useDeleteInvestor = ({
     if (investorAccount) {
       const result =
         !paused &&
-        accountRoles.isWhitelistManager() &&
+        accountRoles.isAgentAdmin() &&
         balance !== undefined &&
         balance <= 0;
 
@@ -75,7 +75,7 @@ export const useDeleteInvestor = ({
     }
 
     setIsAllowed(
-      !paused && accountRoles.isWhitelistManager() && !isActiveAccountChangeTx,
+      !paused && accountRoles.isAgentAdmin() && !isActiveAccountChangeTx,
     );
   }, [paused, account?.address, isMounted, balance, isActiveAccountChangeTx]);
 

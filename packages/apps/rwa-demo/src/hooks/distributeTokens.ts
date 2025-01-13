@@ -57,7 +57,7 @@ export const useDistributeTokens = ({
     setIsAllowed(
       !frozen &&
         !paused &&
-        accountRoles.isSupplyModifier() &&
+        accountRoles.isTransferManager() &&
         !isActiveAccountChangeTx &&
         ((asset.maxSupply.value > INFINITE_COMPLIANCE &&
           asset.supply < asset.maxSupply.value) ||
