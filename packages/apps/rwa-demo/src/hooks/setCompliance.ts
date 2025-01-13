@@ -45,7 +45,7 @@ export const useSetCompliance = () => {
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(
-      !paused && accountRoles.isComplianceManager() && !isActiveAccountChangeTx,
+      !paused && accountRoles.isAgentAdmin() && !isActiveAccountChangeTx,
     );
   }, [
     paused,
