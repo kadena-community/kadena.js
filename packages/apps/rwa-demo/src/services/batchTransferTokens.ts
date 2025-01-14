@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
+import { getAggregatedAccounts } from '@/utils/getAggregatedAccounts';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
@@ -26,33 +27,7 @@ export const batchTransferTokens = async (
    * make sure that every account is only in the array 1 time and the amount is aggregated for a single account
    */
 
-  const aggregatedAccounts = data.reduce(
-    (acc: ITransferToken[], val: ITransferToken) => {
-      //check if account is already in the new array
-
-      let isNew = true;
-      const newAcc = acc.map((r) => {
-        const newR = JSON.parse(JSON.stringify(r));
-        if (newR.to === val.to) {
-          newR.amount = `${parseInt(newR.amount) + parseInt(val.amount)}`;
-          isNew = false;
-        }
-
-        return newR;
-      });
-
-      if (isNew) {
-        console.log(22);
-        newAcc.push(val);
-      }
-
-      console.log({ newAcc });
-      return newAcc;
-    },
-    [],
-  );
-
-  console.log({ aggregatedAccounts });
+  const aggregatedAccounts = getAggregatedAccounts(data);
 
   return Pact.builder
     .execution(
