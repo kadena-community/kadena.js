@@ -2,6 +2,7 @@
 
 import { AssetAction } from '@/components/AssetAction/AssetAction';
 import { TransferAssetAction } from '@/components/AssetAction/TransferAssetAction';
+import { BatchTransferAssetAction } from '@/components/BatchTransferAsset/BatchTransferAssetAction';
 import { ComplianceRule } from '@/components/ComplianceRule/ComplianceRule';
 import { ContractDetails } from '@/components/ContractDetails/ContractDetails';
 import { contractDetailWrapperClass } from '@/components/ContractDetails/style.css';
@@ -22,6 +23,7 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
+import { actionsWrapperClass } from './styles.css';
 
 const Home = () => {
   const { asset } = useAsset();
@@ -69,7 +71,7 @@ const Home = () => {
           <SectionCardContentBlock>
             <SectionCardHeader title="Asset" description={<></>} />
             <SectionCardBody title="Actions">
-              <Stack width="100%" justifyContent="space-between" gap="sm">
+              <Stack className={actionsWrapperClass}>
                 <PauseAssetAction />
 
                 <SetComplianceForm
@@ -86,6 +88,8 @@ const Home = () => {
                   investorAccount={account?.address!}
                   trigger={<TransferAssetAction />}
                 />
+
+                <BatchTransferAssetAction />
               </Stack>
             </SectionCardBody>
           </SectionCardContentBlock>
