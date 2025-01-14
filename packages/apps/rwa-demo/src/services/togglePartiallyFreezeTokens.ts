@@ -4,6 +4,7 @@ import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import { AGENTROLES } from './addAgent';
 
 export interface ITogglePartiallyFreezeTokensProps {
   amount: string;
@@ -39,7 +40,7 @@ export const togglePartiallyFreezeTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, 'freezer'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.FREEZER),
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)

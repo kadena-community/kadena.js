@@ -3,6 +3,7 @@ import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
+import { AGENTROLES } from './addAgent';
 
 export interface IDeleteIdentityProps {
   investor: string;
@@ -19,7 +20,7 @@ export const deleteIdentity = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, 'whitelist-manager'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
     .addData('investor', data.investor)

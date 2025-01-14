@@ -4,6 +4,7 @@ import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import { AGENTROLES } from './addAgent';
 
 export interface ICSVAccount {
   account: string;
@@ -52,7 +53,7 @@ export const batchRegisterIdentity = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, 'whitelist-manager'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
 
