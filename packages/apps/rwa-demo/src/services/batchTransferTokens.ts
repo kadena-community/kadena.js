@@ -21,6 +21,34 @@ export const batchTransferTokens = async (
   data: ITransferToken[],
   account: IWalletAccount,
 ) => {
+  /**
+   * for the TRANSFER capability:
+   * make sure that every account is only in the array 1 time and the amount is aggregated for a single account
+   */
+
+  const aggregatedAccounts = data.reduce(
+    (acc: ITransferToken[], val: ITransferToken) => {
+      //check if account is already in the new array
+
+      let isNew = true;
+      const newAcc = acc.map((r) => {
+        if (r.to === val.to) {
+          r.amount = `${parseInt(r.amount) + parseInt(val.amount)}`;
+          isNew = false;
+        }
+
+        return r;
+      });
+
+      if (isNew) {
+        newAcc.push(val);
+      }
+
+      return newAcc;
+    },
+    [],
+  );
+
   return Pact.builder
     .execution(
       `
@@ -40,7 +68,7 @@ export const batchTransferTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(createPubKeyFromAccount(account.address), (withCap) =>
-      data.map((record, idx) =>
+      aggregatedAccounts.map((_, idx) =>
         withCap(`${getAsset()}.TRANSFER`, account.address, data[idx].to, {
           decimal: data[idx].amount.trim(),
         }),
