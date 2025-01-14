@@ -3,7 +3,7 @@
   "version": "0.1.6",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "pnpm run generate && next build",
     "dev": "next dev",
     "generate": "pactjs contract-generate --contract \"RWA.compliance-v1\" --contract \"RWA.max-balance-compliance\" --contract \"RWA.supply-limit-compliance\" --contract \"RWA.max-investors-compliance\" --chain 0 --network development --api \"http://localhost:8080/chainweb/0.0/development/chain/0/pact\"",
     "generate:sdk": "cache-sh -i \"{codegen-sdk.yml,./node_modules/@kadena/graph/generated-schema.graphql,src/**/*.graph.ts,src/__generated__/**}\" -- graphql-codegen --config codegen-sdk.yml",
