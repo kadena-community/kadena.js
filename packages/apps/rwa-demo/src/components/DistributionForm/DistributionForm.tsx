@@ -1,5 +1,3 @@
-import { INFINITE_COMPLIANCE } from '@/constants';
-import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
@@ -31,8 +29,7 @@ export const DistributionForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { balance } = useAccount();
-  const { asset } = useAsset();
+  const { maxCompliance } = useAsset();
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
   const { submit, isAllowed } = useDistributeTokens({ investorAccount });
@@ -86,10 +83,7 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  let maxAmount = INFINITE_COMPLIANCE;
-  if ((asset?.maxBalance ?? 0) >= 0) {
-    maxAmount = (asset?.maxBalance ?? 0) - balance;
-  }
+  const maxAmount = maxCompliance('RWA.max-balance-compliance');
 
   return (
     <>

@@ -8,9 +8,10 @@ export interface IIsOwnerProps {
 
 export const isOwner = async (data: IIsOwnerProps) => {
   const client = getClient();
-
   const transaction = Pact.builder
-    .execution(`(describe-keyset (${getAsset()}.get-owner-guard))`)
+    .execution(
+      ` (describe-keyset (drop 1 (format "{}" [(${getAsset()}.get-owner-guard)])))`,
+    )
     .setMeta({
       chainId: getNetwork().chainId,
     })
@@ -23,8 +24,7 @@ export const isOwner = async (data: IIsOwnerProps) => {
     signatureVerification: false,
   });
 
-  console.log(22, { result });
-  return true;
-  //TODO: fix contract
-  // return result.status === 'success' ? result.data : undefined;
+  return !!(result as any).data.keys.find((k: string) =>
+    data.owner.includes(k),
+  );
 };

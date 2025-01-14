@@ -23,6 +23,7 @@ export interface ITxType {
 
 export const TXTYPES: Record<
   | 'SETCOMPLIANCE'
+  | 'SETCOMPLIANCERULE'
   | 'ADDINVESTOR'
   | 'DELETEINVESTOR'
   | 'ADDAGENT'
@@ -36,6 +37,7 @@ export const TXTYPES: Record<
   ITxType
 > = {
   SETCOMPLIANCE: { name: 'SETCOMPLIANCE', overall: true },
+  SETCOMPLIANCERULE: { name: 'SETCOMPLIANCERULE', overall: true },
   ADDINVESTOR: { name: 'ADDINVESTOR', overall: true },
   DELETEINVESTOR: { name: 'DELETEINVESTOR', overall: true },
   ADDAGENT: { name: 'ADDAGENT', overall: true },

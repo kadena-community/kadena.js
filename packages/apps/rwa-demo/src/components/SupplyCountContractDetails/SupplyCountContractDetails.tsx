@@ -10,12 +10,15 @@ export const SupplyCountContractDetails: FC = () => {
 
   if (!asset) return null;
 
-  if (asset.supply > asset.maxSupply && asset.maxSupply > INFINITE_COMPLIANCE)
+  if (
+    asset.supply > asset.compliance.maxSupply.value &&
+    asset.compliance.maxSupply.value > INFINITE_COMPLIANCE
+  )
     return (
       <Stack alignItems="center" gap="xs">
         <MonoWarning
           style={{ color: token('color.icon.semantic.warning.default') }}
-          title={`The total supply of tokens is bigger than the max supply (${asset.maxSupply})`}
+          title={`The total supply of tokens is bigger than the max supply (${asset.compliance.maxSupply.value})`}
         />{' '}
         {asset.supply}
       </Stack>

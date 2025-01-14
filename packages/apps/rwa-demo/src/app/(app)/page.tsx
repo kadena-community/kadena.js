@@ -26,9 +26,10 @@ import {
 import { actionsWrapperClass } from './styles.css';
 
 const Home = () => {
-  const { isInvestor, account } = useAccount();
   const { asset } = useAsset();
-  const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
+  const { isInvestor, account } = useAccount();
+  const { isAllowed: isSetComplianceAllowed, toggleComplianceRule } =
+    useSetCompliance();
 
   return (
     <>
@@ -120,16 +121,25 @@ const Home = () => {
               {asset && (
                 <>
                   <ComplianceRule
-                    value={`${asset.maxSupply < 0 ? 'no limit' : asset.maxSupply} tokens`}
+                    isActive={asset.compliance.maxSupply.isActive}
+                    ruleKey={asset.compliance.maxSupply.key}
+                    value={`${asset.compliance.maxSupply.value < 0 ? 'no limit' : asset.compliance.maxSupply.value} tokens`}
                     label="Supply limit"
+                    onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
-                    value={`${asset.maxBalance < 0 ? 'no limit' : asset.maxBalance} tokens`}
+                    isActive={asset.compliance.maxBalance.isActive}
+                    ruleKey={asset.compliance.maxBalance.key}
+                    value={`${asset.compliance.maxBalance.value < 0 ? 'no limit' : asset.compliance.maxBalance.value} tokens`}
                     label="Max balance"
+                    onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
-                    value={`${asset.maxInvestors < 0 ? 'no limit' : asset.maxInvestors} (${asset.investorCount}) investors`}
+                    isActive={asset.compliance.maxInvestors.isActive}
+                    ruleKey={asset.compliance.maxInvestors.key}
+                    value={`${asset.compliance.maxInvestors.value < 0 ? 'no limit' : asset.compliance.maxInvestors.value} (${asset.investorCount}) investors`}
                     label="Max Investors"
+                    onToggle={toggleComplianceRule}
                   />
                 </>
               )}

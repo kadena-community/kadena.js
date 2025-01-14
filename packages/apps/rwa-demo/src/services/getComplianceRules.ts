@@ -3,17 +3,27 @@ import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
+export type IComplianceRuleTypes =
+  | 'RWA.max-balance-compliance'
+  | 'RWA.supply-limit-compliance'
+  | 'RWA.max-investors-compliance';
+
+export interface IComplianceRule {
+  key: IComplianceRuleTypes;
+  isActive: boolean;
+  value: number;
+}
 export interface IComplianceProps {
-  maxSupply: number;
-  maxBalance: number;
-  maxInvestors: number;
+  maxSupply: IComplianceRule;
+  maxBalance: IComplianceRule;
+  maxInvestors: IComplianceRule;
 }
 
-export const getMaxBalance = async (): Promise<number> => {
+export const getActiveComplianceValues = async () => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.max-balance-per-investor)`)
+    .execution(`(${getAsset()}.get-compliance-parameters)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })
@@ -27,35 +37,14 @@ export const getMaxBalance = async (): Promise<number> => {
 
   const data = (result as any).data as any;
 
-  return result.status === 'success' ? data : INFINITE_COMPLIANCE;
+  return result.status === 'success' ? data : undefined;
 };
 
-export const getMaxSupply = async (): Promise<number> => {
+export const getActiveComplianceRules = async () => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.supply-limit)`)
-    .setMeta({
-      chainId: getNetwork().chainId,
-    })
-    .setNetworkId(getNetwork().networkId)
-    .createTransaction();
-
-  const { result } = await client.local(transaction, {
-    preflight: false,
-    signatureVerification: false,
-  });
-
-  const data = (result as any).data as any;
-
-  return result.status === 'success' ? data : INFINITE_COMPLIANCE;
-};
-
-export const getMaxInvestors = async (): Promise<number> => {
-  const client = getClient();
-
-  const transaction = Pact.builder
-    .execution(`(${getAsset()}.max-investors)`)
+    .execution(`(${getAsset()}.get-compliance)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })
@@ -73,13 +62,30 @@ export const getMaxInvestors = async (): Promise<number> => {
 };
 
 export const getComplianceRules = async (): Promise<IComplianceProps> => {
-  const maxBalanceResult = await getMaxBalance();
-  const maxSupplyResult = await getMaxSupply();
-  const maxInvestors = await getMaxInvestors();
+  const rules = await getActiveComplianceRules();
+  const values = await getActiveComplianceValues();
 
   return {
-    maxBalance: maxBalanceResult,
-    maxSupply: maxSupplyResult,
-    maxInvestors: maxInvestors,
+    maxBalance: {
+      key: 'RWA.max-balance-compliance',
+      isActive: !!rules.find(
+        (rule: any) => rule.refName.name === 'max-balance-compliance',
+      ),
+      value: values['max-balance-per-investor'] ?? INFINITE_COMPLIANCE,
+    },
+    maxSupply: {
+      key: 'RWA.supply-limit-compliance',
+      isActive: !!rules.find(
+        (rule: any) => rule.refName.name === 'supply-limit-compliance',
+      ),
+      value: values['supply-limit'] ?? INFINITE_COMPLIANCE,
+    },
+    maxInvestors: {
+      key: 'RWA.max-investors-compliance',
+      isActive: !!rules.find(
+        (rule: any) => rule.refName.name === 'max-investors-compliance',
+      ),
+      value: values['max-investors']?.int ?? INFINITE_COMPLIANCE,
+    },
   };
 };

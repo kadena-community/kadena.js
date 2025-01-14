@@ -7,10 +7,15 @@ import {
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import type { IComplianceProps } from '@/services/getComplianceRules';
+import type {
+  IComplianceProps,
+  IComplianceRule,
+  IComplianceRuleTypes,
+} from '@/services/getComplianceRules';
 import { getComplianceRules } from '@/services/getComplianceRules';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
@@ -20,12 +25,13 @@ import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
-export interface IAsset extends IComplianceProps {
+export interface IAsset {
   uuid: string;
   contractName: string;
   namespace: string;
   supply: number;
   investorCount: number;
+  compliance: IComplianceProps;
 }
 
 export interface IAssetContext {
@@ -46,6 +52,7 @@ export interface IAssetContext {
     uuid: string,
     account: IWalletAccount,
   ) => Promise<IAsset | undefined>;
+  maxCompliance: (rule: IComplianceRuleTypes) => number;
 }
 
 export const AssetContext = createContext<IAssetContext>({
@@ -56,6 +63,7 @@ export const AssetContext = createContext<IAssetContext>({
   addExistingAsset: () => undefined,
   removeAsset: (uuid: string) => undefined,
   getAsset: async () => undefined,
+  maxCompliance: () => -1,
 });
 
 export type EventQueryVariables = Exact<{
@@ -77,6 +85,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { paused } = usePaused();
   const { data: supply } = useSupply();
   const { data: investorCount } = useGetInvestorCount();
+  const { data: complianceRules } = useGetComplianceRules({ asset });
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
       variables: {
@@ -118,7 +127,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     })) as number;
 
     if (!data) return;
-    return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };
+    return {
+      ...data,
+      compliance: { ...extraAssetData },
+      supply: supplyResult ?? 0,
+    };
   };
   const removeAsset = (uuid: string) => {
     const data = getAssets().filter((a) => a.uuid !== uuid);
@@ -137,9 +150,23 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const asset: IAsset = {
       uuid: crypto.randomUUID(),
       supply: INFINITE_COMPLIANCE,
-      maxSupply: INFINITE_COMPLIANCE,
-      maxBalance: INFINITE_COMPLIANCE,
-      maxInvestors: INFINITE_COMPLIANCE,
+      compliance: {
+        maxSupply: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.supply-limit-compliance',
+        },
+        maxBalance: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.max-balance-compliance',
+        },
+        maxInvestors: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.max-investors-compliance',
+        },
+      },
       investorCount: 0,
       contractName,
       namespace,
@@ -172,6 +199,19 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     return addAsset({ namespace: nameArray[0], contractName: nameArray[1] });
   };
 
+  // return the value of the compliance
+  const maxCompliance = (ruleKey: IComplianceRuleTypes): number => {
+    const returnValue = Object.entries(asset?.compliance ?? {}).find(
+      ([key, rule]) => rule.key === ruleKey,
+    ) as [number, IComplianceRule] | undefined;
+
+    if (!returnValue?.length) return INFINITE_COMPLIANCE;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, rule] = returnValue;
+    if (!asset || !rule || !rule.isActive) return INFINITE_COMPLIANCE;
+    return rule.value;
+  };
+
   useEffect(() => {
     getAssets();
     window.addEventListener(storageKey, storageListener);
@@ -182,12 +222,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       window.removeEventListener('storage', storageListener);
     };
   }, []);
-
-  const loadAssetData = async () => {
-    const data = await getComplianceRules();
-
-    setAsset((old) => old && { ...old, ...data });
-  };
 
   useEffect(() => {
     setAsset((old) => old && { ...old, investorCount });
@@ -214,25 +248,37 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         complianceSubscriptionData.events[0].parameters,
       );
 
+      console.log({ complianceSubscriptionData });
       const data = params[0];
 
       setAsset(
         (old) =>
           old && {
             ...old,
-            maxSupply: data['supply-limit'],
-            maxBalance: data['max-balance-per-investor'],
-            maxInvestors: data['max-investors'].int,
+            compliance: {
+              ...old.compliance,
+              maxSupply: {
+                ...old.compliance.maxSupply,
+                value: data['supply-limit'],
+              },
+              maxBalance: {
+                ...old.compliance.maxBalance,
+                value: data['max-balance-per-investor'],
+              },
+              maxInvestors: {
+                ...old.compliance.maxInvestors,
+                value: data['max-investors'].int,
+              },
+            },
           },
       );
     }
   }, [complianceSubscriptionData]);
 
   useEffect(() => {
-    if (!asset) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    loadAssetData();
-  }, [asset?.uuid]);
+    if (!complianceRules) return;
+    setAsset((old) => old && { ...old, compliance: { ...complianceRules } });
+  }, [complianceRules]);
 
   return (
     <AssetContext.Provider
@@ -245,6 +291,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         getAsset,
         removeAsset,
         paused,
+        maxCompliance,
       }}
     >
       {children}
