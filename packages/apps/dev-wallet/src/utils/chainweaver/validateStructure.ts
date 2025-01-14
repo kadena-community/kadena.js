@@ -6,22 +6,30 @@ export const validateStructure = (
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = exportData.StoreFrontend_Data as any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const keys = data.map((d: any) => d[0][0]);
+    const expectedKeys = [
+      'StoreFrontend_Wallet_Keys',
+      'StoreFrontend_Wallet_Accounts',
+      'StoreFrontend_Network_PublicMeta',
+      'StoreFrontend_Network_Networks',
+      'StoreFrontend_Network_SelectedNetwork',
+      'StoreFrontend_ModuleExplorer_SessionFile',
+    ];
+
+    expectedKeys.forEach((key) => {
+      if (!keys.includes(key)) {
+        throw new Error(`Missing key: ${key}`);
+      }
+    });
+
     const checks = [
-      [() => data[0][0][0], 'StoreFrontend_Wallet_Keys'] as const,
-      [() => data[1][0][0], 'StoreFrontend_Wallet_Tokens'] as const,
-      [() => data[2][0][0], 'StoreFrontend_Wallet_Accounts'] as const,
-      [() => data[3][0][0], 'StoreFrontend_Network_PublicMeta'] as const,
-      [() => data[4][0][0], 'StoreFrontend_Network_Networks'] as const,
-      [() => data[5][0][0], 'StoreFrontend_Network_SelectedNetwork'] as const,
-      [
-        () => data[6][0][0],
-        'StoreFrontend_ModuleExplorer_SessionFile',
-      ] as const,
       [
         () => exportData.BIPStorage_Data![0][0][0],
         'BIPStorage_RootKey',
       ] as const,
     ];
+
     checks.forEach(([accessor, expected]) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let actual: any;
@@ -32,7 +40,10 @@ export const validateStructure = (
       }
 
       if (actual !== expected) {
-        throw new Error(`Expected ${expected}, got ${actual}`);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        if (!checks.some(([__accessor, expected]) => actual === expected)) {
+          throw new Error(`Expected ${expected}, got ${actual}`);
+        }
       }
     });
   } catch (e) {
