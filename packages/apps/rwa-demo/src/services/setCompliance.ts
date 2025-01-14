@@ -11,16 +11,14 @@ export interface ISetComplianceProps {
 }
 
 export const setCompliance = async (
-  data: ISetComplianceProps,
+  data: IComplianceRuleTypes[],
   account: IWalletAccount,
 ) => {
-  const r = [data.ruleKey, 'RWA.supply-limit-compliance'];
-  console.log(`[${r.toString()}]`);
-
+  console.log(data, `[${data.toString()}]`);
   return Pact.builder
     .execution(
       `
-      (${getAsset()}.set-compliance [${r.toString()}])`,
+      (${getAsset()}.set-compliance [${data.toString()}])`,
     )
 
     .setMeta({

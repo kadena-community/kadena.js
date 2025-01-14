@@ -14,13 +14,13 @@ export const MaxInvestorBalanceCheck: FC<IProps> = ({ balance }) => {
   if (!asset) return null;
 
   if (
-    asset?.maxBalance.value < balance &&
-    asset?.maxBalance.value > INFINITE_COMPLIANCE
+    asset?.compliance.maxBalance.value < balance &&
+    asset?.compliance.maxBalance.value > INFINITE_COMPLIANCE
   )
     return (
       <MonoWarning
         style={{ color: token('color.icon.semantic.warning.default') }}
-        title={`The balance of this investor is higher than the allowed compliance max balance (${asset.maxBalance.value})`}
+        title={`The balance of this investor is higher than the allowed compliance max balance (${asset.compliance.maxBalance.value})`}
       />
     );
 

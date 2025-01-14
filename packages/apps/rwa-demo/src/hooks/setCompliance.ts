@@ -7,6 +7,7 @@ import { setCompliance } from '@/services/setCompliance';
 import type { ISetComplianceParametersProps } from '@/services/setComplianceParameters';
 import { setComplianceParameters } from '@/services/setComplianceParameters';
 import { getClient } from '@/utils/client';
+import { getActiveRulesKeys } from '@/utils/getActiveRulesKeys';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
@@ -15,7 +16,7 @@ import { useTransactions } from './transactions';
 
 export const useSetCompliance = () => {
   const { account, sign, isMounted, accountRoles } = useAccount();
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -24,14 +25,11 @@ export const useSetCompliance = () => {
     ruleKey: IComplianceRuleTypes,
     newState: boolean,
   ) => {
+    if (!asset) return;
+    const rules = getActiveRulesKeys(asset.compliance, ruleKey, newState);
+
     try {
-      const tx = await setCompliance(
-        {
-          newState,
-          ruleKey,
-        },
-        account!,
-      );
+      const tx = await setCompliance(rules, account!);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;

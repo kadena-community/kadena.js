@@ -59,12 +59,12 @@ export const useDistributeTokens = ({
         !paused &&
         accountRoles.isTransferManager() &&
         !isActiveAccountChangeTx &&
-        ((asset.maxSupply.value > INFINITE_COMPLIANCE &&
-          asset.supply < asset.maxSupply.value) ||
-          asset.maxSupply.value === INFINITE_COMPLIANCE) &&
-        ((asset.maxInvestors.value > INFINITE_COMPLIANCE &&
-          asset.maxInvestors.value > asset.investorCount) ||
-          asset.maxInvestors.value === INFINITE_COMPLIANCE ||
+        ((asset.compliance.maxSupply.value > INFINITE_COMPLIANCE &&
+          asset.supply < asset.compliance.maxSupply.value) ||
+          asset.compliance.maxSupply.value === INFINITE_COMPLIANCE) &&
+        ((asset.compliance.maxInvestors.value > INFINITE_COMPLIANCE &&
+          asset.compliance.maxInvestors.value > asset.investorCount) ||
+          asset.compliance.maxInvestors.value === INFINITE_COMPLIANCE ||
           investorBalance > 0),
     );
   }, [

@@ -7,6 +7,7 @@ import {
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
@@ -20,12 +21,13 @@ import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
-export interface IAsset extends IComplianceProps {
+export interface IAsset {
   uuid: string;
   contractName: string;
   namespace: string;
   supply: number;
   investorCount: number;
+  compliance: IComplianceProps;
 }
 
 export interface IAssetContext {
@@ -77,6 +79,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { paused } = usePaused();
   const { data: supply } = useSupply();
   const { data: investorCount } = useGetInvestorCount();
+  const { data: complianceRules } = useGetComplianceRules({ asset });
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
       variables: {
@@ -118,7 +121,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     })) as number;
 
     if (!data) return;
-    return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };
+    return {
+      ...data,
+      compliance: { ...extraAssetData },
+      supply: supplyResult ?? 0,
+    };
   };
   const removeAsset = (uuid: string) => {
     const data = getAssets().filter((a) => a.uuid !== uuid);
@@ -137,20 +144,22 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const asset: IAsset = {
       uuid: crypto.randomUUID(),
       supply: INFINITE_COMPLIANCE,
-      maxSupply: {
-        isActive: false,
-        value: INFINITE_COMPLIANCE,
-        key: 'RWA.supply-limit-compliance',
-      },
-      maxBalance: {
-        isActive: false,
-        value: INFINITE_COMPLIANCE,
-        key: 'RWA.max-balance-compliance',
-      },
-      maxInvestors: {
-        isActive: false,
-        value: INFINITE_COMPLIANCE,
-        key: 'RWA.max-investors-compliance',
+      compliance: {
+        maxSupply: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.supply-limit-compliance',
+        },
+        maxBalance: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.max-balance-compliance',
+        },
+        maxInvestors: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.max-investors-compliance',
+        },
       },
       investorCount: 0,
       contractName,
@@ -195,12 +204,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
-  const loadAssetData = async () => {
-    const data = await getComplianceRules();
-
-    setAsset((old) => old && { ...old, ...data });
-  };
-
   useEffect(() => {
     setAsset((old) => old && { ...old, investorCount });
   }, [investorCount]);
@@ -226,24 +229,27 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         complianceSubscriptionData.events[0].parameters,
       );
 
-      console.log(complianceSubscriptionData);
+      console.log({ complianceSubscriptionData });
       const data = params[0];
 
       setAsset(
         (old) =>
           old && {
             ...old,
-            maxSupply: {
-              ...old.maxSupply,
-              value: data['supply-limit'],
-            },
-            maxBalance: {
-              ...old.maxBalance,
-              value: data['max-balance-per-investor'],
-            },
-            maxInvestors: {
-              ...old.maxInvestors,
-              value: data['max-investors'].int,
+            compliance: {
+              ...old.compliance,
+              maxSupply: {
+                ...old.compliance.maxSupply,
+                value: data['supply-limit'],
+              },
+              maxBalance: {
+                ...old.compliance.maxBalance,
+                value: data['max-balance-per-investor'],
+              },
+              maxInvestors: {
+                ...old.compliance.maxInvestors,
+                value: data['max-investors'].int,
+              },
             },
           },
       );
@@ -251,11 +257,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [complianceSubscriptionData]);
 
   useEffect(() => {
-    if (!asset) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    loadAssetData();
-  }, [asset?.uuid]);
+    if (!complianceRules) return;
+    setAsset((old) => old && { ...old, compliance: { ...complianceRules } });
+  }, [complianceRules]);
 
+  console.log({ asset });
   return (
     <AssetContext.Provider
       value={{

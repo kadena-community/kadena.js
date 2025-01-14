@@ -117,23 +117,23 @@ const Home = () => {
               {asset && (
                 <>
                   <ComplianceRule
-                    isActive={asset.maxSupply.isActive}
-                    ruleKey={asset.maxSupply.key}
-                    value={`${asset.maxSupply.value < 0 ? 'no limit' : asset.maxSupply.value} tokens`}
+                    isActive={asset.compliance.maxSupply.isActive}
+                    ruleKey={asset.compliance.maxSupply.key}
+                    value={`${asset.compliance.maxSupply.value < 0 ? 'no limit' : asset.compliance.maxSupply.value} tokens`}
                     label="Supply limit"
                     onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
-                    isActive={asset.maxBalance.isActive}
-                    ruleKey={asset.maxBalance.key}
-                    value={`${asset.maxBalance.value < 0 ? 'no limit' : asset.maxBalance.value} tokens`}
+                    isActive={asset.compliance.maxBalance.isActive}
+                    ruleKey={asset.compliance.maxBalance.key}
+                    value={`${asset.compliance.maxBalance.value < 0 ? 'no limit' : asset.compliance.maxBalance.value} tokens`}
                     label="Max balance"
                     onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
-                    isActive={asset.maxInvestors.isActive}
-                    ruleKey={asset.maxInvestors.key}
-                    value={`${asset.maxInvestors.value < 0 ? 'no limit' : asset.maxInvestors.value} (${asset.investorCount}) investors`}
+                    isActive={asset.compliance.maxInvestors.isActive}
+                    ruleKey={asset.compliance.maxInvestors.key}
+                    value={`${asset.compliance.maxInvestors.value < 0 ? 'no limit' : asset.compliance.maxInvestors.value} (${asset.investorCount}) investors`}
                     label="Max Investors"
                     onToggle={toggleComplianceRule}
                   />

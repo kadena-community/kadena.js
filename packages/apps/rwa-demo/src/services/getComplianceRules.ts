@@ -8,7 +8,7 @@ export type IComplianceRuleTypes =
   | 'RWA.supply-limit-compliance'
   | 'RWA.max-investors-compliance';
 
-interface IComplianceRule {
+export interface IComplianceRule {
   key: IComplianceRuleTypes;
   isActive: boolean;
   value: number;
