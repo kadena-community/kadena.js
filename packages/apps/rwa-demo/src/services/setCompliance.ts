@@ -14,7 +14,6 @@ export const setCompliance = async (
   data: IComplianceRuleTypes[],
   account: IWalletAccount,
 ) => {
-  console.log(data, `[${data.toString()}]`);
   return Pact.builder
     .execution(
       `
