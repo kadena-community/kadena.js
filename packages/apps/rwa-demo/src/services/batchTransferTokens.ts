@@ -32,22 +32,27 @@ export const batchTransferTokens = async (
 
       let isNew = true;
       const newAcc = acc.map((r) => {
-        if (r.to === val.to) {
-          r.amount = `${parseInt(r.amount) + parseInt(val.amount)}`;
+        const newR = JSON.parse(JSON.stringify(r));
+        if (newR.to === val.to) {
+          newR.amount = `${parseInt(newR.amount) + parseInt(val.amount)}`;
           isNew = false;
         }
 
-        return r;
+        return newR;
       });
 
       if (isNew) {
+        console.log(22);
         newAcc.push(val);
       }
 
+      console.log({ newAcc });
       return newAcc;
     },
     [],
   );
+
+  console.log({ aggregatedAccounts });
 
   return Pact.builder
     .execution(
@@ -66,12 +71,18 @@ export const batchTransferTokens = async (
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
+      gasLimit: 150000,
     })
     .addSigner(createPubKeyFromAccount(account.address), (withCap) =>
       aggregatedAccounts.map((_, idx) =>
-        withCap(`${getAsset()}.TRANSFER`, account.address, data[idx].to, {
-          decimal: data[idx].amount.trim(),
-        }),
+        withCap(
+          `${getAsset()}.TRANSFER`,
+          account.address,
+          aggregatedAccounts[idx].to,
+          {
+            decimal: aggregatedAccounts[idx].amount.trim(),
+          },
+        ),
       ),
     )
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
