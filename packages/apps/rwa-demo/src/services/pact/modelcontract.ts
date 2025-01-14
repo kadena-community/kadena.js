@@ -4,7 +4,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (namespace "${namespace}")
 
 (module ${contractName} GOV
-  "${contractName} descriptions"
+  "mvp contract descriptions"
 
   (defconst GOV-KEYSET:string "${namespace}.admin-keyset")
   (defcap GOV () (enforce-keyset GOV-KEYSET))
@@ -90,25 +90,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     AGENT-ADMIN
     FREEZER
     TRANSFER-MANAGER
-  ])
-
-  ;; owner roles - NOT USED
-  (defconst OWNER-ADMIN:string 'owner-admin )
-  (defconst REGISTRY-ADDRESS-SETTER:string 'registry-address-setter )
-  (defconst COMPLIANCE-SETTER:string 'compliance-setter )
-  (defconst COMPLIANCE-MANAGER:string 'compliance-manager )
-  (defconst CLAIM-REGISTRY-MANAGER:string 'claim-registry-manager )
-  (defconst ISSUERS-REGISTRY-MANAGER:string 'issuers-registry-manager )
-  (defconst TOKEN-INFO-MANAGER:string 'token-info-manager )
-
-  (defconst OWNER-ROLES:[string] [
-    OWNER-ADMIN
-    REGISTRY-ADDRESS-SETTER
-    COMPLIANCE-SETTER
-    COMPLIANCE-MANAGER
-    CLAIM-REGISTRY-MANAGER
-    ISSUERS-REGISTRY-MANAGER
-    TOKEN-INFO-MANAGER
   ])
 
   (defschema schema-set-compliance-parameters
@@ -238,8 +219,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap COMPLIANCE-ADDED:bool (compliance:module{RWA.compliance-v1})
-    @doc "Event emitted when a compliance contract is added."
+  (defcap COMPLIANCE-UPDATED:bool (compliance:[module{RWA.compliance-v1}])
+    @doc "Event emitted when a compliance is updated"
     @event
     true
   )
@@ -598,7 +579,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     ;;call bind-token
     (only-owner "")
     (update token "" {"compliance": compliance})
-    (emit-event (COMPLIANCE-ADDED compliance))
+    (emit-event (COMPLIANCE-UPDATED compliance))
   )
 
   ;; Transfer actions
@@ -875,6 +856,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defcap CREDIT (receiver:string)
     @doc "Capability for managing crediting operations"
+    (enforce-contains-identity receiver)
     (enforce (!= receiver "") "invalid receiver"))
 
   (defcap TRANSFER:bool
@@ -887,7 +869,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (if (try false (enforce-guard (at 'guard (read users sender))))
       true ;; user signed for the transaction
       ;;else
-      (if (try false (require-capability (MINT)))
+      (if  (try false (require-capability (MINT)))
         ;; mint is in action
         true
         ;;else
@@ -1215,8 +1197,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defun verify-agent-roles (roles:[string])
     (if (= (length roles) 0)
       true
-    (map (lambda (idx:integer)
-      (contains (at idx roles) AGENT-ROLES)
+      (map (lambda (idx:integer)
+        (enforce (contains (at idx roles) AGENT-ROLES) "Role does not exist")
       )
     (enumerate 0 (- (length roles) 1)))
   ))
@@ -1385,5 +1367,5 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
 
 
-(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance RWA.max-investors-compliance] false (keyset-ref-guard "${namespace}.admin-keyset"))
+(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
 `;

@@ -14,23 +14,15 @@ export const setCompliance = async (
   data: ISetComplianceProps,
   account: IWalletAccount,
 ) => {
+  const r = [data.ruleKey, 'RWA.supply-limit-compliance'];
+  console.log(`[${r.toString()}]`);
+
   return Pact.builder
     .execution(
       `
-      (${getAsset()}.set-compliance (read-msg 'rules))`,
+      (${getAsset()}.set-compliance [${r.toString()}])`,
     )
-    .addData('rules', [
-      {
-        refName: {
-          namespace: 'RWA',
-          name: 'max-balance-compliance',
-        },
-        refSpec: {
-          namespace: 'RWA',
-          bane: 'compliance-v1',
-        },
-      },
-    ])
+
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
