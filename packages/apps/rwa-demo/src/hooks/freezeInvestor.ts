@@ -26,9 +26,10 @@ export const useFreezeInvestor = () => {
     if (!account) return;
     try {
       const tx = await setAddressFrozen(data, account!);
-      await store.setFrozenMessage(data);
 
+      await store.setFrozenMessage(data);
       const signedTransaction = await sign(tx);
+
       if (!signedTransaction) return;
 
       const client = getClient();

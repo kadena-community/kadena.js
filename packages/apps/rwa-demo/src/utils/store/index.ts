@@ -3,7 +3,7 @@ import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
-import { get, off, onValue, ref, set } from 'firebase/database';
+import { get, off, onValue, ref, remove, set } from 'firebase/database';
 import { getAsset } from '../getAsset';
 import { database } from './firebase';
 
@@ -152,11 +152,24 @@ const RWAStore = () => {
   const setFrozenMessage = async (data: ISetAddressFrozenProps) => {
     const asset = getAssetFolder();
     if (!asset) return;
+    console.log({ data }, asset);
 
-    await set(
-      ref(database, `${asset}/accounts/${data.investorAccount}/frozenMessage`),
-      data.message,
-    );
+    if (data.message) {
+      await set(
+        ref(
+          database,
+          `${asset}/accounts/${data.investorAccount}/frozenMessage`,
+        ),
+        data.message,
+      );
+    } else {
+      await remove(
+        ref(
+          database,
+          `${asset}/accounts/${data.investorAccount}/frozenMessage`,
+        ),
+      );
+    }
   };
 
   const setFrozenMessages = async (data: IBatchSetAddressFrozenProps) => {
