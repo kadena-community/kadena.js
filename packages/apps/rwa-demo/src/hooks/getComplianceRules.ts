@@ -21,8 +21,6 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
   const init = async () => {
     const res = await getComplianceRules();
 
-    console.log({ res });
-
     if (typeof res !== 'number') {
       setData(res);
     }

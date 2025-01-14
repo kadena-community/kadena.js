@@ -44,7 +44,12 @@ export const ComplianceRule: FC<IProps> = ({
               isDisabled={!isAllowed}
               isCompact
               variant="outlined"
-              endVisual={isActive ? <MonoPlayArrow /> : <MonoPause />}
+              endVisual={
+                <TransactionTypeSpinner
+                  type={TXTYPES.SETCOMPLIANCERULE}
+                  fallbackIcon={isActive ? <MonoPlayArrow /> : <MonoPause />}
+                />
+              }
             />
           }
         >

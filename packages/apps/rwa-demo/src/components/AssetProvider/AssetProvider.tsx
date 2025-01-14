@@ -11,7 +11,11 @@ import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import type { IComplianceProps } from '@/services/getComplianceRules';
+import type {
+  IComplianceProps,
+  IComplianceRule,
+  IComplianceRuleTypes,
+} from '@/services/getComplianceRules';
 import { getComplianceRules } from '@/services/getComplianceRules';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
@@ -48,6 +52,7 @@ export interface IAssetContext {
     uuid: string,
     account: IWalletAccount,
   ) => Promise<IAsset | undefined>;
+  maxCompliance: (rule: IComplianceRuleTypes) => number;
 }
 
 export const AssetContext = createContext<IAssetContext>({
@@ -58,6 +63,7 @@ export const AssetContext = createContext<IAssetContext>({
   addExistingAsset: () => undefined,
   removeAsset: (uuid: string) => undefined,
   getAsset: async () => undefined,
+  maxCompliance: () => -1,
 });
 
 export type EventQueryVariables = Exact<{
@@ -193,6 +199,19 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     return addAsset({ namespace: nameArray[0], contractName: nameArray[1] });
   };
 
+  // return the value of the compliance
+  const maxCompliance = (ruleKey: IComplianceRuleTypes): number => {
+    const returnValue = Object.entries(asset?.compliance ?? {}).find(
+      ([key, rule]) => rule.key === ruleKey,
+    ) as [number, IComplianceRule] | undefined;
+
+    if (!returnValue?.length) return INFINITE_COMPLIANCE;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, rule] = returnValue;
+    if (!asset || !rule || !rule.isActive) return INFINITE_COMPLIANCE;
+    return rule.value;
+  };
+
   useEffect(() => {
     getAssets();
     window.addEventListener(storageKey, storageListener);
@@ -261,7 +280,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     setAsset((old) => old && { ...old, compliance: { ...complianceRules } });
   }, [complianceRules]);
 
-  console.log({ asset });
   return (
     <AssetContext.Provider
       value={{
@@ -273,6 +291,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         getAsset,
         removeAsset,
         paused,
+        maxCompliance,
       }}
     >
       {children}

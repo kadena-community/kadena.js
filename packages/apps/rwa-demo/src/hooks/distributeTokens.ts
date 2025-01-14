@@ -20,7 +20,7 @@ export const useDistributeTokens = ({
   investorAccount: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
-  const { paused, asset } = useAsset();
+  const { paused, asset, maxCompliance } = useAsset();
 
   const { account, sign, accountRoles, isMounted } = useAccount();
   const { data: investorBalance } = useGetInvestorBalance({ investorAccount });
@@ -54,17 +54,25 @@ export const useDistributeTokens = ({
 
   useEffect(() => {
     if (!isMounted || !asset) return;
+
+    console.log(222, maxCompliance('RWA.max-investors-compliance'));
+
+    const complianceMaxSupplyValue = maxCompliance(
+      'RWA.supply-limit-compliance',
+    );
+    const complianceMaxInvestors = maxCompliance(
+      'RWA.max-investors-compliance',
+    );
+
     setIsAllowed(
       !frozen &&
         !paused &&
         accountRoles.isTransferManager() &&
         !isActiveAccountChangeTx &&
-        ((asset.compliance.maxSupply.value > INFINITE_COMPLIANCE &&
-          asset.supply < asset.compliance.maxSupply.value) ||
-          asset.compliance.maxSupply.value === INFINITE_COMPLIANCE) &&
-        ((asset.compliance.maxInvestors.value > INFINITE_COMPLIANCE &&
-          asset.compliance.maxInvestors.value > asset.investorCount) ||
-          asset.compliance.maxInvestors.value === INFINITE_COMPLIANCE ||
+        (asset.supply < complianceMaxSupplyValue ||
+          complianceMaxSupplyValue === INFINITE_COMPLIANCE) &&
+        (complianceMaxInvestors > asset.investorCount ||
+          complianceMaxInvestors === INFINITE_COMPLIANCE ||
           investorBalance > 0),
     );
   }, [

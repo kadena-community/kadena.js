@@ -39,7 +39,7 @@ export const useSetCompliance = () => {
 
       return addTransaction({
         ...res,
-        type: TXTYPES.SETCOMPLIANCE,
+        type: TXTYPES.SETCOMPLIANCERULE,
         accounts: [account?.address!],
       });
     } catch (e: any) {
