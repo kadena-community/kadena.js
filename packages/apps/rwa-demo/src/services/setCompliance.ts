@@ -20,15 +20,23 @@ export const setCompliance = async (
       (${getAsset()}.set-compliance (read-msg 'rules))`,
     )
     .addData('rules', [
-      Pact.modules['RWA.compliance-v1'],
-      Pact.modules[data.ruleKey],
+      {
+        refName: {
+          namespace: 'RWA',
+          name: 'max-balance-compliance',
+        },
+        refSpec: {
+          namespace: 'RWA',
+          bane: 'compliance-v1',
+        },
+      },
     ])
-    .addData('agent', account.address)
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
+      withCap(`${getAsset()}.ONLY-OWNER`, ''),
       withCap(`coin.GAS`),
     ])
 
