@@ -36,6 +36,10 @@ const TransactionResult = builder.objectType('TransactionResult', {
         'The transaction result when it was successful. Formatted as raw JSON.',
       nullable: true,
     }),
+    metadata: t.string({
+      deprecationReason: 'Not used.',
+      resolve: () => 'GraphQL Error: Field `metadata` is deprecated',
+    }),
     logs: t.exposeString('logs', {
       description:
         'Identifier to retrieve the logs for the execution of the transaction.',

@@ -61,8 +61,7 @@ interface ITransferQueryConditions {
   };
 }
 
-const isDev = dotenv.NODE_ENV !== 'production';
-const log = isDev ? console.log : () => {};
+const log = dotenv.NODE_ENV !== 'production' ? console.log : () => {};
 
 export const getTransfers = async (
   accountName: string,

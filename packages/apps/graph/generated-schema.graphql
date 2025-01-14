@@ -177,7 +177,7 @@ type FungibleChainAccount implements Node {
   balance: Float!
   chainId: String!
   fungibleName: String!
-  guard: Guard!
+  guard: IGuard!
   id: ID!
 
   """
@@ -227,18 +227,19 @@ type GraphConfiguration {
   version: String!
 }
 
-type Guard implements IGuard {
-  keys: [String!]!
-  predicate: String!
+"""
+A guard. This is a union of all the different types of guards that can be used in a pact.
+"""
+interface IGuard {
+  keys: [String!]! @deprecated(reason: "deprecated, use KeysetGuard.keys")
+  predicate: String! @deprecated(reason: "deprecated, use KeysetGuard.predicate")
   raw: String!
 }
 
-"""
-A guard. Has values `keys`, `predicate` to provide backwards compatibility for `KeysetGuard`.
-"""
-interface IGuard {
-  keys: [String!]! @deprecated(reason: "Use `... on KeysetGuard { keys predicate }` instead when working with Keysets")
-  predicate: String! @deprecated(reason: "Use `... on KeysetGuard { keys predicate }` instead when working with Keysets")
+"""A keyset guard."""
+type KeysetGuard implements IGuard {
+  keys: [String!]!
+  predicate: String!
   raw: String!
 }
 
@@ -330,7 +331,7 @@ type NonFungibleTokenBalance implements Node {
   accountName: String!
   balance: Int!
   chainId: String!
-  guard: Guard!
+  guard: IGuard!
   id: ID!
   info: NonFungibleToken
   tokenId: String!
@@ -665,6 +666,7 @@ type TransactionResult {
 
   """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
+  metadata: String! @deprecated(reason: "Not used.")
   transactionId: BigInt
   transfers(after: String, before: String, first: Int, last: Int): TransactionResultTransfersConnection!
 }
@@ -699,12 +701,15 @@ type TransactionSignature {
 type Transfer implements Node {
   amount: Decimal!
   block: Block!
+  blockHash: String! @deprecated(reason: "Use `block.hash` field instead.")
+  chainId: String! @deprecated(reason: "Use `block.chainId` field instead.")
   creationTime: DateTime!
 
   """
   The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.
   """
   crossChainTransfer: Transfer
+  height: String! @deprecated(reason: "GraphQL Error: Use `block.height` field instead.")
   id: ID!
   moduleHash: String!
   moduleName: String!
@@ -719,4 +724,12 @@ type Transfer implements Node {
 
   """The transaction that initiated this transfer."""
   transaction: Transaction
+}
+
+type UserGuard implements IGuard {
+  args: [String!]!
+  fun: String!
+  keys: [String!]! @deprecated(reason: "deprecated, use KeysetGuard.keys")
+  predicate: String! @deprecated(reason: "deprecated, use KeysetGuard.predicate")
+  raw: String!
 }

@@ -23,6 +23,22 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
     requestKey: t.exposeString('requestKey'),
     receiverAccount: t.exposeString('receiverAccount'),
 
+    blockHash: t.string({
+      deprecationReason: 'Use `block.hash` field instead.',
+      resolve: () =>
+        'GraphQL Error: Field `blockHash` is deprecated, use `block.hash` instead',
+    }),
+    chainId: t.string({
+      deprecationReason: 'Use `block.chainId` field instead.',
+      resolve: () =>
+        'GraphQL Error: Field `chainId` is deprecated, use `block.chainId` instead',
+    }),
+    height: t.string({
+      deprecationReason: 'GraphQL Error: Use `block.height` field instead.',
+      resolve: () =>
+        'GraphQL Error: Field `height` is deprecated, use `block.height` instead',
+    }),
+
     // computed fields
     creationTime: t.field({
       type: 'DateTime',
