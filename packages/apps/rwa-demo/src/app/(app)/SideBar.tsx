@@ -112,7 +112,7 @@ export const SideBar: FC = () => {
             >
               <ContextMenu
                 trigger={
-                  <Button variant="outlined">
+                  <Button isCompact variant="outlined">
                     {isExpanded ? account?.alias : <MonoAccountBox />}
                   </Button>
                 }

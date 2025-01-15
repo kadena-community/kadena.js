@@ -40,11 +40,13 @@ export const getActiveComplianceValues = async () => {
   return result.status === 'success' ? data : undefined;
 };
 
-export const getActiveComplianceRules = async () => {
+export const getActiveComplianceRules = async (asset?: string) => {
   const client = getClient();
 
+  const innerAsset = asset ? asset : getAsset();
+
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.get-compliance)`)
+    .execution(`(${innerAsset}.get-compliance)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })
