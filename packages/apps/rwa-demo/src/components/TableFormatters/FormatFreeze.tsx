@@ -1,3 +1,4 @@
+import { Button } from '@kadena/kode-ui';
 import type { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
 import React from 'react';
 import { FreezeInvestor } from '../FreezeInvestor/FreezeInvestor';
@@ -12,6 +13,7 @@ export const FormatFreeze = () => {
         variant="outlined"
         iconOnly={true}
         investorAccount={value as string}
+        trigger={<Button />}
       />
     );
   };

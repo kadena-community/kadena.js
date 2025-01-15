@@ -13,8 +13,8 @@ import {
   Text,
   TextareaField,
 } from '@kadena/kode-ui';
-import type { FC } from 'react';
-import React, { useEffect, useState } from 'react';
+import type { FC, ReactElement } from 'react';
+import React, { cloneElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
@@ -26,6 +26,7 @@ interface IProps {
   isCompact?: IButtonProps['isCompact'];
   variant?: IButtonProps['variant'];
   iconOnly?: boolean;
+  trigger?: ReactElement;
 }
 
 const getVisual = (frozen: boolean, isLoading: boolean) => {
@@ -40,6 +41,7 @@ export const FreezeInvestor: FC<IProps> = ({
   iconOnly,
   isCompact,
   variant,
+  trigger,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { frozen } = useFreeze({ investorAccount });
@@ -88,7 +90,13 @@ export const FreezeInvestor: FC<IProps> = ({
   }, [frozen]);
 
   const label = iconOnly ? '' : frozen ? 'Unfreeze account' : 'Freeze account';
-
+  const IconVisual = () => (
+    <TransactionTypeSpinner
+      type={TXTYPES.FREEZEINVESTOR}
+      account={investorAccount}
+      fallbackIcon={getVisual(frozen, isLoading)}
+    />
+  );
   return (
     <>
       <Dialog isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
@@ -124,20 +132,20 @@ export const FreezeInvestor: FC<IProps> = ({
       <SendTransactionAnimation
         onPress={handleStart}
         trigger={
-          <Button
-            startVisual={
-              <TransactionTypeSpinner
-                type={TXTYPES.FREEZEINVESTOR}
-                account={investorAccount}
-                fallbackIcon={getVisual(frozen, isLoading)}
-              />
-            }
-            isDisabled={!isAllowed}
-            isCompact={isCompact}
-            variant={variant}
-          >
-            {label}
-          </Button>
+          trigger ? (
+            cloneElement(trigger, {
+              ...trigger.props,
+              icon: <IconVisual />,
+              startVisual: <IconVisual />,
+              isDisabled: !isAllowed,
+              isCompact,
+              variant,
+              label,
+              children: label,
+            })
+          ) : (
+            <></>
+          )
         }
       ></SendTransactionAnimation>
     </>

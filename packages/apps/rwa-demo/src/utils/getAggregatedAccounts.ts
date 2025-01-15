@@ -20,10 +20,7 @@ export const getAggregatedAccounts = (data: ITransferToken[]) =>
     });
 
     if (isNew) {
-      console.log(22);
       newAcc.push(val);
     }
-
-    console.log({ newAcc });
     return newAcc;
   }, []);

@@ -3,7 +3,7 @@ import { atoms } from '@kadena/kode-ui/styles';
 
 export const actionsWrapperClass = style([
   atoms({
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     gap: 'sm',
     flexWrap: 'wrap',
   }),

@@ -39,8 +39,6 @@ export const useGetInvestorBalance = ({
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;
 
-    console.log({ subscriptionData });
-
     subscriptionData.events?.map((event) => {
       const params = JSON.parse(event.parameters ?? '[]');
 
@@ -52,7 +50,7 @@ export const useGetInvestorBalance = ({
         setData((prevValue) => prevValue - txAmount);
       }
       if (receiverAccount && receiverAccount.account === investorAccount) {
-        setData((prevValue) => prevValue - txAmount);
+        setData((prevValue) => prevValue + txAmount);
       }
     });
   }, [subscriptionData]);

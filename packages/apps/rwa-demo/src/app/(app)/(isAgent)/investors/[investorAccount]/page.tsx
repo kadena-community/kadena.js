@@ -1,5 +1,7 @@
 'use client';
 
+import { actionsWrapperClass } from '@/app/(app)/styles.css';
+import { AssetAction } from '@/components/AssetAction/AssetAction';
 import { DistributionForm } from '@/components/DistributionForm/DistributionForm';
 import { FreezeInvestor } from '@/components/FreezeInvestor/FreezeInvestor';
 import { InvestorForm } from '@/components/InvestorForm/InvestorForm';
@@ -7,6 +9,7 @@ import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
 import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { TXTYPES } from '@/components/TransactionsProvider/TransactionsProvider';
+import { TransactionTable } from '@/components/TransactionTable/TransactionTable';
 import { TransactionTypeSpinner } from '@/components/TransactionTypeSpinner/TransactionTypeSpinner';
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
@@ -15,8 +18,14 @@ import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestor } from '@/hooks/getInvestor';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
-import { Button, Stack } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
+import { Stack } from '@kadena/kode-ui';
+import {
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+  SideBarBreadcrumbsItem,
+} from '@kadena/kode-ui/patterns';
 import { useParams } from 'next/navigation';
 
 const InvestorPage = () => {
@@ -47,66 +56,89 @@ const InvestorPage = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      <Stack width="100%" flexDirection="column">
-        <InvestorInfo account={investor} />
-        <Stack gap="sm">
-          {accountRoles.isTransferManager() && (
-            <TransferForm
-              investorAccount={investorAccount}
-              isForced={true}
-              trigger={<Button variant="warning">Forced transfer</Button>}
+      <Stack width="100%" flexDirection="column" gap="md">
+        <SectionCard>
+          <SectionCardContentBlock>
+            <SectionCardHeader
+              title="Investor"
+              description={<InvestorInfo account={investor} />}
             />
-          )}
-          <DistributionForm
-            investorAccount={investorAccount}
-            trigger={
-              <Button
-                startVisual={
-                  <TransactionTypeSpinner
-                    type={TXTYPES.DISTRIBUTETOKENS}
-                    account={investorAccount}
-                    fallbackIcon={<MonoAdd />}
+            <SectionCardBody title="Actions">
+              <Stack className={actionsWrapperClass}>
+                {accountRoles.isTransferManager() && (
+                  <TransferForm
+                    investorAccount={investorAccount}
+                    isForced={true}
+                    trigger={
+                      <AssetAction label="Forced transfer"></AssetAction>
+                    }
                   />
-                }
-                isDisabled={!isDistributeTokensAllowed}
-              >
-                Distribute Tokens
-              </Button>
-            }
-          />
+                )}
+                <DistributionForm
+                  investorAccount={investorAccount}
+                  trigger={
+                    <AssetAction
+                      icon={
+                        <TransactionTypeSpinner
+                          type={TXTYPES.DISTRIBUTETOKENS}
+                          account={investorAccount}
+                          fallbackIcon={<MonoAdd />}
+                        />
+                      }
+                      isDisabled={!isDistributeTokensAllowed}
+                      label="Distribute Tokens"
+                    />
+                  }
+                />
 
-          <PartiallyFreezeTokensForm
-            investorAccount={investorAccount}
-            trigger={
-              <Button
-                startVisual={
-                  <TransactionTypeSpinner
-                    type={TXTYPES.PARTIALLYFREEZETOKENS}
-                    account={investorAccount}
-                    fallbackIcon={<MonoAdd />}
-                  />
-                }
-                isDisabled={!isPartiallyFreezeTokensAllowed}
-              >
-                Partially freeze tokens
-              </Button>
-            }
-          />
+                <PartiallyFreezeTokensForm
+                  investorAccount={investorAccount}
+                  trigger={
+                    <AssetAction
+                      icon={
+                        <TransactionTypeSpinner
+                          type={TXTYPES.PARTIALLYFREEZETOKENS}
+                          account={investorAccount}
+                          fallbackIcon={<MonoAdd />}
+                        />
+                      }
+                      isDisabled={!isPartiallyFreezeTokensAllowed}
+                      label="Partially freeze tokens"
+                    />
+                  }
+                />
 
-          <FreezeInvestor investorAccount={investorAccount} />
+                <FreezeInvestor
+                  investorAccount={investorAccount}
+                  trigger={<AssetAction label="" />}
+                />
 
-          <InvestorForm
-            investor={investor}
-            trigger={
-              <Button
-                isDisabled={!isEditInvestorAllowed}
-                endVisual={<MonoEditNote />}
-              >
-                Edit Investor
-              </Button>
-            }
-          />
-        </Stack>
+                <InvestorForm
+                  investor={investor}
+                  trigger={
+                    <AssetAction
+                      isDisabled={!isEditInvestorAllowed}
+                      icon={<MonoEditNote />}
+                      label="Edit Investor"
+                    />
+                  }
+                />
+              </Stack>
+            </SectionCardBody>
+          </SectionCardContentBlock>
+        </SectionCard>
+
+        <SectionCard stack="vertical">
+          <SectionCardContentBlock>
+            <SectionCardHeader
+              title="Transactions"
+              description={<>All transactions for this investor</>}
+            />
+            <SectionCardBody>
+              <TransactionTable investor={investor} />
+            </SectionCardBody>
+          </SectionCardContentBlock>
+        </SectionCard>
       </Stack>
     </>
   );

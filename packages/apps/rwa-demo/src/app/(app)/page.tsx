@@ -79,7 +79,7 @@ const Home = () => {
                     <AssetAction
                       isDisabled={!isSetComplianceAllowed}
                       icon={<MonoAdd />}
-                      label=" Set Compliance"
+                      label="Set Compliance"
                     />
                   }
                 />

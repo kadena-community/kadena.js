@@ -41,8 +41,6 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
         ({ refName }: any) => `${refName.namespace}.${refName.name}`,
       );
 
-      console.log({ asset, activeRulesKeys });
-
       if (!asset) return;
       const newRules: IComplianceProps = {
         ...asset.compliance,

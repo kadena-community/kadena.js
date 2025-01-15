@@ -7,7 +7,6 @@ const NETWORKID = process.env.NEXT_PUBLIC_NETWORKID;
 const NETWORKNAME = process.env.NEXT_PUBLIC_NETWORKNAME;
 const NETWORKHOST = process.env.NEXT_PUBLIC_NETWORKHOST;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
-const ACCOUNT = process.env.NEXT_PUBLIC_ACCOUNT;
 const GRAPHURL = process.env.NEXT_PUBLIC_GRAPHURL;
 const ZEROADDRESS = process.env.NEXT_PUBLIC_ZEROADDRESS;
 
@@ -18,7 +17,6 @@ if (!NETWORKID) console.error('NEXT_PUBLIC_NETWORKID is not set');
 if (!NETWORKNAME) console.error('NEXT_PUBLIC_NETWORKNAME is not set');
 if (!NETWORKHOST) console.error('NEXT_PUBLIC_NETWORKHOST is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
-if (!ACCOUNT) console.error('NEXT_PUBLIC_ACCOUNT is not set');
 if (!GRAPHURL) console.error('NEXT_PUBLIC_GRAPHURL is not set');
 if (!ZEROADDRESS) console.error('NEXT_PUBLIC_ZEROADDRESS is not set');
 
@@ -30,7 +28,6 @@ export const env = {
   NETWORKNAME: NETWORKNAME ?? '',
   NETWORKHOST: NETWORKHOST ?? '',
   CHAINWEBAPIURL: CHAINWEBAPIURL ?? '',
-  ACCOUNTID: ACCOUNT,
   GRAPHURL: GRAPHURL ?? '',
   ZEROADDRESS: ZEROADDRESS!,
 } as const;
