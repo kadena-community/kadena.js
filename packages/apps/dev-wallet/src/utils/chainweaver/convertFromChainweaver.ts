@@ -1,7 +1,12 @@
-import { ChainweaverKeyPair, ExportFromChainweaver } from './chainweaver';
+import {
+  ChainweaverKeyPair,
+  ExportFromChainweaver,
+  StoreFrontendData,
+} from './chainweaver';
 
 export const convertFromChainweaver = (exportData: ExportFromChainweaver) => {
   const { StoreFrontend_Data, BIPStorage_Data } = exportData;
+
   const [
     walletKeysExtract,
     walletTokensExtract,
@@ -9,7 +14,7 @@ export const convertFromChainweaver = (exportData: ExportFromChainweaver) => {
     networkPublicMetaExtract,
     networksExtract,
     currentNetworkExtract,
-  ] = StoreFrontend_Data;
+  ] = processData(StoreFrontend_Data);
 
   const encryptedKeyPairs = walletKeysExtract[1].reduce(
     (acc, [key, { pair }]) => {
@@ -36,3 +41,20 @@ export const convertFromChainweaver = (exportData: ExportFromChainweaver) => {
     selectedNetwork,
   };
 };
+
+function processData(data: StoreFrontendData): StoreFrontendData {
+  // if "StoreFrontend_Wallet_Tokens" is not present, return empty array
+  if (data[1][0][0] !== 'StoreFrontend_Wallet_Tokens') {
+    return [
+      data[0],
+      [['StoreFrontend_Wallet_Tokens', []], {}],
+      data[1],
+      data[2],
+      data[3],
+      data[4],
+      data[5],
+    ] as unknown as StoreFrontendData;
+  }
+
+  return data;
+}

@@ -18,6 +18,16 @@ describe('convertFromChainweaver', () => {
     }).not.toThrow();
   });
 
+  it('validates without _Tokens correctly', () => {
+    const exampleExport2 = deepClone(cwExport);
+    delete (exampleExport2.StoreFrontend_Data as any)[1];
+    console.log(exampleExport2);
+
+    expect(() => {
+      validateStructure(exampleExport2);
+    }).not.toThrow();
+  });
+
   it('throws when BIPStorage_RootKey is not found', () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { BIPStorage_Data, ...modifiedExport } = exampleExport;
