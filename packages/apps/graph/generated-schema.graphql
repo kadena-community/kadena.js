@@ -112,6 +112,7 @@ type Event implements Node {
   The order index of this event, in the case that there are multiple events in one transaction.
   """
   orderIndex: BigInt!
+  parameterText: String!
   parameters: String
 
   """
@@ -431,7 +432,7 @@ type Query {
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  fungibleChainAccount(accountName: String!, chainIds: [String!]! = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], fungibleName: String = "coin"): [FungibleChainAccount!]
+  fungibleChainAccount(accountName: String!, chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], fungibleName: String = "coin"): [FungibleChainAccount!]
 
   """Retrieve a chain account by public key."""
   fungibleChainAccountsByPublicKey(chainId: String!, fungibleName: String, publicKey: String!): [FungibleChainAccount!]!
@@ -564,6 +565,13 @@ type QueryTransfersConnection {
 type QueryTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
+}
+
+"""DEPRECATED: a fallthrough IGuard type to cover non-KeysetGuard types."""
+type RawGuard implements IGuard {
+  keys: [String!]! @deprecated(reason: "deprecated, use KeysetGuard.keys")
+  predicate: String! @deprecated(reason: "deprecated, use KeysetGuard.predicate")
+  raw: String!
 }
 
 """A signer for a specific transaction."""

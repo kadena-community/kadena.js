@@ -26,7 +26,6 @@ builder.queryField('fungibleChainAccount', (t) =>
       }),
       chainIds: t.arg.stringList({
         defaultValue: [...CHAINS],
-        required: true,
         validate: {
           minLength: 1,
           items: {
@@ -42,7 +41,7 @@ builder.queryField('fungibleChainAccount', (t) =>
       try {
         return (
           await Promise.all(
-            args.chainIds.map((chainId) =>
+            args.chainIds!.map((chainId) =>
               getFungibleChainAccount({
                 chainId: chainId,
                 fungibleName: args.fungibleName as string,

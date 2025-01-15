@@ -37,6 +37,7 @@ import type {
   INonFungibleToken,
   INonFungibleTokenBalance,
   IPactQueryResponse,
+  IRawGuard,
   ITransactionCapability,
   ITransactionCommand,
   ITransactionMempoolInfo,
@@ -103,6 +104,7 @@ export const builder = new SchemaBuilder<
       NetworkInfo: INetworkInfo;
       BlockNeighbor: IBlockNeighbor;
       KeysetGuard: IKeysetGuard;
+      RawGuard: IRawGuard;
     };
     Interfaces: {
       IGuard: IGuard;

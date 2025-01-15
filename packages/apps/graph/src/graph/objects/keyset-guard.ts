@@ -10,8 +10,11 @@ async function tryParseJson<T>(json: string): Promise<T> {
     }
   });
 }
+
 export class GuardInterfaceClass implements IGuard {
   public raw: string;
+  public keys: string[] = [];
+  public predicate: '' | 'keys-all' | 'keys-any' | 'keys-two' = '';
 
   public constructor(raw: string) {
     this.raw = raw;
@@ -35,22 +38,22 @@ export const InterfaceGuard = builder.interfaceType(GuardInterfaceClass, {
     switch (true) {
       case parsed && 'keys' in parsed:
         return 'KeysetGuard';
-      case parsed && 'keysetref' in parsed:
-        return 'KeysetRefGuard';
-      case parsed && 'fun' in parsed:
-        return 'UserGuard';
-      case parsed && 'cgName' in parsed:
-        return 'CapabilityGuard';
-      case parsed && 'moduleName' in parsed:
-        return 'ModuleGuard';
-      case parsed && 'pactId' in parsed:
-        return 'PactGuard';
+      // case parsed && 'keysetref' in parsed:
+      //   return 'KeysetRefGuard';
+      // case parsed && 'fun' in parsed:
+      //   return 'UserGuard';
+      // case parsed && 'cgName' in parsed:
+      //   return 'CapabilityGuard';
+      // case parsed && 'moduleName' in parsed:
+      //   return 'ModuleGuard';
+      // case parsed && 'pactId' in parsed:
+      //   return 'PactGuard';
       default:
-        throw new Error('not supported guard');
+        return 'RawGuard';
     }
   },
   fields: (t) => ({
-    raw: t.string(),
+    raw: t.string({ resolve: (parent) => parent.raw }),
     predicate: t.string({
       deprecationReason: 'deprecated, use KeysetGuard.predicate',
       resolve: () =>
@@ -69,7 +72,10 @@ builder.objectType('KeysetGuard', {
   interfaces: [InterfaceGuard],
   description: 'A keyset guard.',
   fields: (t) => ({
-    raw: t.expose('raw', { type: 'String' }),
+    raw: t.field({
+      type: 'String',
+      resolve: (parent) => parent.raw,
+    }),
     predicate: t.field({
       type: 'String',
       resolve: async (parent) => ((await tryParseJson(parent.raw)) as any).pred,
@@ -79,6 +85,13 @@ builder.objectType('KeysetGuard', {
       resolve: async (parent) => ((await tryParseJson(parent.raw)) as any).keys,
     }),
   }),
+});
+
+// Temporary RawGuard
+builder.objectType('RawGuard', {
+  interfaces: [InterfaceGuard],
+  description:
+    'DEPRECATED: a fallthrough IGuard type to cover non-KeysetGuard types.',
 });
 
 // // KeysetRef:
@@ -104,12 +117,14 @@ type PactValue = string;
 
 // // UserGuard:
 // //   { "fun":String, "args":Array[PactValue] }
-export class UserGuard {
-  constructor(
+export class UserGuard extends GuardInterfaceClass {
+  public constructor(
     public raw: string,
     public fun: string,
     public args: PactValue[],
-  ) {}
+  ) {
+    super(raw);
+  }
 }
 
 builder.objectType(UserGuard, {

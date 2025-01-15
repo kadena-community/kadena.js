@@ -368,7 +368,7 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           {transaction.result.__typename ===
                           'TransactionResult' ? (
-                            transaction.result.height
+                            transaction.result.block.height
                           ) : (
                             <span style={{ color: 'lightgray' }}>N/A</span>
                           )}

@@ -24,6 +24,7 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
     }),
     moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),
+    parameterText: t.exposeString('parameterText'),
     parameters: t.string({
       nullable: true,
       select: {
