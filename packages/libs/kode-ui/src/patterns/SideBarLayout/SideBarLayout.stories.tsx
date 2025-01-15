@@ -379,7 +379,6 @@ export const Primary: IStory = {
 };
 
 const NotificationsLayout = () => {
-  console.log(11, useNotifications);
   const { addNotification } = useNotifications();
   const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
     useLayout();
