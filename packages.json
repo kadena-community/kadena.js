@@ -72,18 +72,6 @@
     "path": "packages/apps/dev-wallet-example"
   },
   {
-    "name": "@kadena/docs",
-    "version": "0.8.0",
-    "private": true,
-    "path": "packages/apps/docs"
-  },
-  {
-    "name": "@kadena/docs-tools",
-    "version": "0.2.2",
-    "private": true,
-    "path": "packages/tools/docs-tools"
-  },
-  {
     "name": "@kadena/explorer",
     "version": "0.9.0",
     "private": true,
@@ -238,12 +226,6 @@
     "version": "1.0.1",
     "private": false,
     "path": "packages/tools/shared-config"
-  },
-  {
-    "name": "e2e-docs",
-    "version": "0.0.1",
-    "private": true,
-    "path": "packages/e2e/e2e-docs"
   },
   {
     "name": "e2e-graph",
