@@ -2,7 +2,7 @@ import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useFreeze } from '@/hooks/freeze';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
-import { Button, Heading, Stack } from '@kadena/kode-ui';
+import { Button, MaskedValue, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { InvestorBalance } from '../InvestorBalance/InvestorBalance';
@@ -25,10 +25,16 @@ export const InvestorInfo: FC<IProps> = ({ account }) => {
   if (!account) return null;
   return (
     <Stack width="100%" flexDirection="column">
-      <Heading as="h3">
-        investor: {account.alias ? account.alias : accountName}
-      </Heading>
-      <Stack width="100%" alignItems="center" gap="md">
+      <Text>
+        {account.alias ? account.alias : <MaskedValue value={accountName} />}
+      </Text>
+
+      <Stack
+        width="100%"
+        alignItems="flex-start"
+        gap="md"
+        flexDirection="column"
+      >
         <Button isDisabled>
           <TransactionTypeSpinner
             type={TXTYPES.FREEZEINVESTOR}

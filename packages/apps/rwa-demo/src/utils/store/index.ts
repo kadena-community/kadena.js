@@ -152,7 +152,6 @@ const RWAStore = () => {
   const setFrozenMessage = async (data: ISetAddressFrozenProps) => {
     const asset = getAssetFolder();
     if (!asset) return;
-    console.log({ data }, asset);
 
     if (data.message) {
       await set(

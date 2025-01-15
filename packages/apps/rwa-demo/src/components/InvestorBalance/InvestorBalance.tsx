@@ -43,7 +43,7 @@ export const InvestorBalance: FC<IProps> = ({
   return (
     <Stack alignItems="center" gap="xs">
       <MaxInvestorBalanceCheck balance={cleanedBalance} />
-      investorBalance:{' '}
+      balance:{' '}
       <TransactionTypeSpinner
         type={[
           TXTYPES.DISTRIBUTETOKENS,

@@ -55,8 +55,6 @@ export const useDistributeTokens = ({
   useEffect(() => {
     if (!isMounted || !asset) return;
 
-    console.log(222, maxCompliance('RWA.max-investors-compliance'));
-
     const complianceMaxSupplyValue = maxCompliance(
       'RWA.supply-limit-compliance',
     );

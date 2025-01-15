@@ -3,8 +3,8 @@ import { globalStyle } from '@vanilla-extract/css';
 
 export const assetActionWrapper = style([
   {
-    flex: '33%',
-    maxWidth: '150px',
+    flex: '200px',
+    maxWidth: '200px',
     aspectRatio: '1/1',
     textAlign: 'center',
     alignItems: 'stretch',

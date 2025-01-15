@@ -4,7 +4,7 @@ import type { FC, ReactElement } from 'react';
 import { assetActionWrapper } from './style.css';
 
 interface IProps {
-  icon: ReactElement;
+  icon?: ReactElement;
   label: string;
   isDisabled?: boolean;
   onPress?: ITileProps['onClick'];

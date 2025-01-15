@@ -248,7 +248,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         complianceSubscriptionData.events[0].parameters,
       );
 
-      console.log({ complianceSubscriptionData });
       const data = params[0];
 
       setAsset(
