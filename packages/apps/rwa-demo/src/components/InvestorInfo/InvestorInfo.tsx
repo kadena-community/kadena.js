@@ -26,7 +26,9 @@ export const InvestorInfo: FC<IProps> = ({ account }) => {
   return (
     <Stack width="100%" flexDirection="column">
       <Text>
-        {account.alias ? account.alias : <MaskedValue value={accountName} />}
+        {account.alias
+          ? account.alias
+          : accountName && <MaskedValue value={accountName} />}
       </Text>
 
       <Stack

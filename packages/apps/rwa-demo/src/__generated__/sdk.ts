@@ -972,6 +972,14 @@ export type EventSubscriptionSubscription = { __typename?: 'Subscription', event
 
 export type CoreEventsFieldsFragment = { __typename?: 'Event', chainId: any, requestKey: string, parameters?: string | null, block: { __typename?: 'Block', height: any, creationTime: any } };
 
+export type InvestorTransfersEventsQueryVariables = Exact<{
+  qualifiedName: Scalars['String']['input'];
+  parametersFilter: Scalars['String']['input'];
+}>;
+
+
+export type InvestorTransfersEventsQuery = { __typename?: 'Query', events: { __typename?: 'QueryEventsConnection', edges: Array<{ __typename?: 'QueryEventsConnectionEdge', node: { __typename?: 'Event', requestKey: string, parameterText: string, block: { __typename?: 'Block', creationTime: any } } }> } };
+
 export type NetworkInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1069,6 +1077,55 @@ export function useEventSubscriptionSubscription(baseOptions: Apollo.Subscriptio
       }
 export type EventSubscriptionSubscriptionHookResult = ReturnType<typeof useEventSubscriptionSubscription>;
 export type EventSubscriptionSubscriptionResult = Apollo.SubscriptionResult<EventSubscriptionSubscription>;
+export const InvestorTransfersEventsDocument = gql`
+    query investorTransfersEvents($qualifiedName: String!, $parametersFilter: String!) {
+  events(qualifiedEventName: $qualifiedName, parametersFilter: $parametersFilter) {
+    edges {
+      node {
+        requestKey
+        parameterText
+        block {
+          creationTime
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useInvestorTransfersEventsQuery__
+ *
+ * To run a query within a React component, call `useInvestorTransfersEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInvestorTransfersEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInvestorTransfersEventsQuery({
+ *   variables: {
+ *      qualifiedName: // value for 'qualifiedName'
+ *      parametersFilter: // value for 'parametersFilter'
+ *   },
+ * });
+ */
+export function useInvestorTransfersEventsQuery(baseOptions: Apollo.QueryHookOptions<InvestorTransfersEventsQuery, InvestorTransfersEventsQueryVariables> & ({ variables: InvestorTransfersEventsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InvestorTransfersEventsQuery, InvestorTransfersEventsQueryVariables>(InvestorTransfersEventsDocument, options);
+      }
+export function useInvestorTransfersEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvestorTransfersEventsQuery, InvestorTransfersEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InvestorTransfersEventsQuery, InvestorTransfersEventsQueryVariables>(InvestorTransfersEventsDocument, options);
+        }
+export function useInvestorTransfersEventsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<InvestorTransfersEventsQuery, InvestorTransfersEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<InvestorTransfersEventsQuery, InvestorTransfersEventsQueryVariables>(InvestorTransfersEventsDocument, options);
+        }
+export type InvestorTransfersEventsQueryHookResult = ReturnType<typeof useInvestorTransfersEventsQuery>;
+export type InvestorTransfersEventsLazyQueryHookResult = ReturnType<typeof useInvestorTransfersEventsLazyQuery>;
+export type InvestorTransfersEventsSuspenseQueryHookResult = ReturnType<typeof useInvestorTransfersEventsSuspenseQuery>;
+export type InvestorTransfersEventsQueryResult = Apollo.QueryResult<InvestorTransfersEventsQuery, InvestorTransfersEventsQueryVariables>;
 export const NetworkInfoDocument = gql`
     query networkInfo {
   networkInfo {

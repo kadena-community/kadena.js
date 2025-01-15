@@ -9,6 +9,7 @@ import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
 import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { TXTYPES } from '@/components/TransactionsProvider/TransactionsProvider';
+import { TransactionTable } from '@/components/TransactionTable/TransactionTable';
 import { TransactionTypeSpinner } from '@/components/TransactionTypeSpinner/TransactionTypeSpinner';
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
@@ -17,7 +18,7 @@ import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestor } from '@/hooks/getInvestor';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
-import { Button, Stack } from '@kadena/kode-ui';
+import { Stack } from '@kadena/kode-ui';
 import {
   SectionCard,
   SectionCardBody,
@@ -55,7 +56,7 @@ const InvestorPage = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      <Stack width="100%" flexDirection="column">
+      <Stack width="100%" flexDirection="column" gap="md">
         <SectionCard>
           <SectionCardContentBlock>
             <SectionCardHeader
@@ -123,6 +124,18 @@ const InvestorPage = () => {
                   }
                 />
               </Stack>
+            </SectionCardBody>
+          </SectionCardContentBlock>
+        </SectionCard>
+
+        <SectionCard stack="vertical">
+          <SectionCardContentBlock>
+            <SectionCardHeader
+              title="Transactions"
+              description={<>All transactions for this investor</>}
+            />
+            <SectionCardBody>
+              <TransactionTable investor={investor} />
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>
