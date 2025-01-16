@@ -672,6 +672,9 @@ type TransactionResult {
   """The transaction result when it was successful. Formatted as raw JSON."""
   goodResult: String
 
+  """The height of the block this transaction belongs to."""
+  height: BigInt! @deprecated(reason: "Use `block.height` instead.")
+
   """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
   metadata: String! @deprecated(reason: "Not used.")
@@ -710,14 +713,14 @@ type Transfer implements Node {
   amount: Decimal!
   block: Block!
   blockHash: String! @deprecated(reason: "Use `block.hash` field instead.")
-  chainId: String! @deprecated(reason: "Use `block.chainId` field instead.")
+  chainId: BigInt! @deprecated(reason: "Use `block.chainId` field instead.")
   creationTime: DateTime!
 
   """
   The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.
   """
   crossChainTransfer: Transfer
-  height: String! @deprecated(reason: "GraphQL Error: Use `block.height` field instead.")
+  height: BigInt! @deprecated(reason: "Use `block.height` field instead.")
   id: ID!
   moduleHash: String!
   moduleName: String!

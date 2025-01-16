@@ -36,6 +36,11 @@ const TransactionResult = builder.objectType('TransactionResult', {
         'The transaction result when it was successful. Formatted as raw JSON.',
       nullable: true,
     }),
+    height: t.expose('height', {
+      description: 'The height of the block this transaction belongs to.',
+      type: 'BigInt',
+      deprecationReason: 'Use `block.height` instead.',
+    }),
     metadata: t.string({
       deprecationReason: 'Not used.',
       resolve: () => 'GraphQL Error: Field `metadata` is deprecated',
