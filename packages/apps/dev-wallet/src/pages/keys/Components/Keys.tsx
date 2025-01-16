@@ -1,6 +1,7 @@
 import { ListItem } from '@/Components/ListItem/ListItem.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.tsx';
 import { keySourceManager } from '@/modules/key-source/key-source-manager';
+import { keySourceRepository } from '@/modules/key-source/key-source.repository.ts';
 import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers.ts';
@@ -63,6 +64,8 @@ export function Keys() {
       await createHDWallet(profile?.uuid, type, password);
     };
 
+  const defaultIndex = keySources.findIndex((ks) => ks.isDefault) || 0;
+
   return (
     <>
       <AddKeySourceForm
@@ -113,7 +116,7 @@ export function Keys() {
         </Stack>
 
         <Stack flexDirection={'column'} gap="md">
-          {keySources.map((keySource) => (
+          {keySources.map((keySource, index) => (
             <Stack
               key={keySource.uuid}
               flexDirection={'column'}
@@ -130,7 +133,11 @@ export function Keys() {
                 justifyContent={'space-between'}
                 marginBlockEnd={'sm'}
               >
-                <Heading variant="h4">Method: {keySource.source}</Heading>
+                <Heading variant="h4">
+                  Method: {keySource.source}{' '}
+                  {defaultIndex === index && <Text>(Default method)</Text>}
+                </Heading>
+
                 <Stack flexDirection={'row'} gap={'sm'}>
                   <Button
                     startVisual={<MonoAdd />}
@@ -162,6 +169,15 @@ export function Keys() {
                     ) : (
                       <ContextMenuDivider />
                     )}
+                    <ContextMenuItem
+                      label="Set as default method"
+                      onClick={async () => {
+                        await keySourceRepository.setAsDefault(
+                          keySource.uuid,
+                          profile!.uuid,
+                        );
+                      }}
+                    />
                   </ContextMenu>
                 </Stack>
               </Stack>
