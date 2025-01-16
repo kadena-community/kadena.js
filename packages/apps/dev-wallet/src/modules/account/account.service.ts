@@ -34,6 +34,7 @@ import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';
 
 import { config } from '@/config';
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { sleep } from '@/utils/helpers';
 import {
   composePactCommand,
   execution,
@@ -151,6 +152,10 @@ export const accountDiscovery = (
         await emit('key-retrieved')(key);
         const principal = `k:${key.publicKey}`;
         for (const network of networks) {
+          if (network.networkId === 'mainnet01') {
+            await sleep(config.ACCOUNTS.RATE_LIMIT);
+          }
+
           const chainResult = await discoverAccount(
             principal,
             network.networkId,
@@ -307,6 +312,9 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
     profileId,
     networkUUID,
   );
+
+  const network = await networkRepository.getNetwork(networkUUID);
+
   const watchedAccounts = await accountRepository.getWatchedAccountsByProfileId(
     profileId,
     networkUUID,
@@ -330,6 +338,9 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
 
   for (const account of accountsToSync) {
     result.push(await syncAccount(account));
+    if (network.networkId === 'mainnet01') {
+      await sleep(config.ACCOUNTS.RATE_LIMIT);
+    }
   }
 
   return result;

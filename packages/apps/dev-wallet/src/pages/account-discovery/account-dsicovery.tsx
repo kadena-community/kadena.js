@@ -124,13 +124,11 @@ export function AccountDiscovery() {
                   isDisabled={selectedNetworks.length === 0}
                   onClick={async () => {
                     setDiscoveryStatus('discovering');
-
-                    const ks = await Promise.all(
-                      keySources.map(async (keySource) => ({
-                        keySource,
-                        accounts: await start(keySource),
-                      })),
-                    );
+                    const ks = [];
+                    for (const keySource of keySources) {
+                      const accounts = await start(keySource);
+                      ks.push({ keySource, accounts });
+                    }
                     const mostUsedKs = ks.reduce((acc, data) =>
                       acc.accounts.length < data.accounts.length ? data : acc,
                     );
@@ -159,12 +157,16 @@ export function AccountDiscovery() {
                     : `(${key[keySource.source]?.index})`}
                 </Text>
                 <Stack gap={'sm'}>
-                  {key && (
+                  {key[keySource.source]?.publicKey ? (
                     <>
                       <Text color="emphasize" bold>
                         k:{key[keySource.source]?.publicKey}
                       </Text>
                     </>
+                  ) : (
+                    <Text color="emphasize" bold>
+                      Pending...
+                    </Text>
                   )}
                 </Stack>
               </Stack>
