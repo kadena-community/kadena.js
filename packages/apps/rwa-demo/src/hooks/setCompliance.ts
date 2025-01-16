@@ -15,7 +15,7 @@ import { useAsset } from './asset';
 import { useTransactions } from './transactions';
 
 export const useSetCompliance = () => {
-  const { account, sign, isMounted, accountRoles } = useAccount();
+  const { account, isOwner, sign, isMounted, accountRoles } = useAccount();
   const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
@@ -78,13 +78,16 @@ export const useSetCompliance = () => {
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(
-      !paused && accountRoles.isAgentAdmin() && !isActiveAccountChangeTx,
+      !paused &&
+        (accountRoles.isAgentAdmin() || isOwner) &&
+        !isActiveAccountChangeTx,
     );
   }, [
     paused,
     account?.address,
     isMounted,
     accountRoles,
+    isOwner,
     isActiveAccountChangeTx,
   ]);
 

@@ -15,7 +15,7 @@ import { useTransactions } from './transactions';
 
 export const useBatchAddInvestors = () => {
   const { paused } = useAsset();
-  const { account, sign, accountRoles, isMounted } = useAccount();
+  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -57,9 +57,11 @@ export const useBatchAddInvestors = () => {
     if (!isMounted) return;
 
     setIsAllowed(
-      !paused && accountRoles.isAgentAdmin() && !isActiveAccountChangeTx,
+      !paused &&
+        (accountRoles.isAgentAdmin() || isOwner) &&
+        !isActiveAccountChangeTx,
     );
-  }, [paused, isMounted, accountRoles, isActiveAccountChangeTx]);
+  }, [paused, isOwner, isMounted, accountRoles, isActiveAccountChangeTx]);
 
   return { submit, isAllowed };
 };
