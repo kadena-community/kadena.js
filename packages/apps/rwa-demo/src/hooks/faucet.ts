@@ -3,12 +3,8 @@ import {
   interpretErrorMessage,
   TXTYPES,
 } from '@/components/TransactionsProvider/TransactionsProvider';
-import type { IAddAgentProps } from '@/services/addAgent';
-import { addAgent } from '@/services/addAgent';
-import { editAgent } from '@/services/editAgent';
 import { faucet } from '@/services/faucet';
 import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';

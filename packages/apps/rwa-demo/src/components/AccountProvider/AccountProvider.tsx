@@ -62,8 +62,8 @@ export const AccountContext = createContext<IAccountContext>({
     },
     isFreezer: () => false,
     isTransferManager: () => false,
-    isGasPayable: false,
   },
+  isGasPayable: false,
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {

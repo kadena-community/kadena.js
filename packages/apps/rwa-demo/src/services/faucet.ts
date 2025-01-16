@@ -1,15 +1,11 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { env } from '@/utils/env';
-import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-import type { IAddAgentProps } from './addAgent';
-import { AGENTROLES } from './addAgent';
 
 export const faucet = async (account: IWalletAccount) => {
-  console.log(11111111121232342344);
   return Pact.builder
     .execution(
       `(user.coin-faucet.create-and-request-coin (read-string 'owner) (read-keyset 'keyset) ${new PactNumber(env.FAUCETAMOUNT).toDecimal()})`,
