@@ -10,12 +10,14 @@ import {
   DialogHeader,
   DialogHeaderSubtitle,
   maskValue,
+  Stack,
   Text,
   TextareaField,
 } from '@kadena/kode-ui';
 import type { FC, ReactElement } from 'react';
 import React, { cloneElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { complianceWrapperClass } from '../Confirmation/style.css';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
@@ -99,36 +101,38 @@ export const FreezeInvestor: FC<IProps> = ({
   );
   return (
     <>
-      <Dialog isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
-        <form onSubmit={handleSubmit(handleFreeze)}>
-          <DialogHeader>Freeze the account</DialogHeader>
-          <DialogHeaderSubtitle>
-            <Text variant="code">{maskValue(investorAccount)}</Text>
-          </DialogHeaderSubtitle>
-          <DialogContent>
-            <TextareaField
-              label="message"
-              {...register('message', {
-                required: false,
-                maxLength: 100,
-              })}
-              rows={5}
-            />
-          </DialogContent>
-          <DialogFooter>
-            <Button variant="outlined" onPress={() => setIsModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              isDisabled={!isValid || !isAllowed}
-              variant="primary"
-            >
-              Freeze
-            </Button>
-          </DialogFooter>
-        </form>
-      </Dialog>
+      <Stack className={complianceWrapperClass}>
+        <Dialog isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
+          <form onSubmit={handleSubmit(handleFreeze)}>
+            <DialogHeader>Freeze the account</DialogHeader>
+            <DialogHeaderSubtitle>
+              <Text variant="code">{maskValue(investorAccount)}</Text>
+            </DialogHeaderSubtitle>
+            <DialogContent>
+              <TextareaField
+                label="message"
+                {...register('message', {
+                  required: false,
+                  maxLength: 100,
+                })}
+                rows={5}
+              />
+            </DialogContent>
+            <DialogFooter>
+              <Button variant="outlined" onPress={() => setIsModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                isDisabled={!isValid || !isAllowed}
+                variant="primary"
+              >
+                Freeze
+              </Button>
+            </DialogFooter>
+          </form>
+        </Dialog>
+      </Stack>
       <SendTransactionAnimation
         onPress={handleStart}
         trigger={
