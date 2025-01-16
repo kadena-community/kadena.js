@@ -4,11 +4,15 @@ import {
   IPactCommand,
   IPartialPactCommand,
   ISigningRequest,
+  isSignedTransaction,
   IUnsignedCommand,
 } from '@kadena/client';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { transactionRepository } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { normalizeTx } from '@/utils/normalizeSigs';
@@ -165,7 +169,11 @@ export function SignatureBuilder() {
         await transactionRepository.updateTransaction({
           ...tx,
           sigs: updatedTx.sigs,
-        });
+          status:
+            tx.status === 'initiated' && isSignedTransaction(updatedTx)
+              ? 'signed'
+              : tx.status,
+        } as ITransaction);
       }
       navigate(`/transaction/${tx.uuid}`);
       return;
