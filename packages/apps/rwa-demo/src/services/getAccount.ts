@@ -17,7 +17,5 @@ export const getAccount = async (accountId: string) => {
     signatureVerification: false,
   });
 
-  console.log(11111, result);
-
   return result.status === 'success' ? result.data : undefined;
 };

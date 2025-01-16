@@ -1,4 +1,5 @@
-import { useAccount } from '@/hooks/account';
+import { useFaucet } from '@/hooks/faucet';
+import { env } from '@/utils/env';
 import { MonoMonetizationOn } from '@kadena/kode-icons';
 import {
   Button,
@@ -6,14 +7,35 @@ import {
   NotificationFooter,
   NotificationHeading,
 } from '@kadena/kode-ui';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
+import { useState } from 'react';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 export const GasPayableBanner: FC = () => {
-  const { isGasPayable } = useAccount();
+  const { submit, isAllowed } = useFaucet();
+  const [isDone, setIsDone] = useState(false);
+  const { addNotification } = useNotifications();
 
-  const handleAddKda = () => {};
+  const handleAddKda = async () => {
+    const tx = await submit();
+    tx?.listener.subscribe(
+      () => {},
+      () => {},
+      () => {
+        addNotification({
+          intent: 'positive',
+          label: 'KDA added to account',
+          message: `We added ${env.FAUCETAMOUNT} KDA to the account`,
+        });
 
-  if (isGasPayable) return null;
+        setIsDone(true);
+      },
+    );
+  };
+
+  if (!isAllowed || isDone) return null;
 
   return (
     <Notification intent="warning" role="status" type="stacked">
@@ -22,9 +44,15 @@ export const GasPayableBanner: FC = () => {
       </NotificationHeading>
       <NotificationFooter>
         <Button
+          isDisabled={!isAllowed}
           onPress={handleAddKda}
           variant="warning"
-          endVisual={<MonoMonetizationOn />}
+          endVisual={
+            <TransactionTypeSpinner
+              type={TXTYPES.FAUCET}
+              fallbackIcon={<MonoMonetizationOn />}
+            />
+          }
         >
           Add 5 KDA for Gas
         </Button>

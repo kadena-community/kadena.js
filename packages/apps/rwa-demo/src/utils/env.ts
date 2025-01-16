@@ -9,6 +9,8 @@ const NETWORKHOST = process.env.NEXT_PUBLIC_NETWORKHOST;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
 const GRAPHURL = process.env.NEXT_PUBLIC_GRAPHURL;
 const ZEROADDRESS = process.env.NEXT_PUBLIC_ZEROADDRESS;
+const FAUCETADDRESS = process.env.NEXT_PUBLIC_FAUCETADDRESS;
+const FAUCETAMOUNT = process.env.NEXT_PUBLIC_FAUCETAMOUNT;
 
 if (!WALLET_URL) console.error('NEXT_PUBLIC_WALLET_URL is not set');
 if (!URL) console.error('NEXT_PUBLIC_URL is not set');
@@ -19,6 +21,8 @@ if (!NETWORKHOST) console.error('NEXT_PUBLIC_NETWORKHOST is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
 if (!GRAPHURL) console.error('NEXT_PUBLIC_GRAPHURL is not set');
 if (!ZEROADDRESS) console.error('NEXT_PUBLIC_ZEROADDRESS is not set');
+if (!FAUCETADDRESS) console.error('NEXT_PUBLIC_FAUCETADDRESS is not set');
+if (!FAUCETAMOUNT) console.error('NEXT_PUBLIC_FAUCETAMOUNT is not set');
 
 export const env = {
   WALLET_URL,
@@ -30,4 +34,6 @@ export const env = {
   CHAINWEBAPIURL: CHAINWEBAPIURL ?? '',
   GRAPHURL: GRAPHURL ?? '',
   ZEROADDRESS: ZEROADDRESS!,
+  FAUCETADDRESS: FAUCETADDRESS,
+  FAUCETAMOUNT: parseFloat(FAUCETAMOUNT ?? '0.0'),
 } as const;
