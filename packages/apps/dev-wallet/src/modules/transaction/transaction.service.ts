@@ -4,6 +4,7 @@ import {
   IClient,
   ICommand,
   IPactCommand,
+  isSignedTransaction,
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
@@ -60,6 +61,16 @@ export async function syncTransactionStatus(
     (!tx.continuation?.autoContinue || tx.continuation?.done)
   ) {
     return tx;
+  }
+  if (tx.status === 'initiated') {
+    if (isSignedTransaction(tx)) {
+      const updatedTx: ITransaction = {
+        ...tx,
+        status: 'signed',
+      };
+      await transactionRepository.updateTransaction(updatedTx);
+      return syncTransactionStatus(updatedTx, client);
+    }
   }
   if (
     tx.status === 'signed' ||
