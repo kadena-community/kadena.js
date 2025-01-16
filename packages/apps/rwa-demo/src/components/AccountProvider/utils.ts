@@ -90,6 +90,7 @@ export async function getWalletConnection(page: string = '') {
       throw new Error('TIMEOUT');
     }),
   ]).catch(async () => {
+    console.log(walletUrl());
     wallet.location.href = walletUrl();
     // todo: replace this by a better way to know when the wallet is ready
     return waitForWallet();
