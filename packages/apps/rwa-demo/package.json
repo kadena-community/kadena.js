@@ -3,7 +3,8 @@
   "version": "0.1.6",
   "private": true,
   "scripts": {
-    "build": "pnpm run generate & next build",
+    "prebuild": "pnpm run generate",
+    "build": "next build",
     "dev": "next dev",
     "generate": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact\"",
     "generate:sdk": "cache-sh -i \"{codegen-sdk.yml,./node_modules/@kadena/graph/generated-schema.graphql,src/**/*.graph.ts,src/__generated__/**}\" -- graphql-codegen --config codegen-sdk.yml",
