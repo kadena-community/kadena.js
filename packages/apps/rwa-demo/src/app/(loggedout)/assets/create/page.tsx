@@ -11,6 +11,7 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(66666, { isMounted, account });
     if (isMounted && !account) {
       router.replace('/login');
       return;

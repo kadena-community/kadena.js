@@ -175,11 +175,31 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (accountRoles.isMounted && kdaBalance > -1) {
+  const initProps = async (accountProp?: IWalletAccount) => {
+    if (!accountProp) {
       setIsMounted(true);
+      return;
     }
-  }, [accountRoles.isMounted, kdaBalance]);
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    Promise.allSettled([
+      checkIsGasPayable(accountProp),
+      checkIsOwner(accountProp),
+      checkIsComplianceOwner(accountProp),
+      checkIsInvestor(accountProp),
+      checkIsAgent(accountProp),
+      checkIsFrozen(accountProp),
+    ]).then((v) => {
+      setIsMounted(true);
+    });
+  };
+
+  useEffect(() => {
+    if (accountRoles.isMounted) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      initProps(account);
+    }
+  }, [accountRoles.isMounted]);
 
   useEffect(() => {
     if (!account) {
@@ -189,19 +209,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       setIsInvestorState(false);
       return;
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsGasPayable(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsOwner(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsComplianceOwner(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsAgent(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsInvestor(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsFrozen(account);
   }, [account]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
