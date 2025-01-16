@@ -65,7 +65,7 @@ export const useWallet = () => {
   );
 
   const unlockProfile = useCallback(
-    async (profileId: string, password: string) => {
+    async (profileId: string, password: string, unlockSecurity = false) => {
       console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
       await securityService.clearSecurityPhrase();
@@ -73,7 +73,7 @@ export const useWallet = () => {
         const res = await setProfile(profile);
         channel.postMessage({ action: 'switch-profile', payload: profile });
         backupDatabase().catch(console.log);
-        if (profile.options.rememberPassword === 'on-login') {
+        if (profile.options.rememberPassword === 'on-login' || unlockSecurity) {
           const sessionEntropy = (await Session.get('sessionId')) as string;
           if (!sessionEntropy) {
             return res;

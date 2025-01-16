@@ -151,24 +151,23 @@ export function AccountDiscovery() {
 
           {discoveryStatus === 'discovering' &&
             keySources.map((keySource) => (
-              <Card fullWidth>
-                <Text>{keySource.source}</Text>
-                <Text> We are trying for first 20 keys - only K: account</Text>
+              <Stack gap={'md'} key={keySource.uuid}>
+                <Text>
+                  {keySource.source}
+                  {key[keySource.source]?.index === undefined
+                    ? ''
+                    : `(${key[keySource.source]?.index})`}
+                </Text>
                 <Stack gap={'sm'}>
-                  <Text>checking</Text>
                   {key && (
                     <>
-                      <Text color="emphasize">
-                        #{key[keySource.source]?.index}
-                      </Text>
-                      <Text>Address: </Text>
                       <Text color="emphasize" bold>
                         k:{key[keySource.source]?.publicKey}
                       </Text>
                     </>
                   )}
                 </Stack>
-              </Card>
+              </Stack>
             ))}
           {discoveryStatus === 'discovering' && (
             <Stack marginBlockStart={'lg'} flexDirection={'column'} gap={'lg'}>
