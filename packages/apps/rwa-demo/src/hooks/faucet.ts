@@ -52,6 +52,14 @@ export const useFaucet = () => {
   };
 
   useEffect(() => {
+    console.log({
+      isMounted,
+      isAgent,
+      isOwner,
+      isInvestor,
+      isGasPayable,
+      activeNetwork,
+    });
     if (!isMounted || activeNetwork.networkId !== 'development') return;
 
     setIsAllowed((isAgent || isOwner || isInvestor) && !isGasPayable);
