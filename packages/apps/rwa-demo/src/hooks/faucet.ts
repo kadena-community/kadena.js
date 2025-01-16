@@ -12,15 +12,7 @@ import { useNetwork } from './networks';
 import { useTransactions } from './transactions';
 
 export const useFaucet = () => {
-  const {
-    account,
-    sign,
-    isMounted,
-    isAgent,
-    isOwner,
-    isInvestor,
-    isGasPayable,
-  } = useAccount();
+  const { account, sign, isMounted, isGasPayable } = useAccount();
   const { addTransaction } = useTransactions();
   const { activeNetwork } = useNetwork();
   const { addNotification } = useNotifications();
@@ -54,8 +46,8 @@ export const useFaucet = () => {
   useEffect(() => {
     if (!isMounted || activeNetwork.networkId !== 'development') return;
 
-    setIsAllowed((isAgent || isOwner || isInvestor) && !isGasPayable);
-  }, [isOwner, isInvestor, isAgent, isMounted, isOwner, isGasPayable]);
+    setIsAllowed(!!account?.address && !isGasPayable);
+  }, [account?.address, isMounted, isGasPayable]);
 
   return { submit, isAllowed };
 };

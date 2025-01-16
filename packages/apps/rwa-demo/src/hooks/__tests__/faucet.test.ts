@@ -10,9 +10,6 @@ describe('faucet hook', () => {
         },
         sign: vi.fn(),
         isMounted: true,
-        isAgent: true,
-        isOwner: true,
-        isInvestor: true,
         isGasPayable: true,
       }),
       useNetwork: vi.fn().mockReturnValue({
@@ -76,15 +73,12 @@ describe('faucet hook', () => {
   });
 
   describe('isAllowed', () => {
-    it('should return true, when account is mounted, when it is owner, when gas is NOT payable, when network is development', () => {
+    it('should return true, when account is mounted, when gas is NOT payable, when network is development', () => {
       mocksHook.useAccount.mockImplementation(() => ({
         account: {
           address: 'k:he-man',
         },
         isMounted: true,
-        isAgent: false,
-        isOwner: true,
-        isInvestor: false,
         isGasPayable: false,
       }));
 
@@ -99,15 +93,12 @@ describe('faucet hook', () => {
     });
   });
 
-  it('should return false, when account is NOT mounted, when it is owner, when gas is NOT payable, when network is development', () => {
+  it('should return false, when account is NOT mounted, when gas is NOT payable, when network is development', () => {
     mocksHook.useAccount.mockImplementation(() => ({
       account: {
         address: 'k:he-man',
       },
       isMounted: false,
-      isAgent: false,
-      isOwner: true,
-      isInvestor: false,
       isGasPayable: false,
     }));
 
@@ -121,37 +112,12 @@ describe('faucet hook', () => {
     expect(result.current.isAllowed).toBe(false);
   });
 
-  it('should return false, when account is mounted, when account has no role, when gas is NOT payable, when network is development', () => {
+  it('should return false, when account is mounted, when gas is payable, when network is development', () => {
     mocksHook.useAccount.mockImplementation(() => ({
       account: {
         address: 'k:he-man',
       },
       isMounted: true,
-      isAgent: false,
-      isOwner: false,
-      isInvestor: false,
-      isGasPayable: false,
-    }));
-
-    mocksHook.useNetwork.mockImplementation(() => ({
-      ...mocksHook.useNetwork.getMockImplementation(),
-      activeNetwork: { networkId: 'development' },
-    }));
-
-    const { result } = renderHook(() => useFaucet());
-
-    expect(result.current.isAllowed).toBe(false);
-  });
-
-  it('should return false, when account is mounted, when account isinvestor, when gas is payable, when network is development', () => {
-    mocksHook.useAccount.mockImplementation(() => ({
-      account: {
-        address: 'k:he-man',
-      },
-      isMounted: true,
-      isAgent: false,
-      isOwner: false,
-      isInvestor: true,
       isGasPayable: true,
     }));
 
@@ -165,15 +131,12 @@ describe('faucet hook', () => {
     expect(result.current.isAllowed).toBe(false);
   });
 
-  it('should return false, when account is mounted, when account isagent, when gas is NOT payable, when network is mainnet', () => {
+  it('should return false, when account is mounted, when gas is NOT payable, when network is mainnet', () => {
     mocksHook.useAccount.mockImplementation(() => ({
       account: {
         address: 'k:he-man',
       },
       isMounted: false,
-      isAgent: true,
-      isOwner: false,
-      isInvestor: true,
       isGasPayable: false,
     }));
 

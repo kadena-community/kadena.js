@@ -165,7 +165,8 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());
-    if (storage) {
+
+    if (storage && storage !== 'undefined') {
       console.log({ account: JSON.parse(storage) });
       try {
         setAccount(JSON.parse(storage));

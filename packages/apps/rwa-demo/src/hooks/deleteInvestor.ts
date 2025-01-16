@@ -19,7 +19,7 @@ export const useDeleteInvestor = ({
   investorAccount?: string;
 }) => {
   useGetInvestorBalance;
-  const { account, sign, accountRoles, isMounted } = useAccount();
+  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
   const { paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
@@ -75,9 +75,18 @@ export const useDeleteInvestor = ({
     }
 
     setIsAllowed(
-      !paused && accountRoles.isAgentAdmin() && !isActiveAccountChangeTx,
+      !paused &&
+        (accountRoles.isAgentAdmin() || isOwner) &&
+        !isActiveAccountChangeTx,
     );
-  }, [paused, account?.address, isMounted, balance, isActiveAccountChangeTx]);
+  }, [
+    paused,
+    isOwner,
+    account?.address,
+    isMounted,
+    balance,
+    isActiveAccountChangeTx,
+  ]);
 
   return { submit, isAllowed, notAllowedReason };
 };

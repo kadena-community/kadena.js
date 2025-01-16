@@ -1,5 +1,6 @@
 'use client';
 
+import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
 import { Card, Stack, Text } from '@kadena/kode-ui';
 import React from 'react';
 import {
@@ -23,7 +24,10 @@ const RootLayout = ({
       className={wrapperClass}
     >
       <Stack flexDirection="column" className={cardWrapperClass}>
-        <Card className={cardClass}>{children}</Card>
+        <Card className={cardClass}>
+          <GasPayableBanner />
+          {children}
+        </Card>
         <Stack
           className={footerClass}
           width="100%"
