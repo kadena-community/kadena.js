@@ -13,6 +13,7 @@ import {
   MonoPassword,
   MonoPerson,
   MonoRemoveRedEye,
+  MonoSecurity,
   MonoSelectAll,
   MonoSettings,
   MonoSettingsBackupRestore,
@@ -85,6 +86,14 @@ export function Settings() {
         startVisual={<MonoPassword />}
       >
         Change Password
+      </UiLink>
+      <UiLink
+        href="/settings/keep-password-policy"
+        component={Link}
+        variant="outlined"
+        startVisual={<MonoSecurity />}
+      >
+        Keep Password Policy
       </UiLink>
       <UiLink
         href="/settings/export-data"

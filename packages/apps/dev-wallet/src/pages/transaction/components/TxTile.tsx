@@ -3,6 +3,7 @@ import { ITransaction } from '@/modules/transaction/transaction.repository';
 import {
   MonoCheck,
   MonoOpenInFull,
+  MonoPending,
   MonoShare,
   MonoSignature,
   MonoViewInAr,
@@ -19,6 +20,7 @@ import { useMemo, useState } from 'react';
 import { Value } from './helpers';
 import {
   codeClass,
+  pendingClass,
   successClass,
   txTileClass,
   txTileContentClass,
@@ -45,7 +47,11 @@ export const TxTile = ({
   const command: IPactCommand = JSON.parse(tx.cmd);
   const { getPublicKeyData } = useWallet();
   const signers = useMemo(() => normalizeSigs(tx), [tx]);
-  const signedByYou = !signers.find(
+  const isUserSigner = Boolean(
+    signers.find((sigData) => getPublicKeyData(sigData?.pubKey)),
+  );
+
+  const nothingLeftToSignByUser = !signers.find(
     (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
   );
   const [shareClicked, setCopyClick] = useState(false);
@@ -75,7 +81,7 @@ export const TxTile = ({
     >
       <Stack flexDirection={'column'} gap={'sm'} flex={1}>
         <TxPipeLine tx={tx} variant="tile" contTx={contTx} />
-        {tx.status === 'initiated' && !signedByYou && (
+        {tx.status === 'initiated' && !nothingLeftToSignByUser && (
           <>
             {'exec' in command.payload && (
               <>
@@ -107,28 +113,53 @@ export const TxTile = ({
             )}
           </>
         )}
-        {tx.status === 'initiated' && signedByYou && (
-          <Stack
-            gap={'sm'}
-            flexDirection={'column'}
-            overflow="auto"
-            flex={1}
-            className={txTileContentClass}
-          >
-            <Stack>
-              <Text size={'smallest'} className={successClass}>
-                <Stack alignItems={'center'} gap={'xs'}>
-                  <MonoCheck />
-                  Signed by you
-                </Stack>
-              </Text>
+        {tx.status === 'initiated' &&
+          nothingLeftToSignByUser &&
+          isUserSigner && (
+            <Stack
+              gap={'sm'}
+              flexDirection={'column'}
+              overflow="auto"
+              flex={1}
+              className={txTileContentClass}
+            >
+              <Stack>
+                <Text size={'smallest'} className={successClass}>
+                  <Stack alignItems={'center'} gap={'xs'}>
+                    <MonoCheck />
+                    Signed by you
+                  </Stack>
+                </Text>
+              </Stack>
+              <Value className={codeClass}>
+                You have signed this transaction, share the tx with others to
+                sign;
+              </Value>
             </Stack>
-            <Value className={codeClass}>
-              You have signed this transaction, share the tx with others to
-              sign;
-            </Value>
-          </Stack>
-        )}
+          )}
+        {tx.status === 'initiated' &&
+          nothingLeftToSignByUser &&
+          !isUserSigner && (
+            <Stack
+              gap={'sm'}
+              flexDirection={'column'}
+              overflow="auto"
+              flex={1}
+              className={txTileContentClass}
+            >
+              <Stack>
+                <Text size={'smallest'} className={pendingClass}>
+                  <Stack alignItems={'center'} gap={'xs'}>
+                    <MonoPending />
+                    Add external signers
+                  </Stack>
+                </Text>
+              </Stack>
+              <Value className={codeClass}>
+                share the tx with others to sign;
+              </Value>
+            </Stack>
+          )}
         {tx.status === 'signed' && (
           <>
             <Stack
@@ -148,7 +179,7 @@ export const TxTile = ({
       </Stack>
       <Stack justifyContent={'space-between'} alignItems={'center'}>
         <Stack alignItems={'center'}>
-          {tx.status === 'initiated' && !signedByYou && (
+          {tx.status === 'initiated' && !nothingLeftToSignByUser && (
             <Button isCompact onClick={onSign} variant="outlined">
               <Stack gap={'sm'} alignItems={'center'}>
                 <MonoSignature scale={0.5} />
@@ -156,7 +187,7 @@ export const TxTile = ({
               </Stack>
             </Button>
           )}
-          {tx.status === 'initiated' && signedByYou && (
+          {tx.status === 'initiated' && nothingLeftToSignByUser && (
             <Button isCompact variant="outlined" onClick={shareTx}>
               <Stack gap={'sm'} alignItems={'center'}>
                 <MonoShare />

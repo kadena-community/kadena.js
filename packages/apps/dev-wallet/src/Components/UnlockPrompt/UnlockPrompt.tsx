@@ -1,4 +1,5 @@
 import { IProfile } from '@/modules/wallet/wallet.repository.ts';
+import { PasswordKeepPolicy } from '@/service-worker/types.ts';
 import { getErrorMessage } from '@/utils/getErrorMessage.ts';
 import {
   Button,
@@ -24,7 +25,7 @@ export const UnlockPrompt: React.FC<{
     keepOpen,
   }: {
     password: string;
-    keepOpen: 'session' | 'short-time' | 'never';
+    keepOpen: PasswordKeepPolicy;
   }) => Promise<void>;
   reject: (reason: any) => void;
   storePassword?: boolean;
@@ -91,6 +92,9 @@ export const UnlockPrompt: React.FC<{
                     field.onChange(value);
                   }}
                 >
+                  <Radio value="on-login">
+                    Unlock security module at login
+                  </Radio>
                   <Radio value="session">Keep open during this session</Radio>
                   <Radio value="short-time">Lock after 5 minutes</Radio>
                   <Radio value="never">always ask</Radio>

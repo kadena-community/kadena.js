@@ -1,10 +1,10 @@
-import { ISetSecurityPhrase } from '@/service-worker/types';
+import { ISetSecurityPhrase, PasswordKeepPolicy } from '@/service-worker/types';
 import { kadenaDecrypt, kadenaEncrypt, randomBytes } from '@kadena/hd-wallet';
 
 export interface SecureContext {
   encryptionKey: Uint8Array;
   encryptionPhrase: Uint8Array;
-  keepPolicy: 'session' | 'short-time' | 'never';
+  keepPolicy: PasswordKeepPolicy;
   ttl?: number;
 }
 

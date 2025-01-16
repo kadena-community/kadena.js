@@ -65,7 +65,7 @@ export const useWallet = () => {
   );
 
   const unlockProfile = useCallback(
-    async (profileId: string, password: string, openSecurityModule = false) => {
+    async (profileId: string, password: string) => {
       console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
       await securityService.clearSecurityPhrase();
@@ -73,10 +73,13 @@ export const useWallet = () => {
         const res = await setProfile(profile);
         channel.postMessage({ action: 'switch-profile', payload: profile });
         backupDatabase().catch(console.log);
-        if (openSecurityModule) {
-          console.log('openSecurityModule');
+        if (profile.options.rememberPassword === 'on-login') {
+          const sessionEntropy = (await Session.get('sessionId')) as string;
+          if (!sessionEntropy) {
+            return res;
+          }
           await securityService.setSecurityPhrase({
-            sessionEntropy: Session.get('sessionId') as string,
+            sessionEntropy,
             phrase: password,
             keepPolicy: 'session',
           });
