@@ -1,5 +1,6 @@
 'use client';
 
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
 import { Card, Stack, Text } from '@kadena/kode-ui';
 import React from 'react';
@@ -25,6 +26,7 @@ const RootLayout = ({
     >
       <Stack flexDirection="column" className={cardWrapperClass}>
         <Card className={cardClass}>
+          <CookieConsent />
           <GasPayableBanner />
           {children}
         </Card>

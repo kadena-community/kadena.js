@@ -3,7 +3,8 @@
   "version": "0.1.6",
   "private": true,
   "scripts": {
-    "build": "pnpm run generate & next build",
+    "prebuild": "pnpm run generate",
+    "build": "next build",
     "dev": "next dev",
     "generate": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact\"",
     "generate:sdk": "cache-sh -i \"{codegen-sdk.yml,./node_modules/@kadena/graph/generated-schema.graphql,src/**/*.graph.ts,src/__generated__/**}\" -- graphql-codegen --config codegen-sdk.yml",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "@apollo/client": "~3.9.11",
+    "@google-analytics/data": "~3.2.2",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@hookform/resolvers": "^3.2.0",
     "@kadena/client": "workspace:*",
@@ -52,6 +54,7 @@
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",
+    "@types/gtag.js": "~0.0.12",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",

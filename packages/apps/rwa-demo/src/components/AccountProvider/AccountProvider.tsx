@@ -123,6 +123,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const selectAccount = (account: IWalletAccount) => {
     setAccount(account);
+
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
     router.replace('/');
   };
@@ -174,7 +175,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         localStorage.removeItem(getAccountCookieName());
       }
     }
-  }, []);
+  }, [account?.address]);
 
   const initProps = async (accountProp?: IWalletAccount) => {
     if (!accountProp) {
@@ -196,21 +197,19 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (accountRoles.isMounted) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      initProps(account);
-    }
-  }, [accountRoles.isMounted]);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    initProps(account);
+  }, [account?.address]);
 
   useEffect(() => {
-    if (!account) {
+    if (!account?.address) {
       setIsAgentState(false);
       setIsOwnerState(false);
       setIsComplianceOwnerState(false);
       setIsInvestorState(false);
       return;
     }
-  }, [account]);
+  }, [account?.address]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
     const { message, close } = await getWalletConnection();
