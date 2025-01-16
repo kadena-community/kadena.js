@@ -33,6 +33,7 @@ export const TXTYPES: Record<
   | 'DISTRIBUTETOKENS'
   | 'PARTIALLYFREEZETOKENS'
   | 'TRANSFERTOKENS'
+  | 'FAUCET'
   | 'PAUSECONTRACT',
   ITxType
 > = {
@@ -48,6 +49,7 @@ export const TXTYPES: Record<
   DISTRIBUTETOKENS: { name: 'DISTRIBUTETOKENS', overall: true },
   PARTIALLYFREEZETOKENS: { name: 'PARTIALLYFREEZETOKENS', overall: true },
   TRANSFERTOKENS: { name: 'TRANSFERTOKENS', overall: true },
+  FAUCET: { name: 'FAUCET', overall: false },
 } as const;
 
 export interface ITransaction {

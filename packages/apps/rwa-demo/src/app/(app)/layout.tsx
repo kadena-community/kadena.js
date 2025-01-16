@@ -12,6 +12,7 @@ import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/Acti
 import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
 import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
+import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
 import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useAccount } from '@/hooks/account';
@@ -94,6 +95,7 @@ const RootLayout = ({
             <DemoBanner />
             <GraphOnlineBanner />
             <FrozenInvestorBanner />
+            <GasPayableBanner />
           </Stack>
         }
         logo={
