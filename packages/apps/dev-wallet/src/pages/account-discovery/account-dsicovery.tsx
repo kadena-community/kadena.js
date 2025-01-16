@@ -1,7 +1,6 @@
-import { IKeyItem } from '@/modules/wallet/wallet.repository';
-import { Button, Card, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { IKeyItem, IKeySource } from '@/modules/wallet/wallet.repository';
+import { Button, Card, Checkbox, Heading, Stack, Text } from '@kadena/kode-ui';
+import { useState } from 'react';
 
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { IAccount } from '@/modules/account/account.repository';
@@ -10,20 +9,21 @@ import {
   accountDiscovery,
 } from '@/modules/account/account.service';
 import { keySourceManager } from '@/modules/key-source/key-source-manager';
+import { keySourceRepository } from '@/modules/key-source/key-source.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
 import { MonoKey } from '@kadena/kode-icons/system';
+import { PactNumber } from '@kadena/pactjs';
+import { Label } from '../transaction/components/helpers';
 
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
   const navigate = usePatchedNavigate();
-  const processRef = useRef<ReturnType<typeof accountDiscovery>>();
-  const { profile, keySources, unlockKeySource, activeNetwork } = useWallet();
-  const { keySourceId } = useParams();
-  const [key, setKey] = useState<IKeyItem>();
+  const { profile, keySources, unlockKeySource, networks } = useWallet();
+  const [key, setKey] = useState<{ [key: string]: IKeyItem }>({});
   const [discoveryStatus, setDiscoveryStatus] = useState<
     'idle' | 'discovering' | 'finished'
   >('idle');
@@ -31,36 +31,38 @@ export function AccountDiscovery() {
     Array<IWalletDiscoveredAccount | undefined>
   >([]);
   const [accounts, setAccounts] = useState<IAccount[]>();
+  const [selectedNetworks, setSelectedNetworks] = useState<string[]>(
+    networks.map((network) => network.uuid),
+  );
 
-  async function start() {
-    const keySource = keySources.find((ks) => ks.uuid === keySourceId);
-    if (!activeNetwork || !keySource || !profile) return;
+  async function start(keySource: IKeySource) {
+    if (!selectedNetworks.length || !keySource || !profile) return [];
     if (
       keySource.source !== 'HD-BIP44' &&
       keySource.source !== 'HD-chainweaver'
     ) {
       throw new Error('Unsupported key source');
     }
-    setDiscoveryStatus('discovering');
+
     await unlockKeySource(keySource);
-    processRef.current = accountDiscovery(
-      activeNetwork,
+    const process = accountDiscovery(
+      networks.filter((network) => selectedNetworks.includes(network.uuid)),
       keySource,
       profile.uuid,
       NUMBER_OF_KEYS_TO_DISCOVER,
     )
       .on('key-retrieved', (data: IKeyItem) => {
-        setKey(data);
+        setKey((st) => ({ ...st, [keySource.source]: data }));
       })
       .on('chain-result', (data: IWalletDiscoveredAccount) => {
         setDiscoveredAccounts((prev) => [...prev, data]);
       });
-    const accounts = await processRef.current.executeTo('query-done');
-    if (!accounts || !accounts.length) {
-      keySourceManager.disconnect();
-    }
-    setDiscoveryStatus('finished');
-    setAccounts(accounts);
+    const accounts: IAccount[] = await process.executeTo('query-done');
+    setAccounts((acc = []) => [...acc, ...accounts]);
+    await process.execute().catch((e) => {
+      console.log('error', e);
+    });
+    return accounts;
   }
 
   console.log('accounts', discoveredAccounts);
@@ -68,70 +70,149 @@ export function AccountDiscovery() {
     (data) => data?.result,
   ) as Array<{
     chainId: ChainId;
+    networkUUID: string;
     result: Exclude<IWalletDiscoveredAccount['result'], undefined>;
   }>;
 
   return (
-    <Card>
-      <Stack margin="md" flexDirection={'column'} gap="md" flex={1}>
-        <Heading variant="h2">Account Discovery</Heading>
-        <Text>
-          You can discover the accounts that you have created with the imported
-          mnemonic
-        </Text>
-        <Stack gap="md">
-          <Text bold color="emphasize">
-            network:
+    <Stack style={{ width: '100vw', maxWidth: '1200px' }}>
+      <Card fullWidth>
+        <Stack
+          margin="md"
+          flexDirection={'column'}
+          gap="md"
+          flex={1}
+          alignItems={'flex-start'}
+          justifyContent={'flex-start'}
+          textAlign="left"
+        >
+          <Heading variant="h2">Find Your Assets</Heading>
+          <Text>
+            We will discover the accounts that you have created with the
+            imported mnemonic
           </Text>
-          <Text>{activeNetwork?.networkId}</Text>
-        </Stack>
+          {discoveryStatus === 'idle' && (
+            <>
+              <Stack flexDirection={'column'}>
+                <Text bold color="emphasize">
+                  Networks:
+                </Text>
+                <Text>Please select the networks you want to query</Text>
+              </Stack>
+              <Stack gap="sm" flexDirection={'column'}>
+                {networks.map((network) => (
+                  <Checkbox
+                    key={network.networkId}
+                    isSelected={selectedNetworks.includes(network.uuid)}
+                    onChange={(checked) => {
+                      setSelectedNetworks(
+                        checked
+                          ? [...selectedNetworks, network.uuid]
+                          : selectedNetworks.filter((n) => n !== network.uuid),
+                      );
+                    }}
+                  >
+                    {network.name
+                      ? `${network.networkId} - ${network.name}`
+                      : network.networkId}
+                  </Checkbox>
+                ))}
+              </Stack>
 
-        {discoveryStatus === 'idle' && (
-          <Stack>
-            <Button
-              onClick={() => {
-                start();
-              }}
-            >
-              Start Discovery
-            </Button>
-          </Stack>
-        )}
+              <Stack marginBlockStart={'md'}>
+                <Button
+                  isDisabled={selectedNetworks.length === 0}
+                  onClick={async () => {
+                    setDiscoveryStatus('discovering');
 
-        {discoveryStatus === 'discovering' && (
-          <Card fullWidth>
-            <Text> We are trying for first 20 keys - only K: account</Text>
-            <Stack gap={'sm'}>
-              <Text>checking</Text>
-              {key && (
-                <>
-                  <Text color="emphasize">#{key.index}</Text>
-                  <Text>Address: </Text>
-                  <Text color="emphasize" bold>
-                    k:{key.publicKey}
-                  </Text>
-                </>
+                    const ks = await Promise.all(
+                      keySources.map(async (keySource) => ({
+                        keySource,
+                        accounts: await start(keySource),
+                      })),
+                    );
+                    const mostUsedKs = ks.reduce((acc, data) =>
+                      acc.accounts.length < data.accounts.length ? data : acc,
+                    );
+                    if (mostUsedKs.accounts.length) {
+                      keySourceRepository.patchKeySource(
+                        mostUsedKs.keySource.uuid,
+                        { isDefault: true },
+                      );
+                    }
+                    setDiscoveryStatus('finished');
+                  }}
+                >
+                  Continue
+                </Button>
+              </Stack>
+            </>
+          )}
+
+          {discoveryStatus === 'discovering' &&
+            keySources.map((keySource) => (
+              <Card fullWidth>
+                <Text>{keySource.source}</Text>
+                <Text> We are trying for first 20 keys - only K: account</Text>
+                <Stack gap={'sm'}>
+                  <Text>checking</Text>
+                  {key && (
+                    <>
+                      <Text color="emphasize">
+                        #{key[keySource.source]?.index}
+                      </Text>
+                      <Text>Address: </Text>
+                      <Text color="emphasize" bold>
+                        k:{key[keySource.source]?.publicKey}
+                      </Text>
+                    </>
+                  )}
+                </Stack>
+              </Card>
+            ))}
+          {discoveryStatus === 'discovering' && (
+            <Stack marginBlockStart={'lg'} flexDirection={'column'} gap={'lg'}>
+              <Heading variant="h4">Discoverd Funds</Heading>
+              {filteredDiscoveredAccounts.length === 0 ? (
+                <Text>Pending</Text>
+              ) : (
+                <Stack flex={1} flexDirection={'column'} gap={'sm'}>
+                  {networks
+                    .filter((n) => selectedNetworks.includes(n.uuid))
+                    .map((network) => (
+                      <Stack key={network.uuid} gap={'md'}>
+                        <Label>{network.networkId}</Label>
+                        <Text>
+                          {filteredDiscoveredAccounts
+                            .filter((d) => d.networkUUID === network.uuid)
+                            .reduce((acc, data) => {
+                              return new PactNumber(data.result.balance)
+                                .plus(acc)
+                                .toDecimal();
+                            }, '0')}{' '}
+                          KDA
+                        </Text>
+                      </Stack>
+                    ))}
+                </Stack>
               )}
             </Stack>
-          </Card>
-        )}
-        {discoveryStatus !== 'idle' && (
-          <Stack marginBlockStart={'lg'} flexDirection={'column'} gap={'lg'}>
-            <Heading variant="h4">Discoverd Accounts Details</Heading>
-            {filteredDiscoveredAccounts.length === 0 ? (
-              <Text>no accounts found yet</Text>
-            ) : (
+          )}
+          {discoveryStatus === 'finished' && (
+            <Stack marginBlockStart={'lg'} flexDirection={'column'} gap={'lg'}>
+              <Heading variant="h4">Discoverd Accounts</Heading>
+              {!accounts?.length && <Text>no accounts found</Text>}
               <Stack flexDirection={'column'} flex={1}>
-                {filteredDiscoveredAccounts.map((data, index) => (
+                {accounts?.map((account, index) => (
                   <ListItem key={index}>
                     <Stack gap={'md'} flex={1}>
                       <Stack gap={'sm'} flex={1}>
-                        <Text>Chain #{data.chainId}: </Text>
-                        <Text>{data.result.account}</Text>
+                        <Text>{account.address}</Text>
                       </Stack>
+
                       <Stack gap={'md'}>
-                        <Text>{data.result.guard.pred}:</Text>
-                        {data.result.guard.keys.map((key) => (
+                        <Text>{account.guard.pred}:</Text>
+                        {account.guard.keys.map((key) => (
                           <Stack gap={'xs'} alignItems={'center'}>
                             <Text>
                               <MonoKey />
@@ -139,66 +220,27 @@ export function AccountDiscovery() {
                             <Text variant="code">{shorten(key)}</Text>{' '}
                           </Stack>
                         ))}
-                        <Text>{data.result.balance} KDA</Text>
+                        <Text>{account.overallBalance} KDA</Text>
                       </Stack>
                     </Stack>
                   </ListItem>
                 ))}
               </Stack>
-            )}
-          </Stack>
-        )}
-        {accounts && (
-          <Stack marginBlockStart={'lg'} flexDirection={'column'} gap={'lg'}>
-            <Heading variant="h4">Discoverd Accounts</Heading>
-            {!accounts.length && <Text>no accounts found</Text>}
-            <Stack flexDirection={'column'} flex={1}>
-              {accounts.map((account, index) => (
-                <ListItem key={index}>
-                  <Stack gap={'md'} flex={1}>
-                    <Stack gap={'sm'} flex={1}>
-                      <Text>{account.address}</Text>
-                    </Stack>
-
-                    <Stack gap={'md'}>
-                      <Text>{account.guard.pred}:</Text>
-                      {account.guard.keys.map((key) => (
-                        <Stack gap={'xs'} alignItems={'center'}>
-                          <Text>
-                            <MonoKey />
-                          </Text>
-                          <Text variant="code">{shorten(key)}</Text>{' '}
-                        </Stack>
-                      ))}
-                      <Text>{account.overallBalance} KDA</Text>
-                    </Stack>
-                  </Stack>
-                </ListItem>
-              ))}
+              <Stack alignItems={'flex-start'} gap={'sm'}>
+                <Button
+                  isDisabled={discoveryStatus !== 'finished'}
+                  onClick={async () => {
+                    keySourceManager.disconnect();
+                    navigate('/');
+                  }}
+                >
+                  Go to your assets
+                </Button>
+              </Stack>
             </Stack>
-            <Stack alignItems={'flex-start'} gap={'sm'}>
-              <Button
-                variant="transparent"
-                onClick={() => {
-                  keySourceManager.disconnect();
-                  navigate('/');
-                }}
-              >
-                Discard
-              </Button>
-              <Button
-                onClick={async () => {
-                  await processRef.current?.execute();
-                  keySourceManager.disconnect();
-                  navigate('/');
-                }}
-              >
-                Save Accounts
-              </Button>
-            </Stack>
-          </Stack>
-        )}
-      </Stack>
-    </Card>
+          )}
+        </Stack>
+      </Card>
+    </Stack>
   );
 }

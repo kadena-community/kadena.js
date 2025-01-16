@@ -306,7 +306,8 @@ export const useWallet = () => {
         return keys[0];
       }
     });
-    const keySource = context.keySources[0];
+    const keySource =
+      context.keySources.find((ks) => ks.isDefault) || context.keySources[0];
     const availableKey = keySource.keys.find(
       (key) => !usedKeys.includes(key.publicKey),
     );

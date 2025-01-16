@@ -128,7 +128,7 @@ export function Settings() {
         Set automatic backup
       </UiLink>
       <UiLink
-        href={`/account-discovery/${keySources[0].uuid}`}
+        href={`/account-discovery`}
         component={Link}
         variant="outlined"
         startVisual={<MonoSelectAll />}

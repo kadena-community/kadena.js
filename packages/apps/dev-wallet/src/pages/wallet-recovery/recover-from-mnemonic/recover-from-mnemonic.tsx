@@ -1,5 +1,4 @@
 import { useGlobalState } from '@/App/providers/globalState';
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import { config } from '@/config';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
@@ -10,18 +9,17 @@ import {
   PublicKeyCredentialCreate,
 } from '@/utils/webAuthn';
 import {
-  Box,
   Button,
-  Checkbox,
+  Card,
   Heading,
   Stack,
   Text,
   TextField,
+  Link as UiLink,
 } from '@kadena/kode-ui';
-import { useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { noStyleLinkClass } from '../../home/style.css';
 
 type Inputs = {
   mnemonic: string;
@@ -39,9 +37,9 @@ export function RecoverFromMnemonic() {
   const {
     register,
     handleSubmit,
-    control,
     getValues,
     setValue,
+    watch,
     formState: { isValid, errors },
   } = useForm<Inputs>({
     defaultValues: {
@@ -56,12 +54,26 @@ export function RecoverFromMnemonic() {
       fromChainweaver: false,
     },
   });
+
+  useEffect(() => {
+    const name = getValues('profileName');
+    console.log('profileList', profileList, name);
+    if (
+      (!name || name === 'default') &&
+      profileList &&
+      profileList.length > 0
+    ) {
+      setValue('profileName', `profile-${profileList.length + 1}`);
+    }
+  }, [profileList, getValues, setValue]);
+
   const formRef = useRef<HTMLFormElement>(null);
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();
   const { createHDWallet } = useHDWallet();
   const [error, setError] = useState('');
   const { createProfile, unlockProfile, activeNetwork } = useWallet();
+  const [importing, setImporting] = useState(false);
 
   async function importWallet({
     mnemonic,
@@ -69,7 +81,6 @@ export function RecoverFromMnemonic() {
     password,
     confirmation,
     accentColor,
-    fromChainweaver,
   }: Inputs) {
     const is12Words = mnemonic.trim().split(' ').length === 12;
     if (!is12Words) {
@@ -108,17 +119,13 @@ export function RecoverFromMnemonic() {
     );
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
-    const keySource = await createHDWallet(
-      profile.uuid,
-      fromChainweaver ? 'HD-chainweaver' : 'HD-BIP44',
-      pass,
-    );
+    await createHDWallet(profile.uuid, 'HD-chainweaver', pass);
 
-    setOrigin(`/account-discovery/${keySource.uuid}`);
+    await createHDWallet(profile.uuid, 'HD-BIP44', pass);
 
-    await unlockProfile(profile.uuid, pass);
+    setOrigin(`/account-discovery`);
 
-    // TODO: navigate to the backup recovery phrase page
+    await unlockProfile(profile.uuid, pass, true);
   }
 
   async function createWebAuthnCredential() {
@@ -136,30 +143,32 @@ export function RecoverFromMnemonic() {
       console.error('Error creating credential');
     }
   }
+  const profileName = watch('profileName');
   return (
-    <AuthCard>
-      <Stack gap={'lg'} flexDirection={'column'}>
-        <Stack>
-          <Link to="/wallet-recovery" className={noStyleLinkClass}>
-            <Button
-              variant="outlined"
-              isCompact
-              type="button"
-              onPress={() => {
-                throw new Error('back');
-              }}
-            >
-              Back
-            </Button>
-          </Link>
-        </Stack>
+    <Card>
+      <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
+        <Stack></Stack>
         <form
-          onSubmit={handleSubmit(importWallet)}
+          onSubmit={handleSubmit(async (data) => {
+            setImporting(true);
+            await importWallet(data);
+            setImporting(false);
+          })}
           className={displayContentsClass}
           ref={formRef}
         >
           {step === 'import' && (
             <Stack gap={'lg'} flexDirection={'column'}>
+              <Stack>
+                <UiLink
+                  component={Link}
+                  href="/wallet-recovery"
+                  variant="outlined"
+                  isCompact
+                >
+                  Back
+                </UiLink>
+              </Stack>
               <Heading variant="h5">Import mnemonic</Heading>
               <Stack flexDirection="column" gap={'lg'}>
                 <Stack flexDirection={'column'} gap={'sm'}>
@@ -171,29 +180,14 @@ export function RecoverFromMnemonic() {
                     id="phrase"
                     {...register('mnemonic')}
                   />
-                  <Box>
-                    <Controller
-                      name="fromChainweaver"
-                      control={control}
-                      render={({ field }) => {
-                        return (
-                          <Checkbox
-                            isSelected={field.value}
-                            onChange={field.onChange}
-                          >
-                            Generated by Chainweaver v1/v2
-                          </Checkbox>
-                        );
-                      }}
-                    ></Controller>
-                  </Box>
                 </Stack>
 
                 <TextField
                   label="Profile name"
                   id="name"
                   type="text"
-                  defaultValue={getValues('profileName')}
+                  defaultValue={profileName}
+                  value={profileName}
                   {...register('profileName')}
                 />
               </Stack>
@@ -285,7 +279,12 @@ export function RecoverFromMnemonic() {
                 />
               </Stack>
               <Stack flexDirection="column">
-                <Button type="submit" isDisabled={!isValid}>
+                <Button
+                  type="submit"
+                  isDisabled={!isValid}
+                  isLoading={importing}
+                  loadingLabel="Importing"
+                >
                   Continue
                 </Button>
               </Stack>
@@ -294,6 +293,6 @@ export function RecoverFromMnemonic() {
         </form>
         {error && <Text>{error}</Text>}
       </Stack>
-    </AuthCard>
+    </Card>
   );
 }

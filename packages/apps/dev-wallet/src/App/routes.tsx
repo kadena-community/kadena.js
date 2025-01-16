@@ -43,6 +43,7 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
+import { LayoutFull } from './layout-full';
 import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
 import { useGlobalState } from './providers/globalState';
@@ -142,11 +143,10 @@ export const Routes: FC = () => {
               path="/settings/keep-password-policy"
               element={<KeepPasswordPolicy />}
             />
-            <Route
-              path="/account-discovery/:keySourceId"
-              element={<AccountDiscovery />}
-            />
           </Route>
+        </Route>
+        <Route element={<LayoutFull />}>
+          <Route path="/account-discovery" element={<AccountDiscovery />} />
         </Route>
         <Route element={<LayoutMini />}>
           <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />

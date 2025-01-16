@@ -137,7 +137,15 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [navigate, requests, isUnlocked]);
+  }, [
+    navigate,
+    requests,
+    isUnlocked,
+    accounts,
+    profile,
+    networks,
+    activeNetwork,
+  ]);
 
   return (
     <communicationContext.Provider value={requests}>

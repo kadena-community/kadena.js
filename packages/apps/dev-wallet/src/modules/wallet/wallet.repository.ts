@@ -17,6 +17,7 @@ export interface IKeySource {
   profileId: string;
   source: KeySourceType;
   keys: Array<IKeyItem>;
+  isDefault?: boolean;
 }
 
 export interface IProfile {
