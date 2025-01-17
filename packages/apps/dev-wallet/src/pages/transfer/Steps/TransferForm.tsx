@@ -47,7 +47,7 @@ export interface ITransfer {
   accountId: string;
   senderAccount: IRetrievedAccount;
   chain: ChainId | '';
-  receivers: IReceiver[];
+  receivers: Array<IReceiver | undefined>;
   gasPayer: IRetrievedAccount;
   gasPrice: string;
   gasLimit: string;
@@ -124,6 +124,7 @@ export function TransferForm({
     getValues,
     handleSubmit,
     formState,
+    resetField,
   } = useForm<ITransfer>({
     defaultValues: {
       fungible: urlAccount?.contract ?? fungibles[0].contract,
@@ -220,8 +221,10 @@ export function TransferForm({
   const chains = useMemo(() => {
     if (!senderAccount) return [];
     const usedChains = receivers
-      .filter((rec) => rec.address === senderAccount.address && rec.chain)
-      .flatMap(({ chain }) => chain);
+      .filter(
+        (rec) => rec && rec.address === senderAccount.address && rec.chain,
+      )
+      .flatMap((r) => r?.chain);
     return senderAccount.chains.filter(
       (chain) => !usedChains.includes(chain.chainId),
     );
@@ -241,7 +244,7 @@ export function TransferForm({
   const totalAmount = watch('totalAmount');
 
   const evaluateTransactions = useCallback(() => {
-    const receivers = getValues('receivers');
+    const receivers = getValues('receivers').filter((r) => r) as IReceiver[];
     const gasPrice = getValues('gasPrice');
     const gasLimit = getValues('gasLimit');
     const gasPayer = getValues('gasPayer') || getValues('senderAccount');
@@ -507,209 +510,217 @@ export function TransferForm({
           render={({ field: { value: watchReceivers } }) => {
             return (
               <>
-                {watchReceivers.map((__, index) => {
-                  const rec = getValues(`receivers.${index}`);
-                  const chainList = getAvailableChains(rec.discoveredAccount);
-                  const availableChains = ['', ...chainList].filter((ch) => {
-                    // if the receiver is not the sender, then transfer is allowed from any chain
-                    if (rec.address !== senderAccount?.address) {
-                      return true;
-                    }
-                    // if the receiver is the sender, then the chains should be selected manually
-                    if (!ch) return false;
+                {watchReceivers
+                  .map((rec, index) => ({ rec, index }))
+                  .filter(({ rec }) => rec)
+                  .map(({ index }, renderIndex) => {
+                    const rec = getValues(`receivers.${index}`);
+                    if (!rec) return null;
+                    const chainList = getAvailableChains(rec.discoveredAccount);
+                    const availableChains = ['', ...chainList].filter((ch) => {
+                      // if the receiver is not the sender, then transfer is allowed from any chain
+                      if (rec.address !== senderAccount?.address) {
+                        return true;
+                      }
+                      // if the receiver is the sender, then the chains should be selected manually
+                      if (!ch) return false;
 
-                    if (!senderChain && chains.length === 1) {
-                      return ch !== chains[0].chainId;
-                    }
+                      if (!senderChain && chains.length === 1) {
+                        return ch !== chains[0].chainId;
+                      }
 
-                    // source and target chain should not be the same
-                    return ch !== senderChain;
-                  });
-                  console.log('availableChains', {
-                    chainList,
-                    availableChains,
-                    senderChain,
-                    rec,
-                    senderAccount,
-                  });
-                  return (
-                    <Fragment key={index}>
-                      <Stack
-                        gap="sm"
-                        flexDirection={'column'}
-                        className={panelClass}
-                        paddingBlockEnd={'xxl'}
-                      >
+                      // source and target chain should not be the same
+                      return ch !== senderChain;
+                    });
+                    console.log('availableChains', {
+                      chainList,
+                      availableChains,
+                      senderChain,
+                      rec,
+                      senderAccount,
+                    });
+                    return (
+                      <Fragment key={index}>
                         <Stack
-                          marginBlockStart={'md'}
-                          justifyContent={'space-between'}
+                          gap="sm"
+                          flexDirection={'column'}
+                          className={panelClass}
+                          paddingBlockEnd={'xxl'}
                         >
-                          <Heading variant="h5">
-                            Receiver{' '}
-                            {watchReceivers.length > 1 ? `(${index + 1})` : ''}
-                          </Heading>
-                          <Stack>
-                            <>
-                              {watchReceivers.length > 1 && (
+                          <Stack
+                            marginBlockStart={'md'}
+                            justifyContent={'space-between'}
+                          >
+                            <Heading variant="h5">
+                              Receiver{' '}
+                              {watchReceivers.length > 1
+                                ? `(${renderIndex + 1})`
+                                : ''}
+                            </Heading>
+                            <Stack>
+                              <>
+                                {watchReceivers.length > 1 && (
+                                  <Button
+                                    isCompact
+                                    variant="transparent"
+                                    onClick={withEvaluate(() => {
+                                      resetField(`receivers.${index}`);
+                                    })}
+                                  >
+                                    <MonoDelete />
+                                  </Button>
+                                )}
                                 <Button
                                   isCompact
                                   variant="transparent"
-                                  onClick={withEvaluate(() => {
-                                    console.log('deleting', index);
-                                    const receivers = getValues('receivers');
-                                    receivers.splice(index, 1);
-                                    setValue('receivers', [...receivers]);
-                                  })}
-                                >
-                                  <MonoDelete />
-                                </Button>
-                              )}
-                              <Button
-                                isCompact
-                                variant="transparent"
-                                isDisabled={!rec.address || !rec.amount}
-                                onClick={() => {
-                                  const list = [...watchReceivers];
-                                  const newItem = {
-                                    amount: rec.amount,
-                                    address: rec.address,
-                                    chain: '',
-                                    chunks: [],
-                                    discoveredAccount: rec.discoveredAccount,
-                                  } as ITransfer['receivers'][number];
-                                  list.splice(index + 1, 0, newItem);
-                                  setValue('receivers', list);
-                                  evaluateTransactions();
-                                }}
-                              >
-                                <MonoCopyAll />
-                              </Button>
-                            </>
-                          </Stack>
-                        </Stack>
-
-                        <Stack flexDirection={'column'} gap={'sm'}>
-                          <Stack
-                            key={index}
-                            flexDirection={'column'}
-                            gap="sm"
-                            justifyContent={'flex-start'}
-                          >
-                            <Controller
-                              name={`receivers.${index}.discoveredAccount`}
-                              control={control}
-                              rules={{
-                                validate: validateAccount(false, false),
-                              }}
-                              render={({ field, fieldState: { error } }) => {
-                                return (
-                                  <Stack flexDirection={'column'}>
-                                    <AccountSearchBox
-                                      accounts={filteredAccounts}
-                                      hideKeySelector={
-                                        getValues('type') !== 'safeTransfer'
-                                      }
-                                      watchedAccounts={filteredWatchedAccounts}
-                                      contacts={contacts}
-                                      network={activeNetwork!}
-                                      contract={watchFungibleType}
-                                      selectedAccount={field.value}
-                                      errorMessage={
-                                        error?.message ||
-                                        'Please check the account'
-                                      }
-                                      isInvalid={!!error}
-                                      onSelect={(account) => {
-                                        if (account) {
-                                          field.onChange(account);
-                                          setValue(
-                                            `receivers.${index}.address`,
-                                            account.address,
-                                          );
-                                        } else {
-                                          setValue(`receivers.${index}`, {
-                                            amount: getValues(
-                                              `receivers.${index}.amount`,
-                                            ),
-                                            address: '',
-                                            chain: '',
-                                            chunks: getValues(
-                                              `receivers.${index}.chunks`,
-                                            ),
-                                            discoveredAccount: undefined,
-                                          });
-                                        }
-                                        forceRender((prev) => prev + 1);
-                                      }}
-                                    />
-                                  </Stack>
-                                );
-                              }}
-                            />
-                            <Controller
-                              control={control}
-                              name={`receivers.${index}.amount`}
-                              rules={{
-                                min: 0,
-                                required: true,
-                              }}
-                              render={({ field, fieldState: { error } }) => (
-                                <TextField
-                                  aria-label="Amount"
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    field.onChange(value);
+                                  isDisabled={!rec.address || !rec.amount}
+                                  onClick={() => {
+                                    const list = [...watchReceivers];
+                                    const newItem = {
+                                      amount: rec.amount,
+                                      address: rec.address,
+                                      chain: '',
+                                      chunks: [],
+                                      discoveredAccount: rec.discoveredAccount,
+                                    } as ITransfer['receivers'][number];
+                                    list.splice(index + 1, 0, newItem);
+                                    setValue('receivers', list);
+                                    evaluateTransactions();
                                   }}
-                                  placeholder="Enter the amount"
-                                  startVisual={<Label>Amount:</Label>}
-                                  onBlur={evaluateTransactions}
-                                  value={field.value}
-                                  size="sm"
-                                  type="number"
-                                  step="1"
-                                  isInvalid={!!error}
-                                  errorMessage={'Please enter a valid amount'}
-                                />
-                              )}
-                            />
-                            <AdvancedMode>
-                              <Stack flex={1} gap="sm">
-                                <Controller
-                                  name={`receivers.${index}.chain`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <Select
-                                      aria-label="Chain"
-                                      startVisual={<Label>Chain:</Label>}
-                                      // label={index === 0 ? 'Chain' : undefined}
-                                      placeholder="Select a chain"
-                                      description={
-                                        rec.xchain ||
-                                        rec.chunks.find(({ chainId }) =>
-                                          redistribution.find(
-                                            (r) => r.target === chainId,
-                                          ),
-                                        )
-                                          ? `This will trigger balance redistribution`
-                                          : ''
-                                      }
-                                      errorMessage={
-                                        error &&
-                                        error.target === `receivers.${index}` &&
-                                        error.message
-                                      }
-                                      isInvalid={
-                                        error &&
-                                        error.target === `receivers.${index}`
-                                      }
-                                      size="sm"
-                                      selectedKey={field.value}
-                                      onSelectionChange={withEvaluate(
-                                        field.onChange,
-                                      )}
-                                    >
-                                      {(rec.amount ? availableChains : []).map(
-                                        (chain) => (
+                                >
+                                  <MonoCopyAll />
+                                </Button>
+                              </>
+                            </Stack>
+                          </Stack>
+
+                          <Stack flexDirection={'column'} gap={'sm'}>
+                            <Stack
+                              key={index}
+                              flexDirection={'column'}
+                              gap="sm"
+                              justifyContent={'flex-start'}
+                            >
+                              <Controller
+                                name={`receivers.${index}.discoveredAccount`}
+                                control={control}
+                                rules={{
+                                  validate: validateAccount(false, false),
+                                }}
+                                render={({ field, fieldState: { error } }) => {
+                                  return (
+                                    <Stack flexDirection={'column'}>
+                                      <AccountSearchBox
+                                        accounts={filteredAccounts}
+                                        hideKeySelector={
+                                          getValues('type') !== 'safeTransfer'
+                                        }
+                                        watchedAccounts={
+                                          filteredWatchedAccounts
+                                        }
+                                        contacts={contacts}
+                                        network={activeNetwork!}
+                                        contract={watchFungibleType}
+                                        selectedAccount={field.value}
+                                        errorMessage={
+                                          error?.message ||
+                                          'Please check the account'
+                                        }
+                                        isInvalid={!!error}
+                                        onSelect={(account) => {
+                                          if (account) {
+                                            field.onChange(account);
+                                            setValue(
+                                              `receivers.${index}.address`,
+                                              account.address,
+                                            );
+                                          } else {
+                                            setValue(`receivers.${index}`, {
+                                              amount: getValues(
+                                                `receivers.${index}.amount`,
+                                              ),
+                                              address: '',
+                                              chain: '',
+                                              chunks: getValues(
+                                                `receivers.${index}.chunks`,
+                                              ),
+                                              discoveredAccount: undefined,
+                                            });
+                                          }
+                                          forceRender((prev) => prev + 1);
+                                        }}
+                                      />
+                                    </Stack>
+                                  );
+                                }}
+                              />
+                              <Controller
+                                control={control}
+                                name={`receivers.${index}.amount`}
+                                rules={{
+                                  min: 0,
+                                  required: true,
+                                }}
+                                render={({ field, fieldState: { error } }) => (
+                                  <TextField
+                                    aria-label="Amount"
+                                    onChange={(e) => {
+                                      const value = e.target.value;
+                                      field.onChange(value);
+                                    }}
+                                    placeholder="Enter the amount"
+                                    startVisual={<Label>Amount:</Label>}
+                                    onBlur={evaluateTransactions}
+                                    value={field.value}
+                                    size="sm"
+                                    type="number"
+                                    step="1"
+                                    isInvalid={!!error}
+                                    errorMessage={'Please enter a valid amount'}
+                                  />
+                                )}
+                              />
+                              <AdvancedMode>
+                                <Stack flex={1} gap="sm">
+                                  <Controller
+                                    name={`receivers.${index}.chain`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <Select
+                                        aria-label="Chain"
+                                        startVisual={<Label>Chain:</Label>}
+                                        // label={index === 0 ? 'Chain' : undefined}
+                                        placeholder="Select a chain"
+                                        description={
+                                          rec.xchain ||
+                                          rec.chunks.find(({ chainId }) =>
+                                            redistribution.find(
+                                              (r) => r.target === chainId,
+                                            ),
+                                          )
+                                            ? `This will trigger balance redistribution`
+                                            : ''
+                                        }
+                                        errorMessage={
+                                          error &&
+                                          error.target ===
+                                            `receivers.${index}` &&
+                                          error.message
+                                        }
+                                        isInvalid={
+                                          error &&
+                                          error.target === `receivers.${index}`
+                                        }
+                                        size="sm"
+                                        selectedKey={field.value}
+                                        onSelectionChange={withEvaluate(
+                                          field.onChange,
+                                        )}
+                                      >
+                                        {(rec.amount
+                                          ? availableChains
+                                          : []
+                                        ).map((chain) => (
                                           <SelectItem key={chain}>
                                             {chain ? (
                                               <Chain chainId={chain} />
@@ -736,41 +747,40 @@ export function TransferForm({
                                               </Stack>
                                             )}
                                           </SelectItem>
-                                        ),
-                                      )}
-                                    </Select>
-                                  )}
-                                />
-                              </Stack>
-                            </AdvancedMode>
+                                        ))}
+                                      </Select>
+                                    )}
+                                  />
+                                </Stack>
+                              </AdvancedMode>
+                            </Stack>
                           </Stack>
                         </Stack>
-                      </Stack>
-                      {index === watchReceivers.length - 1 && (
-                        <Stack>
-                          <button
-                            className={linkClass}
-                            onClick={() => {
-                              const receivers = getValues('receivers');
-                              setValue('receivers', [
-                                ...receivers,
-                                {
-                                  amount: '',
-                                  address: '',
-                                  chain: '',
-                                  chunks: [],
-                                  discoveredAccount: undefined,
-                                },
-                              ]);
-                            }}
-                          >
-                            + Add Receiver
-                          </button>
-                        </Stack>
-                      )}
-                    </Fragment>
-                  );
-                })}
+                        {index === watchReceivers.length - 1 && (
+                          <Stack>
+                            <button
+                              className={linkClass}
+                              onClick={() => {
+                                const receivers = getValues('receivers');
+                                setValue('receivers', [
+                                  ...receivers,
+                                  {
+                                    amount: '',
+                                    address: '',
+                                    chain: '',
+                                    chunks: [],
+                                    discoveredAccount: undefined,
+                                  },
+                                ]);
+                              }}
+                            >
+                              + Add Receiver
+                            </button>
+                          </Stack>
+                        )}
+                      </Fragment>
+                    );
+                  })}
               </>
             );
           }}
@@ -1000,18 +1010,7 @@ export function TransferForm({
               {error.message}
             </Notification>
           )}
-          <Button
-            type="submit"
-            // isDisabled={
-            //   !formState.isValid ||
-            //   !!error ||
-            //   !senderAccount ||
-            //   new PactNumber(totalAmount).gte(overallBalance) ||
-            //   new PactNumber(totalAmount).lte(0)
-            // }
-          >
-            Create Transactions
-          </Button>
+          <Button type="submit">Create Transactions</Button>
         </Stack>
       </Stack>
     </form>
