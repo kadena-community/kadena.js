@@ -3,6 +3,7 @@
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
 import { Card, Stack, Text } from '@kadena/kode-ui';
+import { NotificationSlot } from '@kadena/kode-ui/patterns';
 import React from 'react';
 import {
   cardClass,
@@ -24,6 +25,7 @@ const RootLayout = ({
       alignItems="center"
       className={wrapperClass}
     >
+      <NotificationSlot />
       <Stack flexDirection="column" className={cardWrapperClass}>
         <Card className={cardClass}>
           <CookieConsent />

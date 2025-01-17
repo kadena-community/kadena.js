@@ -28,6 +28,12 @@ export const useCreateContract = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
+      await addTransaction({
+        ...res,
+        type: TXTYPES.CREATECONTRACT,
+        accounts: [account?.address!],
+      });
+
       const dataResult = await client.listen(res);
 
       // if the contract already exists, go to that contract
@@ -40,13 +46,6 @@ export const useCreateContract = () => {
         window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
         return;
       }
-
-      return addTransaction({
-        ...res,
-        type: TXTYPES.CREATECONTRACT,
-        accounts: [account?.address!],
-        result: dataResult.result,
-      });
     } catch (e: any) {
       addNotification({
         intent: 'negative',
