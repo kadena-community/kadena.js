@@ -1,6 +1,6 @@
 import { useGlobalState } from '@/App/providers/globalState';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
-import { IPactCommand, IUnsignedCommand } from '@kadena/client';
+import { IUnsignedCommand } from '@kadena/client';
 import {
   FC,
   PropsWithChildren,
@@ -9,7 +9,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { addTransaction } from '../transaction/transaction.service';
 import { useWallet } from '../wallet/wallet.hook';
 
 type Message = {
@@ -108,29 +107,11 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
           id: string;
           payload: IUnsignedCommand;
         };
+        const request = createRequest(data);
         console.log('SIGN_REQUEST', id);
         console.log('payload', payload);
-        const cmd = JSON.parse(payload.cmd) as IPactCommand;
-        const networkUUID =
-          networks.find(({ networkId }) => networkId === cmd.networkId)?.uuid ??
-          activeNetwork?.uuid;
-
-        if (!networkUUID) {
-          throw new Error('Network not found');
-        }
-        if (!profile?.uuid) {
-          throw new Error('Profile not found');
-        }
-
-        const tx = await addTransaction({
-          transaction: payload as IUnsignedCommand,
-          profileId: profile?.uuid,
-          networkUUID: networkUUID,
-          groupId: id,
-        });
-        const request = createRequest(data);
-        setOrigin(`transaction/${tx.uuid}?request=${id}`);
-        navigate(`transaction/${tx.uuid}?request=${id}`);
+        setOrigin(`sign-request/${id}`);
+        navigate(`sign-request/${id}`);
         return request;
       }),
     ];

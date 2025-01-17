@@ -31,6 +31,7 @@ import { KeepPasswordPolicy } from '@/pages/settings/keep-password-policy/keep-p
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
+import { SignRequest } from '@/pages/transaction/sign-request';
 import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transfer } from '@/pages/transfer/transfer';
 import { ImportChainweaverExport } from '@/pages/wallet-recovery/import-chainweaver-export/import-chainweaver-export';
@@ -143,6 +144,7 @@ export const Routes: FC = () => {
               path="/settings/keep-password-policy"
               element={<KeepPasswordPolicy />}
             />
+            <Route path="/sign-request/:requestId" element={<SignRequest />} />
           </Route>
         </Route>
         <Route element={<LayoutFull />}>
