@@ -1,8 +1,8 @@
 'use client';
+import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import type { IAgentHookProps } from '@/hooks/getAgentRoles';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
-import { accountKDABalance } from '@/services/accountKDABalance';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
 import { isFrozen } from '@/services/isFrozen';
@@ -75,7 +75,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAgentState, setIsAgentState] = useState(false);
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
-  const [kdaBalance, setKdaBalance] = useState(-1);
+  const { data: kdaBalance } = useGetAccountKDABalance({
+    accountAddress: account?.address,
+  });
+  // const [kdaBalance, setKdaBalance] = useState(-1);
   const { ...accountRoles } = useGetAgentRoles({
     agent: account?.address,
   });
@@ -89,12 +92,11 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     setIsAgentState(!!resIsAgent);
   };
   const checkIsGasPayable = async (account: IWalletAccount) => {
-    const res = await accountKDABalance(
-      { accountName: account.address },
-      account,
-    );
-
-    setKdaBalance(res);
+    // const res = await accountKDABalance(
+    //   { accountName: account.address },
+    //   account,
+    // );
+    // setKdaBalance(res);
   };
   const checkIsOwner = async (account: IWalletAccount) => {
     const resIsOwner = await isOwner({ owner: account.address });

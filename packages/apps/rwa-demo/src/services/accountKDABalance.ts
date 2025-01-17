@@ -1,4 +1,3 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
@@ -6,17 +5,14 @@ export interface IAccountKDABalanceProps {
   accountName: string;
 }
 
-export const accountKDABalance = async (
-  data: IAccountKDABalanceProps,
-  account: IWalletAccount,
-) => {
+export const accountKDABalance = async (data: IAccountKDABalanceProps) => {
   const client = getClient();
   const transaction = Pact.builder
     .execution(
       `(let ((details (coin.details "${data.accountName}")))(let ((principal (create-principal (at "guard" details)))){"details":details, "principal":principal}))`,
     )
     .setMeta({
-      senderAccount: account.address,
+      senderAccount: data.accountName,
       chainId: getNetwork().chainId,
     })
     .addData('account', data.accountName)
