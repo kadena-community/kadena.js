@@ -135,8 +135,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       r.subscribe(
         (nextData: any) => {
           if (!nextData.data.transaction) {
-            console.log(1111111);
-
             addNotification({
               intent: 'negative',
               label: 'there was an error',
