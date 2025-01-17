@@ -65,8 +65,8 @@ export const SignRequest = () => {
         <SideBarBreadcrumbsItem href={`/transactions`}>
           Activities
         </SideBarBreadcrumbsItem>
-        <SideBarBreadcrumbsItem href={`/transaction/${tx?.uuid}`}>
-          Transaction
+        <SideBarBreadcrumbsItem href={`/sign-request/${requestId}`}>
+          Sign Request
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 

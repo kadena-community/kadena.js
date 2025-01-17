@@ -1,6 +1,5 @@
 import { useGlobalState } from '@/App/providers/globalState';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
-import { IUnsignedCommand } from '@kadena/client';
 import {
   FC,
   PropsWithChildren,
@@ -94,6 +93,7 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     const handlers = [
       handleRequest('CONNECTION_REQUEST', '/connect'),
       handleRequest('PAYMENT_REQUEST', '/payment'),
+      handleRequest('SIGN_REQUEST', '/sign-request'),
       handle('GET_STATUS', async () => {
         return {
           payload: {
@@ -101,18 +101,6 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
             ...(isUnlocked ? { profile, accounts } : {}),
           },
         };
-      }),
-      handle('SIGN_REQUEST', async (data) => {
-        const { id, payload } = data as {
-          id: string;
-          payload: IUnsignedCommand;
-        };
-        const request = createRequest(data);
-        console.log('SIGN_REQUEST', id);
-        console.log('payload', payload);
-        setOrigin(`sign-request/${id}`);
-        navigate(`sign-request/${id}`);
-        return request;
       }),
     ];
     return () => {
