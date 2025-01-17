@@ -53,6 +53,7 @@ export const batchRegisterIdentity = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
+      withCap(`${getAsset()}.ONLY-OWNER`, ''),
       withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])

@@ -29,7 +29,10 @@ export const useAddInvestor = ({
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
-    const newData: IRegisterIdentityProps = { ...data, agent: account! };
+    const newData: IRegisterIdentityProps = {
+      ...data,
+      agent: account!,
+    };
     try {
       //if the account is already investor, no need to add it again
       if (data.alreadyExists) return;
@@ -60,8 +63,9 @@ export const useAddInvestor = ({
   useEffect(() => {
     if (!isMounted) return;
 
+    //when there is no investor account, we dont have to look if frozen or not
     setIsAllowed(
-      ((!!investorAccount && !frozen) || frozen) &&
+      ((!!investorAccount && !frozen) || !investorAccount) &&
         !paused &&
         (accountRoles.isAgentAdmin() || isOwner) &&
         !isActiveAccountChangeTx,

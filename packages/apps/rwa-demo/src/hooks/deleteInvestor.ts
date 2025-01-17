@@ -61,7 +61,8 @@ export const useDeleteInvestor = ({
     if (investorAccount) {
       const result =
         !paused &&
-        accountRoles.isAgentAdmin() &&
+        (accountRoles.isAgentAdmin() || isOwner) &&
+        !isActiveAccountChangeTx &&
         balance !== undefined &&
         balance <= 0;
 
@@ -71,14 +72,7 @@ export const useDeleteInvestor = ({
           `There is still a balance of ${balance} tokens on this account`,
         );
       }
-      return;
     }
-
-    setIsAllowed(
-      !paused &&
-        (accountRoles.isAgentAdmin() || isOwner) &&
-        !isActiveAccountChangeTx,
-    );
   }, [
     paused,
     isOwner,

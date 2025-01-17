@@ -7,11 +7,13 @@ import type { IAddContractProps } from '@/services/createContract';
 import { createContract } from '@/services/createContract';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
 export const useCreateContract = () => {
-  const { account, sign } = useAccount();
+  const { account, isMounted, sign, isGasPayable } = useAccount();
+  const [isAllowed, setIsAllowed] = useState(false);
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
 
@@ -54,5 +56,10 @@ export const useCreateContract = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(isGasPayable);
+  }, [isMounted, isGasPayable]);
+
+  return { submit, isAllowed };
 };
