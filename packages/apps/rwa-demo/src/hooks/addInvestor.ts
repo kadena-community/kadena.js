@@ -29,7 +29,10 @@ export const useAddInvestor = ({
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
-    const newData: IRegisterIdentityProps = { ...data, agent: account! };
+    const newData: IRegisterIdentityProps = {
+      ...data,
+      agent: account!,
+    };
     try {
       //if the account is already investor, no need to add it again
       if (data.alreadyExists) return;

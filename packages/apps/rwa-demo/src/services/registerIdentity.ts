@@ -33,6 +33,7 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
+      withCap(`${getAsset()}.ONLY-OWNER`, ''),
       withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])

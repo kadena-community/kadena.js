@@ -61,7 +61,7 @@ export const useDeleteInvestor = ({
     if (investorAccount) {
       const result =
         !paused &&
-        accountRoles.isAgentAdmin() &&
+        (accountRoles.isAgentAdmin() || isOwner) &&
         balance !== undefined &&
         balance <= 0;
 
