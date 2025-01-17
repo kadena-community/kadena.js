@@ -1,5 +1,6 @@
 import { KeySourceType } from '../wallet/wallet.repository';
 import { createBIP44Service } from './hd-wallet/BIP44';
+import { createChainweaverService } from './hd-wallet/chainweaver';
 import { IKeySourceService } from './interface';
 import { createWebAuthnService } from './web-authn/webauthn';
 export interface IKeySourceManager {
@@ -22,12 +23,11 @@ function createKeySourceManager(): IKeySourceManager {
           return bip44;
         }
 
-        case 'HD-chainweaver':
-          return import('./hd-wallet/chainweaver').then((module) => {
-            const chainweaver = module.createChainweaverService();
-            services.set(source, chainweaver);
-            return chainweaver;
-          });
+        case 'HD-chainweaver': {
+          const chainweaver = createChainweaverService();
+          services.set(source, chainweaver);
+          return chainweaver;
+        }
 
         case 'web-authn': {
           const webAuthn = createWebAuthnService();

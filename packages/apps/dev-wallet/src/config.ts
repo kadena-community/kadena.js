@@ -18,6 +18,7 @@ export const config = {
   ACCOUNTS: {
     // this need to be more intelligent; for now, we just set it to 5 seconds
     SYNC_INTERVAL: 5 * 1000, // 5 seconds
+    RATE_LIMIT: 3000, // 3 second
   },
   SESSION: {
     TTL: 30 * 60 * 1000, // 30 minutes

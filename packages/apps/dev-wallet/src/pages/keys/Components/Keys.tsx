@@ -64,7 +64,8 @@ export function Keys() {
       await createHDWallet(profile?.uuid, type, password);
     };
 
-  const defaultIndex = keySources.findIndex((ks) => ks.isDefault) || 0;
+  const idx = keySources.findIndex((ks) => ks.isDefault);
+  const defaultIndex = idx === -1 ? 0 : idx;
 
   return (
     <>
