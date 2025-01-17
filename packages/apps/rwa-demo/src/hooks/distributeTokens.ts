@@ -62,32 +62,6 @@ export const useDistributeTokens = ({
       'RWA.max-investors-compliance',
     );
 
-    console.log(
-      {
-        complianceMaxSupplyValue,
-        complianceMaxInvestors,
-        frozen,
-        paused,
-        transfermanager: accountRoles.isTransferManager(),
-        asset,
-        investorBalance,
-        isActiveAccountChangeTx,
-      },
-      complianceMaxInvestors > asset.investorCount ||
-        complianceMaxInvestors === INFINITE_COMPLIANCE ||
-        investorBalance > 0,
-
-      !frozen &&
-        !paused &&
-        accountRoles.isTransferManager() &&
-        !isActiveAccountChangeTx &&
-        (asset.supply < complianceMaxSupplyValue ||
-          complianceMaxSupplyValue === INFINITE_COMPLIANCE) &&
-        (complianceMaxInvestors > asset.investorCount ||
-          complianceMaxInvestors === INFINITE_COMPLIANCE ||
-          investorBalance > 0),
-    );
-
     setIsAllowed(
       !frozen &&
         !paused &&
