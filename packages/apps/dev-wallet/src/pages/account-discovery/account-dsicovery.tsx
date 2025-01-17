@@ -1,5 +1,17 @@
-import { IKeyItem, IKeySource } from '@/modules/wallet/wallet.repository';
-import { Button, Card, Checkbox, Heading, Stack, Text } from '@kadena/kode-ui';
+import {
+  IKeyItem,
+  IKeySource,
+  walletRepository,
+} from '@/modules/wallet/wallet.repository';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Heading,
+  Stack,
+  Text,
+  Link as UiLink,
+} from '@kadena/kode-ui';
 import { useState } from 'react';
 
 import { ListItem } from '@/Components/ListItem/ListItem';
@@ -16,6 +28,7 @@ import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
 import { MonoKey } from '@kadena/kode-icons/system';
 import { PactNumber } from '@kadena/pactjs';
+import { Link } from 'react-router-dom';
 import { Label } from '../transaction/components/helpers';
 
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
@@ -74,6 +87,28 @@ export function AccountDiscovery() {
     result: Exclude<IWalletDiscoveredAccount['result'], undefined>;
   }>;
 
+  async function startDiscovery() {
+    setDiscoveryStatus('discovering');
+    const ks = [];
+    for (const keySource of keySources) {
+      const accounts = await start(keySource);
+      ks.push({ keySource, accounts });
+    }
+    const mostUsedKs = ks.reduce((acc, data) =>
+      acc.accounts.length < data.accounts.length ? data : acc,
+    );
+    if (mostUsedKs.accounts.length) {
+      keySourceRepository.patchKeySource(mostUsedKs.keySource.uuid, {
+        isDefault: true,
+      });
+      const networkUUID = mostUsedKs.accounts[0].networkUUID;
+      await walletRepository.patchProfile(profile!.uuid, {
+        selectedNetworkUUID: networkUUID,
+      });
+    }
+    setDiscoveryStatus('finished');
+  }
+
   return (
     <Stack style={{ width: '100vw', maxWidth: '1200px' }}>
       <Card fullWidth>
@@ -119,30 +154,16 @@ export function AccountDiscovery() {
                 ))}
               </Stack>
 
-              <Stack marginBlockStart={'md'}>
+              <Stack marginBlockStart={'md'} gap={'sm'}>
                 <Button
                   isDisabled={selectedNetworks.length === 0}
-                  onClick={async () => {
-                    setDiscoveryStatus('discovering');
-                    const ks = [];
-                    for (const keySource of keySources) {
-                      const accounts = await start(keySource);
-                      ks.push({ keySource, accounts });
-                    }
-                    const mostUsedKs = ks.reduce((acc, data) =>
-                      acc.accounts.length < data.accounts.length ? data : acc,
-                    );
-                    if (mostUsedKs.accounts.length) {
-                      keySourceRepository.patchKeySource(
-                        mostUsedKs.keySource.uuid,
-                        { isDefault: true },
-                      );
-                    }
-                    setDiscoveryStatus('finished');
-                  }}
+                  onClick={startDiscovery}
                 >
                   Continue
                 </Button>
+                <UiLink component={Link} href="/">
+                  Skip
+                </UiLink>
               </Stack>
             </>
           )}
