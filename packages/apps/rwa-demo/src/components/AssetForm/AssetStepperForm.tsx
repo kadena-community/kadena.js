@@ -31,7 +31,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const [step, setStep] = useState<number>(STEPS.START);
   const { addAsset, setAsset } = useAsset();
   const { data: namespace } = useGetPrincipalNamespace();
-  const { submit: submitContract } = useCreateContract();
+  const { submit: submitContract, isAllowed } = useCreateContract();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -96,6 +96,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
             <Text bold>or</Text>
           </Stack>
           <Button
+            isDisabled={!isAllowed}
             variant="outlined"
             onPress={async () => {
               setStep(STEPS.CREATE_CONTRACT);
@@ -151,7 +152,10 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
               {isLoading ? (
                 <TransactionPendingIcon />
               ) : (
-                <Button isDisabled={!isValid || isLoading} type="submit">
+                <Button
+                  isDisabled={!isValid || isLoading || !isAllowed}
+                  type="submit"
+                >
                   Create the contract
                 </Button>
               )}

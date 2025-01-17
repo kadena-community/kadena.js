@@ -1,6 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useBatchTransferTokens } from '../batchTransferTokens';
-import { useGetInvestors } from '../getInvestors';
 
 describe('batchTransferTokens hook', () => {
   const mocksHook = vi.hoisted(() => {
