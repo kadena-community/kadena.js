@@ -45,8 +45,24 @@ export const useGetAgentRoles = ({
     },
   });
 
+  const { data: subscriptionAgentRemovedData } =
+    useEventSubscriptionSubscription({
+      variables: {
+        qualifiedName: `${getAsset()}.AGENT-REMOVED`,
+      },
+    });
+
+  const { data: subscriptionAgentAddedData } = useEventSubscriptionSubscription(
+    {
+      variables: {
+        qualifiedName: `${getAsset()}.AGENT-ADDED`,
+      },
+    },
+  );
+
   const initInnerData = async (agentArg: string) => {
     const data = await getAgentRoles({ agent: agentArg });
+
     setInnerData(data);
     setIsMounted(true);
   };
@@ -62,13 +78,25 @@ export const useGetAgentRoles = ({
   }, [agent]);
 
   useEffect(() => {
-    subscriptionData?.events?.map((event) => {
-      const params = JSON.parse(event.parameters ?? '[]');
-      if (params[0] === agent) {
-        setInnerData(params[1]);
-      }
-    });
-  }, [subscriptionData]);
+    const { events: rolesUpdatedEvents } = subscriptionData ?? {};
+    const { events: agentRemovedEvents } = subscriptionAgentRemovedData ?? {};
+    const { events: agentAddedEvents } = subscriptionAgentAddedData ?? {};
+
+    [rolesUpdatedEvents, agentRemovedEvents, agentAddedEvents]
+      .flat()
+      ?.find((event) => {
+        if (!event) return;
+        const params = JSON.parse(event.parameters ?? '[]');
+        if (params[0] === agent && !!agent) {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          initInnerData(agent!);
+        }
+      });
+  }, [
+    subscriptionData,
+    subscriptionAgentRemovedData,
+    subscriptionAgentAddedData,
+  ]);
 
   const getAll = useCallback(() => {
     return innerData;
