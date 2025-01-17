@@ -10,8 +10,10 @@ import {
 
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
 import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
 import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
+import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
 import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useAccount } from '@/hooks/account';
@@ -92,8 +94,10 @@ const RootLayout = ({
         topBanner={
           <Stack width="100%" gap="xs" flexDirection="column">
             <DemoBanner />
+            <CookieConsent />
             <GraphOnlineBanner />
             <FrozenInvestorBanner />
+            <GasPayableBanner />
           </Stack>
         }
         logo={

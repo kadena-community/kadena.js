@@ -13,6 +13,7 @@ import {
   MonoPassword,
   MonoPerson,
   MonoRemoveRedEye,
+  MonoSecurity,
   MonoSelectAll,
   MonoSettings,
   MonoSettingsBackupRestore,
@@ -87,6 +88,14 @@ export function Settings() {
         Change Password
       </UiLink>
       <UiLink
+        href="/settings/keep-password-policy"
+        component={Link}
+        variant="outlined"
+        startVisual={<MonoSecurity />}
+      >
+        Keep Password Policy
+      </UiLink>
+      <UiLink
         href="/settings/export-data"
         component={Link}
         variant="outlined"
@@ -119,7 +128,7 @@ export function Settings() {
         Set automatic backup
       </UiLink>
       <UiLink
-        href={`/account-discovery/${keySources[0].uuid}`}
+        href={`/account-discovery`}
         component={Link}
         variant="outlined"
         startVisual={<MonoSelectAll />}

@@ -27,6 +27,7 @@ import { AutoBackup } from '@/pages/settings/auto-backup/auto-backup';
 import { ChangePassword } from '@/pages/settings/change-password/change-password';
 import { ExportData } from '@/pages/settings/export-data/export-data';
 import { ImportData } from '@/pages/settings/import-data/import-data';
+import { KeepPasswordPolicy } from '@/pages/settings/keep-password-policy/keep-password-policy';
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
@@ -42,6 +43,7 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
+import { LayoutFull } from './layout-full';
 import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
 import { useGlobalState } from './providers/globalState';
@@ -138,10 +140,13 @@ export const Routes: FC = () => {
             <Route path="/settings/export-data" element={<ExportData />} />
             <Route path="/settings/import-data" element={<ImportData />} />
             <Route
-              path="/account-discovery/:keySourceId"
-              element={<AccountDiscovery />}
+              path="/settings/keep-password-policy"
+              element={<KeepPasswordPolicy />}
             />
           </Route>
+        </Route>
+        <Route element={<LayoutFull />}>
+          <Route path="/account-discovery" element={<AccountDiscovery />} />
         </Route>
         <Route element={<LayoutMini />}>
           <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />

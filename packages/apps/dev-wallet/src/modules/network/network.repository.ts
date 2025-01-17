@@ -79,8 +79,6 @@ export const addDefaultNetworks = execInSequence(async () => {
       uuid: crypto.randomUUID(),
       networkId: 'mainnet01',
       name: 'Mainnet',
-      // make mainnet disabled for now
-      disabled: true,
       hosts: [
         {
           url: 'https://api.chainweb.com',

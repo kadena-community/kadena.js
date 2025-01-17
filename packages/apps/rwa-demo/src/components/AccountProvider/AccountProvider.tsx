@@ -2,6 +2,7 @@
 import type { IAgentHookProps } from '@/hooks/getAgentRoles';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
+import { accountKDABalance } from '@/services/accountKDABalance';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
 import { isFrozen } from '@/services/isFrozen';
@@ -36,6 +37,7 @@ export interface IAccountContext {
   selectAccount: (account: IWalletAccount) => void;
   balance: number;
   accountRoles: IAgentHookProps;
+  isGasPayable: boolean;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -61,6 +63,7 @@ export const AccountContext = createContext<IAccountContext>({
     isFreezer: () => false,
     isTransferManager: () => false,
   },
+  isGasPayable: false,
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -72,6 +75,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAgentState, setIsAgentState] = useState(false);
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
+  const [kdaBalance, setKdaBalance] = useState(-1);
   const { ...accountRoles } = useGetAgentRoles({
     agent: account?.address,
   });
@@ -83,6 +87,14 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const checkIsAgent = async (account: IWalletAccount) => {
     const resIsAgent = await isAgent({ agent: account.address });
     setIsAgentState(!!resIsAgent);
+  };
+  const checkIsGasPayable = async (account: IWalletAccount) => {
+    const res = await accountKDABalance(
+      { accountName: account.address },
+      account,
+    );
+
+    setKdaBalance(res);
   };
   const checkIsOwner = async (account: IWalletAccount) => {
     const resIsOwner = await isOwner({ owner: account.address });
@@ -111,6 +123,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const selectAccount = (account: IWalletAccount) => {
     setAccount(account);
+
     localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
     router.replace('/');
   };
@@ -153,7 +166,8 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());
-    if (storage) {
+
+    if (storage && storage !== 'undefined') {
       console.log({ account: JSON.parse(storage) });
       try {
         setAccount(JSON.parse(storage));
@@ -161,34 +175,41 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         localStorage.removeItem(getAccountCookieName());
       }
     }
-  }, []);
+  }, [account?.address]);
 
-  useEffect(() => {
-    if (accountRoles.isMounted) {
+  const initProps = async (accountProp?: IWalletAccount) => {
+    if (!accountProp) {
       setIsMounted(true);
+      return;
     }
-  }, [accountRoles.isMounted]);
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    Promise.allSettled([
+      checkIsGasPayable(accountProp),
+      checkIsOwner(accountProp),
+      checkIsComplianceOwner(accountProp),
+      checkIsInvestor(accountProp),
+      checkIsAgent(accountProp),
+      checkIsFrozen(accountProp),
+    ]).then((v) => {
+      setIsMounted(true);
+    });
+  };
 
   useEffect(() => {
-    if (!account) {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    initProps(account);
+  }, [account?.address]);
+
+  useEffect(() => {
+    if (!account?.address) {
       setIsAgentState(false);
       setIsOwnerState(false);
       setIsComplianceOwnerState(false);
       setIsInvestorState(false);
       return;
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsOwner(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsComplianceOwner(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsAgent(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsInvestor(account);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIsFrozen(account);
-  }, [account]);
+  }, [account?.address]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
     const { message, close } = await getWalletConnection();
@@ -219,6 +240,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         selectAccount,
         balance,
         accountRoles,
+        isGasPayable: kdaBalance > 0,
       }}
     >
       {children}

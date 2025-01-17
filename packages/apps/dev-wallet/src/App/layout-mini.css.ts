@@ -21,3 +21,17 @@ export const containerStyle = style([
     height: '100dvh',
   },
 ]);
+
+export const LayoutFullContainerStyle = style([
+  atoms({
+    padding: 'sm',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
+  {
+    margin: '0 auto',
+    textAlign: 'center',
+    height: '100dvh',
+  },
+]);

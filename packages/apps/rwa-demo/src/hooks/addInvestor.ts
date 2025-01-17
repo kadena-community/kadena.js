@@ -21,7 +21,7 @@ export const useAddInvestor = ({
 }) => {
   const { frozen } = useFreeze({ investorAccount });
   const { paused } = useAsset();
-  const { account, sign, accountRoles, isMounted } = useAccount();
+  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -64,7 +64,7 @@ export const useAddInvestor = ({
     setIsAllowed(
       ((!!investorAccount && !frozen) || !investorAccount) &&
         !paused &&
-        accountRoles.isAgentAdmin() &&
+        (accountRoles.isAgentAdmin() || isOwner) &&
         !isActiveAccountChangeTx,
     );
   }, [
@@ -72,6 +72,7 @@ export const useAddInvestor = ({
     paused,
     isMounted,
     investorAccount,
+    isOwner,
     accountRoles,
     isActiveAccountChangeTx,
   ]);

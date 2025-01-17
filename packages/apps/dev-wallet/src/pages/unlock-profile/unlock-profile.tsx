@@ -9,7 +9,7 @@ import {
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import { linkClass } from '../home/style.css.ts';
 import InitialsAvatar from '../select-profile/initials.tsx';
@@ -23,8 +23,6 @@ export function UnlockProfile({ origin }: { origin: string }) {
     formState: { isValid, errors },
   } = useForm<{ password: string }>();
   const { profileId } = useParams();
-  const [params] = useSearchParams();
-  const openSecModule = params.get('openSecModule') === 'true';
   const navigate = usePatchedNavigate();
   const { profileList, unlockProfile, isUnlocked } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
@@ -35,7 +33,7 @@ export function UnlockProfile({ origin }: { origin: string }) {
       if (!profileId) {
         throw new Error('ProfileId is undefined');
       }
-      const result = await unlockProfile(profileId, password, openSecModule);
+      const result = await unlockProfile(profileId, password);
       if (!result) {
         throw new Error(incorrectPasswordMsg);
       }

@@ -47,6 +47,7 @@ import { IRetrievedAccount } from './IRetrievedAccount';
 
 export type IWalletDiscoveredAccount = {
   chainId: ChainId;
+  networkUUID: UUID;
   result:
     | undefined
     | {
@@ -129,7 +130,7 @@ export const accountDiscovery = (
 )(
   (emit) =>
     async (
-      network: INetwork,
+      networks: INetwork[],
       keySource: IKeySource,
       profileId: string,
       numberOfKeys = 20,
@@ -140,7 +141,6 @@ export const accountDiscovery = (
       }
       const keySourceService = await keySourceManager.get(keySource.source);
       const accounts: IAccount[] = [];
-      const keysets: IKeySet[] = [];
       const usedKeys: IKeyItem[] = [];
       const saveCallbacks: Array<() => Promise<void>> = [];
       for (let i = 0; i < numberOfKeys; i++) {
@@ -150,95 +150,87 @@ export const accountDiscovery = (
         }
         await emit('key-retrieved')(key);
         const principal = `k:${key.publicKey}`;
-        const chainResult = await discoverAccount(
-          principal,
-          network.networkId,
-          undefined,
-          contract,
-        )
-          .on('chain-result', async (data) => {
-            await emit('chain-result')({
-              chainId: data.chainId,
-              result: data.result
-                ? {
-                    ...data.result,
-                    guard: data.result.details.guard
-                      ? {
-                          ...data.result.details.guard,
-                          principal: data.result.principal,
-                        }
-                      : undefined,
-                  }
-                : undefined,
-            });
-          })
-          .execute();
-
-        if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
-          const availableKeyset = await accountRepository.getKeysetByPrincipal(
+        for (const network of networks) {
+          const chainResult = await discoverAccount(
             principal,
-            profileId,
-          );
-          usedKeys.push(key);
-          const keyset: IKeySet = availableKeyset || {
-            uuid: crypto.randomUUID(),
-            principal,
-            profileId,
-            guard: {
-              keys: [key.publicKey],
-              pred: 'keys-all',
-            },
-            alias: '',
-          };
-          if (!availableKeyset) {
-            keysets.push(keyset);
-          }
-          const account: IAccount = {
-            uuid: crypto.randomUUID(),
-            profileId,
-            networkUUID: network.uuid,
+            network.networkId,
+            undefined,
             contract,
-            keysetId: keyset.uuid,
-            guard: {
-              keys: [key.publicKey],
-              pred: 'keys-all',
-              principal,
-            },
-            address: `k:${key.publicKey}`,
-            chains: chainResult
-              .filter(({ result }) => Boolean(result))
-              .map(({ chainId, result }) => ({
-                chainId: chainId!,
-                balance:
-                  new PactNumber(result!.details.balance).toDecimal() || '0.0',
-              })),
-            overallBalance: chainResult.reduce(
-              (acc, { result }) =>
-                result && result.details.balance
-                  ? new PactNumber(result.details.balance).plus(acc).toDecimal()
-                  : acc,
-              '0',
-            ),
-          };
-          accounts.push(account);
-          saveCallbacks.push(async () => {
-            if (!keySource.keys.find((k) => k.publicKey === key.publicKey)) {
-              await keySourceService.createKey(
-                keySource.uuid,
-                key.index as number,
-              );
-            }
-            if (!availableKeyset) {
-              await accountRepository.addKeyset(keyset);
-            }
-            await accountRepository.addAccount(account);
-          });
+          )
+            .on('chain-result', async (data) => {
+              await emit('chain-result')({
+                chainId: data.chainId,
+                networkUUID: network.uuid,
+                result: data.result
+                  ? {
+                      ...data.result,
+                      guard: data.result.details.guard
+                        ? {
+                            ...data.result.details.guard,
+                            principal: data.result.principal,
+                          }
+                        : undefined,
+                      balance: data.result.details.balance,
+                    }
+                  : undefined,
+              });
+            })
+            .execute()
+            .catch((error) => {
+              console.log('DISCOVERY_ERROR', error);
+              return [];
+            });
+
+          if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
+            usedKeys.push(key);
+            const account: IAccount = {
+              uuid: crypto.randomUUID(),
+              profileId,
+              networkUUID: network.uuid,
+              contract,
+              guard: {
+                keys: [key.publicKey],
+                pred: 'keys-all',
+                principal,
+              },
+              address: `k:${key.publicKey}`,
+              chains: chainResult
+                .filter(({ result }) => Boolean(result))
+                .map(({ chainId, result }) => ({
+                  chainId: chainId!,
+                  balance:
+                    new PactNumber(result!.details.balance).toDecimal() ||
+                    '0.0',
+                })),
+              overallBalance: chainResult.reduce(
+                (acc, { result }) =>
+                  result && result.details.balance
+                    ? new PactNumber(result.details.balance)
+                        .plus(acc)
+                        .toDecimal()
+                    : acc,
+                '0',
+              ),
+            };
+            accounts.push(account);
+            saveCallbacks.push(async () => {
+              if (!keySource.keys.find((k) => k.publicKey === key.publicKey)) {
+                await keySourceService.createKey(
+                  keySource.uuid,
+                  key.index as number,
+                );
+              }
+              await accountRepository.addAccount(account);
+            });
+          }
         }
       }
 
       await emit('query-done')(accounts);
 
-      await Promise.all(saveCallbacks.map((cb) => cb().catch(console.error)));
+      for (const cb of saveCallbacks) {
+        await cb().catch(console.error);
+      }
 
       keySourceService.clearCache();
       await emit('accounts-saved')(accounts);
