@@ -134,6 +134,25 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       r.subscribe(
         (nextData: any) => {
+          if (!nextData.data.transaction) {
+            console.log(1111111);
+
+            addNotification({
+              intent: 'negative',
+              label: 'there was an error',
+              message: interpretErrorMessage(
+                nextData?.errors
+                  ? JSON.stringify(nextData?.errors)
+                  : JSON.parse(
+                      nextData?.data.transaction?.result?.badResult ?? '{}',
+                    ).message,
+              ),
+              url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+            });
+
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            store.removeTransaction(data);
+          }
           if (
             nextData?.errors?.length !== undefined ||
             nextData?.data?.transaction?.result.badResult
@@ -252,6 +271,8 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const setTxsAnimationRef = (ref: HTMLDivElement) => {
     setTxsAnimationRefData(ref);
   };
+
+  console.log({ transactions });
 
   return (
     <TransactionsContext.Provider

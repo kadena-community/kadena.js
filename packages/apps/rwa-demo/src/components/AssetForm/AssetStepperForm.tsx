@@ -2,6 +2,7 @@ import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useGetPrincipalNamespace } from '@/hooks/getPrincipalNamespace';
 import type { IAddContractProps } from '@/services/createContract';
+import { MonoAdd } from '@kadena/kode-icons';
 import {
   Button,
   Notification,
@@ -14,7 +15,8 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { AddExistingAssetForm } from './AddExistingAssetForm';
 
 interface IProps {
@@ -33,7 +35,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const { data: namespace } = useGetPrincipalNamespace();
   const { submit: submitContract, isAllowed } = useCreateContract();
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const {
@@ -61,12 +62,12 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     setError('');
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
-      setIsLoading(false);
+
       return;
     }
 
-    setIsLoading(true);
     const tx = await submitContract(data);
+
     if (tx?.result?.status === 'success') {
       setStep(STEPS.DONE);
       const asset = addAsset({
@@ -77,7 +78,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       setAsset(asset);
       window.location.href = '/';
     }
-    setIsLoading(false);
   };
 
   return (
@@ -149,16 +149,18 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
             />
 
             <Stack width="100%" justifyContent="center" alignItems="center">
-              {isLoading ? (
-                <TransactionPendingIcon />
-              ) : (
-                <Button
-                  isDisabled={!isValid || isLoading || !isAllowed}
-                  type="submit"
-                >
-                  Create the contract
-                </Button>
-              )}
+              <Button
+                isDisabled={!isValid || !isAllowed}
+                type="submit"
+                startVisual={
+                  <TransactionTypeSpinner
+                    type={TXTYPES.CREATECONTRACT}
+                    fallbackIcon={<MonoAdd />}
+                  />
+                }
+              >
+                Create the contract
+              </Button>
             </Stack>
           </Stack>
         </form>
