@@ -122,7 +122,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<HTMLDivElement | null>(null);
   const [txsButtonRef, setTxsButtonRefData] =
     useState<HTMLButtonElement | null>(null);
-
   const { activeNetwork } = useNetwork();
 
   const addListener = useCallback(
