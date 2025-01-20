@@ -35,6 +35,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
   account,
   onRedistribution,
 }) => {
+  const distributionIsDisabled = true;
   const { activeNetwork, isOwnedAccount } = useWallet();
   const [availableBalance, setAvailableBalance] = useState(overallBalance);
   const chainLists = useMemo(() => {
@@ -197,14 +198,18 @@ export const AccountBalanceDistribution: FC<IProps> = ({
                       </Button>
                     </>
                   )}
-                  {!editable && (
+                  {!editable && !distributionIsDisabled && (
                     <Button
                       isCompact
                       onClick={() => {
+                        if (distributionIsDisabled) return;
                         setEditable((val) => !val);
                       }}
                       variant={'outlined'}
-                      isDisabled={new PactNumber(account.overallBalance).lte(0)}
+                      isDisabled={
+                        distributionIsDisabled ||
+                        new PactNumber(account.overallBalance).lte(0)
+                      }
                     >
                       Edit Distribution
                     </Button>

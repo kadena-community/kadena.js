@@ -16,6 +16,7 @@ import { useAsync } from '@/utils/useAsync';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
 import {
+  MonoCopyAll,
   MonoCreate,
   MonoKey,
   MonoOpenInNew,
@@ -163,61 +164,78 @@ export function AccountPage() {
           </Stack>
         )}
       </Stack>
-      {ownedAccount && (
-        <Stack gap="md" alignItems={'center'} flexWrap="wrap">
-          <Link
-            to={`/transfer?accountId=${account.uuid}`}
-            className={noStyleLinkClass}
+      <Stack gap="md" alignItems={'center'} flexWrap="wrap">
+        <Link
+          to={`/transfer?accountId=${account.uuid}`}
+          className={noStyleLinkClass}
+        >
+          <Button
+            isDisabled={+account.overallBalance === 0}
+            onPress={(e: any) => {
+              e.preventDefault();
+            }}
           >
-            <Button
-              isDisabled={+account.overallBalance === 0}
-              onPress={(e: any) => {
-                e.preventDefault();
-              }}
-            >
-              Transfer
-            </Button>
-          </Link>
-          {asset.contract === 'coin' &&
-            (activeNetwork?.networkId === 'testnet05' ||
-              activeNetwork?.networkId === 'testnet04') && (
-              <FundOnTestnetButton
-                account={account}
-                fundAccountHandler={fundAccountHandler}
-              />
-            )}
-          {asset.contract === 'coin' && (
-            <a
-              className={linkClass}
-              href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
-              target="_blank"
-            >
-              <Button variant="outlined" endVisual={<MonoOpenInNew />}>
-                Buy KDA
-              </Button>
-            </a>
+            Transfer
+          </Button>
+        </Link>
+        {asset.contract === 'coin' &&
+          (activeNetwork?.networkId === 'testnet05' ||
+            activeNetwork?.networkId === 'testnet04') && (
+            <FundOnTestnetButton
+              account={account}
+              fundAccountHandler={fundAccountHandler}
+            />
           )}
-
+        {asset.contract === 'coin' && (
           <a
             className={linkClass}
+            href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
             target="_blank"
-            title={
-              !account.chains.length
-                ? 'This account has not been mined on-chain yet'
-                : ''
-            }
-            href={explorerLink ? `${explorerLink}#Transfers` : ''}
           >
-            <Button
-              variant="outlined"
-              endVisual={<MonoOpenInNew />}
-              isDisabled={!account.chains.length}
-            >
-              Open in explorer
+            <Button variant="outlined" endVisual={<MonoOpenInNew />}>
+              Buy KDA
             </Button>
           </a>
-        </Stack>
-      )}
+        )}
+
+        <a
+          className={linkClass}
+          target="_blank"
+          title={
+            !account.chains.length
+              ? 'This account has not been mined on-chain yet'
+              : ''
+          }
+          href={explorerLink ? `${explorerLink}#Transfers` : ''}
+        >
+          <Button
+            variant="outlined"
+            endVisual={<MonoOpenInNew />}
+            isDisabled={!account.chains.length}
+          >
+            Open in explorer
+          </Button>
+        </a>
+        <Button
+          variant="outlined"
+          endVisual={<MonoCopyAll />}
+          onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { principal, ...guard } = account.guard;
+            if (account.address.startsWith('w:') && isKeysetGuard(guard)) {
+              navigator.clipboard.writeText(
+                `${account.address}:${guard.keys.join(':')}`,
+              );
+              return;
+            }
+            navigator.clipboard.writeText(account.address);
+          }}
+        >
+          Copy Account
+        </Button>
+      </Stack>
+
+      <Stack gap="md" alignItems={'center'} flexWrap="wrap"></Stack>
       <Tabs>
         <TabItem key="guard" title="Details">
           <Stack gap="lg" width="100%">
@@ -372,66 +390,62 @@ export function AccountPage() {
                 Edit Alias
               </Button>
             </Stack>
-            {
-              (ownedAccount && (
-                <>
-                  <Stack
-                    flexDirection={'column'}
-                    gap={'md'}
-                    className={panelClass}
-                    alignItems={'flex-start'}
-                  >
-                    <Heading variant="h4">Migrate Account</Heading>
-                    <Text>
-                      You can use account migration to transfer all balances to
-                      a newly created account with a new keyset, even though the
-                      keyset guard for this account cannot be changed.
-                    </Text>
-                    <UiLink
-                      variant="outlined"
-                      href={`/account/${accountId}/migrate`}
-                      component={Link}
-                    >
-                      Migrate
-                    </UiLink>
-                  </Stack>
-                  <Stack
-                    flexDirection={'column'}
-                    gap={'md'}
-                    className={panelClass}
-                    alignItems={'flex-start'}
-                  >
-                    <Heading variant="h4">Delete Account</Heading>
-                    <Text>
-                      You don't want to use this account anymore? You can delete
-                      it from your wallet. This will be deleted locally not from
-                      the blockchain.
-                    </Text>
-                    <Button
-                      variant="negative"
-                      onClick={async () => {
-                        const confirm = await prompt((resolve) => {
-                          return (
-                            <ConfirmDeletion
-                              onCancel={() => resolve(false)}
-                              onDelete={() => resolve(true)}
-                              title="Delete Account"
-                              description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
-                            />
-                          );
-                        });
-                        if (confirm) {
-                          await accountRepository.deleteAccount(account.uuid);
-                          navigate('/');
-                        }
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </Stack>
-                </>
-              )) as any
-            }
+            {ownedAccount && (
+              <Stack
+                flexDirection={'column'}
+                gap={'md'}
+                className={panelClass}
+                alignItems={'flex-start'}
+              >
+                <Heading variant="h4">Migrate Account</Heading>
+                <Text>
+                  You can use account migration to transfer all balances to a
+                  newly created account with a new keyset, even though the
+                  keyset guard for this account cannot be changed.
+                </Text>
+                <UiLink
+                  variant="outlined"
+                  href={`/account/${accountId}/migrate`}
+                  component={Link}
+                >
+                  Migrate
+                </UiLink>
+              </Stack>
+            )}
+            <Stack
+              flexDirection={'column'}
+              gap={'md'}
+              className={panelClass}
+              alignItems={'flex-start'}
+            >
+              <Heading variant="h4">Delete Account</Heading>
+              <Text>
+                You don't want to use this account anymore? You can delete it
+                from your wallet. This will be deleted locally not from the
+                blockchain.
+              </Text>
+              <Button
+                variant="negative"
+                onClick={async () => {
+                  const confirm = await prompt((resolve) => {
+                    return (
+                      <ConfirmDeletion
+                        onCancel={() => resolve(false)}
+                        onDelete={() => resolve(true)}
+                        title="Delete Account"
+                        description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
+                      />
+                    );
+                  });
+                  if (confirm) {
+                    await accountRepository.deleteAccount(account.uuid);
+                    navigate('/');
+                  }
+                }}
+              >
+                Delete
+              </Button>
+            </Stack>
           </Stack>
         </TabItem>
       </Tabs>
