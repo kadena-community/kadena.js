@@ -110,7 +110,7 @@ export const interpretErrorMessage = (
     return interpretMessage(result);
   }
 
-  return interpretMessage(result.result.error?.message!, data);
+  return interpretMessage(result?.result?.error?.message!, data);
 };
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -133,23 +133,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       r.subscribe(
         (nextData: any) => {
-          if (!nextData.data.transaction) {
-            addNotification({
-              intent: 'negative',
-              label: 'there was an error',
-              message: interpretErrorMessage(
-                nextData?.errors
-                  ? JSON.stringify(nextData?.errors)
-                  : JSON.parse(
-                      nextData?.data.transaction?.result?.badResult ?? '{}',
-                    ).message,
-              ),
-              url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
-            });
-
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            store.removeTransaction(data);
-          }
           if (
             nextData?.errors?.length !== undefined ||
             nextData?.data?.transaction?.result.badResult
