@@ -26,3 +26,12 @@ export const mainContainerClass = style({
     },
   },
 });
+
+export const mobileNetworkClass = style({
+  display: 'flex',
+  '@media': {
+    'screen and (min-width: 640px)': {
+      display: 'none',
+    },
+  },
+});
