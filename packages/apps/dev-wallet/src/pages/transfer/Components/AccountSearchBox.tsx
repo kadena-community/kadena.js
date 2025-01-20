@@ -516,7 +516,7 @@ export function AccountSearchBox({
               items: filteredContacts,
             },
             {
-              title: 'Discovered From Blockchain',
+              title: 'Discovered',
               items: discovering
                 ? [
                     <Text key="discovered" size="smallest">
@@ -526,7 +526,7 @@ export function AccountSearchBox({
                 : discoverdAccountsElement || [],
             },
             {
-              title: 'Discovered From Blockchain',
+              title: 'Discovered',
               items: createNewAccount ? [createNewAccount] : [],
             },
           ]

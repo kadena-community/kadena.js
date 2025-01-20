@@ -1,4 +1,4 @@
-import { IOwnedAccount } from '@/modules/account/account.repository';
+import { IAccount } from '@/modules/account/account.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { TxContainer } from '@/pages/transaction/components/TxContainer';
 import { ChainId } from '@kadena/client';
@@ -12,7 +12,7 @@ export function FundOnTestnetButton({
   fundAccountHandler,
   className,
 }: {
-  account?: IOwnedAccount;
+  account?: IAccount;
   chainId?: ChainId;
   fundAccountHandler: (chainId: ChainId) => Promise<ITransaction>;
   className?: string;
