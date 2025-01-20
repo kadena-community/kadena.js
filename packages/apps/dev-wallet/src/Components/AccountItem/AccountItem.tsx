@@ -2,6 +2,7 @@ import {
   IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { hashStyle } from '@/pages/activities/style.css';
 import { noStyleLinkClass } from '@/pages/home/style.css';
@@ -11,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { ListItem } from '../ListItem/ListItem';
 
 export function AccountItem({
-  account: { uuid, alias, address, overallBalance, contract },
+  account: { uuid, alias, address, overallBalance, contract, guard },
 }: {
   account: IOwnedAccount | IWatchedAccount;
 }) {
@@ -53,6 +54,11 @@ export function AccountItem({
                 variant="transparent"
                 onClick={(e) => {
                   e.preventDefault();
+                  if (address.startsWith('w:') && isKeysetGuard(guard)) {
+                    navigator.clipboard.writeText(
+                      `${address}:${guard.keys.join(':')}`,
+                    );
+                  }
                   navigator.clipboard.writeText(address);
                 }}
               >
