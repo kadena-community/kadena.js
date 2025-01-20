@@ -98,13 +98,14 @@ export function Transfer() {
 
   function createTransaction(data: Required<ITransfer>) {
     if (!data.senderAccount || !profile) return;
+    const receivers = data.receivers.filter(Boolean) as Required<IReceiver>[];
     return createTransactions({
       account: data.senderAccount,
       contract: data.fungible,
       gasLimit: +data.gasLimit,
       gasPayer: data.gasPayer || data.senderAccount,
       gasPrice: +data.gasPrice,
-      receivers: data.receivers,
+      receivers,
       isSafeTransfer: data.type === 'safeTransfer',
       network: activeNetwork!,
       profileId: profile.uuid,
@@ -276,17 +277,16 @@ export function Transfer() {
                 accountId={accountId}
                 activityId={urlActivityId}
                 onSubmit={async (data, redistribution) => {
+                  const receivers = data.receivers.filter(
+                    Boolean,
+                  ) as Required<IReceiver>[];
                   if (!isKeysetGuard(data.senderAccount.guard)) return;
                   if (
-                    !data.receivers.every(
-                      (receiver) => receiver.discoveredAccount,
-                    )
+                    !receivers.every((receiver) => receiver.discoveredAccount)
                   ) {
                     throw new Error('Discovered account not found');
                   }
-                  const receivers = data.receivers as Array<
-                    Required<IReceiver>
-                  >;
+
                   const getEmpty = () => ['', []] as [string, ITransaction[]];
                   let redistributionGroup = getEmpty();
 
@@ -295,7 +295,9 @@ export function Transfer() {
                       (await createRedistribution(data, redistribution)) ??
                       getEmpty();
                   }
-                  const txGroup = (await createTransaction(data)) ?? getEmpty();
+                  const txGroup =
+                    (await createTransaction({ ...data, receivers })) ??
+                    getEmpty();
                   const updatedTxGroups = {
                     redistribution: {
                       groupId: redistributionGroup[0] ?? '',
