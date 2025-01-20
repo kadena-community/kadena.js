@@ -55,6 +55,7 @@ export interface ITransfer {
   ttl: number;
   totalAmount: number;
   creationTime: number;
+  xchainMode: 'x-chain' | 'redistribution';
 }
 
 export type Redistribution = {
@@ -146,11 +147,27 @@ export function TransferForm({
       type: 'normalTransfer',
       ttl: 2 * 60 * 60,
       totalAmount: 0,
+      xchainMode: 'x-chain',
     },
   });
 
+  const crossChainMode = watch('xchainMode');
+  const [hasXChain, setHasXChain] = useState(false);
+
+  const crossChainText =
+    crossChainMode === 'x-chain'
+      ? 'This will trigger cross-chain transfer'
+      : 'This will trigger redistribution first';
+
   console.log('formState', formState);
   const [redistribution, setRedistribution] = useState(
+    [] as {
+      source: ChainId;
+      target: ChainId;
+      amount: string;
+    }[],
+  );
+  const [xchainSameAccount, setXChainSameAccount] = useState(
     [] as {
       source: ChainId;
       target: ChainId;
@@ -206,6 +223,7 @@ export function TransferForm({
             ttl: transferData.ttl,
             creationTime: transferData.creationTime,
             totalAmount: 0,
+            xchainMode: 'x-chain',
           };
           reset(dataToReset);
           evaluateTransactions();
@@ -249,6 +267,7 @@ export function TransferForm({
     const gasLimit = getValues('gasLimit');
     const gasPayer = getValues('gasPayer') || getValues('senderAccount');
     const selectedChain = getValues('chain');
+    const crossChainMode = getValues('xchainMode');
     const totalAmount = receivers.reduce(
       (acc, receiver) => acc + +receiver.amount,
       0,
@@ -298,7 +317,7 @@ export function TransferForm({
         ({ receiver, index }) => ({
           index,
           amount: receiver.amount,
-          chainId: receiver.chain,
+          chainId: crossChainMode === 'x-chain' ? '' : receiver.chain,
           availableChains: getAvailableChains(receiver.discoveredAccount),
         }),
       );
@@ -313,8 +332,11 @@ export function TransferForm({
         sameAddressReceivers,
       );
 
+      let hasXchain = redistributionRequest.length > 0;
+
       const updatedReceivers = receiversWithIndex.map(({ receiver, index }) => {
         if (receiver.address === senderAccount.address) {
+          hasXchain = true;
           return {
             ...receiver,
             xchain: true,
@@ -323,16 +345,30 @@ export function TransferForm({
           };
         }
         const idx = otherReceivers.findIndex((r) => r.index === index);
+        const xchain =
+          crossChainMode === 'x-chain' &&
+          Boolean(receiver.chain) &&
+          (transfers[idx].chunks.length > 1 ||
+            (transfers[idx].chunks.length === 1 &&
+              transfers[idx].chunks[0].chainId !== receiver.chain));
+
+        if (xchain) {
+          hasXchain = true;
+        }
         return {
           ...receiver,
           address:
             receiver.address || receiver.discoveredAccount?.address || '',
+          xchain,
           chunks: transfers[idx].chunks,
         };
       });
 
       setValue('receivers', updatedReceivers);
-      setRedistribution([...xchain, ...redistributionRequest]);
+      setRedistribution(redistributionRequest);
+      setXChainSameAccount(xchain);
+      setHasXChain(hasXchain);
+      setError(undefined);
     } catch (e) {
       setError({
         target: 'general',
@@ -373,7 +409,7 @@ export function TransferForm({
         gasPayer: data.gasPayer || data.senderAccount,
         creationTime: data.creationTime ?? Math.floor(Date.now() / 1000),
       },
-      redistribution,
+      [...xchainSameAccount, ...redistribution],
     );
   }
 
@@ -698,7 +734,7 @@ export function TransferForm({
                                               (r) => r.target === chainId,
                                             ),
                                           )
-                                            ? `This will trigger balance redistribution`
+                                            ? crossChainText
                                             : ''
                                         }
                                         errorMessage={
@@ -941,6 +977,64 @@ export function TransferForm({
           className={panelClass}
           paddingBlockEnd={'xxl'}
           width="100%"
+          style={{ display: hasXChain ? 'flex' : 'none' }}
+        >
+          <AdvancedMode>
+            <Stack marginBlockStart={'md'} marginBlockEnd={'sm'}>
+              <Heading variant="h5">Transfer options</Heading>
+            </Stack>
+
+            <Controller
+              control={control}
+              name="xchainMode"
+              render={({ field }) => (
+                <RadioGroup
+                  aria-label="Sign Options"
+                  direction={'column'}
+                  defaultValue={'x-chain'}
+                  value={field.value}
+                  onChange={withEvaluate((value) => {
+                    console.log('value', value);
+                    field.onChange(value);
+                    forceRender((prev) => prev + 1);
+                  })}
+                >
+                  <Radio value="x-chain">
+                    {
+                      (
+                        <Stack alignItems={'center'} gap={'sm'}>
+                          Cross chain transfer
+                          <Text size="small">
+                            Safe transfer doesn't support cross-chain transfer
+                          </Text>
+                        </Stack>
+                      ) as any
+                    }
+                  </Radio>
+
+                  <Radio value="redistribution">
+                    {
+                      (
+                        <Stack alignItems={'center'} gap={'sm'}>
+                          Redistribution
+                          <Text size="small">
+                            Redistribute balance first then do final transfer
+                          </Text>
+                        </Stack>
+                      ) as any
+                    }
+                  </Radio>
+                </RadioGroup>
+              )}
+            />
+          </AdvancedMode>
+        </Stack>
+        <Stack
+          gap="sm"
+          flexDirection={'column'}
+          className={panelClass}
+          paddingBlockEnd={'xxl'}
+          width="100%"
         >
           <AdvancedMode>
             <Stack marginBlockStart={'md'} marginBlockEnd={'sm'}>
@@ -990,6 +1084,7 @@ export function TransferForm({
             />
           </AdvancedMode>
         </Stack>
+
         {(error || !formState.isValid) && formState.isSubmitted && (
           <Notification role="alert" intent="negative">
             Invalid Data, Please check the input(s) (
