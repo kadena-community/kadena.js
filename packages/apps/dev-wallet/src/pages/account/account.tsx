@@ -372,66 +372,62 @@ export function AccountPage() {
                 Edit Alias
               </Button>
             </Stack>
-            {
-              (ownedAccount && (
-                <>
-                  <Stack
-                    flexDirection={'column'}
-                    gap={'md'}
-                    className={panelClass}
-                    alignItems={'flex-start'}
-                  >
-                    <Heading variant="h4">Migrate Account</Heading>
-                    <Text>
-                      You can use account migration to transfer all balances to
-                      a newly created account with a new keyset, even though the
-                      keyset guard for this account cannot be changed.
-                    </Text>
-                    <UiLink
-                      variant="outlined"
-                      href={`/account/${accountId}/migrate`}
-                      component={Link}
-                    >
-                      Migrate
-                    </UiLink>
-                  </Stack>
-                  <Stack
-                    flexDirection={'column'}
-                    gap={'md'}
-                    className={panelClass}
-                    alignItems={'flex-start'}
-                  >
-                    <Heading variant="h4">Delete Account</Heading>
-                    <Text>
-                      You don't want to use this account anymore? You can delete
-                      it from your wallet. This will be deleted locally not from
-                      the blockchain.
-                    </Text>
-                    <Button
-                      variant="negative"
-                      onClick={async () => {
-                        const confirm = await prompt((resolve) => {
-                          return (
-                            <ConfirmDeletion
-                              onCancel={() => resolve(false)}
-                              onDelete={() => resolve(true)}
-                              title="Delete Account"
-                              description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
-                            />
-                          );
-                        });
-                        if (confirm) {
-                          await accountRepository.deleteAccount(account.uuid);
-                          navigate('/');
-                        }
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </Stack>
-                </>
-              )) as any
-            }
+            {ownedAccount && (
+              <Stack
+                flexDirection={'column'}
+                gap={'md'}
+                className={panelClass}
+                alignItems={'flex-start'}
+              >
+                <Heading variant="h4">Migrate Account</Heading>
+                <Text>
+                  You can use account migration to transfer all balances to a
+                  newly created account with a new keyset, even though the
+                  keyset guard for this account cannot be changed.
+                </Text>
+                <UiLink
+                  variant="outlined"
+                  href={`/account/${accountId}/migrate`}
+                  component={Link}
+                >
+                  Migrate
+                </UiLink>
+              </Stack>
+            )}
+            <Stack
+              flexDirection={'column'}
+              gap={'md'}
+              className={panelClass}
+              alignItems={'flex-start'}
+            >
+              <Heading variant="h4">Delete Account</Heading>
+              <Text>
+                You don't want to use this account anymore? You can delete it
+                from your wallet. This will be deleted locally not from the
+                blockchain.
+              </Text>
+              <Button
+                variant="negative"
+                onClick={async () => {
+                  const confirm = await prompt((resolve) => {
+                    return (
+                      <ConfirmDeletion
+                        onCancel={() => resolve(false)}
+                        onDelete={() => resolve(true)}
+                        title="Delete Account"
+                        description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
+                      />
+                    );
+                  });
+                  if (confirm) {
+                    await accountRepository.deleteAccount(account.uuid);
+                    navigate('/');
+                  }
+                }}
+              >
+                Delete
+              </Button>
+            </Stack>
           </Stack>
         </TabItem>
       </Tabs>
