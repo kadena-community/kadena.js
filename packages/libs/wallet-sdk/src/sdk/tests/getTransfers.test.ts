@@ -1,8 +1,31 @@
-import { describe, expect, test } from 'vitest';
+import { graphql, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 import { walletSdk } from '../walletSdk.js';
+import { getTransfers01 } from './mocks/getTransfers01.js';
+
+const server = setupServer();
+beforeAll(() =>
+  server.listen({
+    onUnhandledRequest: 'error',
+  }),
+);
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+server.use(
+  graphql.query('accountTransfers', ({ operationName, variables, query }) => {
+    if (
+      variables.accountName !==
+      'k:2017fee3fb15cfe840e5ed34bf101cc7d5579ffdd20dea09e32fd77c1757f946'
+    ) {
+      throw new Error('invalid accountName');
+    }
+    return HttpResponse.json(getTransfers01);
+  }),
+);
 
 describe('getTransfers', () => {
-  test.skip('runs', async () => {
+  test('runs', async () => {
     const result = await walletSdk.getTransfers({
       accountName:
         'k:2017fee3fb15cfe840e5ed34bf101cc7d5579ffdd20dea09e32fd77c1757f946',
@@ -47,7 +70,6 @@ describe('getTransfers', () => {
     const transfer2 = result.transfers.filter(
       (x) => x.requestKey === 'KeasLpaJQUUAB_ROeHChuv-yW8hmM0NlMKM1ht5nb1k',
     );
-    console.log('transfer2', transfer2);
     expect(transfer2).toEqual([
       {
         amount: 0.1,
