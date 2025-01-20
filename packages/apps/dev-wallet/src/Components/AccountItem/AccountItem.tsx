@@ -1,7 +1,4 @@
-import {
-  IOwnedAccount,
-  IWatchedAccount,
-} from '@/modules/account/account.repository';
+import { IAccount } from '@/modules/account/account.repository';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { hashStyle } from '@/pages/activities/style.css';
@@ -14,7 +11,7 @@ import { ListItem } from '../ListItem/ListItem';
 export function AccountItem({
   account: { uuid, alias, address, overallBalance, contract, guard },
 }: {
-  account: IOwnedAccount | IWatchedAccount;
+  account: IAccount;
 }) {
   const { fungibles } = useWallet();
   const getSymbol = (contract: string) =>
@@ -58,8 +55,9 @@ export function AccountItem({
                     navigator.clipboard.writeText(
                       `${address}:${guard.keys.join(':')}`,
                     );
+                  } else {
+                    navigator.clipboard.writeText(address);
                   }
-                  navigator.clipboard.writeText(address);
                 }}
               >
                 <MonoContentCopy />
