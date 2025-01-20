@@ -1,6 +1,5 @@
 import {
-  IAccount,
-  isWatchedAccount,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
@@ -26,7 +25,7 @@ interface IProps extends PropsWithChildren {
   }[];
   overallBalance: string;
   fundAccount: (chainId: ChainId) => Promise<ITransaction>;
-  account: IAccount | IWatchedAccount;
+  account: IOwnedAccount | IWatchedAccount;
   onRedistribution: (groupId: string) => void;
 }
 export const AccountBalanceDistribution: FC<IProps> = ({
@@ -36,7 +35,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
   account,
   onRedistribution,
 }) => {
-  const { activeNetwork, profile } = useWallet();
+  const { activeNetwork, isOwnedAccount } = useWallet();
   const [availableBalance, setAvailableBalance] = useState(overallBalance);
   const chainLists = useMemo(() => {
     const enrichedChains = processChainAccounts(
@@ -85,6 +84,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     .dp(8)
     .toDecimal();
 
+  const ownedAccount = isOwnedAccount(account);
+
   function getRequiredTsxCount(chainList: typeof flatChains) {
     const chainBalance = chainList.map((chain) => ({
       chainId: chain.chainId as ChainId,
@@ -98,7 +99,7 @@ export const AccountBalanceDistribution: FC<IProps> = ({
   }
 
   async function onSubmit(data: { chains: typeof flatChains }) {
-    if (isWatchedAccount(account)) return;
+    if (!ownedAccount) return;
     const chainBalance = data.chains.map((chain) => ({
       chainId: chain.chainId as ChainId,
       demand: chain.balance,
@@ -153,15 +154,12 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     setValue('chains', chainsWithTxFees);
   }
 
-  const isOwnedAccount =
-    !isWatchedAccount(account) && account.profileId === profile?.uuid;
-
   return (
     <Stack flexDirection={'column'} flex={1} gap={'sm'}>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack gap={'sm'} flexDirection={'column'}>
-            {isOwnedAccount && (
+            {ownedAccount && (
               <Stack
                 gap={'sm'}
                 alignItems={'center'}
@@ -236,8 +234,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
                 <ChainList
                   key={idx}
                   chains={chainList}
-                  fundAccount={isOwnedAccount ? fundAccount : undefined}
-                  editable={isOwnedAccount && editable}
+                  fundAccount={ownedAccount ? fundAccount : undefined}
+                  editable={ownedAccount && editable}
                 />
               ))}
             </Stack>

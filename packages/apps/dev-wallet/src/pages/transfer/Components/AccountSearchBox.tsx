@@ -4,8 +4,8 @@ import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import {
-  IAccount,
   IGuard,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
@@ -45,7 +45,7 @@ export function AccountSearchBox({
   isInvalid,
   hideKeySelector,
 }: {
-  accounts?: IAccount[];
+  accounts?: IOwnedAccount[];
   contacts?: IContact[];
   watchedAccounts?: IWatchedAccount[];
   network: INetwork;

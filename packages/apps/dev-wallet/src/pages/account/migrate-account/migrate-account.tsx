@@ -1,4 +1,4 @@
-import { IAccount } from '@/modules/account/account.repository.ts';
+import { IOwnedAccount } from '@/modules/account/account.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
 import {
@@ -31,7 +31,9 @@ import { Label } from '../../transaction/components/helpers';
 
 export function MigrateAccount() {
   const { accountId } = useParams();
-  const [sourceAccount, setSourceAccount] = useState<IAccount | null>(null);
+  const [sourceAccount, setSourceAccount] = useState<IOwnedAccount | null>(
+    null,
+  );
   const [targetAccount, setTargetAccount] = useState<IRetrievedAccount | null>(
     null,
   );

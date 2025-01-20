@@ -24,7 +24,6 @@ import {
   Fungible,
   IAccount,
   IKeySet,
-  IWatchedAccount,
   accountRepository,
 } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
@@ -41,7 +40,6 @@ import * as WalletService from './wallet.service';
 export type ExtWalletContextType = {
   profile: IProfile | undefined;
   accounts: IAccount[];
-  watchAccounts: IWatchedAccount[];
   keysets: IKeySet[];
   profileList: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>[];
   keySources: IKeySource[];
@@ -58,8 +56,7 @@ export const WalletContext = createContext<
       ExtWalletContextType,
       setProfile: (profile: IProfile | undefined) => Promise<null | {
         profile: IProfile;
-        accounts: Array<IAccount>;
-        watchedAccounts: Array<IWatchedAccount>;
+        accounts: IAccount[];
         keySources: IKeySource[];
       }>,
       setActiveNetwork: (activeNetwork: INetwork | undefined) => void,
@@ -200,7 +197,6 @@ const getDefaultContext = (): ExtWalletContextType => ({
   // profile related data
   profile: undefined,
   accounts: [],
-  watchAccounts: [],
   keySources: [],
   keysets: [],
   // independent data
@@ -353,31 +349,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profileId,
         contextValue.activeNetwork?.uuid,
       );
+
       setContextValue((ctx) => ({
         ...ctx,
         accounts,
-      }));
-    },
-    [contextValue.activeNetwork?.uuid],
-  );
-
-  const retrieveWatchedAccounts = useCallback(
-    async (profileId: string) => {
-      if (!contextValue.activeNetwork?.uuid) {
-        setContextValue((ctx) => ({
-          ...ctx,
-          watchAccounts: [],
-        }));
-        return;
-      }
-      const watchAccounts =
-        await accountRepository.getWatchedAccountsByProfileId(
-          profileId,
-          contextValue.activeNetwork?.uuid,
-        );
-      setContextValue((ctx) => ({
-        ...ctx,
-        watchAccounts,
       }));
     },
     [contextValue.activeNetwork?.uuid],
@@ -442,11 +417,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
             retrieveAccounts(profileId);
           }
           break;
-        case 'watched-account':
-          if (profileId) {
-            retrieveWatchedAccounts(profileId);
-          }
-          break;
         case 'keyset':
           if (profileId) {
             retrieveKeysets(profileId);
@@ -472,7 +442,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveFungibles,
     retrieveKeysets,
     retrieveNetworks,
-    retrieveWatchedAccounts,
     contextValue.profile?.uuid,
     retrieveContacts,
   ]);
@@ -499,12 +468,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
             networkUUID,
           )
         : [];
-      const watchedAccounts = networkUUID
-        ? await accountRepository.getWatchedAccountsByProfileId(
-            profile.uuid,
-            networkUUID,
-          )
-        : [];
       const keysets = await accountRepository.getKeysetsByProfileId(
         profile.uuid,
       );
@@ -526,7 +489,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         keysets,
         activeNetwork: activeNetwork ?? ctx.activeNetwork,
       }));
-      return { profile, accounts, keySources, watchedAccounts };
+      return { profile, accounts, keySources };
     },
     [session],
   );
@@ -603,13 +566,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       retrieveAccounts(contextValue.profile.uuid);
     }
   }, [retrieveAccounts, contextValue.profile?.uuid]);
-
-  useEffect(() => {
-    if (contextValue.profile?.uuid) {
-      console.log('retrieving retrieveWatchedAccounts');
-      retrieveWatchedAccounts(contextValue.profile.uuid);
-    }
-  }, [retrieveWatchedAccounts, contextValue.profile?.uuid]);
 
   useEffect(() => {
     // filter network if the id is the same but the uuid is different

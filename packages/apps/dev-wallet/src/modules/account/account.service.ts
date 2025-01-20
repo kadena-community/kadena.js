@@ -13,8 +13,7 @@ import {
   IAccount,
   IGuard,
   IKeySet,
-  isWatchedAccount,
-  IWatchedAccount,
+  IOwnedAccount,
 } from './account.repository';
 
 import {
@@ -87,7 +86,7 @@ export async function createKAccount({
       keys: [publicKey],
     },
   };
-  const account: IAccount = {
+  const account: IOwnedAccount = {
     uuid: crypto.randomUUID(),
     alias: alias || '',
     profileId: profileId,
@@ -125,7 +124,7 @@ export const accountDiscovery = (
           chainResult: IWalletDiscoveredAccount[];
         }>;
       },
-      { event: 'accounts-saved'; data: IAccount[] },
+      { event: 'accounts-saved'; data: IOwnedAccount[] },
     ]
   >
 )(
@@ -141,7 +140,7 @@ export const accountDiscovery = (
         throw new Error('Account discovery not supported for web-authn');
       }
       const keySourceService = await keySourceManager.get(keySource.source);
-      const accounts: IAccount[] = [];
+      const accounts: IOwnedAccount[] = [];
       const usedKeys: IKeyItem[] = [];
       const saveCallbacks: Array<() => Promise<void>> = [];
       for (let i = 0; i < numberOfKeys; i++) {
@@ -188,7 +187,7 @@ export const accountDiscovery = (
 
           if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
             usedKeys.push(key);
-            const account: IAccount = {
+            const account: IOwnedAccount = {
               uuid: crypto.randomUUID(),
               profileId,
               networkUUID: network.uuid,
@@ -254,9 +253,9 @@ export const hasSameGuard = (a?: IGuard, b?: IGuard) => {
   return false;
 };
 
-export const syncAccount = async (account: IAccount | IWatchedAccount) => {
+export const syncAccount = async (account: IAccount) => {
   const network = await networkRepository.getNetwork(account.networkUUID);
-  const patch: Partial<IAccount | IWatchedAccount> = {};
+  const patch: Partial<IAccount> = {};
 
   const chainResult = await discoverAccount(
     account.address,
@@ -298,12 +297,9 @@ export const syncAccount = async (account: IAccount | IWatchedAccount) => {
     '0',
   );
   patch.syncTime = Date.now();
-  if (isWatchedAccount(account)) {
-    return accountRepository.patchWatchedAccount(account.uuid, patch);
-  }
   return accountRepository.patchAccount(
     account.uuid,
-    patch as Partial<IAccount>,
+    patch as Partial<IOwnedAccount>,
   );
 };
 
@@ -315,7 +311,7 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
 
   const network = await networkRepository.getNetwork(networkUUID);
 
-  const watchedAccounts = await accountRepository.getWatchedAccountsByProfileId(
+  const watchedAccounts = await accountRepository.getAccountsByProfileId(
     profileId,
     networkUUID,
   );
@@ -330,9 +326,7 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
 
   await Promise.all(
     accountsToSync.map((account) =>
-      isWatchedAccount(account)
-        ? accountRepository.patchWatchedAccount(account.uuid, { syncTime: now })
-        : accountRepository.patchAccount(account.uuid, { syncTime: now }),
+      accountRepository.patchAccount(account.uuid, { syncTime: now }),
     ),
   );
 
@@ -353,7 +347,7 @@ export async function fundAccount({
   profileId,
   network,
   chainId,
-}: Pick<IAccount, 'address' | 'guard' | 'profileId'> & {
+}: Pick<IOwnedAccount, 'address' | 'guard' | 'profileId'> & {
   chainId: ChainId;
   network: INetwork;
 }) {
@@ -434,7 +428,7 @@ export async function fundAccount({
 }
 
 export async function createMigrateAccountTransactions(
-  source: IAccount,
+  source: IOwnedAccount,
   target: IRetrievedAccount,
   ownedKeys: string[],
 ) {
