@@ -15,7 +15,7 @@ import {
 import { useState } from 'react';
 
 import { ListItem } from '@/Components/ListItem/ListItem';
-import { IAccount } from '@/modules/account/account.repository';
+import { IOwnedAccount } from '@/modules/account/account.repository';
 import {
   IWalletDiscoveredAccount,
   accountDiscovery,
@@ -43,7 +43,7 @@ export function AccountDiscovery() {
   const [discoveredAccounts, setDiscoveredAccounts] = useState<
     Array<IWalletDiscoveredAccount | undefined>
   >([]);
-  const [accounts, setAccounts] = useState<IAccount[]>();
+  const [accounts, setAccounts] = useState<IOwnedAccount[]>();
   const [selectedNetworks, setSelectedNetworks] = useState<string[]>(
     networks.map((network) => network.uuid),
   );
@@ -70,7 +70,7 @@ export function AccountDiscovery() {
       .on('chain-result', (data: IWalletDiscoveredAccount) => {
         setDiscoveredAccounts((prev) => [...prev, data]);
       });
-    const accounts: IAccount[] = await process.executeTo('query-done');
+    const accounts: IOwnedAccount[] = await process.executeTo('query-done');
     setAccounts((acc = []) => [...acc, ...accounts]);
     await process.execute().catch((e) => {
       console.log('error', e);

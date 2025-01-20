@@ -1,5 +1,5 @@
 import {
-  IAccount,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -13,7 +13,7 @@ import { ListItem } from '../ListItem/ListItem';
 export function AccountItem({
   account: { uuid, alias, address, overallBalance, contract },
 }: {
-  account: IAccount | IWatchedAccount;
+  account: IOwnedAccount | IWatchedAccount;
 }) {
   const { fungibles } = useWallet();
   const getSymbol = (contract: string) =>

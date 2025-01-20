@@ -1,4 +1,4 @@
-import { IAccount, IGuard } from '@/modules/account/account.repository';
+import { IGuard, IOwnedAccount } from '@/modules/account/account.repository';
 import { formatList, shorten } from '@/utils/helpers';
 import { MonoLink } from '@kadena/kode-icons/system';
 import { Stack, Text } from '@kadena/kode-ui';
@@ -6,8 +6,8 @@ import { FC } from 'react';
 import { Guard } from '../../../Components/Guard/Guard';
 import { balanceClass } from './style.css';
 export const AccountItem: FC<{
-  account: Pick<IAccount, 'alias' | 'address' | 'overallBalance'>;
-  chains?: IAccount['chains'];
+  account: Pick<IOwnedAccount, 'alias' | 'address' | 'overallBalance'>;
+  chains?: IOwnedAccount['chains'];
   guard?: IGuard;
 }> = ({ guard, account, chains }) => (
   <Stack

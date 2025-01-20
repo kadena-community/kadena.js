@@ -46,16 +46,19 @@ export interface IAccount {
     chainId: ChainId;
     balance: string;
   }>;
-  guard: IKeysetGuard;
+  guard: IGuard;
   keysetId?: string;
   alias?: string;
   syncTime?: number;
 }
 
-export type IWatchedAccount = Omit<IAccount, 'guard' | 'keysetId'> & {
-  guard: IGuard;
-  watched: boolean;
-};
+export interface IOwnedAccount extends IAccount {
+  guard: IKeysetGuard;
+}
+
+export interface IWatchedAccount extends IAccount {
+  _watched?: true;
+}
 
 const createAccountRepository = ({
   getAll,
@@ -144,12 +147,6 @@ const createAccountRepository = ({
     getAllFungibles: async (): Promise<Fungible[]> => {
       return ((await getAll('fungible')) as Fungible[]).reverse();
     },
-    addWatchedAccount: async (account: IWatchedAccount): Promise<void> => {
-      return add('watched-account', account);
-    },
-    updateWatchedAccount: async (account: IWatchedAccount): Promise<void> => {
-      return update('watched-account', account);
-    },
 
     patchAccount: async (
       uuid: string,
@@ -159,31 +156,6 @@ const createAccountRepository = ({
       const updatedAccount = { ...account, ...patch };
       await actions.updateAccount(updatedAccount);
       return updatedAccount;
-    },
-    patchWatchedAccount: async (
-      uuid: string,
-      patch: Partial<IWatchedAccount>,
-    ): Promise<IWatchedAccount> => {
-      const account = (await getOne(
-        'watched-account',
-        uuid,
-      )) as IWatchedAccount;
-      const updatedAccount = { ...account, ...patch };
-      await actions.updateWatchedAccount(updatedAccount);
-      return updatedAccount;
-    },
-    async getWatchedAccountsByProfileId(
-      profileId: string,
-      networkUUID?: UUID,
-    ): Promise<IWatchedAccount[]> {
-      if (networkUUID) {
-        return getAll(
-          'watched-account',
-          IDBKeyRange.only([profileId, networkUUID]),
-          'profile-network',
-        );
-      }
-      return getAll('watched-account', profileId, 'profileId');
     },
   };
   return actions;
@@ -206,9 +178,3 @@ export const addDefaultFungibles = execInSequence(async () => {
     await accountRepository.addFungible(coin);
   }
 });
-
-export const isWatchedAccount = (
-  account: IWatchedAccount | IAccount | undefined,
-): account is IWatchedAccount => {
-  return Boolean(account && 'watched' in account);
-};

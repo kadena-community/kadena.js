@@ -8,10 +8,7 @@ import { FundOnTestnetButton } from '@/Components/FundOnTestnet/FundOnTestnet';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { QRCode } from '@/Components/QRCode/QRCode';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import {
-  accountRepository,
-  isWatchedAccount,
-} from '@/modules/account/account.repository';
+import { accountRepository } from '@/modules/account/account.repository';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
@@ -49,8 +46,14 @@ export function AccountPage() {
   const { accountId } = useParams();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const prompt = usePrompt();
-  const { activeNetwork, fungibles, accounts, profile, watchAccounts, client } =
-    useWallet();
+  const {
+    activeNetwork,
+    fungibles,
+    accounts,
+    watchAccounts,
+    client,
+    isOwnedAccount,
+  } = useWallet();
   const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
   const account =
     accounts.find((account) => account.uuid === accountId) ??
@@ -87,9 +90,6 @@ export function AccountPage() {
   }
 
   const fundAccountHandler = async (chainId: ChainId) => {
-    if (isWatchedAccount(account)) {
-      throw new Error('Can not fund watched account');
-    }
     if (!isKeysetGuard(account.guard)) {
       throw new Error('No keyset found');
     }
@@ -117,8 +117,7 @@ export function AccountPage() {
 
     return fundTx;
   };
-  const isOwnedAccount =
-    !isWatchedAccount(account) && account.profileId === profile?.uuid;
+  const ownedAccount = isOwnedAccount(account);
 
   const guardInfo = getGuardInfo(accountGuard);
 
@@ -157,14 +156,14 @@ export function AccountPage() {
             {account.overallBalance} {asset.symbol}
           </Heading>
         </Stack>
-        {!isOwnedAccount && (
+        {!ownedAccount && (
           <Stack alignItems={'center'} gap={'sm'}>
             <MonoRemoveRedEye />
             <Heading variant="h6">Watched Account</Heading>
           </Stack>
         )}
       </Stack>
-      {isOwnedAccount && (
+      {ownedAccount && (
         <Stack gap="md" alignItems={'center'} flexWrap="wrap">
           <Link
             to={`/transfer?accountId=${account.uuid}`}
@@ -374,7 +373,7 @@ export function AccountPage() {
               </Button>
             </Stack>
             {
-              (isOwnedAccount && (
+              (ownedAccount && (
                 <>
                   <Stack
                     flexDirection={'column'}
