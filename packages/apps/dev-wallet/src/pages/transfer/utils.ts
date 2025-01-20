@@ -435,6 +435,49 @@ export const createTransactions = async ({
               publicKeys: getKeysToSignWith(gasPayer),
             },
           };
+
+          if (
+            receiverAccount.chain &&
+            optimal.chainId !== receiverAccount.chain
+          ) {
+            if (!isKeysetGuard(receiverGuard)) {
+              throw new Error(
+                'Receiver Account guard is not a keyset guard; Cross-chain transfer is not possible',
+              );
+            }
+            const transferCmd = createCrossChainCommand({
+              ...inputs,
+              targetChainId: receiverAccount.chain,
+              receiver: {
+                account: receiverAccount.address,
+                keyset: receiverGuard,
+              },
+            });
+
+            const command = composePactCommand(transferCmd, {
+              networkId: network.networkId,
+              meta: {
+                chainId: optimal.chainId,
+                gasLimit: gasLimit,
+                gasPrice: gasPrice,
+                creationTime,
+              },
+            })();
+
+            return [
+              createTransaction(command),
+              {
+                type: 'xchain-transfer',
+                data: {
+                  source: optimal.chainId,
+                  target: receiverAccount.chain,
+                  amount: optimal.amount,
+                  totalAmount: receiverAccount.amount,
+                },
+              },
+            ] as const;
+          }
+
           const transferCmd = isKeysetGuard(receiverGuard)
             ? transferCreateFn({
                 ...inputs,
@@ -489,6 +532,14 @@ export const createTransactions = async ({
               networkUUID: network.uuid,
               groupId,
               purpose,
+              ...(purpose.type === 'xchain-transfer'
+                ? {
+                    continuation: {
+                      crossChainId: purpose.data.target,
+                      autoContinue: true,
+                    },
+                  }
+                : {}),
             };
             transactionRepository.addTransaction(transaction);
             return transaction;
