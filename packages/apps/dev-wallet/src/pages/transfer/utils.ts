@@ -323,7 +323,7 @@ export const discoverReceiver = async (
   contract: string,
 ) => {
   let address = receiver;
-  let wGuard;
+  let wGuard: IKeysetGuard | undefined;
   if (receiver.startsWith('w:')) {
     const chunks = receiver.split(':');
     if (chunks.length > 3) {
