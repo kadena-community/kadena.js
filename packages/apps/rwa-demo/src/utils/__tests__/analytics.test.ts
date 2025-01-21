@@ -94,15 +94,20 @@ describe('analytics', () => {
 
   describe('analyticsEvent', () => {
     it('should call analyticsEvent with correct props', () => {
-      analyticsEvent(EVENT_NAMES['click:search'], {
+      analyticsEvent(EVENT_NAMES['error:submitChain'], {
         label: 'Master of the universe',
         hash: '/he-man',
       });
 
-      expect(window.gtag).toHaveBeenNthCalledWith(1, 'event', 'click:search', {
-        hash: '/he-man',
-        label: 'Master of the universe',
-      });
+      expect(window.gtag).toHaveBeenNthCalledWith(
+        1,
+        'event',
+        'error:submitChain',
+        {
+          hash: '/he-man',
+          label: 'Master of the universe',
+        },
+      );
     });
 
     it('should also console.warn when the nodeenv is development', () => {
@@ -111,19 +116,24 @@ describe('analytics', () => {
         .mockImplementation(() => undefined);
 
       vi.stubEnv('NODE_ENV', 'development');
-      analyticsEvent(EVENT_NAMES['click:search'], {
+      analyticsEvent(EVENT_NAMES['error:submitChain'], {
         label: 'Master of the universe',
         hash: '/he-man',
       });
 
       expect(consoleMock).toBeCalledWith('GTAG EVENT', {
-        name: 'click:search',
+        name: 'error:submitChain',
         options: { hash: '/he-man', label: 'Master of the universe' },
       });
-      expect(window.gtag).toHaveBeenNthCalledWith(1, 'event', 'click:search', {
-        hash: '/he-man',
-        label: 'Master of the universe',
-      });
+      expect(window.gtag).toHaveBeenNthCalledWith(
+        1,
+        'event',
+        'error:submitChain',
+        {
+          hash: '/he-man',
+          label: 'Master of the universe',
+        },
+      );
     });
   });
 });
