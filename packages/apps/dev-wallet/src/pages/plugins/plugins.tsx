@@ -3,7 +3,7 @@ import { getInitials } from '@/utils/get-initials';
 import { MonoApps } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
 import { pluginContainerClass, pluginIconClass } from './style.css';
@@ -17,17 +17,8 @@ type Plugin = {
   permissions: ['network-list'];
 };
 
-const pluginList: Plugin[] = [
-  {
-    id: 'pact-remote-console',
-    registry: '/hosted-plugins',
-    name: 'Pact Remote Console',
-    shortName: 'Pact Console',
-    description:
-      'A console for interacting remotely with Pact on different networks (read-only)',
-    permissions: ['network-list'],
-  },
-];
+// plugin whitelist
+const registries = ['/hosted-plugins'];
 
 function escapeHTML(input: string) {
   return input
@@ -67,6 +58,7 @@ const getDoc = (plugin: Plugin, sessionId: string) => {
 
 export function Plugins() {
   const [searchParams] = useSearchParams();
+  const [pluginList, setPluginList] = useState<Plugin[]>([]);
   const pluginId = searchParams.get('plugin-id') as
     | null
     | keyof typeof pluginList;
@@ -76,6 +68,17 @@ export function Plugins() {
     () => `${pluginId?.toString()}:${crypto.randomUUID()}`,
     [pluginId],
   );
+
+  useEffect(() => {
+    registries.map((registry) =>
+      fetch(`${registry}/plugins.json`)
+        .then((res) => res.json())
+        .then((list: Omit<Plugin, 'registry'>[]) =>
+          (list || []).map((p) => ({ ...p, registry })),
+        )
+        .then((list) => setPluginList((prev) => [...prev, ...list])),
+    );
+  }, []);
 
   if (plugin) {
     return (
