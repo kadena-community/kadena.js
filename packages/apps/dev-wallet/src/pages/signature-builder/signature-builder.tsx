@@ -209,6 +209,7 @@ export function SignatureBuilder() {
           }>),
         );
         await transactionRepository.updateTransaction({
+          ...tx,
           ...txWithMetaData,
           sigs: updatedTx.sigs,
           status:

@@ -30,7 +30,7 @@ import {
   MonoShare,
 } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
@@ -87,6 +87,26 @@ export function ExpandedTransaction({
   };
   const Title = isDialog ? DialogHeader : Stack;
   const Content = isDialog ? DialogContent : Stack;
+  const [selectedTab, setSelectedTab] = useState('command-details');
+  const activeTabs = [
+    'command-details',
+    transaction.preflight && 'preflight',
+    transaction.request && 'request',
+    'result' in transaction && transaction.result && 'result',
+    transaction.continuation?.proof && 'spv',
+    contTx && 'cont-command-details',
+    contTx?.preflight && 'cont-preflight',
+    contTx?.request && 'cont-request',
+    contTx && 'result' in contTx && contTx.result && 'cont-result',
+  ].filter(Boolean) as string[];
+
+  useEffect(() => {
+    const lastTab = activeTabs[activeTabs.length - 1];
+    if (lastTab !== selectedTab) {
+      setSelectedTab(lastTab);
+    }
+  }, [activeTabs.length]);
+
   return (
     <>
       <Title>
@@ -141,8 +161,15 @@ export function ExpandedTransaction({
                   </Notification>
                 </Stack>
               )}
-            <Tabs isContained>
-              <TabItem title="Command Details">
+            <Tabs
+              isContained
+              selectedKey={selectedTab}
+              onSelectionChange={(key) => {
+                console.log('key', key);
+                setSelectedTab(key as any);
+              }}
+            >
+              <TabItem key="command-details" title="Command Details">
                 <Stack gap={'sm'} flexDirection={'column'}>
                   <Stack justifyContent={'space-between'}>
                     <Heading variant="h4">Command Details</Heading>
@@ -215,7 +242,7 @@ export function ExpandedTransaction({
 
               {transaction.preflight &&
                 ((
-                  <TabItem title="Preflight Result">
+                  <TabItem key="preflight" title="Preflight Result">
                     <JsonView
                       title="Preflight Result"
                       data={transaction.preflight}
@@ -224,17 +251,17 @@ export function ExpandedTransaction({
                 ) as any)}
 
               {transaction.request && (
-                <TabItem title="Request">
+                <TabItem key="request" title="Request">
                   <JsonView title="Request" data={transaction.request} />
                 </TabItem>
               )}
               {'result' in transaction && transaction.result && (
-                <TabItem title="Result">
+                <TabItem key="result" title="Result">
                   <JsonView title="Result" data={transaction.result} />
                 </TabItem>
               )}
               {transaction.continuation?.proof && (
-                <TabItem title="SPV Proof">
+                <TabItem key="spv" title="SPV Proof">
                   <JsonView
                     title="Result"
                     data={transaction.continuation?.proof}
@@ -243,14 +270,17 @@ export function ExpandedTransaction({
                 </TabItem>
               )}
               {contTx && [
-                <TabItem title="cont: Command Details">
+                <TabItem
+                  key="cont-command-details"
+                  title="cont: Command Details"
+                >
                   <Stack gap={'sm'} flexDirection={'column'}>
                     <Heading variant="h4">Command Details</Heading>
                     <CommandView transaction={contTx} onSign={onSign} />
                   </Stack>
                 </TabItem>,
                 contTx.preflight && (
-                  <TabItem title="cont: Preflight Result">
+                  <TabItem key="cont-preflight" title="cont: Preflight Result">
                     <JsonView
                       title="Continuation Preflight Result"
                       data={contTx.preflight}
@@ -258,7 +288,7 @@ export function ExpandedTransaction({
                   </TabItem>
                 ),
                 contTx.request && (
-                  <TabItem title="cont: Request">
+                  <TabItem key="cont-request" title="cont: Request">
                     <JsonView
                       title="Continuation Request"
                       data={contTx.request}
@@ -266,7 +296,7 @@ export function ExpandedTransaction({
                   </TabItem>
                 ),
                 'result' in contTx && contTx.result && (
-                  <TabItem title="cont: Result">
+                  <TabItem key="cont-result" title="cont: Result">
                     <JsonView
                       title="Continuation Result"
                       data={contTx.result}
