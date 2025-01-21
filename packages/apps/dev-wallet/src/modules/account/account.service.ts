@@ -117,13 +117,6 @@ export const accountDiscovery = (
     [
       { event: 'key-retrieved'; data: IKeyItem },
       { event: 'chain-result'; data: IWalletDiscoveredAccount },
-      {
-        event: 'query-done';
-        data: Array<{
-          key: IKeyItem;
-          chainResult: IWalletDiscoveredAccount[];
-        }>;
-      },
       { event: 'accounts-saved'; data: IOwnedAccount[] },
     ]
   >
@@ -142,7 +135,6 @@ export const accountDiscovery = (
       const keySourceService = await keySourceManager.get(keySource.source);
       const accounts: IOwnedAccount[] = [];
       const usedKeys: IKeyItem[] = [];
-      const saveCallbacks: Array<() => Promise<void>> = [];
       for (let i = 0; i < numberOfKeys; i++) {
         const key = await keySourceService.getPublicKey(keySource, i);
         if (!key) {
@@ -217,7 +209,7 @@ export const accountDiscovery = (
               ),
             };
             accounts.push(account);
-            saveCallbacks.push(async () => {
+            try {
               if (!keySource.keys.find((k) => k.publicKey === key.publicKey)) {
                 await keySourceService.createKey(
                   keySource.uuid,
@@ -225,20 +217,15 @@ export const accountDiscovery = (
                 );
               }
               await accountRepository.addAccount(account);
-            });
+            } catch (error) {
+              console.log('ERROR_ADDING_ACCOUNT', error);
+            }
           }
         }
       }
 
-      await emit('query-done')(accounts);
-
-      for (const cb of saveCallbacks) {
-        await cb().catch(console.error);
-      }
-
-      keySourceService.clearCache();
       await emit('accounts-saved')(accounts);
-
+      keySourceService.clearCache();
       return accounts;
     },
 );
