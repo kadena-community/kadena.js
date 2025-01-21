@@ -22,7 +22,6 @@ export const useGetAccountKDABalance = ({
   };
 
   const formatData = (data: any) => {
-    console.log({ data });
     data?.events?.map(({ parameters }: any) => {
       const params = JSON.parse(parameters);
       const fromAccount = params.length > 1 && params[0];

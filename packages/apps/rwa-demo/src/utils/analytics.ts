@@ -1,6 +1,8 @@
+import type { TXTYPES } from '@/components/TransactionsProvider/TransactionsProvider';
+
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const EVENT_NAMES = {
-  'click:search': 'click:search',
+  'error:submitChain': 'error:submitChain',
 } as const;
 
 const COOKIE_CONSENTNAME = 'cookie_consent';
@@ -13,7 +15,10 @@ interface IOptionsPageViewType {
 }
 
 export const analyticsEvent = (
-  name: keyof typeof EVENT_NAMES,
+  name:
+    | keyof typeof EVENT_NAMES
+    | keyof typeof TXTYPES
+    | `error:${keyof typeof TXTYPES}`,
   options: IOptionsType = {},
 ): void => {
   if (process.env.NODE_ENV === 'development') {
