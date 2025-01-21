@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { CHAINS } from '@kadena/chainweb-node-client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
@@ -24,7 +25,7 @@ builder.queryField('blocksFromHeight', (t) =>
         },
       }),
       chainIds: t.arg.stringList({
-        required: false,
+        defaultValue: [...CHAINS],
         description: 'Default: all chains',
         validate: {
           minLength: 1,

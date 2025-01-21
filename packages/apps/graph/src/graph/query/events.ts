@@ -67,9 +67,9 @@ const generateEventsFilter = async (args: {
 builder.queryField('events', (t) =>
   t.prismaConnection({
     description: `Retrieve events by qualifiedName (e.g. \`coin.TRANSFER\`). Default page size is 20.
-       
+
       The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-       
+
       An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     edgesNullable: false,
     args: {

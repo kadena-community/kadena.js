@@ -6,13 +6,11 @@ import {
   getDefaultConnectionComplexity,
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
+import { isDefined } from '@utils/isDefined';
 import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type {
-  INonFungibleAccount,
-  INonFungibleChainAccount,
-} from '../types/graphql-types';
+import type { INonFungibleAccount } from '../types/graphql-types';
 import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
@@ -68,9 +66,7 @@ export default builder.node(
                   });
                 }),
               )
-            ).filter(
-              (chainAccount) => chainAccount !== null,
-            ) as INonFungibleChainAccount[];
+            ).filter(isDefined);
           } catch (error) {
             throw normalizeError(error);
           }

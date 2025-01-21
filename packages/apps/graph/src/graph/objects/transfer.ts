@@ -12,10 +12,7 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
   fields: (t) => ({
     // database fields
     amount: t.expose('amount' as never, { type: 'Decimal' }),
-    blockHash: t.exposeString('blockHash'),
-    chainId: t.expose('chainId', { type: 'BigInt' }),
     senderAccount: t.exposeString('senderAccount'),
-    height: t.expose('height', { type: 'BigInt' }),
     orderIndex: t.expose('orderIndex', {
       type: 'BigInt',
       description:
@@ -25,6 +22,33 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
     moduleName: t.exposeString('moduleName'),
     requestKey: t.exposeString('requestKey'),
     receiverAccount: t.exposeString('receiverAccount'),
+    height: t.expose('height', {
+      type: 'BigInt',
+      deprecationReason: 'Use `block.height` field instead.',
+    }),
+    blockHash: t.exposeString('blockHash', {
+      deprecationReason: 'Use `block.hash` field instead.',
+    }),
+    chainId: t.expose('chainId', {
+      type: 'BigInt',
+      deprecationReason: 'Use `block.chainId` field instead.',
+    }),
+
+    // blockHash: t.string({
+    //   deprecationReason: 'Use `block.hash` field instead.',
+    //   resolve: () =>
+    //     'GraphQL Error: Field `blockHash` is deprecated, use `block.hash` instead',
+    // }),
+    // chainId: t.string({
+    //   deprecationReason: 'Use `block.chainId` field instead.',
+    //   resolve: () =>
+    //     'GraphQL Error: Field `chainId` is deprecated, use `block.chainId` instead',
+    // }),
+    // height: t.string({
+    //   deprecationReason: 'GraphQL Error: Use `block.height` field instead.',
+    //   resolve: () =>
+    //     'GraphQL Error: Field `height` is deprecated, use `block.height` instead',
+    // }),
 
     // computed fields
     creationTime: t.field({

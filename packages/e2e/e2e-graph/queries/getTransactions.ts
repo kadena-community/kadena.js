@@ -45,20 +45,36 @@ export function getTransactionsQuery(accountName: string) {
                   edges {
                     node {
                       amount
-                      chainId
                       id
                       receiverAccount
                       requestKey
                       senderAccount
+                      transaction {
+                        result {
+                          ... on TransactionResult {
+                            block {
+                              chainId
+                            }
+                          }
+                        }
+                      }
                       crossChainTransfer {
                         amount
-                        blockHash
-                        chainId
                         id
                         moduleName
                         receiverAccount
                         requestKey
                         senderAccount
+                        transaction {
+                        result {
+                          ... on TransactionResult {
+                            block {
+                              chainId
+                              hash
+                            }
+                          }
+                        }
+                        }
                       }
                     }
                   }
@@ -122,8 +138,8 @@ export function getTransactionsByRequestKeySubscription(
                       status
                     }
 			              ...on TransactionResult {
-                    badResult
-                    goodResult 
+                      badResult
+                      goodResult
                     }
                   }
                 }

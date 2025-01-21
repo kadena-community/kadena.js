@@ -221,12 +221,6 @@ const RequestKey: React.FC = () => {
                         </Row>
                         <Row>
                           <Cell>
-                            <strong>Metadata</strong>
-                          </Cell>
-                          <Cell>{transaction.result.metadata}</Cell>
-                        </Row>
-                        <Row>
-                          <Cell>
                             <strong>Continuation</strong>
                           </Cell>
                           <Cell>
@@ -282,7 +276,7 @@ const RequestKey: React.FC = () => {
                             <Cell>
                               <pre>
                                 {event?.node ? (
-                                  formatCode(event.node.parameterText)
+                                  formatCode(event.node.parameters || '""')
                                 ) : (
                                   <span style={{ color: 'lightgray' }}>
                                     N/A
@@ -374,7 +368,7 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           {transaction.result.__typename ===
                           'TransactionResult' ? (
-                            transaction.result.height
+                            transaction.result.block.height
                           ) : (
                             <span style={{ color: 'lightgray' }}>N/A</span>
                           )}

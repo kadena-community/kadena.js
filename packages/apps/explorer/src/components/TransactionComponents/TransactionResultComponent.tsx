@@ -93,8 +93,8 @@ export const TransactionResultComponent: React.FC<{
             },
             {
               key: 'Counterpart',
-              value: getCrosschainTransfer(transaction).requestKey,
-              link: `/transaction/${getCrosschainTransfer(transaction).requestKey}`,
+              value: getCrosschainTransfer(transaction).transaction?.hash || '',
+              link: `/transaction/${getCrosschainTransfer(transaction).transaction?.hash || ''}`,
             },
           ]}
         />
@@ -124,7 +124,6 @@ export const TransactionResultComponent: React.FC<{
               />
             ),
           },
-          { key: 'Metadata', value: transaction.metadata },
         ]}
       />
 

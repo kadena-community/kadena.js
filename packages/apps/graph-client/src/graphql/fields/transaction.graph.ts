@@ -21,7 +21,9 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
     }
     result {
       ... on TransactionResult {
-        height
+        block {
+          height
+        }
       }
     }
   }
@@ -75,7 +77,6 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
         gas
         goodResult
         logs
-        metadata
         eventCount
         transactionId
       }

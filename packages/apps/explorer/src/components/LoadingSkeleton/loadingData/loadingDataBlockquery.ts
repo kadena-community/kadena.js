@@ -34,8 +34,8 @@ export const loadingData: BlockQuery = {
     },
     payloadHash: '',
     powHash: '',
-    target: 0,
-    weight: 0,
+    target: '',
+    weight: '',
     transactions: {
       totalCount: 0,
     },

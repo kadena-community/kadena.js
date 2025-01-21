@@ -40,8 +40,8 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     powHash: t.exposeString('powHash', {
       description: 'The proof of work hash.',
     }),
-    target: t.expose('target' as never, { type: 'Decimal' }),
-    weight: t.expose('weight' as never, { type: 'Decimal' }),
+    target: t.expose('target' as never, { type: 'String' }),
+    weight: t.expose('weight' as never, { type: 'String' }),
     nonce: t.expose('nonce' as never, { type: 'Decimal' }),
     flags: t.expose('flags' as never, { type: 'Decimal' }),
     minerAccount: t.field({

@@ -1,9 +1,9 @@
 import { prismaClient } from '@db/prisma-client';
 import { getFungibleChainAccount } from '@services/account-service';
 import { normalizeError } from '@utils/errors';
+import { isDefined } from '@utils/isDefined';
 import { builder } from '../builder';
 import FungibleChainAccount from '../objects/fungible-chain-account';
-import type { IFungibleChainAccount } from '../types/graphql-types';
 
 builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
   t.field({
@@ -51,7 +51,7 @@ builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
               });
             }),
           )
-        ).filter(Boolean) as IFungibleChainAccount[];
+        ).filter(isDefined);
 
         return fungibleChainAccounts;
       } catch (error) {

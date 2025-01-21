@@ -76,7 +76,7 @@ export const CompactTransactionsTable = (
                 </Cell>
                 <Cell>
                   {edge.node.result.__typename === 'TransactionResult' ? (
-                    edge.node.result.height
+                    edge.node.result.block.height
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
