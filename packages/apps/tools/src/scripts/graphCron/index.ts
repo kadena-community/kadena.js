@@ -47,6 +47,16 @@ interface ICompletedBlockHeightsResponse {
   };
 }
 
+function log<T extends unknown>(msg: T, prepend: string = ''): T {
+  prepend = prepend.length > 0 ? `${prepend}\n` : prepend;
+  if (typeof msg !== 'string') {
+    console.log('LOG:', prepend + JSON.stringify(msg, null, 2));
+  } else {
+    console.log('LOG:', prepend + msg);
+  }
+  return msg;
+}
+
 const countHeightOnGraph = async (
   props: IEnvProps,
 ): Promise<{ totalCutHeight: number; lastBlockHeight: number }> => {
@@ -62,7 +72,8 @@ const countHeightOnGraph = async (
       'sec-fetch-site': 'cross-site',
     },
     body: JSON.stringify({
-      query: `query graphBlockHeight {
+      query: log(
+        `query graphBlockHeight {
         completedBlockHeights(heightCount: 1) {
           edges {
             node {
@@ -71,6 +82,8 @@ const countHeightOnGraph = async (
           }
         }
       }`,
+        `Querying Graph ${props.env}:`,
+      ),
       variables: {},
       extensions: {},
     }),
@@ -79,18 +92,21 @@ const countHeightOnGraph = async (
   const completedBlockHeightsResult =
     (await result.json()) as ICompletedBlockHeightsResponse;
 
-  return {
-    totalCutHeight:
-      completedBlockHeightsResult.data.completedBlockHeights.edges.reduce(
-        (acc, { node: { height } }) => acc + height,
-        0,
-      ),
-    lastBlockHeight:
-      completedBlockHeightsResult.data.completedBlockHeights.edges.reduce(
-        (maxHeight, { node: { height } }) => Math.max(maxHeight, height),
-        0,
-      ),
-  };
+  return log(
+    {
+      totalCutHeight:
+        completedBlockHeightsResult.data.completedBlockHeights.edges.reduce(
+          (acc, { node: { height } }) => acc + height,
+          0,
+        ),
+      lastBlockHeight:
+        completedBlockHeightsResult.data.completedBlockHeights.edges.reduce(
+          (maxHeight, { node: { height } }) => Math.max(maxHeight, height),
+          0,
+        ),
+    },
+    `Graph response ${props.env}:`,
+  );
 };
 
 export const runJobPerEnvironment = async (props: IEnvProps) => {
@@ -105,17 +121,27 @@ export const runJobPerEnvironment = async (props: IEnvProps) => {
     } = await countHeightOnGraph(props);
 
     if (Number.isNaN(totalHeightOnChainWeb)) {
-      await sendErrorMessage({
-        title: `${props.env} chainweb.com fail`,
-        msg: `We were unable to retrieve the blockheights from chainweb. \n There seems to be an issue with ChainWeb (${props.chainweb})`,
-      });
+      await sendErrorMessage(
+        log(
+          {
+            title: `${props.env} chainweb.com fail`,
+            msg: `We were unable to retrieve the blockheights from chainweb. \n There seems to be an issue with ChainWeb (${props.chainweb})`,
+          },
+          `Chainweb.com error ${props.env}:`,
+        ),
+      );
       return;
     }
     if (Number.isNaN(totalCutHeightGraph)) {
-      await sendErrorMessage({
-        title: `${props.env} graph fail`,
-        msg: `We were unable to retrieve the blockheights from the test graph. \n There seems to be an issue with test graph (${props.graphql})`,
-      });
+      await sendErrorMessage(
+        log(
+          {
+            title: `${props.env} graph fail`,
+            msg: `We were unable to retrieve the blockheights from the test graph. \n There seems to be an issue with test graph (${props.graphql})`,
+          },
+          `Graph error ${props.env}:`,
+        ),
+      );
       return;
     }
 
@@ -123,9 +149,11 @@ export const runJobPerEnvironment = async (props: IEnvProps) => {
       Math.abs(totalHeightOnChainWeb - totalCutHeightGraph) >
       MAXBLOCKHEIGHT_DIFFERENCE
     ) {
-      await sendErrorMessage({
-        title: `${props.env} chainweb and graph blockheight difference`,
-        msg: `There is a large difference in the totalCutHeight between ${props.env} chainweb and graph.
+      await sendErrorMessage(
+        log(
+          {
+            title: `${props.env} chainweb and graph blockheight difference`,
+            msg: `There is a large difference in the totalCutHeight between ${props.env} chainweb and graph.
 
 Total cut height difference: ${Math.abs(totalHeightOnChainWeb - totalCutHeightGraph)}
 
@@ -133,13 +161,21 @@ Total cut height difference: ${Math.abs(totalHeightOnChainWeb - totalCutHeightGr
 [GraphiQL lastBlockHeight](${props.graphqlRef}): ${lastBlockHeightGraph}
 Total height difference: ${lastBlockHeightChainweb - lastBlockHeightGraph}
 `,
-      });
+          },
+          `Blockheight difference ${props.env}:`,
+        ),
+      );
     }
   } catch (e) {
-    await sendErrorMessage({
-      title: `There was a general issue with the ${props.env} graph cron job`,
-      msg: e,
-    });
+    await sendErrorMessage(
+      log(
+        {
+          title: `There was a general issue with the ${props.env} graph cron job`,
+          msg: JSON.stringify(e),
+        },
+        `General error ${props.env}:`,
+      ),
+    );
   }
 };
 
