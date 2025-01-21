@@ -1,4 +1,6 @@
+import { useAccount } from '@/hooks/account';
 import { useFaucet } from '@/hooks/faucet';
+import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import { env } from '@/utils/env';
 import { MonoMonetizationOn } from '@kadena/kode-icons';
 import {
@@ -9,13 +11,15 @@ import {
 } from '@kadena/kode-ui';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useState } from 'react';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 export const GasPayableBanner: FC = () => {
   const { submit, isAllowed } = useFaucet();
-  const [isDone, setIsDone] = useState(false);
+  const { account } = useAccount();
+  const { data } = useGetAccountKDABalance({
+    accountAddress: account?.address,
+  });
   const { addNotification } = useNotifications();
 
   const handleAddKda = async () => {
@@ -29,13 +33,11 @@ export const GasPayableBanner: FC = () => {
           label: 'KDA added to account',
           message: `We added ${env.FAUCETAMOUNT} KDA to the account`,
         });
-
-        setIsDone(true);
       },
     );
   };
 
-  if (!isAllowed || isDone) return null;
+  if (!isAllowed || data) return null;
 
   return (
     <Notification intent="warning" role="status" type="stacked">
