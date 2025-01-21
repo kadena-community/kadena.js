@@ -1,5 +1,20 @@
 # @kadena/explorer
 
+## 0.9.1
+
+### Patch Changes
+
+- f87b1f7: Reordering columns to present the first column as the one to link to
+
+  Remove toggling close of truncated content. Will always open so users can no
+  select and copy
+
+- Updated dependencies \[35cad4d]
+
+- Updated dependencies \[ebc4e5c]
+  - @kadena/graph\@2.1.0
+  - @kadena/kode-ui\@0.20.1
+
 ## 0.9.0
 
 ### Minor Changes
