@@ -3,11 +3,7 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [
-    [
-      "@kadena/client",
-      "@kadena/pactjs-generator",
-      "@kadena/pactjs-cli"
-    ]
+    ["@kadena/client", "@kadena/pactjs-generator", "@kadena/pactjs-cli"]
   ],
   "linked": [],
   "access": "public",
