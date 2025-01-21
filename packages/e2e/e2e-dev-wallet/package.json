@@ -1,6 +1,6 @@
 {
   "name": "e2e-dev-wallet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "format": "pnpm run --sequential /^format:.*/",
@@ -31,9 +31,7 @@
     "eslint": "^8.45.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-playwright": "1.6.2",
-    "msw": "^2.3.1",
     "playwright-i18next-fixture": "^1.0.0",
-    "playwright-msw": "^3.0.1",
     "prettier": "~3.2.5"
   }
 }
