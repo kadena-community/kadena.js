@@ -21,7 +21,9 @@ const HighlightBlock: React.FC<{ data: string; language: string }> = ({
 }) => {
   const elRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (elRef.current) hljs.highlightElement(elRef.current);
+    if (elRef.current && elRef.current.dataset.highlighted !== 'yes') {
+      hljs.highlightElement(elRef.current);
+    }
   }, []);
   return (
     <pre className={sdkDisplayCode}>

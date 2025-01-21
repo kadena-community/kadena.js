@@ -50,5 +50,5 @@ export async function pollRequestKeys({
     );
   }
 
-  return data;
+  return data as PollResponse;
 }

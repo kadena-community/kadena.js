@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type { ChainId } from '@kadena/types';
 import type { TransferFieldsFragment } from '../../gql/graphql.js';
 import type { ITransfer } from '../../sdk/interface.js';
@@ -239,14 +240,6 @@ export function parseGqlTransfers(
     if (transfers.length === 0) {
       const gqlTransfer = nodes[0];
       if (gqlTransfer.transaction?.result.__typename !== 'TransactionResult') {
-        return [];
-      }
-
-      if (isSuccess(gqlTransfer)) {
-        // eslint-disable-next-line no-console
-        console.log(
-          'RequestKey found with one one Transfer, but it does not have failed status.',
-        );
         return [];
       }
 
