@@ -136,16 +136,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       r.subscribe(
         (nextData: any) => {
-          console.log({ data, nextData });
-          if (nextData?.data?.transaction?.result?.goodResult) {
-            analyticsEvent(data.type.name, {
-              chainId: data?.chainId ?? '',
-              networkId: data?.networkId ?? '',
-              requestKey: data?.requestKey ?? '',
-              message: data?.result?.status,
-            });
-          }
-
           if (
             nextData?.errors?.length !== undefined ||
             nextData?.data?.transaction?.result.badResult
@@ -175,7 +165,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
           }
         },
         (errorData) => {
-          console.log('error');
           analyticsEvent(`error:${data.type.name}`, {
             name: data.type.name,
             chainId: data?.chainId ?? '',
@@ -192,7 +181,12 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
           });
         },
         () => {
-          console.log(11111, data);
+          analyticsEvent(data.type.name, {
+            chainId: data?.chainId ?? '',
+            networkId: data?.networkId ?? '',
+            requestKey: data?.requestKey ?? '',
+            message: data?.result?.status,
+          });
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           store.removeTransaction(data);
         },
