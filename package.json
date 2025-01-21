@@ -24,7 +24,7 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
-    "version": "changeset version && pnpm run docs:changelogs && pnpm run format:pkgs && pnpm run format:md"
+    "version": "changeset version && pnpm run format:pkgs && pnpm run format:md"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.8",
