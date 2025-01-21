@@ -70,12 +70,15 @@ export function AccountDiscovery() {
       .on('chain-result', (data: IWalletDiscoveredAccount) => {
         setDiscoveredAccounts((prev) => [...prev, data]);
       });
-    const accounts: IOwnedAccount[] = await process.executeTo('query-done');
-    setAccounts((acc = []) => [...acc, ...accounts]);
-    await process.execute().catch((e) => {
+
+    const accounts = await process.execute().catch((e) => {
       console.log('error', e);
+      return [] as IOwnedAccount[];
     });
-    return accounts;
+    if (Array.isArray(accounts) && accounts.length) {
+      setAccounts((acc = []) => [...acc, ...accounts]);
+    }
+    return accounts ?? ([] as IOwnedAccount[]);
   }
 
   console.log('accounts', discoveredAccounts);

@@ -79,6 +79,7 @@ export const addDefaultNetworks = execInSequence(async () => {
       uuid: crypto.randomUUID(),
       networkId: 'mainnet01',
       name: 'Mainnet',
+      default: true,
       hosts: [
         {
           url: 'https://api.chainweb.com',
@@ -94,27 +95,10 @@ export const addDefaultNetworks = execInSequence(async () => {
       uuid: crypto.randomUUID(),
       networkId: 'testnet04',
       name: 'Testnet',
-      default: true,
       faucetContract: 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet',
       hosts: [
         {
           url: 'https://api.testnet.chainweb.com',
-          submit: true,
-          read: true,
-          confirm: true,
-        },
-      ],
-    });
-  }
-  if (!networks.find((network) => network.networkId === 'testnet05')) {
-    await networkRepository.addNetwork({
-      uuid: crypto.randomUUID(),
-      networkId: 'testnet05',
-      name: 'Testnet(Pact5)',
-      faucetContract: 'n_f17eb6408bb84795b1c871efa678758882a8744a.coin-faucet',
-      hosts: [
-        {
-          url: 'https://api.testnet05.chainweb.com',
           submit: true,
           read: true,
           confirm: true,
