@@ -1599,15 +1599,9 @@ importers:
       eslint-plugin-playwright:
         specifier: 1.6.2
         version: 1.6.2(eslint-plugin-jest@26.9.0(eslint@8.57.0)(typescript@5.6.3))(eslint@8.57.0)
-      msw:
-        specifier: ^2.3.1
-        version: 2.3.1(typescript@5.6.3)
       playwright-i18next-fixture:
         specifier: ^1.0.0
         version: 1.0.0(@playwright/test@1.46.1)
-      playwright-msw:
-        specifier: ^3.0.1
-        version: 3.0.1(@playwright/test@1.46.1)(msw@2.3.1(typescript@5.6.3))
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -1739,64 +1733,6 @@ importers:
       eslint-plugin-playwright:
         specifier: 1.6.2
         version: 1.6.2(eslint-plugin-jest@26.9.0(eslint@8.57.0)(typescript@5.6.3))(eslint@8.57.0)
-      prettier:
-        specifier: ~3.2.5
-        version: 3.2.5
-
-  packages/e2e/e2e-rwa-demo:
-    dependencies:
-      '@kadena/tools':
-        specifier: workspace:*
-        version: link:../../apps/tools
-      '@playwright/test':
-        specifier: ^1.45.3
-        version: 1.46.1
-    devDependencies:
-      '@kadena-dev/e2e-base':
-        specifier: workspace:*
-        version: link:../e2e-base
-      '@kadena-dev/eslint-config':
-        specifier: workspace:*
-        version: link:../../tools/eslint-config
-      '@kadena-dev/eslint-plugin':
-        specifier: workspace:*
-        version: link:../../tools/eslint-plugin
-      '@kadena-dev/lint-package':
-        specifier: workspace:*
-        version: link:../../tools/lint-package
-      '@kadena-dev/markdown':
-        specifier: workspace:*
-        version: link:../../tools/markdown
-      '@kadena-dev/shared-config':
-        specifier: workspace:*
-        version: link:../../tools/shared-config
-      '@kadena/types':
-        specifier: workspace:*
-        version: link:../../libs/types
-      '@rushstack/eslint-config':
-        specifier: ~3.6.9
-        version: 3.6.10(eslint@8.57.0)(typescript@5.6.3)
-      '@types/node':
-        specifier: ^20.12.7
-        version: 20.16.5
-      eslint:
-        specifier: ^8.45.0
-        version: 8.57.0
-      eslint-import-resolver-typescript:
-        specifier: 3.5.5
-        version: 3.5.5(eslint-plugin-import@2.27.5)(eslint@8.57.0)
-      eslint-plugin-playwright:
-        specifier: 1.6.2
-        version: 1.6.2(eslint-plugin-jest@26.9.0(eslint@8.57.0)(typescript@5.6.3))(eslint@8.57.0)
-      msw:
-        specifier: ^2.3.1
-        version: 2.3.1(typescript@5.6.3)
-      playwright-i18next-fixture:
-        specifier: ^1.0.0
-        version: 1.0.0(@playwright/test@1.46.1)
-      playwright-msw:
-        specifier: ^3.0.1
-        version: 3.0.1(@playwright/test@1.46.1)(msw@2.3.1(typescript@5.6.3))
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -15426,13 +15362,6 @@ packages:
     peerDependencies:
       '@playwright/test': ^1.26.0
 
-  playwright-msw@3.0.1:
-    resolution: {integrity: sha512-w2bVjt7kPIThOQF9OS/1vDDs0HsQfV9inxMVSUv74x/zhCcrgzVN47xpPk84okf3OcCRHHBJKq8sNeBfCDyhMg==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      '@playwright/test': '>=1.20.0'
-      msw: ^2.0.0
-
   playwright@1.46.1:
     resolution: {integrity: sha512-oPcr1yqoXLCkgKtD5eNUPLiN40rYEM39odNpIb6VE6S7/15gJmA1NzVv6zJYusV0e7tzvkU/utBFNa/Kpxmwng==}
     engines: {node: '>=18'}
@@ -23325,13 +23254,15 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -23391,7 +23322,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -23806,7 +23737,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -35145,28 +35076,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.4.5
 
-  msw@2.3.1(typescript@5.6.3):
-    dependencies:
-      '@bundled-es-modules/cookie': 2.0.0
-      '@bundled-es-modules/statuses': 1.0.1
-      '@inquirer/confirm': 3.1.13
-      '@mswjs/cookies': 1.1.1
-      '@mswjs/interceptors': 0.29.1
-      '@open-draft/until': 2.1.0
-      '@types/cookie': 0.6.0
-      '@types/statuses': 2.0.5
-      chalk: 4.1.2
-      graphql: 16.8.2
-      headers-polyfill: 4.0.3
-      is-node-process: 1.2.0
-      outvariant: 1.4.2
-      path-to-regexp: 6.2.2
-      strict-event-emitter: 0.5.1
-      type-fest: 4.21.0
-      yargs: 17.7.2
-    optionalDependencies:
-      typescript: 5.6.3
-
   multiaddr@7.5.0:
     dependencies:
       buffer: 5.7.1
@@ -36023,13 +35932,6 @@ snapshots:
     dependencies:
       '@playwright/test': 1.46.1
       i18next: 21.10.0
-
-  playwright-msw@3.0.1(@playwright/test@1.46.1)(msw@2.3.1(typescript@5.6.3)):
-    dependencies:
-      '@mswjs/cookies': 1.1.1
-      '@playwright/test': 1.46.1
-      msw: 2.3.1(typescript@5.6.3)
-      strict-event-emitter: 0.5.1
 
   playwright@1.46.1:
     dependencies:
