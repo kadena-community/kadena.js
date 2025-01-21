@@ -171,7 +171,7 @@ Total height difference: ${lastBlockHeightChainweb - lastBlockHeightGraph}
       log(
         {
           title: `There was a general issue with the ${props.env} graph cron job`,
-          msg: JSON.stringify(e),
+          msg: '```\nJSON.stringify(e)\n```',
         },
         `General error ${props.env}:`,
       ),
