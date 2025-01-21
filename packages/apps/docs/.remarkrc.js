@@ -1,3 +1,3 @@
-module.exports = {
-  plugins: ['remark-validate-links'],
-};
+// module.exports = {
+//   plugins: ['remark-validate-links'],
+// };
