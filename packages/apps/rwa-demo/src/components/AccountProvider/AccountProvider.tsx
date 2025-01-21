@@ -78,7 +78,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: kdaBalance } = useGetAccountKDABalance({
     accountAddress: account?.address,
   });
-  // const [kdaBalance, setKdaBalance] = useState(-1);
   const { ...accountRoles } = useGetAgentRoles({
     agent: account?.address,
   });
@@ -90,13 +89,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const checkIsAgent = async (account: IWalletAccount) => {
     const resIsAgent = await isAgent({ agent: account.address });
     setIsAgentState(!!resIsAgent);
-  };
-  const checkIsGasPayable = async (account: IWalletAccount) => {
-    // const res = await accountKDABalance(
-    //   { accountName: account.address },
-    //   account,
-    // );
-    // setKdaBalance(res);
   };
   const checkIsOwner = async (account: IWalletAccount) => {
     const resIsOwner = await isOwner({ owner: account.address });
@@ -187,7 +179,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     Promise.allSettled([
-      checkIsGasPayable(accountProp),
       checkIsOwner(accountProp),
       checkIsComplianceOwner(accountProp),
       checkIsInvestor(accountProp),
