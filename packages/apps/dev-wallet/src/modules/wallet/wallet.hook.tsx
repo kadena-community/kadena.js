@@ -47,6 +47,73 @@ export const useWallet = () => {
     throw new Error('useWallet must be used within a WalletProvider');
   }
 
+  const getKeyAlias = useCallback(
+    (publicKey: string) => {
+      const singleKeyAccount = context.accounts.find(
+        (a) =>
+          isKeysetGuard(a.guard) &&
+          a.guard.keys.length === 1 &&
+          a.guard.keys[0] === publicKey,
+      );
+
+      if (
+        singleKeyAccount &&
+        (singleKeyAccount.alias || singleKeyAccount.address.length < 15)
+      ) {
+        return singleKeyAccount.alias || singleKeyAccount.address;
+      }
+
+      const contactSingleKey = context.contacts.find(
+        (c) =>
+          isKeysetGuard(c.account.guard) &&
+          c.account.guard.keys.length === 1 &&
+          c.account.guard.keys[0] === publicKey,
+      );
+
+      if (
+        contactSingleKey &&
+        (contactSingleKey.name || contactSingleKey.account.address.length < 15)
+      ) {
+        return contactSingleKey.name || contactSingleKey.account.address;
+      }
+
+      const multiKeyAccount = context.accounts.find(
+        (a) =>
+          isKeysetGuard(a.guard) &&
+          a.guard.keys.length > 1 &&
+          a.guard.keys.includes(publicKey),
+      );
+
+      if (
+        multiKeyAccount &&
+        isKeysetGuard(multiKeyAccount.guard) &&
+        (multiKeyAccount.alias || multiKeyAccount.address.length < 15)
+      ) {
+        const name = multiKeyAccount.alias || multiKeyAccount.address;
+        return `${name}-key(${multiKeyAccount.guard.keys.indexOf(publicKey) + 1})`;
+      }
+
+      const contactMultiKey = context.contacts.find(
+        (c) =>
+          isKeysetGuard(c.account.guard) &&
+          c.account.guard.keys.length > 1 &&
+          c.account.guard.keys.includes(publicKey),
+      );
+
+      if (
+        contactMultiKey &&
+        isKeysetGuard(contactMultiKey.account.guard) &&
+        (contactMultiKey.name || contactMultiKey.account.address.length < 15)
+      ) {
+        const name = contactMultiKey.name || contactMultiKey.account.address;
+        return `${name}-key(${contactMultiKey.account.guard.keys.indexOf(publicKey) + 1})`;
+      }
+
+      return '';
+    },
+    [context.accounts, context.contacts],
+  );
+
   const getPublicKeyData = useCallback(
     (publicKey: string) => {
       if (!context.keySources) return null;
@@ -415,5 +482,6 @@ export const useWallet = () => {
     ...context,
     accounts,
     watchAccounts,
+    getKeyAlias,
   };
 };
