@@ -9,13 +9,13 @@ const config: PlaywrightTestConfig = {
       ? [['list'], ['blob', { outoutputFile: './blob-report/blob-tools.zip' }]]
       : [['list'], ['html', { open: 'never' }]],
   webServer: {
-    command: `pnpm --filter @kadena/dev-wallet start`,
+    command: `pnpm --filter @kadena/dev-wallet preview`,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
   use: {
     headless: process.env.CI !== undefined,
-    baseURL: 'http://localhost:1420',
+    baseURL: 'http://localhost:4173',
     channel: 'chromium',
     trace: 'retain-on-failure',
     viewport: { width: 1920, height: 1080 },
