@@ -28,6 +28,8 @@ export const useGetInvestors = () => {
     fetchPolicy: 'no-cache',
   });
 
+  console.log({ addedData });
+
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
       qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
