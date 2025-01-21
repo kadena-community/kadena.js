@@ -51,6 +51,8 @@ export {
 
 export type { iRightAsideHeader } from './SideBarLayout/components/RightAside';
 
+export { NotificationSlot } from './SideBarLayout/components/NotificationSlot/NotificationSlot';
+
 export {
   SectionCard,
   SectionCardBody,

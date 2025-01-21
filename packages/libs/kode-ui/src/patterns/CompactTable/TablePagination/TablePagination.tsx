@@ -32,7 +32,6 @@ export const TablePagination: FC<IProps> = ({
   setPage,
   pageInfo,
 }) => {
-  console.log([pageSize, totalCount, setPage, JSON.stringify(pageInfo)]);
   const handlePageSelect = (direction: string) => () => {
     if (direction === 'next') {
       setPage({ after: pageInfo.endCursor, first: pageSize });

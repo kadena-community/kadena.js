@@ -1,27 +1,32 @@
 import { useGlobalState } from '@/App/providers/globalState';
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import { config } from '@/config';
+import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { shorten } from '@/utils/helpers';
 import {
   createCredential,
   extractPublicKeyHex,
   PublicKeyCredentialCreate,
 } from '@/utils/webAuthn';
 import {
-  Box,
+  MonoRadioButtonChecked,
+  MonoRadioButtonUnchecked,
+} from '@kadena/kode-icons/system';
+import {
   Button,
-  Checkbox,
+  Card,
   Heading,
   Stack,
   Text,
   TextField,
+  Link as UiLink,
 } from '@kadena/kode-ui';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { noStyleLinkClass } from '../../home/style.css';
+import { getFirstBip44Key, getFirstLegacyKey } from './utils';
 
 type Inputs = {
   mnemonic: string;
@@ -30,19 +35,25 @@ type Inputs = {
   confirmation: string;
   fromChainweaver: boolean;
   accentColor: string;
+  method: 'HD-BIP44' | 'HD-chainweaver';
 };
 
 export function RecoverFromMnemonic() {
   const { setOrigin } = useGlobalState();
-  const [step, setStep] = useState<'import' | 'set-password'>('import');
+  const [step, setStep] = useState<'import' | 'set-password' | 'select-method'>(
+    'import',
+  );
+  const [bip44key, setBip44Key] = useState<string | null>(null);
+  const [legacyKey, setLegacyKey] = useState<string | null>(null);
   const { profileList } = useWallet();
   const {
     register,
     handleSubmit,
-    control,
     getValues,
     setValue,
-    formState: { isValid, errors },
+    watch,
+    control,
+    formState: { isValid, errors, isSubmitting },
   } = useForm<Inputs>({
     defaultValues: {
       mnemonic: '',
@@ -56,12 +67,27 @@ export function RecoverFromMnemonic() {
       fromChainweaver: false,
     },
   });
+
+  useEffect(() => {
+    const name = getValues('profileName');
+    console.log('profileList', profileList, name);
+    if (
+      (!name || name === 'default') &&
+      profileList &&
+      profileList.length > 0
+    ) {
+      setValue('profileName', `profile-${profileList.length + 1}`);
+    }
+  }, [profileList, getValues, setValue]);
+
   const formRef = useRef<HTMLFormElement>(null);
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();
   const { createHDWallet } = useHDWallet();
   const [error, setError] = useState('');
-  const { createProfile, unlockProfile, activeNetwork } = useWallet();
+  const { createProfile, unlockProfile, activeNetwork, createKey } =
+    useWallet();
+  const [importing, setImporting] = useState(false);
 
   async function importWallet({
     mnemonic,
@@ -69,7 +95,7 @@ export function RecoverFromMnemonic() {
     password,
     confirmation,
     accentColor,
-    fromChainweaver,
+    method,
   }: Inputs) {
     const is12Words = mnemonic.trim().split(' ').length === 12;
     if (!is12Words) {
@@ -106,19 +132,27 @@ export function RecoverFromMnemonic() {
           },
       mnemonic,
     );
-    // for now we only support slip10 so we just create the keySource and the first account by default for it
-    // later we should change this flow to be more flexible
-    const keySource = await createHDWallet(
-      profile.uuid,
-      fromChainweaver ? 'HD-chainweaver' : 'HD-BIP44',
-      pass,
-    );
 
-    setOrigin(`/account-discovery/${keySource.uuid}`);
+    const keySource = await createHDWallet(profile.uuid, method, pass);
+    const key = await createKey(keySource);
+    await createKAccount({
+      profileId: profile.uuid,
+      networkUUID: activeNetwork.uuid,
+      publicKey: key.publicKey,
+      contract: 'coin',
+      alias: 'Account 1',
+    });
 
-    await unlockProfile(profile.uuid, pass);
+    setOrigin(`/account-discovery`);
+    await unlockProfile(profile.uuid, pass, true);
+  }
 
-    // TODO: navigate to the backup recovery phrase page
+  async function createFirstKeys() {
+    const mnemonic = getValues('mnemonic');
+    await Promise.all([
+      getFirstBip44Key(mnemonic).then(setBip44Key),
+      getFirstLegacyKey(mnemonic).then(setLegacyKey),
+    ]);
   }
 
   async function createWebAuthnCredential() {
@@ -129,37 +163,39 @@ export function RecoverFromMnemonic() {
       setWebAuthnCredential(result.credential);
       setValue('password', 'WEB_AUTHN_PROTECTED');
       setValue('confirmation', 'WEB_AUTHN_PROTECTED');
-      setTimeout(() => {
-        formRef.current?.requestSubmit();
-      }, 200);
+      await createFirstKeys();
+      setStep('select-method');
     } else {
       console.error('Error creating credential');
     }
   }
+  const profileName = watch('profileName');
+  const method = watch('method');
   return (
-    <AuthCard>
-      <Stack gap={'lg'} flexDirection={'column'}>
-        <Stack>
-          <Link to="/wallet-recovery" className={noStyleLinkClass}>
-            <Button
-              variant="outlined"
-              isCompact
-              type="button"
-              onPress={() => {
-                throw new Error('back');
-              }}
-            >
-              Back
-            </Button>
-          </Link>
-        </Stack>
+    <Card>
+      <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
+        <Stack></Stack>
         <form
-          onSubmit={handleSubmit(importWallet)}
+          onSubmit={handleSubmit(async (data) => {
+            setImporting(true);
+            await importWallet(data);
+            setImporting(false);
+          })}
           className={displayContentsClass}
           ref={formRef}
         >
           {step === 'import' && (
             <Stack gap={'lg'} flexDirection={'column'}>
+              <Stack>
+                <UiLink
+                  component={Link}
+                  href="/wallet-recovery"
+                  variant="outlined"
+                  isCompact
+                >
+                  Back
+                </UiLink>
+              </Stack>
               <Heading variant="h5">Import mnemonic</Heading>
               <Stack flexDirection="column" gap={'lg'}>
                 <Stack flexDirection={'column'} gap={'sm'}>
@@ -171,29 +207,14 @@ export function RecoverFromMnemonic() {
                     id="phrase"
                     {...register('mnemonic')}
                   />
-                  <Box>
-                    <Controller
-                      name="fromChainweaver"
-                      control={control}
-                      render={({ field }) => {
-                        return (
-                          <Checkbox
-                            isSelected={field.value}
-                            onChange={field.onChange}
-                          >
-                            Generated by Chainweaver v1/v2
-                          </Checkbox>
-                        );
-                      }}
-                    ></Controller>
-                  </Box>
                 </Stack>
 
                 <TextField
                   label="Profile name"
                   id="name"
                   type="text"
-                  defaultValue={getValues('profileName')}
+                  defaultValue={profileName}
+                  value={profileName}
                   {...register('profileName')}
                 />
               </Stack>
@@ -285,15 +306,120 @@ export function RecoverFromMnemonic() {
                 />
               </Stack>
               <Stack flexDirection="column">
-                <Button type="submit" isDisabled={!isValid}>
+                <Button
+                  isDisabled={!isValid}
+                  isLoading={importing}
+                  loadingLabel="Importing"
+                  onClick={async () => {
+                    await createFirstKeys();
+                    setStep('select-method');
+                  }}
+                >
                   Continue
                 </Button>
               </Stack>
             </Stack>
           )}
+          {step === 'select-method' && (
+            <Stack flexDirection={'column'} gap={'lg'}>
+              <Stack>
+                <Button
+                  variant="outlined"
+                  isCompact
+                  type="button"
+                  onPress={() => {
+                    setStep('import');
+                  }}
+                >
+                  Back
+                </Button>
+              </Stack>
+              <Heading variant="h4">Key Derivation</Heading>
+              <Heading variant="h5">Which one is your account?</Heading>
+              <Stack flexDirection={'column'} gap={'xs'}>
+                <Controller
+                  control={control}
+                  name="method"
+                  render={({ field }) => (
+                    <Button
+                      onClick={() => field.onChange('HD-chainweaver')}
+                      variant={
+                        field.value === 'HD-chainweaver' ? 'info' : 'outlined'
+                      }
+                    >
+                      <Stack
+                        gap={'sm'}
+                        flexDirection={'column'}
+                        justifyContent={'center'}
+                        alignItems={'flex-start'}
+                        textAlign="left"
+                        paddingInline={'xs'}
+                      >
+                        <Stack gap={'sm'} alignItems={'center'}>
+                          {field.value === 'HD-chainweaver' ? (
+                            <MonoRadioButtonChecked color="inherit" />
+                          ) : (
+                            <MonoRadioButtonUnchecked color="inherit" />
+                          )}
+                          <Text color="inherit">
+                            Chainweaver Legacy (v1/v2)
+                          </Text>
+                        </Stack>
+
+                        <Text color="inherit" variant="code">
+                          k:{shorten(legacyKey!, 14)}
+                        </Text>
+                      </Stack>
+                    </Button>
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="method"
+                  render={({ field }) => (
+                    <Button
+                      onClick={() => field.onChange('HD-BIP44')}
+                      variant={field.value === 'HD-BIP44' ? 'info' : 'outlined'}
+                    >
+                      <Stack
+                        gap={'sm'}
+                        flexDirection={'column'}
+                        justifyContent={'center'}
+                        alignItems={'flex-start'}
+                        textAlign="left"
+                        paddingInline={'xs'}
+                      >
+                        <Stack gap={'sm'} alignItems={'center'}>
+                          {field.value === 'HD-BIP44' ? (
+                            <MonoRadioButtonChecked color="inherit" />
+                          ) : (
+                            <MonoRadioButtonUnchecked color="inherit" />
+                          )}
+                          <Text color="inherit">
+                            Chainweaver V3 and bip44 wallets
+                          </Text>
+                        </Stack>
+
+                        <Text variant="code" color="inherit">
+                          k:{shorten(bip44key!, 14)}
+                        </Text>
+                      </Stack>
+                    </Button>
+                  )}
+                />
+              </Stack>
+              <Button
+                type="submit"
+                isLoading={isSubmitting}
+                isDisabled={!method}
+              >
+                Confirm
+              </Button>
+            </Stack>
+          )}
         </form>
         {error && <Text>{error}</Text>}
       </Stack>
-    </AuthCard>
+    </Card>
   );
 }

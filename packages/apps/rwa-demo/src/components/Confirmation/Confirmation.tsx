@@ -1,8 +1,15 @@
 import type { PressEvent } from '@kadena/kode-ui';
-import { Button, Dialog, DialogContent, DialogFooter } from '@kadena/kode-ui';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  Stack,
+} from '@kadena/kode-ui';
 
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
+import { complianceWrapperClass } from './style.css';
 
 interface IProps extends PropsWithChildren {
   trigger: React.ReactElement;
@@ -29,17 +36,21 @@ export const Confirmation: FC<IProps> = ({
         onPress: () => setIsOpen(true),
       })}
 
-      <Dialog isOpen={isOpen} onOpenChange={() => setIsOpen(false)}>
-        <DialogContent>{children}</DialogContent>
-        <DialogFooter>
-          <Button variant="outlined" onPress={() => setIsOpen(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onPress={handleAction}>
-            {label}
-          </Button>
-        </DialogFooter>
-      </Dialog>
+      {isOpen && (
+        <Stack className={complianceWrapperClass}>
+          <Dialog isOpen onOpenChange={() => setIsOpen(false)}>
+            <DialogContent>{children}</DialogContent>
+            <DialogFooter>
+              <Button variant="outlined" onPress={() => setIsOpen(false)}>
+                Cancel
+              </Button>
+              <Button variant="primary" onPress={handleAction}>
+                {label}
+              </Button>
+            </DialogFooter>
+          </Dialog>
+        </Stack>
+      )}
     </>
   );
 };

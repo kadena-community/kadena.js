@@ -6,12 +6,8 @@ import { Pact } from '@kadena/client';
 
 export const AGENTROLES = {
   AGENTADMIN: 'agent-admin',
-  SUPPLYMODIFIER: 'supply-modifier',
   FREEZER: 'freezer',
   TRANSFERMANAGER: 'transfer-manager',
-  RECOVERY: 'recovery',
-  COMPLIANCE: 'compliance',
-  WHITELISTMANAGER: 'whitelist-manager',
 } as const;
 
 export interface IAddAgentProps {

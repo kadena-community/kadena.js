@@ -83,8 +83,7 @@ export function ExportData() {
   }
 
   async function exportWatchedAccounts() {
-    const accounts =
-      await accountRepository.getWatchedAccountsByProfileId(profileId);
+    const accounts = await accountRepository.getAccountsByProfileId(profileId);
     const header = [
       'networkId',
       'contract',

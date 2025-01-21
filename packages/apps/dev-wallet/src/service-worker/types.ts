@@ -1,8 +1,14 @@
+export type PasswordKeepPolicy =
+  | 'session'
+  | 'short-time'
+  | 'never'
+  | 'on-login';
+
 export interface ISetSecurityPhrase {
   action: 'setSecurityPhrase';
   payload: {
     sessionEntropy: string;
-    keepPolicy: 'session' | 'short-time' | 'never';
+    keepPolicy: PasswordKeepPolicy;
     phrase: string;
     ttl?: number;
   };
@@ -45,6 +51,6 @@ export type ServiceWorkerMessage =
 export interface SecureContext {
   encryptionKey: Uint8Array;
   encryptionPhrase: [Uint8Array, Uint8Array, Uint8Array];
-  keepPolicy: 'session' | 'short-time' | 'never';
+  keepPolicy: PasswordKeepPolicy;
   ttl?: number;
 }

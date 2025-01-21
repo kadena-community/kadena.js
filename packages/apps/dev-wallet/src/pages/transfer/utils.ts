@@ -322,28 +322,45 @@ export const discoverReceiver = async (
   networkId: string,
   contract: string,
 ) => {
-  const result = await discoverAccount(
-    receiver,
-    networkId,
-    undefined,
-    contract,
-  ).execute();
+  let address = receiver;
+  let wGuard: IKeysetGuard | undefined;
+  if (receiver.startsWith('w:')) {
+    const chunks = receiver.split(':');
+    if (chunks.length > 3) {
+      address = `${chunks[0]}:${chunks[1]}:${chunks[2]}`;
+      wGuard = {
+        pred: chunks[2] as 'keys-all' | 'keys-any' | 'keys-2',
+        keys: chunks.slice(3),
+        principal: address,
+      };
+    }
+  }
+  const result = await discoverAccount(address, networkId, undefined, contract)
+    .execute()
+    .catch(() => []);
 
-  const rec = getAccount(receiver, result);
+  const rec = getAccount(address, result);
 
   if (rec.length === 0) {
-    const [fromDb] = await accountRepository.getAccountsByAddress(receiver);
+    const [fromDb] = await accountRepository.getAccountsByAddress(address);
     if (fromDb) {
       rec.push(fromDb);
-    } else if (receiver.startsWith('k:') && receiver.length === 66) {
+    } else if (wGuard) {
       rec.push({
-        address: receiver,
+        address: address,
+        overallBalance: '0',
+        chains: [],
+        guard: wGuard,
+      });
+    } else if (address.startsWith('k:') && address.length === 66) {
+      rec.push({
+        address: address,
         overallBalance: '0',
         chains: [],
         guard: {
           pred: 'keys-all' as const,
-          keys: [receiver.split('k:')[1]],
-          principal: receiver,
+          keys: [address.split('k:')[1]],
+          principal: address,
         },
       });
     }
@@ -435,6 +452,49 @@ export const createTransactions = async ({
               publicKeys: getKeysToSignWith(gasPayer),
             },
           };
+
+          if (
+            receiverAccount.chain &&
+            optimal.chainId !== receiverAccount.chain
+          ) {
+            if (!isKeysetGuard(receiverGuard)) {
+              throw new Error(
+                'Receiver Account guard is not a keyset guard; Cross-chain transfer is not possible',
+              );
+            }
+            const transferCmd = createCrossChainCommand({
+              ...inputs,
+              targetChainId: receiverAccount.chain,
+              receiver: {
+                account: receiverAccount.address,
+                keyset: receiverGuard,
+              },
+            });
+
+            const command = composePactCommand(transferCmd, {
+              networkId: network.networkId,
+              meta: {
+                chainId: optimal.chainId,
+                gasLimit: gasLimit,
+                gasPrice: gasPrice,
+                creationTime,
+              },
+            })();
+
+            return [
+              createTransaction(command),
+              {
+                type: 'xchain-transfer',
+                data: {
+                  source: optimal.chainId,
+                  target: receiverAccount.chain,
+                  amount: optimal.amount,
+                  totalAmount: receiverAccount.amount,
+                },
+              },
+            ] as const;
+          }
+
           const transferCmd = isKeysetGuard(receiverGuard)
             ? transferCreateFn({
                 ...inputs,
@@ -489,6 +549,14 @@ export const createTransactions = async ({
               networkUUID: network.uuid,
               groupId,
               purpose,
+              ...(purpose.type === 'xchain-transfer'
+                ? {
+                    continuation: {
+                      crossChainId: purpose.data.target,
+                      autoContinue: true,
+                    },
+                  }
+                : {}),
             };
             transactionRepository.addTransaction(transaction);
             return transaction;

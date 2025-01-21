@@ -8,10 +8,7 @@ import { FundOnTestnetButton } from '@/Components/FundOnTestnet/FundOnTestnet';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { QRCode } from '@/Components/QRCode/QRCode';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import {
-  accountRepository,
-  isWatchedAccount,
-} from '@/modules/account/account.repository';
+import { accountRepository } from '@/modules/account/account.repository';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
@@ -19,8 +16,10 @@ import { useAsync } from '@/utils/useAsync';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
 import {
+  MonoCopyAll,
   MonoCreate,
   MonoKey,
+  MonoOpenInNew,
   MonoRemoveRedEye,
   MonoWallet,
 } from '@kadena/kode-icons/system';
@@ -31,6 +30,7 @@ import {
   TabItem,
   Tabs,
   Text,
+  TextLink,
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
@@ -47,8 +47,14 @@ export function AccountPage() {
   const { accountId } = useParams();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const prompt = usePrompt();
-  const { activeNetwork, fungibles, accounts, profile, watchAccounts, client } =
-    useWallet();
+  const {
+    activeNetwork,
+    fungibles,
+    accounts,
+    watchAccounts,
+    client,
+    isOwnedAccount,
+  } = useWallet();
   const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
   const account =
     accounts.find((account) => account.uuid === accountId) ??
@@ -85,9 +91,6 @@ export function AccountPage() {
   }
 
   const fundAccountHandler = async (chainId: ChainId) => {
-    if (isWatchedAccount(account)) {
-      throw new Error('Can not fund watched account');
-    }
     if (!isKeysetGuard(account.guard)) {
       throw new Error('No keyset found');
     }
@@ -115,10 +118,14 @@ export function AccountPage() {
 
     return fundTx;
   };
-  const isOwnedAccount =
-    !isWatchedAccount(account) && account.profileId === profile?.uuid;
+  const ownedAccount = isOwnedAccount(account);
 
   const guardInfo = getGuardInfo(accountGuard);
+
+  const explorerLink =
+    account.chains.length > 0
+      ? `https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}`
+      : '';
 
   return (
     <Stack flexDirection={'column'} gap={'lg'}>
@@ -136,7 +143,7 @@ export function AccountPage() {
       <AliasForm show={isRightAsideExpanded} account={account} />
       <Stack flexDirection={'column'} gap={'sm'}>
         <Stack gap={'sm'} alignItems={'center'}>
-          <Heading variant="h3">{account.alias || '{ No Alias }'}</Heading>
+          <Heading variant="h3">{account.alias}</Heading>
         </Stack>
 
         <Stack justifyContent={'space-between'}>
@@ -150,47 +157,85 @@ export function AccountPage() {
             {account.overallBalance} {asset.symbol}
           </Heading>
         </Stack>
-        {!isOwnedAccount && (
+        {!ownedAccount && (
           <Stack alignItems={'center'} gap={'sm'}>
             <MonoRemoveRedEye />
             <Heading variant="h6">Watched Account</Heading>
           </Stack>
         )}
       </Stack>
-      {isOwnedAccount && (
-        <Stack gap="md" alignItems={'center'}>
-          <Link
-            to={`/transfer?accountId=${account.uuid}`}
-            className={noStyleLinkClass}
+      <Stack gap="md" alignItems={'center'} flexWrap="wrap">
+        <Link
+          to={`/transfer?accountId=${account.uuid}`}
+          className={noStyleLinkClass}
+        >
+          <Button
+            isDisabled={+account.overallBalance === 0}
+            onPress={(e: any) => {
+              e.preventDefault();
+            }}
           >
-            <Button
-              isDisabled={+account.overallBalance === 0}
-              onPress={(e: any) => {
-                e.preventDefault();
-              }}
-            >
-              Transfer
-            </Button>
-          </Link>
-          {asset.contract === 'coin' &&
-            (activeNetwork?.networkId === 'testnet05' ||
-              activeNetwork?.networkId === 'testnet04') && (
-              <FundOnTestnetButton
-                account={account}
-                fundAccountHandler={fundAccountHandler}
-              />
-            )}
-          {asset.contract === 'coin' && (
-            <a
-              className={linkClass}
-              href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
-              target="_blank"
-            >
-              <Button variant="outlined">Buy KDA</Button>
-            </a>
+            Transfer
+          </Button>
+        </Link>
+        {asset.contract === 'coin' &&
+          (activeNetwork?.networkId === 'testnet05' ||
+            activeNetwork?.networkId === 'testnet04') && (
+            <FundOnTestnetButton
+              account={account}
+              fundAccountHandler={fundAccountHandler}
+            />
           )}
-        </Stack>
-      )}
+        {asset.contract === 'coin' && (
+          <a
+            className={linkClass}
+            href="https://www.kadena.io/kda-token#:~:text=activities%2C%20and%20events.-,Where%20to%20Buy%20KDA,-Buy"
+            target="_blank"
+          >
+            <Button variant="outlined" endVisual={<MonoOpenInNew />}>
+              Buy KDA
+            </Button>
+          </a>
+        )}
+
+        <a
+          className={linkClass}
+          target="_blank"
+          title={
+            !account.chains.length
+              ? 'This account has not been mined on-chain yet'
+              : ''
+          }
+          href={explorerLink ? `${explorerLink}#Transfers` : ''}
+        >
+          <Button
+            variant="outlined"
+            endVisual={<MonoOpenInNew />}
+            isDisabled={!account.chains.length}
+          >
+            Open in explorer
+          </Button>
+        </a>
+        <Button
+          variant="outlined"
+          endVisual={<MonoCopyAll />}
+          onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { principal, ...guard } = account.guard;
+            if (account.address.startsWith('w:') && isKeysetGuard(guard)) {
+              navigator.clipboard.writeText(
+                `${account.address}:${guard.keys.join(':')}`,
+              );
+              return;
+            }
+            navigator.clipboard.writeText(account.address);
+          }}
+        >
+          Copy Account
+        </Button>
+      </Stack>
+
+      <Stack gap="md" alignItems={'center'} flexWrap="wrap"></Stack>
       <Tabs>
         <TabItem key="guard" title="Details">
           <Stack gap="lg" width="100%">
@@ -306,33 +351,22 @@ export function AccountPage() {
           )}
           {activities.length > 0 && <ActivityTable activities={activities} />}
         </TabItem>
-
         <TabItem key="transfers" title="Transfers ↗">
-          <WindowOpen
-            link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
-          />
-          View transfers on{' '}
-          <a
-            href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
-            target="_blank"
-          >
-            {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transfers`}
-          </a>
+          {explorerLink && (
+            <>
+              <WindowOpen link={`${explorerLink}#Transfers`} />
+              View transfers on{' '}
+              <TextLink
+                href={`${explorerLink}#Transfers`}
+                target="_blank"
+                style={{ wordBreak: 'break-all' }}
+              >
+                {`${explorerLink}#Transfers`}
+              </TextLink>
+            </>
+          )}
+          {!explorerLink && <Text>No transfers yet</Text>}
         </TabItem>
-
-        <TabItem key="transactions" title="Transactions ↗">
-          <WindowOpen
-            link={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
-          />
-          View transactions where this account was the sender on{' '}
-          <a
-            href={`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
-            target="_blank"
-          >
-            {`https://explorer.kadena.io/account/${account.address}?networkId=${activeNetwork?.networkId}#Transactions`}
-          </a>
-        </TabItem>
-
         <TabItem key="settings" title="Settings">
           <Stack flexDirection={'column'} gap={'xxl'}>
             <Stack
@@ -356,66 +390,62 @@ export function AccountPage() {
                 Edit Alias
               </Button>
             </Stack>
-            {
-              (isOwnedAccount && (
-                <>
-                  <Stack
-                    flexDirection={'column'}
-                    gap={'md'}
-                    className={panelClass}
-                    alignItems={'flex-start'}
-                  >
-                    <Heading variant="h4">Migrate Account</Heading>
-                    <Text>
-                      You can use account migration to transfer all balances to
-                      a newly created account with a new keyset, even though the
-                      keyset guard for this account cannot be changed.
-                    </Text>
-                    <UiLink
-                      variant="outlined"
-                      href={`/account/${accountId}/migrate`}
-                      component={Link}
-                    >
-                      Migrate
-                    </UiLink>
-                  </Stack>
-                  <Stack
-                    flexDirection={'column'}
-                    gap={'md'}
-                    className={panelClass}
-                    alignItems={'flex-start'}
-                  >
-                    <Heading variant="h4">Delete Account</Heading>
-                    <Text>
-                      You don't want to use this account anymore? You can delete
-                      it from your wallet. This will be deleted locally not from
-                      the blockchain.
-                    </Text>
-                    <Button
-                      variant="negative"
-                      onClick={async () => {
-                        const confirm = await prompt((resolve) => {
-                          return (
-                            <ConfirmDeletion
-                              onCancel={() => resolve(false)}
-                              onDelete={() => resolve(true)}
-                              title="Delete Account"
-                              description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
-                            />
-                          );
-                        });
-                        if (confirm) {
-                          await accountRepository.deleteAccount(account.uuid);
-                          navigate('/');
-                        }
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </Stack>
-                </>
-              )) as any
-            }
+            {ownedAccount && (
+              <Stack
+                flexDirection={'column'}
+                gap={'md'}
+                className={panelClass}
+                alignItems={'flex-start'}
+              >
+                <Heading variant="h4">Migrate Account</Heading>
+                <Text>
+                  You can use account migration to transfer all balances to a
+                  newly created account with a new keyset, even though the
+                  keyset guard for this account cannot be changed.
+                </Text>
+                <UiLink
+                  variant="outlined"
+                  href={`/account/${accountId}/migrate`}
+                  component={Link}
+                >
+                  Migrate
+                </UiLink>
+              </Stack>
+            )}
+            <Stack
+              flexDirection={'column'}
+              gap={'md'}
+              className={panelClass}
+              alignItems={'flex-start'}
+            >
+              <Heading variant="h4">Delete Account</Heading>
+              <Text>
+                You don't want to use this account anymore? You can delete it
+                from your wallet. This will be deleted locally not from the
+                blockchain.
+              </Text>
+              <Button
+                variant="negative"
+                onClick={async () => {
+                  const confirm = await prompt((resolve) => {
+                    return (
+                      <ConfirmDeletion
+                        onCancel={() => resolve(false)}
+                        onDelete={() => resolve(true)}
+                        title="Delete Account"
+                        description=" Are you sure you want to delete this account? If you need to add it again you will need to use account creation process."
+                      />
+                    );
+                  });
+                  if (confirm) {
+                    await accountRepository.deleteAccount(account.uuid);
+                    navigate('/');
+                  }
+                }}
+              >
+                Delete
+              </Button>
+            </Stack>
           </Stack>
         </TabItem>
       </Tabs>

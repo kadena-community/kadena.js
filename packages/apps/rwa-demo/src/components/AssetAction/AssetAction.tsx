@@ -4,7 +4,7 @@ import type { FC, ReactElement } from 'react';
 import { assetActionWrapper } from './style.css';
 
 interface IProps {
-  icon: ReactElement;
+  icon?: ReactElement;
   label: string;
   isDisabled?: boolean;
   onPress?: ITileProps['onClick'];
@@ -17,7 +17,7 @@ export const AssetAction: FC<IProps> = ({
   onPress,
 }) => {
   return (
-    <Stack width="100%" className={assetActionWrapper}>
+    <Stack className={assetActionWrapper}>
       <Tile
         isDisabled={isDisabled}
         as={onPress ? 'button' : 'div'}

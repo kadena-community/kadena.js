@@ -14,7 +14,7 @@ import { notificationsSlotClass } from './style.css';
 export const NotificationSlot: FC = () => {
   const { notifications } = useNotifications();
   const reversedNotifications = [...notifications].reverse();
-  console.log(reversedNotifications);
+
   return (
     <Stack className={notificationsSlotClass}>
       {reversedNotifications.map((props) => {

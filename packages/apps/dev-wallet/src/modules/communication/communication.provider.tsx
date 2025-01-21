@@ -1,6 +1,5 @@
 import { useGlobalState } from '@/App/providers/globalState';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
-import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   FC,
   PropsWithChildren,
@@ -9,7 +8,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { addTransaction } from '../transaction/transaction.service';
 import { useWallet } from '../wallet/wallet.hook';
 
 type Message = {
@@ -100,6 +98,7 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     const handlers = [
       handleRequest('CONNECTION_REQUEST', '/connect'),
       handleRequest('PAYMENT_REQUEST', '/payment'),
+      handleRequest('SIGN_REQUEST', '/sign-request'),
       handle('GET_STATUS', async () => {
         return {
           payload: {
@@ -113,41 +112,20 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
           payload: isUnlocked ? networks : [],
         };
       }),
-      handle('SIGN_REQUEST', async (data) => {
-        const { id, payload } = data as {
-          id: string;
-          payload: IUnsignedCommand;
-        };
-        console.log('SIGN_REQUEST', id);
-        console.log('payload', payload);
-        const cmd = JSON.parse(payload.cmd) as IPactCommand;
-        const networkUUID =
-          networks.find(({ networkId }) => networkId === cmd.networkId)?.uuid ??
-          activeNetwork?.uuid;
-
-        if (!networkUUID) {
-          throw new Error('Network not found');
-        }
-        if (!profile?.uuid) {
-          throw new Error('Profile not found');
-        }
-
-        await addTransaction({
-          transaction: payload as IUnsignedCommand,
-          profileId: profile?.uuid,
-          networkUUID: networkUUID,
-          groupId: id,
-        });
-        const request = createRequest(data);
-        setOrigin(`transaction/${id}?request=${id}`);
-        navigate(`transaction/${id}?request=${id}`);
-        return request;
-      }),
     ];
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [navigate, requests, isUnlocked]);
+  }, [
+    navigate,
+    requests,
+    isUnlocked,
+    accounts,
+    profile,
+    networks,
+    activeNetwork,
+    setOrigin,
+  ]);
 
   return (
     <communicationContext.Provider value={requests}>

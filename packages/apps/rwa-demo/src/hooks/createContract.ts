@@ -1,14 +1,19 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IAddContractProps } from '@/services/createContract';
 import { createContract } from '@/services/createContract';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useTransactions } from './transactions';
 
 export const useCreateContract = () => {
-  const { account, sign } = useAccount();
+  const { account, isMounted, sign, isGasPayable } = useAccount();
+  const [isAllowed, setIsAllowed] = useState(false);
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
 
@@ -17,20 +22,30 @@ export const useCreateContract = () => {
   ): Promise<ITransaction | undefined> => {
     try {
       const tx = await createContract(data, account!);
-
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
+      await addTransaction({
+        ...res,
+        type: TXTYPES.CREATECONTRACT,
+        accounts: [account?.address!],
+      });
+
       const dataResult = await client.listen(res);
 
-      return addTransaction({
-        ...res,
-        type: 'CREATEPRINCIPALNAMESPACE',
-        result: dataResult.result,
-      });
+      // if the contract already exists, go to that contract
+      if (
+        dataResult.result.status === 'failure' &&
+        (dataResult.result.error as any)?.message?.includes(
+          '"PactDuplicateTableError',
+        )
+      ) {
+        window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
+        return;
+      }
     } catch (e: any) {
       addNotification({
         intent: 'negative',
@@ -40,5 +55,10 @@ export const useCreateContract = () => {
     }
   };
 
-  return { submit };
+  useEffect(() => {
+    if (!isMounted) return;
+    setIsAllowed(isGasPayable);
+  }, [isMounted, isGasPayable]);
+
+  return { submit, isAllowed };
 };

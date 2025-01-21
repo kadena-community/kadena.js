@@ -1,9 +1,9 @@
 import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import {
   accountRepository,
-  IAccount,
   IGuard,
   IKeysetGuard,
+  IOwnedAccount,
 } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
 import { isKeysetGuard } from '@/modules/account/guards';
@@ -44,7 +44,7 @@ interface IImportedAccount {
   alias: string;
   address: string;
   guard: IGuard | undefined;
-  chains: IAccount['chains'] | undefined;
+  chains: IOwnedAccount['chains'] | undefined;
   overallBalance: string;
   verify:
     | 'pending'
@@ -186,7 +186,7 @@ export function ImportAccounts({
 
   function saveImportedAccounts() {
     if (!importedAccounts) return;
-    const accounts: Omit<IAccount, 'keysetId'>[] = importedAccounts
+    const accounts: Omit<IOwnedAccount, 'keysetId'>[] = importedAccounts
       .map((acc) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { discoveredResult, verify, ...account } = acc;
@@ -195,7 +195,7 @@ export function ImportAccounts({
         }
         return undefined;
       })
-      .filter((acc) => acc) as Omit<IAccount, 'keysetId'>[];
+      .filter((acc) => acc) as Omit<IOwnedAccount, 'keysetId'>[];
 
     accounts.map((account, index) =>
       accountRepository

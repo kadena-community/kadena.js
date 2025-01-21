@@ -1,47 +1,51 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ICSVAccount } from '@/services/batchRegisterIdentity';
+import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
-import { get, off, onValue, ref, set } from 'firebase/database';
+import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
+import { get, off, onValue, ref, remove, set } from 'firebase/database';
 import { getAsset } from '../getAsset';
 import { database } from './firebase';
 
 const getAssetFolder = () => getAsset().replace('.', '');
 
 const RWAStore = () => {
-  const addTransaction = async (
-    account: IWalletAccount,
-    data: ITransaction,
-  ) => {
+  const addTransaction = async (data: ITransaction) => {
+    const asset = getAssetFolder();
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { listener, ...newTransaction } = data;
-    await set(ref(database, `accounts/${account.address}/${data.uuid}`), data);
+    const { listener, ...newData } = data;
+
+    await set(ref(database, `${asset}/transactions/${data.uuid}`), newData);
   };
 
-  const removeTransaction = async (
-    account: IWalletAccount,
-    data: ITransaction,
-  ) => {
-    await set(ref(database, `accounts/${account.address}/${data.uuid}`), null);
+  const removeTransaction = async (data: ITransaction) => {
+    const asset = getAssetFolder();
+    await set(ref(database, `${asset}/transactions/${data.uuid}`), null);
   };
 
-  const getAllTransactions = async (
-    account: IWalletAccount,
-  ): Promise<ITransaction[]> => {
-    if (!account) return [];
-    const snapshot = await get(ref(database, `accounts/${account.address}`));
+  const getOverallTransactions = async (): Promise<ITransaction[]> => {
+    const asset = getAssetFolder();
+    const snapshot = await get(ref(database, `${asset}/transactions`));
 
-    const data = snapshot.toJSON();
+    const data = snapshot.toJSON() as ITransaction;
+
     if (!data) return [];
-    return Object.entries(data).map(([key, value]) => value);
+    return Object.entries(data).map(([key, value]) => {
+      if (!value.accounts) return value;
+      const accounts = Object.entries(value.accounts).map(([_, v]) => v);
+      return { ...value, accounts };
+    });
   };
 
-  const listenToAllTransactions = (
-    account: IWalletAccount,
+  //TODO: this needs to be more efficient
+  const listenToTransactions = (
     setDataCallback: (transactions: ITransaction[]) => void,
   ) => {
-    const accountRef = ref(database, `accounts/${account.address}`);
+    const asset = getAssetFolder();
+    const accountRef = ref(database, `${asset}/transactions`);
     onValue(accountRef, async (snapshot) => {
-      const data = await getAllTransactions(account);
+      const data = await getOverallTransactions();
       setDataCallback(data);
     });
 
@@ -57,7 +61,7 @@ const RWAStore = () => {
     const data = snapshot.toJSON();
     if (!data) return [];
     return Object.entries(data).map(
-      ([key, value]) => value,
+      ([key, value]) => value.account,
     ) as IRegisterIdentityProps[];
   };
 
@@ -69,7 +73,9 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    const snapshot = await get(ref(database, `${asset}/accounts/${account}`));
+    const snapshot = await get(
+      ref(database, `${asset}/accounts/${account}/account`),
+    );
 
     return snapshot.toJSON() as IRegisterIdentityProps;
   };
@@ -81,10 +87,16 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    await set(ref(database, `${asset}/accounts/${accountName}`), {
+    await set(ref(database, `${asset}/accounts/${accountName}/account`), {
       accountName,
       alias: alias ?? '',
     });
+  };
+
+  const setAllAccounts = async ({ accounts }: { accounts: ICSVAccount[] }) => {
+    return accounts.map((account) =>
+      setAccount({ accountName: account.account, alias: account.alias }),
+    );
   };
 
   const listenToAccount = (
@@ -94,7 +106,7 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    const accountRef = ref(database, `${asset}/accounts/${account}`);
+    const accountRef = ref(database, `${asset}/accounts/${account}/account`);
     onValue(accountRef, async (snapshot) => {
       const data = snapshot.toJSON();
 
@@ -116,7 +128,7 @@ const RWAStore = () => {
 
       setDataCallback(
         Object.entries(data).map(
-          ([key, value]) => value,
+          ([key, value]) => value.account,
         ) as IRegisterIdentityProps[],
       );
     });
@@ -124,17 +136,68 @@ const RWAStore = () => {
     return () => off(accountRef);
   };
 
+  const getFrozenMessage = async (
+    account: string,
+  ): Promise<string | undefined> => {
+    const asset = getAssetFolder();
+    if (!asset) return;
+
+    const snapshot = await get(
+      ref(database, `${asset}/accounts/${account}/frozenMessage`),
+    );
+
+    return snapshot.toJSON() as any;
+  };
+
+  const setFrozenMessage = async (data: ISetAddressFrozenProps) => {
+    const asset = getAssetFolder();
+    if (!asset) return;
+
+    if (data.message) {
+      await set(
+        ref(
+          database,
+          `${asset}/accounts/${data.investorAccount}/frozenMessage`,
+        ),
+        data.message,
+      );
+    } else {
+      await remove(
+        ref(
+          database,
+          `${asset}/accounts/${data.investorAccount}/frozenMessage`,
+        ),
+      );
+    }
+  };
+
+  const setFrozenMessages = async (data: IBatchSetAddressFrozenProps) => {
+    const asset = getAssetFolder();
+    if (!asset) return;
+
+    return data.investorAccounts.map((account) =>
+      setFrozenMessage({
+        investorAccount: account,
+        pause: data.pause,
+        message: data.message,
+      }),
+    );
+  };
+
   return {
     addTransaction,
     removeTransaction,
-    getAllTransactions,
-    listenToAllTransactions,
+    listenToTransactions,
 
     setAccount,
+    setAllAccounts,
     getAccount,
     getAccounts,
     listenToAccount,
     listenToAccounts,
+    setFrozenMessage,
+    setFrozenMessages,
+    getFrozenMessage,
   };
 };
 

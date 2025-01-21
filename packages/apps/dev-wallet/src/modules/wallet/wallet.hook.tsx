@@ -1,12 +1,16 @@
 import { config } from '@/config';
+import { Session } from '@/utils/session';
 import { IUnsignedCommand } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import {
   accountRepository,
   IAccount,
   IKeySet,
+  IOwnedAccount,
+  IWatchedAccount,
 } from '../account/account.repository';
+import { isKeysetGuard } from '../account/guards';
 import { backupDatabase } from '../backup/backup.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
@@ -38,9 +42,48 @@ export const useWallet = () => {
     syncAllAccounts,
     askForPassword,
   ] = useContext(WalletContext) ?? [];
+
   if (!context || !setProfile || !askForPassword) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
+
+  const getPublicKeyData = useCallback(
+    (publicKey: string) => {
+      if (!context.keySources) return null;
+      for (const source of context.keySources) {
+        for (const key of source.keys) {
+          if (key.publicKey === publicKey) {
+            return {
+              ...key,
+              source: source.source,
+            };
+          }
+        }
+      }
+      return null;
+    },
+    [context],
+  );
+
+  const isOwnedAccount = useCallback(
+    (account: IAccount): account is IOwnedAccount =>
+      account.profileId === context.profile?.uuid &&
+      isKeysetGuard(account.guard) &&
+      Boolean(account.guard.keys.find((k) => getPublicKeyData(k))),
+    [getPublicKeyData, context.profile?.uuid],
+  );
+
+  const accounts = useMemo(() => {
+    if (!context.accounts) return [];
+    return context.accounts.filter(isOwnedAccount) as IOwnedAccount[];
+  }, [context.accounts, isOwnedAccount]);
+
+  const watchAccounts = useMemo(() => {
+    if (!context.accounts) return [];
+    return context.accounts.filter(
+      (ac) => !isOwnedAccount(ac),
+    ) as IWatchedAccount[];
+  }, [context.accounts, isOwnedAccount]);
 
   const createProfile = useCallback(
     async (
@@ -64,7 +107,7 @@ export const useWallet = () => {
   );
 
   const unlockProfile = useCallback(
-    async (profileId: string, password: string) => {
+    async (profileId: string, password: string, unlockSecurity = false) => {
       console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
       await securityService.clearSecurityPhrase();
@@ -72,6 +115,17 @@ export const useWallet = () => {
         const res = await setProfile(profile);
         channel.postMessage({ action: 'switch-profile', payload: profile });
         backupDatabase().catch(console.log);
+        if (profile.options.rememberPassword === 'on-login' || unlockSecurity) {
+          const sessionEntropy = (await Session.get('sessionId')) as string;
+          if (!sessionEntropy) {
+            return res;
+          }
+          await securityService.setSecurityPhrase({
+            sessionEntropy,
+            phrase: password,
+            keepPolicy: 'session',
+          });
+        }
         return res;
       }
       return null;
@@ -169,24 +223,6 @@ export const useWallet = () => {
     [],
   );
 
-  const getPublicKeyData = useCallback(
-    (publicKey: string) => {
-      if (!context.keySources) return null;
-      for (const source of context.keySources) {
-        for (const key of source.keys) {
-          if (key.publicKey === publicKey) {
-            return {
-              ...key,
-              source: source.source,
-            };
-          }
-        }
-      }
-      return null;
-    },
-    [context],
-  );
-
   const createAccountByKeyset = async ({
     keyset,
     contract,
@@ -199,7 +235,7 @@ export const useWallet = () => {
     if (!context.profile || !context.activeNetwork) {
       throw new Error('Profile or active network not found');
     }
-    const account: IAccount = {
+    const account: IOwnedAccount = {
       uuid: crypto.randomUUID(),
       alias: alias || '',
       profileId: context.profile.uuid,
@@ -251,7 +287,7 @@ export const useWallet = () => {
       await accountRepository.addKeyset(keyset);
     }
 
-    const account: IAccount = {
+    const account: IOwnedAccount = {
       uuid: crypto.randomUUID(),
       alias: alias || '',
       profileId: profile.uuid,
@@ -282,8 +318,8 @@ export const useWallet = () => {
     const { accounts, fungibles } = context;
     const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
     const filteredAccounts = accounts.filter(
-      (account) => account.contract === contract,
-    );
+      (account) => account.contract === contract && isOwnedAccount(account),
+    ) as IOwnedAccount[];
 
     const accountAlias =
       alias ||
@@ -294,7 +330,8 @@ export const useWallet = () => {
         return keys[0];
       }
     });
-    const keySource = context.keySources[0];
+    const keySource =
+      context.keySources.find((ks) => ks.isDefault) || context.keySources[0];
     const availableKey = keySource.keys.find(
       (key) => !usedKeys.includes(key.publicKey),
     );
@@ -370,10 +407,13 @@ export const useWallet = () => {
     createSpecificAccount,
     createAccountByKeyset,
     createAccountByKey,
+    isOwnedAccount,
     setActiveNetwork: (network: INetwork) =>
       setActiveNetwork ? setActiveNetwork(network) : undefined,
     syncAllAccounts: () => (syncAllAccounts ? syncAllAccounts() : undefined),
     isUnlocked: isUnlocked(context),
     ...context,
+    accounts,
+    watchAccounts,
   };
 };

@@ -1,5 +1,8 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
@@ -18,15 +21,18 @@ export const useAddInvestor = ({
 }) => {
   const { frozen } = useFreeze({ investorAccount });
   const { paused } = useAsset();
-  const { account, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
-    const newData: IRegisterIdentityProps = { ...data, agent: account! };
+    const newData: IRegisterIdentityProps = {
+      ...data,
+      agent: account!,
+    };
     try {
       //if the account is already investor, no need to add it again
       if (data.alreadyExists) return;
@@ -40,7 +46,8 @@ export const useAddInvestor = ({
 
       return addTransaction({
         ...res,
-        type: 'IDENTITY-REGISTERED',
+        type: TXTYPES.ADDINVESTOR,
+        accounts: [account?.address!, data.accountName],
       });
     } catch (e: any) {
       addNotification({
@@ -55,12 +62,23 @@ export const useAddInvestor = ({
 
   useEffect(() => {
     if (!isMounted) return;
+
+    //when there is no investor account, we dont have to look if frozen or not
     setIsAllowed(
-      ((!!investorAccount && !frozen) || frozen) &&
+      ((!!investorAccount && !frozen) || !investorAccount) &&
         !paused &&
-        accountRoles.isWhitelistManager(),
+        (accountRoles.isAgentAdmin() || isOwner) &&
+        !isActiveAccountChangeTx,
     );
-  }, [frozen, paused, account?.address, isMounted, investorAccount]);
+  }, [
+    frozen,
+    paused,
+    isMounted,
+    investorAccount,
+    isOwner,
+    accountRoles,
+    isActiveAccountChangeTx,
+  ]);
 
   return { submit, isAllowed };
 };

@@ -1,4 +1,7 @@
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';
@@ -28,7 +31,8 @@ export const useTransferTokens = () => {
 
       return addTransaction({
         ...res,
-        type: 'TRANSFERTOKENS',
+        type: TXTYPES.TRANSFERTOKENS,
+        accounts: [data.investorFromAccount, data.investorToAccount],
       });
     } catch (e: any) {
       addNotification({

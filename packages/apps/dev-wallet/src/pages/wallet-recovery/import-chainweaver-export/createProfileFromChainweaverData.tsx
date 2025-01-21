@@ -1,8 +1,7 @@
 import { config } from '@/config';
 import {
   accountRepository,
-  IAccount,
-  IWatchedAccount,
+  IOwnedAccount,
 } from '@/modules/account/account.repository';
 import { ChainweaverService } from '@/modules/key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '@/modules/key-source/key-source-manager';
@@ -98,12 +97,7 @@ export async function createProfileFromChainweaverData(
     'HD-chainweaver',
   )) as ChainweaverService;
 
-  const cwWallet = await keyManager.import(
-    profile.uuid,
-    rootKey,
-    password,
-    keyPairs,
-  );
+  await keyManager.import(profile.uuid, rootKey, password, keyPairs);
 
   console.log('processing accounts');
 
@@ -127,37 +121,7 @@ export async function createProfileFromChainweaverData(
       continue;
     }
 
-    if (
-      !cwWallet.keys.find((k) => k.publicKey === account.account.split('k:')[1])
-        ?.secretId
-    ) {
-      console.log(
-        `account ${account.account} as it is not in the keypair list. This will be added to the watched accounts.`,
-      );
-      const newWatchedAccount: IWatchedAccount = {
-        uuid: crypto.randomUUID(),
-        profileId: profile.uuid,
-        address: account.account,
-        // TODO: this is not valid always we need to discover the account;
-        // call account discovery
-        guard: {
-          keys: [account.account.split('k:')[1]],
-          pred: 'keys-all',
-          principal: account.account,
-        },
-        networkUUID: dbNetwork.uuid,
-        contract: 'coin',
-        chains: [],
-        overallBalance: '0',
-        alias: account.notes || '',
-        watched: true,
-      };
-
-      await accountRepository.addWatchedAccount(newWatchedAccount);
-      continue;
-    }
-
-    const newAccount: IAccount = {
+    const newAccount: IOwnedAccount = {
       uuid: crypto.randomUUID(),
       profileId: profile.uuid,
       address: account.account,

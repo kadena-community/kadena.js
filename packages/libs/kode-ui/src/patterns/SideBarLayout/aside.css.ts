@@ -124,7 +124,7 @@ export const menuBackdropClass = recipe({
         backdropFilter: 'blur(8px)',
         opacity: 0,
         willChange: 'transform, opacity',
-        transition: 'transform .4s ease, opacity 1s ease',
+        transition: 'opacity 1s ease',
         transform: 'translateX(100%)',
       },
       xxl: {

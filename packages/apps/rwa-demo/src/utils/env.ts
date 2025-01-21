@@ -7,9 +7,11 @@ const NETWORKID = process.env.NEXT_PUBLIC_NETWORKID;
 const NETWORKNAME = process.env.NEXT_PUBLIC_NETWORKNAME;
 const NETWORKHOST = process.env.NEXT_PUBLIC_NETWORKHOST;
 const CHAINWEBAPIURL = process.env.NEXT_PUBLIC_CHAINWEBAPIURL;
-const ACCOUNT = process.env.NEXT_PUBLIC_ACCOUNT;
 const GRAPHURL = process.env.NEXT_PUBLIC_GRAPHURL;
 const ZEROADDRESS = process.env.NEXT_PUBLIC_ZEROADDRESS;
+const FAUCETADDRESS = process.env.NEXT_PUBLIC_FAUCETADDRESS;
+const FAUCETAMOUNT = process.env.NEXT_PUBLIC_FAUCETAMOUNT;
+const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 
 if (!WALLET_URL) console.error('NEXT_PUBLIC_WALLET_URL is not set');
 if (!URL) console.error('NEXT_PUBLIC_URL is not set');
@@ -18,9 +20,11 @@ if (!NETWORKID) console.error('NEXT_PUBLIC_NETWORKID is not set');
 if (!NETWORKNAME) console.error('NEXT_PUBLIC_NETWORKNAME is not set');
 if (!NETWORKHOST) console.error('NEXT_PUBLIC_NETWORKHOST is not set');
 if (!CHAINWEBAPIURL) console.error('NEXT_PUBLIC_CHAINWEBAPIURL is not set');
-if (!ACCOUNT) console.error('NEXT_PUBLIC_ACCOUNT is not set');
 if (!GRAPHURL) console.error('NEXT_PUBLIC_GRAPHURL is not set');
 if (!ZEROADDRESS) console.error('NEXT_PUBLIC_ZEROADDRESS is not set');
+if (!FAUCETADDRESS) console.error('NEXT_PUBLIC_FAUCETADDRESS is not set');
+if (!FAUCETAMOUNT) console.error('NEXT_PUBLIC_FAUCETAMOUNT is not set');
+if (!TRACKING_ID) console.error('NEXT_PUBLIC_TRACKING_ID is not set');
 
 export const env = {
   WALLET_URL,
@@ -30,7 +34,9 @@ export const env = {
   NETWORKNAME: NETWORKNAME ?? '',
   NETWORKHOST: NETWORKHOST ?? '',
   CHAINWEBAPIURL: CHAINWEBAPIURL ?? '',
-  ACCOUNTID: ACCOUNT,
   GRAPHURL: GRAPHURL ?? '',
   ZEROADDRESS: ZEROADDRESS!,
+  FAUCETADDRESS: FAUCETADDRESS,
+  FAUCETAMOUNT: parseFloat(FAUCETAMOUNT ?? '0.0'),
+  TRACKING_ID: TRACKING_ID ?? '',
 } as const;

@@ -1,6 +1,8 @@
 'use client';
 
 import { AssetAction } from '@/components/AssetAction/AssetAction';
+import { TransferAssetAction } from '@/components/AssetAction/TransferAssetAction';
+import { BatchTransferAssetAction } from '@/components/BatchTransferAsset/BatchTransferAssetAction';
 import { ComplianceRule } from '@/components/ComplianceRule/ComplianceRule';
 import { ContractDetails } from '@/components/ContractDetails/ContractDetails';
 import { contractDetailWrapperClass } from '@/components/ContractDetails/style.css';
@@ -13,7 +15,6 @@ import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
-import { useTransferTokens } from '@/hooks/transferTokens';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import {
@@ -22,12 +23,13 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
+import { actionsWrapperClass } from './styles.css';
 
 const Home = () => {
-  const { isInvestor, account } = useAccount();
   const { asset } = useAsset();
-  const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
-  const { isAllowed: isTransferTokensAllowed } = useTransferTokens();
+  const { isInvestor, account } = useAccount();
+  const { isAllowed: isSetComplianceAllowed, toggleComplianceRule } =
+    useSetCompliance();
 
   return (
     <>
@@ -69,7 +71,7 @@ const Home = () => {
           <SectionCardContentBlock>
             <SectionCardHeader title="Asset" description={<></>} />
             <SectionCardBody title="Actions">
-              <Stack width="100%" justifyContent="space-between" gap="sm">
+              <Stack className={actionsWrapperClass}>
                 <PauseAssetAction />
 
                 <SetComplianceForm
@@ -77,20 +79,17 @@ const Home = () => {
                     <AssetAction
                       isDisabled={!isSetComplianceAllowed}
                       icon={<MonoAdd />}
-                      label=" Set Compliance"
+                      label="Set Compliance"
                     />
                   }
                 />
 
                 <TransferForm
-                  trigger={
-                    <AssetAction
-                      isDisabled={!isTransferTokensAllowed}
-                      icon={<MonoAdd />}
-                      label="Transfer tokens"
-                    />
-                  }
+                  investorAccount={account?.address!}
+                  trigger={<TransferAssetAction />}
                 />
+
+                <BatchTransferAssetAction />
               </Stack>
             </SectionCardBody>
           </SectionCardContentBlock>
@@ -122,16 +121,25 @@ const Home = () => {
               {asset && (
                 <>
                   <ComplianceRule
-                    value={asset.maxSupply}
+                    isActive={asset.compliance.maxSupply.isActive}
+                    ruleKey={asset.compliance.maxSupply.key}
+                    value={`${asset.compliance.maxSupply.value < 0 ? 'no limit' : asset.compliance.maxSupply.value} tokens`}
                     label="Supply limit"
+                    onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
-                    value={asset.maxBalance}
+                    isActive={asset.compliance.maxBalance.isActive}
+                    ruleKey={asset.compliance.maxBalance.key}
+                    value={`${asset.compliance.maxBalance.value < 0 ? 'no limit' : asset.compliance.maxBalance.value} tokens`}
                     label="Max balance"
+                    onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
-                    value={`${asset.maxInvestors} (${asset.investorCount})`}
+                    isActive={asset.compliance.maxInvestors.isActive}
+                    ruleKey={asset.compliance.maxInvestors.key}
+                    value={`${asset.compliance.maxInvestors.value < 0 ? 'no limit' : asset.compliance.maxInvestors.value} (${asset.investorCount}) investors`}
                     label="Max Investors"
+                    onToggle={toggleComplianceRule}
                   />
                 </>
               )}

@@ -3,6 +3,7 @@
 import { mediaProviderStyles } from '@kadena/kode-ui';
 import React from 'react';
 
+import { Analytics } from '@/components/Analytics/Analytics';
 import { Providers } from './Providers';
 
 const RootLayout = ({
@@ -20,7 +21,10 @@ const RootLayout = ({
         />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Analytics />
+          {children}
+        </Providers>
       </body>
     </html>
   );

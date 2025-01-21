@@ -1,8 +1,6 @@
-import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
-import { getBalance } from '@/services/getBalance';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -16,6 +14,7 @@ import { cloneElement, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
+import { MaxSupplyMessage } from '../MaxSupplyMessage/MaxSupplyMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
@@ -30,12 +29,10 @@ export const DistributionForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { account } = useAccount();
-  const { asset } = useAsset();
+  const { maxCompliance } = useAsset();
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
   const { submit, isAllowed } = useDistributeTokens({ investorAccount });
-  const [tokenBalance, setTokenBalance] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const {
@@ -86,20 +83,8 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  const init = async () => {
-    const res = await getBalance({ investorAccount, account: account! });
+  const maxAmount = maxCompliance('RWA.max-balance-compliance');
 
-    if (typeof res === 'number') {
-      setTokenBalance(res);
-    }
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, []);
-
-  const maxAmount = (asset?.maxSupply ?? 0) - tokenBalance;
   return (
     <>
       {isRightAsideExpanded && isOpen && (
@@ -113,7 +98,7 @@ export const DistributionForm: FC<IProps> = ({
                 rules={{
                   required: true,
                   min: 0,
-                  max: maxAmount,
+                  max: maxAmount >= 0 ? maxAmount : undefined,
                 }}
                 render={({ field }) => (
                   <TextField
@@ -121,7 +106,9 @@ export const DistributionForm: FC<IProps> = ({
                     label="Amount"
                     {...field}
                     errorMessage={errors.amount?.message}
-                    description={`max amount: ${maxAmount} `}
+                    description={
+                      maxAmount >= 0 ? `max amount: ${maxAmount}` : ''
+                    }
                   />
                 )}
               />
@@ -131,6 +118,7 @@ export const DistributionForm: FC<IProps> = ({
                 <>
                   <InvestorFrozenMessage investorAccount={investorAccount} />
                   <AssetPausedMessage />
+                  <MaxSupplyMessage />
                 </>
               }
             >

@@ -11,6 +11,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import { linkClass } from '../home/style.css.ts';
 import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
@@ -106,10 +107,16 @@ export function UnlockProfile({ origin }: { origin: string }) {
             <Button type="submit" isDisabled={!isValid}>
               Continue
             </Button>
-            <Text as="p" size="small">
-              Forgot password?
-              <Link to="/import-wallet">Recover your profile</Link>
-            </Text>
+            <Stack gap="sm">
+              <Text as="p" size="small">
+                Forgot password?
+              </Text>
+              <Link to="/wallet-recovery" className={linkClass}>
+                <Text as="p" size="small" color="inherit">
+                  Recover your wallet
+                </Text>
+              </Link>
+            </Stack>
           </Stack>
         </form>
       </AuthCard>

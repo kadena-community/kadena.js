@@ -1,8 +1,8 @@
 import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import {
   accountRepository,
-  IAccount,
   IGuard,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
@@ -44,7 +44,7 @@ interface IImportedAccount {
   alias: string;
   address: string;
   guard: IGuard | undefined;
-  chains: IAccount['chains'] | undefined;
+  chains: IOwnedAccount['chains'] | undefined;
   overallBalance: string;
   watched: true;
   verify:
@@ -188,7 +188,7 @@ export function ImportWatchedAccounts({
 
     accounts.map((account, index) =>
       accountRepository
-        .addWatchedAccount(account)
+        .addAccount(account)
         .then(() => {
           console.log('saved', account);
           importedAccounts[index].verify = 'saved';

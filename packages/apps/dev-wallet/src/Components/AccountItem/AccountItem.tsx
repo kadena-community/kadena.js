@@ -1,10 +1,10 @@
 import {
-  IAccount,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { hashStyle } from '@/pages/activities/style.css';
 import { noStyleLinkClass } from '@/pages/home/style.css';
-import { hashStyle } from '@/pages/transactions/style.css';
 import { MonoContentCopy } from '@kadena/kode-icons/system';
 import { Button, Stack, Text } from '@kadena/kode-ui';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ import { ListItem } from '../ListItem/ListItem';
 export function AccountItem({
   account: { uuid, alias, address, overallBalance, contract },
 }: {
-  account: IAccount | IWatchedAccount;
+  account: IOwnedAccount | IWatchedAccount;
 }) {
   const { fungibles } = useWallet();
   const getSymbol = (contract: string) =>

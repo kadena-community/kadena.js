@@ -1,6 +1,7 @@
 import { useAsset } from '@/hooks/asset';
+import { getActiveComplianceRules } from '@/services/getComplianceRules';
 import { Button, Stack, TextField } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -12,8 +13,9 @@ interface IAddExistingAssetProps {
 }
 
 export const AddExistingAssetForm: FC<IProps> = ({ handleDone }) => {
-  const router = useRouter();
-  const { addExistingAsset } = useAsset();
+  const { setAsset, addExistingAsset } = useAsset();
+  const { addNotification } = useNotifications();
+
   const {
     handleSubmit,
     control,
@@ -25,10 +27,22 @@ export const AddExistingAssetForm: FC<IProps> = ({ handleDone }) => {
   });
 
   const handleSave = async (data: IAddExistingAssetProps) => {
+    const result = await getActiveComplianceRules(data.name);
+    if (result === -1) {
+      addNotification({
+        intent: 'negative',
+        label: 'Contract does not exist',
+        message: `The contract does not exist on the chain: ${data.name}`,
+      });
+      return;
+    }
+
     const asset = addExistingAsset(data.name);
     if (!asset) return;
 
-    router.refresh();
+    setAsset(asset);
+    window.location.href = '/';
+
     if (handleDone) handleDone();
   };
 

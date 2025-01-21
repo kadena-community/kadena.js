@@ -4,8 +4,8 @@ import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import {
-  IAccount,
   IGuard,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from 'react';
 import { KeySelector } from '@/Components/Guard/KeySelector';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { PactNumber } from '@kadena/pactjs';
 import { Guard } from '../../../Components/Guard/Guard';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
 import { discoverReceiver, needToSelectKeys } from '../utils';
@@ -44,7 +45,7 @@ export function AccountSearchBox({
   isInvalid,
   hideKeySelector,
 }: {
-  accounts?: IAccount[];
+  accounts?: IOwnedAccount[];
   contacts?: IContact[];
   watchedAccounts?: IWatchedAccount[];
   network: INetwork;
@@ -88,7 +89,10 @@ export function AccountSearchBox({
       if (!isKeysetGuard(account?.guard)) {
         return true;
       }
-      if (!account?.overallBalance || +account.overallBalance === 0) {
+      if (
+        !account?.overallBalance ||
+        new PactNumber(account.overallBalance).lte(0)
+      ) {
         return true;
       }
     }
@@ -512,7 +516,7 @@ export function AccountSearchBox({
               items: filteredContacts,
             },
             {
-              title: 'Discovered From Blockchain',
+              title: 'Discovered',
               items: discovering
                 ? [
                     <Text key="discovered" size="smallest">
@@ -522,7 +526,7 @@ export function AccountSearchBox({
                 : discoverdAccountsElement || [],
             },
             {
-              title: 'Discovered From Blockchain',
+              title: 'Discovered',
               items: createNewAccount ? [createNewAccount] : [],
             },
           ]
@@ -542,7 +546,11 @@ export function AccountSearchBox({
               className={popoverClass}
               gap={'md'}
             >
-              <Stack gap={'md'} alignItems={'center'}>
+              <Stack
+                gap={'md'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+              >
                 <Heading variant="h6">Select one account</Heading>
                 {isSenderAccount && (
                   <Button

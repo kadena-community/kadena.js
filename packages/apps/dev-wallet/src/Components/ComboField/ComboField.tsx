@@ -3,7 +3,14 @@ import {
   MonoKeyboardArrowUp,
 } from '@kadena/kode-icons/system';
 import { Button, Popover, Stack, TextField } from '@kadena/kode-ui';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export function ComboField({
   children,
@@ -18,7 +25,7 @@ export function ComboField({
 }: React.ComponentProps<typeof TextField> & {
   children: (props: { value: string; close: () => void }) => ReactNode;
   clear?: ReactNode;
-  onClose?: (value: string) => void;
+  onClose?: () => void;
   onOpen?: (value: string) => void;
   onSubmit?: (value: string) => void;
 }) {
@@ -30,13 +37,16 @@ export function ComboField({
   const inputRef = useRef<HTMLInputElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  function closePopover(fromPopover = false) {
-    setIsPopoverOpen(false);
-    if (onClose && isPopoverOpen && !fromPopover) {
-      console.log('calling onClose', text);
-      onClose(text);
-    }
-  }
+  const closePopover = useCallback(
+    (fromPopover = false) => {
+      setIsPopoverOpen(false);
+      if (onClose && isPopoverOpen && !fromPopover) {
+        console.log('calling onClose');
+        onClose();
+      }
+    },
+    [isPopoverOpen, onClose],
+  );
 
   function openPopover() {
     setIsPopoverOpen(true);
@@ -61,6 +71,30 @@ export function ComboField({
     },
   });
 
+  useLayoutEffect(() => {
+    if (isPopoverOpen) {
+      const listener = (event: Event) => {
+        console.log('event', event);
+        if (
+          !popoverRef.current?.contains(event.target as Node) &&
+          !triggerRef.current?.contains(event.target as Node)
+        ) {
+          closePopover();
+        }
+      };
+      const events = ['click', 'focusin', 'scroll'];
+      events.forEach((event) => {
+        window.addEventListener(event, listener);
+      });
+
+      return () => {
+        events.forEach((event) => {
+          window.removeEventListener(event, listener);
+        });
+      };
+    }
+  }, [closePopover, isPopoverOpen]);
+
   return (
     <>
       <div ref={triggerRef} onClick={openPopover} style={{ flex: 1 }}>
@@ -69,18 +103,6 @@ export function ComboField({
           ref={inputRef}
           value={text}
           defaultValue={defaultValue}
-          onFocus={() => {
-            if (!text) {
-              openPopover();
-            }
-          }}
-          onBlur={() => {
-            setTimeout(() => {
-              if (livePopoverOpen.current) {
-                closePopover();
-              }
-            }, 100);
-          }}
           onKeyDown={(event) => {
             if (event.key === 'Enter' && onSubmit) {
               onSubmit(text);
@@ -89,10 +111,9 @@ export function ComboField({
           onChange={(event) => {
             const value = event.target.value;
             setText(value);
-            if (value) {
+            if (!isPopoverOpen) {
               openPopover();
             }
-
             if (onChange) {
               onChange(event);
             }
@@ -125,18 +146,10 @@ export function ComboField({
         <Popover
           state={{
             isOpen: Boolean(isPopoverOpen),
-            close: (...args) => {
-              console.log('close event called', args);
-            },
-            open: (...args) => {
-              console.log('open', args);
-            },
-            toggle: (...args) => {
-              console.log('toggle', args);
-            },
-            setOpen: (...args) => {
-              console.log('setOpen', args);
-            },
+            close: () => {},
+            open: () => {},
+            toggle: () => {},
+            setOpen: () => {},
           }}
           shouldCloseOnInteractOutside={() => {
             return true;

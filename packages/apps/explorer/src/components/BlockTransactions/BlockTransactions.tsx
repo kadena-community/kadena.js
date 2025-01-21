@@ -94,14 +94,7 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
           loaderVariant: 'icon',
         },
         {
-          label: 'Sender',
-          key: 'cmd.meta.sender',
-          variant: 'code',
-          width: '25%',
-          render: FormatLinkWrapper({ url: '/account/:value' }),
-        },
-        {
-          label: 'RequestKey',
+          label: 'Request Key',
           key: 'hash',
           variant: 'code',
           width: '25%',
@@ -113,6 +106,13 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
           variant: 'code',
           width: '40%',
           render: CompactTableFormatters.FormatJsonParse(),
+        },
+        {
+          label: 'Sender',
+          key: 'cmd.meta.sender',
+          variant: 'code',
+          width: '25%',
+          render: FormatLinkWrapper({ url: '/account/:value' }),
         },
       ]}
       data={innerData.node.transactions.edges.map(

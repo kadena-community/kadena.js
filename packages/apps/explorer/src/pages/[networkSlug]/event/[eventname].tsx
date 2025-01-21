@@ -30,7 +30,9 @@ const Height: React.FC = () => {
               key={`chain${chainData.chainId}`}
             >
               {chainData.data.edges.length === 0 ? (
-                <NoSearchResults />
+                <LayoutBody>
+                  <NoSearchResults />
+                </LayoutBody>
               ) : (
                 <CompactTable
                   isLoading={isLoading}

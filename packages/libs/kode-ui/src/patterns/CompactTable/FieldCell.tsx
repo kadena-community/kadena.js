@@ -25,7 +25,7 @@ export const FieldCell: FC<IFieldCellProps> = ({
   ) {
     const Render = useMemo(
       () => (field.render ? field.render : FormatDefault()),
-      [],
+      [field.render],
     );
 
     return (

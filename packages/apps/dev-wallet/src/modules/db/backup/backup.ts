@@ -1,7 +1,7 @@
 import {
   Fungible,
-  IAccount,
   IKeySet,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { IActivity } from '@/modules/activity/activity.repository';
@@ -56,7 +56,7 @@ export interface IDBBackup {
     profile: Table<IProfile>;
     encryptedValue: Table<{ uuid: string; profileId: string; value: string }>;
     keySource: Table<IKeySource>;
-    account: Table<IAccount>;
+    account: Table<IOwnedAccount>;
     'watched-account': Table<IWatchedAccount>;
     network: Table<INetwork>;
     fungible: Table<Fungible>;

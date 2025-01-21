@@ -4,6 +4,7 @@ import {
   MonoCheck,
   MonoSettings,
   MonoWifiTethering,
+  MonoWifiTetheringOff,
 } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -39,7 +40,13 @@ export const NetworkSelector: FC<{
         <Button
           variant={variant}
           isCompact={isCompact}
-          startVisual={<MonoWifiTethering />}
+          startVisual={
+            activeNetwork?.isHealthy === false ? (
+              <MonoWifiTetheringOff />
+            ) : (
+              <MonoWifiTethering />
+            )
+          }
         >
           {showLabel ? activeNetwork?.name : undefined}
         </Button>

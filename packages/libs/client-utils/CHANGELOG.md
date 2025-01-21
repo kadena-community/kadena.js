@@ -1,5 +1,11 @@
 # @kadena/client-utils
 
+## 0.12.0
+
+### Minor Changes
+
+- 1cba919: set the keys to sign with in safe transfer create function
+
 ## 0.11.1
 
 ### Patch Changes

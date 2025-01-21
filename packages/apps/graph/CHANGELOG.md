@@ -1,5 +1,14 @@
 # @kadena/graph
 
+## 2.0.5
+
+### Patch Changes
+
+- ee8e99b: Improve query for account.transactions. Do not query signers when not
+  requested
+- Updated dependencies \[1cba919]
+  - @kadena/client-utils\@0.12.0
+
 ## 2.0.4
 
 ### Patch Changes

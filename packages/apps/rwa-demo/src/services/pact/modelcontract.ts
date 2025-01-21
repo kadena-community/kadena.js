@@ -83,46 +83,50 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defconst TOKEN-ID "${namespace}.${contractName}")
 
   (defconst AGENT-ADMIN:string 'agent-admin )
-  (defconst SUPPLY-MODIFIER:string 'supply-modifier )
   (defconst FREEZER:string 'freezer )
   (defconst TRANSFER-MANAGER 'transfer-manager )
-  (defconst RECOVERY:string 'recovery )
-  (defconst COMPLIANCE:string 'compliance )
-  (defconst WHITELIST-MANAGER:string 'whitelist-manager )
 
   (defconst AGENT-ROLES:[string] [
     AGENT-ADMIN
-    SUPPLY-MODIFIER
     FREEZER
     TRANSFER-MANAGER
-    RECOVERY
-    COMPLIANCE
-    WHITELIST-MANAGER
   ])
 
-  ;; owner roles - NOT USED
-  (defconst OWNER-ADMIN:string 'owner-admin )
-  (defconst REGISTRY-ADDRESS-SETTER:string 'registry-address-setter )
-  (defconst COMPLIANCE-SETTER:string 'compliance-setter )
-  (defconst COMPLIANCE-MANAGER:string 'compliance-manager )
-  (defconst CLAIM-REGISTRY-MANAGER:string 'claim-registry-manager )
-  (defconst ISSUERS-REGISTRY-MANAGER:string 'issuers-registry-manager )
-  (defconst TOKEN-INFO-MANAGER:string 'token-info-manager )
+  (defschema schema-set-compliance-parameters
+    supply-limit:decimal
+    max-investors:integer
+    max-balance-per-investor:decimal
+  )
 
-  (defconst OWNER-ROLES:[string] [
-    OWNER-ADMIN
-    REGISTRY-ADDRESS-SETTER
-    COMPLIANCE-SETTER
-    COMPLIANCE-MANAGER
-    CLAIM-REGISTRY-MANAGER
-    ISSUERS-REGISTRY-MANAGER
-    TOKEN-INFO-MANAGER
-  ])
+  (defschema account-balance-change
+    @doc "For use in RECONCILE events"
+    account:string
+    previous:decimal
+    current:decimal
+  )
+
+  (defcap RECONCILE:bool
+    ( amount:decimal
+      sender:object{account-balance-change}
+      receiver:object{account-balance-change}
+    )
+    @doc " For accounting via events. \
+         \ sender = {account: '', previous: 0.0, current: 0.0} for mint \
+         \ receiver = {account: '', previous: 0.0, current: 0.0} for burn"
+    @event
+    true
+  )
+
+  (defcap SET-COMPLIANCE-PARAMETERS:bool (compliance:object{schema-set-compliance-parameters})
+    @doc "Event emitted when a compliance parameters is updated."
+    @event
+    true
+  )
 
   ;; compliance-compatible functions
 
   (defun set-max-balance-per-investor (max-balance-per-investor:decimal)
-    (only-agent COMPLIANCE)
+    (only-owner-or-agent-admin)
     (update compliance-parameters "" {
       "max-balance-per-investor": max-balance-per-investor
       }
@@ -130,7 +134,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun set-supply-limit (supply-limit:decimal)
-    (only-agent COMPLIANCE)
+    (only-owner-or-agent-admin)
     (update compliance-parameters "" {
       "supply-limit": supply-limit
       }
@@ -138,7 +142,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun set-max-investors (max-investors:decimal)
-    (only-agent COMPLIANCE)
+    (only-owner-or-agent-admin)
     (update compliance-parameters "" {
       "max-investors": max-investors
       }
@@ -146,11 +150,12 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun set-compliance-parameters ()
-    (only-agent COMPLIANCE)
+    (only-owner-or-agent-admin)
     (let ((compliance-params:object{compliance-input} (read-msg 'compliance-parameters )))
       (update compliance-parameters ""
         compliance-params
       )
+      (emit-event (SET-COMPLIANCE-PARAMETERS compliance-params))
     )
   )
 
@@ -179,11 +184,23 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun add-investor-count:string ()
+    (require-capability (INTERNAL))
     (with-read compliance-parameters "" {
       "investor-count":= ct
     }
       (update compliance-parameters "" {
         "investor-count": (+ 1 ct)
+      })
+    )
+  )
+
+  (defun remove-investor-count:string ()
+    (require-capability (INTERNAL))
+    (with-read compliance-parameters "" {
+      "investor-count":= ct
+    }
+      (update compliance-parameters "" {
+        "investor-count": (- ct 1)
       })
     )
   )
@@ -202,8 +219,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap COMPLIANCE-ADDED:bool (compliance:module{RWA.compliance-v1})
-    @doc "Event emitted when a compliance contract is added."
+  (defcap COMPLIANCE-UPDATED:bool (compliance:[module{RWA.compliance-v1}])
+    @doc "Event emitted when a compliance is updated"
     @event
     true
   )
@@ -244,8 +261,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap ROLE_UPDATED:bool (user-address:string roles:[string])
-    @doc ""
+  (defcap AGENT-ROLES-UPDATED:bool (user-address:string roles:[string])
+    @doc "Event emitted when agent role is updated"
     @event
     true
   )
@@ -319,7 +336,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap IDENTITY-REGISTERED:bool (investor-address:string identity:string)
+  (defcap IDENTITY-REGISTERED:bool (investor-address:string investor-guard:guard identity:string)
     @doc "This event is emitted when an Identity is registered into the Identity Registry.             \
     \ The event is emitted by the 'register-identity' function.                                        \
     \ \`investor-address\` is the address of the investor's wallet.                                       \
@@ -537,6 +554,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun freeze-partial-tokens:string (user-address:string amount:decimal)
     @doc "Freeze a specific amount of a user's tokens."
+   (enforce (> amount 0.0) "Positive amount")
    (only-agent FREEZER)
    (with-capability (INTERNAL)
     (freeze-partial-tokens-internal user-address amount)
@@ -545,6 +563,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun unfreeze-partial-tokens:string (user-address:string amount:decimal)
     @doc "Unfreeze a specific amount of a user's tokens."
+    (enforce (> amount 0.0) "Positive amount")
     (with-capability (INTERNAL)
       (only-agent FREEZER)
       (with-read users user-address {
@@ -560,25 +579,26 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     ;;call bind-token
     (only-owner "")
     (update token "" {"compliance": compliance})
-    (emit-event (COMPLIANCE-ADDED compliance))
+    (emit-event (COMPLIANCE-UPDATED compliance))
   )
 
   ;; Transfer actions
 
   (defun forced-transfer:bool (from:string to:string amount:decimal)
     @doc "Force transfer tokens from one address to another."
-    (with-capability (FORCED-TRANSFER from to amount)
+    (with-capability (FORCED-TRANSFER)
       (with-capability (TRANSFER from to amount)
         (only-agent TRANSFER-MANAGER)
         (transfer-internal from to amount)
     ))
+    true
   )
 
   (defun mint :string (to:string amount:decimal)
     @doc "Mints amount of token to a user's address"
     (enforce-unit amount)
     (with-capability (MINT)
-      (only-agent SUPPLY-MODIFIER)
+      (only-agent TRANSFER-MANAGER)
       (mint-internal to amount)
     )
   )
@@ -589,7 +609,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (with-read token "" {
       "compliance":=compliance-l
       }
-      (only-agent SUPPLY-MODIFIER)
+      (only-agent TRANSFER-MANAGER)
       (burn-internal user-address amount)
     )
   )
@@ -621,16 +641,19 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defun batch-forced-transfer:bool (from-list:[string] to-list:[string] amounts:[decimal])
     @doc "Perform batch forced transfer of tokens."
       (only-agent TRANSFER-MANAGER)
-      (map (lambda (idx:integer)
-        (with-capability (TRANSFER (at idx from-list) (at idx to-list) (at idx amounts))
-          (transfer-internal (at idx from-list) (at idx to-list) (at idx amounts))
+      (with-capability (FORCED-TRANSFER)
+        (map (lambda (idx:integer)
+          (with-capability (TRANSFER (at idx from-list) (at idx to-list) (at idx amounts))
+
+            (transfer-internal (at idx from-list) (at idx to-list) (at idx amounts))
+          )
         )
-      ) (enumerate 0 (- (length from-list) 1)) ) true
+        ) (enumerate 0 (- (length from-list) 1)) ) true
   )
 
   (defun batch-mint:bool (to-list:[string] amounts:[decimal])
     @doc "Mint tokens to multiple addresses."
-    (only-agent SUPPLY-MODIFIER)
+    (only-agent TRANSFER-MANAGER)
     (with-capability (MINT)
       (map (lambda (idx:integer)
         (with-capability (TRANSFER (zero-address) (at idx to-list) (at idx amounts))
@@ -642,22 +665,24 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun batch-burn:bool (user-addresses:[string] amounts:[decimal])
     @doc "Burn tokens from multiple addresses."
-    (only-agent SUPPLY-MODIFIER)
-    (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
-      (burn-internal (at idx user-addresses) (at idx amounts))
+    (only-agent TRANSFER-MANAGER)
+    (with-capability (BURN)
+      (map (lambda (idx:integer)
+      (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
+        (burn-internal (at idx user-addresses) (at idx amounts))
+      )
+      ) (enumerate 0 (- (length user-addresses) 1)) ) true
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
   )
 
-  (defun batch-register-identity:bool (user-addresses:[string] identities:[string] countries:[integer])
+  (defun batch-register-identity:bool (user-addresses:[string] user-guards:[guard] identities:[string] countries:[integer])
     @doc "Allows batch registration of identities.                                                     \
     \ Requires that none of the users has an identity contract already registered.                   \
     \ Only a wallet set as agent of the smart contract can call this function.                       \
     \ Emits \`IDENTITY-REGISTERED\` events for each user address in the batch."
-    (only-agent WHITELIST-MANAGER)
+    (only-owner-or-agent-admin)
     (map (lambda (idx:integer)
-      (register-identity-internal (at idx user-addresses) (at idx identities) (at idx countries))
+      (register-identity-internal (at idx user-addresses) (at idx user-guards) (at idx identities) (at idx countries))
     ) (enumerate 0 (- (length user-addresses) 1)) ) true
   )
 
@@ -665,38 +690,34 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     @doc "Freeze or unfreeze multiple addresses."
     (only-agent FREEZER)
     (map (lambda (idx:integer)
-    (set-address-frozen-internal (at idx user-addresses) freeze)
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
-  )
-
-  (defun batch-freeze-partial-tokens-internal:bool (user-addresses:[string] amounts:[decimal] )
-    @doc "Freeze a portion of tokens for multiple addresses."
-    (only-agent FREEZER)
-    (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
-      (freeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      (with-capability (INTERNAL)
+        (set-address-frozen-internal (at idx user-addresses) (at idx freeze))
+        )
+        )(enumerate 0 (- (length user-addresses) 1))
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
+    true
   )
 
   (defun batch-freeze-partial-tokens:bool (user-addresses:[string] amounts:[decimal] )
     @doc "Unfreeze a portion of tokens for multiple addresses."
     (only-agent FREEZER)
     (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
+    (with-capability (INTERNAL)
       (freeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+    ) ) (enumerate 0 (- (length user-addresses) 1))
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
+    true
   )
 
   (defun batch-unfreeze-partial-tokens:bool (user-addresses:[string] amounts:[decimal] )
     @doc "Unfreeze a portion of tokens for multiple addresses."
     (only-agent FREEZER)
     (map (lambda (idx:integer)
-    (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
-      (unfreeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      (with-capability (INTERNAL)
+          (unfreeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      ) ) (enumerate 0 (- (length user-addresses) 1))
     )
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
+    true
   )
 
   ;; internal functions
@@ -711,7 +732,14 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       )
       (enforce-contains-identity to)
       (with-capability (TRANSFER (zero-address) to amount)
-        (credit to amount)
+        (let
+          (
+            (receiver (credit to amount))
+            (sender:object{account-balance-change}
+              {'account: "", 'previous: 0.0, 'current: 0.0})
+          )
+          (emit-event (RECONCILE amount sender receiver))
+        )
         (with-capability (UPDATE-SUPPLY)
           (update-supply amount)
         )
@@ -733,7 +761,13 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
           ) compliance-l
         )
         (with-capability (TRANSFER user-address (zero-address) amount)
-          (debit user-address amount)
+        (let
+            (
+              (sender (debit user-address amount))
+              (receiver:object{account-balance-change}
+                {'account: "", 'previous: 0.0, 'current: 0.0})
+            )
+          (emit-event (RECONCILE amount sender receiver)))
           (credit (zero-address) (zero-guard) amount)
           (with-capability (UPDATE-SUPPLY)
             (update-supply (- amount))
@@ -750,21 +784,26 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
     @doc "Transfer AMOUNT of token from sender to receiver"
     (enforce-unit amount)
-    (debit sender amount)
-    (credit receiver amount)
-    (with-read token "" {
-       "compliance":= compliance-l
-      ,"paused":=paused
-      }
-      (enforce (= paused false) "Contract is paused")
-      (map
-        (lambda (compliance:module{RWA.compliance-v1})
-          (compliance::can-transfer TOKEN-ID sender receiver amount)
-          (compliance::transferred TOKEN-ID sender receiver amount)
-          ) compliance-l
+
+      (with-read token "" {
+         "compliance":= compliance-l
+        ,"paused":=paused
+        }
+        (enforce (= paused false) "Contract is paused")
+        (map
+          (lambda (compliance:module{RWA.compliance-v1})
+            (compliance::can-transfer TOKEN-ID sender receiver amount)
+            (compliance::transferred TOKEN-ID sender receiver amount)
+            ) compliance-l
+        )
       )
+    (let
+      ( (sender (debit sender amount))
+        (receiver (credit receiver amount)) )
+
+      (emit-event (RECONCILE amount sender receiver))
     )
-    ""
+    "Transfer successful"
   )
 
   (defun set-address-frozen-internal:string (user-address:string freeze:bool)
@@ -776,12 +815,13 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun freeze-partial-tokens-internal:string (user-address:string amount:decimal)
+    (require-capability (INTERNAL))
+
     (with-read users user-address {
       "balance":= balance,
       "frozen":= frozen,
       "amount-frozen":= amount-frozen
     }
-    (require-capability (INTERNAL))
       (enforce (not frozen) "Account is frozen")
       (enforce (>= balance (+ amount-frozen amount)) "frozen amount exceeds balance")
       (update users user-address {"amount-frozen": (+ amount-frozen amount)})
@@ -791,12 +831,12 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun unfreeze-partial-tokens-internal:string (user-address:string amount:decimal)
+    (require-capability (INTERNAL))
     (with-read users user-address {
       "balance":= balance,
       "frozen":= frozen,
       "amount-frozen":= amount-frozen
     }
-    (require-capability (INTERNAL))
       (enforce (not frozen) "Account is frozen")
       (enforce (<= amount amount-frozen) "amount exceeds frozen balance")
       (update users user-address {"amount-frozen": (- amount-frozen amount)})
@@ -816,6 +856,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defcap CREDIT (receiver:string)
     @doc "Capability for managing crediting operations"
+    (enforce-contains-identity receiver)
     (enforce (!= receiver "") "invalid receiver"))
 
   (defcap TRANSFER:bool
@@ -826,14 +867,25 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     @managed amount TRANSFER-mgr
 
     (if (try false (enforce-guard (at 'guard (read users sender))))
-      true
-      (if (try false (require-capability (MINT)))
+      true ;; user signed for the transaction
+      ;;else
+      (if  (try false (require-capability (MINT)))
+        ;; mint is in action
         true
+        ;;else
         (if (try false (require-capability (BURN)))
+          ;;burn is in action
           true
+          ;; else
           (if (try false (require-capability (FORCED-TRANSFER)))
+          ;; forced-transfer is in action
+          ;; else fail
+          true
+          (enforce false "TRANSFER failed")
         )
-    )))
+        )
+      )
+    )
 
     (enforce (!= sender "") "valid sender")
     (enforce (!= sender receiver) "same sender and receiver")
@@ -858,31 +910,29 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   ; ----------------------------------------------------------------------
   ; Functionality
 
-  (defun credit:string
+  (defun credit:object{account-balance-change}
     ( account:string
       amount:decimal
     )
     (require-capability (CREDIT account))
     (with-default-read users account
-      {"balance": -1.0}
-      { "balance" := balance}
-    (if (= balance -1.0)
-      (update users account
-        { "balance" : amount})
-      (update users account
-        { "balance" : (+ balance amount)})
-    )
-    (if (= account (zero-address))
-      "Credit to Zero Address"
-      (if (= balance -1.0)
-        [(add-investor-count)]
-        "Credit successful"
+      { "balance": 0.0 }
+      { "balance":= balance}
+      (if (= account (zero-address))
+        "Credit to Zero Address"
+        (if (= balance 0.0)
+          (with-capability (INTERNAL)
+            (add-investor-count)
+          )
+          "already existing investor"
+        )
       )
-      )
-    )
-  )
+    (update users account
+      { "balance" : (+ balance amount)})
+      {'account: account, 'previous: balance, 'current: (+ balance amount)}
+  ))
 
-  (defun debit:string
+  (defun debit:object{account-balance-change}
     ( account:string
       amount:decimal
     )
@@ -890,10 +940,20 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (with-read users account
       { "balance" := balance }
       (enforce (<= amount balance) "Insufficient funds")
+      (if (= account (zero-address))
+        "Debit to Zero Address"
+        (if (= (- balance amount) 0.0)
+          (with-capability (INTERNAL)
+            (remove-investor-count)
+          )
+          "already existing investor"
+        )
+      )
       (update users account
         { "balance" : (- balance amount) }
-        ))
-  )
+      )
+     {'account: account, 'previous: balance, 'current: (- balance amount)}
+  ))
 
   (defun enforce-unfrozen-amount:bool
     ( account:string
@@ -975,7 +1035,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun enforce-unit:bool (amount:decimal)
     @doc "Enforce minimum precision allowed for coin transactions"
-
     (enforce
       (= (floor amount MINIMUM-PRECISION)
         amount)
@@ -990,7 +1049,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (enforce-contains-identity account)
     (validate-principal guard account)
     (insert users account {
-      "balance" : -1.0,
+      "balance" : 0.0,
       "guard" : guard,
       "frozen" : false,
       "account": account,
@@ -1089,18 +1148,41 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       } owner-guard)
   )
 
-  (defun update-agent-roles:bool (agent:string roles:[string])
-    @doc "Update agent roles"
+  (defun get-compliance:[module{RWA.compliance-v1}] ()
+    (with-read token "" {
+      "compliance":= compliance:[module{RWA.compliance-v1}]
+      } compliance)
+  )
+
+  (defun get-compliance-parameters:object{compliance-input}()
+    (with-read compliance-parameters ""
+      { "max-balance-per-investor":= max-balance-per-investor,
+        "supply-limit":= supply-limit,
+        "max-investors":= max-investors
+      }
+      { "max-balance-per-investor": max-balance-per-investor,
+        "supply-limit": supply-limit,
+        "max-investors": max-investors
+      }
+    )
+  )
+
+  (defun only-owner-or-agent-admin:bool ()
     (install-capability (ONLY-OWNER ""))
     (install-capability (ONLY-AGENT AGENT-ADMIN))
-
     (if (try false (only-owner ""))
       true
       (only-agent AGENT-ADMIN))
+  )
+
+  (defun update-agent-roles:bool (agent:string roles:[string])
+    @doc "Update agent roles"
+    (only-owner-or-agent-admin)
     (verify-agent-roles roles)
     (update agents agent
       { 'roles: roles }
     )
+    (emit-event (AGENT-ROLES-UPDATED agent roles))
     true
   )
 
@@ -1115,29 +1197,37 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defun verify-agent-roles (roles:[string])
     (if (= (length roles) 0)
       true
-    (map (lambda (idx:integer)
-      (contains (at idx roles) AGENT-ROLES)
+      (map (lambda (idx:integer)
+        (enforce (contains (at idx roles) AGENT-ROLES) "Role does not exist")
       )
     (enumerate 0 (- (length roles) 1)))
   ))
 
-  (defun register-identity:bool (user-address:string identity:string country:integer)
+  (defun register-identity:bool (user-address:string user-guard:guard identity:string country:integer)
     @doc "Register an identity contract corresponding to a user address.                               \
     \ Requires that the user doesn't have an identity contract already registered.                    \
     \ Only a wallet set as agent of the smart contract can call this function.                        \
     \ Emits an \`IDENTITY-REGISTERED\` event."
-    (only-agent WHITELIST-MANAGER)
-    (register-identity-internal user-address identity country)
+    (only-owner-or-agent-admin)
+    (register-identity-internal user-address user-guard identity country)
   )
 
-  (defun register-identity-internal:bool (user-address:string identity:string country:integer)
+  (defun register-identity-internal:bool (user-address:string user-guard:guard identity:string country:integer)
     @doc "Register an identity contract corresponding to a user address.                               \
     \ Requires that the user doesn't have an identity contract already registered.                    \
     \ Only a wallet set as agent of the smart contract can call this function.                        \
     \ Emits an \`IDENTITY-REGISTERED\` event."
     (is-principal user-address)
     (write identities user-address { "kadenaID":identity, "country":country, "active":true })
-    (emit-event (IDENTITY-REGISTERED user-address identity))
+    (with-default-read users user-address
+      { "balance": -1.0 }
+      { "balance":=balance }
+      (if (= balance -1.0)
+        (create-account user-address user-guard)
+        ""
+      )
+    )
+    (emit-event (IDENTITY-REGISTERED user-address user-guard identity))
   )
 
 
@@ -1146,7 +1236,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     \ Requires that the user have an identity contract already deployed that will be deleted.         \
     \ Only a wallet set as agent of the smart contract can call this function.                        \
     \ Emits an \`IDENTITY-REMOVED\` event."
-    (only-agent WHITELIST-MANAGER)
+    (only-owner-or-agent-admin)
     (update identities user-address { "active":false })
     (emit-event (IDENTITY-REMOVED user-address (at 'kadenaID (read identities user-address))))
   )
@@ -1277,5 +1367,5 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
 
 
-(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [RWA.max-balance-compliance RWA.supply-limit-compliance] false (keyset-ref-guard "${namespace}.admin-keyset"))
+(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
 `;

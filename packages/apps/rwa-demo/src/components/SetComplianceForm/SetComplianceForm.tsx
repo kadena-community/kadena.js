@@ -1,6 +1,7 @@
+import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
-import type { ISetComplianceProps } from '@/services/setCompliance';
+import type { ISetComplianceParametersProps } from '@/services/setComplianceParameters';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -23,11 +24,16 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
   const { asset } = useAsset();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
   const [isOpen, setIsOpen] = useState(false);
-  const { handleSubmit, reset, control } = useForm<ISetComplianceProps>({
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { isValid },
+  } = useForm<ISetComplianceParametersProps>({
     defaultValues: {
-      maxBalance: `${asset?.maxBalance ?? 0}`,
-      maxSupply: `${asset?.maxSupply ?? 0}`,
-      maxInvestors: `${asset?.maxInvestors ?? 0}`,
+      maxBalance: `${asset?.compliance.maxBalance.value ?? 0}`,
+      maxSupply: `${asset?.compliance.maxSupply.value ?? 0}`,
+      maxInvestors: `${asset?.compliance.maxInvestors.value ?? 0}`,
     },
   });
 
@@ -43,7 +49,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     if (onClose) onClose();
   };
 
-  const onSubmit = async (data: ISetComplianceProps) => {
+  const onSubmit = async (data: ISetComplianceParametersProps) => {
     await submit(data);
 
     handleOnClose();
@@ -51,11 +57,15 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
 
   useEffect(() => {
     reset({
-      maxSupply: `${asset?.maxSupply}`,
-      maxBalance: `${asset?.maxBalance}`,
-      maxInvestors: `${asset?.maxInvestors}`,
+      maxSupply: `${asset?.compliance.maxSupply.value}`,
+      maxBalance: `${asset?.compliance.maxBalance.value}`,
+      maxInvestors: `${asset?.compliance.maxInvestors.value}`,
     });
-  }, [asset?.maxBalance, asset?.maxSupply, asset?.maxInvestors]);
+  }, [
+    asset?.compliance.maxBalance.value,
+    asset?.compliance.maxSupply.value,
+    asset?.compliance.maxInvestors.value,
+  ]);
 
   return (
     <>
@@ -67,7 +77,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxBalance"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: true, min: INFINITE_COMPLIANCE }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Balance" {...field} />
                 )}
@@ -76,7 +86,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxSupply"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: true, min: INFINITE_COMPLIANCE }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Supply" {...field} />
                 )}
@@ -84,7 +94,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxInvestors"
                 control={control}
-                rules={{ required: true }}
+                rules={{ required: true, min: INFINITE_COMPLIANCE }}
                 render={({ field }) => (
                   <TextField
                     type="number"
@@ -98,7 +108,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Button onPress={onClose} variant="transparent">
                 Cancel
               </Button>
-              <Button isDisabled={!isAllowed} type="submit">
+              <Button isDisabled={!isAllowed || !isValid} type="submit">
                 Set Compliance
               </Button>
             </RightAsideFooter>

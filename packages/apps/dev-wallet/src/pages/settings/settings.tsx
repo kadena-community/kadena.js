@@ -15,10 +15,12 @@ import {
   MonoPerson,
   MonoRemoveRedEye,
   MonoRocketLaunch,
+  MonoSecurity,
   MonoSelectAll,
   MonoSettings,
   MonoToggleOff,
   MonoToggleOn,
+  MonoWifiTethering,
 } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -69,6 +71,14 @@ export function Settings() {
         Change Name or Color
       </Button>
       <UiLink
+        href="/networks"
+        component={Link}
+        variant="outlined"
+        startVisual={<MonoWifiTethering />}
+      >
+        Networks
+      </UiLink>
+      <UiLink
         href="/settings/reveal-phrase"
         component={Link}
         variant="outlined"
@@ -83,6 +93,14 @@ export function Settings() {
         startVisual={<MonoPassword />}
       >
         Change Password
+      </UiLink>
+      <UiLink
+        href="/settings/keep-password-policy"
+        component={Link}
+        variant="outlined"
+        startVisual={<MonoSecurity />}
+      >
+        Keep Password Policy
       </UiLink>
       <UiLink
         href="/settings/export-data"
@@ -108,7 +126,7 @@ export function Settings() {
         Download Entire Database
       </Button>
       <UiLink
-        href={`/account-discovery/${keySources[0].uuid}`}
+        href={`/account-discovery`}
         component={Link}
         variant="outlined"
         startVisual={<MonoSelectAll />}

@@ -1,4 +1,5 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
+import { PasswordKeepPolicy } from '@/service-worker/types';
 import { SignerScheme } from '@kadena/client';
 import type { INetwork } from '../network/network.repository';
 import { UUID } from '../types';
@@ -16,6 +17,7 @@ export interface IKeySource {
   profileId: string;
   source: KeySourceType;
   keys: Array<IKeyItem>;
+  isDefault?: boolean;
 }
 
 export interface IProfile {
@@ -28,7 +30,7 @@ export interface IProfile {
   selectedNetworkUUID?: UUID;
   showExperimentalFeatures?: boolean;
   options: {
-    rememberPassword: 'never' | 'session' | 'short-time';
+    rememberPassword: PasswordKeepPolicy;
   } & (
     | {
         authMode: 'PASSWORD';

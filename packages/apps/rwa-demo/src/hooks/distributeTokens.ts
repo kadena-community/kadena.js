@@ -1,4 +1,8 @@
-import { interpretErrorMessage } from '@/components/TransactionsProvider/TransactionsProvider';
+import {
+  interpretErrorMessage,
+  TXTYPES,
+} from '@/components/TransactionsProvider/TransactionsProvider';
+import { INFINITE_COMPLIANCE } from '@/constants';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { distributeTokens } from '@/services/distributeTokens';
 import { getClient } from '@/utils/client';
@@ -7,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
+import { useGetInvestorBalance } from './getInvestorBalance';
 import { useTransactions } from './transactions';
 
 export const useDistributeTokens = ({
@@ -15,10 +20,11 @@ export const useDistributeTokens = ({
   investorAccount: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
-  const { paused } = useAsset();
+  const { paused, asset, maxCompliance } = useAsset();
 
   const { account, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { data: investorBalance } = useGetInvestorBalance({ investorAccount });
+  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
@@ -34,7 +40,8 @@ export const useDistributeTokens = ({
 
       return addTransaction({
         ...res,
-        type: 'DISTRIBUTETOKENS',
+        type: TXTYPES.DISTRIBUTETOKENS,
+        accounts: [investorAccount],
       });
     } catch (e: any) {
       addNotification({
@@ -46,9 +53,36 @@ export const useDistributeTokens = ({
   };
 
   useEffect(() => {
-    if (!isMounted) return;
-    setIsAllowed(!frozen && !paused && accountRoles.isSupplyModifier());
-  }, [frozen, paused, account?.address, isMounted]);
+    if (!isMounted || !asset) return;
+
+    const complianceMaxSupplyValue = maxCompliance(
+      'RWA.supply-limit-compliance',
+    );
+    const complianceMaxInvestors = maxCompliance(
+      'RWA.max-investors-compliance',
+    );
+
+    setIsAllowed(
+      !frozen &&
+        !paused &&
+        accountRoles.isTransferManager() &&
+        !isActiveAccountChangeTx &&
+        (asset.supply < complianceMaxSupplyValue ||
+          complianceMaxSupplyValue === INFINITE_COMPLIANCE) &&
+        (complianceMaxInvestors > asset.investorCount ||
+          complianceMaxInvestors === INFINITE_COMPLIANCE ||
+          investorBalance > 0),
+    );
+  }, [
+    frozen,
+    paused,
+    account?.address,
+    isMounted,
+    accountRoles,
+    isActiveAccountChangeTx,
+    asset,
+    investorBalance,
+  ]);
 
   return { submit, isAllowed };
 };

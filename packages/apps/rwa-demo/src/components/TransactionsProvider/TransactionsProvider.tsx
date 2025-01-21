@@ -2,18 +2,62 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
-import { getClient } from '@/utils/client';
+import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { store } from '@/utils/store';
+import { useApolloClient } from '@apollo/client';
 import type { ICommandResult } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+export interface ITxType {
+  name: keyof typeof TXTYPES;
+  overall?: boolean;
+}
+
+export const TXTYPES: Record<
+  | 'SETCOMPLIANCE'
+  | 'SETCOMPLIANCERULE'
+  | 'ADDINVESTOR'
+  | 'DELETEINVESTOR'
+  | 'ADDAGENT'
+  | 'REMOVEAGENT'
+  | 'CREATECONTRACT'
+  | 'FREEZEINVESTOR'
+  | 'DISTRIBUTETOKENS'
+  | 'PARTIALLYFREEZETOKENS'
+  | 'TRANSFERTOKENS'
+  | 'FAUCET'
+  | 'PAUSECONTRACT',
+  ITxType
+> = {
+  SETCOMPLIANCE: { name: 'SETCOMPLIANCE', overall: true },
+  SETCOMPLIANCERULE: { name: 'SETCOMPLIANCERULE', overall: true },
+  ADDINVESTOR: { name: 'ADDINVESTOR', overall: true },
+  DELETEINVESTOR: { name: 'DELETEINVESTOR', overall: true },
+  ADDAGENT: { name: 'ADDAGENT', overall: true },
+  REMOVEAGENT: { name: 'REMOVEAGENT', overall: true },
+  PAUSECONTRACT: { name: 'PAUSECONTRACT', overall: true },
+  FREEZEINVESTOR: { name: 'FREEZEINVESTOR', overall: true },
+  CREATECONTRACT: { name: 'CREATECONTRACT', overall: true },
+  DISTRIBUTETOKENS: { name: 'DISTRIBUTETOKENS', overall: true },
+  PARTIALLYFREEZETOKENS: { name: 'PARTIALLYFREEZETOKENS', overall: true },
+  TRANSFERTOKENS: { name: 'TRANSFERTOKENS', overall: true },
+  FAUCET: { name: 'FAUCET', overall: false },
+} as const;
 
 export interface ITransaction {
   uuid: string;
   requestKey: string;
-  type: string;
-  listener?: Promise<void | ICommandResult>;
+  type: ITxType;
+  listener?: any;
+  accounts: string[];
   result?: ICommandResult['result'];
 }
 
@@ -22,11 +66,12 @@ export interface ITransactionsContext {
   addTransaction: (
     request: Omit<ITransaction, 'uuid'>,
   ) => Promise<ITransaction>;
-  getTransactions: (type: string) => ITransaction[];
+  getTransactions: (type: ITxType | ITxType[]) => ITransaction[];
   txsButtonRef?: HTMLButtonElement | null;
   setTxsButtonRef: (value: HTMLButtonElement) => void;
   txsAnimationRef?: HTMLDivElement | null;
   setTxsAnimationRef: (value: HTMLDivElement) => void;
+  isActiveAccountChangeTx: boolean; //checks if the agentroles for this user are being changed. if so, stop all permissions until the tx is resolved
 }
 
 export const TransactionsContext = createContext<ITransactionsContext>({
@@ -37,6 +82,7 @@ export const TransactionsContext = createContext<ITransactionsContext>({
   getTransactions: () => [],
   setTxsButtonRef: () => {},
   setTxsAnimationRef: () => {},
+  isActiveAccountChangeTx: false,
 });
 
 const interpretMessage = (str: string, data?: ITransaction): string => {
@@ -45,6 +91,12 @@ const interpretMessage = (str: string, data?: ITransaction): string => {
   }
   if (str?.includes('buy gas failed')) {
     return `This account does not have enough balance to pay for Gas`;
+  }
+  if (str?.includes('exceeds max investor')) {
+    return `The maximum amount of investors has been reached`;
+  }
+  if (str?.includes('PactDuplicateTableError')) {
+    return `This already exists`;
   }
 
   return `${data?.type}: ${str}`;
@@ -58,10 +110,11 @@ export const interpretErrorMessage = (
     return interpretMessage(result);
   }
 
-  return interpretMessage(result.result.error?.message!, data);
+  return interpretMessage(result?.result?.error?.message!, data);
 };
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
+  const client = useApolloClient();
   const { addNotification } = useNotifications();
   const { account } = useAccount();
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -69,48 +122,66 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<HTMLDivElement | null>(null);
   const [txsButtonRef, setTxsButtonRefData] =
     useState<HTMLButtonElement | null>(null);
-
   const { activeNetwork } = useNetwork();
 
   const addListener = useCallback(
     (data: ITransaction, account: IWalletAccount) => {
-      return getClient()
-        .listen({
-          requestKey: data.requestKey,
-          chainId: activeNetwork.chainId,
-          networkId: activeNetwork.networkId,
-        })
-        .then((result) => {
-          if (result.result.status === 'failure') {
+      const r = client.subscribe({
+        query: transactionsQuery,
+        variables: { requestKey: data.requestKey },
+      });
+
+      r.subscribe(
+        (nextData: any) => {
+          if (
+            nextData?.errors?.length !== undefined ||
+            nextData?.data?.transaction?.result.badResult
+          ) {
             addNotification({
               intent: 'negative',
               label: 'there was an error',
-              message: interpretErrorMessage(result, data),
+              message: interpretErrorMessage(
+                nextData?.errors
+                  ? JSON.stringify(nextData?.errors)
+                  : JSON.parse(
+                      nextData?.data.transaction?.result.badResult ?? '{}',
+                    ).message,
+              ),
               url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
             });
+            return;
           }
-        })
-        .catch((e) => {
+        },
+        (errorData) => {
           addNotification({
             intent: 'negative',
             label: 'there was an error',
-            message: JSON.stringify(e),
+            message: JSON.stringify(errorData),
             url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
           });
-        })
-        .finally(() => {
+        },
+        () => {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          store.removeTransaction(account!, data);
-        });
+          store.removeTransaction(data);
+        },
+      );
+
+      return r;
     },
     [],
   );
 
-  const getTransactions = (type: string) => {
-    return Object.entries(transactions)
-      .map(([key, val]) => val)
-      .filter((val) => val.type === type);
-  };
+  const getTransactions = useCallback(
+    (type: ITxType | ITxType[]) => {
+      if (!Array.isArray(type)) {
+        return transactions.filter((val) => val.type.name === type.name);
+      }
+      return transactions.filter((val) =>
+        type.find((t) => t.name === val.type.name),
+      );
+    },
+    [transactions],
+  );
 
   const addTransaction = async (
     request: Omit<ITransaction, 'uuid'>,
@@ -129,17 +200,22 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       return [...v, data];
     });
 
-    await store.addTransaction(account!, data);
+    await store.addTransaction(data);
 
     return data;
   };
 
   const listenToTransactions = (transactions: ITransaction[]) => {
-    setTransactions(transactions);
+    const filteredTransactions = transactions.filter(
+      (transaction) =>
+        transaction.type.overall ||
+        transaction.accounts.indexOf(account?.address!) >= 0,
+    );
+    setTransactions(filteredTransactions);
   };
 
   const init = async () => {
-    store.listenToAllTransactions(account!, listenToTransactions);
+    store.listenToTransactions(listenToTransactions);
   };
   useEffect(() => {
     if (!account) return;
@@ -163,12 +239,20 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, [transactions.length, account]);
 
+  const isActiveAccountChangeTx: boolean = useMemo(() => {
+    if (!account?.address) return false;
+    const txs = getTransactions(TXTYPES.ADDAGENT);
+    return !!txs.find((tx) => tx.accounts.indexOf(account.address) >= 0);
+  }, [getTransactions(TXTYPES.ADDAGENT), account?.address]);
+
   const setTxsButtonRef = (ref: HTMLButtonElement) => {
     setTxsButtonRefData(ref);
   };
   const setTxsAnimationRef = (ref: HTMLDivElement) => {
     setTxsAnimationRefData(ref);
   };
+
+  console.log({ transactions });
 
   return (
     <TransactionsContext.Provider
@@ -180,6 +264,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         txsButtonRef,
         setTxsAnimationRef,
         txsAnimationRef,
+        isActiveAccountChangeTx,
       }}
     >
       {children}

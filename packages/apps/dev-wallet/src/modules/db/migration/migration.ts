@@ -8,6 +8,8 @@ import { migrateFrom40to41 } from './migrateFrom40to41';
 import { migrateFrom41to42 } from './migrateFrom41to42';
 import { migrateFrom42to43 } from './migrateFrom42to43';
 import { migrateFrom43to44 } from './migrateFrom43to44';
+import { migrateFrom44to45 } from './migrateFrom44to45';
+import { migrateFrom45to46 } from './migrateFrom45to46';
 
 const { DB_NAME, DB_VERSION } = config.DB;
 
@@ -19,6 +21,8 @@ const migrationMap = {
   41: migrateFrom41to42,
   42: migrateFrom42to43,
   43: migrateFrom43to44,
+  44: migrateFrom44to45,
+  45: migrateFrom45to46,
 };
 
 export async function migration(result: {

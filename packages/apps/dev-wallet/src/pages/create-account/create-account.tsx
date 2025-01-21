@@ -1,7 +1,7 @@
 import {
   accountRepository,
-  IAccount,
   IKeysetGuard,
+  IOwnedAccount,
 } from '@/modules/account/account.repository.ts';
 
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -26,7 +26,7 @@ import { Label } from '../transaction/components/helpers';
 
 export function CreateAccount() {
   const [keysetGuard, setKeysetGuard] = useState<IKeysetGuard>();
-  const [created, setCreated] = useState<IAccount | null>(null);
+  const [created, setCreated] = useState<IOwnedAccount | null>(null);
   const [searchParams] = useSearchParams();
   const urlContract = searchParams.get('contract');
   const [contract, setContract] = useState<string | null>(urlContract);
@@ -48,7 +48,7 @@ export function CreateAccount() {
     if (!profile || !activeNetwork || !contract) {
       throw new Error('Profile or active network not found');
     }
-    const account: IAccount = {
+    const account: IOwnedAccount = {
       uuid: crypto.randomUUID(),
       alias: alias || aliasDefaultValue,
       profileId: profile.uuid,

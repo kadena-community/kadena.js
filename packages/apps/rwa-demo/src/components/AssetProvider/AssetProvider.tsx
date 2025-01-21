@@ -1,25 +1,37 @@
 'use client';
+import type { Exact, Scalars } from '@/__generated__/sdk';
+import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import {
+  INFINITE_COMPLIANCE,
   LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import { useGetComplianceRules } from '@/hooks/getComplianceRules';
+import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import type { IComplianceProps } from '@/services/getAssetMaxSupplyBalance';
-import { getAssetMaxSupplyBalance } from '@/services/getAssetMaxSupplyBalance';
+import type {
+  IComplianceProps,
+  IComplianceRule,
+  IComplianceRuleTypes,
+} from '@/services/getComplianceRules';
+import { getComplianceRules } from '@/services/getComplianceRules';
+import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
-import { getFullAsset } from '@/utils/getAsset';
+import { getAsset as getAssetUtil, getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
-
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
-export interface IAsset extends IComplianceProps {
+export interface IAsset {
   uuid: string;
   contractName: string;
   namespace: string;
   supply: number;
+  investorCount: number;
+  compliance: IComplianceProps;
 }
 
 export interface IAssetContext {
@@ -40,6 +52,7 @@ export interface IAssetContext {
     uuid: string,
     account: IWalletAccount,
   ) => Promise<IAsset | undefined>;
+  maxCompliance: (rule: IComplianceRuleTypes) => number;
 }
 
 export const AssetContext = createContext<IAssetContext>({
@@ -50,7 +63,18 @@ export const AssetContext = createContext<IAssetContext>({
   addExistingAsset: () => undefined,
   removeAsset: (uuid: string) => undefined,
   getAsset: async () => undefined,
+  maxCompliance: () => -1,
 });
+
+export type EventQueryVariables = Exact<{
+  qualifiedName: Scalars['String']['input'];
+}>;
+
+export const getEventsDocument = (
+  variables: EventQueryVariables = {
+    qualifiedName: '',
+  },
+): Apollo.DocumentNode => coreEvents;
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
@@ -60,6 +84,15 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused();
   const { data: supply } = useSupply();
+  const { data: investorCount } = useGetInvestorCount();
+  const { data: complianceRules } = useGetComplianceRules({ asset });
+  const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
+    {
+      variables: {
+        qualifiedName: `${getAssetUtil()}.SET-COMPLIANCE-PARAMETERS`,
+      },
+    },
+  );
 
   const getAssets = (): IAsset[] => {
     const result = localStorage.getItem(storageKey);
@@ -87,14 +120,18 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     account: IWalletAccount,
   ): Promise<IAsset | undefined> => {
     const data = getAssets().find((a) => a.uuid === uuid);
-    const extraAssetData = await getAssetMaxSupplyBalance();
+    const extraAssetData = await getComplianceRules();
 
     const supplyResult = (await supplyService({
       account: account!,
     })) as number;
 
     if (!data) return;
-    return { ...data, ...extraAssetData, supply: supplyResult ?? 0 };
+    return {
+      ...data,
+      compliance: { ...extraAssetData },
+      supply: supplyResult ?? 0,
+    };
   };
   const removeAsset = (uuid: string) => {
     const data = getAssets().filter((a) => a.uuid !== uuid);
@@ -112,10 +149,24 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }) => {
     const asset: IAsset = {
       uuid: crypto.randomUUID(),
-      supply: -1,
-      maxSupply: -1,
-      maxBalance: -1,
-      maxInvestors: -1,
+      supply: INFINITE_COMPLIANCE,
+      compliance: {
+        maxSupply: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.supply-limit-compliance',
+        },
+        maxBalance: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.max-balance-compliance',
+        },
+        maxInvestors: {
+          isActive: false,
+          value: INFINITE_COMPLIANCE,
+          key: 'RWA.max-investors-compliance',
+        },
+      },
       investorCount: 0,
       contractName,
       namespace,
@@ -148,6 +199,19 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     return addAsset({ namespace: nameArray[0], contractName: nameArray[1] });
   };
 
+  // return the value of the compliance
+  const maxCompliance = (ruleKey: IComplianceRuleTypes): number => {
+    const returnValue = Object.entries(asset?.compliance ?? {}).find(
+      ([key, rule]) => rule.key === ruleKey,
+    ) as [number, IComplianceRule] | undefined;
+
+    if (!returnValue?.length) return INFINITE_COMPLIANCE;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, rule] = returnValue;
+    if (!asset || !rule || !rule.isActive) return INFINITE_COMPLIANCE;
+    return rule.value;
+  };
+
   useEffect(() => {
     getAssets();
     window.addEventListener(storageKey, storageListener);
@@ -159,11 +223,9 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
-  const loadAssetData = async () => {
-    const data = await getAssetMaxSupplyBalance();
-
-    setAsset((old) => old && { ...old, ...data });
-  };
+  useEffect(() => {
+    setAsset((old) => old && { ...old, investorCount });
+  }, [investorCount]);
 
   useEffect(() => {
     if (asset) return;
@@ -178,10 +240,44 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [asset?.contractName, supply]);
 
   useEffect(() => {
-    if (!asset) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    loadAssetData();
-  }, [asset?.uuid]);
+    if (
+      complianceSubscriptionData?.events?.length &&
+      complianceSubscriptionData.events[0].parameters
+    ) {
+      const params = JSON.parse(
+        complianceSubscriptionData.events[0].parameters,
+      );
+
+      const data = params[0];
+
+      setAsset(
+        (old) =>
+          old && {
+            ...old,
+            compliance: {
+              ...old.compliance,
+              maxSupply: {
+                ...old.compliance.maxSupply,
+                value: data['supply-limit'],
+              },
+              maxBalance: {
+                ...old.compliance.maxBalance,
+                value: data['max-balance-per-investor'],
+              },
+              maxInvestors: {
+                ...old.compliance.maxInvestors,
+                value: data['max-investors'].int,
+              },
+            },
+          },
+      );
+    }
+  }, [complianceSubscriptionData]);
+
+  useEffect(() => {
+    if (!complianceRules) return;
+    setAsset((old) => old && { ...old, compliance: { ...complianceRules } });
+  }, [complianceRules]);
 
   return (
     <AssetContext.Provider
@@ -194,6 +290,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         getAsset,
         removeAsset,
         paused,
+        maxCompliance,
       }}
     >
       {children}

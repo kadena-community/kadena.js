@@ -19,7 +19,7 @@ export const FormatDeleteInvestor = () => {
     });
 
     const handleDelete = async () => {
-      return await submit({ investor: investorAccount });
+      await submit({ investor: investorAccount });
     };
     return (
       <Confirmation
@@ -34,7 +34,7 @@ export const FormatDeleteInvestor = () => {
           />
         }
       >
-        Are you sure you want to delete this agent?
+        Are you sure you want to delete this investor?
       </Confirmation>
     );
   };

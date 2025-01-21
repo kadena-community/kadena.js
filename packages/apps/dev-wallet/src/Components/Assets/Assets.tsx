@@ -1,5 +1,5 @@
 import { useRightAside } from '@/App/Layout/useRightAside';
-import { Fungible, IAccount } from '@/modules/account/account.repository';
+import { Fungible, IOwnedAccount } from '@/modules/account/account.repository';
 import { MonoWallet } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
@@ -17,7 +17,7 @@ export function Assets({
 }: {
   selectedContract: string;
   setSelectedContract: (contract: string) => void;
-  accounts: IAccount[];
+  accounts: IOwnedAccount[];
   fungibles: Fungible[];
   showAddToken?: boolean;
 }) {

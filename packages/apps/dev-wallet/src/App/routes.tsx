@@ -14,6 +14,7 @@ import { CommunicationProvider } from '@/modules/communication/communication.pro
 import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { AccountPage } from '@/pages/account/account';
 import { MigrateAccount } from '@/pages/account/migrate-account/migrate-account';
+import { ActivitiesPage } from '@/pages/activities/activities';
 import { Connect } from '@/pages/connect/connect';
 import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccount } from '@/pages/create-account/create-account';
@@ -26,11 +27,12 @@ import { Ready } from '@/pages/ready/ready';
 import { ChangePassword } from '@/pages/settings/change-password/change-password';
 import { ExportData } from '@/pages/settings/export-data/export-data';
 import { ImportData } from '@/pages/settings/import-data/import-data';
+import { KeepPasswordPolicy } from '@/pages/settings/keep-password-policy/keep-password-policy';
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
+import { SignRequest } from '@/pages/transaction/sign-request';
 import { TransactionPage } from '@/pages/transaction/Transaction';
-import { Transactions } from '@/pages/transactions/transactions';
 import { Transfer } from '@/pages/transfer/transfer';
 import { ImportChainweaverExport } from '@/pages/wallet-recovery/import-chainweaver-export/import-chainweaver-export';
 import { RecoverFromMnemonic } from '@/pages/wallet-recovery/recover-from-mnemonic/recover-from-mnemonic';
@@ -42,6 +44,7 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
+import { LayoutFull } from './layout-full';
 import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
 import { useGlobalState } from './providers/globalState';
@@ -119,8 +122,11 @@ export const Routes: FC = () => {
             <Route path="/connect/:requestId" element={<Connect />} />
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccount />} />
-            <Route path="/transaction/:groupId" element={<TransactionPage />} />
-            <Route path="/transactions" element={<Transactions />} />
+            <Route
+              path="/transaction/:transactionId"
+              element={<TransactionPage />}
+            />
+            <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
             <Route path="/fungible/:contract" element={<FungiblePage />} />
             <Route
@@ -134,6 +140,10 @@ export const Routes: FC = () => {
             <Route path="/settings/export-data" element={<ExportData />} />
             <Route path="/settings/import-data" element={<ImportData />} />
             <Route
+              path="/settings/keep-password-policy"
+              element={<KeepPasswordPolicy />}
+            />
+            <Route
               element={
                 <Redirect
                   if={!profile || !profile.showExperimentalFeatures}
@@ -143,11 +153,11 @@ export const Routes: FC = () => {
             >
               <Route path="/plugins" element={<Plugins />} />
             </Route>
-            <Route
-              path="/account-discovery/:keySourceId"
-              element={<AccountDiscovery />}
-            />
+            <Route path="/sign-request/:requestId" element={<SignRequest />} />
           </Route>
+        </Route>
+        <Route element={<LayoutFull />}>
+          <Route path="/account-discovery" element={<AccountDiscovery />} />
         </Route>
         <Route element={<LayoutMini />}>
           <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />

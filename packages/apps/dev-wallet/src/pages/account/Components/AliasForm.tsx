@@ -1,8 +1,6 @@
 import {
   accountRepository,
   IAccount,
-  isWatchedAccount,
-  IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { Button, Stack, TextField } from '@kadena/kode-ui';
 import {
@@ -18,24 +16,17 @@ export function AliasForm({
   account,
 }: {
   show: boolean;
-  account: IAccount | IWatchedAccount;
+  account: IAccount;
 }) {
   const { setIsRightAsideExpanded } = useLayout();
   const [aliasVal, setAliasVal] = useState(account.alias || '');
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (isWatchedAccount(account)) {
-      accountRepository.updateWatchedAccount({
-        ...(account as IWatchedAccount),
-        alias: aliasVal,
-      });
-    } else {
-      await accountRepository.updateAccount({
-        ...(account as IAccount),
-        alias: aliasVal,
-      });
-    }
+    await accountRepository.updateAccount({
+      ...account,
+      alias: aliasVal,
+    });
     setIsRightAsideExpanded(false);
   }
 

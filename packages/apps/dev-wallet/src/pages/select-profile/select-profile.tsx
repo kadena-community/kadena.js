@@ -20,6 +20,12 @@ export function SelectProfile() {
   const [params] = useSearchParams();
 
   const redirect = params.get('redirect');
+  const qs = new URLSearchParams();
+  if (redirect) {
+    qs.set('redirect', redirect);
+  }
+
+  const searchParam = qs.toString();
 
   return (
     <Box width="100%">
@@ -62,7 +68,7 @@ export function SelectProfile() {
           ) : (
             <Link
               key={profile.uuid}
-              to={`/unlock-profile/${profile.uuid}${redirect ? `?redirect=${redirect}` : ''}`}
+              to={`/unlock-profile/${profile.uuid}${searchParam ? `?${searchParam}` : ''}`}
               style={{ textDecoration: 'none' }}
               className={cardClass}
             >
@@ -100,9 +106,6 @@ export function SelectProfile() {
         <Link to="/wallet-recovery" className={linkClass}>
           Recover your wallet
         </Link>
-        {/* <Link to="/import-chainweaver" className={linkClass}>
-          Import from Chainweaver file
-        </Link> */}
       </Stack>
     </Box>
   );

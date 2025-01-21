@@ -9,6 +9,7 @@ export interface ITransferTokensProps {
   amount: number;
   investorFromAccount: string;
   investorToAccount: string;
+  isForced?: boolean;
 }
 
 const createPubKeyFromAccount = (account: string): string => {

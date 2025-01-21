@@ -1,7 +1,7 @@
 import { useRightAside } from '@/App/Layout/useRightAside';
 import {
   accountRepository,
-  IAccount,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
@@ -32,7 +32,7 @@ export function Accounts({
   contract = 'coin',
   watchedAccounts,
 }: {
-  accounts: Array<IAccount>;
+  accounts: Array<IOwnedAccount>;
   watchedAccounts: Array<IWatchedAccount>;
   contract: string;
 }) {
@@ -53,12 +53,9 @@ export function Accounts({
       guard: account.guard,
       contract,
       networkUUID: activeNetwork!.uuid,
-      watched: true,
     }));
     await Promise.all(
-      accountsToWatch.map((account) =>
-        accountRepository.addWatchedAccount(account),
-      ),
+      accountsToWatch.map((account) => accountRepository.addAccount(account)),
     );
   };
 

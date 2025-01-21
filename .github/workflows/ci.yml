@@ -10,7 +10,7 @@ env:
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   CI: true
   # comma separated list of allowed authors for docs PRs
-  ALLOWED_DOCS_AUTHORS: lsgunnlsgunn,
+  # ALLOWED_DOCS_AUTHORS: lsgunnlsgunn,
 
 permissions:
   pull-requests: write
@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ['tools', 'docs', 'graph']
+        app: ['tools', 'graph']
 
     steps:
       - uses: actions/checkout@v4
@@ -141,51 +141,51 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  auto-approve-docs:
-    runs-on: ubuntu-latest
+  # auto-approve-docs:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-         fetch-depth: 2
-         show-progress: false
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #        fetch-depth: 2
+  #        show-progress: false
 
-    - name: Check PR author
-      id: check_author
-      run: echo "author=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
+  #   - name: Check PR author
+  #     id: check_author
+  #     run: echo "author=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
 
-    - uses: pnpm/action-setup@v3
-      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
-      with:
-        version: 9
+  #   - uses: pnpm/action-setup@v3
+  #     if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+  #     with:
+  #       version: 9
 
-    - uses: actions/setup-node@v4
-      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
-      with:
-        node-version: 20
+  #   - uses: actions/setup-node@v4
+  #     if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+  #     with:
+  #       node-version: 20
 
-    - name: Install dependencies
-      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
-      shell: bash
-      run: pnpm install --filter @kadena-dev/scripts
+  #   - name: Install dependencies
+  #     if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+  #     shell: bash
+  #     run: pnpm install --filter @kadena-dev/scripts
 
-    - name: Run file check script
-      if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
-      id: check_files
-      run: |
-        git fetch origin main:refs/remotes/origin/main
-        set +e
-        chmod +x ./packages/tools/scripts/check-changed-files.mjs
-        ./packages/tools/scripts/check-changed-files.mjs
-        echo "exitcode=$?" >> $GITHUB_OUTPUT
-        exit 0
+  #   - name: Run file check script
+  #     if: contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+  #     id: check_files
+  #     run: |
+  #       git fetch origin main:refs/remotes/origin/main
+  #       set +e
+  #       chmod +x ./packages/tools/scripts/check-changed-files.mjs
+  #       ./packages/tools/scripts/check-changed-files.mjs
+  #       echo "exitcode=$?" >> $GITHUB_OUTPUT
+  #       exit 0
 
-    - name: Approve PR
-      if: steps.check_files.outputs.exitcode == 0 && contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
-      uses: hmarr/auto-approve-action@v4
-      with:
-        pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
-        review-message: "Auto approved by [auto-approve-action](https://github.com/kadena-community/kadena.js/blob/main/.github/workflows/ci.yml#L186)"
+  #   - name: Approve PR
+  #     if: steps.check_files.outputs.exitcode == 0 && contains(env.ALLOWED_DOCS_AUTHORS, steps.check_author.outputs.author)
+  #     uses: hmarr/auto-approve-action@v4
+  #     with:
+  #       pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
+  #       review-message: "Auto approved by [auto-approve-action](https://github.com/kadena-community/kadena.js/blob/main/.github/workflows/ci.yml#L186)"
 
   ci-gate:
     if: always()
@@ -216,10 +216,10 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=ref,event=pr
-  
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-  
+
       - name: Cache Docker layers
         uses: actions/cache@v4
         with:
@@ -227,14 +227,14 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-  
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-  
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v6

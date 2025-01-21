@@ -11,16 +11,19 @@ import {
 import { useSession } from '@/App/providers/session';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { UnlockPrompt } from '@/Components/UnlockPrompt/UnlockPrompt';
-import { ISetPhraseResponse, ISetSecurityPhrase } from '@/service-worker/types';
+import {
+  ISetPhraseResponse,
+  ISetSecurityPhrase,
+  PasswordKeepPolicy,
+} from '@/service-worker/types';
 import { throttle } from '@/utils/helpers';
 import { Session } from '@/utils/session';
-import { IClient, createClient } from '@kadena/client';
+import { IClient, INetworkOptions, createClient } from '@kadena/client';
 import { setGlobalConfig } from '@kadena/client-utils/core';
 import {
   Fungible,
   IAccount,
   IKeySet,
-  IWatchedAccount,
   accountRepository,
 } from '../account/account.repository';
 import * as AccountService from '../account/account.service';
@@ -37,13 +40,12 @@ import * as WalletService from './wallet.service';
 export type ExtWalletContextType = {
   profile: IProfile | undefined;
   accounts: IAccount[];
-  watchAccounts: IWatchedAccount[];
   keysets: IKeySet[];
   profileList: Pick<IProfile, 'name' | 'uuid' | 'accentColor' | 'options'>[];
   keySources: IKeySource[];
   fungibles: Fungible[];
   loaded: boolean;
-  activeNetwork: INetwork | undefined;
+  activeNetwork: (INetwork & { isHealthy?: boolean }) | undefined;
   networks: INetwork[];
   client: IClient;
   contacts: IContact[];
@@ -54,8 +56,7 @@ export const WalletContext = createContext<
       ExtWalletContextType,
       setProfile: (profile: IProfile | undefined) => Promise<null | {
         profile: IProfile;
-        accounts: Array<IAccount>;
-        watchedAccounts: Array<IWatchedAccount>;
+        accounts: IAccount[];
         keySources: IKeySource[];
       }>,
       setActiveNetwork: (activeNetwork: INetwork | undefined) => void,
@@ -76,7 +77,7 @@ function usePassword(profile: IProfile | undefined) {
   const prompt = usePrompt();
   const getPassword = useCallback(async () => {
     const phrase = await securityService.getSecurityPhrase(
-      Session.get('sessionId') as string,
+      (await Session.get('sessionId')) as string,
     );
     return phrase;
   }, []);
@@ -89,7 +90,7 @@ function usePassword(profile: IProfile | undefined) {
       const { result } = (await securityService.setSecurityPhrase({
         phrase: password,
         keepPolicy,
-        sessionEntropy: Session.get('sessionId') as string,
+        sessionEntropy: (await Session.get('sessionId')) as string,
       })) as ISetPhraseResponse;
       if (result !== 'success') {
         throw new Error('Failed to set password');
@@ -116,7 +117,7 @@ function usePassword(profile: IProfile | undefined) {
       }
       const storeData = async (unlockOptions: {
         password: string;
-        keepOpen: 'session' | 'short-time' | 'never';
+        keepOpen: PasswordKeepPolicy;
       }) => {
         if (!unlockOptions.password) {
           return null;
@@ -165,7 +166,9 @@ function usePassword(profile: IProfile | undefined) {
             <UnlockPrompt
               resolve={async ({ keepOpen }) => {
                 const pass = await WalletService.getWebAuthnPass(profile);
-                if (!pass) reject('Failed to unlock profile');
+                if (!pass) {
+                  throw new Error('Failed to unlock profile');
+                }
                 const unlockOptions = { password: pass, keepOpen };
                 if (storePassword) {
                   await storeData(unlockOptions);
@@ -194,7 +197,6 @@ const getDefaultContext = (): ExtWalletContextType => ({
   // profile related data
   profile: undefined,
   accounts: [],
-  watchAccounts: [],
   keySources: [],
   keysets: [],
   // independent data
@@ -227,16 +229,52 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     getDefaultContext(),
   );
 
+  const networkHostFunctionRef =
+    useRef<({ networkId, chainId }: INetworkOptions) => string>();
+
   useEffect(() => {
     channel.onmessage = (event) => {
       const { action, payload } = event.data;
       if (action === 'switch-profile') {
-        setProfile(payload);
+        setProfile(payload, true);
       }
     };
     return () => {
       // channel.close();
     };
+  }, []);
+
+  // check network health
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setContextValue((ctx) => {
+        const hostUrl = networkHostFunctionRef.current;
+        if (hostUrl && ctx.activeNetwork) {
+          try {
+            hostUrl({ networkId: ctx.activeNetwork.networkId, chainId: '0' });
+            if (ctx.activeNetwork.isHealthy === true) return ctx;
+            return {
+              ...ctx,
+              activeNetwork: {
+                ...ctx.activeNetwork,
+                isHealthy: true,
+              },
+            };
+          } catch (e) {
+            if (ctx.activeNetwork.isHealthy === false) return ctx;
+            return {
+              ...ctx,
+              activeNetwork: {
+                ...ctx.activeNetwork,
+                isHealthy: false,
+              },
+            };
+          }
+        }
+        return ctx;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -262,7 +300,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     setContextValue((ctx) => ({
       ...ctx,
       networks,
-      activeNetwork: ctx.activeNetwork ?? networks.find((n) => n.default),
+      activeNetwork:
+        ctx.activeNetwork &&
+        (!networks.length ||
+          networks.find((n) => n.uuid === ctx.activeNetwork?.uuid))
+          ? ctx.activeNetwork
+          : networks.find((n) => n.default),
     }));
 
     return networks;
@@ -306,31 +349,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         profileId,
         contextValue.activeNetwork?.uuid,
       );
+
       setContextValue((ctx) => ({
         ...ctx,
         accounts,
-      }));
-    },
-    [contextValue.activeNetwork?.uuid],
-  );
-
-  const retrieveWatchedAccounts = useCallback(
-    async (profileId: string) => {
-      if (!contextValue.activeNetwork?.uuid) {
-        setContextValue((ctx) => ({
-          ...ctx,
-          watchAccounts: [],
-        }));
-        return;
-      }
-      const watchAccounts =
-        await accountRepository.getWatchedAccountsByProfileId(
-          profileId,
-          contextValue.activeNetwork?.uuid,
-        );
-      setContextValue((ctx) => ({
-        ...ctx,
-        watchAccounts,
       }));
     },
     [contextValue.activeNetwork?.uuid],
@@ -395,11 +417,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
             retrieveAccounts(profileId);
           }
           break;
-        case 'watched-account':
-          if (profileId) {
-            retrieveWatchedAccounts(profileId);
-          }
-          break;
         case 'keyset':
           if (profileId) {
             retrieveKeysets(profileId);
@@ -425,7 +442,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     retrieveFungibles,
     retrieveKeysets,
     retrieveNetworks,
-    retrieveWatchedAccounts,
     contextValue.profile?.uuid,
     retrieveContacts,
   ]);
@@ -442,18 +458,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       if (!noSession) {
         await session.reset();
+        await session.set('profileId', profile.uuid);
       }
       const networkUUID =
         profile.selectedNetworkUUID || contextValue.activeNetwork?.uuid;
-      await session.set('profileId', profile.uuid);
       const accounts = networkUUID
         ? await accountRepository.getAccountsByProfileId(
-            profile.uuid,
-            networkUUID,
-          )
-        : [];
-      const watchedAccounts = networkUUID
-        ? await accountRepository.getWatchedAccountsByProfileId(
             profile.uuid,
             networkUUID,
           )
@@ -479,7 +489,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         keysets,
         activeNetwork: activeNetwork ?? ctx.activeNetwork,
       }));
-      return { profile, accounts, keySources, watchedAccounts };
+      return { profile, accounts, keySources };
     },
     [session],
   );
@@ -499,7 +509,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const loadSession = async () => {
       if (!session.isLoaded()) return;
-      const profileId = session.get('profileId') as string | undefined;
+      const profileId = (await session.get('profileId')) as string | undefined;
       if (profileId) {
         const profile = await walletRepository.getProfile(profileId);
         await setProfile(profile, true);
@@ -558,13 +568,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [retrieveAccounts, contextValue.profile?.uuid]);
 
   useEffect(() => {
-    if (contextValue.profile?.uuid) {
-      console.log('retrieving retrieveWatchedAccounts');
-      retrieveWatchedAccounts(contextValue.profile.uuid);
-    }
-  }, [retrieveWatchedAccounts, contextValue.profile?.uuid]);
-
-  useEffect(() => {
     // filter network if the id is the same but the uuid is different
     // e.g. multiple devnets
     const filteredNetworks = contextValue.networks.filter((network) => {
@@ -575,6 +578,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       );
     });
     const getHostUrl = hostUrlGenerator(filteredNetworks);
+
+    networkHostFunctionRef.current = getHostUrl;
 
     setGlobalConfig({
       host: getHostUrl,

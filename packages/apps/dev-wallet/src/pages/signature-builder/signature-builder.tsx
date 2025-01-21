@@ -1,15 +1,19 @@
 import {
   addSignatures,
+  ChainId,
   createTransaction,
   IPactCommand,
   IPartialPactCommand,
   ISigningRequest,
+  isSignedTransaction,
   IUnsignedCommand,
 } from '@kadena/client';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
-import { transactionRepository } from '@/modules/transaction/transaction.repository';
-import * as transactionService from '@/modules/transaction/transaction.service';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { normalizeTx } from '@/utils/normalizeSigs';
 import {
@@ -29,6 +33,7 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
+import { PactNumber } from '@kadena/pactjs';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import yaml from 'js-yaml';
@@ -153,31 +158,81 @@ export function SignatureBuilder() {
       unsignedTx.hash,
     );
 
+    const parsedCode =
+      'exec' in command.payload
+        ? execCodeParser(command.payload.exec.code)
+        : undefined;
+
+    const continuationData = {
+      autoContinue: false,
+      target: '' as ChainId,
+      source: '',
+      amount: NaN,
+    };
+
+    if (parsedCode && parsedCode[0]) {
+      const code = parsedCode[0];
+      if (code.function.name === 'transfer-crosschain') {
+        const targetObject = code.args[3] as { string: string };
+        continuationData.autoContinue = true;
+        continuationData.target = targetObject.string as ChainId;
+        continuationData.source = command.meta.chainId;
+        continuationData.amount = new PactNumber(
+          code.args[4] as unknown as { int: string } | { decimal: string },
+        ).toNumber();
+      }
+    }
+
+    const txWithMetaData = {
+      ...unsignedTx,
+      ...(continuationData.autoContinue
+        ? {
+            continuation: {
+              autoContinue: true,
+              crossChainId: continuationData.target,
+            },
+            purpose: {
+              type: 'cross-chain',
+              data: continuationData,
+            },
+          }
+        : {}),
+    };
+
     if (tx) {
-      if (unsignedTx.sigs && unsignedTx.sigs.length > 0) {
+      if (txWithMetaData.sigs && txWithMetaData.sigs.length > 0) {
         const updatedTx = addSignatures(
-          tx,
-          ...(unsignedTx.sigs.filter((item) => item && item.sig) as Array<{
+          txWithMetaData,
+          ...(txWithMetaData.sigs.filter((item) => item && item.sig) as Array<{
             sig: string;
             pubKey?: string;
           }>),
         );
         await transactionRepository.updateTransaction({
-          ...tx,
+          ...txWithMetaData,
           sigs: updatedTx.sigs,
-        });
+          status:
+            tx.status === 'initiated' && isSignedTransaction(txWithMetaData)
+              ? 'signed'
+              : tx.status,
+        } as ITransaction);
       }
-      navigate(`/transaction/${tx.groupId}`);
+      navigate(`/transaction/${tx.uuid}`);
       return;
     }
 
-    await transactionService.addTransaction({
-      transaction: unsignedTx,
+    const dbTx: ITransaction = {
+      ...txWithMetaData,
+      uuid: crypto.randomUUID(),
       profileId: profile.uuid,
       networkUUID: networkUUID,
+      status: isSignedTransaction(txWithMetaData) ? 'signed' : 'initiated',
       groupId,
-    });
-    navigate(`/transaction/${groupId}`);
+    };
+    console.log('dbTx', dbTx);
+    await transactionRepository.addTransaction(dbTx);
+
+    navigate(`/transaction/${dbTx.uuid}`);
   };
 
   return (

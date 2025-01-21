@@ -55,10 +55,13 @@ export const useFreeze = ({
 
   useEffect(() => {
     if (!data?.events?.length) return;
-    const params = JSON.parse(data?.events[0].parameters ?? '[]');
-    if (params.length < 2 || params[0] !== investorAccount) return;
 
-    setFrozen(params[1]);
+    data?.events?.map((evt) => {
+      const params = JSON.parse(evt.parameters ?? '[]');
+      if (params.length < 2 || params[0] !== investorAccount) return;
+
+      setFrozen(params[1]);
+    });
   }, [data]);
 
   return { frozen };

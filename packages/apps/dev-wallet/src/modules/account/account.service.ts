@@ -1,8 +1,4 @@
-import {
-  discoverAccount,
-  IDiscoveredAccount,
-  transferAllCommand,
-} from '@kadena/client-utils/coin';
+import { discoverAccount, transferAllCommand } from '@kadena/client-utils/coin';
 import {
   dirtyReadClient,
   estimateGas,
@@ -17,8 +13,7 @@ import {
   IAccount,
   IGuard,
   IKeySet,
-  isWatchedAccount,
-  IWatchedAccount,
+  IOwnedAccount,
 } from './account.repository';
 
 import {
@@ -38,6 +33,7 @@ import type { IKeyItem, IKeySource } from '../wallet/wallet.repository';
 
 import { config } from '@/config';
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { sleep } from '@/utils/helpers';
 import {
   composePactCommand,
   execution,
@@ -51,6 +47,7 @@ import { IRetrievedAccount } from './IRetrievedAccount';
 
 export type IWalletDiscoveredAccount = {
   chainId: ChainId;
+  networkUUID: UUID;
   result:
     | undefined
     | {
@@ -89,7 +86,7 @@ export async function createKAccount({
       keys: [publicKey],
     },
   };
-  const account: IAccount = {
+  const account: IOwnedAccount = {
     uuid: crypto.randomUUID(),
     alias: alias || '',
     profileId: profileId,
@@ -127,13 +124,13 @@ export const accountDiscovery = (
           chainResult: IWalletDiscoveredAccount[];
         }>;
       },
-      { event: 'accounts-saved'; data: IAccount[] },
+      { event: 'accounts-saved'; data: IOwnedAccount[] },
     ]
   >
 )(
   (emit) =>
     async (
-      network: INetwork,
+      networks: INetwork[],
       keySource: IKeySource,
       profileId: string,
       numberOfKeys = 20,
@@ -143,8 +140,7 @@ export const accountDiscovery = (
         throw new Error('Account discovery not supported for web-authn');
       }
       const keySourceService = await keySourceManager.get(keySource.source);
-      const accounts: IAccount[] = [];
-      const keysets: IKeySet[] = [];
+      const accounts: IOwnedAccount[] = [];
       const usedKeys: IKeyItem[] = [];
       const saveCallbacks: Array<() => Promise<void>> = [];
       for (let i = 0; i < numberOfKeys; i++) {
@@ -154,95 +150,91 @@ export const accountDiscovery = (
         }
         await emit('key-retrieved')(key);
         const principal = `k:${key.publicKey}`;
-        const chainResult = await discoverAccount(
-          principal,
-          network.networkId,
-          undefined,
-          contract,
-        )
-          .on('chain-result', async (data) => {
-            await emit('chain-result')({
-              chainId: data.chainId,
-              result: data.result
-                ? {
-                    ...data.result,
-                    guard: data.result.details.guard
-                      ? {
-                          ...data.result.details.guard,
-                          principal: data.result.principal,
-                        }
-                      : undefined,
-                  }
-                : undefined,
-            });
-          })
-          .execute();
-
-        if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
-          const availableKeyset = await accountRepository.getKeysetByPrincipal(
-            principal,
-            profileId,
-          );
-          usedKeys.push(key);
-          const keyset: IKeySet = availableKeyset || {
-            uuid: crypto.randomUUID(),
-            principal,
-            profileId,
-            guard: {
-              keys: [key.publicKey],
-              pred: 'keys-all',
-            },
-            alias: '',
-          };
-          if (!availableKeyset) {
-            keysets.push(keyset);
+        for (const network of networks) {
+          if (network.networkId === 'mainnet01') {
+            await sleep(config.ACCOUNTS.RATE_LIMIT);
           }
-          const account: IAccount = {
-            uuid: crypto.randomUUID(),
-            profileId,
-            networkUUID: network.uuid,
+
+          const chainResult = await discoverAccount(
+            principal,
+            network.networkId,
+            undefined,
             contract,
-            keysetId: keyset.uuid,
-            guard: {
-              keys: [key.publicKey],
-              pred: 'keys-all',
-              principal,
-            },
-            address: `k:${key.publicKey}`,
-            chains: chainResult
-              .filter(({ result }) => Boolean(result))
-              .map(({ chainId, result }) => ({
-                chainId: chainId!,
-                balance:
-                  new PactNumber(result!.details.balance).toDecimal() || '0.0',
-              })),
-            overallBalance: chainResult.reduce(
-              (acc, { result }) =>
-                result && result.details.balance
-                  ? new PactNumber(result.details.balance).plus(acc).toDecimal()
-                  : acc,
-              '0',
-            ),
-          };
-          accounts.push(account);
-          saveCallbacks.push(async () => {
-            if (!keySource.keys.find((k) => k.publicKey === key.publicKey)) {
-              await keySourceService.createKey(
-                keySource.uuid,
-                key.index as number,
-              );
-            }
-            if (!availableKeyset) {
-              await accountRepository.addKeyset(keyset);
-            }
-            await accountRepository.addAccount(account);
-          });
+          )
+            .on('chain-result', async (data) => {
+              await emit('chain-result')({
+                chainId: data.chainId,
+                networkUUID: network.uuid,
+                result: data.result
+                  ? {
+                      ...data.result,
+                      guard: data.result.details.guard
+                        ? {
+                            ...data.result.details.guard,
+                            principal: data.result.principal,
+                          }
+                        : undefined,
+                      balance: data.result.details.balance,
+                    }
+                  : undefined,
+              });
+            })
+            .execute()
+            .catch((error) => {
+              console.log('DISCOVERY_ERROR', error);
+              return [];
+            });
+
+          if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
+            usedKeys.push(key);
+            const account: IOwnedAccount = {
+              uuid: crypto.randomUUID(),
+              profileId,
+              networkUUID: network.uuid,
+              contract,
+              guard: {
+                keys: [key.publicKey],
+                pred: 'keys-all',
+                principal,
+              },
+              address: `k:${key.publicKey}`,
+              chains: chainResult
+                .filter(({ result }) => Boolean(result))
+                .map(({ chainId, result }) => ({
+                  chainId: chainId!,
+                  balance:
+                    new PactNumber(result!.details.balance).toDecimal() ||
+                    '0.0',
+                })),
+              overallBalance: chainResult.reduce(
+                (acc, { result }) =>
+                  result && result.details.balance
+                    ? new PactNumber(result.details.balance)
+                        .plus(acc)
+                        .toDecimal()
+                    : acc,
+                '0',
+              ),
+            };
+            accounts.push(account);
+            saveCallbacks.push(async () => {
+              if (!keySource.keys.find((k) => k.publicKey === key.publicKey)) {
+                await keySourceService.createKey(
+                  keySource.uuid,
+                  key.index as number,
+                );
+              }
+              await accountRepository.addAccount(account);
+            });
+          }
         }
       }
 
       await emit('query-done')(accounts);
 
-      await Promise.all(saveCallbacks.map((cb) => cb().catch(console.error)));
+      for (const cb of saveCallbacks) {
+        await cb().catch(console.error);
+      }
 
       keySourceService.clearCache();
       await emit('accounts-saved')(accounts);
@@ -261,9 +253,9 @@ export const hasSameGuard = (a?: IGuard, b?: IGuard) => {
   return false;
 };
 
-export const syncAccount = async (account: IAccount | IWatchedAccount) => {
+export const syncAccount = async (account: IAccount) => {
   const network = await networkRepository.getNetwork(account.networkUUID);
-  const patch: Partial<IAccount | IWatchedAccount> = {};
+  const patch: Partial<IAccount> = {};
 
   const chainResult = await discoverAccount(
     account.address,
@@ -273,12 +265,13 @@ export const syncAccount = async (account: IAccount | IWatchedAccount) => {
   )
     .execute()
     .catch((error) => {
-      console.error('DISCOVERY ERROR', error);
-      return [] as {
-        result: IDiscoveredAccount | undefined;
-        chainId: ChainId | undefined;
-      }[];
+      console.log('DISCOVERY_ERROR', error);
+      return undefined;
     });
+
+  if (!chainResult) {
+    return account;
+  }
 
   const filteredResult = chainResult.filter(
     ({ result }) =>
@@ -304,12 +297,9 @@ export const syncAccount = async (account: IAccount | IWatchedAccount) => {
     '0',
   );
   patch.syncTime = Date.now();
-  if (isWatchedAccount(account)) {
-    return accountRepository.patchWatchedAccount(account.uuid, patch);
-  }
   return accountRepository.patchAccount(
     account.uuid,
-    patch as Partial<IAccount>,
+    patch as Partial<IOwnedAccount>,
   );
 };
 
@@ -318,7 +308,10 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
     profileId,
     networkUUID,
   );
-  const watchedAccounts = await accountRepository.getWatchedAccountsByProfileId(
+
+  const network = await networkRepository.getNetwork(networkUUID);
+
+  const watchedAccounts = await accountRepository.getAccountsByProfileId(
     profileId,
     networkUUID,
   );
@@ -333,14 +326,15 @@ export const syncAllAccounts = async (profileId: string, networkUUID: UUID) => {
 
   await Promise.all(
     accountsToSync.map((account) =>
-      isWatchedAccount(account)
-        ? accountRepository.patchWatchedAccount(account.uuid, { syncTime: now })
-        : accountRepository.patchAccount(account.uuid, { syncTime: now }),
+      accountRepository.patchAccount(account.uuid, { syncTime: now }),
     ),
   );
 
   for (const account of accountsToSync) {
     result.push(await syncAccount(account));
+    if (network.networkId === 'mainnet01') {
+      await sleep(config.ACCOUNTS.RATE_LIMIT);
+    }
   }
 
   return result;
@@ -353,7 +347,7 @@ export async function fundAccount({
   profileId,
   network,
   chainId,
-}: Pick<IAccount, 'address' | 'guard' | 'profileId'> & {
+}: Pick<IOwnedAccount, 'address' | 'guard' | 'profileId'> & {
   chainId: ChainId;
   network: INetwork;
 }) {
@@ -434,7 +428,7 @@ export async function fundAccount({
 }
 
 export async function createMigrateAccountTransactions(
-  source: IAccount,
+  source: IOwnedAccount,
   target: IRetrievedAccount,
   ownedKeys: string[],
 ) {
