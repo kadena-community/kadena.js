@@ -29,6 +29,7 @@ import './query/events';
 import './query/fungible-account';
 import './query/fungible-accounts-by-public-key';
 import './query/fungible-chain-account';
+import './query/fungible-chain-accounts';
 import './query/fungible-chain-accounts-by-public-key';
 import './query/gas-limit-estimate';
 import './query/graph-configuration';
