@@ -40,8 +40,8 @@ export const InterfaceGuard = builder.interfaceType(GuardInterfaceClass, {
         return 'KeysetGuard';
       // case parsed && 'keysetref' in parsed:
       //   return 'KeysetRefGuard';
-      // case parsed && 'fun' in parsed:
-      //   return 'UserGuard';
+      case parsed && 'fun' in parsed:
+        return 'UserGuard';
       // case parsed && 'cgName' in parsed:
       //   return 'CapabilityGuard';
       // case parsed && 'moduleName' in parsed:
