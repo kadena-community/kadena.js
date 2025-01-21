@@ -3,7 +3,11 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [
-    ["@kadena/client", "@kadena/pactjs-generator", "@kadena/pactjs-cli"]
+    [
+      "@kadena/client",
+      "@kadena/pactjs-generator",
+      "@kadena/pactjs-cli"
+    ]
   ],
   "linked": [],
   "access": "public",
@@ -13,10 +17,8 @@
     "@kadena/bootstrap-lib",
     "@kadena/tools",
     "@kadena-dev/e2e-base",
-    "e2e-docs",
     "e2e-tools",
     "e2e-graph",
-    "e2e-proof-of-us",
-    "@kadena/docs"
+    "e2e-proof-of-us"
   ]
 }
