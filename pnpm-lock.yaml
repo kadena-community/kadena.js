@@ -1554,6 +1554,58 @@ importers:
         specifier: ~3.2.5
         version: 3.2.5
 
+  packages/e2e/e2e-dev-wallet:
+    dependencies:
+      '@kadena/tools':
+        specifier: workspace:*
+        version: link:../../apps/tools
+      '@playwright/test':
+        specifier: ^1.45.3
+        version: 1.46.1
+    devDependencies:
+      '@kadena-dev/e2e-base':
+        specifier: workspace:*
+        version: link:../e2e-base
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/eslint-plugin
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../../tools/markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
+      '@rushstack/eslint-config':
+        specifier: ~3.6.9
+        version: 3.6.10(eslint@8.57.0)(typescript@5.6.3)
+      '@types/node':
+        specifier: ^20.12.7
+        version: 20.16.5
+      eslint:
+        specifier: ^8.45.0
+        version: 8.57.0
+      eslint-import-resolver-typescript:
+        specifier: 3.5.5
+        version: 3.5.5(eslint-plugin-import@2.27.5)(eslint@8.57.0)
+      eslint-plugin-playwright:
+        specifier: 1.6.2
+        version: 1.6.2(eslint-plugin-jest@26.9.0(eslint@8.57.0)(typescript@5.6.3))(eslint@8.57.0)
+      playwright-i18next-fixture:
+        specifier: ^1.0.0
+        version: 1.0.0(@playwright/test@1.46.1)
+      prettier:
+        specifier: ~3.2.5
+        version: 3.2.5
+
   packages/e2e/e2e-graph:
     dependencies:
       '@kadena/chainweb-node-client':

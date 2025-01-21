@@ -246,6 +246,12 @@
     "path": "packages/e2e/e2e-tools"
   },
   {
+    "name": "e2e-dev-wallet",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-dev-wallet"
+  },
+  {
     "name": "wallet-sdk-example-app",
     "version": "0.0.4",
     "private": true,
