@@ -171,7 +171,9 @@ export const TxTile = ({
               paddingBlockEnd={'sm'}
             >
               <Text size="small">
-                The transaction is Signed; you can now call preflight
+                {sendDisabled
+                  ? 'Waiting for redistribution to complete'
+                  : 'The transaction is Signed; you can now call preflight'}
               </Text>
             </Stack>
           </>

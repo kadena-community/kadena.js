@@ -406,10 +406,26 @@ export function TransferForm({
     onSubmit(
       {
         ...data,
+        receivers: [
+          ...data.receivers,
+          ...xchainSameAccount.map((x) => ({
+            amount: x.amount,
+            address: senderAccount.address,
+            chain: x.target,
+            xchain: true,
+            chunks: [
+              {
+                amount: x.amount,
+                chainId: x.source,
+              },
+            ],
+            discoveredAccount: senderAccount,
+          })),
+        ],
         gasPayer: data.gasPayer || data.senderAccount,
         creationTime: data.creationTime ?? Math.floor(Date.now() / 1000),
       },
-      [...xchainSameAccount, ...redistribution],
+      [...redistribution],
     );
   }
 
