@@ -15,7 +15,7 @@ const config: PlaywrightTestConfig = {
   },
   use: {
     headless: process.env.CI !== undefined,
-    baseURL: 'http://localhost:1420',
+    baseURL: 'http://localhost:4173/',
     channel: 'chromium',
     trace: 'retain-on-failure',
     viewport: { width: 1080, height: 800 },
