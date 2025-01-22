@@ -2,7 +2,7 @@ import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
 import { useAccountTransfersQuery } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -94,13 +94,19 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           label: 'RequestKey',
           key: 'transaction.hash',
           width: '20%',
-          render: FormatLinkWrapper({ url: '/transaction/:value' }),
+          render: FormatLinkWrapper({
+            url: '/transaction/:value',
+            condition: (value) => !value && <Text>Mining reward</Text>,
+          }),
         },
         {
           label: 'Sender',
           key: 'senderAccount',
           width: '20%',
-          render: FormatLinkWrapper({ url: '/account/:value' }),
+          render: FormatLinkWrapper({
+            url: '/account/:value',
+            condition: (value) => !value && <Text>Coinbase</Text>,
+          }),
         },
         {
           label: 'Receiver',
@@ -117,17 +123,9 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           render: CompactTableFormatters.FormatAmount(),
         },
       ]}
-      data={innerData.node?.transfers.edges
-        .map((edge) => edge.node as Transfer)
-        .map((transfer) => ({
-          ...transfer,
-          senderAccount:
-            transfer.senderAccount.length === 0 ? 'Coinbase' : transfer.senderAccount,
-          transaction: {
-            ...transfer.transaction,
-            hash: transfer.transaction?.hash ?? 'Mining reward',
-          },
-        }))}
+      data={innerData.node?.transfers.edges.map(
+        (edge) => edge.node as Transfer,
+      )}
     />
   );
 };
