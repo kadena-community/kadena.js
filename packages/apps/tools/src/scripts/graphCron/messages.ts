@@ -24,9 +24,9 @@ export const sendErrorMessage = async ({
           },
         },
         {
-          type: 'rich_text',
+          type: 'section',
           text: {
-            type: 'rich_text',
+            type: 'mrkdwn',
             text: `${msg}`,
           },
         },
