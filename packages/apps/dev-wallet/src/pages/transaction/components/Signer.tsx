@@ -5,6 +5,7 @@ import {
   parseAsPactValue,
 } from '@kadena/client';
 import {
+  Badge,
   Button,
   Heading,
   Notification,
@@ -12,7 +13,7 @@ import {
   Text,
   TextareaField,
 } from '@kadena/kode-ui';
-import { FC, PropsWithChildren, useState } from 'react';
+import { FC, PropsWithChildren, useMemo, useState } from 'react';
 import {
   breakAllClass,
   codeClass,
@@ -51,12 +52,16 @@ export const RenderSigner = ({
   transactionStatus: ITransaction['status'];
   onSign: (sig: ITransaction['sigs']) => void;
 }) => {
-  const { getPublicKeyData, sign } = useWallet();
+  const { getPublicKeyData, sign, getKeyAlias } = useWallet();
   const signature = transaction.sigs.find(
     (sig) => sig?.pubKey === signer.pubKey && sig.sig,
   )?.sig;
   const info = getPublicKeyData(signer.pubKey);
   const [error, setError] = useState<string>();
+  const keyAlias = useMemo(
+    () => getKeyAlias(signer.pubKey),
+    [signer.pubKey, getKeyAlias],
+  );
   return (
     <>
       <Stack gap={'sm'}>
@@ -65,7 +70,11 @@ export const RenderSigner = ({
         {!signature && info && <Text className={readyToSignClass}>Owned</Text>}
         {<Text className={tagClass}>{info?.source ?? 'External'}</Text>}
       </Stack>
-      <Value className={breakAllClass}>{signer.pubKey}</Value>
+
+      <Stack gap={'sm'} alignItems={'center'}>
+        {keyAlias && <Badge size="sm">{keyAlias}</Badge>}
+        <Value className={breakAllClass}>{signer.pubKey}</Value>
+      </Stack>
       <Stack gap={'sm'} justifyContent={'space-between'}></Stack>
       <Stack gap={'sm'} flexDirection={'column'}>
         <Heading variant="h5">Sign for</Heading>

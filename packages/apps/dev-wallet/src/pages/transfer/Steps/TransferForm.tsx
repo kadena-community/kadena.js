@@ -431,6 +431,8 @@ export function TransferForm({
 
   const senderChain = watch('chain');
 
+  const isSafeTransfer = watch('type') === 'safeTransfer';
+
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <Stack flexDirection="column" gap="md" flex={1} width="100%">
@@ -664,9 +666,7 @@ export function TransferForm({
                                     <Stack flexDirection={'column'}>
                                       <AccountSearchBox
                                         accounts={filteredAccounts}
-                                        hideKeySelector={
-                                          getValues('type') !== 'safeTransfer'
-                                        }
+                                        hideKeySelector={!isSafeTransfer}
                                         watchedAccounts={
                                           filteredWatchedAccounts
                                         }
