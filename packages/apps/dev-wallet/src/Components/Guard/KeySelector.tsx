@@ -1,7 +1,8 @@
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { BuiltInPredicate } from '@kadena/client';
 import { MonoKey } from '@kadena/kode-icons/system';
-import { Checkbox, Stack, Text } from '@kadena/kode-ui';
+import { Badge, Checkbox, Stack, Text } from '@kadena/kode-ui';
 
 export const KeySelector = ({
   guard,
@@ -12,6 +13,11 @@ export const KeySelector = ({
   onSelect: (keys: string[]) => void;
   selectedKeys: string[];
 }) => {
+  const { getKeyAlias } = useWallet();
+  const keysWithAlias = guard.keys.map((key) => ({
+    key,
+    alias: getKeyAlias(key),
+  }));
   return (
     <Stack
       flexWrap="wrap"
@@ -21,11 +27,12 @@ export const KeySelector = ({
       marginBlock={'xs'}
     >
       <Text size="smallest">{guard.pred}:</Text>
-      {guard.keys.map((key) => (
+      {keysWithAlias.map(({ key, alias }) => (
         <Stack key={key} gap="sm" alignItems={'center'}>
           <Text size="smallest">
             <MonoKey />
           </Text>
+          {keysWithAlias.length > 1 && <Badge size="sm">{alias}</Badge>}
           <Text variant="code" size="smallest">
             <Checkbox
               isSelected={selectedKeys.includes(key)}
@@ -39,7 +46,7 @@ export const KeySelector = ({
                 onSelect(updated);
               }}
             >
-              {shorten(key!)}
+              {(<Text size="smallest">{shorten(key!)}</Text>) as any}
             </Checkbox>
           </Text>
         </Stack>

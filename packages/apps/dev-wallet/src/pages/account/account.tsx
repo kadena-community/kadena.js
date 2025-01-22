@@ -24,6 +24,7 @@ import {
   MonoWallet,
 } from '@kadena/kode-icons/system';
 import {
+  Badge,
   Button,
   Heading,
   Stack,
@@ -54,6 +55,7 @@ export function AccountPage() {
     watchAccounts,
     client,
     isOwnedAccount,
+    getKeyAlias,
   } = useWallet();
   const [redistributionGroupId, setRedistributionGroupId] = useState<string>();
   const account =
@@ -296,21 +298,28 @@ export function AccountPage() {
                       {account.guard.pred}
                     </Text>
                   </Stack>
-                  <Stack flexDirection={'column'} gap={'sm'}>
+                  <Stack flexDirection={'column'} gap={'md'}>
                     <Text>Keys</Text>
                     {account.guard.keys.map((key) => (
-                      <Stack
-                        key={key}
-                        gap="sm"
-                        alignItems={'center'}
-                        className={addressBreakClass}
-                      >
-                        <Text>
-                          <MonoKey />
-                        </Text>
-                        <Text variant="code" color="emphasize">
-                          {key}
-                        </Text>
+                      <Stack key={key} gap="sm" flexDirection={'column'}>
+                        <Stack key={key} gap="sm" alignItems={'center'}>
+                          {isKeysetGuard(account.guard) &&
+                            account.guard.keys.length > 1 && (
+                              <Badge size="sm">{getKeyAlias(key)}</Badge>
+                            )}
+                        </Stack>
+                        <Stack gap="sm" alignItems={'center'}>
+                          <Text>
+                            <MonoKey />
+                          </Text>
+                          <Text
+                            variant="code"
+                            color="emphasize"
+                            className={addressBreakClass}
+                          >
+                            {key}
+                          </Text>
+                        </Stack>
                       </Stack>
                     ))}
                   </Stack>
