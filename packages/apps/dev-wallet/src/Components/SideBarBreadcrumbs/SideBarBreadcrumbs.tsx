@@ -11,6 +11,7 @@ export const SideBarBreadcrumbs: FC<
 
   return (
     <SideBarBreadcrumbsUI
+      data-testid="breadcrumbs"
       {...props}
       badge={
         <Stack paddingInlineEnd={'sm'}>

@@ -52,6 +52,7 @@ export const SideBarAside: FC<{
         })}
       ></Stack>
       <aside
+        data-testid="rightaside"
         className={asideWrapperClass({
           expanded: isRightAsideExpanded,
         })}

@@ -167,7 +167,7 @@ export const asideContentClass = style([
     flex: 1,
   }),
   {
-    overflowY: 'scroll',
+    overflowY: 'auto',
     height: `calc(100dvh - ${minHeaderHeight})`,
   },
   responsiveStyle({

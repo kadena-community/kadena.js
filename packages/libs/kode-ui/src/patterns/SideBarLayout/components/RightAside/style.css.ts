@@ -1,7 +1,11 @@
 import { atoms, globalStyle, style, token } from './../../../../styles';
 
 export const rightAsideClass = style([
-  atoms({ display: 'flex', flexDirection: 'column', flex: 1 }),
+  atoms({
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+  }),
   {},
 ]);
 export const rightAsideContentClass = style([

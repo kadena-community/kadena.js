@@ -74,7 +74,9 @@ export class ChainweaverAppIndex {
     actor: Page,
     network: { networkId: string; title: string; host: string },
   ): Promise<boolean> {
+    await expect(actor.getByTestId('rightaside')).not.toBeInViewport();
     await actor.getByRole('button', { name: 'Add Network' }).click();
+    await expect(actor.getByTestId('rightaside')).toBeInViewport();
     const icon = actor.getByTestId('testnetworkicon');
     const saveButton = actor.getByRole('button', { name: 'Save' });
 
@@ -95,9 +97,15 @@ export class ChainweaverAppIndex {
 
     await expect(saveButton).not.toHaveAttribute('disabled');
     await saveButton.click();
-    await expect(
-      actor.getByRole('heading', { name: 'Add Network' }),
-    ).toBeHidden();
+
+    await actor.waitForTimeout(500);
+    await expect(actor.getByTestId('rightaside')).not.toBeInViewport();
+    return true;
+  }
+  public async selectNetwork(actor: Page, network: string): Promise<boolean> {
+    await actor.getByTestId('networkselector').first().click();
+    await actor.getByRole('button', { name: network }).click();
+
     return true;
   }
 }
