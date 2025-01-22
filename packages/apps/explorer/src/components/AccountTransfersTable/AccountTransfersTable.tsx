@@ -80,19 +80,19 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
       fields={[
         {
           label: 'ChainId',
-          key: 'chainId',
+          key: 'block.chainId',
           variant: 'code',
           width: '10%',
         },
         {
           label: 'Height',
-          key: 'height',
+          key: 'block.height',
           variant: 'code',
           width: '10%',
         },
         {
           label: 'RequestKey',
-          key: 'requestKey',
+          key: 'transaction.hash',
           width: '20%',
           render: FormatLinkWrapper({ url: '/transaction/:value' }),
         },
@@ -117,9 +117,17 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
           render: CompactTableFormatters.FormatAmount(),
         },
       ]}
-      data={innerData.node?.transfers.edges.map(
-        (edge) => edge.node as Transfer,
-      )}
+      data={innerData.node?.transfers.edges
+        .map((edge) => edge.node as Transfer)
+        .map((transfer) => ({
+          ...transfer,
+          senderAccount:
+            transfer.senderAccount.length === 0 ? 'Coinbase' : transfer.senderAccount,
+          transaction: {
+            ...transfer.transaction,
+            hash: transfer.transaction?.hash ?? 'Mining reward',
+          },
+        }))}
     />
   );
 };
