@@ -18,10 +18,16 @@ document.documentElement.classList.add(darkThemeClass);
 
 export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 
-export function PactConsole({ sessionId }: { sessionId: string }) {
+export function PactConsole({
+  sessionId,
+  target,
+}: {
+  sessionId: string;
+  target: Window;
+}) {
   const message = useMemo(
-    () => communicate(window, window.parent, 'pact-remote-console', sessionId),
-    [sessionId],
+    () => communicate(window, target, 'pact-remote-console', sessionId),
+    [sessionId, target],
   );
   const [networks, setNetworks] = useState<INetwork[]>([]);
   const [counter, setCounter] = useState<number>(0);

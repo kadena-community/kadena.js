@@ -18,7 +18,7 @@ type Plugin = {
 };
 
 // plugin whitelist
-const registries = ['/hosted-plugins'];
+const registries = ['/hosted-plugins', 'https://localhost:3000/test-plugins'];
 
 function escapeHTML(input: string) {
   return input
@@ -50,7 +50,7 @@ const getDoc = (plugin: Plugin, sessionId: string) => {
     </script>
     <script type="module">
       import { createApp } from '${src}';
-      createApp(document.getElementById('plugin-root'), { sessionId: '${sessionId}' });
+      createApp(document.getElementById('plugin-root'), { sessionId: '${sessionId}' }, window.parent);
     </script>
   </body>
 </html>`;

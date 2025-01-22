@@ -6,10 +6,11 @@ import { PactConsole } from './pact-console';
 export function createApp(
   domElement: HTMLElement,
   { sessionId }: { sessionId: string },
+  target: Window,
 ) {
   ReactDOM.createRoot(domElement).render(
     <React.StrictMode>
-      <PactConsole sessionId={sessionId} />
+      <PactConsole sessionId={sessionId} target={target} />
     </React.StrictMode>,
   );
 }

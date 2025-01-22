@@ -28,7 +28,7 @@ type Request = Message & {
   reject: (error: unknown) => void;
 };
 
-const handle = (
+const messageHandle = (
   type: RequestType,
   handler: (
     message: Message,
@@ -58,10 +58,31 @@ export const useRequests = () => {
   return requests;
 };
 
-export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
+export const CommunicationProvider: FC<
+  PropsWithChildren<{
+    handle?: (
+      type: RequestType,
+      handler: (message: Message) => Promise<
+        | {
+            payload: unknown;
+          }
+        | {
+            error: unknown;
+          }
+      >,
+    ) => () => void;
+    uiLoader?: (route: string) => void;
+  }>
+> = ({ children, handle = messageHandle, uiLoader }) => {
   const { setOrigin } = useGlobalState();
   const [requests] = useState(() => new Map<string, Request>());
-  const navigate = usePatchedNavigate();
+  const routeNavigate = usePatchedNavigate();
+  const navigate =
+    uiLoader ||
+    ((route: string) => {
+      setOrigin(route);
+      routeNavigate(route);
+    });
   const { isUnlocked, accounts, profile, networks, activeNetwork } =
     useWallet();
 
