@@ -1,4 +1,5 @@
 import { test as baseTest } from '@playwright/test';
+import { ChainweaverAppIndex } from '../../page-objects/chainweaver/chainweaverApp.index';
 import { DocsAppIndex } from '../../page-objects/docs-app/docsApp.index';
 import { ProofOfUsAppIndex } from '../../page-objects/proof-of-us/proofOfusApp.index';
 import { SpireKeyIndex } from '../../page-objects/spirekey/spirekeyInline.index';
@@ -9,6 +10,7 @@ export const test = baseTest.extend<{
   docsApp: DocsAppIndex;
   proofOfusApp: ProofOfUsAppIndex;
   spirekeyApp: SpireKeyIndex;
+  chainweaverApp: ChainweaverAppIndex;
 }>({
   toolsApp: async ({ page }, use) => {
     await use(new ToolsAppIndex(page));
@@ -21,5 +23,8 @@ export const test = baseTest.extend<{
   },
   spirekeyApp: async ({}, use) => {
     await use(new SpireKeyIndex());
+  },
+  chainweaverApp: async ({}, use) => {
+    await use(new ChainweaverAppIndex());
   },
 });

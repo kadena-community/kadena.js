@@ -970,6 +970,14 @@ export type EventSubscriptionSubscriptionVariables = Exact<{
 
 export type EventSubscriptionSubscription = { __typename?: 'Subscription', events?: Array<{ __typename?: 'Event', parameters?: string | null }> | null };
 
+export type EventSubscriptionFilteredSubscriptionVariables = Exact<{
+  qualifiedName: Scalars['String']['input'];
+  parametersFilter: Scalars['String']['input'];
+}>;
+
+
+export type EventSubscriptionFilteredSubscription = { __typename?: 'Subscription', events?: Array<{ __typename?: 'Event', parameters?: string | null }> | null };
+
 export type CoreEventsFieldsFragment = { __typename?: 'Event', chainId: any, requestKey: string, parameters?: string | null, block: { __typename?: 'Block', height: any, creationTime: any } };
 
 export type InvestorTransfersEventsQueryVariables = Exact<{
@@ -1077,6 +1085,37 @@ export function useEventSubscriptionSubscription(baseOptions: Apollo.Subscriptio
       }
 export type EventSubscriptionSubscriptionHookResult = ReturnType<typeof useEventSubscriptionSubscription>;
 export type EventSubscriptionSubscriptionResult = Apollo.SubscriptionResult<EventSubscriptionSubscription>;
+export const EventSubscriptionFilteredDocument = gql`
+    subscription eventSubscriptionFiltered($qualifiedName: String!, $parametersFilter: String!) {
+  events(qualifiedEventName: $qualifiedName, parametersFilter: $parametersFilter) {
+    parameters
+  }
+}
+    `;
+
+/**
+ * __useEventSubscriptionFilteredSubscription__
+ *
+ * To run a query within a React component, call `useEventSubscriptionFilteredSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useEventSubscriptionFilteredSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEventSubscriptionFilteredSubscription({
+ *   variables: {
+ *      qualifiedName: // value for 'qualifiedName'
+ *      parametersFilter: // value for 'parametersFilter'
+ *   },
+ * });
+ */
+export function useEventSubscriptionFilteredSubscription(baseOptions: Apollo.SubscriptionHookOptions<EventSubscriptionFilteredSubscription, EventSubscriptionFilteredSubscriptionVariables> & ({ variables: EventSubscriptionFilteredSubscriptionVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<EventSubscriptionFilteredSubscription, EventSubscriptionFilteredSubscriptionVariables>(EventSubscriptionFilteredDocument, options);
+      }
+export type EventSubscriptionFilteredSubscriptionHookResult = ReturnType<typeof useEventSubscriptionFilteredSubscription>;
+export type EventSubscriptionFilteredSubscriptionResult = Apollo.SubscriptionResult<EventSubscriptionFilteredSubscription>;
 export const InvestorTransfersEventsDocument = gql`
     query investorTransfersEvents($qualifiedName: String!, $parametersFilter: String!) {
   events(qualifiedEventName: $qualifiedName, parametersFilter: $parametersFilter) {

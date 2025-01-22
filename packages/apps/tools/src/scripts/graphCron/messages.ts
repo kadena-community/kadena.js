@@ -1,3 +1,5 @@
+import { markdownToBlocks } from '@tryfabric/mack';
+import { log } from '.';
 import { channelId, tokenId } from './../constants';
 
 export const sendErrorMessage = async ({
@@ -15,22 +17,18 @@ export const sendErrorMessage = async ({
     },
     body: JSON.stringify({
       channel: `${channelId}`,
-      blocks: JSON.stringify([
-        {
-          type: 'header',
-          text: {
-            type: 'plain_text',
-            text: title ? title : `Error in Graph check! 🚨`,
-          },
-        },
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: `${msg}`,
-          },
-        },
-      ]),
+      blocks: log(
+        JSON.stringify(
+          await markdownToBlocks(
+            [title ? `# ${title}` : `# Error in Graph check! 🚨`, `${msg}`]
+              .filter(Boolean)
+              .join('\n'),
+          ),
+        ),
+        'Sending Error Message:',
+      ),
     }),
-  });
+  })
+    .then(async (res) => console.log(await res.json()))
+    .catch(console.error);
 };

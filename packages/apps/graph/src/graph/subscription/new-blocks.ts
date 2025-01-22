@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { CHAINS } from '@kadena/chainweb-node-client';
 import type { Block } from '@prisma/client';
 import { networkData } from '@utils/network';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
@@ -11,7 +12,7 @@ builder.subscriptionField('newBlocks', (t) =>
     description: 'Subscribe to new blocks.',
     args: {
       chainIds: t.arg.stringList({
-        required: false,
+        defaultValue: [...CHAINS],
         validate: {
           minLength: 1,
           items: {

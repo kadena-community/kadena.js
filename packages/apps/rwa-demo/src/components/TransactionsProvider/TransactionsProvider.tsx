@@ -3,6 +3,7 @@ import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
+import { analyticsEvent } from '@/utils/analytics';
 import { store } from '@/utils/store';
 import { useApolloClient } from '@apollo/client';
 import type { ICommandResult } from '@kadena/client';
@@ -56,6 +57,8 @@ export interface ITransaction {
   uuid: string;
   requestKey: string;
   type: ITxType;
+  chainId?: string;
+  networkId?: string;
   listener?: any;
   accounts: string[];
   result?: ICommandResult['result'];
@@ -137,6 +140,15 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
             nextData?.errors?.length !== undefined ||
             nextData?.data?.transaction?.result.badResult
           ) {
+            analyticsEvent(`error:${data.type.name}`, {
+              name: data.type.name,
+              chainId: data?.chainId ?? '',
+              networkId: data?.networkId ?? '',
+              requestKey: data?.requestKey ?? '',
+              message: JSON.stringify(
+                nextData?.data.transaction?.result.badResult,
+              ),
+            });
             addNotification({
               intent: 'negative',
               label: 'there was an error',
@@ -153,6 +165,14 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
           }
         },
         (errorData) => {
+          analyticsEvent(`error:${data.type.name}`, {
+            name: data.type.name,
+            chainId: data?.chainId ?? '',
+            networkId: data?.networkId ?? '',
+            requestKey: data?.requestKey ?? '',
+            message: JSON.stringify(errorData),
+          });
+
           addNotification({
             intent: 'negative',
             label: 'there was an error',
@@ -161,6 +181,12 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
           });
         },
         () => {
+          analyticsEvent(data.type.name, {
+            chainId: data?.chainId ?? '',
+            networkId: data?.networkId ?? '',
+            requestKey: data?.requestKey ?? '',
+            message: data?.result?.status,
+          });
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           store.removeTransaction(data);
         },
@@ -251,8 +277,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const setTxsAnimationRef = (ref: HTMLDivElement) => {
     setTxsAnimationRefData(ref);
   };
-
-  console.log({ transactions });
 
   return (
     <TransactionsContext.Provider

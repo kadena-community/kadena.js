@@ -176,7 +176,6 @@ export const profileTables = [
   'encryptedValue',
   'keySource',
   'account',
-  'watched-account',
   'keyset',
   'transaction',
   'activity',

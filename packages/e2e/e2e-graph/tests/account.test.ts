@@ -49,13 +49,17 @@ test('Query: getAccount by AccountName', async ({ request }) => {
             {
               node: {
                 amount: 100,
-                chainId: 0,
                 crossChainTransfer: null,
-                height: accountCreationResult.metaData?.blockHeight,
                 receiverAccount: testAccount.account,
                 requestKey: accountCreationResult.reqKey,
                 senderAccount: sender00Account.account,
                 transaction: {
+                  result: {
+                    block: {
+                      height: accountCreationResult.metaData?.blockHeight,
+                      chainId: 0,
+                    },
+                  },
                   cmd: {
                     payload: {},
                   },

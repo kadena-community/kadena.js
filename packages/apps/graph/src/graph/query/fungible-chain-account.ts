@@ -17,7 +17,7 @@ builder.queryField('fungibleChainAccount', (t) =>
         },
       }),
       fungibleName: t.arg.string({
-        required: false,
+        defaultValue: dotenv.DEFAULT_FUNGIBLE_NAME,
         validate: {
           minLength: 1,
         },
@@ -34,9 +34,9 @@ builder.queryField('fungibleChainAccount', (t) =>
     complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
-        return await getFungibleChainAccount({
+        return getFungibleChainAccount({
           chainId: args.chainId,
-          fungibleName: args.fungibleName || dotenv.DEFAULT_FUNGIBLE_NAME,
+          fungibleName: args.fungibleName as string,
           accountName: args.accountName,
         });
       } catch (error) {

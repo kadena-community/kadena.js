@@ -23,6 +23,7 @@
 /packages/e2e/e2e-graph                         
 /packages/e2e/e2e-proof-of-us                   
 /packages/e2e/e2e-tools                         
+/packages/e2e/e2e-dev-wallet                         
 
 # Libraries
 /packages/libs/bootstrap-lib                    

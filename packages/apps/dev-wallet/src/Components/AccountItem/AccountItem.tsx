@@ -1,7 +1,5 @@
-import {
-  IOwnedAccount,
-  IWatchedAccount,
-} from '@/modules/account/account.repository';
+import { IAccount } from '@/modules/account/account.repository';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { hashStyle } from '@/pages/activities/style.css';
 import { noStyleLinkClass } from '@/pages/home/style.css';
@@ -11,9 +9,9 @@ import { Link } from 'react-router-dom';
 import { ListItem } from '../ListItem/ListItem';
 
 export function AccountItem({
-  account: { uuid, alias, address, overallBalance, contract },
+  account: { uuid, alias, address, overallBalance, contract, guard },
 }: {
-  account: IOwnedAccount | IWatchedAccount;
+  account: IAccount;
 }) {
   const { fungibles } = useWallet();
   const getSymbol = (contract: string) =>
@@ -53,7 +51,13 @@ export function AccountItem({
                 variant="transparent"
                 onClick={(e) => {
                   e.preventDefault();
-                  navigator.clipboard.writeText(address);
+                  if (address.startsWith('w:') && isKeysetGuard(guard)) {
+                    navigator.clipboard.writeText(
+                      `${address}:${guard.keys.join(':')}`,
+                    );
+                  } else {
+                    navigator.clipboard.writeText(address);
+                  }
                 }}
               >
                 <MonoContentCopy />

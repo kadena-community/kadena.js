@@ -133,6 +133,9 @@ e2e-graph:
 e2e-tools:
   - changed-files:
       - any-glob-to-any-file: packages/e2e/e2e-tools/*
+e2e-dev-wallet:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-dev-wallet/*
 kadena.js:
   - changed-files:
       - any-glob-to-any-file: packages/libs/kadena.js/*

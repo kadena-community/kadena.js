@@ -1,6 +1,6 @@
 {
   "name": "@kadena/dev-wallet",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "description": "Kadena developer wallet",
   "type": "module",
@@ -8,6 +8,7 @@
     "prebuild": "npm run generate-coin-type",
     "build": "pnpm run prebuild && tsc && vite build",
     "build-dev": "tsc && vite build --mode development --watch",
+    "build:e2e": "NODE_ENV=test pnpm run build",
     "build:watch": "pnpm run build && concurrently \"chokidar './src/**' './node_modules/@kadena/**' -s -t 500  --command './node_modules/.bin/vite build' \" \"pnpm run preview --port 1420\"",
     "dev": "vite --force",
     "dev:chainweaver": "concurrently \"chokidar './src/**' --command './node_modules/.bin/vite build' --initial\" \"pnpm run preview --port 3002\"",

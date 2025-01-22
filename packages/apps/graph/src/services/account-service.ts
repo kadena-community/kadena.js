@@ -31,8 +31,6 @@ export async function getFungibleChainAccount({
         accountName,
         fungibleName,
         guard: {
-          keys: accountDetails.guard.keys,
-          predicate: accountDetails.guard.pred,
           raw: JSON.stringify(accountDetails.guard),
         },
         balance: accountDetails.balance,

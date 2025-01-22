@@ -1,5 +1,12 @@
 # wallet-sdk-example-app
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies \[ebc4e5c]
+  - @kadena/kode-ui\@0.20.1
+
 ## 0.0.3
 
 ### Patch Changes

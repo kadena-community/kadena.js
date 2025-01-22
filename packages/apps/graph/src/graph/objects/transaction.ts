@@ -110,7 +110,6 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
               : null,
             height: parent.height,
             logs: parent.logs,
-            metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
             eventCount: parent.eventCount,
             transactionId: parent.transactionId,
             blockHash: parent.blockHash,

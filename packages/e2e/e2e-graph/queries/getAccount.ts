@@ -25,7 +25,7 @@ export function getAccountQuery(accountName: string) {
                 ...CoreTransferFields
               }
               transaction {
-                cmd{
+                cmd {
                   payload {
                     ... on ContinuationPayload {
                       pactId
@@ -66,17 +66,27 @@ export function getAccountQuery(accountName: string) {
       }
       result {
         ... on TransactionResult {
-          height
+          block {
+            height
+          }
         }
       }
     }
     fragment CoreTransferFields on Transfer {
       amount
-      chainId
       senderAccount
-      height
       requestKey
       receiverAccount
+      transaction {
+      	result {
+          ... on TransactionResult {
+            block {
+              chainId
+              height
+            }
+          }
+        }
+      }
     }`,
     variables: { fungibleName: 'coin', accountName: accountName },
     operationName: 'getAccount',

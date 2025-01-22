@@ -6,7 +6,8 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-import { Stack, Themes, useTheme } from '@kadena/kode-ui';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { Badge, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
   SideBarFooterItem,
@@ -17,11 +18,13 @@ import classNames from 'classnames';
 import { FC, useMemo } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
+import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
 import {
   isExpandedMainClass,
   isNotExpandedClass,
   mainContainerClass,
+  mobileNetworkClass,
 } from './style.css';
 
 export const Layout: FC = () => {
@@ -29,6 +32,7 @@ export const Layout: FC = () => {
   const location = useLocation();
   const navigate = usePatchedNavigate();
   const { isExpanded } = useLayout();
+  const { activeNetwork } = useWallet();
 
   const innerLocation = useMemo(
     () => ({
@@ -44,10 +48,28 @@ export const Layout: FC = () => {
     setTheme(newTheme);
   };
 
+  const network = activeNetwork?.name || activeNetwork?.networkId;
+
   return (
     <>
       <SideBarLayout
         location={innerLocation}
+        logo={
+          <Stack gap={'sm'} flexDirection={'row'} alignItems={'center'}>
+            <Link to="/">
+              <KLogo height={40} />
+            </Link>
+            {network && (
+              <Badge
+                size="sm"
+                style="highContrast"
+                className={mobileNetworkClass}
+              >
+                {network}
+              </Badge>
+            )}
+          </Stack>
+        }
         sidebar={<SideBar />}
         footer={
           <SideBarFooter>

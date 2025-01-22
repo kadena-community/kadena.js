@@ -39,13 +39,17 @@ const TransactionResult = builder.objectType('TransactionResult', {
     height: t.expose('height', {
       description: 'The height of the block this transaction belongs to.',
       type: 'BigInt',
+      deprecationReason: 'Use `block.height` instead.',
+    }),
+    metadata: t.string({
+      deprecationReason: 'Not used.',
+      resolve: () => 'GraphQL Error: Field `metadata` is deprecated',
     }),
     logs: t.exposeString('logs', {
       description:
         'Identifier to retrieve the logs for the execution of the transaction.',
       nullable: true,
     }),
-    metadata: t.exposeString('metadata', { nullable: true }),
     eventCount: t.expose('eventCount', { type: 'BigInt', nullable: true }),
     transactionId: t.expose('transactionId', {
       type: 'BigInt',

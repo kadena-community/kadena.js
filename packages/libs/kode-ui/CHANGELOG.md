@@ -1,5 +1,11 @@
 # @kadena/kode-ui
 
+## 0.20.1
+
+### Patch Changes
+
+- ebc4e5c: fix the sizing of the compactdatatable
+
 ## 0.20.0
 
 ### Minor Changes
