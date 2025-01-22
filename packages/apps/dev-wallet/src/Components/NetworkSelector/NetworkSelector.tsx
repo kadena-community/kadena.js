@@ -38,6 +38,7 @@ export const NetworkSelector: FC<{
     <ContextMenu
       trigger={
         <Button
+          data-testid="networkselector"
           variant={variant}
           isCompact={isCompact}
           startVisual={
