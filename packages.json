@@ -252,6 +252,12 @@
     "path": "packages/e2e/e2e-dev-wallet"
   },
   {
+    "name": "e2e-rwa-demo",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-rwa-demo"
+  },
+  {
     "name": "wallet-sdk-example-app",
     "version": "0.0.4",
     "private": true,

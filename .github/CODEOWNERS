@@ -24,6 +24,7 @@
 /packages/e2e/e2e-proof-of-us                   
 /packages/e2e/e2e-tools                         
 /packages/e2e/e2e-dev-wallet                         
+/packages/e2e/e2e-rwa-demo                        
 
 # Libraries
 /packages/libs/bootstrap-lib                    

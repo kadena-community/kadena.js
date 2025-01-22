@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ['tools', 'graph', 'dev-wallet']
+        app: ['tools', 'graph', 'dev-wallet', 'rwa-demo']
 
     steps:
       - uses: actions/checkout@v4
