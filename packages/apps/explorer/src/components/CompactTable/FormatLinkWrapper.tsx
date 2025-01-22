@@ -24,12 +24,27 @@ export const valueToString = (value: string | string[]): string => {
   return value;
 };
 
-export const FormatLinkWrapper = ({ url }: ICompactTableFormatterLinkProps) => {
-  const Component = ({ value }: ICompactTableFormatterProps) => (
-    <Link href={formatURL(url, valueToString(value))} passHref legacyBehavior>
-      {CompactTableFormatters.FormatLink({ url })({ value })}
-    </Link>
-  );
+export const FormatLinkWrapper = ({
+  url,
+  condition,
+}: ICompactTableFormatterLinkProps & {
+  condition?: (
+    value: ICompactTableFormatterProps['value'],
+  ) => JSX.Element | false;
+}) => {
+  const Component = ({ value }: ICompactTableFormatterProps) => {
+    if (condition) {
+      const conditionResult = condition(value);
+      if (conditionResult) {
+        return conditionResult;
+      }
+    }
+    return (
+      <Link href={formatURL(url, valueToString(value))} passHref legacyBehavior>
+        {CompactTableFormatters.FormatLink({ url })({ value })}
+      </Link>
+    );
+  };
 
   return Component;
 };
