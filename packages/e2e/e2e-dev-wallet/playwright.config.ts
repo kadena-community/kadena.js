@@ -15,10 +15,11 @@ const config: PlaywrightTestConfig = {
   },
   use: {
     headless: process.env.CI !== undefined,
-    baseURL: 'http://localhost:4173',
+    baseURL: 'http://localhost:1420',
     channel: 'chromium',
     trace: 'retain-on-failure',
-    viewport: { width: 1920, height: 1080 },
+    viewport: { width: 1080, height: 800 },
+    testIdAttribute: 'data-testid',
   },
 
   projects: [

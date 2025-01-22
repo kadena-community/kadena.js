@@ -55,4 +55,49 @@ export class ChainweaverAppIndex {
 
     return true;
   }
+  public async goToSettings(actor: Page): Promise<boolean> {
+    await actor.getByRole('heading', { name: 'Your Assets' }).waitFor();
+    await expect(
+      actor.getByRole('heading', { name: 'Your Assets' }),
+    ).toBeVisible();
+
+    await actor.getByRole('button', { name: 'Mainnet' }).waitFor();
+    await actor.getByRole('button', { name: 'Mainnet' }).click();
+    await actor.getByRole('button', { name: 'Settings' }).waitFor();
+    await actor.getByRole('button', { name: 'Settings' }).click();
+
+    await expect(actor).toHaveURL('/networks');
+
+    return true;
+  }
+  public async addNetwork(
+    actor: Page,
+    network: { networkId: string; title: string; host: string },
+  ): Promise<boolean> {
+    await actor.getByRole('button', { name: 'Add Network' }).click();
+    const icon = actor.getByTestId('testnetworkicon');
+    const saveButton = actor.getByRole('button', { name: 'Save' });
+
+    await expect(icon).toHaveAttribute('data-ishealthy', 'undefined');
+    await expect(saveButton).toHaveAttribute('disabled');
+
+    await expect(icon).toBeVisible();
+    await expect(
+      actor.getByRole('heading', { name: 'Add Network' }),
+    ).toBeVisible();
+    await actor.type('[name="networkId"]', network.networkId);
+    await actor.type('[name="hosts.0.url"]', network.host);
+    await actor.type('[name="name"]', network.title);
+    await actor.focus('[name="name"]');
+
+    await expect(icon).toBeVisible();
+    await expect(icon).toHaveAttribute('data-ishealthy', 'true');
+
+    await expect(saveButton).not.toHaveAttribute('disabled');
+    await saveButton.click();
+    await expect(
+      actor.getByRole('heading', { name: 'Add Network' }),
+    ).toBeHidden();
+    return true;
+  }
 }

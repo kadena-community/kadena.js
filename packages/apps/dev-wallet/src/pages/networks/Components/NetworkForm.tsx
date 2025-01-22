@@ -236,6 +236,8 @@ export function NetworkForm({
                         })}
                       />
                       <MonoCircle
+                        data-testid="testnetworkicon"
+                        data-ishealthy={`${isHealthy}`}
                         className={classNames({
                           [successClass]: isHealthy === true,
                           [failureClass]: isHealthy === false,
