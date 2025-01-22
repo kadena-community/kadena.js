@@ -47,7 +47,7 @@ interface ICompletedBlockHeightsResponse {
   };
 }
 
-function log<T extends unknown>(msg: T, prepend: string = ''): T {
+export function log<T extends unknown>(msg: T, prepend: string = ''): T {
   prepend = prepend.length > 0 ? `${prepend}\n` : prepend;
   if (typeof msg !== 'string') {
     console.log('LOG:', prepend + JSON.stringify(msg, null, 2));
