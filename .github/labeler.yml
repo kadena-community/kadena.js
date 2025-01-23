@@ -160,3 +160,6 @@ e2e-proof-of-us:
 wallet-sdk-example-app:
   - changed-files:
       - any-glob-to-any-file: packages/apps/wallet-sdk-example/*
+'@kadena/dev-wallet-plugin':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/dev-wallet-plugin/*

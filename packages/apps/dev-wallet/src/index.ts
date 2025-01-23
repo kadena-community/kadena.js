@@ -43,7 +43,7 @@ async function registerServiceWorker() {
   }
   if ('serviceWorker' in navigator) {
     await navigator.serviceWorker
-      .register('/sw.js')
+      .register('/assets/sw.js')
       .then((registration) => {
         console.log(
           'Service Worker registered with scope:',

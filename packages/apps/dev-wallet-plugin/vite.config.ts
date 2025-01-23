@@ -41,12 +41,6 @@ export const config: UserConfig = {
           src: 'manifest.json',
           dest: './',
         },
-        // this is only for plugins that are hosted and maintain with kadena's teams
-        // other plugins should be hosted in their own domain; we might later create a plugin registry and host them there.
-        {
-          src: 'node_modules/@kadena/dev-wallet-plugin/dist/*',
-          dest: './hosted-plugins/pact-remote-console/',
-        },
       ],
     }),
   ],
@@ -64,44 +58,10 @@ export const config: UserConfig = {
     ssr: false,
     minify: false,
     sourcemap: 'hidden',
-    rollupOptions: {
-      input: {
-        html: 'index.html',
-        main: 'src/index.ts', // your main app entry point
-        sw: 'src/service-worker/service-worker.ts', // entry for the service worker
-      },
-      output: {
-        minifyInternalExports: false,
-        // this lets us specify the output filename pattern for each chunk, later we can use this to cache each chunk in the service worker
-        manualChunks: {
-          'react-libs': [
-            'react',
-            'react-dom',
-            'react-router-dom',
-            '@vanilla-extract/css',
-          ],
-          'kadena-libs': ['@kadena/client', '@kadena/client-utils'],
-          'kadena-ui': ['@kadena/kode-ui', '@kadena/kode-icons'],
-        },
-        entryFileNames: (chunk) => {
-          return [
-            'sw',
-            'react-libs',
-            'kadena-libs',
-            'kadena-ui',
-            'html',
-          ].includes(chunk.name)
-            ? 'assets/[name].js'
-            : 'assets/[name]-[hash].js';
-        },
-
-        chunkFileNames: (chunk) =>
-          ['sw', 'react-libs', 'kadena-libs', 'kadena-ui', 'html'].includes(
-            chunk.name,
-          )
-            ? 'assets/[name].js'
-            : 'assets/[name]-[hash].js',
-      },
+    lib: {
+      entry: 'src/plugin.tsx', // The entry point of your library
+      name: 'pact-remote-console', // The global variable name for UMD/IIFE builds
+      fileName: (format) => `pact-remote-console.${format}.js`, // File name template
     },
     commonjsOptions: {
       // add all monorepo packages path regex to commonjsOptions since they are commonjs
