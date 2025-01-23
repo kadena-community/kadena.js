@@ -21,8 +21,12 @@ const config: PlaywrightTestConfig = {
     viewport: { width: 1080, height: 800 },
     testIdAttribute: 'data-testid',
   },
-
   projects: [
+    {
+      name: 'setup',
+      testDir: 'setup',
+      testMatch: 'devnet.setup.ts',
+    },
     {
       name: 'tools',
       testDir: 'tests',
