@@ -127,8 +127,8 @@ export function AccountDiscovery() {
         >
           <Heading variant="h2">Find Your Assets</Heading>
           <Text>
-            We will discover the accounts that you have created with the
-            imported mnemonic
+            We will identify all accounts associated with the mnemonic you
+            imported. This process may take a few minutes.
           </Text>
           {discoveryStatus === 'idle' && (
             <>
@@ -178,9 +178,9 @@ export function AccountDiscovery() {
             <Stack gap={'md'} flexDirection={'column'}>
               <Stack gap={'md'} alignItems={'center'}>
                 <MonoLoading className={pendingClass} fontSize={24} />
-                <Heading variant="h4">Please wait ...</Heading>
+                <Heading variant="h4">Checking Blockchain ...</Heading>
               </Stack>
-              <Text>We are checking first 20 keys form each method</Text>
+              <Text>We are checking the first 20 keys form each method</Text>
             </Stack>
           )}
 
