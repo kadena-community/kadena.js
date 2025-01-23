@@ -10,14 +10,13 @@ import {
   extractPublicKeyHex,
   PublicKeyCredentialCreate,
 } from '@/utils/webAuthn';
-import {
-  MonoRadioButtonChecked,
-  MonoRadioButtonUnchecked,
-} from '@kadena/kode-icons/system';
+
 import {
   Button,
   Card,
   Heading,
+  Select,
+  SelectItem,
   Stack,
   Text,
   TextField,
@@ -35,14 +34,12 @@ type Inputs = {
   confirmation: string;
   fromChainweaver: boolean;
   accentColor: string;
-  method: 'HD-BIP44' | 'HD-chainweaver';
+  keyDerivation: 'HD-BIP44' | 'HD-chainweaver' | 'auto-detect';
 };
 
 export function RecoverFromMnemonic() {
   const { setOrigin } = useGlobalState();
-  const [step, setStep] = useState<'import' | 'set-password' | 'select-method'>(
-    'import',
-  );
+  const [step, setStep] = useState<'import' | 'set-password'>('import');
   const [bip44key, setBip44Key] = useState<string | null>(null);
   const [legacyKey, setLegacyKey] = useState<string | null>(null);
   const { profileList } = useWallet();
@@ -53,7 +50,7 @@ export function RecoverFromMnemonic() {
     setValue,
     watch,
     control,
-    formState: { isValid, errors, isSubmitting },
+    formState: { isValid, errors },
   } = useForm<Inputs>({
     defaultValues: {
       mnemonic: '',
@@ -65,6 +62,7 @@ export function RecoverFromMnemonic() {
         config.colorList[profileList.length % config.colorList.length],
       password: '',
       fromChainweaver: false,
+      keyDerivation: 'auto-detect',
     },
   });
 
@@ -95,7 +93,7 @@ export function RecoverFromMnemonic() {
     password,
     confirmation,
     accentColor,
-    method,
+    keyDerivation: method,
   }: Inputs) {
     const is12Words = mnemonic.trim().split(' ').length === 12;
     if (!is12Words) {
@@ -132,16 +130,20 @@ export function RecoverFromMnemonic() {
           },
       mnemonic,
     );
-
-    const keySource = await createHDWallet(profile.uuid, method, pass);
-    const key = await createKey(keySource);
-    await createKAccount({
-      profileId: profile.uuid,
-      networkUUID: activeNetwork.uuid,
-      publicKey: key.publicKey,
-      contract: 'coin',
-      alias: 'Account 1',
-    });
+    if (method === 'auto-detect') {
+      await createHDWallet(profile.uuid, 'HD-chainweaver', pass);
+      await createHDWallet(profile.uuid, 'HD-BIP44', pass);
+    } else {
+      const keySource = await createHDWallet(profile.uuid, method, pass);
+      const key = await createKey(keySource);
+      await createKAccount({
+        profileId: profile.uuid,
+        networkUUID: activeNetwork.uuid,
+        publicKey: key.publicKey,
+        contract: 'coin',
+        alias: 'Account 1',
+      });
+    }
 
     setOrigin(`/account-discovery`);
     await unlockProfile(profile.uuid, pass, true);
@@ -149,6 +151,9 @@ export function RecoverFromMnemonic() {
 
   async function createFirstKeys() {
     const mnemonic = getValues('mnemonic');
+    if (!mnemonic || mnemonic.trim().split(' ').length < 12) {
+      return;
+    }
     await Promise.all([
       getFirstBip44Key(mnemonic).then(setBip44Key),
       getFirstLegacyKey(mnemonic).then(setLegacyKey),
@@ -158,19 +163,17 @@ export function RecoverFromMnemonic() {
   async function createWebAuthnCredential() {
     const result = await createCredential();
     if (result && result.credential) {
-      // const pk = result.credential.response.getPublicKey();
-      // setPublicKey(pk ? hex(new Uint8Array(extractPublicKeyBytes(pk))) : '');
       setWebAuthnCredential(result.credential);
       setValue('password', 'WEB_AUTHN_PROTECTED');
       setValue('confirmation', 'WEB_AUTHN_PROTECTED');
-      await createFirstKeys();
-      setStep('select-method');
+      setTimeout(() => {
+        formRef.current?.requestSubmit();
+      }, 200);
     } else {
       console.error('Error creating credential');
     }
   }
   const profileName = watch('profileName');
-  const method = watch('method');
   return (
     <Card>
       <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
@@ -199,13 +202,58 @@ export function RecoverFromMnemonic() {
               <Heading variant="h5">Import mnemonic</Heading>
               <Stack flexDirection="column" gap={'lg'}>
                 <Stack flexDirection={'column'} gap={'sm'}>
-                  <Text color="emphasize">
-                    Enter the 12 word recovery phrase
-                  </Text>
-                  <TextField
-                    type="text"
-                    id="phrase"
-                    {...register('mnemonic')}
+                  <Controller
+                    control={control}
+                    name="mnemonic"
+                    rules={{
+                      validate: (value) =>
+                        value.trim().split(' ').length === 12,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        type="text"
+                        label="Enter the 12 word recovery phrase"
+                        id="phrase"
+                        value={field.value}
+                        placeholder="e.g word1 word2 word3..."
+                        onChange={(e) => {
+                          field.onChange(e.target.value);
+                        }}
+                        onBlur={() => {
+                          createFirstKeys();
+                        }}
+                      />
+                    )}
+                  />
+                </Stack>
+
+                <Stack flexDirection={'column'} gap={'sm'}>
+                  <Controller
+                    control={control}
+                    name="keyDerivation"
+                    render={({ field }) => (
+                      <Select
+                        label="Key derivation method"
+                        defaultSelectedKey={'auto-detect'}
+                        onSelectionChange={(value) => field.onChange(value)}
+                      >
+                        <SelectItem
+                          key={'auto-detect'}
+                          textValue={'auto-detect'}
+                        >
+                          Auto Detect (Takes longer)
+                        </SelectItem>
+                        <SelectItem
+                          key={'HD-chainweaver'}
+                          textValue={'HD-chainweaver'}
+                        >
+                          {`Legacy (chainweaver v1/v2)${legacyKey ? ` - account 1 "k:${shorten(legacyKey, 6)}"` : ''}`}
+                        </SelectItem>
+                        <SelectItem key={'HD-BIP44'} textValue={'HD-BIP44'}>
+                          {`BIP44 (chainweaver v3)${bip44key ? ` -  account 1 k:${shorten(bip44key, 6)}` : ''}`}
+                        </SelectItem>
+                      </Select>
+                    )}
                   />
                 </Stack>
 
@@ -231,6 +279,7 @@ export function RecoverFromMnemonic() {
               <Stack flexDirection="row" gap={'sm'}>
                 <Button
                   type="button"
+                  isDisabled={!isValid}
                   variant="transparent"
                   onClick={() => setStep('set-password')}
                 >
@@ -238,6 +287,7 @@ export function RecoverFromMnemonic() {
                 </Button>
                 <Button
                   variant="primary"
+                  isDisabled={!isValid}
                   onClick={() => {
                     createWebAuthnCredential();
                   }}
@@ -310,111 +360,11 @@ export function RecoverFromMnemonic() {
                   isDisabled={!isValid}
                   isLoading={importing}
                   loadingLabel="Importing"
-                  onClick={async () => {
-                    await createFirstKeys();
-                    setStep('select-method');
-                  }}
+                  type="submit"
                 >
                   Continue
                 </Button>
               </Stack>
-            </Stack>
-          )}
-          {step === 'select-method' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Button
-                  variant="outlined"
-                  isCompact
-                  type="button"
-                  onPress={() => {
-                    setStep('import');
-                  }}
-                >
-                  Back
-                </Button>
-              </Stack>
-              <Heading variant="h4">Key Derivation</Heading>
-              <Heading variant="h5">Which one is your account?</Heading>
-              <Stack flexDirection={'column'} gap={'xs'}>
-                <Controller
-                  control={control}
-                  name="method"
-                  render={({ field }) => (
-                    <Button
-                      onClick={() => field.onChange('HD-chainweaver')}
-                      variant={
-                        field.value === 'HD-chainweaver' ? 'info' : 'outlined'
-                      }
-                    >
-                      <Stack
-                        gap={'sm'}
-                        flexDirection={'column'}
-                        justifyContent={'center'}
-                        alignItems={'flex-start'}
-                        textAlign="left"
-                        paddingInline={'xs'}
-                      >
-                        <Stack gap={'sm'} alignItems={'center'}>
-                          {field.value === 'HD-chainweaver' ? (
-                            <MonoRadioButtonChecked color="inherit" />
-                          ) : (
-                            <MonoRadioButtonUnchecked color="inherit" />
-                          )}
-                          <Text color="inherit">
-                            Chainweaver Legacy (v1/v2)
-                          </Text>
-                        </Stack>
-
-                        <Text color="inherit" variant="code">
-                          k:{shorten(legacyKey!, 14)}
-                        </Text>
-                      </Stack>
-                    </Button>
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name="method"
-                  render={({ field }) => (
-                    <Button
-                      onClick={() => field.onChange('HD-BIP44')}
-                      variant={field.value === 'HD-BIP44' ? 'info' : 'outlined'}
-                    >
-                      <Stack
-                        gap={'sm'}
-                        flexDirection={'column'}
-                        justifyContent={'center'}
-                        alignItems={'flex-start'}
-                        textAlign="left"
-                        paddingInline={'xs'}
-                      >
-                        <Stack gap={'sm'} alignItems={'center'}>
-                          {field.value === 'HD-BIP44' ? (
-                            <MonoRadioButtonChecked color="inherit" />
-                          ) : (
-                            <MonoRadioButtonUnchecked color="inherit" />
-                          )}
-                          <Text color="inherit">
-                            Chainweaver V3 and bip44 wallets
-                          </Text>
-                        </Stack>
-
-                        <Text variant="code" color="inherit">
-                          k:{shorten(bip44key!, 14)}
-                        </Text>
-                      </Stack>
-                    </Button>
-                  )}
-                />
-              </Stack>
-              <Button
-                type="submit"
-                isLoading={isSubmitting}
-                isDisabled={!method}
-              >
-                Confirm
-              </Button>
             </Stack>
           )}
         </form>
