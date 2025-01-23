@@ -143,7 +143,7 @@ export function CodeView({
         ))}
         {command && (
           <Card fullWidth>
-            <Heading variant="h5">Max gas cost</Heading>
+            <Heading variant="h5">Max Gas Cost</Heading>
             <Text bold color="emphasize">
               {(command.meta.gasLimit ?? 0) * (command.meta.gasPrice ?? 0)} KDA
             </Text>
