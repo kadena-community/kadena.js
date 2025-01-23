@@ -26,10 +26,11 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
-import { MonoKey } from '@kadena/kode-icons/system';
+import { MonoKey, MonoLoading } from '@kadena/kode-icons/system';
 import { PactNumber } from '@kadena/pactjs';
 import { Link } from 'react-router-dom';
 import { Label } from '../transaction/components/helpers';
+import { pendingClass } from '../transaction/components/style.css';
 
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
@@ -169,6 +170,16 @@ export function AccountDiscovery() {
                 </UiLink>
               </Stack>
             </>
+          )}
+
+          {discoveryStatus === 'discovering' && (
+            <Stack gap={'md'} flexDirection={'column'}>
+              <Stack gap={'md'} alignItems={'center'}>
+                <MonoLoading className={pendingClass} fontSize={24} />
+                <Heading variant="h4">Please wait ...</Heading>
+              </Stack>
+              <Text>We are checking first 20 keys form each method</Text>
+            </Stack>
           )}
 
           {discoveryStatus === 'discovering' &&
