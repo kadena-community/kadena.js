@@ -144,9 +144,9 @@ export const Transfers = () => {
                             ? `-${transfer.amount}`
                             : `+${transfer.amount}`}
                         </Text>
-                        {transfer.transactionFeeTransfer && (
+                        {transfer.transactionFee && (
                           <Text className="text-negative">
-                            {`-${transfer.transactionFeeTransfer.amount}`}
+                            {`-${transfer.transactionFee.amount}`}
                           </Text>
                         )}
                       </Stack>
