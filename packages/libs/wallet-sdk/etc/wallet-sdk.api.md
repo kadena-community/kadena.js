@@ -11,7 +11,6 @@ import type { ICommand } from '@kadena/types';
 import type { ISigner } from '@kadena/client';
 import type { ISigner as ISigner_2 } from '@kadena/types';
 import type { IUnsignedCommand } from '@kadena/types';
-import type { transferCreateCommand } from '@kadena/client-utils/coin';
 import * as v from 'valibot';
 
 // @public (undocumented)
@@ -55,7 +54,82 @@ export interface IChain {
 export type ICreateCrossChainTransfer = Parameters<typeof createCrossChainCommand>[0];
 
 // @public (undocumented)
-export type ICreateTransfer = Parameters<typeof transferCreateCommand>[0];
+export interface ICreateTransfer {
+    // (undocumented)
+    amount: string;
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    gasPayer?: {
+        account: string;
+        publicKeys: ISigner[];
+    };
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    receiver: string;
+    // (undocumented)
+    sender: string | {
+        account: string;
+        publicKeys: ISigner[];
+    };
+}
+
+// @public (undocumented)
+export interface ICreateTransferCreate {
+    // (undocumented)
+    amount: string;
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    gasPayer?: {
+        account: string;
+        publicKeys: ISigner[];
+    };
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    receiver: {
+        account: string;
+        keyset: {
+            keys: ISigner[];
+            pred: 'keys-all' | 'keys-2' | 'keys-any';
+        };
+    };
+    // (undocumented)
+    sender: string | {
+        account: string;
+        publicKeys: ISigner[];
+    };
+}
+
+// @public (undocumented)
+export interface ICreateTransferCreateOptional {
+    // (undocumented)
+    amount: string;
+    // (undocumented)
+    chainId: ChainId;
+    // (undocumented)
+    gasPayer?: {
+        account: string;
+        publicKeys: ISigner[];
+    };
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    receiver: {
+        account?: string;
+        keyset: {
+            keys: ISigner[];
+            pred: 'keys-all' | 'keys-2' | 'keys-any';
+        };
+    };
+    // (undocumented)
+    sender: string | {
+        account: string;
+        publicKeys: ISigner[];
+    };
+}
 
 // Warning: (ae-forgotten-export) The symbol "IBaseTransfer" needs to be exported by the entry point index.d.ts
 //
@@ -213,13 +287,10 @@ export class WalletSDK {
         account: string;
         publicKeys: ISigner_2[];
     }): Promise<IUnsignedCommand>;
-    // Warning: (ae-forgotten-export) The symbol "ICreateSimpleTransferInput" needs to be exported by the entry point index.d.ts
-    createSimpleTransfer(transfer: ICreateSimpleTransferInput & {
-        networkId: string;
-    }): IUnsignedCommand;
-    createTransfer(transfer: ICreateTransfer & {
-        networkId: string;
-    }): IUnsignedCommand;
+    createTransfer(transfer: ICreateTransfer): Promise<IUnsignedCommand>;
+    createTransferCommand(transfer: ICreateTransfer): IUnsignedCommand;
+    createTransferCreate(transfer: ICreateTransferCreateOptional): Promise<IUnsignedCommand>;
+    createTransferCreateCommand(transfer: ICreateTransferCreate): IUnsignedCommand;
     // Warning: (ae-forgotten-export) The symbol "exchange" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import type { ChainId } from '@kadena/types';
 import type { TransferFieldsFragment } from '../../gql/graphql.js';
 import type { ITransfer } from '../../sdk/interface.js';

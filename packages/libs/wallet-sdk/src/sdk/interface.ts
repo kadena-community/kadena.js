@@ -110,10 +110,13 @@ export interface ICreateTransfer {
   networkId: string;
 }
 
-export interface ICreateTransferCreateOptional {
+/**
+ * @public
+ */
+export interface ICreateTransferCreate {
   sender: string | { account: string; publicKeys: ISigner[] };
   receiver: {
-    account?: string;
+    account: string;
     keyset: {
       keys: ISigner[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
@@ -125,10 +128,13 @@ export interface ICreateTransferCreateOptional {
   networkId: string;
 }
 
-export interface ICreateTransferCreate {
+/**
+ * @public
+ */
+export interface ICreateTransferCreateOptional {
   sender: string | { account: string; publicKeys: ISigner[] };
   receiver: {
-    account: string;
+    account?: string;
     keyset: {
       keys: ISigner[];
       pred: 'keys-all' | 'keys-2' | 'keys-any';
