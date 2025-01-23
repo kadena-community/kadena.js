@@ -1,4 +1,5 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
+import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten, toISOLocalDateTime } from '@/utils/helpers';
@@ -56,7 +57,9 @@ export function CommandView({
       </Stack>
       {'exec' in command.payload && (
         <>
-          <CodeView codes={parsedCode} command={command} />
+          <ErrorBoundary>
+            <CodeView codes={parsedCode} command={command} />
+          </ErrorBoundary>
           <Stack gap={'sm'} flexDirection={'column'}>
             <Stack gap={'sm'} justifyContent={'space-between'}>
               <Heading variant="h4">Code</Heading>
