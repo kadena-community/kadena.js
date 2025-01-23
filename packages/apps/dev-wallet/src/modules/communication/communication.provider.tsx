@@ -17,17 +17,19 @@ type Message = {
 };
 
 type RequestType =
+  | 'GET_STATUS'
   | 'CONNECTION_REQUEST'
   | 'SIGN_REQUEST'
   | 'PAYMENT_REQUEST'
-  | 'UNLOCK_REQUEST';
+  | 'UNLOCK_REQUEST'
+  | 'GET_NETWORK_LIST';
 type Request = Message & {
   resolve: (data: unknown) => void;
   reject: (error: unknown) => void;
 };
 
-const handle = (
-  type: string,
+const messageHandle = (
+  type: RequestType,
   handler: (
     message: Message,
   ) => Promise<{ payload: unknown } | { error: unknown }>,
@@ -37,9 +39,12 @@ const handle = (
       const payload = await handler(event.data);
       event.source.postMessage(
         { id: event.data.id, type: event.data.type, ...payload },
-        { targetOrigin: event.origin },
+        // TODO: use sessionId of plugins, since 'null' happens for the iframe plugins that we need more proper handling
+        { targetOrigin: event.origin === 'null' ? '*' : event.origin },
       );
-      window.opener.focus();
+      if (window.opener && event.origin && event.origin !== 'null') {
+        window.opener.focus();
+      }
     }
   };
   window.addEventListener('message', cb);
@@ -53,10 +58,31 @@ export const useRequests = () => {
   return requests;
 };
 
-export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
+export const CommunicationProvider: FC<
+  PropsWithChildren<{
+    handle?: (
+      type: RequestType,
+      handler: (message: Message) => Promise<
+        | {
+            payload: unknown;
+          }
+        | {
+            error: unknown;
+          }
+      >,
+    ) => () => void;
+    uiLoader?: (route: string) => void;
+  }>
+> = ({ children, handle = messageHandle, uiLoader }) => {
   const { setOrigin } = useGlobalState();
   const [requests] = useState(() => new Map<string, Request>());
-  const navigate = usePatchedNavigate();
+  const routeNavigate = usePatchedNavigate();
+  const navigate =
+    uiLoader ||
+    ((route: string) => {
+      setOrigin(route);
+      routeNavigate(route);
+    });
   const { isUnlocked, accounts, profile, networks, activeNetwork } =
     useWallet();
 
@@ -102,6 +128,11 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
           },
         };
       }),
+      handle('GET_NETWORK_LIST', async () => {
+        return {
+          payload: isUnlocked ? networks : [],
+        };
+      }),
     ];
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
@@ -114,6 +145,7 @@ export const CommunicationProvider: FC<PropsWithChildren> = ({ children }) => {
     profile,
     networks,
     activeNetwork,
+    setOrigin,
   ]);
 
   return (

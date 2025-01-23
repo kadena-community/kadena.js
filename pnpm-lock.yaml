@@ -61,6 +61,9 @@ importers:
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
+      '@kadena/dev-wallet-plugin':
+        specifier: workspace:*
+        version: link:../dev-wallet-plugin
       '@kadena/hd-wallet':
         specifier: workspace:*
         version: link:../../libs/hd-wallet
@@ -262,6 +265,172 @@ importers:
       typescript:
         specifier: 5.4.5
         version: 5.4.5
+
+  packages/apps/dev-wallet-plugin:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: ^3.2.0
+        version: 3.7.0(react-hook-form@7.52.1(react@18.3.1))
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
+      '@kadena/hd-wallet':
+        specifier: workspace:*
+        version: link:../../libs/hd-wallet
+      '@kadena/kode-icons':
+        specifier: workspace:*
+        version: link:../../libs/kode-icons
+      '@kadena/kode-ui':
+        specifier: workspace:*
+        version: link:../../libs/kode-ui
+      '@kadena/pactjs':
+        specifier: workspace:*
+        version: link:../../libs/pactjs
+      '@kadena/pactjs-generator':
+        specifier: workspace:*
+        version: link:../../libs/pactjs-generator
+      '@scure/bip39':
+        specifier: 1.2.1
+        version: 1.2.1
+      '@tauri-apps/api':
+        specifier: ^1.4.0
+        version: 1.6.0
+      '@vanilla-extract/css':
+        specifier: 1.14.2
+        version: 1.14.2
+      '@vanilla-extract/dynamic':
+        specifier: ^2.1.2
+        version: 2.1.2
+      '@vanilla-extract/recipes':
+        specifier: 0.5.1
+        version: 0.5.1(@vanilla-extract/css@1.14.2)
+      asn1js:
+        specifier: ^3.0.5
+        version: 3.0.5
+      cbor-web:
+        specifier: ^9.0.2
+        version: 9.0.2
+      chrome-types:
+        specifier: ^0.1.248
+        version: 0.1.291
+      classnames:
+        specifier: ^2.3.1
+        version: 2.5.1
+      ed25519-keygen:
+        specifier: 0.4.8
+        version: 0.4.8
+      elliptic:
+        specifier: ^6.5.5
+        version: 6.5.5
+      js-yaml:
+        specifier: ~4.1.0
+        version: 4.1.0
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-aria:
+        specifier: ^3.31.1
+        version: 3.33.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-console-emulator:
+        specifier: ^5.0.2
+        version: 5.0.2(@types/react@18.3.14)(react@18.3.1)
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.45.4
+        version: 7.52.1(react@18.3.1)
+      react-qrcode-logo:
+        specifier: ^2.9.0
+        version: 2.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.26.2
+        version: 6.26.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      swr:
+        specifier: ^2.2.2
+        version: 2.2.5(react@18.3.1)
+      usehooks-ts:
+        specifier: ^2.9.1
+        version: 2.16.0(react@18.3.1)
+      yup:
+        specifier: ^1.2.0
+        version: 1.4.0
+    devDependencies:
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/pactjs-cli':
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
+      '@rollup/plugin-commonjs':
+        specifier: ^25.0.7
+        version: 25.0.8(rollup@4.24.0)
+      '@types/elliptic':
+        specifier: ^6.4.18
+        version: 6.4.18
+      '@types/js-yaml':
+        specifier: 4.0.9
+        version: 4.0.9
+      '@types/react':
+        specifier: ^18.2.79
+        version: 18.3.14
+      '@types/react-dom':
+        specifier: ^18.2.25
+        version: 18.3.0
+      '@vanilla-extract/esbuild-plugin':
+        specifier: ^2.3.11
+        version: 2.3.11(@types/node@22.9.1)(esbuild@0.21.5)(lightningcss@1.25.1)(terser@5.31.1)
+      '@vanilla-extract/vite-plugin':
+        specifier: 4.0.17
+        version: 4.0.17(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))
+      '@vitejs/plugin-react-swc':
+        specifier: ^3.2.2
+        version: 3.7.0(@swc/helpers@0.5.11)(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))
+      chokidar-cli:
+        specifier: ^3.0.0
+        version: 3.0.0
+      concurrently:
+        specifier: ^8.2.2
+        version: 8.2.2
+      eslint:
+        specifier: ^8.45.0
+        version: 8.57.0
+      eslint-plugin-react-hooks:
+        specifier: ^4.6.0
+        version: 4.6.2(eslint@8.57.0)
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.3
+        version: 0.4.16(eslint@8.57.0)
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vite:
+        specifier: ^5.4.8
+        version: 5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1)
+      vite-plugin-static-copy:
+        specifier: ^1.0.0
+        version: 1.0.6(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))
+      vite-tsconfig-paths:
+        specifier: ^4.2.1
+        version: 4.3.2(typescript@5.4.5)(vite@5.4.9(@types/node@22.9.1)(lightningcss@1.25.1)(terser@5.31.1))
+      vitest:
+        specifier: ^1.6.0
+        version: 1.6.0(@types/node@22.9.1)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0)(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/apps/explorer:
     dependencies:
@@ -9436,9 +9605,6 @@ packages:
   '@vanilla-extract/css@1.14.2':
     resolution: {integrity: sha512-OasEW4ojGqqRiUpsyEDUMrSkLnmwbChtafkogpCZ1eDAgAZ9eY9CHLYodj2nB8aV5T25kQ5shm92k25ngjYhhg==}
 
-  '@vanilla-extract/css@1.15.3':
-    resolution: {integrity: sha512-mxoskDAxdQAspbkmQRxBvolUi1u1jnyy9WZGm+GeH8V2wwhEvndzl1QoK7w8JfA0WFevTxbev5d+i+xACZlPhA==}
-
   '@vanilla-extract/css@1.16.1':
     resolution: {integrity: sha512-3jKxH5ty/ZjmGoLAx8liY7e87FRCIJfnuufX/K9fQklu0YHP3ClrNisU++LkZuD+GZleqMSAQMF0r8Otln+OPQ==}
 
@@ -11433,7 +11599,6 @@ packages:
 
   ed25519-keygen@0.4.8:
     resolution: {integrity: sha512-rsdNLL15/MmdGZ+I5f7/lVBk1+lZmd/Cw60QEuR5X6gebyBgBImCSLRk2J/REaoRvWwpWuaeOu5Y2Y9deyWNmA==}
-    deprecated: 'Switch to micro-key-producer: the package has been merged into it'
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -21864,7 +22029,7 @@ snapshots:
     dependencies:
       '@kadena/client': 1.13.0(encoding@0.1.13)
       '@kadena/kode-ui': 0.13.0
-      '@vanilla-extract/css': 1.15.3
+      '@vanilla-extract/css': 1.16.1
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -21889,7 +22054,7 @@ snapshots:
   '@kadena/spirekey-sdk@0.0.1-dev-16(encoding@0.1.13)':
     dependencies:
       '@kadena/client': 1.13.0(encoding@0.1.13)
-      '@vanilla-extract/css': 1.15.3
+      '@vanilla-extract/css': 1.16.1
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -21914,7 +22079,7 @@ snapshots:
   '@kadena/spirekey-sdk@1.0.0(encoding@0.1.13)':
     dependencies:
       '@kadena/client': 1.15.0(encoding@0.1.13)
-      '@vanilla-extract/css': 1.15.3
+      '@vanilla-extract/css': 1.16.1
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -27765,22 +27930,6 @@ snapshots:
       modern-ahocorasick: 1.0.1
       outdent: 0.8.0
 
-  '@vanilla-extract/css@1.15.3':
-    dependencies:
-      '@emotion/hash': 0.9.1
-      '@vanilla-extract/private': 1.0.6
-      css-what: 6.1.0
-      cssesc: 3.0.0
-      csstype: 3.1.3
-      dedent: 1.5.3
-      deep-object-diff: 1.1.9
-      deepmerge: 4.3.1
-      media-query-parser: 2.0.2
-      modern-ahocorasick: 1.0.1
-      picocolors: 1.1.0
-    transitivePeerDependencies:
-      - babel-plugin-macros
-
   '@vanilla-extract/css@1.16.1':
     dependencies:
       '@emotion/hash': 0.9.1
@@ -27902,7 +28051,7 @@ snapshots:
       '@babel/core': 7.24.7
       '@babel/plugin-syntax-typescript': 7.24.7(@babel/core@7.24.7)
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.6
-      '@vanilla-extract/css': 1.15.3
+      '@vanilla-extract/css': 1.16.1
       dedent: 1.5.3
       esbuild: 0.21.5
       eval: 0.1.8
@@ -27928,7 +28077,7 @@ snapshots:
       '@babel/core': 7.24.7
       '@babel/plugin-syntax-typescript': 7.24.7(@babel/core@7.24.7)
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.6
-      '@vanilla-extract/css': 1.15.3
+      '@vanilla-extract/css': 1.16.1
       dedent: 1.5.3
       esbuild: 0.21.5
       eval: 0.1.8
@@ -36644,6 +36793,17 @@ snapshots:
       react: 18.3.1
       tween-functions: 1.2.0
 
+  react-console-emulator@5.0.2(@types/react@18.3.14)(react@18.3.1):
+    dependencies:
+      defaults: 1.0.4
+      prop-types: 15.8.1
+      react-fast-compare: 3.2.2
+      react-inner-html: 1.0.1
+      react-innertext: 1.1.5(@types/react@18.3.14)(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+
   react-console-emulator@5.0.2(@types/react@18.3.3)(react@18.3.1):
     dependencies:
       defaults: 1.0.4
@@ -36700,6 +36860,11 @@ snapshots:
       react: 18.3.1
 
   react-inner-html@1.0.1: {}
+
+  react-innertext@1.1.5(@types/react@18.3.14)(react@18.3.1):
+    dependencies:
+      '@types/react': 18.3.14
+      react: 18.3.1
 
   react-innertext@1.1.5(@types/react@18.3.3)(react@18.3.1):
     dependencies:

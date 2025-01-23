@@ -1,0 +1,11 @@
+[
+  {
+    "id": "pact-remote-console",
+    "name": "Pact Remote Console",
+    "shortName": "Pact Console",
+    "description": "A console for interacting remotely with Pact on different networks (read-only)",
+    "permissions": [
+      "network-list"
+    ]
+  }
+]
