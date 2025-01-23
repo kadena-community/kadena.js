@@ -241,7 +241,7 @@ export function RecoverFromMnemonic() {
                           key={'auto-detect'}
                           textValue={'auto-detect'}
                         >
-                          Auto Detect (Takes longer)
+                          Auto Detect
                         </SelectItem>
                         <SelectItem
                           key={'HD-chainweaver'}
