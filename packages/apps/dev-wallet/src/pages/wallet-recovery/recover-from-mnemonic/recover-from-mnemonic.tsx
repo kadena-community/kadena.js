@@ -39,9 +39,7 @@ type Inputs = {
 
 export function RecoverFromMnemonic() {
   const { setOrigin } = useGlobalState();
-  const [step, setStep] = useState<'import' | 'set-password' | 'select-method'>(
-    'import',
-  );
+  const [step, setStep] = useState<'import' | 'set-password'>('import');
   const [bip44key, setBip44Key] = useState<string | null>(null);
   const [legacyKey, setLegacyKey] = useState<string | null>(null);
   const { profileList } = useWallet();
