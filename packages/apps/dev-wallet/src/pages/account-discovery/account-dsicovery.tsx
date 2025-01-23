@@ -165,9 +165,11 @@ export function AccountDiscovery() {
                 >
                   Continue
                 </Button>
-                <UiLink component={Link} href="/">
-                  Skip
-                </UiLink>
+                {keySources.length === 1 && (
+                  <UiLink component={Link} href="/">
+                    Skip
+                  </UiLink>
+                )}
               </Stack>
             </>
           )}
