@@ -22,11 +22,11 @@ const config: PlaywrightTestConfig = {
     testIdAttribute: 'data-testid',
   },
   projects: [
-    {
-      name: 'setup',
-      testDir: 'setup',
-      testMatch: 'devnet.setup.ts',
-    },
+    // {
+    //   name: 'setup',
+    //   testDir: 'setup',
+    //   testMatch: 'devnet.setup.ts',
+    // },
     {
       name: 'tools',
       testDir: 'tests',
