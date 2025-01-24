@@ -13,9 +13,7 @@ export const getPrincipalNamespace = async (
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(
-      `(namespace (ns.create-principal-namespace (read-keyset 'keyset)))`,
-    )
+    .execution(`(ns.create-principal-namespace (read-keyset 'keyset))`)
     .addData('keyset', {
       keys: [getPubkeyFromAccount(data.owner)],
       pred: 'keys-all',
@@ -34,11 +32,8 @@ export const getPrincipalNamespace = async (
   const resultData =
     result.status !== 'success' ? (result.error as any).message : result.data;
 
-  const regex = /n_[a-f0-9]{40}/;
-  const match = (resultData as string).match(regex);
-  if (match) {
-    return match[0];
-  }
+  if (resultData) return resultData;
+
   console.log('No match found.');
   return;
 };

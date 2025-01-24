@@ -19,7 +19,7 @@ export const useCreateContract = () => {
 
   const submit = async (
     data: IAddContractProps,
-  ): Promise<ITransaction | undefined> => {
+  ): Promise<boolean | undefined> => {
     try {
       const tx = await createContract(data, account!);
       const signedTransaction = await sign(tx);
@@ -35,7 +35,6 @@ export const useCreateContract = () => {
       });
 
       const dataResult = await client.listen(res);
-
       // if the contract already exists, go to that contract
       if (
         dataResult.result.status === 'failure' &&
@@ -44,20 +43,23 @@ export const useCreateContract = () => {
         )
       ) {
         window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
-        return;
+        return false;
       }
+
+      return true;
     } catch (e: any) {
       addNotification({
         intent: 'negative',
         label: 'there was an error',
         message: interpretErrorMessage(e.message),
       });
+      return false;
     }
   };
 
   useEffect(() => {
     if (!isMounted) return;
-    setIsAllowed(isGasPayable);
+    setIsAllowed(true);
   }, [isMounted, isGasPayable]);
 
   return { submit, isAllowed };
