@@ -13,28 +13,35 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
   console.log('variables', variables);
   const data = useMemo(
     () =>
-      activities.map((activity) => ({
-        ...activity,
-        open: (
-          <Link
-            to={`/transfer?activityId=${activity.uuid}`}
-            className={noStyleLinkClass}
-            style={{ textDecoration: 'underline' }}
-          >
-            <Text variant="code">{shorten(activity.uuid)}</Text>
-          </Link>
-        ),
-        sender: shorten(activity.data.transferData.senderAccount.address, 6),
-        amount: activity.data.transferData.receivers.reduce(
-          (acc, { amount }) => {
-            return acc + parseFloat(amount);
-          },
-          0,
-        ),
-        receivers: activity.data.transferData.receivers
-          .map((receiver) => shorten(receiver.address, 6))
-          .join(' | '),
-      })),
+      !activities
+        ? []
+        : activities
+            .filter((activity) => activity?.data?.transferData?.senderAccount)
+            .map((activity) => ({
+              ...activity,
+              open: (
+                <Link
+                  to={`/transfer?activityId=${activity.uuid}`}
+                  className={noStyleLinkClass}
+                  style={{ textDecoration: 'underline' }}
+                >
+                  <Text variant="code">{shorten(activity.uuid)}</Text>
+                </Link>
+              ),
+              sender: shorten(
+                activity.data.transferData.senderAccount?.address ?? '',
+                6,
+              ),
+              amount: activity.data.transferData.receivers.reduce(
+                (acc, { amount }) => {
+                  return acc + parseFloat(amount);
+                },
+                0,
+              ),
+              receivers: activity.data.transferData.receivers
+                .map((receiver) => shorten(receiver?.address ?? '', 6))
+                .join(' | '),
+            })),
     [activities],
   );
 

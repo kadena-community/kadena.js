@@ -114,6 +114,23 @@ export const useWallet = () => {
     [context.accounts, context.contacts],
   );
 
+  const getAccountAlias = useCallback(
+    (address: string) => {
+      const account = context.accounts.find((a) => a.address === address);
+      if (account) {
+        return account.alias;
+      }
+      const contact = context.contacts.find(
+        (c) => c.account.address === address,
+      );
+      if (contact) {
+        return contact.name;
+      }
+      return '';
+    },
+    [context.accounts, context.contacts],
+  );
+
   const getPublicKeyData = useCallback(
     (publicKey: string) => {
       if (!context.keySources) return null;
@@ -483,5 +500,6 @@ export const useWallet = () => {
     accounts,
     watchAccounts,
     getKeyAlias,
+    getAccountAlias,
   };
 };

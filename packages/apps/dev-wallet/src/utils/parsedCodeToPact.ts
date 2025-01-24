@@ -15,7 +15,7 @@ interface IDecoration {
   breakLines?: boolean;
 }
 
-const parseArg = (
+export const parseArg = (
   arg: IParsedCode['args'][number],
   decoration: Required<IDecoration>,
 ): string => {

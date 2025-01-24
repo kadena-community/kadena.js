@@ -87,7 +87,7 @@ export function ActivitiesPage() {
               </Stack>
             }
           >
-            {activities.length > 0 && <ActivityTable activities={activities} />}
+            <ActivityTable activities={activities} />
           </TabItem>
         </Tabs>
       </Stack>

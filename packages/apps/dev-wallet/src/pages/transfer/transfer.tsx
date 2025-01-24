@@ -277,6 +277,9 @@ export function Transfer() {
                 accountId={accountId}
                 activityId={urlActivityId}
                 onSubmit={async (data, redistribution) => {
+                  if (!data.senderAccount) {
+                    throw new Error('Sender account not found');
+                  }
                   const receivers = data.receivers.filter(
                     Boolean,
                   ) as Required<IReceiver>[];

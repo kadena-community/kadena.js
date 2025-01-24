@@ -228,9 +228,12 @@ export const importBackup =
         `Database version mismatch: expected ${db.version} but got ${backup.db_version}; WIP: we need to add a migration path here`,
       );
     }
-    const tables = Object.keys(backup.data) as (keyof IDBBackup['data'])[];
+    const tables = Object.keys(backup.data).filter(
+      (name) => !name.includes(':'),
+    ) as (keyof IDBBackup['data'])[];
+    console.log('Importing backup', tables);
     const transaction = db.transaction(tables, 'readwrite');
-
+    console.log('transaction', transaction);
     await importContacts(db, backup.data.contact, transaction);
     const networkRemap = await importNetworks(
       db,
