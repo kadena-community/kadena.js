@@ -15,7 +15,7 @@ import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { AccountPage } from '@/pages/account/account';
 import { MigrateAccount } from '@/pages/account/migrate-account/migrate-account';
 import { ActivitiesPage } from '@/pages/activities/activities';
-import { Connect } from '@/pages/connect/connect';
+import { ConnectPage } from '@/pages/connect/connect';
 import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccount } from '@/pages/create-account/create-account';
 import { FungiblePage } from '@/pages/fungible/fungible';
@@ -31,7 +31,7 @@ import { KeepPasswordPolicy } from '@/pages/settings/keep-password-policy/keep-p
 import { RevealPhrase } from '@/pages/settings/reveal-phrase/reveal-phrase';
 import { Settings } from '@/pages/settings/settings';
 import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
-import { SignRequest } from '@/pages/transaction/sign-request';
+import { SignRequestPage } from '@/pages/transaction/sign-request';
 import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transfer } from '@/pages/transfer/transfer';
 import { ImportChainweaverExport } from '@/pages/wallet-recovery/import-chainweaver-export/import-chainweaver-export';
@@ -119,7 +119,7 @@ export const Routes: FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/sig-builder" element={<SignatureBuilder />} />
             <Route path="/networks" element={<Networks />} />
-            <Route path="/connect/:requestId" element={<Connect />} />
+            <Route path="/connect/:requestId" element={<ConnectPage />} />
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccount />} />
             <Route
@@ -153,7 +153,10 @@ export const Routes: FC = () => {
             >
               <Route path="/plugins" element={<Plugins />} />
             </Route>
-            <Route path="/sign-request/:requestId" element={<SignRequest />} />
+            <Route
+              path="/sign-request/:requestId"
+              element={<SignRequestPage />}
+            />
           </Route>
         </Route>
         <Route element={<LayoutFull />}>

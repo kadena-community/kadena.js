@@ -1,5 +1,5 @@
 import { useLayout } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export function useRightAside() {
   const [expanded, setExpanded] = useState(false);
@@ -13,18 +13,18 @@ export function useRightAside() {
 
   return [
     expanded,
-    () => {
+    useCallback(() => {
       if (isRightAsideExpanded && !expanded) {
         throw new Error('Right aside is already open with a different panel');
       }
       setIsRightAsideExpanded(true);
       setExpanded(true);
-    },
-    () => {
+    }, [isRightAsideExpanded, expanded, setIsRightAsideExpanded]),
+    useCallback(() => {
       if (expanded) {
         setIsRightAsideExpanded(false);
         setExpanded(false);
       }
-    },
+    }, [expanded, setIsRightAsideExpanded]),
   ] as [isExpanded: boolean, expand: () => void, close: () => void];
 }

@@ -5,7 +5,7 @@
     "shortName": "Pact Console",
     "description": "A console for interacting remotely with Pact on different networks (read-only)",
     "permissions": [
-      "network-list"
+      "GET_NETWORK_LIST"
     ]
   }
 ]

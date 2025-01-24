@@ -17,8 +17,7 @@ const sleep = (time: number) =>
     }, time);
   });
 
-const walletOrigin = () =>
-  (window as any).walletUrl || 'https://wallet.kadena.io';
+const walletOrigin = () => (window as any).walletUrl || 'http://localhost:4173';
 const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';
@@ -114,9 +113,7 @@ interface IState {
   };
   accounts: Array<{
     address: string;
-    keyset: {
-      guard: { keys: string[]; pred: 'keys-all' | 'keys-any' | 'keys-2' };
-    };
+    guard: { keys: string[]; pred: 'keys-all' | 'keys-any' | 'keys-2' };
     alias: string;
     contract: string;
     chains: Array<{ chainId: ChainId; balance: string }>;
@@ -166,7 +163,7 @@ export default function Home() {
               });
               addLog(status);
               setProfile((status.payload as any).profile);
-              // close();
+              close();
             }}
           >
             {profile
@@ -189,7 +186,8 @@ export default function Home() {
               });
               addLog(response);
               setState(response.payload as IState);
-              // close();
+              console.log(response.payload);
+              close();
             }}
           >
             GET_STATUS
@@ -209,7 +207,7 @@ export default function Home() {
                       <div>Alias: {account.alias}</div>
                       <div>Contract: {account.contract}</div>
                       <div>overallBalance: {account.overallBalance}</div>
-                      <div>Guard: {JSON.stringify(account.keyset.guard)}</div>
+                      <div>Guard: {JSON.stringify(account.guard)}</div>
                     </li>
                   ))}
                 </ul>
@@ -223,34 +221,40 @@ export default function Home() {
           onClick={async () => {
             if (!state) return;
             const { message, focus, close } = await getWalletConnection();
+            const accounts = state.accounts.filter(
+              ({ overallBalance }) => +overallBalance > 0,
+            );
+            if (accounts.length < 2) {
+              setLog(['Not enough accounts with balance']);
+            }
             const tx = transferAllCommand({
               sender: {
-                account: state.accounts[0].address,
-                publicKeys: state.accounts[0].keyset.guard.keys,
+                account: accounts[0].address,
+                publicKeys: accounts[0].guard.keys,
               },
               receiver: {
-                account: state.accounts[1].address,
-                keyset: state.accounts[1].keyset.guard,
+                account: accounts[1].address,
+                keyset: accounts[1].guard,
               },
-              chainId: state.accounts[0].chains[0].chainId,
-              amount: state.accounts[0].chains[0].balance,
-              contract: state.accounts[0].contract,
+              chainId: accounts[0].chains[0].chainId,
+              amount: accounts[0].chains[0].balance,
+              contract: accounts[0].contract,
             });
             focus();
             const response = await message(
               'SIGN_REQUEST',
               createTransaction(tx()) as any,
             );
+            console.log(response);
             const payload: {
               status: 'signed' | 'rejected';
               transaction?: ICommand;
             } = response.payload as any;
-            debugger;
             if (payload && payload.status === 'signed') {
               setSignedTx(payload.transaction as ICommand);
             }
             addLog(response);
-            // close();
+            close();
           }}
         >
           Transfer balance from account 1 to account 2

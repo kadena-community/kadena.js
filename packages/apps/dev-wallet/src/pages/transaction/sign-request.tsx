@@ -1,4 +1,7 @@
-import { ITransaction } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useRequests } from '@/modules/communication/communication.provider';
@@ -7,16 +10,24 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Heading, Notification, Stack, Text } from '@kadena/kode-ui';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { panelClass } from '../home/style.css';
 import { TxList } from './components/TxList';
 
-export const SignRequest = () => {
+export const SignRequest = ({
+  requestId,
+  onSign,
+  onAbort,
+}: {
+  requestId?: string;
+  onSign?: () => void;
+  onAbort?: () => void;
+}) => {
   const navigate = usePatchedNavigate();
   const { profile, networks, activeNetwork } = useWallet();
-  const { requestId } = useParams();
   const requests = useRequests();
   const [tx, setTx] = useState<ITransaction>();
   const [error, setError] = useState<string | undefined>();
@@ -77,8 +88,39 @@ export const SignRequest = () => {
       ) : (
         <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
           <Stack flexDirection={'column'} gap={'sm'}>
-            <Heading>Transaction</Heading>
+            <Heading>Sign Request</Heading>
             {!tx && <Text>No transaction</Text>}
+          </Stack>
+          <Stack
+            flexDirection={'column'}
+            gap={'sm'}
+            className={panelClass}
+            alignItems={'flex-start'}
+          >
+            <Stack gap={'sm'} flexDirection={'row'}>
+              <Text bold color="emphasize">
+                Request ID:
+              </Text>
+              <Text variant="code">{requestId}</Text>
+            </Stack>
+            <Button
+              variant="negative"
+              onClick={() => {
+                if (tx?.uuid) {
+                  transactionRepository.deleteTransaction(tx?.uuid);
+                }
+                if (requestId) {
+                  const request = requests.get(requestId);
+                  if (request) {
+                    console.log('resolving request', request);
+                    request.reject({ status: 'rejected' });
+                  }
+                }
+                if (onAbort) onAbort();
+              }}
+            >
+              Reject
+            </Button>
           </Stack>
           <TxList
             onDone={() => {
@@ -92,6 +134,7 @@ export const SignRequest = () => {
                 if (request) {
                   console.log('resolving request', request);
                   request.resolve({ status: 'signed', transaction: tx });
+                  if (onSign) onSign();
                 }
               }
             }}
@@ -100,4 +143,9 @@ export const SignRequest = () => {
       )}
     </>
   );
+};
+
+export const SignRequestPage = () => {
+  const { requestId } = useParams<{ requestId: string }>();
+  return <SignRequest requestId={requestId} />;
 };
