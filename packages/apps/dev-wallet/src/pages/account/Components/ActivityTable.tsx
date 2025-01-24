@@ -1,7 +1,7 @@
 import { noStyleLinkClass } from '@/Components/Accounts/style.css';
 import { IActivity } from '@/modules/activity/activity.repository';
 import { shorten } from '@/utils/helpers';
-import { Text } from '@kadena/kode-ui';
+import { Stack, Text } from '@kadena/kode-ui';
 import { CompactTable, usePagination } from '@kadena/kode-ui/patterns';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -40,7 +40,7 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
               ),
               receivers: activity.data.transferData.receivers
                 .map((receiver) => shorten(receiver?.address ?? '', 6))
-                .join(' | '),
+                .join(' '),
             })),
     [activities],
   );
@@ -55,7 +55,7 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
         {
           label: 'Id',
           key: 'open',
-          width: '10%',
+          width: '20%',
           variant: 'code',
           render: ({ value }) => value,
         },
@@ -63,26 +63,34 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
           label: 'Type',
           key: 'type',
           variant: 'code',
-          width: '10%',
+          width: '20%',
         },
         {
           label: 'Sender',
           key: 'sender',
           variant: 'code',
-          width: '10%',
+          width: '20%',
         },
         {
           label: 'Amount',
           key: 'amount',
           variant: 'code',
-          width: '10%',
-          align: 'end',
+          width: '20%',
         },
         {
           label: 'Receivers',
           key: 'receivers',
           variant: 'code',
-          width: '70%',
+          width: '20%',
+          render: ({ value }) => (
+            <Stack gap={'sm'} flexWrap="wrap" flexDirection={'column'}>
+              {value.split(' ').map((address) => (
+                <Text variant="code" color="emphasize">
+                  {address}
+                </Text>
+              ))}
+            </Stack>
+          ),
         },
       ]}
       data={data}
