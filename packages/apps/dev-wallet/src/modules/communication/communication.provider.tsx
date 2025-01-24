@@ -172,7 +172,17 @@ export const CommunicationProvider: FC<
       }),
       handle('GET_ACCOUNTS', async () => {
         return {
-          payload: isUnlocked ? accounts : [],
+          payload: isUnlocked
+            ? accounts.map(
+                ({ address, alias, overallBalance, chains, guard }) => ({
+                  address,
+                  alias,
+                  overallBalance,
+                  chains,
+                  guard,
+                }),
+              )
+            : [],
         };
       }),
     ];
