@@ -1,4 +1,7 @@
-import { ITransaction } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useRequests } from '@/modules/communication/communication.provider';
@@ -11,6 +14,7 @@ import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { panelClass } from '../home/style.css';
 import { TxList } from './components/TxList';
 
 export const SignRequest = ({
@@ -84,23 +88,40 @@ export const SignRequest = ({
       ) : (
         <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
           <Stack flexDirection={'column'} gap={'sm'}>
-            <Heading>Transaction</Heading>
+            <Heading>Sign Request</Heading>
             {!tx && <Text>No transaction</Text>}
           </Stack>
-          <Button
-            onClick={() => {
-              if (requestId) {
-                const request = requests.get(requestId);
-                if (request) {
-                  console.log('resolving request', request);
-                  request.reject({ status: 'rejected' });
-                }
-              }
-              if (onAbort) onAbort();
-            }}
+          <Stack
+            flexDirection={'column'}
+            gap={'sm'}
+            className={panelClass}
+            alignItems={'flex-start'}
           >
-            Reject
-          </Button>
+            <Stack gap={'sm'} flexDirection={'row'}>
+              <Text bold color="emphasize">
+                Request ID:
+              </Text>
+              <Text variant="code">{requestId}</Text>
+            </Stack>
+            <Button
+              variant="negative"
+              onClick={() => {
+                if (tx?.uuid) {
+                  transactionRepository.deleteTransaction(tx?.uuid);
+                }
+                if (requestId) {
+                  const request = requests.get(requestId);
+                  if (request) {
+                    console.log('resolving request', request);
+                    request.reject({ status: 'rejected' });
+                  }
+                }
+                if (onAbort) onAbort();
+              }}
+            >
+              Reject
+            </Button>
+          </Stack>
           <TxList
             onDone={() => {
               console.log('done');
