@@ -79,7 +79,7 @@ export const CommunicationProvider: FC<
   const [requests] = useState(() => new Map<string, Request>());
   const routeNavigate = usePatchedNavigate();
   const defaultUiLoader = useCallback(
-    (_requestId: string, requestType: UiRequiredRequest) => {
+    (requestId: string, requestType: UiRequiredRequest) => {
       const routeMap = {
         CONNECTION_REQUEST: '/connect',
         PAYMENT_REQUEST: '/payment',
@@ -87,8 +87,9 @@ export const CommunicationProvider: FC<
       };
       const route = routeMap[requestType];
       if (!route) return;
-      setOrigin(route);
-      routeNavigate(route);
+      const path = `${route}/${requestId}`;
+      setOrigin(path);
+      routeNavigate(path);
     },
     [routeNavigate, setOrigin],
   );
@@ -99,11 +100,10 @@ export const CommunicationProvider: FC<
     },
     [defaultUiLoader, uiLoader],
   );
-  const { isUnlocked, accounts, profile, networks, activeNetwork } =
+  const { isUnlocked, accounts, profile, networks, activeNetwork, keySources } =
     useWallet();
 
   useEffect(() => {
-    console.log('CommunicationProvider mounted', isUnlocked);
     const createRequest = (data: Message) =>
       new Promise<{ payload: unknown } | { error: unknown }>((resolve) => {
         const request = {
@@ -126,7 +126,6 @@ export const CommunicationProvider: FC<
 
     const handleUIRequiredRequest = (type: UiRequiredRequest) =>
       handle(type, async (payload) => {
-        console.log('handleRequest', type, payload);
         const request = createRequest(payload);
         loadUiComponent(payload.id, type);
         return request;
@@ -135,10 +134,34 @@ export const CommunicationProvider: FC<
       handleUIRequiredRequest('CONNECTION_REQUEST'),
       handleUIRequiredRequest('SIGN_REQUEST'),
       handle('GET_STATUS', async () => {
+        if (!isUnlocked || !profile) return { payload: { isUnlocked: false } };
+        const { uuid, name, accentColor } = profile;
+        const accountsToSend = accounts.map(
+          ({ address, alias, overallBalance, chains, guard }) => ({
+            address,
+            alias,
+            overallBalance,
+            chains,
+            guard,
+          }),
+        );
         return {
           payload: {
             isUnlocked: isUnlocked,
-            ...(isUnlocked ? { profile, accounts } : {}),
+            profile: {
+              uuid,
+              name,
+              accentColor,
+              authMode: profile.options?.authMode,
+            },
+            accounts: accountsToSend,
+            keySources: keySources.map(({ uuid, source, keys }) => ({
+              uuid,
+              source,
+              keys,
+            })),
+            networks,
+            activeNetwork,
           },
         };
       }),
@@ -166,6 +189,7 @@ export const CommunicationProvider: FC<
     activeNetwork,
     setOrigin,
     handle,
+    keySources,
   ]);
 
   return (

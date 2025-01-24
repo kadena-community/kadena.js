@@ -90,7 +90,6 @@ export function PluginCommunicationProvider({
           return;
         }
         if (type === 'SIGN_REQUEST') {
-          console.log('SignRequestAside', requestId, plugin);
           setUiComponent(
             <SignRequestDialog
               requestId={requestId}
