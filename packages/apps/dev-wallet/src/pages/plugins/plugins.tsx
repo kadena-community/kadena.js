@@ -76,7 +76,19 @@ export function Plugins() {
         .then((list: Omit<Plugin, 'registry'>[]) =>
           (list || []).map((p) => ({ ...p, registry })),
         )
-        .then((list) => setPluginList((prev) => [...prev, ...list])),
+        .then((list) =>
+          setPluginList((prev) => {
+            const newPlugins: Plugin[] = [];
+            list.forEach((p) => {
+              if (
+                !prev.find((pl) => pl.id === p.id && pl.registry === p.registry)
+              ) {
+                newPlugins.push(p);
+              }
+            });
+            return [...prev, ...newPlugins];
+          }),
+        ),
     );
   }, []);
 
