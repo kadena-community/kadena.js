@@ -96,7 +96,7 @@ export function Plugins() {
             <Stack gap={'sm'} alignItems={'center'}>
               <div style={{ display: 'inline-block' }}>
                 <div className={pluginIconClass}>
-                  {getInitials(plugin.name).toUpperCase()}
+                  {getInitials(plugin.shortName).toUpperCase()}
                 </div>
               </div>
               {plugin.name}
