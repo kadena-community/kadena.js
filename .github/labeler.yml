@@ -136,6 +136,9 @@ e2e-tools:
 e2e-dev-wallet:
   - changed-files:
       - any-glob-to-any-file: packages/e2e/e2e-dev-wallet/*
+e2e-rwa-demo:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-rwa-demo/*
 kadena.js:
   - changed-files:
       - any-glob-to-any-file: packages/libs/kadena.js/*

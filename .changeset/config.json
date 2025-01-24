@@ -15,6 +15,7 @@
     "@kadena-dev/e2e-base",
     "e2e-tools",
     "e2e-dev-wallet",
+    "e2e-rwa-demo",
     "e2e-graph",
     "e2e-proof-of-us"
   ]
