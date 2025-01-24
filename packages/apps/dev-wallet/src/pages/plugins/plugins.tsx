@@ -6,16 +6,9 @@ import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
+import { PluginCommunicationProvider } from './PluginCommunicationProvider';
 import { pluginContainerClass, pluginIconClass } from './style.css';
-
-type Plugin = {
-  id: string;
-  name: string;
-  shortName: string;
-  registry: string;
-  description: string;
-  permissions: ['network-list'];
-};
+import { Plugin } from './type';
 
 // plugin whitelist
 const registries = ['/hosted-plugins', 'https://localhost:3000/test-plugins'];
@@ -94,37 +87,43 @@ export function Plugins() {
 
   if (plugin) {
     return (
-      <Stack flexDirection={'column'} gap={'md'} height="100%">
-        <SideBarBreadcrumbs icon={<MonoApps />} isGlobal>
-          <SideBarBreadcrumbsItem href="/plugins">
-            plugins
-          </SideBarBreadcrumbsItem>
-          <SideBarBreadcrumbsItem href={`/plugins?plugin-id=${plugin.id}`}>
-            {plugin.name}
-          </SideBarBreadcrumbsItem>
-        </SideBarBreadcrumbs>
-        <Stack gap={'sm'} flexDirection={'column'}>
-          <Heading variant="h3">
-            <Stack gap={'sm'} alignItems={'center'}>
-              <div style={{ display: 'inline-block' }}>
-                <div className={pluginIconClass}>
-                  {getInitials(plugin.shortName).toUpperCase()}
-                </div>
-              </div>
+      <PluginCommunicationProvider sessionId={sessionId} plugin={plugin}>
+        <Stack flexDirection={'column'} gap={'md'} height="100%">
+          <SideBarBreadcrumbs icon={<MonoApps />} isGlobal>
+            <SideBarBreadcrumbsItem href="/plugins">
+              plugins
+            </SideBarBreadcrumbsItem>
+            <SideBarBreadcrumbsItem href={`/plugins?plugin-id=${plugin.id}`}>
               {plugin.name}
-            </Stack>
-          </Heading>
+            </SideBarBreadcrumbsItem>
+          </SideBarBreadcrumbs>
+          <Stack gap={'sm'} flexDirection={'column'}>
+            <Heading variant="h3">
+              <Stack gap={'sm'} alignItems={'center'}>
+                <div style={{ display: 'inline-block' }}>
+                  <div className={pluginIconClass}>
+                    {getInitials(plugin.shortName).toUpperCase()}
+                  </div>
+                </div>
+                {plugin.name}
+              </Stack>
+            </Heading>
 
-          <Text>{plugin.description}</Text>
+            <Text>{plugin.description}</Text>
+          </Stack>
+          <Stack
+            flex={1}
+            marginBlockEnd={'md'}
+            className={pluginContainerClass}
+          >
+            <iframe
+              sandbox="allow-scripts allow-forms"
+              style={{ border: 'none', width: '100%', height: '100%' }}
+              srcDoc={getDoc(plugin, sessionId)}
+            />
+          </Stack>
         </Stack>
-        <Stack flex={1} marginBlockEnd={'md'} className={pluginContainerClass}>
-          <iframe
-            sandbox="allow-scripts allow-forms"
-            style={{ border: 'none', width: '100%', height: '100%' }}
-            srcDoc={getDoc(plugin, sessionId)}
-          />
-        </Stack>
-      </Stack>
+      </PluginCommunicationProvider>
     );
   }
   return (

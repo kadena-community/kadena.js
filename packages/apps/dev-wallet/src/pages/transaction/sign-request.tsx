@@ -7,16 +7,23 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Heading, Notification, Stack, Text } from '@kadena/kode-ui';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TxList } from './components/TxList';
 
-export const SignRequest = () => {
+export const SignRequest = ({
+  requestId,
+  onSign,
+  onAbort,
+}: {
+  requestId?: string;
+  onSign?: () => void;
+  onAbort?: () => void;
+}) => {
   const navigate = usePatchedNavigate();
   const { profile, networks, activeNetwork } = useWallet();
-  const { requestId } = useParams();
   const requests = useRequests();
   const [tx, setTx] = useState<ITransaction>();
   const [error, setError] = useState<string | undefined>();
@@ -80,6 +87,20 @@ export const SignRequest = () => {
             <Heading>Transaction</Heading>
             {!tx && <Text>No transaction</Text>}
           </Stack>
+          <Button
+            onClick={() => {
+              if (requestId) {
+                const request = requests.get(requestId);
+                if (request) {
+                  console.log('resolving request', request);
+                  request.reject({ status: 'rejected' });
+                }
+              }
+              if (onAbort) onAbort();
+            }}
+          >
+            Reject
+          </Button>
           <TxList
             onDone={() => {
               console.log('done');
@@ -92,6 +113,7 @@ export const SignRequest = () => {
                 if (request) {
                   console.log('resolving request', request);
                   request.resolve({ status: 'signed', transaction: tx });
+                  if (onSign) onSign();
                 }
               }
             }}
@@ -100,4 +122,9 @@ export const SignRequest = () => {
       )}
     </>
   );
+};
+
+export const SignRequestPage = () => {
+  const { requestId } = useParams<{ requestId: string }>();
+  return <SignRequest requestId={requestId} />;
 };

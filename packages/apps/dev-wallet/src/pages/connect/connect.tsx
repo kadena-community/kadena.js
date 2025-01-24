@@ -3,9 +3,16 @@ import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-export function Connect() {
+export function Connect({
+  requestId,
+  onAccept,
+  onReject,
+}: {
+  requestId?: string;
+  onAccept?: () => void;
+  onReject?: () => void;
+}) {
   const requests = useRequests();
-  const { requestId } = useParams();
   const [result, setResult] = useState<'none' | 'rejected' | 'accepted'>(
     'none',
   );
@@ -32,6 +39,9 @@ export function Connect() {
             onPress={() => {
               request?.resolve({ status: 'accepted' });
               setResult('accepted');
+              if (onAccept) {
+                onAccept();
+              }
             }}
           >
             <div>Accept</div>
@@ -40,6 +50,9 @@ export function Connect() {
             onPress={() => {
               request?.resolve({ status: 'rejected' });
               setResult('rejected');
+              if (onReject) {
+                onReject();
+              }
             }}
           >
             <div>reject</div>
@@ -61,3 +74,8 @@ export function Connect() {
     </Stack>
   );
 }
+
+export const ConnectPage = () => {
+  const { requestId } = useParams();
+  return <Connect requestId={requestId} />;
+};

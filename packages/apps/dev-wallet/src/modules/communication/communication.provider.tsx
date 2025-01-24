@@ -4,25 +4,27 @@ import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
 } from 'react';
 import { useWallet } from '../wallet/wallet.hook';
 
-type Message = {
+export type Message = {
   id: string;
   type: RequestType;
   payload: unknown;
 };
 
-type RequestType =
+export type UiRequiredRequest = 'CONNECTION_REQUEST' | 'SIGN_REQUEST';
+
+export type RequestType =
+  | UiRequiredRequest
   | 'GET_STATUS'
-  | 'CONNECTION_REQUEST'
-  | 'SIGN_REQUEST'
-  | 'PAYMENT_REQUEST'
-  | 'UNLOCK_REQUEST'
-  | 'GET_NETWORK_LIST';
+  | 'GET_NETWORK_LIST'
+  | 'GET_ACCOUNTS';
+
 type Request = Message & {
   resolve: (data: unknown) => void;
   reject: (error: unknown) => void;
@@ -35,14 +37,13 @@ const messageHandle = (
   ) => Promise<{ payload: unknown } | { error: unknown }>,
 ) => {
   const cb = async (event: MessageEvent) => {
-    if (event.data.type === type && event.source) {
+    if (event.data.type === type && event.source && event.origin !== 'null') {
       const payload = await handler(event.data);
       event.source.postMessage(
         { id: event.data.id, type: event.data.type, ...payload },
-        // TODO: use sessionId of plugins, since 'null' happens for the iframe plugins that we need more proper handling
-        { targetOrigin: event.origin === 'null' ? '*' : event.origin },
+        { targetOrigin: event.origin },
       );
-      if (window.opener && event.origin && event.origin !== 'null') {
+      if (window.opener && event.origin) {
         window.opener.focus();
       }
     }
@@ -71,18 +72,33 @@ export const CommunicationProvider: FC<
           }
       >,
     ) => () => void;
-    uiLoader?: (route: string) => void;
+    uiLoader?: (requestId: string, requestType: UiRequiredRequest) => void;
   }>
 > = ({ children, handle = messageHandle, uiLoader }) => {
   const { setOrigin } = useGlobalState();
   const [requests] = useState(() => new Map<string, Request>());
   const routeNavigate = usePatchedNavigate();
-  const navigate =
-    uiLoader ||
-    ((route: string) => {
+  const defaultUiLoader = useCallback(
+    (_requestId: string, requestType: UiRequiredRequest) => {
+      const routeMap = {
+        CONNECTION_REQUEST: '/connect',
+        PAYMENT_REQUEST: '/payment',
+        SIGN_REQUEST: '/sign-request',
+      };
+      const route = routeMap[requestType];
+      if (!route) return;
       setOrigin(route);
       routeNavigate(route);
-    });
+    },
+    [routeNavigate, setOrigin],
+  );
+  const loadUiComponent = useCallback(
+    (requestId: string, requestType: UiRequiredRequest) => {
+      const loader = uiLoader || defaultUiLoader;
+      return loader(requestId, requestType);
+    },
+    [defaultUiLoader, uiLoader],
+  );
   const { isUnlocked, accounts, profile, networks, activeNetwork } =
     useWallet();
 
@@ -108,18 +124,16 @@ export const CommunicationProvider: FC<
         requests.delete(data.id);
       });
 
-    const handleRequest = (type: RequestType, route: string) =>
+    const handleUIRequiredRequest = (type: UiRequiredRequest) =>
       handle(type, async (payload) => {
         console.log('handleRequest', type, payload);
         const request = createRequest(payload);
-        setOrigin(`${route}/${payload.id}`);
-        navigate(`${route}/${payload.id}`);
+        loadUiComponent(payload.id, type);
         return request;
       });
     const handlers = [
-      handleRequest('CONNECTION_REQUEST', '/connect'),
-      handleRequest('PAYMENT_REQUEST', '/payment'),
-      handleRequest('SIGN_REQUEST', '/sign-request'),
+      handleUIRequiredRequest('CONNECTION_REQUEST'),
+      handleUIRequiredRequest('SIGN_REQUEST'),
       handle('GET_STATUS', async () => {
         return {
           payload: {
@@ -133,12 +147,17 @@ export const CommunicationProvider: FC<
           payload: isUnlocked ? networks : [],
         };
       }),
+      handle('GET_ACCOUNTS', async () => {
+        return {
+          payload: isUnlocked ? accounts : [],
+        };
+      }),
     ];
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
   }, [
-    navigate,
+    loadUiComponent,
     requests,
     isUnlocked,
     accounts,
@@ -146,6 +165,7 @@ export const CommunicationProvider: FC<
     networks,
     activeNetwork,
     setOrigin,
+    handle,
   ]);
 
   return (
