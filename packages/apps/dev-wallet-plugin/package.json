@@ -4,6 +4,12 @@
   "private": true,
   "description": "Kadena developer wallet plugin",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/pact-remote-console.es.js",
+      "require": "./dist/pact-remote-console.umd.js"
+    }
+  },
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite --force",
