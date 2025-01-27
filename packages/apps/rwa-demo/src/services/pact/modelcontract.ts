@@ -4,98 +4,46 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (namespace "${namespace}")
 
 (module ${contractName} GOV
-  "${contractName} contract descriptions"
+  "\`${contractName}\` an example real-world asset (RWA) token, which extends fungible-v2        \
+  \ and provides mint, burn, forced-transfer, freezing of entire contract or investors.  \
+  \ The example also implements agent-role, and identity registry features, but does not \
+  \ implement the identity verification. "
 
   (defconst GOV-KEYSET:string "${namespace}.admin-keyset")
+
   (defcap GOV () (enforce-keyset GOV-KEYSET))
 
   (implements fungible-v2)
   (implements RWA.real-world-asset-v1)
   (implements RWA.agent-role-v1)
   (implements RWA.identity-registry-v1)
-  (implements RWA.identity-registry-storage-v1)
   (implements RWA.compliance-compatible-v1)
 
   (use fungible-v2 [account-details])
+  (use RWA.compliance-compatible-v1 [compliance-parameters-input compliance-info])
   (use RWA.burn-wallet)
 
-;; acts like a tokenStorage.sol
+  (defconst TOKEN-ID:string "${namespace}.${contractName}" "Token ID")
+  (defconst VERSION:string "0.0")
+  (defconst MINIMUM-PRECISION:integer 0 "Minimum allowed precision for token transactions")
+
+  (defconst AGENT-ADMIN:string "agent-admin")
+  (defconst FREEZER:string "freezer")
+  (defconst TRANSFER-MANAGER "transfer-manager")
+
+  (defconst AGENT-ROLES:[string]
+    [AGENT-ADMIN FREEZER TRANSFER-MANAGER] )
+
   (defschema token-info
+    @doc "Saves token metedata information"
     name:string
     symbol:string
-    decimals:integer
     kadenaID:string
-    version:string
+    decimals:integer
     compliance:[module{RWA.compliance-v1}]
     paused:bool
     supply:decimal
     owner-guard:guard
-  )
-
-  (defschema user-info
-    account:string
-    balance:decimal
-    guard:guard
-    frozen:bool
-    amount-frozen:decimal
-  )
-
-  (defschema agent-schema
-    roles:[string]
-    guard:guard
-    active:bool
-  )
-
-  (defschema identity-schema
-    kadenaID:string
-    country:integer
-    active:bool
-  )
-
-  (defschema compliance-info-schema
-    max-balance-per-investor:decimal
-    supply-limit:decimal
-    max-investors:integer
-    investor-count:integer
-  )
-
-  (defschema compliance-input
-    max-balance-per-investor:decimal
-    supply-limit:decimal
-    max-investors:integer
-  )
-
-  (deftable token:{token-info})
-  (deftable users:{user-info})
-  (deftable compliance-parameters:{compliance-info-schema})
-
-  ;; agent management
-  (deftable agents:{agent-schema})
-
-  ;;identity management
-  (deftable identities:{identity-schema})
-
-  ;; defconsts
-
-  (defconst MINIMUM-PRECISION 0
-    "Minimum allowed precision for coin transactions")
-
-  (defconst TOKEN-ID "${namespace}.${contractName}")
-
-  (defconst AGENT-ADMIN:string 'agent-admin )
-  (defconst FREEZER:string 'freezer )
-  (defconst TRANSFER-MANAGER 'transfer-manager )
-
-  (defconst AGENT-ROLES:[string] [
-    AGENT-ADMIN
-    FREEZER
-    TRANSFER-MANAGER
-  ])
-
-  (defschema schema-set-compliance-parameters
-    supply-limit:decimal
-    max-investors:integer
-    max-balance-per-investor:decimal
   )
 
   (defschema account-balance-change
@@ -105,107 +53,95 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     current:decimal
   )
 
-  (defcap RECONCILE:bool
-    ( amount:decimal
-      sender:object{account-balance-change}
-      receiver:object{account-balance-change}
-    )
-    @doc " For accounting via events. \
-         \ sender = {account: '', previous: 0.0, current: 0.0} for mint \
-         \ receiver = {account: '', previous: 0.0, current: 0.0} for burn"
-    @event
-    true
+  (defschema user-info
+    @doc "Investor information"
+    account:string
+    balance:decimal
+    guard:guard
+    frozen:bool
+    amount-frozen:decimal
   )
 
-  (defcap SET-COMPLIANCE-PARAMETERS:bool (compliance:object{schema-set-compliance-parameters})
-    @doc "Event emitted when a compliance parameters is updated."
-    @event
-    true
+  (defschema agent-schema
+    @doc "Agent information"
+    roles:[string]
+    guard:guard
+    active:bool
   )
 
-  ;; compliance-compatible functions
-
-  (defun set-max-balance-per-investor (max-balance-per-investor:decimal)
-    (only-owner-or-agent-admin)
-    (update compliance-parameters "" {
-      "max-balance-per-investor": max-balance-per-investor
-      }
-    )
+  (defschema identity-schema
+    @doc "Investor identity information"
+    kadenaID:string
+    country:integer
+    active:bool
   )
 
-  (defun set-supply-limit (supply-limit:decimal)
-    (only-owner-or-agent-admin)
-    (update compliance-parameters "" {
-      "supply-limit": supply-limit
-      }
-    )
+  (deftable token:{token-info})
+  (deftable users:{user-info})
+  (deftable agents:{agent-schema})
+  (deftable identities:{identity-schema})
+  (deftable compliance-parameters:{compliance-info})
+
+  ; ----------------------------------------------------------------------
+  ; Caps
+
+
+
+  (defcap ONLY-AGENT:bool (role:string)
+    @doc "Capability that can be required to validate if an address is an agent with required role"
+    @managed
+    (enforce-agent (read-string "agent") role)
   )
 
-  (defun set-max-investors (max-investors:decimal)
-    (only-owner-or-agent-admin)
-    (update compliance-parameters "" {
-      "max-investors": max-investors
-      }
-    )
-  )
-
-  (defun set-compliance-parameters ()
-    (only-owner-or-agent-admin)
-    (let ((compliance-params:object{compliance-input} (read-msg 'compliance-parameters )))
-      (update compliance-parameters ""
-        compliance-params
-      )
-      (emit-event (SET-COMPLIANCE-PARAMETERS compliance-params))
+  (defcap ONLY-OWNER:bool (role:string)
+    @doc "Capability that can be required to validate if an address is an agent"
+    @managed
+    (with-read token "" {"owner-guard":=guard}
+      (enforce-guard guard)
     )
   )
 
-  (defun max-balance-per-investor:decimal ()
-    (with-read compliance-parameters "" {
-      "max-balance-per-investor":= max-balance-per-investor
-    } max-balance-per-investor)
-  )
+  (defcap DEBIT (sender:string)
+    @doc "Capability for managing debiting operations"
+    (enforce (!= sender "") "ACC-PRT-003"))
 
-  (defun supply-limit:decimal ()
-    (with-read compliance-parameters "" {
-      "supply-limit":= supply-limit
-    } supply-limit)
-  )
+  (defcap CREDIT (receiver:string)
+    @doc "Capability for managing crediting operations"
+    (enforce-contains-identity receiver)
+    (enforce (!= receiver "") "ACC-PRT-003"))
 
-  (defun max-investors:integer ()
-    (with-read compliance-parameters "" {
-      "max-investors":= max-investors
-    } max-investors)
-  )
-
-  (defun investor-count:integer ()
-    (with-read compliance-parameters "" {
-        "investor-count":= ct
-      } ct)
-  )
-
-  (defun add-investor-count:string ()
-    (require-capability (INTERNAL))
-    (with-read compliance-parameters "" {
-      "investor-count":= ct
-    }
-      (update compliance-parameters "" {
-        "investor-count": (+ 1 ct)
-      })
+  (defun TRANSFER-mgr:decimal
+    ( managed:decimal
+      requested:decimal
     )
+    @doc "Ensures that the sum of transfer amounts in the requested transaction \
+    \ does not exceed the managed amount."
+    (let ((newbal (- managed requested)))
+      (enforce (>= newbal 0.0)
+        (format "TRF-MGR-001: {}" [managed]))
+      newbal)
   )
 
-  (defun remove-investor-count:string ()
-    (require-capability (INTERNAL))
-    (with-read compliance-parameters "" {
-      "investor-count":= ct
-    }
-      (update compliance-parameters "" {
-        "investor-count": (- ct 1)
-      })
+  (defcap TRANSFER:bool
+    ( sender:string
+      receiver:string
+      amount:decimal
     )
+    @doc "Transfers tokens between two accounts. Ensures both accounts are compliant and unfrozen."
+    @managed amount TRANSFER-mgr
+    (enforce-unit amount)
+    (enforce (> amount 0.0) "TRF-AMT-002")
+    (enforce-one "TRF-CAP-001" [
+      (enforce-guard (at 'guard (read users sender)))
+      (enforce  (try false (require-capability (MINT))) "TRF-MINT-001")
+      (enforce  (try false (require-capability (BURN))) "TRF-BURN-001")
+      (enforce  (try false (require-capability (FORCED-TRANSFER))) "TRF-FRC-001")
+      ])
+    (enforce (!= sender "") "ACC-PRT-003")
+    (enforce (!= sender receiver) "TRF-ACC-001")
+    (compose-capability (DEBIT sender))
+    (compose-capability (CREDIT receiver))
   )
-
-  ;; @events
 
   (defcap UPDATED-TOKEN-INFORMATION:bool (new-name:string new-symbol:string new-decimals:integer new-version:string new-kadenaID:string)
     @doc "Event emitted when token information is updated."
@@ -221,6 +157,12 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defcap COMPLIANCE-UPDATED:bool (compliance:[module{RWA.compliance-v1}])
     @doc "Event emitted when a compliance is updated"
+    @event
+    true
+  )
+
+  (defcap COMPLIANCE-PARAMETERS:bool (compliance:object{compliance-parameters-input})
+    @doc "Event emitted when a compliance parameters is updated."
     @event
     true
   )
@@ -267,36 +209,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  ;; grant caps
-
-  (defcap INTERNAL:bool () true)
-  (defcap MINT:bool () true)
-  (defcap BURN:bool () true)
-  (defcap FORCED-TRANSFER:bool () true )
-  (defcap UPDATE-SUPPLY:bool () true )
-
-  ;; agent caps
-
-  (defcap ONLY-AGENT:bool (role:string)
-    @doc "Capability that can be required to validate if an address is an agent"
-    @managed
-    (with-read agents (read-string 'agent) {
-      "guard":= guard,
-      "roles":= roles
-      }
-      (contains role roles)
-      (enforce-guard guard)
-    )
-  )
-
-  (defcap ONLY-OWNER:bool (role:string)
-    @doc "Capability that can be required to validate if an address is an agent"
-    @managed
-    (with-read token "" {"owner-guard":=guard}
-      (enforce-guard guard)
-    )
-  )
-
   (defcap OWNERSHIP-TRANSFERRED:bool (old-owner-guard:guard new-owner-guard:guard )
     @doc "Event emitted when ownership of the contract is transferred"
     @event
@@ -315,106 +227,73 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap SUPPLY (supply:decimal)
+  (defcap SUPPLY:decimal (supply:decimal)
+    @doc "Event emitted when supply is changed."
     @event
     supply
   )
 
-  (defcap CLAIM-TOPICS-REGISTRY-SET:bool (claim-topics-registry:string)
-    @doc "This event is emitted when the Claim Topics Registry has been set for the Identity Registry. \
-    \ The event is emitted by the IdentityRegistry constructor.                                          \
-    \ \`claim-topics-registry\` is the address of the Claim Topics Registry contract."
-    @event
-    true
-  )
-
-  (defcap TRUSTED-ISSUERS-REGISTRY-SET:bool (trusted-issuers-registry:string)
-    @doc "This event is emitted when the Trusted Issuers Registry has been set for the Identity Registry. \
-    \ The event is emitted by the IdentityRegistry constructor.                                          \
-    \ \`trusted-issuers-registry\` is the address of the Trusted Issuers Registry contract."
-    @event
-    true
-  )
-
   (defcap IDENTITY-REGISTERED:bool (investor-address:string investor-guard:guard identity:string)
-    @doc "This event is emitted when an Identity is registered into the Identity Registry.             \
-    \ The event is emitted by the 'register-identity' function.                                        \
-    \ \`investor-address\` is the address of the investor's wallet.                                       \
-    \ \`identity\` is the address of the Identity smart contract (kadenaID)."
+    @doc "Event emitted when identity is added"
     @event
     true
   )
 
   (defcap IDENTITY-REMOVED:bool (investor-address:string identity:string)
-    @doc "This event is emitted when an Identity is removed from the Identity Registry.               \
-    \ The event is emitted by the 'delete-identity' function.                                          \
-    \ \`investor-address\` is the address of the investor's wallet.                                       \
-    \ \`identity\` is the address of the Identity smart contract (kadenaID)."
+    @doc "Event emitted when identity is removed"
     @event
     true
   )
 
-  (defcap IDENTITY-UPDATED:bool (old-identity:string new-identity:string)
-    @doc "This event is emitted when an Identity has been updated.                                      \
-    \ The event is emitted by the 'update-identity' function.                                          \
-    \ \`old-identity\` is the old Identity contract's address to update.                                  \
-    \ \`new-identity\` is the new Identity contract's address."
+  ;; grant caps
+
+  (defcap INTERNAL:bool ()
+    @doc "Capability to guard functions for internal operations"
+    true
+  )
+
+  (defcap MINT:bool ()
+    @doc "Capability to guard functions for mint operations"
+    true
+  )
+
+  (defcap BURN:bool ()
+    @doc "Capability to guard functions for mint operations"
+    true
+  )
+
+  (defcap FORCED-TRANSFER:bool ()
+    @doc "Capability to guard functions for forced-transfer operations"
+    true
+  )
+
+  (defcap UPDATE-SUPPLY:bool ()
+    @doc "Capability to guard functions for update-supply operations"
+    true
+  )
+
+  (defcap RECONCILE:bool
+    ( amount:decimal
+      sender:object{account-balance-change}
+      receiver:object{account-balance-change}
+    )
+    @doc " For accounting via events. \
+         \ sender = {account: '', previous: 0.0, current: 0.0} for mint \
+         \ receiver = {account: '', previous: 0.0, current: 0.0} for burn"
     @event
     true
   )
 
-  (defcap COUNTRY-UPDATED:bool (investor-address:string country:integer)
-    @doc "This event is emitted when an Identity's country has been updated.                           \
-    \ The event is emitted by the 'update-country' function.                                           \
-    \ \`investor-address\` is the address on which the country has been updated.                         \
-    \ \`country\` is the numeric code (ISO 3166-1) of the new country."
-    @event
-    true
-  )
-
-  (defcap IDENTITY-STORED:bool (investor-address:string identity:string)
-    @doc "This event is emitted when an Identity is registered into the storage contract.           \
-    \ The event is emitted by the 'register-identity' function.                                      \
-    \ \`investor-address\` is the address of the investor's wallet.                                     \
-    \ \`identity\` is the address of the Identity smart contract (kadenaID)."
-    @event
-  true)
-
-  (defcap IDENTITY-UNSTORED:bool (investor-address:string identity:string)
-    @doc "This event is emitted when an Identity is removed from the storage contract.              \
-    \ The event is emitted by the 'delete-identity' function.                                        \
-    \ \`investor-address\` is the address of the investor's wallet.                                     \
-    \ \`identity\` is the address of the Identity smart contract (kadenaID)."
-    @event
-  true)
-
-  (defcap IDENTITY-MODIFIED:bool (oldIdentity:string newIdentity:string)
-    @doc "This event is emitted when an Identity has been updated.                                  \
-    \ The event is emitted by the 'update-identity' function.                                        \
-    \ \`oldIdentity\` is the old Identity contract's address to update.                                \
-    \ \`newIdentity\` is the new Identity contract's address."
-    @event
-  true)
-
-  (defcap COUNTRY-MODIFIED:bool (investor-address:string country:integer)
-    @doc "This event is emitted when an Identity's country has been updated.        \
-    \ The event is emitted by the 'update-country' function.                        \
-    \ \`investor-address\` is the address on which the country has been updated.      \
-    \ \`country\` is the numeric code (ISO 3166-1) of the new country."
-    @event
-  true)
-
-  (defun init (name:string symbol:string decimals:integer kadenaID:string version:string compliances:[module{RWA.compliance-v1}] paused:bool owner-guard:guard)
+  (defun init (name:string symbol:string decimals:integer kadenaID:string compliances:[module{RWA.compliance-v1}] paused:bool owner-guard:guard)
     @doc "Initiates token with supplied informations and owner guard"
     (with-capability (GOV)
       (insert token "" {
         "name": name,
         "symbol":symbol,
         "kadenaID":kadenaID,
-        "version":version,
         "compliance":compliances,
+        "decimals":decimals,
         "paused":false,
-        "decimals": decimals,
         "supply": 0.0,
         "owner-guard": owner-guard
       })
@@ -427,30 +306,70 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
         }
       )
     )
-
-    (emit-event (UPDATED-TOKEN-INFORMATION name symbol 0 version kadenaID ))
+    (emit-event (UPDATED-TOKEN-INFORMATION name symbol MINIMUM-PRECISION VERSION kadenaID ))
+    (emit-event (COMPLIANCE-UPDATED compliances))
+    (emit-event (COMPLIANCE-PARAMETERS {
+        "max-balance-per-investor": -1.0
+       ,"supply-limit": -1.0
+       ,"max-investors": -1
+      } ))
   )
 
-  ;; Getters
-
-  (defun kadenaID:string ()
-    @doc "Return the kadena ID."
-    (with-read token "" {"kadenaID" := id } id)
+  (defun contains-identity:bool (user-address:string)
+    @doc "Checks whether a wallet has its Identity registered or not in the Identity Registry.           \
+    \ Returns 'true' if the address is contained in the Identity Registry, 'false' if not."
+    (with-default-read identities user-address
+      { "active": false }
+      { "active":= active }
+      active
+    )
   )
 
-  (defun version:string ()
-    @doc "Return the version of the contract."
-    (with-read token "" {"version" := version } version)
+  (defun enforce-contains-identity:bool (account:string)
+    @doc "Enforce that the provided account has an identity registered in the system."
+    (let ((r (contains-identity account)))
+      (enforce r "IDR-001"))
+      false
   )
 
-  (defun identity-registry:module{RWA.identity-registry-v1} ()
-    @doc "Return the associated identity registry."
-    (with-read token "" {"identity-registry" := identity-registry } identity-registry)
+  (defun enforce-agent:bool (agent:string role:string)
+    @doc "Checks that agent has the valid role for the transaction"
+    (with-read agents agent {
+      "guard":= guard,
+      "roles":= roles,
+      "active":= active
+      }
+      (enforce active "ROL-STS-002")
+      (enforce (contains role roles) "ROL-STS-003")
+      (enforce-guard guard)
+    )
   )
 
-  (defun compliance:[module{RWA.compliance-v1}] ()
-    @doc "Return the compliance contract."
-    (with-read token "" {"compliance" := compliance } compliance)
+  (defun verify-agent-roles (roles:[string])
+    @doc "Verify that all roles in the provided list exist in the predefined agent roles."
+    (if (= (length roles) 0)
+      true
+      (map (lambda (idx:integer)
+        (enforce (contains (at idx roles) AGENT-ROLES)
+          (format "ROL-002: {}" [(at idx roles)]))
+      )
+      (enumerate 0 (- (length roles) 1)))
+    )
+  )
+
+  (defun enforce-unit:bool (amount:decimal)
+    @doc "Enforce minimum precision allowed for coin transactions"
+    (enforce
+      (= (floor amount MINIMUM-PRECISION)
+        amount)
+      (format "AMT-001: {}" [amount]))
+  )
+
+  (defun enforce-unfrozen (sender:string)
+    @doc "Fail if sender is frozen"
+    (let ((frozen:bool (address-frozen sender)))
+      (enforce (not frozen) "ACC-FRZ-001")
+    )
   )
 
   (defun paused:bool ()
@@ -474,255 +393,105 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       "balance":= balance
       }
       (if frozen 0.0 amount-frozen)
+    )
+  )
+
+  (defun enforce-unfrozen-amount:bool
+    ( account:string
+      amount:decimal
+    )
+    (with-read users account
+      { "frozen" := frozen,
+        "amount-frozen" := amount-frozen,
+        "balance" := balance
+      }
+      (enforce (not frozen) "ACC-FRZ-001")
+      (enforce (>= (- balance amount-frozen) amount) "ACC-AMT-001")
+    )
+  )
+
+  (defun only-agent:bool (role:string)
+    @doc "Verifies that the agent is signing for the capability"
+    (with-capability (ONLY-AGENT role)
+      true
+    )
+  )
+
+  (defun only-owner:bool (role:string)
+    @doc "Verifies that the owner is signing for the capability"
+    (with-capability (ONLY-OWNER role)
+      true
+    )
+  )
+
+  (defun only-owner-or-agent-admin:bool ()
+    @doc "Ensures that the caller is either the owner or an agent with the \`agent-admin\` role. \
+    \ This function installs both the \`ONLY-OWNER\` and \`ONLY-AGENT\` capabilities, enforcing at least one of them."
+    (install-capability (ONLY-OWNER ""))
+    (install-capability (ONLY-AGENT AGENT-ADMIN))
+    (enforce-one "ROL-001" [
+      (only-owner "")
+      (only-agent AGENT-ADMIN)
+    ])
+    true
+  )
+
+  ;
+  ;; fungible-v2 implementation
+  ;
+  (defun credit:object{account-balance-change}
+    ( account:string
+      amount:decimal
+    )
+    @doc "Credits the requested account. If the account balance is zero, increments \
+    \ the investor count. Protected by the \`CREDIT\` capability."
+    (require-capability (CREDIT account))
+    (with-default-read users account
+      { "balance": 0.0 }
+      { "balance":= balance}
+      (if (= account (zero-address))
+        "Credit to Zero Address"
+        (if (= balance 0.0)
+          (with-capability (INTERNAL)
+            (add-investor-count)
+          )
+          "already existing investor"
+        )
+      )
+    (update users account
+      { "balance" : (+ balance amount)})
+      {'account: account, 'previous: balance, 'current: (+ balance amount)}
   ))
 
-  ;; Setters
-  (defun set-name:string (name:string)
-    @doc "Set the name of the token."
-    (with-read token "" {
-      "symbol":= symbol,
-      "version":= version,
-      "kadenaID":= kadenaID
-      }
-      (only-owner)
-      (write token "" {"name": name}
-      (emit-event (UPDATED-TOKEN-INFORMATION name symbol 0.0 version kadenaID ))
-      )
+  (defun debit:object{account-balance-change}
+    ( account:string
+      amount:decimal
     )
-  )
-
-  (defun set-symbol:string (symbol:string)
-    @doc "Set the name of the token."
-    (with-read token "" {
-      "name":= name,
-      "version":= version,
-      "kadenaID":= kadenaID
-      }
-        (only-owner)
-        (write token "" {"symbol": symbol}
-        (emit-event (UPDATED-TOKEN-INFORMATION name symbol 0.0 version kadenaID ))
-        )
-    )
-  )
-
-  (defun set-kadenaID:string (kadenaID:string)
-    @doc "Set the name of the token."
-    (with-read token "" {
-      "name":= name,
-      "version":= version,
-      "symbol":= symbol
-      }
-      (only-owner)
-      (write token "" {"kadenaID": kadenaID}
-      (emit-event (UPDATED-TOKEN-INFORMATION name symbol 0.0 version kadenaID ))
-      )
-    )
-  )
-
-  (defun pause:string ()
-    @doc "Pause the contract."
-    (with-read token "" {
-      "paused":= paused
-      }
-     (only-agent FREEZER)
-     (enforce (= paused false) "Contract is paused")
-     (update token "" {"paused": true}))
-     (emit-event (PAUSED))
-     "Paused"
-  )
-
-  (defun unpause:string ()
-    @doc "Unpause the contract."
-    (with-read token "" {
-      "paused":= paused
-      }
-      (only-agent FREEZER)
-      (enforce (= paused true) "Contract is unpaused")
-      (update token "" {"paused": false}))
-      (emit-event (UNPAUSED))
-      "Paused"
-  )
-
-
-  (defun set-address-frozen:string (user-address:string freeze:bool)
-    @doc "Freeze or unfreeze a user's address."
-    (with-capability (INTERNAL)
-      (only-agent FREEZER)
-      (set-address-frozen-internal user-address freeze)
-    )
-  )
-
-  (defun freeze-partial-tokens:string (user-address:string amount:decimal)
-    @doc "Freeze a specific amount of a user's tokens."
-   (enforce (> amount 0.0) "Positive amount")
-   (only-agent FREEZER)
-   (with-capability (INTERNAL)
-    (freeze-partial-tokens-internal user-address amount)
-   )
-  )
-
-  (defun unfreeze-partial-tokens:string (user-address:string amount:decimal)
-    @doc "Unfreeze a specific amount of a user's tokens."
-    (enforce (> amount 0.0) "Positive amount")
-    (with-capability (INTERNAL)
-      (only-agent FREEZER)
-      (with-read users user-address {
-        "frozen":= frozen,
-        "amount-frozen":= amount-frozen
-      }
-      (unfreeze-partial-tokens-internal user-address amount)
-    ) )
-  )
-
-  (defun set-compliance:string (compliance:[module{RWA.compliance-v1}])
-    @doc "Set the compliance contract."
-    ;;call bind-token
-    (only-owner "")
-    (update token "" {"compliance": compliance})
-    (emit-event (COMPLIANCE-UPDATED compliance))
-  )
-
-  ;; Transfer actions
-
-  (defun forced-transfer:bool (from:string to:string amount:decimal)
-    @doc "Force transfer tokens from one address to another."
-    (with-capability (FORCED-TRANSFER)
-      (with-capability (TRANSFER from to amount)
-        (only-agent TRANSFER-MANAGER)
-        (transfer-internal from to amount)
-    ))
-    true
-  )
-
-  (defun mint :string (to:string amount:decimal)
-    @doc "Mints amount of token to a user's address"
-    (enforce-unit amount)
-    (with-capability (MINT)
-      (only-agent TRANSFER-MANAGER)
-      (mint-internal to amount)
-    )
-  )
-
-  (defun burn:bool (user-address:string amount:decimal)
-    @doc "Burn tokens from a user's address according to destroy rules in compliance"
-    (enforce-unit amount)
-    (with-read token "" {
-      "compliance":=compliance-l
-      }
-      (only-agent TRANSFER-MANAGER)
-      (burn-internal user-address amount)
-    )
-  )
-
-  (defun enforce-contains-identity (account:string)
-    (let ((r (contains-identity account)))
-      (enforce r "Address is not registered"))
-  )
-
-  (defun recovery-address:bool (lost-wallet:string new-wallet:string investor-kadenaID:string)
-    @doc "Recover tokens from a lost wallet to a new wallet."
-    (only-agent AGENT-ADMIN)
-    (emit-event (RECOVERY-SUCCESS lost-wallet new-wallet investor-kadenaID))
-    false
-  )
-
-  ;; Batch functions
-  (defun batch-transfer:bool (from:string to-list:[string] amounts:[decimal])
-    @doc "Perform batch transfer of tokens."
-    (map (lambda (idx:integer)
-      (with-capability (TRANSFER from (at idx to-list) (at idx amounts))
-        (enforce-unfrozen from)
-        (transfer-internal from (at idx to-list) (at idx amounts))
-      )
-    ) (enumerate 0 (- (length to-list) 1))
-    ) true
-  )
-
-  (defun batch-forced-transfer:bool (from-list:[string] to-list:[string] amounts:[decimal])
-    @doc "Perform batch forced transfer of tokens."
-      (only-agent TRANSFER-MANAGER)
-      (with-capability (FORCED-TRANSFER)
-        (map (lambda (idx:integer)
-          (with-capability (TRANSFER (at idx from-list) (at idx to-list) (at idx amounts))
-
-            (transfer-internal (at idx from-list) (at idx to-list) (at idx amounts))
+    @doc "Debits the requested account by a specified amount. If the account balance becomes zero after the debit, \
+       \ it decrements the investor count. Protected by the \`DEBIT\` capability."
+    (require-capability (DEBIT account))
+    (with-read users account
+      { "balance" := balance }
+      (enforce (<= amount balance) "ACC-AMT-001")
+      (if (= account (zero-address))
+        "Debit to Zero Address"
+        (if (= (- balance amount) 0.0)
+          (with-capability (INTERNAL)
+            (remove-investor-count)
           )
+          "already existing investor"
         )
-        ) (enumerate 0 (- (length from-list) 1)) ) true
-  )
-
-  (defun batch-mint:bool (to-list:[string] amounts:[decimal])
-    @doc "Mint tokens to multiple addresses."
-    (only-agent TRANSFER-MANAGER)
-    (with-capability (MINT)
-      (map (lambda (idx:integer)
-        (with-capability (TRANSFER (zero-address) (at idx to-list) (at idx amounts))
-          (mint-internal (at idx to-list) (at idx amounts))
-        )
-        ) (enumerate 0 (- (length to-list) 1))) true
-    )
-  )
-
-  (defun batch-burn:bool (user-addresses:[string] amounts:[decimal])
-    @doc "Burn tokens from multiple addresses."
-    (only-agent TRANSFER-MANAGER)
-    (with-capability (BURN)
-      (map (lambda (idx:integer)
-      (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
-        (burn-internal (at idx user-addresses) (at idx amounts))
       )
-      ) (enumerate 0 (- (length user-addresses) 1)) ) true
-    )
-  )
-
-  (defun batch-register-identity:bool (user-addresses:[string] user-guards:[guard] identities:[string] countries:[integer])
-    @doc "Allows batch registration of identities.                                                     \
-    \ Requires that none of the users has an identity contract already registered.                   \
-    \ Only a wallet set as agent of the smart contract can call this function.                       \
-    \ Emits \`IDENTITY-REGISTERED\` events for each user address in the batch."
-    (only-owner-or-agent-admin)
-    (map (lambda (idx:integer)
-      (register-identity-internal (at idx user-addresses) (at idx user-guards) (at idx identities) (at idx countries))
-    ) (enumerate 0 (- (length user-addresses) 1)) ) true
-  )
-
-  (defun batch-set-address-frozen:bool (user-addresses:[string] freeze:[bool])
-    @doc "Freeze or unfreeze multiple addresses."
-    (only-agent FREEZER)
-    (map (lambda (idx:integer)
-      (with-capability (INTERNAL)
-        (set-address-frozen-internal (at idx user-addresses) (at idx freeze))
-        )
-        )(enumerate 0 (- (length user-addresses) 1))
-    )
-    true
-  )
-
-  (defun batch-freeze-partial-tokens:bool (user-addresses:[string] amounts:[decimal] )
-    @doc "Unfreeze a portion of tokens for multiple addresses."
-    (only-agent FREEZER)
-    (map (lambda (idx:integer)
-    (with-capability (INTERNAL)
-      (freeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
-    ) ) (enumerate 0 (- (length user-addresses) 1))
-    )
-    true
-  )
-
-  (defun batch-unfreeze-partial-tokens:bool (user-addresses:[string] amounts:[decimal] )
-    @doc "Unfreeze a portion of tokens for multiple addresses."
-    (only-agent FREEZER)
-    (map (lambda (idx:integer)
-      (with-capability (INTERNAL)
-          (unfreeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
-      ) ) (enumerate 0 (- (length user-addresses) 1))
-    )
-    true
-  )
+      (update users account
+        { "balance" : (- balance amount) }
+      )
+     {'account: account, 'previous: balance, 'current: (- balance amount)}
+  ))
 
   ;; internal functions
 
-  (defun mint-internal (to:string amount:decimal)
+  (defun mint-internal:bool (to:string amount:decimal)
+    @doc "Mint tokens from a user's address according to create rules in compliance"
     (with-read token "" {
       "compliance":= compliance-l:[module{RWA.compliance-v1}]
       }
@@ -744,8 +513,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
           (update-supply amount)
         )
       )
-      "Token Minted"
     )
+    true
   )
 
   (defun burn-internal:bool (user-address:string amount:decimal)
@@ -775,6 +544,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
         )
       )
     )
+    true
   )
 
   (defun transfer-internal:string
@@ -782,193 +552,192 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       receiver:string
       amount:decimal
     )
-    @doc "Transfer AMOUNT of token from sender to receiver"
+    @doc "Transfer AMOUNT of token from sender to receiver. Validates can-transfer rules in compliance"
     (enforce-unit amount)
-
-      (with-read token "" {
-         "compliance":= compliance-l
-        ,"paused":=paused
-        }
-        (enforce (= paused false) "Contract is paused")
-        (map
-          (lambda (compliance:module{RWA.compliance-v1})
-            (compliance::can-transfer TOKEN-ID sender receiver amount)
-            (compliance::transferred TOKEN-ID sender receiver amount)
-            ) compliance-l
-        )
+    (enforce-unfrozen sender)
+    (enforce-unfrozen-amount sender amount)
+    (enforce-contains-identity receiver)
+    (with-read token "" {
+       "compliance":= compliance-l
+      ,"paused":=paused
+      }
+      (enforce (= paused false) "TRF-PAUSE-001")
+      (map
+        (lambda (compliance:module{RWA.compliance-v1})
+          (compliance::can-transfer TOKEN-ID sender receiver amount)
+          (compliance::transferred TOKEN-ID sender receiver amount)
+          ) compliance-l
       )
+    )
     (let
       ( (sender (debit sender amount))
         (receiver (credit receiver amount)) )
-
       (emit-event (RECONCILE amount sender receiver))
     )
     "Transfer successful"
   )
 
   (defun set-address-frozen-internal:string (user-address:string freeze:bool)
-    @doc "Freeze or unfreeze a user's address."
-      (require-capability (INTERNAL))
-      (update users user-address {"frozen": freeze})
-      (emit-event (ADDRESS-FROZEN user-address freeze) )
-    ""
+    @doc "Internal function to update the freeze state."
+    (require-capability (INTERNAL))
+    (update users user-address {"frozen": freeze})
+    (emit-event (ADDRESS-FROZEN user-address freeze) )
+    "Address Frozen"
   )
 
   (defun freeze-partial-tokens-internal:string (user-address:string amount:decimal)
+    @doc "Internal function to update the partial freeze."
     (require-capability (INTERNAL))
-
+    (enforce (> amount 0.0) "FRZ-AMT-004")
     (with-read users user-address {
       "balance":= balance,
       "frozen":= frozen,
       "amount-frozen":= amount-frozen
     }
-      (enforce (not frozen) "Account is frozen")
-      (enforce (>= balance (+ amount-frozen amount)) "frozen amount exceeds balance")
+      (enforce (not frozen) "ACC-FRZ-001")
+      (enforce (>= balance (+ amount-frozen amount)) "FRZ-AMT-002")
       (update users user-address {"amount-frozen": (+ amount-frozen amount)})
       (emit-event (TOKENS-FROZEN user-address  (+ amount-frozen amount)))
-      ""
+      "Partial tokens frozen"
     )
   )
 
   (defun unfreeze-partial-tokens-internal:string (user-address:string amount:decimal)
+    @doc "Internal function to update the partial freeze."
     (require-capability (INTERNAL))
+    (enforce (> amount 0.0) "FRZ-AMT-004")
     (with-read users user-address {
       "balance":= balance,
       "frozen":= frozen,
       "amount-frozen":= amount-frozen
     }
-      (enforce (not frozen) "Account is frozen")
-      (enforce (<= amount amount-frozen) "amount exceeds frozen balance")
+      (enforce (not frozen) "ACC-FRZ-001")
+      (enforce (<= amount amount-frozen) "FRZ-AMT-003")
       (update users user-address {"amount-frozen": (- amount-frozen amount)})
       (emit-event (TOKENS-FROZEN user-address (- amount-frozen amount)))
-      ""
+      "Partial tokens unfrozen"
     )
   )
 
-;; fungible-v2 implementation
-
-  ; ----------------------------------------------------------------------
-  ; Caps
-
-  (defcap DEBIT (sender:string)
-    @doc "Capability for managing debiting operations"
-    (enforce (!= sender "") "invalid sender"))
-
-  (defcap CREDIT (receiver:string)
-    @doc "Capability for managing crediting operations"
-    (enforce-contains-identity receiver)
-    (enforce (!= receiver "") "invalid receiver"))
-
-  (defcap TRANSFER:bool
-    ( sender:string
-      receiver:string
-      amount:decimal
-    )
-    @managed amount TRANSFER-mgr
-
-    (if (try false (enforce-guard (at 'guard (read users sender))))
-      true ;; user signed for the transaction
-      ;;else
-      (if  (try false (require-capability (MINT)))
-        ;; mint is in action
-        true
-        ;;else
-        (if (try false (require-capability (BURN)))
-          ;;burn is in action
-          true
-          ;; else
-          (if (try false (require-capability (FORCED-TRANSFER)))
-          ;; forced-transfer is in action
-          ;; else fail
-          true
-          (enforce false "TRANSFER failed")
-        )
-        )
+  (defun register-identity-internal:bool (user-address:string user-guard:guard identity:string country:integer)
+    @doc "Register an identity contract corresponding to a user address.                               \
+    \ Requires that the user doesn't have an identity contract already registered.                    \
+    \ Only a wallet set as agent of the smart contract can call this function.                        \
+    \ Emits an \`IDENTITY-REGISTERED\` event."
+    (require-capability (INTERNAL))
+    (is-principal user-address)
+    (write identities user-address { "kadenaID":identity, "country":country, "active":true })
+    (with-default-read users user-address
+      { "balance": -1.0 }
+      { "balance":=balance }
+      (if (= balance -1.0)
+        (create-account user-address user-guard)
+        ""
       )
     )
-
-    (enforce (!= sender "") "valid sender")
-    (enforce (!= sender receiver) "same sender and receiver")
-    (compose-capability (DEBIT sender))
-    (compose-capability (CREDIT receiver))
-    (enforce-unit amount)
-    (enforce (> amount 0.0) "Positive amount")
-    ""
+    (emit-event (IDENTITY-REGISTERED user-address user-guard identity))
   )
 
-  (defun TRANSFER-mgr:decimal
-    ( managed:decimal
-      requested:decimal
-    )
+  ;; freeze operations (pause, unpause, set-address-frozen, freeze-partial-tokens, unfreeze-partial-tokens)
 
-    (let ((newbal (- managed requested)))
-      (enforce (>= newbal 0.0)
-        (format "TRANSFER exceeded for balance {}" [managed]))
-      newbal)
-  )
-
-  ; ----------------------------------------------------------------------
-  ; Functionality
-
-  (defun credit:object{account-balance-change}
-    ( account:string
-      amount:decimal
-    )
-    (require-capability (CREDIT account))
-    (with-default-read users account
-      { "balance": 0.0 }
-      { "balance":= balance}
-      (if (= account (zero-address))
-        "Credit to Zero Address"
-        (if (= balance 0.0)
-          (with-capability (INTERNAL)
-            (add-investor-count)
-          )
-          "already existing investor"
-        )
-      )
-    (update users account
-      { "balance" : (+ balance amount)})
-      {'account: account, 'previous: balance, 'current: (+ balance amount)}
-  ))
-
-  (defun debit:object{account-balance-change}
-    ( account:string
-      amount:decimal
-    )
-    (require-capability (DEBIT account))
-    (with-read users account
-      { "balance" := balance }
-      (enforce (<= amount balance) "Insufficient funds")
-      (if (= account (zero-address))
-        "Debit to Zero Address"
-        (if (= (- balance amount) 0.0)
-          (with-capability (INTERNAL)
-            (remove-investor-count)
-          )
-          "already existing investor"
-        )
-      )
-      (update users account
-        { "balance" : (- balance amount) }
-      )
-     {'account: account, 'previous: balance, 'current: (- balance amount)}
-  ))
-
-  (defun enforce-unfrozen-amount:bool
-    ( account:string
-      amount:decimal
-    )
-    (with-read users account
-      { "frozen" := frozen,
-        "amount-frozen" := amount-frozen,
-        "balance" := balance
+  (defun pause:string ()
+    @doc "Pause the contract."
+    (with-read token "" {
+      "paused":= paused
       }
-      (enforce (not frozen) "Account is frozen")
-      (enforce (>= (- balance amount-frozen) amount) "Insufficient funds")
+     (only-agent FREEZER)
+     (enforce (= paused false) "PAU-001: Contract is already paused.")
+     (update token "" {"paused": true}))
+     (emit-event (PAUSED))
+     "Paused"
+  )
+
+  (defun unpause:string ()
+    @doc "Unpause the contract."
+    (with-read token "" {
+      "paused":= paused
+      }
+      (only-agent FREEZER)
+      (enforce (= paused true) "PAU-002: Contract is already unpaused.")
+      (update token "" {"paused": false}))
+      (emit-event (UNPAUSED))
+      "Unpaused"
+  )
+
+  (defun set-address-frozen:string (user-address:string freeze:bool)
+    @doc "Freeze or unfreeze a user's address."
+    (only-agent FREEZER)
+    (with-capability (INTERNAL)
+      (set-address-frozen-internal user-address freeze)
     )
   )
 
+  (defun freeze-partial-tokens:string (user-address:string amount:decimal)
+    @doc "Freeze an amount of a user's tokens."
+   (only-agent FREEZER)
+   (with-capability (INTERNAL)
+    (freeze-partial-tokens-internal user-address amount)
+   )
+  )
+
+  (defun unfreeze-partial-tokens:string (user-address:string amount:decimal)
+    @doc "Unfreeze an amount of a user's tokens."
+    (with-capability (INTERNAL)
+      (only-agent FREEZER)
+      (with-read users user-address {
+        "frozen":= frozen,
+        "amount-frozen":= amount-frozen
+      }
+      (unfreeze-partial-tokens-internal user-address amount)
+    ) )
+  )
+
+  ;; identity operations (register-identity, delete-identity)
+  (defun register-identity:bool (user-address:string user-guard:guard identity:string country:integer)
+    @doc "Register a user address.                               \
+    \ Requires that the user doesn't have an identity contract already registered.                    \
+    \ Only a wallet set as agent of the smart contract can call this function.                        \
+    \ Emits an \`IDENTITY-REGISTERED\` event."
+    (only-owner-or-agent-admin)
+    (with-capability (INTERNAL)
+      (register-identity-internal user-address user-guard identity country)
+    )
+  )
+
+  (defun delete-identity:bool (user-address:string)
+    @doc "Removes a user from the identity registry.                                                    \
+    \ Requires that the user have an identity contract already deployed that will be deleted.         \
+    \ Only a wallet set as agent of the smart contract can call this function.                        \
+    \ Emits an \`IDENTITY-REMOVED\` event."
+    (only-owner-or-agent-admin)
+    (with-default-read users user-address
+      { "balance": -1.0 }
+      { "balance":=balance }
+      (enforce (<= balance 0.0) "IDR-002")
+    )
+    (update identities user-address { "active":false })
+    (emit-event (IDENTITY-REMOVED user-address (at 'kadenaID (read identities user-address))))
+  )
+
+  ;; transfer operations (mint, burn, transfer, forced-transfer)
+  (defun mint:bool (to:string amount:decimal)
+    @doc "Mints amount of token to a user's address"
+    (enforce-unit amount)
+    (with-capability (MINT)
+      (only-agent TRANSFER-MANAGER)
+      (mint-internal to amount)
+    )
+  )
+
+  (defun burn:bool (user-address:string amount:decimal)
+    @doc "Burn tokens from a user's address according to destroy rules in compliance"
+    (only-agent TRANSFER-MANAGER)
+    (with-read token "" {
+      "compliance":=compliance-l
+      }
+      (burn-internal user-address amount)
+    )
+  )
 
   (defun transfer:string
     ( sender:string
@@ -976,43 +745,111 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       amount:decimal
     )
     @doc "Transfer AMOUNT of token from sender to receiver"
-    (enforce-unfrozen sender)
-    (enforce-unfrozen-amount sender amount)
-    (enforce-contains-identity receiver)
     (with-capability (TRANSFER sender receiver amount)
       (transfer-internal sender receiver amount)
     )
   )
 
-  (defun enforce-unfrozen (sender:string)
-    @doc "Fail if sender is frozen"
-    (let ((frozen:bool (address-frozen sender)))
-      (enforce (not frozen) "frozen sender")
+  (defun forced-transfer:bool (from:string to:string amount:decimal)
+    @doc "Force transfer tokens from one address to another."
+    (only-agent TRANSFER-MANAGER)
+    (with-capability (FORCED-TRANSFER)
+      (with-capability (TRANSFER from to amount)
+        (transfer-internal from to amount)
+    ))
+    true
+  )
+
+  ;; Getters
+
+  (defun kadenaID:string ()
+    @doc "Return the kadena ID."
+    (with-read token "" {"kadenaID" := id } id)
+  )
+
+  (defun version:string ()
+    @doc "Return the version of the contract."
+    VERSION
+  )
+
+  (defun precision:integer ()
+    @doc "Return the precision of the contract."
+    MINIMUM-PRECISION
+  )
+
+  (defun decimals:integer ()
+    @doc "Return the decimals of the contract."
+    (with-read token "" {
+      "decimals":= decimals
+      } decimals
     )
   )
 
-  (defun transfer-create:string
-    ( sender:string
-      receiver:string
-      receiver-guard:guard
-      amount:decimal
-    )
-    @doc"" ""
+  (defun name:string ()
+    @doc "Return the name of the token."
+    (with-read token "" {"name" := name } name)
   )
 
-  (defpact transfer-crosschain:string
-    ( sender:string
-      receiver:string
-      receiver-guard:guard
-      target-chain:string
-      amount:decimal
-    )
-    @doc ""
-    (step "" )
+
+  (defun symbol:string ()
+    @doc "Return the symbol of the token."
+    (with-read token "" {"symbol" := symbol } symbol)
   )
 
-  (defun get-balance:decimal
-    ( account:string )
+
+  (defun get-owner-guard:guard ()
+    @doc "Return the owner guard of the token"
+    (with-read token "" {
+      "owner-guard":= owner-guard
+      } owner-guard)
+  )
+
+
+  ;; Setters
+  (defun set-name:string (name:string)
+    @doc "Set the name of the token."
+    (only-owner "")
+    (with-read token "" {
+      "symbol":= symbol,
+      "version":= version,
+      "kadenaID":= kadenaID
+      }
+      (write token "" {"name": name}
+      (emit-event (UPDATED-TOKEN-INFORMATION name symbol MINIMUM-PRECISION VERSION kadenaID ))
+      )
+    )
+  )
+
+  (defun set-symbol:string (symbol:string)
+    @doc "Set the name of the token."
+    (only-owner "")
+    (with-read token "" {
+      "name":= name,
+      "version":= version,
+      "kadenaID":= kadenaID
+      }
+        (write token "" {"symbol": symbol}
+        (emit-event (UPDATED-TOKEN-INFORMATION name symbol MINIMUM-PRECISION VERSION kadenaID ))
+      )
+    )
+  )
+
+  (defun set-kadenaID:string (kadenaID:string)
+    @doc "Set the name of the token."
+    (only-owner "")
+    (with-read token "" {
+      "name":= name,
+      "version":= version,
+      "symbol":= symbol
+      }
+      (write token "" {"kadenaID": kadenaID}
+      (emit-event (UPDATED-TOKEN-INFORMATION name symbol MINIMUM-PRECISION VERSION kadenaID ))
+      )
+    )
+  )
+
+  (defun get-balance:decimal ( account:string )
+    @doc "Retrieves the investor balance"
     (with-read users account {
       "balance" := balance
       }
@@ -1020,8 +857,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun details:object{account-details}
-    ( account: string )
+  (defun details:object{account-details} ( account: string )
+    @doc "Retrieves the investor balance and the guard"
     (with-read users account {
       "balance" := balance,
       "guard" := guard
@@ -1029,30 +866,26 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       {"balance" : balance, "guard" : guard, "account" : account})
   )
 
-  (defun precision:integer ()
-    MINIMUM-PRECISION
-  )
-
-  (defun enforce-unit:bool (amount:decimal)
-    @doc "Enforce minimum precision allowed for coin transactions"
-    (enforce
-      (= (floor amount MINIMUM-PRECISION)
-        amount)
-      (format "Amount violates minimum precision: {}" [amount]))
+  (defun recovery-address:bool (lost-wallet:string new-wallet:string investor-kadenaID:string)
+    @doc "Recover tokens from a lost wallet to a new wallet."
+    (only-agent AGENT-ADMIN)
+    (emit-event (RECOVERY-SUCCESS lost-wallet new-wallet investor-kadenaID))
+    false
   )
 
   (defun create-account:string
     ( account:string
       guard:guard
     )
-    @doc " Create ACCOUNT with 0.0 balance, with GUARD controlling access."
+    @doc "Create ACCOUNT with 0.0 balance. Only principal accounts are accepted."
+    (require-capability (INTERNAL))
     (enforce-contains-identity account)
     (validate-principal guard account)
     (insert users account {
+      "account": account,
       "balance" : 0.0,
       "guard" : guard,
       "frozen" : false,
-      "account": account,
       "amount-frozen": 0.0
       }
     )
@@ -1066,9 +899,9 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
         (if (= r "")
           true
           (if (= r "k")
-            (enforce false "Single-key account protocol violation")
+            (enforce false "PRT-ACC-001")
             (enforce false
-              (format "Reserved protocol guard violation: {}" [r]))
+              (format "PRT-ACC-002: {}" [r]))
             )))))
 
   (defun check-reserved:string (account:string)
@@ -1079,82 +912,20 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       (if (= ":" (take -1 pfx)) (take 1 pfx) "")))
 
   (defun transfer-ownership:bool (new-owner-guard:guard)
-    @doc "transfer ownership of the contract"
-    (with-capability (ONLY-OWNER "")
-      (with-read token "" {
-        "owner-guard":= old-owner-guard
-        }
-        (update token "" {
-          "owner-guard": new-owner-guard
-        })
-        (emit-event (OWNERSHIP-TRANSFERRED old-owner-guard new-owner-guard))
-      )
-    )
-  )
-
-  (defun add-agent:bool (agent:string guard:guard)
-    @doc "Add a new agent."
-    ;; re-activate an agent if already exists
-    (validate-principal guard agent)
-    (verify-agent-roles (read-msg 'roles))
-    (with-default-read agents agent {
-      "guard": guard
-      } {
-      "guard":= g
+    @doc "Transfers ownership of the contract to a new owner-guard. Note: GOV-KEYSET also has to be modified."
+    (only-owner "")
+    (with-read token "" {
+      "owner-guard":= old-owner-guard
       }
-    (with-capability (ONLY-OWNER "")
-      (write agents agent {
-        "roles": (read-msg 'roles),
-        "guard": g,
-        "active":true })
-      (emit-event (AGENT-ADDED agent))
-    )
-  ))
-
-  (defun remove-agent:bool (agent:string)
-    @doc "Remove an agent."
-    (with-capability (ONLY-OWNER "")
-      (update agents agent { "active":false })
-      (emit-event (AGENT-REMOVED agent))
+      (update token "" {
+        "owner-guard": new-owner-guard
+      })
+      (emit-event (OWNERSHIP-TRANSFERRED old-owner-guard new-owner-guard))
     )
   )
 
-  (defun is-agent:bool (agent:string)
-    @doc "Check if an address is an agent."
-    (with-default-read agents agent
-      { 'active: false }
-      { 'active := active }
-      active
-    )
-  )
-
-  (defun only-agent:bool (role:string)
-    @doc "Verifies that the agent is signing for the capability"
-    (with-capability (ONLY-AGENT role)
-      true
-    )
-  )
-
-  (defun only-owner:bool (role:string)
-    @doc "Verifies that the owner is signing for the capability"
-    (with-capability (ONLY-OWNER role)
-      true
-    )
-  )
-
-  (defun get-owner-guard:guard ()
-    (with-read token "" {
-      "owner-guard":= owner-guard
-      } owner-guard)
-  )
-
-  (defun get-compliance:[module{RWA.compliance-v1}] ()
-    (with-read token "" {
-      "compliance":= compliance:[module{RWA.compliance-v1}]
-      } compliance)
-  )
-
-  (defun get-compliance-parameters:object{compliance-input}()
+  (defun get-compliance-parameters:object{compliance-parameters-input}()
+    @doc "Retrieves compliance parameters."
     (with-read compliance-parameters ""
       { "max-balance-per-investor":= max-balance-per-investor,
         "supply-limit":= supply-limit,
@@ -1167,16 +938,290 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun only-owner-or-agent-admin:bool ()
-    (install-capability (ONLY-OWNER ""))
-    (install-capability (ONLY-AGENT AGENT-ADMIN))
-    (if (try false (only-owner ""))
-      true
-      (only-agent AGENT-ADMIN))
+  (defun compliance:[module{RWA.compliance-v1}] ()
+    @doc "Retrieves the list of compliance contracts in action."
+    (with-read token "" {"compliance" := compliance } compliance)
+  )
+
+  (defun max-balance-per-investor:decimal ()
+    @doc "Retrieves compliance parameter, max-balance-per-investor. \
+    \ Used in max-balance-compliance. "
+    (with-read compliance-parameters "" {
+      "max-balance-per-investor":= max-balance-per-investor
+    } max-balance-per-investor)
+  )
+
+  (defun supply-limit:decimal ()
+    @doc "Retrieves compliance parameter, supply-limit. \
+    \ Used in supply-limit-compliance. "
+    (with-read compliance-parameters "" {
+      "supply-limit":= supply-limit
+    } supply-limit)
+  )
+
+  (defun max-investors:integer ()
+    @doc "Retrieves compliance parameter, max-investors.\
+    \ Used in max-investors-compliance. "
+    (with-read compliance-parameters "" {
+      "max-investors":= max-investors
+    } max-investors)
+  )
+
+  (defun investor-count:integer ()
+    @doc "Current count of investors"
+    (with-read compliance-parameters "" {
+        "investor-count":= ct
+      } ct)
+  )
+
+  (defun supply:decimal ()
+    @doc "Current count of investors"
+    (with-default-read token ""
+    { 'supply : 0.0 }
+    { 'supply := s }
+    s)
+  )
+
+  (defun set-max-balance-per-investor (max-balance-per-investor:decimal)
+    @doc "Updates the compliance parameter, max balance per investor"
+    (only-owner-or-agent-admin)
+    (with-read compliance-parameters ""
+      { "supply-limit":= supply-limit,
+        "max-investors":= max-investors
+      }
+      (update compliance-parameters "" {
+        "max-balance-per-investor": max-balance-per-investor
+        }
+      )
+    (emit-event (COMPLIANCE-PARAMETERS
+      { "supply-limit": supply-limit,
+        "max-investors": max-investors,
+        "max-balance-per-investor": max-balance-per-investor
+      })))
+  )
+
+  (defun set-supply-limit (supply-limit:decimal)
+    @doc "Updates the compliance parameter, supply limit"
+    (only-owner-or-agent-admin)
+    (with-read compliance-parameters ""
+      { "max-balance-per-investor":= max-balance-per-investor,
+        "max-investors":= max-investors
+      }
+    (update compliance-parameters "" {
+      "supply-limit": supply-limit
+      }
+    )
+    (emit-event (COMPLIANCE-PARAMETERS
+      { "supply-limit": supply-limit,
+        "max-investors": max-investors,
+        "max-balance-per-investor": max-balance-per-investor
+      })))
+  )
+
+  (defun set-max-investors (max-investors:decimal)
+    @doc "Updates the compliance parameter, max investors"
+    (only-owner-or-agent-admin)
+    (with-read compliance-parameters ""
+      { "max-balance-per-investor":= max-balance-per-investor,
+        "supply-limit":= supply-limit
+      }
+    (update compliance-parameters "" {
+      "max-investors": max-investors
+      }
+    )
+    (emit-event (COMPLIANCE-PARAMETERS
+      { "supply-limit": supply-limit,
+        "max-investors": max-investors,
+        "max-balance-per-investor": max-balance-per-investor
+      })))
+  )
+
+  (defun set-compliance-parameters ()
+    @doc "Updates the compliance parameter, supply limit. The input is read from the \
+    \ data field, \`compliance-parameters\`. "
+    (only-owner-or-agent-admin)
+    (let ((compliance-params:object{compliance-parameters-input} (read-msg 'compliance-parameters )))
+      (update compliance-parameters ""
+        compliance-params
+      )
+      (emit-event (COMPLIANCE-PARAMETERS compliance-params))
+    )
+  )
+
+  (defun set-compliance:string (compliance:[module{RWA.compliance-v1}])
+    @doc "Set the compliance contract."
+    (only-owner "")
+    (update token "" {"compliance": compliance})
+    (emit-event (COMPLIANCE-UPDATED compliance))
+  )
+
+  (defun update-supply:bool (amount:decimal)
+    @doc "Updates total supply at mint or burn"
+    (require-capability (UPDATE-SUPPLY))
+    (with-default-read token ""
+      { 'supply: 0.0 }
+      { 'supply := s }
+      (let ((new-supply (+ s amount)))
+      (update token "" {'supply: new-supply })
+      (emit-event (SUPPLY new-supply))))
+  )
+
+  (defun add-investor-count:string ()
+    @doc "Increments investor count if an account of balance 0.0 is credited"
+    (require-capability (INTERNAL))
+    (with-read compliance-parameters "" {
+      "investor-count":= ct
+    }
+      (update compliance-parameters "" {
+        "investor-count": (+ 1 ct)
+      })
+    )
+  )
+
+  (defun remove-investor-count:string ()
+    @doc "Decrements investor count if an account is debited to balance of 0.0"
+    (require-capability (INTERNAL))
+    (with-read compliance-parameters "" {
+      "investor-count":= ct
+    }
+      (update compliance-parameters "" {
+        "investor-count": (- ct 1)
+      })
+    )
+  )
+
+  ;; Batch functions
+  (defun batch-transfer:[string] (from:string to-list:[string] amounts:[decimal])
+    @doc "Perform batch transfer of tokens."
+    (map (lambda (idx:integer)
+      (with-capability (TRANSFER from (at idx to-list) (at idx amounts))
+        (transfer-internal from (at idx to-list) (at idx amounts))
+      )
+    ) (enumerate 0 (- (length to-list) 1))
+    )
+  )
+
+  (defun batch-forced-transfer:[bool] (from-list:[string] to-list:[string] amounts:[decimal])
+    @doc "Perform batch forced transfer of tokens."
+      (only-agent TRANSFER-MANAGER)
+      (with-capability (FORCED-TRANSFER)
+        (map (lambda (idx:integer)
+          (with-capability (TRANSFER (at idx from-list) (at idx to-list) (at idx amounts))
+            (transfer-internal (at idx from-list) (at idx to-list) (at idx amounts))
+          )
+        )
+        ) (enumerate 0 (- (length from-list) 1)) )
+  )
+
+  (defun batch-mint:[bool] (to-list:[string] amounts:[decimal])
+    @doc "Mint tokens to multiple addresses."
+    (only-agent TRANSFER-MANAGER)
+    (with-capability (MINT)
+      (map (lambda (idx:integer)
+        (with-capability (TRANSFER (zero-address) (at idx to-list) (at idx amounts))
+          (mint-internal (at idx to-list) (at idx amounts))
+        )
+        ) (enumerate 0 (- (length to-list) 1)))
+    )
+  )
+
+  (defun batch-burn:[bool] (user-addresses:[string] amounts:[decimal])
+    @doc "Burn tokens from multiple addresses."
+    (only-agent TRANSFER-MANAGER)
+    (with-capability (BURN)
+      (map (lambda (idx:integer)
+      (with-capability (TRANSFER (at idx user-addresses) (zero-address) (at idx amounts))
+        (burn-internal (at idx user-addresses) (at idx amounts))
+      )
+      ) (enumerate 0 (- (length user-addresses) 1)) ) true
+    )
+  )
+
+  (defun batch-register-identity:[bool] (user-addresses:[string] user-guards:[guard] identities:[string] countries:[integer])
+    @doc "Allows batch registration of identities.                                                     \
+    \ Requires that none of the users has an identity contract already registered.                   \
+    \ Only a wallet set as agent of the smart contract can call this function.                       \
+    \ Emits \`IDENTITY-REGISTERED\` events for each user address in the batch."
+    (only-owner-or-agent-admin)
+    (map (lambda (idx:integer)
+      (with-capability (INTERNAL)
+        (register-identity-internal (at idx user-addresses) (at idx user-guards) (at idx identities) (at idx countries))
+      )
+    ) (enumerate 0 (- (length user-addresses) 1)) )
+  )
+
+  (defun batch-set-address-frozen:[string] (user-addresses:[string] freeze:[bool])
+    @doc "Freeze or unfreeze multiple addresses."
+    (only-agent FREEZER)
+    (map (lambda (idx:integer)
+      (with-capability (INTERNAL)
+        (set-address-frozen-internal (at idx user-addresses) (at idx freeze))
+      )
+     )(enumerate 0 (- (length user-addresses) 1))
+    )
+  )
+
+  (defun batch-freeze-partial-tokens:[string] (user-addresses:[string] amounts:[decimal] )
+    @doc "Freeze amount of tokens for multiple addresses."
+    (only-agent FREEZER)
+    (map (lambda (idx:integer)
+      (with-capability (INTERNAL)
+        (freeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      ) ) (enumerate 0 (- (length user-addresses) 1))
+    )
+  )
+
+  (defun batch-unfreeze-partial-tokens:[string] (user-addresses:[string] amounts:[decimal] )
+    @doc "Unfreeze amount of tokens for multiple addresses."
+    (only-agent FREEZER)
+    (map (lambda (idx:integer)
+      (with-capability (INTERNAL)
+          (unfreeze-partial-tokens-internal (at idx user-addresses) (at idx amounts))
+      ) ) (enumerate 0 (- (length user-addresses) 1))
+    )
+  )
+
+  (defun add-agent:bool (agent:string guard:guard)
+    @doc "Add a new agent. Re-activate an agent if already exists"
+    (validate-principal guard agent)
+    (verify-agent-roles (read-msg "roles" ))
+    (only-owner "")
+    (with-default-read agents agent {
+        "guard": guard,
+        "active": false
+        } {
+        "guard":= g,
+        "active":= active
+        }
+        (enforce (!= active true) "ROL-STS-001")
+      (write agents agent {
+        "roles": (read-msg "roles"),
+        "guard": g,
+        "active":true
+      })
+      (emit-event (AGENT-ADDED agent))
+    )
+  )
+
+  (defun remove-agent:bool (agent:string)
+    @doc "Remove an agent."
+    (only-owner "")
+    (update agents agent { "active":false })
+    (emit-event (AGENT-REMOVED agent))
+  )
+
+  (defun is-agent:bool (agent:string)
+    @doc "Returns if an agent is registered and active"
+    (with-read agents agent {
+      "active":= active
+      }
+    active
+    )
   )
 
   (defun update-agent-roles:bool (agent:string roles:[string])
-    @doc "Update agent roles"
+    @doc "Updates the roles assigned to an agent. Ensures that the caller is either the contract \
+    \ owner or an agent with the \`agent-admin\` role. Emits the \`AGENT-ROLES-UPDATED\` event."
     (only-owner-or-agent-admin)
     (verify-agent-roles roles)
     (update agents agent
@@ -1194,178 +1239,126 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun verify-agent-roles (roles:[string])
-    (if (= (length roles) 0)
-      true
-      (map (lambda (idx:integer)
-        (enforce (contains (at idx roles) AGENT-ROLES) "Role does not exist")
-      )
-    (enumerate 0 (- (length roles) 1)))
-  ))
-
-  (defun register-identity:bool (user-address:string user-guard:guard identity:string country:integer)
-    @doc "Register an identity contract corresponding to a user address.                               \
-    \ Requires that the user doesn't have an identity contract already registered.                    \
-    \ Only a wallet set as agent of the smart contract can call this function.                        \
-    \ Emits an \`IDENTITY-REGISTERED\` event."
-    (only-owner-or-agent-admin)
-    (register-identity-internal user-address user-guard identity country)
-  )
-
-  (defun register-identity-internal:bool (user-address:string user-guard:guard identity:string country:integer)
-    @doc "Register an identity contract corresponding to a user address.                               \
-    \ Requires that the user doesn't have an identity contract already registered.                    \
-    \ Only a wallet set as agent of the smart contract can call this function.                        \
-    \ Emits an \`IDENTITY-REGISTERED\` event."
-    (is-principal user-address)
-    (write identities user-address { "kadenaID":identity, "country":country, "active":true })
-    (with-default-read users user-address
-      { "balance": -1.0 }
-      { "balance":=balance }
-      (if (= balance -1.0)
-        (create-account user-address user-guard)
-        ""
-      )
+  (defun transfer-create:string
+    ( sender:string
+      receiver:string
+      receiver-guard:guard
+      amount:decimal
     )
-    (emit-event (IDENTITY-REGISTERED user-address user-guard identity))
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
   )
 
-
-  (defun delete-identity:bool (user-address:string)
-    @doc "Removes a user from the identity registry.                                                    \
-    \ Requires that the user have an identity contract already deployed that will be deleted.         \
-    \ Only a wallet set as agent of the smart contract can call this function.                        \
-    \ Emits an \`IDENTITY-REMOVED\` event."
-    (only-owner-or-agent-admin)
-    (update identities user-address { "active":false })
-    (emit-event (IDENTITY-REMOVED user-address (at 'kadenaID (read identities user-address))))
+  (defpact transfer-crosschain:string
+    ( sender:string
+      receiver:string
+      receiver-guard:guard
+      target-chain:string
+      amount:decimal
+    )
+    @doc "unused"
+    (step (enforce false "GEN-IMPL-001") )
   )
 
-  (defun set-claim-topics-registry:bool (claim-topics-registry:string)
-    @doc "Replace the actual claimTopicsRegistry contract with a new one.                              \
-    \ Only the wallet set as owner of the smart contract can call this function.                       \
-    \ Emits a \`CLAIM-TOPICS-REGISTRY-SET\` event."
-    true ; TODO: Implement this function
-  )
-
-  (defun set-trusted-issuers-registry:bool (trusted-issuers-registry:string)
-    @doc "Replace the actual Trusted Issuers Registry contract with a new one.                           \
-    \ Only the wallet set as owner of the smart contract can call this function.                      \
-    \ Emits a \`TRUSTED-ISSUERS-REGISTRY-SET\` event."
-    true ; TODO: Implement this function
-  )
-
-  (defun update-country:bool (user-address:string country:integer)
-    @doc "Updates the country corresponding to a user address.                                         \
-    \ Requires that the user have an identity contract already deployed that will be replaced.        \
-    \ Only a wallet set as agent of the smart contract can call this function.                        \
-    \ Emits a \`COUNTRY-UPDATED\` event."
-    true ; TODO: Implement this function
-  )
-
-  (defun update-identity:bool (user-address:string identity:string)
-    @doc "Updates an identity contract corresponding to a user address.                               \
-    \ Requires that the user address should be the owner of the identity contract.                    \
-    \ Requires that the user should have an identity contract already deployed that will be replaced.\
-    \ Only a wallet set as agent of the smart contract can call this function.                        \
-    \ Emits an \`IDENTITY-UPDATED\` event."
-    true ; TODO: Implement this function
-  )
-
-  (defun contains-identity:bool (user-address:string)
-    @doc "Checks whether a wallet has its Identity registered or not in the Identity Registry.           \
-    \ Returns 'true' if the address is contained in the Identity Registry, 'false' if not."
-    (with-default-read identities user-address
-      { "active": false }
-      { "active":= active }
-      active)
-  )
 
   (defun is-verified:bool (user-address:string)
-    @doc "Checks whether an identity contract corresponding to the provided user address has the required \
-    \ claims or not, based on the data fetched from the trusted issuers registry and the claim topics registry. \
-    \ Returns 'true' if the address is verified, 'false' if not."
-    true ; TODO: Implement this function
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
   )
 
   (defun user-identity:string (user-address:string)
-    @doc "Returns the kadenaID of an investor for a given user address."
-    "" ; TODO: Implement this function
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
   )
 
   (defun investor-country:integer (user-address:string)
-    @doc "Returns the country code of an investor for a given user address."
-    1 ; TODO: Implement this function
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
+    1
   )
 
   (defun issuers-registry:string ()
-    @doc "Returns the Trusted Issuers Registry linked to the current Identity Registry."
-    "" ; TODO: Implement this function
+    @doc "unused"
+   (enforce false "GEN-IMPL-001")
   )
 
   (defun topics-registry:string ()
-    @doc "Returns the Claim Topics Registry linked to the current Identity Registry."
-    "" ; TODO: Implement this function
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
   )
 
-  (defun update-supply:bool (amount:decimal)
-    (require-capability (UPDATE-SUPPLY))
-    (with-default-read token ""
-      { 'supply: 0.0 }
-      { 'supply := s }
-      (let ((new-supply (+ s amount)))
-      (update token "" {'supply: new-supply })
-      (emit-event (SUPPLY new-supply))))
+  (defun set-identity-registry:string (identity-registry:module {RWA.identity-registry-v1})
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
   )
 
-  (defun supply:decimal ()
-    (with-default-read token ""
-    { 'supply : 0.0 }
-    { 'supply := s }
-    s)
-  )
-
-  ;;unused
-  (defun set-identity-registry:string (identity-registry:module{RWA.identity-registry-v1})
-    @doc ""
-    ""
+  (defun identity-registry:module{RWA.identity-registry-v1} ()
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
   )
 
   (defun rotate:string
     ( account:string
       new-guard:guard
     )
-    @doc ""
-    ""
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defun set-claim-topics-registry:bool (claim-topics-registry:string)
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defun set-trusted-issuers-registry:bool (trusted-issuers-registry:string)
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defun update-country:bool (user-address:string country:integer)
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defun update-identity:bool (user-address:string identity:string)
+    @doc "unused"
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defcap CLAIM-TOPICS-REGISTRY-SET:bool (claim-topics-registry:string)
+    @doc "unused"
+    @event
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defcap TRUSTED-ISSUERS-REGISTRY-SET:bool (trusted-issuers-registry:string)
+    @doc "unused"
+    @event
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defcap IDENTITY-UPDATED:bool (old-identity:string new-identity:string)
+    @doc "unused"
+    @event
+    (enforce false "GEN-IMPL-001")
+  )
+
+  (defcap COUNTRY-UPDATED:bool (investor-address:string country:integer)
+    @doc "unused"
+    @event
+    (enforce false "GEN-IMPL-001")
   )
 )
 
-;; token
 (create-table token)
 (create-table users)
 (create-table compliance-parameters)
-
-;; agents
 (create-table agents)
-
-;; investors
 (create-table identities)
 
-
-  ; (defcap WHEN-NOT-PAUSED ()
-  ;   @doc "check if token is not paused"
-  ; )
-  ;
-  ; (defcap WHEN-PAUSED ()
-  ;   @doc "check if token is paused"
-  ; )
-;; doesn't have erc-20's approve feature
-;; implemented partial functions
-;; changing the way agents were used using data field
-;; set roles in agent
-;; wanted to review frontend and see if certain features were possible with graphql (still exploring but want to sit with Travis?)
 (RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
 
 
-(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
+
+(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
 `;

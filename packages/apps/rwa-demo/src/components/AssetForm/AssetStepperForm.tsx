@@ -68,12 +68,13 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
     const tx = await submitContract(data);
 
-    if (tx?.result?.status === 'success') {
+    if (tx) {
       setStep(STEPS.DONE);
       const asset = addAsset({
         contractName: data.contractName,
         namespace: data.namespace,
       });
+
       if (!asset) return;
       setAsset(asset);
       window.location.href = '/';

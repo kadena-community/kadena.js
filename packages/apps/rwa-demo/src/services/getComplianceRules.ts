@@ -45,8 +45,10 @@ export const getActiveComplianceRules = async (asset?: string) => {
 
   const innerAsset = asset ? asset : getAsset();
 
+  if (!innerAsset) return [];
+
   const transaction = Pact.builder
-    .execution(`(${innerAsset}.get-compliance)`)
+    .execution(`(${innerAsset}.compliance)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })
@@ -60,31 +62,31 @@ export const getActiveComplianceRules = async (asset?: string) => {
 
   const data = (result as any).data as any;
 
-  return result.status === 'success' ? data : INFINITE_COMPLIANCE;
+  return result.status === 'success' ? data : [];
 };
 
 export const getComplianceRules = async (): Promise<IComplianceProps> => {
-  const rules = await getActiveComplianceRules();
-  const values = await getActiveComplianceValues();
+  const rules = (await getActiveComplianceRules()) ?? [];
+  const values = (await getActiveComplianceValues()) ?? {};
 
   return {
     maxBalance: {
       key: 'RWA.max-balance-compliance',
-      isActive: !!rules.find(
+      isActive: !!rules?.find(
         (rule: any) => rule.refName.name === 'max-balance-compliance',
       ),
       value: values['max-balance-per-investor'] ?? INFINITE_COMPLIANCE,
     },
     maxSupply: {
       key: 'RWA.supply-limit-compliance',
-      isActive: !!rules.find(
+      isActive: !!rules?.find(
         (rule: any) => rule.refName.name === 'supply-limit-compliance',
       ),
       value: values['supply-limit'] ?? INFINITE_COMPLIANCE,
     },
     maxInvestors: {
       key: 'RWA.max-investors-compliance',
-      isActive: !!rules.find(
+      isActive: !!rules?.find(
         (rule: any) => rule.refName.name === 'max-investors-compliance',
       ),
       value: values['max-investors']?.int ?? INFINITE_COMPLIANCE,

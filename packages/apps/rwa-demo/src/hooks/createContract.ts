@@ -1,4 +1,3 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import {
   interpretErrorMessage,
   TXTYPES,
@@ -19,7 +18,7 @@ export const useCreateContract = () => {
 
   const submit = async (
     data: IAddContractProps,
-  ): Promise<ITransaction | undefined> => {
+  ): Promise<boolean | undefined> => {
     try {
       const tx = await createContract(data, account!);
       const signedTransaction = await sign(tx);
@@ -37,21 +36,26 @@ export const useCreateContract = () => {
       const dataResult = await client.listen(res);
 
       // if the contract already exists, go to that contract
-      if (
-        dataResult.result.status === 'failure' &&
-        (dataResult.result.error as any)?.message?.includes(
-          '"PactDuplicateTableError',
-        )
-      ) {
-        window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
-        return;
+      if (dataResult.result.status === 'failure') {
+        if (
+          (dataResult.result.error as any)?.message?.includes(
+            '"PactDuplicateTableError',
+          )
+        ) {
+          window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
+          return false;
+        }
+        return false;
       }
+
+      return true;
     } catch (e: any) {
       addNotification({
         intent: 'negative',
         label: 'there was an error',
         message: interpretErrorMessage(e.message),
       });
+      return false;
     }
   };
 
