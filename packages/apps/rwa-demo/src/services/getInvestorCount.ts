@@ -20,5 +20,5 @@ export const getInvestorCount = async (): Promise<number> => {
 
   const data = (result as any).data as any;
 
-  return result.status === 'success' ? data : 0;
+  return result.status === 'success' ? data.int : 0;
 };

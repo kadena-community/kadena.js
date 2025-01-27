@@ -89,7 +89,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
       variables: {
-        qualifiedName: `${getAssetUtil()}.SET-COMPLIANCE-PARAMETERS`,
+        qualifiedName: `${getAssetUtil()}.COMPLIANCE-PARAMETERS`,
       },
     },
   );
