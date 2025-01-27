@@ -1,4 +1,3 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import {
   interpretErrorMessage,
   TXTYPES,
