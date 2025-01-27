@@ -60,6 +60,8 @@ export interface ICreateTransfer {
     // (undocumented)
     chainId: ChainId;
     // (undocumented)
+    fungibleName?: string;
+    // (undocumented)
     gasPayer?: {
         account: string;
         publicKeys: ISigner[];
@@ -109,6 +111,8 @@ export interface ICreateTransferCreateOptional {
     amount: string;
     // (undocumented)
     chainId: ChainId;
+    // (undocumented)
+    fungibleName?: string;
     // (undocumented)
     gasPayer?: {
         account: string;

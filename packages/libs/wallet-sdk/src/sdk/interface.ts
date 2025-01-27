@@ -108,6 +108,7 @@ export interface ICreateTransfer {
   gasPayer?: { account: string; publicKeys: ISigner[] };
   chainId: ChainId;
   networkId: string;
+  fungibleName?: string;
 }
 
 /**
@@ -144,6 +145,7 @@ export interface ICreateTransferCreateOptional {
   gasPayer?: { account: string; publicKeys: ISigner[] };
   chainId: ChainId;
   networkId: string;
+  fungibleName?: string;
 }
 
 /**

@@ -139,7 +139,7 @@ export class WalletSDK {
     const account = await this.getAccountDetails(
       transfer.receiver,
       transfer.networkId,
-      'coin',
+      transfer.fungibleName ?? 'coin',
       [transfer.chainId],
     ).catch(() => []);
 
@@ -212,7 +212,7 @@ export class WalletSDK {
     const [account] = await this.getAccountDetails(
       accountName,
       transfer.networkId,
-      'coin',
+      transfer.fungibleName ?? 'coin',
       [transfer.chainId],
     ).catch(() => []);
 
