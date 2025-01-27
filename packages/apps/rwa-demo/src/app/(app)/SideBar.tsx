@@ -37,6 +37,8 @@ export const SideBar: FC = () => {
     useAccount();
   const router = useRouter();
 
+  console.log({ isMounted, isAgent, isOwner, isComplianceOwner });
+
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
