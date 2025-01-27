@@ -1360,5 +1360,5 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
 
 
-(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" "0.0" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
+(${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
 `;

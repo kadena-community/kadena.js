@@ -35,14 +35,17 @@ export const useCreateContract = () => {
       });
 
       const dataResult = await client.listen(res);
+
       // if the contract already exists, go to that contract
-      if (
-        dataResult.result.status === 'failure' &&
-        (dataResult.result.error as any)?.message?.includes(
-          '"PactDuplicateTableError',
-        )
-      ) {
-        window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
+      if (dataResult.result.status === 'failure') {
+        if (
+          (dataResult.result.error as any)?.message?.includes(
+            '"PactDuplicateTableError',
+          )
+        ) {
+          window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
+          return false;
+        }
         return false;
       }
 
