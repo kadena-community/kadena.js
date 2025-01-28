@@ -1,7 +1,7 @@
 version: '3'
 services:
   devnet:
-    image: kadena/devnet@sha256:b4af222fc8c2f1e1164cbfb63164d5fe2f19a5840720b63d0f18c44e6125569d
+    image: kadena/devnet:latest
     ports:
       - 1848:1848 # Node Service Port
       - 1789:1789 # Chainweb node’s p2p API port
