@@ -3,12 +3,16 @@ import type {
   ITransferOptions,
   ITransferResponse,
 } from '../../sdk/interface.js';
+import { isEmpty } from '../../utils/typeUtils.js';
 import { ACCOUNT_TRANSFER_QUERY } from './transfer.query.js';
 import type { GqlTransfer } from './transfer.util.js';
 import { parseGqlTransfers } from './transfer.util.js';
 
 async function fetchTransfers(graphqlUrl: string, options: ITransferOptions) {
   const client = createClient({ url: graphqlUrl, exchanges: [fetchExchange] });
+  if (options.first === undefined && options.last === undefined) {
+    options.first = 100;
+  }
   const result = await client
     .query(ACCOUNT_TRANSFER_QUERY, {
       accountName: options.accountName,
@@ -25,18 +29,19 @@ async function fetchTransfers(graphqlUrl: string, options: ITransferOptions) {
     return {
       transfers: [],
       pageInfo: { hasNextPage: false, hasPreviousPage: false },
-      lastBlockHeight: 0,
+      lastBlockHeight: BigInt(0),
     };
   }
 
   const transfers = result.data.fungibleAccount.transfers.edges.map(
     (edge) => edge.node as GqlTransfer,
   );
-
   return {
     transfers,
     pageInfo: result.data.fungibleAccount.transfers.pageInfo,
-    lastBlockHeight: (result.data?.lastBlockHeight ?? null) as number | null,
+    lastBlockHeight: !isEmpty(result.data?.lastBlockHeight)
+      ? BigInt(result.data.lastBlockHeight)
+      : null,
   };
 }
 
@@ -52,8 +57,7 @@ export async function getTransfers(
   } = await fetchTransfers(graphqlUrl, options);
   const transfers = parseGqlTransfers(
     nodes,
-    lastBlockHeight ?? 0,
-    options.accountName,
+    lastBlockHeight ?? BigInt(0),
     options.fungibleName,
   );
   return {

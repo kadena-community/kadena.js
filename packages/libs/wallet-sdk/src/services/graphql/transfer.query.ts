@@ -13,10 +13,17 @@ export const TRANSFER_FIELDS_FRAGMENT = graphql(`
       hash
       height
       creationTime
+      minerAccount {
+        accountName
+      }
     }
     transaction {
       cmd {
         networkId
+        meta {
+          gasPrice
+          sender
+        }
         payload {
           __typename
           ... on ExecutionPayload {
@@ -40,6 +47,7 @@ export const TRANSFER_FIELDS_FRAGMENT = graphql(`
         ... on TransactionResult {
           goodResult
           badResult
+          gas
           events {
             edges {
               node {
