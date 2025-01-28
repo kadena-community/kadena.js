@@ -244,25 +244,7 @@
             },
             {
               "kind": "Content",
-              "text": "(typeof "
-            },
-            {
-              "kind": "Reference",
-              "text": "GraphTypes",
-              "canonicalReference": "@kadena/wallet-sdk!GraphTypes:var"
-            },
-            {
-              "kind": "Content",
-              "text": ")[keyof typeof "
-            },
-            {
-              "kind": "Reference",
-              "text": "GraphTypes",
-              "canonicalReference": "@kadena/wallet-sdk!GraphTypes:var"
-            },
-            {
-              "kind": "Content",
-              "text": "]"
+              "text": "'kadena' | 'hackachain'"
             },
             {
               "kind": "Content",
@@ -273,29 +255,6 @@
           "releaseTag": "Public",
           "name": "GraphType",
           "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 6
-          }
-        },
-        {
-          "kind": "Variable",
-          "canonicalReference": "@kadena/wallet-sdk!GraphTypes:var",
-          "docComment": "/**\n * @public\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "GraphTypes: "
-            },
-            {
-              "kind": "Content",
-              "text": "{\n    readonly Kadena: \"kadena\";\n    readonly Hackachain: \"hackachain\";\n}"
-            }
-          ],
-          "fileUrlPath": "src/sdk/host.ts",
-          "isReadonly": true,
-          "releaseTag": "Public",
-          "name": "GraphTypes",
-          "variableTypeTokenRange": {
             "startIndex": 1,
             "endIndex": 2
           }

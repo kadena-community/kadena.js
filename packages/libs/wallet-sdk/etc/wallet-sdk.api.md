@@ -27,13 +27,7 @@ export type GraphqlHostGenerator = (options: {
 }) => string;
 
 // @public (undocumented)
-export type GraphType = (typeof GraphTypes)[keyof typeof GraphTypes];
-
-// @public (undocumented)
-export const GraphTypes: {
-    readonly Kadena: "kadena";
-    readonly Hackachain: "hackachain";
-};
+export type GraphType = 'kadena' | 'hackachain';
 
 // @public (undocumented)
 export interface IAccountDetails {
