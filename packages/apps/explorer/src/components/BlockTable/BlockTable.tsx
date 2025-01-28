@@ -49,6 +49,7 @@ export const BlockTable: React.FC = () => {
     loading: newBlocksLoading,
     error: newBlocksError,
   } = useNewBlocksSubscription();
+
   const {
     data: lastBlockHeightData,
     loading: lastBlockLoading,
@@ -94,13 +95,13 @@ export const BlockTable: React.FC = () => {
   useEffect(() => {
     if (isMounted) return;
 
-    if (newBlocksLoading || lastBlockLoading || oldBlocksLoading) {
+    if (lastBlockLoading || oldBlocksLoading) {
       setIsLoading(true);
     } else {
       setTimeout(() => {
         setIsLoading(false);
         setIsMounted(true);
-      }, 200);
+      }, 10);
     }
   }, [
     isLoading,
