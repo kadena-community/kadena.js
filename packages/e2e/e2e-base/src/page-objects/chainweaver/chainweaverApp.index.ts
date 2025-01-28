@@ -66,7 +66,9 @@ export class ChainweaverAppIndex {
     await actor.getByRole('button', { name: 'Settings' }).waitFor();
     await actor.getByRole('button', { name: 'Settings' }).click();
 
-    await expect(actor).toHaveURL('/networks');
+    const url = await actor.evaluate(() => window.location.href);
+
+    await expect(url).toContain('/networks');
 
     return true;
   }
@@ -87,8 +89,8 @@ export class ChainweaverAppIndex {
     await expect(
       actor.getByRole('heading', { name: 'Add Network' }),
     ).toBeVisible();
-    await actor.type('[name="networkId"]', network.networkId);
     await actor.type('[name="hosts.0.url"]', network.host);
+    await actor.type('[name="networkId"]', network.networkId);
     await actor.type('[name="name"]', network.title);
     await actor.focus('[name="name"]');
 
