@@ -3,6 +3,7 @@ import type {
   createCrossChainCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
+import type { GraphType } from './host.js';
 
 interface ITransactionFeeTransfer extends IBaseTransfer {
   /**
@@ -188,3 +189,49 @@ export type INodeChainInfo = Pick<INetworkInfo, 'nodeChains' | 'nodeVersion'>;
  * @public
  */
 export type INodeNetworkInfo = Omit<INetworkInfo, 'nodeChains'>;
+
+/**
+ * Options for fetching fungible accounts.
+ */
+
+/**
+ * @public
+ */
+export interface IFungibleAccountsOptions {
+  publicKey: string;
+  fungibleName?: string;
+  networkId: string;
+  graphType?: GraphType;
+}
+
+/**
+ * Represents a chain account associated with a fungible account.
+ */
+/**
+ * @public
+ */
+export interface IChainAccount {
+  accountName: string;
+  chainId: string;
+}
+
+/**
+ * Represents a fungible account.
+ */
+/**
+ * @public
+ */
+export interface IFungibleAccount {
+  accountName: string;
+  chainAccounts: IChainAccount[];
+}
+
+/**
+ * Response structure for fetching fungible accounts.
+ */
+/**
+ * @public
+ */
+export interface IFungibleAccountsResponse {
+  fungibleAccounts: IFungibleAccount[];
+}

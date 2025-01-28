@@ -69,6 +69,11 @@ export const Header: React.FC = () => {
             <Link to="/kadenanames">Kadena Names</Link>
           </NavHeaderLink>
         </Tooltip>
+        <Tooltip text="Get all accounts by PublicKey.">
+          <NavHeaderLink href="/accountsbypublickey" asChild>
+            <Link to="/accountsbypublickey">Accounts by public key</Link>
+          </NavHeaderLink>
+        </Tooltip>
       </NavHeaderLinkList>
 
       <Tooltip text="Select the network for executing commands.">
