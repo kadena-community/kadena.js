@@ -11,6 +11,12 @@ const config: CodegenConfig = {
       config: { useTypeImports: true },
     },
   },
+  config: {
+    scalars: {
+      BigInt: 'number',
+      DateTime: 'string',
+    },
+  },
   hooks: {
     afterAllFileWrite(...files) {
       for (let i = 0; i < files.length; i++) {

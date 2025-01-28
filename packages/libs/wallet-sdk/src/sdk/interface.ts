@@ -1,17 +1,5 @@
-import type { ChainId } from '@kadena/client';
-import type {
-  createCrossChainCommand,
-  transferCreateCommand,
-} from '@kadena/client-utils/coin';
-
-interface ITransactionFeeTransfer extends IBaseTransfer {
-  /**
-   * If `true`, this transaction fee paid for multiple transfers.
-   * When displaying this value in the UI, it is advised to inform
-   * the user about this
-   */
-  isBulkTransfer: boolean;
-}
+import type { ChainId, ISigner } from '@kadena/client';
+import type { createCrossChainCommand } from '@kadena/client-utils/coin';
 
 interface IBaseTransfer {
   senderAccount: string;
@@ -24,12 +12,22 @@ interface IBaseTransfer {
   networkId: string;
   block: {
     hash: string;
-    height: number;
+    height: bigint;
     creationTime: Date;
-    blockDepthEstimate: number;
+    blockDepthEstimate: bigint;
   };
   /** Only available when lookup account paid for transaction fee */
-  transactionFeeTransfer?: ITransactionFeeTransfer;
+  transactionFee?: {
+    senderAccount: string;
+    receiverAccount: string;
+    amount: number;
+    /**
+     * If `true`, this transaction fee paid for multiple transfers.
+     * When displaying this value in the UI, it is advised to inform
+     * the user about this
+     */
+    isBulkTransfer: boolean;
+  };
 }
 
 interface ISameChainTransfer extends IBaseTransfer {
@@ -103,7 +101,52 @@ export interface ITransferResponse {
 /**
  * @public
  */
-export type ICreateTransfer = Parameters<typeof transferCreateCommand>[0];
+export interface ICreateTransfer {
+  sender: string | { account: string; publicKeys: ISigner[] };
+  receiver: string;
+  amount: string;
+  gasPayer?: { account: string; publicKeys: ISigner[] };
+  chainId: ChainId;
+  networkId: string;
+  fungibleName?: string;
+}
+
+/**
+ * @public
+ */
+export interface ICreateTransferCreate {
+  sender: string | { account: string; publicKeys: ISigner[] };
+  receiver: {
+    account: string;
+    keyset: {
+      keys: ISigner[];
+      pred: 'keys-all' | 'keys-2' | 'keys-any';
+    };
+  };
+  amount: string;
+  gasPayer?: { account: string; publicKeys: ISigner[] };
+  chainId: ChainId;
+  networkId: string;
+}
+
+/**
+ * @public
+ */
+export interface ICreateTransferCreateOptional {
+  sender: string | { account: string; publicKeys: ISigner[] };
+  receiver: {
+    account?: string;
+    keyset: {
+      keys: ISigner[];
+      pred: 'keys-all' | 'keys-2' | 'keys-any';
+    };
+  };
+  amount: string;
+  gasPayer?: { account: string; publicKeys: ISigner[] };
+  chainId: ChainId;
+  networkId: string;
+  fungibleName?: string;
+}
 
 /**
  * @public

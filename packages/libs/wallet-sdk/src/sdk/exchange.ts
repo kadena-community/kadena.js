@@ -24,7 +24,7 @@ export const exchange = {
           }`,
         }),
       });
-      const json = await response.json();
+      const json: any = await response.json();
       const data = json?.data?.getCoinGeckoTokenMarketDataByIds as (Record<
         string,
         number
