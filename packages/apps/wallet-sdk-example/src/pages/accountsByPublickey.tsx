@@ -42,7 +42,6 @@ export const AccountsByPublicKey = () => {
 
         <Divider />
 
-        {/* Input Fields */}
         <Stack flexDirection="column" gap="md" className="mb-6">
           <Text variant="ui" bold>
             Fetch Accounts
@@ -64,7 +63,7 @@ export const AccountsByPublicKey = () => {
             />
             <Button
               variant="primary"
-              onClick={handleFetchAccounts}
+              onPress={handleFetchAccounts}
               isDisabled={!publicKey || !fungibleName}
             >
               Fetch
@@ -97,10 +96,8 @@ export const AccountsByPublicKey = () => {
             {accounts?.length ? (
               <Table aria-label="Associated Accounts">
                 <TableHeader>
-                  <Column>Account ID</Column>
                   <Column>Account Name</Column>
                   <Column>Chain</Column>
-                  <Column>Actions</Column>
                 </TableHeader>
                 <TableBody>
                   {accounts.map((accountItem, index) => (

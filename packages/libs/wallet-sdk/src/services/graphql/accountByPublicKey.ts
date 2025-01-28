@@ -1,5 +1,6 @@
 import { createClient, fetchExchange } from '@urql/core';
 import type {
+  IFungibleAccount,
   IFungibleAccountsOptions,
   IFungibleAccountsResponse,
 } from '../../sdk/interface.js';
@@ -39,7 +40,16 @@ export async function fetchAccountsByPublicKey(
     };
   }
 
+  const fungibleAccounts: IFungibleAccount[] =
+    result.data.fungibleAccountsByPublicKey.map((account) => ({
+      accountName: account.accountName,
+      chainAccounts: account.chainAccounts.map((chain) => ({
+        accountName: chain.accountName,
+        chainId: chain.chainId,
+      })),
+    }));
+
   return {
-    fungibleAccounts: result.data.fungibleAccountsByPublicKey,
+    fungibleAccounts,
   };
 }
