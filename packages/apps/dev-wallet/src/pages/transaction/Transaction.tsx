@@ -39,7 +39,7 @@ export const TransactionPage = () => {
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
-        <SideBarBreadcrumbsItem href={`/transactions`}>
+        <SideBarBreadcrumbsItem href={`/activities`}>
           Activities
         </SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href={`/transaction/${transactionId}`}>
