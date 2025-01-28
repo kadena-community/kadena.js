@@ -313,9 +313,9 @@ export class WalletSDK {
   public async getFungibleAccountsByPublicKey(
     options: IFungibleAccountsOptions,
   ): Promise<IFungibleAccountsResponse> {
-    const { networkId, graphType } = options;
+    const { networkId, graphType, ...rest } = options;
     const url = this.getGraphqlUrl({ networkId, graphType });
-    return fetchAccountsByPublicKey(url, options);
+    return fetchAccountsByPublicKey(url, rest);
   }
 
   public async getTransfers(

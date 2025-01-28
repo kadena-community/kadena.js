@@ -16,7 +16,7 @@ import { ACCOUNTS_BY_PUBLIC_KEY_QUERY } from './account.query.js';
  */
 export async function fetchAccountsByPublicKey(
   graphqlUrl: string,
-  options: IFungibleAccountsOptions,
+  options: Omit<IFungibleAccountsOptions, 'networkId'>,
 ): Promise<IFungibleAccountsResponse> {
   const client = createClient({ url: graphqlUrl, exchanges: [fetchExchange] });
   const result = await client

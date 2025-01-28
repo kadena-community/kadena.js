@@ -36,6 +36,56 @@ describe('getFungibleAccountsByPublicKey', () => {
       expect(result.fungibleAccounts).toEqual(expectedAccounts);
     });
 
+    it('fetches multiple fungible accounts correctly with valid inputs', async () => {
+      const publicKey =
+        '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
+      const fungibleName = 'coin';
+      const networkId = 'testnet04';
+      const graphType = 'hackachain';
+
+      const result = await walletSdk.getFungibleAccountsByPublicKey({
+        publicKey,
+        fungibleName,
+        networkId,
+        graphType,
+      });
+
+      const expectedAccounts = [
+        {
+          accountName:
+            'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          chainAccounts: [
+            {
+              accountName:
+                'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+              chainId: '0',
+            },
+            {
+              accountName:
+                'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+              chainId: '1',
+            },
+            {
+              accountName:
+                'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+              chainId: '2',
+            },
+            {
+              accountName:
+                'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+              chainId: '5',
+            },
+            {
+              accountName:
+                'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+              chainId: '8',
+            },
+          ],
+        },
+      ];
+      expect(result.fungibleAccounts).toEqual(expectedAccounts);
+    });
+
     it('returns an empty array when no accounts are found', async () => {
       const publicKey = 'nonexistentpublickey1234567890';
       const fungibleName = 'coin';
