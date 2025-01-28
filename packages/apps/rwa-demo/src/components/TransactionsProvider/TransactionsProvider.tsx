@@ -4,6 +4,7 @@ import { useAccount } from '@/hooks/account';
 import { useNetwork } from '@/hooks/networks';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { analyticsEvent } from '@/utils/analytics';
+import { interpretMessage } from '@/utils/interpretMessage';
 import { store } from '@/utils/store';
 import { useApolloClient } from '@apollo/client';
 import type { ICommandResult } from '@kadena/client';
@@ -87,23 +88,6 @@ export const TransactionsContext = createContext<ITransactionsContext>({
   setTxsAnimationRef: () => {},
   isActiveAccountChangeTx: false,
 });
-
-const interpretMessage = (str: string, data?: ITransaction): string => {
-  if (str?.includes('Insert: row found for key')) {
-    return `${data?.type}: This key already exists`;
-  }
-  if (str?.includes('buy gas failed')) {
-    return `This account does not have enough balance to pay for Gas`;
-  }
-  if (str?.includes('exceeds max investor')) {
-    return `The maximum amount of investors has been reached`;
-  }
-  if (str?.includes('PactDuplicateTableError')) {
-    return `This already exists`;
-  }
-
-  return `${data?.type}: ${str}`;
-};
 
 export const interpretErrorMessage = (
   result: any,
