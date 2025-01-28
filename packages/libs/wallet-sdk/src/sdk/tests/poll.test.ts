@@ -25,10 +25,16 @@ describe('example test', () => {
 
       const chainId = '0' as ChainId;
       const networkId = 'testnet04';
-      const command = walletSdk.createSimpleTransfer({
+      const command = walletSdk.createTransferCreateCommand({
         amount: '0.01',
         sender: `k:${publicKey}`,
-        receiver: `k:${publicKey2}`,
+        receiver: {
+          account: `k:${publicKey2}`,
+          keyset: {
+            keys: [publicKey2],
+            pred: 'keys-all',
+          },
+        },
         chainId,
         networkId,
       });

@@ -2,6 +2,7 @@
 import { createClient, createTransaction } from '@kadena/client';
 import {
   createCrossChainCommand,
+  transferCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
 import { estimateGas } from '@kadena/client-utils/core';
@@ -19,8 +20,12 @@ import { getChainTransfers } from '../services/graphql/getChainTransfers.js';
 import { getTransfers } from '../services/graphql/getTransfers.js';
 import { pollGraphqlTransfers } from '../services/graphql/pollTransfers.js';
 import { isSameTransfer } from '../services/graphql/transfer.util.js';
+import {
+  createPrincipal,
+  parseAccountNameAndKeys,
+} from '../utils/accountName.js';
 import { poll } from '../utils/retry.js';
-import { isEmpty, notEmpty } from '../utils/typeUtils.js';
+import { arrayEquals, isEmpty, notEmpty } from '../utils/typeUtils.js';
 import type { ICreateCrossChainFinishInput } from './crossChainFinishCreate.js';
 import { crossChainFinishCreateCommand } from './crossChainFinishCreate.js';
 import { exchange } from './exchange.js';
@@ -34,10 +39,11 @@ import type {
   IChain,
   ICreateCrossChainTransfer,
   ICreateTransfer,
+  ICreateTransferCreate,
+  ICreateTransferCreateOptional,
   ICrossChainTransfer,
   IFungibleAccountsOptions,
   IFungibleAccountsResponse,
-  INetworkInfo,
   INodeChainInfo,
   INodeNetworkInfo,
   ITransactionDescriptor,
@@ -48,8 +54,11 @@ import { KadenaNames } from './kadenaNames.js';
 import type { ILogTransport, LogLevel } from './logger.js';
 import { Logger } from './logger.js';
 import type { ResponseResult } from './schema.js';
-import type { ICreateSimpleTransferInput } from './simpleTransferCreate.js';
-import { simpleTransferCreateCommand } from './simpleTransferCreate.js';
+
+// createTransfer = regular transfer without guard
+// createTransferCreate = transfer-create with guard
+// createTransferCommand = underlying sync version
+// createTransferCreateCommand = underlying sync version
 
 /**
  * @public
@@ -79,7 +88,11 @@ export class WalletSDK {
     this.kadenaNames = new KadenaNames(this);
 
     this.getTransfers = this.getTransfers.bind(this);
-    this.createSimpleTransfer = this.createSimpleTransfer.bind(this);
+    this.createTransfer = this.createTransfer.bind(this);
+    this.createTransferCommand = this.createTransferCommand.bind(this);
+    this.createTransferCreate = this.createTransferCreate.bind(this);
+    this.createTransferCreateCommand =
+      this.createTransferCreateCommand.bind(this);
     this.createCrossChainTransfer = this.createCrossChainTransfer.bind(this);
     this.createFinishCrossChainTransfer =
       this.createFinishCrossChainTransfer.bind(this);
@@ -124,11 +137,48 @@ export class WalletSDK {
     return chainIds ?? (await this.getChains(networkId)).map((c) => c.id);
   }
 
-  /** Create a transfer that only accepts `k:` accounts */
-  public createSimpleTransfer(
-    transfer: ICreateSimpleTransferInput & { networkId: string },
-  ): IUnsignedCommand {
-    const command = simpleTransferCreateCommand(transfer)();
+  /** create transfer that accepts any kind of account (requires keys/pred) */
+  public async createTransfer(
+    transfer: ICreateTransfer,
+  ): Promise<IUnsignedCommand> {
+    const account = await this.getAccountDetails(
+      transfer.receiver,
+      transfer.networkId,
+      transfer.fungibleName ?? 'coin',
+      [transfer.chainId],
+    ).catch(() => []);
+
+    if (account.length === 0) {
+      if (transfer.receiver.startsWith('k:')) {
+        this.logger.info(
+          `Account ${transfer.receiver} does not exist on chain, returning transfer-create`,
+          { transfer },
+        );
+        return this.createTransferCreateCommand({
+          ...transfer,
+          receiver: {
+            account: transfer.receiver,
+            keyset: {
+              keys: [transfer.receiver.substring(2)],
+              pred: 'keys-all',
+            },
+          },
+        });
+      }
+      throw new Error(
+        `Account ${transfer.receiver} not found on network ${transfer.networkId} chain ${transfer.chainId}`,
+      );
+    }
+
+    return this.createTransferCommand(transfer);
+  }
+
+  /** create transfer that accepts any kind of account (requires keys/pred) */
+  public createTransferCommand(transfer: ICreateTransfer): IUnsignedCommand {
+    const command = transferCommand({
+      ...transfer,
+      sender: parseAccountNameAndKeys(transfer.sender),
+    })();
     return createTransaction({
       ...command,
       networkId: transfer.networkId,
@@ -136,10 +186,77 @@ export class WalletSDK {
   }
 
   /** create transfer that accepts any kind of account (requires keys/pred) */
-  public createTransfer(
-    transfer: ICreateTransfer & { networkId: string },
+  public async createTransferCreate(
+    transfer: ICreateTransferCreateOptional,
+  ): Promise<IUnsignedCommand> {
+    const host = this.getChainwebUrl({
+      networkId: transfer.networkId,
+      chainId: transfer.chainId,
+    });
+    const resolvedAccountName = await createPrincipal({
+      chainId: transfer.chainId,
+      networkHost: new URL(host).origin,
+      networkId: transfer.networkId,
+      predicate: transfer.receiver.keyset.pred,
+      publicKeys: transfer.receiver.keyset.keys.map((key) =>
+        typeof key === 'string' ? key : key.pubKey,
+      ),
+    });
+
+    if (
+      transfer.receiver.account !== undefined &&
+      transfer.receiver.account !== resolvedAccountName
+    ) {
+      throw new Error(
+        `Invalid receiver account name: "${transfer.receiver.account}" expected it to be "${resolvedAccountName}"`,
+      );
+    }
+
+    const accountName = transfer.receiver.account ?? resolvedAccountName;
+
+    const [account] = await this.getAccountDetails(
+      accountName,
+      transfer.networkId,
+      transfer.fungibleName ?? 'coin',
+      [transfer.chainId],
+    ).catch(() => []);
+
+    if (account !== undefined) {
+      const chainPred = account.accountDetails?.guard.pred ?? 'keys-all';
+      const chainKeys = account.accountDetails?.guard.keys ?? [];
+      if (
+        transfer.receiver.keyset.pred !== chainPred &&
+        !arrayEquals(
+          transfer.receiver.keyset.keys.map((key) =>
+            typeof key === 'string' ? key : key.pubKey,
+          ),
+          chainKeys,
+        )
+      ) {
+        throw new Error(
+          `Account ${transfer.receiver} exists on chain with different keyset`,
+        );
+      }
+      this.logger.info(`Account ${transfer.receiver} already exists on chain`);
+    }
+    return this.createTransferCreateCommand({
+      ...transfer,
+      receiver: {
+        account: accountName,
+        keyset: transfer.receiver.keyset,
+      },
+    });
+  }
+
+  /** create transfer that accepts any kind of account (requires keys/pred) */
+  public createTransferCreateCommand(
+    transfer: ICreateTransferCreate,
   ): IUnsignedCommand {
-    const command = transferCreateCommand(transfer)();
+    const command = transferCreateCommand({
+      ...transfer,
+      // receiver:
+      sender: parseAccountNameAndKeys(transfer.sender),
+    })();
     return createTransaction({
       ...command,
       networkId: transfer.networkId,
@@ -392,7 +509,7 @@ export class WalletSDK {
 
   public async getChains(networkHost: string): Promise<IChain[]> {
     const res = await fetch(`${networkHost}/info`);
-    const json: INodeChainInfo = await res.json();
+    const json = (await res.json()) as INodeChainInfo;
 
     const chains = json.nodeChains ?? [];
     return chains.map((c) => ({ id: c as ChainId }));
@@ -400,13 +517,15 @@ export class WalletSDK {
 
   public async getNetworkInfo(networkHost: string): Promise<INodeNetworkInfo> {
     const res = await fetch(`${networkHost}/info`);
-    const json: INetworkInfo = await res.json();
+    const json = (await res.json()) as INodeNetworkInfo & {
+      nodeChains: string[];
+    };
 
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       nodeChains = [],
       ...networkInfo
-    }: INodeNetworkInfo & { nodeChains: string[] } = json;
+    } = json;
 
     return networkInfo;
   }

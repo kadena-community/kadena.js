@@ -43,6 +43,7 @@ function App() {
 
   useEffect(() => {
     const transport = (log: ILogObject) => {
+      console.log(log);
       const id = notificationIdCounter.current++;
       const notification: ILogNotification = { ...log, id };
 

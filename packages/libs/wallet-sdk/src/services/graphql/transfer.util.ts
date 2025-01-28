@@ -149,7 +149,7 @@ const getCrossChainTransferFinish = (transfer: GqlTransferParsed) => {
 
 const mapBaseTransfer = (
   gqlTransfer: GqlTransferParsed,
-  lastBlockHeight: number,
+  lastBlockHeight: bigint,
 ): ITransfer => {
   return {
     amount: gqlTransfer.amount,
@@ -163,17 +163,17 @@ const mapBaseTransfer = (
     networkId: gqlTransfer.transaction?.cmd.networkId!,
     block: {
       creationTime: new Date(gqlTransfer.block.creationTime),
-      blockDepthEstimate: lastBlockHeight - 3 - gqlTransfer.block.height,
+      blockDepthEstimate:
+        lastBlockHeight - BigInt(3) - BigInt(gqlTransfer.block.height),
       hash: gqlTransfer.block.hash,
-      height: gqlTransfer.block.height,
+      height: BigInt(gqlTransfer.block.height),
     },
   };
 };
 
 export const gqlTransferToTransfer = (
   rawGqlTransfer: GqlTransfer,
-  accountName: string,
-  lastBlockHeight: number,
+  lastBlockHeight: bigint,
   fungibleName?: string,
 ): ITransfer | null => {
   const gqlTransfer = parseTransfer(rawGqlTransfer, fungibleName);
@@ -218,8 +218,7 @@ export const gqlTransferToTransfer = (
 
 export function parseGqlTransfers(
   nodes: GqlTransfer[],
-  lastBlockHeight: number,
-  accountName: string,
+  lastBlockHeight: bigint,
   fungibleName?: string,
 ): ITransfer[] {
   const grouped = nodes.reduce(
@@ -233,21 +232,13 @@ export function parseGqlTransfers(
   );
 
   const mapped = Object.values(grouped).flatMap((nodes) => {
-    const transactionFee = nodes.find((node) => isTransactionFeeTransfer(node));
     const transfers = nodes.filter((node) => !isTransactionFeeTransfer(node));
-
-    // console.log('nodes', nodes);
 
     // Failed transfers only have the transaction fee transfer
     // For wallets, give the transfer with original amount and receiver
     if (transfers.length === 0) {
       const gqlTransfer = nodes[0];
-
-      if (isSuccess(gqlTransfer)) {
-        // eslint-disable-next-line no-console
-        console.log(
-          'RequestKey found with one one Transfer, but it does not have failed status.',
-        );
+      if (gqlTransfer.transaction?.result.__typename !== 'TransactionResult') {
         return [];
       }
 
@@ -257,7 +248,6 @@ export function parseGqlTransfers(
       if (isEmpty(transferCap)) return [];
       const transactionFeeTransfer = gqlTransferToTransfer(
         gqlTransfer,
-        accountName,
         lastBlockHeight,
         fungibleName,
       );
@@ -269,10 +259,13 @@ export function parseGqlTransfers(
         // It would be an improvement to parse code instead of using the cap, but that is very complex.
         amount: parsePactNumber(transferCap[2]),
         success: false,
-        transactionFeeTransfer: {
-          ...transactionFeeTransfer,
-          isBulkTransfer: false,
-          success: true,
+        transactionFee: {
+          isBulkTransfer: transfers.length > 1,
+          amount:
+            Number(gqlTransfer.transaction.result.gas) *
+            gqlTransfer.transaction.cmd.meta.gasPrice,
+          receiverAccount: gqlTransfer.block.minerAccount.accountName,
+          senderAccount: gqlTransfer.transaction.cmd.meta.sender,
         },
       };
       return [transfer];
@@ -281,29 +274,28 @@ export function parseGqlTransfers(
     return transfers.map((gqlTransfer) => {
       const base = gqlTransferToTransfer(
         gqlTransfer,
-        accountName,
         lastBlockHeight,
         fungibleName,
       );
-      if (!base) return null;
-      const transactionFeeBase = transactionFee
-        ? gqlTransferToTransfer(
-            transactionFee,
-            accountName,
-            lastBlockHeight,
-            fungibleName,
-          )
-        : null;
-      if (transactionFeeBase) {
-        return {
-          ...base,
-          transactionFeeTransfer: {
-            ...transactionFeeBase,
-            isBulkTransfer: transfers.length > 1,
-          },
-        } as ITransfer;
+
+      if (
+        !base ||
+        gqlTransfer.transaction?.result.__typename !== 'TransactionResult'
+      ) {
+        return null;
       }
-      return base;
+
+      return {
+        ...base,
+        transactionFee: {
+          isBulkTransfer: transfers.length > 1,
+          amount:
+            Number(gqlTransfer.transaction.result.gas) *
+            gqlTransfer.transaction.cmd.meta.gasPrice,
+          receiverAccount: gqlTransfer.block.minerAccount.accountName,
+          senderAccount: gqlTransfer.transaction.cmd.meta.sender,
+        },
+      } as ITransfer;
     });
   });
 
