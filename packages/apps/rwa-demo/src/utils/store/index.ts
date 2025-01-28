@@ -1,4 +1,5 @@
 import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import { LOCALSTORAGE_ACCOUNTS } from '@/constants';
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
@@ -8,6 +9,10 @@ import { getAsset } from '../getAsset';
 import { database } from './firebase';
 
 const getAssetFolder = () => getAsset().replace('.', '');
+
+const GetAccountsLocalStorageKey = () => {
+  return `${getAssetFolder()}_${LOCALSTORAGE_ACCOUNTS}`;
+};
 
 const RWAStore = () => {
   const addTransaction = async (data: ITransaction) => {
@@ -56,13 +61,11 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return [];
 
-    const snapshot = await get(ref(database, `${asset}/accounts`));
+    const accounts: IRegisterIdentityProps[] = await JSON.parse(
+      localStorage.getItem(GetAccountsLocalStorageKey()) ?? '[]',
+    );
 
-    const data = snapshot.toJSON();
-    if (!data) return [];
-    return Object.entries(data).map(
-      ([key, value]) => value.account,
-    ) as IRegisterIdentityProps[];
+    return accounts;
   };
 
   const getAccount = async ({
@@ -73,11 +76,9 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    const snapshot = await get(
-      ref(database, `${asset}/accounts/${account}/account`),
-    );
+    const accounts = await getAccounts();
 
-    return snapshot.toJSON() as IRegisterIdentityProps;
+    return accounts.find((acc) => acc.accountName === account);
   };
 
   const setAccount = async ({
@@ -87,10 +88,29 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    await set(ref(database, `${asset}/accounts/${accountName}/account`), {
-      accountName,
-      alias: alias ?? '',
+    const accounts = await getAccounts();
+
+    let isNew = true;
+    const newAccountsArray = accounts.map((account) => {
+      if (account.accountName === accountName) {
+        isNew = false;
+        account.alias = alias;
+      }
+      return account;
     });
+
+    if (isNew) {
+      newAccountsArray.push({
+        accountName,
+        alias,
+      } as IRegisterIdentityProps);
+    }
+
+    localStorage.setItem(
+      GetAccountsLocalStorageKey(),
+      JSON.stringify(newAccountsArray),
+    );
+    window.dispatchEvent(new Event(GetAccountsLocalStorageKey()));
   };
 
   const setAllAccounts = async ({ accounts }: { accounts: ICSVAccount[] }) => {
@@ -106,34 +126,40 @@ const RWAStore = () => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    const accountRef = ref(database, `${asset}/accounts/${account}/account`);
-    onValue(accountRef, async (snapshot) => {
-      const data = snapshot.toJSON();
+    const storageListener = async () => {
+      const accounts = await getAccounts();
 
-      if (!data) return;
-      setDataCallback(data as IRegisterIdentityProps);
-    });
+      const foundAccount = accounts.find((acc) => acc.accountName === account);
+      if (!foundAccount) return;
 
-    return () => off(accountRef);
+      setDataCallback(foundAccount);
+    };
+
+    window.addEventListener(GetAccountsLocalStorageKey(), storageListener);
+    window.addEventListener('storage', storageListener);
+
+    return () => {
+      window.removeEventListener(GetAccountsLocalStorageKey(), storageListener);
+      window.removeEventListener('storage', storageListener);
+    };
   };
 
   const listenToAccounts = (setDataCallback: (aliases: any[]) => void) => {
     const asset = getAssetFolder();
     if (!asset) return;
 
-    const accountRef = ref(database, `${asset}/accounts`);
-    onValue(accountRef, async (snapshot) => {
-      const data = snapshot.toJSON();
-      if (!data) return setDataCallback([]);
+    const storageListener = async () => {
+      const accounts = await getAccounts();
+      setDataCallback(accounts);
+    };
 
-      setDataCallback(
-        Object.entries(data).map(
-          ([key, value]) => value.account,
-        ) as IRegisterIdentityProps[],
-      );
-    });
+    window.addEventListener(GetAccountsLocalStorageKey(), storageListener);
+    window.addEventListener('storage', storageListener);
 
-    return () => off(accountRef);
+    return () => {
+      window.removeEventListener(GetAccountsLocalStorageKey(), storageListener);
+      window.removeEventListener('storage', storageListener);
+    };
   };
 
   const getFrozenMessage = async (
