@@ -122,7 +122,7 @@ export const txOptions = {
   txUnsignedTransactionFiles: createOption({
     key: 'txUnsignedTransactionFiles',
     prompt: tx.transactionsSelectPrompt,
-    validation: z.array(z.string()),
+    validation: z.string().or(z.array(z.string())),
     option: new Option(
       '-u, --tx-unsigned-transaction-files <txUnsignedTransactionFiles>',
       'provide your unsigned transaction file(s) to sign',
