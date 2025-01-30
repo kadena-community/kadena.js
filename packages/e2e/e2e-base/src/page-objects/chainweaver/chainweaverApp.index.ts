@@ -5,10 +5,48 @@ import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
 export class ChainweaverAppIndex {
   private _webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
   private _PROFILENAME: string = 'He-man';
+  private _PROFILENAME_WITHPASSWORD: string = 'Skeletor';
+  private _PASSWORD: string = 'M4st3r_of_th3_un1v3rs3';
 
   public constructor() {}
 
-  public async createProfile(actor: Page): Promise<boolean> {
+  public async createAccount(actor: Page): Promise<boolean> {
+    const newAccountButton = actor.getByRole('button', {
+      name: 'Next Account',
+    });
+    await expect(newAccountButton).toBeVisible();
+    await newAccountButton.click();
+
+    const unlockButton = actor.getByRole('button', {
+      name: 'Unlock',
+    });
+
+    await expect(unlockButton).toBeVisible();
+    await expect(unlockButton).toBeDisabled();
+
+    const input = actor.getByRole('textbox', {});
+    await input.fill(this._PASSWORD);
+    await expect(unlockButton).toBeEnabled();
+    await unlockButton.click();
+
+    return true;
+  }
+
+  public async setup(actor: Page, full: boolean = true): Promise<boolean> {
+    await actor.goto('/');
+    await this.createProfileWithPassword(actor);
+    await this.goToSettings(actor);
+
+    if (full) {
+      await this.addNetwork(actor, {
+        networkId: 'development',
+        title: 'development',
+        host: 'http://localhost:8080',
+      });
+    }
+    return true;
+  }
+  public async createProfile(actor: Page): Promise<string> {
     await this._webAuthNHelper.enableVirtualAuthenticator(actor);
 
     const button = actor.getByText('Add new profile');
@@ -28,12 +66,50 @@ export class ChainweaverAppIndex {
     await expect(skipButton).toBeVisible();
     await skipButton.click();
 
-    return true;
+    return this._PROFILENAME;
+  }
+  public async createProfileWithPassword(actor: Page): Promise<string> {
+    const button = actor.getByText('Add new profile');
+    await expect(button).toBeVisible();
+    await button.click();
+
+    const passwordButton = actor.getByRole('button', {
+      name: 'Prefer password',
+    });
+    await expect(passwordButton).toBeVisible();
+    await actor.fill('#profileName', this._PROFILENAME_WITHPASSWORD);
+    await passwordButton.click();
+
+    //create password
+    await expect(
+      actor.getByRole('heading', {
+        name: 'Choose a password',
+      }),
+    ).toBeVisible();
+
+    const continueButton = actor.getByRole('button', {
+      name: 'Continue',
+    });
+    await expect(continueButton).toBeDisabled();
+
+    await actor.fill('#password', this._PASSWORD);
+    await actor.fill('#confirmation', this._PASSWORD);
+
+    await expect(continueButton).toBeEnabled();
+    await continueButton.click();
+
+    const skipButton = actor.getByRole('button', {
+      name: 'Skip',
+    });
+    await expect(skipButton).toBeVisible();
+    await skipButton.click();
+
+    return this._PROFILENAME_WITHPASSWORD;
   }
 
-  public async logout(actor: Page): Promise<boolean> {
+  public async logout(actor: Page, profileName: string): Promise<boolean> {
     const profileButton = actor.getByRole('button', {
-      name: this._PROFILENAME,
+      name: profileName,
     });
     await expect(profileButton).toHaveAttribute('aria-haspopup');
     await profileButton.click();
