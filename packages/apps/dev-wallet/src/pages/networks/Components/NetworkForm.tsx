@@ -53,6 +53,7 @@ interface INewNetwork {
     isHealthy?: boolean;
     nodeVersion?: string;
   }[];
+  faucetContract?: string;
 }
 
 export const getNewNetwork = (): INetworkWithOptionalUuid => ({
@@ -117,13 +118,13 @@ export function NetworkForm({
     reset(network ?? getNewNetwork());
   }, [network, reset]);
 
-  const hosts = watch('hosts');
   const networkId = watch('networkId');
 
-  const isNetworkIdValid =
-    hosts.length > 0 &&
-    networkId.length > 0 &&
-    hosts.every((host) => host.nodeVersion === networkId);
+  // const hosts = watch('hosts');
+  // const isNetworkIdValid =
+  //   hosts.length > 0 &&
+  //   networkId.length > 0 &&
+  //   hosts.every((host) => host.nodeVersion === networkId);
 
   useEffect(() => {
     if (networkId) {
@@ -150,14 +151,14 @@ export function NetworkForm({
               aria-label="networkId"
               type="text"
               defaultValue={getValues('networkId')}
-              {...register('networkId')}
+              {...register('networkId', { required: 'Network ID is required' })}
             />
             <TextField
               label="Title"
               aria-label="title"
               type="text"
               defaultValue={getValues('name')}
-              {...register('name')}
+              {...register('name', { required: 'Title is required' })}
             />
             <Controller
               control={control}
@@ -217,6 +218,7 @@ export function NetworkForm({
                         aria-label="url"
                         defaultValue={getValues(`hosts.${index}.url`)}
                         {...register(`hosts.${index}.url`, {
+                          required: 'Host url is required',
                           onBlur: () => {
                             const host = getValues(`hosts.${index}.url`);
                             if (!host) {
@@ -267,6 +269,16 @@ export function NetworkForm({
                 );
               })}
               {}
+              <Stack gap="md" flexDirection={'column'}>
+                <TextField
+                  id={`faucetContract`}
+                  label="Faucet Contract (Optional)"
+                  type="text"
+                  aria-label="url"
+                  defaultValue={getValues(`faucetContract`)}
+                  {...register(`faucetContract`)}
+                />
+              </Stack>
             </Stack>
             {error !== undefined && (
               <Notification intent="negative" role="alert">
@@ -281,7 +293,7 @@ export function NetworkForm({
           </Button>
           <Button
             type="submit"
-            isDisabled={!isNetworkIdValid || !formState.isDirty}
+            isDisabled={!formState.isDirty || !formState.isValid}
           >
             Save
           </Button>

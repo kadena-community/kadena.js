@@ -221,29 +221,31 @@ function TxStatusList({
               {sendDisabled ? 'Transaction is pending' : 'Ready to preflight'}
             </Stack>
           </Text>
-          <Text size="small">
-            Preflight will test your transaction first to avoid paying gas for a
-            failed submission.
-          </Text>
           {variant === 'expanded' && (
-            <Stack gap={'sm'}>
-              <Button
-                isCompact
-                onClick={() => onPreflight()}
-                isDisabled={sendDisabled}
-                startVisual={<MonoViewInAr />}
-              >
-                Preflight
-              </Button>
-              <Button
-                variant="outlined"
-                startVisual={<MonoShare />}
-                isCompact
-                onClick={copyTx}
-              >
-                {copied ? 'copied' : 'Share'}
-              </Button>
-            </Stack>
+            <>
+              <Text size="small">
+                Preflight will test your transaction first to avoid paying gas
+                for a failed submission.
+              </Text>
+              <Stack gap={'sm'}>
+                <Button
+                  isCompact
+                  onClick={() => onPreflight()}
+                  isDisabled={sendDisabled}
+                  startVisual={<MonoViewInAr />}
+                >
+                  Preflight
+                </Button>
+                <Button
+                  variant="outlined"
+                  startVisual={<MonoShare />}
+                  isCompact
+                  onClick={copyTx}
+                >
+                  {copied ? 'copied' : 'Share'}
+                </Button>
+              </Stack>
+            </>
           )}
         </Stack>
       ),

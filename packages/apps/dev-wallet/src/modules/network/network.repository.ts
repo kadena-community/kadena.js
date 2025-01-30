@@ -8,6 +8,7 @@ export interface INetwork {
   name?: string;
   default?: boolean;
   disabled?: boolean;
+  removed?: boolean;
   faucetContract?: string;
   hosts: Array<{
     url: string;
@@ -19,10 +20,10 @@ export interface INetwork {
 
 export interface NetworkRepository {
   getEnabledNetworkList: () => Promise<INetwork[]>;
-  getAllNetworks: () => Promise<INetwork[]>;
+  getAllNetworks: (includingDeleted?: boolean) => Promise<INetwork[]>;
   getNetwork: (uuid: UUID) => Promise<INetwork>;
   getNetworkByNetworkId: (uuid: string) => Promise<INetwork>;
-  addNetwork: (network: INetwork) => Promise<void>;
+  addNetwork: (network: INetwork) => Promise<INetwork>;
   updateNetwork: (network: INetwork) => Promise<void>;
   deleteNetwork: (uuid: UUID) => Promise<void>;
 }
@@ -32,16 +33,19 @@ const createNetworkRepository = ({
   getOne,
   add,
   update,
-  remove,
 }: IDBService): NetworkRepository => {
-  return {
+  const networkRepository: NetworkRepository = {
     getEnabledNetworkList: async (): Promise<INetwork[]> => {
       const list: INetwork[] = await getAll('network');
+      console.log('getEnabledNetworkList', list);
       return list.filter((network) => !network.disabled);
     },
 
-    getAllNetworks: async (): Promise<INetwork[]> => {
-      return getAll('network');
+    getAllNetworks: async (includingDeleted = false): Promise<INetwork[]> => {
+      const list: INetwork[] = await getAll('network');
+      return includingDeleted
+        ? list
+        : list.filter((network) => !network.removed);
     },
 
     getNetwork: async (uuid: UUID): Promise<INetwork> => {
@@ -55,24 +59,51 @@ const createNetworkRepository = ({
       );
       return networks[0];
     },
-    addNetwork: async (network: INetwork): Promise<void> => {
-      await add('network', {
+    addNetwork: async (network: INetwork): Promise<INetwork> => {
+      const existingNetwork = await networkRepository.getNetworkByNetworkId(
+        network.networkId,
+      );
+      // if the network already exists and it is removed, we keep the uuid and update the network;
+      // this is to keep the relation with other models
+      if (existingNetwork && existingNetwork.removed) {
+        const updatedNetwork = {
+          ...network,
+          name: network.name ?? network.networkId,
+          uuid: existingNetwork.uuid,
+        };
+        await update('network', updatedNetwork);
+        return updatedNetwork;
+      }
+      const newNetwork = {
         ...network,
         name: network.name ?? network.networkId,
-      });
+      };
+      await add('network', newNetwork);
+      return newNetwork;
     },
     updateNetwork: async (network: INetwork): Promise<void> => {
       await update('network', network);
     },
+    // many models have relation to the network model, so we don't delete the network to avoid breaking the relation
+    // we just mark it as disabled and removed then we don't show it in the UI
     deleteNetwork: async (uuid: UUID): Promise<void> => {
-      await remove('network', uuid);
+      const network = await getOne<INetwork>('network', uuid);
+      if (network) {
+        await update('network', {
+          ...network,
+          disabled: true,
+          removed: true,
+          default: false,
+        });
+      }
     },
   };
+  return networkRepository;
 };
 export const networkRepository = createNetworkRepository(dbService);
 
 export const addDefaultNetworks = execInSequence(async () => {
-  const networks = await networkRepository.getAllNetworks();
+  const networks = await networkRepository.getAllNetworks(true);
 
   if (!networks.find((network) => network.networkId === 'mainnet01')) {
     await networkRepository.addNetwork({
