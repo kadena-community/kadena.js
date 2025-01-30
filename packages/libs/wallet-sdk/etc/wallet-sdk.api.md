@@ -22,11 +22,7 @@ export type ChainwebHostGenerator = (options: {
 // @public (undocumented)
 export type GraphqlHostGenerator = (options: {
     networkId: string;
-    graphType?: GraphType;
 }) => string;
-
-// @public (undocumented)
-export type GraphType = 'kadena' | 'hackachain';
 
 // @public (undocumented)
 export interface IAccountDetails {
@@ -190,8 +186,6 @@ export interface IFungibleAccount {
 export interface IFungibleAccountsOptions {
     // (undocumented)
     fungibleName?: string;
-    // (undocumented)
-    graphType?: GraphType;
     // (undocumented)
     networkId: string;
     // (undocumented)

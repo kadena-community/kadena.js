@@ -1,5 +1,4 @@
 import type {
-  GraphType,
   IFungibleAccount,
   IFungibleAccountsResponse,
 } from '@kadena/wallet-sdk';
@@ -20,7 +19,6 @@ import { useFunctionTracker } from './functionTracker';
 export const useAccountsByPublicKey = (
   publicKey: string,
   fungibleName: string,
-  graphType: GraphType = 'hackachain',
 ) => {
   const wallet = useWalletState();
   const [accounts, setAccounts] = useState<IFungibleAccount[]>([]);
@@ -40,7 +38,6 @@ export const useAccountsByPublicKey = (
       publicKey,
       fungibleName,
       wallet.selectedNetwork,
-      graphType,
     ],
     enabled: false,
     queryFn: async () => {
@@ -52,7 +49,6 @@ export const useAccountsByPublicKey = (
         publicKey,
         fungibleName,
         networkId: wallet.selectedNetwork,
-        graphType,
       });
     },
   });

@@ -313,8 +313,8 @@ export class WalletSDK {
   public async getFungibleAccountsByPublicKey(
     options: IFungibleAccountsOptions,
   ): Promise<IFungibleAccountsResponse> {
-    const { networkId, graphType, ...rest } = options;
-    const url = this.getGraphqlUrl({ networkId, graphType });
+    const { networkId, ...rest } = options;
+    const url = this.getGraphqlUrl({ networkId });
     return fetchAccountsByPublicKey(url, rest);
   }
 

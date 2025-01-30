@@ -1,8 +1,6 @@
 import type { ChainId, ISigner } from '@kadena/client';
 import type { createCrossChainCommand } from '@kadena/client-utils/coin';
 
-import type { GraphType } from './host.js';
-
 interface IBaseTransfer {
   senderAccount: string;
   receiverAccount: string;
@@ -245,7 +243,6 @@ export interface IFungibleAccountsOptions {
   publicKey: string;
   fungibleName?: string;
   networkId: string;
-  graphType?: GraphType;
 }
 
 /**

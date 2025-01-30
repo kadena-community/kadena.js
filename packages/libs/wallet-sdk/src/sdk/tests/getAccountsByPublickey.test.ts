@@ -3,21 +3,19 @@ import { walletSdk } from '../walletSdk.js';
 
 describe('getFungibleAccountsByPublicKey', () => {
   /**
-   * Tests for Hackachain GraphType
+   * Tests for fungable accounts by publickey
    */
-  describe('Hackachain GraphType', () => {
+  describe('Graph', () => {
     it('fetches fungible accounts correctly with valid inputs', async () => {
       const publicKey =
         '232d28fe92059876b5febb69e7e10a92e46e844697d9643dfdef7d61eec06359';
       const fungibleName = 'coin';
       const networkId = 'testnet04';
-      const graphType = 'hackachain';
 
       const result = await walletSdk.getFungibleAccountsByPublicKey({
         publicKey,
         fungibleName,
         networkId,
-        graphType,
       });
 
       const expectedAccounts = [
@@ -41,13 +39,11 @@ describe('getFungibleAccountsByPublicKey', () => {
         '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94';
       const fungibleName = 'coin';
       const networkId = 'testnet04';
-      const graphType = 'hackachain';
 
       const result = await walletSdk.getFungibleAccountsByPublicKey({
         publicKey,
         fungibleName,
         networkId,
-        graphType,
       });
 
       const expectedAccounts = [
@@ -90,13 +86,11 @@ describe('getFungibleAccountsByPublicKey', () => {
       const publicKey = 'nonexistentpublickey1234567890';
       const fungibleName = 'coin';
       const networkId = 'testnet04';
-      const graphType = 'hackachain';
 
       const result = await walletSdk.getFungibleAccountsByPublicKey({
         publicKey,
         fungibleName,
         networkId,
-        graphType,
       });
       expect(result.fungibleAccounts).toEqual([]);
     });

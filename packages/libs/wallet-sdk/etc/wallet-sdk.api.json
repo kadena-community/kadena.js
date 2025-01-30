@@ -209,16 +209,7 @@
             },
             {
               "kind": "Content",
-              "text": "(options: {\n    networkId: string;\n    graphType?: "
-            },
-            {
-              "kind": "Reference",
-              "text": "GraphType",
-              "canonicalReference": "@kadena/wallet-sdk!GraphType:type"
-            },
-            {
-              "kind": "Content",
-              "text": ";\n}) => string"
+              "text": "(options: {\n    networkId: string;\n}) => string"
             },
             {
               "kind": "Content",
@@ -228,32 +219,6 @@
           "fileUrlPath": "src/sdk/host.ts",
           "releaseTag": "Public",
           "name": "GraphqlHostGenerator",
-          "typeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 4
-          }
-        },
-        {
-          "kind": "TypeAlias",
-          "canonicalReference": "@kadena/wallet-sdk!GraphType:type",
-          "docComment": "/**\n * @public\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "export type GraphType = "
-            },
-            {
-              "kind": "Content",
-              "text": "'kadena' | 'hackachain'"
-            },
-            {
-              "kind": "Content",
-              "text": ";"
-            }
-          ],
-          "fileUrlPath": "src/sdk/host.ts",
-          "releaseTag": "Public",
-          "name": "GraphType",
           "typeTokenRange": {
             "startIndex": 1,
             "endIndex": 2
@@ -1671,34 +1636,6 @@
               "isOptional": true,
               "releaseTag": "Public",
               "name": "fungibleName",
-              "propertyTypeTokenRange": {
-                "startIndex": 1,
-                "endIndex": 2
-              }
-            },
-            {
-              "kind": "PropertySignature",
-              "canonicalReference": "@kadena/wallet-sdk!IFungibleAccountsOptions#graphType:member",
-              "docComment": "",
-              "excerptTokens": [
-                {
-                  "kind": "Content",
-                  "text": "graphType?: "
-                },
-                {
-                  "kind": "Reference",
-                  "text": "GraphType",
-                  "canonicalReference": "@kadena/wallet-sdk!GraphType:type"
-                },
-                {
-                  "kind": "Content",
-                  "text": ";"
-                }
-              ],
-              "isReadonly": false,
-              "isOptional": true,
-              "releaseTag": "Public",
-              "name": "graphType",
               "propertyTypeTokenRange": {
                 "startIndex": 1,
                 "endIndex": 2

@@ -1,5 +1,4 @@
 export { ChainwebHostGenerator, GraphqlHostGenerator } from './sdk/host.js';
-export type { GraphType } from './sdk/host.js';
 
 export type * from './sdk/interface.js';
 export { ILogTransport, LogLevel } from './sdk/logger.js';
