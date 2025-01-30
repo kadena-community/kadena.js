@@ -11,6 +11,12 @@ export class ChainweaverAppIndex {
   public constructor() {}
 
   public async createAccount(actor: Page): Promise<boolean> {
+    const listItems = await actor
+      .getByTestId('assetList')
+      .getByRole('listitem')
+      .all();
+    await expect(listItems.length).toEqual(0);
+
     const newAccountButton = actor.getByRole('button', {
       name: 'Next Account',
     });
@@ -22,13 +28,18 @@ export class ChainweaverAppIndex {
     });
 
     await expect(unlockButton).toBeVisible();
-    await expect(unlockButton).toBeDisabled();
-
-    const input = actor.getByRole('textbox', {});
+    const input = actor.getByTestId('passwordField');
     await input.fill(this._PASSWORD);
-    await expect(unlockButton).toBeEnabled();
-    await unlockButton.click();
 
+    await unlockButton.click();
+    await expect(unlockButton).toBeHidden();
+
+    const newListItems = await actor
+      .getByTestId('assetList')
+      .getByRole('listitem')
+      .all();
+
+    await expect(newListItems.length).toEqual(1);
     return true;
   }
 
@@ -43,6 +54,8 @@ export class ChainweaverAppIndex {
         title: 'development',
         host: 'http://localhost:8080',
       });
+
+      await this.selectNetwork(actor, 'Development');
     }
     return true;
   }
