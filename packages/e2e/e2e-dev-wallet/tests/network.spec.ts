@@ -2,11 +2,11 @@ import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
 import { expect } from '@playwright/test';
 
 test('Network creation', async ({ initiator, chainweaverApp }) => {
+  await test.step('setup', async () => {
+    await chainweaverApp.setup(initiator, false);
+  });
   await test.step('Create network', async () => {
-    await initiator.goto('/');
-    await chainweaverApp.createProfile(initiator);
-    await chainweaverApp.goToSettings(initiator);
-
+    await initiator.goto('/networks');
     await expect(initiator.getByText('mainnet01 - Mainnet')).toBeVisible();
     await expect(initiator.getByText('development - development')).toBeHidden();
 
