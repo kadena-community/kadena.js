@@ -23,16 +23,8 @@ export class ChainweaverAppIndex {
     await expect(newAccountButton).toBeVisible();
     await newAccountButton.click();
 
-    const unlockButton = actor.getByRole('button', {
-      name: 'Unlock',
-    });
-
-    await expect(unlockButton).toBeVisible();
-    const input = actor.getByTestId('passwordField');
-    await input.fill(this._PASSWORD);
-
-    await unlockButton.click();
-    await expect(unlockButton).toBeHidden();
+    await this.signPopupWithPassword(actor);
+    await actor.waitForTimeout(500);
 
     const newListItems = await actor
       .getByTestId('assetList')
@@ -161,6 +153,30 @@ export class ChainweaverAppIndex {
 
     return true;
   }
+
+  public async signPopupWithPassword(actor: Page): Promise<boolean> {
+    const unlockButton = actor.getByRole('button', {
+      name: 'Unlock',
+    });
+
+    await expect(unlockButton).toBeVisible();
+    const input = actor.getByTestId('passwordField');
+    await input.fill(this._PASSWORD);
+
+    await unlockButton.click();
+    await expect(unlockButton).toBeHidden();
+
+    return true;
+  }
+  public async signWithPassword(actor: Page): Promise<boolean> {
+    const signButton = actor.getByTestId('signTx');
+    await signButton.click();
+
+    await this.signPopupWithPassword(actor);
+
+    return true;
+  }
+
   public async addNetwork(
     actor: Page,
     network: { networkId: string; title: string; host: string },

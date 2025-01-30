@@ -39,9 +39,6 @@ export class RWADemoAppIndex {
   }
 
   public async login(actor: Page): Promise<boolean> {
-    const authenticator =
-      await this._webAuthNHelper.enableVirtualAuthenticator(actor);
-
     await expect(
       actor.getByRole('heading', {
         name: 'Login',
@@ -61,14 +58,6 @@ export class RWADemoAppIndex {
 
     await expect(loginAcceptButton).toBeVisible();
     await loginAcceptButton.click();
-
-    const credentials = await this._webAuthNHelper.getCredential(
-      authenticator.authenticatorId,
-      authenticator.cdpSession,
-    );
-
-    console.log(33333, credentials.credentials);
-    expect(false).toBe(true);
 
     await expect(
       actor.getByRole('heading', {

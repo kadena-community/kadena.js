@@ -1,13 +1,10 @@
 import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
-import { WebAuthNHelper } from '@kadena-dev/e2e-base/src/helpers/chainweaver/webauthn.helper';
 import { expect } from '@playwright/test';
-
-const webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
 
 test('Login', async ({ initiator, RWADemoApp, chainweaverApp }) => {
   await test.step('Setup wallet', async () => {
     await initiator.goto('https://wallet.kadena.io');
-    await chainweaverApp.createProfile(initiator);
+    await chainweaverApp.createProfileWithPassword(initiator);
     await chainweaverApp.goToSettings(initiator);
 
     await expect(initiator.getByText('mainnet01 - Mainnet')).toBeVisible();
@@ -18,10 +15,9 @@ test('Login', async ({ initiator, RWADemoApp, chainweaverApp }) => {
       title: 'development',
       host: 'http://localhost:8080',
     });
-
-    await expect(
-      initiator.getByText('development - development'),
-    ).toBeVisible();
+    await chainweaverApp.selectNetwork(initiator, 'development');
+    await initiator.goto('https://wallet.kadena.io/');
+    await chainweaverApp.createAccount(initiator);
   });
 
   await test.step('remove cookie consent window', async () => {
@@ -40,8 +36,6 @@ test('Login', async ({ initiator, RWADemoApp, chainweaverApp }) => {
   });
 
   await test.step('Add Kadena for gas', async () => {
-    await webAuthNHelper.enableVirtualAuthenticator(initiator);
-
     //setup profile and account in the wallet
     await initiator.goto('/');
 
@@ -61,22 +55,18 @@ test('Login', async ({ initiator, RWADemoApp, chainweaverApp }) => {
       name: 'Add 5 KDA for Gas',
     });
 
+    const startNewAssetButton = initiator.getByRole('button', {
+      name: 'Start new Asset',
+    });
+    await expect(startNewAssetButton).toBeDisabled();
+
     const popupPromise = initiator.waitForEvent('popup');
     await addButton.click();
 
     const walletPopup = await popupPromise;
-    await webAuthNHelper.enableVirtualAuthenticator(walletPopup);
-    const signTxButton = walletPopup.getByRole('button', {
-      name: 'Sign Tx',
-    });
-    await expect(signTxButton).toBeVisible();
-    await signTxButton.click();
+    await chainweaverApp.signWithPassword(walletPopup);
 
-    const unlockButton = walletPopup.getByRole('button', {
-      name: 'unlock',
-    });
-
-    await expect(unlockButton).toBeVisible();
-    await unlockButton.click();
+    await initiator.waitForTimeout(3000);
+    await expect(startNewAssetButton).toBeEnabled();
   });
 });
