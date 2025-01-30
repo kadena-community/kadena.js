@@ -180,14 +180,12 @@ export function AccountPage() {
             Transfer
           </Button>
         </Link>
-        {asset.contract === 'coin' &&
-          (activeNetwork?.networkId === 'testnet05' ||
-            activeNetwork?.networkId === 'testnet04') && (
-            <FundOnTestnetButton
-              account={account}
-              fundAccountHandler={fundAccountHandler}
-            />
-          )}
+        {asset.contract === 'coin' && activeNetwork?.faucetContract && (
+          <FundOnTestnetButton
+            account={account}
+            fundAccountHandler={fundAccountHandler}
+          />
+        )}
         {asset.contract === 'coin' && (
           <a
             className={linkClass}
