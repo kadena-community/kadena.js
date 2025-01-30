@@ -1,4 +1,4 @@
-import { ICommand, IUnsignedCommand } from '@kadena/client';
+import { ICommand, IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   Button,
   ContextMenu,
@@ -21,6 +21,7 @@ import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
 
+import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary.tsx';
 import { shorten } from '@/utils/helpers.ts';
 import { normalizeTx } from '@/utils/normalizeSigs.ts';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
@@ -29,8 +30,9 @@ import {
   MonoMoreVert,
   MonoShare,
 } from '@kadena/kode-icons/system';
-import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { execCodeParser } from '@kadena/pactjs-generator';
+import { useEffect, useMemo, useState } from 'react';
+import { CodeView } from './code-components/CodeView.tsx';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
@@ -107,6 +109,18 @@ export function ExpandedTransaction({
     }
   }, [activeTabs.length]);
 
+  const command: IPactCommand = useMemo(
+    () => JSON.parse(transaction.cmd),
+    [transaction.cmd],
+  );
+
+  const parsedCode = useMemo(() => {
+    if ('exec' in command.payload) {
+      return execCodeParser(command.payload.exec.code);
+    }
+    return [];
+  }, [command.payload]);
+
   return (
     <>
       <Title>
@@ -141,7 +155,7 @@ export function ExpandedTransaction({
             flex={1}
             gap={'xxl'}
             flexDirection={'column'}
-            className={classNames(panelClass, txDetailsClass)}
+            className={txDetailsClass}
           >
             {statusPassed(transaction.status, 'success') &&
               (!transaction.continuation?.autoContinue ||
@@ -161,150 +175,161 @@ export function ExpandedTransaction({
                   </Notification>
                 </Stack>
               )}
-            <Tabs
-              isContained
-              selectedKey={selectedTab}
-              onSelectionChange={(key) => {
-                console.log('key', key);
-                setSelectedTab(key as any);
-              }}
-            >
-              <TabItem key="command-details" title="Command Details">
-                <Stack gap={'sm'} flexDirection={'column'}>
-                  <Stack justifyContent={'space-between'}>
-                    <Heading variant="h4">Command Details</Heading>
-                    <Stack gap={'sm'}>
-                      <Tooltip
-                        content="The transaction url is copied to to the clipboard."
-                        position="left"
-                        isOpen={showShareTooltip}
-                      >
-                        <Button
-                          startVisual={<MonoShare />}
-                          variant="transparent"
-                          onClick={() => {
-                            const encodedTx = base64UrlEncodeArr(
-                              new TextEncoder().encode(
-                                JSON.stringify({
-                                  hash: txCommand.hash,
-                                  cmd: txCommand.cmd,
-                                  sigs: txCommand.sigs,
-                                }),
-                              ),
-                            );
-                            const baseUrl = `${window.location.protocol}//${window.location.host}`;
-                            navigator.clipboard.writeText(
-                              `${baseUrl}/sig-builder#${encodedTx}`,
-                            );
-                            setShowShareTooltip(true);
-                            setTimeout(() => setShowShareTooltip(false), 5000);
-                          }}
-                          isCompact
-                        />
-                      </Tooltip>
-                      <CopyButton data={txCommand} />
-                      <ContextMenu
-                        placement="bottom end"
-                        trigger={
+            <ErrorBoundary>
+              <CodeView codes={parsedCode} tx={transaction} />
+            </ErrorBoundary>
+            <Stack className={panelClass}>
+              <Tabs
+                isContained
+                selectedKey={selectedTab}
+                onSelectionChange={(key) => {
+                  console.log('key', key);
+                  setSelectedTab(key as any);
+                }}
+              >
+                <TabItem key="command-details" title="Command Details">
+                  <Stack gap={'sm'} flexDirection={'column'}>
+                    <Stack justifyContent={'space-between'}>
+                      <Heading variant="h4">Command Details</Heading>
+                      <Stack gap={'sm'}>
+                        <Tooltip
+                          content="The transaction url is copied to to the clipboard."
+                          position="left"
+                          isOpen={showShareTooltip}
+                        >
                           <Button
-                            endVisual={<MonoMoreVert />}
+                            startVisual={<MonoShare />}
                             variant="transparent"
+                            onClick={() => {
+                              const encodedTx = base64UrlEncodeArr(
+                                new TextEncoder().encode(
+                                  JSON.stringify({
+                                    hash: txCommand.hash,
+                                    cmd: txCommand.cmd,
+                                    sigs: txCommand.sigs,
+                                  }),
+                                ),
+                              );
+                              const baseUrl = `${window.location.protocol}//${window.location.host}`;
+                              navigator.clipboard.writeText(
+                                `${baseUrl}/sig-builder#${encodedTx}`,
+                              );
+                              setShowShareTooltip(true);
+                              setTimeout(
+                                () => setShowShareTooltip(false),
+                                5000,
+                              );
+                            }}
                             isCompact
                           />
-                        }
-                      >
-                        <ContextMenuItem
-                          label="JSON"
-                          endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('json')}
-                        />
-                        <ContextMenuItem
-                          label="YAML"
-                          endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('yaml')}
-                        />
-                        <ContextMenuItem
-                          label="JSON Legacy (v2)"
-                          endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('json', true)}
-                        />
-                        <ContextMenuItem
-                          label="YAML Legacy (v2)"
-                          endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('yaml', true)}
-                        />
-                      </ContextMenu>
+                        </Tooltip>
+                        <CopyButton data={txCommand} />
+                        <ContextMenu
+                          placement="bottom end"
+                          trigger={
+                            <Button
+                              endVisual={<MonoMoreVert />}
+                              variant="transparent"
+                              isCompact
+                            />
+                          }
+                        >
+                          <ContextMenuItem
+                            label="JSON"
+                            endVisual={<MonoContentCopy />}
+                            onClick={copyTransactionAs('json')}
+                          />
+                          <ContextMenuItem
+                            label="YAML"
+                            endVisual={<MonoContentCopy />}
+                            onClick={copyTransactionAs('yaml')}
+                          />
+                          <ContextMenuItem
+                            label="JSON Legacy (v2)"
+                            endVisual={<MonoContentCopy />}
+                            onClick={copyTransactionAs('json', true)}
+                          />
+                          <ContextMenuItem
+                            label="YAML Legacy (v2)"
+                            endVisual={<MonoContentCopy />}
+                            onClick={copyTransactionAs('yaml', true)}
+                          />
+                        </ContextMenu>
+                      </Stack>
                     </Stack>
+                    <CommandView transaction={transaction} onSign={onSign} />
                   </Stack>
-                  <CommandView transaction={transaction} onSign={onSign} />
-                </Stack>
-              </TabItem>
+                </TabItem>
 
-              {transaction.preflight &&
-                ((
-                  <TabItem key="preflight" title="Preflight Result">
-                    <JsonView
-                      title="Preflight Result"
-                      data={transaction.preflight}
-                    />
-                  </TabItem>
-                ) as any)}
+                {transaction.preflight &&
+                  ((
+                    <TabItem key="preflight" title="Preflight Result">
+                      <JsonView
+                        title="Preflight Result"
+                        data={transaction.preflight}
+                      />
+                    </TabItem>
+                  ) as any)}
 
-              {transaction.request && (
-                <TabItem key="request" title="Request">
-                  <JsonView title="Request" data={transaction.request} />
-                </TabItem>
-              )}
-              {'result' in transaction && transaction.result && (
-                <TabItem key="result" title="Result">
-                  <JsonView title="Result" data={transaction.result} />
-                </TabItem>
-              )}
-              {transaction.continuation?.proof && (
-                <TabItem key="spv" title="SPV Proof">
-                  <JsonView
-                    title="Result"
-                    data={transaction.continuation?.proof}
-                    shortening={40}
-                  />
-                </TabItem>
-              )}
-              {contTx && [
-                <TabItem
-                  key="cont-command-details"
-                  title="cont: Command Details"
-                >
-                  <Stack gap={'sm'} flexDirection={'column'}>
-                    <Heading variant="h4">Command Details</Heading>
-                    <CommandView transaction={contTx} onSign={onSign} />
-                  </Stack>
-                </TabItem>,
-                contTx.preflight && (
-                  <TabItem key="cont-preflight" title="cont: Preflight Result">
+                {transaction.request && (
+                  <TabItem key="request" title="Request">
+                    <JsonView title="Request" data={transaction.request} />
+                  </TabItem>
+                )}
+                {'result' in transaction && transaction.result && (
+                  <TabItem key="result" title="Result">
+                    <JsonView title="Result" data={transaction.result} />
+                  </TabItem>
+                )}
+                {transaction.continuation?.proof && (
+                  <TabItem key="spv" title="SPV Proof">
                     <JsonView
-                      title="Continuation Preflight Result"
-                      data={contTx.preflight}
+                      title="Result"
+                      data={transaction.continuation?.proof}
+                      shortening={40}
                     />
                   </TabItem>
-                ),
-                contTx.request && (
-                  <TabItem key="cont-request" title="cont: Request">
-                    <JsonView
-                      title="Continuation Request"
-                      data={contTx.request}
-                    />
-                  </TabItem>
-                ),
-                'result' in contTx && contTx.result && (
-                  <TabItem key="cont-result" title="cont: Result">
-                    <JsonView
-                      title="Continuation Result"
-                      data={contTx.result}
-                    />
-                  </TabItem>
-                ),
-              ]}
-            </Tabs>
+                )}
+                {contTx && [
+                  <TabItem
+                    key="cont-command-details"
+                    title="cont: Command Details"
+                  >
+                    <Stack gap={'sm'} flexDirection={'column'}>
+                      <Heading variant="h4">Command Details</Heading>
+                      <CommandView transaction={contTx} onSign={onSign} />
+                    </Stack>
+                  </TabItem>,
+                  contTx.preflight && (
+                    <TabItem
+                      key="cont-preflight"
+                      title="cont: Preflight Result"
+                    >
+                      <JsonView
+                        title="Continuation Preflight Result"
+                        data={contTx.preflight}
+                      />
+                    </TabItem>
+                  ),
+                  contTx.request && (
+                    <TabItem key="cont-request" title="cont: Request">
+                      <JsonView
+                        title="Continuation Request"
+                        data={contTx.request}
+                      />
+                    </TabItem>
+                  ),
+                  'result' in contTx && contTx.result && (
+                    <TabItem key="cont-result" title="cont: Result">
+                      <JsonView
+                        title="Continuation Result"
+                        data={contTx.result}
+                      />
+                    </TabItem>
+                  ),
+                ]}
+              </Tabs>
+            </Stack>
           </Stack>
         </Stack>
       </Content>

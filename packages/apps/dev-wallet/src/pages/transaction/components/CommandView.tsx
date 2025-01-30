@@ -7,10 +7,8 @@ import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
 import { MonoTextSnippet } from '@kadena/kode-icons/system';
 import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
-import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
-import { CodeView } from './code-components/CodeView';
 import { Label, Value } from './helpers';
 import { RenderSigner } from './Signer';
 import { cardClass, codeClass, textEllipsis } from './style.css';
@@ -39,13 +37,6 @@ export function CommandView({
     [command, getPublicKeyData],
   );
 
-  const parsedCode = useMemo(() => {
-    if ('exec' in command.payload) {
-      return execCodeParser(command.payload.exec.code);
-    }
-    return [];
-  }, [command.payload]);
-
   const externalSigners = signers.filter((signer) => !signer.info);
   const internalSigners = signers.filter((signer) => signer.info);
   const [showShortenCode, setShowShortenCode] = useState(true);
@@ -57,9 +48,6 @@ export function CommandView({
       </Stack>
       {'exec' in command.payload && (
         <>
-          <ErrorBoundary>
-            <CodeView codes={parsedCode} command={command} />
-          </ErrorBoundary>
           <Stack gap={'sm'} flexDirection={'column'}>
             <Stack gap={'sm'} justifyContent={'space-between'}>
               <Heading variant="h4">Code</Heading>
