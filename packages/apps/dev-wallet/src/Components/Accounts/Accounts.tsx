@@ -141,7 +141,7 @@ export function Accounts({
         </Stack>
       </Stack>
       {accountsToShow.length ? (
-        <ul className={listClass}>
+        <ul className={listClass} data-testid="assetList">
           {accountsToShow.map((account) => (
             <li key={account.uuid}>
               <AccountItem account={account} />
