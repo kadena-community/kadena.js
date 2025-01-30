@@ -171,6 +171,7 @@ function TxStatusList({
               )}
               <Stack gap={'sm'}>
                 <Button
+                  data-testid="signTx"
                   isCompact
                   onClick={() => {
                     if (signAll) {

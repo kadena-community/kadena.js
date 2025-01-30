@@ -72,6 +72,7 @@ export const UnlockPrompt: React.FC<{
           </Text>
           {showPassword && (
             <TextField
+              data-testid="passwordField"
               type="password"
               {...register('password')}
               label="Password"
