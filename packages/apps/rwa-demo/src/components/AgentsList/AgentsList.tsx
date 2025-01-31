@@ -31,7 +31,7 @@ export const AgentsList: FC = () => {
 
   return (
     <>
-      <SectionCard stack="vertical">
+      <SectionCard stack="vertical" data-testid="agentsCard">
         <SectionCardContentBlock>
           <SectionCardHeader
             title="Agents"
@@ -56,6 +56,7 @@ export const AgentsList: FC = () => {
               type={[TXTYPES.ADDAGENT, TXTYPES.REMOVEAGENT]}
             />
             <CompactTable
+              data-testid="agentTable"
               isLoading={isLoading}
               variant="open"
               fields={[

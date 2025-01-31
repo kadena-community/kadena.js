@@ -35,24 +35,29 @@ export const CompactTable: React.FC<ICompactTableProps> = ({
   pageSize,
   setPage,
   pageInfo,
+  ...props
 }) => {
   return (
     <>
       <Media lessThan="sm" className={fullWidthClass}>
         <CompactTableMobile
+          data-isloading={isLoading}
           variant={variant}
           isLoading={isLoading}
           fields={fields}
           data={data}
+          {...props}
         />
       </Media>
       <Media greaterThanOrEqual="sm" className={fullWidthClass}>
         <CompactTableDesktop
+          data-isloading={isLoading}
           variant={variant}
           isLoading={isLoading}
           fields={fields}
           data={data}
           label={label}
+          {...props}
         />
       </Media>
       {!!(setPage && pageInfo && pageSize) && (

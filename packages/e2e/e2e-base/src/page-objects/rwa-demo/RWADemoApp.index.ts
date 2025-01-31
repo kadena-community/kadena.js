@@ -150,6 +150,16 @@ export class RWADemoAppIndex {
     }
   }
 
+  public async getAssetLink(actor: Page): Promise<string> {
+    const copyButton = actor.getByTestId('copyAsset');
+    await copyButton.click();
+
+    const shareUrl: string = await actor.evaluate(
+      'navigator.clipboard.readText()',
+    );
+    return shareUrl;
+  }
+
   public async login(actor: Page): Promise<boolean> {
     await expect(
       actor.getByRole('heading', {
