@@ -81,19 +81,11 @@ export function NetworkForm({
   onClose: () => void;
   isOpen: boolean;
 }) {
-  const {
-    control,
-    register,
-    handleSubmit,
-    getValues,
-    setValue,
-    watch,
-    formState,
-    reset,
-  } = useForm<INewNetwork>({
-    defaultValues: network,
-    mode: 'all',
-  });
+  const { control, register, handleSubmit, getValues, setValue, watch, reset } =
+    useForm<INewNetwork>({
+      defaultValues: network,
+      mode: 'all',
+    });
   const { fields, append, remove } = useFieldArray({ control, name: 'hosts' });
   const [error, setError] = useState<string>();
   async function create(updNetwork: INewNetwork) {
@@ -279,10 +271,7 @@ export function NetworkForm({
           <Button variant="outlined" onPress={() => onClose()} type="reset">
             Cancel
           </Button>
-          <Button
-            type="submit"
-            isDisabled={!isNetworkIdValid || !formState.isDirty}
-          >
+          <Button type="submit" isDisabled={!isNetworkIdValid}>
             Save
           </Button>
         </RightAsideFooter>
