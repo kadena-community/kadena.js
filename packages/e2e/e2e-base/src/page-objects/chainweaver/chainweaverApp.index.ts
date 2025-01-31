@@ -165,12 +165,13 @@ export class ChainweaverAppIndex {
       name: 'Unlock',
     });
 
-    const input = actor.getByTestId('passwordField');
-    await input.waitFor();
-    await input.fill(this._PASSWORD);
+    if (await unlockButton.isVisible()) {
+      const input = actor.getByTestId('passwordField');
+      await input.waitFor();
+      await input.fill(this._PASSWORD);
 
-    await unlockButton.click();
-    await unlockButton.waitFor({ state: 'hidden' });
+      await unlockButton.click();
+    }
 
     return true;
   }
