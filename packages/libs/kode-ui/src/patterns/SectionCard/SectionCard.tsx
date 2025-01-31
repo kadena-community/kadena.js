@@ -17,6 +17,7 @@ export interface ISectionCardProps
   icon?: ReactElement;
   isLoading?: boolean;
   background?: 'default' | 'reversed' | 'none';
+  ['data-testid']?: string;
 }
 
 export const SectionCard: FC<ISectionCardProps> = ({
@@ -27,9 +28,11 @@ export const SectionCard: FC<ISectionCardProps> = ({
   intent,
   isLoading = false,
   background = 'default',
+  ['data-testid']: dataTestId,
+  ...props
 }) => {
   return (
-    <Card className={cardClass}>
+    <Card className={cardClass} data-testid={dataTestId}>
       <IconWrapper
         icon={icon}
         intent={intent}

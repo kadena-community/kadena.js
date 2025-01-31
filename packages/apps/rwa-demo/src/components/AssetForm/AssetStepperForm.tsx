@@ -130,7 +130,12 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                 required: true,
               }}
               render={({ field }) => (
-                <TextField label="Namespace" isDisabled {...field} />
+                <TextField
+                  data-testid="namespaceField"
+                  label="Namespace"
+                  isDisabled
+                  {...field}
+                />
               )}
             />
 
@@ -145,7 +150,12 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                 },
               }}
               render={({ field }) => (
-                <TextField label="Contract Name" {...field} />
+                <TextField
+                  data-testid="contractNameField"
+                  id="contractName"
+                  label="Contract Name"
+                  {...field}
+                />
               )}
             />
 

@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
 
@@ -23,16 +23,8 @@ export class ChainweaverAppIndex {
     await expect(newAccountButton).toBeVisible();
     await newAccountButton.click();
 
-    const unlockButton = actor.getByRole('button', {
-      name: 'Unlock',
-    });
-
-    await expect(unlockButton).toBeVisible();
-    const input = actor.getByTestId('passwordField');
-    await input.fill(this._PASSWORD);
-
-    await unlockButton.click();
-    await expect(unlockButton).toBeHidden();
+    await this.signPopupWithPassword(actor);
+    await actor.waitForTimeout(500);
 
     const newListItems = await actor
       .getByTestId('assetList')
@@ -155,10 +147,44 @@ export class ChainweaverAppIndex {
     await actor.getByRole('button', { name: 'Settings' }).waitFor();
     await actor.getByRole('button', { name: 'Settings' }).click();
 
-    await expect(actor).toHaveURL('/networks');
+    const url = await actor.evaluate(() => window.location.href);
+
+    await expect(url).toContain('/networks');
 
     return true;
   }
+
+  public async signPopupWithPassword(actor: Page): Promise<boolean> {
+    const unlockButton = actor.getByRole('button', {
+      name: 'Unlock',
+    });
+
+    const input = actor.getByTestId('passwordField');
+    await unlockButton.waitFor();
+    await input.waitFor();
+    await input.fill(this._PASSWORD);
+
+    await unlockButton.click();
+    await expect(unlockButton).toBeHidden();
+
+    return true;
+  }
+  public async signWithPassword(
+    actor: Page,
+    trigger: Locator,
+  ): Promise<boolean> {
+    const popupPromise = actor.waitForEvent('popup');
+    await trigger.click();
+    const walletPopup = await popupPromise;
+
+    const signButton = walletPopup.getByTestId('signTx');
+    await signButton.click();
+
+    await this.signPopupWithPassword(walletPopup);
+
+    return true;
+  }
+
   public async addNetwork(
     actor: Page,
     network: { networkId: string; title: string; host: string },
@@ -176,8 +202,8 @@ export class ChainweaverAppIndex {
     await expect(
       actor.getByRole('heading', { name: 'Add Network' }),
     ).toBeVisible();
-    await actor.type('[name="networkId"]', network.networkId);
     await actor.type('[name="hosts.0.url"]', network.host);
+    await actor.type('[name="networkId"]', network.networkId);
     await actor.type('[name="name"]', network.title);
     await actor.focus('[name="name"]');
 
