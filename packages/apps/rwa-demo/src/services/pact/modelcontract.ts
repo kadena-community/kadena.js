@@ -233,13 +233,13 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     supply
   )
 
-  (defcap IDENTITY-REGISTERED:bool (investor-address:string investor-guard:guard identity:string)
+  (defcap IDENTITY-REGISTERED:bool (investor-address:string investor-guard:guard user-identity:string)
     @doc "Event emitted when identity is added"
     @event
     true
   )
 
-  (defcap IDENTITY-REMOVED:bool (investor-address:string identity:string)
+  (defcap IDENTITY-REMOVED:bool (investor-address:string user-identity:string)
     @doc "Event emitted when identity is removed"
     @event
     true
@@ -619,14 +619,14 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun register-identity-internal:bool (user-address:string user-guard:guard identity:string country:integer)
+  (defun register-identity-internal:bool (user-address:string user-guard:guard user-identity:string country:integer)
     @doc "Register an identity contract corresponding to a user address.                               \
     \ Requires that the user doesn't have an identity contract already registered.                    \
     \ Only a wallet set as agent of the smart contract can call this function.                        \
     \ Emits an \`IDENTITY-REGISTERED\` event."
     (require-capability (INTERNAL))
     (is-principal user-address)
-    (write identities user-address { "kadenaID":identity, "country":country, "active":true })
+    (write identities user-address { "kadenaID":user-identity, "country":country, "active":true })
     (with-default-read users user-address
       { "balance": -1.0 }
       { "balance":=balance }
@@ -635,7 +635,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
         ""
       )
     )
-    (emit-event (IDENTITY-REGISTERED user-address user-guard identity))
+    (emit-event (IDENTITY-REGISTERED user-address user-guard user-identity))
   )
 
   ;; freeze operations (pause, unpause, set-address-frozen, freeze-partial-tokens, unfreeze-partial-tokens)
@@ -693,14 +693,14 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   ;; identity operations (register-identity, delete-identity)
-  (defun register-identity:bool (user-address:string user-guard:guard identity:string country:integer)
+  (defun register-identity:bool (user-address:string user-guard:guard user-identity:string country:integer)
     @doc "Register a user address.                               \
     \ Requires that the user doesn't have an identity contract already registered.                    \
     \ Only a wallet set as agent of the smart contract can call this function.                        \
     \ Emits an \`IDENTITY-REGISTERED\` event."
     (only-owner-or-agent-admin)
     (with-capability (INTERNAL)
-      (register-identity-internal user-address user-guard identity country)
+      (register-identity-internal user-address user-guard user-identity country)
     )
   )
 
@@ -1320,7 +1320,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (enforce false "GEN-IMPL-001")
   )
 
-  (defun update-identity:bool (user-address:string identity:string)
+  (defun update-identity:bool (user-address:string user-identity:string)
     @doc "unused"
     (enforce false "GEN-IMPL-001")
   )
@@ -1357,7 +1357,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (create-table identities)
 
 (RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
-
 
 
 (${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" [] false (keyset-ref-guard "${namespace}.admin-keyset"))

@@ -1,7 +1,11 @@
 import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
 import { expect } from '@playwright/test';
 
-test('Login', async ({ initiator, RWADemoApp, chainweaverApp }) => {
+test('Create first asset', async ({
+  initiator,
+  RWADemoApp,
+  chainweaverApp,
+}) => {
   await test.step('Setup wallet', async () => {
     await initiator.goto('https://wallet.kadena.io');
     await chainweaverApp.createProfileWithPassword(initiator);
@@ -60,13 +64,40 @@ test('Login', async ({ initiator, RWADemoApp, chainweaverApp }) => {
     });
     await expect(startNewAssetButton).toBeDisabled();
 
-    const popupPromise = initiator.waitForEvent('popup');
-    await addButton.click();
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      addButton,
+      chainweaverApp.signWithPassword(initiator, addButton),
+    );
 
-    const walletPopup = await popupPromise;
-    await chainweaverApp.signWithPassword(walletPopup);
-
-    await initiator.waitForTimeout(3000);
     await expect(startNewAssetButton).toBeEnabled();
+  });
+
+  await test.step('Create new asset', async () => {
+    await initiator
+      .getByRole('button', {
+        name: 'Start new Asset',
+      })
+      .click();
+
+    const createContractButton = initiator.getByRole('button', {
+      name: 'Create the contract',
+    });
+
+    await expect(createContractButton).toBeDisabled();
+
+    const namespace = await initiator
+      .getByTestId('namespaceField')
+      .inputValue();
+    await expect(namespace.startsWith('n_')).toEqual(true);
+    await initiator.fill('#contractName', 'He-man');
+
+    await expect(createContractButton).toBeEnabled();
+
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      createContractButton,
+      chainweaverApp.signWithPassword(initiator, createContractButton),
+    );
   });
 });

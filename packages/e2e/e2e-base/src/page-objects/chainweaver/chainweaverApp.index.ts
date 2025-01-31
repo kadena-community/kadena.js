@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
 
@@ -159,8 +159,9 @@ export class ChainweaverAppIndex {
       name: 'Unlock',
     });
 
-    await expect(unlockButton).toBeVisible();
     const input = actor.getByTestId('passwordField');
+    await unlockButton.waitFor();
+    await input.waitFor();
     await input.fill(this._PASSWORD);
 
     await unlockButton.click();
@@ -168,11 +169,18 @@ export class ChainweaverAppIndex {
 
     return true;
   }
-  public async signWithPassword(actor: Page): Promise<boolean> {
-    const signButton = actor.getByTestId('signTx');
+  public async signWithPassword(
+    actor: Page,
+    trigger: Locator,
+  ): Promise<boolean> {
+    const popupPromise = actor.waitForEvent('popup');
+    await trigger.click();
+    const walletPopup = await popupPromise;
+
+    const signButton = walletPopup.getByTestId('signTx');
     await signButton.click();
 
-    await this.signPopupWithPassword(actor);
+    await this.signPopupWithPassword(walletPopup);
 
     return true;
   }

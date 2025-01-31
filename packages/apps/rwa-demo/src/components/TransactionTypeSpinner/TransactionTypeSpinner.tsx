@@ -24,10 +24,15 @@ export const TransactionTypeSpinner: FC<IProps> = ({
   }, [type, getTransactions]);
 
   return transactions.length > 0 ? (
-    <Stack title="Someone is updating this value">
+    <Stack
+      data-testid="pending-transactionIcon"
+      title="Someone is updating this value"
+    >
       <TransactionPendingIcon />
     </Stack>
   ) : (
-    !!fallbackIcon && fallbackIcon
+    <Stack data-testid="no-pending-transactionIcon" as="span">
+      {!!fallbackIcon && fallbackIcon}
+    </Stack>
   );
 };

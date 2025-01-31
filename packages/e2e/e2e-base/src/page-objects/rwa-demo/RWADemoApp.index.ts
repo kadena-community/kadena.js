@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
 
@@ -36,6 +36,40 @@ export class RWADemoAppIndex {
     expect(cookieConsentValueNew).toEqual('true');
 
     return true;
+  }
+
+  public async checkLoadingIndicator(
+    actor: Page,
+    loadingWrapper: Locator,
+    callback: Promise<any>,
+  ): Promise<void> {
+    await expect(
+      loadingWrapper.getByTestId('no-pending-transactionIcon'),
+    ).toBeVisible();
+    await expect(
+      loadingWrapper.getByTestId('pending-transactionIcon'),
+    ).toBeHidden();
+
+    await callback;
+
+    //show loading indicator
+    await expect(
+      loadingWrapper.getByTestId('no-pending-transactionIcon'),
+    ).toBeHidden();
+    await expect(
+      loadingWrapper.getByTestId('pending-transactionIcon'),
+    ).toBeVisible();
+
+    await actor.waitForTimeout(3000);
+
+    if (await loadingWrapper.isVisible()) {
+      await expect(
+        loadingWrapper.getByTestId('no-pending-transactionIcon'),
+      ).toBeVisible();
+      await expect(
+        loadingWrapper.getByTestId('pending-transactionIcon'),
+      ).toBeHidden();
+    }
   }
 
   public async login(actor: Page): Promise<boolean> {
