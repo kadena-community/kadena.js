@@ -65,6 +65,7 @@ test('Create first asset', async ({
     const startNewAssetButton = initiator.getByRole('button', {
       name: 'Start new Asset',
     });
+    await startNewAssetButton.waitFor();
     await expect(startNewAssetButton).toBeDisabled();
 
     await RWADemoApp.checkLoadingIndicator(

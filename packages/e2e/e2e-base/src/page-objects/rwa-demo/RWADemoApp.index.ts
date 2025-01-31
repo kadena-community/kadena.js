@@ -2,6 +2,11 @@ import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { ChainweaverAppIndex } from '../chainweaver/chainweaverApp.index';
 
+type IOptions =
+  | undefined
+  | {
+      waitForEnd?: boolean;
+    };
 export class RWADemoAppIndex {
   private NAMESPACE;
   private CONTRACTNAME = 'He-man';
@@ -37,6 +42,18 @@ export class RWADemoAppIndex {
       .getByRole('button', {
         name: 'Start new Asset',
       })
+      .waitFor();
+
+    await actor
+      .getByRole('button', {
+        name: 'Start new Asset',
+      })
+      .isEnabled();
+
+    await actor
+      .getByRole('button', {
+        name: 'Start new Asset',
+      })
       .click();
 
     const createContractButton = actor.getByRole('button', {
@@ -55,7 +72,12 @@ export class RWADemoAppIndex {
       actor,
       createContractButton,
       chainweaverApp.signWithPassword(actor, createContractButton),
+      {
+        waitForEnd: false,
+      },
     );
+
+    await actor.getByRole('heading', { name: this.CONTRACTNAME }).waitFor();
 
     return this.NAMESPACE;
   }
@@ -95,6 +117,9 @@ export class RWADemoAppIndex {
     actor: Page,
     loadingWrapper: Locator,
     callback: Promise<any>,
+    options: IOptions = {
+      waitForEnd: true,
+    },
   ): Promise<void> {
     await expect(
       loadingWrapper.getByTestId('no-pending-transactionIcon'),
@@ -106,6 +131,7 @@ export class RWADemoAppIndex {
     await callback;
 
     //show loading indicator
+    await loadingWrapper.getByTestId('pending-transactionIcon').waitFor();
     await expect(
       loadingWrapper.getByTestId('no-pending-transactionIcon'),
     ).toBeHidden();
@@ -113,9 +139,8 @@ export class RWADemoAppIndex {
       loadingWrapper.getByTestId('pending-transactionIcon'),
     ).toBeVisible();
 
-    await actor.waitForTimeout(3000);
-
-    if (await loadingWrapper.isVisible()) {
+    if ((await loadingWrapper.isVisible()) && options?.waitForEnd) {
+      await loadingWrapper.getByTestId('no-pending-transactionIcon').waitFor();
       await expect(
         loadingWrapper.getByTestId('no-pending-transactionIcon'),
       ).toBeVisible();

@@ -155,17 +155,22 @@ export class ChainweaverAppIndex {
   }
 
   public async signPopupWithPassword(actor: Page): Promise<boolean> {
+    await actor
+      .getByRole('button', {
+        name: 'Unlock',
+      })
+      .waitFor();
+
     const unlockButton = actor.getByRole('button', {
       name: 'Unlock',
     });
 
     const input = actor.getByTestId('passwordField');
-    await unlockButton.waitFor();
     await input.waitFor();
     await input.fill(this._PASSWORD);
 
     await unlockButton.click();
-    await expect(unlockButton).toBeHidden();
+    await unlockButton.waitFor({ state: 'hidden' });
 
     return true;
   }
@@ -202,10 +207,14 @@ export class ChainweaverAppIndex {
     await expect(
       actor.getByRole('heading', { name: 'Add Network' }),
     ).toBeVisible();
-    await actor.type('[name="hosts.0.url"]', network.host);
-    await actor.type('[name="networkId"]', network.networkId);
-    await actor.type('[name="name"]', network.title);
+    await actor.type('[name="hosts.0.url"]', network.host, { delay: 10 });
+    await actor.locator('[name="hosts.0.url"]').blur();
+    await actor.waitForTimeout(100);
     await actor.focus('[name="name"]');
+    await actor.type('[name="name"]', network.title, { delay: 10 });
+    await actor.focus('[name="networkId"]');
+    await actor.type('[name="networkId"]', network.networkId, { delay: 10 });
+    await actor.locator('[name="networkId"]').blur();
 
     await expect(icon).toBeVisible();
     await expect(icon).toHaveAttribute('data-ishealthy', 'true');
