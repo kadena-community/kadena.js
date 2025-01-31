@@ -36,7 +36,7 @@ export class ChainweaverAppIndex {
   }
 
   public async setup(actor: Page, full: boolean = true): Promise<boolean> {
-    await actor.goto('/');
+    //await actor.goto('/');
     await this.createProfileWithPassword(actor);
     await this.goToSettings(actor);
 

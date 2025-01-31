@@ -77,29 +77,7 @@ test('Create first asset', async ({
   });
 
   await test.step('Create new asset', async () => {
-    await initiator
-      .getByRole('button', {
-        name: 'Start new Asset',
-      })
-      .click();
-
-    const createContractButton = initiator.getByRole('button', {
-      name: 'Create the contract',
-    });
-
-    await expect(createContractButton).toBeDisabled();
-
-    NAMESPACE = await initiator.getByTestId('namespaceField').inputValue();
-    await expect(NAMESPACE.startsWith('n_')).toEqual(true);
-    await initiator.fill('#contractName', CONTRACTNAME);
-
-    await expect(createContractButton).toBeEnabled();
-
-    await RWADemoApp.checkLoadingIndicator(
-      initiator,
-      createContractButton,
-      chainweaverApp.signWithPassword(initiator, createContractButton),
-    );
+    NAMESPACE = await RWADemoApp.createAsset(initiator, chainweaverApp);
   });
 
   await test.step('Check dashboard setup for the owner', async () => {
