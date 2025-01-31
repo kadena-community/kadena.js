@@ -8,6 +8,7 @@ interface IProps {
   label: string;
   isDisabled?: boolean;
   onPress?: ITileProps['onClick'];
+  'data-testid'?: string;
 }
 
 export const AssetAction: FC<IProps> = ({
@@ -15,10 +16,12 @@ export const AssetAction: FC<IProps> = ({
   label,
   isDisabled,
   onPress,
+  'data-testid': dataTestId,
 }) => {
   return (
     <Stack className={assetActionWrapper}>
       <Tile
+        data-testId={dataTestId}
         isDisabled={isDisabled}
         as={onPress ? 'button' : 'div'}
         onClick={!isDisabled ? onPress : () => {}}

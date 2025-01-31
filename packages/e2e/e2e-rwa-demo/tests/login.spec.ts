@@ -1,6 +1,9 @@
 import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
 import { expect } from '@playwright/test';
 
+const CONTRACTNAME = 'He-man';
+let NAMESPACE = '';
+
 test('Create first asset', async ({
   initiator,
   RWADemoApp,
@@ -86,11 +89,9 @@ test('Create first asset', async ({
 
     await expect(createContractButton).toBeDisabled();
 
-    const namespace = await initiator
-      .getByTestId('namespaceField')
-      .inputValue();
-    await expect(namespace.startsWith('n_')).toEqual(true);
-    await initiator.fill('#contractName', 'He-man');
+    NAMESPACE = await initiator.getByTestId('namespaceField').inputValue();
+    await expect(NAMESPACE.startsWith('n_')).toEqual(true);
+    await initiator.fill('#contractName', CONTRACTNAME);
 
     await expect(createContractButton).toBeEnabled();
 
@@ -99,5 +100,47 @@ test('Create first asset', async ({
       createContractButton,
       chainweaverApp.signWithPassword(initiator, createContractButton),
     );
+  });
+
+  await test.step('Check dashboard setup for the owner', async () => {
+    await expect(
+      initiator.getByRole('heading', { name: CONTRACTNAME }),
+    ).toBeVisible();
+
+    //check the contractcard
+    const contractCard = initiator.getByTestId('contractCard');
+    await expect(
+      contractCard.getByTestId('contractName').locator('span'),
+    ).toHaveText(CONTRACTNAME);
+    await expect(
+      contractCard.getByTestId('namespace').locator('span'),
+    ).toHaveText(NAMESPACE);
+    await await expect(
+      contractCard.getByTestId('tokenSupply').locator('span'),
+    ).toHaveText('0');
+    await await expect(contractCard.getByTestId('balance')).toBeHidden();
+
+    //check the assetcard persmissions
+    const assetCard = initiator.getByTestId('assetCard');
+    await expect(assetCard.getByTestId('pauseAction')).toHaveAttribute(
+      'data-disabled',
+      'true',
+    );
+    await expect(assetCard.getByTestId('complianceAction')).not.toHaveAttribute(
+      'data-disabled',
+    );
+    await expect(assetCard.getByTestId('transferassetAction')).toHaveAttribute(
+      'data-disabled',
+      'true',
+    );
+    await expect(assetCard.getByTestId('batchTransferAction')).toHaveAttribute(
+      'data-disabled',
+      'true',
+    );
+
+    //check the compliancecard persmissions
+    const complianceCard = initiator.getByTestId('complianceCard');
+    await complianceCard.scrollIntoViewIfNeeded();
+    await expect(complianceCard.getByTestId('editrules')).toBeEnabled();
   });
 });

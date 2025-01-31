@@ -36,7 +36,7 @@ const Home = () => {
       <SideBarBreadcrumbs />
 
       <Stack width="100%" flexDirection="column" gap="md">
-        <SectionCard>
+        <SectionCard data-testid="contractCard">
           <SectionCardContentBlock>
             <SectionCardHeader
               title="Contract details"
@@ -44,15 +44,25 @@ const Home = () => {
             />
             <SectionCardBody>
               <Stack width="100%" className={contractDetailWrapperClass}>
-                <ContractDetails label="Name" value={asset?.contractName} />
-                <ContractDetails label="Namespace" value={asset?.namespace} />
                 <ContractDetails
+                  data-testid="contractName"
+                  label="Name"
+                  value={asset?.contractName}
+                />
+                <ContractDetails
+                  data-testid="namespace"
+                  label="Namespace"
+                  value={asset?.namespace}
+                />
+                <ContractDetails
+                  data-testid="tokenSupply"
                   label="Total token supply"
                   value={<SupplyCountContractDetails />}
                 />
 
                 {isInvestor && (
                   <ContractDetails
+                    data-testid="balance"
                     label="Investor balance"
                     value={
                       <InvestorBalance
@@ -67,16 +77,17 @@ const Home = () => {
           </SectionCardContentBlock>
         </SectionCard>
 
-        <SectionCard>
+        <SectionCard data-testid="assetCard">
           <SectionCardContentBlock>
             <SectionCardHeader title="Asset" description={<></>} />
             <SectionCardBody title="Actions">
               <Stack className={actionsWrapperClass}>
-                <PauseAssetAction />
+                <PauseAssetAction data-testid="pauseAction" />
 
                 <SetComplianceForm
                   trigger={
                     <AssetAction
+                      data-testid="complianceAction"
                       isDisabled={!isSetComplianceAllowed}
                       icon={<MonoAdd />}
                       label="Set Compliance"
@@ -86,16 +97,18 @@ const Home = () => {
 
                 <TransferForm
                   investorAccount={account?.address!}
-                  trigger={<TransferAssetAction />}
+                  trigger={
+                    <TransferAssetAction data-testid="transferassetAction" />
+                  }
                 />
 
-                <BatchTransferAssetAction />
+                <BatchTransferAssetAction data-testid="batchTransferAction" />
               </Stack>
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>
 
-        <SectionCard>
+        <SectionCard data-testid="complianceCard">
           <SectionCardContentBlock>
             <SectionCardHeader
               title="Compliance rules"
@@ -105,6 +118,7 @@ const Home = () => {
                   <SetComplianceForm
                     trigger={
                       <Button
+                        data-testid="editrules"
                         isCompact
                         variant="outlined"
                         isDisabled={!isSetComplianceAllowed}

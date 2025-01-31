@@ -15,11 +15,16 @@ export const Card: FC<ICardProps> = ({
   fullWidth,
   disabled,
   className,
+  ...props
 }) => {
   const classList = cn(containerClass, className, {
     [fullWidthClass]: fullWidth,
     [disabledClass]: disabled,
   });
 
-  return <div className={classList}>{children}</div>;
+  return (
+    <div {...props} className={classList}>
+      {children}
+    </div>
+  );
 };

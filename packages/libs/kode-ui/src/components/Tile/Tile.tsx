@@ -27,6 +27,8 @@ export const Tile: FC<ITileProps> = ({
     autoFocus: hasFocus,
   });
 
+  console.log({ props });
+
   return (
     <Stack
       {...mergeProps(focusProps, props)}

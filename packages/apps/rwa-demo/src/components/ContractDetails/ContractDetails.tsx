@@ -9,15 +9,21 @@ import {
 interface IProps {
   label: string;
   value?: ReactElement | string;
+  ['data-testid']?: string;
 }
 
-export const ContractDetails: FC<IProps> = ({ label, value }) => {
+export const ContractDetails: FC<IProps> = ({
+  label,
+  value,
+  'data-testid': dataTestId,
+}) => {
   return (
     <Stack
       className={contractDetailsClass}
       flexDirection="column"
       alignItems="center"
       gap="sm"
+      data-testid={dataTestId}
     >
       <Heading as="h6" className={contractDetailsHeaderClass}>
         {label}

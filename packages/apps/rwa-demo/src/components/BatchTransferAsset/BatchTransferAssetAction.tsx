@@ -9,14 +9,19 @@ import { BatchTransferAssetForm } from './BatchTransferAssetForm';
 
 interface IProps {
   onPress?: ITileProps['onClick'];
+  'data-testid'?: string;
 }
 
-export const BatchTransferAssetAction: FC<IProps> = ({ onPress }) => {
+export const BatchTransferAssetAction: FC<IProps> = ({
+  onPress,
+  'data-testid': dataTestId,
+}) => {
   const { isAllowed: isTransferTokensAllowed } = useBatchTransferTokens();
   return (
     <BatchTransferAssetForm
       trigger={
         <AssetAction
+          data-testid={dataTestId}
           isDisabled={!isTransferTokensAllowed}
           icon={
             <TransactionTypeSpinner

@@ -6,12 +6,17 @@ import { AssetAction } from './AssetAction';
 
 interface IProps {
   onPress?: ITileProps['onClick'];
+  'data-testid'?: string;
 }
 
-export const TransferAssetAction: FC<IProps> = ({ onPress }) => {
+export const TransferAssetAction: FC<IProps> = ({
+  onPress,
+  'data-testid': dataTestId,
+}) => {
   const { isAllowed: isTransferTokensAllowed } = useTransferTokens();
   return (
     <AssetAction
+      data-testid={dataTestId}
       onPress={onPress}
       isDisabled={!isTransferTokensAllowed}
       icon={<MonoAdd />}
