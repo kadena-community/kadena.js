@@ -1362,7 +1362,5 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
 (RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
 
-
-
 (${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
 `;
