@@ -10,9 +10,9 @@ const config: PlaywrightTestConfig = {
       : [['list'], ['html', { open: 'never' }]],
   webServer: {
     command: `pnpm --filter @kadena/rwa-demo start`,
-    timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
+  timeout: 180 * 1000,
   use: {
     headless: process.env.CI !== undefined,
     baseURL: 'http://localhost:3000/',

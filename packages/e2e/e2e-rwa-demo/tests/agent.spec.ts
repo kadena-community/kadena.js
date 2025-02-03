@@ -7,10 +7,16 @@ test('Create agent', async ({
   RWADemoApp,
   chainweaverApp,
 }) => {
+  let ownerAccount: string = '';
+  let agent1Account: string = '';
+
   await test.step('Setup', async () => {
     const initiatorPromise = RWADemoApp.setup(initiator, chainweaverApp);
     const agent1Promise = RWADemoApp.setup(agent1, chainweaverApp);
-    await Promise.all([initiatorPromise, agent1Promise]);
+    const accounts = await Promise.all([initiatorPromise, agent1Promise]);
+
+    ownerAccount = accounts[0];
+    agent1Account = accounts[1];
   });
 
   await test.step('give agent the link to the asset of the initiator', async () => {
@@ -37,6 +43,8 @@ test('Create agent', async ({
 
     await agent1.goto(link);
     await agent1.waitForTimeout(200);
+
+    await agent1.getByRole('heading', { name: 'He-man' }).waitFor();
 
     await initiator
       .getByTestId('contractCard')
@@ -85,18 +93,43 @@ test('Create agent', async ({
     ).toBeVisible();
   });
 
-  await test.step('Add Agent1 as Agent', async () => {
+  await test.step('Add Agent1 as Agent role "agent-admin"', async () => {
     await expect(initiator.getByTestId('agentTable')).toHaveAttribute(
       'data-isloading',
       'true',
     );
 
-    await initiator.waitForTimeout(10000);
-    await expect(initiator.getByTestId('agentTable')).toHaveAttribute(
-      'data-isloading',
-      'false',
+    await initiator
+      .locator('div[data-testid="agentTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
+
+    await initiator.waitForTimeout(1000);
+
+    const tr = await initiator.locator('table > tbody tr').all();
+    await expect(tr.length).toBe(0);
+
+    await initiator
+      .getByTestId('agentsCard')
+      .getByRole('button', { name: 'Add Agent' })
+      .click();
+
+    const rightAside = initiator.getByTestId('rightaside');
+    await initiator.type('[name="accountName"]', agent1Account, { delay: 10 });
+    await initiator.type('[name="alias"]', 'skeletor', { delay: 10 });
+
+    await rightAside.getByRole('checkbox').first().click();
+
+    const txSpinner = initiator.getByTestId('agentTableTxSpinner');
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      txSpinner,
+      chainweaverApp.signWithPassword(
+        initiator,
+        rightAside.getByRole('button', { name: 'Add Agent' }),
+      ),
     );
-    const t = await initiator.locator('table > tbody tr').all();
-    console.log(t);
+
+    const newTr = await initiator.locator('table > tbody tr').all();
+    await expect(newTr.length).toBe(1);
   });
 });

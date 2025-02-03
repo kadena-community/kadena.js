@@ -10,7 +10,7 @@ export class ChainweaverAppIndex {
 
   public constructor() {}
 
-  public async createAccount(actor: Page): Promise<boolean> {
+  public async createAccount(actor: Page): Promise<string> {
     const listItems = await actor
       .getByTestId('assetList')
       .getByRole('listitem')
@@ -32,7 +32,16 @@ export class ChainweaverAppIndex {
       .all();
 
     await expect(newListItems.length).toEqual(1);
-    return true;
+
+    const str = (await newListItems[0].allTextContents()).join('');
+    const account = str.match(/\(([^)]+)\)/);
+
+    if (!account) {
+      await expect(true).toBe(false);
+      return '';
+    }
+
+    return account[1] ?? '';
   }
 
   public async setup(actor: Page, full: boolean = true): Promise<boolean> {
