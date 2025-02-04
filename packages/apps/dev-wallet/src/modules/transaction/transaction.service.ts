@@ -339,7 +339,6 @@ export const submitTransaction = async (
   if (updatedTx.preflight?.result.status === 'failure' && !skipPreflight) {
     return updatedTx;
   }
-  debugger;
   // if the preflight showed that the transaction is already done, we can skip the submission
   if ('result' in updatedTx && updatedTx.result?.result?.status === 'success') {
     return updatedTx;
