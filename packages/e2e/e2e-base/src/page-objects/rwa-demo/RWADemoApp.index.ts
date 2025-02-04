@@ -10,25 +10,49 @@ type IOptions =
       waitForStart?: boolean;
     };
 
+export interface ILoginDataProps {
+  db: {
+    name: string;
+    version: string;
+  };
+  profileName: string;
+  phrase: string;
+  data: any;
+}
+
 export class RWADemoAppIndex {
   private NAMESPACE;
   private CONTRACTNAME = 'He-man';
 
   public constructor() {}
 
+  public async getSetupProps(
+    name: string,
+  ): Promise<ILoginDataProps | undefined> {
+    const walletImportData = await JSON.parse(
+      fs.readFileSync(`./_generated/${name}.json`, 'utf8'),
+    );
+
+    return walletImportData;
+  }
+  public async removeSetupProps(name: string): Promise<void> {
+    try {
+      await fs.unlinkSync(`./_generated/${name}.json`);
+    } catch (e) {}
+  }
+
   public async setup(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
     typeName: string,
-  ): Promise<string> {
+  ): Promise<ILoginDataProps | undefined> {
     await actor.goto('https://wallet.kadena.io/?env=e2e');
     await actor.waitForTimeout(1000);
 
     let accountData;
     try {
-      const walletImportData = JSON.parse(
-        fs.readFileSync(`./_generated/${typeName}.json`, 'utf8'),
-      );
+      const walletImportData = await this.getSetupProps(typeName);
+      if (!walletImportData) return;
 
       accountData = await actor.evaluate(
         async ({ walletImportData }) => {
@@ -62,17 +86,17 @@ export class RWADemoAppIndex {
         { profileName, phrase },
       );
 
-      // fs.mkdirSync(`./_generated/`, { recursive: true });
-      // fs.writeFileSync(
-      //   `./_generated/${typeName}.json`,
-      //   JSON.stringify(accountData, null, 2),
-      //   { encoding: 'utf8' },
-      // );
+      fs.mkdirSync(`./_generated/`, { recursive: true });
+      fs.writeFileSync(
+        `./_generated/${typeName}.json`,
+        JSON.stringify(accountData, null, 2),
+        { encoding: 'utf8' },
+      );
     }
 
     await actor.goto('https://wallet.kadena.io/');
 
-    return accountData.data.data.account[0];
+    return accountData;
   }
 
   public async createAsset(
@@ -202,6 +226,42 @@ export class RWADemoAppIndex {
     return shareUrl;
   }
 
+  public async loginWithPhrase(
+    actor: Page,
+    chainweaverApp: ChainweaverAppIndex,
+    setupProps?: ILoginDataProps,
+  ) {
+    if (!setupProps) {
+      console.error('no setup props were found');
+      throw new Error('no setup props were found');
+    }
+
+    await actor.goto('/');
+    await actor
+      .getByRole('heading', {
+        name: 'Login',
+      })
+      .waitFor();
+
+    const popupPromise = actor.waitForEvent('popup');
+    const button = actor.getByRole('button', {
+      name: 'Connect',
+    });
+    await button.click();
+    const walletPopup = await popupPromise;
+
+    const loginAcceptButton = walletPopup.getByRole('button', {
+      name: 'Accept',
+    });
+
+    await actor.waitForTimeout(1000);
+    if (await loginAcceptButton.isHidden()) {
+      await chainweaverApp.selectProfileWithPhrase(walletPopup, setupProps);
+    }
+
+    await actor.waitForTimeout(500000000);
+  }
+
   public async login(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
@@ -227,8 +287,6 @@ export class RWADemoAppIndex {
     if (await loginAcceptButton.isHidden()) {
       await chainweaverApp.selectProfile(walletPopup, 'Skeletor');
     }
-
-    console.log(4444);
 
     await loginAcceptButton.waitFor();
     await expect(loginAcceptButton).toBeVisible();

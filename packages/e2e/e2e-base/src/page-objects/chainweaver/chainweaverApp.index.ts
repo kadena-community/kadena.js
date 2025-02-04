@@ -1,12 +1,13 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
+import type { ILoginDataProps } from '../rwa-demo/RWADemoApp.index';
 
 export class ChainweaverAppIndex {
   private _webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
   private _PROFILENAME: string = 'He-man';
   private _PROFILENAME_WITHPASSWORD: string = 'Skeletor';
-  private _PASSWORD: string = 'M4st3r_of_th3_un1v3rs3';
+  private _PASSWORD: string = 'm4st3r_of_th3_un1v3rs3';
 
   public constructor() {}
 
@@ -164,6 +165,35 @@ export class ChainweaverAppIndex {
 
     return true;
   }
+
+  public async selectProfileWithPhrase(
+    actor: Page,
+    setupProps?: ILoginDataProps,
+  ) {
+    await actor.getByRole('link', { name: 'Recover your wallet' }).click();
+    await actor.getByRole('link', { name: 'Recovery Phrase' }).waitFor();
+    await actor.getByRole('link', { name: 'Recovery Phrase' }).click();
+    await actor.locator('#phrase').waitFor();
+    await actor.fill('#phrase', setupProps?.phrase ?? '');
+    await actor.fill('#name', `${setupProps?.profileName ?? ''}1`);
+
+    await actor.getByRole('button', { name: 'Prefer password' }).click();
+
+    await actor.fill('#password', this._PASSWORD);
+    await actor.fill('#confirmation', this._PASSWORD);
+
+    const continueButton = actor.getByRole('button', {
+      name: 'Continue',
+    });
+    await expect(continueButton).toBeEnabled();
+    await continueButton.click();
+    await actor
+      .getByRole('button', {
+        name: 'Continue',
+      })
+      .click();
+  }
+
   public async selectProfile(
     actor: Page,
     profileName: string,
