@@ -21,6 +21,65 @@ export class RWADemoAppIndex {
     await actor.goto('https://wallet.kadena.io');
     await chainweaverApp.setup(actor);
     await chainweaverApp.selectNetwork(actor, 'development');
+
+    const data = await actor.evaluate(async () => {
+      return new Promise((resolve) => {
+        /**
+         * Export all data from an IndexedDB database
+         * @param {IDBDatabase} idbDatabase - to export from
+         * @param {function(Object?, string?)} cb - callback with signature (error, jsonString)
+         */
+        async function exportToJsonString(idbDatabase, cb) {
+          const exportObject = {};
+          const objectStoreNamesSet = new Set(idbDatabase.objectStoreNames);
+          const size = objectStoreNamesSet.size;
+          if (size === 0) {
+            cb(null, JSON.stringify(exportObject));
+          } else {
+            const objectStoreNames = Array.from(objectStoreNamesSet);
+            const transaction = idbDatabase.transaction(
+              objectStoreNames,
+              'readonly',
+            );
+            transaction.onerror = (event) => cb(event, null);
+
+            objectStoreNames.forEach((storeName: string) => {
+              const allObjects: any[] = [];
+              transaction.objectStore(storeName).openCursor().onsuccess = (
+                event,
+              ) => {
+                const cursor = event.target.result as IDBCursorWithValue;
+                if (cursor) {
+                  allObjects.push(cursor.value);
+                  cursor.continue();
+                } else {
+                  exportObject[storeName] = allObjects;
+                  if (
+                    objectStoreNames.length === Object.keys(exportObject).length
+                  ) {
+                    cb(null, JSON.stringify(exportObject));
+                  }
+                }
+              };
+            });
+          }
+        }
+        const walletDBRequest = indexedDB.open('dev-wallet');
+
+        walletDBRequest.onsuccess = (event) => {
+          // store the result of opening the database in the db variable. This is used a lot below
+          const db = walletDBRequest.result;
+
+          return exportToJsonString(db, async (err, json) => {
+            resolve(JSON.parse(json ?? '{}'));
+          });
+        };
+      });
+    });
+
+    console.log(111111, { data });
+    await expect(true).toBe(false);
+
     await actor.goto('https://wallet.kadena.io/');
     const account = await chainweaverApp.createAccount(actor);
 
