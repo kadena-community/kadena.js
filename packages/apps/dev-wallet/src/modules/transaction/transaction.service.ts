@@ -1,8 +1,10 @@
+import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import {
   ChainId,
   createTransaction,
   IClient,
   ICommand,
+  ICommandResult,
   IPactCommand,
   isSignedTransaction,
   ITransactionDescriptor,
@@ -241,12 +243,27 @@ export const preflightTransaction = async (
     });
 };
 
+function isContinuationDone(
+  pactCommand: IPactCommand,
+  result: ICommandResult | ILocalCommandResult,
+) {
+  if ('exec' in pactCommand.payload) return false;
+  if (result.result.status === 'failure' && result.result.error) {
+    const error = result.result.error;
+    if (error && 'message' in error && typeof error.message === 'string') {
+      return error.message.includes('pact completed');
+    }
+  }
+  return false;
+}
+
 export const submitTransaction = async (
   tx: ITransaction,
   client: IClient,
   onUpdate: (tx: ITransaction) => void = () => {},
   skipPreflight = false,
 ) => {
+  const command = JSON.parse(tx.cmd) as IPactCommand;
   if ('result' in tx && tx.result?.result?.status === 'success') {
     return tx;
   }
@@ -265,11 +282,36 @@ export const submitTransaction = async (
       } as ICommand)
       .then(async (result) => {
         console.log('preflight', result);
+        const isContDone = isContinuationDone(command, result);
+        const status = isContDone ? 'success' : result.result.status;
+        const updResult = {
+          ...result,
+          result: {
+            ...(isContDone
+              ? {
+                  data: 'the continuation is done via another tx - the information about that tx is not available',
+                }
+              : {}),
+            ...result.result,
+            status,
+          },
+        };
         const updatedTx = {
           ...tx,
-          status: 'preflight',
-          preflight: result,
           request: undefined,
+          // TODO: we should check if in that case the cont was actually success full
+          status: isContDone ? 'success' : 'preflight',
+          preflight: updResult,
+          ...(isContDone
+            ? {
+                result: updResult,
+                request: {
+                  networkId: command.networkId,
+                  chainId: command.meta.chainId,
+                  requestKey: tx.hash,
+                },
+              }
+            : {}),
         } as ITransaction;
         await transactionRepository.updateTransaction(updatedTx);
         return updatedTx;
@@ -295,6 +337,11 @@ export const submitTransaction = async (
   }
   onUpdate(updatedTx);
   if (updatedTx.preflight?.result.status === 'failure' && !skipPreflight) {
+    return updatedTx;
+  }
+  debugger;
+  // if the preflight showed that the transaction is already done, we can skip the submission
+  if ('result' in updatedTx && updatedTx.result?.result?.status === 'success') {
     return updatedTx;
   }
   updatedTx = await client
@@ -334,10 +381,23 @@ export const submitTransaction = async (
   onUpdate(updatedTx);
 
   updatedTx = await client.pollOne(updatedTx.request!).then(async (result) => {
+    const isContDone = isContinuationDone(command, result);
+    const status = isContDone ? 'success' : result.result.status;
     updatedTx = {
       ...updatedTx,
-      status: result.result.status,
-      result,
+      status,
+      result: {
+        ...result,
+        result: {
+          ...(isContDone
+            ? {
+                data: 'the continuation is done via another tx - the information about that tx is not available',
+              }
+            : {}),
+          ...result.result,
+          status,
+        },
+      },
     } as ITransaction;
     await transactionRepository.updateTransaction(updatedTx);
     return updatedTx;

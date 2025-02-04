@@ -19,9 +19,9 @@ export function CodeView({
   command: IPactCommand;
 }) {
   const { getAccountAlias } = useWallet();
-  const getAccount = (address: string) => {
+  const getAccount = (address: string, contract: string) => {
     const value = address.replace(/"/gi, '');
-    const alias = getAccountAlias(value);
+    const alias = getAccountAlias(value, contract);
     const shortAddress = shorten(value, 20);
     if (!alias) return shortAddress;
     console.log('alias', alias);
@@ -40,6 +40,7 @@ export function CodeView({
     : codes
         .map((code) => {
           if (code.function.module === 'coin' && !code.function.namespace) {
+            const contract = 'coin';
             if (code.function.name === 'transfer') {
               const [sender, receiver, amount] = code.args;
               const senderAddress = parseArg(sender, decoration);
@@ -50,13 +51,13 @@ export function CodeView({
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>from</Text>
                     <Text bold color="emphasize">
-                      {getAccount(senderAddress)}
+                      {getAccount(senderAddress, contract)}
                     </Text>
                   </Stack>
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>to</Text>
                     <Text bold color="emphasize">
-                      {getAccount(receiverAddress)}
+                      {getAccount(receiverAddress, contract)}
                     </Text>
                   </Stack>
                   <Stack gap={'sm'} flexWrap="wrap">
@@ -78,13 +79,13 @@ export function CodeView({
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>from</Text>
                     <Text bold color="emphasize">
-                      {getAccount(senderAddress)}
+                      {getAccount(senderAddress, contract)}
                     </Text>
                   </Stack>
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>to</Text>
                     <Text bold color="emphasize">
-                      {getAccount(receiverAddress)}
+                      {getAccount(receiverAddress, contract)}
                     </Text>
                   </Stack>
                   <Stack gap={'sm'} flexWrap="wrap">
@@ -107,13 +108,13 @@ export function CodeView({
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>from</Text>
                     <Text bold color="emphasize">
-                      {getAccount(senderAddress)}
+                      {getAccount(senderAddress, contract)}
                     </Text>
                   </Stack>
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>to</Text>
                     <Text bold color="emphasize">
-                      {getAccount(receiverAddress)}
+                      {getAccount(receiverAddress, contract)}
                     </Text>
                   </Stack>
                   <Stack gap={'sm'} flexWrap="wrap">
