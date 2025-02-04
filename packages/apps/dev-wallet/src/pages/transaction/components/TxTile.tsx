@@ -172,8 +172,8 @@ export const TxTile = ({
             >
               <Text size="small">
                 {sendDisabled
-                  ? 'Waiting for redistribution to complete'
-                  : 'The transaction is Signed; you can now call preflight'}
+                  ? 'Waiting for redistribution to complete.'
+                  : 'Preflight will test your transaction first to avoid paying gas for a failed submission.'}
               </Text>
             </Stack>
           </>
