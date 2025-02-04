@@ -57,7 +57,7 @@ export const dotenv: {
     process.env.COMPLEXITY_EXPOSED?.toLocaleLowerCase() === 'true',
     false,
   ),
-  COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
+  COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '50000'), 10),
   DATABASE_URL: or(
     process.env.DATABASE_URL,
     'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
