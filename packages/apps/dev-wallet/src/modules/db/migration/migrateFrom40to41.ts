@@ -6,6 +6,7 @@ import {
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { getAllItems, putItem } from '../indexeddb';
+import { TableName } from './createDB';
 
 const changeLog = ['add guard to the accounts'];
 
@@ -20,7 +21,7 @@ export async function migrateFrom40to41(
   const allWatchedAccounts = await getAllItems(
     db,
     transaction,
-  )<IWatchedAccount>('watched-account');
+  )<IWatchedAccount>('watched-account' as TableName);
   const allKeysets = await getAllItems(db, transaction)<IKeySet>('keyset');
 
   await Promise.all(
@@ -44,7 +45,7 @@ export async function migrateFrom40to41(
 
   await Promise.all(
     allWatchedAccounts.map(async (account) => {
-      return update<IWatchedAccount>('watched-account', {
+      return update<IWatchedAccount>('watched-account' as TableName, {
         ...account,
         guard: {
           principal: account.address,

@@ -2,6 +2,7 @@
 // check the change log for more details
 import { IAccount } from '@/modules/account/account.repository';
 import { addItem, getAllItems } from '../indexeddb';
+import { TableName } from './createDB';
 
 const changeLog = ['merge watched-account into account'];
 
@@ -14,7 +15,7 @@ export async function migrateFrom45to46(
   const allWatchedAccounts = await getAllItems(
     db,
     transaction,
-  )<IAccount>('watched-account');
+  )<IAccount>('watched-account' as TableName);
   const add = addItem(db, transaction);
   await Promise.all(
     allWatchedAccounts.map((account) => add('account', account)),

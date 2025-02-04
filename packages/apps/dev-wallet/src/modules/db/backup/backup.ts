@@ -2,16 +2,20 @@ import {
   Fungible,
   IKeySet,
   IOwnedAccount,
-  IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { IActivity } from '@/modules/activity/activity.repository';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { UUID } from '@/modules/types';
-import { IKeySource, IProfile } from '@/modules/wallet/wallet.repository';
+import {
+  IBackup,
+  IKeySource,
+  IProfile,
+} from '@/modules/wallet/wallet.repository';
 import { base64UrlEncodeArr, hash } from '@kadena/cryptography-utils';
 import { addItem, dbDump, getAllItems, putItem } from '../indexeddb';
+import { TableName, tables } from '../migration/createDB';
 
 function BufferToBase64UrlReplacer(_key: string, value: any) {
   if (value instanceof Uint8Array) {
@@ -35,7 +39,11 @@ export const serializeTables = async (db: IDBDatabase) => {
 };
 
 type Table<T> = Array<{ key: string; value: T }>;
-export interface IDBBackup {
+
+interface BASE {
+  data: Record<TableName, unknown>;
+}
+export interface IDBBackup extends BASE {
   checksum: string;
   wallet_version: string;
   db_name: string;
@@ -57,13 +65,13 @@ export interface IDBBackup {
     encryptedValue: Table<{ uuid: string; profileId: string; value: string }>;
     keySource: Table<IKeySource>;
     account: Table<IOwnedAccount>;
-    'watched-account': Table<IWatchedAccount>;
     network: Table<INetwork>;
     fungible: Table<Fungible>;
     keyset: Table<IKeySet>;
     transaction: Table<ITransaction>;
     activity: Table<IActivity>;
     contact: Table<IContact>;
+    backup: Table<IBackup>;
   };
 }
 
@@ -228,11 +236,11 @@ export const importBackup =
         `Database version mismatch: expected ${db.version} but got ${backup.db_version}; WIP: we need to add a migration path here`,
       );
     }
-    const tables = Object.keys(backup.data).filter(
-      (name) => !name.includes(':'),
-    ) as (keyof IDBBackup['data'])[];
-    console.log('Importing backup', tables);
-    const transaction = db.transaction(tables, 'readwrite');
+    const importedTables = Object.keys(backup.data).filter((name) =>
+      tables.includes(name as TableName),
+    ) as TableName[];
+    console.log('Importing backup', importedTables);
+    const transaction = db.transaction(importedTables, 'readwrite');
     console.log('transaction', transaction);
     await importContacts(db, backup.data.contact, transaction);
     const networkRemap = await importNetworks(
@@ -241,7 +249,13 @@ export const importBackup =
       transaction,
     );
     await importFungibles(db, backup.data.fungible, networkRemap, transaction);
-    await importProfiles(db, backup.data.profile, transaction);
+    await importProfiles(
+      db,
+      profileUUIds && profileUUIds.length
+        ? backup.data.profile.filter(({ key }) => profileUUIds.includes(key))
+        : backup.data.profile,
+      transaction,
+    );
     await importProfileRelatedTables({
       backup,
       profileUUIds,

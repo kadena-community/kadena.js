@@ -67,7 +67,7 @@ export const config: UserConfig = {
     rollupOptions: {
       input: {
         html: 'index.html',
-        main: 'src/index.ts', // your main app entry point
+        bootstrap: 'src/index.ts', // your main app entry point
         sw: 'src/service-worker/service-worker.ts', // entry for the service worker
       },
       output: {
@@ -90,6 +90,7 @@ export const config: UserConfig = {
             'kadena-libs',
             'kadena-ui',
             'html',
+            'bootstrap',
           ].includes(chunk.name)
             ? 'assets/[name].js'
             : 'assets/[name]-[hash].js';

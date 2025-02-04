@@ -1,11 +1,10 @@
 import { createStore } from '../indexeddb';
 
-type TableName =
+export type TableName =
   | 'profile'
   | 'encryptedValue'
   | 'keySource'
   | 'account'
-  | 'watched-account'
   | 'network'
   | 'fungible'
   | 'keyset'
@@ -13,6 +12,20 @@ type TableName =
   | 'activity'
   | 'contact'
   | 'backup';
+
+export const tables: TableName[] = [
+  'profile',
+  'encryptedValue',
+  'keySource',
+  'account',
+  'network',
+  'fungible',
+  'keyset',
+  'transaction',
+  'activity',
+  'contact',
+  'backup',
+];
 
 export type ExtendedTableName =
   | TableName
@@ -59,16 +72,6 @@ export function getDBScheme() {
     {
       index: 'unique-account',
       indexKeyPath: ['profileId', 'guard.principal', 'contract', 'networkUUID'],
-      unique: true,
-    },
-  ]);
-  defineScheme('watched-account', 'uuid', [
-    { index: 'address' },
-    { index: 'profileId' },
-    { index: 'profile-network', indexKeyPath: ['profileId', 'networkUUID'] },
-    {
-      index: 'unique-account',
-      indexKeyPath: ['profileId', 'contract', 'address', 'networkUUID'],
       unique: true,
     },
   ]);

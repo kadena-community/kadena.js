@@ -48,13 +48,17 @@ export const useWallet = () => {
   }
 
   const getKeyAlias = useCallback(
-    (publicKey: string) => {
-      const singleKeyAccount = context.accounts.find(
-        (a) =>
-          isKeysetGuard(a.guard) &&
-          a.guard.keys.length === 1 &&
-          a.guard.keys[0] === publicKey,
-      );
+    (publicKey: string, contract: string = 'coin') => {
+      const singleKeyAccount = context.accounts
+        .filter(
+          (a) =>
+            isKeysetGuard(a.guard) &&
+            a.guard.keys.length === 1 &&
+            a.guard.keys[0] === publicKey,
+        )
+        .sort((b) =>
+          b.alias && (b.contract === contract || !contract) ? -1 : 1,
+        )[0];
 
       if (
         singleKeyAccount &&
@@ -77,12 +81,16 @@ export const useWallet = () => {
         return contactSingleKey.name || contactSingleKey.account.address;
       }
 
-      const multiKeyAccount = context.accounts.find(
-        (a) =>
-          isKeysetGuard(a.guard) &&
-          a.guard.keys.length > 1 &&
-          a.guard.keys.includes(publicKey),
-      );
+      const multiKeyAccount = context.accounts
+        .filter(
+          (a) =>
+            isKeysetGuard(a.guard) &&
+            a.guard.keys.length > 1 &&
+            a.guard.keys.includes(publicKey),
+        )
+        .sort((b) =>
+          b.alias && (b.contract === contract || !contract) ? -1 : 1,
+        )[0];
 
       if (
         multiKeyAccount &&
@@ -115,8 +123,10 @@ export const useWallet = () => {
   );
 
   const getAccountAlias = useCallback(
-    (address: string) => {
-      const account = context.accounts.find((a) => a.address === address);
+    (address: string, contract: string) => {
+      const account = context.accounts.find(
+        (a) => a.address === address && (!contract || a.contract === contract),
+      );
       if (account) {
         return account.alias;
       }
