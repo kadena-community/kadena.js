@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import * as fs from 'fs';
 import type { ChainweaverAppIndex } from '../chainweaver/chainweaverApp.index';
 
 type IOptions =
@@ -8,6 +9,7 @@ type IOptions =
       waitForEnd?: boolean;
       waitForStart?: boolean;
     };
+
 export class RWADemoAppIndex {
   private NAMESPACE;
   private CONTRACTNAME = 'He-man';
@@ -17,83 +19,60 @@ export class RWADemoAppIndex {
   public async setup(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
+    typeName: string,
   ): Promise<string> {
-    await actor.goto('https://wallet.kadena.io');
-    await chainweaverApp.setup(actor);
-    await chainweaverApp.selectNetwork(actor, 'development');
+    await actor.goto('https://wallet.kadena.io/?env=e2e');
+    await actor.waitForTimeout(1000);
 
-    const data = await actor.evaluate(async () => {
-      return new Promise((resolve) => {
-        /**
-         * Export all data from an IndexedDB database
-         * @param {IDBDatabase} idbDatabase - to export from
-         * @param {function(Object?, string?)} cb - callback with signature (error, jsonString)
-         */
-        async function exportToJsonString(idbDatabase, cb) {
-          const exportObject = {};
-          const objectStoreNamesSet = new Set(idbDatabase.objectStoreNames);
-          const size = objectStoreNamesSet.size;
-          if (size === 0) {
-            cb(null, JSON.stringify(exportObject));
-          } else {
-            const objectStoreNames = Array.from(objectStoreNamesSet);
-            const transaction = idbDatabase.transaction(
-              objectStoreNames,
-              'readonly',
-            );
-            transaction.onerror = (event) => cb(event, null);
+    let accountData;
+    try {
+      const walletImportData = JSON.parse(
+        fs.readFileSync(`./_generated/${typeName}.json`, 'utf8'),
+      );
 
-            objectStoreNames.forEach((storeName: string) => {
-              const allObjects: any[] = [];
-              transaction.objectStore(storeName).openCursor().onsuccess = (
-                event,
-              ) => {
-                const cursor = event.target.result as IDBCursorWithValue;
-                if (cursor) {
-                  allObjects.push(cursor.value);
-                  cursor.continue();
-                } else {
-                  exportObject[storeName] = allObjects;
-                  if (
-                    objectStoreNames.length === Object.keys(exportObject).length
-                  ) {
-                    cb(null, JSON.stringify(exportObject));
-                  }
-                }
-              };
-            });
-          }
-        }
-        const walletDBRequest = indexedDB.open('dev-wallet');
+      accountData = await actor.evaluate(
+        async ({ walletImportData }) => {
+          await window.DevWallet.importBackup(walletImportData.data);
+          return walletImportData;
+        },
+        { walletImportData },
+      );
 
-        walletDBRequest.onsuccess = (event) => {
-          // store the result of opening the database in the db variable. This is used a lot below
-          const db = walletDBRequest.result;
+      await actor.goto('https://wallet.kadena.io/?env=e2e');
+    } catch (e) {
+      const { profileName, phrase } = await chainweaverApp.setup(actor);
 
-          return exportToJsonString(db, async (err, json) => {
-            resolve(JSON.parse(json ?? '{}'));
-          });
-        };
-      });
-    });
+      await chainweaverApp.selectNetwork(actor, 'development');
+      await actor.goto('https://wallet.kadena.io/?env=e2e');
+      await chainweaverApp.createAccount(actor);
 
-    console.log(111111, { data });
-    await expect(true).toBe(false);
+      accountData = await actor.evaluate(
+        async ({ profileName, phrase }) => {
+          const dbs = await window.indexedDB.databases();
+          const db = dbs[0];
+          const data = await window.DevWallet.serializeTables();
+
+          return {
+            db,
+            phrase,
+            profileName,
+            data: JSON.parse(data),
+          };
+        },
+        { profileName, phrase },
+      );
+
+      // fs.mkdirSync(`./_generated/`, { recursive: true });
+      // fs.writeFileSync(
+      //   `./_generated/${typeName}.json`,
+      //   JSON.stringify(accountData, null, 2),
+      //   { encoding: 'utf8' },
+      // );
+    }
 
     await actor.goto('https://wallet.kadena.io/');
-    const account = await chainweaverApp.createAccount(actor);
 
-    await actor.goto('/');
-    await this.cookieConsent(actor);
-    await this.login(actor);
-
-    const addButton = actor.getByRole('button', {
-      name: 'Add 5 KDA for Gas',
-    });
-    await chainweaverApp.signWithPassword(actor, addButton);
-    await this.createAsset(actor, chainweaverApp);
-
-    return account;
+    return accountData.data.data.account[0];
   }
 
   public async createAsset(
@@ -223,7 +202,10 @@ export class RWADemoAppIndex {
     return shareUrl;
   }
 
-  public async login(actor: Page): Promise<boolean> {
+  public async login(
+    actor: Page,
+    chainweaverApp: ChainweaverAppIndex,
+  ): Promise<boolean> {
     await expect(
       actor.getByRole('heading', {
         name: 'Login',
@@ -241,6 +223,14 @@ export class RWADemoAppIndex {
       name: 'Accept',
     });
 
+    await actor.waitForTimeout(1000);
+    if (await loginAcceptButton.isHidden()) {
+      await chainweaverApp.selectProfile(walletPopup, 'Skeletor');
+    }
+
+    console.log(4444);
+
+    await loginAcceptButton.waitFor();
     await expect(loginAcceptButton).toBeVisible();
     await loginAcceptButton.click();
 

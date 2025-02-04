@@ -10,21 +10,7 @@ test('Create first asset', async ({
   chainweaverApp,
 }) => {
   await test.step('Setup wallet', async () => {
-    await initiator.goto('https://wallet.kadena.io');
-    await chainweaverApp.createProfileWithPassword(initiator);
-    await chainweaverApp.goToSettings(initiator);
-
-    await expect(initiator.getByText('mainnet01 - Mainnet')).toBeVisible();
-    await expect(initiator.getByText('development - development')).toBeHidden();
-
-    await chainweaverApp.addNetwork(initiator, {
-      networkId: 'development',
-      title: 'development',
-      host: 'http://localhost:8080',
-    });
-    await chainweaverApp.selectNetwork(initiator, 'development');
-    await initiator.goto('https://wallet.kadena.io/');
-    await chainweaverApp.createAccount(initiator);
+    await RWADemoApp.setup(initiator, chainweaverApp, 'initiator');
   });
 
   await test.step('remove cookie consent window', async () => {
@@ -38,7 +24,7 @@ test('Create first asset', async ({
     //setup profile and account in the wallet
     await initiator.goto('/');
 
-    const result = await RWADemoApp.login(initiator);
+    const result = await RWADemoApp.login(initiator, chainweaverApp);
     await expect(result).toEqual(true);
   });
 

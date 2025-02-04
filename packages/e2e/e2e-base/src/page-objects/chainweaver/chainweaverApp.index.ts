@@ -44,9 +44,14 @@ export class ChainweaverAppIndex {
     return account[1] ?? '';
   }
 
-  public async setup(actor: Page, full: boolean = true): Promise<boolean> {
-    //await actor.goto('/');
-    await this.createProfileWithPassword(actor);
+  public async setup(
+    actor: Page,
+    full: boolean = true,
+  ): Promise<{
+    profileName: string;
+    phrase: string;
+  }> {
+    const data = await this.createProfileWithPassword(actor);
     await this.goToSettings(actor);
 
     if (full) {
@@ -58,7 +63,7 @@ export class ChainweaverAppIndex {
 
       await this.selectNetwork(actor, 'Development');
     }
-    return true;
+    return data;
   }
   public async createProfile(actor: Page): Promise<string> {
     await this._webAuthNHelper.enableVirtualAuthenticator(actor);
@@ -82,7 +87,13 @@ export class ChainweaverAppIndex {
 
     return this._PROFILENAME;
   }
-  public async createProfileWithPassword(actor: Page): Promise<string> {
+  public async createProfileWithPassword(actor: Page): Promise<{
+    profileName: string;
+    phrase: string;
+  }> {
+    await actor
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
     const button = actor.getByText('Add new profile');
     await expect(button).toBeVisible();
     await button.click();
@@ -113,12 +124,30 @@ export class ChainweaverAppIndex {
     await continueButton.click();
 
     const skipButton = actor.getByRole('button', {
-      name: 'Skip',
+      name: 'Show Phrase',
     });
     await expect(skipButton).toBeVisible();
     await skipButton.click();
 
-    return this._PROFILENAME_WITHPASSWORD;
+    const copyButton = actor.getByRole('button', {
+      name: 'Copy to clipboard',
+    });
+
+    await copyButton.click();
+
+    const phrase: string = await actor.evaluate(
+      'navigator.clipboard.readText()',
+    );
+
+    const skipButton2 = actor.getByRole('button', {
+      name: 'Skip',
+    });
+    await skipButton2.click();
+
+    return {
+      profileName: this._PROFILENAME_WITHPASSWORD,
+      phrase,
+    };
   }
 
   public async logout(actor: Page, profileName: string): Promise<boolean> {
@@ -140,8 +169,18 @@ export class ChainweaverAppIndex {
     profileName: string,
   ): Promise<boolean> {
     const button = actor.getByText(profileName);
+    await button.waitFor();
     await expect(button).toBeVisible();
     await button.click();
+
+    if (
+      await actor
+        .getByRole('heading', { name: 'Unlock your profile' })
+        .isVisible()
+    ) {
+      await actor.type('[id="password"]', this._PASSWORD, { delay: 10 });
+      await actor.getByRole('button', { name: 'Continue' }).click();
+    }
 
     return true;
   }
@@ -204,6 +243,9 @@ export class ChainweaverAppIndex {
     actor: Page,
     network: { networkId: string; title: string; host: string },
   ): Promise<boolean> {
+    await expect(actor.getByText('mainnet01 - Mainnet')).toBeVisible();
+    await expect(actor.getByText('development - development')).toBeHidden();
+
     await expect(actor.getByTestId('rightaside')).not.toBeInViewport();
     await actor.getByRole('button', { name: 'Add Network' }).click();
     await expect(actor.getByTestId('rightaside')).toBeInViewport();

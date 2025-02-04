@@ -7,16 +7,22 @@ test('Create agent', async ({
   RWADemoApp,
   chainweaverApp,
 }) => {
-  let ownerAccount: string = '';
+  const ownerAccount: string = '';
   const agent1Account: string = '';
 
   await test.step('Setup', async () => {
-    const initiatorPromise = await RWADemoApp.setup(initiator, chainweaverApp);
-    // const agent1Promise = RWADemoApp.setup(agent1, chainweaverApp);
+    const initiatorPromise = await RWADemoApp.setup(
+      initiator,
+      chainweaverApp,
+      'initiator',
+    );
+    // const agent1Promise = RWADemoApp.setup(agent1, chainweaverApp, 'agent1');
     // const accounts = await Promise.all([initiatorPromise, agent1Promise]);
 
-    ownerAccount = initiatorPromise;
-    //agent1Account = accounts[1];
+    // console.log(22, { accounts });
+
+    // ownerAccount = accounts[0];
+    // agent1Account = accounts[1];
   });
 
   await test.step('give agent the link to the asset of the initiator', async () => {
