@@ -301,11 +301,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       ...ctx,
       networks,
       activeNetwork:
-        ctx.activeNetwork &&
-        (!networks.length ||
-          networks.find((n) => n.uuid === ctx.activeNetwork?.uuid))
-          ? ctx.activeNetwork
-          : networks.find((n) => n.default),
+        networks.find((n) => n.uuid === ctx.activeNetwork?.uuid) ??
+        networks.find((n) => n.default) ??
+        networks[0],
     }));
 
     return networks;

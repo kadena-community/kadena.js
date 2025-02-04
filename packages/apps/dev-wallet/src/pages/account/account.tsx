@@ -180,14 +180,12 @@ export function AccountPage() {
             Transfer
           </Button>
         </Link>
-        {asset.contract === 'coin' &&
-          (activeNetwork?.networkId === 'testnet05' ||
-            activeNetwork?.networkId === 'testnet04') && (
-            <FundOnTestnetButton
-              account={account}
-              fundAccountHandler={fundAccountHandler}
-            />
-          )}
+        {asset.contract === 'coin' && activeNetwork?.faucetContract && (
+          <FundOnTestnetButton
+            account={account}
+            fundAccountHandler={fundAccountHandler}
+          />
+        )}
         {asset.contract === 'coin' && (
           <a
             className={linkClass}
@@ -305,7 +303,9 @@ export function AccountPage() {
                         <Stack key={key} gap="sm" alignItems={'center'}>
                           {isKeysetGuard(account.guard) &&
                             account.guard.keys.length > 1 && (
-                              <Badge size="sm">{getKeyAlias(key)}</Badge>
+                              <Badge size="sm">
+                                {getKeyAlias(key, account.contract)}
+                              </Badge>
                             )}
                         </Stack>
                         <Stack gap="sm" alignItems={'center'}>

@@ -12,6 +12,10 @@ const loadingContent = document.getElementById('loading-content');
 // the entry file for the dev wallet app
 // TODO: we need to do setup app here like service worker, etc
 async function bootstrap() {
+  const e2e = window.location.search.includes('env=e2e');
+  if (e2e) {
+    await import('./e2e');
+  }
   const mainModule = import('./App/main');
   await registerServiceWorker();
   addBootTheme();

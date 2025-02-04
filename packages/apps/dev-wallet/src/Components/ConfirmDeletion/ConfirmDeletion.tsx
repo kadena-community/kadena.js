@@ -31,12 +31,16 @@ export const ConfirmDeletion = ({
     <DialogHeader>{title}</DialogHeader>
     <DialogContent>{description}</DialogContent>
     <DialogFooter>
-      <Button variant="transparent" onClick={onCancel}>
-        {cancelText}
-      </Button>
-      <Button onClick={onDelete} variant="negative">
-        {deleteText}
-      </Button>
+      {cancelText && (
+        <Button variant="transparent" onClick={onCancel}>
+          {cancelText}
+        </Button>
+      )}
+      {deleteText && (
+        <Button onClick={onDelete} variant="negative">
+          {deleteText}
+        </Button>
+      )}
     </DialogFooter>
   </Dialog>
 );
