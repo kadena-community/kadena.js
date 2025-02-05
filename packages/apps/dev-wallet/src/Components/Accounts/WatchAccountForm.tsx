@@ -38,7 +38,7 @@ export function WatchAccountsForm({
       <RightAsideContent>
         <Stack gap={'xl'} flexDirection={'column'}>
           <Heading variant="h6">
-            You can add or watch any account that exists on the blockchain.
+            You can watch any account on the network.
           </Heading>
           <Stack gap={'md'} flexDirection={'column'}>
             <Heading variant="h6">Enter a {asset?.symbol} Address</Heading>

@@ -151,6 +151,9 @@ export function ComboField({
             toggle: () => {},
             setOpen: () => {},
           }}
+          shouldCloseOnInteractOutside={() => {
+            return true;
+          }}
           offset={0}
           triggerRef={triggerRef}
           ref={popoverRef}

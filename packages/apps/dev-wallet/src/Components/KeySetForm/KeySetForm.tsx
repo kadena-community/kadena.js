@@ -1,3 +1,4 @@
+import { useRightAside } from '@/App/Layout/useRightAside';
 import { Key } from '@/Components/Key/Key';
 import { displayContentsClass } from '@/Components/Sidebar/style.css';
 import { IKeySet, IKeysetGuard } from '@/modules/account/account.repository';
@@ -16,10 +17,12 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
+import { RightAside } from '@kadena/kode-ui/patterns';
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { KeySearchBox } from '../KeySearchBox/KeySearchBox';
 import { ListItem } from '../ListItem/ListItem';
+import { KeysetList } from './keyset-list';
 
 interface IKeysetForm {
   publicKey: string;
@@ -33,6 +36,7 @@ export function KeySetForm({
   keyset,
   variant = 'dialog',
   LiveForm = false,
+  filteredKeysets = [],
 }: {
   isOpen: boolean;
   close: () => void;
@@ -48,6 +52,9 @@ export function KeySetForm({
       predicate: 'keys-all',
     },
   });
+
+  const [isKeysetListExpanded, expandKeysetList, closeKeysetList] =
+    useRightAside();
 
   useEffect(() => {
     if (keyset) {
@@ -108,6 +115,20 @@ export function KeySetForm({
 
   return (
     <Content>
+      <RightAside isOpen={isKeysetListExpanded}>
+        <KeysetList
+          keysets={filteredKeysets}
+          flexDirection={'column'}
+          onSelect={(keyset) => {
+            onChange({
+              ...keyset.guard,
+              principal: keyset.principal,
+              alias: keyset.alias,
+            });
+            closeKeysetList();
+          }}
+        />
+      </RightAside>
       <form
         className={displayContentsClass}
         onSubmit={handleSubmit((data) => onSubmit(data))}
@@ -123,6 +144,15 @@ export function KeySetForm({
                   alignItems={'center'}
                 >
                   <Label bold>Key</Label>
+                  {variant === 'inline' && (
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      onClick={() => expandKeysetList()}
+                    >
+                      existing keysets
+                    </Button>
+                  )}
                 </Stack>
                 <Stack gap={'sm'}>
                   <Controller
@@ -132,15 +162,6 @@ export function KeySetForm({
                       <>
                         <KeySearchBox
                           onSelect={(data) => {
-                            if ('guard' in data) {
-                              onChange({
-                                ...data.guard,
-                                principal: data.principal,
-                                alias: data.alias,
-                              });
-                              return;
-                            }
-
                             const keys = newKeyList(data.publicKey);
                             setAddedKeys(keys);
                             setValue('publicKey', '');
@@ -168,7 +189,7 @@ export function KeySetForm({
                         justifyContent={'space-between'}
                         alignItems={'center'}
                       >
-                        <Key publicKey={key} shortening={10} />
+                        <Key publicKey={key} shortening={20} />
                         <Button
                           variant="transparent"
                           isCompact
