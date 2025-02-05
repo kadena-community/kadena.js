@@ -19,10 +19,15 @@ export class ChainweaverAppIndex {
     await expect(listItems.length).toEqual(0);
 
     const newAccountButton = actor.getByRole('button', {
-      name: 'Next Account',
+      name: 'Account',
     });
     await expect(newAccountButton).toBeVisible();
     await newAccountButton.click();
+
+    const createAccountButton = actor.getByRole('button', {
+      name: 'Create Account',
+    });
+    await createAccountButton.click();
 
     await this.signPopupWithPassword(actor);
     await actor.waitForTimeout(500);
