@@ -88,6 +88,7 @@ export class RWADemoAppIndex {
 
     await actor.goto('/');
     await actor.waitForTimeout(1000);
+    await this.cookieConsent(actor);
 
     if (
       await actor

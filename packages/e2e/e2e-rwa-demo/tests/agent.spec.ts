@@ -1,39 +1,39 @@
-import type { ILoginDataProps } from '@kadena-dev/e2e-base/src/page-objects/chainweaver/setupDatabase';
+import type { ILoginDataRWAProps } from '@kadena-dev/e2e-base/src/page-objects/rwa-demo/RWADemoApp.index';
 import { expect } from '@playwright/test';
 import { test } from '../fixtures/rwa-persona.fixture';
 
-test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
-  let ownerProps: ILoginDataProps | undefined;
-  let agent1Props: ILoginDataProps | undefined;
+test('Create agent', async ({
+  initiator,
+  agent1,
+  RWADemoApp,
+  chainweaverApp,
+}) => {
+  let ownerProps: ILoginDataRWAProps;
+  let agent1Props: ILoginDataRWAProps;
 
   await test.step('give agent the link to the asset of the initiator', async () => {
-    const initiatorPromise = await RWADemoApp.setup(
-      initiator,
+    await RWADemoApp.setup(initiator, chainweaverApp, 'initiator');
+
+    agent1Props = (await RWADemoApp.setup(
+      agent1,
       chainweaverApp,
-      'initiator',
-    );
+      'agent1',
+    )) as ILoginDataRWAProps;
 
-    // const agent1Promise = RWADemoApp.setup(agent1, chainweaverApp, 'agent1');
-    // await Promise.all([initiatorPromise, agent1Promise]);
-
-    //await chainweaverApp.selectProfile(initiator, 'Skeletor');
-    //await chainweaverApp.selectProfile(agent1, 'Skeletor');
-
-    const initiatorAppendProps = await RWADemoApp.setupAppend(
+    ownerProps = await RWADemoApp.setupAppend(
       initiator,
       chainweaverApp,
       'initiator',
     );
     await initiator.goto(
-      `/assets/create/${initiatorAppendProps.assetContract?.namespace}/${initiatorAppendProps.assetContract?.contractName}`,
+      `/assets/create/${ownerProps.assetContract?.namespace}/${ownerProps.assetContract?.contractName}`,
     );
 
-    console.log(113123123, initiatorAppendProps);
+    await agent1.goto(
+      `/assets/create/${ownerProps.assetContract?.namespace}/${ownerProps.assetContract?.contractName}`,
+    );
 
-    await initiator.waitForTimeout(1000000);
     await expect(true).toBe(true);
-
-    // await agent1.goto('/');
   });
 
   // await test.step('give agent the link to the asset of the initiator', async () => {
@@ -44,24 +44,14 @@ test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
   //     .context()
   //     .grantPermissions(['clipboard-read', 'clipboard-write']);
 
-  //   const initiatorNamespace = await initiator
-  //     .getByTestId('contractCard')
-  //     .getByTestId('namespace')
-  //     .locator('span')
-  //     .innerText();
-  //   const agent1Namespace = await agent1
-  //     .getByTestId('contractCard')
-  //     .getByTestId('namespace')
-  //     .locator('span')
-  //     .innerText();
-
-  //   await expect(initiatorNamespace !== agent1Namespace).toBe(true);
   //   const link = await RWADemoApp.getAssetLink(initiator);
 
   //   await agent1.goto(link);
   //   await agent1.waitForTimeout(200);
 
-  //   await agent1.getByRole('heading', { name: 'He-man' }).waitFor();
+  //   await agent1
+  //     .getByRole('heading', { name: ownerProps.assetContract?.contractName })
+  //     .waitFor();
 
   //   await initiator
   //     .getByTestId('contractCard')
@@ -79,7 +69,10 @@ test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
   //     .locator('span')
   //     .innerText();
 
-  //   await expect(initiatorNamespaceNew !== agent1NamespaceNew).toBe(false);
+  //   await expect(
+  //     initiatorNamespaceNew === ownerProps.assetContract?.namespace,
+  //   ).toBe(true);
+  //   await expect(initiatorNamespaceNew === agent1NamespaceNew).toBe(true);
   // });
 
   // await test.step('check set compliance rules for owner and agent', async () => {
@@ -102,7 +95,15 @@ test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
   // });
 
   // await test.step('Set agent1 to agentrole', async () => {
-  //   await initiator.getByTestId('leftaside').locator('li:nth-child(2)').click();
+  //   await initiator
+  //     .getByTestId('leftaside')
+  //     .locator('nav > ul li:nth-child(2)')
+  //     .click();
+  //   await initiator
+  //     .getByTestId('agentsCard')
+  //     .getByRole('heading', { name: 'Agents' })
+  //     .waitFor();
+
   //   await expect(
   //     initiator
   //       .getByTestId('agentsCard')
@@ -110,43 +111,49 @@ test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
   //   ).toBeVisible();
   // });
 
-  // await test.step('Add Agent1 as Agent role "agent-admin"', async () => {
-  //   await expect(initiator.getByTestId('agentTable')).toHaveAttribute(
-  //     'data-isloading',
-  //     'true',
-  //   );
+  await test.step('Add Agent1 as Agent role "agent-admin"', async () => {
+    await initiator.goto('/agents');
 
-  //   await initiator
-  //     .locator('div[data-testid="agentTable"][data-isloading="false"]')
-  //     .waitFor({ timeout: 60000 });
+    await expect(initiator.getByTestId('agentTable')).toHaveAttribute(
+      'data-isloading',
+      'true',
+    );
 
-  //   await initiator.waitForTimeout(1000);
+    await initiator
+      .locator('div[data-testid="agentTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
 
-  //   const tr = await initiator.locator('table > tbody tr').all();
-  //   await expect(tr.length).toBe(0);
+    await initiator.waitForTimeout(1000);
 
-  //   await initiator
-  //     .getByTestId('agentsCard')
-  //     .getByRole('button', { name: 'Add Agent' })
-  //     .click();
+    const tr = await initiator.locator('table > tbody tr').all();
+    await expect(tr.length).toBe(0);
 
-  //   const rightAside = initiator.getByTestId('rightaside');
-  //   await initiator.type('[name="accountName"]', agent1Account, { delay: 10 });
-  //   await initiator.type('[name="alias"]', 'skeletor', { delay: 10 });
+    await initiator
+      .getByTestId('agentsCard')
+      .getByRole('button', { name: 'Add Agent' })
+      .click();
 
-  //   await rightAside.getByRole('checkbox').first().click();
+    const rightAside = initiator.getByTestId('rightaside');
+    await initiator.type(
+      '[name="accountName"]',
+      agent1Props.data.data.account[0].value.address,
+      { delay: 10 },
+    );
+    await initiator.type('[name="alias"]', 'skeletor', { delay: 10 });
 
-  //   const txSpinner = initiator.getByTestId('agentTableTxSpinner');
-  //   await RWADemoApp.checkLoadingIndicator(
-  //     initiator,
-  //     txSpinner,
-  //     chainweaverApp.signWithPassword(
-  //       initiator,
-  //       rightAside.getByRole('button', { name: 'Add Agent' }),
-  //     ),
-  //   );
+    await rightAside.getByRole('checkbox').first().click();
 
-  //   const newTr = await initiator.locator('table > tbody tr').all();
-  //   await expect(newTr.length).toBe(1);
-  // });
+    const txSpinner = initiator.getByTestId('agentTableTxSpinner');
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      txSpinner,
+      chainweaverApp.signWithPassword(
+        initiator,
+        rightAside.getByRole('button', { name: 'Add Agent' }),
+      ),
+    );
+
+    const newTr = await initiator.locator('table > tbody tr').all();
+    await expect(newTr.length).toBe(1);
+  });
 });
