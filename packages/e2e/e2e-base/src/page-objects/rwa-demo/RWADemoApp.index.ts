@@ -56,7 +56,16 @@ export class RWADemoAppIndex {
 
       accountData = await actor.evaluate(
         async ({ walletImportData }) => {
-          await window.DevWallet.importBackup(walletImportData.data);
+          console.log(11111, walletImportData.data.data);
+          const profileUUIDs = walletImportData.data.data.profile.map(
+            (profile) => profile.key,
+          );
+          console.log(3333, profileUUIDs);
+
+          await window.DevWallet.importBackup(
+            walletImportData.data,
+            profileUUIDs,
+          );
           return walletImportData;
         },
         { walletImportData },

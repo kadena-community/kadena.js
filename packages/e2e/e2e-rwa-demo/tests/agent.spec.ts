@@ -19,12 +19,14 @@ test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
 
     // ownerAccount = accounts[0];
     // agent1Account = accounts[1];
+    const result = await chainweaverApp.selectProfile(initiator, 'Skeletor');
+    await initiator.waitForTimeout(100000000);
 
-    const result = await RWADemoApp.loginWithPhrase(
-      initiator,
-      chainweaverApp,
-      initiatorSetupProps,
-    );
+    // const result = await RWADemoApp.loginWithPhrase(
+    //   initiator,
+    //   chainweaverApp,
+    //   initiatorSetupProps,
+    // );
 
     console.log(2222, result);
   });

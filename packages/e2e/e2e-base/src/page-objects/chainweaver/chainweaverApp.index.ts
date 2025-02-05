@@ -7,7 +7,7 @@ export class ChainweaverAppIndex {
   private _webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
   private _PROFILENAME: string = 'He-man';
   private _PROFILENAME_WITHPASSWORD: string = 'Skeletor';
-  private _PASSWORD: string = 'm4st3r_of_th3_un1v3rs3';
+  private _PASSWORD: string = '123456';
 
   public constructor() {}
 
@@ -208,7 +208,8 @@ export class ChainweaverAppIndex {
         .getByRole('heading', { name: 'Unlock your profile' })
         .isVisible()
     ) {
-      await actor.type('[id="password"]', this._PASSWORD, { delay: 10 });
+      await actor.fill('[id="password"]', this._PASSWORD);
+      await actor.getByRole('button', { name: 'Continue' }).waitFor();
       await actor.getByRole('button', { name: 'Continue' }).click();
     }
 
