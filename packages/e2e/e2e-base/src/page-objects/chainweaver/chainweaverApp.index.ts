@@ -300,12 +300,16 @@ export class ChainweaverAppIndex extends setupDatabase {
 
     await trigger.click();
     const walletPopup = await popupPromise;
+    await walletPopup.waitForTimeout(1000);
+
+    console.log(7777777777, 'test', this._PROFILENAME_WITHPASSWORD);
     if (
       await walletPopup
         .getByRole('link', { name: this._PROFILENAME_WITHPASSWORD })
         .isVisible()
     ) {
-      await this.selectProfile(actor, this._PROFILENAME_WITHPASSWORD);
+      console.log(666666666, 'test', this._PROFILENAME_WITHPASSWORD);
+      await this.selectProfile(walletPopup, this._PROFILENAME_WITHPASSWORD);
     }
 
     const signButton = walletPopup.getByTestId('signTx');

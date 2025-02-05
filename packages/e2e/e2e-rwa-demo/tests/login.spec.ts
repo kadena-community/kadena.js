@@ -2,7 +2,6 @@ import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
 import type { ILoginDataRWAProps } from '@kadena-dev/e2e-base/src/page-objects/rwa-demo/RWADemoApp.index';
 import { expect } from '@playwright/test';
 
-const CONTRACTNAME = 'He-man';
 let DATA: ILoginDataRWAProps['assetContract'];
 
 test('Create first asset', async ({
@@ -35,14 +34,14 @@ test('Create first asset', async ({
 
   await test.step('Check dashboard setup for the owner', async () => {
     await expect(
-      initiator.getByRole('heading', { name: CONTRACTNAME }),
+      initiator.getByRole('heading', { name: DATA?.contractName ?? '' }),
     ).toBeVisible();
 
     //check the contractcard
     const contractCard = initiator.getByTestId('contractCard');
     await expect(
       contractCard.getByTestId('contractName').locator('span'),
-    ).toHaveText(CONTRACTNAME);
+    ).toHaveText(DATA?.contractName ?? '');
     await expect(
       contractCard.getByTestId('namespace').locator('span'),
     ).toHaveText(DATA?.namespace ?? '');

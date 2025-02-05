@@ -27,6 +27,7 @@ test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
 
     console.log(113123123, initiatorAppendProps);
 
+    await initiator.waitForTimeout(1000000);
     await expect(true).toBe(true);
 
     await initiator.goto('/');

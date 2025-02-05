@@ -73,15 +73,6 @@ export class RWADemoAppIndex {
 
     await actor.goto('/');
     await actor.waitForTimeout(1000);
-    if (
-      await actor
-        .getByRole('heading', {
-          name: 'The account has no balance to pay the gas',
-        })
-        .isVisible()
-    ) {
-      await this.addKDA(actor, chainweaverApp);
-    }
 
     return accountData;
   }
@@ -98,20 +89,38 @@ export class RWADemoAppIndex {
     await actor.goto('/');
     await actor.waitForTimeout(1000);
 
+    if (
+      await actor
+        .getByRole('heading', {
+          name: 'The account has no balance to pay the gas',
+        })
+        .isVisible()
+    ) {
+      await this.addKDA(actor, chainweaverApp);
+    }
+
     if (!data.assetContract) {
       const contractData = await this.createAsset(actor, chainweaverApp);
       console.log(44444, contractData);
       data.assetContract = contractData;
 
       await chainweaverApp.setSetupProps(typeName, data);
-    }
 
-    console.log(3333, data);
+      await actor.evaluate(
+        ({ data }) => {
+          window.localStorage.setItem(
+            'development-selected_asset',
+            JSON.stringify(data.assetContract),
+          );
+        },
+        { data },
+      );
+    }
     return data;
   }
 
   public createContractName() {
-    return crypto.randomUUID();
+    return `${crypto.randomUUID()}`;
   }
 
   public async createAsset(
