@@ -20,18 +20,24 @@ import {
 } from '@kadena/kode-ui';
 
 import { shorten } from '@/utils/helpers';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Label } from '../transaction/components/helpers';
 
-export function CreateAccount() {
+export function CreateAccount({
+  initialContract,
+  onCreated,
+  onCancel,
+}: {
+  initialContract: string;
+  onCreated: (account: IOwnedAccount) => void;
+  onCancel: () => void;
+}) {
   const [keysetGuard, setKeysetGuard] = useState<IKeysetGuard>();
-  const [created, setCreated] = useState<IOwnedAccount | null>(null);
-  const [searchParams] = useSearchParams();
-  const urlContract = searchParams.get('contract');
-  const [contract, setContract] = useState<string | null>(urlContract);
+  const [contract, setContract] = useState<string | null>(initialContract);
   const [alias, setAlias] = useState<string | null>(null);
-  const { profile, activeNetwork, fungibles, keysets, accounts } = useWallet();
+  const { profile, activeNetwork, fungibles, accounts } = useWallet();
 
   const filteredAccounts = accounts.filter(
     (account) => account.contract === contract,
@@ -62,93 +68,90 @@ export function CreateAccount() {
 
     await accountRepository.addAccount(account);
 
-    setCreated(account);
+    onCreated(account);
   };
-
-  const filteredKeysets = keysets
-    .filter((keyset) => keyset.guard.keys.length >= 2)
-    .map((keyset) => ({
-      ...keyset,
-      used: Boolean(
-        filteredAccounts.find((account) => account.keysetId === keyset.uuid),
-      ),
-    }))
-    .sort((a) => (a.used ? 1 : -1));
-
-  if (created) {
-    return <Navigate to={`/account/${created.uuid}`} />;
-  }
 
   return (
     <>
-      <Stack style={{ maxWidth: '670px', width: '100%' }}>
-        <Card fullWidth>
-          <Stack flexDirection={'column'} gap={'xxl'}>
-            <Heading variant="h3">Create Account</Heading>
-            <Stack flexDirection={'column'} gap={'xxl'}>
-              <Select
-                label="Fungible Contract"
-                selectedKey={contract}
-                onSelectionChange={(key) => setContract(key as string)}
-              >
-                {fungibles.map((fungible) => (
-                  <SelectItem
-                    key={fungible.contract}
-                    textValue={fungible.contract}
-                  >
-                    {fungible.symbol} ({fungible.contract})
-                  </SelectItem>
-                ))}
-              </Select>
-              <TextField
-                label="Alias"
-                defaultValue={aliasDefaultValue}
-                value={alias || aliasDefaultValue}
-                onChange={(e) => setAlias(e.target.value)}
-              />
+      <Stack flexDirection={'column'} gap={'xxl'}>
+        <Heading variant="h3">Create Multi-sig Account</Heading>
+        <Stack flexDirection={'column'} gap={'xxl'}>
+          <Select
+            label="Fungible Contract"
+            selectedKey={contract}
+            onSelectionChange={(key) => setContract(key as string)}
+          >
+            {fungibles.map((fungible) => (
+              <SelectItem key={fungible.contract} textValue={fungible.contract}>
+                {fungible.symbol} ({fungible.contract})
+              </SelectItem>
+            ))}
+          </Select>
+          <TextField
+            label="Alias"
+            defaultValue={aliasDefaultValue}
+            value={alias || aliasDefaultValue}
+            onChange={(e) => setAlias(e.target.value)}
+          />
 
-              <KeySetForm
-                isOpen
-                close={() => {}}
-                variant="inline"
-                keyset={keysetGuard}
-                onChange={(data) => {
-                  if (!data) {
-                    setKeysetGuard(undefined);
-                    return;
-                  }
-                  const { alias: keysetAlias, ...keyset } = data;
-                  setKeysetGuard(keyset);
-                  if (keysetAlias && !alias) {
-                    setAlias(keysetAlias);
-                  }
-                }}
-                filteredKeysets={filteredKeysets}
-                LiveForm
-              />
-            </Stack>
-            {keysetGuard && (
-              <Stack gap={'sm'} flexDirection={'column'}>
-                <Label bold>Address:</Label>
-                <Text variant="code">{shorten(keysetGuard.principal, 26)}</Text>
-              </Stack>
-            )}
-            <Stack gap="sm">
-              <Button variant="transparent">Cancel</Button>
-              <Button
-                isDisabled={!keysetGuard}
-                onClick={() => {
-                  if (keysetGuard) {
-                    createAccountByKeyset(keysetGuard);
-                  }
-                }}
-              >
-                <>Create account</>
-              </Button>
-            </Stack>
+          <KeySetForm
+            isOpen
+            close={() => {}}
+            variant="inline"
+            keyset={keysetGuard}
+            onChange={(data) => {
+              if (!data) {
+                setKeysetGuard(undefined);
+                return;
+              }
+              const { alias: keysetAlias, ...keyset } = data;
+              setKeysetGuard(keyset);
+              if (keysetAlias && !alias) {
+                setAlias(keysetAlias);
+              }
+            }}
+            LiveForm
+          />
+        </Stack>
+        {keysetGuard && (
+          <Stack gap={'sm'} flexDirection={'column'}>
+            <Label bold>Address:</Label>
+            <Text variant="code">{shorten(keysetGuard.principal, 14)}</Text>
           </Stack>
-        </Card>
+        )}
+        <Stack gap="sm">
+          <Button variant="transparent" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button
+            isDisabled={!keysetGuard}
+            onClick={() => {
+              if (keysetGuard) {
+                createAccountByKeyset(keysetGuard);
+              }
+            }}
+          >
+            <>Create account</>
+          </Button>
+        </Stack>
       </Stack>
     </>
   );
 }
+
+export const CreateAccountPage = () => {
+  const navigate = usePatchedNavigate();
+  const [searchParams] = useSearchParams();
+  const urlContract = searchParams.get('contract');
+  return (
+    <Stack style={{ maxWidth: '670px', width: '100%' }}>
+      <Card fullWidth>
+        <CreateAccount
+          initialContract={urlContract ?? 'coin'}
+          onCreated={() => navigate('/')}
+          onCancel={() => navigate('/')}
+        />
+      </Card>
+    </Stack>
+  );
+};

@@ -7,11 +7,7 @@ import {
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
-import {
-  MonoAdd,
-  MonoMoreVert,
-  MonoRemoveRedEye,
-} from '@kadena/kode-icons/system';
+import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
 import {
   Button,
   ContextMenu,
@@ -22,9 +18,9 @@ import {
 } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { AccountItem } from '../AccountItem/AccountItem';
-import { accountTypeClass, listClass, noStyleLinkClass } from './style.css';
+import { MultiSigForm } from './MultiSigForm';
+import { accountTypeClass, listClass } from './style.css';
 import { WatchAccountsForm } from './WatchAccountForm';
 
 export function Accounts({
@@ -40,6 +36,7 @@ export function Accounts({
   const { createNextAccount, activeNetwork, profile } = useWallet();
   const [isWatchAccountExpanded, expandWatchAccount, closeWatchAccount] =
     useRightAside();
+  const [isMultiSigExpanded, expandMultiSig, closeMultiSig] = useRightAside();
   const accountsToShow = show === 'owned' ? accounts : watchedAccounts;
 
   const onWatch = async (accounts: IRetrievedAccount[]) => {
@@ -68,6 +65,11 @@ export function Accounts({
         contract={contract}
         networkId={activeNetwork!.networkId}
       />
+      <MultiSigForm
+        isOpen={isMultiSigExpanded}
+        onClose={closeMultiSig}
+        contract={contract}
+      />
       <Stack justifyContent={'space-between'}>
         <Stack gap={'sm'}>
           <Stack
@@ -93,51 +95,32 @@ export function Accounts({
           </Stack>
         </Stack>
         <Stack gap={'sm'}>
-          {contract &&
-            (show === 'owned' ? (
+          <ContextMenu
+            placement="bottom end"
+            trigger={
               <Button
                 startVisual={<MonoAdd />}
+                endVisual={<MonoMoreVert />}
                 variant="outlined"
                 isCompact
-                onClick={() => createNextAccount({ contract })}
               >
-                Next Account
+                Account
               </Button>
-            ) : (
-              <Button
-                startVisual={<MonoRemoveRedEye />}
-                variant="outlined"
-                isCompact
-                onClick={() => {
-                  expandWatchAccount();
-                }}
-              >
-                Watch Account
-              </Button>
-            ))}
-          {show === 'owned' && (
-            <ContextMenu
-              placement="bottom end"
-              trigger={
-                <Button
-                  endVisual={<MonoMoreVert />}
-                  variant="transparent"
-                  isCompact
-                />
-              }
-            >
-              <Link
-                to={
-                  contract
-                    ? `/create-account${contract ? `?contract=${contract}` : ''}`
-                    : '/create-account'
-                }
-                className={noStyleLinkClass}
-              >
-                <ContextMenuItem label="+ Advanced Account" />
-              </Link>
-            </ContextMenu>
-          )}
+            }
+          >
+            <ContextMenuItem
+              label="Create Account"
+              onClick={() => createNextAccount({ contract })}
+            />
+            <ContextMenuItem
+              label="Watch/Add existing"
+              onClick={() => expandWatchAccount()}
+            />
+            <ContextMenuItem
+              label="create Multi-Sig"
+              onClick={() => expandMultiSig()}
+            />
+          </ContextMenu>
         </Stack>
       </Stack>
       {accountsToShow.length ? (

@@ -7,8 +7,10 @@ import { useMemo } from 'react';
 
 export const Keyset = ({
   guard,
+  alias,
 }: {
   guard: { keys: string[]; pred: BuiltInPredicate; principal: string };
+  alias?: string;
 }) => {
   const { getKeyAlias } = useWallet();
   const keysWithAlias = useMemo(
@@ -35,6 +37,11 @@ export const Keyset = ({
           </Text>
         </Stack>
       ))}
+      {alias && (
+        <Stack flex={1} justifyContent={'flex-end'}>
+          <Badge size="sm">{alias}</Badge>
+        </Stack>
+      )}
     </Stack>
   );
 };
