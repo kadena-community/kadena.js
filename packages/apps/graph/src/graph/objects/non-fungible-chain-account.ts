@@ -5,6 +5,7 @@ import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
@@ -57,8 +58,7 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        description:
-          'Default page size is 20. Note that custom token related transactions are not included.',
+        description: `Default page size is ${dotenv.DEFAULT_PAGE_SIZE}. Note that custom token related transactions are not included.`,
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,

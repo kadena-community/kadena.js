@@ -70,7 +70,7 @@ export interface IContext {
 }
 
 export const PRISMA = {
-  DEFAULT_SIZE: 20,
+  DEFAULT_SIZE: 500,
 };
 
 const traceResolver = createSentryWrapper({

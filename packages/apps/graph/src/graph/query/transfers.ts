@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
@@ -30,7 +31,7 @@ export const generateTransferFilter = (args: {
 
 builder.queryField('transfers', (t) =>
   t.prismaConnection({
-    description: 'Retrieve transfers. Default page size is 20.',
+    description: `Retrieve transfers. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
     edgesNullable: false,
     args: {
       accountName: t.arg.string({
