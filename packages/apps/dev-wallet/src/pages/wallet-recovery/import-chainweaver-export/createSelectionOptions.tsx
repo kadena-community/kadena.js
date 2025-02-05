@@ -1,14 +1,38 @@
 import { ExportFromChainweaver } from '@/utils/chainweaver/chainweaver';
 import { convertFromChainweaver } from '@/utils/chainweaver/convertFromChainweaver';
 import { forEachKey } from './forEachKey';
-import {
-  ImportAccount,
-  ImportKeypair,
-  ImportNetwork,
-  ImportRootKey,
-  ImportToken,
-  OptionType,
-} from './import-chainweaver-export';
+
+export type OptionType<
+  T extends
+    | ImportAccount
+    | ImportKeypair
+    | ImportToken
+    | ImportNetwork
+    | ImportRootKey,
+> = {
+  description: string;
+  selected: boolean;
+  value: T;
+  id: string;
+};
+
+export type ImportAccount = {
+  network: string;
+  account: string;
+  notes?: string;
+};
+
+export type ImportKeypair = { private: string; public: string; index: number };
+
+export type ImportToken = {
+  network: string;
+  namespace: string | null;
+  name: string;
+};
+
+export type ImportNetwork = { network: string; hosts: string[] };
+
+export type ImportRootKey = { rootkey: string };
 
 export function createSelectionOptions(
   chainweaverExport: ExportFromChainweaver,

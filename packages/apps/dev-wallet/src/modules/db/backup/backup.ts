@@ -13,7 +13,11 @@ import {
   IKeySource,
   IProfile,
 } from '@/modules/wallet/wallet.repository';
-import { base64UrlEncodeArr, hash } from '@kadena/cryptography-utils';
+import {
+  base64UrlDecodeArr,
+  base64UrlEncodeArr,
+  hash,
+} from '@kadena/cryptography-utils';
 import { addItem, dbDump, getAllItems, putItem } from '../indexeddb';
 import { TableName, tables } from '../migration/createDB';
 
@@ -226,6 +230,22 @@ const importProfileRelatedTables = async ({
       }),
     );
   });
+};
+
+export const parseBackup = (backup: string) => {
+  const json = JSON.parse(backup, (_key, value) => {
+    if (typeof value !== 'string') return value;
+    if (value.startsWith('Uint8Array:')) {
+      const base64Url = value.split('Uint8Array:')[1];
+      return base64UrlDecodeArr(base64Url);
+    }
+    if (value.startsWith('ArrayBuffer:')) {
+      const base64Url = value.split('ArrayBuffer:')[1];
+      return base64UrlDecodeArr(base64Url).buffer;
+    }
+    return value;
+  });
+  return json;
 };
 
 export const importBackup =

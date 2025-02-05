@@ -1,3 +1,4 @@
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository';
 import { Button, Checkbox, Divider, Stack, Text } from '@kadena/kode-ui';
 import {
@@ -19,6 +20,8 @@ export function AddKeySourceForm({
   onSave: (sourcesToInstall: KeySourceType[]) => void;
   isOpen: boolean;
 }) {
+  const hdWallets = ['HD-BIP44', 'HD-chainweaver'];
+  const { profile } = useWallet();
   const [localInstalled, setLocalInstalled] =
     useState<KeySourceType[]>(installed);
 
@@ -30,7 +33,11 @@ export function AddKeySourceForm({
     }
   };
   const checkBoxProps = (source: KeySourceType) => ({
-    isDisabled: installed.includes(source),
+    isDisabled:
+      installed.includes(source) ||
+      // if the profile doesn't have a mnemonic, it can't use HD wallets
+      // e.g its imported form legacy chainweaver
+      (hdWallets.includes(source) && !profile?.securityPhraseId),
     onChange: onChange(source),
     isSelected: localInstalled.includes(source),
   });
