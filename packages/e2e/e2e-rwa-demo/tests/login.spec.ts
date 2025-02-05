@@ -1,8 +1,9 @@
 import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
+import type { ILoginDataRWAProps } from '@kadena-dev/e2e-base/src/page-objects/rwa-demo/RWADemoApp.index';
 import { expect } from '@playwright/test';
 
 const CONTRACTNAME = 'He-man';
-let NAMESPACE = '';
+let DATA: ILoginDataRWAProps['assetContract'];
 
 test('Create first asset', async ({
   initiator,
@@ -21,52 +22,15 @@ test('Create first asset', async ({
     await expect(true).toEqual(true);
   });
 
-  await test.step('Login', async () => {
-    //setup profile and account in the wallet
-    await initiator.goto('/');
-    await chainweaverApp.removeSetupProps('initiator');
-
-    const result = await RWADemoApp.login(initiator, chainweaverApp);
-    await expect(result).toEqual(true);
-  });
-
   await test.step('Add Kadena for gas', async () => {
     //setup profile and account in the wallet
     await initiator.goto('/');
 
-    await expect(
-      initiator.getByRole('heading', {
-        name: 'Add an asset',
-      }),
-    ).toBeVisible();
-
-    await expect(
-      initiator.getByRole('heading', {
-        name: 'The account has no balance to pay the gas',
-      }),
-    ).toBeVisible();
-
-    const addButton = initiator.getByRole('button', {
-      name: 'Add 5 KDA for Gas',
-    });
-
-    const startNewAssetButton = initiator.getByRole('button', {
-      name: 'Start new Asset',
-    });
-    await startNewAssetButton.waitFor();
-    await expect(startNewAssetButton).toBeDisabled();
-
-    await RWADemoApp.checkLoadingIndicator(
-      initiator,
-      addButton,
-      chainweaverApp.signWithPassword(initiator, addButton),
-    );
-
-    await expect(startNewAssetButton).toBeEnabled();
+    await RWADemoApp.addKDA(initiator, chainweaverApp);
   });
 
   await test.step('Create new asset', async () => {
-    NAMESPACE = await RWADemoApp.createAsset(initiator, chainweaverApp);
+    DATA = await RWADemoApp.createAsset(initiator, chainweaverApp);
   });
 
   await test.step('Check dashboard setup for the owner', async () => {
@@ -81,7 +45,7 @@ test('Create first asset', async ({
     ).toHaveText(CONTRACTNAME);
     await expect(
       contractCard.getByTestId('namespace').locator('span'),
-    ).toHaveText(NAMESPACE);
+    ).toHaveText(DATA?.namespace ?? '');
     await await expect(
       contractCard.getByTestId('tokenSupply').locator('span'),
     ).toHaveText('0');

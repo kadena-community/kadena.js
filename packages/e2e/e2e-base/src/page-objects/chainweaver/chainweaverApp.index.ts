@@ -297,8 +297,16 @@ export class ChainweaverAppIndex extends setupDatabase {
     trigger: Locator,
   ): Promise<boolean> {
     const popupPromise = actor.waitForEvent('popup');
+
     await trigger.click();
     const walletPopup = await popupPromise;
+    if (
+      await walletPopup
+        .getByRole('link', { name: this._PROFILENAME_WITHPASSWORD })
+        .isVisible()
+    ) {
+      await this.selectProfile(actor, this._PROFILENAME_WITHPASSWORD);
+    }
 
     const signButton = walletPopup.getByTestId('signTx');
     await signButton.click();

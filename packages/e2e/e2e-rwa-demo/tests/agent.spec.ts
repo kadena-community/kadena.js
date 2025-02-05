@@ -2,32 +2,35 @@ import type { ILoginDataProps } from '@kadena-dev/e2e-base/src/page-objects/chai
 import { expect } from '@playwright/test';
 import { test } from '../fixtures/rwa-persona.fixture';
 
-test('Create agent', async ({
-  initiator,
-  agent1,
-  RWADemoApp,
-  chainweaverApp,
-}) => {
+test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
   let ownerProps: ILoginDataProps | undefined;
   let agent1Props: ILoginDataProps | undefined;
 
-  await test.step('Setup', async () => {
-    const initiatorPromise = RWADemoApp.setup(
+  await test.step('give agent the link to the asset of the initiator', async () => {
+    const initiatorPromise = await RWADemoApp.setup(
       initiator,
       chainweaverApp,
       'initiator',
     );
 
-    const agent1Promise = RWADemoApp.setup(agent1, chainweaverApp, 'agent1');
-    const accountProps = await Promise.all([initiatorPromise, agent1Promise]);
+    // const agent1Promise = RWADemoApp.setup(agent1, chainweaverApp, 'agent1');
+    // await Promise.all([initiatorPromise, agent1Promise]);
 
-    ownerProps = accountProps[0];
-    agent1Props = accountProps[1];
+    //await chainweaverApp.selectProfile(initiator, 'Skeletor');
+    //await chainweaverApp.selectProfile(agent1, 'Skeletor');
 
-    await chainweaverApp.selectProfile(initiator, 'Skeletor');
-    await chainweaverApp.selectProfile(agent1, 'Skeletor');
+    const initiatorAppendProps = await RWADemoApp.setupAppend(
+      initiator,
+      chainweaverApp,
+      'initiator',
+    );
+
+    console.log(113123123, initiatorAppendProps);
 
     await expect(true).toBe(true);
+
+    await initiator.goto('/');
+    // await agent1.goto('/');
   });
 
   // await test.step('give agent the link to the asset of the initiator', async () => {

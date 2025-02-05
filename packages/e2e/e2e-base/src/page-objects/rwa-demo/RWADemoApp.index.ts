@@ -11,6 +11,27 @@ type IOptions =
       waitForStart?: boolean;
     };
 
+interface ICompliance {
+  isActive: boolean;
+  value: number;
+  key: string;
+}
+
+export type ILoginDataRWAProps = ILoginDataProps & {
+  assetContract?: {
+    namespace?: string;
+    contractName?: string;
+    investorCount?: number;
+    supply?: number;
+    uuid?: string;
+    compliance?: {
+      maxSupply?: ICompliance;
+      maxBalance?: ICompliance;
+      maxInvestors?: ICompliance;
+    };
+  };
+};
+
 export class RWADemoAppIndex {
   private NAMESPACE;
   private CONTRACTNAME = 'He-man';
@@ -21,19 +42,83 @@ export class RWADemoAppIndex {
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
     typeName: string,
-  ): Promise<ILoginDataProps | undefined> {
+  ): Promise<ILoginDataRWAProps | undefined> {
     await actor.goto(`https://wallet.kadena.io/?env=e2e`);
     await actor.waitForTimeout(1000);
 
-    const accountData = await chainweaverApp.setup(actor, typeName);
+    const accountData = (await chainweaverApp.setup(
+      actor,
+      typeName,
+    )) as ILoginDataRWAProps;
+
+    await actor.goto('/');
+
+    await actor.waitForTimeout(1000);
+    await actor.evaluate(
+      ({ accountData }) => {
+        window.localStorage.setItem(
+          'rwa_development_0',
+          JSON.stringify({
+            address: accountData?.data.data.account[0].value.address,
+            alias: accountData?.data.data.account[0].value.alias,
+            chains: [],
+            guard: accountData?.data.data.account[0].value.guard,
+            overallBalance:
+              accountData?.data.data.account[0].value.overallBalance,
+          }),
+        );
+      },
+      { accountData },
+    );
+
+    await actor.goto('/');
+    await actor.waitForTimeout(1000);
+    if (
+      await actor
+        .getByRole('heading', {
+          name: 'The account has no balance to pay the gas',
+        })
+        .isVisible()
+    ) {
+      await this.addKDA(actor, chainweaverApp);
+    }
 
     return accountData;
+  }
+
+  public async setupAppend(
+    actor: Page,
+    chainweaverApp: ChainweaverAppIndex,
+    typeName: string,
+  ): Promise<ILoginDataRWAProps> {
+    const data = (await chainweaverApp.getSetupProps(
+      typeName,
+    )) as ILoginDataRWAProps;
+
+    await actor.goto('/');
+    await actor.waitForTimeout(1000);
+
+    if (!data.assetContract) {
+      const contractData = await this.createAsset(actor, chainweaverApp);
+      console.log(44444, contractData);
+      data.assetContract = contractData;
+
+      await chainweaverApp.setSetupProps(typeName, data);
+    }
+
+    console.log(3333, data);
+    return data;
+  }
+
+  public createContractName() {
+    return crypto.randomUUID();
   }
 
   public async createAsset(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
-  ): Promise<string> {
+  ): Promise<ILoginDataRWAProps['assetContract']> {
+    const CONTRACTNAME = this.createContractName();
     await actor
       .getByRole('button', {
         name: 'Start new Asset',
@@ -60,7 +145,7 @@ export class RWADemoAppIndex {
 
     this.NAMESPACE = await actor.getByTestId('namespaceField').inputValue();
     await expect(this.NAMESPACE.startsWith('n_')).toEqual(true);
-    await actor.fill('#contractName', this.CONTRACTNAME);
+    await actor.fill('#contractName', CONTRACTNAME);
 
     await expect(createContractButton).toBeEnabled();
 
@@ -73,9 +158,32 @@ export class RWADemoAppIndex {
       },
     );
 
-    await actor.getByRole('heading', { name: this.CONTRACTNAME }).waitFor();
+    await actor.getByRole('heading', { name: CONTRACTNAME }).waitFor();
 
-    return this.NAMESPACE;
+    return {
+      namespace: this.NAMESPACE,
+      contractName: CONTRACTNAME,
+      uuid: '1',
+      investorCount: 0,
+      supply: -1,
+      compliance: {
+        maxSupply: {
+          isActive: false,
+          value: -1,
+          key: 'RWA.supply-limit-compliance',
+        },
+        maxBalance: {
+          isActive: false,
+          value: -1,
+          key: 'RWA.max-balance-compliance',
+        },
+        maxInvestors: {
+          isActive: false,
+          value: -1,
+          key: 'RWA.max-investors-compliance',
+        },
+      },
+    };
   }
 
   public async cookieConsent(actor: Page): Promise<boolean> {
@@ -193,6 +301,42 @@ export class RWADemoAppIndex {
     await actor.waitForTimeout(500000000);
   }
 
+  public async addKDA(
+    actor: Page,
+    chainweaverApp: ChainweaverAppIndex,
+  ): Promise<boolean> {
+    await expect(
+      actor.getByRole('heading', {
+        name: 'Add an asset',
+      }),
+    ).toBeVisible();
+
+    await expect(
+      actor.getByRole('heading', {
+        name: 'The account has no balance to pay the gas',
+      }),
+    ).toBeVisible();
+
+    const addButton = actor.getByRole('button', {
+      name: 'Add 5 KDA for Gas',
+    });
+
+    const startNewAssetButton = actor.getByRole('button', {
+      name: 'Start new Asset',
+    });
+    await startNewAssetButton.waitFor();
+    await expect(startNewAssetButton).toBeDisabled();
+
+    await this.checkLoadingIndicator(
+      actor,
+      addButton,
+      chainweaverApp.signWithPassword(actor, addButton),
+    );
+
+    await expect(startNewAssetButton).toBeEnabled();
+
+    return true;
+  }
   public async login(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,

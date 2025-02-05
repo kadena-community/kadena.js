@@ -34,6 +34,7 @@ export class setupDatabase {
     name: string,
     accountData: ILoginDataProps,
   ): Promise<void> {
+    console.log(999999, accountData);
     fs.mkdirSync(`${process.cwd()}/_generated/`, {
       recursive: true,
     });
