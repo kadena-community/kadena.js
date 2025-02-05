@@ -25,7 +25,9 @@ export async function migrateFrom37to38(
   const encryptedValuesProfileIdMap = new Map<string, string>();
   profileList.forEach((profile) => {
     encryptedValuesProfileIdMap.set(profile.secretId, profile.uuid);
-    encryptedValuesProfileIdMap.set(profile.securityPhraseId, profile.uuid);
+    if (profile.securityPhraseId) {
+      encryptedValuesProfileIdMap.set(profile.securityPhraseId, profile.uuid);
+    }
   });
   keySources.forEach((keySource) => {
     if (keySource.source === 'HD-chainweaver') {

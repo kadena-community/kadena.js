@@ -47,6 +47,11 @@ export function createBIP44Service() {
     if (!profile) {
       throw new Error('Profile not found');
     }
+    if (!profile.securityPhraseId) {
+      throw new Error(
+        'Profile does not have a security phrase; create a new profile; this might be a legacy profile',
+      );
+    }
     const encryptedMnemonic = await walletRepository.getEncryptedValue(
       profile.securityPhraseId,
     );

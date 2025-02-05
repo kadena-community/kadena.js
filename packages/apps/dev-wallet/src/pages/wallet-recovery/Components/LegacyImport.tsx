@@ -35,6 +35,7 @@ async function importLegacyData(
   data: ExportFromChainweaver,
   password: string,
   profileName: string,
+  mnemonic: string | undefined,
 ) {
   const items = createSelectionOptions(data);
   const itemsToImport = {
@@ -58,6 +59,7 @@ async function importLegacyData(
     itemsToImport,
     password,
     profileName,
+    mnemonic,
   );
   if (profileId) return walletRepository.getProfile(profileId);
   if (!profileId) throw new Error('Failed to create profile');
@@ -136,6 +138,7 @@ export function LegacyImport({
                       loadedContent.data,
                       password,
                       `profile-${profileList.length + 1} (Imported)`,
+                      mnemonic,
                     );
                     setProfile(createdProfile);
                     setStep('success');

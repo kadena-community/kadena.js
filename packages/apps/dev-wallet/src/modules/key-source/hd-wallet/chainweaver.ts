@@ -188,6 +188,11 @@ export function createChainweaverService() {
       if (!profile) {
         throw new Error('Profile not found');
       }
+      if (!profile.securityPhraseId) {
+        throw new Error(
+          'This profile does not have a mnemonic; create a new one',
+        );
+      }
       const encryptedMnemonic = await walletRepository.getEncryptedValue(
         profile.securityPhraseId,
       );

@@ -25,7 +25,7 @@ export interface IProfile {
   name: string;
   networks: INetwork[];
   secretId: string;
-  securityPhraseId: string;
+  securityPhraseId: string | undefined;
   accentColor: string;
   selectedNetworkUUID?: UUID;
   showExperimentalFeatures?: boolean;

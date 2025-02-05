@@ -10,7 +10,6 @@ import {
   networkRepository,
 } from '@/modules/network/network.repository';
 import { createProfile } from '@/modules/wallet/wallet.service';
-import { kadenaEntropyToMnemonic } from '@kadena/hd-wallet';
 
 export async function createProfileFromChainweaverData(
   cwImport: {
@@ -22,6 +21,7 @@ export async function createProfileFromChainweaverData(
   },
   password: string,
   profileName: string,
+  mnemonic: string | undefined,
 ) {
   const {
     accounts,
@@ -68,11 +68,6 @@ export async function createProfileFromChainweaverData(
       }),
     )
   ).filter((network) => network !== undefined);
-
-  const rootKeyBuffer = new TextEncoder().encode(rootKey);
-  console.log('rootKeyBuffer length', rootKeyBuffer.length);
-  const rootKeyHash = await crypto.subtle.digest('SHA-256', rootKeyBuffer);
-  const mnemonic = await kadenaEntropyToMnemonic(new Uint8Array(rootKeyHash));
 
   // process profile
   const profile = await createProfile(

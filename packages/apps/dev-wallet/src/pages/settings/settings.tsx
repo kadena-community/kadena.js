@@ -83,6 +83,7 @@ export function Settings() {
         component={Link}
         variant="outlined"
         startVisual={<MonoRemoveRedEye />}
+        isDisabled={!profile?.securityPhraseId}
       >
         Reveal Recovery Phrase
       </UiLink>
