@@ -12,6 +12,7 @@ test('Create first asset', async ({
   await test.step('Setup wallet', async () => {
     await chainweaverApp.removeSetupProps('initiator');
     await RWADemoApp.setup(initiator, chainweaverApp, 'initiator');
+    await chainweaverApp.removeSetupProps('initiator');
   });
 
   await test.step('remove cookie consent window', async () => {

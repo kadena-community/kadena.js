@@ -24,13 +24,15 @@ test('Create agent', async ({ initiator, RWADemoApp, chainweaverApp }) => {
       chainweaverApp,
       'initiator',
     );
+    await initiator.goto(
+      `/assets/create/${initiatorAppendProps.assetContract?.namespace}/${initiatorAppendProps.assetContract?.contractName}`,
+    );
 
     console.log(113123123, initiatorAppendProps);
 
     await initiator.waitForTimeout(1000000);
     await expect(true).toBe(true);
 
-    await initiator.goto('/');
     // await agent1.goto('/');
   });
 
