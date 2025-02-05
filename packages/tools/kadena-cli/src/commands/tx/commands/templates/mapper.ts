@@ -63,7 +63,10 @@ const templatePartialMetaSchema = z.object({
   // Could be optional if doing local calls
   sender: z.string(),
   // Technically optional, but kadena-client's type requires it
-  chainId: z.string().transform((chainId) => chainId as ChainId),
+  chainId: z
+    .string()
+    .or(z.array(z.string()))
+    .transform((chainId) => chainId as ChainId | ChainId[]),
   creationTime: z.number().optional(),
   gasLimit: z.number().optional(),
   gasPrice: z.number().optional(),
@@ -105,10 +108,22 @@ const templatePartialSchema = z
     return { ...transaction, meta: newMeta, signers: newSigners };
   });
 
-export const fixTemplatePactCommand = (template: unknown): IPactCommand => {
+export const fixTemplatePactCommand = (template: unknown): IPactCommand[] => {
   const parsed = templatePartialSchema.safeParse(template);
   if (parsed.success) {
-    return parsed.data;
+    if (Array.isArray(parsed.data.meta.chainId)) {
+      return parsed.data.meta.chainId.map(
+        (chainId) =>
+          ({
+            ...parsed.data,
+            meta: {
+              ...parsed.data.meta,
+              chainId,
+            },
+          }) as IPactCommand,
+      );
+    }
+    return [parsed.data] as IPactCommand[];
   }
   throw new Error(`Failed to parse template: ${formatZodError(parsed.error)}`);
 };
