@@ -55,9 +55,11 @@ export class setupDatabase {
         );
         console.log(2222, (window as any).DevWallet);
         await (window as any).DevWallet.importBackup(
-          walletImportData.data,
+          JSON.stringify(walletImportData.data),
           profileUUIDs,
         );
+
+        console.log(1111);
         return walletImportData;
       },
       { walletImportData },
