@@ -34,7 +34,6 @@ import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { SignRequestPage } from '@/pages/transaction/sign-request';
 import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transfer } from '@/pages/transfer/transfer';
-import { ImportChainweaverExport } from '@/pages/wallet-recovery/import-chainweaver-export/import-chainweaver-export';
 import { RecoverFromMnemonic } from '@/pages/wallet-recovery/recover-from-mnemonic/recover-from-mnemonic';
 import { WalletRecovery } from '@/pages/wallet-recovery/wallet-recovery';
 import { Heading } from '@kadena/kode-ui';
@@ -98,10 +97,6 @@ export const Routes: FC = () => {
             <Route
               path="/wallet-recovery/recover-from-mnemonic"
               element={<RecoverFromMnemonic />}
-            />
-            <Route
-              path="/wallet-recovery/import-chainweaver"
-              element={<ImportChainweaverExport />}
             />
             <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
