@@ -1,8 +1,7 @@
-import { IDBBackup } from '@/modules/db/backup/backup';
+import { IDBBackup, parseBackup } from '@/modules/db/backup/backup';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { validateStructure } from '@/utils/chainweaver/validateStructure';
 import { browse, readContent } from '@/utils/select-file';
-import { base64UrlDecodeArr } from '@kadena/cryptography-utils';
 import { MonoRestore } from '@kadena/kode-icons/system';
 import {
   Box,
@@ -80,20 +79,15 @@ export function WalletRecovery() {
                 if (file && file instanceof File) {
                   const content = await readContent(file);
                   try {
-                    const json = JSON.parse(content, (_key, value) => {
-                      if (typeof value !== 'string') return value;
-                      if (value.startsWith('Uint8Array:')) {
-                        const base64Url = value.split('Uint8Array:')[1];
-                        return base64UrlDecodeArr(base64Url);
-                      }
-                      if (value.startsWith('ArrayBuffer:')) {
-                        const base64Url = value.split('ArrayBuffer:')[1];
-                        return base64UrlDecodeArr(base64Url).buffer;
-                      }
-                      return value;
-                    });
+                    const json = parseBackup(content);
                     setFileContent(json);
                     if (json.wallet_version === '3') {
+                      if (json.db_version < 46) {
+                        setError(
+                          'The backup file is too old, You cant recover this file - this was generated with alpha version which is not supported anymore',
+                        );
+                        return;
+                      }
                       const backup: IDBBackup = json;
                       console.log('chainweaver v3 detected!');
                       const profiles = backup.data.profile.map(

@@ -11,6 +11,7 @@ import {
   PublicKeyCredentialCreate,
 } from '@/utils/webAuthn';
 
+import { MonoKey } from '@kadena/kode-icons/system';
 import {
   Button,
   Card,
@@ -34,7 +35,11 @@ type Inputs = {
   confirmation: string;
   fromChainweaver: boolean;
   accentColor: string;
-  keyDerivation: 'HD-BIP44' | 'HD-chainweaver' | 'auto-detect';
+  keyDerivation:
+    | 'HD-BIP44'
+    | 'HD-chainweaver'
+    | 'HD-eckoWALLET'
+    | 'auto-detect';
 };
 
 export function RecoverFromMnemonic() {
@@ -134,7 +139,8 @@ export function RecoverFromMnemonic() {
       await createHDWallet(profile.uuid, 'HD-chainweaver', pass);
       await createHDWallet(profile.uuid, 'HD-BIP44', pass);
     } else {
-      const keySource = await createHDWallet(profile.uuid, method, pass);
+      const hdMethod = method === 'HD-eckoWALLET' ? 'HD-chainweaver' : method;
+      const keySource = await createHDWallet(profile.uuid, hdMethod, pass);
       const key = await createKey(keySource);
       await createKAccount({
         profileId: profile.uuid,
@@ -174,6 +180,7 @@ export function RecoverFromMnemonic() {
     }
   }
   const profileName = watch('profileName');
+  const keyDerivation = watch('keyDerivation');
   return (
     <Card>
       <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
@@ -233,28 +240,59 @@ export function RecoverFromMnemonic() {
                     name="keyDerivation"
                     render={({ field }) => (
                       <Select
-                        label="Key derivation method"
+                        label="Select the wallet you wan to import from"
                         defaultSelectedKey={'auto-detect'}
                         onSelectionChange={(value) => field.onChange(value)}
                       >
-                        <SelectItem
-                          key={'auto-detect'}
-                          textValue={'auto-detect'}
-                        >
-                          Auto Detect
-                        </SelectItem>
-                        <SelectItem
-                          key={'HD-chainweaver'}
-                          textValue={'HD-chainweaver'}
-                        >
-                          {`Legacy (chainweaver v1/v2)${legacyKey ? ` - account 1 "k:${shorten(legacyKey, 6)}"` : ''}`}
-                        </SelectItem>
-                        <SelectItem key={'HD-BIP44'} textValue={'HD-BIP44'}>
-                          {`BIP44 (chainweaver v3)${bip44key ? ` -  account 1 k:${shorten(bip44key, 6)}` : ''}`}
-                        </SelectItem>
+                        {methodSelectItem({
+                          key: 'auto-detect',
+                          textValue: 'auto-detect',
+                          title: 'Auto Detect',
+                        })}
+                        {methodSelectItem({
+                          key: 'HD-chainweaver',
+                          textValue: 'HD-chainweaver',
+                          title: 'Legacy chainweaver (v1/v2)',
+                        })}
+                        {methodSelectItem({
+                          key: 'HD-eckoWALLET',
+                          textValue: 'HD-chainweaver',
+                          title: 'eckoWALLET',
+                        })}
+                        {methodSelectItem({
+                          key: 'HD-BIP44',
+                          textValue: 'HD-BIP44',
+                          title: 'BIP44 (chainweaver v3)',
+                        })}
                       </Select>
                     )}
                   />
+                  {['HD-chainweaver', 'HD-eckoWALLET'].includes(
+                    keyDerivation,
+                  ) &&
+                    legacyKey && (
+                      <Text>
+                        <Stack gap={'sm'} alignItems={'center'}>
+                          <Text size="smallest">First key</Text>
+                          <MonoKey />
+                          <Text size="smallest" variant="code">
+                            {shorten(legacyKey, 10)}
+                          </Text>
+                        </Stack>
+                      </Text>
+                    )}
+
+                  {keyDerivation === 'HD-BIP44' && bip44key && (
+                    <Text>
+                      <Stack gap={'sm'} alignItems={'center'}>
+                        <Text size="smallest">First key</Text>
+                        <MonoKey />
+                        <Text size="smallest" variant="code">
+                          {shorten(bip44key, 10)}
+                        </Text>
+                      </Stack>
+                    </Text>
+                  )}
                 </Stack>
 
                 <TextField
@@ -371,5 +409,23 @@ export function RecoverFromMnemonic() {
         {error && <Text>{error}</Text>}
       </Stack>
     </Card>
+  );
+}
+
+function methodSelectItem({
+  key,
+  textValue,
+  title,
+}: {
+  key: React.Key;
+  textValue: string;
+  title: string;
+}) {
+  return (
+    <SelectItem key={key} textValue={textValue}>
+      <Stack flexDirection={'column'} gap={'sm'}>
+        <Text color="inherit">{title}</Text>
+      </Stack>
+    </SelectItem>
   );
 }

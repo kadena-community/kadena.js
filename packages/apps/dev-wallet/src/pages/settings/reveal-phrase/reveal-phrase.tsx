@@ -31,6 +31,17 @@ export function RevealPhrase() {
       setError("Password doesn't match");
     }
   }
+
+  if (profile?.securityPhraseId === undefined) {
+    return (
+      <AuthCard>
+        <Notification intent="negative" role="alert">
+          No recovery phrase found
+        </Notification>
+      </AuthCard>
+    );
+  }
+
   if (error) {
     return (
       <AuthCard>

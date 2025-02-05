@@ -104,7 +104,7 @@ export async function createProfile(
   networks: INetwork[],
   accentColor: string,
   options: IProfile['options'],
-  securityTerm: string | Uint8Array,
+  securityTerm: string | Uint8Array | undefined,
 ) {
   const secretId = crypto.randomUUID();
   // create this in order to verify the password later
@@ -114,15 +114,18 @@ export async function createProfile(
     'buffer',
   );
   const profileUUID = crypto.randomUUID();
-  const encryptedTerm = await kadenaEncrypt(password, securityTerm, 'buffer');
-  const securityPhraseId = crypto.randomUUID();
   await walletRepository.addEncryptedValue(secretId, secret, profileUUID);
 
-  await walletRepository.addEncryptedValue(
-    securityPhraseId,
-    encryptedTerm,
-    profileUUID,
-  );
+  const securityPhraseId = securityTerm ? crypto.randomUUID() : undefined;
+  if (securityTerm) {
+    const encryptedTerm = await kadenaEncrypt(password, securityTerm, 'buffer');
+
+    await walletRepository.addEncryptedValue(
+      securityPhraseId!,
+      encryptedTerm,
+      profileUUID,
+    );
+  }
 
   const profile: IProfile = {
     uuid: profileUUID,
@@ -209,19 +212,29 @@ export const changePassword = async (
 ) => {
   const profile = await walletRepository.getProfile(profileId);
   const keySources = await walletRepository.getProfileKeySources(profileId);
+  const persistData: Array<() => Promise<void>> = [];
   if (!profile) return;
-  const encryptedMnemonic = await walletRepository.getEncryptedValue(
-    profile.securityPhraseId,
-  );
-  if (!encryptedMnemonic) {
-    throw new Error('No mnemonic found');
+  if (profile.securityPhraseId !== undefined) {
+    const securityPhraseId = profile.securityPhraseId;
+    const encryptedMnemonic =
+      await walletRepository.getEncryptedValue(securityPhraseId);
+    if (!encryptedMnemonic) {
+      throw new Error('No mnemonic found');
+    }
+    const data = await kadenaChangePassword(
+      currentPassword,
+      encryptedMnemonic,
+      newPassword,
+      'buffer',
+    );
+    persistData.push(() =>
+      walletRepository.updateEncryptedValue(
+        securityPhraseId,
+        data,
+        profile.uuid,
+      ),
+    );
   }
-  const data = await kadenaChangePassword(
-    currentPassword,
-    encryptedMnemonic,
-    newPassword,
-    'buffer',
-  );
   const secret = await kadenaEncrypt(
     newPassword,
     JSON.stringify({ secretId: profile.secretId }),
@@ -230,7 +243,6 @@ export const changePassword = async (
   const legacyKeySource = keySources.filter(
     ({ source }) => source === 'HD-chainweaver',
   );
-  const persistData: Array<() => Promise<void>> = [];
   if (legacyKeySource.length > 0) {
     const service = (await keySourceManager.get(
       'HD-chainweaver',
@@ -250,19 +262,12 @@ export const changePassword = async (
     );
   }
 
-  persistData.push(
-    () =>
-      walletRepository.updateEncryptedValue(
-        profile.securityPhraseId,
-        data,
-        profile.uuid,
-      ),
-    () =>
-      walletRepository.updateEncryptedValue(
-        profile.secretId,
-        secret,
-        profile.uuid,
-      ),
+  persistData.push(() =>
+    walletRepository.updateEncryptedValue(
+      profile.secretId,
+      secret,
+      profile.uuid,
+    ),
   );
 
   // save all data to the db in on place after all the operations are done;
