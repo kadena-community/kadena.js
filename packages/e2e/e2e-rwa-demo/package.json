@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
+    "build": "echo \"No build needed.\"",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
@@ -11,6 +12,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint . --ext .js,.ts",
+    "test": "echo \"No tests yet.\"",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test  --ui"
   },
