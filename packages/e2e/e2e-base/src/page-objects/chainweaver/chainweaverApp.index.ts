@@ -1,7 +1,12 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
 import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
+import type { ILoginDataProps } from './setupDatabase';
 import { setupDatabase } from './setupDatabase';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 export class ChainweaverAppIndex extends setupDatabase {
   private _webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
@@ -11,6 +16,12 @@ export class ChainweaverAppIndex extends setupDatabase {
 
   public constructor() {
     super();
+  }
+
+  public getWalletUrl() {
+    if (process.env.WALLETURL) return process.env.WALLETURL;
+
+    return 'https://wallet.kadena.io';
   }
 
   public async createAccount(actor: Page): Promise<string> {
@@ -23,6 +34,7 @@ export class ChainweaverAppIndex extends setupDatabase {
     const newAccountButton = actor.getByRole('button', {
       name: 'Account',
     });
+    await newAccountButton.waitFor();
     await expect(newAccountButton).toBeVisible();
     await newAccountButton.click();
 
@@ -54,24 +66,43 @@ export class ChainweaverAppIndex extends setupDatabase {
 
   public async setup(
     actor: Page,
+    typeName: string,
     full: boolean = true,
-  ): Promise<{
-    profileName: string;
-    phrase: string;
-  }> {
-    const data = await this.createProfileWithPassword(actor);
-    await this.goToSettings(actor);
+  ): Promise<ILoginDataProps | undefined> {
+    await actor.goto(`${this.getWalletUrl()}/?env=e2e`);
+    await actor.waitForTimeout(1000);
 
-    if (full) {
-      await this.addNetwork(actor, {
-        networkId: 'development',
-        title: 'development',
-        host: 'http://localhost:8080',
+    let accountData: ILoginDataProps | undefined = undefined;
+
+    try {
+      accountData = await this.importBackup(actor, typeName);
+    } catch (e) {
+      const data = await this.createProfileWithPassword(actor);
+
+      await this.goToSettings(actor);
+
+      if (full) {
+        await this.addNetwork(actor, {
+          networkId: 'development',
+          title: 'development',
+          host: 'http://localhost:8080',
+        });
+
+        await this.selectNetwork(actor, 'Development');
+
+        await actor.goto(`${this.getWalletUrl()}/?env=e2e`);
+        await this.createAccount(actor);
+      }
+      accountData = await this.downloadBackup(actor, {
+        profileName: data.profileName,
+        phrase: data.phrase,
+        typeName,
       });
-
-      await this.selectNetwork(actor, 'Development');
+    } finally {
+      await actor.goto(`${this.getWalletUrl()}/?env=e2e`);
     }
-    return data;
+
+    return accountData;
   }
   public async createProfile(actor: Page): Promise<string> {
     await this._webAuthNHelper.enableVirtualAuthenticator(actor);

@@ -4,11 +4,6 @@ import { expect } from '@playwright/test';
 import type { ChainweaverAppIndex } from '../chainweaver/chainweaverApp.index';
 import type { ILoginDataProps } from '../chainweaver/setupDatabase';
 
-import dotenv from 'dotenv';
-import path from 'path';
-
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
-
 type IOptions =
   | undefined
   | {
@@ -27,27 +22,10 @@ export class RWADemoAppIndex {
     chainweaverApp: ChainweaverAppIndex,
     typeName: string,
   ): Promise<ILoginDataProps | undefined> {
-    await actor.goto(`${process.env.WALLETURL}/?env=e2e`);
+    await actor.goto(`https://wallet.kadena.io/?env=e2e`);
     await actor.waitForTimeout(1000);
 
-    let accountData;
-    try {
-      accountData = await chainweaverApp.importBackup(actor, typeName);
-    } catch (e) {
-      const { profileName, phrase } = await chainweaverApp.setup(actor);
-
-      await chainweaverApp.selectNetwork(actor, 'development');
-      await actor.goto(`${process.env.WALLETURL}/?env=e2e`);
-      await chainweaverApp.createAccount(actor);
-
-      accountData = await chainweaverApp.restoreBackup(actor, {
-        profileName,
-        phrase,
-        typeName,
-      });
-    } finally {
-      await actor.goto(`${process.env.WALLETURL}/?env=e2e`);
-    }
+    const accountData = await chainweaverApp.setup(actor, typeName);
 
     return accountData;
   }
