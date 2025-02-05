@@ -10,7 +10,7 @@ test('Create first asset', async ({
   chainweaverApp,
 }) => {
   await test.step('Setup wallet', async () => {
-    await RWADemoApp.removeSetupProps('initiator');
+    await chainweaverApp.removeSetupProps('initiator');
     await RWADemoApp.setup(initiator, chainweaverApp, 'initiator');
   });
 
@@ -24,7 +24,7 @@ test('Create first asset', async ({
   await test.step('Login', async () => {
     //setup profile and account in the wallet
     await initiator.goto('/');
-    await RWADemoApp.removeSetupProps('initiator');
+    await chainweaverApp.removeSetupProps('initiator');
 
     const result = await RWADemoApp.login(initiator, chainweaverApp);
     await expect(result).toEqual(true);

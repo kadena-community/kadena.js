@@ -1,15 +1,17 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
-import type { ILoginDataProps } from '../rwa-demo/RWADemoApp.index';
+import { setupDatabase } from './setupDatabase';
 
-export class ChainweaverAppIndex {
+export class ChainweaverAppIndex extends setupDatabase {
   private _webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
   private _PROFILENAME: string = 'He-man';
   private _PROFILENAME_WITHPASSWORD: string = 'Skeletor';
   private _PASSWORD: string = '123456';
 
-  public constructor() {}
+  public constructor() {
+    super();
+  }
 
   public async createAccount(actor: Page): Promise<string> {
     const listItems = await actor

@@ -1,7 +1,13 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import * as fs from 'fs';
+
 import type { ChainweaverAppIndex } from '../chainweaver/chainweaverApp.index';
+import type { ILoginDataProps } from '../chainweaver/setupDatabase';
+
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 type IOptions =
   | undefined
@@ -10,100 +16,38 @@ type IOptions =
       waitForStart?: boolean;
     };
 
-export interface ILoginDataProps {
-  db: {
-    name: string;
-    version: string;
-  };
-  profileName: string;
-  phrase: string;
-  data: any;
-}
-
 export class RWADemoAppIndex {
   private NAMESPACE;
   private CONTRACTNAME = 'He-man';
 
   public constructor() {}
 
-  public async getSetupProps(
-    name: string,
-  ): Promise<ILoginDataProps | undefined> {
-    const walletImportData = await JSON.parse(
-      fs.readFileSync(`./_generated/${name}.json`, 'utf8'),
-    );
-
-    return walletImportData;
-  }
-  public async removeSetupProps(name: string): Promise<void> {
-    try {
-      await fs.unlinkSync(`./_generated/${name}.json`);
-    } catch (e) {}
-  }
-
   public async setup(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
     typeName: string,
   ): Promise<ILoginDataProps | undefined> {
-    await actor.goto('https://wallet.kadena.io/?env=e2e');
+    await actor.goto(`${process.env.WALLETURL}/?env=e2e`);
     await actor.waitForTimeout(1000);
 
     let accountData;
     try {
-      const walletImportData = await this.getSetupProps(typeName);
-      if (!walletImportData) return;
-
-      accountData = await actor.evaluate(
-        async ({ walletImportData }) => {
-          console.log(11111, walletImportData.data.data);
-          const profileUUIDs = walletImportData.data.data.profile.map(
-            (profile) => profile.key,
-          );
-          console.log(3333, profileUUIDs);
-
-          await window.DevWallet.importBackup(
-            walletImportData.data,
-            profileUUIDs,
-          );
-          return walletImportData;
-        },
-        { walletImportData },
-      );
-
-      await actor.goto('https://wallet.kadena.io/?env=e2e');
+      accountData = await chainweaverApp.importBackup(actor, typeName);
     } catch (e) {
       const { profileName, phrase } = await chainweaverApp.setup(actor);
 
       await chainweaverApp.selectNetwork(actor, 'development');
-      await actor.goto('https://wallet.kadena.io/?env=e2e');
+      await actor.goto(`${process.env.WALLETURL}/?env=e2e`);
       await chainweaverApp.createAccount(actor);
 
-      accountData = await actor.evaluate(
-        async ({ profileName, phrase }) => {
-          const dbs = await window.indexedDB.databases();
-          const db = dbs[0];
-          const data = await window.DevWallet.serializeTables();
-
-          return {
-            db,
-            phrase,
-            profileName,
-            data: JSON.parse(data),
-          };
-        },
-        { profileName, phrase },
-      );
-
-      fs.mkdirSync(`./_generated/`, { recursive: true });
-      fs.writeFileSync(
-        `./_generated/${typeName}.json`,
-        JSON.stringify(accountData, null, 2),
-        { encoding: 'utf8' },
-      );
+      accountData = await chainweaverApp.restoreBackup(actor, {
+        profileName,
+        phrase,
+        typeName,
+      });
+    } finally {
+      await actor.goto(`${process.env.WALLETURL}/?env=e2e`);
     }
-
-    await actor.goto('https://wallet.kadena.io/');
 
     return accountData;
   }
