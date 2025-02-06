@@ -251,7 +251,13 @@ function isContinuationDone(
   if (result.result.status === 'failure' && result.result.error) {
     const error = result.result.error;
     if (error && 'message' in error && typeof error.message === 'string') {
-      return error.message.includes('pact completed');
+      // TODO: this code is very fragile and should be replaced with a more robust solution
+      return (
+        // pact4
+        error.message.includes('pact completed') ||
+        // pact5
+        error.message.includes('defpact execution already completed')
+      );
     }
   }
   return false;
