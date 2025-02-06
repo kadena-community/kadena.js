@@ -25,9 +25,6 @@ test('Create agent', async ({
       chainweaverApp,
       'initiator',
     );
-    await initiator.goto(
-      `/assets/create/${ownerProps.assetContract?.namespace}/${ownerProps.assetContract?.contractName}`,
-    );
 
     await agent1.goto(
       `/assets/create/${ownerProps.assetContract?.namespace}/${ownerProps.assetContract?.contractName}`,
@@ -36,80 +33,80 @@ test('Create agent', async ({
     await expect(true).toBe(true);
   });
 
-  // await test.step('give agent the link to the asset of the initiator', async () => {
-  //   await initiator
-  //     .context()
-  //     .grantPermissions(['clipboard-read', 'clipboard-write']);
-  //   await agent1
-  //     .context()
-  //     .grantPermissions(['clipboard-read', 'clipboard-write']);
+  await test.step('give agent the link to the asset of the initiator', async () => {
+    await initiator
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
+    await agent1
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
 
-  //   const link = await RWADemoApp.getAssetLink(initiator);
+    const link = await RWADemoApp.getAssetLink(initiator);
 
-  //   await agent1.goto(link);
-  //   await agent1.waitForTimeout(200);
+    await agent1.goto(link);
+    await agent1.waitForTimeout(200);
 
-  //   await agent1
-  //     .getByRole('heading', { name: ownerProps.assetContract?.contractName })
-  //     .waitFor();
+    await agent1
+      .getByRole('heading', { name: ownerProps.assetContract?.contractName })
+      .waitFor();
 
-  //   await initiator
-  //     .getByTestId('contractCard')
-  //     .getByTestId('namespace')
-  //     .waitFor({ state: 'visible' });
+    await initiator
+      .getByTestId('contractCard')
+      .getByTestId('namespace')
+      .waitFor({ state: 'visible' });
 
-  //   const initiatorNamespaceNew = await initiator
-  //     .getByTestId('contractCard')
-  //     .getByTestId('namespace')
-  //     .locator('span')
-  //     .innerText();
-  //   const agent1NamespaceNew = await agent1
-  //     .getByTestId('contractCard')
-  //     .getByTestId('namespace')
-  //     .locator('span')
-  //     .innerText();
+    const initiatorNamespaceNew = await initiator
+      .getByTestId('contractCard')
+      .getByTestId('namespace')
+      .locator('span')
+      .innerText();
+    const agent1NamespaceNew = await agent1
+      .getByTestId('contractCard')
+      .getByTestId('namespace')
+      .locator('span')
+      .innerText();
 
-  //   await expect(
-  //     initiatorNamespaceNew === ownerProps.assetContract?.namespace,
-  //   ).toBe(true);
-  //   await expect(initiatorNamespaceNew === agent1NamespaceNew).toBe(true);
-  // });
+    await expect(
+      initiatorNamespaceNew === ownerProps.assetContract?.namespace,
+    ).toBe(true);
+    await expect(initiatorNamespaceNew === agent1NamespaceNew).toBe(true);
+  });
 
-  // await test.step('check set compliance rules for owner and agent', async () => {
-  //   await agent1.goto('/');
-  //   await initiator.goto('/');
+  await test.step('check set compliance rules for owner and agent', async () => {
+    await agent1.goto('/');
+    await initiator.goto('/');
 
-  //   await expect(
-  //     agent1.getByTestId('assetCard').getByTestId('complianceAction'),
-  //   ).toHaveAttribute('data-disabled', 'true');
-  //   await expect(
-  //     agent1.getByTestId('leftaside').locator('li:nth-child(2)'),
-  //   ).not.toHaveText('Agents');
+    await expect(
+      agent1.getByTestId('assetCard').getByTestId('complianceAction'),
+    ).toHaveAttribute('data-disabled', 'true');
+    await expect(
+      agent1.getByTestId('leftaside').locator('li:nth-child(2)'),
+    ).not.toHaveText('Agents');
 
-  //   await expect(
-  //     initiator.getByTestId('assetCard').getByTestId('complianceAction'),
-  //   ).not.toHaveAttribute('data-disabled');
-  //   await expect(
-  //     initiator.getByTestId('leftaside').locator('li:nth-child(2)'),
-  //   ).toHaveText('Agents');
-  // });
+    await expect(
+      initiator.getByTestId('assetCard').getByTestId('complianceAction'),
+    ).not.toHaveAttribute('data-disabled');
+    await expect(
+      initiator.getByTestId('leftaside').locator('li:nth-child(2)'),
+    ).toHaveText('Agents');
+  });
 
-  // await test.step('Set agent1 to agentrole', async () => {
-  //   await initiator
-  //     .getByTestId('leftaside')
-  //     .locator('nav > ul li:nth-child(2)')
-  //     .click();
-  //   await initiator
-  //     .getByTestId('agentsCard')
-  //     .getByRole('heading', { name: 'Agents' })
-  //     .waitFor();
+  await test.step('Set agent1 to agentrole', async () => {
+    await initiator
+      .getByTestId('leftaside')
+      .locator('nav > ul li:nth-child(2)')
+      .click();
+    await initiator
+      .getByTestId('agentsCard')
+      .getByRole('heading', { name: 'Agents' })
+      .waitFor();
 
-  //   await expect(
-  //     initiator
-  //       .getByTestId('agentsCard')
-  //       .getByRole('heading', { name: 'Agents' }),
-  //   ).toBeVisible();
-  // });
+    await expect(
+      initiator
+        .getByTestId('agentsCard')
+        .getByRole('heading', { name: 'Agents' }),
+    ).toBeVisible();
+  });
 
   await test.step('Add Agent1 as Agent role "agent-admin"', async () => {
     await initiator.goto('/agents');

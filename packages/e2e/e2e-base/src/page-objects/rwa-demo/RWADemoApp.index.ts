@@ -102,13 +102,10 @@ export class RWADemoAppIndex {
 
     // do not save the contract to a file.
     // we want a clean contract when every test starts
-    //if (!data.assetContract) {
-    await actor.waitForTimeout(1000);
-    const contractData = await this.createAsset(actor, chainweaverApp);
-    console.log(44444, contractData);
-    data.assetContract = contractData;
 
-    //await chainweaverApp.setSetupProps(typeName, data);
+    await actor.waitForTimeout(5000);
+    const contractData = await this.createAsset(actor, chainweaverApp);
+    data.assetContract = contractData;
 
     await actor.evaluate(
       ({ data }) => {
@@ -240,16 +237,9 @@ export class RWADemoAppIndex {
       waitForStart: true,
     },
   ): Promise<void> {
-    // await expect(
-    //   loadingWrapper.getByTestId('no-pending-transactionIcon'),
-    // ).toBeVisible();
-    // await expect(
-    //   loadingWrapper.getByTestId('pending-transactionIcon'),
-    // ).toBeHidden();
     await callback;
     await actor.waitForTimeout(1000);
     //show loading indicator
-    console.log(222222222, options, loadingWrapper.isVisible());
     if ((await loadingWrapper.isVisible()) && options?.waitForStart) {
       await expect(
         loadingWrapper.getByTestId('pending-transactionIcon'),
@@ -260,6 +250,8 @@ export class RWADemoAppIndex {
           .getByTestId('pending-transactionIcon')
           .waitFor({ state: 'detached' });
       }
+
+      await actor.waitForTimeout(2000);
     }
   }
 
