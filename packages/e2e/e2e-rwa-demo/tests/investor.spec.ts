@@ -1,5 +1,5 @@
 import type { ILoginDataRWAProps } from '@kadena-dev/e2e-base/src/page-objects/rwa-demo/RWADemoApp.index';
-import { expect, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { test } from '../fixtures/rwa-persona.fixture';
 
 test('Investor checks', async ({
