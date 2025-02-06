@@ -116,44 +116,27 @@ test('Create agent', async ({
       'true',
     );
 
-    await initiator
-      .locator('div[data-testid="agentTable"][data-isloading="false"]')
-      .waitFor({ timeout: 60000 });
-
-    await initiator.waitForTimeout(1000);
-
-    const tr = await initiator.locator('table > tbody tr').all();
-    await expect(tr.length).toBe(0);
-
-    await initiator
-      .getByTestId('agentsCard')
-      .getByRole('button', { name: 'Add Agent' })
-      .click();
-
-    const rightAside = initiator.getByTestId('rightaside');
-    await initiator.type(
-      '[name="accountName"]',
-      agent1Props.data.data.account[0].value.address,
-      { delay: 10 },
-    );
-    await initiator.type('[name="alias"]', 'skeletor', { delay: 10 });
-
-    await rightAside.getByRole('checkbox').first().click();
-
-    const txSpinner = initiator.getByTestId('agentTableTxSpinner');
-    await RWADemoApp.checkLoadingIndicator(
+    await RWADemoApp.createAgent(
       initiator,
-      txSpinner,
-      chainweaverApp.signWithPassword(
-        initiator,
-        rightAside.getByRole('button', { name: 'Add Agent' }),
-      ),
+      agent1Props,
+      'Orko',
+      chainweaverApp,
     );
+  });
 
-    // await initiator.waitForTimeout(1000000);
-    const newTr = await initiator
-      .locator('table > tbody tr > td:nth-child(1)')
-      .all();
-    await expect(newTr.length).toBe(1);
+  await test.step('when agent is removed, the roles should also be removed', async () => {
+    /**
+     * TODO: there is a bug where the roles for the call `get-agent-roles` are not removed once the agent is removed
+     * the actual rights ARE removed, just not the roles definition
+     * once this bug is fixed, lets create a test for it
+     * https://app.asana.com/0/1208241270436006/1209168000490129
+     * replicate:
+     * 1. create new asset
+     * 2. owner does not have role for freezing contract and can not freeze contract on dashboard
+     * 3. add owner as an agent with freezer role
+     * 4. owner now can freeze the contract on dashboard
+     * 5. remove owner as an agent
+     * 6. owner still has the role to freeze the contract on dashboard (still should NOT be the case)
+     */
   });
 });

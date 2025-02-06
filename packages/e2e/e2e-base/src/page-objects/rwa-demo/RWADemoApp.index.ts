@@ -102,7 +102,7 @@ export class RWADemoAppIndex {
     // do not save the contract to a file.
     // we want a clean contract when every test starts
 
-    await actor.waitForTimeout(5000);
+    await actor.waitForTimeout(1000);
     const contractData = await this.createAsset(actor, chainweaverApp);
     data.assetContract = contractData;
 
@@ -373,5 +373,109 @@ export class RWADemoAppIndex {
     ).toBeVisible();
 
     return true;
+  }
+
+  public async createAgent(
+    actor: Page,
+    investorAccountProps: ILoginDataRWAProps,
+    alias: string,
+    chainweaverApp: ChainweaverAppIndex,
+  ) {
+    await actor.goto('/agents');
+
+    await actor
+      .locator('div[data-testid="agentTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
+
+    await actor.waitForTimeout(1000);
+
+    const tr = await actor.locator('table > tbody tr > td:nth-child(1)').all();
+
+    await actor
+      .getByTestId('agentsCard')
+      .getByRole('button', { name: 'Add Agent' })
+      .click();
+
+    const rightAside = actor.getByTestId('rightaside');
+    await actor.type(
+      '[name="accountName"]',
+      investorAccountProps.data.data.account[0].value.address,
+      { delay: 10 },
+    );
+    await actor.type('[name="alias"]', alias, { delay: 10 });
+
+    await rightAside.getByRole('checkbox').nth(0).click();
+    await rightAside.getByRole('checkbox').nth(1).click();
+    await rightAside.getByRole('checkbox').nth(2).click();
+
+    const txSpinner = actor.getByTestId('agentTableTxSpinner');
+    await this.checkLoadingIndicator(
+      actor,
+      txSpinner,
+      chainweaverApp.signWithPassword(
+        actor,
+        rightAside.getByRole('button', { name: 'Add Agent' }),
+      ),
+    );
+
+    await actor.waitForTimeout(1000);
+    const newTr = await actor
+      .locator('table > tbody tr > td:nth-child(1)')
+      .all();
+    await expect(newTr.length).toBe(tr.length + 1);
+  }
+
+  public async createInvestor(
+    actor: Page,
+    investorAccountProps: ILoginDataRWAProps,
+    alias: string,
+    chainweaverApp: ChainweaverAppIndex,
+  ) {
+    await actor
+      .getByTestId('leftaside')
+      .locator('nav > ul li:nth-child(3)')
+      .click();
+    await actor
+      .getByTestId('investorsCard')
+      .getByRole('heading', { name: 'Investors' })
+      .waitFor();
+
+    await actor
+      .locator('div[data-testid="investorTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
+
+    await actor.waitForTimeout(1000);
+
+    const tr = await actor.locator('table > tbody tr > td:nth-child(1)').all();
+
+    await actor
+      .getByTestId('investorsCard')
+      .getByRole('button', { name: 'Add Investor' })
+      .last()
+      .click();
+
+    const rightAside = actor.getByTestId('rightaside');
+    await actor.type(
+      '[name="accountName"]',
+      investorAccountProps.data.data.account[0].value.address,
+      { delay: 10 },
+    );
+    await actor.type('[name="alias"]', alias, { delay: 10 });
+
+    const txSpinner = actor.getByTestId('investorTableTxSpinner');
+    await this.checkLoadingIndicator(
+      actor,
+      txSpinner,
+      chainweaverApp.signWithPassword(
+        actor,
+        rightAside.getByRole('button', { name: 'Add Investor' }),
+      ),
+    );
+
+    await actor.waitForTimeout(1000);
+    const newTr = await actor
+      .locator('table > tbody tr > td:nth-child(1)')
+      .all();
+    await expect(newTr.length).toBe(tr.length + 1);
   }
 }
