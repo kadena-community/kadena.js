@@ -1,6 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-
 import type { ChainweaverAppIndex } from '../chainweaver/chainweaverApp.index';
 import type { ILoginDataProps } from '../chainweaver/setupDatabase';
 

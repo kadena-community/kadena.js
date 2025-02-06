@@ -28,7 +28,7 @@ const config: PlaywrightTestConfig = {
     //   testMatch: 'devnet.setup.ts',
     // },
     {
-      name: 'tools',
+      name: 'rwa',
       testDir: 'tests',
     },
   ],
