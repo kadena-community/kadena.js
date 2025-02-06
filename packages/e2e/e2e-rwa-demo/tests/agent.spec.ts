@@ -153,7 +153,10 @@ test('Create agent', async ({
       ),
     );
 
-    const newTr = await initiator.locator('table > tbody tr').all();
+    // await initiator.waitForTimeout(1000000);
+    const newTr = await initiator
+      .locator('table > tbody tr > td:nth-child(1)')
+      .all();
     await expect(newTr.length).toBe(1);
   });
 });

@@ -100,23 +100,26 @@ export class RWADemoAppIndex {
       await this.addKDA(actor, chainweaverApp);
     }
 
-    if (!data.assetContract) {
-      const contractData = await this.createAsset(actor, chainweaverApp);
-      console.log(44444, contractData);
-      data.assetContract = contractData;
+    // do not save the contract to a file.
+    // we want a clean contract when every test starts
+    //if (!data.assetContract) {
+    await actor.waitForTimeout(1000);
+    const contractData = await this.createAsset(actor, chainweaverApp);
+    console.log(44444, contractData);
+    data.assetContract = contractData;
 
-      await chainweaverApp.setSetupProps(typeName, data);
+    //await chainweaverApp.setSetupProps(typeName, data);
 
-      await actor.evaluate(
-        ({ data }) => {
-          window.localStorage.setItem(
-            'development-selected_asset',
-            JSON.stringify(data.assetContract),
-          );
-        },
-        { data },
-      );
-    }
+    await actor.evaluate(
+      ({ data }) => {
+        window.localStorage.setItem(
+          'development-selected_asset',
+          JSON.stringify(data.assetContract),
+        );
+      },
+      { data },
+    );
+    //}
 
     return data;
   }
@@ -244,26 +247,20 @@ export class RWADemoAppIndex {
     //   loadingWrapper.getByTestId('pending-transactionIcon'),
     // ).toBeHidden();
     await callback;
-    // //show loading indicator
-    // if ((await loadingWrapper.isVisible()) && options?.waitForStart) {
-    //   await expect(
-    //     loadingWrapper.getByTestId('no-pending-transactionIcon'),
-    //   ).toBeHidden();
-    //   await expect(
-    //     loadingWrapper.getByTestId('pending-transactionIcon'),
-    //   ).toBeVisible();
-    //   if ((await loadingWrapper.isVisible()) && options?.waitForEnd) {
-    //     await loadingWrapper
-    //       .getByTestId('no-pending-transactionIcon')
-    //       .waitFor();
-    //     await expect(
-    //       loadingWrapper.getByTestId('no-pending-transactionIcon'),
-    //     ).toBeVisible();
-    //     await expect(
-    //       loadingWrapper.getByTestId('pending-transactionIcon'),
-    //     ).toBeHidden();
-    //   }
-    // }
+    await actor.waitForTimeout(1000);
+    //show loading indicator
+    console.log(222222222, options, loadingWrapper.isVisible());
+    if ((await loadingWrapper.isVisible()) && options?.waitForStart) {
+      await expect(
+        loadingWrapper.getByTestId('pending-transactionIcon'),
+      ).toBeVisible();
+
+      if (options?.waitForEnd) {
+        await loadingWrapper
+          .getByTestId('pending-transactionIcon')
+          .waitFor({ state: 'detached' });
+      }
+    }
   }
 
   public async getAssetLink(actor: Page): Promise<string> {
