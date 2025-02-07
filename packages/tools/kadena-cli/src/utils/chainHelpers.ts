@@ -1,5 +1,5 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
-import { Pact } from '@kadena/client';
+import { getPactErrorCode, Pact } from '@kadena/client';
 
 import { dirtyRead } from './client.js';
 
@@ -41,6 +41,6 @@ export async function accountExists(
   const { result } = await getBalance(accountName, chainId, networkId);
   return !(
     result.status === 'failure' &&
-    (result.error as { message: string }).message.includes('row not found')
+    getPactErrorCode(result.error) === 'RECORD_NOT_FOUND'
   );
 }

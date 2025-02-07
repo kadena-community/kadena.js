@@ -84,6 +84,11 @@ export type EckoStatus = 'success' | 'fail';
 export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;
 
 // @public (undocumented)
+export function getPactErrorCode(error: {
+    message: string | undefined;
+} | undefined): PactErrorCode;
+
+// @public (undocumented)
 export interface IBaseClient {
     createSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId, options?: ClientRequestInit) => Promise<string>;
     getStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor, options?: ClientRequestInit) => Promise<IPollResponse>;
@@ -497,6 +502,9 @@ export type Milliseconds = number & {
 
 // @public
 export const Pact: IPact;
+
+// @public (undocumented)
+export type PactErrorCode = 'RECORD_NOT_FOUND' | 'DEFPACT_COMPLETED' | 'CANNOT_RESOLVE_MODULE' | 'EMPTY_CODE' | 'ERROR';
 
 // @public
 export type PactReference = Literal | (() => string);

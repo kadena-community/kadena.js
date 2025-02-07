@@ -1,3 +1,4 @@
+import { getPactErrorCode } from '@kadena/client';
 import {
   PrismaClientInitializationError,
   PrismaClientKnownRequestError,
@@ -100,13 +101,13 @@ export function normalizeError(error: unknown): GraphQLError {
   if (error instanceof PactCommandError) {
     let description: string | undefined;
 
-    if (error.pactError?.message.includes('with-read: row not found')) {
+    if (getPactErrorCode(error.pactError) === 'RECORD_NOT_FOUND') {
       description =
         'The requested resource (account, e.g.) was most likely not found.';
-    } else if (error.pactError?.message.startsWith('Cannot resolve')) {
+    } else if (getPactErrorCode(error.pactError) === 'CANNOT_RESOLVE_MODULE') {
       description =
         'The requested module or function was most likely not found.';
-    } else if (error.pactError?.message.includes('Failed reading: mzero')) {
+    } else if (getPactErrorCode(error.pactError) === 'EMPTY_CODE') {
       description =
         'Empty code was most likely sent to the Chainweb Node. Please check your arguments.';
     }

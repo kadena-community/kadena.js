@@ -28,4 +28,5 @@ export {
   IUnsignedCommand,
 } from '@kadena/types';
 
+export * from './utils/getPactErrorCode';
 export * from './utils/parseAsPactValue';
