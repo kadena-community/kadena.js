@@ -15,7 +15,7 @@ export type PactErrorCode =
  * This function is compatible with both Pact 4 and Pact 5 error formats.
  *
  * @param  error - The error returned by Pact.
- * @returns {PactErrorCode} - The extracted Pact error ('ERROR' if the error code could not be extracted).
+ * @returns {@link PactErrorCode} - The extracted Pact error ('ERROR' if the error code could not be extracted).
  *
  * @example
  * ```ts
