@@ -83,7 +83,7 @@ export type EckoStatus = 'success' | 'fail';
 // @public
 export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;
 
-// @public (undocumented)
+// @public
 export function getPactErrorCode(error: {
     message: string | undefined;
 } | undefined): PactErrorCode;
@@ -503,7 +503,7 @@ export type Milliseconds = number & {
 // @public
 export const Pact: IPact;
 
-// @public (undocumented)
+// @public
 export type PactErrorCode = 'RECORD_NOT_FOUND' | 'DEFPACT_COMPLETED' | 'CANNOT_RESOLVE_MODULE' | 'EMPTY_CODE' | 'ERROR';
 
 // @public
