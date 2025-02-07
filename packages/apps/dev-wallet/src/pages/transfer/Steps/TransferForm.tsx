@@ -37,6 +37,7 @@ import {
   needToSelectKeys,
 } from '../utils';
 
+import { IOwnedAccount } from '@/modules/account/account.repository';
 import { AccountSearchBox } from '../Components/AccountSearchBox';
 import { CreationTime } from '../Components/CreationTime';
 import { Label } from '../Components/Label';
@@ -116,7 +117,9 @@ export function TransferForm({
     contacts,
   } = useWallet();
   const [, , AdvancedMode] = useShow(true);
-  const urlAccount = allAccounts.find((account) => account.uuid === accountId);
+  const urlAccount = [...allAccounts, ...watchAccounts].find(
+    (account) => account.uuid === accountId,
+  ) as IOwnedAccount | undefined;
   const {
     control,
     watch,
@@ -1086,11 +1089,34 @@ export function TransferForm({
                   <Radio value="safeTransfer">
                     {
                       (
-                        <Stack alignItems={'center'} gap={'sm'}>
-                          Safe transfer
-                          <Text size="small">
-                            Sign by both sender and receiver
-                          </Text>
+                        <Stack flexDirection={'column'} gap={'sm'}>
+                          <Stack alignItems={'center'} gap={'sm'}>
+                            Safe transfer
+                            <Text size="small">
+                              Sign by both sender and receiver
+                            </Text>
+                          </Stack>
+                          {hasXChain &&
+                            crossChainMode === 'x-chain' &&
+                            field.value === 'safeTransfer' && (
+                              <Notification role="alert" intent="warning">
+                                Note: You cant perform a cross-chain safe
+                                transfer. the transaction(s) will be created as
+                                normal transfer. if you want to do a safe
+                                transfer, please switch to redistribution mode
+                                <Stack gap="sm">
+                                  <Button
+                                    isCompact
+                                    variant="outlined"
+                                    onClick={() => {
+                                      setValue('xchainMode', 'redistribution');
+                                    }}
+                                  >
+                                    Enable Redistribution
+                                  </Button>
+                                </Stack>
+                              </Notification>
+                            )}
                         </Stack>
                       ) as any
                     }

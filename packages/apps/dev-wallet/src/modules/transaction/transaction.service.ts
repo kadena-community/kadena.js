@@ -1,3 +1,4 @@
+import { normalizeErrorObject } from '@/utils/getErrorMessage';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import {
   ChainId,
@@ -111,11 +112,23 @@ export async function syncTransactionStatus(
     }
   }
   if (tx.status === 'submitted') {
-    const result = await client.pollOne(tx.request!);
+    let request = tx.request;
+    if (!request) {
+      // this happens if chainweb returns error while submitting the transaction
+      // but the tx might be already submitted before
+      const cmd: IPactCommand = JSON.parse(tx.cmd);
+      request = {
+        networkId: cmd.networkId,
+        chainId: cmd.meta.chainId,
+        requestKey: tx.hash,
+      };
+    }
+    const result = await client.pollOne(request);
     if (result) {
       const updatedTx: ITransaction = {
         ...tx,
         status: result.result.status,
+        request,
         result: result,
       };
       await transactionRepository.updateTransaction(updatedTx);
@@ -232,7 +245,7 @@ export const preflightTransaction = async (
         preflight: {
           result: {
             status: 'failure',
-            error: e.message ? JSON.stringify(e) : 'UNKNOWN_ERROR',
+            error: normalizeErrorObject(e),
           },
         },
         request: undefined,
@@ -325,7 +338,7 @@ export const submitTransaction = async (
           preflight: {
             result: {
               status: 'failure',
-              error: e.message ? JSON.stringify(e) : 'UNKNOWN_ERROR',
+              error: normalizeErrorObject(e),
             },
           },
           request: undefined,
@@ -368,7 +381,7 @@ export const submitTransaction = async (
         result: {
           result: {
             status: 'failure',
-            error: e.message ? JSON.stringify(e) : 'UNKNOWN_ERROR',
+            error: normalizeErrorObject(e),
           },
         },
         request: undefined,

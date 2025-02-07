@@ -12,6 +12,7 @@ import { accountRepository } from '@/modules/account/account.repository';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { getTransferActivities } from '@/modules/activity/activity.service';
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { shorten } from '@/utils/helpers';
 import { useAsync } from '@/utils/useAsync';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
@@ -138,8 +139,8 @@ export function AccountPage() {
         </SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem href={`/account/${accountId}`}>
           {account.alias
-            ? `${account.alias} (${account.address})`
-            : account.address}
+            ? `${account.alias} (${shorten(account.address, 10)})`
+            : shorten(account.address, 10)}
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       <AliasForm show={isRightAsideExpanded} account={account} />
@@ -298,30 +299,30 @@ export function AccountPage() {
                   </Stack>
                   <Stack flexDirection={'column'} gap={'md'}>
                     <Text>Keys</Text>
-                    {account.guard.keys.map((key) => (
-                      <Stack key={key} gap="sm" flexDirection={'column'}>
-                        <Stack key={key} gap="sm" alignItems={'center'}>
-                          {isKeysetGuard(account.guard) &&
-                            account.guard.keys.length > 1 && (
-                              <Badge size="sm">
-                                {getKeyAlias(key, account.contract)}
-                              </Badge>
-                            )}
+                    {account.guard.keys.map((key) => {
+                      const alias = getKeyAlias(key, account.contract);
+                      return (
+                        <Stack key={key} gap="sm" flexDirection={'column'}>
+                          <Stack key={key} gap="sm" alignItems={'center'}>
+                            {isKeysetGuard(account.guard) &&
+                              account.guard.keys.length > 1 &&
+                              alias && <Badge size="sm">{alias}</Badge>}
+                          </Stack>
+                          <Stack gap="sm" alignItems={'center'}>
+                            <Text>
+                              <MonoKey />
+                            </Text>
+                            <Text
+                              variant="code"
+                              color="emphasize"
+                              className={addressBreakClass}
+                            >
+                              {key}
+                            </Text>
+                          </Stack>
                         </Stack>
-                        <Stack gap="sm" alignItems={'center'}>
-                          <Text>
-                            <MonoKey />
-                          </Text>
-                          <Text
-                            variant="code"
-                            color="emphasize"
-                            className={addressBreakClass}
-                          >
-                            {key}
-                          </Text>
-                        </Stack>
-                      </Stack>
-                    ))}
+                      );
+                    })}
                   </Stack>
                 </>
               )}
