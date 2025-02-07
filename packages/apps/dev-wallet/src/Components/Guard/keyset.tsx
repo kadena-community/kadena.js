@@ -31,7 +31,7 @@ export const Keyset = ({
           <Text size="smallest">
             <MonoKey />
           </Text>
-          {keysWithAlias.length > 1 && <Badge size="sm">{alias}</Badge>}
+          {alias && <Badge size="sm">{alias}</Badge>}
           <Text variant="code" size="smallest">
             {shorten(key!)}
           </Text>

@@ -18,7 +18,9 @@ self.addEventListener('activate', () => {
   self.clients.claim(); // Take control of open clients (pages)
 });
 
-const setContext = async (context: SecureContext) => {
+const setContext = async (
+  context: Pick<SecureContext, 'encryptionKey' | 'encryptionPhrase'>,
+) => {
   caches.open('sec-context').then((cache) => {
     const buffer = new Uint8Array(
       4 +
@@ -103,7 +105,6 @@ self.addEventListener('message', async (event) => {
           getPassword(sessionEntropy, encryptionKey),
           payload.phrase,
         ),
-        keepPolicy: payload.keepPolicy,
       });
       if (payload.keepPolicy === 'short-time') {
         clearTimer = setTimeout(clearContext, payload.ttl || 5 * 60 * 1000);
