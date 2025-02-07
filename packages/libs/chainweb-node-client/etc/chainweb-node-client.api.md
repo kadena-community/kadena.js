@@ -67,25 +67,9 @@ export interface IListenRequestBody {
 }
 
 // @alpha
-export interface ILocalCommandResult {
-    // (undocumented)
-    continuation: IPactExec | null;
-    // (undocumented)
-    events?: Array<IPactEvent>;
-    // (undocumented)
-    gas: number;
-    // (undocumented)
-    logs: string | null;
-    // (undocumented)
-    metaData: IChainwebResponseMetaData | null;
+export interface ILocalCommandResult extends ICommandResult {
     // (undocumented)
     preflightWarnings?: Array<string>;
-    // (undocumented)
-    reqKey: IBase64Url;
-    // (undocumented)
-    result: IPactResultSuccess | IPactResultError;
-    // (undocumented)
-    txId: number | null;
 }
 
 // @alpha (undocumented)
@@ -102,7 +86,12 @@ export type ILocalResult = IPreflightResult | ICommandResult;
 // @alpha
 export interface IPactResultError {
     // (undocumented)
-    error: object;
+    error: {
+        callStack: any;
+        type: string;
+        message: string;
+        info: string;
+    };
     // (undocumented)
     status: 'failure';
 }

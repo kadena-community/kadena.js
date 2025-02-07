@@ -1,3 +1,4 @@
+import { getPactErrorCode } from '@kadena/client';
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
@@ -39,9 +40,10 @@ export async function getFungibleAccountDetails(
 
     return result as IFungibleChainAccountDetails;
   } catch (error) {
+    const code = getPactErrorCode(error);
     if (
-      error.message.includes('with-read: row not found') || // Account not found
-      error.message.includes('Cannot resolve') // Fungible or contract not found
+      code === 'RECORD_NOT_FOUND' || // Account not found
+      code === 'CANNOT_RESOLVE_MODULE' // Fungible or contract not found
     ) {
       return null;
     } else {
