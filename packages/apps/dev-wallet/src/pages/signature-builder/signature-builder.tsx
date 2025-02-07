@@ -202,7 +202,7 @@ export function SignatureBuilder() {
     if (tx) {
       if (txWithMetaData.sigs && txWithMetaData.sigs.length > 0) {
         const updatedTx = addSignatures(
-          txWithMetaData,
+          tx,
           ...(txWithMetaData.sigs.filter((item) => item && item.sig) as Array<{
             sig: string;
             pubKey?: string;
