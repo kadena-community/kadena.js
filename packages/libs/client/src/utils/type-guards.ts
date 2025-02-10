@@ -13,7 +13,7 @@ export const hasField = <T extends string>(
 
 /**
  *
- * @param arg
+ * @param arg - the argument to check
  * @returns boolean
  * @public
  */
@@ -22,7 +22,7 @@ export const isIPactDecimal = (arg: unknown): arg is IPactDecimal =>
 
 /**
  *
- * @param arg
+ * @param arg - the argument to check
  * @returns boolean
  * @public
  */
