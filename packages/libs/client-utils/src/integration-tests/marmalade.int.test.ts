@@ -178,7 +178,7 @@ describe('createToken', () => {
         }),
       )
       .execute();
-
+      console.log(result, "create-token")
     expect(result).toBe(true);
   });
 });
@@ -276,7 +276,7 @@ describe('mintToken', () => {
     );
 
     await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });
@@ -305,7 +305,7 @@ describe('getTokenBalance', () => {
 
     await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(
-        `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
+        `No value found in table marmalade-v2.ledger_ledger for key: non-existi...`,
       ),
     );
   });
@@ -343,7 +343,7 @@ describe('getAccountDetails', () => {
 
     await expect(() => Promise.resolve(task)).rejects.toThrowError(
       new Error(
-        `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
+        `No value found in table marmalade-v2.ledger_ledger for key: non-existi...`,
       ),
     );
   });
@@ -376,7 +376,7 @@ describe('getTokenInfo', () => {
     });
 
     await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });
@@ -402,7 +402,7 @@ describe('getTokenUri', () => {
     });
 
     await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });
@@ -446,7 +446,7 @@ describe('updateUri', () => {
     );
 
     await expect(() => task.execute()).rejects.toThrowError(
-      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });
@@ -669,7 +669,7 @@ describe('burnToken', () => {
     );
 
     await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });

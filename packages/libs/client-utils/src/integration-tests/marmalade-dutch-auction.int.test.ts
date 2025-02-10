@@ -320,7 +320,7 @@ describe('offerToken - with auction data', () => {
     );
 
     await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });

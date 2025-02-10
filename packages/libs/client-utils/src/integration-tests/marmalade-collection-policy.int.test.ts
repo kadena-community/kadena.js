@@ -305,7 +305,7 @@ describe('mintToken', () => {
     );
 
     await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });
@@ -331,7 +331,7 @@ describe('getCollection', () => {
       },
     });
   });
-  it('should throw an error if token does not exist', async () => {
+  it('should throw an error if collection does not exist', async () => {
     const nonExistingTokenId = 'non-existing-collection';
     const task = getCollection({
       collectionId: nonExistingTokenId,
@@ -341,7 +341,7 @@ describe('getCollection', () => {
     });
 
     await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(`read: row not found: non-existing-collection`),
+      new Error(`No value found in table marmalade-v2.collection-policy-v1_collections for key: non-existi...`),
     );
   });
 });
@@ -370,7 +370,7 @@ describe('getCollectionToken', () => {
     });
 
     await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(`read: row not found: non-existing-token`),
+      new Error(`No value found in table marmalade-v2.collection-policy-v1_tokens for key: non-existi...`),
     );
   });
 });

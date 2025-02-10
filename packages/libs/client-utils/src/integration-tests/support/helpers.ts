@@ -1,4 +1,4 @@
-import { createSignWithKeypair } from '@kadena/client';
+import { createSignWithKeypair, parseAsPactValue } from '@kadena/client';
 import {
   addData,
   addSigner,
@@ -52,14 +52,13 @@ export const getBlockTime = async (props?: { chainId?: ChainId }) => {
       }),
     ),
   ).execute();
-
-  return new Date(Number(time) * 1000);
+  
+  return new Date(Number(parseAsPactValue(time)) * 1000);
 };
 
 export const waitForBlockTime = async (timeMs: number) => {
   while (true) {
     const time = await getBlockTime();
-
     if (time.getTime() >= timeMs) {
       break;
     }

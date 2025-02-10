@@ -326,7 +326,7 @@ describe('offerToken - with auction data', () => {
     );
 
     await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
+      new Error('No value found in table marmalade-v2.ledger_tokens for key: non-existi...'),
     );
   });
 });
@@ -499,7 +499,7 @@ describe('getAuctionDetails', () => {
 
 describe('placeBid', () => {
   it('should be able to place a bid on conventional auction', async () => {
-    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
+    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000)
 
     const withStep = withStepFactory();
 
@@ -509,6 +509,7 @@ describe('placeBid', () => {
       networkId: config.defaults.networkId,
       host: config.host,
     });
+    
     const result = await placeBid(
       {
         bid: { decimal: '2.0' },
@@ -589,7 +590,7 @@ describe('createBidId', () => {
     expect(bidId).toBeDefined();
   });
 });
-
+ 
 describe('getBid', () => {
   it('should get the bid', async () => {
     const result = await getBid({
@@ -597,7 +598,7 @@ describe('getBid', () => {
       chainId,
       networkId: config.defaults.networkId,
       host: config.host,
-    });
+    })
 
     expect(result).toStrictEqual({
       bid: 2,
@@ -932,6 +933,7 @@ describe('buyToken', () => {
         'preflight',
         withStep((step, prResult) => {
           expect(step).toBe(2);
+          console.log(JSON.stringify(prResult))
           if (prResult.result.status === 'failure') {
             expect(prResult.result.status).toBe('success');
           } else {
@@ -952,6 +954,7 @@ describe('buyToken', () => {
         'listen',
         withStep((step, sbResult) => {
           expect(step).toBe(4);
+          console.log(JSON.stringify(sbResult))
           if (sbResult.result.status === 'failure') {
             expect(sbResult.result.status).toBe('success');
           } else {

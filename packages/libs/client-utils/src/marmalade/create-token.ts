@@ -75,7 +75,6 @@ const generatePolicyTransactionData = (
   props: PolicyProps,
 ): ((cmd: IPartialPactCommand) => IPartialPactCommand)[] => {
   const data = [];
-
   if (policyConfig?.collection) {
     data.push(addData('collection_id', props.collection.collectionId));
   }
@@ -240,7 +239,7 @@ export const createToken = <C extends ICreateTokenPolicyConfig>(
   inputs: WithCreateTokenPolicy<C, ICreateTokenInput>,
   config: IClientConfig,
 ) => {
-  fetch('/api/cron').catch(console.log);
+  fetch('http://localhost:3000/api/cron').catch(console.log);
   return submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['create-token']>
   >(config)(createTokenCommand(inputs));

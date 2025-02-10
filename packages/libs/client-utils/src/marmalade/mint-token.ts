@@ -125,7 +125,7 @@ const mintTokenCommand = ({
 };
 
 export const mintToken = (inputs: IMintTokenInput, config: IClientConfig) => {
-  fetch('/api/cron').catch(console.log);
+  fetch('http://localhost:3000/api/cron').catch(console.log);
   return submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['mint']>
   >(config)(mintTokenCommand(inputs));
