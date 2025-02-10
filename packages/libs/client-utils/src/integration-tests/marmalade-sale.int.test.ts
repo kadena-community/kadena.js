@@ -1,5 +1,5 @@
-import type { ChainId } from '@kadena/client';
-import { createSignWithKeypair } from '@kadena/client';
+import type { ChainId, PactErrorCode } from '@kadena/client';
+import { createSignWithKeypair, getPactErrorCode } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import type { IPactInt } from '@kadena/types';
 import { describe, expect, it } from 'vitest';
@@ -319,9 +319,8 @@ describe('offerToken - default', () => {
       saleConfig,
     );
 
-    await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
-    );
+    const res = await task.execute().catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
 

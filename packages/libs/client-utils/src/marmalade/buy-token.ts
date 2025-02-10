@@ -129,16 +129,14 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
             ),
           ]
         : []),
-      ...(auctionConfig?.dutch
-        ? [
-            signFor(
-              'coin.TRANSFER',
-              buyer.account,
-              (props as unknown as IDutchAuctionPurchaseInput).escrow.account,
-              (props as unknown as IDutchAuctionPurchaseInput).updatedPrice,
-            ),
-          ]
-        : []),
+      ...[
+        signFor(
+          'coin.TRANSFER',
+          buyer.account,
+          (props as unknown as IDutchAuctionPurchaseInput).escrow.account,
+          (props as unknown as IDutchAuctionPurchaseInput).updatedPrice,
+        ),
+      ],
       ...formatCapabilities(capabilities, signFor),
     ]),
     ...generatePolicyTransactionData({

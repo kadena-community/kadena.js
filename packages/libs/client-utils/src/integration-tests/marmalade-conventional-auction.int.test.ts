@@ -326,7 +326,6 @@ describe('offerToken - with auction data', () => {
     );
 
     const res = await task.execute().catch((err) => getPactErrorCode(err));
-
     expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
@@ -509,6 +508,7 @@ describe('placeBid', () => {
       networkId: config.defaults.networkId,
       host: config.host,
     });
+
     const result = await placeBid(
       {
         bid: { decimal: '2.0' },
