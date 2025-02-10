@@ -190,7 +190,7 @@ const reduceModules = (acc: Required<IModuleLike>[], module: IModuleLike) => {
       name: module.name,
       namespace: module.namespace ?? '',
       hash: module.hash ?? '',
-      imports: [],
+      imports: module.imports ?? [],
     });
   } else {
     const mod = acc[idx];
@@ -198,7 +198,9 @@ const reduceModules = (acc: Required<IModuleLike>[], module: IModuleLike) => {
       name: mod.name,
       namespace: mod.namespace,
       hash: mod.hash ?? module.hash,
-      imports: [],
+      imports: [...mod.imports, ...(module.imports ?? [])].filter(
+        isNotDuplicated((a, b) => a === b),
+      ),
     };
   }
   return acc;
@@ -244,6 +246,7 @@ export function contractParser(
             ...getUsedModules(location, usedModules),
             ...getUsedModulesInFunctions(mod.functions),
           ].reduce(reduceModules, []);
+          console.log('modules', modules);
           return {
             ...mod,
             namespace: getNamespace(location, namespaces) || namespace,
