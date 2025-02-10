@@ -24,7 +24,7 @@ import {
   addMinutesToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitForBlockTime,
+  waitForBlocks,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -498,7 +498,7 @@ describe('getAuctionDetails', () => {
 
 describe('placeBid', () => {
   it('should be able to place a bid on conventional auction', async () => {
-    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
+    await waitForBlocks(3);
 
     const withStep = withStepFactory();
 
@@ -788,7 +788,7 @@ describe('buyToken', () => {
   });
 
   it('should be able to place a bid on conventional auction', async () => {
-    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
+    await waitForBlocks(3);
 
     const withStep = withStepFactory();
 
@@ -878,7 +878,7 @@ describe('buyToken', () => {
   });
 
   it('should buy a token', async () => {
-    await waitForBlockTime((Number(auctionEndDate.int) + 7) * 1000);
+    await waitForBlocks(3);
 
     const withStep = withStepFactory();
 

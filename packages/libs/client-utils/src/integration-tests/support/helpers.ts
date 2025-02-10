@@ -56,16 +56,19 @@ export const getBlockTime = async (props?: { chainId?: ChainId }) => {
   return new Date(Number(parseAsPactValue(time)) * 1000);
 };
 
-export const waitForBlockTime = async (timeMs: number) => {
-  while (true) {
-    const time = await getBlockTime();
-
-    if (time.getTime() >= timeMs) {
-      break;
-    }
-
-    await waitFor(1000);
-  }
+/**
+ * The nodeBlockDelay is a constant set to 0.05 minutes in the sandbox.
+ * See also `.github/actions/sandbox/docker-compose.yaml`
+ *
+ * @param blockCount approximate amount of blocks to wait for
+ */
+export const waitForBlocks = async (blockCount: number) => {
+  // taken from .github/actions/sandbox/docker-compose.yaml
+  // localhost:8080/info doesn't return the correct `nodeBlockDelay`
+  const MINING_BATCH_PERIOD = 0.05; // is in minutes
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, blockCount * MINING_BATCH_PERIOD * 60 * 1000);
+  });
 };
 
 export const addDaysToDate = (originalDate: Date, daysToAdd: number) =>

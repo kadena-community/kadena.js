@@ -21,7 +21,7 @@ import {
   addDaysToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitForBlockTime,
+  waitForBlocks,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -510,7 +510,7 @@ describe('getCurrentPrice', () => {
   });
 
   it('should return start price after the auction have started', async () => {
-    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
+    await waitForBlocks(3);
 
     const result = await getCurrentPrice({
       saleId: saleId as string,
@@ -704,7 +704,7 @@ describe('buyToken', () => {
   });
 
   it('should buy a token', async () => {
-    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
+    await waitForBlocks(3);
 
     const withStep = withStepFactory();
 
