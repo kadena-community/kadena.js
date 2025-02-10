@@ -9,12 +9,12 @@ export const validateStructure = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const keys = data.map((d: any) => d[0][0]);
     const expectedKeys = [
-      'StoreFrontend_Wallet_Keys',
-      'StoreFrontend_Wallet_Accounts',
-      'StoreFrontend_Network_PublicMeta',
-      'StoreFrontend_Network_Networks',
-      'StoreFrontend_Network_SelectedNetwork',
-      'StoreFrontend_ModuleExplorer_SessionFile',
+      'StoreFrontend_Wallet_Keys', // confirmed
+      'StoreFrontend_Wallet_Accounts', // confirmed
+      // 'StoreFrontend_Network_PublicMeta', // optional
+      // 'StoreFrontend_Network_Networks', // optional but should be filled with default values
+      // 'StoreFrontend_Network_SelectedNetwork', // optional
+      // 'StoreFrontend_ModuleExplorer_SessionFile', // optional
     ];
 
     expectedKeys.forEach((key) => {
