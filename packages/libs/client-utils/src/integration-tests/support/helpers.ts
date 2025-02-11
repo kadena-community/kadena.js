@@ -56,6 +56,18 @@ export const getBlockTime = async (props?: { chainId?: ChainId }) => {
   return new Date(Number(parseAsPactValue(time)) * 1000);
 };
 
+export const waitForBlockTime = async (timeMs: number) => {
+  while (true) {
+    const time = await getBlockTime();
+
+    if (time.getTime() >= timeMs) {
+      break;
+    }
+
+    await waitFor(1000);
+  }
+};
+
 /**
  * The nodeBlockDelay is a constant set to 0.05 minutes in the sandbox.
  * See also `.github/actions/sandbox/docker-compose.yaml`

@@ -21,7 +21,7 @@ import {
   addDaysToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitForBlocks,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -510,7 +510,7 @@ describe('getCurrentPrice', () => {
   });
 
   it('should return start price after the auction have started', async () => {
-    await waitForBlocks(3);
+    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
 
     const result = await getCurrentPrice({
       saleId: saleId as string,
@@ -704,7 +704,7 @@ describe('buyToken', () => {
   });
 
   it('should buy a token', async () => {
-    await waitForBlocks(3);
+    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
 
     const withStep = withStepFactory();
 
@@ -749,6 +749,8 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        buyerFungibleAccount: secondaryTargetAccount.account,
+        sellerFungibleAccount: sourceAccount.account,
         signerPublicKey: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
@@ -772,6 +774,7 @@ describe('buyToken', () => {
       .on(
         'preflight',
         withStep((step, prResult) => {
+          console.log(prResult, "logging dutch auction")
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
             expect(prResult.result.status).toBe('success');

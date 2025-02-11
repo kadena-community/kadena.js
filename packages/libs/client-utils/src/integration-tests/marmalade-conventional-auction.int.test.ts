@@ -24,7 +24,7 @@ import {
   addMinutesToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitForBlocks,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -498,7 +498,7 @@ describe('getAuctionDetails', () => {
 
 describe('placeBid', () => {
   it('should be able to place a bid on conventional auction', async () => {
-    await waitForBlocks(3);
+    await waitForBlockTime((Number(auctionStartDate.int) + 10) * 1000);
 
     const withStep = withStepFactory();
 
@@ -788,8 +788,7 @@ describe('buyToken', () => {
   });
 
   it('should be able to place a bid on conventional auction', async () => {
-    await waitForBlocks(3);
-
+    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
     const withStep = withStepFactory();
 
     const config = {
@@ -834,6 +833,7 @@ describe('buyToken', () => {
       .on(
         'preflight',
         withStep((step, prResult) => {
+          console.log(prResult, "failing case 2")
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
             expect(prResult.result.status).toBe('success');
@@ -854,10 +854,10 @@ describe('buyToken', () => {
       .on(
         'listen',
         withStep((step, sbResult) => {
+          console.log(sbResult, "Listening to failing case 2")
           const bidEvent = sbResult.events?.find(
             (event) => event.name === 'BID_PLACED',
           );
-
           bidId = bidEvent?.params[0] as string;
 
           expect(step).toBe(4);
@@ -873,14 +873,14 @@ describe('buyToken', () => {
         console.error(JSON.stringify(err, null, 2));
         return false;
       });
+      console.log(result, "failing result")
 
     expect(result).toBe(true);
     
   });
 
   it('should buy a token', async () => {
-    await waitForBlocks(3);
-
+    await waitForBlockTime((Number(auctionEndDate.int) + 12) * 1000);
     const withStep = withStepFactory();
 
     const config = {

@@ -17,7 +17,7 @@ import {
   addMinutesToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitForBlocks,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -378,7 +378,7 @@ describe('withdrawToken', () => {
 
   it('should withdraw a token from the sale after the timeout have passed', async () => {
     // wait for the sale timeout to pass
-    await waitForBlocks(10);
+    await waitForBlockTime((Number(timeout.int) + 10) * 1000);
 
     const withStep = withStepFactory();
 
@@ -555,7 +555,7 @@ describe('buyToken', () => {
 
   it('should buy a token', async () => {
     // wait for the sale timeout to pass
-    await waitForBlocks(3);
+    await waitForBlockTime((Number(timeout.int) + 2) * 1000);
 
     const withStep = withStepFactory();
 
