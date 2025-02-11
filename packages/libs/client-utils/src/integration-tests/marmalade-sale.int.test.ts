@@ -378,7 +378,7 @@ describe('withdrawToken', () => {
 
   it('should withdraw a token from the sale after the timeout have passed', async () => {
     // wait for the sale timeout to pass
-    await waitForBlocks(3);
+    await waitForBlocks(10);
 
     const withStep = withStepFactory();
 
@@ -598,7 +598,6 @@ describe('buyToken', () => {
       .on(
         'preflight',
         withStep((step, prResult) => {
-          console.log('prResult', JSON.stringify(prResult, null, 2));
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
             expect(prResult.result.status).toBe('success');

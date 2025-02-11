@@ -875,6 +875,7 @@ describe('buyToken', () => {
       });
 
     expect(result).toBe(true);
+    
   });
 
   it('should buy a token', async () => {
@@ -912,6 +913,8 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        buyerFungibleAccount: _escrowAccount as string,
+        sellerFungibleAccount: sourceAccount.account,
         signerPublicKey: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
