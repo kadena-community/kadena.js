@@ -246,7 +246,6 @@ export function contractParser(
             ...getUsedModules(location, usedModules),
             ...getUsedModulesInFunctions(mod.functions),
           ].reduce(reduceModules, []);
-          console.log('modules', modules);
           return {
             ...mod,
             namespace: getNamespace(location, namespaces) || namespace,
@@ -326,7 +325,6 @@ async function loadModuleDependencies(
   getModule: (name: string) => Promise<IModuleWithPointer | undefined>,
 ): Promise<Array<IModuleWithPointer>> {
   const module = await getModule(fullName);
-  console.log(`Loading module ${fullName}`);
   // skip this module if its not available
   if (!module) return [];
 
@@ -347,7 +345,6 @@ async function loadModuleDependencies(
       continue;
     }
     let moduleName: string;
-    // console.log(`Loading module ${usedModule.name}`);
     const withParentNamespace = getModuleFullName({
       name: usedModule.name,
       namespace: parentNamespace,
@@ -358,7 +355,6 @@ async function loadModuleDependencies(
       // this will store the module in the storage so we can use it later
       await getModule(withParentNamespace);
       moduleName = withParentNamespace;
-      console.log('withParentNamespace', withParentNamespace);
     } catch {
       // if the module is not found, continue without a namespace
       moduleName = usedModule.name;
@@ -515,8 +511,6 @@ export async function pactParser({
   for (const name of parsedModules.keys()) {
     await loadModuleDependencies(name, loader.getModule);
   }
-
-  console.log('All modules are loaded');
 
   const allModules = loader.getStorage();
 
