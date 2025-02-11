@@ -30,7 +30,7 @@ export const withStepFactory = () => {
 export const waitFor = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const getBlockTimeMs = async (props?: { chainId?: ChainId }) => {
+export const getBlockDate = async (props?: { chainId?: ChainId }) => {
   const { chainId } = props || { chainId: '0' };
 
   console.log('getting time for chain', chainId);
@@ -63,16 +63,24 @@ export const getBlockTimeMs = async (props?: { chainId?: ChainId }) => {
  */
 export const waitForBlockTime = async (timeSeconds: IPactInt) => {
   while (true) {
-    const time = await getBlockTimeMs();
+    const time = await getBlockDate();
 
-    console.log('blockTime', time.getTime());
-    console.log('timeMs   ', Number(timeSeconds.int) * 1000);
+    let diffTime = 0;
 
     if (time.getTime() > Number(timeSeconds.int) * 1000) {
       break;
+    } else {
+      diffTime = Number(timeSeconds.int) * 1000 - time.getTime() + 200;
     }
 
-    await waitFor(1000);
+    if (diffTime === 0) {
+      break;
+    }
+    console.log(
+      `Diff: ${Number(timeSeconds.int) * 1000 - time.getTime()}ms - Waiting ${diffTime}ms...`,
+    );
+
+    await waitFor(diffTime);
   }
 };
 

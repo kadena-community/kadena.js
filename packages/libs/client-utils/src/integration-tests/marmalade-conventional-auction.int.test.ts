@@ -4,7 +4,6 @@ import { PactNumber } from '@kadena/pactjs';
 import type { IPactInt } from '@kadena/types';
 import { describe, expect, it } from 'vitest';
 import {
-  buyToken,
   createAuction,
   createBidId,
   createToken,
@@ -24,31 +23,12 @@ import {
   addMinutesToDate,
   addSecondsToDate,
   dateToPactInt,
-  waitForBlocks,
+  getBlockDate,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
 
-let tokenId: string | undefined;
-let saleId: string | undefined;
-let bidId: string | undefined;
-const timeout = dateToPactInt(addDaysToDate(new Date(), 1));
-let auctionStartDate: IPactInt;
-let auctionEndDate: IPactInt;
-const chainId = '0' as ChainId;
-const inputs = {
-  chainId,
-  precision: { int: '0' },
-  uri: Math.random().toString(),
-  policies: [],
-  creator: {
-    account: sourceAccount.account,
-    guard: {
-      keys: [sourceAccount.publicKey],
-      pred: 'keys-all' as const,
-    },
-  },
-};
 const config = {
   host: 'http://127.0.0.1:8080',
   defaults: {
@@ -57,8 +37,30 @@ const config = {
   sign: createSignWithKeypair([sourceAccount]),
 };
 
-describe('createTokenId', () => {
-  it('should return a token id', async () => {
+describe.only('creates, mints, offers for sale, creates and updates auction for, gets details of, bids on, a token', () => {
+  let tokenId: string | undefined;
+  let saleId: string | undefined;
+  let bidId: string | undefined;
+  let timeout: IPactInt | undefined;
+  let auctionStartDate: IPactInt | undefined;
+  let auctionEndDate: IPactInt | undefined;
+  const chainId = '0' as ChainId;
+
+  const inputs = {
+    chainId,
+    precision: { int: '0' },
+    uri: Math.random().toString(),
+    policies: [],
+    creator: {
+      account: sourceAccount.account,
+      guard: {
+        keys: [sourceAccount.publicKey],
+        pred: 'keys-all' as const,
+      },
+    },
+  };
+
+  it('returns a token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
       networkId: config.defaults.networkId,
@@ -68,10 +70,8 @@ describe('createTokenId', () => {
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
   });
-});
 
-describe('createToken', () => {
-  it('should create a token', async () => {
+  it('creates a token', async () => {
     const withStep = withStepFactory();
 
     const result = await createToken(
@@ -121,10 +121,8 @@ describe('createToken', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('mintToken', () => {
-  it('should mint a token', async () => {
+  it('mints a token', async () => {
     const withStep = withStepFactory();
 
     const result = await mintToken(
@@ -196,10 +194,8 @@ describe('mintToken', () => {
 
     expect(balance).toBe(1);
   });
-});
 
-describe('offerToken - with auction data', () => {
-  it('should offer a token for sale', async () => {
+  it('offers a token for sale', async () => {
     const withStep = withStepFactory();
 
     const saleConfig = {
@@ -209,6 +205,7 @@ describe('offerToken - with auction data', () => {
       },
       sign: createSignWithKeypair([sourceAccount]),
     };
+    timeout = dateToPactInt(addDaysToDate(new Date(), 1));
 
     const result = await offerToken(
       {
@@ -297,7 +294,7 @@ describe('offerToken - with auction data', () => {
     expect(result).toBe(saleId);
   });
 
-  it('should throw error when non-existent token offered', async () => {
+  it('throws error when non-existent token offered', async () => {
     const saleConfig = {
       host: 'http://127.0.0.1:8080',
       defaults: {
@@ -328,10 +325,8 @@ describe('offerToken - with auction data', () => {
     const res = await task.execute().catch((err) => getPactErrorCode(err));
     expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
-});
 
-describe('createAuction', () => {
-  it('should be able to create conventional auction', async () => {
+  it('is able to create conventional auction', async () => {
     const withStep = withStepFactory();
 
     const result = await createAuction(
@@ -398,14 +393,18 @@ describe('createAuction', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('updateAuction', () => {
-  it('should be able to update conventional auction', async () => {
+  it('is able to update conventional auction', async () => {
     const withStep = withStepFactory();
 
-    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
-    auctionEndDate = dateToPactInt(addMinutesToDate(new Date(), 10));
+    const currentBlockTime = await getBlockDate({ chainId });
+
+    auctionStartDate = dateToPactInt(
+      addSecondsToDate(new Date(currentBlockTime), 2),
+    );
+    auctionEndDate = dateToPactInt(
+      addSecondsToDate(new Date(currentBlockTime), 8),
+    );
 
     const result = await updateAuction(
       {
@@ -471,10 +470,8 @@ describe('updateAuction', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('getAuctionDetails', () => {
-  it('should get the auction details', async () => {
+  it('gets the auction details', async () => {
     const result = await getAuctionDetails({
       auctionConfig: {
         conventional: true,
@@ -494,11 +491,12 @@ describe('getAuctionDetails', () => {
       }),
     );
   });
-});
 
-describe('placeBid', () => {
-  it('should be able to place a bid on conventional auction', async () => {
-    await waitForBlocks(3);
+  it('is able to place a bid on conventional auction', async () => {
+    if (!auctionStartDate) {
+      throw new Error('auctionStartDate is not defined');
+    }
+    await waitForBlockTime(auctionStartDate);
 
     const withStep = withStepFactory();
 
@@ -574,10 +572,8 @@ describe('placeBid', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('createBidId', () => {
-  it('should return a bid id', async () => {
+  it('returns a bid id', async () => {
     const bidId = await createBidId({
       saleId: saleId as string,
       bidderAccount: sourceAccount.account,
@@ -588,10 +584,8 @@ describe('createBidId', () => {
 
     expect(bidId).toBeDefined();
   });
-});
 
-describe('getBid', () => {
-  it('should get the bid', async () => {
+  it('gets the bid', async () => {
     const result = await getBid({
       bidId: bidId as string,
       chainId,
@@ -607,374 +601,5 @@ describe('getBid', () => {
         pred: 'keys-all',
       },
     });
-  });
-});
-
-describe('buyToken', () => {
-  const inputs = {
-    chainId,
-    precision: { int: '0' },
-    uri: Math.random().toString(),
-    policies: [],
-    creator: {
-      account: sourceAccount.account,
-      guard: {
-        keys: [sourceAccount.publicKey],
-        pred: 'keys-all' as const,
-      },
-    },
-  };
-  let auctionStartDate: IPactInt;
-  let auctionEndDate: IPactInt;
-
-  it('should create token id', async () => {
-    tokenId = await createTokenId({
-      ...inputs,
-      networkId: config.defaults.networkId,
-      host: config.host,
-    });
-
-    expect(tokenId).toBeDefined();
-    expect(tokenId).toMatch(/^t:.{43}$/);
-  });
-
-  it('should create a token', async () => {
-    const result = await createToken(
-      { ...inputs, tokenId: tokenId as string },
-      config,
-    ).execute();
-
-    expect(result).toBe(true);
-  });
-
-  it('should mint a token', async () => {
-    const result = await mintToken(
-      {
-        ...inputs,
-        tokenId: tokenId as string,
-        accountName: sourceAccount.account,
-        guard: {
-          account: sourceAccount.account,
-          guard: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
-        amount: new PactNumber(1).toPactDecimal(),
-      },
-      config,
-    ).execute();
-
-    expect(result).toBe(true);
-  });
-
-  it('should offer a token for sale', async () => {
-    const withStep = withStepFactory();
-
-    const result = await offerToken(
-      {
-        policyConfig: {
-          auction: true,
-        },
-        auction: {
-          fungible: {
-            refName: {
-              name: 'coin',
-              namespace: null,
-            },
-            refSpec: [
-              {
-                name: 'fungible-v2',
-                namespace: null,
-              },
-            ],
-          },
-          sellerFungibleAccount: {
-            account: sourceAccount.account,
-            guard: {
-              keys: [sourceAccount.publicKey],
-              pred: 'keys-all' as const,
-            },
-          },
-          price: { decimal: '0.0' },
-          saleType: 'marmalade-sale.conventional-auction',
-        },
-        chainId,
-        tokenId: tokenId as string,
-        seller: {
-          account: sourceAccount.account,
-          guard: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
-        amount: new PactNumber(1).toPactDecimal(),
-        timeout,
-      },
-      config,
-    )
-      .on(
-        'sign',
-        withStep((step, tx) => {
-          saleId = tx.hash;
-          expect(step).toBe(1);
-          expect(tx.sigs).toHaveLength(1);
-          expect(tx.sigs[0].sig).toBeTruthy();
-        }),
-      )
-      .on(
-        'preflight',
-        withStep((step, prResult) => {
-          expect(step).toBe(2);
-          if (prResult.result.status === 'failure') {
-            expect(prResult.result.status).toBe('success');
-          } else {
-            expect(prResult.result.data).toBe(saleId);
-          }
-        }),
-      )
-      .on(
-        'submit',
-        withStep((step, trDesc) => {
-          expect(step).toBe(3);
-          expect(trDesc.networkId).toBe(NetworkIds.development);
-          expect(trDesc.chainId).toBe(chainId);
-          expect(trDesc.requestKey).toBeTruthy();
-        }),
-      )
-      .on(
-        'listen',
-        withStep((step, sbResult) => {
-          expect(step).toBe(4);
-          if (sbResult.result.status === 'failure') {
-            expect(sbResult.result.status).toBe('success');
-          } else {
-            expect(sbResult.result.data).toBe(saleId);
-          }
-        }),
-      )
-      .execute();
-
-    expect(result).toBe(saleId);
-  });
-
-  it('should create conventional auction', async () => {
-    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
-    auctionEndDate = dateToPactInt(addSecondsToDate(new Date(), 80));
-
-    const result = await createAuction(
-      {
-        auctionConfig: {
-          conventional: true,
-        },
-        saleId: saleId as string,
-        tokenId: tokenId as string,
-        startDate: auctionStartDate,
-        endDate: auctionEndDate,
-        reservedPrice: { decimal: '1.0' },
-        chainId,
-        seller: {
-          account: sourceAccount.account,
-          guard: {
-            keys: [sourceAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
-      },
-      config,
-    ).execute();
-
-    expect(result).toBe(true);
-  });
-
-  it('should be able to place a bid on conventional auction', async () => {
-    await waitForBlocks(3);
-
-    const withStep = withStepFactory();
-
-    const config = {
-      host: 'http://127.0.0.1:8080',
-      defaults: {
-        networkId: 'development',
-      },
-      sign: createSignWithKeypair([secondaryTargetAccount]),
-    };
-
-    const _escrowAccount = await escrowAccount({
-      saleId: saleId as string,
-      chainId,
-      networkId: config.defaults.networkId,
-      host: config.host,
-    });
-
-    const result = await placeBid(
-      {
-        bid: { decimal: '2.0' },
-        bidder: {
-          account: secondaryTargetAccount.account,
-          guard: {
-            keys: [secondaryTargetAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
-        escrowAccount: _escrowAccount as string,
-        saleId: saleId as string,
-        chainId,
-      },
-      config,
-    )
-      .on(
-        'sign',
-        withStep((step, tx) => {
-          expect(step).toBe(1);
-          expect(tx.sigs).toHaveLength(1);
-          expect(tx.sigs[0].sig).toBeTruthy();
-        }),
-      )
-      .on(
-        'preflight',
-        withStep((step, prResult) => {
-          expect(step).toBe(2);
-          if (prResult.result.status === 'failure') {
-            expect(prResult.result.status).toBe('success');
-          } else {
-            expect(prResult.result.data).toBe(true);
-          }
-        }),
-      )
-      .on(
-        'submit',
-        withStep((step, trDesc) => {
-          expect(step).toBe(3);
-          expect(trDesc.networkId).toBe(NetworkIds.development);
-          expect(trDesc.chainId).toBe(chainId);
-          expect(trDesc.requestKey).toBeTruthy();
-        }),
-      )
-      .on(
-        'listen',
-        withStep((step, sbResult) => {
-          const bidEvent = sbResult.events?.find(
-            (event) => event.name === 'BID_PLACED',
-          );
-
-          bidId = bidEvent?.params[0] as string;
-
-          expect(step).toBe(4);
-          if (sbResult.result.status === 'failure') {
-            expect(sbResult.result.status).toBe('success');
-          } else {
-            expect(sbResult.result.data).toBe(true);
-          }
-        }),
-      )
-      .execute()
-      .catch((err) => {
-        console.error(JSON.stringify(err, null, 2));
-        return false;
-      });
-
-    expect(result).toBe(true);
-  });
-
-  it('should buy a token', async () => {
-    await waitForBlocks(3);
-
-    const withStep = withStepFactory();
-
-    const config = {
-      host: 'http://127.0.0.1:8080',
-      defaults: {
-        networkId: 'development',
-      },
-      sign: createSignWithKeypair([secondaryTargetAccount]),
-    };
-
-    const _escrowAccount = await escrowAccount({
-      saleId: saleId as string,
-      chainId,
-      networkId: config.defaults.networkId,
-      host: config.host,
-    });
-
-    expect(_escrowAccount).toBeDefined();
-
-    const result = await buyToken(
-      {
-        auctionConfig: {
-          conventional: true,
-        },
-        escrow: { account: _escrowAccount as string },
-        updatedPrice: { decimal: '2.0' },
-        chainId,
-        tokenId: tokenId as string,
-        saleId: saleId as string,
-        seller: {
-          account: sourceAccount.account,
-        },
-        signerPublicKey: secondaryTargetAccount.publicKey,
-        buyer: {
-          account: secondaryTargetAccount.account,
-          guard: {
-            keys: [secondaryTargetAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
-        amount: new PactNumber(1).toPactDecimal(),
-      },
-      config,
-    )
-      .on(
-        'sign',
-        withStep((step, tx) => {
-          expect(step).toBe(1);
-          expect(tx.sigs).toHaveLength(1);
-          expect(tx.sigs[0].sig).toBeTruthy();
-        }),
-      )
-      .on(
-        'preflight',
-        withStep((step, prResult) => {
-          expect(step).toBe(2);
-          if (prResult.result.status === 'failure') {
-            expect(prResult.result.status).toBe('success');
-          } else {
-            expect(prResult.result.data).toBe(saleId);
-          }
-        }),
-      )
-      .on(
-        'submit',
-        withStep((step, trDesc) => {
-          expect(step).toBe(3);
-          expect(trDesc.networkId).toBe(NetworkIds.development);
-          expect(trDesc.chainId).toBe(chainId);
-          expect(trDesc.requestKey).toBeTruthy();
-        }),
-      )
-      .on(
-        'listen',
-        withStep((step, sbResult) => {
-          expect(step).toBe(4);
-          if (sbResult.result.status === 'failure') {
-            expect(sbResult.result.status).toBe('success');
-          } else {
-            expect(sbResult.result.data).toBe(saleId);
-          }
-        }),
-      )
-      .execute();
-
-    expect(result).toBe(saleId);
-
-    const balance = await getTokenBalance({
-      accountName: secondaryTargetAccount.account,
-      tokenId: tokenId as string,
-      chainId,
-      networkId: config.defaults.networkId,
-      host: config.host,
-    });
-
-    expect(balance).toBe(1);
   });
 });

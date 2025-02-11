@@ -22,6 +22,7 @@ import {
   addSecondsToDate,
   dateToPactInt,
   waitForBlocks,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
@@ -54,7 +55,7 @@ const config = {
 };
 
 describe('createTokenId', () => {
-  it('should return a token id', async () => {
+  it('returns a token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
       networkId: config.defaults.networkId,
@@ -67,7 +68,7 @@ describe('createTokenId', () => {
 });
 
 describe('createToken', () => {
-  it('should create a token', async () => {
+  it('creates a token', async () => {
     const withStep = withStepFactory();
 
     const result = await createToken(
@@ -120,7 +121,7 @@ describe('createToken', () => {
 });
 
 describe('mintToken', () => {
-  it('should mint a token', async () => {
+  it('mints a token', async () => {
     const withStep = withStepFactory();
 
     const result = await mintToken(
@@ -195,7 +196,7 @@ describe('mintToken', () => {
 });
 
 describe('offerToken - with auction data', () => {
-  it('should offer a token for sale', async () => {
+  it('offers a token for sale', async () => {
     const withStep = withStepFactory();
 
     const saleConfig = {
@@ -293,7 +294,7 @@ describe('offerToken - with auction data', () => {
     expect(result).toBe(saleId);
   });
 
-  it('should throw error when non-existent token offered', async () => {
+  it('throws error when non-existent token offered', async () => {
     const saleConfig = {
       host: 'http://127.0.0.1:8080',
       defaults: {
@@ -325,7 +326,7 @@ describe('offerToken - with auction data', () => {
 });
 
 describe('createAuction', () => {
-  it('should be able to create dutch auction', async () => {
+  it('is able to create dutch auction', async () => {
     const withStep = withStepFactory();
 
     const result = await createAuction(
@@ -397,11 +398,11 @@ describe('createAuction', () => {
 });
 
 describe('updateAuction', () => {
-  it('should be able to update dutch auction', async () => {
+  it('is able to update dutch auction', async () => {
     const withStep = withStepFactory();
 
-    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
-    auctionEndDate = dateToPactInt(addDaysToDate(new Date(), 10));
+    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 3));
+    auctionEndDate = dateToPactInt(addSecondsToDate(new Date(), 9));
 
     const result = await updateAuction(
       {
@@ -472,7 +473,7 @@ describe('updateAuction', () => {
 });
 
 describe('getAuctionDetails', () => {
-  it('should get the auction details', async () => {
+  it('gets the auction details', async () => {
     const result = await getAuctionDetails({
       auctionConfig: {
         dutch: true,
@@ -498,7 +499,7 @@ describe('getAuctionDetails', () => {
 });
 
 describe('getCurrentPrice', () => {
-  it('should return 0 if the auction has not started yet', async () => {
+  it('returns 0 if the auction has not started yet', async () => {
     const result = await getCurrentPrice({
       saleId: saleId as string,
       chainId,
@@ -509,8 +510,8 @@ describe('getCurrentPrice', () => {
     expect(result).toBe(0);
   });
 
-  it('should return start price after the auction have started', async () => {
-    await waitForBlocks(3);
+  it('returns start price after the auction have started', async () => {
+    await waitForBlockTime(auctionStartDate);
 
     const result = await getCurrentPrice({
       saleId: saleId as string,
@@ -541,7 +542,7 @@ describe('buyToken', () => {
   let auctionStartDate: IPactInt;
   let auctionEndDate: IPactInt;
 
-  it('should create token id', async () => {
+  it('creates token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
       networkId: config.defaults.networkId,
@@ -552,7 +553,7 @@ describe('buyToken', () => {
     expect(tokenId).toMatch(/^t:.{43}$/);
   });
 
-  it('should create a token', async () => {
+  it('creates a token', async () => {
     const result = await createToken(
       { ...inputs, tokenId: tokenId as string },
       config,
@@ -561,7 +562,7 @@ describe('buyToken', () => {
     expect(result).toBe(true);
   });
 
-  it('should mint a token', async () => {
+  it('mints a token', async () => {
     const result = await mintToken(
       {
         ...inputs,
@@ -582,7 +583,7 @@ describe('buyToken', () => {
     expect(result).toBe(true);
   });
 
-  it('should offer a token for sale', async () => {
+  it('offers a token for sale', async () => {
     const withStep = withStepFactory();
 
     const result = await offerToken(
@@ -672,7 +673,7 @@ describe('buyToken', () => {
     expect(result).toBe(saleId);
   });
 
-  it('should create dutch auction', async () => {
+  it('creates dutch auction', async () => {
     auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
     auctionEndDate = dateToPactInt(addDaysToDate(new Date(), 10));
 
@@ -703,8 +704,8 @@ describe('buyToken', () => {
     expect(result).toBe(true);
   });
 
-  it('should buy a token', async () => {
-    await waitForBlocks(3);
+  it('buys a token', async () => {
+    await waitForBlockTime(auctionEndDate);
 
     const withStep = withStepFactory();
 
@@ -749,6 +750,8 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        // buyerFungibleAccount: secondaryTargetAccount.account,
+        sellerFungibleAccount: sourceAccount.account,
         signerPublicKey: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
@@ -797,7 +800,10 @@ describe('buyToken', () => {
         withStep((step, sbResult) => {
           expect(step).toBe(4);
           if (sbResult.result.status === 'failure') {
-            expect(sbResult.result.status).toBe('success');
+            expect(
+              sbResult.result.status,
+              `Error:${JSON.stringify(sbResult.result.error, null, 2)}`,
+            ).toBe('success');
           } else {
             expect(sbResult.result.data).toBe(saleId);
           }

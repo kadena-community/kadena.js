@@ -14,10 +14,9 @@ import {
 } from '../marmalade';
 import { NetworkIds } from './support/NetworkIds';
 import {
-  addMinutesToDate,
   addSecondsToDate,
   dateToPactInt,
-  getBlockTimeMs,
+  getBlockDate,
   waitForBlocks,
   waitForBlockTime,
   withStepFactory,
@@ -49,7 +48,7 @@ const config = {
 describe('create, mint, offer and test withdrawal of a token', () => {
   let tokenId: string | undefined;
 
-  it('should return a token id', async () => {
+  it('returns a token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
       networkId: config.defaults.networkId,
@@ -60,7 +59,7 @@ describe('create, mint, offer and test withdrawal of a token', () => {
     expect(tokenId).toMatch(/^t:.{43}$/);
   });
 
-  it('should create a token', async () => {
+  it('creates a token', async () => {
     const withStep = withStepFactory();
 
     const result = await createToken(
@@ -111,7 +110,7 @@ describe('create, mint, offer and test withdrawal of a token', () => {
     expect(result).toBe(true);
   });
 
-  it('should mint a token', async () => {
+  it('mints a token', async () => {
     const withStep = withStepFactory();
 
     const result = await mintToken(
@@ -188,7 +187,7 @@ describe('create, mint, offer and test withdrawal of a token', () => {
   let saleTimeoutTimeSeconds: IPactInt;
   let escrowAccount: string | undefined;
 
-  it('should offer a token for sale', async () => {
+  it('offers a token for sale', async () => {
     const withStep = withStepFactory();
 
     const saleConfig = {
@@ -199,7 +198,7 @@ describe('create, mint, offer and test withdrawal of a token', () => {
       sign: createSignWithKeypair([sourceAccount]),
     };
 
-    const currentBlockTime = await getBlockTimeMs({ chainId });
+    const currentBlockTime = await getBlockDate({ chainId });
 
     saleTimeoutTimeSeconds = new PactNumber(
       Math.floor(addSecondsToDate(currentBlockTime, 15).getTime() / 1000),
@@ -344,7 +343,7 @@ describe('create, mint, offer and test withdrawal of a token', () => {
     );
   });
 
-  it('should withdraw a token from the sale after the timeout have passed', async () => {
+  it('withdraws a token from the sale after the timeout have passed', async () => {
     // wait for the sale timeout to pass
     await waitForBlockTime(saleTimeoutTimeSeconds);
 
@@ -435,7 +434,7 @@ describe('offer non-existent token', () => {
       sign: createSignWithKeypair([secondaryTargetAccount]),
     };
 
-    const currentBlockTime = await getBlockTimeMs({ chainId });
+    const currentBlockTime = await getBlockDate({ chainId });
 
     const failedTimeout = new PactNumber(
       Math.floor(addSecondsToDate(currentBlockTime, 15).getTime() / 1000),
@@ -481,7 +480,7 @@ describe('create, mint, offer and buy a token', () => {
   let saleTimeoutTimeSeconds: IPactInt | undefined;
   let saleId: string | undefined;
 
-  it('should create token id', async () => {
+  it('creates token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
       networkId: config.defaults.networkId,
@@ -492,7 +491,7 @@ describe('create, mint, offer and buy a token', () => {
     expect(tokenId).toMatch(/^t:.{43}$/);
   });
 
-  it('should create a token', async () => {
+  it('creates a token', async () => {
     const result = await createToken(
       { ...inputs, tokenId: tokenId as string },
       config,
@@ -501,7 +500,7 @@ describe('create, mint, offer and buy a token', () => {
     expect(result).toBe(true);
   });
 
-  it('should mint a token', async () => {
+  it('mints a token', async () => {
     const result = await mintToken(
       {
         ...inputs,
@@ -522,7 +521,7 @@ describe('create, mint, offer and buy a token', () => {
     expect(result).toBe(true);
   });
 
-  it('should offer a token for sale', async () => {
+  it('offers a token for sale', async () => {
     const withStep = withStepFactory();
 
     const saleConfig = {
@@ -565,7 +564,7 @@ describe('create, mint, offer and buy a token', () => {
     expect(result).toBe(saleId);
   });
 
-  it('should buy a token', async () => {
+  it('buys a token', async () => {
     // wait for the sale timeout to pass
     await waitForBlocks(3);
 
