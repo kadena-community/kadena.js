@@ -70,15 +70,12 @@ export const waitForBlockTime = async (timeSeconds: IPactInt) => {
     if (time.getTime() > Number(timeSeconds.int) * 1000) {
       break;
     } else {
-      diffTime = Number(timeSeconds.int) * 1000 - time.getTime() + 200;
+      diffTime = Number(timeSeconds.int) * 1000 - time.getTime() + 50;
     }
 
     if (diffTime === 0) {
       break;
     }
-    console.log(
-      `Diff: ${Number(timeSeconds.int) * 1000 - time.getTime()}ms - Waiting ${diffTime}ms...`,
-    );
 
     await waitFor(diffTime);
   }
