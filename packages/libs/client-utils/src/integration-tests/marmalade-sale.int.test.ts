@@ -17,15 +17,13 @@ import {
   addMinutesToDate,
   addSecondsToDate,
   dateToPactInt,
+  getBlockTimeMs,
   waitForBlocks,
+  waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
 import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
 
-let tokenId: string | undefined;
-let saleId: string | undefined;
-let escrowAccount: string | undefined;
-let timeout: IPactInt;
 const chainId = '0' as ChainId;
 const inputs = {
   chainId,
@@ -48,7 +46,9 @@ const config = {
   sign: createSignWithKeypair([sourceAccount]),
 };
 
-describe('createTokenId', () => {
+describe('create, mint, offer and test withdrawal of a token', () => {
+  let tokenId: string | undefined;
+
   it('should return a token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
@@ -59,9 +59,7 @@ describe('createTokenId', () => {
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
   });
-});
 
-describe('createToken', () => {
   it('should create a token', async () => {
     const withStep = withStepFactory();
 
@@ -112,9 +110,7 @@ describe('createToken', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('mintToken', () => {
   it('should mint a token', async () => {
     const withStep = withStepFactory();
 
@@ -187,9 +183,11 @@ describe('mintToken', () => {
 
     expect(balance).toBe(1);
   });
-});
 
-describe('offerToken - default', () => {
+  let saleId: string | undefined;
+  let saleTimeoutTimeSeconds: IPactInt;
+  let escrowAccount: string | undefined;
+
   it('should offer a token for sale', async () => {
     const withStep = withStepFactory();
 
@@ -201,7 +199,11 @@ describe('offerToken - default', () => {
       sign: createSignWithKeypair([sourceAccount]),
     };
 
-    timeout = dateToPactInt(addSecondsToDate(new Date(), 30));
+    const currentBlockTime = await getBlockTimeMs({ chainId });
+
+    saleTimeoutTimeSeconds = new PactNumber(
+      Math.floor(addSecondsToDate(currentBlockTime, 15).getTime() / 1000),
+    ).toPactInteger();
 
     const result = await offerToken(
       {
@@ -215,7 +217,7 @@ describe('offerToken - default', () => {
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
+        timeout: saleTimeoutTimeSeconds,
       },
       saleConfig,
     )
@@ -291,41 +293,7 @@ describe('offerToken - default', () => {
     expect(escrowBalance).toBe(1);
   });
 
-  it('should throw error when non-existent token offered', async () => {
-    const saleConfig = {
-      host: 'http://127.0.0.1:8080',
-      defaults: {
-        networkId: 'development',
-      },
-      sign: createSignWithKeypair([secondaryTargetAccount]),
-    };
-
-    const task = offerToken(
-      {
-        chainId,
-        tokenId: 'non-existing-token',
-        seller: {
-          account: secondaryTargetAccount.account,
-          guard: {
-            keys: [secondaryTargetAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
-        amount: new PactNumber(1).toPactDecimal(),
-        timeout: new PactNumber(
-          Math.floor(addMinutesToDate(new Date(), 1).getTime() / 1000),
-        ).toPactInteger(),
-      },
-      saleConfig,
-    );
-
-    const res = await task.execute().catch((err) => getPactErrorCode(err));
-    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
-  });
-});
-
-describe('withdrawToken', () => {
-  it('should not be able to withdraw a token from the sale if still active', async () => {
+  it('does not allow to withdraw a token from the sale if still active', async () => {
     const withStep = withStepFactory();
 
     const result = withdrawToken(
@@ -341,7 +309,7 @@ describe('withdrawToken', () => {
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
+        timeout: saleTimeoutTimeSeconds,
       },
       config,
     )
@@ -378,7 +346,7 @@ describe('withdrawToken', () => {
 
   it('should withdraw a token from the sale after the timeout have passed', async () => {
     // wait for the sale timeout to pass
-    await waitForBlocks(3);
+    await waitForBlockTime(saleTimeoutTimeSeconds);
 
     const withStep = withStepFactory();
 
@@ -395,7 +363,7 @@ describe('withdrawToken', () => {
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
+        timeout: saleTimeoutTimeSeconds,
       },
       config,
     )
@@ -412,7 +380,10 @@ describe('withdrawToken', () => {
         withStep((step, prResult) => {
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
-            expect(prResult.result.status).toBe('success');
+            expect(
+              prResult.result.status,
+              `Error: ${JSON.stringify(prResult.result.error)}`,
+            ).toBe('success');
           } else {
             expect(prResult.result.data).toBe(saleId);
           }
@@ -454,7 +425,45 @@ describe('withdrawToken', () => {
   });
 });
 
-describe('buyToken', () => {
+describe('offer non-existent token', () => {
+  it('throws an error because token does not exist', async () => {
+    const saleConfig = {
+      host: 'http://127.0.0.1:8080',
+      defaults: {
+        networkId: 'development',
+      },
+      sign: createSignWithKeypair([secondaryTargetAccount]),
+    };
+
+    const currentBlockTime = await getBlockTimeMs({ chainId });
+
+    const failedTimeout = new PactNumber(
+      Math.floor(addSecondsToDate(currentBlockTime, 15).getTime() / 1000),
+    ).toPactInteger();
+
+    const task = offerToken(
+      {
+        chainId,
+        tokenId: 'non-existing-token',
+        seller: {
+          account: secondaryTargetAccount.account,
+          guard: {
+            keys: [secondaryTargetAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        timeout: failedTimeout,
+        amount: new PactNumber(1).toPactDecimal(),
+      },
+      saleConfig,
+    );
+
+    const res = await task.execute().catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
+  });
+});
+
+describe('create, mint, offer and buy a token', () => {
   const inputs = {
     chainId,
     precision: { int: '0' },
@@ -468,6 +477,9 @@ describe('buyToken', () => {
       },
     },
   };
+  let tokenId: string | undefined;
+  let saleTimeoutTimeSeconds: IPactInt | undefined;
+  let saleId: string | undefined;
 
   it('should create token id', async () => {
     tokenId = await createTokenId({
@@ -521,7 +533,7 @@ describe('buyToken', () => {
       sign: createSignWithKeypair([sourceAccount]),
     };
 
-    timeout = dateToPactInt(addSecondsToDate(new Date(), 30));
+    saleTimeoutTimeSeconds = dateToPactInt(addSecondsToDate(new Date(), 30));
 
     const result = await offerToken(
       {
@@ -535,7 +547,7 @@ describe('buyToken', () => {
           },
         },
         amount: new PactNumber(1).toPactDecimal(),
-        timeout,
+        timeout: saleTimeoutTimeSeconds,
       },
       saleConfig,
     )

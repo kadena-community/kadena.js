@@ -774,7 +774,10 @@ describe('buyToken', () => {
         withStep((step, prResult) => {
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
-            expect(prResult.result.status).toBe('success');
+            expect(
+              prResult.result.status,
+              `Error: ${JSON.stringify(prResult.result.error, null, 2)}`,
+            ).toBe('success');
           } else {
             expect(prResult.result.data).toBe(saleId);
           }

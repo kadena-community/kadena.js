@@ -1,3 +1,4 @@
+
 import type {
   IPactModules,
   IPartialPactCommand,
@@ -42,6 +43,7 @@ interface IBuyTokenInput extends CommonProps {
     account: string;
     guard: Guard;
   };
+  sellerFungibleAccount?: string;
   buyerFungibleAccount?: string;
 }
 
@@ -72,15 +74,6 @@ const generatePolicyTransactionData = <C extends IAuctionPurchaseConfig>(
     data.push(addData('buyer_fungible_account', props.buyer!.account));
   }
 
-  if (props.auctionConfig?.conventional) {
-    data.push(
-      addData(
-        'buyer_fungible_account',
-        (props as unknown as IDutchAuctionPurchaseInput).escrow.account,
-      ),
-    );
-  }
-
   return data;
 };
 
@@ -92,6 +85,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
   seller,
   buyer,
   buyerFungibleAccount,
+  sellerFungibleAccount,
   amount,
   gasLimit = 3000,
   policyConfig,
@@ -129,14 +123,22 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
             ),
           ]
         : []),
-      ...[
-        signFor(
-          'coin.TRANSFER',
-          buyer.account,
-          (props as unknown as IDutchAuctionPurchaseInput).escrow.account,
-          (props as unknown as IDutchAuctionPurchaseInput).updatedPrice,
-        ),
-      ],
+      ...((auctionConfig?.dutch || auctionConfig?.conventional)
+        ? [
+            signFor(
+              'coin.TRANSFER',
+              buyerFungibleAccount,
+              (props as unknown as IDutchAuctionPurchaseInput).escrow.account,
+              (props as unknown as IDutchAuctionPurchaseInput).updatedPrice,
+            ),
+            signFor(
+              'coin.TRANSFER',
+              (props as unknown as IDutchAuctionPurchaseInput).escrow.account,
+              sellerFungibleAccount,
+              (props as unknown as IDutchAuctionPurchaseInput).updatedPrice,
+            ),
+          ]
+      : []),
       ...formatCapabilities(capabilities, signFor),
     ]),
     ...generatePolicyTransactionData({

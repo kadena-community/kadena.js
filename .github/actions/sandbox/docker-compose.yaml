@@ -11,6 +11,7 @@ services:
       - 9999:9999 # Info
     environment:
       - MINING_BATCH_PERIOD=0.05
+      - MINING_IDLE_PERIOD=2
       - MINING_CONFIRMATION_PERIOD=1
     volumes:
       - ../../../packages/apps/graph/cwd-extra-migrations:/cwd-extra-migrations:ro

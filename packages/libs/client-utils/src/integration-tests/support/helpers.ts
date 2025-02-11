@@ -30,8 +30,10 @@ export const withStepFactory = () => {
 export const waitFor = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const getBlockTime = async (props?: { chainId?: ChainId }) => {
+export const getBlockTimeMs = async (props?: { chainId?: ChainId }) => {
   const { chainId } = props || { chainId: '0' };
+
+  console.log('getting time for chain', chainId);
 
   const config = {
     host: 'http://127.0.0.1:8080',
@@ -57,6 +59,24 @@ export const getBlockTime = async (props?: { chainId?: ChainId }) => {
 };
 
 /**
+ * Wait for a certain blockTime to have passed
+ */
+export const waitForBlockTime = async (timeSeconds: IPactInt) => {
+  while (true) {
+    const time = await getBlockTimeMs();
+
+    console.log('blockTime', time.getTime());
+    console.log('timeMs   ', Number(timeSeconds.int) * 1000);
+
+    if (time.getTime() > Number(timeSeconds.int) * 1000) {
+      break;
+    }
+
+    await waitFor(1000);
+  }
+};
+
+/**
  * The nodeBlockDelay is a constant set to 0.05 minutes in the sandbox.
  * See also `.github/actions/sandbox/docker-compose.yaml`
  *
@@ -65,9 +85,9 @@ export const getBlockTime = async (props?: { chainId?: ChainId }) => {
 export const waitForBlocks = async (blockCount: number) => {
   // taken from .github/actions/sandbox/docker-compose.yaml
   // localhost:8080/info doesn't return the correct `nodeBlockDelay`
-  const MINING_BATCH_PERIOD = 0.05; // is in minutes
+  const BLOCK_TIME_IN_SECONDS = 1;
   return new Promise<void>((resolve) => {
-    setTimeout(resolve, blockCount * MINING_BATCH_PERIOD * 60 * 1000);
+    setTimeout(resolve, blockCount * BLOCK_TIME_IN_SECONDS * 1000);
   });
 };
 
