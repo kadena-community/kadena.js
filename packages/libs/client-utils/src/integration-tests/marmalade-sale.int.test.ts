@@ -17,7 +17,6 @@ import {
   addSecondsToDate,
   dateToPactInt,
   getBlockDate,
-  waitForBlocks,
   waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
@@ -532,7 +531,8 @@ describe('create, mint, offer and buy a token', () => {
       sign: createSignWithKeypair([sourceAccount]),
     };
 
-    saleTimeoutTimeSeconds = dateToPactInt(addSecondsToDate(new Date(), 30));
+    const blockDate = await getBlockDate({ chainId });
+    saleTimeoutTimeSeconds = dateToPactInt(addSecondsToDate(blockDate, 20));
 
     const result = await offerToken(
       {
@@ -566,7 +566,7 @@ describe('create, mint, offer and buy a token', () => {
 
   it('buys a token', async () => {
     // wait for the sale timeout to pass
-    await waitForBlocks(3);
+    await waitForBlockTime({ int: `${saleTimeoutTimeSeconds}` });
 
     const withStep = withStepFactory();
 

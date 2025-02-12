@@ -81,21 +81,6 @@ export const waitForBlockTime = async (timeSeconds: IPactInt) => {
   }
 };
 
-/**
- * The nodeBlockDelay is a constant set to 0.05 minutes in the sandbox.
- * See also `.github/actions/sandbox/docker-compose.yaml`
- *
- * @param blockCount approximate amount of blocks to wait for
- */
-export const waitForBlocks = async (blockCount: number) => {
-  // taken from .github/actions/sandbox/docker-compose.yaml
-  // localhost:8080/info doesn't return the correct `nodeBlockDelay`
-  const BLOCK_TIME_IN_SECONDS = 1;
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, blockCount * BLOCK_TIME_IN_SECONDS * 1000);
-  });
-};
-
 export const addDaysToDate = (originalDate: Date, daysToAdd: number) =>
   new Date(originalDate.getTime() + daysToAdd * 86400000);
 
