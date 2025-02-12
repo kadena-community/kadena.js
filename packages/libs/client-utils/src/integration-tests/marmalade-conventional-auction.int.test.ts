@@ -37,7 +37,7 @@ const config = {
   sign: createSignWithKeypair([sourceAccount]),
 };
 
-describe.only('creates, mints, offers for sale, creates and updates auction for, gets details of, bids on, a token', () => {
+describe('creates, mints, offers for sale, creates and updates auction for, gets details of, bids on, a token', () => {
   let tokenId: string | undefined;
   let saleId: string | undefined;
   let bidId: string | undefined;

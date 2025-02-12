@@ -352,7 +352,7 @@ describe('create id, mint, offer for sale, create conventional auction, for a to
       networkId: config.defaults.networkId,
       host: config.host,
     });
-    
+
     expect(_escrowAccount).toBeDefined();
 
     if (_escrowAccount === undefined || tokenId === undefined) {
@@ -397,7 +397,7 @@ describe('create id, mint, offer for sale, create conventional auction, for a to
       .on(
         'preflight',
         withStep((step, prResult) => {
-         expect(step).toBe(2);
+          expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
             expect(
               prResult.result.status,

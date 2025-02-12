@@ -1,4 +1,3 @@
-
 import type {
   IPactModules,
   IPartialPactCommand,
@@ -119,7 +118,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
             ),
           ]
         : []),
-      ...((auctionConfig?.dutch || auctionConfig?.conventional)
+      ...(auctionConfig?.dutch || auctionConfig?.conventional
         ? [
             signFor(
               'coin.TRANSFER',
@@ -134,7 +133,7 @@ const buyTokenCommand = <C extends IAuctionPurchaseConfig>({
               (props as unknown as IDutchAuctionPurchaseInput).updatedPrice,
             ),
           ]
-      : []),
+        : []),
       ...formatCapabilities(capabilities, signFor),
     ]),
     ...generatePolicyTransactionData({

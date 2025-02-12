@@ -725,7 +725,7 @@ describe('buyToken', () => {
     });
 
     expect(latestPrice).toBeDefined();
-    
+
     const result = await buyToken(
       {
         auctionConfig: {

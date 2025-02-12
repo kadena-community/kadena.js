@@ -33,8 +33,6 @@ export const waitFor = (ms: number) =>
 export const getBlockDate = async (props?: { chainId?: ChainId }) => {
   const { chainId } = props || { chainId: '0' };
 
-  console.log('getting time for chain', chainId);
-
   const config = {
     host: 'http://127.0.0.1:8080',
     defaults: {
@@ -62,6 +60,13 @@ export const getBlockDate = async (props?: { chainId?: ChainId }) => {
  * Wait for a certain blockTime to have passed
  */
 export const waitForBlockTime = async (timeSeconds: IPactInt) => {
+  const timeS =
+    Number(timeSeconds.int) - (await getBlockDate()).getTime() / 1000;
+  if (Number.isNaN(timeS)) {
+    throw new Error('Invalid timeSeconds');
+  }
+  console.log(`Waiting for ${timeS} seconds`);
+
   while (true) {
     const time = await getBlockDate();
 

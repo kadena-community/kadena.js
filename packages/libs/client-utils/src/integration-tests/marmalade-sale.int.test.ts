@@ -200,7 +200,7 @@ describe('create, mint, offer and test withdrawal of a token', () => {
     const currentBlockTime = await getBlockDate({ chainId });
 
     saleTimeoutTimeSeconds = new PactNumber(
-      Math.floor(addSecondsToDate(currentBlockTime, 15).getTime() / 1000),
+      Math.floor(addSecondsToDate(currentBlockTime, 5).getTime() / 1000),
     ).toPactInteger();
 
     const result = await offerToken(
@@ -532,7 +532,7 @@ describe('create, mint, offer and buy a token', () => {
     };
 
     const blockDate = await getBlockDate({ chainId });
-    saleTimeoutTimeSeconds = dateToPactInt(addSecondsToDate(blockDate, 20));
+    saleTimeoutTimeSeconds = dateToPactInt(addSecondsToDate(blockDate, 4));
 
     const result = await offerToken(
       {
@@ -565,8 +565,12 @@ describe('create, mint, offer and buy a token', () => {
   });
 
   it('buys a token', async () => {
+    if (saleTimeoutTimeSeconds === undefined) {
+      throw new Error('saleTimeoutTimeSeconds is undefined');
+    }
+
     // wait for the sale timeout to pass
-    await waitForBlockTime({ int: `${saleTimeoutTimeSeconds}` });
+    await waitForBlockTime(saleTimeoutTimeSeconds);
 
     const withStep = withStepFactory();
 
