@@ -70,10 +70,6 @@ const generatePolicyTransactionData = <C extends IAuctionPurchaseConfig>(
     );
   }
 
-  if (props.auctionConfig?.dutch) {
-    data.push(addData('buyer_fungible_account', props.buyer!.account));
-  }
-
   return data;
 };
 
