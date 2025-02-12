@@ -693,10 +693,10 @@ describe('buyToken', () => {
   });
 
   it('buys a token', async () => {
-    if (auctionEndDate === undefined) {
-      throw new Error('auctionEndDate is undefined');
+    if (auctionStartDate === undefined) {
+      throw new Error('auctionStartDate is undefined');
     }
-    await waitForBlockTime(auctionEndDate);
+    await waitForBlockTime(auctionStartDate);
 
     const withStep = withStepFactory();
 
@@ -725,7 +725,7 @@ describe('buyToken', () => {
     });
 
     expect(latestPrice).toBeDefined();
-
+    
     const result = await buyToken(
       {
         auctionConfig: {
@@ -741,7 +741,7 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
-        // buyerFungibleAccount: secondaryTargetAccount.account,
+        buyerFungibleAccount: secondaryTargetAccount.account,
         sellerFungibleAccount: sourceAccount.account,
         signerPublicKey: secondaryTargetAccount.publicKey,
         buyer: {

@@ -8,6 +8,7 @@ import {
   createToken,
   createTokenId,
   escrowAccount,
+  getEscrowAccount,
   getTokenBalance,
   mintToken,
   offerToken,
@@ -198,7 +199,7 @@ describe('create id, mint, offer for sale, create conventional auction, for a to
   it('creates conventional auction', async () => {
     const blockTime = await getBlockDate({ chainId: chainId as ChainId });
     auctionStartDate = dateToPactInt(addSecondsToDate(new Date(blockTime), 3));
-    auctionEndDate = dateToPactInt(addSecondsToDate(new Date(blockTime), 6));
+    auctionEndDate = dateToPactInt(addSecondsToDate(new Date(blockTime), 13));
 
     if (tokenId === undefined || saleId === undefined) {
       throw new Error('Token ID or Sale ID is not defined');
@@ -336,13 +337,22 @@ describe('create id, mint, offer for sale, create conventional auction, for a to
       throw new Error('Sale ID is not defined');
     }
 
+    const policyManager_escrowAccount = await getEscrowAccount({
+      saleId: saleId as string,
+      chainId,
+      networkId: config.defaults.networkId,
+      host: config.host,
+    });
+
+    expect(policyManager_escrowAccount).toBeDefined();
+
     const _escrowAccount = await escrowAccount({
       saleId: saleId,
       chainId,
       networkId: config.defaults.networkId,
       host: config.host,
     });
-
+    
     expect(_escrowAccount).toBeDefined();
 
     if (_escrowAccount === undefined || tokenId === undefined) {
@@ -354,7 +364,7 @@ describe('create id, mint, offer for sale, create conventional auction, for a to
         auctionConfig: {
           conventional: true,
         },
-        escrow: { account: _escrowAccount },
+        escrow: { account: (policyManager_escrowAccount as any).account },
         updatedPrice: { decimal: '2.0' },
         chainId,
         tokenId: tokenId,
@@ -387,7 +397,7 @@ describe('create id, mint, offer for sale, create conventional auction, for a to
       .on(
         'preflight',
         withStep((step, prResult) => {
-          expect(step).toBe(2);
+         expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
             expect(
               prResult.result.status,
