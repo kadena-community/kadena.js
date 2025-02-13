@@ -6,6 +6,18 @@
     "path": "packages/libs/bootstrap-lib"
   },
   {
+    "name": "@kadena/chainweaver-pact-console-plugin",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/chainweaver-pact-console-plugin"
+  },
+  {
+    "name": "@kadena/chainweaver-wallet-connect-plugin",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/chainweaver-wallet-connect-plugin"
+  },
+  {
     "name": "@kadena/chainweb-node-client",
     "version": "0.8.0",
     "private": false,
@@ -70,12 +82,6 @@
     "version": "0.2.2",
     "private": true,
     "path": "packages/apps/dev-wallet-example"
-  },
-  {
-    "name": "@kadena/dev-wallet-plugin",
-    "version": "0.0.1",
-    "private": true,
-    "path": "packages/apps/dev-wallet-plugin"
   },
   {
     "name": "@kadena/explorer",
@@ -234,6 +240,12 @@
     "path": "packages/tools/shared-config"
   },
   {
+    "name": "e2e-dev-wallet",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-dev-wallet"
+  },
+  {
     "name": "e2e-graph",
     "version": "0.0.2",
     "private": true,
@@ -246,22 +258,16 @@
     "path": "packages/e2e/e2e-proof-of-us"
   },
   {
-    "name": "e2e-tools",
-    "version": "0.0.2",
-    "private": true,
-    "path": "packages/e2e/e2e-tools"
-  },
-  {
-    "name": "e2e-dev-wallet",
-    "version": "0.0.2",
-    "private": true,
-    "path": "packages/e2e/e2e-dev-wallet"
-  },
-  {
     "name": "e2e-rwa-demo",
     "version": "0.0.2",
     "private": true,
     "path": "packages/e2e/e2e-rwa-demo"
+  },
+  {
+    "name": "e2e-tools",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-tools"
   },
   {
     "name": "wallet-sdk-example-app",
