@@ -70,7 +70,7 @@ export interface IContext {
 }
 
 export const PRISMA = {
-  DEFAULT_SIZE: 500,
+  DEFAULT_SIZE: dotenv.DEFAULT_PAGE_SIZE,
 };
 
 const traceResolver = createSentryWrapper({

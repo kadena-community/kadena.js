@@ -1,9 +1,9 @@
 # This dockerfile is using @kadena/graph from NPM
-FROM node:20-bookworm-slim AS build
+FROM node:20 AS build
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN npm i -g pnpm
 
 WORKDIR /app
 
