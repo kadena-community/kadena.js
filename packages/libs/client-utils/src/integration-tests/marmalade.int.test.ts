@@ -1,5 +1,5 @@
-import type { ChainId } from '@kadena/client';
-import { createSignWithKeypair } from '@kadena/client';
+import type { ChainId, PactErrorCode } from '@kadena/client';
+import { createSignWithKeypair, getPactErrorCode } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { describe, expect, it } from 'vitest';
 import {
@@ -275,9 +275,8 @@ describe('mintToken', () => {
       config,
     );
 
-    await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
-    );
+    const res = await task.execute().catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
 
@@ -303,11 +302,8 @@ describe('getTokenBalance', () => {
       host: config.host,
     });
 
-    await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(
-        `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
-      ),
-    );
+    const res = await task.catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
 
@@ -341,11 +337,8 @@ describe('getAccountDetails', () => {
       host: config.host,
     });
 
-    await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(
-        `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
-      ),
-    );
+    const res = await task.catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
 
@@ -375,9 +368,8 @@ describe('getTokenInfo', () => {
       host: config.host,
     });
 
-    await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(`with-read: row not found: ${nonExistingTokenId}`),
-    );
+    const res = await task.catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
 
@@ -401,9 +393,8 @@ describe('getTokenUri', () => {
       host: config.host,
     });
 
-    await expect(() => Promise.resolve(task)).rejects.toThrowError(
-      new Error(`with-read: row not found: ${nonExistingTokenId}`),
-    );
+    const res = await task.catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
 
@@ -427,6 +418,7 @@ describe('updateUri', () => {
 
     expect(result).toBe(true);
   });
+
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-token';
     const task = updateUri(
@@ -445,9 +437,8 @@ describe('updateUri', () => {
       config,
     );
 
-    await expect(() => task.execute()).rejects.toThrowError(
-      new Error(`with-read: row not found: ${nonExistingTokenId}`),
-    );
+    const res = await task.execute().catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
 
@@ -668,8 +659,7 @@ describe('burnToken', () => {
       burnConfig,
     );
 
-    await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
-    );
+    const res = await task.execute().catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });

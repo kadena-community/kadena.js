@@ -1,5 +1,5 @@
-import type { ChainId } from '@kadena/client';
-import { createSignWithKeypair } from '@kadena/client';
+import type { ChainId, PactErrorCode } from '@kadena/client';
+import { createSignWithKeypair, getPactErrorCode } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import type { IPactInt } from '@kadena/types';
 import { describe, expect, it } from 'vitest';
@@ -21,6 +21,7 @@ import {
   addDaysToDate,
   addSecondsToDate,
   dateToPactInt,
+  getBlockDate,
   waitForBlockTime,
   withStepFactory,
 } from './support/helpers';
@@ -28,10 +29,15 @@ import { secondaryTargetAccount, sourceAccount } from './test-data/accounts';
 
 let tokenId: string | undefined;
 let saleId: string | undefined;
+
 const timeout = dateToPactInt(addDaysToDate(new Date(), 1));
-let auctionStartDate: IPactInt;
-let auctionEndDate: IPactInt;
+const PRICE_INTERVAL_IN_SECONDS: IPactInt = { int: '5' };
+
+let auctionStartDate: IPactInt | undefined;
+let auctionEndDate: IPactInt | undefined;
+
 const chainId = '0' as ChainId;
+
 const inputs = {
   chainId,
   precision: { int: '0' },
@@ -45,6 +51,7 @@ const inputs = {
     },
   },
 };
+
 const config = {
   host: 'http://127.0.0.1:8080',
   defaults: {
@@ -53,8 +60,8 @@ const config = {
   sign: createSignWithKeypair([sourceAccount]),
 };
 
-describe('createTokenId', () => {
-  it('should return a token id', async () => {
+describe('create, mint and offer a token with auction, update auction. Get details', () => {
+  it('returns a token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
       networkId: config.defaults.networkId,
@@ -64,10 +71,8 @@ describe('createTokenId', () => {
     expect(tokenId).toBeDefined();
     expect(tokenId).toMatch(/^t:.{43}$/);
   });
-});
 
-describe('createToken', () => {
-  it('should create a token', async () => {
+  it('creates a token', async () => {
     const withStep = withStepFactory();
 
     const result = await createToken(
@@ -117,10 +122,8 @@ describe('createToken', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('mintToken', () => {
-  it('should mint a token', async () => {
+  it('mints a token', async () => {
     const withStep = withStepFactory();
 
     const result = await mintToken(
@@ -192,10 +195,8 @@ describe('mintToken', () => {
 
     expect(balance).toBe(1);
   });
-});
 
-describe('offerToken - with auction data', () => {
-  it('should offer a token for sale', async () => {
+  it('offers a token for sale', async () => {
     const withStep = withStepFactory();
 
     const saleConfig = {
@@ -293,41 +294,12 @@ describe('offerToken - with auction data', () => {
     expect(result).toBe(saleId);
   });
 
-  it('should throw error when non-existent token offered', async () => {
-    const saleConfig = {
-      host: 'http://127.0.0.1:8080',
-      defaults: {
-        networkId: 'development',
-      },
-      sign: createSignWithKeypair([secondaryTargetAccount]),
-    };
-
-    const task = await offerToken(
-      {
-        chainId,
-        tokenId: 'non-existing-token',
-        seller: {
-          account: secondaryTargetAccount.account,
-          guard: {
-            keys: [secondaryTargetAccount.publicKey],
-            pred: 'keys-all' as const,
-          },
-        },
-        amount: new PactNumber(1).toPactDecimal(),
-        timeout,
-      },
-      saleConfig,
-    );
-
-    await expect(() => task.execute()).rejects.toThrowError(
-      new Error('with-read: row not found: non-existing-token'),
-    );
-  });
-});
-
-describe('createAuction', () => {
-  it('should be able to create dutch auction', async () => {
+  it('is able to create dutch auction', async () => {
     const withStep = withStepFactory();
+
+    const blockDate = await getBlockDate({ chainId });
+    auctionStartDate = dateToPactInt(addSecondsToDate(blockDate, 10));
+    auctionEndDate = dateToPactInt(addSecondsToDate(blockDate, 30));
 
     const result = await createAuction(
       {
@@ -336,11 +308,11 @@ describe('createAuction', () => {
         },
         saleId: saleId as string,
         tokenId: tokenId as string,
-        startDate: dateToPactInt(addSecondsToDate(new Date(), 50)),
-        endDate: dateToPactInt(addSecondsToDate(new Date(), 100)),
+        startDate: auctionStartDate,
+        endDate: auctionEndDate,
         startPrice: { decimal: '100.0' },
         reservedPrice: { decimal: '1.0' },
-        priceIntervalInSeconds: { int: '10' },
+        priceIntervalInSeconds: PRICE_INTERVAL_IN_SECONDS,
         chainId,
         seller: {
           account: sourceAccount.account,
@@ -395,14 +367,21 @@ describe('createAuction', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('updateAuction', () => {
-  it('should be able to update dutch auction', async () => {
+  it('is able to update dutch auction', async () => {
+    if (auctionStartDate === undefined || auctionEndDate === undefined) {
+      throw new Error('auctionStartDate or auctionEndDate is undefined');
+    }
+
     const withStep = withStepFactory();
 
-    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
-    auctionEndDate = dateToPactInt(addDaysToDate(new Date(), 10));
+    // add 5 seconds to the auction start and end date
+    auctionStartDate = dateToPactInt(
+      addSecondsToDate(new Date(Number(auctionStartDate.int) * 1000), 5),
+    );
+    auctionEndDate = dateToPactInt(
+      addSecondsToDate(new Date(Number(auctionEndDate.int) * 1000), 5),
+    );
 
     const result = await updateAuction(
       {
@@ -415,7 +394,7 @@ describe('updateAuction', () => {
         endDate: auctionEndDate,
         startPrice: { decimal: '10.0' },
         reservedPrice: { decimal: '1.0' },
-        priceIntervalInSeconds: { int: '10' },
+        priceIntervalInSeconds: PRICE_INTERVAL_IN_SECONDS,
         chainId,
         seller: {
           account: sourceAccount.account,
@@ -470,10 +449,8 @@ describe('updateAuction', () => {
 
     expect(result).toBe(true);
   });
-});
 
-describe('getAuctionDetails', () => {
-  it('should get the auction details', async () => {
+  it('gets the auction details', async () => {
     const result = await getAuctionDetails({
       auctionConfig: {
         dutch: true,
@@ -488,7 +465,7 @@ describe('getAuctionDetails', () => {
       expect.objectContaining({
         buyer: '',
         'price-interval-seconds': {
-          int: 10,
+          int: Number(PRICE_INTERVAL_IN_SECONDS.int),
         },
         'reserve-price': 1,
         'sell-price': 0,
@@ -496,10 +473,8 @@ describe('getAuctionDetails', () => {
       }),
     );
   });
-});
 
-describe('getCurrentPrice', () => {
-  it('should return 0 if the auction has not started yet', async () => {
+  it('returns 0 if the auction has not started yet', async () => {
     const result = await getCurrentPrice({
       saleId: saleId as string,
       chainId,
@@ -510,18 +485,30 @@ describe('getCurrentPrice', () => {
     expect(result).toBe(0);
   });
 
-  it('should return start price after the auction have started', async () => {
-    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
+  it(
+    'returns start price after the auction have started',
+    async () => {
+      if (auctionStartDate === undefined) {
+        throw new Error('auctionStartDate is undefined');
+      }
+      const blockDate = await getBlockDate({ chainId });
+      console.log(
+        `blockDate:        ${new Date(blockDate)}
+auctionStartDate:  ${new Date(Number(auctionStartDate.int) * 1000)}`,
+      );
+      await waitForBlockTime(auctionStartDate);
 
-    const result = await getCurrentPrice({
-      saleId: saleId as string,
-      chainId,
-      networkId: config.defaults.networkId,
-      host: config.host,
-    });
+      const result = await getCurrentPrice({
+        saleId: saleId as string,
+        chainId,
+        networkId: config.defaults.networkId,
+        host: config.host,
+      });
 
-    expect(result).toBe(10);
-  });
+      expect(result).toBe(10);
+    },
+    { timeout: 60000 },
+  );
 });
 
 describe('buyToken', () => {
@@ -539,10 +526,10 @@ describe('buyToken', () => {
     },
   };
 
-  let auctionStartDate: IPactInt;
-  let auctionEndDate: IPactInt;
+  let auctionStartDate: IPactInt | undefined;
+  let auctionEndDate: IPactInt | undefined;
 
-  it('should create token id', async () => {
+  it('creates token id', async () => {
     tokenId = await createTokenId({
       ...inputs,
       networkId: config.defaults.networkId,
@@ -553,7 +540,7 @@ describe('buyToken', () => {
     expect(tokenId).toMatch(/^t:.{43}$/);
   });
 
-  it('should create a token', async () => {
+  it('creates a token', async () => {
     const result = await createToken(
       { ...inputs, tokenId: tokenId as string },
       config,
@@ -562,7 +549,7 @@ describe('buyToken', () => {
     expect(result).toBe(true);
   });
 
-  it('should mint a token', async () => {
+  it('mints a token', async () => {
     const result = await mintToken(
       {
         ...inputs,
@@ -583,7 +570,7 @@ describe('buyToken', () => {
     expect(result).toBe(true);
   });
 
-  it('should offer a token for sale', async () => {
+  it('offers a token for sale', async () => {
     const withStep = withStepFactory();
 
     const result = await offerToken(
@@ -673,9 +660,10 @@ describe('buyToken', () => {
     expect(result).toBe(saleId);
   });
 
-  it('should create dutch auction', async () => {
-    auctionStartDate = dateToPactInt(addSecondsToDate(new Date(), 10));
-    auctionEndDate = dateToPactInt(addDaysToDate(new Date(), 10));
+  it('creates dutch auction', async () => {
+    const blockDate = await getBlockDate({ chainId });
+    auctionStartDate = dateToPactInt(addSecondsToDate(blockDate, 10));
+    auctionEndDate = dateToPactInt(addSecondsToDate(blockDate, 20));
 
     const result = await createAuction(
       {
@@ -688,7 +676,7 @@ describe('buyToken', () => {
         endDate: auctionEndDate,
         startPrice: { decimal: '5.0' },
         reservedPrice: { decimal: '1.0' },
-        priceIntervalInSeconds: { int: '3600' },
+        priceIntervalInSeconds: PRICE_INTERVAL_IN_SECONDS,
         chainId,
         seller: {
           account: sourceAccount.account,
@@ -704,8 +692,11 @@ describe('buyToken', () => {
     expect(result).toBe(true);
   });
 
-  it('should buy a token', async () => {
-    await waitForBlockTime((Number(auctionStartDate.int) + 2) * 1000);
+  it('buys a token', async () => {
+    if (auctionStartDate === undefined) {
+      throw new Error('auctionStartDate is undefined');
+    }
+    await waitForBlockTime(auctionStartDate);
 
     const withStep = withStepFactory();
 
@@ -750,6 +741,8 @@ describe('buyToken', () => {
         seller: {
           account: sourceAccount.account,
         },
+        buyerFungibleAccount: secondaryTargetAccount.account,
+        sellerFungibleAccount: sourceAccount.account,
         signerPublicKey: secondaryTargetAccount.publicKey,
         buyer: {
           account: secondaryTargetAccount.account,
@@ -775,7 +768,10 @@ describe('buyToken', () => {
         withStep((step, prResult) => {
           expect(step).toBe(2);
           if (prResult.result.status === 'failure') {
-            expect(prResult.result.status).toBe('success');
+            expect(
+              prResult.result.status,
+              `Error: ${JSON.stringify(prResult.result.error, null, 2)}`,
+            ).toBe('success');
           } else {
             expect(prResult.result.data).toBe(saleId);
           }
@@ -795,7 +791,10 @@ describe('buyToken', () => {
         withStep((step, sbResult) => {
           expect(step).toBe(4);
           if (sbResult.result.status === 'failure') {
-            expect(sbResult.result.status).toBe('success');
+            expect(
+              sbResult.result.status,
+              `Error:${JSON.stringify(sbResult.result.error, null, 2)}`,
+            ).toBe('success');
           } else {
             expect(sbResult.result.data).toBe(saleId);
           }
@@ -814,5 +813,37 @@ describe('buyToken', () => {
     });
 
     expect(balance).toBe(1);
+  });
+});
+
+describe('non-existent auction details', () => {
+  it('throws error when non-existent token offered', async () => {
+    const saleConfig = {
+      host: 'http://127.0.0.1:8080',
+      defaults: {
+        networkId: 'development',
+      },
+      sign: createSignWithKeypair([secondaryTargetAccount]),
+    };
+
+    const task = await offerToken(
+      {
+        chainId,
+        tokenId: 'non-existing-token',
+        seller: {
+          account: secondaryTargetAccount.account,
+          guard: {
+            keys: [secondaryTargetAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        amount: new PactNumber(1).toPactDecimal(),
+        timeout,
+      },
+      saleConfig,
+    );
+
+    const res = await task.execute().catch((err) => getPactErrorCode(err));
+    expect(res).toBe('RECORD_NOT_FOUND' as PactErrorCode);
   });
 });
