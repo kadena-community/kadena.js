@@ -80,7 +80,7 @@
     "json-bigint-patch": "~0.0.8",
     "listr2": "~8.2.1",
     "module-alias": "^2.2.3",
-    "prisma": "^5.12.1",
+    "prisma": "^5.16.1",
     "seedrandom": "~3.0.5",
     "ws": "^8.16.0",
     "zod": "~3.23.0"
