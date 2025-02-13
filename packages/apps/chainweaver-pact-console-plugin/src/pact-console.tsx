@@ -26,7 +26,7 @@ export function PactConsole({
   target: Window;
 }) {
   const message = useMemo(
-    () => communicate(window, target, 'pact-remote-console', sessionId),
+    () => communicate(window, target, '@kadena/chainweaver-pact-console-plugin', sessionId),
     [sessionId, target],
   );
   const [networks, setNetworks] = useState<INetwork[]>([]);
