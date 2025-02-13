@@ -1,10 +1,3 @@
-export const logTap =
-  (msg: string) =>
-  <T>(x: T): T => {
-    console.log(msg, x);
-    return x;
-  };
-
 import fs, { readFileSync } from 'fs';
 import path from 'path';
 

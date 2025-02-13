@@ -1,5 +1,6 @@
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { getInitials } from '@/utils/get-initials';
+import { logTap } from '@/utils/logTap';
 import { MonoApps } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
@@ -55,13 +56,6 @@ const getDoc = (plugin: Plugin, sessionId: string) => {
 </html>`;
 };
 
-const logTap = function <T>(msg: string): (e: T) => T {
-  return function (e: T): T {
-    console.log(msg, e);
-    return e;
-  };
-};
-
 export function Plugins() {
   const [searchParams] = useSearchParams();
   const [pluginList, setPluginList] = useState<Plugin[]>([]);
@@ -89,7 +83,7 @@ export function Plugins() {
               if (
                 !prev.find((pl) => pl.id === p.id && pl.registry === p.registry)
               ) {
-                newPlugins.push(logTap<typeof p>('plugin found')(p));
+                newPlugins.push(logTap('plugin found')(p));
               }
             });
             return [...prev, ...newPlugins];
@@ -120,7 +114,7 @@ export function Plugins() {
               <Stack gap={'sm'} alignItems={'center'}>
                 <div style={{ display: 'inline-block' }}>
                   <div className={pluginIconClass}>
-                    {getInitials(plugin.shortName).toUpperCase()}
+                    {getInitials(plugin.name).toUpperCase()}
                   </div>
                 </div>
                 {plugin.name}
@@ -156,7 +150,7 @@ export function Plugins() {
       </Text>
       <Divider />
       <Stack flexWrap="wrap" gap={'md'}>
-        {pluginList.map(({ name, shortName, id }) => (
+        {pluginList.map(({ name, id }) => (
           <Link to={`/plugins?plugin-id=${id}`} className={noStyleLinkClass}>
             <Stack
               alignItems={'center'}
@@ -165,7 +159,7 @@ export function Plugins() {
               gap={'xs'}
             >
               <div className={pluginIconClass}>
-                {getInitials(shortName).toUpperCase()}
+                {getInitials(name).toUpperCase()}
               </div>
               <Text bold size="smallest">
                 {name}

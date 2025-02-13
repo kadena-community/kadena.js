@@ -75,7 +75,7 @@
     "vitest": "^1.6.0"
   },
   "chainweaver-plugin-manifest": {
-    "shortName": "Wallet Connect",
+    "name": "Wallet Connect",
     "description": "Wallet Connect plugin for Kadena Chainweaver wallet",
     "permissions": [
       "CONNECTION_REQUEST",

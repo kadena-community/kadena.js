@@ -2,7 +2,7 @@
   "name": "@kadena/chainweaver-pact-console-plugin",
   "version": "0.0.1",
   "private": true,
-  "description": "Kadena developer wallet plugin",
+  "description": "A console for interacting remotely with Pact on different networks (read-only)",
   "type": "module",
   "main": "dist/index.es.js",
   "scripts": {
@@ -72,8 +72,7 @@
     "vitest": "^1.6.0"
   },
   "chainweaver-plugin-manifest": {
-    "shortName": "Pact Console",
-    "description": "Remote Pact Console",
+    "name": "Pact Console",
     "permissions": [
       "GET_NETWORK_LIST"
     ]
