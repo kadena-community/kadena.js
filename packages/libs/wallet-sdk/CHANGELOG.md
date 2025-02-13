@@ -1,5 +1,17 @@
 # @kadena/wallet-sdk
 
+## 0.2.0
+
+### Minor Changes
+
+- 4e1530d: Provide new create transfer methods (breaking change)
+
+### Patch Changes
+
+- Updated dependencies \[67ee479]
+  - @kadena/client\@1.17.0
+  - @kadena/client-utils\@0.12.1
+
 ## 0.1.1
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @kadena/kadena-cli
 
+## 1.4.0
+
+### Minor Changes
+
+- 67ee479: Add support for pact 5 error messages
+
+### Patch Changes
+
+- d99871a: Fixed warning when passing -u in tx sign
+- Updated dependencies \[67ee479]
+  - @kadena/client\@1.17.0
+  - @kadena/client-utils\@0.12.1
+  - @kadena/pactjs-cli\@1.17.0
+  - @kadena/pactjs-generator\@1.17.0
+
 ## 1.3.9
 
 ### Patch Changes
