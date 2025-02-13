@@ -6,6 +6,7 @@ import {
   createBlockDepthMap,
   getConditionForMinimumDepth,
 } from '@services/depth-service';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { ZodError } from 'zod';
 import { builder } from '../builder';
@@ -62,8 +63,7 @@ const generateTransactionFilter = async (args: {
 
 builder.queryField('transactions', (t) =>
   t.prismaConnection({
-    description:
-      'Retrieve transactions. Default page size is 20.\n At least one of accountName, fungibleName, blockHash, or requestKey must be provided.',
+    description: `Retrieve transactions. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.\n At least one of accountName, fungibleName, blockHash, or requestKey must be provided.`,
     type: Prisma.ModelName.Transaction,
     cursor: 'blockHash_requestKey',
     edgesNullable: false,

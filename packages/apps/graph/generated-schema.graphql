@@ -16,7 +16,7 @@ type Block implements Node {
   """
   epoch: DateTime!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
   flags: Decimal!
   hash: String!
@@ -32,7 +32,7 @@ type Block implements Node {
   powHash: String!
   target: String!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
   weight: String!
 }
@@ -144,10 +144,10 @@ type FungibleAccount implements Node {
   id: ID!
   totalBalance: Decimal!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transactions(after: String, before: String, first: Int, last: Int): FungibleAccountTransactionsConnection!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleAccountTransfersConnection!
 }
 
@@ -182,11 +182,11 @@ type FungibleChainAccount implements Node {
   id: ID!
 
   """
-  Transactions that the current account is sender of. Default page size is 20.
+  Transactions that the current account is sender of. Default page size is 500.
   """
   transactions(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransactionsConnection!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransfersConnection!
 }
 
@@ -280,7 +280,7 @@ type NonFungibleAccount implements Node {
   nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
-  Default page size is 20. Note that custom token related transactions are not included.
+  Default page size is 500. Note that custom token related transactions are not included.
   """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
 }
@@ -304,7 +304,7 @@ type NonFungibleChainAccount implements Node {
   nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
-  Default page size is 20. Note that custom token related transactions are not included.
+  Default page size is 500. Note that custom token related transactions are not included.
   """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
 }
@@ -370,7 +370,7 @@ type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
-  """Retrieve blocks by chain and minimal depth. Default page size is 20."""
+  """Retrieve blocks by chain and minimal depth. Default page size is 500."""
   blocksFromDepth(
     after: String
     before: String
@@ -382,7 +382,7 @@ type Query {
     minimumDepth: Int!
   ): QueryBlocksFromDepthConnection
 
-  """Retrieve blocks by chain and minimal height. Default page size is 20."""
+  """Retrieve blocks by chain and minimal height. Default page size is 500."""
   blocksFromHeight(
     after: String
     before: String
@@ -396,7 +396,7 @@ type Query {
   ): QueryBlocksFromHeightConnection!
 
   """
-  Retrieve all completed blocks from a given height. Default page size is 20.
+  Retrieve all completed blocks from a given height. Default page size is 500.
   """
   completedBlockHeights(
     after: String
@@ -413,7 +413,7 @@ type Query {
   ): QueryCompletedBlockHeightsConnection!
 
   """
-  Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
+  Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 0500.
   
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
   
@@ -486,7 +486,7 @@ type Query {
   transaction(blockHash: String, minimumDepth: Int, requestKey: String!): Transaction
 
   """
-  Retrieve transactions. Default page size is 20.
+  Retrieve transactions. Default page size is 500.
    At least one of accountName, fungibleName, blockHash, or requestKey must be provided.
   """
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, maxHeight: Int, minHeight: Int, minimumDepth: Int, requestKey: String): QueryTransactionsConnection!
@@ -494,7 +494,7 @@ type Query {
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
-  """Retrieve transfers. Default page size is 20."""
+  """Retrieve transfers. Default page size is 500."""
   transfers(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransfersConnection!
 }
 

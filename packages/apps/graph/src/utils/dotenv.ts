@@ -10,6 +10,7 @@ export const dotenv: {
   COMPLEXITY_ENABLED: boolean;
   COMPLEXITY_EXPOSED: boolean;
   COMPLEXITY_LIMIT: number;
+  DEFAULT_PAGE_SIZE: number;
   DATABASE_URL: string;
   DEFAULT_FUNGIBLE_NAME: string;
   GITHUB_TOKEN: string | undefined;
@@ -51,13 +52,14 @@ export const dotenv: {
   ),
   COMPLEXITY_ENABLED: or(
     process.env.COMPLEXITY_ENABLED?.toLocaleLowerCase() === 'true',
-    false,
+    true,
   ),
   COMPLEXITY_EXPOSED: or(
     process.env.COMPLEXITY_EXPOSED?.toLocaleLowerCase() === 'true',
-    false,
+    true,
   ),
-  COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
+  COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '50000'), 10),
+  DEFAULT_PAGE_SIZE: parseInt(or(process.env.DEFAULT_PAGE_SIZE, '500'), 10),
   DATABASE_URL: or(
     process.env.DATABASE_URL,
     'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
