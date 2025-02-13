@@ -1,15 +1,10 @@
 {
-  "name": "@kadena/dev-wallet-plugin",
+  "name": "@kadena/chainweaver-wallet-connect-plugin",
   "version": "0.0.1",
   "private": true,
-  "description": "Kadena developer wallet plugin",
+  "description": "Wallet Connect plugin for Kadena Chainweaver wallet",
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/pact-remote-console.es.js",
-      "require": "./dist/pact-remote-console.umd.js"
-    }
-  },
+  "main": "dist/index.es.js",
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite --force",
@@ -29,11 +24,14 @@
     "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
+    "@reown/walletkit": "^1.2.0",
     "@scure/bip39": "1.2.1",
     "@tauri-apps/api": "^1.4.0",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/dynamic": "^2.1.2",
     "@vanilla-extract/recipes": "0.5.1",
+    "@walletconnect/core": "^2.18.0",
+    "@walletconnect/utils": "~2.9.2",
     "asn1js": "^3.0.5",
     "cbor-web": "^9.0.2",
     "chrome-types": "^0.1.248",
@@ -75,5 +73,16 @@
     "vite-plugin-static-copy": "^1.0.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^1.6.0"
+  },
+  "chainweaver-plugin-manifest": {
+    "shortName": "Wallet Connect",
+    "description": "Wallet Connect plugin for Kadena Chainweaver wallet",
+    "permissions": [
+      "CONNECTION_REQUEST",
+      "SIGN",
+      "GET_STATUS",
+      "GET_NETWORK_LIST",
+      "GET_ACCOUNTS"
+    ]
   }
 }

@@ -1,19 +1,13 @@
 {
-  "name": "@kadena/dev-wallet",
-  "version": "0.5.1",
+  "name": "@kadena/chainweaver-pact-console-plugin",
+  "version": "0.0.1",
   "private": true,
-  "description": "Kadena developer wallet",
+  "description": "Kadena developer wallet plugin",
   "type": "module",
+  "main": "dist/index.es.js",
   "scripts": {
-    "prebuild": "pnpm run generate-coin-type && pnpm run generate:plugins",
-    "build": "pnpm run prebuild && tsc && vite build",
-    "build-dev": "tsc && vite build --mode development --watch",
-    "build:e2e": "NODE_ENV=test pnpm run build",
-    "build:watch": "pnpm run build && concurrently \"chokidar './src/**' './node_modules/@kadena/**' -s -t 500  --command './node_modules/.bin/vite build' \" \"pnpm run preview --port 1420\"",
+    "build": "tsc && vite build",
     "dev": "vite --force",
-    "dev:chainweaver": "concurrently \"chokidar './src/**' --command './node_modules/.bin/vite build' --initial\" \"pnpm run preview --port 1337\"",
-    "generate-coin-type": "cache-sh -i \"node_modules/.kadena/**\" -- \"pactjs contract-generate --contract \\\"coin\\\" --api \\\"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\\\"\"",
-    "generate:plugins": "rimraf public/internal-registry/* && ./scripts/symlink-plugins.ts && ./scripts/generate-plugins-json.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "preview": "vite preview",
     "test": "vitest run",
@@ -21,7 +15,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
-    "@kadena/chainweaver-pact-console-plugin": "workspace:*",
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
@@ -52,8 +45,7 @@
     "react-router-dom": "^6.26.2",
     "swr": "^2.2.2",
     "usehooks-ts": "^2.9.1",
-    "yup": "^1.2.0",
-    "zx": "^8.1.5"
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -68,18 +60,22 @@
     "@vanilla-extract/esbuild-plugin": "^2.3.11",
     "@vanilla-extract/vite-plugin": "4.0.17",
     "@vitejs/plugin-react-swc": "^3.2.2",
-    "cache-sh": "^1.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "rimraf": "~5.0.1",
-    "tsx": "^4.16.2",
     "typescript": "5.4.5",
     "vite": "^5.4.8",
     "vite-plugin-static-copy": "^1.0.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^1.6.0"
+  },
+  "chainweaver-plugin-manifest": {
+    "shortName": "Pact Console",
+    "description": "Remote Pact Console",
+    "permissions": [
+      "GET_NETWORK_LIST"
+    ]
   }
 }

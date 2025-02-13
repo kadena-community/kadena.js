@@ -24,6 +24,8 @@ function getMonorepoPackagesFromPackageJson() {
   return packages;
 }
 
+// TODO: Fix all packages to include a esm version
+// This will allow us to remove the commonjsOptions and optimizeDeps.include
 const monorepoPackages = getMonorepoPackagesFromPackageJson();
 const monorepoPathsRegex = monorepoPackages.map(
   (pkg) => new RegExp(`${pkg.replace('@kadena/', '')}`),
@@ -57,11 +59,11 @@ export const config: UserConfig = {
   build: {
     ssr: false,
     minify: false,
-    sourcemap: 'hidden',
+    sourcemap: 'inline',
     lib: {
-      entry: 'src/plugin.tsx', // The entry point of your library
-      name: 'pact-remote-console', // The global variable name for UMD/IIFE builds
-      fileName: (format) => `pact-remote-console.${format}.js`, // File name template
+      entry: 'src/index.tsx', // The entry point of your library
+      fileName: 'index.es',
+      formats: ['es'], // the formats to build
     },
     commonjsOptions: {
       // add all monorepo packages path regex to commonjsOptions since they are commonjs

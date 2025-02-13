@@ -11,7 +11,10 @@ import { pluginContainerClass, pluginIconClass } from './style.css';
 import { Plugin } from './type';
 
 // plugin whitelist
-const registries = ['/hosted-plugins', 'https://localhost:3000/test-plugins'];
+const registries = [
+  '/internal-registry',
+  // 'https://localhost:3000/test-plugins',
+];
 
 function escapeHTML(input: string) {
   return input
@@ -24,8 +27,11 @@ function escapeHTML(input: string) {
 const getDoc = (plugin: Plugin, sessionId: string) => {
   const id = escapeHTML(plugin.id);
   const host = escapeHTML(plugin.registry);
-  const src = `${host}/${id}/${id}.es.js`;
-  const style = `${host}/${id}/style.css`;
+  const src = `${host}/${id}/dist/index.es.js`;
+  const style = `${host}/${id}/dist/style.css`;
+
+  console.log('loading plugin: ', { id, host, src, style });
+
   return `
 <!doctype html>
 <html lang="en">
@@ -47,6 +53,13 @@ const getDoc = (plugin: Plugin, sessionId: string) => {
     </script>
   </body>
 </html>`;
+};
+
+const logTap = function <T>(msg: string): (e: T) => T {
+  return function (e: T): T {
+    console.log(msg, e);
+    return e;
+  };
 };
 
 export function Plugins() {
@@ -76,7 +89,7 @@ export function Plugins() {
               if (
                 !prev.find((pl) => pl.id === p.id && pl.registry === p.registry)
               ) {
-                newPlugins.push(p);
+                newPlugins.push(logTap<typeof p>('plugin found')(p));
               }
             });
             return [...prev, ...newPlugins];
@@ -84,6 +97,11 @@ export function Plugins() {
         ),
     );
   }, []);
+
+  const doc = useMemo(() => {
+    if (!plugin) return '';
+    return getDoc(plugin, sessionId);
+  }, [plugin, sessionId]);
 
   if (plugin) {
     return (
@@ -119,7 +137,7 @@ export function Plugins() {
             <iframe
               sandbox="allow-scripts allow-forms"
               style={{ border: 'none', width: '100%', height: '100%' }}
-              srcDoc={getDoc(plugin, sessionId)}
+              srcDoc={doc}
             />
           </Stack>
         </Stack>

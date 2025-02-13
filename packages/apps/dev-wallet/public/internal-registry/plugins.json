@@ -1,0 +1,12 @@
+[
+  {
+    "id": "@kadena/chainweaver-pact-console-plugin",
+    "shortName": "Pact Console",
+    "registry": "/internal-registry",
+    "description": "Remote Pact Console",
+    "version": "0.0.1",
+    "permissions": [
+      "GET_NETWORK_LIST"
+    ]
+  }
+]
