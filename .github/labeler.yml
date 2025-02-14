@@ -163,3 +163,9 @@ wallet-sdk-example-app:
 '@kadena/dev-wallet-plugin':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet-plugin/*
+'@kadena/chainweaver-pact-console-plugin':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/chainweaver-pact-console-plugin/*
+'@kadena/chainweaver-wallet-connect-plugin':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/chainweaver-wallet-connect-plugin/*

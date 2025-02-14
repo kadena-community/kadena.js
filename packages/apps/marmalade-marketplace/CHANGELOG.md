@@ -1,5 +1,13 @@
 # @kadena/marmalade-marketplace
 
+## 0.1.16
+
+### Patch Changes
+
+- Updated dependencies \[67ee479]
+  - @kadena/client\@1.17.0
+  - @kadena/client-utils\@0.12.1
+
 ## 0.1.15
 
 ### Patch Changes
