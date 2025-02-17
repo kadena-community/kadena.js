@@ -1,5 +1,4 @@
 {
-  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "esModuleInterop": true,
     "strictNullChecks": true,
