@@ -25,6 +25,9 @@ export class ChainweaverAppIndex extends setupDatabase {
   }
 
   public async createAccount(actor: Page): Promise<string> {
+    await actor.getByTestId('assetList').waitFor();
+    await actor.waitForTimeout(500);
+
     const listItems = await actor
       .getByTestId('assetList')
       .getByRole('listitem')
