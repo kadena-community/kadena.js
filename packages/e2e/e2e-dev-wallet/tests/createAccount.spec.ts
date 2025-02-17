@@ -12,7 +12,7 @@ test('Create account', async ({ initiator, chainweaverApp }) => {
 
   await test.step('create account', async () => {
     await initiator.goto('/');
-    await chainweaverApp.selectNetwork(initiator, 'Development');
+    await chainweaverApp.selectNetwork(initiator, 'development');
     const result = await chainweaverApp.createAccount(initiator);
 
     expect(result).toBeDefined();

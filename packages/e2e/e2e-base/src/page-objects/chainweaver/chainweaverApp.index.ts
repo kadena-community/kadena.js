@@ -43,6 +43,8 @@ export class ChainweaverAppIndex extends setupDatabase {
     await createAccountButton.click();
 
     await this.signPopupWithPassword(actor);
+
+    await actor.getByTestId('assetList').waitFor();
     await actor.waitForTimeout(500);
 
     const newListItems = await actor
