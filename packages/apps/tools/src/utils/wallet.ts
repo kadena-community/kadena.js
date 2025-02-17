@@ -1,13 +1,13 @@
-import type { Network } from '@/constants/kadena';
+import type { NetworkNames } from '@/constants/kadena';
 
-export const getNetworks = (accounts: string[] = []): Network[] =>
+export const getNetworks = (accounts: string[] = []): NetworkNames[] =>
   Array.from(
     new Set(
       accounts
         ?.map((account) => account.split(':')[1])
         ?.filter((network) => network !== 'development'),
     ),
-  ) as Network[];
+  ) as NetworkNames[];
 
 export const getAccounts = (
   accounts: string[] = [],

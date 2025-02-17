@@ -230,7 +230,7 @@ const ExistingAccountFaucetPage: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm<FormData>({ resolver: zodResolver(schema as any) });
 
   return (
     <section className={containerClass}>

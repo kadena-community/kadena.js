@@ -1,5 +1,5 @@
 import client from '@/constants/client';
-import type { Network } from '@/constants/kadena';
+import type { NetworkName, NetworkNames } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
@@ -38,7 +38,7 @@ export async function getTransferStatus({
   networksData,
 }: {
   requestKey: string;
-  network: Network;
+  network: NetworkName;
   t: Translate;
   options?: {
     onPoll?: (status: IStatusData) => void;
@@ -165,14 +165,14 @@ export async function getXChainTransferInfo({
   senderAccount?: string;
   senderChain: ChainwebChainId;
   receiverChain: ChainwebChainId;
-  network: Network;
+  network: NetworkName;
   networksData: INetworkData[];
   t: Translate;
 }): Promise<IStatusData> {
   debug(getXChainTransferInfo.name);
   try {
     const networkData: INetworkData | undefined = networksData.find(
-      (item) => (network as Network) === item.networkId,
+      (item) => (network as NetworkNames) === item.networkId,
     );
 
     if (!networkData) return { error: 'No network found' };
@@ -275,7 +275,7 @@ export async function checkForProof({
   t,
 }: {
   requestKey: string;
-  network: Network;
+  network: NetworkName;
   senderAccount: string;
   senderChain: ChainwebChainId;
   receiverAccount: string;
@@ -292,7 +292,7 @@ export async function checkForProof({
   const { onPoll = () => {} } = { ...options };
 
   const networkData: INetworkData | undefined = networksData.find(
-    (item) => (network as Network) === item.networkId,
+    (item) => (network as NetworkNames) === item.networkId,
   );
 
   if (!networkData) return '';

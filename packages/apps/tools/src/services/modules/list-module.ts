@@ -1,4 +1,4 @@
-import type { Network } from '@/constants/kadena';
+import type { NetworkNames } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
@@ -12,12 +12,12 @@ export interface IModulesResult {
   status?: string;
   data?: string[];
   chainId: ChainwebChainId;
-  network: Network;
+  network: NetworkNames;
 }
 
 export const listModules = async (
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkNames,
   networksData: INetworkData[],
   senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,

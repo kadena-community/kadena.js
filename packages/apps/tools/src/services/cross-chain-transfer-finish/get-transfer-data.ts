@@ -1,5 +1,5 @@
 import client from '@/constants/client';
-import type { Network } from '@/constants/kadena';
+import type { NetworkName } from '@/constants/kadena';
 import {
   convertIntToChainId,
   validateRequestKey,
@@ -54,7 +54,7 @@ export async function getTransferData({
   networksData,
 }: {
   requestKey: string;
-  network: Network;
+  network: NetworkName;
   t: Translate;
   networksData: INetworkData[];
 }): Promise<ITransferDataResult> {

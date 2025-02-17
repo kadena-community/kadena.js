@@ -74,7 +74,7 @@ export const SignForm: FC<ISignFormProps> = ({
   const [ledgerSignState, signTx] = useLedgerSign();
 
   const methods = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as any),
     defaultValues,
   });
 

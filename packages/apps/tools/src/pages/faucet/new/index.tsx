@@ -142,7 +142,7 @@ const NewAccountFaucetPage: FC = () => {
     control,
     setValue,
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as any),
   });
 
   const faqs: Array<{ title: string; body: React.ReactNode }> = [

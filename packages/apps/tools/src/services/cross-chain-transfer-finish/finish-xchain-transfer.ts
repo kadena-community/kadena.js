@@ -1,5 +1,5 @@
 import client from '@/constants/client';
-import type { Network } from '@/constants/kadena';
+import type { NetworkNames } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type {
@@ -28,7 +28,7 @@ export async function finishXChainTransfer(
   debug(finishXChainTransfer.name);
 
   const networkData: INetworkData | undefined = networskData.find(
-    (item) => (networkId as Network) === item.networkId,
+    (item) => (networkId as NetworkNames) === item.networkId,
   );
 
   if (!networkData) return { error: 'No network found' };

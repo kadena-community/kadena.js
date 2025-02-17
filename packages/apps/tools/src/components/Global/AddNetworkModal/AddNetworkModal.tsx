@@ -1,3 +1,4 @@
+import type { NetworkName } from '@/constants/kadena';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MonoKeyboardArrowRight } from '@kadena/kode-icons/system';
@@ -32,7 +33,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
     useWalletConnectClient();
 
   const [label, setLabel] = useState('');
-  const [networkId, setNetworkId] = useState('');
+  const [networkId, setNetworkId] = useState<NetworkName>('');
   const [api, setApi] = useState('');
 
   const [error, setError] = useState('');
@@ -71,7 +72,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
     handleSubmit: validateThenSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as any),
   });
 
   return (

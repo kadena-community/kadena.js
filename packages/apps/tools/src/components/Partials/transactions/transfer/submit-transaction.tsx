@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { SubmitTransactionDetails } from './submit-transaction-details';
 
 import client from '@/constants/client';
-import type { Network } from '@/constants/kadena';
+import type { NetworkNames } from '@/constants/kadena';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import type { ISubmitTxResponseBody } from '@/services/transfer/submit-transaction';
@@ -71,7 +71,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const networkData: INetworkData = networksData.filter(
-    (item) => (network as Network) === item.networkId,
+    (item) => (network as NetworkNames) === item.networkId,
   )[0];
 
   const [requestKey, setRequestKey] = useState<string>('');

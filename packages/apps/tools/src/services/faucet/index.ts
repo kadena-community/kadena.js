@@ -1,4 +1,4 @@
-import type { Network } from '@/constants/kadena';
+import type { NetworkName } from '@/constants/kadena';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
@@ -28,7 +28,7 @@ const DEFAULT_MODULE_NAME =
 export const fundExistingAccount = async (
   account: string,
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkName,
   networksData: INetworkData[],
   amount = 100,
 ): Promise<ITransactionDescriptor> => {
@@ -91,7 +91,7 @@ export const fundExistingAccount = async (
 
 export const pollResult = async (
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkName,
   networksData: INetworkData[],
   requestKeys: ITransactionDescriptor,
 ) => {

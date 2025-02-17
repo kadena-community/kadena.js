@@ -1,4 +1,4 @@
-import type { Network } from '@/constants/kadena';
+import type { NetworkName } from '@/constants/kadena';
 import type { AppKdaLike } from '@/utils/ledger';
 import { getKadenaLedgerApp } from '@/utils/ledger';
 import { isSignedTransaction } from '@kadena/client';
@@ -27,7 +27,7 @@ export const GasDefaults = {
 const pactToLedger = (
   input: TransferInput,
   derivationPath: string,
-  networkId: Network,
+  networkId: NetworkName,
 ): TransferCrossChainTxParams => {
   const { receiver, amount, chainId } = input;
   const recipient = typeof receiver === 'string' ? receiver : receiver.account;
@@ -62,7 +62,7 @@ const signWithLedger = (
   app: AppKdaLike,
   transferInput: TransferInput,
   derivationPath: string,
-  networkId: Network,
+  networkId: NetworkName,
 ) => {
   const ledgerParams = pactToLedger(transferInput, derivationPath, networkId);
 

@@ -9,7 +9,7 @@ import {
   RequestKeyField,
 } from '@/components/Global';
 import client from '@/constants/client';
-import type { Network } from '@/constants/kadena';
+import type { NetworkNames } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
@@ -131,7 +131,7 @@ const CrossChainTransferFinisher: FC = () => {
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const networkData: INetworkData = networksData.filter(
-    (item) => (network as Network) === item.networkId,
+    (item) => (network as NetworkNames) === item.networkId,
   )[0];
 
   const checkRequestKey = async (reqKey = requestKey): Promise<void> => {
@@ -292,7 +292,7 @@ const CrossChainTransferFinisher: FC = () => {
     resetField,
     control,
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as any),
     defaultValues: {
       requestKey: router.query?.reqKey as string,
       gasPayer: 'kadena-xchain-gas',
