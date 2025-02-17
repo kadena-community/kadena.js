@@ -98,11 +98,7 @@ export type ChainwebChainId = (typeof CHAINS)[number];
  * Different Chainweb network versions.
  * @alpha
  */
-export type ChainwebNetworkId =
-  | 'mainnet01'
-  | 'testnet04'
-  | 'testnet05'
-  | 'development';
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
 
 /**
  * A Request Key is the blake2b-256 bit hash of a Pact command.
