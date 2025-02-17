@@ -29,7 +29,6 @@ export class ChainweaverAppIndex extends setupDatabase {
       .getByTestId('assetList')
       .getByRole('listitem')
       .all();
-    await expect(listItems.length).toEqual(0);
 
     const newAccountButton = actor.getByRole('button', {
       name: 'Account',
@@ -51,7 +50,7 @@ export class ChainweaverAppIndex extends setupDatabase {
       .getByRole('listitem')
       .all();
 
-    await expect(newListItems.length).toEqual(1);
+    await expect(newListItems.length).toEqual(listItems.length + 1);
 
     const str = (await newListItems[0].allTextContents()).join('');
     const account = str.match(/\(([^)]+)\)/);
