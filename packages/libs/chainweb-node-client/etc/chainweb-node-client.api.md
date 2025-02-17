@@ -21,7 +21,7 @@ export const CHAINS: readonly ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
 export type ChainwebChainId = (typeof CHAINS)[number];
 
 // @alpha
-export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'testnet05' | 'development';
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
 
 // @alpha (undocumented)
 export type ClientRequestInit = Omit<RequestInit, 'method' | 'body'>;
