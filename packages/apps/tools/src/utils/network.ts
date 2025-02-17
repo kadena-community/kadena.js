@@ -22,7 +22,7 @@ export interface INetworkData {
 }
 
 const isNetwork = (x: any): x is Network =>
-  ['mainnet01', 'testnet04', 'testnet05'].includes(x);
+  ['mainnet01', 'testnet04'].includes(x);
 
 export const getConfigNetworkNames = (): DefinedNetwork[] => {
   return Object.keys(kadenaConstants).filter((key) =>

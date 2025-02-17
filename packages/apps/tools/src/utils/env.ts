@@ -2,7 +2,6 @@ export interface IEnvInterface {
   KADENA_API_TTIL?: number;
   KADENA_MAINNET_API?: string;
   KADENA_TESTNET_API?: string;
-  KADENA_TESTNET05_API?: string;
   KADENA_MAINNET_ESTATS?: string;
   KADENA_TESTNET_ESTATS?: string;
   GAS_LIMIT?: number;

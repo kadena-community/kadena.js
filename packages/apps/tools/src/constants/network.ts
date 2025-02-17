@@ -12,8 +12,4 @@ export const chainNetwork: {
     server: kadenaConstants.testnet04.API,
     network: 'testnet04',
   },
-  testnet05: {
-    server: kadenaConstants.testnet05.API,
-    network: 'testnet05',
-  },
 };
