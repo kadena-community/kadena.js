@@ -2,7 +2,6 @@ export interface IEnvInterface {
   KADENA_API_TTIL?: number;
   KADENA_MAINNET_API?: string;
   KADENA_TESTNET_API?: string;
-  KADENA_TESTNET05_API?: string;
   KADENA_MAINNET_ESTATS?: string;
   KADENA_TESTNET_ESTATS?: string;
   GAS_LIMIT?: number;
@@ -24,7 +23,6 @@ export const dotenv: IEnvInterface = {
   KADENA_API_TTIL: Number(process.env.KADENA_API_TTIL),
   KADENA_MAINNET_API: process.env.KADENA_MAINNET_API,
   KADENA_TESTNET_API: process.env.KADENA_TESTNET_API,
-  KADENA_TESTNET05_API: process.env.KADENA_TESTNET05_API,
   KADENA_MAINNET_ESTATS: process.env.KADENA_MAINNET_ESTATS,
   KADENA_TESTNET_ESTATS: process.env.KADENA_TESTNET_ESTATS,
   GAS_LIMIT: Number(process.env.GAS_LIMIT),

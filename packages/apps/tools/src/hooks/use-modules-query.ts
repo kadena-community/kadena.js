@@ -40,7 +40,7 @@ const fetchModules = async (
 
   const promises = chains.map((chainId) =>
     listModules({
-      host: kadenaConstants[networkId as 'testnet04' | 'testnet05'].apiHost,
+      host: kadenaConstants[networkId as 'testnet04'].apiHost,
       defaults: { networkId, meta: { chainId } },
     }),
   );
