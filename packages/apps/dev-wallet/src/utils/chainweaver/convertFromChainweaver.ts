@@ -1,7 +1,9 @@
+import { IPactCommand } from '@kadena/client';
 import {
   ChainweaverKeyPair,
   ExportFromChainweaver,
   StoreFrontendData,
+  StoreFrontendTuple,
 } from './chainweaver';
 
 export const convertFromChainweaver = (exportData: ExportFromChainweaver) => {
@@ -42,19 +44,44 @@ export const convertFromChainweaver = (exportData: ExportFromChainweaver) => {
   };
 };
 
-function processData(data: StoreFrontendData): StoreFrontendData {
-  // if "StoreFrontend_Wallet_Tokens" is not present, return empty array
-  if (data[1][0][0] !== 'StoreFrontend_Wallet_Tokens') {
-    return [
-      data[0],
-      [['StoreFrontend_Wallet_Tokens', []], {}],
-      data[1],
-      data[2],
-      data[3],
-      data[4],
-      data[5],
-    ] as unknown as StoreFrontendData;
-  }
+function processData(data: StoreFrontendData): StoreFrontendTuple {
+  const storeFrontendTuple: StoreFrontendTuple = [
+    [['StoreFrontend_Wallet_Keys', []], []],
+    [['StoreFrontend_Wallet_Tokens', []], {}],
+    [['StoreFrontend_Wallet_Accounts', []], {}],
+    [['StoreFrontend_Network_PublicMeta', []], {} as IPactCommand['meta']],
+    [
+      ['StoreFrontend_Network_Networks', []],
+      { Mainnet: ['api.chainweb.com'], Testnet: ['api.testnet.chainweb.com'] },
+    ],
+    [['StoreFrontend_Network_SelectedNetwork', []], 'Mainnet'],
+    [['StoreFrontend_ModuleExplorer_SessionFile', []], ''],
+  ];
+  data.forEach((tuple) => {
+    switch (tuple[0]?.[0]) {
+      case 'StoreFrontend_Wallet_Keys':
+        storeFrontendTuple[0] = tuple as StoreFrontendTuple[0];
+        break;
+      case 'StoreFrontend_Wallet_Tokens':
+        storeFrontendTuple[1] = tuple as StoreFrontendTuple[1];
+        break;
+      case 'StoreFrontend_Wallet_Accounts':
+        storeFrontendTuple[2] = tuple as StoreFrontendTuple[2];
+        break;
+      case 'StoreFrontend_Network_PublicMeta':
+        storeFrontendTuple[3] = tuple as StoreFrontendTuple[3];
+        break;
+      case 'StoreFrontend_Network_Networks':
+        storeFrontendTuple[4] = tuple as StoreFrontendTuple[4];
+        break;
+      case 'StoreFrontend_Network_SelectedNetwork':
+        storeFrontendTuple[5] = tuple as StoreFrontendTuple[5];
+        break;
+      case 'StoreFrontend_ModuleExplorer_SessionFile':
+        storeFrontendTuple[6] = tuple as StoreFrontendTuple[6];
+        break;
+    }
+  });
 
-  return data;
+  return storeFrontendTuple;
 }

@@ -1,5 +1,19 @@
 # @kadena/graph
 
+## 2.2.0
+
+### Minor Changes
+
+- 44b5408: Default page sizes have increased to 500. Issues should be covered by
+  complexity calculations
+
+### Patch Changes
+
+- Updated dependencies \[67ee479]
+  - @kadena/chainweb-node-client\@0.9.0
+  - @kadena/client\@1.17.0
+  - @kadena/client-utils\@0.12.1
+
 ## 2.1.0
 
 ### Minor Changes

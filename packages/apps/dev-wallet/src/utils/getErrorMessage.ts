@@ -5,3 +5,8 @@ export const getErrorMessage = (e: any, fallback: string = 'UNKNOWN ERROR') => {
   }
   return fallback;
 };
+
+export const normalizeErrorObject = (error: any) => {
+  const message = getErrorMessage(error);
+  return typeof error === 'object' ? { ...error, message } : { message };
+};

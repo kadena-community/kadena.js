@@ -1,5 +1,6 @@
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { getInitials } from '@/utils/get-initials';
+import { logTap } from '@/utils/logTap';
 import { MonoApps } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
@@ -11,7 +12,10 @@ import { pluginContainerClass, pluginIconClass } from './style.css';
 import { Plugin } from './type';
 
 // plugin whitelist
-const registries = ['/hosted-plugins', 'https://localhost:3000/test-plugins'];
+const registries = [
+  '/internal-registry',
+  // 'https://localhost:3000/test-plugins',
+];
 
 function escapeHTML(input: string) {
   return input
@@ -24,8 +28,11 @@ function escapeHTML(input: string) {
 const getDoc = (plugin: Plugin, sessionId: string) => {
   const id = escapeHTML(plugin.id);
   const host = escapeHTML(plugin.registry);
-  const src = `${host}/${id}/${id}.es.js`;
-  const style = `${host}/${id}/style.css`;
+  const src = `${host}/${id}/dist/index.es.js`;
+  const style = `${host}/${id}/dist/style.css`;
+
+  console.log('loading plugin: ', { id, host, src, style });
+
   return `
 <!doctype html>
 <html lang="en">
@@ -76,7 +83,7 @@ export function Plugins() {
               if (
                 !prev.find((pl) => pl.id === p.id && pl.registry === p.registry)
               ) {
-                newPlugins.push(p);
+                newPlugins.push(logTap('plugin found')(p));
               }
             });
             return [...prev, ...newPlugins];
@@ -84,6 +91,11 @@ export function Plugins() {
         ),
     );
   }, []);
+
+  const doc = useMemo(() => {
+    if (!plugin) return '';
+    return getDoc(plugin, sessionId);
+  }, [plugin, sessionId]);
 
   if (plugin) {
     return (
@@ -102,7 +114,7 @@ export function Plugins() {
               <Stack gap={'sm'} alignItems={'center'}>
                 <div style={{ display: 'inline-block' }}>
                   <div className={pluginIconClass}>
-                    {getInitials(plugin.shortName).toUpperCase()}
+                    {getInitials(plugin.name).toUpperCase()}
                   </div>
                 </div>
                 {plugin.name}
@@ -119,7 +131,7 @@ export function Plugins() {
             <iframe
               sandbox="allow-scripts allow-forms"
               style={{ border: 'none', width: '100%', height: '100%' }}
-              srcDoc={getDoc(plugin, sessionId)}
+              srcDoc={doc}
             />
           </Stack>
         </Stack>
@@ -138,7 +150,7 @@ export function Plugins() {
       </Text>
       <Divider />
       <Stack flexWrap="wrap" gap={'md'}>
-        {pluginList.map(({ name, shortName, id }) => (
+        {pluginList.map(({ name, id }) => (
           <Link to={`/plugins?plugin-id=${id}`} className={noStyleLinkClass}>
             <Stack
               alignItems={'center'}
@@ -147,7 +159,7 @@ export function Plugins() {
               gap={'xs'}
             >
               <div className={pluginIconClass}>
-                {getInitials(shortName).toUpperCase()}
+                {getInitials(name).toUpperCase()}
               </div>
               <Text bold size="smallest">
                 {name}

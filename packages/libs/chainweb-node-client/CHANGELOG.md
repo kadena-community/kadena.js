@@ -1,5 +1,11 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.9.0
+
+### Minor Changes
+
+- 67ee479: Add support for pact 5 error messages
+
 ## 0.8.0
 
 ### Minor Changes

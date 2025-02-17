@@ -7,7 +7,7 @@ export type ChainweaverKeyPair = {
   };
 };
 
-type StoreFrontendData = [
+type StoreFrontendTuple = [
   TupleExport<'StoreFrontend_Wallet_Keys', Array<[number, ChainweaverKeyPair]>>,
   TupleExport<
     'StoreFrontend_Wallet_Tokens',
@@ -31,6 +31,11 @@ type StoreFrontendData = [
   TupleExport<'StoreFrontend_Network_SelectedNetwork', NetworkLabel>,
   TupleExport<'StoreFrontend_ModuleExplorer_SessionFile', string>,
 ];
+
+// The exported file may not always contain all keys, and the key order might not be consistent.
+// So, we later convert the input file to StoreFrontendTuple type,
+// using default values for missing keys and correct order.
+type StoreFrontendData = Array<StoreFrontendTuple[number]>;
 
 type NetworkLabel = string;
 type TokenIdentifier = {

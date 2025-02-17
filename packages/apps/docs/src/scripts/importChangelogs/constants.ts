@@ -20,7 +20,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Spirekey SDK',
     slug: 'spirekey',
-    repo: 'https://github.com/kadena-community/spirekey.git',
+    repo: 'git@github.com:kadena-community/spirekey.git',
     directory: '/sdk',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -29,7 +29,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Pact 4',
     slug: 'pact',
-    repo: 'https://github.com/kadena-io/pact.git',
+    repo: 'git@github.com:kadena-io/pact.git',
     directory: '/',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-io',
@@ -38,7 +38,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Marmalade V2',
     slug: 'marmalade-v2',
-    repo: 'https://github.com/kadena-io/marmalade.git',
+    repo: 'git@github.com:kadena-io/marmalade.git',
     directory: '/',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-io',
@@ -47,7 +47,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Kadena Cli',
     slug: 'kadena-cli',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/tools/kadena-cli',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -56,7 +56,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Create Kadena App',
     slug: 'create-kadena-app',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/tools/create-kadena-app',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -65,7 +65,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Client',
     slug: 'client',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/client',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -74,7 +74,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Client Utils',
     slug: 'client-utils',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/client-utils',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -83,7 +83,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'HD Wallet',
     slug: 'hd-wallet',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/hd-wallet',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -92,7 +92,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'GraphQL',
     slug: 'graph',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/apps/graph',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -101,7 +101,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Block Explorer',
     slug: 'explorer',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/apps/explorer',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -110,7 +110,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'ChainwebJS',
     slug: 'chainwebjs',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/chainwebjs',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -119,7 +119,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Chainweb Stream Client',
     slug: 'chainweb-stream-client',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/chainweb-stream-client',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -128,7 +128,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Chainweb Node CLient',
     slug: 'chainweb-node-client',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/chainweb-node-client',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -137,7 +137,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'PactJS Cli',
     slug: 'pactjs-cli',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/tools/pactjs-cli',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -146,7 +146,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'PactJS Generator',
     slug: 'pactjs-generator',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/pactjs-generator',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -155,7 +155,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Kode UI Components',
     slug: 'kode-ui-components',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/kode-ui',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -164,7 +164,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Kode Icons',
     slug: 'kode-icons',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/kode-icons',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -173,7 +173,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Cryptography Utils',
     slug: 'cryptography-utils',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/cryptography-utils',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -182,7 +182,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Tools',
     slug: 'tools',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/apps/tools',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -191,7 +191,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'PactJS',
     slug: 'pactjs',
-    repo: 'https://github.com/kadena-community/kadena.js.git',
+    repo: 'git@github.com:kadena-community/kadena.js.git',
     directory: '/packages/libs/pactjs',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-community',
@@ -200,7 +200,7 @@ export const REPOS: IRepo[] = [
   {
     name: 'Chainweb Node',
     slug: 'chainweb-node',
-    repo: 'https://github.com/kadena-io/chainweb-node.git',
+    repo: 'git@github.com:kadena-io/chainweb-node.git',
     directory: '/',
     fileName: 'CHANGELOG.md',
     owner: 'kadena-io',

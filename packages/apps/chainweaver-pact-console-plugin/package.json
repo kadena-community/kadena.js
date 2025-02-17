@@ -1,15 +1,10 @@
 {
-  "name": "@kadena/dev-wallet-plugin",
-  "version": "0.0.1",
+  "name": "@kadena/chainweaver-pact-console-plugin",
+  "version": "0.0.2",
   "private": true,
-  "description": "Kadena developer wallet plugin",
+  "description": "A console for interacting remotely with Pact on different networks (read-only)",
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/pact-remote-console.es.js",
-      "require": "./dist/pact-remote-console.umd.js"
-    }
-  },
+  "main": "dist/index.es.js",
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite --force",
@@ -75,5 +70,11 @@
     "vite-plugin-static-copy": "^1.0.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^1.6.0"
+  },
+  "chainweaver-plugin-manifest": {
+    "name": "Pact Console",
+    "permissions": [
+      "GET_NETWORK_LIST"
+    ]
   }
 }

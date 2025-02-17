@@ -6,7 +6,10 @@ module.exports = {
     '@kadena-dev/eslint-config/profile/lib',
     'plugin:playwright/recommended',
   ],
-  parserOptions: { tsconfigRootDir: __dirname, ecmaVersion: 'latest' },
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    ecmaVersion: 'latest',
+  },
   rules: {},
   settings: {
     'import/parsers': {

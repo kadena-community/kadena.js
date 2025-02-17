@@ -102,8 +102,12 @@ export async function getTransferData({
     const { events, result } = found;
 
     if ('error' in result) {
-      return result.error;
-      // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
+      return {
+        error:
+          'message' in result.error
+            ? (result.error.message as string)
+            : 'An error occurred.',
+      };
     }
 
     let senderAccount: string | undefined,

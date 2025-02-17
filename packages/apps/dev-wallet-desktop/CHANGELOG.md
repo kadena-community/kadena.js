@@ -1,5 +1,11 @@
 # @kadena/dev-wallet-desktop
 
+## 0.0.31
+
+### Patch Changes
+
+- @kadena/dev-wallet\@0.5.2
+
 ## 0.0.30
 
 ### Patch Changes

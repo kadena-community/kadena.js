@@ -77,7 +77,7 @@ export const getTransfers = async (
 
       if (condition && (condition.take === 0 || condition.take === undefined)) {
         // use default value for take
-        condition.take = 20;
+        condition.take = dotenv.DEFAULT_PAGE_SIZE;
       }
 
       if (condition !== undefined && condition.take > 0) {
@@ -297,7 +297,7 @@ export const getTransactions = async (
       log('take', condition?.take);
 
       if (condition && (condition.take === 0 || condition.take === undefined)) {
-        condition.take = 20;
+        condition.take = dotenv.DEFAULT_PAGE_SIZE;
       }
 
       if (condition !== undefined && condition.take > 0) {
@@ -575,7 +575,7 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        description: 'Default page size is 20.',
+        description: `Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -621,7 +621,7 @@ export default builder.node(
         },
       }),
       transfers: t.prismaConnection({
-        description: 'Default page size is 20.',
+        description: `Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
         type: Prisma.ModelName.Transfer,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         edgesNullable: false,

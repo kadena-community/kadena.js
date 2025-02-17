@@ -43,10 +43,16 @@ export const config: UserConfig = {
         },
         // this is only for plugins that are hosted and maintain with kadena's teams
         // other plugins should be hosted in their own domain; we might later create a plugin registry and host them there.
-        {
-          src: 'node_modules/@kadena/dev-wallet-plugin/dist/*',
-          dest: './hosted-plugins/pact-remote-console/',
-        },
+        // ...getChainweaverPluginsFromPackageJson(
+        //   JSON.parse(
+        //     readFileSync(path.resolve(__dirname, './package.json'), 'utf-8'),
+        //   ) as PackageJson,
+        // ).map((dep) =>
+        //   logTap('Plugin: ')({
+        //     src: `node_modules/${dep}/dist/*`,
+        //     dest: `./internal-registry/${dep}/`,
+        //   }),
+        // ),
       ],
     }),
   ],

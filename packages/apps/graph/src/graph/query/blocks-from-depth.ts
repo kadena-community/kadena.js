@@ -6,14 +6,14 @@ import {
   getConditionForMinimumDepth,
   getConfirmationDepth,
 } from '@services/depth-service';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import GQLBlock from '../objects/block';
 
 builder.queryField('blocksFromDepth', (t) =>
   t.prismaConnection({
-    description:
-      'Retrieve blocks by chain and minimal depth. Default page size is 20.',
+    description: `Retrieve blocks by chain and minimal depth. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
     args: {
       minimumDepth: t.arg.int({
         required: true,

@@ -1,4 +1,4 @@
-import { createSignWithKeypair } from '@kadena/client';
+import { createSignWithKeypair, parseAsPactValue } from '@kadena/client';
 import {
   addData,
   addSigner,
@@ -30,7 +30,7 @@ export const withStepFactory = () => {
 export const waitFor = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const getBlockTime = async (props?: { chainId?: ChainId }) => {
+export const getBlockDate = async (props?: { chainId?: ChainId }) => {
   const { chainId } = props || { chainId: '0' };
 
   const config = {
@@ -53,18 +53,36 @@ export const getBlockTime = async (props?: { chainId?: ChainId }) => {
     ),
   ).execute();
 
-  return new Date(Number(time) * 1000);
+  return new Date(Number(parseAsPactValue(time)) * 1000);
 };
 
-export const waitForBlockTime = async (timeMs: number) => {
-  while (true) {
-    const time = await getBlockTime();
+/**
+ * Wait for a certain blockTime to have passed
+ */
+export const waitForBlockTime = async (timeSeconds: IPactInt) => {
+  const timeS =
+    Number(timeSeconds.int) - (await getBlockDate()).getTime() / 1000;
+  if (Number.isNaN(timeS)) {
+    throw new Error('Invalid timeSeconds');
+  }
+  console.log(`Waiting for ${timeS} seconds`);
 
-    if (time.getTime() >= timeMs) {
+  while (true) {
+    const time = await getBlockDate();
+
+    let diffTime = 0;
+
+    if (time.getTime() > Number(timeSeconds.int) * 1000) {
+      break;
+    } else {
+      diffTime = Number(timeSeconds.int) * 1000 - time.getTime() + 50;
+    }
+
+    if (diffTime === 0) {
       break;
     }
 
-    await waitFor(1000);
+    await waitFor(diffTime);
   }
 };
 

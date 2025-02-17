@@ -5,6 +5,7 @@ import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { bigintSortFn } from '../../utils/bigintSortFn';
 import { builder } from '../builder';
@@ -71,8 +72,7 @@ export default builder.node(
       }),
       balance: t.exposeFloat('balance'),
       transactions: t.prismaConnection({
-        description:
-          'Transactions that the current account is sender of. Default page size is 20.',
+        description: `Transactions that the current account is sender of. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -109,7 +109,7 @@ export default builder.node(
         },
       }),
       transfers: t.prismaConnection({
-        description: 'Default page size is 20.',
+        description: `Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
         type: Prisma.ModelName.Transfer,
         edgesNullable: false,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
