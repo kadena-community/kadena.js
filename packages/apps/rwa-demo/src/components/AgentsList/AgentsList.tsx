@@ -3,7 +3,7 @@ import { useGetAgents } from '@/hooks/getAgents';
 import { useRemoveAgent } from '@/hooks/removeAgent';
 import { loadingData } from '@/utils/loadingData';
 import { MonoDelete, MonoSupportAgent } from '@kadena/kode-icons';
-import { Button } from '@kadena/kode-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -31,7 +31,7 @@ export const AgentsList: FC = () => {
 
   return (
     <>
-      <SectionCard stack="vertical">
+      <SectionCard stack="vertical" data-testid="agentsCard">
         <SectionCardContentBlock>
           <SectionCardHeader
             title="Agents"
@@ -52,10 +52,13 @@ export const AgentsList: FC = () => {
             }
           />
           <SectionCardBody>
-            <TransactionTypeSpinner
-              type={[TXTYPES.ADDAGENT, TXTYPES.REMOVEAGENT]}
-            />
+            <Stack data-testid="agentTableTxSpinner">
+              <TransactionTypeSpinner
+                type={[TXTYPES.ADDAGENT, TXTYPES.REMOVEAGENT]}
+              />
+            </Stack>
             <CompactTable
+              data-testid="agentTable"
               isLoading={isLoading}
               variant="open"
               fields={[

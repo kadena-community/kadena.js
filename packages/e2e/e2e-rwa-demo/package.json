@@ -30,6 +30,7 @@
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
+    "dotenv": "~16.4.5",
     "eslint": "^8.45.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-playwright": "1.6.2",

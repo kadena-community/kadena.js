@@ -28,7 +28,7 @@ test('Login passwordless', async ({ initiator, chainweaverApp }) => {
 test('Login with password', async ({ initiator, chainweaverApp }) => {
   await test.step('create profile with a password', async () => {
     await initiator.goto('/');
-    const profileName =
+    const { profileName } =
       await chainweaverApp.createProfileWithPassword(initiator);
     expect(profileName).toBeTruthy();
 

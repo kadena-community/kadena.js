@@ -1,25 +1,42 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
 import { WebAuthNHelper } from '../../helpers/chainweaver/webauthn.helper';
+import type { ILoginDataProps } from './setupDatabase';
+import { setupDatabase } from './setupDatabase';
 
-export class ChainweaverAppIndex {
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+
+export class ChainweaverAppIndex extends setupDatabase {
   private _webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
   private _PROFILENAME: string = 'He-man';
   private _PROFILENAME_WITHPASSWORD: string = 'Skeletor';
-  private _PASSWORD: string = 'M4st3r_of_th3_un1v3rs3';
+  private _PASSWORD: string = '123456';
 
-  public constructor() {}
+  public constructor() {
+    super();
+  }
 
-  public async createAccount(actor: Page): Promise<boolean> {
+  public getWalletUrl() {
+    if (process.env.WALLETURL) return process.env.WALLETURL;
+
+    return 'https://wallet.kadena.io';
+  }
+
+  public async createAccount(actor: Page): Promise<string> {
+    await actor.getByTestId('assetList').waitFor();
+    await actor.waitForTimeout(500);
+
     const listItems = await actor
       .getByTestId('assetList')
       .getByRole('listitem')
       .all();
-    await expect(listItems.length).toEqual(0);
 
     const newAccountButton = actor.getByRole('button', {
       name: 'Account',
     });
+    await newAccountButton.waitFor();
     await expect(newAccountButton).toBeVisible();
     await newAccountButton.click();
 
@@ -29,6 +46,8 @@ export class ChainweaverAppIndex {
     await createAccountButton.click();
 
     await this.signPopupWithPassword(actor);
+
+    await actor.getByTestId('assetList').waitFor();
     await actor.waitForTimeout(500);
 
     const newListItems = await actor
@@ -36,25 +55,58 @@ export class ChainweaverAppIndex {
       .getByRole('listitem')
       .all();
 
-    await expect(newListItems.length).toEqual(1);
-    return true;
+    await expect(newListItems.length).toEqual(listItems.length + 1);
+
+    const str = (await newListItems[0].allTextContents()).join('');
+    const account = str.match(/\(([^)]+)\)/);
+
+    if (!account) {
+      await expect(true).toBe(false);
+      return '';
+    }
+
+    return account[1] ?? '';
   }
 
-  public async setup(actor: Page, full: boolean = true): Promise<boolean> {
-    await actor.goto('/');
-    await this.createProfileWithPassword(actor);
-    await this.goToSettings(actor);
+  public async setup(
+    actor: Page,
+    typeName: string,
+    full: boolean = true,
+  ): Promise<ILoginDataProps | undefined> {
+    await actor.goto(`${this.getWalletUrl()}/?env=e2e`);
+    await actor.waitForTimeout(1000);
 
-    if (full) {
-      await this.addNetwork(actor, {
-        networkId: 'development',
-        title: 'development',
-        host: 'http://localhost:8080',
+    let accountData: ILoginDataProps | undefined = undefined;
+
+    try {
+      accountData = await this.importBackup(actor, typeName);
+    } catch (e) {
+      const data = await this.createProfileWithPassword(actor);
+
+      await this.goToSettings(actor);
+
+      if (full) {
+        await this.addNetwork(actor, {
+          networkId: 'development',
+          title: 'development',
+          host: 'http://localhost:8080',
+        });
+
+        await this.selectNetwork(actor, 'Development');
+
+        await actor.goto(`${this.getWalletUrl()}/?env=e2e`);
+        await this.createAccount(actor);
+      }
+      accountData = await this.downloadBackup(actor, {
+        profileName: data.profileName,
+        phrase: data.phrase,
+        typeName,
       });
-
-      await this.selectNetwork(actor, 'Development');
+    } finally {
+      await actor.goto(`${this.getWalletUrl()}/?env=e2e`);
     }
-    return true;
+
+    return accountData;
   }
   public async createProfile(actor: Page): Promise<string> {
     await this._webAuthNHelper.enableVirtualAuthenticator(actor);
@@ -78,7 +130,13 @@ export class ChainweaverAppIndex {
 
     return this._PROFILENAME;
   }
-  public async createProfileWithPassword(actor: Page): Promise<string> {
+  public async createProfileWithPassword(actor: Page): Promise<{
+    profileName: string;
+    phrase: string;
+  }> {
+    await actor
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
     const button = actor.getByText('Add new profile');
     await expect(button).toBeVisible();
     await button.click();
@@ -109,12 +167,30 @@ export class ChainweaverAppIndex {
     await continueButton.click();
 
     const skipButton = actor.getByRole('button', {
-      name: 'Skip',
+      name: 'Show Phrase',
     });
     await expect(skipButton).toBeVisible();
     await skipButton.click();
 
-    return this._PROFILENAME_WITHPASSWORD;
+    const copyButton = actor.getByRole('button', {
+      name: 'Copy to clipboard',
+    });
+
+    await copyButton.click();
+
+    const phrase: string = await actor.evaluate(
+      'navigator.clipboard.readText()',
+    );
+
+    const skipButton2 = actor.getByRole('button', {
+      name: 'Skip',
+    });
+    await skipButton2.click();
+
+    return {
+      profileName: this._PROFILENAME_WITHPASSWORD,
+      phrase,
+    };
   }
 
   public async logout(actor: Page, profileName: string): Promise<boolean> {
@@ -131,13 +207,53 @@ export class ChainweaverAppIndex {
 
     return true;
   }
+
+  public async selectProfileWithPhrase(
+    actor: Page,
+    setupProps?: ILoginDataProps,
+  ) {
+    await actor.getByRole('link', { name: 'Recover your wallet' }).click();
+    await actor.getByRole('link', { name: 'Recovery Phrase' }).waitFor();
+    await actor.getByRole('link', { name: 'Recovery Phrase' }).click();
+    await actor.locator('#phrase').waitFor();
+    await actor.fill('#phrase', setupProps?.phrase ?? '');
+    await actor.fill('#name', `${setupProps?.profileName ?? ''}1`);
+
+    await actor.getByRole('button', { name: 'Prefer password' }).click();
+
+    await actor.fill('#password', this._PASSWORD);
+    await actor.fill('#confirmation', this._PASSWORD);
+
+    const continueButton = actor.getByRole('button', {
+      name: 'Continue',
+    });
+    await expect(continueButton).toBeEnabled();
+    await continueButton.click();
+    await actor
+      .getByRole('button', {
+        name: 'Continue',
+      })
+      .click();
+  }
+
   public async selectProfile(
     actor: Page,
     profileName: string,
   ): Promise<boolean> {
     const button = actor.getByText(profileName);
+    await button.waitFor();
     await expect(button).toBeVisible();
     await button.click();
+
+    if (
+      await actor
+        .getByRole('heading', { name: 'Unlock your profile' })
+        .isVisible()
+    ) {
+      await actor.fill('[id="password"]', this._PASSWORD);
+      await actor.getByRole('button', { name: 'Continue' }).waitFor();
+      await actor.getByRole('button', { name: 'Continue' }).click();
+    }
 
     return true;
   }
@@ -160,17 +276,23 @@ export class ChainweaverAppIndex {
   }
 
   public async signPopupWithPassword(actor: Page): Promise<boolean> {
+    await actor
+      .getByRole('button', {
+        name: 'Unlock',
+      })
+      .waitFor();
+
     const unlockButton = actor.getByRole('button', {
       name: 'Unlock',
     });
 
-    const input = actor.getByTestId('passwordField');
-    await unlockButton.waitFor();
-    await input.waitFor();
-    await input.fill(this._PASSWORD);
+    if (await unlockButton.isVisible()) {
+      const input = actor.getByTestId('passwordField');
+      await input.waitFor();
+      await input.fill(this._PASSWORD);
 
-    await unlockButton.click();
-    await expect(unlockButton).toBeHidden();
+      await unlockButton.click();
+    }
 
     return true;
   }
@@ -179,8 +301,18 @@ export class ChainweaverAppIndex {
     trigger: Locator,
   ): Promise<boolean> {
     const popupPromise = actor.waitForEvent('popup');
+
     await trigger.click();
     const walletPopup = await popupPromise;
+    await walletPopup.waitForTimeout(1000);
+
+    if (
+      await walletPopup
+        .getByRole('link', { name: this._PROFILENAME_WITHPASSWORD })
+        .isVisible()
+    ) {
+      await this.selectProfile(walletPopup, 'Skeletor');
+    }
 
     const signButton = walletPopup.getByTestId('signTx');
     await signButton.click();
@@ -194,6 +326,9 @@ export class ChainweaverAppIndex {
     actor: Page,
     network: { networkId: string; title: string; host: string },
   ): Promise<boolean> {
+    await expect(actor.getByText('mainnet01 - Mainnet')).toBeVisible();
+    await expect(actor.getByText('development - development')).toBeHidden();
+
     await expect(actor.getByTestId('rightaside')).not.toBeInViewport();
     await actor.getByRole('button', { name: 'Add Network' }).click();
     await expect(actor.getByTestId('rightaside')).toBeInViewport();
@@ -207,10 +342,14 @@ export class ChainweaverAppIndex {
     await expect(
       actor.getByRole('heading', { name: 'Add Network' }),
     ).toBeVisible();
-    await actor.type('[name="hosts.0.url"]', network.host);
-    await actor.type('[name="networkId"]', network.networkId);
-    await actor.type('[name="name"]', network.title);
+    await actor.type('[name="hosts.0.url"]', network.host, { delay: 10 });
+    await actor.locator('[name="hosts.0.url"]').blur();
+    await actor.waitForTimeout(100);
     await actor.focus('[name="name"]');
+    await actor.type('[name="name"]', network.title, { delay: 10 });
+    await actor.focus('[name="networkId"]');
+    await actor.type('[name="networkId"]', network.networkId, { delay: 10 });
+    await actor.locator('[name="networkId"]').blur();
 
     await expect(icon).toBeVisible();
     await expect(icon).toHaveAttribute('data-ishealthy', 'true');

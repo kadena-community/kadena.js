@@ -53,6 +53,7 @@ export const SideBar: FC<ISideBarProps> = ({
       />
 
       <aside
+        data-testid="leftaside"
         className={classNames(menuWrapperClass({ expanded: isExpanded }), {
           [menuWrapperMobileExpandedClass]: isExpanded,
         })}
@@ -69,7 +70,6 @@ export const SideBar: FC<ISideBarProps> = ({
         {appContext && <SideBarAppContext>{appContext}</SideBarAppContext>}
         {navigation && <SideBarNavigation>{navigation}</SideBarNavigation>}
         {context && <SideBarContext>{context}</SideBarContext>}
-
         {children}
       </aside>
     </>

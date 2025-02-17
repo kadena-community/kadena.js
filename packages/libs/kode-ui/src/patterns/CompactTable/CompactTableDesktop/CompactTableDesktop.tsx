@@ -25,6 +25,7 @@ export const CompactTableDesktop: FC<IProps> = ({
   label = 'Table',
   isLoading = false,
   variant = 'default',
+  ...props
 }) => {
   return (
     <Stack
@@ -32,6 +33,7 @@ export const CompactTableDesktop: FC<IProps> = ({
       flexDirection="column"
       gap="sm"
       className={tableBorderClass({ variant })}
+      {...props}
     >
       <Table
         aria-label={label}

@@ -77,6 +77,7 @@ export const BadgeFreezeForm: FC<IProps> = ({
           <DialogHeader>Freeze selected accounts</DialogHeader>
           <DialogContent>
             <TextareaField
+              name="message"
               onChange={handleMessageChange}
               label="message"
               maxLength={100}
