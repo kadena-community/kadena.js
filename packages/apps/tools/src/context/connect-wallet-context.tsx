@@ -108,6 +108,7 @@ export const WalletConnectClientContextProvider: FC<
       StorageKeys.NETWORKS_DATA,
     ) as INetworkData[];
     const allNetworks = getAllNetworks(initialNetworks || []);
+    console.log(444, allNetworks);
     if (initialNetworks) {
       setNetworksData(allNetworks);
     }

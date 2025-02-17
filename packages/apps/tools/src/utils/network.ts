@@ -61,7 +61,7 @@ export const getAllNetworks = (
       }),
     );
   }
-  return allNetworkObjects;
+  return allNetworkObjects.filter((item) => item.networkId !== 'testnet05');
 };
 
 export const getInitialNetworks = (): INetworkData[] => {

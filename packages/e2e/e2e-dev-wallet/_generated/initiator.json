@@ -1,0 +1,415 @@
+{
+  "db": {
+    "name": "dev-wallet",
+    "version": 46
+  },
+  "phrase": "whale bring armed chuckle anchor glow rice cement awkward wave asset abandon",
+  "profileName": "Skeletor",
+  "data": {
+    "checksum": "DmmKFlLl54-0OgbvufKERNuH9UTCxFs5TaVulyKGdTg",
+    "wallet_version": "3",
+    "db_name": "dev-wallet",
+    "db_version": 46,
+    "timestamp": 1738852918320,
+    "schemes": [
+      {
+        "name": "account",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "address",
+            "keyPath": "address",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "keysetId",
+            "keyPath": "keysetId",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "profile-network",
+            "keyPath": [
+              "profileId",
+              "networkUUID"
+            ],
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "profileId",
+            "keyPath": "profileId",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "unique-account",
+            "keyPath": [
+              "profileId",
+              "guard.principal",
+              "contract",
+              "networkUUID"
+            ],
+            "unique": true,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "activity",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "keyset-network",
+            "keyPath": [
+              "keysetId",
+              "networkUUID"
+            ],
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "profile-network",
+            "keyPath": [
+              "profileId",
+              "networkUUID"
+            ],
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "profileId",
+            "keyPath": "profileId",
+            "unique": false,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "backup",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": []
+      },
+      {
+        "name": "contact",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "name",
+            "keyPath": "name",
+            "unique": true,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "encryptedValue",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "profileId",
+            "keyPath": "profileId",
+            "unique": false,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "fungible",
+        "keyPath": "contract",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "symbol",
+            "keyPath": "symbol",
+            "unique": true,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "keySource",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "profileId",
+            "keyPath": "profileId",
+            "unique": false,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "keyset",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "principal",
+            "keyPath": "principal",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "profileId",
+            "keyPath": "profileId",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "unique-keyset",
+            "keyPath": [
+              "profileId",
+              "principal"
+            ],
+            "unique": true,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "network",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "networkId",
+            "keyPath": "networkId",
+            "unique": true,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "profile",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "name",
+            "keyPath": "name",
+            "unique": true,
+            "multiEntry": false
+          }
+        ]
+      },
+      {
+        "name": "transaction",
+        "keyPath": "uuid",
+        "autoIncrement": false,
+        "indexes": [
+          {
+            "name": "groupId",
+            "keyPath": "groupId",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "hash",
+            "keyPath": "hash",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "network",
+            "keyPath": [
+              "profileId",
+              "networkUUID"
+            ],
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "network-status",
+            "keyPath": [
+              "profileId",
+              "networkUUID",
+              "status"
+            ],
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "profileId",
+            "keyPath": "profileId",
+            "unique": false,
+            "multiEntry": false
+          },
+          {
+            "name": "unique-tx",
+            "keyPath": [
+              "profileId",
+              "networkUUID",
+              "hash"
+            ],
+            "unique": true,
+            "multiEntry": false
+          }
+        ]
+      }
+    ],
+    "data": {
+      "account": [
+        {
+          "key": "ecf10799-d022-478d-ac59-cd23619537df",
+          "value": {
+            "uuid": "ecf10799-d022-478d-ac59-cd23619537df",
+            "alias": "Account 1",
+            "profileId": "dae4d671-e408-44f8-8b45-3b69602b759c",
+            "address": "k:e914fba0beb60be132c63432e6a1adc00f56f6a195d9e09d70b3486819b00205",
+            "keysetId": "32bde3ea-b8b2-4673-a811-044004fc4bbc",
+            "guard": {
+              "pred": "keys-all",
+              "keys": [
+                "e914fba0beb60be132c63432e6a1adc00f56f6a195d9e09d70b3486819b00205"
+              ],
+              "principal": "k:e914fba0beb60be132c63432e6a1adc00f56f6a195d9e09d70b3486819b00205"
+            },
+            "networkUUID": "d04e1584-73f0-4157-b7c8-a41842b8c886",
+            "contract": "coin",
+            "chains": [],
+            "overallBalance": "0",
+            "creationTime": 1738852918020,
+            "syncTime": 1738852918227
+          }
+        }
+      ],
+      "activity": [],
+      "backup": [],
+      "contact": [],
+      "encryptedValue": [
+        {
+          "key": "55fb7ebb-ccd4-45ce-aa71-c5b8d010ad9e",
+          "value": {
+            "uuid": "55fb7ebb-ccd4-45ce-aa71-c5b8d010ad9e",
+            "value": "Uint8Array:UytsanE1bnBxQ1IxYUdwT3I2bkpTQT09LldtZmZ0a2xwcE5mMEdIeUYuTkYvSVQ2Z09mbUNTd0pscnJ6MkRHOFFGZFRoYUx0aWFhSzVOZFUzS0RGQ2tGd3NVUWJPWGx0UTJGSGhHTXYxSkxKcnU4NEUwMlA1ajJTbm5HYmNBMEwwZmdBPT0",
+            "profileId": "dae4d671-e408-44f8-8b45-3b69602b759c",
+            "creationTime": 1738852917969
+          }
+        },
+        {
+          "key": "c2ac6c69-27b5-419b-b9be-4d93160394c2",
+          "value": {
+            "uuid": "c2ac6c69-27b5-419b-b9be-4d93160394c2",
+            "value": "Uint8Array:c09qNEdHSVBhbGN0eERLQ3Z6cDdhUT09LkpTK0QzN0phN1Q4emlaT3kuWHhuVWZxUk9JT0dmUHZkcC84aW5iTm50RkFSNGtZOGJGcjB4eTNVMGt0MTNUVkwwTkxxSENTREFSQ0FJbjE4SFc3RTA5SWF0ZE1NUjcxMmR6TnFzVCtqR3VwOUpEait3aFVxdHY4dXRCSXNiVjYrOTdJdlRsYzhSTFRZPQ",
+            "profileId": "dae4d671-e408-44f8-8b45-3b69602b759c",
+            "creationTime": 1738852917971
+          }
+        }
+      ],
+      "fungible": [
+        {
+          "key": "coin",
+          "value": {
+            "title": "Kadena Coin",
+            "symbol": "KDA",
+            "interface": "fungible-v2",
+            "contract": "coin",
+            "creationTime": 1738852916925
+          }
+        }
+      ],
+      "keySource": [
+        {
+          "key": "e8c5a87e-7037-4a48-8fee-a8e9ec1c7e3d",
+          "value": {
+            "uuid": "e8c5a87e-7037-4a48-8fee-a8e9ec1c7e3d",
+            "profileId": "dae4d671-e408-44f8-8b45-3b69602b759c",
+            "source": "HD-BIP44",
+            "derivationPathTemplate": "m'/44'/626'/<index>'",
+            "keys": [
+              {
+                "publicKey": "e914fba0beb60be132c63432e6a1adc00f56f6a195d9e09d70b3486819b00205",
+                "index": 0
+              }
+            ],
+            "secretId": "c2ac6c69-27b5-419b-b9be-4d93160394c2",
+            "creationTime": 1738852917977
+          }
+        }
+      ],
+      "keyset": [
+        {
+          "key": "32bde3ea-b8b2-4673-a811-044004fc4bbc",
+          "value": {
+            "principal": "k:e914fba0beb60be132c63432e6a1adc00f56f6a195d9e09d70b3486819b00205",
+            "uuid": "32bde3ea-b8b2-4673-a811-044004fc4bbc",
+            "profileId": "dae4d671-e408-44f8-8b45-3b69602b759c",
+            "alias": "Account 1",
+            "guard": {
+              "pred": "keys-all",
+              "keys": [
+                "e914fba0beb60be132c63432e6a1adc00f56f6a195d9e09d70b3486819b00205"
+              ]
+            },
+            "creationTime": 1738852918020
+          }
+        }
+      ],
+      "network": [
+        {
+          "key": "7005c5ea-ef0e-4d8b-aeeb-674226b15a7b",
+          "value": {
+            "uuid": "7005c5ea-ef0e-4d8b-aeeb-674226b15a7b",
+            "networkId": "testnet04",
+            "name": "Testnet",
+            "faucetContract": "n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet",
+            "hosts": [
+              {
+                "url": "https://api.testnet.chainweb.com",
+                "submit": true,
+                "read": true,
+                "confirm": true
+              }
+            ],
+            "creationTime": 1738852916924
+          }
+        },
+        {
+          "key": "d04e1584-73f0-4157-b7c8-a41842b8c886",
+          "value": {
+            "uuid": "d04e1584-73f0-4157-b7c8-a41842b8c886",
+            "networkId": "mainnet01",
+            "name": "Mainnet",
+            "default": true,
+            "hosts": [
+              {
+                "url": "https://api.chainweb.com",
+                "submit": true,
+                "read": true,
+                "confirm": true
+              }
+            ],
+            "creationTime": 1738852916924
+          }
+        }
+      ],
+      "profile": [
+        {
+          "key": "dae4d671-e408-44f8-8b45-3b69602b759c",
+          "value": {
+            "uuid": "dae4d671-e408-44f8-8b45-3b69602b759c",
+            "name": "Skeletor",
+            "networks": [],
+            "secretId": "55fb7ebb-ccd4-45ce-aa71-c5b8d010ad9e",
+            "securityPhraseId": "c2ac6c69-27b5-419b-b9be-4d93160394c2",
+            "accentColor": "#5e4db2",
+            "options": {
+              "authMode": "PASSWORD",
+              "rememberPassword": "session"
+            },
+            "creationTime": 1738852917973
+          }
+        }
+      ],
+      "transaction": []
+    }
+  }
+}
