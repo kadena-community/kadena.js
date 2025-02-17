@@ -292,7 +292,7 @@ const CrossChainTransferFinisher: FC = () => {
     resetField,
     control,
   } = useForm<FormData>({
-    resolver: zodResolver(schema as any),
+    resolver: zodResolver(schema),
     defaultValues: {
       requestKey: router.query?.reqKey as string,
       gasPayer: 'kadena-xchain-gas',

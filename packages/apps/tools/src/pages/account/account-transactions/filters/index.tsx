@@ -70,7 +70,7 @@ const CheckTransactions: FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema as any),
+    resolver: zodResolver(schema),
   });
 
   return (
