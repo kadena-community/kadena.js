@@ -34,7 +34,6 @@ export class setupDatabase {
     name: string,
     accountData: ILoginDataProps,
   ): Promise<void> {
-    console.log(999999, accountData);
     fs.mkdirSync(`${process.cwd()}/_generated/`, {
       recursive: true,
     });
@@ -54,13 +53,11 @@ export class setupDatabase {
         const profileUUIDs = walletImportData.data.data.profile.map(
           (profile) => profile.key,
         );
-        console.log(2222, (window as any).DevWallet);
         await (window as any).DevWallet.importBackup(
           JSON.stringify(walletImportData.data),
           profileUUIDs,
         );
 
-        console.log(1111);
         return walletImportData;
       },
       { walletImportData },
