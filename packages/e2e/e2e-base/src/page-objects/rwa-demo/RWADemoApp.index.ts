@@ -300,6 +300,31 @@ export class RWADemoAppIndex {
     await actor.waitForTimeout(500000000);
   }
 
+  public async addSimpleKDA(
+    actor: Page,
+    chainweaverApp: ChainweaverAppIndex,
+  ): Promise<boolean> {
+    if (
+      await actor
+        .getByRole('heading', {
+          name: 'The account has no balance to pay the gas',
+        })
+        .isVisible()
+    ) {
+      const addButton = actor.getByRole('button', {
+        name: 'Add 5 KDA for Gas',
+      });
+
+      await this.checkLoadingIndicator(
+        actor,
+        addButton,
+        chainweaverApp.signWithPassword(actor, addButton),
+      );
+    }
+
+    return true;
+  }
+
   public async addKDA(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
@@ -310,32 +335,19 @@ export class RWADemoAppIndex {
       }),
     ).toBeVisible();
 
-    await expect(
-      actor.getByRole('heading', {
-        name: 'The account has no balance to pay the gas',
-      }),
-    ).toBeVisible();
-
-    const addButton = actor.getByRole('button', {
-      name: 'Add 5 KDA for Gas',
-    });
-
     const startNewAssetButton = actor.getByRole('button', {
       name: 'Start new Asset',
     });
     await startNewAssetButton.waitFor();
     await expect(startNewAssetButton).toBeDisabled();
 
-    await this.checkLoadingIndicator(
-      actor,
-      addButton,
-      chainweaverApp.signWithPassword(actor, addButton),
-    );
+    await this.addSimpleKDA(actor, chainweaverApp);
 
     await expect(startNewAssetButton).toBeEnabled();
 
     return true;
   }
+
   public async login(
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
@@ -496,7 +508,10 @@ export class RWADemoAppIndex {
     const values = await BalanceInfo.allTextContents();
 
     const str = values[0];
-    const cleanedStr = str.replace('balance:', '').trim();
+    const cleanedStr = str
+      .replace('balance:', '')
+      .replace('Investor balance', '')
+      .trim();
     const arr = cleanedStr.split(' ');
 
     return arr[0];

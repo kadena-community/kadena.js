@@ -66,6 +66,9 @@ test('Investor checks', async ({
       'He-man',
       chainweaverApp,
     );
+
+    await investor1.reload();
+    await investor2.reload();
   });
 
   await test.step('Freeze an investor', async () => {
@@ -227,7 +230,8 @@ test('Investor checks', async ({
     await initiator.goto('/investors');
     await RWADemoApp.selectInvestor(initiator, 0);
 
-    const balanceInfo = initiator.getByTestId('balance-info');
+    const balanceInfo = initiator.getByTestId('balance-info').first();
+    await balanceInfo.waitFor();
     const balance = await RWADemoApp.getBalance(balanceInfo);
 
     await expect(balance).toBe('0');
@@ -251,5 +255,54 @@ test('Investor checks', async ({
 
     const newBalance = await RWADemoApp.getBalance(balanceInfo);
     await expect(newBalance).toBe('20');
+
+    //check that investor1 now has balance of 20
+    const investor1Balance = investor1.getByTestId('balance').first();
+    const newBalanceInvestor1 = await RWADemoApp.getBalance(investor1Balance);
+    await expect(newBalanceInvestor1).toBe('20');
+
+    //check that investor2 now has balance of 0
+    const investor2Balance = investor2.getByTestId('balance').first();
+    const newBalanceInvestor2 = await RWADemoApp.getBalance(investor2Balance);
+    await expect(newBalanceInvestor2).toBe('0');
+  });
+
+  await test.step('Transfer tokens', async () => {
+    await RWADemoApp.addSimpleKDA(investor1, chainweaverApp);
+
+    const transferAction = investor1.getByTestId('transferassetAction');
+    const rightaside = investor1.getByTestId('rightaside');
+    const transferButton = rightaside.getByRole('button', { name: 'Transfer' });
+    const descriptionString = rightaside.getByText('max amount tokens');
+    await transferAction.click();
+
+    await expect(transferButton).toBeDisabled();
+    const txt = await descriptionString.allTextContents();
+    await expect(txt[0]).toContain('20');
+
+    await rightaside.locator('[name="amount"]').fill('15');
+
+    await rightaside.getByRole('button', { name: 'Select an option' }).click();
+    await investor1.getByRole('listbox').locator('li').first().click();
+
+    await expect(transferButton).toBeEnabled();
+
+    await RWADemoApp.checkLoadingIndicator(
+      investor1,
+      transferAction,
+      chainweaverApp.signWithPassword(investor1, transferButton),
+    );
+
+    await investor1.waitForTimeout(1000);
+
+    //check that investor1 now has balance of 5
+    const investor1Balance = investor1.getByTestId('balance').first();
+    const newBalanceInvestor1 = await RWADemoApp.getBalance(investor1Balance);
+    await expect(newBalanceInvestor1).toBe('5');
+
+    //check that investor2 now has balance of 15
+    const investor2Balance = investor2.getByTestId('balance').first();
+    const newBalanceInvestor2 = await RWADemoApp.getBalance(investor2Balance);
+    await expect(newBalanceInvestor2).toBe('15');
   });
 });
