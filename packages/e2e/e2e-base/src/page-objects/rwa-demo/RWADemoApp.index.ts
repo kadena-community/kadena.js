@@ -478,4 +478,27 @@ export class RWADemoAppIndex {
       .all();
     await expect(newTr.length).toBe(tr.length + 1);
   }
+
+  public async selectInvestor(actor: Page, idx: number) {
+    await actor
+      .locator('div[data-testid="investorTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
+
+    const selectedRow = actor
+      .getByTestId('investorTable')
+      .locator('table > tbody tr:has(td:nth-child(1))')
+      .nth(idx);
+
+    await selectedRow.getByTestId('select-account').click();
+  }
+
+  public async getBalance(BalanceInfo: Locator) {
+    const values = await BalanceInfo.allTextContents();
+
+    const str = values[0];
+    const cleanedStr = str.replace('balance:', '').trim();
+    const arr = cleanedStr.split(' ');
+
+    return arr[0];
+  }
 }

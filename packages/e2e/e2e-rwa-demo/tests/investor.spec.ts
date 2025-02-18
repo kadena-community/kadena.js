@@ -222,4 +222,34 @@ test('Investor checks', async ({
     await expect(freezeButton).toBeDisabled();
     await expect(unfreezeButton).toBeDisabled();
   });
+
+  await test.step('Distribute tokens', async () => {
+    await initiator.goto('/investors');
+    await RWADemoApp.selectInvestor(initiator, 0);
+
+    const balanceInfo = initiator.getByTestId('balance-info');
+    const balance = await RWADemoApp.getBalance(balanceInfo);
+
+    await expect(balance).toBe('0');
+
+    const button = initiator.getByTestId('action-distributetokens');
+    await button.waitFor();
+    await button.click();
+
+    const rightAside = initiator.getByTestId('rightaside');
+
+    await rightAside.locator('[name="amount"]').fill('20');
+
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      button,
+      chainweaverApp.signWithPassword(
+        initiator,
+        rightAside.getByRole('button', { name: 'Distribute' }),
+      ),
+    );
+
+    const newBalance = await RWADemoApp.getBalance(balanceInfo);
+    await expect(newBalance).toBe('20');
+  });
 });
