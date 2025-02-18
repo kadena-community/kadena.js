@@ -78,6 +78,7 @@ const InvestorPage = () => {
                   investorAccount={investorAccount}
                   trigger={
                     <AssetAction
+                      data-testid="action-distributetokens"
                       icon={
                         <TransactionTypeSpinner
                           type={TXTYPES.DISTRIBUTETOKENS}

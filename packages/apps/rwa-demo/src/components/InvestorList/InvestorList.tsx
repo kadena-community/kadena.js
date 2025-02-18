@@ -148,6 +148,7 @@ export const InvestorList: FC = () => {
                     render: CompactTableFormatters.FormatActions({
                       trigger: (
                         <Button
+                          data-testid="select-account"
                           isCompact
                           variant="outlined"
                           startVisual={<MonoFindInPage />}
