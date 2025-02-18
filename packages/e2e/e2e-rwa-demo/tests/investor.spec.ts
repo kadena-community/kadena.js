@@ -253,6 +253,7 @@ test('Investor checks', async ({
       ),
     );
 
+    await initiator.waitForTimeout(1000);
     const newBalance = await RWADemoApp.getBalance(balanceInfo);
     await expect(newBalance).toBe('20');
 
@@ -304,5 +305,92 @@ test('Investor checks', async ({
     const investor2Balance = investor2.getByTestId('balance').first();
     const newBalanceInvestor2 = await RWADemoApp.getBalance(investor2Balance);
     await expect(newBalanceInvestor2).toBe('15');
+  });
+
+  await test.step('When contract frozen, investor not allowed to transfer tokens', async () => {
+    await initiator.goto('/');
+    await investor1.goto('/');
+
+    //the investor transferbutton is enabled
+    const transferassetAction = investor1.getByTestId('transferassetAction');
+    await expect(transferassetAction).not.toHaveAttribute('data-disabled');
+
+    const pauseAction = initiator.getByTestId('pauseAction');
+
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      pauseAction,
+      chainweaverApp.signWithPassword(initiator, pauseAction),
+    );
+
+    await initiator.waitForTimeout(1000);
+
+    await expect(transferassetAction).toHaveAttribute('data-disabled', 'true');
+
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      pauseAction,
+      chainweaverApp.signWithPassword(initiator, pauseAction),
+    );
+
+    await initiator.waitForTimeout(1000);
+
+    await expect(transferassetAction).not.toHaveAttribute('data-disabled');
+  });
+
+  await test.step('When investor is pauzed, investor not allowed to transfer tokens', async () => {
+    await initiator.goto('/investors');
+    await investor1.goto('/');
+    await investor2.goto('/');
+
+    //the investor transferbutton is enabled
+    const transferassetAction = investor1.getByTestId('transferassetAction');
+    const transferassetActionInvestor2 = investor2.getByTestId(
+      'transferassetAction',
+    );
+    await expect(transferassetAction).not.toHaveAttribute('data-disabled');
+    await expect(transferassetActionInvestor2).not.toHaveAttribute(
+      'data-disabled',
+    );
+
+    await initiator
+      .locator('div[data-testid="investorTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
+
+    const tableTds = initiator
+      .getByTestId('investorTable')
+      .locator('table > tbody tr:has(td:nth-child(1))')
+      .nth(0);
+    const firstRow = tableTds.nth(0);
+
+    await firstRow.waitFor();
+    const trigger = firstRow.getByTestId('freezeAccountTrigger');
+    await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
+    await trigger.click();
+
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      trigger,
+      chainweaverApp.signWithPassword(
+        initiator,
+        initiator.getByRole('button', { name: 'Freeze' }).nth(0),
+      ),
+    );
+
+    await expect(trigger.locator('[data-frozenState="true"]')).toBeVisible();
+    await expect(transferassetAction).toHaveAttribute('data-disabled', 'true');
+    await expect(transferassetActionInvestor2).not.toHaveAttribute(
+      'data-disabled',
+    );
+
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      trigger,
+      chainweaverApp.signWithPassword(initiator, trigger),
+    );
+    await expect(transferassetAction).not.toHaveAttribute('data-disabled');
+    await expect(transferassetActionInvestor2).not.toHaveAttribute(
+      'data-disabled',
+    );
   });
 });
