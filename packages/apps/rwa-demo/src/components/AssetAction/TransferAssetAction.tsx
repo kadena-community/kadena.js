@@ -2,6 +2,8 @@ import { useTransferTokens } from '@/hooks/transferTokens';
 import { MonoAdd } from '@kadena/kode-icons';
 import type { ITileProps } from '@kadena/kode-ui';
 import type { FC } from 'react';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
+import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { AssetAction } from './AssetAction';
 
 interface IProps {
@@ -19,7 +21,12 @@ export const TransferAssetAction: FC<IProps> = ({
       data-testid={dataTestId}
       onPress={onPress}
       isDisabled={!isTransferTokensAllowed}
-      icon={<MonoAdd />}
+      icon={
+        <TransactionTypeSpinner
+          type={TXTYPES.TRANSFERTOKENS}
+          fallbackIcon={<MonoAdd />}
+        />
+      }
       label="Transfer tokens"
     />
   );
