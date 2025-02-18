@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import type { IAddContractProps } from '../createContract';
 
 export const getContract = ({ contractName, namespace }: IAddContractProps) => `
@@ -14,14 +15,14 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defcap GOV () (enforce-keyset GOV-KEYSET))
 
   (implements fungible-v2)
-  (implements RWA.real-world-asset-v1)
-  (implements RWA.agent-role-v1)
-  (implements RWA.identity-registry-v1)
-  (implements RWA.compliance-compatible-v1)
+  (implements ${env.RWADEFAULT_NAMESPACE}.real-world-asset-v1)
+  (implements ${env.RWADEFAULT_NAMESPACE}.agent-role-v1)
+  (implements ${env.RWADEFAULT_NAMESPACE}.identity-registry-v1)
+  (implements ${env.RWADEFAULT_NAMESPACE}.compliance-compatible-v1)
 
   (use fungible-v2 [account-details])
-  (use RWA.compliance-compatible-v1 [compliance-parameters-input compliance-info])
-  (use RWA.burn-wallet)
+  (use ${env.RWADEFAULT_NAMESPACE}.compliance-compatible-v1 [compliance-parameters-input compliance-info])
+  (use ${env.RWADEFAULT_NAMESPACE}.burn-wallet)
 
   (defconst TOKEN-ID:string "${namespace}.${contractName}" "Token ID")
   (defconst VERSION:string "0.0")
@@ -40,7 +41,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     symbol:string
     kadenaID:string
     decimals:integer
-    compliance:[module{RWA.compliance-v1}]
+    compliance:[module{${env.RWADEFAULT_NAMESPACE}.compliance-v1}]
     paused:bool
     supply:decimal
     owner-guard:guard
@@ -146,13 +147,13 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defcap IDENTITY-REGISTRY-ADDED:bool (identity-registry:module{RWA.identity-registry-v1})
+  (defcap IDENTITY-REGISTRY-ADDED:bool (identity-registry:module{${env.RWADEFAULT_NAMESPACE}.identity-registry-v1})
     @doc "Event emitted when an identity registry is added."
     @event
     true
   )
 
-  (defcap COMPLIANCE-UPDATED:bool (compliance:[module{RWA.compliance-v1}])
+  (defcap COMPLIANCE-UPDATED:bool (compliance:[module{${env.RWADEFAULT_NAMESPACE}.compliance-v1}])
     @doc "Event emitted when a compliance is updated"
     @event
     true
@@ -281,7 +282,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     true
   )
 
-  (defun init (name:string symbol:string decimals:integer kadenaID:string compliances:[module{RWA.compliance-v1}] paused:bool owner-guard:guard)
+  (defun init (name:string symbol:string decimals:integer kadenaID:string compliances:[module{${env.RWADEFAULT_NAMESPACE}.compliance-v1}] paused:bool owner-guard:guard)
     @doc "Initiates token with supplied informations and owner guard"
     (with-capability (GOV)
       (let ((default-compliance-parameters:object{compliance-parameters-input} 
@@ -485,9 +486,9 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defun mint-internal:bool (to:string amount:decimal)
     @doc "Mint tokens from an investor's address according to create rules in compliance"
     (with-read token "" {
-      "compliance":= compliance-l:[module{RWA.compliance-v1}]
+      "compliance":= compliance-l:[module{${env.RWADEFAULT_NAMESPACE}.compliance-v1}]
       }
-      (map (lambda (compliance:module{RWA.compliance-v1})
+      (map (lambda (compliance:module{${env.RWADEFAULT_NAMESPACE}.compliance-v1})
          (compliance::created TOKEN-ID to amount)
         ) compliance-l
       )
@@ -517,7 +518,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       (with-read token "" {
         "compliance":=compliance-l
         }
-        (map (lambda (compliance:module{RWA.compliance-v1})
+        (map (lambda (compliance:module{${env.RWADEFAULT_NAMESPACE}.compliance-v1})
             (compliance::destroyed TOKEN-ID investor-address amount)
           ) compliance-l
         )
@@ -556,7 +557,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       }
       (enforce (= paused false) "TRF-PAUSE-001")
       (map
-        (lambda (compliance:module{RWA.compliance-v1})
+        (lambda (compliance:module{${env.RWADEFAULT_NAMESPACE}.compliance-v1})
           (compliance::can-transfer TOKEN-ID sender receiver amount)
         ) compliance-l
       )
@@ -565,7 +566,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
           (receiver-obj (credit receiver amount)) )
         (emit-event (RECONCILE amount sender-obj receiver-obj))
         (map
-          (lambda (compliance:module{RWA.compliance-v1})
+          (lambda (compliance:module{${env.RWADEFAULT_NAMESPACE}.compliance-v1})
             (compliance::transferred TOKEN-ID sender receiver amount)
           ) compliance-l
         )
@@ -929,7 +930,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun compliance:[module{RWA.compliance-v1}] ()
+  (defun compliance:[module{${env.RWADEFAULT_NAMESPACE}.compliance-v1}] ()
     @doc "Retrieves the list of compliance contracts in action."
     (with-read token "" {"compliance" := compliance } compliance)
   )
@@ -1039,7 +1040,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun set-compliance:string (compliance:[module{RWA.compliance-v1}])
+  (defun set-compliance:string (compliance:[module{${env.RWADEFAULT_NAMESPACE}.compliance-v1}])
     @doc "Set the compliance contract."
     (only-owner "")
     (update token "" {"compliance": compliance})
@@ -1284,12 +1285,12 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (enforce false "GEN-IMPL-001")
   )
 
-  (defun set-identity-registry:string (identity-registry:module {RWA.identity-registry-v1})
+  (defun set-identity-registry:string (identity-registry:module {${env.RWADEFAULT_NAMESPACE}.identity-registry-v1})
     @doc "unused"
     (enforce false "GEN-IMPL-001")
   )
 
-  (defun identity-registry:module{RWA.identity-registry-v1} ()
+  (defun identity-registry:module{${env.RWADEFAULT_NAMESPACE}.identity-registry-v1} ()
     @doc "unused"
     (enforce false "GEN-IMPL-001")
   )
@@ -1353,7 +1354,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (create-table agents)
 (create-table identities)
 
-(RWA.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
+(${env.RWADEFAULT_NAMESPACE}.token-mapper.add-token-ref TOKEN-ID ${namespace}.${contractName})
 
 
 (${namespace}.${contractName}.init "${contractName}" "MVP" 0 "kadenaID" [] false (keyset-ref-guard "${namespace}.admin-keyset"))
