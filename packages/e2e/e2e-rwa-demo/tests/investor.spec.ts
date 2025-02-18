@@ -71,160 +71,160 @@ test('Investor checks', async ({
     await investor2.reload();
   });
 
-  // await test.step('Freeze an investor', async () => {
-  //   const FROZENMESSAGE = 'the investor account is frozen';
-  //   await initiator.goto('/investors');
+  await test.step('Freeze an investor', async () => {
+    const FROZENMESSAGE = 'the investor account is frozen';
+    await initiator.goto('/investors');
 
-  //   await initiator
-  //     .locator('div[data-testid="investorTable"][data-isloading="false"]')
-  //     .waitFor({ timeout: 60000 });
+    await initiator
+      .locator('div[data-testid="investorTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
 
-  //   const tableTds = initiator
-  //     .getByTestId('investorTable')
-  //     .locator('table > tbody tr:has(td:nth-child(1))')
-  //     .nth(0);
-  //   const firstRow = tableTds.nth(0);
+    const tableTds = initiator
+      .getByTestId('investorTable')
+      .locator('table > tbody tr:has(td:nth-child(1))')
+      .nth(0);
+    const firstRow = tableTds.nth(0);
 
-  //   await firstRow.waitFor();
-  //   const trigger = firstRow.getByTestId('freezeAccountTrigger');
-  //   await trigger.waitFor();
-  //   await trigger.click();
+    await firstRow.waitFor();
+    const trigger = firstRow.getByTestId('freezeAccountTrigger');
+    await trigger.waitFor();
+    await trigger.click();
 
-  //   await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
+    await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
 
-  //   // check that the popup is there
-  //   await initiator
-  //     .getByRole('heading', { name: 'Freeze the account' })
-  //     .waitFor();
-  //   await initiator.fill('[name="message"]', FROZENMESSAGE);
+    // check that the popup is there
+    await initiator
+      .getByRole('heading', { name: 'Freeze the account' })
+      .waitFor();
+    await initiator.fill('[name="message"]', FROZENMESSAGE);
 
-  //   await RWADemoApp.checkLoadingIndicator(
-  //     initiator,
-  //     trigger,
-  //     chainweaverApp.signWithPassword(
-  //       initiator,
-  //       initiator.getByRole('button', { name: 'Freeze' }),
-  //     ),
-  //   );
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      trigger,
+      chainweaverApp.signWithPassword(
+        initiator,
+        initiator.getByRole('button', { name: 'Freeze' }),
+      ),
+    );
 
-  //   await expect(trigger.locator('[data-frozenState="true"]')).toBeVisible();
+    await expect(trigger.locator('[data-frozenState="true"]')).toBeVisible();
 
-  //   //check if the message exists in the frozen account
-  //   await investor1.reload();
-  //   await investor1.getByRole('heading', { name: FROZENMESSAGE }).waitFor();
-  //   await expect(
-  //     investor1.getByRole('heading', { name: FROZENMESSAGE }),
-  //   ).toBeVisible();
+    //check if the message exists in the frozen account
+    await investor1.reload();
+    await investor1.getByRole('heading', { name: FROZENMESSAGE }).waitFor();
+    await expect(
+      investor1.getByRole('heading', { name: FROZENMESSAGE }),
+    ).toBeVisible();
 
-  //   await RWADemoApp.checkLoadingIndicator(
-  //     initiator,
-  //     trigger,
-  //     chainweaverApp.signWithPassword(initiator, trigger),
-  //   );
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      trigger,
+      chainweaverApp.signWithPassword(initiator, trigger),
+    );
 
-  //   //check if the message exists in the frozen account
-  //   await investor1.reload();
-  //   await investor1
-  //     .getByRole('heading', { name: FROZENMESSAGE })
-  //     .waitFor({ state: 'detached' });
+    //check if the message exists in the frozen account
+    await investor1.reload();
+    await investor1
+      .getByRole('heading', { name: FROZENMESSAGE })
+      .waitFor({ state: 'detached' });
 
-  //   await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
-  // });
+    await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
+  });
 
-  // await test.step('Batch Freeze an investor', async () => {
-  //   await initiator.goto('/investors');
+  await test.step('Batch Freeze an investor', async () => {
+    await initiator.goto('/investors');
 
-  //   const FROZENMESSAGE = 'The investor account is frozen';
-  //   const freezeButton = initiator
-  //     .getByTestId('investorsCard')
-  //     .getByRole('button', { name: 'Freeze' })
-  //     .first();
-  //   const unfreezeButton = initiator
-  //     .getByTestId('investorsCard')
-  //     .getByRole('button', { name: 'Unfreeze' });
+    const FROZENMESSAGE = 'The investor account is frozen';
+    const freezeButton = initiator
+      .getByTestId('investorsCard')
+      .getByRole('button', { name: 'Freeze' })
+      .first();
+    const unfreezeButton = initiator
+      .getByTestId('investorsCard')
+      .getByRole('button', { name: 'Unfreeze' });
 
-  //   await expect(freezeButton).toBeDisabled();
-  //   await expect(unfreezeButton).toBeDisabled();
+    await expect(freezeButton).toBeDisabled();
+    await expect(unfreezeButton).toBeDisabled();
 
-  //   await initiator
-  //     .locator('div[data-testid="investorTable"][data-isloading="false"]')
-  //     .waitFor({ timeout: 60000 });
+    await initiator
+      .locator('div[data-testid="investorTable"][data-isloading="false"]')
+      .waitFor({ timeout: 60000 });
 
-  //   const tableTds = await initiator
-  //     .getByTestId('investorTable')
-  //     .locator('table > tbody tr:has(td:nth-child(1))')
-  //     .all();
+    const tableTds = await initiator
+      .getByTestId('investorTable')
+      .locator('table > tbody tr:has(td:nth-child(1))')
+      .all();
 
-  //   const promises1 = tableTds.map(async (td) => {
-  //     await td.getByRole('checkbox').click();
-  //     await initiator.waitForTimeout(200);
-  //     const trigger = td.getByTestId('freezeAccountTrigger');
-  //     await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
-  //   });
+    const promises1 = tableTds.map(async (td) => {
+      await td.getByRole('checkbox').click();
+      await initiator.waitForTimeout(200);
+      const trigger = td.getByTestId('freezeAccountTrigger');
+      await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
+    });
 
-  //   await Promise.all(promises1);
-  //   await initiator.waitForTimeout(500);
+    await Promise.all(promises1);
+    await initiator.waitForTimeout(500);
 
-  //   await expect(freezeButton).toBeEnabled();
-  //   await expect(unfreezeButton).toBeEnabled();
+    await expect(freezeButton).toBeEnabled();
+    await expect(unfreezeButton).toBeEnabled();
 
-  //   await freezeButton.click();
+    await freezeButton.click();
 
-  //   await initiator
-  //     .getByRole('heading', { name: 'Freeze selected accounts' })
-  //     .waitFor();
-  //   await initiator.fill('[name="message"]', FROZENMESSAGE);
+    await initiator
+      .getByRole('heading', { name: 'Freeze selected accounts' })
+      .waitFor();
+    await initiator.fill('[name="message"]', FROZENMESSAGE);
 
-  //   await RWADemoApp.checkLoadingIndicator(
-  //     initiator,
-  //     freezeButton,
-  //     chainweaverApp.signWithPassword(
-  //       initiator,
-  //       initiator.getByRole('button', { name: 'Freeze' }),
-  //     ),
-  //   );
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      freezeButton,
+      chainweaverApp.signWithPassword(
+        initiator,
+        initiator.getByRole('button', { name: 'Freeze' }),
+      ),
+    );
 
-  //   // check the other screeens if they see the warning
-  //   const promises = tableTds.map(async (td) => {
-  //     const trigger = td.getByTestId('freezeAccountTrigger');
-  //     await expect(trigger.locator('[data-frozenState="true"]')).toBeVisible();
-  //   });
-  //   await Promise.all(promises);
+    // check the other screeens if they see the warning
+    const promises = tableTds.map(async (td) => {
+      const trigger = td.getByTestId('freezeAccountTrigger');
+      await expect(trigger.locator('[data-frozenState="true"]')).toBeVisible();
+    });
+    await Promise.all(promises);
 
-  //   await investor1.reload();
-  //   await investor1.getByRole('heading', { name: FROZENMESSAGE }).waitFor();
-  //   await expect(
-  //     investor1.getByRole('heading', { name: FROZENMESSAGE }),
-  //   ).toBeVisible();
+    await investor1.reload();
+    await investor1.getByRole('heading', { name: FROZENMESSAGE }).waitFor();
+    await expect(
+      investor1.getByRole('heading', { name: FROZENMESSAGE }),
+    ).toBeVisible();
 
-  //   await investor2.reload();
-  //   await investor2.getByRole('heading', { name: FROZENMESSAGE }).waitFor();
-  //   await expect(
-  //     investor2.getByRole('heading', { name: FROZENMESSAGE }),
-  //   ).toBeVisible();
+    await investor2.reload();
+    await investor2.getByRole('heading', { name: FROZENMESSAGE }).waitFor();
+    await expect(
+      investor2.getByRole('heading', { name: FROZENMESSAGE }),
+    ).toBeVisible();
 
-  //   // unfreeze the accounts
-  //   const promises2 = tableTds.map(async (td) => {
-  //     await td.getByRole('checkbox').click();
-  //     await initiator.waitForTimeout(200);
-  //   });
-  //   await Promise.all(promises2);
+    // unfreeze the accounts
+    const promises2 = tableTds.map(async (td) => {
+      await td.getByRole('checkbox').click();
+      await initiator.waitForTimeout(200);
+    });
+    await Promise.all(promises2);
 
-  //   await RWADemoApp.checkLoadingIndicator(
-  //     initiator,
-  //     unfreezeButton,
-  //     chainweaverApp.signWithPassword(initiator, unfreezeButton),
-  //   );
+    await RWADemoApp.checkLoadingIndicator(
+      initiator,
+      unfreezeButton,
+      chainweaverApp.signWithPassword(initiator, unfreezeButton),
+    );
 
-  //   const promises3 = tableTds.map(async (td, idx) => {
-  //     const trigger = td.getByTestId('freezeAccountTrigger');
-  //     await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
-  //   });
-  //   await Promise.all(promises3);
+    const promises3 = tableTds.map(async (td, idx) => {
+      const trigger = td.getByTestId('freezeAccountTrigger');
+      await expect(trigger.locator('[data-frozenState="false"]')).toBeVisible();
+    });
+    await Promise.all(promises3);
 
-  //   await expect(freezeButton).toBeDisabled();
-  //   await expect(unfreezeButton).toBeDisabled();
-  // });
+    await expect(freezeButton).toBeDisabled();
+    await expect(unfreezeButton).toBeDisabled();
+  });
 
   await test.step('Distribute tokens', async () => {
     await initiator.goto('/investors');
