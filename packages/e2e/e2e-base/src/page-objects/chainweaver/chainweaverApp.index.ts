@@ -301,7 +301,6 @@ export class ChainweaverAppIndex extends setupDatabase {
     trigger: Locator,
   ): Promise<boolean> {
     const popupPromise = actor.waitForEvent('popup');
-
     await trigger.click();
     const walletPopup = await popupPromise;
     await walletPopup.waitForTimeout(1000);
