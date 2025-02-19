@@ -9,6 +9,9 @@ services:
     build:
       context: ../../../
       dockerfile: ./packages/apps/graph/source.Dockerfile
+      tags:
+        - ghcr.io/kadena-community/graphql
+        - ghcr.io/kadena-community/graphql:$(git rev-parse --short HEAD)
 
   # build with `docker compose build graphql`
   # run with `docker compose up graphql`

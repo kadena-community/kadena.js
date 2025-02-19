@@ -81,7 +81,7 @@ jobs:
             jq --arg tag "$latest_tag" -r '.[] | select(.metadata.container.tags | index($tag)) | .id')
           echo "version_id=$version_id" >> $GITHUB_OUTPUT
 
-      - name: Build Docker Image for `latest` npm @kadena/graph
+      - name: Build Docker Image for `:latest`
         id: docker-build-graph-latest
         # only run when npm-ghcr-version-id is empty
         # when it's not empty, the image is already built
@@ -92,16 +92,15 @@ jobs:
             -t ghcr.io/kadena-community/graphql:$(npm view @kadena/graph --json |jq -r '."dist-tags".latest') \
             -t ghcr.io/kadena-community/graphql:latest
 
-      - name: Docker push all tags
-        if: steps.npm-ghcr-version-id.outputs.version_id == ''
-        run: docker push --all-tags ghcr.io/kadena-community/graphql
+      - name: Build Docker Image `:preview`
+        id: docker-build-graph-preview
+        # no need to publish when `:latest` is publishing
+        if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.filter.outputs.graph == 'true'
+        # only run when `packages/apps/graph/**` has changes
+        run: |
+          cd packages/apps/graph && \
+          docker compose build graphql-source
 
-      # - name: Build Docker Image `:preview`
-      #   id: docker-build-graph-preview
-      #   # no need to publish when `:latest` is publishing
-      #   if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.filter.outputs.graph == 'true'
-      #   # only run when `packages/apps/graph/**` has changes
-      #   run: |
-      #     cd packages/apps/graph && \
-      #     docker compose build graphql --push --build-arg \
-      #     -t="ghcr.io/kadena-community/graphql:preview,ghcr.io/kadena-community/graphql:sha-${GITHUB_SHA::7}"
+      - name: Docker push all tags
+        if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.docker-build-graph-preview.conclusion != 'skipped'
+        run: docker push --all-tags ghcr.io/kadena-community/graphql
