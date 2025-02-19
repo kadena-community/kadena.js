@@ -10,8 +10,8 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install -y openssl
 
-RUN pnpm i -g @prisma/engines prisma
-RUN pnpm i -g @kadena/graph
+RUN npm i -g @prisma/engines prisma
+RUN npm i -g @kadena/graph
 
 # empty to satisfy checks
 RUN mkdir /app/cwd-extra-migrations
