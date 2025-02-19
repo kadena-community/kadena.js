@@ -71,6 +71,9 @@ const defaultContext: INetworkContext = {
 const getApolloClient = (network: INetwork) => {
   const httpLink = new YogaLink({
     endpoint: network?.graphUrl,
+    headers: {
+      'x-api-key': env.GRAPHAPIKEY,
+    },
   });
 
   const wsLink = new GraphQLWsLink(
