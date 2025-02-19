@@ -210,7 +210,7 @@ export function AccountDiscovery() {
             ))}
           {discoveryStatus === 'discovering' && (
             <Stack marginBlockStart={'lg'} flexDirection={'column'} gap={'lg'}>
-              <Heading variant="h4">Discoverd Funds</Heading>
+              <Heading variant="h4">Discovered Funds</Heading>
               {filteredDiscoveredAccounts.length === 0 ? (
                 <Text>Pending</Text>
               ) : (

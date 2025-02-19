@@ -7,6 +7,7 @@
   "main": "dist/index.es.js",
   "scripts": {
     "build": "tsc && vite build",
+    "build:watch": "pnpm run build && concurrently \"chokidar './src/**' -s -t 500  --command './node_modules/.bin/vite build' \"",
     "dev": "vite --force",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "preview": "vite preview",
@@ -31,7 +32,7 @@
     "@vanilla-extract/dynamic": "^2.1.2",
     "@vanilla-extract/recipes": "0.5.1",
     "@walletconnect/core": "^2.18.0",
-    "@walletconnect/utils": "~2.9.2",
+    "@walletconnect/utils": "^2.18.0",
     "asn1js": "^3.0.5",
     "cbor-web": "^9.0.2",
     "chrome-types": "^0.1.248",
