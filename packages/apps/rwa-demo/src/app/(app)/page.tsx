@@ -135,6 +135,7 @@ const Home = () => {
               {asset && (
                 <>
                   <ComplianceRule
+                    data-testid="compliance-maxSupply"
                     isActive={asset.compliance.maxSupply.isActive}
                     ruleKey={asset.compliance.maxSupply.key}
                     value={`${asset.compliance.maxSupply.value < 0 ? 'no limit' : asset.compliance.maxSupply.value} tokens`}
@@ -142,6 +143,7 @@ const Home = () => {
                     onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
+                    data-testid="compliance-maxBalance"
                     isActive={asset.compliance.maxBalance.isActive}
                     ruleKey={asset.compliance.maxBalance.key}
                     value={`${asset.compliance.maxBalance.value < 0 ? 'no limit' : asset.compliance.maxBalance.value} tokens`}
@@ -149,6 +151,7 @@ const Home = () => {
                     onToggle={toggleComplianceRule}
                   />
                   <ComplianceRule
+                    data-testid="compliance-maxInvestors"
                     isActive={asset.compliance.maxInvestors.isActive}
                     ruleKey={asset.compliance.maxInvestors.key}
                     value={`${asset.compliance.maxInvestors.value < 0 ? 'no limit' : asset.compliance.maxInvestors.value} (${asset.investorCount}) investors`}

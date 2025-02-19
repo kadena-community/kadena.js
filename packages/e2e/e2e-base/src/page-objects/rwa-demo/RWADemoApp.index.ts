@@ -491,6 +491,36 @@ export class RWADemoAppIndex {
     await expect(newTr.length).toBe(tr.length + 1);
   }
 
+  public async distributeTokens(
+    actor: Page,
+    chainweaverApp: ChainweaverAppIndex,
+    options: { startBalance: number; fill: number; endBalance: number },
+  ) {
+    const balanceInfo = actor.getByTestId('balance-info').first();
+    await balanceInfo.waitFor();
+    const balance = await this.getBalance(balanceInfo);
+    await expect(balance).toBe(`${options.startBalance}`);
+
+    const distributetokensBtn = actor.getByTestId('action-distributetokens');
+    await distributetokensBtn.waitFor();
+    await distributetokensBtn.click();
+
+    const rightAside = actor.getByTestId('rightaside');
+    await rightAside.locator('[name="amount"]').fill(`${options.fill}`);
+
+    const formButton = rightAside.getByRole('button', { name: 'Distribute' });
+
+    await this.checkLoadingIndicator(
+      actor,
+      distributetokensBtn,
+      chainweaverApp.signWithPassword(actor, formButton),
+    );
+
+    await actor.waitForTimeout(1000);
+    const newBalance = await this.getBalance(balanceInfo);
+    await expect(newBalance).toBe(`${options.endBalance}`);
+  }
+
   public async selectInvestor(actor: Page, idx: number) {
     await actor
       .locator('div[data-testid="investorTable"][data-isloading="false"]')
