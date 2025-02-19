@@ -367,7 +367,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'RWA.supply-limit-compliance') {
+              if (arg === 'supply-limit-compliance') {
                 return 1;
               }
               return -1;
@@ -413,7 +413,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'RWA.supply-limit-compliance') {
+              if (arg === 'supply-limit-compliance') {
                 return 100;
               }
               return -1;
@@ -461,7 +461,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'RWA.max-investors-compliance') {
+              if (arg === 'max-investors-compliance') {
                 return 1;
               }
               return -1;
@@ -507,7 +507,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'RWA.max-investors-compliance') {
+              if (arg === 'max-investors-compliance') {
                 return 13;
               }
               return -1;
@@ -553,7 +553,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'RWA.max-investors-compliance') {
+              if (arg === 'max-investors-compliance') {
                 return 2;
               }
               return -1;

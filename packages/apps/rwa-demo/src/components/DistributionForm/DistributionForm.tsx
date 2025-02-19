@@ -87,8 +87,8 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  const maxBalance = maxCompliance('RWA.max-balance-compliance');
-  const maxSupply = maxCompliance('RWA.supply-limit-compliance');
+  const maxBalance = maxCompliance('max-balance-compliance');
+  const maxSupply = maxCompliance('supply-limit-compliance');
   const supply = asset?.supply ?? 0;
 
   let maxAmount = -1;

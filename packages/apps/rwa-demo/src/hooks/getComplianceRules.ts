@@ -38,7 +38,7 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
       const params = JSON.parse(event.parameters ?? '[]');
 
       const activeRulesKeys = params[0].map(
-        ({ refName }: any) => `${refName.namespace}.${refName.name}`,
+        ({ refName }: any) => `${refName.name}`,
       );
 
       if (!asset) return;
