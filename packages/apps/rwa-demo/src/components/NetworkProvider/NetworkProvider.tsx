@@ -73,6 +73,7 @@ const getApolloClient = (network: INetwork) => {
     endpoint: network?.graphUrl,
     headers: {
       'x-api-key': env.GRAPHAPIKEY,
+      'bypass-tunnel-reminder': env.GRAPHURL,
     },
   });
 
