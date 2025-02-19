@@ -81,17 +81,19 @@ jobs:
             jq --arg tag "$latest_tag" -r '.[] | select(.metadata.container.tags | index($tag)) | .id')
           echo "version_id=$version_id" >> $GITHUB_OUTPUT
 
-      - name: Build Docker Image for `:latest`
+      - name: Build Docker Image for `latest` npm @kadena/graph
         id: docker-build-graph-latest
         # only run when npm-ghcr-version-id is empty
         # when it's not empty, the image is already built
         if: steps.npm-ghcr-version-id.outputs.version_id == ''
         run: |
           cd packages/apps/graph && \
-          docker compose build graphql --build-arg \
-          -t="ghcr.io/kadena-community/graphql:latest,ghcr.io/kadena-community/graphql:$(npm view @kadena/graph --json |jq '."dist-tags".latest'),ghcr.io/kadena-community/graphql:albert"
+          docker build . -t ghcr.io/kadena-community/graphql \
+            -t ghcr.io/kadena-community/graphql:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
+            -t ghcr.io/kadena-community/graphql:latest
 
       - name: Docker push all tags
+        if: steps.npm-ghcr-version-id.outputs.version_id == ''
         run: docker push --all-tags ghcr.io/kadena-community/graphql
 
       # - name: Build Docker Image `:preview`
