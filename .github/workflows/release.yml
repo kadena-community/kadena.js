@@ -88,7 +88,7 @@ jobs:
         if: steps.npm-ghcr-version-id.outputs.version_id == ''
         run: |
           cd packages/apps/graph && \
-          docker build . -t ghcr.io/kadena-community/graphql \
+          docker build . -t graphql-npm \
             -t ghcr.io/kadena-community/graphql:$(npm view @kadena/graph --json |jq -r '."dist-tags".latest') \
             -t ghcr.io/kadena-community/graphql:latest
 
@@ -102,5 +102,6 @@ jobs:
           docker compose build graphql-source
 
       - name: Docker push all tags
-        if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.docker-build-graph-preview.conclusion != 'skipped'
-        run: docker push --all-tags ghcr.io/kadena-community/graphql
+        if: steps.docker-build-graph-latest.outcome == 'success' || steps.docker-build-graph-preview.outcome == 'success'
+        run: docker push --all-tags graphql-npm && \
+          docker push --all-tags graphql-source

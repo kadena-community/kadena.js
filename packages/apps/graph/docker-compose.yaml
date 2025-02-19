@@ -10,6 +10,7 @@ services:
       context: ../../../
       dockerfile: ./packages/apps/graph/source.Dockerfile
       tags:
+        - graphql-source
         - ghcr.io/kadena-community/graphql
         - ghcr.io/kadena-community/graphql:$(git rev-parse --short HEAD)
 
