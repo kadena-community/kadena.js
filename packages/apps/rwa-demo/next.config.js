@@ -10,7 +10,7 @@ const nextConfig = {
     return [
       {
         source: '/graph',
-        destination: 'https://api.testnet.kadindexer.io/v0',
+        destination: process.env.NEXT_PUBLIC_GRAPHURL,
       },
     ];
   },
