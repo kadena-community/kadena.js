@@ -1,5 +1,12 @@
 # @kadena/marmalade-marketplace
 
+## 0.1.17
+
+### Patch Changes
+
+- @kadena/client\@1.17.1
+- @kadena/client-utils\@0.12.2
+
 ## 0.1.16
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.9.1
+
+### Patch Changes
+
+- 0ebc455: remove testnet05 option
+
 ## 0.9.0
 
 ### Minor Changes

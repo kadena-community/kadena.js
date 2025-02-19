@@ -1,5 +1,12 @@
 # @kadena/graph-client
 
+## 0.4.15
+
+### Patch Changes
+
+- Updated dependencies \[ea02b15]
+  - @kadena/graph\@2.2.1
+
 ## 0.4.14
 
 ### Patch Changes
