@@ -61,6 +61,7 @@ export const useCreateContract = () => {
 
   useEffect(() => {
     if (!isMounted) return;
+
     setIsAllowed(isGasPayable);
   }, [isMounted, isGasPayable]);
 

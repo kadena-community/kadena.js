@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
+import { env } from '@/utils/env';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
@@ -14,10 +15,12 @@ export const setCompliance = async (
   data: IComplianceRuleTypes[],
   account: IWalletAccount,
 ) => {
+  const newData = data.map((item) => `${env.RWADEFAULT_NAMESPACE}.${item}`);
+
   return Pact.builder
     .execution(
       `
-      (${getAsset()}.set-compliance [${data.toString()}])`,
+      (${getAsset()}.set-compliance [${newData.toString()}])`,
     )
 
     .setMeta({

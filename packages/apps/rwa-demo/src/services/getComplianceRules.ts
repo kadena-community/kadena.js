@@ -4,9 +4,9 @@ import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export type IComplianceRuleTypes =
-  | 'RWA.max-balance-compliance'
-  | 'RWA.supply-limit-compliance'
-  | 'RWA.max-investors-compliance';
+  | 'max-balance-compliance'
+  | 'supply-limit-compliance'
+  | 'max-investors-compliance';
 
 export interface IComplianceRule {
   key: IComplianceRuleTypes;
@@ -71,21 +71,21 @@ export const getComplianceRules = async (): Promise<IComplianceProps> => {
 
   return {
     maxBalance: {
-      key: 'RWA.max-balance-compliance',
+      key: 'max-balance-compliance',
       isActive: !!rules?.find(
         (rule: any) => rule.refName.name === 'max-balance-compliance',
       ),
       value: values['max-balance-per-investor'] ?? INFINITE_COMPLIANCE,
     },
     maxSupply: {
-      key: 'RWA.supply-limit-compliance',
+      key: 'supply-limit-compliance',
       isActive: !!rules?.find(
         (rule: any) => rule.refName.name === 'supply-limit-compliance',
       ),
       value: values['supply-limit'] ?? INFINITE_COMPLIANCE,
     },
     maxInvestors: {
-      key: 'RWA.max-investors-compliance',
+      key: 'max-investors-compliance',
       isActive: !!rules?.find(
         (rule: any) => rule.refName.name === 'max-investors-compliance',
       ),
