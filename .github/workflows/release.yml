@@ -89,7 +89,7 @@ jobs:
         run: |
           cd packages/apps/graph && \
           docker build . -t ghcr.io/kadena-community/graphql \
-            -t ghcr.io/kadena-community/graphql:$(npm view @kadena/graph --json |jq -r '."dist-tags".latest')
+            -t ghcr.io/kadena-community/graphql:$(npm view @kadena/graph --json |jq -r '."dist-tags".latest') \
             -t ghcr.io/kadena-community/graphql:latest
 
       - name: Docker push all tags
