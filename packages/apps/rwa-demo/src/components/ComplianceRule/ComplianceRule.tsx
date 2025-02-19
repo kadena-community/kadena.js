@@ -14,6 +14,7 @@ interface IProps {
   label: string;
   isActive: boolean;
   onToggle: (rule: IComplianceRuleTypes, newState: boolean) => void;
+  'data-testid': string;
 }
 
 export const ComplianceRule: FC<IProps> = ({
@@ -22,6 +23,7 @@ export const ComplianceRule: FC<IProps> = ({
   isActive,
   onToggle,
   ruleKey,
+  'data-testid': dataTestId,
 }) => {
   const { isAllowed } = useSetCompliance();
 
@@ -31,6 +33,7 @@ export const ComplianceRule: FC<IProps> = ({
 
   return (
     <Stack
+      data-testid={dataTestId}
       className={complianceRuleClass}
       width="100%"
       alignItems="center"
@@ -57,7 +60,7 @@ export const ComplianceRule: FC<IProps> = ({
         </Confirmation>
         <Text>{label}</Text>
       </Stack>
-      <Stack alignItems="center" gap="sm">
+      <Stack alignItems="center" gap="sm" data-testid="compliance-text">
         <TransactionTypeSpinner type={TXTYPES.SETCOMPLIANCE} />
         <Badge style="positive" size="sm">
           {`${value.toString()}`}

@@ -1,7 +1,7 @@
 import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { MonoWarning } from '@kadena/kode-icons';
-import { Stack } from '@kadena/kode-ui';
+import { Stack, Text } from '@kadena/kode-ui';
 import { token } from '@kadena/kode-ui/styles';
 import type { FC } from 'react';
 
@@ -20,7 +20,7 @@ export const SupplyCountContractDetails: FC = () => {
           style={{ color: token('color.icon.semantic.warning.default') }}
           title={`The total supply of tokens is bigger than the max supply (${asset.compliance.maxSupply.value})`}
         />{' '}
-        {asset.supply}
+        <Text as="span">{asset.supply}</Text>
       </Stack>
     );
 
