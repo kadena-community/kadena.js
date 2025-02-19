@@ -1,5 +1,13 @@
 # @kadena/rwa-demo
 
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies \[ea02b15]
+  - @kadena/graph\@2.2.1
+  - @kadena/client\@1.17.1
+
 ## 0.1.8
 
 ### Patch Changes

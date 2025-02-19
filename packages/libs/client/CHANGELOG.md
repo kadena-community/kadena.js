@@ -1,5 +1,12 @@
 # Change Log - @kadena/client
 
+## 1.17.1
+
+### Patch Changes
+
+- Updated dependencies \[0ebc455]
+  - @kadena/chainweb-node-client\@0.9.1
+
 ## 1.17.0
 
 ### Minor Changes
