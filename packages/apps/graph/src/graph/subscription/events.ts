@@ -86,7 +86,7 @@ async function* iteratorFn(
       yield newEvents;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   }
 }
 
@@ -156,12 +156,18 @@ async function getLastEvents(
 
 async function getLatestEventId(): Promise<number | null> {
   try {
-    const lastEventId = await prismaClient.event.aggregate({
-      _max: {
-        id: true,
+    const lastEventId = await prismaClient.event.findFirst({
+      orderBy: {
+        id: 'desc',
       },
+      take: 1,
     });
-    return lastEventId._max.id;
+
+    if (!lastEventId) {
+      throw new Error('No event found');
+    }
+
+    return lastEventId.id;
   } catch (error) {
     return null;
   }
