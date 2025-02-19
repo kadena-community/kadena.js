@@ -13,6 +13,7 @@ const FAUCETADDRESS = process.env.NEXT_PUBLIC_FAUCETADDRESS;
 const FAUCETAMOUNT = process.env.NEXT_PUBLIC_FAUCETAMOUNT;
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 const RWADEFAULT_NAMESPACE = process.env.NEXT_PUBLIC_RWADEFAULT_NAMESPACE;
+const FAUCETNAMESPACE = process.env.NEXT_PUBLIC_FAUCETNAMESPACE;
 
 if (!WALLET_URL) console.error('NEXT_PUBLIC_WALLET_URL is not set');
 if (!URL) console.error('NEXT_PUBLIC_URL is not set');
@@ -28,6 +29,8 @@ if (!FAUCETAMOUNT) console.error('NEXT_PUBLIC_FAUCETAMOUNT is not set');
 if (!TRACKING_ID) console.error('NEXT_PUBLIC_TRACKING_ID is not set');
 if (!RWADEFAULT_NAMESPACE)
   console.error('NEXT_PUBLIC_RWADEFAULT_NAMESPACE is not set');
+if (!FAUCETNAMESPACE)
+  console.error('NEXT_PUBLIC_FAUCETNAMESPACE=user is not set');
 
 export const env = {
   WALLET_URL,
@@ -43,4 +46,5 @@ export const env = {
   FAUCETAMOUNT: parseFloat(FAUCETAMOUNT ?? '0.0'),
   TRACKING_ID: TRACKING_ID ?? '',
   RWADEFAULT_NAMESPACE: RWADEFAULT_NAMESPACE ?? '',
+  FAUCETNAMESPACE: FAUCETNAMESPACE ?? '',
 } as const;

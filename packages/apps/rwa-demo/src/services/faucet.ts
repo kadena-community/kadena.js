@@ -8,7 +8,7 @@ import { PactNumber } from '@kadena/pactjs';
 export const faucet = async (account: IWalletAccount) => {
   return Pact.builder
     .execution(
-      `(user.coin-faucet.create-and-request-coin (read-string 'owner) (read-keyset 'keyset) ${new PactNumber(env.FAUCETAMOUNT).toDecimal()})`,
+      `(${env.FAUCETNAMESPACE}.coin-faucet.create-and-request-coin (read-string 'owner) (read-keyset 'keyset) ${new PactNumber(env.FAUCETAMOUNT).toDecimal()})`,
     )
     .setMeta({
       senderAccount: env.FAUCETADDRESS,
@@ -22,7 +22,12 @@ export const faucet = async (account: IWalletAccount) => {
     })
 
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap('user.coin-faucet.GAS_PAYER', '', { int: 0 }, 0.0),
+      withCap(
+        `${env.FAUCETNAMESPACE}.coin-faucet.GAS_PAYER`,
+        '',
+        { int: 0 },
+        0.0,
+      ),
       withCap(
         `coin.TRANSFER`,
         env.FAUCETADDRESS,
