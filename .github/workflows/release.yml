@@ -71,7 +71,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Log in GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run:
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{
+          github.actor }} --password-stdin
 
       - name: Get version_id from GHCR for `@kadena/graph` latest version on NPM
         id: npm-ghcr-version-id
@@ -95,13 +97,18 @@ jobs:
       - name: Build Docker Image `:preview`
         id: docker-build-graph-preview
         # no need to publish when `:latest` is publishing
-        if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.filter.outputs.graph == 'true'
+        if:
+          steps.docker-build-graph-latest.conclusion != 'skipped' &&
+          steps.filter.outputs.graph == 'true'
         # only run when `packages/apps/graph/**` has changes
         run: |
           cd packages/apps/graph && \
           docker compose build graphql-source
 
       - name: Docker push all tags
-        if: steps.docker-build-graph-latest.outcome == 'success' || steps.docker-build-graph-preview.outcome == 'success'
-        run: docker push --all-tags graphql-npm && \
-          docker push --all-tags graphql-source
+        if:
+          steps.docker-build-graph-latest.outcome == 'success' ||
+          steps.docker-build-graph-preview.outcome == 'success'
+        run:
+          docker push --all-tags graphql-npm && \ docker push --all-tags
+          graphql-source
