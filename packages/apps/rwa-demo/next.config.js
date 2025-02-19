@@ -10,7 +10,8 @@ const nextConfig = {
     return [
       {
         source: '/graph',
-        destination: process.env.NEXT_PUBLIC_GRAPHURL,
+        destination:
+          process.env.NEXT_PUBLIC_GRAPHURL ?? 'http://localhost:8080/graphql',
       },
     ];
   },
