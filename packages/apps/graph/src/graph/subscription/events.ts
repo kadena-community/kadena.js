@@ -86,7 +86,7 @@ async function* iteratorFn(
       yield newEvents;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }
 
