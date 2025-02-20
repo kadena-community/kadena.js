@@ -82,11 +82,11 @@ jobs:
           version_id=$(gh api "orgs/kadena-community/packages/container/graphql/versions" | \
             jq --arg tag "$latest_tag" -r '.[] | select(.metadata.container.tags | index($tag)) | .id')
           echo "version_id=$version_id" >> $GITHUB_OUTPUT
+          echo "version_id=$version_id"
 
       - name: Build Docker Image for `:latest`
         id: docker-build-graph-latest
-        # only run when npm-ghcr-version-id is empty
-        # when it's not empty, the image is already built
+        # only run when npm-ghcr-version-id has no built version yet
         if: steps.npm-ghcr-version-id.outputs.version_id == ''
         run: |
           VERSION_LATEST=$(npm view @kadena/graph --json | jq -r '."dist-tags".latest') && \
