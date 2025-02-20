@@ -9,6 +9,9 @@ services:
     build:
       context: ../../../
       dockerfile: ./packages/apps/graph/source.Dockerfile
+      tags:
+        - ghcr.io/kadena-community/graphql:preview
+        - ghcr.io/kadena-community/graphql:$(git rev-parse --short HEAD)
 
   # build with `docker compose build graphql`
   # run with `docker compose up graphql`
@@ -21,3 +24,7 @@ services:
       - NODE_ENV=production
     build:
       dockerfile: Dockerfile
+      tags:
+        - ghcr.io/kadena-community/graphql:latest
+        - ghcr.io/kadena-community/graphql:$(npm view @kadena/graph --json |jq
+          -r '."dist-tags".latest')

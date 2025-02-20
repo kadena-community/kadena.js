@@ -92,6 +92,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                 rules={{ required: true }}
                 render={({ field }) => (
                   <TextField
+                    id="accountName"
                     isDisabled={!!agent?.accountName}
                     label="AccountName"
                     {...field}
@@ -102,7 +103,9 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
               <Controller
                 name="alias"
                 control={control}
-                render={({ field }) => <TextField label="Alias" {...field} />}
+                render={({ field }) => (
+                  <TextField id="alias" label="Alias" {...field} />
+                )}
               />
 
               <CheckboxGroup direction="column" label="Roles" name="roles">

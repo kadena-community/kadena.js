@@ -3,7 +3,11 @@ import { expect } from '@playwright/test';
 
 test('Network creation', async ({ initiator, chainweaverApp }) => {
   await test.step('setup', async () => {
-    await chainweaverApp.setup(initiator, false);
+    await initiator.goto('/');
+    await chainweaverApp.removeSetupProps('initiator');
+    await chainweaverApp.setup(initiator, 'initiator', false);
+    await initiator.waitForTimeout(1000);
+    await chainweaverApp.selectProfile(initiator, 'Skeletor');
   });
   await test.step('Create network', async () => {
     await initiator.goto('/networks');

@@ -75,6 +75,7 @@ export const menuWrapperClass = recipe({
         zIndex: token('zIndex.overlay'),
         backgroundColor: token('color.background.base.default'),
         padding: token('spacing.lg'),
+        paddingBlockStart: token('spacing.sm'),
       },
       md: {
         display: 'flex',
@@ -113,6 +114,7 @@ export const menuMenuIconClass = style({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
 });
 
 export const menuNavWrapperClass = style([
@@ -298,7 +300,7 @@ export const headerClass = style([
 
   responsiveStyle({
     xs: {
-      gridTemplateColumns: `50px 1fr 100px 50px`,
+      gridTemplateColumns: `120px 1fr 100px 50px`,
       gridTemplateAreas: `
     "header-logo header-crumbs  header-rightside header-toggle"
   `,

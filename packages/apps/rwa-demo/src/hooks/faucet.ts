@@ -44,7 +44,12 @@ export const useFaucet = () => {
   };
 
   useEffect(() => {
-    if (!isMounted || activeNetwork.networkId !== 'development') return;
+    if (
+      !isMounted ||
+      (activeNetwork.networkId !== 'development' &&
+        activeNetwork.networkId !== 'testnet04')
+    )
+      return;
 
     setIsAllowed(!!account?.address && !isGasPayable);
   }, [account?.address, isMounted, isGasPayable]);

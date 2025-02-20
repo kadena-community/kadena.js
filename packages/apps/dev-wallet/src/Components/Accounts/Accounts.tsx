@@ -133,6 +133,7 @@ export function Accounts({
         </ul>
       ) : (
         <Stack
+          data-testid="assetList"
           padding={'sm'}
           marginBlockStart="md"
           className={classNames(panelClass)}
