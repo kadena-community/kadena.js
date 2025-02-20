@@ -89,6 +89,7 @@ jobs:
         # when it's not empty, the image is already built
         if: steps.npm-ghcr-version-id.outputs.version_id == ''
         run: |
+          VERSION_LATEST=$(npm view @kadena/graph --json | jq -r '."dist-tags".latest') && \
           cd packages/apps/graph && \
           docker compose build graphql
 
@@ -100,6 +101,7 @@ jobs:
           steps.filter.outputs.graph == 'true'
         # only run when `packages/apps/graph/**` has changes
         run: |
+          VERSION_PREVIEW=$(git rev-parse --short HEAD) && \
           cd packages/apps/graph && \
           docker compose build graphql-source
 
