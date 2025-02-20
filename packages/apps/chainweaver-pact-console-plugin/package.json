@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweaver-pact-console-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "description": "A console for interacting remotely with Pact on different networks (read-only)",
   "type": "module",

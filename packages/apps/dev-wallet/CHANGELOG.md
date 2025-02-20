@@ -1,5 +1,14 @@
 # @kadena/dev-wallet
 
+## 0.5.4
+
+### Patch Changes
+
+- 8dd7433: Change the KLogo to the text logo
+- Updated dependencies \[8dd7433]
+  - @kadena/kode-ui\@0.20.2
+  - @kadena/chainweaver-pact-console-plugin\@0.0.4
+
 ## 0.5.3
 
 ### Patch Changes

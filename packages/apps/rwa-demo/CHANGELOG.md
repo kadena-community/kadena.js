@@ -1,5 +1,15 @@
 # @kadena/rwa-demo
 
+## 0.1.10
+
+### Patch Changes
+
+- 8dd7433: Change the KLogo to the text logo
+- Updated dependencies \[8dd7433]
+- Updated dependencies \[034b2c2]
+  - @kadena/kode-ui\@0.20.2
+  - @kadena/graph\@2.2.2
+
 ## 0.1.9
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweaver-wallet-connect-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "description": "Wallet Connect plugin for Kadena Chainweaver wallet",
   "type": "module",

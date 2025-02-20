@@ -1,5 +1,12 @@
 # @kadena/chainweaver-wallet-connect-plugin
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies \[8dd7433]
+  - @kadena/kode-ui\@0.20.2
+
 ## 0.0.3
 
 ### Patch Changes

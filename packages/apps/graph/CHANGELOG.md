@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 2.2.2
+
+### Patch Changes
+
+- 034b2c2: Poll for new events every 1 second
+
 ## 2.2.1
 
 ### Patch Changes
