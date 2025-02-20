@@ -77,6 +77,8 @@ jobs:
 
       - name: Get version_id from GHCR for `@kadena/graph` latest version on NPM
         id: npm-ghcr-version-id
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           latest_tag=$(npm view @kadena/graph --json | jq -r '."dist-tags".latest')
           version_id=$(gh api "orgs/kadena-community/packages/container/graphql/versions" | \
