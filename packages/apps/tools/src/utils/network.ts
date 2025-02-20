@@ -1,10 +1,10 @@
-import type { DefinedNetwork, Network } from '@/constants/kadena';
-import { kadenaConstants } from '@/constants/kadena';
+import type { NetworkId, NetworkIds } from '@/constants/kadena';
+import { kadenaDefaultNetworks, networksIds } from '@/constants/kadena';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
 interface IApiHostData {
   api: string;
-  networkId: string;
+  networkId: NetworkId;
   chainId: ChainwebChainId;
 }
 
@@ -15,40 +15,28 @@ interface IEstatsHostData {
 }
 
 export interface INetworkData {
-  networkId: Network;
+  networkId: NetworkId;
   label: string;
   API: string;
   ESTATS: string;
 }
 
-const isNetwork = (x: any): x is Network =>
-  ['mainnet01', 'testnet04'].includes(x);
-
-export const getConfigNetworkNames = (): DefinedNetwork[] => {
-  return Object.keys(kadenaConstants).filter((key) =>
-    isNetwork(key),
-  ) as DefinedNetwork[];
-};
-
 export const getAllNetworks = (
   localStorageNetworks: INetworkData[],
 ): INetworkData[] => {
   const allNetworkObjects: INetworkData[] = [];
-  const configNetworks = getConfigNetworkNames();
 
   const configNetworksAdded =
     Boolean(localStorageNetworks) &&
-    localStorageNetworks.some((item) =>
-      getConfigNetworkNames().includes(item.networkId),
-    );
+    localStorageNetworks.some((item) => networksIds.includes(item.networkId));
 
   if (!configNetworksAdded) {
-    configNetworks.forEach((item: DefinedNetwork) => {
+    networksIds.forEach((item: NetworkIds) => {
       allNetworkObjects.push({
         networkId: item,
-        label: kadenaConstants[item].label,
-        API: kadenaConstants[item].API,
-        ESTATS: kadenaConstants[item].estatsHost(),
+        label: kadenaDefaultNetworks[item].label,
+        API: kadenaDefaultNetworks[item].API,
+        ESTATS: kadenaDefaultNetworks[item].estatsHost(),
       } as INetworkData);
     });
   }
@@ -61,19 +49,22 @@ export const getAllNetworks = (
       }),
     );
   }
-  return allNetworkObjects.filter((item) => item.networkId !== 'testnet05');
+
+  // remove leftover `testnet05` from the localStorage to clean up the users data
+  return allNetworkObjects.filter(
+    (item) => (item.networkId as string) !== 'testnet05',
+  );
 };
 
 export const getInitialNetworks = (): INetworkData[] => {
   const allNetworkObjects: INetworkData[] = [];
-  const configNetworks = getConfigNetworkNames();
 
-  configNetworks.forEach((item: DefinedNetwork) => {
+  networksIds.forEach((item: NetworkIds) => {
     allNetworkObjects.push({
       networkId: item,
-      label: kadenaConstants[item].label,
-      API: kadenaConstants[item].API,
-      ESTATS: kadenaConstants[item].estatsHost(),
+      label: kadenaDefaultNetworks[item].label,
+      API: kadenaDefaultNetworks[item].API,
+      ESTATS: kadenaDefaultNetworks[item].estatsHost(),
     } as INetworkData);
   });
 

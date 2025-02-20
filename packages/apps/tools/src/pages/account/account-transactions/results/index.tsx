@@ -1,6 +1,6 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { ProgressBar } from '@/components/Global';
-import type { Network } from '@/constants/kadena';
+import type { NetworkIds } from '@/constants/kadena';
 import Routes from '@/constants/routes';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
@@ -83,7 +83,7 @@ const CheckTransactions: FC = () => {
       }
 
       getAndSetTransactions(
-        router.query.network as Network,
+        router.query.network as NetworkIds,
         router.query.chain as ChainwebChainId,
         router.query.account as string,
       )
@@ -98,7 +98,7 @@ const CheckTransactions: FC = () => {
   }, [router.isReady]);
 
   async function getAndSetTransactions(
-    network: Network,
+    network: NetworkIds,
     chain: ChainwebChainId,
     account: string,
   ): Promise<void> {
@@ -121,7 +121,7 @@ const CheckTransactions: FC = () => {
     setResults([]);
 
     getAndSetTransactions(
-      router.query.network as Network,
+      router.query.network as NetworkIds,
       router.query.chain as ChainwebChainId,
       router.query.account as string,
     )
