@@ -61,7 +61,7 @@ export const SideBar: FC = () => {
       logo={
         <>
           <Link to="/">
-            <KLogo height={40} />
+            <KLogo />
           </Link>
         </>
       }
