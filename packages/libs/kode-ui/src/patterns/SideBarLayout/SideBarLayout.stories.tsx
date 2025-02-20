@@ -19,7 +19,7 @@ import {
   useLayout,
   useNotifications,
 } from './components/LayoutProvider';
-import { KLogo } from './components/Logo/KLogo';
+import { KLogoText } from './components/Logo/KLogoText';
 import {
   RightAside,
   RightAsideContent,
@@ -153,7 +153,7 @@ const InnerLayout = () => {
       <SideBarLayout
         logo={
           <a href="https://kadena.io" target="_blank" rel="noreferrer">
-            <KLogo height={40} />
+            <KLogoText />
           </a>
         }
         location={{
@@ -171,7 +171,7 @@ const InnerLayout = () => {
           <SideBar
             logo={
               <a href="https://kadena.io" target="_blank" rel="noreferrer">
-                <KLogo height={40} />
+                <KLogoText />
               </a>
             }
             navigation={
@@ -400,7 +400,7 @@ const NotificationsLayout = () => {
       <SideBarLayout
         logo={
           <a href="https://kadena.io" target="_blank" rel="noreferrer">
-            <KLogo height={40} />
+            <KLogoText />
           </a>
         }
         location={{
@@ -411,7 +411,7 @@ const NotificationsLayout = () => {
           <SideBar
             logo={
               <a href="https://kadena.io" target="_blank" rel="noreferrer">
-                <KLogo height={40} />
+                <KLogoText />
               </a>
             }
             navigation={

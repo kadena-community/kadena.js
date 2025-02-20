@@ -6,6 +6,7 @@ import type { PressEvent } from './../../components';
 import { Button, Stack } from './../../components';
 import { useLayout } from './components/LayoutProvider';
 import { KLogo } from './components/Logo/KLogo';
+import { KLogoText } from './components/Logo/KLogoText';
 import { SideBarAppContext } from './components/SideBarAppContext';
 import { SideBarContext } from './components/SideBarContext';
 import { SideBarNavigation } from './components/SideBarNavigation';
@@ -41,7 +42,10 @@ export const SideBar: FC<ISideBarProps> = ({
   };
 
   const ShowLogo = () => {
-    return logo ? logo : <KLogo height={40} />;
+    return logo ? logo : <KLogoText />;
+  };
+  const ShowSmallLogo = () => {
+    return <KLogo />;
   };
 
   return (
@@ -59,7 +63,7 @@ export const SideBar: FC<ISideBarProps> = ({
         })}
       >
         <Stack className={classNames(menuMenuIconClass)}>
-          {ShowLogo()}
+          {isExpanded ? ShowLogo() : ShowSmallLogo()}
 
           <Button
             variant="transparent"

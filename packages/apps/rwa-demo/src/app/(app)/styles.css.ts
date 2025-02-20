@@ -1,5 +1,5 @@
 import { style } from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
+import { atoms, token } from '@kadena/kode-ui/styles';
 
 export const actionsWrapperClass = style([
   atoms({
@@ -8,3 +8,9 @@ export const actionsWrapperClass = style([
     flexWrap: 'wrap',
   }),
 ]);
+
+export const logoClass = style({
+  color: token('color.text.brand.wordmark.default'),
+  height: '32px',
+  minHeight: '32px',
+});

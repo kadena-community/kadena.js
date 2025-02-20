@@ -15,7 +15,7 @@ import { Button } from './../../../components/Button';
 import { Stack } from './../../../components/Layout';
 import { Media } from './../../../components/Media';
 import { useLayout } from './LayoutProvider';
-import { KLogo } from './Logo/KLogo';
+import { KLogoText } from './Logo/KLogoText';
 
 interface IProps extends PropsWithChildren {
   logo?: ReactElement;
@@ -37,7 +37,7 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
   };
 
   const ShowLogo = () => {
-    return logo ? logo : <KLogo height={40} />;
+    return logo ? logo : <KLogoText />;
   };
 
   useEffect(() => {
