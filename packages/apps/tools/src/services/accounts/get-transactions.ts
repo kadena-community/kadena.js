@@ -1,4 +1,4 @@
-import type { NetworkNames } from '@/constants/kadena';
+import type { NetworkIds } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
 import { getEstatsHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
@@ -22,7 +22,7 @@ const debug = Debug('kadena-transfer:services:get-transactions');
 
 // TODO: convert to use graphql
 export async function getTransactions(options: {
-  network: NetworkNames;
+  network: NetworkIds;
   chain: ChainwebChainId;
   account: string;
   networksData: INetworkData[];

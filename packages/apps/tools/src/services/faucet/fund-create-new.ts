@@ -11,7 +11,7 @@ import { PactNumber } from '@kadena/pactjs';
 
 import Debug from 'debug';
 
-import type { NetworkName } from '@/constants/kadena';
+import type { NetworkId } from '@/constants/kadena';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
@@ -35,7 +35,7 @@ export const fundCreateNewAccount = async (
   account: string,
   keys: string[],
   chainId: ChainwebChainId,
-  network: NetworkName,
+  network: NetworkId,
   networksData: INetworkData[],
   amount = 100,
   pred = 'keys-all',

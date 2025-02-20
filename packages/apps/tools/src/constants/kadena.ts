@@ -1,8 +1,8 @@
 import { env } from '@/utils/env';
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 
-export type NetworkNames = Exclude<ChainwebNetworkId, 'development'>;
-export type NetworkName = NetworkNames | string;
+export type NetworkIds = Exclude<ChainwebNetworkId, 'development'>;
+export type NetworkId = NetworkIds | string;
 
 export type DevOption = 'BASIC' | 'BACKEND' | 'DAPP';
 
@@ -16,7 +16,7 @@ interface KadenaConstants {
 interface NetworkType {
   label: string;
   API: string;
-  apiHost: (params: { networkId: string; chainId: string }) => string;
+  apiHost: (params: { networkId: NetworkId; chainId: string }) => string;
   estatsHost: () => string;
 }
 
@@ -27,7 +27,7 @@ export const kadenaConstants: KadenaConstants = {
   DEFAULT_SENDER: env('DEFAULT_SENDER', 'not-real'),
 };
 
-export const kadenaDefaultNetworks: Record<NetworkNames, NetworkType> = {
+export const kadenaDefaultNetworks: Record<NetworkIds, NetworkType> = {
   mainnet01: {
     label: 'Mainnet',
     API: env('KADENA_MAINNET_API', 'api.chainweb.com'),
@@ -43,4 +43,6 @@ export const kadenaDefaultNetworks: Record<NetworkNames, NetworkType> = {
     estatsHost: () =>
       env('KADENA_TESTNET_ESTATS', 'estats.testnet.chainweb.com'),
   },
-};
+} as const;
+
+export const networksIds = Object.keys(kadenaDefaultNetworks) as NetworkIds[];

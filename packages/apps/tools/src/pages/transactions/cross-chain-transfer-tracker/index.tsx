@@ -141,7 +141,7 @@ const CrossChainTransferTracker: FC = () => {
     formState: { errors, isSubmitting },
     control,
   } = useForm<FormData>({
-    resolver: zodResolver(schema as any),
+    resolver: zodResolver(schema),
     values: { requestKey: requestKey },
     // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
     resetOptions: {

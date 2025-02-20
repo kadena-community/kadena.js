@@ -1,10 +1,10 @@
-import type { NetworkName, NetworkNames } from '@/constants/kadena';
-import { kadenaDefaultNetworks } from '@/constants/kadena';
+import type { NetworkId, NetworkIds } from '@/constants/kadena';
+import { kadenaDefaultNetworks, networksIds } from '@/constants/kadena';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
 interface IApiHostData {
   api: string;
-  networkId: NetworkName;
+  networkId: NetworkId;
   chainId: ChainwebChainId;
 }
 
@@ -15,30 +15,23 @@ interface IEstatsHostData {
 }
 
 export interface INetworkData {
-  networkId: NetworkName;
+  networkId: NetworkId;
   label: string;
   API: string;
   ESTATS: string;
 }
 
-export const getConfigNetworkNames = (): NetworkNames[] => {
-  return Object.keys(kadenaDefaultNetworks) as NetworkNames[];
-};
-
 export const getAllNetworks = (
   localStorageNetworks: INetworkData[],
 ): INetworkData[] => {
   const allNetworkObjects: INetworkData[] = [];
-  const configNetworks = getConfigNetworkNames();
 
   const configNetworksAdded =
     Boolean(localStorageNetworks) &&
-    localStorageNetworks.some((item) =>
-      getConfigNetworkNames().includes(item.networkId),
-    );
+    localStorageNetworks.some((item) => networksIds.includes(item.networkId));
 
   if (!configNetworksAdded) {
-    configNetworks.forEach((item: NetworkNames) => {
+    networksIds.forEach((item: NetworkIds) => {
       allNetworkObjects.push({
         networkId: item,
         label: kadenaDefaultNetworks[item].label,
@@ -56,6 +49,8 @@ export const getAllNetworks = (
       }),
     );
   }
+
+  // remove leftover `testnet05` from the localStorage to clean up the users data
   return allNetworkObjects.filter(
     (item) => (item.networkId as string) !== 'testnet05',
   );
@@ -63,9 +58,8 @@ export const getAllNetworks = (
 
 export const getInitialNetworks = (): INetworkData[] => {
   const allNetworkObjects: INetworkData[] = [];
-  const configNetworks = getConfigNetworkNames();
 
-  configNetworks.forEach((item: NetworkNames) => {
+  networksIds.forEach((item: NetworkIds) => {
     allNetworkObjects.push({
       networkId: item,
       label: kadenaDefaultNetworks[item].label,

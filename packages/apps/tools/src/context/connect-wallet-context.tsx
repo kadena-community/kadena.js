@@ -1,4 +1,4 @@
-import type { NetworkName, NetworkNames } from '@/constants/kadena';
+import type { NetworkId, NetworkIds } from '@/constants/kadena';
 import { useDidUpdateEffect } from '@/hooks';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
@@ -28,8 +28,8 @@ interface IWalletConnectClientContext {
   isInitializing: boolean;
   pairings: PairingTypes.Struct[];
   accounts: string[] | undefined;
-  selectedNetwork: NetworkName;
-  setSelectedNetwork: (selectedNetwork: NetworkName) => void;
+  selectedNetwork: NetworkId;
+  setSelectedNetwork: (selectedNetwork: NetworkId) => void;
   selectedChain: ChainwebChainId;
   setSelectedChain: (selectedChain: ChainwebChainId) => void;
   selectedAccount?: string;
@@ -49,7 +49,7 @@ export const StorageKeys: Record<
 };
 
 export const DefaultValues: {
-  NETWORK: NetworkNames;
+  NETWORK: NetworkIds;
   CHAIN_ID: ChainwebChainId;
 } = {
   NETWORK: 'mainnet01',
@@ -85,7 +85,7 @@ export const WalletConnectClientContextProvider: FC<
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [accounts, setAccounts] = useState<string[]>();
-  const [selectedNetwork, setSelectedNetwork] = useState<NetworkName>(
+  const [selectedNetwork, setSelectedNetwork] = useState<NetworkId>(
     DefaultValues.NETWORK,
   );
   const [selectedChain, setSelectedChain] = useState<ChainwebChainId>(
@@ -97,9 +97,7 @@ export const WalletConnectClientContextProvider: FC<
     useState<INetworkData[]>(getInitialNetworks());
 
   useLayoutEffect(() => {
-    const initialNetwork = getItem(StorageKeys.NETWORK) as
-      | NetworkNames
-      | string;
+    const initialNetwork = getItem(StorageKeys.NETWORK) as NetworkIds | string;
     if (initialNetwork) {
       setSelectedNetwork(initialNetwork);
     }

@@ -1,4 +1,4 @@
-import type { NetworkNames } from '@/constants/kadena';
+import type { NetworkIds } from '@/constants/kadena';
 import type {
   IncompleteModuleModel,
   ModuleModel,
@@ -15,7 +15,7 @@ export interface IChainModule {
   chainId: ChainwebChainId;
   moduleName: string;
   hash?: string;
-  network: NetworkNames;
+  network: NetworkIds;
 }
 
 export type Outline =

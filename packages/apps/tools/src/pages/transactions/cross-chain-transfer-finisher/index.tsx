@@ -9,7 +9,7 @@ import {
   RequestKeyField,
 } from '@/components/Global';
 import client from '@/constants/client';
-import type { NetworkNames } from '@/constants/kadena';
+import type { NetworkIds } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
@@ -130,9 +130,9 @@ const CrossChainTransferFinisher: FC = () => {
   }>(helpInfoSections[0]);
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
-  const networkData: INetworkData = networksData.filter(
-    (item) => (network as NetworkNames) === item.networkId,
-  )[0];
+  const networkData: INetworkData | undefined = networksData.find(
+    (item) => (network as NetworkIds) === item.networkId,
+  );
 
   const checkRequestKey = async (reqKey = requestKey): Promise<void> => {
     if (!validateRequestKey(reqKey)) {
@@ -173,6 +173,8 @@ const CrossChainTransferFinisher: FC = () => {
   };
 
   const handleValidateSubmit = async (data: FormData): Promise<void> => {
+    if (!networkData) return;
+
     debug(handleValidateSubmit.name);
 
     if (
@@ -304,6 +306,15 @@ const CrossChainTransferFinisher: FC = () => {
     setOpenItem(undefined);
   }, [requestKey, setValue]);
 
+  useEffect(() => {
+    resetField('requestKey');
+    setPollResults({});
+    setFinalResults({});
+    setTxError('');
+  }, [network, resetField]);
+
+  if (!networkData) return null;
+
   const isAdvancedOptions = devOption !== 'BASIC';
   const showNotification = Object.keys(finalResults).length > 0;
 
@@ -378,13 +389,6 @@ const CrossChainTransferFinisher: FC = () => {
   const handleOnClickLink = () => {
     setOpenItem(undefined);
   };
-
-  useEffect(() => {
-    resetField('requestKey');
-    setPollResults({});
-    setFinalResults({});
-    setTxError('');
-  }, [network, resetField]);
 
   return (
     <section className={containerClass}>
