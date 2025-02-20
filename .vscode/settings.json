@@ -2,5 +2,9 @@
   "files.associations": {
     "*.json": "jsonc"
   },
-  "eslint.workingDirectories": [{ "pattern": "./packages/*/*" }]
+  "eslint.workingDirectories": [
+    {
+      "pattern": "./packages/*/*"
+    }
+  ]
 }

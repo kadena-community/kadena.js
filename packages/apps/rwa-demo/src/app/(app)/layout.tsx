@@ -102,7 +102,7 @@ const RootLayout = ({
         }
         logo={
           <Link href="/">
-            <KLogo height={40} />
+            <KLogo />
           </Link>
         }
         sidebar={<SideBar />}
