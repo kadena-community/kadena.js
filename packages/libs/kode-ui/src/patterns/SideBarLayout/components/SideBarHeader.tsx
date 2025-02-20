@@ -15,7 +15,6 @@ import { Button } from './../../../components/Button';
 import { Stack } from './../../../components/Layout';
 import { Media } from './../../../components/Media';
 import { useLayout } from './LayoutProvider';
-import { KLogo } from './Logo/KLogo';
 import { KLogoText } from './Logo/KLogoText';
 
 interface IProps extends PropsWithChildren {
