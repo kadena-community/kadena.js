@@ -134,7 +134,8 @@ const ExistingAccountFaucetPage: FC = () => {
     },
   ];
 
-  const { chainID, onChainSelectChange } = useHighestBalanceChainId();
+  const { chainID, onChainSelectChange, isMounted } =
+    useHighestBalanceChainId();
 
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
@@ -232,6 +233,7 @@ const ExistingAccountFaucetPage: FC = () => {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  if (!isMounted) return null;
   return (
     <section className={containerClass}>
       <Head>

@@ -103,7 +103,8 @@ const NewAccountFaucetPage: FC = () => {
   const router = useRouter();
   const { selectedNetwork, networksData } = useWalletConnectClient();
 
-  const { chainID, onChainSelectChange } = useHighestBalanceChainId();
+  const { chainID, onChainSelectChange, isMounted } =
+    useHighestBalanceChainId();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
@@ -331,6 +332,8 @@ const NewAccountFaucetPage: FC = () => {
       ))}
     </div>
   );
+
+  if (!isMounted) return null;
 
   return (
     <section className={containerClass}>
