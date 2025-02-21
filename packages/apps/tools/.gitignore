@@ -24,5 +24,3 @@ next-env.d.ts
 
 src/resources/svg/generated
 ./junit.xml
-
-src/__generated__

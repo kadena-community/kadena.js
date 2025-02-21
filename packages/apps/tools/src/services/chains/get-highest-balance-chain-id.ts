@@ -1,4 +1,5 @@
 import type { NetworkIds } from '@/constants/kadena';
+import { DefaultValues } from '@/context/connect-wallet-context';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
@@ -76,7 +77,7 @@ export const getHighestBalanceChainId = async ({
     },
     {
       balance: 0,
-      chainId: '0',
+      chainId: DefaultValues.CHAIN_ID,
     },
   );
   return chainBalance;

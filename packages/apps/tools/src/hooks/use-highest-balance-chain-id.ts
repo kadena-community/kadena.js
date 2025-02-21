@@ -1,4 +1,3 @@
-import { useAccountQuery } from '@/__generated__/sdk';
 import {
   DefaultValues,
   useWalletConnectClient,
@@ -13,16 +12,6 @@ const useHighestBalanceChainId = () => {
     DefaultValues.CHAIN_ID,
   );
 
-  const accountQueryVariables = {
-    accountName: 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
-  };
-
-  const { loading, data, error } = useAccountQuery({
-    variables: accountQueryVariables,
-  });
-
-  console.log({ loading, data, error });
-
   const init = async () => {
     const data = await getHighestBalanceChainId({
       selectedNetwork,
@@ -35,9 +24,12 @@ const useHighestBalanceChainId = () => {
   };
 
   useLayoutEffect(() => {
+    console.log({ selectedNetwork });
+    if (selectedNetwork !== 'testnet04') return;
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, []);
+  }, [selectedNetwork]);
 
   return { chainID, onChainSelectChange: setChainId };
 };
