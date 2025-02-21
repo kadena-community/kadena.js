@@ -118,10 +118,10 @@ jobs:
         if:
           steps.docker-build-graph-latest.outcome == 'success'
         run:
-          docker push --all-tags ghcr.io/kadena-community/graphql:latest
+          docker push --all-tags graphql
 
       - name: Docker push all tags `:preview`
         if:
           steps.docker-build-graph-preview.outcome == 'success'
         run:
-          docker push --all-tags ghcr.io/kadena-community/graphql:preview
+          docker push --all-tags graphql-source

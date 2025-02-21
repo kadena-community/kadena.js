@@ -17,7 +17,7 @@ services:
   # build with `docker compose build graphql`
   # run with `docker compose up graphql`
   graphql:
-    image: ghcr.io/kadena-community/graphql
+    image: graphql
     ports:
       - '4000:4000'
     # env_file: .env
