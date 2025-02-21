@@ -8,7 +8,6 @@ import {
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
-import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount, pollResult } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
@@ -35,6 +34,7 @@ import { z } from 'zod';
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { sidebarLinks } from '@/constants/side-links';
+import { useHighestBalanceChainId } from '@/hooks';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
 import type { ITransactionDescriptor } from '@kadena/client';
@@ -134,7 +134,7 @@ const ExistingAccountFaucetPage: FC = () => {
     },
   ];
 
-  const [chainID, onChainSelectChange] = usePersistentChainID();
+  const { chainID, onChainSelectChange } = useHighestBalanceChainId();
 
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;

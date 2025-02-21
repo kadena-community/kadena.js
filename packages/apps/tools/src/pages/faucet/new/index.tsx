@@ -48,7 +48,7 @@ import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
-import { usePersistentChainID } from '@/hooks';
+import { useHighestBalanceChainId } from '@/hooks';
 import { pollResult } from '@/services/faucet';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
@@ -103,7 +103,7 @@ const NewAccountFaucetPage: FC = () => {
   const router = useRouter();
   const { selectedNetwork, networksData } = useWalletConnectClient();
 
-  const [chainID, onChainSelectChange] = usePersistentChainID();
+  const { chainID, onChainSelectChange } = useHighestBalanceChainId();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;

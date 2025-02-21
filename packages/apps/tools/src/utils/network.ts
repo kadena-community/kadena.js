@@ -19,6 +19,8 @@ export interface INetworkData {
   label: string;
   API: string;
   ESTATS: string;
+  graphUrl: string;
+  wsGraphUrl: string;
 }
 
 export const getAllNetworks = (
@@ -62,9 +64,8 @@ export const getInitialNetworks = (): INetworkData[] => {
   networksIds.forEach((item: NetworkIds) => {
     allNetworkObjects.push({
       networkId: item,
-      label: kadenaDefaultNetworks[item].label,
-      API: kadenaDefaultNetworks[item].API,
       ESTATS: kadenaDefaultNetworks[item].estatsHost(),
+      ...kadenaDefaultNetworks[item],
     } as INetworkData);
   });
 

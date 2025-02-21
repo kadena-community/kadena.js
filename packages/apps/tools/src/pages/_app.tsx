@@ -4,6 +4,7 @@ import '@kadena/kode-ui/global';
 import { Layout } from '@/components/Common';
 import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
+import { NetworkContextProvider } from '@/context/networksContext';
 import '@/resources/styles/globals.css';
 import { RouterProvider } from '@kadena/kode-ui';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
@@ -40,13 +41,15 @@ const App: FC<AppProps<IPageProps>> = ({
       >
         <RouterProvider navigate={router.push}>
           <WalletConnectClientContextProvider>
-            <AppContextProvider>
-              <LayoutContextProvider>
-                <Layout useFullWidth={pageProps.useFullPageWidth}>
-                  <Component {...pageProps} />
-                </Layout>
-              </LayoutContextProvider>
-            </AppContextProvider>
+            <NetworkContextProvider>
+              <AppContextProvider>
+                <LayoutContextProvider>
+                  <Layout useFullWidth={pageProps.useFullPageWidth}>
+                    <Component {...pageProps} />
+                  </Layout>
+                </LayoutContextProvider>
+              </AppContextProvider>
+            </NetworkContextProvider>
           </WalletConnectClientContextProvider>
         </RouterProvider>
       </ThemeProvider>

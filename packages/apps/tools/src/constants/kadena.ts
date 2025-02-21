@@ -18,6 +18,8 @@ interface NetworkType {
   API: string;
   apiHost: (params: { networkId: NetworkId; chainId: string }) => string;
   estatsHost: () => string;
+  graphUrl: string;
+  wsGraphUrl: string;
 }
 
 export const kadenaConstants: KadenaConstants = {
@@ -31,6 +33,8 @@ export const kadenaDefaultNetworks: Record<NetworkIds, NetworkType> = {
   mainnet01: {
     label: 'Mainnet',
     API: env('KADENA_MAINNET_API', 'api.chainweb.com'),
+    graphUrl: 'https://graph.kadena.network/graphql',
+    wsGraphUrl: 'https://graph.kadena.network/graphql',
     apiHost: ({ networkId, chainId }) =>
       `https://${kadenaDefaultNetworks.mainnet01.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () => env('KADENA_MAINNET_ESTATS', 'estats.chainweb.com'),
@@ -38,6 +42,8 @@ export const kadenaDefaultNetworks: Record<NetworkIds, NetworkType> = {
   testnet04: {
     label: 'Testnet',
     API: env('KADENA_TESTNET_API', 'api.testnet.chainweb.com'),
+    graphUrl: 'https://graph.testnet.kadena.network/graphql',
+    wsGraphUrl: 'https://graph.testnet.kadena.network/graphql',
     apiHost: ({ networkId, chainId }) =>
       `https://${kadenaDefaultNetworks.testnet04.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     estatsHost: () =>
