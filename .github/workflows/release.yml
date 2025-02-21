@@ -87,8 +87,8 @@ jobs:
           images: |
             ghcr.io/kadena-community/graphql
           tags: |
-            type=ref,pattern={{branch}}
-            type=sha
+            type=ref,event=branch
+            type=sha,format=long
 
       - name: Build and Push graphql image
         uses: docker/build-push-action@v6
@@ -107,8 +107,8 @@ jobs:
           images: |
             ghcr.io/kadena-community/graphql
           tags: |
-            type=ref,pattern=preview-{{branch}}
-            type=sha
+            type=ref,event=branch,prefix=preview-
+            type=sha,format=long,prefix=preview-
 
       - name: Build and Push graphql-source image
         if: steps.filter.outputs.graph == 'true'
