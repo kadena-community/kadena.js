@@ -229,7 +229,7 @@ test('Investor checks', async ({
   await test.step('Distribute tokens', async () => {
     await initiator.goto('/investors');
     await RWADemoApp.selectInvestor(initiator, 0);
-
+    await initiator.waitForTimeout(1000);
     const balanceInfo = initiator.getByTestId('balance-info').first();
     await balanceInfo.waitFor();
     const balance = await RWADemoApp.getBalance(balanceInfo);
