@@ -1,6 +1,7 @@
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { ISetComplianceParametersProps } from '@/services/setComplianceParameters';
+import { setComplianceValue } from '@/utils/setComplianceValue';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -17,14 +18,6 @@ interface IProps {
   onClose?: () => void;
   trigger: ReactElement;
 }
-
-const setComplianceValue = (
-  value: string | number | undefined,
-  defaultValue?: string | number,
-): string => {
-  const number = parseInt(`${value ?? 0}`);
-  return number >= 0 ? `${number}` : `${defaultValue}`;
-};
 
 export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
   const { submit, isAllowed } = useSetCompliance();
