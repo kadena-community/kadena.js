@@ -17,6 +17,7 @@ export const eckoSignTx = async (tx: IUnsignedCommand) => {
 
   const result = await kadena.request({
     method: 'kda_requestSign',
+    networkId: env.NETWORKID,
     data: {
       networkId: env.NETWORKID,
       signingCmd: eckoUnsignedTx,
