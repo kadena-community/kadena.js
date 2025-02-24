@@ -28,6 +28,7 @@ export const useSetCompliance = () => {
     if (!asset) return;
     const rules = getActiveRulesKeys(asset.compliance, ruleKey, newState);
 
+    console.log(rules);
     try {
       const tx = await setCompliance(rules, account!);
 
