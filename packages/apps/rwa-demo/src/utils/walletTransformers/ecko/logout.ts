@@ -6,7 +6,7 @@ export const eckoAccountLogout = async (): Promise<void> => {
   const isKadena = Boolean(kadena && kadena.isKadena);
   if (!isKadena) return;
 
-  kadena.request({
+  await kadena.request({
     method: 'kda_disconnect',
     networkId: env.NETWORKID,
   });

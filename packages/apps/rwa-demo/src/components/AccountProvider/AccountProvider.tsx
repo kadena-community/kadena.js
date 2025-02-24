@@ -161,17 +161,17 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     [router],
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
     switch (account?.walletType) {
       case WALLETTYPES.ECKO:
-        return eckoAccountLogout();
+        return await eckoAccountLogout();
       case WALLETTYPES.CHAINWEAVER:
-        return chainweaverAccountLogout();
+        return await chainweaverAccountLogout();
     }
     localStorage.removeItem(getAccountCookieName());
     setAccount(undefined);
     router.replace('/');
-  }, []);
+  }, [account]);
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());

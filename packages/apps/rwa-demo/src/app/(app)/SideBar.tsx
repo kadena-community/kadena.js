@@ -42,8 +42,8 @@ export const SideBar: FC = () => {
     setTheme(newTheme);
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     router.push('/login');
   };
 
