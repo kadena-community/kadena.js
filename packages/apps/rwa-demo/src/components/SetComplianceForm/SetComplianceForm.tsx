@@ -50,8 +50,6 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
   };
 
   const onSubmit = async (data: ISetComplianceParametersProps) => {
-    console.log(data);
-
     const newData = {
       maxSupply: setComplianceValue(data.maxSupply, -1),
       maxBalance: setComplianceValue(data.maxBalance, -1),
