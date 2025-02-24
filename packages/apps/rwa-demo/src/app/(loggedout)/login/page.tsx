@@ -1,12 +1,14 @@
 'use client';
+import { EckoWalletConnect } from '@/components/EckoWalletConnect/EckoWalletConnect';
+import { WALLETTYPES } from '@/constants';
 import { useAccount } from '@/hooks/account';
 import { Button, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
   const { login, accounts, selectAccount } = useAccount();
-  const handleConnect = async () => {
-    await login();
+  const handleConnect = async (type: keyof typeof WALLETTYPES) => {
+    await login(type);
   };
 
   return (
@@ -43,7 +45,10 @@ const Home = () => {
       </CardContentBlock>
       {!accounts && (
         <CardFooterGroup>
-          <Button onPress={handleConnect}>Connect</Button>
+          <EckoWalletConnect />
+          <Button onPress={() => handleConnect(WALLETTYPES.CHAINWEAVER)}>
+            Chainweaver Connect
+          </Button>
         </CardFooterGroup>
       )}
     </>
