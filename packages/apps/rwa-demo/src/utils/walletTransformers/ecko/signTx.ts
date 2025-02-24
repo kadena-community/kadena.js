@@ -10,7 +10,7 @@ export const eckoSignTx = async (tx: IUnsignedCommand) => {
     ...cmd.meta,
     pactCode: cmd.payload.exec.code,
     envData: cmd.payload.exec.data,
-    caps: cmd.signers[0].clist.map((c) => ({
+    caps: cmd.signers[0].clist.map((c: any) => ({
       cap: c,
     })),
   };
