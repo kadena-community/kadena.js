@@ -136,7 +136,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         case WALLETTYPES.ECKO:
           tempAccount = await eckoAccountLogin();
           break;
-
         case WALLETTYPES.CHAINWEAVER:
           const result = await chainweaverAccountLogin();
           if (result.length > 1) {
@@ -221,11 +220,9 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [account?.address]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
-    console.log({ account });
     switch (account?.walletType) {
       case WALLETTYPES.ECKO:
         return await eckoSignTx(tx);
-
       case WALLETTYPES.CHAINWEAVER:
         return await chainweaverSignTx(tx);
     }
