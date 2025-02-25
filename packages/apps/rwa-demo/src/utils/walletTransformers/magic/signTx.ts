@@ -1,6 +1,5 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
-
-import { KadenaExtension } from '@magic-ext/kadena';
+import type { KadenaExtension } from '@magic-ext/kadena';
 import { magicInit } from './utils';
 
 export const magicSignTx = async (tx: IUnsignedCommand) => {

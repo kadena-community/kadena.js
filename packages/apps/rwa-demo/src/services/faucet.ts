@@ -1,6 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { env } from '@/utils/env';
+import { getGuard } from '@/utils/getPubKey';
 import { setSigner } from '@/utils/setSigner';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
@@ -15,7 +16,7 @@ export const faucet = async (account: IWalletAccount) => {
       chainId: getNetwork().chainId,
     })
     .addData('owner', account.address)
-    .addData('keyset', account.guard)
+    .addData('keyset', getGuard(account))
 
     .addSigner(setSigner(account), (withCap) => [
       withCap(

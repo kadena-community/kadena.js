@@ -1,18 +1,21 @@
-import type {
-  Guard,
-  IWalletAccount,
-} from '@/components/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import {
   isKeysetGuard,
   isKeysetRefGuard,
 } from '@/components/AccountProvider/AccountType';
 
-export const getPubkeyFromAccount = (account: IWalletAccount): Guard => {
+export const getPubkeyFromAccount = (account: IWalletAccount): string => {
   if (isKeysetGuard(account.guard)) {
     return account.guard.keys[0];
   }
-  if (isKeysetRefGuard(account.guard)) {
+
+  return '';
+};
+
+export const getGuard = (account: IWalletAccount): any => {
+  if (isKeysetGuard(account.guard) || isKeysetRefGuard(account.guard)) {
     return account.guard;
   }
-  return '';
+
+  return;
 };
