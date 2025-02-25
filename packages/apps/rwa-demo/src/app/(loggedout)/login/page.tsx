@@ -1,6 +1,7 @@
 'use client';
 import { ChainweaverWalletConnect } from '@/components/ChainweaverWalletConnect/ChainweaverWalletConnect';
 import { EckoWalletConnect } from '@/components/EckoWalletConnect/EckoWalletConnect';
+import { MagicConnect } from '@/components/MagicConnect/MagicConnect';
 import { useAccount } from '@/hooks/account';
 import { Button, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
@@ -42,6 +43,7 @@ const Home = () => {
       </CardContentBlock>
       {!accounts && (
         <CardFooterGroup>
+          <MagicConnect />
           <EckoWalletConnect />
           <ChainweaverWalletConnect />
         </CardFooterGroup>

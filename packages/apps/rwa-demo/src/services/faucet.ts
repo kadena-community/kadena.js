@@ -1,27 +1,23 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { env } from '@/utils/env';
-import { getPubkeyFromAccount } from '@/utils/getPubKey';
+import { setSigner } from '@/utils/setSigner';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
 export const faucet = async (account: IWalletAccount) => {
   return Pact.builder
     .execution(
-      `(${env.FAUCETNAMESPACE}.coin-faucet.create-and-request-coin (read-string 'owner) (read-keyset 'keyset) ${new PactNumber(env.FAUCETAMOUNT).toDecimal()})`,
+      `(${env.FAUCETNAMESPACE}.coin-faucet.create-and-request-coin (read-string 'owner) (read-msg 'keyset) ${new PactNumber(env.FAUCETAMOUNT).toDecimal()})`,
     )
     .setMeta({
       senderAccount: env.FAUCETADDRESS,
       chainId: getNetwork().chainId,
     })
     .addData('owner', account.address)
-    .addData('roles', [])
-    .addData('keyset', {
-      keys: [getPubkeyFromAccount(account)],
-      pred: 'keys-all',
-    })
+    .addData('keyset', account.guard)
 
-    .addSigner(getPubkeyFromAccount(account), (withCap) => [
+    .addSigner(setSigner(account), (withCap) => [
       withCap(
         `${env.FAUCETNAMESPACE}.coin-faucet.GAS_PAYER`,
         '',

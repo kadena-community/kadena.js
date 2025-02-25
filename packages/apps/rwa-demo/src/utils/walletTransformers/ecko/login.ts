@@ -22,6 +22,7 @@ export const eckoAccountLogin = async (): Promise<
   )
     return;
 
+  console.log(result);
   return {
     address: result.account.account,
     publicKey: result.account.publicKey,
@@ -33,6 +34,6 @@ export const eckoAccountLogin = async (): Promise<
     contract: '',
     chains: [],
     overallBalance: '0',
-    walletType: WALLETTYPES.ECKO,
+    walletName: WALLETTYPES.ECKO,
   };
 };

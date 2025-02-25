@@ -103,7 +103,8 @@ export interface IWalletAccount {
   contract: string;
   chains: Array<{ chainId: ChainId; balance: string }>;
   overallBalance: string;
-  walletType: keyof typeof WALLETTYPES;
+  walletName: keyof typeof WALLETTYPES;
+  walletType?: 'default' | 'WebAuthn';
 }
 
 export function isKeysetGuard(guard: Guard): guard is KeysetGuard {

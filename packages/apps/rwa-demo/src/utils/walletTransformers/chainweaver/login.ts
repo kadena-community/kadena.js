@@ -2,6 +2,7 @@ import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import type { IState } from '@/components/TransactionsProvider/utils';
 import { getWalletConnection } from '@/components/TransactionsProvider/utils';
 import { WALLETTYPES } from '@/constants';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 
 export const chainweaverAccountLogin = async (): Promise<IWalletAccount[]> => {
   const { message, focus, close } = await getWalletConnection();
@@ -22,7 +23,8 @@ export const chainweaverAccountLogin = async (): Promise<IWalletAccount[]> => {
   return (
     payload.accounts.map((account) => ({
       ...account,
-      walletType: WALLETTYPES.CHAINWEAVER,
+      publicKey: getPubkeyFromAccount(account),
+      walletName: WALLETTYPES.CHAINWEAVER,
     })) ?? []
   );
 };

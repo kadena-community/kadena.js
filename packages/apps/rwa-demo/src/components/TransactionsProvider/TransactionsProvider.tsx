@@ -143,7 +143,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
                       nextData?.data.transaction?.result.badResult ?? '{}',
                     ).message,
               ),
-              url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+              url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
             });
             return;
           }
@@ -161,7 +161,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
             intent: 'negative',
             label: 'there was an error',
             message: JSON.stringify(errorData),
-            url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+            url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
           });
         },
         () => {

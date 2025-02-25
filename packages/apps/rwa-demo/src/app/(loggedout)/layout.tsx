@@ -25,7 +25,9 @@ const RootLayout = ({
       alignItems="center"
       className={wrapperClass}
     >
-      <NotificationSlot />
+      <Stack>
+        <NotificationSlot />
+      </Stack>
       <Stack flexDirection="column" className={cardWrapperClass}>
         <Card className={cardClass}>
           <CookieConsent />

@@ -18,7 +18,11 @@ import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx
 import { eckoAccountLogin } from '@/utils/walletTransformers/ecko/login';
 import { eckoAccountLogout } from '@/utils/walletTransformers/ecko/logout';
 import { eckoSignTx } from '@/utils/walletTransformers/ecko/signTx';
+import { magicAccountLogin } from '@/utils/walletTransformers/magic/login';
+import { magicAccountLogout } from '@/utils/walletTransformers/magic/logout';
+import { magicSignTx } from '@/utils/walletTransformers/magic/signTx';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -76,6 +80,7 @@ export const AccountContext = createContext<IAccountContext>({
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
   const [accounts, setAccounts] = useState<IWalletAccount[]>();
+  const { addNotification } = useNotifications();
   const [isMounted, setIsMounted] = useState(false);
   const [isOwnerState, setIsOwnerState] = useState(false);
   const [isComplianceOwnerState, setIsComplianceOwnerState] = useState(false);
@@ -130,9 +135,9 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const login = useCallback(
-    async (type: keyof typeof WALLETTYPES) => {
+    async (name: keyof typeof WALLETTYPES) => {
       let tempAccount;
-      switch (type) {
+      switch (name) {
         case WALLETTYPES.ECKO:
           tempAccount = await eckoAccountLogin();
           break;
@@ -144,6 +149,16 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
           } else if (result.length === 1) {
             tempAccount = result[0];
           }
+          break;
+        case WALLETTYPES.MAGIC:
+          tempAccount = await magicAccountLogin();
+          break;
+        default:
+          addNotification({
+            intent: 'negative',
+            label: 'Provider does not exist',
+            message: `Provider (${name}) does not exist`,
+          });
       }
 
       if (tempAccount) {
@@ -162,12 +177,24 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const logout = useCallback(async () => {
-    switch (account?.walletType) {
+    switch (account?.walletName) {
       case WALLETTYPES.ECKO:
-        return await eckoAccountLogout();
+        await eckoAccountLogout();
+        break;
       case WALLETTYPES.CHAINWEAVER:
-        return await chainweaverAccountLogout();
+        await chainweaverAccountLogout();
+        break;
+      case WALLETTYPES.MAGIC:
+        await magicAccountLogout();
+        break;
+      default:
+        addNotification({
+          intent: 'negative',
+          label: 'Provider does not exist',
+          message: `Provider (${account?.walletName}) does not exist`,
+        });
     }
+
     localStorage.removeItem(getAccountCookieName());
     setAccount(undefined);
     router.replace('/');
@@ -220,11 +247,20 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [account?.address]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
-    switch (account?.walletType) {
+    switch (account?.walletName) {
       case WALLETTYPES.ECKO:
         return await eckoSignTx(tx);
       case WALLETTYPES.CHAINWEAVER:
         return await chainweaverSignTx(tx);
+      case WALLETTYPES.MAGIC:
+        return await magicSignTx(tx);
+
+      default:
+        addNotification({
+          intent: 'negative',
+          label: 'Provider does not exist',
+          message: `Provider (${account?.walletType}) does not exist`,
+        });
     }
   };
 
