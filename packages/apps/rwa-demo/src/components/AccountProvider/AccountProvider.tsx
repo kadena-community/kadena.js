@@ -164,9 +164,11 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const logout = useCallback(async () => {
     switch (account?.walletType) {
       case WALLETTYPES.ECKO:
-        return await eckoAccountLogout();
+        await eckoAccountLogout();
+        break;
       case WALLETTYPES.CHAINWEAVER:
-        return await chainweaverAccountLogout();
+        await chainweaverAccountLogout();
+        break;
     }
     localStorage.removeItem(getAccountCookieName());
     setAccount(undefined);
