@@ -64,9 +64,13 @@ export const getHighestBalanceChainId = async ({
 
   const chainBalance = data.reduce<IBalance>(
     (acc, curr, idx) => {
-      const balance = (curr.result as any).data?.balance ?? 0;
+      const balanceResult = (curr.result as any).data?.balance ?? 0;
+      const balance =
+        typeof balanceResult === 'number'
+          ? balanceResult
+          : balanceResult.decimal;
 
-      if (balance > acc.balance) {
+      if (parseFloat(balance) > parseFloat(`${acc.balance}`)) {
         return {
           balance,
           chainId: `${idx}`,
