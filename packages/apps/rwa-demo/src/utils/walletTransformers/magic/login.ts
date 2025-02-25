@@ -1,33 +1,26 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
-import type { IECKOWindow } from '@/components/EckoWalletConnect/eckotypes';
+import type {
+  Guard,
+  IWalletAccount,
+} from '@/components/AccountProvider/AccountType';
 import { WALLETTYPES } from '@/constants';
-import { env } from '@/utils/env';
-import { KadenaExtension } from '@magic-ext/kadena';
-import { Magic } from 'magic-sdk';
+import type { KadenaExtension } from '@magic-ext/kadena';
+import { magicInit } from './utils';
 
 export const magicAccountLogin = async (): Promise<
   IWalletAccount | undefined
 > => {
-  const magic = new Magic(env.MAGIC_APIKEY, {
-    extensions: [
-      new KadenaExtension({
-        rpcUrl: env.CHAINWEBAPIURL,
-        chainId: env.CHAINID,
-        networkId: env.NETWORKID,
-        createAccountsOnChain: true,
-      }),
-    ],
-  });
+  const magic = magicInit();
 
-  const account = await magic.kadena.loginWithSpireKey();
+  const account = await (magic.kadena as KadenaExtension).loginWithSpireKey();
 
+  console.log({ account });
   return {
     address: account.accountName,
     publicKey: account.devices[0].guard.keys[0],
-    guard: account.guard,
+    guard: account.guard as Guard,
     alias: account.alias,
     contract: '',
-    chains: account.chainIds,
+    chains: account.chainIds.map((chainId) => ({ chainId, balance: '0' })),
     overallBalance: account.balance,
     walletName: WALLETTYPES.MAGIC,
     walletType: 'WebAuthn',

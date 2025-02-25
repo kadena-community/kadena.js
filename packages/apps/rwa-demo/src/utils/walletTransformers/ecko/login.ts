@@ -22,7 +22,6 @@ export const eckoAccountLogin = async (): Promise<
   )
     return;
 
-  console.log(result);
   return {
     address: result.account.account,
     publicKey: result.account.publicKey,
