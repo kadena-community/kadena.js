@@ -27,6 +27,7 @@ export const AccountNameField: FC<IProps> = ({
       }}
       render={({ field }) => (
         <TextField
+          placeholder="k:1234..."
           id="accountName"
           isInvalid={!!error?.message}
           errorMessage={`${error?.message}`}

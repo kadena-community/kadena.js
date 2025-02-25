@@ -254,7 +254,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         return await chainweaverSignTx(tx);
       case WALLETTYPES.MAGIC:
         return await magicSignTx(tx);
-
       default:
         addNotification({
           intent: 'negative',
