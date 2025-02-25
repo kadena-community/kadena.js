@@ -1,4 +1,5 @@
 'use client';
+import { WALLETTYPES } from '@/constants';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import type { IAgentHookProps } from '@/hooks/getAgentRoles';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
@@ -8,14 +9,20 @@ import { isComplianceOwner } from '@/services/isComplianceOwner';
 import { isFrozen } from '@/services/isFrozen';
 import { isInvestor } from '@/services/isInvestor';
 import { isOwner } from '@/services/isOwner';
+
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
+
+import { chainweaverAccountLogin } from '@/utils/walletTransformers/chainweaver/login';
+import { chainweaverAccountLogout } from '@/utils/walletTransformers/chainweaver/logout';
+import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
+import { eckoAccountLogin } from '@/utils/walletTransformers/ecko/login';
+import { eckoAccountLogout } from '@/utils/walletTransformers/ecko/logout';
+import { eckoSignTx } from '@/utils/walletTransformers/ecko/signTx';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import type { IWalletAccount } from './AccountType';
-import type { IState } from './utils';
-import { getWalletConnection } from './utils';
 
 interface IAccountError {
   message: string;
@@ -26,7 +33,7 @@ export interface IAccountContext {
   accounts?: IWalletAccount[];
   error?: IAccountError;
   isMounted: boolean;
-  login: () => void;
+  login: (type: keyof typeof WALLETTYPES) => void;
   logout: () => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
   isAgent: boolean;
@@ -122,41 +129,51 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     router.replace('/');
   };
 
-  const login = useCallback(async () => {
-    const { message, focus, close } = await getWalletConnection();
-    focus();
-    const response = await message('CONNECTION_REQUEST', {
-      name: 'RWA-demo',
-    });
+  const login = useCallback(
+    async (type: keyof typeof WALLETTYPES) => {
+      let tempAccount;
+      switch (type) {
+        case WALLETTYPES.ECKO:
+          tempAccount = await eckoAccountLogin();
+          break;
+        case WALLETTYPES.CHAINWEAVER:
+          const result = await chainweaverAccountLogin();
+          if (result.length > 1) {
+            setAccounts(result);
+            return;
+          } else if (result.length === 1) {
+            tempAccount = result[0];
+          }
+      }
 
-    if ((response.payload as any).status !== 'accepted') {
-      return;
+      if (tempAccount) {
+        setAccounts(undefined);
+        setAccount(tempAccount);
+        localStorage.setItem(
+          getAccountCookieName(),
+          JSON.stringify(tempAccount),
+        );
+
+        router.replace('/');
+      }
+    },
+
+    [router],
+  );
+
+  const logout = useCallback(async () => {
+    switch (account?.walletType) {
+      case WALLETTYPES.ECKO:
+        await eckoAccountLogout();
+        break;
+      case WALLETTYPES.CHAINWEAVER:
+        await chainweaverAccountLogout();
+        break;
     }
-    const { payload } = (await message('GET_STATUS', {
-      name: 'RWA-demo',
-    })) as { payload: IState };
-
-    if (payload.accounts.length > 1) {
-      setAccounts(payload.accounts);
-      close();
-      return;
-    }
-
-    setAccounts(undefined);
-    setAccount(payload.accounts[0]);
-    localStorage.setItem(
-      getAccountCookieName(),
-      JSON.stringify(payload.accounts[0]),
-    );
-    close();
-    router.replace('/');
-  }, [router]);
-
-  const logout = useCallback(() => {
     localStorage.removeItem(getAccountCookieName());
     setAccount(undefined);
     router.replace('/');
-  }, []);
+  }, [account]);
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());
@@ -205,15 +222,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [account?.address]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
-    const { message, close } = await getWalletConnection();
-    const response = await message('SIGN_REQUEST', tx as any);
-    const payload: {
-      status: 'signed' | 'rejected';
-      transaction?: ICommand;
-    } = response.payload as any;
-
-    close();
-    return payload.transaction;
+    switch (account?.walletType) {
+      case WALLETTYPES.ECKO:
+        return await eckoSignTx(tx);
+      case WALLETTYPES.CHAINWEAVER:
+        return await chainweaverSignTx(tx);
+    }
   };
 
   return (

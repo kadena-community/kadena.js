@@ -280,11 +280,11 @@ export class RWADemoAppIndex {
         name: 'Login',
       })
       .waitFor();
-
     const popupPromise = actor.waitForEvent('popup');
     const button = actor.getByRole('button', {
-      name: 'Connect',
+      name: 'Chainweaver Connect',
     });
+    await button.waitFor();
     await button.click();
     const walletPopup = await popupPromise;
 
@@ -358,10 +358,14 @@ export class RWADemoAppIndex {
       }),
     ).toBeVisible();
 
+    console.log(234234234234234234);
     const popupPromise = actor.waitForEvent('popup');
     const button = actor.getByRole('button', {
-      name: 'Connect',
+      name: 'Chainweaver Connect',
     });
+
+    console.log(2222, button);
+    await button.waitFor();
     await button.click();
     const walletPopup = await popupPromise;
 
