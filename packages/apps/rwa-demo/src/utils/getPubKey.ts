@@ -5,11 +5,7 @@ import {
 } from '@/components/AccountProvider/AccountType';
 
 export const getPubkeyFromAccount = (account: IWalletAccount): string => {
-  if (isKeysetGuard(account.guard)) {
-    return account.guard.keys[0];
-  }
-
-  return '';
+  return account.publicKey;
 };
 
 export const getGuard = (account: IWalletAccount): any => {
