@@ -14,10 +14,6 @@ export interface IBatchTransferTokensProps {
   select: ITransferToken[];
 }
 
-const createPubKeyFromAccount = (account: string): string => {
-  return account.replace('k:', '').replace('r:', '');
-};
-
 export const batchTransferTokens = async (
   data: ITransferToken[],
   account: IWalletAccount,
@@ -48,8 +44,8 @@ export const batchTransferTokens = async (
       chainId: getNetwork().chainId,
       gasLimit: 150000,
     })
-    .addSigner(createPubKeyFromAccount(account.address), (withCap) =>
-      aggregatedAccounts.map((_, idx) =>
+    .addSigner(getPubkeyFromAccount(account), (withCap) => [
+      ...aggregatedAccounts.map((_, idx) =>
         withCap(
           `${getAsset()}.TRANSFER`,
           account.address,
@@ -59,8 +55,6 @@ export const batchTransferTokens = async (
           },
         ),
       ),
-    )
-    .addSigner(getPubkeyFromAccount(account), (withCap) => [
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)
