@@ -1,6 +1,10 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type {
+  Guard,
+  IWalletAccount,
+} from '@/components/AccountProvider/AccountType';
 import type { IECKOWindow } from '@/components/EckoWalletConnect/eckotypes';
 import { WALLETTYPES } from '@/constants';
+import { getKeysetService } from '@/services/getKeyset';
 import { env } from '@/utils/env';
 
 export const eckoAccountLogin = async (): Promise<
@@ -22,17 +26,13 @@ export const eckoAccountLogin = async (): Promise<
   )
     return;
 
+  const keyset = (await getKeysetService(result.account.account)) as Guard;
+
   return {
     address: result.account.account,
     publicKey: result.account.publicKey,
-    guard: {
-      keys: [result.account.publicKey],
-      pred: 'keys-all',
-    },
-    keyset: {
-      keys: [result.account.publicKey],
-      pred: 'keys-all',
-    },
+    guard: keyset,
+    keyset: keyset,
     alias: 'Ecko Account',
     contract: '',
     chains: [],

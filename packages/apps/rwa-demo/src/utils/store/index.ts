@@ -8,7 +8,8 @@ import { get, off, onValue, ref, remove, set } from 'firebase/database';
 import { getAsset } from '../getAsset';
 import { database } from './firebase';
 
-const getAssetFolder = () => getAsset().replace('.', '');
+const getAssetFolder = () => getAsset().replace(/\./g, '');
+const getAccountVal = (val: string) => val.replace(/\./g, '');
 
 const GetAccountsLocalStorageKey = () => {
   return `${getAssetFolder()}_${LOCALSTORAGE_ACCOUNTS}`;
@@ -169,7 +170,10 @@ const RWAStore = () => {
     if (!asset) return;
 
     const snapshot = await get(
-      ref(database, `${asset}/accounts/${account}/frozenMessage`),
+      ref(
+        database,
+        `${asset}/accounts/${getAccountVal(account)}/frozenMessage`,
+      ),
     );
 
     return snapshot.toJSON() as any;
@@ -183,7 +187,7 @@ const RWAStore = () => {
       await set(
         ref(
           database,
-          `${asset}/accounts/${data.investorAccount}/frozenMessage`,
+          `${asset}/accounts/${getAccountVal(data.investorAccount)}/frozenMessage`,
         ),
         data.message,
       );
@@ -191,7 +195,7 @@ const RWAStore = () => {
       await remove(
         ref(
           database,
-          `${asset}/accounts/${data.investorAccount}/frozenMessage`,
+          `${asset}/accounts/${getAccountVal(data.investorAccount)}/frozenMessage`,
         ),
       );
     }
