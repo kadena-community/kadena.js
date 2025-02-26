@@ -3,7 +3,14 @@ import { ChainweaverWalletConnect } from '@/components/ChainweaverWalletConnect/
 import { EckoWalletConnect } from '@/components/EckoWalletConnect/EckoWalletConnect';
 import { MagicConnect } from '@/components/MagicConnect/MagicConnect';
 import { useAccount } from '@/hooks/account';
-import { Button, Stack, Text } from '@kadena/kode-ui';
+import { MonoKeyboardArrowDown } from '@kadena/kode-icons';
+import {
+  Button,
+  ContextMenu,
+  ContextMenuItem,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
@@ -37,15 +44,23 @@ const Home = () => {
           </Stack>
         ) : (
           <>
-            <Text>Please connect with your Kadena</Text>
+            <Text>Please connect your Kadena Account</Text>
           </>
         )}
       </CardContentBlock>
       {!accounts && (
         <CardFooterGroup>
-          <MagicConnect />
-          <EckoWalletConnect />
-          <ChainweaverWalletConnect />
+          <ContextMenu
+            trigger={
+              <Button endVisual={<MonoKeyboardArrowDown />}>
+                Select a wallet
+              </Button>
+            }
+          >
+            <MagicConnect />
+            <EckoWalletConnect />
+            <ChainweaverWalletConnect />
+          </ContextMenu>
         </CardFooterGroup>
       )}
     </>
