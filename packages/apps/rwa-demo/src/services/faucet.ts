@@ -1,7 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { env } from '@/utils/env';
-import { getGuard } from '@/utils/getPubKey';
+import { getGuard, getKeyset } from '@/utils/getPubKey';
 import { setSigner } from '@/utils/setSigner';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';

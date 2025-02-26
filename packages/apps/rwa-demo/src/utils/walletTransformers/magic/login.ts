@@ -13,11 +13,11 @@ export const magicAccountLogin = async (): Promise<
 
   const account = await (magic.kadena as KadenaExtension).loginWithSpireKey();
 
-  console.log({ account });
   return {
     address: account.accountName,
     publicKey: account.devices[0].guard.keys[0],
     guard: account.guard as Guard,
+    keyset: account.keyset as Guard,
     alias: account.alias,
     contract: '',
     chains: account.chainIds.map((chainId) => ({ chainId, balance: '0' })),

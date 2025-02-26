@@ -29,6 +29,10 @@ export const eckoAccountLogin = async (): Promise<
       keys: [result.account.publicKey],
       pred: 'keys-all',
     },
+    keyset: {
+      keys: [result.account.publicKey],
+      pred: 'keys-all',
+    },
     alias: 'Ecko Account',
     contract: '',
     chains: [],

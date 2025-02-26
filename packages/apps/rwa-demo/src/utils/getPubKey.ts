@@ -19,3 +19,6 @@ export const getGuard = (account: IWalletAccount): any => {
 
   return;
 };
+export const getKeyset = (account: IWalletAccount): any => {
+  return account.keyset;
+};

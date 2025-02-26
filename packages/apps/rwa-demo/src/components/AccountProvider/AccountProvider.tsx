@@ -48,7 +48,7 @@ export interface IAccountContext {
   selectAccount: (account: IWalletAccount) => void;
   balance: number;
   accountRoles: IAgentHookProps;
-  isGasPayable: boolean;
+  isGasPayable: boolean | undefined;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -74,7 +74,7 @@ export const AccountContext = createContext<IAccountContext>({
     isFreezer: () => false,
     isTransferManager: () => false,
   },
-  isGasPayable: false,
+  isGasPayable: undefined,
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -87,9 +87,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isAgentState, setIsAgentState] = useState(false);
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
-  const { data: kdaBalance } = useGetAccountKDABalance({
-    accountAddress: account?.address,
-  });
+  const { data: kdaBalance, isMounted: isBalanceMounted } =
+    useGetAccountKDABalance({
+      accountAddress: account?.address,
+    });
   const { ...accountRoles } = useGetAgentRoles({
     agent: account?.address,
   });
@@ -103,7 +104,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     setIsAgentState(!!resIsAgent);
   };
   const checkIsOwner = async (account: IWalletAccount) => {
-    const resIsOwner = await isOwner({ owner: account.address });
+    const resIsOwner = await isOwner({ account });
     setIsOwnerState(!!resIsOwner);
   };
   const checkIsComplianceOwner = async (account: IWalletAccount) => {
@@ -280,7 +281,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         selectAccount,
         balance,
         accountRoles,
-        isGasPayable: kdaBalance > 0,
+        isGasPayable: !isBalanceMounted ? undefined : kdaBalance > 0,
       }}
     >
       {children}

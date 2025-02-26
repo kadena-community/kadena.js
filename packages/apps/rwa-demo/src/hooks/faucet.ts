@@ -8,6 +8,7 @@ import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useGetAccountKDABalance } from './getAccountKDABalance';
 import { useNetwork } from './networks';
 import { useTransactions } from './transactions';
 
@@ -45,6 +46,7 @@ export const useFaucet = () => {
 
   useEffect(() => {
     if (
+      isGasPayable === undefined ||
       !isMounted ||
       (activeNetwork.networkId !== 'development' &&
         activeNetwork.networkId !== 'testnet04')

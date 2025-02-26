@@ -99,6 +99,7 @@ export interface IWalletAccount {
   address: string;
   publicKey: string;
   guard: Guard;
+  keyset: Guard;
   alias: string;
   contract: string;
   chains: Array<{ chainId: ChainId; balance: string }>;
