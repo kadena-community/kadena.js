@@ -8,7 +8,7 @@ import {
   NotificationHeading,
 } from '@kadena/kode-ui';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import { type FC } from 'react';
+import type { FC } from 'react';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
