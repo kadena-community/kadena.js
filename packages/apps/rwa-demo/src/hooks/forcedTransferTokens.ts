@@ -32,7 +32,7 @@ export const useForcedTransferTokens = () => {
         type: TXTYPES.TRANSFERTOKENS,
         accounts: [
           account?.address!,
-          data.investorFromAccount,
+          data.investorFromAccount!,
           data.investorToAccount,
         ],
       });

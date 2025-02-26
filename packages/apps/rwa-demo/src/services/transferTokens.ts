@@ -7,6 +7,7 @@ import { PactNumber } from '@kadena/pactjs';
 
 export interface ITransferTokensProps {
   amount: number;
+  investorFromAccount?: string;
   investorToAccount: string;
   isForced?: boolean;
 }
