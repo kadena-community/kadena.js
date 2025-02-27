@@ -89,6 +89,7 @@ test('Compliance MaxSupply', async ({
     await complianceRule.waitFor();
     await complianceRule.scrollIntoViewIfNeeded();
     const complianceRuleText = complianceRule.getByTestId('compliance-text');
+    const complianceRuleBtn = complianceRule.getByRole('button');
 
     expect(await complianceRuleText.allTextContents()).toContain(
       'no limit tokens',
@@ -101,9 +102,11 @@ test('Compliance MaxSupply', async ({
       name: 'Set Compliance',
     });
 
+    await initiator.waitForTimeout(1000);
+
     await RWADemoApp.checkLoadingIndicator(
       initiator,
-      complianceRuleText,
+      complianceRuleBtn,
       chainweaverApp.signWithPassword(initiator, setComplianceBtn),
     );
 

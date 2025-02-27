@@ -29,10 +29,13 @@ export const useTransferTokens = () => {
       const client = getClient();
       const res = await client.submit(signedTransaction);
 
+      const accountStr = data.investorFromAccount
+        ? data.investorFromAccount
+        : account?.address!;
       return addTransaction({
         ...res,
         type: TXTYPES.TRANSFERTOKENS,
-        accounts: [data.investorFromAccount, data.investorToAccount],
+        accounts: [accountStr, data.investorToAccount],
       });
     } catch (e: any) {
       addNotification({

@@ -20,13 +20,18 @@ export const AccountNameField: FC<IProps> = ({
       control={control}
       rules={{
         required: true,
+        maxLength: {
+          value: 70,
+          message: 'This exceeds the maximum length',
+        },
         pattern: {
-          value: /^k:[0-9a-fA-F]{64}$/,
-          message: 'Fill in a correct K:account',
+          value: /^[a-z]:[a-zA-Z0-9_.]+$/,
+          message: 'Fill in a correct ..:account',
         },
       }}
       render={({ field }) => (
         <TextField
+          placeholder="k:1234..."
           id="accountName"
           isInvalid={!!error?.message}
           errorMessage={`${error?.message}`}

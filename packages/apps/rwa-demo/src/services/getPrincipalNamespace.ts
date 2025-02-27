@@ -1,6 +1,6 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
-import { getPubkeyFromAccount } from '@/utils/getPubKey';
+import { getKeyset } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 
 export interface ICreatePrincipalNamespaceProps {
@@ -14,10 +14,7 @@ export const getPrincipalNamespace = async (
 
   const transaction = Pact.builder
     .execution(`(ns.create-principal-namespace (read-keyset 'keyset))`)
-    .addData('keyset', {
-      keys: [getPubkeyFromAccount(data.owner)],
-      pred: 'keys-all',
-    })
+    .addData('keyset', getKeyset(data.owner))
     .setMeta({
       chainId: getNetwork().chainId,
     })
