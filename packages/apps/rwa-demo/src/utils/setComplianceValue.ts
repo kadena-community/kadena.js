@@ -6,7 +6,7 @@ export const setComplianceValue = (
   const defaultNumber = parseInt(`${defaultValue}`);
   return number >= 0
     ? `${number}`
-    : defaultNumber >= 0
+    : !Number.isNaN(defaultNumber)
       ? `${defaultValue}`
       : '';
 };
