@@ -180,6 +180,12 @@
     "path": "packages/apps/spirekey-example"
   },
   {
+    "name": "@kadena/tools",
+    "version": "1.2.0",
+    "private": true,
+    "path": "packages/apps/tools"
+  },
+  {
     "name": "@kadena/types",
     "version": "0.7.0",
     "private": false,
