@@ -53,7 +53,6 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
-    "@kadena/tools": "workspace:*",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/gtag.js": "~0.0.12",
     "@types/node": "^20.12.7",
