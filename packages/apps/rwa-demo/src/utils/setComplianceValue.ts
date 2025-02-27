@@ -1,3 +1,4 @@
+//check that the string is actually a number
 export const setComplianceValue = (
   value: string | number | undefined,
   defaultValue?: string | number,
