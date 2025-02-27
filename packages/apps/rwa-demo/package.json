@@ -3,7 +3,7 @@
   "version": "0.1.10",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 next build",
     "build:e2e": "NODE_ENV=test pnpm run build",
     "dev": "next dev",
     "generate": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact\"",
@@ -28,7 +28,6 @@
     "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/spirekey-sdk": "^1.0.0",
-    "@ledgerhq/hw-app-kda": "git+ssh://git@github.com:obsidiansystems/hw-app-kda",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/css-utils": "^0.1.3",
     "@vanilla-extract/next-plugin": "2.4.0",
