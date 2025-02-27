@@ -24,6 +24,7 @@ export const CopyButton: FC<IProps> = ({ value }) => {
 
   return (
     <Button
+      data-testid="copyAsset"
       onPress={handlePress}
       isCompact
       variant="transparent"

@@ -1,5 +1,11 @@
 # @kadena/kode-ui
 
+## 0.20.2
+
+### Patch Changes
+
+- 8dd7433: Change the KLogo to the text logo
+
 ## 0.20.1
 
 ### Patch Changes

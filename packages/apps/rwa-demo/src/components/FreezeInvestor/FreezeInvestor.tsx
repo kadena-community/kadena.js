@@ -35,7 +35,11 @@ const getVisual = (frozen: boolean, isLoading: boolean) => {
   if (isLoading) {
     return <TransactionPendingIcon />;
   }
-  return frozen ? <MonoPause /> : <MonoPlayArrow />;
+  return (
+    <Stack data-frozenState={frozen}>
+      {frozen ? <MonoPause /> : <MonoPlayArrow />}
+    </Stack>
+  );
 };
 
 export const FreezeInvestor: FC<IProps> = ({
@@ -50,11 +54,7 @@ export const FreezeInvestor: FC<IProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { submit, isAllowed } = useFreezeInvestor();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<{ message: string }>({
+  const { register, handleSubmit } = useForm<{ message: string }>({
     values: {
       message: '',
     },
@@ -99,6 +99,7 @@ export const FreezeInvestor: FC<IProps> = ({
       fallbackIcon={getVisual(frozen, isLoading)}
     />
   );
+
   return (
     <>
       <Stack className={complianceWrapperClass}>
@@ -122,11 +123,7 @@ export const FreezeInvestor: FC<IProps> = ({
               <Button variant="outlined" onPress={() => setIsModalOpen(false)}>
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                isDisabled={!isValid || !isAllowed}
-                variant="primary"
-              >
+              <Button type="submit" isDisabled={!isAllowed} variant="primary">
                 Freeze
               </Button>
             </DialogFooter>

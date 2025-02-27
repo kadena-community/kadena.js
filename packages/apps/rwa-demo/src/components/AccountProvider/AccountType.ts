@@ -1,3 +1,4 @@
+import type { WALLETTYPES } from '@/constants';
 import type { BuiltInPredicate, ChainId } from '@kadena/client';
 
 export type PvString = string;
@@ -96,11 +97,13 @@ export type Guard =
 
 export interface IWalletAccount {
   address: string;
+  publicKey: string;
   guard: Guard;
   alias: string;
   contract: string;
   chains: Array<{ chainId: ChainId; balance: string }>;
   overallBalance: string;
+  walletType: keyof typeof WALLETTYPES;
 }
 
 export function isKeysetGuard(guard: Guard): guard is KeysetGuard {

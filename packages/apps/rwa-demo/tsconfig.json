@@ -1,12 +1,7 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "types": [
-      "node",
-      "vitest/globals",
-      "@types/gtag.js",
-      ".kadena/pactjs-generated"
-    ],
+    "types": ["node", "vitest/globals", "@types/gtag.js"],
     "rootDir": ".",
     "baseUrl": ".",
     "target": "ES2020",

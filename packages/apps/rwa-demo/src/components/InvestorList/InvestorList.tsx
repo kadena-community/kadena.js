@@ -2,7 +2,7 @@ import { useAddInvestor } from '@/hooks/addInvestor';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { loadingData } from '@/utils/loadingData';
 import { MonoAdd, MonoFindInPage } from '@kadena/kode-icons';
-import { Button } from '@kadena/kode-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -51,7 +51,7 @@ export const InvestorList: FC = () => {
   return (
     <>
       <form ref={formRef}>
-        <SectionCard stack="vertical">
+        <SectionCard stack="vertical" data-testid="investorsCard">
           <SectionCardContentBlock>
             <SectionCardHeader
               title="Investors"
@@ -98,11 +98,14 @@ export const InvestorList: FC = () => {
               }
             />
             <SectionCardBody>
-              <TransactionTypeSpinner
-                type={[TXTYPES.ADDINVESTOR, TXTYPES.DELETEINVESTOR]}
-              />
+              <Stack data-testid="investorTableTxSpinner">
+                <TransactionTypeSpinner
+                  type={[TXTYPES.ADDINVESTOR, TXTYPES.DELETEINVESTOR]}
+                />
+              </Stack>
 
               <CompactTable
+                data-testid="investorTable"
                 isLoading={isLoading}
                 variant="open"
                 fields={[
@@ -145,6 +148,7 @@ export const InvestorList: FC = () => {
                     render: CompactTableFormatters.FormatActions({
                       trigger: (
                         <Button
+                          data-testid="select-account"
                           isCompact
                           variant="outlined"
                           startVisual={<MonoFindInPage />}

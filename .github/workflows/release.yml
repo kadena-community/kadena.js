@@ -71,32 +71,51 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Log in GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Get version_id from GHCR for `@kadena/graph` latest version on NPM
-        id: npm-ghcr-version-id
         run: |
-          latest_tag=$(npm view @kadena/graph --json | jq -r '."dist-tags".latest')
-          version_id=$(gh api "orgs/kadena-community/packages/container/graphql/versions" | \
-            jq --arg tag "$latest_tag" -r '.[] | select(.metadata.container.tags | index($tag)) | .id')
-          echo "version_id=$version_id" >> $GITHUB_OUTPUT
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build Docker Image for `:latest`
-        id: docker-build-graph-latest
-        # only run when npm-ghcr-version-id is empty
-        # when it's not empty, the image is already built
-        if: steps.npm-ghcr-version-id.outputs.version_id == ''
-        run: |
-          cd packages/apps/graph && \
-          docker compose build graphql --push --build-arg \
-          -t=ghcr.io/kadena/graphql:latest,ghcr.io/kadena/graphql:$(npm view @kadena/graph --json |jq '."dist-tags".latest')
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Build Docker Image `:preview`
-        id: docker-build-graph-preview
-        # no need to publish when `:latest` is publishing
-        if: steps.docker-build-graph-latest.conclusion != 'skipped' && steps.filter.outputs.graph == 'true'
-        # only run when `packages/apps/graph/**` has changes
-        run: |
-          cd packages/apps/graph && \
-          docker compose build graphql --push --build-arg \
-          -t=ghcr.io/kadena-community/graphql:preview,ghcr.io/kadena-community/graphql:sha-${GITHUB_SHA::7}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Meta for graphql
+        id: meta-graphql
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/kadena-community/graphql
+          tags: |
+            type=ref,event=branch
+            type=sha,format=long
+
+      - name: Build and Push graphql image
+        uses: docker/build-push-action@v6
+        with:
+          context: packages/apps/graph
+          file: packages/apps/graph/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-graphql.outputs.tags }}
+          labels: ${{ steps.meta-graphql.outputs.labels }}
+
+      - name: Docker Meta for graphql-source
+        if: steps.filter.outputs.graph == 'true'
+        id: meta-graphql-source
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/kadena-community/graphql
+          tags: |
+            type=ref,event=branch,prefix=preview-
+            type=sha,format=long,prefix=preview-
+
+      - name: Build and Push graphql-source image
+        if: steps.filter.outputs.graph == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: packages/apps/graph
+          file: packages/apps/graph/source.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-graphql-source.outputs.tags }}
+          labels: ${{ steps.meta-graphql-source.outputs.labels }}

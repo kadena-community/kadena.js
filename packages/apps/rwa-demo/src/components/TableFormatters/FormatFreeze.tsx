@@ -13,7 +13,7 @@ export const FormatFreeze = () => {
         variant="outlined"
         iconOnly={true}
         investorAccount={value as string}
-        trigger={<Button />}
+        trigger={<Button data-testid="freezeAccountTrigger" />}
       />
     );
   };

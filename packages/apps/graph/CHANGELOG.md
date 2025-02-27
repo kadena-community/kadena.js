@@ -1,5 +1,22 @@
 # @kadena/graph
 
+## 2.2.2
+
+### Patch Changes
+
+- 034b2c2: Poll for new events every 1 second
+
+## 2.2.1
+
+### Patch Changes
+
+- ea02b15: Fixed issue where using the subscription for Events would scan the
+  whole events table
+- Updated dependencies \[0ebc455]
+  - @kadena/chainweb-node-client\@0.9.1
+  - @kadena/client\@1.17.1
+  - @kadena/client-utils\@0.12.2
+
 ## 2.2.0
 
 ### Minor Changes

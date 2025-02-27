@@ -1,5 +1,6 @@
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
+import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
@@ -29,7 +30,10 @@ export const DistributionForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { maxCompliance } = useAsset();
+  const { maxCompliance, asset } = useAsset();
+  const { data: balance } = useGetInvestorBalance({
+    investorAccount,
+  });
   const [tx, setTx] = useState<ITransaction>();
   const resolveRef = useRef<Function | null>(null);
   const { submit, isAllowed } = useDistributeTokens({ investorAccount });
@@ -83,7 +87,17 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  const maxAmount = maxCompliance('RWA.max-balance-compliance');
+  const maxBalance = maxCompliance('max-balance-compliance');
+  const maxSupply = maxCompliance('supply-limit-compliance');
+  const supply = asset?.supply ?? 0;
+
+  let maxAmount = -1;
+  if (maxBalance >= 0) {
+    maxAmount = maxBalance - balance;
+  }
+  if (maxSupply >= 0 && maxAmount < maxSupply - supply) {
+    maxAmount = maxSupply - supply;
+  }
 
   return (
     <>

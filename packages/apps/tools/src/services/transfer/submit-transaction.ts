@@ -1,5 +1,5 @@
 import client from '@/constants/client';
-import type { Network } from '@/constants/kadena';
+import type { NetworkId, NetworkIds } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
@@ -30,7 +30,7 @@ export async function submitTx(
   debug(submitTx.name);
 
   const networkData: INetworkData | undefined = networksData.find(
-    (item) => (networkId as Network) === item.networkId,
+    (item) => (networkId as NetworkIds) === item.networkId,
   );
 
   if (!networkData) return { error: 'No network found' };
@@ -52,7 +52,7 @@ export async function submitTx(
 
 export const pollResult = async (
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkId,
   networksData: INetworkData[],
   requestKeys: ITransactionDescriptor,
 ) => {
@@ -74,7 +74,7 @@ export const pollResult = async (
 
 export const listenResult = async (
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkId,
   networksData: INetworkData[],
   requestKeys: ITransactionDescriptor,
 ) => {

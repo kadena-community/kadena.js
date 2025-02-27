@@ -1,6 +1,6 @@
 import { AddNetworkModal } from '@/components/Global';
 import { OptionsModal } from '@/components/Global/OptionsModal';
-import type { Network } from '@/constants/kadena';
+import type { NetworkId, NetworkIds } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
@@ -56,7 +56,7 @@ const Header: FC<IHeaderProps> = () => {
 
   const openNetworkModal = () => setIsOpen(true);
 
-  const handleOnChange = (value: Network): void => {
+  const handleOnChange = (value: NetworkId): void => {
     if (value === 'custom') {
       return openNetworkModal();
     }
@@ -122,7 +122,7 @@ const Header: FC<IHeaderProps> = () => {
             id="network-select"
             aria-label={t('Select Network')}
             selectedKey={selectedNetwork as string}
-            onSelectionChange={(value) => handleOnChange(value as Network)}
+            onSelectionChange={(value) => handleOnChange(value as NetworkIds)}
             startVisual={<MonoPublic />}
           >
             {[

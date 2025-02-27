@@ -1906,6 +1906,9 @@ importers:
       directory-tree:
         specifier: 3.5.1
         version: 3.5.1
+      dotenv:
+        specifier: ~16.4.5
+        version: 16.4.5
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2135,6 +2138,9 @@ importers:
       '@types/node':
         specifier: ^20.12.7
         version: 20.16.5
+      dotenv:
+        specifier: ~16.4.5
+        version: 16.4.5
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -5476,11 +5482,6 @@ packages:
       '@parcel/watcher':
         optional: true
 
-  '@graphql-codegen/client-preset@4.3.2':
-    resolution: {integrity: sha512-42jHyG6u2uFDIVNvzue8zR529aPT16EYIJQmvMk8XuYHo3PneQVlWmQ3j2fBy+RuWCBzpJKPKm7IGSKiw19nmg==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-
   '@graphql-codegen/client-preset@4.5.1':
     resolution: {integrity: sha512-UE2/Kz2eaxv35HIXFwlm2QwoUH77am6+qp54aeEWYq+T+WPwmIc6+YzqtGiT/VcaXgoOUSgidREGm9R6jKcf9g==}
     engines: {node: '>=16'}
@@ -5495,11 +5496,6 @@ packages:
   '@graphql-codegen/gql-tag-operations@4.0.12':
     resolution: {integrity: sha512-v279i49FJ5dMmQXIGUgm6FtnnkxtJjVJWDNYh9JK4ppvOixdHp+PmEzW227DkLN6avhVxNnYdp/1gdRBwdWypw==}
     engines: {node: '>=16'}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-
-  '@graphql-codegen/gql-tag-operations@4.0.9':
-    resolution: {integrity: sha512-lVgu1HClel896HqZAEjynatlU6eJrYOw+rh05DPgM150xvmb7Gz5TnRHA2vfwlDNIXDaToAIpz5RFfkjjnYM1Q==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
 
@@ -5532,11 +5528,6 @@ packages:
   '@graphql-codegen/typed-document-node@5.0.12':
     resolution: {integrity: sha512-Wsbc1AqC+MFp3maWPzrmmyHLuWCPB63qBBFLTKtO6KSsnn0KnLocBp475wkfBZnFISFvzwpJ0e6LV71gKfTofQ==}
     engines: {node: '>=16'}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-
-  '@graphql-codegen/typed-document-node@5.0.9':
-    resolution: {integrity: sha512-Wx6fyA4vpfIbfNTMiWUECGnjqzKkJdEbZHxVMIegiCBPzBYPAJV4mZZcildLAfm2FtZcgW4YKtFoTbnbXqPB3w==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
 
@@ -7128,6 +7119,7 @@ packages:
 
   '@pinata/sdk@2.1.0':
     resolution: {integrity: sha512-hkS0tcKtsjf9xhsEBs2Nbey5s+Db7x5rlOH9TaWHBXkJ7IwwOs2xnEDigNaxAHKjYAwcw+m2hzpO5QgOfeF7Zw==}
+    deprecated: Please install the new IPFS SDK at pinata-web3. More information at https://docs.pinata.cloud/web3/sdk
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -10277,6 +10269,7 @@ packages:
 
   acorn-import-assertions@1.9.0:
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
 
@@ -11925,6 +11918,7 @@ packages:
 
   ed25519-keygen@0.4.8:
     resolution: {integrity: sha512-rsdNLL15/MmdGZ+I5f7/lVBk1+lZmd/Cw60QEuR5X6gebyBgBImCSLRk2J/REaoRvWwpWuaeOu5Y2Y9deyWNmA==}
+    deprecated: 'Switch to micro-key-producer: the package has been merged into it'
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -14426,6 +14420,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.includes@4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
@@ -14435,6 +14430,7 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.isinteger@4.0.4:
     resolution: {integrity: sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==}
@@ -14465,6 +14461,7 @@ packages:
 
   lodash.omit@4.5.0:
     resolution: {integrity: sha512-XeqSp49hNGmlkj2EJlfrQFIzQ6lXdNro9sddtQzcJY8QaoC2GO0DT7xaIokHeyM+mIT0mPMlPvkYzg2xCuHdZg==}
+    deprecated: This package is deprecated. Use destructuring assignment syntax instead.
 
   lodash.once@4.1.1:
     resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==}
@@ -21069,9 +21066,9 @@ snapshots:
       '@babel/generator': 7.24.7
       '@babel/template': 7.24.7
       '@babel/types': 7.24.7
-      '@graphql-codegen/client-preset': 4.3.2(encoding@0.1.13)(graphql@16.8.2)
+      '@graphql-codegen/client-preset': 4.5.1(encoding@0.1.13)(graphql@16.8.2)
       '@graphql-codegen/core': 4.0.2(graphql@16.8.2)
-      '@graphql-codegen/plugin-helpers': 5.0.4(graphql@16.8.2)
+      '@graphql-codegen/plugin-helpers': 5.1.0(graphql@16.8.2)
       '@graphql-tools/apollo-engine-loader': 8.0.1(encoding@0.1.13)(graphql@16.8.2)
       '@graphql-tools/code-file-loader': 8.1.2(graphql@16.8.2)
       '@graphql-tools/git-loader': 8.0.6(graphql@16.8.2)
@@ -21119,9 +21116,9 @@ snapshots:
       '@babel/generator': 7.24.7
       '@babel/template': 7.24.7
       '@babel/types': 7.24.7
-      '@graphql-codegen/client-preset': 4.3.2(encoding@0.1.13)(graphql@16.8.2)
+      '@graphql-codegen/client-preset': 4.5.1(encoding@0.1.13)(graphql@16.8.2)
       '@graphql-codegen/core': 4.0.2(graphql@16.8.2)
-      '@graphql-codegen/plugin-helpers': 5.0.4(graphql@16.8.2)
+      '@graphql-codegen/plugin-helpers': 5.1.0(graphql@16.8.2)
       '@graphql-tools/apollo-engine-loader': 8.0.1(encoding@0.1.13)(graphql@16.8.2)
       '@graphql-tools/code-file-loader': 8.1.2(graphql@16.8.2)
       '@graphql-tools/git-loader': 8.0.6(graphql@16.8.2)
@@ -21169,9 +21166,9 @@ snapshots:
       '@babel/generator': 7.24.7
       '@babel/template': 7.24.7
       '@babel/types': 7.24.7
-      '@graphql-codegen/client-preset': 4.3.2(encoding@0.1.13)(graphql@16.8.2)
+      '@graphql-codegen/client-preset': 4.5.1(encoding@0.1.13)(graphql@16.8.2)
       '@graphql-codegen/core': 4.0.2(graphql@16.8.2)
-      '@graphql-codegen/plugin-helpers': 5.0.4(graphql@16.8.2)
+      '@graphql-codegen/plugin-helpers': 5.1.0(graphql@16.8.2)
       '@graphql-tools/apollo-engine-loader': 8.0.1(encoding@0.1.13)(graphql@16.8.2)
       '@graphql-tools/code-file-loader': 8.1.2(graphql@16.8.2)
       '@graphql-tools/git-loader': 8.0.6(graphql@16.8.2)
@@ -21214,26 +21211,6 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@graphql-codegen/client-preset@4.3.2(encoding@0.1.13)(graphql@16.8.2)':
-    dependencies:
-      '@babel/helper-plugin-utils': 7.24.8
-      '@babel/template': 7.24.7
-      '@graphql-codegen/add': 5.0.3(graphql@16.8.2)
-      '@graphql-codegen/gql-tag-operations': 4.0.9(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-codegen/plugin-helpers': 5.0.4(graphql@16.8.2)
-      '@graphql-codegen/typed-document-node': 5.0.9(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-codegen/typescript': 4.0.9(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-codegen/typescript-operations': 4.2.3(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-codegen/visitor-plugin-common': 5.3.1(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-tools/documents': 1.0.1(graphql@16.8.2)
-      '@graphql-tools/utils': 10.2.3(graphql@16.8.2)
-      '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.2)
-      graphql: 16.8.2
-      tslib: 2.6.3
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-
   '@graphql-codegen/client-preset@4.5.1(encoding@0.1.13)(graphql@16.8.2)':
     dependencies:
       '@babel/helper-plugin-utils': 7.24.8
@@ -21256,7 +21233,7 @@ snapshots:
 
   '@graphql-codegen/core@4.0.2(graphql@16.8.2)':
     dependencies:
-      '@graphql-codegen/plugin-helpers': 5.0.4(graphql@16.8.2)
+      '@graphql-codegen/plugin-helpers': 5.1.0(graphql@16.8.2)
       '@graphql-tools/schema': 10.0.4(graphql@16.8.2)
       '@graphql-tools/utils': 10.2.3(graphql@16.8.2)
       graphql: 16.8.2
@@ -21266,18 +21243,6 @@ snapshots:
     dependencies:
       '@graphql-codegen/plugin-helpers': 5.1.0(graphql@16.8.2)
       '@graphql-codegen/visitor-plugin-common': 5.6.0(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-tools/utils': 10.2.3(graphql@16.8.2)
-      auto-bind: 4.0.0
-      graphql: 16.8.2
-      tslib: 2.6.3
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-
-  '@graphql-codegen/gql-tag-operations@4.0.9(encoding@0.1.13)(graphql@16.8.2)':
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 5.0.4(graphql@16.8.2)
-      '@graphql-codegen/visitor-plugin-common': 5.3.1(encoding@0.1.13)(graphql@16.8.2)
       '@graphql-tools/utils': 10.2.3(graphql@16.8.2)
       auto-bind: 4.0.0
       graphql: 16.8.2
@@ -21337,18 +21302,6 @@ snapshots:
     dependencies:
       '@graphql-codegen/plugin-helpers': 5.1.0(graphql@16.8.2)
       '@graphql-codegen/visitor-plugin-common': 5.6.0(encoding@0.1.13)(graphql@16.8.2)
-      auto-bind: 4.0.0
-      change-case-all: 1.0.15
-      graphql: 16.8.2
-      tslib: 2.6.3
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-
-  '@graphql-codegen/typed-document-node@5.0.9(encoding@0.1.13)(graphql@16.8.2)':
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 5.0.4(graphql@16.8.2)
-      '@graphql-codegen/visitor-plugin-common': 5.3.1(encoding@0.1.13)(graphql@16.8.2)
       auto-bind: 4.0.0
       change-case-all: 1.0.15
       graphql: 16.8.2
@@ -23832,15 +23785,13 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -23900,7 +23851,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -24315,7 +24266,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)

@@ -1,7 +1,7 @@
-import { INFINITE_COMPLIANCE } from '@/constants';
 import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { ISetComplianceParametersProps } from '@/services/setComplianceParameters';
+import { setComplianceValue } from '@/utils/setComplianceValue';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
@@ -31,9 +31,9 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     formState: { isValid },
   } = useForm<ISetComplianceParametersProps>({
     defaultValues: {
-      maxBalance: `${asset?.compliance.maxBalance.value ?? 0}`,
-      maxSupply: `${asset?.compliance.maxSupply.value ?? 0}`,
-      maxInvestors: `${asset?.compliance.maxInvestors.value ?? 0}`,
+      maxBalance: `${setComplianceValue(asset?.compliance.maxBalance.value)}`,
+      maxSupply: `${setComplianceValue(asset?.compliance.maxSupply.value)}`,
+      maxInvestors: `${setComplianceValue(asset?.compliance.maxInvestors.value)}`,
     },
   });
 
@@ -50,16 +50,22 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
   };
 
   const onSubmit = async (data: ISetComplianceParametersProps) => {
-    await submit(data);
+    const newData = {
+      maxSupply: setComplianceValue(data.maxSupply, -1),
+      maxBalance: setComplianceValue(data.maxBalance, -1),
+      maxInvestors: setComplianceValue(data.maxInvestors, -1),
+    };
+
+    await submit(newData);
 
     handleOnClose();
   };
 
   useEffect(() => {
     reset({
-      maxSupply: `${asset?.compliance.maxSupply.value}`,
-      maxBalance: `${asset?.compliance.maxBalance.value}`,
-      maxInvestors: `${asset?.compliance.maxInvestors.value}`,
+      maxSupply: `${setComplianceValue(asset?.compliance.maxSupply.value)}`,
+      maxBalance: `${setComplianceValue(asset?.compliance.maxBalance.value)}`,
+      maxInvestors: `${setComplianceValue(asset?.compliance.maxInvestors.value)}`,
     });
   }, [
     asset?.compliance.maxBalance.value,
@@ -77,7 +83,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxBalance"
                 control={control}
-                rules={{ required: true, min: INFINITE_COMPLIANCE }}
+                rules={{ min: 0 }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Balance" {...field} />
                 )}
@@ -86,7 +92,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxSupply"
                 control={control}
-                rules={{ required: true, min: INFINITE_COMPLIANCE }}
+                rules={{ min: 0 }}
                 render={({ field }) => (
                   <TextField type="number" label="Max Supply" {...field} />
                 )}
@@ -94,7 +100,7 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
               <Controller
                 name="maxInvestors"
                 control={control}
-                rules={{ required: true, min: INFINITE_COMPLIANCE }}
+                rules={{ min: 0 }}
                 render={({ field }) => (
                   <TextField
                     type="number"

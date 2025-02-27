@@ -14,6 +14,7 @@ import {
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { AccountNameField } from '../Fields/AccountNameField';
 
 interface IProps {
   agent?: IRecord;
@@ -33,9 +34,10 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     handleSubmit,
     control,
     register,
-    formState: { isValid },
+    formState: { isValid, errors },
     reset,
   } = useForm<IAddAgentProps>({
+    mode: 'onChange',
     defaultValues: {
       accountName: agent?.accountName ?? '',
       alias: agent?.alias ?? '',
@@ -86,23 +88,18 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
               label={agent?.accountName ? 'Edit Agent' : 'Add Agent'}
             />
             <RightAsideContent>
-              <Controller
-                name="accountName"
+              <AccountNameField
+                error={errors.accountName}
+                accountName={agent?.accountName}
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <TextField
-                    isDisabled={!!agent?.accountName}
-                    label="AccountName"
-                    {...field}
-                  />
-                )}
               />
 
               <Controller
                 name="alias"
                 control={control}
-                render={({ field }) => <TextField label="Alias" {...field} />}
+                render={({ field }) => (
+                  <TextField id="alias" label="Alias" {...field} />
+                )}
               />
 
               <CheckboxGroup direction="column" label="Roles" name="roles">

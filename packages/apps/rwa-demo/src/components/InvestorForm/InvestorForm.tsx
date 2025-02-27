@@ -12,6 +12,7 @@ import {
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { AccountNameField } from '../Fields/AccountNameField';
 
 interface IProps {
   investor?: IRecord;
@@ -25,9 +26,12 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
   });
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
-  const { handleSubmit, control } = useForm<
-    Omit<IRegisterIdentityProps, 'agent'>
-  >({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<Omit<IRegisterIdentityProps, 'agent'>>({
+    mode: 'onChange',
     values: {
       accountName: investor?.accountName ?? '',
       alias: investor?.alias ?? '',
@@ -61,16 +65,10 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
               label={investor?.accountName ? 'Edit Investor' : 'Add Investor'}
             />
             <RightAsideContent>
-              <Controller
-                name="accountName"
+              <AccountNameField
+                error={errors.accountName}
+                accountName={investor?.accountName}
                 control={control}
-                render={({ field }) => (
-                  <TextField
-                    isDisabled={!!investor?.accountName}
-                    label="AccountName"
-                    {...field}
-                  />
-                )}
               />
 
               <Controller

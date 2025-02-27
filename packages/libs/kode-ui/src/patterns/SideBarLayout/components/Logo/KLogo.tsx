@@ -1,13 +1,15 @@
 import type { FC } from 'react';
 import React from 'react';
+import { logoMiniClass } from './styles.css';
 
-export const KLogo: FC<{ height: number; className?: string }> = (props) => (
+export const KLogo: FC<{ className?: string }> = (props) => (
   <svg
     data-style="kdacolor"
     viewBox="0 0 32 32"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
+    className={logoMiniClass}
   >
     <g clipPath="url(#clip0_509_65640)">
       <path

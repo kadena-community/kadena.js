@@ -57,7 +57,7 @@ export const Layout: FC = () => {
         logo={
           <Stack gap={'sm'} flexDirection={'row'} alignItems={'center'}>
             <Link to="/">
-              <KLogo height={40} />
+              <KLogo />
             </Link>
             {network && (
               <Badge

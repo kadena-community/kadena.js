@@ -1,3 +1,4 @@
+import { token } from '@kadena/kode-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 
 const contentWidth = createVar();
@@ -36,4 +37,10 @@ export const mobileNetworkClass = style({
       display: 'none',
     },
   },
+});
+
+export const logoClass = style({
+  color: token('color.text.brand.wordmark.default'),
+  height: '32px',
+  minHeight: '32px',
 });

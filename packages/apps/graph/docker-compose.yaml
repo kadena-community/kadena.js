@@ -6,18 +6,26 @@ services:
     # env_file: .env
     environment:
       - NODE_ENV=production
+      - VERSION_PREVIEW=${VERSION_PREVIEW}
     build:
       context: ../../../
       dockerfile: ./packages/apps/graph/source.Dockerfile
+      tags:
+        - ghcr.io/kadena-community/graphql:preview
+        - ghcr.io/kadena-community/graphql:${VERSION_PREVIEW}
 
   # build with `docker compose build graphql`
   # run with `docker compose up graphql`
   graphql:
-    image: ghcr.io/kadena-community/graphql
+    image: graphql
     ports:
       - '4000:4000'
     # env_file: .env
     environment:
       - NODE_ENV=production
+      - VERSION_LATEST=${VERSION_LATEST}
     build:
       dockerfile: Dockerfile
+      tags:
+        - ghcr.io/kadena-community/graphql:latest
+        - ghcr.io/kadena-community/graphql:${VERSION_LATEST}
