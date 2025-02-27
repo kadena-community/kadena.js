@@ -19,8 +19,9 @@ export const AddExistingAssetForm: FC<IProps> = ({ handleDone }) => {
   const {
     handleSubmit,
     control,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<IAddExistingAssetProps>({
+    mode: 'onChange',
     values: {
       name: '',
     },
@@ -56,9 +57,21 @@ export const AddExistingAssetForm: FC<IProps> = ({ handleDone }) => {
       <Controller
         name="name"
         control={control}
-        rules={{ required: true }}
+        rules={{
+          required: true,
+          pattern: {
+            value: /^n_[a-f0-9]+\.([a-zA-Z0-9_-]+)$/,
+            message:
+              'The contract does not have the correct format (example n_NAMESPACE.NAME)',
+          },
+        }}
         render={({ field }) => (
-          <TextField placeholder="Asset name" {...field} />
+          <TextField
+            placeholder="Asset name"
+            {...field}
+            isInvalid={!!errors.name?.message}
+            errorMessage={`${errors.name?.message}`}
+          />
         )}
       />
 
