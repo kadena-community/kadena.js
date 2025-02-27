@@ -2,11 +2,7 @@ import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useGetPrincipalNamespace } from '@/hooks/getPrincipalNamespace';
 import type { IAddContractProps } from '@/services/createContract';
-import {
-  MonoAdd,
-  MonoKeyboardArrowLeft,
-  MonoKeyboardArrowRight,
-} from '@kadena/kode-icons';
+import { MonoAdd, MonoKeyboardArrowLeft } from '@kadena/kode-icons';
 import {
   Button,
   Notification,
