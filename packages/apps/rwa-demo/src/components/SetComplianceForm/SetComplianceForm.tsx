@@ -56,8 +56,6 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
       maxInvestors: setComplianceValue(data.maxInvestors, -1),
     };
 
-    console.log(newData);
-
     await submit(newData);
 
     handleOnClose();
