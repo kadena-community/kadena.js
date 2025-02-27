@@ -13,9 +13,10 @@ describe('setComplianceValue utils', () => {
     expect(setComplianceValue(-12)).toEqual('');
     expect(setComplianceValue('-13')).toEqual('');
   });
-  it('should return defaultValue when value is < 0 and defaultValue is given', () => {
+  it('should return defaultValue when value is < 0 and defaultValue is a number', () => {
     expect(setComplianceValue(-12, 1)).toEqual('1');
     expect(setComplianceValue(-12, 0)).toEqual('0');
+    expect(setComplianceValue(-12, -1)).toEqual('-1');
     expect(setComplianceValue('-13', '2')).toEqual('2');
     expect(setComplianceValue('-13', 'he-man')).toEqual('');
   });

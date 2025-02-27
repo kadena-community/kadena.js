@@ -3,7 +3,6 @@ import type { ICommand, IUnsignedCommand } from '@kadena/client';
 
 export const chainweaverSignTx = async (tx: IUnsignedCommand) => {
   const { message, close } = await getWalletConnection();
-  console.log({ tx });
   const response = await message('SIGN_REQUEST', tx as any);
   const payload: {
     status: 'signed' | 'rejected';

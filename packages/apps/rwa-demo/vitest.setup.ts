@@ -1,10 +1,6 @@
 import '@vanilla-extract/css/disableRuntimeStyles';
-import { afterEach, beforeAll, vi } from 'vitest';
+import { afterEach, vi } from 'vitest';
 import 'vitest-dom/extend-expect';
-
-beforeAll(() => {
-  vi.mock('next/router', () => import('next-router-mock'));
-});
 
 afterEach(() => {});
 
