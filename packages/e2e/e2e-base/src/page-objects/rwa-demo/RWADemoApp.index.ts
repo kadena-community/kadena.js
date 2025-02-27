@@ -41,6 +41,9 @@ export class RWADemoAppIndex {
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
     typeName: string,
+    options?: {
+      skiplogin: boolean;
+    },
   ): Promise<ILoginDataRWAProps | undefined> {
     await actor.goto(`https://wallet.kadena.io/?env=e2e`);
     await actor.waitForTimeout(1000);
@@ -52,23 +55,28 @@ export class RWADemoAppIndex {
 
     await actor.goto('/');
 
-    await actor.waitForTimeout(1000);
-    await actor.evaluate(
-      ({ accountData }) => {
-        window.localStorage.setItem(
-          'rwa_development_0',
-          JSON.stringify({
-            address: accountData?.data.data.account[0].value.address,
-            alias: accountData?.data.data.account[0].value.alias,
-            chains: [],
-            guard: accountData?.data.data.account[0].value.guard,
-            overallBalance:
-              accountData?.data.data.account[0].value.overallBalance,
-          }),
-        );
-      },
-      { accountData },
-    );
+    if (!options?.skiplogin) {
+      await actor.waitForTimeout(1000);
+      await actor.evaluate(
+        ({ accountData }) => {
+          window.localStorage.setItem(
+            'rwa_development_0',
+            JSON.stringify({
+              address: accountData?.data.data.account[0].value.address,
+              publicKey: accountData?.data.data.account[0].value.guard.keys[0],
+              alias: accountData?.data.data.account[0].value.alias,
+              chains: [],
+              walletName: 'CHAINWEAVER',
+              guard: accountData?.data.data.account[0].value.guard,
+              keyset: accountData?.data.data.account[0].value.guard,
+              overallBalance:
+                accountData?.data.data.account[0].value.overallBalance,
+            }),
+          );
+        },
+        { accountData },
+      );
+    }
 
     await actor.goto('/');
     await actor.waitForTimeout(1000);
@@ -121,7 +129,12 @@ export class RWADemoAppIndex {
   }
 
   public createContractName() {
-    return `${crypto.randomUUID()}`;
+    const getRandomChar = (): string => {
+      const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+      return alphabet[Math.floor(Math.random() * alphabet.length)];
+    };
+
+    return `${getRandomChar()}${crypto.randomUUID()}`;
   }
 
   public async createAsset(
@@ -352,6 +365,13 @@ export class RWADemoAppIndex {
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
   ): Promise<boolean> {
+    console.log(1111111);
+
+    await actor
+      .getByRole('heading', {
+        name: 'Login',
+      })
+      .waitFor();
     await expect(
       actor.getByRole('heading', {
         name: 'Login',
@@ -360,13 +380,20 @@ export class RWADemoAppIndex {
 
     console.log(234234234234234234);
     const popupPromise = actor.waitForEvent('popup');
+
     const button = actor.getByRole('button', {
-      name: 'Chainweaver Connect',
+      name: 'Select a wallet',
+    });
+    await button.waitFor();
+    await button.click();
+
+    const chainweaverBtn = actor.getByRole('button', {
+      name: 'Chainweaver',
     });
 
     console.log(2222, button);
-    await button.waitFor();
-    await button.click();
+    await chainweaverBtn.waitFor();
+    await chainweaverBtn.click();
     const walletPopup = await popupPromise;
 
     const loginAcceptButton = walletPopup.getByRole('button', {
