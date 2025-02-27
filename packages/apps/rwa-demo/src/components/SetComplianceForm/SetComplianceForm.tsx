@@ -57,7 +57,6 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     };
 
     await submit(newData);
-
     handleOnClose();
   };
 
