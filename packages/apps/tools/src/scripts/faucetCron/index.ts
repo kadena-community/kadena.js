@@ -7,6 +7,7 @@ export const lowFaucetChains = (
   minBalance: number,
 ): IChainAccount[] => {
   if (!chainAccounts?.length) return [];
+
   const lowChains = chainAccounts.filter(
     (chainAccount) => chainAccount.balance < minBalance,
   );
