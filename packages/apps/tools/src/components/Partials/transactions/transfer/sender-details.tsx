@@ -115,14 +115,12 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
           />
         )}
       />
-
       <input
         type="hidden"
         {...register('isConnected', {
           value: !isLedger,
         })}
       />
-
       <Stack
         flexDirection={'row'}
         justifyContent={'space-between'}
@@ -156,7 +154,6 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
           <Text>{t('No funds on selected chain.')}</Text>
         )}
       </Stack>
-
       <NumberField
         {...register('amount')}
         id="ledger-transfer-amount"
@@ -164,6 +161,9 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
         label={t('Amount')}
         onValueChange={(value) => setValue('amount', value)}
         minValue={0}
+        formatOptions={{
+          maximumFractionDigits: 4,
+        }}
         isDisabled={!!senderDataQuery.error}
         isInvalid={!!errors.amount || invalidAmount}
         errorMessage={
