@@ -180,12 +180,6 @@
     "path": "packages/apps/spirekey-example"
   },
   {
-    "name": "@kadena/tools",
-    "version": "1.2.0",
-    "private": true,
-    "path": "packages/apps/tools"
-  },
-  {
     "name": "@kadena/types",
     "version": "0.7.0",
     "private": false,
@@ -262,12 +256,6 @@
     "version": "0.0.2",
     "private": true,
     "path": "packages/e2e/e2e-rwa-demo"
-  },
-  {
-    "name": "e2e-tools",
-    "version": "0.0.2",
-    "private": true,
-    "path": "packages/e2e/e2e-tools"
   },
   {
     "name": "wallet-sdk-example-app",
