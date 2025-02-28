@@ -1,6 +1,6 @@
 import { WALLETTYPES } from '@/constants';
 import { useAccount } from '@/hooks/account';
-import { Button } from '@kadena/kode-ui';
+import { ContextMenuItem } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import type { IECKOWindow } from './eckotypes';
@@ -19,8 +19,10 @@ export const EckoWalletConnect: FC = () => {
   }, []);
 
   return (
-    <Button onPress={handleConnect} isDisabled={!isMounted}>
-      Ecko Connect
-    </Button>
+    <ContextMenuItem
+      label="Ecko Wallet"
+      onClick={handleConnect}
+      isDisabled={!isMounted}
+    />
   );
 };

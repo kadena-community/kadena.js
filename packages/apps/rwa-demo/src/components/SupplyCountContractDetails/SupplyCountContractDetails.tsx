@@ -11,6 +11,7 @@ export const SupplyCountContractDetails: FC = () => {
   if (!asset) return null;
 
   if (
+    asset.compliance.maxSupply.isActive &&
     asset.supply > asset.compliance.maxSupply.value &&
     asset.compliance.maxSupply.value > INFINITE_COMPLIANCE
   )

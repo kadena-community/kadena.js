@@ -5,38 +5,31 @@ import { Controller } from 'react-hook-form';
 
 interface IProps {
   error?: FieldErrors['accountName'];
-  accountName?: string;
+  alias?: string;
   control: Control<any, any>;
 }
 
-export const AccountNameField: FC<IProps> = ({
-  error,
-  accountName,
-  control,
-}) => {
+export const AliasField: FC<IProps> = ({ error, alias, control }) => {
   return (
     <Controller
-      name="accountName"
+      name="alias"
       control={control}
       rules={{
-        required: true,
         maxLength: {
-          value: 70,
+          value: 40,
           message: 'This exceeds the maximum length',
         },
         pattern: {
-          value: /^[a-z]:[a-zA-Z0-9_.]+$/,
-          message: 'Fill in a correct ..:account',
+          value: /^[a-zA-Z0-9_-]+$/,
+          message: 'Only use allowed characters (a-z A-Z 0-9)',
         },
       }}
       render={({ field }) => (
         <TextField
-          placeholder="k:1234..."
-          id="accountName"
+          id="alias"
           isInvalid={!!error?.message}
           errorMessage={`${error?.message}`}
-          isDisabled={!!accountName}
-          label="AccountName"
+          label="Alias"
           {...field}
         />
       )}

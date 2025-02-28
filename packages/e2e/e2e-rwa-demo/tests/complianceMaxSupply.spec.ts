@@ -101,6 +101,8 @@ test('Compliance MaxSupply', async ({
       name: 'Set Compliance',
     });
 
+    await initiator.waitForTimeout(1000);
+
     await RWADemoApp.checkLoadingIndicator(
       initiator,
       complianceRuleText,

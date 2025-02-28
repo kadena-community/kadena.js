@@ -5,7 +5,6 @@ import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
 import { AssetAction } from '../AssetAction/AssetAction';
-import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 import { PauseForm } from './PauseForm';
@@ -14,7 +13,8 @@ export const PauseAssetAction: FC<{
   'data-testid'?: string;
 }> = ({ 'data-testid': dataTestId }) => {
   const { paused } = useAsset();
-  const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setLoading] = useState(false);
   const { isAllowed } = useTogglePause();
   const { getTransactions } = useTransactions();
   const transactions = useMemo(() => {
@@ -25,9 +25,7 @@ export const PauseAssetAction: FC<{
     if (transactions.length) {
       return <TransactionTypeSpinner type={TXTYPES.PAUSECONTRACT} />;
     }
-    if (loading) {
-      return <TransactionPendingIcon />;
-    }
+
     return paused ? <MonoPause /> : <MonoPlayArrow />;
   };
 

@@ -7,6 +7,7 @@ export const useGetAccountKDABalance = ({
 }: {
   accountAddress?: string;
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [innerData, setInnerData] = useState(0);
   const { data: toData } = useEventSubscriptionFilteredSubscription({
     variables: {
@@ -19,6 +20,7 @@ export const useGetAccountKDABalance = ({
     if (!accountAddress) return;
     const res = await accountKDABalance({ accountName: accountAddress });
     setInnerData(res);
+    setIsMounted(true);
   };
 
   const formatData = (data: any) => {
@@ -48,5 +50,5 @@ export const useGetAccountKDABalance = ({
     formatData(toData);
   }, [toData]);
 
-  return { data: innerData };
+  return { data: innerData, isMounted };
 };
