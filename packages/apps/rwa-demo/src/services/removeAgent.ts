@@ -19,7 +19,7 @@ export const removeAgent = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-OWNER`, ''),
+      withCap(`${getAsset()}.ONLY-AGENT`, 'OWNER'),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.agent)
