@@ -159,7 +159,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                   message: 'Max length of 40',
                 },
                 pattern: {
-                  value: /^[a-z][a-z0-9_-]{0,39}$/,
+                  value: /^[a-z][a-z0-9_-]{0,39}$/i,
                   message: "Can't start with a number",
                 },
               }}
