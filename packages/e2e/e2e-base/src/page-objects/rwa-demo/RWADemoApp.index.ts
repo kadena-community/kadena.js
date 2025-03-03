@@ -365,8 +365,6 @@ export class RWADemoAppIndex {
     actor: Page,
     chainweaverApp: ChainweaverAppIndex,
   ): Promise<boolean> {
-    console.log(1111111);
-
     await actor
       .getByRole('heading', {
         name: 'Login',
@@ -378,7 +376,6 @@ export class RWADemoAppIndex {
       }),
     ).toBeVisible();
 
-    console.log(234234234234234234);
     const popupPromise = actor.waitForEvent('popup');
 
     const button = actor.getByRole('button', {
@@ -391,7 +388,6 @@ export class RWADemoAppIndex {
       name: 'Chainweaver',
     });
 
-    console.log(2222, button);
     await chainweaverBtn.waitFor();
     await chainweaverBtn.click();
     const walletPopup = await popupPromise;

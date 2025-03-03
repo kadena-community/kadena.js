@@ -6,7 +6,6 @@ import type { FC } from 'react';
 export const MagicConnect: FC = () => {
   const { login } = useAccount();
   const handleConnect = async () => {
-    console.log(11111);
     await login(WALLETTYPES.MAGIC);
   };
 
