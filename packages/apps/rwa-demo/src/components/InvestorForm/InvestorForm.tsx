@@ -1,7 +1,7 @@
 import { useAddInvestor } from '@/hooks/addInvestor';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
-import { Button, TextField } from '@kadena/kode-ui';
+import { Button } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -11,8 +11,9 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
+import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   investor?: IRecord;
@@ -29,7 +30,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { isValid, errors },
   } = useForm<Omit<IRegisterIdentityProps, 'agent'>>({
     mode: 'onChange',
     values: {
@@ -70,18 +71,17 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
                 accountName={investor?.accountName}
                 control={control}
               />
-
-              <Controller
-                name="alias"
+              <AliasField
+                error={errors.alias}
+                alias={investor?.alias}
                 control={control}
-                render={({ field }) => <TextField label="Alias" {...field} />}
               />
             </RightAsideContent>
             <RightAsideFooter>
               <Button onPress={handleOnClose} variant="transparent">
                 Cancel
               </Button>
-              <Button isDisabled={!isAllowed} type="submit">
+              <Button isDisabled={!isValid || !isAllowed} type="submit">
                 {investor?.accountName ? 'Edit Investor' : 'Add Investor'}
               </Button>
             </RightAsideFooter>

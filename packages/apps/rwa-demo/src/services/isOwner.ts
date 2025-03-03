@@ -1,12 +1,13 @@
+import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export interface IIsOwnerProps {
-  owner: string;
+  account: IWalletAccount;
 }
 
-export const isOwner = async (data: IIsOwnerProps) => {
+export const isOwner = async ({ account }: IIsOwnerProps) => {
   const client = getClient();
   const transaction = Pact.builder
     .execution(
@@ -15,7 +16,7 @@ export const isOwner = async (data: IIsOwnerProps) => {
     .setMeta({
       chainId: getNetwork().chainId,
     })
-    .addData('owner', data.owner)
+    .addData('owner', account.address)
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 
@@ -24,7 +25,7 @@ export const isOwner = async (data: IIsOwnerProps) => {
     signatureVerification: false,
   });
 
-  return !!(result as any).data.keys.find((k: string) =>
-    data.owner.includes(k),
+  return !!(result as any).data.keys.find(
+    (k: string) => account.publicKey === k,
   );
 };

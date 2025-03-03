@@ -2,7 +2,7 @@ import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useGetPrincipalNamespace } from '@/hooks/getPrincipalNamespace';
 import type { IAddContractProps } from '@/services/createContract';
-import { MonoAdd } from '@kadena/kode-icons';
+import { MonoAdd, MonoKeyboardArrowLeft } from '@kadena/kode-icons';
 import {
   Button,
   Notification,
@@ -41,10 +41,11 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     handleSubmit,
     control,
     reset,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<IAddContractProps>({
+    mode: 'onChange',
     values: {
-      contractName: '',
+      contractName: 'sdf',
       namespace: namespace ?? '',
     },
   });
@@ -54,7 +55,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
     reset({
       contractName: '',
-      namespace,
+      namespace: namespace ?? '',
     });
   }, [namespace]);
 
@@ -127,13 +128,22 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
               name="namespace"
               control={control}
               rules={{
-                required: true,
+                required: {
+                  value: true,
+                  message: 'There seems to be a problem with the namespace',
+                },
+                pattern: {
+                  value: /^n_[a-f0-9]{40}$/,
+                  message: 'There seems to be a problem with the namespace',
+                },
               }}
               render={({ field }) => (
                 <TextField
                   data-testid="namespaceField"
                   label="Namespace"
                   isDisabled
+                  isInvalid={!!errors.namespace?.message}
+                  errorMessage={`${errors.namespace?.message}`}
                   {...field}
                 />
               )}
@@ -144,9 +154,13 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
               control={control}
               rules={{
                 required: true,
+                maxLength: {
+                  value: 40,
+                  message: 'Max length of 40',
+                },
                 pattern: {
-                  value: /^\S*$/gi,
-                  message: 'no spaces allowed',
+                  value: /^[a-z][a-z0-9_-]{0,39}$/i,
+                  message: "Can't start with a number",
                 },
               }}
               render={({ field }) => (
@@ -154,12 +168,27 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                   data-testid="contractNameField"
                   id="contractName"
                   label="Contract Name"
+                  maxLength={40}
+                  isInvalid={!!errors.contractName?.message}
+                  errorMessage={`${errors.contractName?.message}`}
                   {...field}
                 />
               )}
             />
 
-            <Stack width="100%" justifyContent="center" alignItems="center">
+            <Stack
+              width="100%"
+              justifyContent="center"
+              alignItems="center"
+              gap="xs"
+            >
+              <Button
+                onPress={() => setStep(STEPS.START)}
+                variant="transparent"
+                startVisual={<MonoKeyboardArrowLeft />}
+              >
+                Back
+              </Button>
               <Button
                 isDisabled={!isValid || !isAllowed}
                 type="submit"

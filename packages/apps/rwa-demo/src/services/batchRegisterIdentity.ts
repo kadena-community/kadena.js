@@ -5,6 +5,7 @@ import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { AGENTROLES } from './addAgent';
+import { getKeysetService } from './getKeyset';
 
 export interface ICSVAccount {
   account: string;
@@ -16,25 +17,20 @@ export interface IBatchRegisterIdentityProps {
   agent: IWalletAccount;
 }
 
-const createPubKeyFromAccount = (account: string): string => {
-  return account.replace('k:', '').replace('r:', '');
-};
-
 export const batchRegisterIdentity = async (
   data: IBatchRegisterIdentityProps,
 ) => {
+  const promises = data.accounts.map((account) =>
+    getKeysetService(account.account),
+  );
+  const keys = await Promise.all(promises);
+
   return Pact.builder
     .execution(
       `(${getAsset()}.batch-register-identity (read-msg 'investors) (read-msg 'investor-keysets) (read-msg 'agents) (read-msg 'countries))
       `,
     )
-    .addData(
-      'investor-keysets',
-      data.accounts.map((account) => ({
-        keys: [createPubKeyFromAccount(account.account)],
-        pred: 'keys-all',
-      })),
-    )
+    .addData('investor-keysets', keys)
     .addData(
       'investors',
       data.accounts.map((account) => account.account),

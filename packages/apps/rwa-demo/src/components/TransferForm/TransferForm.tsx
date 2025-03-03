@@ -4,6 +4,7 @@ import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
+import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import {
   Button,
@@ -56,7 +57,7 @@ export const TransferForm: FC<IProps> = ({
     control,
     handleSubmit,
     formState: { isValid, errors },
-  } = useForm<ITransferTokensProps>({
+  } = useForm<ITransferTokensProps | IForcedTransferTokensProps>({
     values: {
       amount: 0,
       investorFromAccount: investorAccount,
@@ -77,7 +78,9 @@ export const TransferForm: FC<IProps> = ({
     if (onClose) onClose();
   };
 
-  const onSubmit = async (data: ITransferTokensProps) => {
+  const onSubmit = async (
+    data: IForcedTransferTokensProps | ITransferTokensProps,
+  ) => {
     if (data.isForced) {
       await forcedSubmit(data);
     } else {

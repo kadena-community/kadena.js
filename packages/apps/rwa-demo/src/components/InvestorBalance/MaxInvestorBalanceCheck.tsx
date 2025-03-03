@@ -14,6 +14,7 @@ export const MaxInvestorBalanceCheck: FC<IProps> = ({ balance }) => {
   if (!asset) return null;
 
   if (
+    asset.compliance.maxBalance.isActive &&
     asset?.compliance.maxBalance.value < balance &&
     asset?.compliance.maxBalance.value > INFINITE_COMPLIANCE
   )

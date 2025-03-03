@@ -18,7 +18,11 @@ import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx
 import { eckoAccountLogin } from '@/utils/walletTransformers/ecko/login';
 import { eckoAccountLogout } from '@/utils/walletTransformers/ecko/logout';
 import { eckoSignTx } from '@/utils/walletTransformers/ecko/signTx';
+import { magicAccountLogin } from '@/utils/walletTransformers/magic/login';
+import { magicAccountLogout } from '@/utils/walletTransformers/magic/logout';
+import { magicSignTx } from '@/utils/walletTransformers/magic/signTx';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
+import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -44,7 +48,7 @@ export interface IAccountContext {
   selectAccount: (account: IWalletAccount) => void;
   balance: number;
   accountRoles: IAgentHookProps;
-  isGasPayable: boolean;
+  isGasPayable: boolean | undefined;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -70,21 +74,23 @@ export const AccountContext = createContext<IAccountContext>({
     isFreezer: () => false,
     isTransferManager: () => false,
   },
-  isGasPayable: false,
+  isGasPayable: undefined,
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
   const [accounts, setAccounts] = useState<IWalletAccount[]>();
+  const { addNotification } = useNotifications();
   const [isMounted, setIsMounted] = useState(false);
   const [isOwnerState, setIsOwnerState] = useState(false);
   const [isComplianceOwnerState, setIsComplianceOwnerState] = useState(false);
   const [isAgentState, setIsAgentState] = useState(false);
   const [isInvestorState, setIsInvestorState] = useState(false);
   const [isFrozenState, setIsFrozenState] = useState(false);
-  const { data: kdaBalance } = useGetAccountKDABalance({
-    accountAddress: account?.address,
-  });
+  const { data: kdaBalance, isMounted: isBalanceMounted } =
+    useGetAccountKDABalance({
+      accountAddress: account?.address,
+    });
   const { ...accountRoles } = useGetAgentRoles({
     agent: account?.address,
   });
@@ -98,7 +104,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     setIsAgentState(!!resIsAgent);
   };
   const checkIsOwner = async (account: IWalletAccount) => {
-    const resIsOwner = await isOwner({ owner: account.address });
+    const resIsOwner = await isOwner({ account });
     setIsOwnerState(!!resIsOwner);
   };
   const checkIsComplianceOwner = async (account: IWalletAccount) => {
@@ -130,9 +136,9 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const login = useCallback(
-    async (type: keyof typeof WALLETTYPES) => {
+    async (name: keyof typeof WALLETTYPES) => {
       let tempAccount;
-      switch (type) {
+      switch (name) {
         case WALLETTYPES.ECKO:
           tempAccount = await eckoAccountLogin();
           break;
@@ -144,6 +150,16 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
           } else if (result.length === 1) {
             tempAccount = result[0];
           }
+          break;
+        case WALLETTYPES.MAGIC:
+          tempAccount = await magicAccountLogin();
+          break;
+        default:
+          addNotification({
+            intent: 'negative',
+            label: 'Provider does not exist',
+            message: `Provider (${name}) does not exist`,
+          });
       }
 
       if (tempAccount) {
@@ -162,14 +178,24 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const logout = useCallback(async () => {
-    switch (account?.walletType) {
+    switch (account?.walletName) {
       case WALLETTYPES.ECKO:
         await eckoAccountLogout();
         break;
       case WALLETTYPES.CHAINWEAVER:
         await chainweaverAccountLogout();
         break;
+      case WALLETTYPES.MAGIC:
+        await magicAccountLogout();
+        break;
+      default:
+        addNotification({
+          intent: 'negative',
+          label: 'Provider does not exist',
+          message: `Provider (${account?.walletName}) does not exist`,
+        });
     }
+
     localStorage.removeItem(getAccountCookieName());
     setAccount(undefined);
     router.replace('/');
@@ -222,11 +248,19 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [account?.address]);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
-    switch (account?.walletType) {
+    switch (account?.walletName) {
       case WALLETTYPES.ECKO:
         return await eckoSignTx(tx);
       case WALLETTYPES.CHAINWEAVER:
         return await chainweaverSignTx(tx);
+      case WALLETTYPES.MAGIC:
+        return await magicSignTx(tx);
+      default:
+        addNotification({
+          intent: 'negative',
+          label: 'Provider does not exist',
+          message: `Provider (${account?.walletType}) does not exist`,
+        });
     }
   };
 
@@ -247,7 +281,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         selectAccount,
         balance,
         accountRoles,
-        isGasPayable: kdaBalance > 0,
+        isGasPayable: !isBalanceMounted ? undefined : kdaBalance > 0,
       }}
     >
       {children}

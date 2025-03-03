@@ -10,4 +10,5 @@ export const ALLOWEDFILETYPES = () => ['text/csv'];
 export const WALLETTYPES = {
   CHAINWEAVER: 'CHAINWEAVER',
   ECKO: 'ECKO',
+  MAGIC: 'MAGIC',
 } as const;

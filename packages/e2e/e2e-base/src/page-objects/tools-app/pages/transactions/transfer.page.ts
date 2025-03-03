@@ -61,6 +61,8 @@ export class TransferPage {
   }
 
   public async setAmount(value: string): Promise<void> {
+    await this._amount.waitFor({ state: 'visible' });
+    await this._page.waitForTimeout(1000);
     await this._amount.fill(value);
   }
 
