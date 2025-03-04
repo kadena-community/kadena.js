@@ -5,6 +5,7 @@ import { getKeyset, getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 
 export const AGENTROLES = {
+  OWNER: 'owner',
   AGENTADMIN: 'agent-admin',
   FREEZER: 'freezer',
   TRANSFERMANAGER: 'transfer-manager',
@@ -31,7 +32,7 @@ export const addAgent = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-OWNER`, ''),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.accountName)
