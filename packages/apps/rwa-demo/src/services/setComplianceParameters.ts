@@ -19,7 +19,7 @@ export const setComplianceParameters = async (
   return Pact.builder
     .execution(
       `
-      (${getAsset()}.set-compliance-parameters)`,
+      (${getAsset()}.set-compliance-parameters (read-msg "compliance-parameters"))`,
     )
     .addData('compliance-parameters', {
       'supply-limit': new PactNumber(data.maxSupply).toPactDecimal(),
@@ -34,7 +34,7 @@ export const setComplianceParameters = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, 'OWNER'),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
       withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])

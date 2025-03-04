@@ -37,7 +37,7 @@ export const distributeTokens = async (
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
       withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.TRANSFERMANAGER),
-      withCap(`${getAsset()}.TRANSFER`, env.ZEROADDRESS, data.investorAccount, {
+      withCap(`${getAsset()}.TRANSFER`, '', data.investorAccount, {
         decimal: data.amount,
       }),
       withCap(`coin.GAS`),
