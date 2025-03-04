@@ -1,6 +1,5 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
-import { env } from '@/utils/env';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';

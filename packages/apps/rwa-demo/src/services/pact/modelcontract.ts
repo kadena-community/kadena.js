@@ -2,6 +2,7 @@ import { env } from '@/utils/env';
 import type { IAddContractProps } from '../createContract';
 
 export const getContract = ({ contractName, namespace }: IAddContractProps) => `
+
 (namespace "${namespace}")
 
 (module ${contractName} GOV
@@ -112,6 +113,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     ( managed:decimal
       requested:decimal
     )
+    @doc "Ensures that the sum of transfer amounts in the requested transaction \
+    \ does not exceed the managed amount."
     (let ((newbal (- managed requested)))
       (enforce (>= newbal ZERO-DECIMAL)
         (format "TRF-MGR-001: {}" [managed]))
@@ -123,6 +126,15 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       receiver:string
       amount:decimal
     )
+    @doc "Transfers tokens between two accounts. The transfer is valid if any   \ 
+    \ of the following conditions apply:                                        \ 
+    \ 1. The sender signs the \`TRANSFER\` capability.                            \ 
+    \ 2. An agent with the \`transfer-manager\` role signs the \`mint\` function    \ 
+    \    with the \`ONLY-AGENT\` capability.                                      \
+    \ 3. An agent with the \`transfer-manager\` role signs the \`burn\` function    \ 
+    \    with the \`ONLY-AGENT\` capability.                                      \
+    \ 4. An agent with the \`transfer-manager\` role signs the \`forced-transfer\`  \
+    \    function with the \`ONLY-AGENT\` capability."
     @managed amount TRANSFER-mgr
     (enforce-unit amount)
     (enforce (> amount ZERO-DECIMAL) "TRF-AMT-002")
@@ -277,6 +289,9 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       sender:object{account-balance-change}
       receiver:object{account-balance-change}
     )
+    @doc " For accounting via events. \
+         \ sender = {account: '', previous: 0.0, current: 0.0} for mint \
+         \ receiver = {account: '', previous: 0.0, current: 0.0} for burn"
     @event
     true
   )
@@ -411,6 +426,9 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun only-owner-or-agent-admin:bool ()
+    @doc "Ensures that the caller is either the owner or an agent with the \`agent-admin\` \ 
+    \ role. Requires either OWNER or AGENT-ADMIN role. Installs \`(ONLY-AGENT OWNER)\` to  \
+    \ prevent the function from failing when caller is the AGENT-ADMIN."
     (install-capability (ONLY-AGENT OWNER))
     (install-capability (ONLY-AGENT AGENT-ADMIN))
     (enforce-one "ROL-001" [
@@ -426,6 +444,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     ( account:string
       amount:decimal
     )
+    @doc "Credits the requested account. If the account balance is zero, increments \
+    \ the investor count. Protected by the \`CREDIT\` capability."
     (require-capability (CREDIT account))
     (with-default-read investors account
       { "balance": ZERO-DECIMAL }
@@ -446,6 +466,9 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     ( account:string
       amount:decimal
     )
+    @doc "Debits the requested account by a specified amount. If the account balance \ 
+    \ becomes zero after the debit, it decrements the \`investor-count\`. Protected by \
+    \ the \`DEBIT\` capability. "
     (require-capability (DEBIT account))
     (with-read investors account
       { "balance" := balance }
@@ -598,6 +621,10 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun register-identity-internal:bool (investor-address:string investor-guard:guard investor-identity:string country:integer)
+    @doc "Register an identity contract corresponding to an investor address.                               \
+    \ Requires that the investor doesn't have an identity contract already registered.                    \
+    \ Only a wallet set as agent of the smart contract can call this function.                        \
+    \ Emits an \`IDENTITY-REGISTERED\` event."
     (require-capability (INTERNAL))
     (is-principal investor-address)
     (write identities investor-address { "kadenaID":investor-identity, "country":country, "active":true })
@@ -664,6 +691,10 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   ;; identity operations (register-identity, delete-identity)
   (defun register-identity:bool (investor-address:string investor-guard:guard investor-identity:string country:integer)
+    @doc "Register an investor address.                                                          \
+    \ Requires that the investor doesn't have an identity contract already registered.           \
+    \ Only a wallet set as agent of the smart contract can call this function.                   \
+    \ Emits an \`IDENTITY-REGISTERED\` event."
     (only-owner-or-agent-admin)
     (with-capability (INTERNAL)
       (register-identity-internal investor-address investor-guard investor-identity country)
@@ -671,6 +702,10 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun delete-identity:bool (investor-address:string)
+    @doc "Removes an investor from the identity registry.                                        \
+    \ Requires that the investor have an identity contract already deployed that will be deleted.\
+    \ Only a wallet set as agent of the smart contract can call this function.                   \
+    \ Emits an \`IDENTITY-REMOVED\` event."
     (only-owner-or-agent-admin)
     (with-default-read investors investor-address
       { "balance": -1.0 }
@@ -903,18 +938,24 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun max-balance-per-investor:decimal ()
+    @doc "Retrieves compliance parameter, max-balance-per-investor. \
+    \ Used in max-balance-compliance. "
     (with-read compliance-parameters DEFAULT-ROW {
       "max-balance-per-investor":= max-balance-per-investor
       } max-balance-per-investor)
   )
 
   (defun supply-limit:decimal ()
+    @doc "Retrieves compliance parameter, supply-limit. \
+    \ Used in supply-limit-compliance. "
     (with-read compliance-parameters DEFAULT-ROW {
       "supply-limit":= supply-limit
     } supply-limit)
   )
 
   (defun max-investors:integer ()
+    @doc "Retrieves compliance parameter, max-investors.\
+    \ Used in max-investors-compliance. "
     (with-read compliance-parameters DEFAULT-ROW {
       "max-investors":= max-investors
     } max-investors)
@@ -981,6 +1022,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun set-compliance-parameters:bool (compliance-params:object{compliance-parameters-input})
+    @doc "Updates the compliance parameter, supply limit. The input is read from the \
+    \ data field, \`compliance-parameters\`. "
     (only-owner-or-agent-admin)
     (validate-compliance-parameters compliance-params)
     (update compliance-parameters DEFAULT-ROW
@@ -1095,6 +1138,10 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun batch-register-identity:[bool] (investor-addresses:[string] investor-guards:[guard] identities:[string] countries:[integer])
+    @doc "Allows batch registration of identities.                                                     \
+    \ Requires that none of the investors has an identity contract already registered.                   \
+    \ Only a wallet set as agent of the smart contract can call this function.                       \
+    \ Emits \`IDENTITY-REGISTERED\` events for each investor address in the batch."
     (only-owner-or-agent-admin)
     (map (lambda (idx:integer)
       (with-capability (INTERNAL)
@@ -1176,6 +1223,8 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   )
 
   (defun update-agent-roles:bool (agent:string roles:[string])
+    @doc "Updates the roles assigned to an agent. Ensures that the caller is either the contract \
+    \ owner or an agent with the \`agent-admin\` role. Emits the \`AGENT-ROLES-UPDATED\` event."
     (only-owner-or-agent-admin)
     (verify-agent-roles roles)
     (update agents agent

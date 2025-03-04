@@ -4,6 +4,7 @@ import { env } from '@/utils/env';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
+import { AGENTROLES } from './addAgent';
 import type { IComplianceRuleTypes } from './getComplianceRules';
 
 export interface ISetComplianceProps {
