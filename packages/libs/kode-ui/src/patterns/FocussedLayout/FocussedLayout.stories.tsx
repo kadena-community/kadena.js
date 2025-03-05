@@ -23,7 +23,7 @@ const meta: Meta<IProps> = {
     docs: {
       description: {
         component:
-          'The card can have multiple sections, a title and content section. `Buttons` in the actions prop have to be compact variants',
+          'This is a centered layout. The main purpose is to have a stack of Card components',
       },
     },
   },
