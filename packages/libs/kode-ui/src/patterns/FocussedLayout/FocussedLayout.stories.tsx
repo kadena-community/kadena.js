@@ -7,7 +7,9 @@ import {
   SectionCardHeader,
 } from '../SectionCard';
 import { FocussedLayout } from './FocussedLayout';
-import { HeaderContentLeft } from './components/Header/HeaderContentLeft';
+import { HeaderAside } from './components/Header/HeaderAside';
+import { HeaderContent } from './components/Header/HeaderContent';
+import { LayoutProvider } from './components/LayoutProvider';
 
 interface IProps {}
 
@@ -37,20 +39,32 @@ export const Primary: Story = {
   },
   render: () => {
     return (
-      <FocussedLayout>
-        <HeaderContentLeft>test</HeaderContentLeft>
-        <SectionCard stack="horizontal" intent="info">
-          <SectionCardContentBlock>
-            <SectionCardBody>
-              <>He-man!</>
-            </SectionCardBody>
-            <SectionCardHeader
-              title="Masters of the Universe"
-              description={<>I have the Power</>}
-            />
-          </SectionCardContentBlock>
-        </SectionCard>
-      </FocussedLayout>
+      <LayoutProvider>
+        <HeaderContent>LEFT CONTENT</HeaderContent>
+        <HeaderAside>RIGHT ASIDE</HeaderAside>
+        <FocussedLayout>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+
+          <SectionCard stack="vertical" intent="negative">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>Skeletor</>
+              </SectionCardBody>
+              <SectionCardHeader title="Greyskull" />
+            </SectionCardContentBlock>
+          </SectionCard>
+        </FocussedLayout>
+      </LayoutProvider>
     );
   },
 };

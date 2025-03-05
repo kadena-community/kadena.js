@@ -37,6 +37,11 @@ export type {
 } from './SideBarLayout';
 
 export {
+  LayoutProvider as FocussedLayoutProvider,
+  useLayout as useFocussedLayout,
+} from './FocussedLayout';
+
+export {
   RightAside,
   RightAsideContent,
   RightAsideFooter,

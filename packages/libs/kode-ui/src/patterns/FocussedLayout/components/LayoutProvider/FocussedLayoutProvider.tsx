@@ -2,11 +2,14 @@ import type { FC, PropsWithChildren } from 'react';
 import React, { createContext, useContext, useState } from 'react';
 
 export interface ILayoutContext {
-  headerContextRef?: HTMLDivElement | null;
-  setHeaderContextRef: (value?: HTMLDivElement | null) => void;
+  headerContentRef?: HTMLDivElement | null;
+  setHeaderContentRef: (value?: HTMLDivElement | null) => void;
+  headerAsideRef?: HTMLDivElement | null;
+  setHeaderAsideRef: (value?: HTMLDivElement | null) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
-  setHeaderContextRef: () => {},
+  setHeaderContentRef: () => {},
+  setHeaderAsideRef: () => {},
 });
 
 export const useLayout = () => useContext(LayoutContext);
@@ -14,18 +17,25 @@ export const useLayout = () => useContext(LayoutContext);
 export interface ILayoutProvider extends PropsWithChildren {}
 
 export const FocussedLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
-  const [headerContextRef, setHeaderContextRefState] =
+  const [headerContentRef, setHeaderContentRefState] =
+    useState<HTMLDivElement | null>(null);
+  const [headerAsideRef, setHeaderAsideRefState] =
     useState<HTMLDivElement | null>(null);
 
-  const setHeaderContextRef = (value?: HTMLDivElement | null) => {
-    setHeaderContextRefState(value ? value : null);
+  const setHeaderContentRef = (value?: HTMLDivElement | null) => {
+    setHeaderContentRefState(value ? value : null);
+  };
+  const setHeaderAsideRef = (value?: HTMLDivElement | null) => {
+    setHeaderAsideRefState(value ? value : null);
   };
 
   return (
     <LayoutContext.Provider
       value={{
-        headerContextRef,
-        setHeaderContextRef,
+        headerContentRef,
+        setHeaderContentRef,
+        headerAsideRef,
+        setHeaderAsideRef,
       }}
     >
       {children}
