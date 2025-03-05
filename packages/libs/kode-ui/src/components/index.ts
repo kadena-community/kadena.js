@@ -4,6 +4,8 @@ export type { IBadgeProps } from './Badge';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
 export type { IButtonProps, IToggleButtonProps, PressEvent } from './Button';
 export type { ICardProps } from './Card';
+export { CompactStepper } from './CompactStepper';
+export type { ICompactStepperProps } from './CompactStepper';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
   IDialogContentProps,
