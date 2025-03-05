@@ -7,7 +7,7 @@ import {
   RightAside,
   RightAsideContent,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
@@ -18,7 +18,7 @@ export function AliasForm({
   show: boolean;
   account: IAccount;
 }) {
-  const { setIsRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useSideBarLayout();
   const [aliasVal, setAliasVal] = useState(account.alias || '');
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {

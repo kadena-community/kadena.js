@@ -9,7 +9,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -28,7 +28,7 @@ export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
     },
   });
 
-  const { setIsRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useSideBarLayout();
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: ProfileForm) {

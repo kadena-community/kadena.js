@@ -18,7 +18,6 @@ export {
 export { usePagination } from './CompactTable/usePagination';
 
 export {
-  LayoutProvider,
   SideBar,
   SideBarFooter,
   SideBarFooterItem,
@@ -26,16 +25,21 @@ export {
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
+  LayoutProvider as SideBarLayoutProvider,
   SideBarTree,
   SideBarTreeItem,
-  useLayout,
-  useNotifications,
+  useLayout as useSideBarLayout,
 } from './SideBarLayout';
 export type {
   ISideBarFooterItemProps,
   ISideBarItemProps,
   ISideBarProps,
 } from './SideBarLayout';
+
+export {
+  LayoutProvider as FocussedLayoutProvider,
+  useLayout as useFocussedLayout,
+} from './FocussedLayout';
 
 export {
   RightAside,
@@ -51,8 +55,6 @@ export {
 
 export type { iRightAsideHeader } from './SideBarLayout/components/RightAside';
 
-export { NotificationSlot } from './SideBarLayout/components/NotificationSlot/NotificationSlot';
-
 export {
   SectionCard,
   SectionCardBody,
@@ -66,3 +68,6 @@ export type {
   ISectionCardHeaderProps,
   ISectionCardProps,
 } from './SectionCard';
+
+//notifications functionality
+export { NotificationSlot, useNotifications } from './LayoutUtils';

@@ -11,14 +11,11 @@ import {
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
+import { useNotifications } from '../LayoutUtils';
 import { Button, Dialog, DialogHeader, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
-import {
-  LayoutProvider,
-  useLayout,
-  useNotifications,
-} from './components/LayoutProvider';
+import { LayoutProvider, useLayout } from './components/LayoutProvider';
 import { KLogoText } from './components/Logo/KLogoText';
 import {
   RightAside,
@@ -491,7 +488,7 @@ const NotificationsLayout = () => {
                 addNotification({
                   icon: <MonoAccountTree />,
                   label: 'This is an info Notification',
-                  message: 'And this is the message',
+                  message: 'And this is the info message',
                   isDismissable: true,
                   url: 'https://explorer.kadena.io',
                 });

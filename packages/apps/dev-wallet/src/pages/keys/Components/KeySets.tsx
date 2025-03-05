@@ -1,11 +1,11 @@
 import { FormatKeys } from '@/Components/Table/FormatKeys';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Button, Heading, Stack } from '@kadena/kode-ui';
-import { CompactTable, useLayout } from '@kadena/kode-ui/patterns';
+import { CompactTable, useSideBarLayout } from '@kadena/kode-ui/patterns';
 import { CreateKeySetForm } from './CreateKeySetForm';
 
 export function KeySets() {
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { keysets } = useWallet();
   return (
     <>

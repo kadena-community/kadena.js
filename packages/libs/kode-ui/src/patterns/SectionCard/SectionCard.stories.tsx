@@ -91,7 +91,7 @@ export const Primary: Story = {
   render: ({ stack, title, description, children, actions, intent }) => {
     return (
       <Stack width="100%" padding="lg">
-        <SectionCard stack={stack} intent={intent} data-testid="sdsf">
+        <SectionCard stack={stack} intent={intent}>
           <SectionCardContentBlock>
             <SectionCardBody
               title="Content title"

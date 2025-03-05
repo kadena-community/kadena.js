@@ -5,7 +5,7 @@ import {
   RightAsideHeader,
   SideBarHeaderContext,
   SideBarLayout,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
@@ -33,7 +33,7 @@ const RootLayout = ({
 }>) => {
   const { account, isMounted } = useAccount();
   const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { transactions, setTxsButtonRef, setTxsAnimationRef } =
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);

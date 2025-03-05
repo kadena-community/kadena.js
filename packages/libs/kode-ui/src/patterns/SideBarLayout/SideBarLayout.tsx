@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect } from 'react';
+import { NotificationSlot } from '../LayoutUtils';
 import { MediaContextProvider, Stack } from './../../components';
 import { useLayout } from './components/LayoutProvider';
-import { NotificationSlot } from './components/NotificationSlot/NotificationSlot';
 import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
 import { bodyWrapperClass, layoutWrapperClass, mainClass } from './styles.css';

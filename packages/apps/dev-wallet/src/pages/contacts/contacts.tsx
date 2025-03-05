@@ -20,13 +20,16 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
+import {
+  SideBarBreadcrumbsItem,
+  useSideBarLayout,
+} from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../home/style.css';
 import { ContactForm } from './Components/ContactForm';
 
 export function Contacts() {
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const [editContact, setEditContact] = useState<IContact | undefined>();
   const { contacts } = useWallet();
   const prompt = usePrompt();

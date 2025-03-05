@@ -3,7 +3,7 @@ import { AssetProvider } from '@/components/AssetProvider/AssetProvider';
 import { NetworkProvider } from '@/components/NetworkProvider/NetworkProvider';
 import { TransactionsProvider } from '@/components/TransactionsProvider/TransactionsProvider';
 import { MediaContextProvider } from '@kadena/kode-ui';
-import { LayoutProvider } from '@kadena/kode-ui/patterns';
+import { SideBarLayoutProvider } from '@kadena/kode-ui/patterns';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { ThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
@@ -21,13 +21,13 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         enableColorScheme={true} // When enabled, we can't make the background of the embedded iframe transparent
       >
         <NetworkProvider>
-          <LayoutProvider>
+          <SideBarLayoutProvider>
             <AccountProvider>
               <AssetProvider>
                 <TransactionsProvider>{children}</TransactionsProvider>
               </AssetProvider>
             </AccountProvider>
-          </LayoutProvider>
+          </SideBarLayoutProvider>
         </NetworkProvider>
       </ThemeProvider>
     </MediaContextProvider>
