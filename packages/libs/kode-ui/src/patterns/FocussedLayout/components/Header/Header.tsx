@@ -24,7 +24,13 @@ export const Header: FC = () => {
     >
       <KLogoText />
       <Stack flex={1} ref={leftRef} />
-      <Stack as="aside" marginInlineEnd="xs" ref={rightRef} />
+      <Stack
+        as="aside"
+        marginInlineEnd="xs"
+        justifyContent="flex-end"
+        textAlign="right"
+        ref={rightRef}
+      />
     </Stack>
   );
 };
