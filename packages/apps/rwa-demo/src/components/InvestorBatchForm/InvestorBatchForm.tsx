@@ -8,7 +8,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
@@ -28,7 +28,7 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [accounts, setAccounts] = useState<ICSVAccount[]>([]);
   const { submit } = useBatchAddInvestors();
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { handleSubmit } = useForm<IRegisterIdentityBatchProps>({
     defaultValues: {
       select: [],

@@ -10,7 +10,10 @@ import {
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { MonoDelete, MonoWifiTethering } from '@kadena/kode-icons/system';
 import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
+import {
+  SideBarBreadcrumbsItem,
+  useSideBarLayout,
+} from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { panelClass } from '../home/style.css';
 import {
@@ -23,7 +26,7 @@ export function Networks() {
   const prompt = usePrompt();
   const { setActiveNetwork, activeNetwork } = useWallet();
   const [networks, setNetworks] = useState<INetwork[]>([]);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const [selectedNetwork, setSelectedNetwork] =
     useState<INetworkWithOptionalUuid>(() => getNewNetwork());
 

@@ -1,7 +1,7 @@
 import { DatabaseProvider } from '@/modules/db/db.provider';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
 import { MediaContextProvider, useTheme } from '@kadena/kode-ui';
-import { LayoutProvider } from '@kadena/kode-ui/patterns';
+import { SideBarLayoutProvider } from '@kadena/kode-ui/patterns';
 import { useEffect } from 'react';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
 import { GlobalStateProvider } from './providers/globalState';
@@ -18,7 +18,7 @@ function Providers({ children }: { children: React.ReactNode }) {
   return (
     <GlobalStateProvider>
       <MediaContextProvider>
-        <LayoutProvider>
+        <SideBarLayoutProvider>
           <SessionProvider>
             <PromptProvider>
               <DatabaseProvider>
@@ -29,7 +29,7 @@ function Providers({ children }: { children: React.ReactNode }) {
               </DatabaseProvider>
             </PromptProvider>
           </SessionProvider>
-        </LayoutProvider>
+        </SideBarLayoutProvider>
       </MediaContextProvider>
     </GlobalStateProvider>
   );

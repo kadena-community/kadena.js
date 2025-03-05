@@ -8,7 +8,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useRef, useState } from 'react';
@@ -37,7 +37,7 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
 
   const { data: frozenData } = useGetFrozenTokens({ investorAccount });
   const [isOpen, setIsOpen] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
 
   const { submit, isAllowed: isPartiallyFreezeTokensAllowed } =
     useTogglePartiallyFreezeTokens({

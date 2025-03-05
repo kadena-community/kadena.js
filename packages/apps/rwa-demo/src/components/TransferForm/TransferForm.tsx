@@ -20,7 +20,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
@@ -41,7 +41,7 @@ export const TransferForm: FC<IProps> = ({
   investorAccount,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { account } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
   const { data: investors } = useGetInvestors();

@@ -7,7 +7,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
@@ -26,7 +26,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
     investorAccount: investor?.accountName,
   });
   const [isOpen, setIsOpen] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const {
     handleSubmit,
     control,

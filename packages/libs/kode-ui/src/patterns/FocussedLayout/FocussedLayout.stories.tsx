@@ -6,8 +6,8 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '../SectionCard';
-import { Card } from './../../components';
 import { FocussedLayout } from './FocussedLayout';
+import { HeaderContentLeft } from './components/Header/HeaderContentLeft';
 
 interface IProps {}
 
@@ -38,6 +38,7 @@ export const Primary: Story = {
   render: () => {
     return (
       <FocussedLayout>
+        <HeaderContentLeft>test</HeaderContentLeft>
         <SectionCard stack="horizontal" intent="info">
           <SectionCardContentBlock>
             <SectionCardBody>

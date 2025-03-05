@@ -1,10 +1,4 @@
-import {
-  atoms,
-  globalStyle,
-  responsiveStyle,
-  style,
-  token,
-} from './../../styles';
+import { globalStyle, responsiveStyle, style, token } from './../../styles';
 
 export const wrapperClass = style([
   {
@@ -32,6 +26,7 @@ export const cardWrapperClass = style([
 globalStyle('body', {
   padding: '0 !important',
   margin: '0 !important',
+  backgroundColor: token('color.background.base.default'),
 });
 
 globalStyle(`${cardWrapperClass} [class^="Card"]`, {

@@ -37,7 +37,7 @@ import {
   SideBarItem,
   SideBarItemsInline,
   SideBar as SideBarUI,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
@@ -47,7 +47,7 @@ import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isExpanded } = useLayout();
+  const { isExpanded } = useSideBarLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
   const navigate = usePatchedNavigate();
 

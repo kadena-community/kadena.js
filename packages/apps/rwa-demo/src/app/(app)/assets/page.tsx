@@ -19,8 +19,8 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
   SideBarBreadcrumbsItem,
-  useLayout,
   useNotifications,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
@@ -30,7 +30,7 @@ const Assets = () => {
   const { isAllowed } = useCreateContract();
   const { addNotification } = useNotifications();
   const [openSide, setOpenSide] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
 
   const handleDelete = (value: any) => {
     removeAsset(value);

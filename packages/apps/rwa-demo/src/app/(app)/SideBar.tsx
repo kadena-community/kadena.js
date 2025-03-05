@@ -22,7 +22,7 @@ import {
   SideBarItem,
   SideBarItemsInline,
   SideBar as SideBarLayout,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -32,7 +32,7 @@ import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isExpanded } = useLayout();
+  const { isExpanded } = useSideBarLayout();
   const { logout, account, isMounted, isAgent, isOwner, isComplianceOwner } =
     useAccount();
   const router = useRouter();

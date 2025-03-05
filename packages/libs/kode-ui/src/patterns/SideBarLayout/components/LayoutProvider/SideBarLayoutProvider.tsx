@@ -52,17 +52,21 @@ export const LayoutContext = createContext<ILayoutContext>({
   handleToggleExpand: () => {},
   handleSetExpanded: () => {},
   handleToggleAsideExpand: () => {},
-  handleSetAsidExpanded: () => {},
   appContext: undefined,
   setAppContext: () => {},
   setBreadCrumbs: () => {},
   breadCrumbs: [],
   setLocation: () => {},
-  isActiveUrl: () => {},
+  isActiveUrl: () => {
+    return false;
+  },
   setRightAsideTitle: () => {},
   isRightAsideExpanded: false,
   setIsRightAsideExpanded: () => {},
   setRightAsideOnClose: () => {},
+  setRightAsideRef: () => {},
+  setBreadcrumbsRef: () => {},
+  setHeaderContextRef: () => {},
 });
 
 export const useLayout = () => useContext(LayoutContext);
