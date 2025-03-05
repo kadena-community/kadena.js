@@ -13,7 +13,7 @@ const meta: Meta<IProps> = {
     docs: {
       description: {
         component:
-          'The card can have multiple sections, a title and content section. `Buttons` in the actions prop have to be compact variants',
+          'The landing page extends the FocussedLayout, but only has 1 card and a footer',
       },
     },
   },
