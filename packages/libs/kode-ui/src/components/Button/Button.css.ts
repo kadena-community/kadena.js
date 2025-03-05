@@ -316,9 +316,11 @@ export const button = recipe({
         },
       },
       outlined: {
-        boxShadow: `0px 0px 0px 1px ${token(
-          'color.border.base.default',
-        )} inset`,
+        border: token('border.hairline'),
+        borderColor: token('color.border.base.default'),
+        // boxShadow: `0px 0px 0px 1px ${token(
+        //   'color.border.base.default',
+        // )} inset`,
         vars: {
           [backgroundColor]: 'transparent',
           [hoverBackgroundColor]: token('color.background.base.@hover'),
