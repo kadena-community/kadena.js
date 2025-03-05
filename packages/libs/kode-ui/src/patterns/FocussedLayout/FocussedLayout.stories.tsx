@@ -1,11 +1,14 @@
+import { MonoAccountTree } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { useNotifications } from '../LayoutUtils';
 import {
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
 } from '../SectionCard';
+import { Button } from './../../components';
 import { FocussedLayout } from './FocussedLayout';
 import { HeaderAside } from './components/Header/HeaderAside';
 import { HeaderContent } from './components/Header/HeaderContent';
@@ -27,6 +30,24 @@ const meta: Meta<IProps> = {
   argTypes: {},
 };
 
+const AddNotificationButton = () => {
+  const { addNotification } = useNotifications();
+
+  return (
+    <Button
+      onPress={() => {
+        addNotification({
+          icon: <MonoAccountTree />,
+          label: 'This is an error Notification',
+          message: 'And this is the message',
+          intent: 'negative',
+        });
+      }}
+    >
+      add notification
+    </Button>
+  );
+};
 export default meta;
 type Story = StoryObj<IProps>;
 
@@ -58,7 +79,7 @@ export const Primary: Story = {
           <SectionCard stack="vertical" intent="negative">
             <SectionCardContentBlock>
               <SectionCardBody>
-                <>Skeletor</>
+                <AddNotificationButton />
               </SectionCardBody>
               <SectionCardHeader title="Greyskull" />
             </SectionCardContentBlock>
