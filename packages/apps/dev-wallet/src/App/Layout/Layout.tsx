@@ -12,7 +12,7 @@ import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { FC, useMemo } from 'react';
@@ -31,7 +31,7 @@ export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = usePatchedNavigate();
-  const { isExpanded } = useLayout();
+  const { isExpanded } = useSideBarLayout();
   const { activeNetwork } = useWallet();
 
   const innerLocation = useMemo(

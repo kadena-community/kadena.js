@@ -1,9 +1,9 @@
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { useSideBarLayout } from '@kadena/kode-ui/patterns';
 import { useCallback, useEffect, useState } from 'react';
 
 export function useRightAside() {
   const [expanded, setExpanded] = useState(false);
-  const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
+  const { isRightAsideExpanded, setIsRightAsideExpanded } = useSideBarLayout();
 
   useEffect(() => {
     if (!isRightAsideExpanded && expanded) {
