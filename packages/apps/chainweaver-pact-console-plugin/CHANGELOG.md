@@ -1,5 +1,12 @@
 # @kadena/chainweaver-pact-console-plugin
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies \[24fb611]
+  - @kadena/kode-ui\@0.21.0
+
 ## 0.0.4
 
 ### Patch Changes

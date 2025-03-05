@@ -1,5 +1,11 @@
 # @kadena/kode-ui
 
+## 0.21.0
+
+### Minor Changes
+
+- 24fb611: add the focussed and landingpage layout
+
 ## 0.20.2
 
 ### Patch Changes
