@@ -31,7 +31,12 @@ export const CompactStepper: FC<ICompactStepperProps> = ({
 
   return (
     <Stack alignItems="center" gap="xs">
-      <Stack as="ul" alignItems="center" gap="xs">
+      <Stack
+        as="ul"
+        alignItems="center"
+        gap="xs"
+        style={{ listStyle: 'none', margin: 0, padding: 0 }}
+      >
         {steps.map((step, idx) => (
           <Step key={step.label} {...step} isActive={idx === stepIdx} />
         ))}

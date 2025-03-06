@@ -1,21 +1,20 @@
 import { recipe, style, token } from './../../styles';
 
-const WIDTH = 8;
+export const WIDTH = 8;
 
 export const stepClass = recipe({
   base: {
     borderRadius: `${WIDTH / 2}px`,
     height: `${WIDTH}px`,
+    width: `${WIDTH}px`,
     transition: 'all .5s ease',
   },
   variants: {
     isActive: {
       true: {
-        width: `${WIDTH * 4}px`,
         backgroundColor: token('color.border.tint.@focus'),
       },
       false: {
-        width: `${WIDTH}px`,
         backgroundColor: token('color.border.base.default'),
       },
     },

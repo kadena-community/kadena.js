@@ -1,6 +1,7 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import type { FC } from 'react';
-import React from 'react';
-import { stepClass } from '../CompactStepper.css';
+import React, { useEffect, useState } from 'react';
+import { stepClass, WIDTH } from '../CompactStepper.css';
 import { Stack } from './../../';
 
 export interface IStep {
@@ -9,5 +10,27 @@ export interface IStep {
 }
 
 export const Step: FC<IStep> = ({ isActive = false }) => {
-  return <Stack as="li" className={stepClass({ isActive })} />;
+  const transitionValues = {
+    duration: 0.4,
+    yoyo: Infinity,
+    ease: 'easeOut',
+  };
+
+  return (
+    <motion.li
+      key={isActive.toString()}
+      initial={{ width: `${WIDTH}px` }}
+      exit={{ width: `${WIDTH}px` }}
+      animate={{
+        width: isActive
+          ? [`${WIDTH * 20}px`, `${WIDTH * 4}px`]
+          : [`${WIDTH * 10}px`, `${WIDTH}px`],
+      }}
+      transition={{
+        backgroundColor: transitionValues,
+        width: transitionValues,
+      }}
+      className={stepClass({ isActive })}
+    />
+  );
 };
