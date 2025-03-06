@@ -37,11 +37,6 @@ export type {
 } from './SideBarLayout';
 
 export {
-  LayoutProvider as FocussedLayoutProvider,
-  useLayout as useFocussedLayout,
-} from './FocussedLayout';
-
-export {
   RightAside,
   RightAsideContent,
   RightAsideFooter,
@@ -68,6 +63,23 @@ export type {
   ISectionCardHeaderProps,
   ISectionCardProps,
 } from './SectionCard';
+
+//focussed layout
+export {
+  FocussedLayout,
+  HeaderAside as FocussedLayoutHeaderAside,
+  HeaderContent as FocussedLayoutHeaderContent,
+  LayoutProvider as FocussedLayoutProvider,
+  useLayout as useFocussedLayout,
+} from './FocussedLayout';
+
+//landingpage layout
+export {
+  HeaderAside as LandingPageLayoutHeaderAside,
+  HeaderContent as LandingPageLayoutHeaderContent,
+  LayoutProvider as LandingPageLayoutProvider,
+} from './FocussedLayout';
+export { LandingPageLayout, useLayout } from './LandingPageLayout';
 
 //notifications functionality
 export { NotificationSlot, useNotifications } from './LayoutUtils';
