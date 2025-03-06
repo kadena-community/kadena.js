@@ -1,8 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { stepClass, WIDTH } from '../CompactStepper.css';
-import { Stack } from './../../';
 
 export interface IStep {
   label: string;
