@@ -179,9 +179,6 @@ export function RecoverFromMnemonic() {
   }
   const profileName = watch('profileName');
   const keyDerivation = watch('keyDerivation');
-
-  console.log({ isValid, errors });
-
   return (
     <Card>
       <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
