@@ -57,12 +57,10 @@ export function RecoverFromMnemonic() {
     control,
     formState: { isValid, errors },
   } = useForm<Inputs>({
+    mode: 'onChange',
     defaultValues: {
       mnemonic: '',
-      profileName:
-        profileList.length === 0
-          ? 'default'
-          : `profile-${profileList.length + 1}`,
+      profileName: '',
       accentColor:
         config.colorList[profileList.length % config.colorList.length],
       password: '',
@@ -181,6 +179,9 @@ export function RecoverFromMnemonic() {
   }
   const profileName = watch('profileName');
   const keyDerivation = watch('keyDerivation');
+
+  console.log({ isValid, errors });
+
   return (
     <Card>
       <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
@@ -295,13 +296,39 @@ export function RecoverFromMnemonic() {
                   )}
                 </Stack>
 
-                <TextField
-                  label="Profile name"
-                  id="name"
-                  type="text"
-                  defaultValue={profileName}
-                  value={profileName}
-                  {...register('profileName')}
+                <Controller
+                  control={control}
+                  name="profileName"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    minLength: { value: 6, message: 'Minimum 6 symbols' },
+                    maxLength: { value: 30, message: 'Maximym 30 symbols' },
+                    validate: {
+                      required: (value) => {
+                        const existingProfile = profileList.find(
+                          (profile) => profile.name === value,
+                        );
+                        if (existingProfile)
+                          return `The profile name ${value} already exists. Please use another name.`;
+                        return true;
+                      },
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      label="Profile name"
+                      id="name"
+                      type="text"
+                      defaultValue={profileName}
+                      value={field.value}
+                      {...register('profileName')}
+                      isInvalid={!!errors.profileName}
+                      errorMessage={errors.profileName?.message}
+                    />
+                  )}
                 />
               </Stack>
               <Stack flexDirection={'column'} gap={'lg'}>
