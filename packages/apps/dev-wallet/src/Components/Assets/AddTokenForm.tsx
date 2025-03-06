@@ -157,6 +157,7 @@ export function AddTokenForm({
               <Heading variant={'h5'}>Add New Token</Heading>
               <Stack width="100%" flexDirection="column" gap="md">
                 <TextField
+                  autoFocus
                   label="SmartContract"
                   {...register('contract', { required: true })}
                 />

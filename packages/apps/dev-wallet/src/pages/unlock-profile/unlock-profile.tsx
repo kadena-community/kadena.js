@@ -92,6 +92,7 @@ export function UnlockProfile({ origin }: { origin: string }) {
           <div className={passwordContainer}>
             <TextField
               id="password"
+              autoFocus
               type="password"
               placeholder="Password"
               aria-label="Password"

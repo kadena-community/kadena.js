@@ -197,6 +197,7 @@ export function ChangePassword() {
                     id="password"
                     type="password"
                     label="Password"
+                    autoFocus
                     defaultValue={getValues('password')}
                     // react-hook-form uses uncontrolled elements;
                     // and because we add and remove the fields we need to add key to prevent confusion for react

@@ -72,6 +72,7 @@ export const UnlockPrompt: React.FC<{
           </Text>
           {showPassword && (
             <TextField
+              autoFocus
               data-testid="passwordField"
               type="password"
               {...register('password')}
