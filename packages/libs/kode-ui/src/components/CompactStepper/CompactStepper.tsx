@@ -1,6 +1,6 @@
-import { animated, useSpringRef, useTransition } from '@react-spring/web';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { FC, ReactElement } from 'react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack } from '../';
 import {
   iconWrapperClass,
@@ -23,19 +23,10 @@ export const CompactStepper: FC<ICompactStepperProps> = ({
   showLabel = true,
   endVisual,
 }) => {
-  const transRef = useSpringRef();
-  const transitions = useTransition(stepIdx, {
-    ref: transRef,
-    keys: null,
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-    config: { tension: 220, friction: 120, duration: 500 },
-  });
+  const [label, setLabel] = useState('');
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    transRef.start();
+    setLabel(steps[stepIdx].label);
   }, [stepIdx]);
 
   return (
@@ -47,19 +38,21 @@ export const CompactStepper: FC<ICompactStepperProps> = ({
       </Stack>
       <Stack className={iconWrapperClass}>{endVisual && endVisual}</Stack>
       <Stack alignItems="center" className={textWrapperClass}>
-        {showLabel &&
-          transitions((style, idx) => {
-            return (
-              <animated.div
-                key={idx}
-                style={{ ...style, position: 'absolute' }}
-              >
-                <Stack marginInlineStart="sm" className={textClass}>
-                  {steps[idx].label}
-                </Stack>
-              </animated.div>
-            );
-          })}
+        {showLabel && (
+          <AnimatePresence>
+            <motion.div
+              key={label}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ position: 'absolute' }}
+            >
+              <Stack marginInlineStart="sm" className={textClass}>
+                {label}
+              </Stack>
+            </motion.div>
+          </AnimatePresence>
+        )}
       </Stack>
     </Stack>
   );

@@ -1,6 +1,7 @@
 import { recipe, style, token } from './../../styles';
 
 const WIDTH = 8;
+
 export const stepClass = recipe({
   base: {
     borderRadius: `${WIDTH / 2}px`,
