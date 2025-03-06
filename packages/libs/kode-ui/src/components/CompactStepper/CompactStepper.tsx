@@ -2,7 +2,11 @@ import { animated, useSpringRef, useTransition } from '@react-spring/web';
 import type { FC, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 import { Stack } from '../';
-import { textClass } from './CompactStepper.css';
+import {
+  iconWrapperClass,
+  textClass,
+  textWrapperClass,
+} from './CompactStepper.css';
 import type { IStep } from './components/Step';
 import { Step } from './components/Step';
 
@@ -35,12 +39,14 @@ export const CompactStepper: FC<ICompactStepperProps> = ({
   }, [stepIdx]);
 
   return (
-    <Stack as="ul" alignItems="center" gap="xs">
-      {steps.map((step, idx) => (
-        <Step key={step.label} {...step} isActive={idx === stepIdx} />
-      ))}
-      {endVisual && stepIdx === steps.length - 1 && endVisual}
-      <Stack alignItems="center">
+    <Stack alignItems="center" gap="xs">
+      <Stack as="ul" alignItems="center" gap="xs">
+        {steps.map((step, idx) => (
+          <Step key={step.label} {...step} isActive={idx === stepIdx} />
+        ))}
+      </Stack>
+      <Stack className={iconWrapperClass}>{endVisual && endVisual}</Stack>
+      <Stack alignItems="center" className={textWrapperClass}>
         {showLabel &&
           transitions((style, idx) => {
             return (

@@ -46,7 +46,7 @@ type Story = StoryObj<ICompactStepperProps>;
 export const Primary: Story = {
   name: 'Compact Stepper',
   args: {
-    endVisual: <MonoCheck />,
+    endVisual: <MonoCheck color="green" />,
     showLabel: true,
   },
 
@@ -61,6 +61,9 @@ export const Primary: Story = {
       },
       {
         label: 'He-man',
+      },
+      {
+        label: 'Master of the Universe',
       },
     ];
 
@@ -84,7 +87,7 @@ export const Primary: Story = {
         gap="xl"
       >
         <CompactStepper
-          endVisual={endVisual}
+          endVisual={idx === 1 ? endVisual : undefined}
           showLabel={showLabel}
           steps={steps}
           stepIdx={idx}

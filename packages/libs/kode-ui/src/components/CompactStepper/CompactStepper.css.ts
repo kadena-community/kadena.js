@@ -1,4 +1,4 @@
-import { atoms, recipe, style, token } from './../../styles';
+import { recipe, style, token } from './../../styles';
 
 const WIDTH = 8;
 export const stepClass = recipe({
@@ -23,4 +23,14 @@ export const stepClass = recipe({
 
 export const textClass = style({
   color: token('color.text.gray.default'),
+});
+export const textWrapperClass = style({
+  transform: 'translate(-10px, 0px)',
+  textWrap: 'nowrap',
+});
+export const iconWrapperClass = style({
+  transform: 'translateY(-2px)',
+  width: token('icon.size.sm'),
+  maxHeight: token('icon.size.sm'),
+  minHeight: token('icon.size.sm'),
 });
