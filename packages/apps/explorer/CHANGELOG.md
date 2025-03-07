@@ -1,5 +1,13 @@
 # @kadena/explorer
 
+## 0.9.5
+
+### Patch Changes
+
+- Updated dependencies \[24fb611]
+- Updated dependencies \[05168d0]
+  - @kadena/kode-ui\@0.21.0
+
 ## 0.9.4
 
 ### Patch Changes
