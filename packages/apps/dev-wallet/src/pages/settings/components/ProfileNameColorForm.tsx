@@ -49,6 +49,7 @@ export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
         <RightAsideContent>
           <Stack width="100%" flexDirection="column" gap="md">
             <TextField
+              autoFocus
               label="Profile Name"
               placeholder="Enter profile name"
               defaultValue={profile?.name}
