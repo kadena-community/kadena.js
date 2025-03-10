@@ -1,9 +1,12 @@
 import { LandingPageLayout } from '@/App/layout-landingpage';
 import { useMaintenance } from '@/Components/MaintenanceProvider/MaintenanceProvider';
+import { env } from '@/utils/env';
 import { MonoPrivacyTip } from '@kadena/kode-icons/system';
 import { Button, Card, Heading, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { wrapperClass } from '../errors/styles.css';
 import { iconColorClass } from './styles.css';
 
 export const Maintenance: FC = () => {
@@ -25,6 +28,7 @@ export const Maintenance: FC = () => {
             gap="xxl"
             style={{ marginBlockStart: '-80px' }}
             marginBlockEnd="xxxl"
+            className={wrapperClass}
           >
             <Stack flexDirection="column">
               <Heading variant="h5">Temporarily unreachable</Heading>
@@ -37,9 +41,7 @@ export const Maintenance: FC = () => {
             <Stack flexDirection="column">
               <Heading variant="h6">Planned downtime</Heading>
               <Text>
-                Please don’t hesitate to reach out if you have any concerns or
-                believe there may be an issue with the system. We’re here to
-                help!
+                <ReactMarkdown>{env.MAINTENANCE_MESSAGE}</ReactMarkdown>
               </Text>
             </Stack>
             <Stack flexDirection="column">

@@ -1,4 +1,5 @@
 import { Maintenance } from '@/pages/maintenance/maintenance';
+import { env } from '@/utils/env';
 import {
   createContext,
   FC,
@@ -8,8 +9,12 @@ import {
   useState,
 } from 'react';
 
-const context = createContext<(elm: JSX.Element | null) => void>(() => {
-  throw new Error('MaintenanceContext not found');
+const context = createContext<{
+  isInMaintenance: boolean;
+  refreshMaintenanceMode: () => void;
+}>({
+  isInMaintenance: false,
+  refreshMaintenanceMode: () => {},
 });
 
 export const useMaintenance = () => {
@@ -18,11 +23,26 @@ export const useMaintenance = () => {
 };
 
 export const MaintenanceProvider: FC<PropsWithChildren> = ({ children }) => {
-  const isInMaintenance = useState(false);
+  const [isInMaintenance, setIsInMaintenance] = useState(false);
 
   const refreshMaintenanceMode = () => {
     window.location.reload();
   };
+
+  useEffect(() => {
+    const date = Date.now();
+
+    setIsInMaintenance(false);
+    if (!env.MAINTENANCE_STARTDATE) return;
+    if (
+      (!env.MAINTENANCE_ENDDATE && date > env.MAINTENANCE_STARTDATE) ||
+      (env.MAINTENANCE_ENDDATE &&
+        date > env.MAINTENANCE_STARTDATE &&
+        date < env.MAINTENANCE_ENDDATE)
+    ) {
+      setIsInMaintenance(true);
+    }
+  }, [env.MAINTENANCE_ENDDATE, env.MAINTENANCE_STARTDATE]);
 
   return (
     <context.Provider value={{ refreshMaintenanceMode, isInMaintenance }}>
