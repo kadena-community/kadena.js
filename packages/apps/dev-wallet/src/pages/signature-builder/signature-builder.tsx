@@ -247,6 +247,7 @@ export function SignatureBuilder() {
       <Stack flexDirection={'column'} gap={'md'} width="100%">
         <Heading as="h4">Paste SigData, CommandSigData, or Payload</Heading>
         <textarea
+          autoFocus
           value={input}
           className={classNames(codeArea)}
           onChange={(e) => {

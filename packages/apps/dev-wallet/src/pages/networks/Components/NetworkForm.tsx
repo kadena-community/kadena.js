@@ -147,6 +147,7 @@ export function NetworkForm({
         <RightAsideContent>
           <Stack width="100%" flexDirection="column" gap="md">
             <TextField
+              autoFocus={!network.uuid}
               label="Network ID"
               aria-label="networkId"
               type="text"
