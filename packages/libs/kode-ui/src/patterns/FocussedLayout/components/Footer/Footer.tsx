@@ -1,10 +1,10 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useRef } from 'react';
 import { useLayout } from '../LayoutProvider';
 import { Stack, Text } from './../../../../components';
 import { footerClass, footerContentClass } from './style.css';
 
-export const Footer: FC = () => {
+export const Footer: FC<PropsWithChildren> = ({ children }) => {
   const { setFooterContentRef } = useLayout();
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -13,7 +13,14 @@ export const Footer: FC = () => {
     setFooterContentRef(contentRef.current);
   }, [contentRef.current]);
   return (
-    <Stack className={footerClass} width="100%" padding="md" gap="xs">
+    <Stack
+      className={footerClass}
+      width="100%"
+      paddingInline="md"
+      paddingBlockStart="md"
+      gap="xs"
+      alignItems="center"
+    >
       <Text>
         Powered by{' '}
         <a href="https://kadena.io" target="_blank" rel="noreferrer">
@@ -21,7 +28,8 @@ export const Footer: FC = () => {
         </a>
       </Text>
 
-      <Stack flex={1}>
+      <Stack flex={1} marginInlineStart="sm">
+        {children}
         <Stack ref={contentRef} />
       </Stack>
 
