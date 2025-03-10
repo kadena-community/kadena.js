@@ -171,7 +171,7 @@ export const Routes: FC = () => {
           <Route path="/ready" element={<Ready />} />
         </Route>
         <Route element={<LandingPageLayout />}>
-          <Route path="/selec" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
     </Route>,

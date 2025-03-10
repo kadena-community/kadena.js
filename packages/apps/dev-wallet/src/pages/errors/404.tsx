@@ -1,31 +1,53 @@
-import { Heading, Text } from '@kadena/kode-ui';
-import {
-  SectionCard,
-  SectionCardBody,
-  SectionCardContentBlock,
-  SectionCardHeader,
-} from '@kadena/kode-ui/patterns';
+import { MonoFindInPage } from '@kadena/kode-icons/system';
+import { Button, Card, Heading, Stack, Text } from '@kadena/kode-ui';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
+import { warningIconColorClass } from './styles.css';
 
 export const NotFound = () => {
+  const handleBack = () => {
+    if (!window.history) return;
+    window.history.back();
+  };
+
   return (
-    <>
-      <SectionCard>
-        <SectionCardContentBlock>
-          <SectionCardHeader title="Page not found" description={<></>} />
-          <SectionCardBody>
+    <Card>
+      <CardContentBlock
+        visual={
+          <Stack className={warningIconColorClass}>
+            <MonoFindInPage width={36} height={36} />
+          </Stack>
+        }
+        title="Page not found"
+      >
+        <Stack
+          flexDirection="column"
+          gap="xxl"
+          style={{ marginBlockStart: '-80px' }}
+          marginBlockEnd="xxxl"
+        >
+          <Stack flexDirection="column">
             <Heading variant="h5">Something is wrong</Heading>
             <Text>
               It seems that the page you are trying to access in not available.
             </Text>
+          </Stack>
 
-            <Heading variant="h5">Reach out!</Heading>
+          <Stack flexDirection="column">
+            <Heading variant="h6">Reach out!</Heading>
             <Text>
               Please don’t hesitate to reach out if you have any concerns or
               believe there may be an issue with the system. We’re here to help!
             </Text>
-          </SectionCardBody>
-        </SectionCardContentBlock>
-      </SectionCard>
-    </>
+          </Stack>
+
+          <Stack justifyContent="flex-end" gap="md">
+            <Button variant="outlined">Get support</Button>
+            <Button variant="primary" onPress={handleBack}>
+              Go Back
+            </Button>
+          </Stack>
+        </Stack>
+      </CardContentBlock>
+    </Card>
   );
 };

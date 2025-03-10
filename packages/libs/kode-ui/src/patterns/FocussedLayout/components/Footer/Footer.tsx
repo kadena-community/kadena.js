@@ -17,7 +17,7 @@ export const Footer: FC<PropsWithChildren> = ({ children }) => {
       className={footerClass}
       width="100%"
       paddingInline="md"
-      paddingBlockStart="sm"
+      paddingBlockStart="md"
       gap="xs"
       alignItems="center"
     >
