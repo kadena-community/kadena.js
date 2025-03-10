@@ -6,10 +6,10 @@ import {
   FocussedLayoutHeaderAside,
   FocussedLayoutProvider,
 } from '@kadena/kode-ui/patterns';
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Outlet } from 'react-router-dom';
 
-export const LandingPageLayout: FC = () => {
+export const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = (): void => {
@@ -31,6 +31,7 @@ export const LandingPageLayout: FC = () => {
           />
         </FocussedLayoutHeaderAside>
         <Outlet />
+        {children}
         <FocussedLayoutFooter />
       </FocussedLayout>
     </FocussedLayoutProvider>

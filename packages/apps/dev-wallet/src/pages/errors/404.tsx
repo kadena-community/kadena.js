@@ -41,7 +41,9 @@ export const NotFound = () => {
           </Stack>
 
           <Stack justifyContent="flex-end" gap="md">
-            <Button variant="outlined">Get support</Button>
+            <a href="https://discord.com/invite/kadena" target="_blank">
+              <Button variant="outlined">Get support</Button>
+            </a>
             <Button variant="primary" onPress={handleBack}>
               Go Back
             </Button>
