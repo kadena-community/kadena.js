@@ -6,10 +6,13 @@ export interface ILayoutContext {
   setHeaderContentRef: (value?: HTMLDivElement | null) => void;
   headerAsideRef?: HTMLDivElement | null;
   setHeaderAsideRef: (value?: HTMLDivElement | null) => void;
+  footerContentRef?: HTMLDivElement | null;
+  setFooterContentRef: (value?: HTMLDivElement | null) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   setHeaderContentRef: () => {},
   setHeaderAsideRef: () => {},
+  setFooterContentRef: () => {},
 });
 
 export const useLayout = () => useContext(LayoutContext);
@@ -21,12 +24,17 @@ export const FocussedLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
     useState<HTMLDivElement | null>(null);
   const [headerAsideRef, setHeaderAsideRefState] =
     useState<HTMLDivElement | null>(null);
+  const [footerContentRef, setFooterContentState] =
+    useState<HTMLDivElement | null>(null);
 
   const setHeaderContentRef = (value?: HTMLDivElement | null) => {
     setHeaderContentRefState(value ? value : null);
   };
   const setHeaderAsideRef = (value?: HTMLDivElement | null) => {
     setHeaderAsideRefState(value ? value : null);
+  };
+  const setFooterContentRef = (value?: HTMLDivElement | null) => {
+    setFooterContentState(value ? value : null);
   };
 
   return (
@@ -36,6 +44,8 @@ export const FocussedLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setHeaderContentRef,
         headerAsideRef,
         setHeaderAsideRef,
+        footerContentRef,
+        setFooterContentRef,
       }}
     >
       {children}

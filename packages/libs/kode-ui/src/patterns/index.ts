@@ -67,19 +67,13 @@ export type {
 //focussed layout
 export {
   FocussedLayout,
+  Footer as FocussedLayoutFooter,
+  FooterContent as FocussedLayoutFooterContent,
   HeaderAside as FocussedLayoutHeaderAside,
   HeaderContent as FocussedLayoutHeaderContent,
   LayoutProvider as FocussedLayoutProvider,
   useLayout as useFocussedLayout,
 } from './FocussedLayout';
-
-//landingpage layout
-export {
-  HeaderAside as LandingPageLayoutHeaderAside,
-  HeaderContent as LandingPageLayoutHeaderContent,
-  LayoutProvider as LandingPageLayoutProvider,
-} from './FocussedLayout';
-export { LandingPageLayout, useLayout } from './LandingPageLayout';
 
 //notifications functionality
 export { NotificationSlot, useNotifications } from './LayoutUtils';

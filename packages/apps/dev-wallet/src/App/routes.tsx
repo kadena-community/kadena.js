@@ -18,6 +18,7 @@ import { ActivitiesPage } from '@/pages/activities/activities';
 import { ConnectPage } from '@/pages/connect/connect';
 import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccountPage } from '@/pages/create-account/create-account';
+import { NotFound } from '@/pages/errors/404';
 import { FungiblePage } from '@/pages/fungible/fungible';
 import { KeysPage } from '@/pages/keys/keys-page';
 import { Keyset } from '@/pages/keyset/keyset';
@@ -36,7 +37,6 @@ import { TransactionPage } from '@/pages/transaction/Transaction';
 import { Transfer } from '@/pages/transfer/transfer';
 import { RecoverFromMnemonic } from '@/pages/wallet-recovery/recover-from-mnemonic/recover-from-mnemonic';
 import { WalletRecovery } from '@/pages/wallet-recovery/wallet-recovery';
-import { Heading } from '@kadena/kode-ui';
 import { useWallet } from '../modules/wallet/wallet.hook';
 import { CreateProfile } from '../pages/create-profile/create-profile';
 import { HomePage } from '../pages/home/home-page';
@@ -44,6 +44,7 @@ import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
 import { LayoutFull } from './layout-full';
+import { LandingPageLayout } from './layout-landingpage';
 import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
 import { useGlobalState } from './providers/globalState';
@@ -168,7 +169,9 @@ export const Routes: FC = () => {
             element={<UnlockProfile origin={origin} />}
           />
           <Route path="/ready" element={<Ready />} />
-          <Route path="*" element={<Heading>Not found!</Heading>} />
+        </Route>
+        <Route element={<LandingPageLayout />}>
+          <Route path="/selec" element={<NotFound />} />
         </Route>
       </Route>
     </Route>,

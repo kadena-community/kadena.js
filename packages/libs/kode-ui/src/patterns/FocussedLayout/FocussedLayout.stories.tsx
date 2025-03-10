@@ -10,6 +10,8 @@ import {
 } from '../SectionCard';
 import { Button } from './../../components';
 import { FocussedLayout } from './FocussedLayout';
+import { Footer } from './components/Footer/Footer';
+import { FooterContent } from './components/Footer/FooterContent';
 import { HeaderAside } from './components/Header/HeaderAside';
 import { HeaderContent } from './components/Header/HeaderContent';
 import { LayoutProvider } from './components/LayoutProvider';
@@ -52,7 +54,7 @@ export default meta;
 type Story = StoryObj<IProps>;
 
 export const Primary: Story = {
-  name: 'Foccused Layout with 1 card',
+  name: 'Foccused Layout with multiple card',
   args: {
     title: 'Our section',
     description: <>Our section is awesome</>,
@@ -84,6 +86,39 @@ export const Primary: Story = {
               <SectionCardHeader title="Greyskull" />
             </SectionCardContentBlock>
           </SectionCard>
+        </FocussedLayout>
+      </LayoutProvider>
+    );
+  },
+};
+
+export const WithFooter: Story = {
+  name: 'Foccused Layout with a footer',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    children: 'This is the content for our section',
+  },
+  render: () => {
+    return (
+      <LayoutProvider>
+        <HeaderContent>LEFT CONTENT</HeaderContent>
+        <HeaderAside>RIGHT ASIDE</HeaderAside>
+        <FocussedLayout>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <Footer>
+            <FooterContent>FOOTERCONTENT</FooterContent>
+          </Footer>
         </FocussedLayout>
       </LayoutProvider>
     );

@@ -7,9 +7,8 @@ import { useLayout } from './../LayoutProvider';
 export const FooterContent: FC<PropsWithChildren> = ({ children }) => {
   const { footerContentRef } = useLayout();
 
-  if (!footerContentRef || React.Children.count(children) === 0)
-    if (!footerContentRef || React.Children.count(children) === 0)
-      return <>sdf</>;
+  console.log(footerContentRef);
+  if (!footerContentRef || React.Children.count(children) === 0) return <></>;
 
   return createPortal(<Stack>{children}</Stack>, footerContentRef);
 };
