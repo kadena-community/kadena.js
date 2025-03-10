@@ -80,7 +80,7 @@
     "description": "Wallet Connect plugin for Kadena Chainweaver wallet",
     "permissions": [
       "CONNECTION_REQUEST",
-      "SIGN",
+      "SIGN_REQUEST",
       "GET_STATUS",
       "GET_NETWORK_LIST",
       "GET_ACCOUNTS"

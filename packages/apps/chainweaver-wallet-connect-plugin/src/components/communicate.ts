@@ -16,9 +16,25 @@ export interface IAccount {
   syncTime?: number;
 }
 
+export interface INetwork {
+  uuid: string;
+  networkId: string;
+  name?: string;
+  default?: boolean;
+  disabled?: boolean;
+  faucetContract?: string;
+  hosts: Array<{
+    url: string;
+    submit: boolean;
+    read: boolean;
+    confirm: boolean;
+  }>;
+}
 
 interface ResponsePayload {
   GET_ACCOUNTS: Array<IAccount>;
+  GET_NETWORK_LIST: INetwork[];
+  SIGN_REQUEST: void;
 }
 
 interface IResponseType<T extends MessageType> {
@@ -28,7 +44,7 @@ interface IResponseType<T extends MessageType> {
   error: unknown;
 }
 
-type MessageType = 'GET_ACCOUNTS';
+type MessageType = 'GET_ACCOUNTS' | 'GET_NETWORK_LIST' | 'SIGN_REQUEST';
 
 export const communicate =
   (client: Window, server: Window, pluginId: string, sessionId: string) =>

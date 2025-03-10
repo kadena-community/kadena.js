@@ -174,12 +174,13 @@ export const CommunicationProvider: FC<
         return {
           payload: isUnlocked
             ? accounts.map(
-                ({ address, alias, overallBalance, chains, guard }) => ({
+                ({ address, alias, overallBalance, chains, guard, contract }) => ({
                   address,
                   alias,
                   overallBalance,
                   chains,
                   guard,
+                  contract
                 }),
               )
             : [],
