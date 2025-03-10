@@ -1,11 +1,11 @@
 import WalletKit, { WalletKitTypes } from '@reown/walletkit';
 import Core from '@walletconnect/core';
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { mainContainerClass } from '../style.css';
 // import { subscribeToSessionProposal } from './subscribe';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
-import { communicate, IAccount, INetwork } from './communicate';
 import { AccountPrompt } from './AccountPrompt/AccountPrompt';
+import { communicate, IAccount, INetwork } from './communicate';
 
 const core = new Core({
   projectId: '77ef30356b9964645f55fa54c3e83988',
@@ -37,31 +37,41 @@ export const WalletConnect: React.FC<{
   const [walletKit, setWalletKit] = useState<WalletKit | undefined>();
   const [uri, setUri] = useState<string>('');
   const [session, setSession] = useState<any>();
-  const [activeSessions, setActiveSessions] = useState<Array<any>>([])
+  const [activeSessions, setActiveSessions] = useState<Array<any>>([]);
   const [networks, setNetworks] = useState<INetwork[]>([]);
   const [showAccountPrompt, setShowAccountPrompt] = useState<boolean>(false);
-  const [availableAccounts, setAvailableAccounts] = useState<Array<IAccount>>([])
-  const [selectedAccounts, setSelectedAccounts] = useState<Array<IAccount>>([])
-  const [accountStore, setAccountStore] = useState<{ [id: string]: Array<{ name:string, account: IAccount, publicKey: string}> }>({});
+  const [availableAccounts, setAvailableAccounts] = useState<Array<IAccount>>(
+    [],
+  );
+  const [selectedAccounts, setSelectedAccounts] = useState<Array<IAccount>>([]);
+  const [accountStore, setAccountStore] = useState<{
+    [id: string]: Array<{ name: string; account: IAccount; publicKey: string }>;
+  }>({});
 
   const message = useMemo(
-    () => communicate(window, target, '@kadena/chainweaver-pact-console-plugin', sessionId),
+    () =>
+      communicate(
+        window,
+        target,
+        '@kadena/chainweaver-pact-console-plugin',
+        sessionId,
+      ),
     [sessionId, target],
   );
 
-   // Refs to track latest state
-   const networksRef = useRef(networks);
-   const walletKitRef = useRef(walletKit);
-   const selectedAccountsRef = useRef(selectedAccounts);
-   const accountStoreRef = useRef(accountStore);
+  // Refs to track latest state
+  const networksRef = useRef(networks);
+  const walletKitRef = useRef(walletKit);
+  const selectedAccountsRef = useRef(selectedAccounts);
+  const accountStoreRef = useRef(accountStore);
 
-   // Sync state to refs
-   useEffect(() => {
-     networksRef.current = networks;
-     walletKitRef.current = walletKit;
-     selectedAccountsRef.current = selectedAccounts;
-     accountStoreRef.current = accountStore;
-   }, [networks, walletKit, selectedAccounts, accountStore]);
+  // Sync state to refs
+  useEffect(() => {
+    networksRef.current = networks;
+    walletKitRef.current = walletKit;
+    selectedAccountsRef.current = selectedAccounts;
+    accountStoreRef.current = accountStore;
+  }, [networks, walletKit, selectedAccounts, accountStore]);
 
   useEffect(() => {
     const storedAccounts = localStorage.getItem('accountStore');
@@ -91,14 +101,16 @@ export const WalletConnect: React.FC<{
     localStorage.setItem('accountStore', JSON.stringify(accountStore));
   }, [accountStore]);
 
-
   // TODO: find a more solid way to solve this
   function deriveKeyFromAccount(account: IAccount) {
     const key = account.guard.keys[0];
     return key;
   }
 
-  async function onSessionProposal({ id, params }: WalletKitTypes.SessionProposal){
+  async function onSessionProposal({
+    id,
+    params,
+  }: WalletKitTypes.SessionProposal) {
     const currentWalletKit = walletKitRef.current;
     const currentNetworks = networksRef.current;
     const currentSelectedAccounts = selectedAccountsRef.current;
@@ -106,15 +118,25 @@ export const WalletConnect: React.FC<{
     if (!currentWalletKit) return;
 
     try {
-      const accountStoreEntry: Array<{ name:string, account: IAccount, publicKey: string}> = [];
-      const chains = currentNetworks.map(network => `kadena:${network.networkId}`);
-      const approvedAccounts = Array.from( new Set( currentNetworks.flatMap((network) =>
-        currentSelectedAccounts.map((account) => {
-          const publicKey = deriveKeyFromAccount(account);
-          const name = `kadena:${network.networkId}:${publicKey}`;
-          accountStoreEntry.push({ name, account, publicKey });
-          return name;
-        })))
+      const accountStoreEntry: Array<{
+        name: string;
+        account: IAccount;
+        publicKey: string;
+      }> = [];
+      const chains = currentNetworks.map(
+        (network) => `kadena:${network.networkId}`,
+      );
+      const approvedAccounts = Array.from(
+        new Set(
+          currentNetworks.flatMap((network) =>
+            currentSelectedAccounts.map((account) => {
+              const publicKey = deriveKeyFromAccount(account);
+              const name = `kadena:${network.networkId}:${publicKey}`;
+              accountStoreEntry.push({ name, account, publicKey });
+              return name;
+            }),
+          ),
+        ),
       );
 
       // ------- namespaces builder util ------------ //
@@ -123,7 +145,11 @@ export const WalletConnect: React.FC<{
         supportedNamespaces: {
           kadena: {
             chains,
-            methods: ['kadena_getAccounts_v1', 'kadena_sign_v1', 'kadena_quicksign_v1'],
+            methods: [
+              'kadena_getAccounts_v1',
+              'kadena_sign_v1',
+              'kadena_quicksign_v1',
+            ],
             events: [],
             accounts: approvedAccounts,
           },
@@ -136,7 +162,10 @@ export const WalletConnect: React.FC<{
       });
 
       // Store selected accounts in accounts store
-      setAccountStore({ ...accountStoreRef.current, [session.topic]: accountStoreEntry});
+      setAccountStore({
+        ...accountStoreRef.current,
+        [session.topic]: accountStoreEntry,
+      });
       console.log(accountStoreRef.current);
       setSession(session);
     } catch (error) {
@@ -150,9 +179,9 @@ export const WalletConnect: React.FC<{
   }
 
   async function handleSessionRequest(sessionRequest: any) {
-    const request = sessionRequest.params.request
-    const { id, topic } = sessionRequest
-    const { params, method } = request
+    const request = sessionRequest.params.request;
+    const { id, topic } = sessionRequest;
+    const { params, method } = request;
 
     const currentWalletKit = walletKitRef.current;
 
@@ -164,7 +193,7 @@ export const WalletConnect: React.FC<{
         // const requestedAccountsArray = params.accounts;
         const requestedAccountsArray = [params]; // Temp to support demo app that doesn't conform to the spec
 
-        let storedAccounts = accountStoreRef.current[topic];
+        const storedAccounts = accountStoreRef.current[topic];
         if (!storedAccounts) {
           // Handle case where no accounts are found for the given topic/session
           console.warn('No accounts found for topic', topic);
@@ -173,34 +202,53 @@ export const WalletConnect: React.FC<{
             response: {
               id,
               jsonrpc: '2.0',
-              error: getSdkError('UNSUPPORTED_ACCOUNTS')
-            }
+              error: getSdkError('UNSUPPORTED_ACCOUNTS'),
+            },
           });
           return;
         }
 
-        const accountsResponse = requestedAccountsArray.map((requestedAccount: { account: string, contracts: string[] }) => {
-          return storedAccounts.filter(storedAccount => {
-            return requestedAccount.account === storedAccount.name && (requestedAccount.contracts.length === 0 || requestedAccount.contracts.includes(storedAccount.account.contract));
-          }).map(acc => {
-            return {
-              account: acc.name,
-              publicKey: acc.publicKey,
-              kadenaAccounts: [{
-                name: acc.account.address,
-                contract: acc.account.contract,
-                chains: acc.account.chains.map(chain => chain.chainId)
-              }]
-            };
-          }).reduce((result: AccountResponse | null, curr: AccountResponse) => {
-            if (!result) {
-              result = curr;
-            } else {
-              result.kadenaAccounts = [...result.kadenaAccounts, ...curr.kadenaAccounts];
-            }
-            return result;
-          }, null);
-        })
+        const accountsResponse = requestedAccountsArray.map(
+          (requestedAccount: { account: string; contracts: string[] }) => {
+            return storedAccounts
+              .filter((storedAccount) => {
+                return (
+                  requestedAccount.account === storedAccount.name &&
+                  (requestedAccount.contracts.length === 0 ||
+                    requestedAccount.contracts.includes(
+                      storedAccount.account.contract,
+                    ))
+                );
+              })
+              .map((acc) => {
+                return {
+                  account: acc.name,
+                  publicKey: acc.publicKey,
+                  kadenaAccounts: [
+                    {
+                      name: acc.account.address,
+                      contract: acc.account.contract,
+                      chains: acc.account.chains.map((chain) => chain.chainId),
+                    },
+                  ],
+                };
+              })
+              .reduce(
+                (result: AccountResponse | null, curr: AccountResponse) => {
+                  if (!result) {
+                    result = curr;
+                  } else {
+                    result.kadenaAccounts = [
+                      ...result.kadenaAccounts,
+                      ...curr.kadenaAccounts,
+                    ];
+                  }
+                  return result;
+                },
+                null,
+              );
+          },
+        );
 
         await currentWalletKit.respondSessionRequest({
           topic,
@@ -208,19 +256,20 @@ export const WalletConnect: React.FC<{
             id,
             jsonrpc: '2.0',
             result: {
-              accounts: accountsResponse
-            }
-          }
+              accounts: accountsResponse,
+            },
+          },
         });
       } else if (method === 'kadena_sign_v1') {
         console.log(params);
 
-        //const signingRequest = params;
+        // const signingRequest = params;
         const response = await message('SIGN_REQUEST');
         console.log(response);
-
       } else if (method === 'kadena_quicksign_v1') {
-        console.log(params);
+        const txObject = params.commandSigDatas[0];
+        const response = await message('SIGN_REQUEST', txObject);
+        console.log(response);
       } else {
         console.warn(`Unhandled method: ${method}`);
         await currentWalletKit.respondSessionRequest({
@@ -228,12 +277,12 @@ export const WalletConnect: React.FC<{
           response: {
             id,
             jsonrpc: '2.0',
-            error: getSdkError('INVALID_METHOD')
-          }
+            error: getSdkError('INVALID_METHOD'),
+          },
         });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -276,33 +325,52 @@ export const WalletConnect: React.FC<{
 
     const activeSessions = await walletKit.getActiveSessions();
     console.log('active sessions', activeSessions);
-    setActiveSessions(Object.values(activeSessions))
+    setActiveSessions(Object.values(activeSessions));
   }
 
-  return <div className={mainContainerClass}>
-    <input type="text" placeholder='WalletConnect URI' onChange={(e) => setUri(e.target.value)} value={uri} />
-    <button onClick={handleConnect} disabled={!uri}>Accept Request</button>
-    <button onClick={getActiveSessions}>Get Active Sessions</button>
+  return (
+    <div className={mainContainerClass}>
+      <input
+        type="text"
+        placeholder="WalletConnect URI"
+        onChange={(e) => setUri(e.target.value)}
+        value={uri}
+      />
+      <button onClick={handleConnect} disabled={!uri}>
+        Accept Request
+      </button>
+      <button onClick={getActiveSessions}>Get Active Sessions</button>
 
-    {activeSessions.length > 0 && <h2>Active Sessions</h2>}
-    {activeSessions?.map(session => (
-      <div key={session.topic}>
-        <p>{session.peer.metadata.name} - {session.topic}</p>
-        <button onClick={() => setSession(session)}>Set Session</button>
-      </div>
-    ))}
-    {session &&
-      <div>
-        <h2>Session Details</h2>
-        <div>session topic: {session.topic}</div>
-        <div>Accounts: {session.namespaces['kadena'].accounts.map((a: string) => <p>{a}</p>)}</div>
-        <div>Connected to: {session.peer.metadata.name}</div>
-        <button onClick={handleDisconnect}>
-          Disconnect
-        </button>
-      </div>
-    }
-    {showAccountPrompt &&<AccountPrompt accounts={availableAccounts} onAccountsSelected={onAccountsSelected} />}
-    <p>Plugin Session Id: { sessionId }</p>
-  </div>
+      {activeSessions.length > 0 && <h2>Active Sessions</h2>}
+      {activeSessions?.map((session) => (
+        <div key={session.topic}>
+          <p>
+            {session.peer.metadata.name} - {session.topic}
+          </p>
+          <button onClick={() => setSession(session)}>Set Session</button>
+        </div>
+      ))}
+      {session && (
+        <div>
+          <h2>Session Details</h2>
+          <div>session topic: {session.topic}</div>
+          <div>
+            Accounts:{' '}
+            {session.namespaces['kadena'].accounts.map((a: string) => (
+              <p>{a}</p>
+            ))}
+          </div>
+          <div>Connected to: {session.peer.metadata.name}</div>
+          <button onClick={handleDisconnect}>Disconnect</button>
+        </div>
+      )}
+      {showAccountPrompt && (
+        <AccountPrompt
+          accounts={availableAccounts}
+          onAccountsSelected={onAccountsSelected}
+        />
+      )}
+      <p>Plugin Session Id: {sessionId}</p>
+    </div>
+  );
 };

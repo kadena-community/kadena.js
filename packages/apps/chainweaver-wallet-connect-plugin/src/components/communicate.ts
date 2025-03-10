@@ -1,4 +1,3 @@
-
 export interface IAccount {
   uuid: string;
   networkUUID: any;
@@ -62,6 +61,6 @@ export const communicate =
         }
       };
       client.addEventListener('message', handler);
-      server.postMessage({ payload, id, sessionId, type }, '*');
+      server.postMessage({ payload, id, sessionId, type, pluginId }, '*');
     });
   };
