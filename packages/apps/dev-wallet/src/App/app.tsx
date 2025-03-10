@@ -1,3 +1,4 @@
+import { MaintenanceProvider } from '@/Components/MaintenanceProvider/MaintenanceProvider';
 import { DatabaseProvider } from '@/modules/db/db.provider';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
 import { MediaContextProvider, useTheme } from '@kadena/kode-ui';
@@ -23,8 +24,10 @@ function Providers({ children }: { children: React.ReactNode }) {
             <PromptProvider>
               <DatabaseProvider>
                 <WalletProvider>
-                  {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
-                  <PromptProvider>{children}</PromptProvider>
+                  <MaintenanceProvider>
+                    {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
+                    <PromptProvider>{children}</PromptProvider>
+                  </MaintenanceProvider>
                 </WalletProvider>
               </DatabaseProvider>
             </PromptProvider>
