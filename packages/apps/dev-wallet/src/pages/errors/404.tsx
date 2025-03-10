@@ -1,7 +1,7 @@
 import { MonoFindInPage } from '@kadena/kode-icons/system';
 import { Button, Card, Heading, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { warningIconColorClass } from './styles.css';
+import { warningIconColorClass, wrapperClass } from './styles.css';
 
 export const NotFound = () => {
   const handleBack = () => {
@@ -22,8 +22,8 @@ export const NotFound = () => {
         <Stack
           flexDirection="column"
           gap="xxl"
-          style={{ marginBlockStart: '-80px' }}
           marginBlockEnd="xxxl"
+          className={wrapperClass}
         >
           <Stack flexDirection="column">
             <Heading variant="h5">Something is wrong</Heading>
