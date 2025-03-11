@@ -3,6 +3,7 @@ export type { IAvatarProps } from './Avatar';
 export type { IBadgeProps } from './Badge';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
 export type { IButtonProps, IToggleButtonProps, PressEvent } from './Button';
+export type { IButtonGroupProps } from './ButtonGroup';
 export type { ICardProps } from './Card';
 export { CompactStepper } from './CompactStepper';
 export type { ICompactStepperProps } from './CompactStepper';
@@ -63,6 +64,7 @@ export { Avatar } from './Avatar';
 export { Badge } from './Badge';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button, ToggleButton } from './Button';
+export { ButtonGroup } from './ButtonGroup';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
 export {
