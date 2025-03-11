@@ -32,14 +32,10 @@ export const MaintenanceProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const date = Date.now();
 
+    // there should be at least an enddate if you want to maintenance message to show
     setIsInMaintenance(false);
-    if (!env.MAINTENANCE_STARTDATE) return;
-    if (
-      (!env.MAINTENANCE_ENDDATE && date > env.MAINTENANCE_STARTDATE) ||
-      (env.MAINTENANCE_ENDDATE &&
-        date > env.MAINTENANCE_STARTDATE &&
-        date < env.MAINTENANCE_ENDDATE)
-    ) {
+    if (!env.MAINTENANCE_STARTDATE && !env.MAINTENANCE_ENDDATE) return;
+    if (date > env.MAINTENANCE_STARTDATE && date < env.MAINTENANCE_ENDDATE) {
       setIsInMaintenance(true);
     }
   }, [env.MAINTENANCE_ENDDATE, env.MAINTENANCE_STARTDATE]);
