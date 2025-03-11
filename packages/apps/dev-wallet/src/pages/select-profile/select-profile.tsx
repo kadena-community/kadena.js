@@ -1,16 +1,31 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
-import { MonoAdd } from '@kadena/kode-icons';
+import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons';
 import { ChainweaverAlphaLogoKdacolorLight } from '@kadena/kode-icons/product';
-import { Box, Button, Card, Heading, Stack, Text } from '@kadena/kode-ui';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  ContextMenu,
+  ContextMenuItem,
+  Heading,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { wrapperClass } from '../errors/styles.css';
 
 import { ProfileListItem } from '@/Components/ProfileListItem/ProfileListItem';
 
 export function SelectProfile() {
   const { profileList } = useWallet();
+  const navigate = useNavigate();
+
+  const handleRecover = () => {
+    navigate('/wallet-recovery');
+  };
 
   return (
     <Card>
@@ -20,11 +35,27 @@ export function SelectProfile() {
             managing your assets instantly"
         visual={<ChainweaverAlphaLogoKdacolorLight width={64} height={64} />}
         supportingContent={
-          <Link to="/create-profile">
-            <Button isCompact variant="outlined" startVisual={<MonoAdd />}>
-              New Profile
-            </Button>
-          </Link>
+          <ButtonGroup variant="outlined">
+            <Link to="/create-profile">
+              <Button isCompact variant="outlined" startVisual={<MonoAdd />}>
+                New Profile
+              </Button>
+            </Link>
+            <ContextMenu
+              trigger={
+                <Button
+                  variant="outlined"
+                  isCompact
+                  endVisual={<MonoMoreVert />}
+                />
+              }
+            >
+              <ContextMenuItem
+                onClick={handleRecover}
+                label="Recover your wallet"
+              />
+            </ContextMenu>
+          </ButtonGroup>
         }
       >
         <Box width="100%" className={wrapperClass}>
@@ -44,13 +75,6 @@ export function SelectProfile() {
             {profileList.map((profile) => (
               <ProfileListItem key={profile.uuid} profile={profile} />
             ))}
-          </Stack>
-          <Stack width="100%" justifyContent="flex-end">
-            <Link to="/wallet-recovery">
-              <Button isCompact variant="outlined">
-                Recover your wallet
-              </Button>
-            </Link>
           </Stack>
         </Box>
       </CardContentBlock>

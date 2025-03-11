@@ -1,5 +1,5 @@
-import { cardColor, linkBlockColor } from '@/utils/color.ts';
-import { atoms, tokens, vars } from '@kadena/kode-ui/styles';
+import { cardColor } from '@/utils/color.ts';
+import { atoms, tokens } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const titleClass = style([
@@ -36,5 +36,17 @@ export const initialsClass = style([
   }),
   {
     color: 'white',
+  },
+]);
+
+export const linkClass = style([
+  {
+    textDecoration: 'none',
+    color: tokens.kda.foundation.color.palette.aqua.n50,
+    selectors: {
+      [`&:hover`]: {
+        textDecoration: 'underline',
+      },
+    },
   },
 ]);
