@@ -1,20 +1,6 @@
-import { globalStyle, recipe, style } from './../../styles';
+import { globalStyle, style } from './../../styles';
 
 export const buttonGroupClass = style({});
-export const buttonGroupRecipe = recipe({
-  base: {},
-  variants: {
-    variant: {
-      primary: {},
-      transparent: {},
-      info: {},
-      warning: {},
-      positive: {},
-      negative: {},
-      outlined: {},
-    },
-  },
-});
 
 globalStyle(
   `${buttonGroupClass} button:not(:first-child):not(:last-child), ${buttonGroupClass} a:not(:first-child):not(:last-child)`,

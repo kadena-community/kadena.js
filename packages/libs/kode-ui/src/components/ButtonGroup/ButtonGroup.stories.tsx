@@ -4,19 +4,15 @@ import React from 'react';
 
 import { Button, Link, Stack } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
+import { button } from '../Button/Button.css';
 import type { IButtonGroupProps } from './ButtonGroup';
 import { ButtonGroup } from './ButtonGroup';
-import { buttonGroupRecipe } from './ButtonGroup.css';
 
-const variants = getVariants(buttonGroupRecipe);
+const variants = getVariants(button);
 
 const meta: Meta<IButtonGroupProps> = {
   title: 'Components/ButtonGroup',
   parameters: {
-    controls: {
-      hideNoControlsWarning: true,
-      sort: 'requiredFirst',
-    },
     docs: {
       description: {
         component:
@@ -25,13 +21,6 @@ const meta: Meta<IButtonGroupProps> = {
     },
   },
   argTypes: {
-    onPress: {
-      action: 'clicked',
-      description: 'callback when button is clicked',
-      table: {
-        disable: true,
-      },
-    },
     variant: {
       options: variants.variant,
       control: {
@@ -53,6 +42,7 @@ type ButtonGroupStory = StoryObj<IButtonGroupProps>;
 export const Primary: ButtonGroupStory = {
   args: {
     variant: 'primary',
+    isCompact: true,
   },
   render: (props: IButtonGroupProps) => {
     return (

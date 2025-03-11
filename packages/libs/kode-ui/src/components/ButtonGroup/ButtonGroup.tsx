@@ -1,9 +1,8 @@
-import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 import type { IButtonProps } from '../Button/Button';
 import { Stack } from '../Layout';
-import { buttonGroupClass, buttonGroupRecipe } from './ButtonGroup.css';
+import { buttonGroupClass } from './ButtonGroup.css';
 
 export interface IButtonGroupProps extends PropsWithChildren {
   variant: IButtonProps['variant'];
@@ -16,16 +15,7 @@ export const ButtonGroup: FC<IButtonGroupProps> = ({
   isCompact,
 }) => {
   return (
-    <Stack
-      as="section"
-      data-variant={variant}
-      className={classNames(
-        buttonGroupClass,
-        buttonGroupRecipe({
-          variant,
-        }),
-      )}
-    >
+    <Stack as="section" data-variant={variant} className={buttonGroupClass}>
       {React.Children.map(children, (child) => {
         if (!React.isValidElement(child)) return null;
         return React.cloneElement(child, {
