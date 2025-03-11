@@ -9,11 +9,14 @@ import {
   extractPublicKeyHex,
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import { ChainweaverAlphaLogoKdacolorLight } from '@kadena/kode-icons/product';
+import { Button, Card, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import { wrapperClass } from '../errors/styles.css';
 import { noStyleLinkClass } from '../home/style.css';
 import InitialsAvatar from '../select-profile/initials';
 import { Label } from '../transaction/components/helpers';
@@ -178,94 +181,113 @@ export function CreateProfile() {
 
   return (
     <>
-      <AuthCard>
+      <Card>
         <form onSubmit={handleSubmit(create)} ref={formRef}>
           {step === 'profile' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Link to="/" className={noStyleLinkClass}>
+            <>
+              <CardContentBlock
+                title="Create Profile"
+                visual={
+                  <ChainweaverAlphaLogoKdacolorLight width={64} height={64} />
+                }
+              >
+                <Stack
+                  flexDirection={'column'}
+                  gap={'lg'}
+                  className={wrapperClass}
+                >
+                  <Stack flexDirection={'column'}>
+                    <Controller
+                      name="profileName"
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                      }}
+                      render={({ field, fieldState: { error } }) => (
+                        <Stack
+                          flexDirection={'column'}
+                          gap={'md'}
+                          marginBlock="md"
+                        >
+                          <Label bold>Profile name</Label>
+                          <Stack gap="sm" flexDirection={'row'}>
+                            <InitialsAvatar
+                              name={field.value}
+                              accentColor={accentColor}
+                              onClick={() => {
+                                console.log('click');
+                                setValue(
+                                  'accentColor',
+                                  config.colorList[rotateColor.current()],
+                                );
+                              }}
+                            />
+                            <TextField
+                              id="profileName"
+                              type="text"
+                              autoFocus
+                              defaultValue={field.value}
+                              value={field.value}
+                              onChange={field.onChange}
+                              key="profileName"
+                              isInvalid={!isValid && !!error}
+                              errorMessage={error && error.message}
+                            />
+                          </Stack>
+                        </Stack>
+                      )}
+                    />
+                  </Stack>
+                  <Stack flexDirection={'column'} gap={'lg'}>
+                    <Text size="smallest">
+                      Your system supports{' '}
+                      <Text bold size="smallest">
+                        WebAuthn
+                      </Text>{' '}
+                      so you can create a more secure and more convenient
+                      password-less profile!
+                    </Text>
+                  </Stack>
+                  <Stack flexDirection="row" gap={'sm'}></Stack>
+                </Stack>
+              </CardContentBlock>
+              <CardFooterGroup>
+                <Stack width="100%">
+                  <Link to="/" className={noStyleLinkClass}>
+                    <Button
+                      variant="outlined"
+                      isCompact
+                      type="button"
+                      onPress={() => {
+                        throw new Error('back');
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Link>
+                </Stack>
+                <CardFooterGroup>
                   <Button
-                    variant="outlined"
-                    isCompact
                     type="button"
-                    onPress={() => {
-                      throw new Error('back');
+                    variant="transparent"
+                    onClick={() => setStep('set-password')}
+                  >
+                    Prefer password
+                  </Button>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      createWebAuthnCredential();
                     }}
                   >
-                    Back
+                    Password-less
                   </Button>
-                </Link>
-              </Stack>
-              <Stack flexDirection={'column'}>
-                <Heading variant="h4">Create Profile</Heading>
-                <Controller
-                  name="profileName"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                  }}
-                  render={({ field, fieldState: { error } }) => (
-                    <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
-                      <Label bold>Profile name</Label>
-                      <Stack gap="sm" flexDirection={'row'}>
-                        <InitialsAvatar
-                          name={field.value}
-                          accentColor={accentColor}
-                          onClick={() => {
-                            console.log('click');
-                            setValue(
-                              'accentColor',
-                              config.colorList[rotateColor.current()],
-                            );
-                          }}
-                        />
-                        <TextField
-                          id="profileName"
-                          type="text"
-                          autoFocus
-                          defaultValue={field.value}
-                          value={field.value}
-                          onChange={field.onChange}
-                          key="profileName"
-                          isInvalid={!isValid && !!error}
-                          errorMessage={error && error.message}
-                        />
-                      </Stack>
-                    </Stack>
-                  )}
-                />
-              </Stack>
-              <Stack flexDirection={'column'} gap={'lg'}>
-                <Text size="smallest">
-                  Your system supports{' '}
-                  <Text bold size="smallest">
-                    WebAuthn
-                  </Text>{' '}
-                  so you can create a more secure and more convenient
-                  password-less profile!
-                </Text>
-              </Stack>
-              <Stack flexDirection="row" gap={'sm'}>
-                <Button
-                  type="button"
-                  variant="transparent"
-                  onClick={() => setStep('set-password')}
-                >
-                  Prefer password
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    createWebAuthnCredential();
-                  }}
-                >
-                  Password-less
-                </Button>
-              </Stack>
-            </Stack>
+                </CardFooterGroup>
+              </CardFooterGroup>
+            </>
           )}
           {step === 'set-password' && (
             <Stack flexDirection={'column'} gap={'lg'}>
@@ -342,7 +364,7 @@ export function CreateProfile() {
             />
           )}
         </form>
-      </AuthCard>
+      </Card>
     </>
   );
 }
