@@ -13,6 +13,10 @@ const variants = getVariants(button);
 const meta: Meta<IButtonGroupProps> = {
   title: 'Components/ButtonGroup',
   parameters: {
+    controls: {
+      hideNoControlsWarning: true,
+      sort: 'requiredFirst',
+    },
     docs: {
       description: {
         component:

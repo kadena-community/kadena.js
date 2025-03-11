@@ -1,6 +1,20 @@
-import { globalStyle, style } from './../../styles';
+import { globalStyle, recipe, style } from './../../styles';
 
 export const buttonGroupClass = style({});
+export const buttonGroupRecipe = recipe({
+  base: {},
+  variants: {
+    variant: {
+      primary: {},
+      transparent: {},
+      info: {},
+      warning: {},
+      positive: {},
+      negative: {},
+      outlined: {},
+    },
+  },
+});
 
 globalStyle(
   `${buttonGroupClass} button:not(:first-child):not(:last-child), ${buttonGroupClass} a:not(:first-child):not(:last-child)`,
@@ -25,14 +39,14 @@ globalStyle(
 );
 
 //variants
-globalStyle(
-  `${buttonGroupClass}[data-variant="primary"] button:not(:first-child), ${buttonGroupClass}[data-variant="primary"] a:not(:first-child)`,
-  {
-    border: 0,
-    borderInlineStartWidth: '1px',
-    borderStyle: 'solid',
-  },
-);
+// globalStyle(
+//   `${buttonGroupClass}[data-variant="outlined"] button:not(:first-child), ${buttonGroupClass}[data-variant="outlined"] a:not(:first-child)`,
+//   {
+//     border: 0,
+//     borderInlineStartWidth: '0px',
+//     borderStyle: 'solid',
+//   },
+// );
 
 globalStyle(
   `${buttonGroupClass} button:not(:last-child), ${buttonGroupClass} a:not(:last-child)`,
