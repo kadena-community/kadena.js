@@ -2,13 +2,26 @@ import { IDBService, dbService } from '@/modules/db/db.service';
 import { execInSequence } from '@/utils/helpers';
 import { BuiltInPredicate, ChainId } from '@kadena/client';
 import { UUID } from '../types';
+import { Guard, KeysetGuard, KeysetRefGuard } from './guards';
+
+export type IGuard = Guard & {
+  principal: string;
+};
+
+export type IKeysetGuard = KeysetGuard & {
+  principal: string;
+};
+
+export type IKeysetRefGuard = KeysetRefGuard & {
+  principal: string;
+};
 
 export interface Fungible {
   contract: string; // unique identifier
   title: string;
   symbol: string;
   interface: 'fungible-v2';
-  chainIds: ChainId[];
+  networkUUIDs?: UUID[];
 }
 
 export interface IKeySet {
@@ -27,35 +40,25 @@ export interface IAccount {
   networkUUID: UUID;
   profileId: string;
   contract: string;
-  keysetId: string;
   address: string;
   overallBalance: string;
   chains: Array<{
     chainId: ChainId;
     balance: string;
   }>;
-  keyset?: IKeySet;
+  guard: IGuard;
+  keysetId?: string;
   alias?: string;
+  syncTime?: number;
 }
 
-export type IWatchedAccount = Omit<IAccount, 'keysetId' | 'keyset'> & {
-  keyset: {
-    guard: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
-  };
-  watched: true;
-};
+export interface IOwnedAccount extends IAccount {
+  guard: IKeysetGuard;
+}
 
-const deleteKey = <Key extends string, T extends Partial<Record<Key, unknown>>>(
-  obj: T,
-  key: Key,
-) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { [key]: toBeDeleted, ...rest } = obj;
-  return rest;
-};
+export interface IWatchedAccount extends IAccount {
+  _watched?: true;
+}
 
 const createAccountRepository = ({
   getAll,
@@ -67,12 +70,7 @@ const createAccountRepository = ({
   const getKeyset = async (id: string): Promise<IKeySet> => {
     return getOne('keyset', id);
   };
-
-  const appendKeyset = async (account: IAccount) => ({
-    ...account,
-    keyset: await getKeyset(account.keysetId),
-  });
-  return {
+  const actions = {
     async getKeysetByPrincipal(
       principal: string,
       profileId: string,
@@ -96,26 +94,25 @@ const createAccountRepository = ({
       return keysets;
     },
     addAccount: async (account: IAccount): Promise<void> => {
-      return add('account', deleteKey(account, 'keyset' as const));
+      return add('account', account);
     },
 
     updateAccount: async (account: IAccount): Promise<void> => {
-      return update('account', deleteKey(account, 'keyset'));
+      return update('account', account);
     },
     deleteAccount: async (uuid: string): Promise<void> => {
       return remove('account', uuid);
     },
-    getAccount: async (id: string) => {
-      const account: IAccount = await getOne('account', id);
-      return appendKeyset(account);
+    getAccount: async (id: string): Promise<IAccount> => {
+      return getOne('account', id);
     },
-    getAccountByAddress: async (address: string) => {
+    getAccountsByAddress: async (address: string) => {
       const account: Array<IAccount> = await getAll(
         'account',
         address,
         'address',
       );
-      return Promise.all(account.map(appendKeyset));
+      return account;
     },
     getAccountByKeyset: async (keysetId: string) => {
       const accounts: IAccount[] = await getAll(
@@ -125,16 +122,24 @@ const createAccountRepository = ({
       );
       return accounts;
     },
-    async getAccountsByProfileId(profileId: string, networkUUID: UUID) {
-      const accounts: Array<IAccount> = await getAll(
-        'account',
-        IDBKeyRange.only([profileId, networkUUID]),
-        'profile-network',
-      );
-      return Promise.all(accounts.map(appendKeyset));
+    async getAccountsByProfileId(
+      profileId: string,
+      networkUUID?: UUID,
+    ): Promise<IAccount[]> {
+      if (networkUUID) {
+        return getAll(
+          'account',
+          IDBKeyRange.only([profileId, networkUUID]),
+          'profile-network',
+        );
+      }
+      return getAll('account', profileId, 'profileId');
     },
     addFungible: async (fungible: Fungible): Promise<void> => {
       return add('fungible', fungible);
+    },
+    updateFungible: async (fungible: Fungible): Promise<void> => {
+      return update('fungible', fungible);
     },
     getFungible: async (contract: string): Promise<Fungible> => {
       return getOne('fungible', contract);
@@ -142,21 +147,18 @@ const createAccountRepository = ({
     getAllFungibles: async (): Promise<Fungible[]> => {
       return ((await getAll('fungible')) as Fungible[]).reverse();
     },
-    addWatchedAccount: async (account: IWatchedAccount): Promise<void> => {
-      return add('watched-account', account);
-    },
-    updateWatchedAccount: async (account: IWatchedAccount): Promise<void> => {
-      return update('watched-account', account);
-    },
-    async getWatchedAccountsByProfileId(profileId: string, networkUUID: UUID) {
-      const accounts: Array<IWatchedAccount> = await getAll(
-        'watched-account',
-        IDBKeyRange.only([profileId, networkUUID]),
-        'profile-network',
-      );
-      return accounts;
+
+    patchAccount: async (
+      uuid: string,
+      patch: Partial<IAccount>,
+    ): Promise<IAccount> => {
+      const account = await actions.getAccount(uuid);
+      const updatedAccount = { ...account, ...patch };
+      await actions.updateAccount(updatedAccount);
+      return updatedAccount;
     },
   };
+  return actions;
 };
 
 export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
@@ -172,14 +174,7 @@ export const addDefaultFungibles = execInSequence(async () => {
       symbol: 'KDA',
       interface: 'fungible-v2',
       contract: 'coin',
-      chainIds,
     };
     await accountRepository.addFungible(coin);
   }
 });
-
-export const isWatchedAccount = (
-  account: IWatchedAccount | IAccount | undefined,
-): account is IWatchedAccount => {
-  return Boolean(account && 'watched' in account && account.watched);
-};

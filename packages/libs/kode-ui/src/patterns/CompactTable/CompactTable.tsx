@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ITableProps } from 'src/components';
 import { Media } from './../../components/Media';
 import { CompactTableDesktop } from './CompactTableDesktop/CompactTableDesktop';
 import { CompactTableMobile } from './CompactTableMobile/CompactTableMobile';
@@ -15,6 +16,7 @@ export interface ICompactTableProps {
   totalCount?: number;
   pageSize?: number;
   setPage?: (page: ITablePaginationPageOptions) => void;
+  variant?: ITableProps<HTMLTableElement>['variant'];
   pageInfo?: {
     endCursor?: string | null;
     startCursor?: string | null;
@@ -29,26 +31,37 @@ export const CompactTable: React.FC<ICompactTableProps> = ({
   label,
   isLoading = false,
   totalCount,
+  variant = 'default',
   pageSize,
   setPage,
   pageInfo,
+  ...props
 }) => {
   return (
     <>
       <Media lessThan="sm" className={fullWidthClass}>
-        <CompactTableMobile isLoading={isLoading} fields={fields} data={data} />
+        <CompactTableMobile
+          data-isloading={isLoading}
+          variant={variant}
+          isLoading={isLoading}
+          fields={fields}
+          data={data}
+          {...props}
+        />
       </Media>
       <Media greaterThanOrEqual="sm" className={fullWidthClass}>
         <CompactTableDesktop
+          data-isloading={isLoading}
+          variant={variant}
           isLoading={isLoading}
           fields={fields}
           data={data}
           label={label}
+          {...props}
         />
       </Media>
-      {!!(setPage && pageInfo && totalCount && pageSize) && (
+      {!!(setPage && pageInfo && pageSize) && (
         <TablePagination
-          totalCount={totalCount}
           pageSize={pageSize}
           setPage={setPage}
           pageInfo={pageInfo}

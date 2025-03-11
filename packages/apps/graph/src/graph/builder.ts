@@ -18,7 +18,6 @@ import {
   BigIntResolver,
   DateTimeResolver,
   NonNegativeFloatResolver,
-  PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
@@ -38,6 +37,7 @@ import type {
   INonFungibleToken,
   INonFungibleTokenBalance,
   IPactQueryResponse,
+  IRawGuard,
   ITransactionCapability,
   ITransactionCommand,
   ITransactionMempoolInfo,
@@ -60,10 +60,6 @@ interface IDefaultTypesExtension {
       Input: number;
       Output: number;
     };
-    PositiveFloat: {
-      Input: number;
-      Output: number;
-    };
   };
 }
 
@@ -74,7 +70,7 @@ export interface IContext {
 }
 
 export const PRISMA = {
-  DEFAULT_SIZE: 20,
+  DEFAULT_SIZE: dotenv.DEFAULT_PAGE_SIZE,
 };
 
 const traceResolver = createSentryWrapper({
@@ -108,6 +104,7 @@ export const builder = new SchemaBuilder<
       NetworkInfo: INetworkInfo;
       BlockNeighbor: IBlockNeighbor;
       KeysetGuard: IKeysetGuard;
+      RawGuard: IRawGuard;
     };
     Interfaces: {
       IGuard: IGuard;
@@ -183,7 +180,6 @@ const SCALARS = [
   ['BigInt', BigIntResolver],
   ['DateTime', DateTimeResolver],
   ['Decimal', NonNegativeFloatResolver],
-  ['PositiveFloat', PositiveFloatResolver],
 ] as const;
 
 // add the custom scalars

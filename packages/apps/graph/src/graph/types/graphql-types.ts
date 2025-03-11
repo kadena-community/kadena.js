@@ -1,12 +1,25 @@
 import type { Signer, Transaction, Transfer } from '@prisma/client';
 
 export interface IGuard {
+  raw: string;
+
+  /** @deprecated */
+  keys?: string[];
+  /** @deprecated */
+  predicate?: 'keys-all' | 'keys-any' | 'keys-two' | '';
+}
+
+export interface IKeysetGuard extends IGuard {
   keys: string[];
   predicate: 'keys-all' | 'keys-any' | 'keys-two' | '';
   raw: string;
 }
 
-export interface IKeysetGuard extends IGuard {}
+export interface IRawGuard extends IGuard {
+  keys: string[];
+  predicate: 'keys-all' | 'keys-any' | 'keys-two' | '';
+  raw: string;
+}
 
 export interface IGasLimitEstimation {
   amount: number;
@@ -134,7 +147,6 @@ export interface ITransactionResult {
   goodResult: string | null;
   height: bigint;
   logs: string | null;
-  metadata: string | null;
   eventCount: bigint | null;
   transactionId: bigint | null;
 }

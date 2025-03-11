@@ -2,16 +2,25 @@ import {
   ITransaction,
   TransactionStatus,
 } from '@/modules/transaction/transaction.repository';
+import { syncTransactionStatus } from '@/modules/transaction/transaction.service';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 import { shorten } from '@/utils/helpers';
+import { normalizeSigs } from '@/utils/normalizeSigs';
+import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
   MonoCheck,
   MonoClose,
+  MonoCloudSync,
   MonoLoading,
   MonoPauseCircle,
+  MonoRefresh,
+  MonoShare,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
-import { Button, Stack, Text } from '@kadena/kode-ui';
+import { Button, Notification, Stack, Text } from '@kadena/kode-ui';
+import { useMemo, useState } from 'react';
 import { failureClass, pendingClass, successClass } from './style.css';
 
 export const steps: TransactionStatus[] = [
@@ -43,12 +52,14 @@ export function TxPipeLine({
   signAll,
   onSubmit,
   sendDisabled,
+  onPreflight,
 }: {
   tx: ITransaction;
   contTx?: ITransaction;
   variant: 'tile' | 'expanded' | 'minimized';
-  signAll?: () => void;
-  onSubmit?: () => void;
+  signAll?: () => Promise<void>;
+  onSubmit?: (skipPreflight?: boolean) => void;
+  onPreflight?: () => void;
   sendDisabled?: boolean;
 }) {
   const showAfterCont = !contTx || variant === 'expanded';
@@ -61,6 +72,7 @@ export function TxPipeLine({
           tx,
           signAll,
           onSubmit,
+          onPreflight,
           sendDisabled,
           contTx,
         }}
@@ -74,19 +86,45 @@ function TxStatusList({
   showAfterCont,
   tx,
   signAll,
-  onSubmit,
+  onSubmit = () => {},
   sendDisabled,
   contTx,
+  onPreflight = () => {},
 }: {
   variant: 'tile' | 'expanded' | 'minimized';
   showAfterCont: boolean;
   tx: ITransaction;
-  signAll?: () => void;
-  onSubmit?: () => void;
+  signAll?: () => Promise<void>;
+  onSubmit?: (skipPreflight?: boolean) => void;
+  onPreflight?: () => void;
   sendDisabled?: boolean;
   contTx?: ITransaction | null;
 }) {
+  const { getPublicKeyData, client } = useWallet();
+  const signers = useMemo(() => normalizeSigs(tx), [tx]);
   const textSize = variant === 'tile' ? 'smallest' : 'base';
+  const signedByYou = !signers.find(
+    (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
+  );
+  const [copied, setCopied] = useState(false);
+  const [signError, setSignError] = useState<string | null>(null);
+
+  const copyTx = () => {
+    const encodedTx = base64UrlEncodeArr(
+      new TextEncoder().encode(
+        JSON.stringify({
+          hash: tx.hash,
+          cmd: tx.cmd,
+          sigs: tx.sigs,
+        }),
+      ),
+    );
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    navigator.clipboard.writeText(`${baseUrl}/sig-builder#${encodedTx}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const statusList = [
     variant !== 'minimized' && (
       <Stack justifyContent={'space-between'}>
@@ -103,18 +141,62 @@ function TxStatusList({
           <Text size={textSize} className={pendingClass}>
             <Stack alignItems={'center'} gap={'xs'}>
               <MonoPauseCircle />
-              Waiting for sign
+              {signedByYou ? 'add external signatures' : 'Waiting for sign'}
             </Stack>
           </Text>
-          {variant === 'expanded' && (
-            <Stack>
+
+          {variant === 'expanded' && signedByYou && (
+            <Stack gap={'sm'}>
               <Button
+                startVisual={<MonoCloudSync />}
                 isCompact
-                onClick={() => signAll!()}
-                startVisual={<MonoSignature />}
+                variant="outlined"
+                onClick={() => {
+                  syncTransactionStatus(tx, client);
+                }}
               >
-                Sign all possible signers
+                query chain
               </Button>
+              <Button startVisual={<MonoShare />} isCompact onClick={copyTx}>
+                {copied ? 'copied' : 'Share'}
+              </Button>
+            </Stack>
+          )}
+          {variant === 'expanded' && !signedByYou && (
+            <Stack flexDirection={'column'} gap={'sm'}>
+              {signError && (
+                <Notification intent="negative" role="alert">
+                  {signError}
+                </Notification>
+              )}
+              <Stack gap={'sm'}>
+                <Button
+                  data-testid="signTx"
+                  isCompact
+                  onClick={() => {
+                    if (signAll) {
+                      signAll().catch((e) => {
+                        const errorMessage = getErrorMessage(
+                          e,
+                          "Couldn't sign transaction",
+                        );
+                        setSignError(errorMessage);
+                      });
+                    }
+                  }}
+                  startVisual={<MonoSignature />}
+                >
+                  Sign Tx
+                </Button>
+                <Button
+                  variant="outlined"
+                  startVisual={<MonoShare />}
+                  isCompact
+                  onClick={copyTx}
+                >
+                  {copied ? 'copied' : 'Share'}
+                </Button>
+              </Stack>
             </Stack>
           )}
         </Stack>
@@ -137,23 +219,39 @@ function TxStatusList({
           <Text size={textSize} className={pendingClass}>
             <Stack alignItems={'center'} gap={'xs'}>
               <MonoPauseCircle />
-              {sendDisabled ? 'Send is pending' : 'Ready to send'}
+              {sendDisabled ? 'Transaction is pending' : 'Ready to preflight'}
             </Stack>
           </Text>
           {variant === 'expanded' && (
-            <Button
-              isCompact
-              onClick={onSubmit}
-              isDisabled={sendDisabled}
-              startVisual={<MonoViewInAr />}
-            >
-              Send transaction
-            </Button>
+            <>
+              <Text size="small">
+                Preflight will test your transaction first to avoid paying gas
+                for a failed submission.
+              </Text>
+              <Stack gap={'sm'}>
+                <Button
+                  isCompact
+                  onClick={() => onPreflight()}
+                  isDisabled={sendDisabled}
+                  startVisual={<MonoViewInAr />}
+                >
+                  Preflight
+                </Button>
+                <Button
+                  variant="outlined"
+                  startVisual={<MonoShare />}
+                  isCompact
+                  onClick={copyTx}
+                >
+                  {copied ? 'copied' : 'Share'}
+                </Button>
+              </Stack>
+            </>
           )}
         </Stack>
       ),
     showAfterCont && statusPassed(tx.status, 'preflight') && (
-      <Stack>
+      <Stack gap={'sm'} alignItems={'center'}>
         <Text
           size={textSize}
           className={
@@ -171,16 +269,75 @@ function TxStatusList({
             preflight
           </Stack>
         </Text>
+        {variant === 'expanded' &&
+          tx.status === 'preflight' &&
+          tx.preflight?.result.status === 'failure' && (
+            <Stack>
+              <Button isCompact onClick={() => onPreflight()}>
+                <MonoRefresh />
+              </Button>
+              <Button
+                isCompact
+                variant="transparent"
+                onClick={() => onSubmit(true)}
+              >
+                Skip
+              </Button>
+            </Stack>
+          )}
       </Stack>
     ),
+    showAfterCont &&
+      variant !== 'tile' &&
+      tx.status === 'preflight' &&
+      tx.preflight?.result.status === 'success' && (
+        <Stack flexDirection={'column'} gap={'md'}>
+          <Text size={textSize} className={pendingClass}>
+            <Stack alignItems={'center'} gap={'xs'}>
+              <MonoPauseCircle />
+              Ready to send
+            </Stack>
+          </Text>
+          {variant === 'expanded' && (
+            <Stack gap={'sm'}>
+              <Button
+                isCompact
+                onClick={() => onSubmit()}
+                isDisabled={sendDisabled}
+                startVisual={<MonoViewInAr />}
+              >
+                Send tx
+              </Button>
+              <Button
+                variant="outlined"
+                startVisual={<MonoShare />}
+                isCompact
+                onClick={copyTx}
+              >
+                {copied ? 'copied' : 'Share'}
+              </Button>
+            </Stack>
+          )}
+        </Stack>
+      ),
     showAfterCont && statusPassed(tx.status, 'submitted') && (
-      <Stack>
-        <Text size={textSize} className={successClass}>
+      <Stack gap={'sm'} alignItems={'center'}>
+        <Text
+          size={textSize}
+          className={tx.request ? successClass : failureClass}
+        >
           <Stack alignItems={'center'} gap={'xs'}>
-            <MonoCheck />
+            {tx.request ? <MonoCheck /> : <MonoClose />}
             Send
           </Stack>
         </Text>
+        {variant === 'expanded' && !tx.request && (
+          <Stack>
+            <Button isCompact onClick={() => onSubmit(true)}>
+              <MonoRefresh />
+            </Button>
+          </Stack>
+        )}
       </Stack>
     ),
     showAfterCont &&
@@ -219,7 +376,7 @@ function TxStatusList({
       </Stack>
     ),
     statusPassed(tx.status, 'success') && [
-      tx.continuation?.autoContinue && !contTx && (
+      tx.continuation?.autoContinue && !tx.continuation.proof && (
         <Stack>
           <Text size={textSize} className={pendingClass}>
             <Stack alignItems={'center'} gap={'xs'}>

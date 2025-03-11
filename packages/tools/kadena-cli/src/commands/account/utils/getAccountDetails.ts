@@ -1,3 +1,4 @@
+import { getPactErrorCode } from '@kadena/client';
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import type { IAccountDetailsResult } from '../types.js';
@@ -42,7 +43,7 @@ export const getAccountDetails = async (
     const accountDetails = await getAccountDetailsFromChain(config);
     return accountDetails;
   } catch (error) {
-    if (error.message.includes('row not found') === true) {
+    if (getPactErrorCode(error) === 'RECORD_NOT_FOUND') {
       return;
     }
     throw new Error(error.message);

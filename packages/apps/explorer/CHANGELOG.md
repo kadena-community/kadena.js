@@ -1,5 +1,109 @@
 # @kadena/explorer
 
+## 0.9.4
+
+### Patch Changes
+
+- Updated dependencies \[8dd7433]
+- Updated dependencies \[034b2c2]
+  - @kadena/kode-ui\@0.20.2
+  - @kadena/graph\@2.2.2
+
+## 0.9.3
+
+### Patch Changes
+
+- Updated dependencies \[ea02b15]
+  - @kadena/graph\@2.2.1
+
+## 0.9.2
+
+### Patch Changes
+
+- Updated dependencies \[44b5408]
+  - @kadena/graph\@2.2.0
+
+## 0.9.1
+
+### Patch Changes
+
+- f87b1f7: Reordering columns to present the first column as the one to link to
+
+  Remove toggling close of truncated content. Will always open so users can no
+  select and copy
+
+- Updated dependencies \[35cad4d]
+
+- Updated dependencies \[ebc4e5c]
+  - @kadena/graph\@2.1.0
+  - @kadena/kode-ui\@0.20.1
+
+## 0.9.0
+
+### Minor Changes
+
+- 7a6f1ac: Various QoL improvements for Explorer
+
+  - show specific messages when account, block or transactions are not found
+    (this can be extended to show the search query on other networks)
+  - when switching networks, the url will be preserved
+  - added logic to use `?networkId=<networkid>` in query string parameter to
+    improve navigating from external sources
+
+### Patch Changes
+
+- ee8e99b: Remove AccountName column from Transactions when querying for a
+  specific account
+- Updated dependencies \[ee8e99b]
+  - @kadena/graph\@2.0.5
+
+## 0.8.13
+
+### Patch Changes
+
+- Updated dependencies \[629766c]
+- Updated dependencies \[629766c]
+  - @kadena/graph\@2.0.4
+
+## 0.8.12
+
+### Patch Changes
+
+- Updated dependencies \[5c5c747]
+- Updated dependencies \[f35e30c]
+- Updated dependencies \[4c684a2]
+- Updated dependencies \[dbd9076]
+  - @kadena/kode-ui\@0.20.0
+  - @kadena/graph\@2.0.3
+
+## 0.8.11
+
+### Patch Changes
+
+- Updated dependencies \[2a073ed]
+  - @kadena/graph\@2.0.2
+
+## 0.8.10
+
+### Patch Changes
+
+- Updated dependencies \[868c732]
+  - @kadena/graph\@2.0.1
+
+## 0.8.9
+
+### Patch Changes
+
+- Updated dependencies \[a8204ab]
+- Updated dependencies \[7cefeb1]
+- Updated dependencies \[edcfbe0]
+- Updated dependencies \[8467af0]
+- Updated dependencies \[14e809a]
+- Updated dependencies \[8467af0]
+  - @kadena/graph\@2.0.0
+  - @kadena/kode-ui\@0.19.0
+  - @kadena/kode-icons\@0.3.0
+
 ## 0.8.8
 
 ### Patch Changes

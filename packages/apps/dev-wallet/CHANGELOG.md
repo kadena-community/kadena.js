@@ -1,5 +1,96 @@
 # @kadena/dev-wallet
 
+## 0.5.4
+
+### Patch Changes
+
+- 8dd7433: Change the KLogo to the text logo
+- Updated dependencies \[8dd7433]
+  - @kadena/kode-ui\@0.20.2
+  - @kadena/chainweaver-pact-console-plugin\@0.0.4
+
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies \[0ebc455]
+  - @kadena/chainweb-node-client\@0.9.1
+  - @kadena/chainweaver-pact-console-plugin\@0.0.3
+  - @kadena/client\@1.17.1
+  - @kadena/client-utils\@0.12.2
+  - @kadena/pactjs-generator\@1.17.1
+
+## 0.5.2
+
+### Patch Changes
+
+- Updated dependencies \[67ee479]
+  - @kadena/chainweb-node-client\@0.9.0
+  - @kadena/client\@1.17.0
+  - @kadena/chainweaver-pact-console-plugin\@0.0.2
+  - @kadena/client-utils\@0.12.1
+  - @kadena/pactjs-generator\@1.17.0
+
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies \[ebc4e5c]
+  - @kadena/kode-ui\@0.20.1
+
+## 0.5.0
+
+### Minor Changes
+
+- 7a6f1ac: Adds links to explorer.kadena.io for Transfers and Transactions
+
+### Patch Changes
+
+- Updated dependencies \[1cba919]
+  - @kadena/client-utils\@0.12.0
+
+## 0.4.6
+
+### Patch Changes
+
+- Updated dependencies \[5c5c747]
+- Updated dependencies \[f35e30c]
+- Updated dependencies \[4c684a2]
+- Updated dependencies \[5e9bfd0]
+- Updated dependencies \[dbd9076]
+- Updated dependencies \[8615d09]
+- Updated dependencies \[1f46bee]
+  - @kadena/kode-ui\@0.20.0
+  - @kadena/chainweb-node-client\@0.8.0
+  - @kadena/client\@1.16.0
+  - @kadena/hd-wallet\@0.6.1
+  - @kadena/client-utils\@0.11.1
+  - @kadena/pactjs-generator\@1.16.0
+
+## 0.4.5
+
+### Patch Changes
+
+- Updated dependencies \[90a5684]
+  - @kadena/hd-wallet\@0.6.0
+
+## 0.4.4
+
+### Patch Changes
+
+- Updated dependencies \[7cefeb1]
+- Updated dependencies \[edcfbe0]
+- Updated dependencies \[14e809a]
+  - @kadena/kode-ui\@0.19.0
+  - @kadena/chainweb-node-client\@0.7.0
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/hd-wallet\@0.5.0
+  - @kadena/kode-icons\@0.3.0
+  - @kadena/pactjs\@0.4.3
+  - @kadena/pactjs-generator\@1.15.0
+
 ## 0.4.3
 
 ### Patch Changes

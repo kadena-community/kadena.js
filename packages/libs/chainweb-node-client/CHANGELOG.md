@@ -1,5 +1,23 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.9.1
+
+### Patch Changes
+
+- 0ebc455: remove testnet05 option
+
+## 0.9.0
+
+### Minor Changes
+
+- 67ee479: Add support for pact 5 error messages
+
+## 0.8.0
+
+### Minor Changes
+
+- 5e9bfd0: Support for passing a request init object to client functions
+
 ## 0.7.0
 
 ### Minor Changes

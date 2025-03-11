@@ -19,6 +19,7 @@ jobs:
       id-token: write
       contents: write
       pull-requests: write
+      packages: write
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -29,14 +30,18 @@ jobs:
           show-progress: false
           token: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
 
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            graph:
+              - 'packages/apps/graph/**'
+
       - name: Runner setup
         uses: ./.github/actions/runner-setup
 
       - name: Lint monorepo root
         run: pnpm run lint
-
-      - name: Cache for Turbo
-        uses: rharkor/caching-for-turbo@v1.5
 
       - name: Build, lint, test all packages
         run: pnpm turbo lint build test
@@ -61,3 +66,56 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         # Do something more interesting when a publish happens.
         run: echo ${{ steps.changesets.outputs.publishedPackages }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Meta for graphql
+        id: meta-graphql
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/kadena-community/graphql
+          tags: |
+            type=ref,event=branch
+            type=sha,format=long
+
+      - name: Build and Push graphql image
+        uses: docker/build-push-action@v6
+        with:
+          context: packages/apps/graph
+          file: packages/apps/graph/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-graphql.outputs.tags }}
+          labels: ${{ steps.meta-graphql.outputs.labels }}
+
+      - name: Docker Meta for graphql-source
+        if: steps.filter.outputs.graph == 'true'
+        id: meta-graphql-source
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/kadena-community/graphql
+          tags: |
+            type=ref,event=branch,prefix=preview-
+            type=sha,format=long,prefix=preview-
+
+      - name: Build and Push graphql-source image
+        if: steps.filter.outputs.graph == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: packages/apps/graph
+          file: packages/apps/graph/source.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-graphql-source.outputs.tags }}
+          labels: ${{ steps.meta-graphql-source.outputs.labels }}

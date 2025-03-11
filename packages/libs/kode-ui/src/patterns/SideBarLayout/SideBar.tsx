@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../components';
-import { Button, Media, Stack } from './../../components';
+import { Button, Stack } from './../../components';
 import { useLayout } from './components/LayoutProvider';
 import { KLogo } from './components/Logo/KLogo';
-import { KadenaLogo } from './components/Logo/KadenaLogo';
+import { KLogoText } from './components/Logo/KLogoText';
 import { SideBarAppContext } from './components/SideBarAppContext';
 import { SideBarContext } from './components/SideBarContext';
 import { SideBarNavigation } from './components/SideBarNavigation';
@@ -24,7 +24,6 @@ export interface ISideBarProps extends PropsWithChildren {
   navigation?: ReactElement;
   context?: ReactElement;
   logo?: ReactElement;
-  minifiedLogo?: ReactElement;
 }
 
 export const SideBar: FC<ISideBarProps> = ({
@@ -33,7 +32,6 @@ export const SideBar: FC<ISideBarProps> = ({
   navigation,
   context,
   logo,
-  minifiedLogo,
 }) => {
   const { isExpanded, handleToggleExpand } = useLayout();
 
@@ -44,29 +42,28 @@ export const SideBar: FC<ISideBarProps> = ({
   };
 
   const ShowLogo = () => {
-    if (!isExpanded) {
-      return minifiedLogo ? minifiedLogo : <KLogo height={40} />;
-    }
-
-    return logo ? logo : <KadenaLogo height={40} />;
+    return logo ? logo : <KLogoText />;
+  };
+  const ShowSmallLogo = () => {
+    return <KLogo />;
   };
 
   return (
     <>
-      <Stack
+      <button
+        type="button"
         className={menuBackdropClass({ expanded: isExpanded })}
-        onClick={handleExpand}
+        onClick={(e) => handleExpand(e as unknown as PressEvent)}
       />
+
       <aside
+        data-testid="leftaside"
         className={classNames(menuWrapperClass({ expanded: isExpanded }), {
           [menuWrapperMobileExpandedClass]: isExpanded,
         })}
       >
         <Stack className={classNames(menuMenuIconClass)}>
-          <div>
-            <Media lessThan="md">{ShowLogo()}</Media>
-            <Media greaterThanOrEqual="md">{ShowLogo()}</Media>
-          </div>
+          {isExpanded ? ShowLogo() : ShowSmallLogo()}
 
           <Button
             variant="transparent"
@@ -74,11 +71,9 @@ export const SideBar: FC<ISideBarProps> = ({
             startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
           />
         </Stack>
-
         {appContext && <SideBarAppContext>{appContext}</SideBarAppContext>}
         {navigation && <SideBarNavigation>{navigation}</SideBarNavigation>}
         {context && <SideBarContext>{context}</SideBarContext>}
-
         {children}
       </aside>
     </>

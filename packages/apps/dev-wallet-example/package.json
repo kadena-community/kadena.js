@@ -1,6 +1,6 @@
 {
   "name": "@kadena/dev-wallet-example",
-  "version": "0.2.0",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "next": "14.2.2"

@@ -1,9 +1,9 @@
 import { getFungibleChainAccount } from '@services/account-service';
 import { dotenv } from '@utils/dotenv';
+import { isDefined } from '@utils/isDefined';
 import { networkData } from '@utils/network';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
-import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('fungibleAccount', (t) =>
@@ -19,7 +19,7 @@ builder.queryField('fungibleAccount', (t) =>
         },
       }),
       fungibleName: t.arg.string({
-        required: false,
+        defaultValue: dotenv.DEFAULT_FUNGIBLE_NAME,
         validate: {
           minLength: 1,
         },
@@ -32,14 +32,12 @@ builder.queryField('fungibleAccount', (t) =>
           networkData.chainIds.map(async (chainId) => {
             return getFungibleChainAccount({
               chainId: chainId,
-              fungibleName: args.fungibleName || dotenv.DEFAULT_FUNGIBLE_NAME,
+              fungibleName: args.fungibleName as string,
               accountName: args.accountName,
             });
           }),
         )
-      ).filter(
-        (chainAccount) => chainAccount !== null,
-      ) as IFungibleChainAccount[];
+      ).filter(isDefined);
 
       if (chainAccounts.length === 0) {
         return null;
@@ -48,7 +46,7 @@ builder.queryField('fungibleAccount', (t) =>
       return {
         __typename: FungibleAccountName,
         accountName: args.accountName,
-        fungibleName: args.fungibleName || dotenv.DEFAULT_FUNGIBLE_NAME,
+        fungibleName: args.fungibleName as string,
         chainAccounts: chainAccounts,
         totalBalance: 0,
         transactions: [],

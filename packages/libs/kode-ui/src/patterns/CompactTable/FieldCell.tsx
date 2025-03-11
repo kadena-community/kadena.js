@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text } from './../../components';
 import { ValueLoader } from './LoadingSkeleton/ValueLoader/ValueLoader';
 import {
@@ -20,10 +20,13 @@ export const FieldCell: FC<IFieldCellProps> = ({
   isMobile = false,
 }) => {
   if (
-    typeof field.key === 'string' &&
+    (typeof field.key === 'string' || typeof field.key === 'object') &&
     (typeof field.render === 'function' || !field.render)
   ) {
-    const Render = field.render ? field.render : FormatDefault();
+    const Render = useMemo(
+      () => (field.render ? field.render : FormatDefault()),
+      [field.render],
+    );
 
     return (
       <Text

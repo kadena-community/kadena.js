@@ -29,7 +29,12 @@ export interface IPactResultSuccess {
  */
 export interface IPactResultError {
   status: 'failure';
-  error: object;
+  error: {
+    callStack: any;
+    type: string;
+    message: string;
+    info: string;
+  };
 }
 
 /**
@@ -93,11 +98,7 @@ export type ChainwebChainId = (typeof CHAINS)[number];
  * Different Chainweb network versions.
  * @alpha
  */
-export type ChainwebNetworkId =
-  | 'mainnet01'
-  | 'testnet04'
-  | 'testnet05'
-  | 'development';
+export type ChainwebNetworkId = 'mainnet01' | 'testnet04' | 'development';
 
 /**
  * A Request Key is the blake2b-256 bit hash of a Pact command.
@@ -267,18 +268,6 @@ export interface ICommandResult {
  */
 // @TODO Should `txId` and `gas` be a BigInt since Haskell defines it as int64?
 // @TODO Add `gas` to OpenApi spec?
-export interface ILocalCommandResult {
-  reqKey: IBase64Url;
-  /* eslint-disable-next-line @rushstack/no-new-null*/
-  txId: number | null;
-  result: IPactResultSuccess | IPactResultError;
-  gas: number;
-  /* eslint-disable-next-line @rushstack/no-new-null*/
-  logs: string | null;
-  /* eslint-disable-next-line @rushstack/no-new-null*/
-  continuation: IPactExec | null;
-  /* eslint-disable-next-line @rushstack/no-new-null*/
-  metaData: IChainwebResponseMetaData | null;
-  events?: Array<IPactEvent>;
+export interface ILocalCommandResult extends ICommandResult {
   preflightWarnings?: Array<string>;
 }

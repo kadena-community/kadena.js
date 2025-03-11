@@ -1,4 +1,4 @@
-import type { Network } from '@/constants/kadena';
+import type { NetworkIds } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
@@ -14,7 +14,7 @@ const debug = Debug('kadena-transfer:services:describe-module');
 export const describeModule = async (
   moduleName: string,
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkIds,
   networksData: INetworkData[],
   senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,

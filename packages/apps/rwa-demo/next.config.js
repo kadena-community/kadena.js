@@ -3,10 +3,17 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
+  swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
-  env: {},
-  async redirects() {
-    return [];
+  async rewrites() {
+    return [
+      {
+        source: '/graph',
+        destination:
+          process.env.NEXT_PUBLIC_GRAPHURL ?? 'http://localhost:8080/graphql',
+      },
+    ];
   },
 };
 

@@ -13,11 +13,13 @@ export const CompactTableMobile: FC<IProps> = ({
   data,
   fields,
   isLoading = false,
+  variant,
+  ...props
 }) => {
   return data.map((item, idx) => (
-    <section key={idx} className={sectionClass}>
-      {fields.map((field) => (
-        <div key={field.key.toString()} className={rowClass}>
+    <section key={idx} className={sectionClass({ variant })} {...props}>
+      {fields.map((field, idx) => (
+        <div key={`${field.key.toString()}${idx}`} className={rowClass}>
           <span className={headerClass}>{field.label}</span>
           <FieldCell isLoading={isLoading} item={item} field={field} isMobile />
         </div>

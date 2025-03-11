@@ -9,6 +9,7 @@ export type {
   ICheckboxGroupProps,
   ICheckboxProps,
   IComboboxProps,
+  ICompactStepperProps,
   IContentHeaderProps,
   IContextMenuDividerProps,
   IContextMenuItemProps,
@@ -75,6 +76,7 @@ export {
   Column,
   Combobox,
   ComboboxItem,
+  CompactStepper,
   ContentHeader,
   ContextMenu,
   ContextMenuDivider,
@@ -109,6 +111,8 @@ export {
   NotificationHeading,
   NumberField,
   Pagination,
+  Popover,
+  PopoverTrigger,
   ProductIcon,
   ProgressCircle,
   Radio,
@@ -136,6 +140,7 @@ export {
   Tooltip,
   TrackerCard,
   maskValue,
+  mediaProviderStyles,
   useDialog,
 } from './components';
 

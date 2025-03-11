@@ -1,6 +1,7 @@
 import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { config } from '@/config';
+import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
 import {
   PublicKeyCredentialCreate,
@@ -9,16 +10,19 @@ import {
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
-import { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import { noStyleLinkClass } from '../home/style.css';
+import InitialsAvatar from '../select-profile/initials';
+import { Label } from '../transaction/components/helpers';
 
 const rotate = (max: number, start: number = 0) => {
   let index = start;
   return () => {
     index = (index + 1) % max;
+    console.log('index', index);
     return index;
   };
 };
@@ -27,7 +31,6 @@ export function CreateProfile() {
   const {
     createProfile,
     createKey,
-    createKAccount,
     profileList,
     unlockProfile,
     activeNetwork,
@@ -45,11 +48,18 @@ export function CreateProfile() {
     rotate(config.colorList.length, profileList.length),
   );
 
+  const defaultColor = useMemo(
+    () => config.colorList[rotateColor.current()],
+    [],
+  );
+
   const {
     register,
     handleSubmit,
     getValues,
     setValue,
+    control,
+    watch,
     formState: { isValid, errors },
   } = useForm<{
     password: string;
@@ -57,16 +67,27 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
-    mode: 'all',
     defaultValues: {
       password: '',
       confirmation: '',
       profileName: isShortFlow
         ? 'default'
         : `profile-${profileList.length + 1}`,
-      accentColor: config.colorList[rotateColor.current()],
+      accentColor: defaultColor,
     },
   });
+
+  useEffect(() => {
+    console.log('profileList', profileList);
+    setValue(
+      'profileName',
+      profileList.length === 0
+        ? 'default'
+        : `profile-${profileList.length + 1}`,
+    );
+    rotateColor.current = rotate(config.colorList.length, profileList.length);
+    setValue('accentColor', config.colorList[rotateColor.current()]);
+  }, [profileList, setValue]);
 
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();
@@ -114,7 +135,13 @@ export function CreateProfile() {
 
     const key = await createKey(keySource);
 
-    await createKAccount(profile.uuid, activeNetwork.uuid, key.publicKey);
+    await createKAccount({
+      profileId: profile.uuid,
+      networkUUID: activeNetwork.uuid,
+      publicKey: key.publicKey,
+      contract: 'coin',
+      alias: 'Account 1',
+    });
 
     setMnemonic(mnemonic);
     setProfileId(profile.uuid);
@@ -147,6 +174,8 @@ export function CreateProfile() {
     await unlockProfile(profileId, password);
   }
 
+  const accentColor = watch('accentColor');
+
   return (
     <>
       <AuthCard>
@@ -169,25 +198,45 @@ export function CreateProfile() {
               </Stack>
               <Stack flexDirection={'column'}>
                 <Heading variant="h4">Create Profile</Heading>
-                <Stack marginBlock="md" gap="sm" alignItems={'flex-end'}>
-                  <TextField
-                    id="profileName"
-                    type="text"
-                    label="Profile name"
-                    defaultValue={getValues('profileName')}
-                    key="profileName"
-                    {...register('profileName', {
-                      required: {
-                        value: true,
-                        message: 'This field is required',
-                      },
-                    })}
-                    isInvalid={!isValid && !!errors.profileName}
-                    errorMessage={
-                      errors.profileName && errors.profileName?.message
-                    }
-                  />
-                </Stack>
+                <Controller
+                  name="profileName"
+                  control={control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
+                      <Label bold>Profile name</Label>
+                      <Stack gap="sm" flexDirection={'row'}>
+                        <InitialsAvatar
+                          name={field.value}
+                          accentColor={accentColor}
+                          onClick={() => {
+                            console.log('click');
+                            setValue(
+                              'accentColor',
+                              config.colorList[rotateColor.current()],
+                            );
+                          }}
+                        />
+                        <TextField
+                          id="profileName"
+                          type="text"
+                          autoFocus
+                          defaultValue={field.value}
+                          value={field.value}
+                          onChange={field.onChange}
+                          key="profileName"
+                          isInvalid={!isValid && !!error}
+                          errorMessage={error && error.message}
+                        />
+                      </Stack>
+                    </Stack>
+                  )}
+                />
               </Stack>
               <Stack flexDirection={'column'} gap={'lg'}>
                 <Text size="smallest">
@@ -244,6 +293,7 @@ export function CreateProfile() {
                   id="password"
                   type="password"
                   label="Password"
+                  autoFocus
                   defaultValue={getValues('password')}
                   // react-hook-form uses uncontrolled elements;
                   // and because we add and remove the fields we need to add key to prevent confusion for react

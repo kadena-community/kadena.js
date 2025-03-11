@@ -1,34 +1,37 @@
-import { initialsClass } from './select-profile.css';
+import { getInitials } from '@/utils/get-initials';
+import { imgClass, initialsClass } from './select-profile.css';
 
 const InitialsAvatar = ({
   name,
   accentColor,
+  size,
+  onClick,
 }: {
   name: string;
   accentColor: string;
+  size?: 'small' | 'medium' | 'large';
+  onClick?: () => void;
 }) => {
-  const getInitials = (name: string) => {
-    let initials = '';
-    const has2names = name.split(' ').length > 1;
-    if (has2names) {
-      initials = name
-        .split(' ')
-        .slice(0, 2)
-        .map((word) => word[0])
-        .join('')
-        .toUpperCase();
-    } else {
-      initials = name.slice(0, 2).toUpperCase();
-    }
-
-    return initials;
-  };
-
   const initials = getInitials(name || 'default');
 
   return (
-    <div className={initialsClass} style={{ backgroundColor: accentColor }}>
-      {initials}
+    <div
+      className={imgClass}
+      onClick={onClick}
+      style={{
+        backgroundColor: accentColor,
+        ...(onClick ? { cursor: 'pointer' } : {}),
+        ...(size === 'small'
+          ? { width: 25, height: 25 }
+          : { width: 40, height: 40 }),
+      }}
+    >
+      <div
+        className={initialsClass}
+        style={{ backgroundColor: accentColor, fontSize: 12 }}
+      >
+        {initials}
+      </div>
     </div>
   );
 };

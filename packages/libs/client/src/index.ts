@@ -15,6 +15,7 @@ export type * from './interfaces/IPactCommand';
 export type * from './interfaces/ISigningRequest';
 
 export {
+  ClientRequestInit,
   ICommandResult,
   IPollResponse,
   IPreflightResult,
@@ -27,4 +28,5 @@ export {
   IUnsignedCommand,
 } from '@kadena/types';
 
+export * from './utils/getPactErrorCode';
 export * from './utils/parseAsPactValue';

@@ -1,6 +1,7 @@
 import {
   MonoAccountTree,
   MonoControlPointDuplicate,
+  MonoInsertDriveFile,
   MonoLightMode,
   MonoWallet,
   MonoWifiTethering,
@@ -9,18 +10,21 @@ import {
 } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
-import React, { useEffect } from 'react';
-import {
-  Breadcrumbs,
-  BreadcrumbsItem,
-  Button,
-  Stack,
-} from './../../components';
+import React, { useState } from 'react';
+import { useNotifications } from '../LayoutUtils';
+import { Button, Dialog, DialogHeader, Stack } from './../../components';
+import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
+import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
-import { KadenaLogo } from './components/Logo/KadenaLogo';
-import { KLogo } from './components/Logo/KLogo';
+import { KLogoText } from './components/Logo/KLogoText';
+import {
+  RightAside,
+  RightAsideContent,
+  RightAsideHeader,
+} from './components/RightAside';
 import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
+import { SideBarHeaderContext } from './components/SideBarHeaderContext/SideBarHeaderContext';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarTree } from './components/SideBarTree';
@@ -62,133 +66,279 @@ const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
   return <a {...props}>{children}</a>;
 };
 
-const InnerLayout = () => {
-  const { setAppContext, isExpanded } = useLayout();
+const InnerFooter = () => {
+  return (
+    <SideBarFooter>
+      <SideBarFooterItem
+        visual={<MonoWindow />}
+        component={LinkComponent}
+        href="https://kadena.io"
+        label="option 1"
+      />
+      <SideBarFooterItem
+        visual={<MonoWifiTethering />}
+        onPress={() => {}}
+        label="option 2"
+      />
+      <SideBarFooterItem
+        visual={<MonoWorkspaces />}
+        onPress={() => {}}
+        label="option 3"
+      />
+      <SideBarFooterItem
+        visual={<MonoLightMode />}
+        onPress={() => {}}
+        label="option 4"
+      />
+    </SideBarFooter>
+  );
+};
 
-  useEffect(() => {
-    setAppContext({
-      visual: <MonoAccountTree />,
-      label: 'New Transf.',
-      href: 'https://kadena.io',
-    });
-  }, []);
+const InnerLayout = () => {
+  const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
+    useLayout();
+  const [hasOpenSidebar, setHasOpenSidebar] = useState(false);
+  const [hasOpenOtherSidebar, setHasOpenOtherSidebar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   return (
-    <SideBarLayout
-      minifiedLogo={
-        <a href="https://kadena.io" target="_blank" rel="noreferrer">
-          <KLogo height={40} />
-        </a>
-      }
-      location={{
-        url: 'https://kadena.io',
-        push: console.log,
-      }}
-      topBanner={
-        <div
-          style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
+    <>
+      {openDialog && (
+        <Dialog
+          isOpen
+          onOpenChange={() => {
+            setOpenDialog(false);
+          }}
         >
-          topbanner
-        </div>
-      }
-      breadcrumbs={
-        <Breadcrumbs icon={<MonoAccountTree />}>
-          <BreadcrumbsItem href="/accounts">He-man</BreadcrumbsItem>
-          <BreadcrumbsItem href="/accounts/2">Skeletor</BreadcrumbsItem>
-        </Breadcrumbs>
-      }
-      sidebar={
-        <SideBar
-          logo={
-            <a href="https://kadena.io" target="_blank" rel="noreferrer">
-              <KadenaLogo height={40} />
-            </a>
-          }
-          minifiedLogo={
-            <a href="https://kadena.io" target="_blank" rel="noreferrer">
-              <KLogo height={40} />
-            </a>
-          }
-          appContext={
-            <SideBarItem
-              visual={<MonoWifiTethering />}
-              label="Mainnet"
-              href="javascript:void()"
-            />
-          }
-          navigation={
-            <>
-              <SideBarTree visual={<MonoWallet />} label="My Wallet">
-                <SideBarTreeItem label="Accounts" href="https://kadena.io" />
-                <SideBarTreeItem label="Assets" href="https://docs.kadena.io" />
-              </SideBarTree>
-              <SideBarTree visual={<MonoWallet />} label="My Wallet 2">
-                <SideBarTreeItem label="Accounts" href="https://kadena.io" />
-                <SideBarTreeItem label="Assets" href="https://docs.kadena.io" />
-              </SideBarTree>
-            </>
-          }
-          context={
-            <>
-              <SideBarItem
-                visual={<MonoControlPointDuplicate />}
-                label="New Transfer"
-                onPress={() => {}}
-              />
+          <DialogHeader>Header of dialog</DialogHeader>
+        </Dialog>
+      )}
+      {isRightAsideExpanded && hasOpenSidebar && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+            setHasOpenSidebar(false);
+          }}
+        >
+          <RightAsideHeader label="test header" />
+          <RightAsideContent>content</RightAsideContent>
+        </RightAside>
+      )}
 
-              <SideBarItemsInline>
+      {isRightAsideExpanded && hasOpenOtherSidebar && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+            setHasOpenOtherSidebar(false);
+          }}
+        >
+          <RightAsideHeader label="test header" />
+          <RightAsideContent>
+            content
+            <Button
+              onPress={() => {
+                setOpenDialog(true);
+              }}
+            >
+              Open Dialog on TOP of Sidebar
+            </Button>
+          </RightAsideContent>
+        </RightAside>
+      )}
+      <SideBarLayout
+        logo={
+          <a href="https://kadena.io" target="_blank" rel="noreferrer">
+            <KLogoText />
+          </a>
+        }
+        location={{
+          url: 'https://kadena.io',
+          push: console.log,
+        }}
+        topBanner={
+          <div
+            style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
+          >
+            topbanner
+          </div>
+        }
+        sidebar={
+          <SideBar
+            logo={
+              <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                <KLogoText />
+              </a>
+            }
+            navigation={
+              <>
                 <SideBarItem
-                  visual={<MonoAccountTree />}
-                  label="Profile"
+                  visual={<MonoWifiTethering />}
+                  label="Mainnet"
+                  href="javascript:void()"
+                />
+                <SideBarTree visual={<MonoWallet />} label="My Wallet">
+                  <SideBarTreeItem label="Accounts" href="https://kadena.io" />
+                  <SideBarTreeItem
+                    label="Assets"
+                    href="https://docs.kadena.io"
+                  />
+                </SideBarTree>
+                <SideBarTree visual={<MonoWallet />} label="My Wallet 2">
+                  <SideBarTreeItem label="Accounts" href="https://kadena.io" />
+                  <SideBarTreeItem
+                    label="Assets"
+                    href="https://docs.kadena.io"
+                  />
+                </SideBarTree>
+              </>
+            }
+            context={
+              <>
+                <SideBarItem
+                  visual={<MonoControlPointDuplicate />}
+                  label="New Transfer"
                   onPress={() => {}}
                 />
 
-                <SideBarItem
-                  visual={<MonoLightMode />}
-                  label="Change theme"
-                  onPress={() => {}}
-                >
-                  <Button
-                    aria-label="Change theme"
-                    variant={isExpanded ? 'transparent' : 'outlined'}
-                    isCompact={!isExpanded}
-                    startVisual={<MonoLightMode />}
+                <SideBarItemsInline>
+                  <SideBarItem
+                    visual={<MonoAccountTree />}
+                    label="Profile"
                     onPress={() => {}}
                   />
-                </SideBarItem>
-              </SideBarItemsInline>
-            </>
-          }
-        />
-      }
-      footer={
-        <SideBarFooter>
-          <SideBarFooterItem
-            visual={<MonoWindow />}
-            component={LinkComponent}
-            href="https://kadena.io"
-            label="option 1"
+
+                  <SideBarItem
+                    visual={<MonoLightMode />}
+                    label="Change theme"
+                    onPress={() => {}}
+                  >
+                    <Button
+                      aria-label="Change theme"
+                      variant={isExpanded ? 'transparent' : 'outlined'}
+                      isCompact={!isExpanded}
+                      startVisual={<MonoLightMode />}
+                      onPress={() => {}}
+                    />
+                  </SideBarItem>
+                </SideBarItemsInline>
+              </>
+            }
           />
-          <SideBarFooterItem
-            visual={<MonoWifiTethering />}
-            onPress={() => {}}
-            label="option 2"
-          />
-          <SideBarFooterItem
-            visual={<MonoWorkspaces />}
-            onPress={() => {}}
-            label="option 3"
-          />
-          <SideBarFooterItem
-            visual={<MonoLightMode />}
-            onPress={() => {}}
-            label="option 4"
-          />
-        </SideBarFooter>
-      }
-    >
-      <Stack style={{ maxWidth: '800px', height: '400px' }}>content</Stack>
-    </SideBarLayout>
+        }
+        footer={<InnerFooter />}
+      >
+        <Stack
+          flexDirection="column"
+          style={{ maxWidth: '800px', height: '400px' }}
+        >
+          <Stack
+            width="100%"
+            flexDirection="column"
+            justifyContent="center"
+            margin="md"
+            gap="md"
+          >
+            <Button
+              onPress={() => {
+                setIsRightAsideExpanded(true);
+                setHasOpenSidebar(true);
+              }}
+            >
+              open sidebar
+            </Button>
+
+            <Button
+              onPress={() => {
+                setIsRightAsideExpanded(true);
+                setHasOpenOtherSidebar(true);
+              }}
+            >
+              open other sidebar
+            </Button>
+          </Stack>
+          content
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+          <p>content</p>
+        </Stack>
+      </SideBarLayout>
+    </>
   );
 };
 
@@ -199,39 +349,176 @@ export const Primary: IStory = {
   render: () => {
     return (
       <LayoutProvider>
+        <SideBarHeaderContext>
+          <Button variant="transparent" startVisual={<MonoInsertDriveFile />} />
+        </SideBarHeaderContext>
+        <SideBarBreadcrumbs icon={<MonoAccountTree />}>
+          <SideBarBreadcrumbsItem href="/accounts">
+            He-man
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Skeletor
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Cringer
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Orko
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Masters of the Universe
+          </SideBarBreadcrumbsItem>
+        </SideBarBreadcrumbs>
         <InnerLayout />
       </LayoutProvider>
     );
   },
 };
 
-const InnerLayoutFull = () => {
+const NotificationsLayout = () => {
+  const { addNotification } = useNotifications();
+  const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
+    useLayout();
+
   return (
-    <SideBarLayout
-      location={{
-        url: 'https://kadena.io',
-        push: console.log,
-      }}
-      logo={
-        <a href="https://kadena.io" target="_blank" rel="noreferrer">
-          <KadenaLogo height={40} />
-        </a>
-      }
-      variant="full"
-    >
-      <Stack style={{ maxWidth: '800px' }}>content</Stack>
-    </SideBarLayout>
+    <>
+      {isRightAsideExpanded && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setIsRightAsideExpanded(false);
+          }}
+        >
+          <RightAsideHeader label="test header" />
+
+          <RightAsideContent>content</RightAsideContent>
+        </RightAside>
+      )}
+      <SideBarLayout
+        logo={
+          <a href="https://kadena.io" target="_blank" rel="noreferrer">
+            <KLogoText />
+          </a>
+        }
+        location={{
+          url: 'https://kadena.io',
+          push: console.log,
+        }}
+        sidebar={
+          <SideBar
+            logo={
+              <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                <KLogoText />
+              </a>
+            }
+            navigation={
+              <>
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Mainnet"
+                  href="javascript:void()"
+                />
+              </>
+            }
+            context={
+              <>
+                <SideBarItemsInline>
+                  <SideBarItem
+                    visual={<MonoAccountTree />}
+                    label="Profile"
+                    onPress={() => {}}
+                  />
+
+                  <SideBarItem
+                    visual={<MonoLightMode />}
+                    label="Change theme"
+                    onPress={() => {}}
+                  >
+                    <Button
+                      aria-label="Change theme"
+                      variant={isExpanded ? 'transparent' : 'outlined'}
+                      isCompact={!isExpanded}
+                      startVisual={<MonoLightMode />}
+                      onPress={() => {}}
+                    />
+                  </SideBarItem>
+                </SideBarItemsInline>
+              </>
+            }
+          />
+        }
+        footer={<InnerFooter />}
+      >
+        <Stack
+          flexDirection="column"
+          style={{ maxWidth: '800px', height: '400px' }}
+        >
+          <Stack
+            width="100%"
+            flexDirection="column"
+            justifyContent="center"
+            margin="md"
+            gap="md"
+          >
+            <p>content</p>
+
+            <Button
+              onPress={() => {
+                setIsRightAsideExpanded(true);
+              }}
+            >
+              Open sidebar
+            </Button>
+
+            <Button
+              onPress={() => {
+                addNotification({
+                  icon: <MonoAccountTree />,
+                  label: 'This is an error Notification',
+                  message: 'And this is the message',
+                  intent: 'negative',
+                });
+              }}
+            >
+              Add Error Notification
+            </Button>
+
+            <Button
+              onPress={() => {
+                addNotification({
+                  icon: <MonoAccountTree />,
+                  label: 'This is an info Notification',
+                  message: 'And this is the info message',
+                  isDismissable: true,
+                  url: 'https://explorer.kadena.io',
+                });
+              }}
+            >
+              Add Info Notification
+            </Button>
+          </Stack>
+        </Stack>
+      </SideBarLayout>
+    </>
   );
 };
 
-export const Full: IStory = {
-  name: 'Full centered layout',
+export const Notifications: IStory = {
+  name: 'Notifications',
 
   args: {},
   render: () => {
     return (
       <LayoutProvider>
-        <InnerLayoutFull />
+        <SideBarBreadcrumbs icon={<MonoAccountTree />}>
+          <SideBarBreadcrumbsItem href="/accounts">
+            He-man
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href="/accounts/2">
+            Skeletor
+          </SideBarBreadcrumbsItem>
+        </SideBarBreadcrumbs>
+        <NotificationsLayout />
       </LayoutProvider>
     );
   },

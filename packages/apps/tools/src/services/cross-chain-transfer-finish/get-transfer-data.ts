@@ -1,5 +1,5 @@
 import client from '@/constants/client';
-import type { Network } from '@/constants/kadena';
+import type { NetworkId } from '@/constants/kadena';
 import {
   convertIntToChainId,
   validateRequestKey,
@@ -54,7 +54,7 @@ export async function getTransferData({
   networksData,
 }: {
   requestKey: string;
-  network: Network;
+  network: NetworkId;
   t: Translate;
   networksData: INetworkData[];
 }): Promise<ITransferDataResult> {
@@ -102,8 +102,12 @@ export async function getTransferData({
     const { events, result } = found;
 
     if ('error' in result) {
-      return result.error;
-      // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
+      return {
+        error:
+          'message' in result.error
+            ? (result.error.message as string)
+            : 'An error occurred.',
+      };
     }
 
     let senderAccount: string | undefined,

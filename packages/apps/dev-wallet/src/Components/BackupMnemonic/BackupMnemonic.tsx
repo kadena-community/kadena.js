@@ -30,9 +30,9 @@ export function BackupMnemonic({
   return (
     <>
       {step === 'start' && (
-        <Stack flexDirection={'column'} gap={'lg'}>
-          <Stack flexDirection={'column'} gap={'sm'}>
-            <Heading variant="h5">Write your recovery phrase down</Heading>
+        <Stack flexDirection={'column'} gap="md">
+          <Stack flexDirection={'column'} gap="md">
+            <Heading as="h4">Write your recovery phrase down</Heading>
             <Text>
               Make sure no one is watching you; consider some malware might take
               screenshot of your screen
@@ -59,7 +59,7 @@ export function BackupMnemonic({
         </Stack>
       )}
       {step === 'view' && (
-        <Stack flexDirection={'column'} gap={'sm'}>
+        <Stack flexDirection={'column'} gap={'md'}>
           <Heading variant="h5">Write down your recovery phrase</Heading>
           <Text size="small">
             Your recovery phrase is the key to your account. Write it down and

@@ -14,5 +14,6 @@ module.exports = {
     '@rushstack/no-new-null': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
   },
 };

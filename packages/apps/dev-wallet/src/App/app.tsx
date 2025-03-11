@@ -1,33 +1,37 @@
 import { DatabaseProvider } from '@/modules/db/db.provider';
 import { WalletProvider } from '@/modules/wallet/wallet.provider';
-import { MediaContextProvider } from '@kadena/kode-ui';
-import { LayoutProvider } from '@kadena/kode-ui/patterns';
+import { MediaContextProvider, useTheme } from '@kadena/kode-ui';
+import { SideBarLayoutProvider } from '@kadena/kode-ui/patterns';
 import { useEffect } from 'react';
 import { PromptProvider } from '../Components/PromptProvider/Prompt';
+import { GlobalStateProvider } from './providers/globalState';
+import { SessionProvider } from './providers/session';
 import { Routes } from './routes';
-import { SessionProvider } from './session';
 
 function Providers({ children }: { children: React.ReactNode }) {
+  useTheme();
   useEffect(() => {
     if (!localStorage.getItem('theme')) {
       localStorage.setItem('theme', 'dark');
     }
   }, []);
   return (
-    <MediaContextProvider>
-      <SessionProvider>
-        <PromptProvider>
-          <DatabaseProvider>
-            <WalletProvider>
-              <LayoutProvider>
-                {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
-                <PromptProvider>{children}</PromptProvider>
-              </LayoutProvider>
-            </WalletProvider>
-          </DatabaseProvider>
-        </PromptProvider>
-      </SessionProvider>
-    </MediaContextProvider>
+    <GlobalStateProvider>
+      <MediaContextProvider>
+        <SideBarLayoutProvider>
+          <SessionProvider>
+            <PromptProvider>
+              <DatabaseProvider>
+                <WalletProvider>
+                  {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
+                  <PromptProvider>{children}</PromptProvider>
+                </WalletProvider>
+              </DatabaseProvider>
+            </PromptProvider>
+          </SessionProvider>
+        </SideBarLayoutProvider>
+      </MediaContextProvider>
+    </GlobalStateProvider>
   );
 }
 

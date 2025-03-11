@@ -1,5 +1,4 @@
 import { MonoArrowOutward } from '@kadena/kode-icons';
-import type { FC } from 'react';
 import React from 'react';
 import {
   dataFieldClass,
@@ -12,6 +11,7 @@ import type {
   ICompactTableFormatterLinkProps,
   ICompactTableFormatterProps,
 } from './types';
+import { valueToString } from './utils';
 
 const formatURL = (url: string, value: string): string => {
   if (url.includes(':value')) {
@@ -20,21 +20,22 @@ const formatURL = (url: string, value: string): string => {
   return url;
 };
 
-export const FormatLink = ({
-  url,
-}: ICompactTableFormatterLinkProps): FC<ICompactTableFormatterProps> => {
-  const Component: FC<ICompactTableFormatterProps> = ({ value }) => (
-    <Stack alignItems="center" className={linkWrapperClass}>
-      <a href={formatURL(url, value)} className={linkClass}>
-        <Text variant="code" className={dataFieldClass}>
-          {value}
-        </Text>
-      </a>
-      <a href={formatURL(url, value)} className={value}>
-        <MonoArrowOutward className={linkIconClass} />
-      </a>
-    </Stack>
-  );
+export const FormatLink = ({ url }: ICompactTableFormatterLinkProps) => {
+  const Component = ({ value }: ICompactTableFormatterProps) => {
+    const valueString = valueToString(value);
+    return (
+      <Stack alignItems="center" className={linkWrapperClass}>
+        <a href={formatURL(url, valueString)} className={linkClass}>
+          <Text variant="code" className={dataFieldClass}>
+            {valueString}
+          </Text>
+        </a>
+        <a href={formatURL(url, valueString)}>
+          <MonoArrowOutward className={linkIconClass} />
+        </a>
+      </Stack>
+    );
+  };
 
   return Component;
 };

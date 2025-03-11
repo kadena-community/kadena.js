@@ -135,8 +135,25 @@ httpServer.on('connection', (socket) => {
 runSystemsCheck()
   .then(() => {
     httpServer.listen(dotenv.PORT, () => {
+      console.info(`
+██╗  ██╗ █████╗ ██████╗ ███████╗███╗   ██╗ █████╗
+██║ ██╔╝██╔══██╗██╔══██╗██╔════╝████╗  ██║██╔══██╗
+█████╔╝ ███████║██║  ██║█████╗  ██╔██╗ ██║███████║
+██╔═██╗ ██╔══██║██║  ██║██╔══╝  ██║╚██╗██║██╔══██║
+██║  ██╗██║  ██║██████╔╝███████╗██║ ╚████║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝
+
+     ██████╗ ██████╗  █████╗ ██████╗ ██╗  ██╗
+    ██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██║  ██║
+    ██║  ███╗██████╔╝███████║██████╔╝███████║
+    ██║   ██║██╔══██╗██╔══██║██╔═══╝ ██╔══██║
+    ╚██████╔╝██║  ██║██║  ██║██║     ██║  ██║
+     ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝`);
+      console.info(`
+        @kadena/graph version: ${dotenv.KADENA_GRAPH_VERSION}
+        Node Env: ${dotenv.NODE_ENV}`);
       console.info(
-        `\nServer is running on http://localhost:${dotenv.PORT}/graphql\n`,
+        `\nServer is running on http://${dotenv.HOST}:${dotenv.PORT}/graphql\n`,
       );
     });
   })

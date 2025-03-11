@@ -1,4 +1,4 @@
-import { atoms, style, token } from '../../styles';
+import { atoms, globalStyle, style, token } from '../../styles';
 
 export const containerClass = style([
   atoms({
@@ -8,6 +8,7 @@ export const containerClass = style([
   {
     listStyle: 'none',
     flexFlow: 'wrap',
+    marginBlockStart: '1px',
   },
 ]);
 
@@ -19,16 +20,17 @@ export const itemClass = style([
     display: 'flex',
     padding: 0,
     whiteSpace: 'nowrap',
+    marginInlineEnd: token('spacing.sm'),
     selectors: {
       '&:not(:first-child):not(:last-child)::before': {
         content: '/',
         color: token('color.text.gray.default'),
-        marginInline: token('spacing.sm'),
+        marginInlineEnd: token('spacing.sm'),
       },
       '&:not(:first-child):last-child::before': {
         content: '/',
         color: token('color.text.gray.default'),
-        marginInline: token('spacing.sm'),
+        marginInlineEnd: token('spacing.sm'),
       },
     },
   },
@@ -55,9 +57,17 @@ export const linkClass = style({
   },
 });
 
-export const navClass = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: 'max-content',
+export const navClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
+  {
+    width: 'max-content',
+  },
+]);
+
+globalStyle(`${navClass} svg`, {
+  width: '20px',
 });

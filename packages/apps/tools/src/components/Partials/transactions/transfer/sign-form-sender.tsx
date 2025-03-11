@@ -75,7 +75,9 @@ export const SignFormSender: FC<ISignFormSenderProps> = ({
         </Select>
         <Link
           className={notificationLinkStyle}
-          href={'https://transfer.chainweb.com/search-ledger-keys.html'}
+          href={
+            'https://kadena-community.github.io/kadena-transfer-js/search-ledger-keys.html'
+          }
           target={'_blank'}
           key={'key'}
         >

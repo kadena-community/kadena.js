@@ -1,5 +1,69 @@
 # @kadena/marmalade-marketplace
 
+## 0.1.18
+
+### Patch Changes
+
+- Updated dependencies \[8dd7433]
+  - @kadena/kode-ui\@0.20.2
+
+## 0.1.17
+
+### Patch Changes
+
+- @kadena/client\@1.17.1
+- @kadena/client-utils\@0.12.2
+
+## 0.1.16
+
+### Patch Changes
+
+- Updated dependencies \[67ee479]
+  - @kadena/client\@1.17.0
+  - @kadena/client-utils\@0.12.1
+
+## 0.1.15
+
+### Patch Changes
+
+- Updated dependencies \[ebc4e5c]
+  - @kadena/kode-ui\@0.20.1
+
+## 0.1.14
+
+### Patch Changes
+
+- Updated dependencies \[1cba919]
+  - @kadena/client-utils\@0.12.0
+
+## 0.1.13
+
+### Patch Changes
+
+- Updated dependencies \[5c5c747]
+- Updated dependencies \[f35e30c]
+- Updated dependencies \[4c684a2]
+- Updated dependencies \[5e9bfd0]
+- Updated dependencies \[dbd9076]
+- Updated dependencies \[1f46bee]
+  - @kadena/kode-ui\@0.20.0
+  - @kadena/client\@1.16.0
+  - @kadena/client-utils\@0.11.1
+
+## 0.1.12
+
+### Patch Changes
+
+- Updated dependencies \[7cefeb1]
+- Updated dependencies \[edcfbe0]
+- Updated dependencies \[14e809a]
+  - @kadena/kode-ui\@0.19.0
+  - @kadena/client\@1.15.0
+  - @kadena/client-utils\@0.11.0
+  - @kadena/cryptography-utils\@0.4.4
+  - @kadena/kode-icons\@0.3.0
+  - @kadena/pactjs\@0.4.3
+
 ## 0.1.11
 
 ### Patch Changes

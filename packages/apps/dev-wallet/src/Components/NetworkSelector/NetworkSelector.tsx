@@ -1,5 +1,11 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { MonoSettings, MonoWifiTethering } from '@kadena/kode-icons/system';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
+import {
+  MonoCheck,
+  MonoSettings,
+  MonoWifiTethering,
+  MonoWifiTetheringOff,
+} from '@kadena/kode-icons/system';
 import {
   Button,
   ContextMenu,
@@ -8,7 +14,6 @@ import {
   IButtonProps,
 } from '@kadena/kode-ui';
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export const NetworkSelector: FC<{
   showLabel?: boolean;
@@ -16,7 +21,7 @@ export const NetworkSelector: FC<{
   isCompact?: IButtonProps['isCompact'];
 }> = ({ showLabel = true, variant, isCompact = false }) => {
   const { networks, activeNetwork, setActiveNetwork } = useWallet();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
 
   const handleNetworkUpdate = (uuid: string) => {
     const network = networks.find((network) => network.uuid === uuid);
@@ -33,9 +38,16 @@ export const NetworkSelector: FC<{
     <ContextMenu
       trigger={
         <Button
+          data-testid="networkselector"
           variant={variant}
           isCompact={isCompact}
-          startVisual={<MonoWifiTethering />}
+          startVisual={
+            activeNetwork?.isHealthy === false ? (
+              <MonoWifiTetheringOff />
+            ) : (
+              <MonoWifiTethering />
+            )
+          }
         >
           {showLabel ? activeNetwork?.name : undefined}
         </Button>
@@ -46,6 +58,9 @@ export const NetworkSelector: FC<{
           aria-label={network.name}
           key={network.networkId}
           label={network.name ?? network.networkId}
+          endVisual={
+            network.uuid === activeNetwork?.uuid ? <MonoCheck /> : undefined
+          }
           onClick={() => handleNetworkUpdate(network.uuid)}
         />
       ))}

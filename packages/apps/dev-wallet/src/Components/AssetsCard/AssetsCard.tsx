@@ -6,9 +6,14 @@ import { Accounts } from '../Accounts/Accounts';
 import { Assets } from '../Assets/Assets';
 
 export function AssetsCard() {
-  const { accounts, fungibles, watchAccounts } = useWallet();
+  const { accounts, fungibles, watchAccounts, activeNetwork } = useWallet();
+  const filteredFungibles = fungibles.filter(
+    ({ networkUUIDs }) =>
+      !networkUUIDs ||
+      (activeNetwork?.uuid && networkUUIDs.includes(activeNetwork?.uuid)),
+  );
   const [selectedContract, setSelectedContract] = useState<string>(
-    fungibles[0].contract,
+    filteredFungibles[0].contract,
   );
   const filteredAccounts = accounts.filter(
     ({ contract }) => contract === selectedContract,
@@ -17,15 +22,10 @@ export function AssetsCard() {
     ({ contract }) => contract === selectedContract,
   );
   return (
-    <Stack
-      className={panelClass}
-      marginBlockStart="xl"
-      gap={'xl'}
-      flexDirection={'column'}
-    >
+    <Stack className={panelClass} gap={'xl'} flexDirection={'column'}>
       <Assets
         accounts={accounts}
-        fungibles={fungibles}
+        fungibles={filteredFungibles}
         showAddToken
         selectedContract={selectedContract}
         setSelectedContract={setSelectedContract}

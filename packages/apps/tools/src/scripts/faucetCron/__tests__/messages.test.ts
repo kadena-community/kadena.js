@@ -1,4 +1,4 @@
-import type { IAccount } from '../constants';
+import type { IAccount } from '../../constants';
 import { sendErrorMessage, sendMessage } from '../messages';
 
 const mocks = vi.hoisted(() => {

@@ -12,7 +12,6 @@ export const accountTransfers: DocumentNode = gql`
     node(id: $id) {
       ... on FungibleAccount {
         transfers(first: $first, after: $after, last: $last, before: $before) {
-          totalCount
           pageInfo {
             endCursor
             hasNextPage
@@ -21,13 +20,17 @@ export const accountTransfers: DocumentNode = gql`
           }
           edges {
             node {
-              requestKey
-              blockHash
+              transaction {
+                hash
+              }
+              block {
+                hash
+                height
+                chainId
+              }
               amount
-              chainId
               receiverAccount
               senderAccount
-              height
             }
           }
         }

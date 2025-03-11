@@ -24,19 +24,26 @@ export const CompactTableDesktop: FC<IProps> = ({
   fields,
   label = 'Table',
   isLoading = false,
+  variant = 'default',
+  ...props
 }) => {
   return (
     <Stack
-      padding="sm"
       width="100%"
       flexDirection="column"
       gap="sm"
-      className={tableBorderClass}
+      className={tableBorderClass({ variant })}
+      {...props}
     >
-      <Table aria-label={label} isStriped className={tableClass}>
+      <Table
+        aria-label={label}
+        isStriped
+        className={tableClass}
+        variant={variant}
+      >
         <TableHeader>
-          {fields.map((field) => (
-            <Column key={field.key.toString()} width={field.width}>
+          {fields.map((field, idx) => (
+            <Column key={`${field.key.toString()}${idx}`} width={field.width}>
               <Stack
                 width="100%"
                 className={alignVariants({ align: field.align ?? 'start' })}
@@ -48,9 +55,9 @@ export const CompactTableDesktop: FC<IProps> = ({
         </TableHeader>
         <TableBody>
           {data.map((item, idx) => (
-            <Row key={item.toString() + idx}>
-              {fields.map((field) => (
-                <Cell key={field.key.toString()}>
+            <Row key={`${item.toString()}${idx}`}>
+              {fields.map((field, innerIdx) => (
+                <Cell key={`${field.key.toString()}${innerIdx}`}>
                   <FieldCell isLoading={isLoading} field={field} item={item} />
                 </Cell>
               ))}

@@ -1,4 +1,4 @@
-import { BuiltInPredicate } from '@kadena/client';
+import { IGuard } from '../account/account.repository';
 import { dbService, IDBService } from '../db/db.service';
 import { UUID } from '../types';
 
@@ -7,13 +7,8 @@ export interface IContact {
   name: string;
   email?: string;
   account: {
-    networkUUID: UUID;
     address: string;
-    contract: string;
-    keyset?: {
-      keys: string[];
-      pred: BuiltInPredicate;
-    };
+    guard: IGuard;
   };
 }
 

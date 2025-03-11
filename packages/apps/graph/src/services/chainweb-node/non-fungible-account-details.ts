@@ -1,5 +1,5 @@
 import type { IClient } from '@kadena/client';
-import { Pact, createClient } from '@kadena/client';
+import { Pact, createClient, getPactErrorCode } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
@@ -70,7 +70,7 @@ export async function getNonFungibleAccountDetails(
     return result as INonFungibleChainAccountDetails;
   } catch (error) {
     if (
-      error.message.includes('with-read: row not found') // Account not found
+      getPactErrorCode(error) === 'RECORD_NOT_FOUND' // Account not found
     ) {
       return null;
     } else {

@@ -67,8 +67,8 @@ export function createChainweaverService() {
     ) => {
       // check if password is correct
       const checkKeyPair = keyPairs[0];
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [__private, publickey] = await legacyKadenaGenKeypair(
+
+      const [, publickey] = await legacyKadenaGenKeypair(
         password,
         Buffer.from(rootKey, 'hex'),
         0x80000000 + checkKeyPair.index,
@@ -88,6 +88,7 @@ export function createChainweaverService() {
       await walletRepository.addEncryptedValue(
         rootKeyId,
         encryptedRootKeyBuffer,
+        profileId,
       );
 
       // store keys
@@ -97,6 +98,7 @@ export function createChainweaverService() {
           await walletRepository.addEncryptedValue(
             secretId,
             await kadenaEncrypt(password, Buffer.from(keyPair.private, 'hex')),
+            profileId,
           );
           const key = {
             index: keyPair.index,
@@ -124,6 +126,8 @@ export function createChainweaverService() {
       keysetId: string,
       oldPassword: string,
       newPassword: string,
+      persist = (cbs: Array<() => Promise<void>>) =>
+        Promise.all(cbs.map((cb) => cb())),
     ) => {
       try {
         const keySource = await keySourceRepository.getKeySource(keysetId);
@@ -153,24 +157,26 @@ export function createChainweaverService() {
             );
 
             return () =>
-              keySourceRepository.updateEncryptedValue(
+              walletRepository.updateEncryptedValue(
                 key.secretId,
                 newSecretKey,
+                keySource.profileId,
               );
           }),
         );
 
-        // update all keys in repository
-        return Promise.all([
-          newKeys.map((update) => update()),
-          keySourceRepository.updateEncryptedValue(
-            keySource.rootKeyId,
-            newRootKey,
-          ),
+        return await persist([
+          ...newKeys,
+          () =>
+            walletRepository.updateEncryptedValue(
+              keySource.rootKeyId,
+              newRootKey,
+              keySource.profileId,
+            ),
         ]);
-      } catch (e) {
-        throw new Error(`Error changing password
-${(e as any).message}`);
+      } catch (e: any) {
+        const message = 'message' in e ? e.message : JSON.stringify(e);
+        throw new Error(`Error changing password\n${message}`);
       }
     },
 
@@ -181,6 +187,11 @@ ${(e as any).message}`);
       const profile = await walletRepository.getProfile(profileId);
       if (!profile) {
         throw new Error('Profile not found');
+      }
+      if (!profile.securityPhraseId) {
+        throw new Error(
+          'This profile does not have a mnemonic; create a new one',
+        );
       }
       const encryptedMnemonic = await walletRepository.getEncryptedValue(
         profile.securityPhraseId,
@@ -200,7 +211,11 @@ ${(e as any).message}`);
         mnemonic,
         'buffer',
       );
-      await walletRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
+      await walletRepository.addEncryptedValue(
+        rootKeyId,
+        encryptedRootKey,
+        profile.uuid,
+      );
       const keySource: IHDChainweaver = {
         uuid: crypto.randomUUID(),
         profileId,
@@ -280,6 +295,7 @@ ${(e as any).message}`);
       await walletRepository.addEncryptedValue(
         secretId,
         Buffer.from(key.secretKey, 'base64'),
+        keySource.profileId,
       );
       const newKey = {
         publicKey: key.publicKey,

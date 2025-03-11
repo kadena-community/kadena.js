@@ -1,5 +1,6 @@
 import type { ChainId } from '@kadena/types';
 import * as _dotenv from 'dotenv';
+import packageJson from '../../package.json';
 
 _dotenv.config();
 
@@ -9,6 +10,7 @@ export const dotenv: {
   COMPLEXITY_ENABLED: boolean;
   COMPLEXITY_EXPOSED: boolean;
   COMPLEXITY_LIMIT: number;
+  DEFAULT_PAGE_SIZE: number;
   DATABASE_URL: string;
   DEFAULT_FUNGIBLE_NAME: string;
   GITHUB_TOKEN: string | undefined;
@@ -26,6 +28,7 @@ export const dotenv: {
   NETWORK_STATISTICS_URL: string;
   NODE_ENV: string;
   ENVIRONMENT: string;
+  HOST: string;
   PORT: number;
   PRISMA_LOGGING_ENABLED: boolean;
   PRISMA_LOG_TO_FILE: boolean;
@@ -37,6 +40,7 @@ export const dotenv: {
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
   TIMEOUT_PACT_QUERY: number;
+  KADENA_GRAPH_VERSION: string;
 } = {
   CHAINWEB_NODE_RETRY_ATTEMPTS: parseInt(
     or(process.env.CHAINWEB_NODE_RETRY_ATTEMPTS, '5'),
@@ -48,13 +52,14 @@ export const dotenv: {
   ),
   COMPLEXITY_ENABLED: or(
     process.env.COMPLEXITY_ENABLED?.toLocaleLowerCase() === 'true',
-    false,
+    true,
   ),
   COMPLEXITY_EXPOSED: or(
     process.env.COMPLEXITY_EXPOSED?.toLocaleLowerCase() === 'true',
-    false,
+    true,
   ),
-  COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
+  COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '50000'), 10),
+  DEFAULT_PAGE_SIZE: parseInt(or(process.env.DEFAULT_PAGE_SIZE, '500'), 10),
   DATABASE_URL: or(
     process.env.DATABASE_URL,
     'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
@@ -105,6 +110,7 @@ export const dotenv: {
   ),
   NODE_ENV: or(process.env.NODE_ENV, 'production'),
   ENVIRONMENT: or(process.env.ENVIRONMENT, 'mainnet'),
+  HOST: or(process.env.HOST, 'localhost'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
   PRISMA_LOGGING_ENABLED: or(
     process.env.PRISMA_LOGGING_ENABLED?.toLocaleLowerCase() === 'true',
@@ -134,6 +140,10 @@ export const dotenv: {
   ),
   SIMULATE_LOG_FOLDER_NAME: or(process.env.SIMULATE_LOG_FOLDER_NAME, 'logs'),
   TIMEOUT_PACT_QUERY: parseInt(or(process.env.TIMEOUT_PACT_QUERY, '5000'), 10),
+  KADENA_GRAPH_VERSION: or(
+    process.env.KADENA_GRAPH_VERSION,
+    packageJson.version,
+  ),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

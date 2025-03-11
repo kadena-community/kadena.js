@@ -1,19 +1,27 @@
 import { config } from '@/config';
+import { Session } from '@/utils/session';
 import { IUnsignedCommand } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import {
   accountRepository,
   IAccount,
   IKeySet,
+  IOwnedAccount,
+  IWatchedAccount,
 } from '../account/account.repository';
-import * as AccountService from '../account/account.service';
+import { isKeysetGuard } from '../account/guards';
+import { backupDatabase } from '../backup/backup.service';
 import { BIP44Service } from '../key-source/hd-wallet/BIP44';
 import { ChainweaverService } from '../key-source/hd-wallet/chainweaver';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
-import { UUID } from '../types';
-import { ExtWalletContextType, WalletContext } from './wallet.provider';
+import { securityService } from '../security/security.service';
+import {
+  channel,
+  ExtWalletContextType,
+  WalletContext,
+} from './wallet.provider';
 import { IKeyItem, IKeySource, IProfile } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
@@ -34,9 +42,142 @@ export const useWallet = () => {
     syncAllAccounts,
     askForPassword,
   ] = useContext(WalletContext) ?? [];
+
   if (!context || !setProfile || !askForPassword) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
+
+  const getKeyAlias = useCallback(
+    (publicKey: string, contract: string = 'coin') => {
+      const singleKeyAccount = context.accounts
+        .filter(
+          (a) =>
+            isKeysetGuard(a.guard) &&
+            a.guard.keys.length === 1 &&
+            a.guard.keys[0] === publicKey,
+        )
+        .sort((b) =>
+          b.alias && (b.contract === contract || !contract) ? -1 : 1,
+        )[0];
+
+      if (
+        singleKeyAccount &&
+        (singleKeyAccount.alias || singleKeyAccount.address.length < 15)
+      ) {
+        return singleKeyAccount.alias || singleKeyAccount.address;
+      }
+
+      const contactSingleKey = context.contacts.find(
+        (c) =>
+          isKeysetGuard(c.account.guard) &&
+          c.account.guard.keys.length === 1 &&
+          c.account.guard.keys[0] === publicKey,
+      );
+
+      if (
+        contactSingleKey &&
+        (contactSingleKey.name || contactSingleKey.account.address.length < 15)
+      ) {
+        return contactSingleKey.name || contactSingleKey.account.address;
+      }
+
+      const multiKeyAccount = context.accounts
+        .filter(
+          (a) =>
+            isKeysetGuard(a.guard) &&
+            a.guard.keys.length > 1 &&
+            a.guard.keys.includes(publicKey),
+        )
+        .sort((b) =>
+          b.alias && (b.contract === contract || !contract) ? -1 : 1,
+        )[0];
+
+      if (
+        multiKeyAccount &&
+        isKeysetGuard(multiKeyAccount.guard) &&
+        (multiKeyAccount.alias || multiKeyAccount.address.length < 15)
+      ) {
+        const name = multiKeyAccount.alias || multiKeyAccount.address;
+        return `${name}-key(${multiKeyAccount.guard.keys.indexOf(publicKey) + 1})`;
+      }
+
+      const contactMultiKey = context.contacts.find(
+        (c) =>
+          isKeysetGuard(c.account.guard) &&
+          c.account.guard.keys.length > 1 &&
+          c.account.guard.keys.includes(publicKey),
+      );
+
+      if (
+        contactMultiKey &&
+        isKeysetGuard(contactMultiKey.account.guard) &&
+        (contactMultiKey.name || contactMultiKey.account.address.length < 15)
+      ) {
+        const name = contactMultiKey.name || contactMultiKey.account.address;
+        return `${name}-key(${contactMultiKey.account.guard.keys.indexOf(publicKey) + 1})`;
+      }
+
+      return '';
+    },
+    [context.accounts, context.contacts],
+  );
+
+  const getAccountAlias = useCallback(
+    (address: string, contract: string) => {
+      const account = context.accounts.find(
+        (a) => a.address === address && (!contract || a.contract === contract),
+      );
+      if (account) {
+        return account.alias;
+      }
+      const contact = context.contacts.find(
+        (c) => c.account.address === address,
+      );
+      if (contact) {
+        return contact.name;
+      }
+      return '';
+    },
+    [context.accounts, context.contacts],
+  );
+
+  const getPublicKeyData = useCallback(
+    (publicKey: string) => {
+      if (!context.keySources) return null;
+      for (const source of context.keySources) {
+        for (const key of source.keys) {
+          if (key.publicKey === publicKey) {
+            return {
+              ...key,
+              source: source.source,
+            };
+          }
+        }
+      }
+      return null;
+    },
+    [context],
+  );
+
+  const isOwnedAccount = useCallback(
+    (account: IAccount): account is IOwnedAccount =>
+      account.profileId === context.profile?.uuid &&
+      isKeysetGuard(account.guard) &&
+      Boolean(account.guard.keys.find((k) => getPublicKeyData(k))),
+    [getPublicKeyData, context.profile?.uuid],
+  );
+
+  const accounts = useMemo(() => {
+    if (!context.accounts) return [];
+    return context.accounts.filter(isOwnedAccount) as IOwnedAccount[];
+  }, [context.accounts, isOwnedAccount]);
+
+  const watchAccounts = useMemo(() => {
+    if (!context.accounts) return [];
+    return context.accounts.filter(
+      (ac) => !isOwnedAccount(ac),
+    ) as IWatchedAccount[];
+  }, [context.accounts, isOwnedAccount]);
 
   const createProfile = useCallback(
     async (
@@ -60,11 +201,26 @@ export const useWallet = () => {
   );
 
   const unlockProfile = useCallback(
-    async (profileId: string, password: string) => {
+    async (profileId: string, password: string, unlockSecurity = false) => {
       console.log('unlockProfile', profileId, password);
       const profile = await WalletService.unlockProfile(profileId, password);
+      await securityService.clearSecurityPhrase();
       if (profile) {
-        return setProfile(profile);
+        const res = await setProfile(profile);
+        channel.postMessage({ action: 'switch-profile', payload: profile });
+        backupDatabase().catch(console.log);
+        if (profile.options.rememberPassword === 'on-login' || unlockSecurity) {
+          const sessionEntropy = (await Session.get('sessionId')) as string;
+          if (!sessionEntropy) {
+            return res;
+          }
+          await securityService.setSecurityPhrase({
+            sessionEntropy,
+            phrase: password,
+            keepPolicy: 'session',
+          });
+        }
+        return res;
       }
       return null;
     },
@@ -72,12 +228,19 @@ export const useWallet = () => {
   );
 
   const lockProfile = useCallback(() => {
-    setProfile(undefined);
+    const run = async () => {
+      await securityService.clearSecurityPhrase();
+      await setProfile(undefined);
+      channel.postMessage({ action: 'switch-profile', payload: undefined });
+      backupDatabase(true).catch(console.log);
+    };
+    run();
   }, [setProfile]);
 
   const unlockKeySource = useCallback(
     async (keySource: IKeySource) => {
       const password = await askForPassword();
+      console.log('unlockKeySource', keySource, password);
       if (!password) {
         throw new Error('Password is required');
       }
@@ -141,43 +304,15 @@ export const useWallet = () => {
     [context],
   );
 
-  const createKey = useCallback(async (keySource: IKeySource) => {
-    const res = await WalletService.createKey(keySource, unlockKeySource);
-    keySourceManager.disconnect();
-    return res;
-  }, []);
-
-  const getPublicKeyData = useCallback(
-    (publicKey: string) => {
-      if (!context.keySources) return null;
-      for (const source of context.keySources) {
-        for (const key of source.keys) {
-          if (key.publicKey === publicKey) {
-            return {
-              ...key,
-              source: source.source,
-            };
-          }
-        }
-      }
-      return null;
-    },
-    [context],
-  );
-
-  const createKAccount = useCallback(
-    async (
-      profileId: string,
-      networkUUID: UUID,
-      publicKey: string,
-      contract?: string,
-    ) => {
-      return AccountService.createKAccount(
-        profileId,
-        networkUUID,
-        publicKey,
-        contract,
+  const createKey = useCallback(
+    async (keySource: IKeySource, index?: number) => {
+      const res = await WalletService.createKey(
+        keySource,
+        unlockKeySource,
+        index,
       );
+      keySourceManager.disconnect();
+      return res;
     },
     [],
   );
@@ -194,11 +329,12 @@ export const useWallet = () => {
     if (!context.profile || !context.activeNetwork) {
       throw new Error('Profile or active network not found');
     }
-    const account: IAccount = {
+    const account: IOwnedAccount = {
       uuid: crypto.randomUUID(),
       alias: alias || '',
       profileId: context.profile.uuid,
       address: keyset.principal,
+      guard: { ...keyset.guard, principal: keyset.principal },
       keysetId: keyset.uuid,
       networkUUID: context.activeNetwork.uuid,
       contract,
@@ -245,11 +381,15 @@ export const useWallet = () => {
       await accountRepository.addKeyset(keyset);
     }
 
-    const account: IAccount = {
+    const account: IOwnedAccount = {
       uuid: crypto.randomUUID(),
       alias: alias || '',
       profileId: profile.uuid,
       address: keyset.principal,
+      guard: {
+        ...guard,
+        principal: keyset.principal,
+      },
       keysetId: keyset.uuid,
       networkUUID: activeNetwork.uuid,
       contract,
@@ -269,28 +409,38 @@ export const useWallet = () => {
     contract: string;
     alias?: string;
   }) => {
-    const { accounts } = context;
+    const { accounts, fungibles } = context;
+    const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
     const filteredAccounts = accounts.filter(
-      (account) => account.contract === contract,
-    );
+      (account) => account.contract === contract && isOwnedAccount(account),
+    ) as IOwnedAccount[];
+
+    const accountAlias =
+      alias ||
+      `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
     const usedKeys = filteredAccounts.map((account) => {
-      const keys = account.keyset?.guard.keys;
-      if (keys?.length === 1 && account.keyset?.guard.pred === 'keys-all') {
+      const keys = account.guard.keys;
+      if (keys?.length === 1 && account.guard.pred === 'keys-all') {
         return keys[0];
       }
     });
-    const keySource = context.keySources[0];
+    const keySource =
+      context.keySources.find((ks) => ks.isDefault) || context.keySources[0];
     const availableKey = keySource.keys.find(
       (key) => !usedKeys.includes(key.publicKey),
     );
     if (availableKey) {
       // prompt for password anyway for account creation even if the key is available.
       await askForPassword();
-      return createAccountByKey({ key: availableKey, contract, alias });
+      return createAccountByKey({
+        key: availableKey,
+        contract,
+        alias: accountAlias,
+      });
     }
     // If no available key, create a new one
     const key = await createKey(keySource);
-    return createAccountByKey({ key, contract, alias });
+    return createAccountByKey({ key, contract, alias: accountAlias });
   };
 
   const getContact = (id: string) => {
@@ -299,12 +449,47 @@ export const useWallet = () => {
     );
   };
 
+  const createSpecificAccount = async ({
+    contract,
+    index,
+    alias,
+  }: {
+    contract: string;
+    index: number;
+    alias?: string;
+  }) => {
+    const { accounts, fungibles } = context;
+    const symbol = fungibles.find((f) => f.contract === contract)?.symbol;
+    const filteredAccounts = accounts.filter(
+      (account) => account.contract === contract,
+    );
+
+    const accountAlias =
+      alias ||
+      `${contract === 'coin' ? '' : `${symbol} `}Account ${filteredAccounts.length + 1}`;
+
+    const keySource = context.keySources[0];
+    const indexKey = await createKey(keySource, index);
+    const availableKey = keySource.keys.find(
+      (ksKey) => ksKey.publicKey === indexKey.publicKey,
+    );
+    if (availableKey) {
+      // prompt for password anyway for account creation even if the key is available.
+      await askForPassword();
+      return createAccountByKey({
+        key: availableKey,
+        contract,
+        alias: accountAlias,
+      });
+    }
+    return createAccountByKey({ key: indexKey, contract, alias: accountAlias });
+  };
+
   return {
     getContact,
     createProfile,
     unlockProfile,
     createKey,
-    createKAccount,
     sign,
     decryptSecret,
     lockProfile,
@@ -313,12 +498,18 @@ export const useWallet = () => {
     unlockKeySource,
     lockKeySource,
     createNextAccount,
+    createSpecificAccount,
     createAccountByKeyset,
     createAccountByKey,
+    isOwnedAccount,
     setActiveNetwork: (network: INetwork) =>
       setActiveNetwork ? setActiveNetwork(network) : undefined,
     syncAllAccounts: () => (syncAllAccounts ? syncAllAccounts() : undefined),
     isUnlocked: isUnlocked(context),
     ...context,
+    accounts,
+    watchAccounts,
+    getKeyAlias,
+    getAccountAlias,
   };
 };

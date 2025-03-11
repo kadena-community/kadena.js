@@ -64,12 +64,15 @@ export type ITransaction = {
 export interface TransactionRepository {
   getTransactionList: (
     profileId: string,
-    networkUUID: UUID,
+    networkUUID?: UUID,
     status?: TransactionStatus,
   ) => Promise<ITransaction[]>;
   getTransaction: (uuid: string) => Promise<ITransaction>;
   getTransactionByHash: (hash: string) => Promise<ITransaction>;
-  getTransactionsByGroup: (groupId: string) => Promise<ITransaction[]>;
+  getTransactionsByGroup: (
+    groupId: string,
+    profileId: string,
+  ) => Promise<ITransaction[]>;
   getTransactionByHashNetworkProfile: (
     profileId: string,
     networkUUID: UUID,
@@ -90,7 +93,7 @@ const createTransactionRepository = ({
   return {
     getTransactionList: async (
       profileId: string,
-      networkUUID: UUID,
+      networkUUID?: UUID,
       status?: TransactionStatus,
     ): Promise<ITransaction[]> => {
       if (status) {
@@ -100,11 +103,14 @@ const createTransactionRepository = ({
           'network-status',
         );
       }
-      return getAll(
-        'transaction',
-        IDBKeyRange.only([profileId, networkUUID]),
-        'network',
-      );
+      if (networkUUID) {
+        return getAll(
+          'transaction',
+          IDBKeyRange.only([profileId, networkUUID]),
+          'network',
+        );
+      }
+      return getAll('transaction', profileId, 'profileId');
     },
     getTransaction: async (uuid: string): Promise<ITransaction> => {
       return getOne('transaction', uuid);
@@ -130,8 +136,14 @@ const createTransactionRepository = ({
     },
     getTransactionsByGroup: async (
       groupId: string,
+      profileId: string,
     ): Promise<ITransaction[]> => {
-      return getAll('transaction', groupId, 'groupId');
+      const txs: ITransaction[] = await getAll(
+        'transaction',
+        groupId,
+        'groupId',
+      );
+      return txs.filter((tx) => tx.profileId === profileId);
     },
     addTransaction: async (transaction: ITransaction): Promise<void> => {
       console.log('addTransaction', transaction);

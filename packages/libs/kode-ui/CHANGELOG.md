@@ -1,5 +1,41 @@
 # @kadena/kode-ui
 
+## 0.20.2
+
+### Patch Changes
+
+- 8dd7433: Change the KLogo to the text logo
+
+## 0.20.1
+
+### Patch Changes
+
+- ebc4e5c: fix the sizing of the compactdatatable
+
+## 0.20.0
+
+### Minor Changes
+
+- 5c5c747: add context section in the sidebar layout header
+- 4c684a2: add the SectionCard Component
+- dbd9076: add an extra styling variant to the table component
+
+### Patch Changes
+
+- f35e30c: fix in the sidebar header layout
+
+## 0.19.0
+
+### Minor Changes
+
+- 7cefeb1: add SideBar Component
+- edcfbe0: add notifications hook to the sidebar layout
+- 14e809a: Text size extended with inherit
+
+### Patch Changes
+
+- @kadena/kode-icons\@0.3.0
+
 ## 0.18.0
 
 ### Minor Changes

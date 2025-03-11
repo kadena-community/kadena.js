@@ -2,6 +2,9 @@ import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
 
 export const minHeaderHeight = '60px';
 export const sideBarWidth = '232px';
+export const sideBarMinWidth = '45px';
+export const rightAsBarMinWidth = '370px';
+export const mainFullWidth = '96rem';
 
 export const layoutWrapperClass = recipe({
   base: [
@@ -9,136 +12,120 @@ export const layoutWrapperClass = recipe({
     {
       minHeight: '100%',
     },
+
+    responsiveStyle({
+      xs: {
+        gridTemplateColumns: 'auto',
+        gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
+        gridTemplateAreas: `
+        "sidebarlayout-header"
+        "sidebarlayout-main"
+        "sidebarlayout-footer"
+      `,
+      },
+      md: {
+        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-header"
+        "sidebarlayout-sidebar sidebarlayout-main"
+      `,
+      },
+      xxl: {
+        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-header"
+        "sidebarlayout-sidebar sidebarlayout-main"
+      `,
+      },
+    }),
   ],
   compoundVariants: [
     {
       variants: {
-        variant: 'default',
-        hasTopBanner: false,
+        isLeftExpanded: false,
+        isRightExpanded: false,
       },
       style: [
         responsiveStyle({
-          xs: {
-            gridTemplateColumns: 'auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
           md: {
-            gridTemplateColumns: '45px auto',
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main"
-          `,
+            gridTemplateColumns: `${sideBarMinWidth} auto`,
           },
-          xl: {
-            gridTemplateColumns: '45px 800px 1fr',
-            gridTemplateRows: `${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main  sidebarlayout-aside"
-          `,
+          xxl: {
+            gridTemplateColumns: `${sideBarMinWidth} minmax(auto calc(${mainFullWidth} + ${sideBarWidth} - ${sideBarMinWidth} + ${rightAsBarMinWidth}))`,
           },
         }),
       ],
     },
     {
       variants: {
-        variant: 'default',
-        hasTopBanner: true,
+        isLeftExpanded: true,
+        isRightExpanded: false,
       },
       style: [
         responsiveStyle({
-          xs: {
-            gridTemplateColumns: 'auto',
-            gridTemplateRows: `minMax(0px, 60px) ${minHeaderHeight} 1fr 60px`,
-            gridTemplateAreas: `
-            "sidebarlayout-topbanner"
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-            "sidebarlayout-footer"
-          `,
-          },
           md: {
-            gridTemplateColumns: '45px auto',
-            gridTemplateRows: `minMax(0px, 60px) ${minHeaderHeight} 1fr`,
-            gridTemplateAreas: `
-            "sidebarlayout-topbanner sidebarlayout-topbanner sidebarlayout-topbanner"
-            "sidebarlayout-sidebar sidebarlayout-header sidebarlayout-header"
-            "sidebarlayout-sidebar sidebarlayout-main sidebarlayout-aside"
-          `,
+            gridTemplateColumns: `${sideBarWidth} auto`,
           },
-          xl: {
-            position: 'relative',
+          xxl: {
+            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(${mainFullWidth} + ${rightAsBarMinWidth}))`,
+          },
+        }),
+      ],
+    },
+
+    {
+      variants: {
+        isLeftExpanded: false,
+        isRightExpanded: true,
+      },
+      style: [
+        responsiveStyle({
+          md: {
+            gridTemplateColumns: `${sideBarMinWidth} auto`,
+          },
+          xxl: {
+            gridTemplateColumns: `${sideBarMinWidth} auto calc(${rightAsBarMinWidth} + 20px)`,
+          },
+        }),
+      ],
+    },
+
+    {
+      variants: {
+        isLeftExpanded: true,
+        isRightExpanded: true,
+      },
+      style: [
+        responsiveStyle({
+          md: {
+            gridTemplateColumns: `${sideBarWidth} auto`,
+          },
+          xxl: {
+            gridTemplateColumns: `${sideBarWidth} minmax(auto, calc(${mainFullWidth} + ${sideBarWidth})) calc(${rightAsBarMinWidth} + 20px)`,
           },
         }),
       ],
     },
   ],
   variants: {
-    hasTopBanner: {
+    isLeftExpanded: {
+      false: {},
+      true: {},
+    },
+    isRightExpanded: {
       true: {},
       false: {},
-    },
-    variant: {
-      full: [
-        style({
-          gridTemplateColumns: 'auto',
-          gridTemplateRows: `60px ${minHeaderHeight} 1fr`,
-          gridTemplateAreas: `
-            "sidebarlayout-topbanner"
-            "sidebarlayout-header"
-            "sidebarlayout-main"
-          `,
-        }),
-      ],
-      default: [],
     },
   },
 });
 
-export const layoutExpandedWrapperClass = style([
-  responsiveStyle({
-    md: {
-      gridTemplateColumns: `${sideBarWidth} auto`,
-    },
-    xl: {
-      gridTemplateColumns: `${sideBarWidth} 800px 1fr`,
-    },
-  }),
-]);
-
 export const bodyWrapperClass = style({
   minHeight: '100dvh',
+
   backgroundColor: token('color.background.base.default'),
   overflowX: 'hidden',
 });
 
-export const mainClass = recipe({
-  base: {
-    overflowY: 'scroll',
-    gridArea: 'sidebarlayout-main',
-  },
-  variants: {
-    variant: {
-      default: [],
-      full: [
-        atoms({
-          width: '100%',
-          color: 'text.base.default',
-          display: 'flex',
-          alignItems: 'center',
-        }),
-        {
-          minHeight: `calc(100vh - ${minHeaderHeight})`,
-          background: 'transparent', // fallback in case radial-gradient is not working
-          backgroundRepeat: 'no-repeat',
-        },
-      ],
-    },
-  },
+export const mainClass = style({
+  gridArea: 'sidebarlayout-main',
 });

@@ -32,9 +32,9 @@ TXOUT is the same as what is used for crosschain, but should not be used for "on
 
 ## Managed Capabilities
 
-Documentation for understanding capabilities can be found [here](/build/pact/advanced#capabilitiesh-1323277354).
+Documentation for understanding capabilities can be found [here](/build/pact/advanced#capabilities).
 
-The capability built-in functions can be found [here](/reference/functions/capabilities#compose-capabilityh1942343731).
+The capability built-in functions can be found [here](/reference/functions/capabilities).
 
 Before diving into managed capabilities, it is important to understand the difference between managed and unmanaged capabilities. Capabilities are never "changed" since they are only granted by `with-capability`. In addition to defining a capability, managed capabilities also define a "resource" that is decreased whenever the associated capability is granted.
 

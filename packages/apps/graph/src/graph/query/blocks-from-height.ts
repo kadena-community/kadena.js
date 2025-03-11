@@ -1,5 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
+import { CHAINS } from '@kadena/chainweb-node-client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
 import { ZodError } from 'zod';
@@ -8,8 +10,7 @@ import Block from '../objects/block';
 
 builder.queryField('blocksFromHeight', (t) =>
   t.prismaConnection({
-    description:
-      'Retrieve blocks by chain and minimal height. Default page size is 20.',
+    description: `Retrieve blocks by chain and minimal height. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
     args: {
       startHeight: t.arg.int({
         required: true,
@@ -24,7 +25,7 @@ builder.queryField('blocksFromHeight', (t) =>
         },
       }),
       chainIds: t.arg.stringList({
-        required: false,
+        defaultValue: [...CHAINS],
         description: 'Default: all chains',
         validate: {
           minLength: 1,

@@ -1,0 +1,75 @@
+{
+  "name": "@kadena/wallet-sdk",
+  "version": "0.2.1",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/wallet-sdk"
+  },
+  "license": "BSD-3-Clause",
+  "contributors": [
+    "Albert Groothedde <albert@kadena.io>",
+    "Bart Huijgen <bart@kadena.io>",
+    "Danillo Felixdaal <danillo@kadena.io>"
+  ],
+  "type": "module",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.cjs.json && tsc && cp ./package.cjs.json ./lib/cjs/package.json && api-extractor run",
+    "codegen": "graphql-codegen",
+    "format": "pnpm run --sequential /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts",
+    "start": "ts-node --transpile-only src/index.ts",
+    "test": "vitest run",
+    "watch": "graphql-codegen && rm -rf ./dist/ && pnpm rollup -c rollup.config.mjs --watch"
+  },
+  "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
+    "@urql/core": "^5.0.8",
+    "graphql": "~16.8.1",
+    "valibot": "^0.42.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "^4.4.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/hd-wallet": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@microsoft/api-extractor": "^7.43.1",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-inject": "^5.0.5",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@rushstack/eslint-config": "~3.6.9",
+    "@types/debug": "~4.1.12",
+    "@types/node": "^20.12.7",
+    "@vitest/coverage-v8": "^1.6.0",
+    "cpy-cli": "^5.0.0",
+    "eslint": "^8.45.0",
+    "msw": "^2.2.14",
+    "prettier": "~3.2.5",
+    "rollup": "^4.17.2",
+    "rollup-plugin-polyfill-node": "^0.13.0",
+    "ts-node": "~10.9.2",
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
+  }
+}

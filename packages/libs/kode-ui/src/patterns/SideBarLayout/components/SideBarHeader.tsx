@@ -1,28 +1,35 @@
 import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { PressEvent } from 'react-aria';
 import {
+  crumbsWrapperClass,
   headerClass,
   headerExpandedClass,
   headerWrapperClass,
   menuMenuIconClass,
+  rightsideWrapperClass,
 } from '../sidebar.css';
 import { Button } from './../../../components/Button';
 import { Stack } from './../../../components/Layout';
 import { Media } from './../../../components/Media';
 import { useLayout } from './LayoutProvider';
-import { KLogo } from './Logo/KLogo';
+import { KLogoText } from './Logo/KLogoText';
 
 interface IProps extends PropsWithChildren {
-  breadcrumbs?: ReactElement;
-  minifiedLogo?: ReactElement;
-  hasSidebar?: boolean;
+  logo?: ReactElement;
 }
 
-export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
-  const { isExpanded, handleToggleExpand } = useLayout();
+export const SideBarHeader: FC<IProps> = ({ logo }) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const contextRef = useRef<HTMLDivElement | null>(null);
+  const {
+    isExpanded,
+    handleToggleExpand,
+    setBreadcrumbsRef,
+    setHeaderContextRef,
+  } = useLayout();
   const handleExpand = (e: PressEvent) => {
     if (handleToggleExpand) {
       handleToggleExpand(e);
@@ -30,11 +37,17 @@ export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
   };
 
   const ShowLogo = () => {
-    return minifiedLogo ? minifiedLogo : <KLogo height={40} />;
+    return logo ? logo : <KLogoText />;
   };
 
+  useEffect(() => {
+    if (!ref.current || !contextRef.current) return;
+    setBreadcrumbsRef(ref.current);
+    setHeaderContextRef(contextRef.current);
+  }, [ref.current, contextRef.current]);
+
   return (
-    <header className={headerWrapperClass}>
+    <header className={headerWrapperClass({ sideBarExpanded: isExpanded })}>
       <Stack
         className={classNames(headerClass, {
           [headerExpandedClass]: !isExpanded,
@@ -56,7 +69,8 @@ export const SideBarHeader: FC<IProps> = ({ breadcrumbs, minifiedLogo }) => {
             />
           </Stack>
         </Media>
-        <Stack style={{ gridArea: 'header-crumbs' }}>{breadcrumbs}</Stack>
+        <Stack className={crumbsWrapperClass} ref={ref}></Stack>
+        <Stack className={rightsideWrapperClass} ref={contextRef}></Stack>
       </Stack>
     </header>
   );

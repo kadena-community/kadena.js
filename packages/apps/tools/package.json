@@ -37,6 +37,7 @@
     "@ledgerhq/hw-transport-webhid": "^6.28.3",
     "@ledgerhq/logs": "^6.12.0",
     "@tanstack/react-query": "^5.32.0",
+    "@tryfabric/mack": "1.2.1",
     "@vanilla-extract/css": "1.14.2",
     "@walletconnect/modal": "~2.6.1",
     "@walletconnect/sign-client": "~2.8.1",
@@ -75,7 +76,7 @@
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@vanilla-extract/next-plugin": "2.1.2",
-    "@vanilla-extract/vite-plugin": "4.0.7",
+    "@vanilla-extract/vite-plugin": "4.0.17",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^1.6.0",
     "@walletconnect/types": "~2.8.1",
@@ -92,6 +93,7 @@
     "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1"
   },
+  "packageManager": "pnpm@9.5.0",
   "volta": {
     "node": "16.15.0"
   }

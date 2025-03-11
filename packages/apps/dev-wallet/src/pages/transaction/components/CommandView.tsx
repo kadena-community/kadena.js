@@ -1,11 +1,18 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
+import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { shorten, toISOLocalDateTime } from '@/utils/helpers';
+import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
-import { Heading, Stack, Text } from '@kadena/kode-ui';
+import { MonoTextSnippet } from '@kadena/kode-icons/system';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
+import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { CodeView } from './code-components/CodeView';
 import { Label, Value } from './helpers';
-import { Signers } from './Signers';
+import { RenderSigner } from './Signer';
 import { cardClass, codeClass, textEllipsis } from './style.css';
 
 export function CommandView({
@@ -15,22 +22,67 @@ export function CommandView({
   transaction: ITransaction;
   onSign: (sig: ITransaction['sigs']) => void;
 }) {
+  const { getPublicKeyData } = useWallet();
   const command: IPactCommand = useMemo(
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
+  const signers = useMemo(
+    () =>
+      command.signers.map((signer) => {
+        const info = getPublicKeyData(signer.pubKey);
+        return {
+          ...signer,
+          info,
+        };
+      }),
+    [command, getPublicKeyData],
+  );
+
+  const parsedCode = useMemo(() => {
+    if ('exec' in command.payload) {
+      return execCodeParser(command.payload.exec.code);
+    }
+    return [];
+  }, [command.payload]);
+
+  const externalSigners = signers.filter((signer) => !signer.info);
+  const internalSigners = signers.filter((signer) => signer.info);
+  const [showShortenCode, setShowShortenCode] = useState(true);
   return (
-    <Stack flexDirection={'column'} gap={'xl'}>
+    <Stack flexDirection={'column'} gap={'lg'}>
       <Stack gap={'sm'} flexDirection={'column'}>
         <Heading variant="h4">hash (request-key)</Heading>
-
         <Value className={codeClass}>{transaction.hash}</Value>
       </Stack>
       {'exec' in command.payload && (
         <>
+          <ErrorBoundary>
+            <CodeView codes={parsedCode} command={command} />
+          </ErrorBoundary>
           <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h4">Code</Heading>
-            <Value className={codeClass}>{command.payload.exec.code}</Value>
+            <Stack gap={'sm'} justifyContent={'space-between'}>
+              <Heading variant="h4">Code</Heading>
+              <Button
+                onPress={() => setShowShortenCode(!showShortenCode)}
+                variant={'transparent'}
+                isCompact
+                startVisual={<MonoTextSnippet />}
+              />
+            </Stack>
+            <Value className={codeClass}>
+              {showShortenCode ? (
+                <pre
+                  style={{
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  {shortenPactCode(command.payload.exec.code)}
+                </pre>
+              ) : (
+                command.payload.exec.code
+              )}
+            </Value>
           </Stack>
           {Object.keys(command.payload.exec.data).length > 0 && (
             <Stack gap={'sm'} flexDirection={'column'}>
@@ -69,7 +121,7 @@ export function CommandView({
                 variant="code"
                 className={classNames(codeClass, textEllipsis)}
               >
-                {command.payload.cont.proof}
+                {shorten(command.payload.cont.proof, 40)}
               </Text>
             </Stack>
           )}
@@ -90,16 +142,16 @@ export function CommandView({
             <Label>Creation time</Label>
             <Value>
               {command.meta.creationTime} (
-              {new Date(command.meta.creationTime! * 1000).toLocaleString()})
+              {toISOLocalDateTime(command.meta.creationTime! * 1000)})
             </Value>
           </Stack>
           <Stack gap={'sm'}>
             <Label>TTL</Label>
             <Value>
               {command.meta.ttl} (
-              {new Date(
+              {toISOLocalDateTime(
                 (command.meta.ttl! + command.meta.creationTime!) * 1000,
-              ).toLocaleString()}
+              )}
               )
             </Value>
           </Stack>
@@ -130,7 +182,65 @@ export function CommandView({
           </Stack>
         </Stack>
       </Stack>
-      <Signers transaction={transaction} onSign={onSign} />
+      <Stack flexDirection={'column'} gap={'xxl'}>
+        <Stack
+          title="Your Signatures"
+          key={'your-signatures'}
+          flexDirection={'column'}
+          gap={'sm'}
+        >
+          <Heading variant="h4">Your Signatures</Heading>
+          {internalSigners.length === 0 && (
+            <Notification intent="info" role="status">
+              Nothing to sign by you
+            </Notification>
+          )}
+          {internalSigners.map((signer) => {
+            return (
+              <Stack
+                gap={'sm'}
+                flexDirection={'column'}
+                className={cardClass}
+                key={signer.pubKey}
+              >
+                <RenderSigner
+                  transaction={transaction}
+                  signer={signer}
+                  transactionStatus={transaction.status}
+                  onSign={onSign}
+                />
+              </Stack>
+            );
+          })}
+        </Stack>
+        {externalSigners.length > 0 && (
+          <Stack
+            title="External Signers"
+            key={'external-signatures'}
+            flexDirection={'column'}
+            gap={'sm'}
+          >
+            <Heading variant="h4">External Signers</Heading>
+            {externalSigners.map((signer) => {
+              return (
+                <Stack
+                  gap={'sm'}
+                  flexDirection={'column'}
+                  className={cardClass}
+                  key={signer.pubKey}
+                >
+                  <RenderSigner
+                    transaction={transaction}
+                    signer={signer}
+                    transactionStatus={transaction.status}
+                    onSign={onSign}
+                  />
+                </Stack>
+              );
+            })}
+          </Stack>
+        )}
+      </Stack>
     </Stack>
   );
 }

@@ -20,15 +20,26 @@ export interface IFieldCellProps {
  * @param key
  * @returns
  */
-export const getItem = (item: IFieldCellProps['item'], key: string) => {
-  const keyArr = key.split('.');
-  const value = keyArr.reduce((acc, val) => {
-    if (!acc) return;
-    const newItem = acc[val];
-    if (newItem === undefined || newItem === null) return;
+export const getItem = (
+  item: IFieldCellProps['item'],
+  key?: string | [],
+): any => {
+  if (!key) return item;
 
-    return newItem;
-  }, item);
+  if (typeof key === 'string') {
+    const keyArr = key.split('.');
+    const value = keyArr.reduce((acc, val) => {
+      if (!acc) return;
+      const newItem = acc[val];
+      if (newItem === undefined || newItem === null) return;
 
-  return value;
+      return newItem;
+    }, item);
+
+    return value;
+  }
+
+  if (typeof key === 'object') {
+    return key.map((k) => getItem(item, k));
+  }
 };

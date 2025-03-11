@@ -24,7 +24,7 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
-    "version": "changeset version && pnpm run docs:changelogs && pnpm run format:pkgs && pnpm run format:md"
+    "version": "changeset version && pnpm run format:pkgs && pnpm run format:md"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.8",
@@ -37,11 +37,11 @@
     "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-packagejson": "^2.5.2",
     "syncpack": "^11.2.1",
-    "turbo": "2.0.6"
+    "turbo": "2.3.1"
   },
   "packageManager": "pnpm@9.5.0",
   "engines": {
-    "node": ">=18 <21",
-    "pnpm": ">=9 <10"
+    "node": ">=18 <23",
+    "pnpm": ">=9 <11"
   }
 }

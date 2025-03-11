@@ -1,28 +1,34 @@
 import type { FC } from 'react';
 import React from 'react';
+import { logoMiniClass } from './styles.css';
 
-export const KLogo: FC<{ height: number; className?: string }> = (props) => (
+export const KLogo: FC<{ className?: string }> = (props) => (
   <svg
     data-style="kdacolor"
-    viewBox="0 0 64 64"
+    viewBox="0 0 32 32"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
+    className={logoMiniClass}
   >
-    <path
-      d="M56.8703 56L39.4779 55.9911L17.7995 39.0708L26.6166 32L56.8703 56Z"
-      id="{kda.foundation.color.icon.brand.logo.default}"
-      fill="#4A9079"
-    />
-    <path
-      d="M56.8703 8H39.4868L17.7995 24.9292L26.6166 32L56.8703 8Z"
-      id="{kda.foundation.color.icon.brand.logo.default}"
-      fill="#4A9079"
-    />
-    <path
-      d="M17.7935 55.9913L7 47.4633V16.537L17.7935 8.00901V55.9913Z"
-      id="{kda.foundation.color.icon.brand.logo.default}"
-      fill="#4A9079"
-    />
+    <g clipPath="url(#clip0_509_65640)">
+      <path
+        d="M28.4352 28L19.739 27.9956L8.89978 19.5354L13.3083 16L28.4352 28Z"
+        fill="#4A9079"
+      />
+      <path
+        d="M28.4352 4H19.7434L8.89978 12.4646L13.3083 16L28.4352 4Z"
+        fill="#4A9079"
+      />
+      <path
+        d="M8.89675 27.9957L3.5 23.7317V8.26851L8.89675 4.00452V27.9957Z"
+        fill="#4A9079"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_509_65640">
+        <rect width="32" height="32" fill="white" />
+      </clipPath>
+    </defs>
   </svg>
 );

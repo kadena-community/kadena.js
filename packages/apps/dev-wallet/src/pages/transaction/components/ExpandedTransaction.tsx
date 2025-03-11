@@ -10,17 +10,27 @@ import {
   Stack,
   TabItem,
   Tabs,
+  Tooltip,
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
 
-import { codeClass } from './style.css.ts';
+import { codeClass, txDetailsClass, txExpandedWrapper } from './style.css.ts';
 
 import { CopyButton } from '@/Components/CopyButton/CopyButton.tsx';
 import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { panelClass } from '@/pages/home/style.css.ts';
 
-import { MonoMoreVert } from '@kadena/kode-icons/system';
+import { shorten } from '@/utils/helpers.ts';
+import { normalizeTx } from '@/utils/normalizeSigs.ts';
+import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
+import {
+  MonoContentCopy,
+  MonoMoreVert,
+  MonoShare,
+} from '@kadena/kode-icons/system';
+import classNames from 'classnames';
+import { useEffect, useState } from 'react';
 import { CommandView } from './CommandView.tsx';
 import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
 
@@ -31,32 +41,40 @@ export function ExpandedTransaction({
   sendDisabled,
   onSubmit,
   showTitle,
+  isDialog,
+  onPreflight,
 }: {
   transaction: ITransaction;
   contTx?: ITransaction;
   onSign: (sig: ITransaction['sigs']) => void;
-  onSubmit: () => Promise<ITransaction>;
+  onSubmit: (skipPreflight?: boolean) => Promise<ITransaction>;
+  onPreflight: () => Promise<ITransaction>;
   sendDisabled?: boolean;
   showTitle?: boolean;
+  isDialog?: boolean;
 }) {
   const { sign } = useWallet();
+  const [showShareTooltip, setShowShareTooltip] = useState(false);
 
-  const copyTransactionAs = (format: 'json' | 'yaml') => () => {
-    const transactionData = {
-      hash: transaction.hash,
-      cmd: transaction.cmd,
-      sigs: transaction.sigs,
+  const copyTransactionAs =
+    (format: 'json' | 'yaml', legacySig = false) =>
+    () => {
+      const tx = {
+        hash: transaction.hash,
+        cmd: transaction.cmd,
+        sigs: transaction.sigs,
+      };
+      const transactionData = legacySig ? normalizeTx(tx) : tx;
+
+      let formattedData: string;
+      if (format === 'json') {
+        formattedData = JSON.stringify(transactionData, null, 2);
+      } else {
+        formattedData = yaml.dump(transactionData);
+      }
+
+      navigator.clipboard.writeText(formattedData);
     };
-
-    let formattedData: string;
-    if (format === 'json') {
-      formattedData = JSON.stringify(transactionData, null, 2);
-    } else {
-      formattedData = yaml.dump(transactionData);
-    }
-
-    navigator.clipboard.writeText(formattedData);
-  };
 
   const signAll = async () => {
     const signedTx = (await sign(transaction)) as IUnsignedCommand | ICommand;
@@ -67,31 +85,55 @@ export function ExpandedTransaction({
     cmd: transaction.cmd,
     sigs: transaction.sigs,
   };
+  const Title = isDialog ? DialogHeader : Stack;
+  const Content = isDialog ? DialogContent : Stack;
+  const [selectedTab, setSelectedTab] = useState('command-details');
+  const activeTabs = [
+    'command-details',
+    transaction.preflight && 'preflight',
+    transaction.request && 'request',
+    'result' in transaction && transaction.result && 'result',
+    transaction.continuation?.proof && 'spv',
+    contTx && 'cont-command-details',
+    contTx?.preflight && 'cont-preflight',
+    contTx?.request && 'cont-request',
+    contTx && 'result' in contTx && contTx.result && 'cont-result',
+  ].filter(Boolean) as string[];
+
+  useEffect(() => {
+    const lastTab = activeTabs[activeTabs.length - 1];
+    if (lastTab !== selectedTab) {
+      setSelectedTab(lastTab);
+    }
+  }, [activeTabs.length]);
+
   return (
     <>
-      <DialogHeader>
+      <Title>
         <Stack justifyContent={'space-between'}>
           {showTitle && <Heading>View Transaction</Heading>}
         </Stack>
-      </DialogHeader>
-      <DialogContent>
-        <Stack gap={'lg'}>
+      </Title>
+      <Content>
+        <Stack gap={'lg'} width="100%" className={txExpandedWrapper}>
           <Stack
             gap={'lg'}
             flexDirection={'column'}
             style={{
-              flexBasis: '260px',
               minWidth: '260px',
             }}
             className={panelClass}
           >
-            <Heading variant="h6">Tx Status</Heading>
+            <Stack justifyContent={'space-between'} alignItems={'center'}>
+              <Heading variant="h6">Tx Status</Heading>
+            </Stack>
             <TxPipeLine
               tx={transaction}
               contTx={contTx}
               variant={'expanded'}
               signAll={signAll}
               onSubmit={onSubmit}
+              onPreflight={onPreflight}
               sendDisabled={sendDisabled}
             />
           </Stack>
@@ -99,7 +141,7 @@ export function ExpandedTransaction({
             flex={1}
             gap={'xxl'}
             flexDirection={'column'}
-            className={panelClass}
+            className={classNames(panelClass, txDetailsClass)}
           >
             {statusPassed(transaction.status, 'success') &&
               (!transaction.continuation?.autoContinue ||
@@ -119,12 +161,47 @@ export function ExpandedTransaction({
                   </Notification>
                 </Stack>
               )}
-            <Tabs isContained>
-              <TabItem title="Command Details">
+            <Tabs
+              isContained
+              selectedKey={selectedTab}
+              onSelectionChange={(key) => {
+                console.log('key', key);
+                setSelectedTab(key as any);
+              }}
+            >
+              <TabItem key="command-details" title="Command Details">
                 <Stack gap={'sm'} flexDirection={'column'}>
                   <Stack justifyContent={'space-between'}>
                     <Heading variant="h4">Command Details</Heading>
                     <Stack gap={'sm'}>
+                      <Tooltip
+                        content="The transaction url is copied to to the clipboard."
+                        position="left"
+                        isOpen={showShareTooltip}
+                      >
+                        <Button
+                          startVisual={<MonoShare />}
+                          variant="transparent"
+                          onClick={() => {
+                            const encodedTx = base64UrlEncodeArr(
+                              new TextEncoder().encode(
+                                JSON.stringify({
+                                  hash: txCommand.hash,
+                                  cmd: txCommand.cmd,
+                                  sigs: txCommand.sigs,
+                                }),
+                              ),
+                            );
+                            const baseUrl = `${window.location.protocol}//${window.location.host}`;
+                            navigator.clipboard.writeText(
+                              `${baseUrl}/sig-builder#${encodedTx}`,
+                            );
+                            setShowShareTooltip(true);
+                            setTimeout(() => setShowShareTooltip(false), 5000);
+                          }}
+                          isCompact
+                        />
+                      </Tooltip>
                       <CopyButton data={txCommand} />
                       <ContextMenu
                         placement="bottom end"
@@ -137,16 +214,24 @@ export function ExpandedTransaction({
                         }
                       >
                         <ContextMenuItem
-                          label="Copy as JSON"
+                          label="JSON"
+                          endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json')}
                         />
                         <ContextMenuItem
-                          label="Copy as YAML"
+                          label="YAML"
+                          endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml')}
                         />
                         <ContextMenuItem
-                          label="Copy as CMS"
-                          onClick={copyTransactionAs('json')}
+                          label="JSON Legacy (v2)"
+                          endVisual={<MonoContentCopy />}
+                          onClick={copyTransactionAs('json', true)}
+                        />
+                        <ContextMenuItem
+                          label="YAML Legacy (v2)"
+                          endVisual={<MonoContentCopy />}
+                          onClick={copyTransactionAs('yaml', true)}
                         />
                       </ContextMenu>
                     </Stack>
@@ -157,7 +242,7 @@ export function ExpandedTransaction({
 
               {transaction.preflight &&
                 ((
-                  <TabItem title="Preflight Result">
+                  <TabItem key="preflight" title="Preflight Result">
                     <JsonView
                       title="Preflight Result"
                       data={transaction.preflight}
@@ -166,32 +251,36 @@ export function ExpandedTransaction({
                 ) as any)}
 
               {transaction.request && (
-                <TabItem title="Request">
+                <TabItem key="request" title="Request">
                   <JsonView title="Request" data={transaction.request} />
                 </TabItem>
               )}
               {'result' in transaction && transaction.result && (
-                <TabItem title="Result">
+                <TabItem key="result" title="Result">
                   <JsonView title="Result" data={transaction.result} />
                 </TabItem>
               )}
               {transaction.continuation?.proof && (
-                <TabItem title="SPV Proof">
+                <TabItem key="spv" title="SPV Proof">
                   <JsonView
                     title="Result"
                     data={transaction.continuation?.proof}
+                    shortening={40}
                   />
                 </TabItem>
               )}
               {contTx && [
-                <TabItem title="cont: Command Details">
+                <TabItem
+                  key="cont-command-details"
+                  title="cont: Command Details"
+                >
                   <Stack gap={'sm'} flexDirection={'column'}>
                     <Heading variant="h4">Command Details</Heading>
                     <CommandView transaction={contTx} onSign={onSign} />
                   </Stack>
                 </TabItem>,
                 contTx.preflight && (
-                  <TabItem title="cont: Preflight Result">
+                  <TabItem key="cont-preflight" title="cont: Preflight Result">
                     <JsonView
                       title="Continuation Preflight Result"
                       data={contTx.preflight}
@@ -199,7 +288,7 @@ export function ExpandedTransaction({
                   </TabItem>
                 ),
                 contTx.request && (
-                  <TabItem title="cont: Request">
+                  <TabItem key="cont-request" title="cont: Request">
                     <JsonView
                       title="Continuation Request"
                       data={contTx.request}
@@ -207,7 +296,7 @@ export function ExpandedTransaction({
                   </TabItem>
                 ),
                 'result' in contTx && contTx.result && (
-                  <TabItem title="cont: Result">
+                  <TabItem key="cont-result" title="cont: Result">
                     <JsonView
                       title="Continuation Result"
                       data={contTx.result}
@@ -218,12 +307,20 @@ export function ExpandedTransaction({
             </Tabs>
           </Stack>
         </Stack>
-      </DialogContent>
+      </Content>
     </>
   );
 }
 
-const JsonView = ({ title, data }: { title: string; data: any }) => (
+const JsonView = ({
+  title,
+  data,
+  shortening = 0,
+}: {
+  title: string;
+  data: any;
+  shortening?: number;
+}) => (
   <Stack gap={'sm'} flexDirection={'column'}>
     <Stack gap={'sm'} flexDirection={'column'}>
       <Stack justifyContent={'space-between'}>
@@ -233,7 +330,9 @@ const JsonView = ({ title, data }: { title: string; data: any }) => (
       <pre className={codeClass}>
         {data && typeof data === 'object'
           ? JSON.stringify(data, null, 2)
-          : data}
+          : shortening
+            ? shorten(data, shortening)
+            : data}
       </pre>
     </Stack>
   </Stack>

@@ -1,12 +1,13 @@
+import { useRightAside } from '@/App/Layout/useRightAside';
 import {
   accountRepository,
-  IAccount,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
-import { IReceiverAccount } from '@/pages/transfer/utils';
-import { MonoMoreVert } from '@kadena/kode-icons/system';
+import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
 import {
   Button,
   ContextMenu,
@@ -17,27 +18,58 @@ import {
 } from '@kadena/kode-ui';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { AccountItem } from '../AccountItem/AccountItem';
-import { usePrompt } from '../PromptProvider/Prompt';
-import { accountTypeClass, listClass, noStyleLinkClass } from './style.css';
-import { WatchAccountsDialog } from './WatchAccountDialog';
+import { MultiSigForm } from './MultiSigForm';
+import { accountTypeClass, listClass } from './style.css';
+import { WatchAccountsForm } from './WatchAccountForm';
 
 export function Accounts({
   accounts,
   contract = 'coin',
   watchedAccounts,
 }: {
-  accounts: Array<IAccount>;
+  accounts: Array<IOwnedAccount>;
   watchedAccounts: Array<IWatchedAccount>;
   contract: string;
 }) {
   const [show, setShow] = useState<'owned' | 'watched'>('owned');
   const { createNextAccount, activeNetwork, profile } = useWallet();
-  const prompt = usePrompt();
+  const [isWatchAccountExpanded, expandWatchAccount, closeWatchAccount] =
+    useRightAside();
+  const [isMultiSigExpanded, expandMultiSig, closeMultiSig] = useRightAside();
   const accountsToShow = show === 'owned' ? accounts : watchedAccounts;
+
+  const onWatch = async (accounts: IRetrievedAccount[]) => {
+    const accountsToWatch: IWatchedAccount[] = accounts.map((account) => ({
+      uuid: crypto.randomUUID(),
+      alias: account.alias ?? '',
+      profileId: profile!.uuid,
+      address: account.address,
+      chains: account.chains,
+      overallBalance: account.overallBalance,
+      guard: account.guard,
+      contract,
+      networkUUID: activeNetwork!.uuid,
+    }));
+    await Promise.all(
+      accountsToWatch.map((account) => accountRepository.addAccount(account)),
+    );
+  };
+
   return (
     <Stack flexDirection={'column'}>
+      <WatchAccountsForm
+        onClose={closeWatchAccount}
+        isOpen={isWatchAccountExpanded}
+        onWatch={onWatch}
+        contract={contract}
+        networkId={activeNetwork!.networkId}
+      />
+      <MultiSigForm
+        isOpen={isMultiSigExpanded}
+        onClose={closeMultiSig}
+        contract={contract}
+      />
       <Stack justifyContent={'space-between'}>
         <Stack gap={'sm'}>
           <Stack
@@ -63,80 +95,36 @@ export function Accounts({
           </Stack>
         </Stack>
         <Stack gap={'sm'}>
-          {contract && (
-            <Button
-              variant="outlined"
-              isCompact
-              onClick={() => createNextAccount({ contract })}
-            >
-              Create Next Account
-            </Button>
-          )}
           <ContextMenu
             placement="bottom end"
             trigger={
               <Button
+                startVisual={<MonoAdd />}
                 endVisual={<MonoMoreVert />}
-                variant="transparent"
+                variant="outlined"
                 isCompact
-              />
+              >
+                Account
+              </Button>
             }
           >
-            <Link
-              to={
-                contract
-                  ? `/create-account${contract ? `?contract=${contract}` : ''}`
-                  : '/create-account'
-              }
-              className={noStyleLinkClass}
-            >
-              <ContextMenuItem label="Add Multisig/Advanced" />
-            </Link>
             <ContextMenuItem
-              label="Watch Account"
-              onClick={async () => {
-                const accounts = (await prompt((resolve, reject) => (
-                  <WatchAccountsDialog
-                    onWatch={resolve}
-                    onClose={reject}
-                    contract={contract}
-                    networkId={activeNetwork!.networkId}
-                  />
-                ))) as IReceiverAccount[];
-                const accountsToWatch: IWatchedAccount[] = accounts.map(
-                  (account) => ({
-                    uuid: crypto.randomUUID(),
-                    alias: account.alias ?? '',
-                    profileId: profile!.uuid,
-                    address: account.address,
-                    chains: account.chains,
-                    overallBalance: account.overallBalance,
-                    keyset: {
-                      ...account.keyset,
-                      guard: {
-                        ...account.keyset.guard,
-                        keys: account.keyset.guard.keys.map((key) =>
-                          typeof key === 'string' ? key : key.pubKey,
-                        ),
-                      },
-                    },
-                    contract,
-                    networkUUID: activeNetwork!.uuid,
-                    watched: true,
-                  }),
-                );
-                await Promise.all(
-                  accountsToWatch.map((account) =>
-                    accountRepository.addWatchedAccount(account),
-                  ),
-                );
-              }}
+              label="Create Account"
+              onClick={() => createNextAccount({ contract })}
+            />
+            <ContextMenuItem
+              label="Watch/Add existing"
+              onClick={() => expandWatchAccount()}
+            />
+            <ContextMenuItem
+              label="create Multi-Sig"
+              onClick={() => expandMultiSig()}
             />
           </ContextMenu>
         </Stack>
       </Stack>
       {accountsToShow.length ? (
-        <ul className={listClass}>
+        <ul className={listClass} data-testid="assetList">
           {accountsToShow.map((account) => (
             <li key={account.uuid}>
               <AccountItem account={account} />
@@ -145,6 +133,7 @@ export function Accounts({
         </ul>
       ) : (
         <Stack
+          data-testid="assetList"
           padding={'sm'}
           marginBlockStart="md"
           className={classNames(panelClass)}

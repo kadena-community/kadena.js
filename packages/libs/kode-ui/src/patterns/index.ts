@@ -18,19 +18,62 @@ export {
 export { usePagination } from './CompactTable/usePagination';
 
 export {
-  LayoutProvider,
   SideBar,
   SideBarFooter,
   SideBarFooterItem,
+  SideBarHeaderContext,
   SideBarItem,
   SideBarItemsInline,
   SideBarLayout,
+  LayoutProvider as SideBarLayoutProvider,
   SideBarTree,
   SideBarTreeItem,
-  useLayout,
+  useLayout as useSideBarLayout,
 } from './SideBarLayout';
 export type {
   ISideBarFooterItemProps,
   ISideBarItemProps,
   ISideBarProps,
 } from './SideBarLayout';
+
+export {
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+} from './SideBarLayout/components/RightAside';
+
+export {
+  SideBarBreadcrumbs,
+  SideBarBreadcrumbsItem,
+} from './SideBarLayout/components/Breadcrumbs';
+
+export type { iRightAsideHeader } from './SideBarLayout/components/RightAside';
+
+export {
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+} from './SectionCard';
+
+export type {
+  ISectionCardBodyProps,
+  ISectionCardContentBlockProps,
+  ISectionCardHeaderProps,
+  ISectionCardProps,
+} from './SectionCard';
+
+//focussed layout
+export {
+  FocussedLayout,
+  Footer as FocussedLayoutFooter,
+  FooterContent as FocussedLayoutFooterContent,
+  HeaderAside as FocussedLayoutHeaderAside,
+  HeaderContent as FocussedLayoutHeaderContent,
+  LayoutProvider as FocussedLayoutProvider,
+  useLayout as useFocussedLayout,
+} from './FocussedLayout';
+
+//notifications functionality
+export { NotificationSlot, useNotifications } from './LayoutUtils';

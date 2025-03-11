@@ -12,7 +12,7 @@ function i2hex(i: number) {
 
 export const hex = (bytes: Uint8Array) => Array.from(bytes).map(i2hex).join('');
 
-export function base64URLencode(utf8Arr: Uint8Array) {
+export function base64URLencode(utf8Arr: Uint8Array | string) {
   const base64Encoded = Buffer.from(utf8Arr).toString('base64');
   return base64Encoded
     .replace(/\+/g, '-')

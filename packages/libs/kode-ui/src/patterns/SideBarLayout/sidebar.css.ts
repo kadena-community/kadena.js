@@ -6,10 +6,13 @@ import {
   style,
   token,
 } from './../../styles';
-import { minHeaderHeight, sideBarWidth } from './styles.css';
+import { minHeaderHeight, sideBarMinWidth, sideBarWidth } from './styles.css';
 
 export const menuBackdropClass = recipe({
   base: [
+    {
+      border: 0,
+    },
     responsiveStyle({
       xs: {
         display: 'flex',
@@ -49,6 +52,7 @@ export const menuBackdropClass = recipe({
 export const menuWrapperClass = recipe({
   base: [
     atoms({
+      position: 'fixed',
       flexDirection: 'column',
       flex: 1,
       gap: 'sm',
@@ -65,13 +69,13 @@ export const menuWrapperClass = recipe({
         willChange: 'transform',
         transition: 'transform .4s ease',
         transform: 'translateX(-100%)',
-        position: 'relative',
         gridArea: 'sidebarlayout-main',
         gridRow: '1/5',
         inset: 0,
         zIndex: token('zIndex.overlay'),
         backgroundColor: token('color.background.base.default'),
         padding: token('spacing.lg'),
+        paddingBlockStart: token('spacing.sm'),
       },
       md: {
         display: 'flex',
@@ -110,14 +114,16 @@ export const menuMenuIconClass = style({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
 });
 
 export const menuNavWrapperClass = style([
   atoms({
+    marginBlockStart: 'xxxl',
     flex: 1,
   }),
   {
-    overflowY: 'scroll',
+    overflowY: 'hidden',
   },
 ]);
 
@@ -146,6 +152,7 @@ export const listClass = recipe({
     direction: {
       horizontal: {
         flexDirection: 'row',
+        alignItems: 'center',
       },
       vertical: {
         flexDirection: 'column',
@@ -167,12 +174,70 @@ export const listClass = recipe({
 
 export const listItemClass = style([
   atoms({
-    display: 'flex',
-    flexDirection: 'column',
     width: '100%',
   }),
   {},
 ]);
+
+export const sidebartreeItemClass = recipe({
+  base: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    gap: token('spacing.md'),
+    borderRadius: token('spacing.sm'),
+    textDecoration: 'none',
+    fontSize: token('typography.fontSize.sm'),
+    fontWeight: token('typography.weight.primaryFont.semiBold'),
+    paddingBlock: token('spacing.sm'),
+    cursor: 'pointer',
+
+    selectors: {
+      '&:hover': {
+        backgroundColor: token('color.background.base.@active'),
+        color: token('color.text.base.@hover'),
+      },
+    },
+  },
+  variants: {
+    isExpanded: {
+      true: {
+        paddingInline: token('spacing.md'),
+      },
+      false: {
+        justifyContent: 'center',
+        paddingInline: 0,
+      },
+    },
+    isActive: {
+      true: {
+        backgroundColor: token('color.background.base.@active'),
+        color: token('color.link.base.default'),
+      },
+      false: {
+        color: token('color.text.gray.bolder'),
+        selector: {
+          '&:hover': {
+            color: token('color.text.base.@hover'),
+          },
+        },
+      },
+    },
+  },
+});
+
+globalStyle(`${sidebartreeItemClass()}[data-isactive="true"] svg`, {
+  color: token('color.link.base.default'),
+  width: '12px',
+});
+globalStyle(`${sidebartreeItemClass()}[data-isactive="false"] svg`, {
+  color: token('color.text.gray.bolder'),
+  width: '12px',
+});
+globalStyle(`${sidebartreeItemClass()}[data-isactive="false"]:hover svg`, {
+  color: token('color.text.base.@hover'),
+});
 
 export const listItemInlineClass = style([
   atoms({
@@ -192,42 +257,86 @@ export const listNotExpandedClass = style([
   }),
 ]);
 
-globalStyle(`${listItemClass} button`, {
-  justifyContent: 'flex-start',
-  flex: 1,
-});
-globalStyle(`${listItemClass} a`, { justifyContent: 'flex-start', flex: 1 });
-
-export const headerWrapperClass = style([
-  {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    width: '100%',
-    height: minHeaderHeight,
-    gridArea: 'sidebarlayout-header',
+export const headerWrapperClass = recipe({
+  base: [
+    {
+      maxWidth: '2140px',
+      position: 'fixed',
+      backgroundColor: token('color.background.base.default'),
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      height: minHeaderHeight,
+      gridArea: 'sidebarlayout-header',
+      zIndex: token('zIndex.overlay'),
+    },
+  ],
+  variants: {
+    sideBarExpanded: {
+      true: responsiveStyle({
+        xs: {
+          paddingInlineStart: token('spacing.md'),
+        },
+        md: {
+          paddingInlineStart: sideBarWidth,
+        },
+      }),
+      false: responsiveStyle({
+        xs: {
+          paddingInlineStart: token('spacing.md'),
+        },
+        md: {
+          paddingInlineStart: sideBarMinWidth,
+        },
+      }),
+    },
   },
-]);
+});
 export const headerClass = style([
   atoms({
     display: 'grid',
+    marginInlineEnd: 'sm',
   }),
 
   responsiveStyle({
     xs: {
-      gridTemplateColumns: `50px 1fr 50px`,
+      gridTemplateColumns: `120px 1fr 100px 50px`,
       gridTemplateAreas: `
-    "header-logo header-crumbs header-toggle"
+    "header-logo header-crumbs  header-rightside header-toggle"
   `,
     },
     md: {
-      gridTemplateColumns: '1fr',
+      gridTemplateColumns: '1fr 100px',
       gridTemplateRows: '1fr',
       gridTemplateAreas: `
-    "header-crumbs"
-  `,
+        "header-crumbs header-rightside"
+      `,
     },
   }),
 ]);
+
+export const crumbsWrapperClass = style([
+  {
+    gridArea: 'header-crumbs',
+  },
+]);
+export const rightsideWrapperClass = style([
+  {
+    gridArea: 'header-rightside',
+    justifyContent: 'flex-end',
+  },
+]);
+
+globalStyle(`${crumbsWrapperClass} > *`, {
+  ...responsiveStyle({
+    xs: {
+      display: 'none!important',
+    },
+    sm: {
+      display: 'flex!important',
+    },
+  }),
+});
 
 export const headerExpandedClass = style([
   responsiveStyle({

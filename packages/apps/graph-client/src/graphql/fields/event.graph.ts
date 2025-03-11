@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 
 export const CORE_EVENT_FIELDS: DocumentNode = gql`
   fragment CoreEventFields on Event {
-    parameterText
+    parameters
     qualifiedName
   }
 `;

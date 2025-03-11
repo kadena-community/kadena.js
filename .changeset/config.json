@@ -13,10 +13,10 @@
     "@kadena/bootstrap-lib",
     "@kadena/tools",
     "@kadena-dev/e2e-base",
-    "e2e-docs",
     "e2e-tools",
+    "e2e-dev-wallet",
+    "e2e-rwa-demo",
     "e2e-graph",
-    "e2e-proof-of-us",
-    "@kadena/docs"
+    "e2e-proof-of-us"
   ]
 }

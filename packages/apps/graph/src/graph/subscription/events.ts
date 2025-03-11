@@ -15,7 +15,6 @@ builder.subscriptionField('events', (t) =>
     description: `Listen for events by qualifiedName (e.g. \`coin.TRANSFER\`).
        
       The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-       
       An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     args: {
       qualifiedEventName: t.arg.string({
@@ -156,12 +155,18 @@ async function getLastEvents(
 
 async function getLatestEventId(): Promise<number | null> {
   try {
-    const lastEventId = await prismaClient.event.aggregate({
-      _max: {
-        id: true,
+    const lastEventId = await prismaClient.event.findFirst({
+      orderBy: {
+        id: 'desc',
       },
+      take: 1,
     });
-    return lastEventId._max.id;
+
+    if (!lastEventId) {
+      throw new Error('No event found');
+    }
+
+    return lastEventId.id;
   } catch (error) {
     return null;
   }

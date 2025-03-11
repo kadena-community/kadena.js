@@ -40,7 +40,7 @@ export const TxContainer = React.memo(
     );
     const contTx = useSubscribe<ITransaction>(
       'transaction',
-      transaction.continuation?.continuationTxId,
+      localTransaction?.continuation?.continuationTxId,
     );
 
     useEffect(() => {
@@ -107,13 +107,25 @@ export const TxContainer = React.memo(
       };
 
     const onSubmit = useCallback(
-      async (tx: ITransaction) => {
+      async (tx: ITransaction, skipPreflight = false) => {
         const result = await transactionService.submitTransaction(
           tx,
           client,
-          // (updatedTx) => {
-          //   // setLocalTransaction(updatedTx);
-          // },
+          undefined,
+          skipPreflight,
+        );
+        if (onUpdate) onUpdate(result);
+
+        return result;
+      },
+      [client, onUpdate],
+    );
+
+    const onPreflight = useCallback(
+      async (tx: ITransaction) => {
+        const result = await transactionService.preflightTransaction(
+          tx,
+          client,
         );
         if (onUpdate) onUpdate(result);
 
@@ -123,14 +135,18 @@ export const TxContainer = React.memo(
     );
 
     if (!localTransaction) return null;
-    const renderExpanded = () => (
+    const renderExpanded = (isDialog = false) => (
       <ExpandedTransaction
         transaction={localTransaction}
         contTx={contTx}
         onSign={onExpandedSign(localTransaction)}
-        onSubmit={() => onSubmit(localTransaction)}
+        onSubmit={(skipPreflight = false) =>
+          onSubmit(localTransaction, skipPreflight)
+        }
+        onPreflight={() => onPreflight(localTransaction)}
         sendDisabled={sendDisabled}
-        showTitle={as === 'tile'}
+        showTitle={as === 'tile' || isDialog}
+        isDialog={isDialog}
       />
     );
     if (as === 'tile' || as === 'minimized')
@@ -147,7 +163,7 @@ export const TxContainer = React.memo(
                 }
               }}
             >
-              {renderExpanded()}
+              {renderExpanded(true)}
             </Dialog>
           )}
           {as === 'tile' && (
@@ -159,6 +175,7 @@ export const TxContainer = React.memo(
                 onSign(localTransaction);
               }}
               onSubmit={() => onSubmit(localTransaction)}
+              onPreflight={() => onPreflight(localTransaction)}
               onView={async () => {
                 setExpandedModal(true);
               }}

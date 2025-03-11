@@ -1,44 +1,51 @@
+import { useGlobalState } from '@/App/providers/globalState';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useWallet } from '../wallet/wallet.hook';
 
-type Message = {
+export type Message = {
   id: string;
   type: RequestType;
   payload: unknown;
 };
 
-type RequestType =
-  | 'CONNECTION_REQUEST'
-  | 'SIGN_REQUEST'
-  | 'PAYMENT_REQUEST'
-  | 'UNLOCK_REQUEST';
+export type UiRequiredRequest = 'CONNECTION_REQUEST' | 'SIGN_REQUEST';
+
+export type RequestType =
+  | UiRequiredRequest
+  | 'GET_STATUS'
+  | 'GET_NETWORK_LIST'
+  | 'GET_ACCOUNTS';
+
 type Request = Message & {
   resolve: (data: unknown) => void;
   reject: (error: unknown) => void;
 };
 
-const handle = (
-  type: string,
+const messageHandle = (
+  type: RequestType,
   handler: (
     message: Message,
   ) => Promise<{ payload: unknown } | { error: unknown }>,
 ) => {
   const cb = async (event: MessageEvent) => {
-    if (event.data.type === type && event.source) {
+    if (event.data.type === type && event.source && event.origin !== 'null') {
       const payload = await handler(event.data);
       event.source.postMessage(
         { id: event.data.id, type: event.data.type, ...payload },
         { targetOrigin: event.origin },
       );
-      window.opener.focus();
+      if (window.opener && event.origin) {
+        window.opener.focus();
+      }
     }
   };
   window.addEventListener('message', cb);
@@ -53,14 +60,50 @@ export const useRequests = () => {
 };
 
 export const CommunicationProvider: FC<
-  PropsWithChildren<{ setOrigin: (pathname: string) => void }>
-> = ({ setOrigin, children }) => {
+  PropsWithChildren<{
+    handle?: (
+      type: RequestType,
+      handler: (message: Message) => Promise<
+        | {
+            payload: unknown;
+          }
+        | {
+            error: unknown;
+          }
+      >,
+    ) => () => void;
+    uiLoader?: (requestId: string, requestType: UiRequiredRequest) => void;
+  }>
+> = ({ children, handle = messageHandle, uiLoader }) => {
+  const { setOrigin } = useGlobalState();
   const [requests] = useState(() => new Map<string, Request>());
-  const navigate = useNavigate();
-  const { isUnlocked, accounts, profile } = useWallet();
+  const routeNavigate = usePatchedNavigate();
+  const defaultUiLoader = useCallback(
+    (requestId: string, requestType: UiRequiredRequest) => {
+      const routeMap = {
+        CONNECTION_REQUEST: '/connect',
+        PAYMENT_REQUEST: '/payment',
+        SIGN_REQUEST: '/sign-request',
+      };
+      const route = routeMap[requestType];
+      if (!route) return;
+      const path = `${route}/${requestId}`;
+      setOrigin(path);
+      routeNavigate(path);
+    },
+    [routeNavigate, setOrigin],
+  );
+  const loadUiComponent = useCallback(
+    (requestId: string, requestType: UiRequiredRequest) => {
+      const loader = uiLoader || defaultUiLoader;
+      return loader(requestId, requestType);
+    },
+    [defaultUiLoader, uiLoader],
+  );
+  const { isUnlocked, accounts, profile, networks, activeNetwork, keySources } =
+    useWallet();
 
   useEffect(() => {
-    console.log('CommunicationProvider mounted', isUnlocked);
     const createRequest = (data: Message) =>
       new Promise<{ payload: unknown } | { error: unknown }>((resolve) => {
         const request = {
@@ -81,31 +124,83 @@ export const CommunicationProvider: FC<
         requests.delete(data.id);
       });
 
-    const handleRequest = (type: RequestType, route: string) =>
+    const handleUIRequiredRequest = (type: UiRequiredRequest) =>
       handle(type, async (payload) => {
-        console.log('handleRequest', type, payload);
         const request = createRequest(payload);
-        setOrigin(`${route}/${payload.id}`);
-        navigate(`${route}/${payload.id}`);
+        loadUiComponent(payload.id, type);
         return request;
       });
     const handlers = [
-      handleRequest('CONNECTION_REQUEST', '/connect'),
-      handleRequest('SIGN_REQUEST', '/sign'),
-      handleRequest('PAYMENT_REQUEST', '/payment'),
+      handleUIRequiredRequest('CONNECTION_REQUEST'),
+      handleUIRequiredRequest('SIGN_REQUEST'),
       handle('GET_STATUS', async () => {
+        if (!isUnlocked || !profile) return { payload: { isUnlocked: false } };
+        const { uuid, name, accentColor } = profile;
+        const accountsToSend = accounts.map(
+          ({ address, alias, overallBalance, chains, guard }) => ({
+            address,
+            alias,
+            overallBalance,
+            chains,
+            guard,
+          }),
+        );
         return {
           payload: {
             isUnlocked: isUnlocked,
-            ...(isUnlocked ? { profile, accounts } : {}),
+            profile: {
+              uuid,
+              name,
+              accentColor,
+              authMode: profile.options?.authMode,
+            },
+            accounts: accountsToSend,
+            keySources: keySources.map(({ uuid, source, keys }) => ({
+              uuid,
+              source,
+              keys,
+            })),
+            networks,
+            activeNetwork,
           },
+        };
+      }),
+      handle('GET_NETWORK_LIST', async () => {
+        return {
+          payload: isUnlocked ? networks : [],
+        };
+      }),
+      handle('GET_ACCOUNTS', async () => {
+        return {
+          payload: isUnlocked
+            ? accounts.map(
+                ({ address, alias, overallBalance, chains, guard }) => ({
+                  address,
+                  alias,
+                  overallBalance,
+                  chains,
+                  guard,
+                }),
+              )
+            : [],
         };
       }),
     ];
     return () => {
       handlers.forEach((unsubscribe) => unsubscribe());
     };
-  }, [navigate, requests, isUnlocked]);
+  }, [
+    loadUiComponent,
+    requests,
+    isUnlocked,
+    accounts,
+    profile,
+    networks,
+    activeNetwork,
+    setOrigin,
+    handle,
+    keySources,
+  ]);
 
   return (
     <communicationContext.Provider value={requests}>

@@ -117,13 +117,13 @@ test.describe('Query: getTransactions', () => {
           result: {
             continuation: null,
             eventCount: 2,
-            gas: 736,
+            gas: 236,
             events: {
               edges: [
                 {
                   node: {
                     requestKey: transfer.reqKey,
-                    parameterText: `["${sourceAccount.account}","${devnetMiner.account}",7.36e-6]`,
+                    parameterText: `["${sourceAccount.account}","${targetAccount.account}",20]`,
                     id: base64Encode(
                       `Event:["${transfer.metaData?.blockHash}","0","${transfer.reqKey}"]`,
                     ),
@@ -132,7 +132,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.reqKey,
-                    parameterText: `["${sourceAccount.account}","${targetAccount.account}",20]`,
+                    parameterText: `["${sourceAccount.account}","${devnetMiner.account}",2.36e-6]`,
                     id: base64Encode(
                       `Event:["${transfer.metaData?.blockHash}","1","${transfer.reqKey}"]`,
                     ),
@@ -144,10 +144,16 @@ test.describe('Query: getTransactions', () => {
               edges: [
                 {
                   node: {
-                    amount: 0.00000736,
-                    chainId: 0,
+                    amount: 20,
+                    transaction: {
+                      result: {
+                        block: {
+                          chainId: 0,
+                        },
+                      },
+                    },
                     crossChainTransfer: null,
-                    receiverAccount: devnetMiner.account,
+                    receiverAccount: targetAccount.account,
                     requestKey: transfer.reqKey,
                     senderAccount: sourceAccount.account,
                     id: base64Encode(
@@ -157,10 +163,16 @@ test.describe('Query: getTransactions', () => {
                 },
                 {
                   node: {
-                    amount: 20,
-                    chainId: 0,
+                    amount: 0.00000236,
+                    transaction: {
+                      result: {
+                        block: {
+                          chainId: 0,
+                        },
+                      },
+                    },
                     crossChainTransfer: null,
-                    receiverAccount: targetAccount.account,
+                    receiverAccount: devnetMiner.account,
                     requestKey: transfer.reqKey,
                     senderAccount: sourceAccount.account,
                     id: base64Encode(
@@ -228,14 +240,14 @@ test.describe('Query: getTransactions', () => {
         expect(finalResponse.transactions.edges[0].node).toEqual({
           result: {
             continuation: `{"step":1,"yield":null,"pactId":"${transfer.continuation?.pactId}","executed":null,"stepCount":2,"continuation":{"def":"coin.transfer-crosschain","args":["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"},"1",20]},"stepHasRollback":false}`,
-            gas: 478,
+            gas: 210,
             eventCount: 4,
             events: {
               edges: [
                 {
                   node: {
                     requestKey: transfer.reqKey,
-                    parameterText: `["${sourceAccount.account}","${devnetMiner.account}",4.78e-6]`,
+                    parameterText: `["","${targetAccount.account}",20]`,
                     id: base64Encode(
                       `Event:["${transfer.metaData?.blockHash}","0","${transfer.reqKey}"]`,
                     ),
@@ -244,7 +256,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.reqKey,
-                    parameterText: `["","${targetAccount.account}",20]`,
+                    parameterText: `["","${targetAccount.account}",20,"0"]`,
                     id: base64Encode(
                       `Event:["${transfer.metaData?.blockHash}","1","${transfer.reqKey}"]`,
                     ),
@@ -253,7 +265,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.reqKey,
-                    parameterText: `["","${targetAccount.account}",20,"0"]`,
+                    parameterText: `["0","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"},"1",20]]`,
                     id: base64Encode(
                       `Event:["${transfer.metaData?.blockHash}","2","${transfer.reqKey}"]`,
                     ),
@@ -262,7 +274,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.reqKey,
-                    parameterText: `["0","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"},"1",20]]`,
+                    parameterText: `["${sourceAccount.account}","${devnetMiner.account}",2.1e-6]`,
                     id: base64Encode(
                       `Event:["${transfer.metaData?.blockHash}","3","${transfer.reqKey}"]`,
                     ),
@@ -274,39 +286,57 @@ test.describe('Query: getTransactions', () => {
               edges: [
                 {
                   node: {
-                    amount: 0.00000478,
-                    chainId: 1,
-                    receiverAccount: devnetMiner.account,
-                    requestKey: transfer.reqKey,
-                    senderAccount: sourceAccount.account,
-                    id: base64Encode(
-                      `Transfer:["${transfer.metaData?.blockHash}","1","0","${coinModuleHash}","${transfer.reqKey}"]`,
-                    ),
-                    crossChainTransfer: null,
-                  },
-                },
-                {
-                  node: {
                     amount: 20,
-                    chainId: 1,
+                    transaction: {
+                      result: {
+                        block: {
+                          chainId: 1,
+                        },
+                      },
+                    },
                     receiverAccount: targetAccount.account,
                     requestKey: transfer.reqKey,
                     senderAccount: '',
                     id: base64Encode(
-                      `Transfer:["${transfer.metaData?.blockHash}","1","1","${coinModuleHash}","${transfer.reqKey}"]`,
+                      `Transfer:["${transfer.metaData?.blockHash}","1","0","${coinModuleHash}","${transfer.reqKey}"]`,
                     ),
                     crossChainTransfer: {
                       amount: 20,
-                      blockHash: continuationBlockHash,
-                      chainId: 0,
                       moduleName: 'coin',
                       receiverAccount: '',
                       requestKey: transfer.continuation?.pactId,
                       senderAccount: sourceAccount.account,
                       id: base64Encode(
-                        `Transfer:["${continuationBlockHash}","0","2","${coinModuleHash}","${transfer.continuation?.pactId}"]`,
+                        `Transfer:["${continuationBlockHash}","0","1","${coinModuleHash}","${transfer.continuation?.pactId}"]`,
                       ),
+                      transaction: {
+                        result: {
+                          block: {
+                            hash: continuationBlockHash,
+                            chainId: 0,
+                          },
+                        },
+                      },
                     },
+                  },
+                },
+                {
+                  node: {
+                    amount: 0.0000021,
+                    transaction: {
+                      result: {
+                        block: {
+                          chainId: 1,
+                        },
+                      },
+                    },
+                    receiverAccount: devnetMiner.account,
+                    requestKey: transfer.reqKey,
+                    senderAccount: sourceAccount.account,
+                    id: base64Encode(
+                      `Transfer:["${transfer.metaData?.blockHash}","1","3","${coinModuleHash}","${transfer.reqKey}"]`,
+                    ),
+                    crossChainTransfer: null,
                   },
                 },
               ],
@@ -347,45 +377,63 @@ test.describe('Query: getTransactions', () => {
         expect(finalResponse.transactions.edges[1].node).toEqual({
           result: {
             continuation: `{\"step\":0,\"yield\":{\"data\":{\"amount\":20,\"receiver\":\"${targetAccount.account}\",\"source-chain\":\"0\",\"receiver-guard\":{\"keys\":[\"${targetAccount.keys[0].publicKey}\"],\"pred\":\"keys-all\"}},\"source\":\"0\",\"provenance\":{\"moduleHash\":\"${coinModuleHash}\",\"targetChainId\":\"1\"}},\"pactId\":\"${transfer.continuation?.pactId}\",\"executed\":null,\"stepCount\":2,\"continuation\":{\"def\":\"coin.transfer-crosschain\",\"args\":[\"${sourceAccount.account}\",\"${targetAccount.account}\",{\"keys\":[\"${targetAccount.keys[0].publicKey}\"],\"pred\":\"keys-all\"},\"1\",20]},\"stepHasRollback\":false}`,
-            gas: 621,
+            gas: 288,
             eventCount: 4,
             transfers: {
               edges: [
                 {
                   node: {
-                    amount: 0.00000621,
-                    chainId: 0,
-                    receiverAccount: devnetMiner.account,
-                    requestKey: transfer.continuation?.pactId,
-                    senderAccount: sourceAccount.account,
-                    id: base64Encode(
-                      `Transfer:["${continuationBlockHash}","0","0","${coinModuleHash}","${transfer.continuation?.pactId}"]`,
-                    ),
-                    crossChainTransfer: null,
-                  },
-                },
-                {
-                  node: {
                     amount: 20,
-                    chainId: 0,
+                    transaction: {
+                      result: {
+                        block: {
+                          chainId: 0,
+                        },
+                      },
+                    },
                     receiverAccount: '',
                     requestKey: transfer.continuation?.pactId, // feels like this should be the transfer.reqKey
                     senderAccount: sourceAccount.account,
                     id: base64Encode(
-                      `Transfer:["${continuationBlockHash}","0","2","${coinModuleHash}","${transfer.continuation?.pactId}"]`, // feels like this should not be the continuation block has and pactId
+                      `Transfer:["${continuationBlockHash}","0","1","${coinModuleHash}","${transfer.continuation?.pactId}"]`, // feels like this should not be the continuation block has and pactId
                     ),
                     crossChainTransfer: {
                       amount: 20,
-                      blockHash: transfer.metaData?.blockHash,
-                      chainId: 1,
                       moduleName: 'coin',
                       receiverAccount: targetAccount.account,
                       requestKey: transfer.reqKey,
                       senderAccount: '',
                       id: base64Encode(
-                        `Transfer:["${transfer.metaData?.blockHash}","1","1","${coinModuleHash}","${transfer.reqKey}"]`, // feels like this should be the continuation block has and pactId?
+                        `Transfer:["${transfer.metaData?.blockHash}","1","0","${coinModuleHash}","${transfer.reqKey}"]`, // feels like this should be the continuation block has and pactId?
                       ),
+                      transaction: {
+                        result: {
+                          block: {
+                            hash: transfer.metaData?.blockHash,
+                            chainId: 1,
+                          },
+                        },
+                      },
                     },
+                  },
+                },
+                {
+                  node: {
+                    amount: 0.00000288,
+                    transaction: {
+                      result: {
+                        block: {
+                          chainId: 0,
+                        },
+                      },
+                    },
+                    receiverAccount: devnetMiner.account,
+                    requestKey: transfer.continuation?.pactId,
+                    senderAccount: sourceAccount.account,
+                    id: base64Encode(
+                      `Transfer:["${continuationBlockHash}","0","3","${coinModuleHash}","${transfer.continuation?.pactId}"]`,
+                    ),
+                    crossChainTransfer: null,
                   },
                 },
               ],
@@ -395,7 +443,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.continuation?.pactId,
-                    parameterText: `["${sourceAccount.account}","${devnetMiner.account}",6.21e-6]`,
+                    parameterText: `["${sourceAccount.account}","${targetAccount.account}",20,"1"]`,
                     id: base64Encode(
                       `Event:["${continuationBlockHash}","0","${transfer.continuation?.pactId}"]`,
                     ),
@@ -404,7 +452,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.continuation?.pactId,
-                    parameterText: `["${sourceAccount.account}","${targetAccount.account}",20,"1"]`,
+                    parameterText: `["${sourceAccount.account}","",20]`,
                     id: base64Encode(
                       `Event:["${continuationBlockHash}","1","${transfer.continuation?.pactId}"]`,
                     ),
@@ -413,7 +461,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.continuation?.pactId,
-                    parameterText: `["${sourceAccount.account}","",20]`,
+                    parameterText: `["1","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"},"1",20]]`,
                     id: base64Encode(
                       `Event:["${continuationBlockHash}","2","${transfer.continuation?.pactId}"]`,
                     ),
@@ -422,7 +470,7 @@ test.describe('Query: getTransactions', () => {
                 {
                   node: {
                     requestKey: transfer.continuation?.pactId,
-                    parameterText: `["1","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"},"1",20]]`,
+                    parameterText: `["${sourceAccount.account}","${devnetMiner.account}",2.88e-6]`,
                     id: base64Encode(
                       `Event:["${continuationBlockHash}","3","${transfer.continuation?.pactId}"]`,
                     ),

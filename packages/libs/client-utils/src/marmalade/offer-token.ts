@@ -127,7 +127,6 @@ export const offerToken = <C extends ISaleTokenPolicyConfig>(
   inputs: WithSaleTokenPolicy<C, IOfferTokenInput>,
   config: IClientConfig,
 ) => {
-  fetch('/api/cron').catch(console.log);
   return submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['defpact']['sale']>
   >(config)(offerTokenCommand(inputs));

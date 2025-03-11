@@ -9,18 +9,21 @@ import {
 import type { ICheckboxProps } from '../Form';
 import { Checkbox } from '../Form';
 import type { ITableRowProps } from './Body';
+import type { ITableProps } from './Table';
 import { selectorCell, tableDataCell } from './Table.css';
 
 interface ITableSelectAllCellProps<T> {
   column: GridNode<T>;
   state: ITableRowProps<T>['state'];
   inverse?: boolean;
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 export function TableSelectAllCell<T>({
   column,
   state,
   inverse = false,
+  variant,
 }: ITableSelectAllCellProps<T>) {
   const ref = useRef<HTMLTableCellElement | null>(null);
   const { columnHeaderProps } = useTableColumnHeader(
@@ -34,7 +37,7 @@ export function TableSelectAllCell<T>({
     <th
       {...columnHeaderProps}
       ref={ref}
-      className={classNames(selectorCell.header, tableDataCell)}
+      className={classNames(selectorCell.header, tableDataCell({ variant }))}
     >
       {state.selectionManager.selectionMode === 'single' ? (
         <VisuallyHidden>{checkboxProps['aria-label']}</VisuallyHidden>

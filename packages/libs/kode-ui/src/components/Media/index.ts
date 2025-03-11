@@ -10,4 +10,8 @@ const AppMedia = createMedia({
   },
 });
 
+// this is a fix for the approuter nextjs
+// https://github.com/artsy/fresnel/tree/main/examples/nextjs/app-router
+export const mediaProviderStyles = AppMedia.createMediaStyle();
+
 export const { Media, MediaContextProvider } = AppMedia;

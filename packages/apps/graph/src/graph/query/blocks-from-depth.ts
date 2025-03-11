@@ -1,18 +1,19 @@
 import { prismaClient } from '@db/prisma-client';
+import { CHAINS } from '@kadena/chainweb-node-client';
 import type { Block } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import {
   getConditionForMinimumDepth,
   getConfirmationDepth,
 } from '@services/depth-service';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import GQLBlock from '../objects/block';
 
 builder.queryField('blocksFromDepth', (t) =>
   t.prismaConnection({
-    description:
-      'Retrieve blocks by chain and minimal depth. Default page size is 20.',
+    description: `Retrieve blocks by chain and minimal depth. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
     args: {
       minimumDepth: t.arg.int({
         required: true,
@@ -21,7 +22,7 @@ builder.queryField('blocksFromDepth', (t) =>
         },
       }),
       chainIds: t.arg.stringList({
-        required: false,
+        defaultValue: [...CHAINS],
         description: 'Default: all chains',
         validate: {
           minLength: 1,

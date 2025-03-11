@@ -16,7 +16,7 @@ type Block implements Node {
   """
   epoch: DateTime!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
   flags: Decimal!
   hash: String!
@@ -30,11 +30,11 @@ type Block implements Node {
 
   """The proof of work hash."""
   powHash: String!
-  target: Decimal!
+  target: String!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
-  weight: Decimal!
+  weight: String!
 }
 
 type BlockEventsConnection {
@@ -105,7 +105,6 @@ type Event implements Node {
   """The height of the block where the event was emitted."""
   height: BigInt!
   id: ID!
-  incrementedId: Int!
   moduleName: String!
   name: String!
 
@@ -145,10 +144,10 @@ type FungibleAccount implements Node {
   id: ID!
   totalBalance: Decimal!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transactions(after: String, before: String, first: Int, last: Int): FungibleAccountTransactionsConnection!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleAccountTransfersConnection!
 }
 
@@ -166,7 +165,6 @@ type FungibleAccountTransactionsConnectionEdge {
 type FungibleAccountTransfersConnection {
   edges: [FungibleAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type FungibleAccountTransfersConnectionEdge {
@@ -180,15 +178,15 @@ type FungibleChainAccount implements Node {
   balance: Float!
   chainId: String!
   fungibleName: String!
-  guard: Guard!
+  guard: IGuard!
   id: ID!
 
   """
-  Transactions that the current account is sender of. Default page size is 20.
+  Transactions that the current account is sender of. Default page size is 500.
   """
   transactions(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransactionsConnection!
 
-  """Default page size is 20."""
+  """Default page size is 500."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransfersConnection!
 }
 
@@ -206,7 +204,6 @@ type FungibleChainAccountTransactionsConnectionEdge {
 type FungibleChainAccountTransfersConnection {
   edges: [FungibleChainAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type FungibleChainAccountTransfersConnectionEdge {
@@ -226,29 +223,25 @@ type GasLimitEstimation {
 type GraphConfiguration {
   """The lowest block-height that is indexed in this endpoint."""
   minimumBlockHeight: BigInt
+
+  """The version of the @kadena/graph package."""
+  version: String!
 }
 
-type Guard implements IGuard {
+"""
+A guard. This is a union of all the different types of guards that can be used in a pact.
+"""
+interface IGuard {
+  keys: [String!]! @deprecated(reason: "deprecated, use KeysetGuard.keys")
+  predicate: String! @deprecated(reason: "deprecated, use KeysetGuard.predicate")
+  raw: String!
+}
+
+"""A keyset guard."""
+type KeysetGuard implements IGuard {
   keys: [String!]!
   predicate: String!
   raw: String!
-}
-
-"""
-A guard. Has values `keys`, `predicate` to provide backwards compatibility for `KeysetGuard`.
-"""
-interface IGuard {
-  keys: [String!]! @deprecated(reason: "Use `... on KeysetGuard { keys predicate }` instead when working with Keysets")
-  predicate: String! @deprecated(reason: "Use `... on KeysetGuard { keys predicate }` instead when working with Keysets")
-  raw: String!
-}
-
-"""The account of the miner that solved a block."""
-type MinerKey implements Node {
-  block: Block!
-  blockHash: String!
-  id: ID!
-  key: String!
 }
 
 """Information about the network."""
@@ -287,7 +280,7 @@ type NonFungibleAccount implements Node {
   nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
-  Default page size is 20. Note that custom token related transactions are not included.
+  Default page size is 500. Note that custom token related transactions are not included.
   """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
 }
@@ -311,7 +304,7 @@ type NonFungibleChainAccount implements Node {
   nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
-  Default page size is 20. Note that custom token related transactions are not included.
+  Default page size is 500. Note that custom token related transactions are not included.
   """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
 }
@@ -339,7 +332,7 @@ type NonFungibleTokenBalance implements Node {
   accountName: String!
   balance: Int!
   chainId: String!
-  guard: Guard!
+  guard: IGuard!
   id: ID!
   info: NonFungibleToken
   tokenId: String!
@@ -373,32 +366,29 @@ type PageInfo {
   startCursor: String
 }
 
-"""Floats that will have a value greater than 0."""
-scalar PositiveFloat
-
 type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
-  """Retrieve blocks by chain and minimal depth. Default page size is 20."""
+  """Retrieve blocks by chain and minimal depth. Default page size is 500."""
   blocksFromDepth(
     after: String
     before: String
 
     """Default: all chains"""
-    chainIds: [String!]
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
     first: Int
     last: Int
     minimumDepth: Int!
   ): QueryBlocksFromDepthConnection
 
-  """Retrieve blocks by chain and minimal height. Default page size is 20."""
+  """Retrieve blocks by chain and minimal height. Default page size is 500."""
   blocksFromHeight(
     after: String
     before: String
 
     """Default: all chains"""
-    chainIds: [String!]
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
     endHeight: Int
     first: Int
     last: Int
@@ -406,14 +396,14 @@ type Query {
   ): QueryBlocksFromHeightConnection!
 
   """
-  Retrieve all completed blocks from a given height. Default page size is 20.
+  Retrieve all completed blocks from a given height. Default page size is 500.
   """
   completedBlockHeights(
     after: String
     before: String
 
     """Default: all chains"""
-    chainIds: [String!]
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
 
     """Retrieve blocks from completed heights only. Default: true"""
     completedHeights: Boolean = true
@@ -423,10 +413,10 @@ type Query {
   ): QueryCompletedBlockHeightsConnection!
 
   """
-  Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
-         
+  Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 500.
+  
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-         
+  
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
   events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, maxHeight: Int, minHeight: Int, minimumDepth: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
@@ -434,7 +424,7 @@ type Query {
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
   """
-  fungibleAccount(accountName: String!, fungibleName: String): FungibleAccount
+  fungibleAccount(accountName: String!, fungibleName: String = "coin"): FungibleAccount
 
   """Retrieve an account by public key."""
   fungibleAccountsByPublicKey(fungibleName: String, publicKey: String!): [FungibleAccount!]!
@@ -442,7 +432,12 @@ type Query {
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String): FungibleChainAccount
+  fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String = "coin"): FungibleChainAccount
+
+  """
+  Retrieve an account by its name and fungible, such as coin, on a specific chain.
+  """
+  fungibleChainAccounts(accountName: String!, chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], fungibleName: String = "coin"): [FungibleChainAccount!]
 
   """Retrieve a chain account by public key."""
   fungibleChainAccountsByPublicKey(chainId: String!, fungibleName: String, publicKey: String!): [FungibleChainAccount!]!
@@ -491,7 +486,7 @@ type Query {
   transaction(blockHash: String, minimumDepth: Int, requestKey: String!): Transaction
 
   """
-  Retrieve transactions. Default page size is 20.
+  Retrieve transactions. Default page size is 500.
    At least one of accountName, fungibleName, blockHash, or requestKey must be provided.
   """
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, maxHeight: Int, minHeight: Int, minimumDepth: Int, requestKey: String): QueryTransactionsConnection!
@@ -499,7 +494,7 @@ type Query {
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
-  """Retrieve transfers. Default page size is 20."""
+  """Retrieve transfers. Default page size is 500."""
   transfers(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransfersConnection!
 }
 
@@ -577,6 +572,13 @@ type QueryTransfersConnectionEdge {
   node: Transfer!
 }
 
+"""DEPRECATED: a fallthrough IGuard type to cover non-KeysetGuard types."""
+type RawGuard implements IGuard {
+  keys: [String!]! @deprecated(reason: "deprecated, use KeysetGuard.keys")
+  predicate: String! @deprecated(reason: "deprecated, use KeysetGuard.predicate")
+  raw: String!
+}
+
 """A signer for a specific transaction."""
 type Signer implements Node {
   """The signer for the gas."""
@@ -595,16 +597,15 @@ type Subscription {
   Listen for events by qualifiedName (e.g. `coin.TRANSFER`).
          
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-         
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
   events(chainId: String, minimumDepth: Int, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
-  newBlocks(chainIds: [String!]): [Block!]
+  newBlocks(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]): [Block!]
 
   """Subscribe to new blocks from a specific depth."""
-  newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
+  newBlocksFromDepth(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], minimumDepth: Int!): [Block!]
 
   """Listen for a transaction by request key."""
   transaction(chainId: String, requestKey: String!): Transaction
@@ -676,11 +677,11 @@ type TransactionResult {
   goodResult: String
 
   """The height of the block this transaction belongs to."""
-  height: BigInt!
+  height: BigInt! @deprecated(reason: "Use `block.height` instead.")
 
   """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
-  metadata: String
+  metadata: String! @deprecated(reason: "Not used.")
   transactionId: BigInt
   transfers(after: String, before: String, first: Int, last: Int): TransactionResultTransfersConnection!
 }
@@ -699,7 +700,6 @@ type TransactionResultEventsConnectionEdge {
 type TransactionResultTransfersConnection {
   edges: [TransactionResultTransfersConnectionEdge]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type TransactionResultTransfersConnectionEdge {
@@ -716,15 +716,15 @@ type TransactionSignature {
 type Transfer implements Node {
   amount: Decimal!
   block: Block!
-  blockHash: String!
-  chainId: BigInt!
+  blockHash: String! @deprecated(reason: "Use `block.hash` field instead.")
+  chainId: BigInt! @deprecated(reason: "Use `block.chainId` field instead.")
   creationTime: DateTime!
 
   """
   The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.
   """
   crossChainTransfer: Transfer
-  height: BigInt!
+  height: BigInt! @deprecated(reason: "Use `block.height` field instead.")
   id: ID!
   moduleHash: String!
   moduleName: String!
@@ -739,4 +739,12 @@ type Transfer implements Node {
 
   """The transaction that initiated this transfer."""
   transaction: Transaction
+}
+
+type UserGuard implements IGuard {
+  args: [String!]!
+  fun: String!
+  keys: [String!]! @deprecated(reason: "deprecated, use KeysetGuard.keys")
+  predicate: String! @deprecated(reason: "deprecated, use KeysetGuard.predicate")
+  raw: String!
 }

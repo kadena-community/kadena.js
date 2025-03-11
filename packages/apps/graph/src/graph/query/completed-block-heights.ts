@@ -1,5 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
+import { CHAINS } from '@kadena/chainweb-node-client';
 import { COMPLEXITY } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
 import { builder } from '../builder';
@@ -7,8 +9,7 @@ import Block from '../objects/block';
 
 builder.queryField('completedBlockHeights', (t) =>
   t.prismaConnection({
-    description:
-      'Retrieve all completed blocks from a given height. Default page size is 20.',
+    description: `Retrieve all completed blocks from a given height. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
     args: {
       completedHeights: t.arg.boolean({
         description:
@@ -24,7 +25,7 @@ builder.queryField('completedBlockHeights', (t) =>
         },
       }),
       chainIds: t.arg.stringList({
-        required: false,
+        defaultValue: [...CHAINS],
         description: 'Default: all chains',
         validate: {
           minLength: 1,

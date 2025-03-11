@@ -1,100 +1,87 @@
 import {
+  MonoCheck,
   MonoContacts,
   MonoContrast,
-  MonoDashboardCustomize,
+  MonoDarkMode,
+  MonoExtension,
+  MonoKey,
+  MonoLightMode,
   MonoLogout,
   MonoNetworkCheck,
+  MonoSettings,
+  MonoSignature,
   MonoSwapHoriz,
   MonoTableRows,
   MonoWallet,
-  MonoWindow,
+  MonoWarning,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
+
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
+import InitialsAvatar from '@/pages/select-profile/initials';
+import { getInitials } from '@/utils/get-initials';
 import {
   Button,
   ContextMenu,
+  ContextMenuDivider,
   ContextMenuItem,
+  Heading,
+  Stack,
+  Text,
   Themes,
   useTheme,
 } from '@kadena/kode-ui';
 import {
   SideBarItem,
   SideBarItemsInline,
-  SideBarTree,
-  SideBarTreeItem,
   SideBar as SideBarUI,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
+import { BetaHeader } from '../BetaHeader';
+import { KLogo } from './KLogo';
 
 export const SideBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isExpanded } = useLayout();
-  const navigate = useNavigate();
-  const { lockProfile } = useWallet();
+  const { isExpanded } = useSideBarLayout();
+  const { lockProfile, profileList, unlockProfile, profile } = useWallet();
+  const navigate = usePatchedNavigate();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
 
-  const handleLogout = () => {
-    lockProfile();
-  };
   return (
     <SideBarUI
+      logo={
+        <>
+          <Link to="/">
+            <KLogo />
+          </Link>
+        </>
+      }
       appContext={
         <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
           <NetworkSelector
             showLabel={isExpanded}
             variant="outlined"
-            isCompact={!isExpanded}
+            isCompact
           />
         </SideBarItem>
       }
       navigation={
         <>
           <SideBarItem
-            visual={<MonoWindow />}
-            label="Dashboard"
+            visual={<MonoWallet />}
+            label="Your Assets"
             component={Link}
             href="/"
           />
-
-          <SideBarTree visual={<MonoWallet />} label="My Wallets">
-            <SideBarTreeItem
-              label="Keys"
-              component={Link}
-              href="/key-management/keys"
-            />
-          </SideBarTree>
-          <SideBarTree visual={<MonoTableRows />} label="Transactions">
-            <SideBarTreeItem
-              label="History"
-              component={Link}
-              href="/transactions"
-            />
-          </SideBarTree>
-          <SideBarTree visual={<MonoDashboardCustomize />} label="Utilities">
-            <SideBarTreeItem
-              label="Sig Builder"
-              component={Link}
-              href="/sig-builder"
-            />
-            <SideBarTreeItem
-              label="Dev Console"
-              component={Link}
-              href="/terminal"
-            />
-            <SideBarTreeItem
-              label="Backup"
-              component={Link}
-              href="/backup-recovery-phrase/write-down"
-            />
-          </SideBarTree>
 
           <SideBarItem
             visual={<MonoSwapHoriz />}
@@ -104,36 +91,133 @@ export const SideBar: FC = () => {
           />
 
           <SideBarItem
+            visual={<MonoTableRows />}
+            label="Activities"
+            component={Link}
+            href="/activities"
+          />
+
+          <SideBarItem
+            visual={<MonoSignature />}
+            label="Sig Builder"
+            component={Link}
+            href="/sig-builder"
+          />
+
+          <SideBarItem
+            label="Key Management"
+            component={Link}
+            href="/key-management/keys"
+            visual={<MonoKey />}
+          />
+
+          <SideBarItem
             visual={<MonoContacts />}
             label="Contacts"
             component={Link}
             href="/contacts"
           />
+          {profile?.showExperimentalFeatures && (
+            <SideBarItem
+              visual={<MonoExtension />}
+              label="Plugins"
+              component={Link}
+              href="/plugins"
+            />
+          )}
         </>
       }
       context={
         <>
+          <SideBarItem visual={<MonoWarning />} label="warning">
+            {isExpanded ? (
+              <BetaHeader />
+            ) : (
+              <Stack
+                backgroundColor="semantic.warning.default"
+                justifyContent={'center'}
+                alignItems={'center'}
+                padding={'sm'}
+              >
+                <Text>
+                  <MonoWarning />
+                </Text>
+              </Stack>
+            )}
+          </SideBarItem>
+
           <SideBarItemsInline>
             <SideBarItem visual={<MonoContacts />} label="Profile">
               <ContextMenu
                 trigger={
                   <Button
-                    isCompact={!isExpanded}
-                    variant="outlined"
-                    endVisual={<MonoContacts />}
+                    isCompact
+                    variant={isExpanded ? 'outlined' : 'transparent'}
+                    startVisual={
+                      <InitialsAvatar
+                        name={getInitials(profile!.name)}
+                        accentColor={profile!.accentColor}
+                        size="small"
+                      />
+                    }
                   >
-                    {isExpanded ? 'Profile' : undefined}
+                    {isExpanded ? profile?.name : undefined}
                   </Button>
                 }
               >
+                <Stack
+                  paddingInline={'md'}
+                  paddingBlockStart={'md'}
+                  paddingBlockEnd={'sm'}
+                >
+                  <Heading variant="h6">Switch Profile</Heading>
+                </Stack>
+                {profileList.map((prf) => (
+                  <ContextMenuItem
+                    key={prf.uuid}
+                    endVisual={
+                      prf.uuid === profile?.uuid ? (
+                        <Text>
+                          <MonoCheck />
+                        </Text>
+                      ) : undefined
+                    }
+                    label={
+                      (
+                        <Stack gap="sm">
+                          <InitialsAvatar
+                            name={getInitials(prf!.name)}
+                            accentColor={prf!.accentColor}
+                            size="small"
+                          />
+                          <Text>{prf.name}</Text>
+                        </Stack>
+                      ) as any
+                    }
+                    onClick={async () => {
+                      if (prf.uuid === profile?.uuid) return;
+                      if (prf.options.authMode === 'WEB_AUTHN') {
+                        const pass = await getWebAuthnPass(prf);
+                        if (pass) {
+                          lockProfile();
+                          await unlockProfile(prf.uuid, pass);
+                        }
+                      } else {
+                        navigate(`/unlock-profile/${prf.uuid}`);
+                      }
+                    }}
+                  />
+                ))}
+                <ContextMenuDivider />
                 <ContextMenuItem
-                  onClick={() => navigate('/profile')}
-                  label="Profile"
+                  endVisual={<MonoSettings />}
+                  label="Settings"
+                  onClick={() => navigate('/settings')}
                 />
                 <ContextMenuItem
                   endVisual={<MonoLogout />}
                   label="Logout"
-                  onClick={handleLogout}
+                  onClick={lockProfile}
                 />
               </ContextMenu>
             </SideBarItem>
@@ -143,10 +227,12 @@ export const SideBar: FC = () => {
               label="Change theme"
             >
               <Button
-                variant={isExpanded ? 'transparent' : 'outlined'}
+                isCompact
+                variant="transparent"
                 onPress={() => toggleTheme()}
-                startVisual={<MonoContrast />}
-                isCompact={!isExpanded}
+                startVisual={
+                  theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
+                }
               />
             </SideBarItem>
           </SideBarItemsInline>

@@ -1,5 +1,39 @@
 # @kadena/client-utils
 
+## 0.12.2
+
+### Patch Changes
+
+- Updated dependencies \[0ebc455]
+  - @kadena/chainweb-node-client\@0.9.1
+  - @kadena/client\@1.17.1
+  - @kadena/pactjs-cli\@1.17.1
+
+## 0.12.1
+
+### Patch Changes
+
+- Updated dependencies \[67ee479]
+  - @kadena/chainweb-node-client\@0.9.0
+  - @kadena/client\@1.17.0
+  - @kadena/pactjs-cli\@1.17.0
+
+## 0.12.0
+
+### Minor Changes
+
+- 1cba919: set the keys to sign with in safe transfer create function
+
+## 0.11.1
+
+### Patch Changes
+
+- Updated dependencies \[5e9bfd0]
+- Updated dependencies \[1f46bee]
+  - @kadena/chainweb-node-client\@0.8.0
+  - @kadena/client\@1.16.0
+  - @kadena/pactjs-cli\@1.16.0
+
 ## 0.11.0
 
 ### Minor Changes

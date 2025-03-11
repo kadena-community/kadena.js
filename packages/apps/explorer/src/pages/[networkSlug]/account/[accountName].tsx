@@ -118,7 +118,9 @@ const Account: FC = () => {
     return (
       <Layout layout="full">
         <LayoutBody>
-          <NoSearchResults />
+          {!Array.isArray(accountName) && (
+            <NoSearchResults type="accountName" value={accountName} />
+          )}
         </LayoutBody>
       </Layout>
     );

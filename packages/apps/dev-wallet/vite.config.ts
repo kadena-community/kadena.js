@@ -41,6 +41,18 @@ export const config: UserConfig = {
           src: 'manifest.json',
           dest: './',
         },
+        // this is only for plugins that are hosted and maintain with kadena's teams
+        // other plugins should be hosted in their own domain; we might later create a plugin registry and host them there.
+        // ...getChainweaverPluginsFromPackageJson(
+        //   JSON.parse(
+        //     readFileSync(path.resolve(__dirname, './package.json'), 'utf-8'),
+        //   ) as PackageJson,
+        // ).map((dep) =>
+        //   logTap('Plugin: ')({
+        //     src: `node_modules/${dep}/dist/*`,
+        //     dest: `./internal-registry/${dep}/`,
+        //   }),
+        // ),
       ],
     }),
   ],
@@ -57,10 +69,45 @@ export const config: UserConfig = {
   build: {
     ssr: false,
     minify: false,
-    sourcemap: 'inline',
+    sourcemap: 'hidden',
     rollupOptions: {
+      input: {
+        html: 'index.html',
+        bootstrap: 'src/index.ts', // your main app entry point
+        sw: 'src/service-worker/service-worker.ts', // entry for the service worker
+      },
       output: {
         minifyInternalExports: false,
+        // this lets us specify the output filename pattern for each chunk, later we can use this to cache each chunk in the service worker
+        manualChunks: {
+          'react-libs': [
+            'react',
+            'react-dom',
+            'react-router-dom',
+            '@vanilla-extract/css',
+          ],
+          'kadena-libs': ['@kadena/client', '@kadena/client-utils'],
+          'kadena-ui': ['@kadena/kode-ui', '@kadena/kode-icons'],
+        },
+        entryFileNames: (chunk) => {
+          return [
+            'sw',
+            'react-libs',
+            'kadena-libs',
+            'kadena-ui',
+            'html',
+            'bootstrap',
+          ].includes(chunk.name)
+            ? 'assets/[name].js'
+            : 'assets/[name]-[hash].js';
+        },
+
+        chunkFileNames: (chunk) =>
+          ['sw', 'react-libs', 'kadena-libs', 'kadena-ui', 'html'].includes(
+            chunk.name,
+          )
+            ? 'assets/[name].js'
+            : 'assets/[name]-[hash].js',
       },
     },
     commonjsOptions: {

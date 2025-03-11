@@ -133,6 +133,12 @@ e2e-graph:
 e2e-tools:
   - changed-files:
       - any-glob-to-any-file: packages/e2e/e2e-tools/*
+e2e-dev-wallet:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-dev-wallet/*
+e2e-rwa-demo:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-rwa-demo/*
 kadena.js:
   - changed-files:
       - any-glob-to-any-file: packages/libs/kadena.js/*
@@ -148,3 +154,18 @@ e2e-proof-of-us:
 '@kadena/snap':
   - changed-files:
       - any-glob-to-any-file: packages/libs/snap/*
+'@kadena/wallet-sdk':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-sdk/*
+wallet-sdk-example-app:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/wallet-sdk-example/*
+'@kadena/dev-wallet-plugin':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/dev-wallet-plugin/*
+'@kadena/chainweaver-pact-console-plugin':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/chainweaver-pact-console-plugin/*
+'@kadena/chainweaver-wallet-connect-plugin':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/chainweaver-wallet-connect-plugin/*

@@ -1,5 +1,17 @@
 # @kadena/hd-wallet
 
+## 0.6.1
+
+### Patch Changes
+
+- 8615d09: Improved documentation in readme
+
+## 0.6.0
+
+### Minor Changes
+
+- 90a5684: Add support for buffer in kadenaChangePassword
+
 ## 0.5.0
 
 ### Minor Changes

@@ -1,28 +1,38 @@
 import {
-  MonoKey,
   MonoLightMode,
-  MonoWifiTethering,
+  MonoSwapHoriz,
+  MonoWallet,
   MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 
-import { Aside } from '@/Components/Aside/Aside';
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-import { BreadCrumbs } from '@/pages/BreadCrumbs/BreadCrumbs';
-import { Themes, useTheme } from '@kadena/kode-ui';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { Badge, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
+import classNames from 'classnames';
 import { FC, useMemo } from 'react';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { BetaHeader } from './../BetaHeader';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
+import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
+import {
+  isExpandedMainClass,
+  isNotExpandedClass,
+  mainContainerClass,
+  mobileNetworkClass,
+} from './style.css';
 
 export const Layout: FC = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = usePatchedNavigate();
+  const { isExpanded } = useSideBarLayout();
+  const { activeNetwork } = useWallet();
 
   const innerLocation = useMemo(
     () => ({
@@ -38,28 +48,43 @@ export const Layout: FC = () => {
     setTheme(newTheme);
   };
 
+  const network = activeNetwork?.name || activeNetwork?.networkId;
+
   return (
     <>
       <SideBarLayout
-        aside={<Aside />}
-        topBanner={<BetaHeader />}
-        breadcrumbs={<BreadCrumbs />}
         location={innerLocation}
+        logo={
+          <Stack gap={'sm'} flexDirection={'row'} alignItems={'center'}>
+            <Link to="/">
+              <KLogo />
+            </Link>
+            {network && (
+              <Badge
+                size="sm"
+                style="highContrast"
+                className={mobileNetworkClass}
+              >
+                {network}
+              </Badge>
+            )}
+          </Stack>
+        }
         sidebar={<SideBar />}
         footer={
           <SideBarFooter>
             <SideBarFooterItem
               href="/"
               component={Link}
-              visual={<MonoWifiTethering />}
-              label="Profile"
+              visual={<MonoWallet />}
+              label="Your Assets"
             />
 
             <SideBarFooterItem
-              href="/key-management/keys"
+              href="/transfer"
               component={Link}
-              visual={<MonoKey />}
-              label="Keys"
+              visual={<MonoSwapHoriz />}
+              label="transfer"
             />
 
             <SideBarFooterItem
@@ -76,7 +101,16 @@ export const Layout: FC = () => {
           </SideBarFooter>
         }
       >
-        <Outlet />
+        <Stack
+          flexDirection={'column'}
+          className={classNames(
+            mainContainerClass,
+            isExpanded ? isExpandedMainClass : isNotExpandedClass,
+          )}
+          flex={1}
+        >
+          <Outlet />
+        </Stack>
       </SideBarLayout>
 
       <div id="modalportal"></div>

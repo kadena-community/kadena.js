@@ -1,5 +1,5 @@
-import type { IAccount, IChainAccount } from './constants';
-import { MINBALANCE, faucetAccount } from './constants';
+import type { IAccount, IChainAccount } from './../constants';
+import { MINBALANCE, faucetAccount } from './../constants';
 import { sendErrorMessage, sendMessage } from './messages';
 
 export const lowFaucetChains = (
@@ -7,6 +7,7 @@ export const lowFaucetChains = (
   minBalance: number,
 ): IChainAccount[] => {
   if (!chainAccounts?.length) return [];
+
   const lowChains = chainAccounts.filter(
     (chainAccount) => chainAccount.balance < minBalance,
   );

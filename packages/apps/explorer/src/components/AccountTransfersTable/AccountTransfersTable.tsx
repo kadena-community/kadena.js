@@ -2,7 +2,7 @@ import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
 import { useAccountTransfersQuery } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { Heading, Stack, Text } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -76,32 +76,37 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
       setPage={handlePageChange}
       pageSize={pageSize}
       pageInfo={innerData.node!.transfers.pageInfo}
-      totalCount={innerData.node!.transfers.totalCount}
       isLoading={isLoading}
       fields={[
         {
           label: 'ChainId',
-          key: 'chainId',
+          key: 'block.chainId',
           variant: 'code',
           width: '10%',
         },
         {
           label: 'Height',
-          key: 'height',
+          key: 'block.height',
           variant: 'code',
           width: '10%',
         },
         {
           label: 'RequestKey',
-          key: 'requestKey',
+          key: 'transaction.hash',
           width: '20%',
-          render: FormatLinkWrapper({ url: '/transaction/:value' }),
+          render: FormatLinkWrapper({
+            url: '/transaction/:value',
+            condition: (value) => !value && <Text>Mining reward</Text>,
+          }),
         },
         {
           label: 'Sender',
           key: 'senderAccount',
           width: '20%',
-          render: FormatLinkWrapper({ url: '/account/:value' }),
+          render: FormatLinkWrapper({
+            url: '/account/:value',
+            condition: (value) => !value && <Text>Coinbase</Text>,
+          }),
         },
         {
           label: 'Receiver',

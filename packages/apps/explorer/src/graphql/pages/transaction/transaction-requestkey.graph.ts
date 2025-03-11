@@ -57,7 +57,6 @@ export const transactionRequestKey: DocumentNode = gql`
             hash
             creationTime
           }
-          metadata
           continuation
           events {
             edges {
@@ -71,7 +70,9 @@ export const transactionRequestKey: DocumentNode = gql`
             edges {
               node {
                 crossChainTransfer {
-                  requestKey
+                  transaction {
+                    hash
+                  }
                   senderAccount
                   receiverAccount
                 }

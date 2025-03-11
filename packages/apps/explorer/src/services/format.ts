@@ -19,7 +19,16 @@ export function formatNumberWithUnit(number: number): string {
 }
 
 export function formatStatisticsData(
-  networkInfo: NetworkInfo | null | undefined,
+  networkInfo:
+    | Pick<
+        NetworkInfo,
+        | 'networkHashRate'
+        | 'totalDifficulty'
+        | 'transactionCount'
+        | 'coinsInCirculation'
+      >
+    | null
+    | undefined,
 ): { label: string; value: string }[] {
   if (!networkInfo) {
     return [

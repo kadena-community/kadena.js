@@ -1,6 +1,7 @@
 import { noStyleLinkClass } from '@/Components/Accounts/style.css';
 import { IActivity } from '@/modules/activity/activity.repository';
-import { MonoOpenInNew } from '@kadena/kode-icons/system';
+import { shorten } from '@/utils/helpers';
+import { Stack, Text } from '@kadena/kode-ui';
 import { CompactTable, usePagination } from '@kadena/kode-ui/patterns';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,28 +13,39 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
   console.log('variables', variables);
   const data = useMemo(
     () =>
-      activities.map((activity) => ({
-        ...activity,
-        open: (
-          <Link
-            to={`/transfer?activityId=${activity.uuid}`}
-            className={noStyleLinkClass}
-          >
-            <MonoOpenInNew />
-          </Link>
-        ),
-        amount: activity.data.transferData.receivers.reduce(
-          (acc, { amount }) => {
-            return acc + parseFloat(amount);
-          },
-          0,
-        ),
-        receivers: activity.data.transferData.receivers
-          .map((receiver) => receiver.address)
-          .join(', '),
-      })),
+      !activities
+        ? []
+        : activities
+            .filter((activity) => activity?.data?.transferData?.senderAccount)
+            .map((activity) => ({
+              ...activity,
+              open: (
+                <Link
+                  to={`/transfer?activityId=${activity.uuid}`}
+                  className={noStyleLinkClass}
+                  style={{ textDecoration: 'underline' }}
+                >
+                  <Text variant="code">{shorten(activity.uuid)}</Text>
+                </Link>
+              ),
+              sender: shorten(
+                activity.data.transferData.senderAccount?.address ?? '',
+                6,
+              ),
+              amount: activity.data.transferData.receivers.reduce(
+                (acc, { amount }) => {
+                  return acc + parseFloat(amount);
+                },
+                0,
+              ),
+              receivers: activity.data.transferData.receivers
+                .map((receiver) => shorten(receiver?.address ?? '', 6))
+                .join(' '),
+            })),
     [activities],
   );
+
+  console.log('data', data);
   return (
     <CompactTable
       setPage={handlePageChange}
@@ -41,32 +53,44 @@ export function ActivityTable({ activities }: { activities: IActivity[] }) {
       totalCount={activities.length}
       fields={[
         {
-          label: '',
+          label: 'Id',
           key: 'open',
-          width: '5%',
+          width: '20%',
+          variant: 'code',
+          render: ({ value }) => value,
         },
         {
           label: 'Type',
           key: 'type',
           variant: 'code',
-          width: '10%',
+          width: '20%',
+        },
+        {
+          label: 'Sender',
+          key: 'sender',
+          variant: 'code',
+          width: '20%',
         },
         {
           label: 'Amount',
           key: 'amount',
           variant: 'code',
-          width: '10%',
-          align: 'end',
+          width: '20%',
         },
         {
           label: 'Receivers',
           key: 'receivers',
-          width: '50%',
-        },
-        {
-          label: 'Status',
-          key: 'status',
-          width: '10%',
+          variant: 'code',
+          width: '20%',
+          render: ({ value }) => (
+            <Stack gap={'sm'} flexWrap="wrap" flexDirection={'column'}>
+              {value.split(' ').map((address) => (
+                <Text variant="code" color="emphasize">
+                  {address}
+                </Text>
+              ))}
+            </Stack>
+          ),
         },
       ]}
       data={data}

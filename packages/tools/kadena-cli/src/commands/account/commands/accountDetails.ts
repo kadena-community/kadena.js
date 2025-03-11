@@ -1,3 +1,4 @@
+import { getPactErrorCode } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { Table } from 'cli-table3';
 import { CHAIN_ID_ACTION_ERROR_MESSAGE } from '../../../constants/account.js';
@@ -73,7 +74,7 @@ export async function accountDetails(
             [chainId]: accountDetails,
           };
         } catch (error) {
-          if (error.message.includes('row not found') === true) {
+          if (getPactErrorCode(error) === 'RECORD_NOT_FOUND') {
             if (warnings.length === 0) {
               warnings.push(
                 `\nAccount "${config.accountName}" is not available on\nfollowing chain(s):`,

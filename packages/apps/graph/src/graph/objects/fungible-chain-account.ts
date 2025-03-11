@@ -5,6 +5,7 @@ import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { bigintSortFn } from '../../utils/bigintSortFn';
 import { builder } from '../builder';
@@ -49,7 +50,7 @@ export default builder.node(
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       guard: t.field({
-        type: 'Guard',
+        type: 'IGuard',
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
@@ -71,8 +72,7 @@ export default builder.node(
       }),
       balance: t.exposeFloat('balance'),
       transactions: t.prismaConnection({
-        description:
-          'Transactions that the current account is sender of. Default page size is 20.',
+        description: `Transactions that the current account is sender of. Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -109,7 +109,7 @@ export default builder.node(
         },
       }),
       transfers: t.prismaConnection({
-        description: 'Default page size is 20.',
+        description: `Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
         type: Prisma.ModelName.Transfer,
         edgesNullable: false,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
@@ -119,36 +119,6 @@ export default builder.node(
             last: args.last,
           }),
         }),
-        async totalCount(parent) {
-          try {
-            return (
-              await Promise.all([
-                await prismaClient.transfer.count({
-                  where: {
-                    senderAccount: parent.accountName,
-                    // NOT: {
-                    //   receiverAccount: parent.accountName,
-                    // },
-                    moduleName: parent.fungibleName,
-                    chainId: parseInt(parent.chainId),
-                  },
-                }),
-                await prismaClient.transfer.count({
-                  where: {
-                    receiverAccount: parent.accountName,
-                    // NOT: {
-                    //   senderAccount: parent.accountName,
-                    // },
-                    moduleName: parent.fungibleName,
-                    chainId: parseInt(parent.chainId),
-                  },
-                }),
-              ])
-            ).reduce((acc, count) => acc + count, 0);
-          } catch (error) {
-            throw normalizeError(error);
-          }
-        },
         async resolve(condition, parent) {
           try {
             return (

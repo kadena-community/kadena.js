@@ -30,6 +30,7 @@ const main = async () => {
   try {
     await describeModule('marmalade-v2.ledger', config);
     marmaladeDeployed = true;
+    console.log('Marmalade already deployed');
   } catch (error) {
     console.log('Marmalade not deployed, deploying now');
   }

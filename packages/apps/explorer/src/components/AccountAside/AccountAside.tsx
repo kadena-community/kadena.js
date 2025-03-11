@@ -17,7 +17,7 @@ export const AccountAside: FC<IProps> = ({ account, isLoading }) => {
   const router = useRouter();
 
   useEffect(() => {
-    setRoute(window.location.href);
+    setRoute(window.location.hostname + window.location.pathname);
   }, [router]);
 
   return (

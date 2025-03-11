@@ -19,6 +19,34 @@ export const useRouter = () => {
 
     const innerNetworks = getNetworks();
 
+    // if networkId is passed, find appropriate slug and redirect
+    if (router.query.networkId) {
+      // maybe network is passed
+      const networkId = router.query.networkId;
+      const network = innerNetworks.find((n) => n.networkId === networkId);
+      if (network) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.replace(
+          createHref(
+            network,
+            innerNetworks,
+            `${location.pathname}${location.hash}`,
+          ),
+        );
+        return;
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.replace(
+          createHref(
+            innerNetworks.find((x) => x.networkId === 'mainnet')!,
+            innerNetworks,
+            router.asPath,
+          ),
+        );
+        return;
+      }
+    }
+
     const regExp = new RegExp(/[?#].*/);
     const pathArray = router.asPath
       .replace(regExp, '')
@@ -52,7 +80,14 @@ export const useRouter = () => {
         Cookies.remove(selectedNetworkKey);
       }
 
-      window.location.href = '/mainnet';
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.replace(
+        createHref(
+          networks.find((x) => x.networkId === 'mainnet')!,
+          innerNetworks,
+          `/mainnet/${router.asPath.split('/').slice(2).join('/')}`,
+        ),
+      );
     }
   }, [router.asPath]);
 

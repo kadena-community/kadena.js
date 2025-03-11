@@ -88,7 +88,9 @@ const Block: React.FC = () => {
     return (
       <Layout layout="full">
         <LayoutBody>
-          <NoSearchResults />
+          {!Array.isArray(router.query.hash) && (
+            <NoSearchResults type="blockhash" value={router.query.hash} />
+          )}
         </LayoutBody>
       </Layout>
     );

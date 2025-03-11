@@ -1,5 +1,35 @@
 # Change Log - @kadena/client
 
+## 1.17.1
+
+### Patch Changes
+
+- Updated dependencies \[0ebc455]
+  - @kadena/chainweb-node-client\@0.9.1
+
+## 1.17.0
+
+### Minor Changes
+
+- 67ee479: Add support for pact 5 error messages
+
+### Patch Changes
+
+- Updated dependencies \[67ee479]
+  - @kadena/chainweb-node-client\@0.9.0
+
+## 1.16.0
+
+### Minor Changes
+
+- 5e9bfd0: Support for passing a request init object to client functions
+
+### Patch Changes
+
+- 1f46bee: Add a default value `null` for the proof
+- Updated dependencies \[5e9bfd0]
+  - @kadena/chainweb-node-client\@0.8.0
+
 ## 1.15.0
 
 ### Minor Changes

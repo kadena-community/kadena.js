@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.json": "jsonc"
+  },
+  "eslint.workingDirectories": [
+    {
+      "pattern": "./packages/*/*"
+    }
+  ]
+}

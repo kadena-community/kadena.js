@@ -44,7 +44,6 @@ export const loadingTransactionData: TransactionRequestKeyQuery = {
       transactionId: 1,
       logs: '1',
       gas: 262,
-      metadata: null,
       continuation: null,
       __typename: 'TransactionResult',
       events: {

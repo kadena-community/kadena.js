@@ -1,19 +1,19 @@
 import {
-  IAccount,
-  isWatchedAccount,
+  IOwnedAccount,
   IWatchedAccount,
 } from '@/modules/account/account.repository';
+import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   createRedistributionTxs,
   processRedistribute,
-} from '@/pages/transfer-v2/utils';
-import { ChainId, ISigner } from '@kadena/client';
+} from '@/pages/transfer/utils';
+import { ChainId } from '@kadena/client';
 import { Button, Notification, Stack, Text } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import type { FC, PropsWithChildren } from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ChainList } from './components/ChainList';
 import { divideChains, processChainAccounts } from './processChainAccounts';
@@ -25,7 +25,7 @@ interface IProps extends PropsWithChildren {
   }[];
   overallBalance: string;
   fundAccount: (chainId: ChainId) => Promise<ITransaction>;
-  account: IAccount | IWatchedAccount;
+  account: IOwnedAccount | IWatchedAccount;
   onRedistribution: (groupId: string) => void;
 }
 export const AccountBalanceDistribution: FC<IProps> = ({
@@ -35,7 +35,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
   account,
   onRedistribution,
 }) => {
-  const { activeNetwork, getPublicKeyData, profile } = useWallet();
+  const distributionIsDisabled = true;
+  const { activeNetwork, isOwnedAccount } = useWallet();
   const [availableBalance, setAvailableBalance] = useState(overallBalance);
   const chainLists = useMemo(() => {
     const enrichedChains = processChainAccounts(
@@ -84,6 +85,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     .dp(8)
     .toDecimal();
 
+  const ownedAccount = isOwnedAccount(account);
+
   function getRequiredTsxCount(chainList: typeof flatChains) {
     const chainBalance = chainList.map((chain) => ({
       chainId: chain.chainId as ChainId,
@@ -96,29 +99,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     return redistribution.length;
   }
 
-  const mapKeys = useCallback(
-    (key: ISigner) => {
-      if (typeof key === 'object') return key;
-      const info = getPublicKeyData(key);
-      if (info && info.scheme) {
-        return {
-          pubKey: key,
-          scheme: info.scheme,
-        };
-      }
-      if (key.startsWith('WEBAUTHN')) {
-        return {
-          pubKey: key,
-          scheme: 'WebAuthn' as const,
-        };
-      }
-      return key;
-    },
-    [getPublicKeyData],
-  );
-
   async function onSubmit(data: { chains: typeof flatChains }) {
-    if (isWatchedAccount(account)) return;
+    if (!ownedAccount) return;
     const chainBalance = data.chains.map((chain) => ({
       chainId: chain.chainId as ChainId,
       demand: chain.balance,
@@ -132,12 +114,14 @@ export const AccountBalanceDistribution: FC<IProps> = ({
       '0',
     );
     const [groupId] = await createRedistributionTxs({
-      account: account as IAccount,
+      account: account as IRetrievedAccount,
+      gasPayer: account as IRetrievedAccount,
       gasLimit,
       gasPrice,
       network: activeNetwork!,
       redistribution,
-      mapKeys,
+      creationTime: Math.round(Date.now() / 1000),
+      profileId: account.profileId,
     });
 
     onRedistribution(groupId);
@@ -171,15 +155,12 @@ export const AccountBalanceDistribution: FC<IProps> = ({
     setValue('chains', chainsWithTxFees);
   }
 
-  const isOwnedAccount =
-    !isWatchedAccount(account) && account.profileId === profile?.uuid;
-
   return (
     <Stack flexDirection={'column'} flex={1} gap={'sm'}>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack gap={'sm'} flexDirection={'column'}>
-            {isOwnedAccount && (
+            {ownedAccount && (
               <Stack
                 gap={'sm'}
                 alignItems={'center'}
@@ -217,14 +198,18 @@ export const AccountBalanceDistribution: FC<IProps> = ({
                       </Button>
                     </>
                   )}
-                  {!editable && (
+                  {!editable && !distributionIsDisabled && (
                     <Button
                       isCompact
                       onClick={() => {
+                        if (distributionIsDisabled) return;
                         setEditable((val) => !val);
                       }}
                       variant={'outlined'}
-                      isDisabled={new PactNumber(account.overallBalance).lte(0)}
+                      isDisabled={
+                        distributionIsDisabled ||
+                        new PactNumber(account.overallBalance).lte(0)
+                      }
                     >
                       Edit Distribution
                     </Button>
@@ -254,8 +239,8 @@ export const AccountBalanceDistribution: FC<IProps> = ({
                 <ChainList
                   key={idx}
                   chains={chainList}
-                  fundAccount={isOwnedAccount ? fundAccount : undefined}
-                  editable={isOwnedAccount && editable}
+                  fundAccount={ownedAccount ? fundAccount : undefined}
+                  editable={ownedAccount && editable}
                 />
               ))}
             </Stack>

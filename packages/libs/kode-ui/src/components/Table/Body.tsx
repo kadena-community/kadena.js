@@ -10,19 +10,22 @@ import {
   useTableCell,
   useTableRow,
 } from 'react-aria';
-import { tableDataCell, tableRow } from './Table.css';
+import type { ITableProps } from './Table';
+import { spacerClass, tableDataCell, tableRow } from './Table.css';
 
 export interface ITableRowProps<T> {
   item: GridNode<T>;
   state: TableState<T> | TreeGridState<T>;
   children: ReactNode;
   selectionMode: TableProps<T>['selectionMode'];
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 export function TableRow<T extends object>({
   item,
   children,
   state,
+  variant,
 }: ITableRowProps<T>) {
   const ref = useRef(null);
   const { rowProps, isSelected } = useTableRow(
@@ -36,27 +39,32 @@ export function TableRow<T extends object>({
   const { isHovered, hoverProps } = useHover({ isDisabled: false });
 
   return (
-    <tr
-      className={tableRow}
-      {...mergeProps(rowProps, focusProps, hoverProps)}
-      data-focused={isFocusVisible || undefined}
-      data-hovered={isHovered || undefined}
-      data-selected={isSelected || undefined}
-      ref={ref}
-    >
-      {children}
-    </tr>
+    <>
+      {variant === 'open' && <tr className={spacerClass} />}
+      <tr
+        className={tableRow}
+        {...mergeProps(rowProps, focusProps, hoverProps)}
+        data-focused={isFocusVisible || undefined}
+        data-hovered={isHovered || undefined}
+        data-selected={isSelected || undefined}
+        ref={ref}
+      >
+        {children}
+      </tr>
+    </>
   );
 }
 
 interface ITableCellProps<T> {
   cell: GridNode<T>;
   state: TableState<T>;
+  variant: ITableProps<HTMLTableElement>['variant'];
 }
 
 export function TableCell<T extends object>({
   cell,
   state,
+  variant = 'default',
 }: ITableCellProps<T>) {
   const ref = useRef(null);
   const { gridCellProps } = useTableCell({ node: cell }, state, ref);
@@ -65,7 +73,7 @@ export function TableCell<T extends object>({
   return (
     <td
       {...mergeProps(gridCellProps, focusProps)}
-      className={tableDataCell}
+      className={tableDataCell({ variant })}
       data-focused={isFocusVisible || undefined}
       ref={ref}
     >

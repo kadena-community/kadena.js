@@ -1,4 +1,4 @@
-import type { Network } from '@/constants/kadena';
+import type { NetworkId } from '@/constants/kadena';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
@@ -9,14 +9,14 @@ import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 import Debug from 'debug';
 
-let FAUCET_ACCOUNT = env(
+const FAUCET_ACCOUNT = env(
   'FAUCET_USER',
   'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
 );
 
 const debug = Debug('kadena-transfer:services:faucet');
 
-let NAMESPACE = env(
+const NAMESPACE = env(
   'FAUCET_NAMESPACE',
   'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49',
 );
@@ -28,7 +28,7 @@ const DEFAULT_MODULE_NAME =
 export const fundExistingAccount = async (
   account: string,
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkId,
   networksData: INetworkData[],
   amount = 100,
 ): Promise<ITransactionDescriptor> => {
@@ -39,11 +39,6 @@ export const fundExistingAccount = async (
 
   if (!networkDto) {
     throw new Error('Network not found');
-  }
-
-  if (network === 'testnet05') {
-    NAMESPACE = 'n_f17eb6408bb84795b1c871efa678758882a8744a';
-    FAUCET_ACCOUNT = 'c:rpb80hScMYbI_fc8VKzaxcUVCj6s0Bw-iTQvo2Uq50g';
   }
 
   const transaction = Pact.builder
@@ -96,7 +91,7 @@ export const fundExistingAccount = async (
 
 export const pollResult = async (
   chainId: ChainwebChainId,
-  network: Network,
+  network: NetworkId,
   networksData: INetworkData[],
   requestKeys: ITransactionDescriptor,
 ) => {

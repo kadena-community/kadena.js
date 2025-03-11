@@ -42,7 +42,7 @@ export const EventsTable = (props: IEventsTableProps): JSX.Element => {
                     <Column>Values</Column>
                   </TableHeader>
                   <TableBody>
-                    {JSON.parse(event.parameterText).map(
+                    {JSON.parse(event.parameters || '""').map(
                       (parameter: any, index: number) => (
                         <Row key={`arguments-${index}`}>
                           <Cell>

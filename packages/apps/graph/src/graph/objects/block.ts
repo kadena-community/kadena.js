@@ -5,6 +5,7 @@ import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
 import { builder } from '../builder';
@@ -40,8 +41,8 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     powHash: t.exposeString('powHash', {
       description: 'The proof of work hash.',
     }),
-    target: t.expose('target' as never, { type: 'Decimal' }),
-    weight: t.expose('weight' as never, { type: 'Decimal' }),
+    target: t.expose('target' as never, { type: 'String' }),
+    weight: t.expose('weight' as never, { type: 'String' }),
     nonce: t.expose('nonce' as never, { type: 'Decimal' }),
     flags: t.expose('flags' as never, { type: 'Decimal' }),
     minerAccount: t.field({
@@ -143,7 +144,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     // relations
     transactions: t.prismaConnection({
       type: Prisma.ModelName.Transaction,
-      description: 'Default page size is 20.',
+      description: `Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
       cursor: 'blockHash_requestKey',
       edgesNullable: false,
       complexity: (args) => ({
@@ -181,7 +182,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     }),
 
     events: t.prismaConnection({
-      description: 'Default page size is 20.',
+      description: `Default page size is ${dotenv.DEFAULT_PAGE_SIZE}.`,
       type: Prisma.ModelName.Event,
       cursor: 'blockHash_orderIndex_requestKey',
       edgesNullable: false,

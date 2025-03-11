@@ -12,6 +12,7 @@ import { isSignedCommand } from '@kadena/pactjs';
 import React, { useCallback, useEffect } from 'react';
 
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { normalizeSigs } from '@/utils/normalizeSigs';
 import { TxContainer } from './TxContainer';
 import { statusPassed, steps } from './TxPipeLine';
 
@@ -21,13 +22,15 @@ export const TxList = React.memo(
     sendDisabled,
     onDone,
     showExpanded,
+    onSign,
   }: {
     txIds: string[];
     showExpanded?: boolean;
     sendDisabled?: boolean;
     onDone?: () => void;
+    onSign?: (tx: ICommand) => void;
   }) => {
-    const { sign, client } = useWallet();
+    const { sign, client, getPublicKeyData } = useWallet();
     const [transactions, setTransactions] = React.useState<ITransaction[]>([]);
 
     useEffect(() => {
@@ -42,11 +45,22 @@ export const TxList = React.memo(
 
     const updateTx = useCallback(
       (updatedTx: ITransaction) =>
-        setTransactions((prev) =>
-          prev.map((prevTx) =>
+        setTransactions((prev) => {
+          if (updatedTx.status === 'signed' && onSign) {
+            if (
+              prev.find((tx) => tx.uuid === updatedTx.uuid)?.status !== 'signed'
+            ) {
+              onSign({
+                cmd: updatedTx.cmd,
+                hash: updatedTx.hash,
+                sigs: updatedTx.sigs as ICommand['sigs'],
+              });
+            }
+          }
+          return prev.map((prevTx) =>
             prevTx.uuid === updatedTx.uuid ? updatedTx : prevTx,
-          ),
-        ),
+          );
+        }),
       [],
     );
 
@@ -59,7 +73,7 @@ export const TxList = React.memo(
       const updatedTxs = txs.map((tx) => {
         const signedTx = signed.find(({ hash }) => hash === tx.hash);
         if (!signedTx) return tx;
-        return {
+        const updatedTx = {
           ...tx,
           ...signedTx,
           status: isSignedCommand(signedTx)
@@ -68,6 +82,14 @@ export const TxList = React.memo(
               : tx.status
             : tx.status,
         } as ITransaction;
+        if (updatedTx.status === 'signed' && onSign) {
+          onSign({
+            cmd: updatedTx.cmd,
+            hash: updatedTx.hash,
+            sigs: updatedTx.sigs as ICommand['sigs'],
+          });
+        }
+        return updatedTx;
       });
       await updatedTxs.map(transactionRepository.updateTransaction);
       setTransactions(updatedTxs);
@@ -88,6 +110,26 @@ export const TxList = React.memo(
       console.log(result);
     };
 
+    const onPreflightAll = async () => {
+      const onPreflight = async (tx: ITransaction) => {
+        return transactionService.preflightTransaction(tx, client);
+      };
+
+      const txs = await Promise.all(
+        txIds.map(transactionRepository.getTransaction),
+      );
+      const result = await Promise.all(txs.map(onPreflight));
+      result.forEach(updateTx);
+      console.log(result);
+    };
+
+    const signedByYou = (tx: ITransaction) => {
+      const signers = normalizeSigs(tx);
+      return !signers.find(
+        (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
+      );
+    };
+
     return (
       <Stack flexDirection={'column'} gap={'lg'}>
         <Stack flexDirection={'row'} flexWrap="wrap" gap="md">
@@ -104,7 +146,12 @@ export const TxList = React.memo(
             ))}
           {showExpanded &&
             transactions.map((tx) => (
-              <Stack flexDirection={'column'} justifyContent={'flex-start'}>
+              <Stack
+                flexDirection={'column'}
+                justifyContent={'flex-start'}
+                flex={1}
+                style={{ maxWidth: '100%' }}
+              >
                 <TxContainer
                   key={tx.uuid}
                   as="expanded"
@@ -115,24 +162,48 @@ export const TxList = React.memo(
               </Stack>
             ))}
         </Stack>
+        {!showExpanded && !transactions.every((tx) => signedByYou(tx)) && (
+          <Stack gap={'sm'} flexDirection={'column'}>
+            <Text>You can sign all transactions at once.</Text>
+            <Stack>
+              <Button isCompact onClick={signAll}>
+                <Stack>
+                  <MonoSignature scale={0.5} />
+                  Sign All Transactions
+                </Stack>
+              </Button>
+            </Stack>
+          </Stack>
+        )}
         {!showExpanded &&
+          transactions.every((tx) => signedByYou(tx)) &&
           !transactions.every((tx) => statusPassed(tx.status, 'signed')) && (
             <Stack gap={'sm'} flexDirection={'column'}>
-              <Text>You can sign all transactions at once.</Text>
-              <Stack>
-                <Button isCompact onClick={signAll}>
-                  <Stack>
-                    <MonoSignature scale={0.5} />
-                    Sign All Transactions
-                  </Stack>
-                </Button>
-              </Stack>
+              <Text>
+                There is no action at the moment; share the transactions with
+                other signers to sign
+              </Text>
             </Stack>
           )}
         {!showExpanded &&
           !sendDisabled &&
           transactions.every((tx) => statusPassed(tx.status, 'signed')) &&
           transactions.find((tx) => tx.status === 'signed') && (
+            <Stack flexDirection={'column'} gap={'sm'}>
+              <Text>
+                All transactions are signed. Now you can call preflight
+              </Text>
+              <Stack>
+                <Button isCompact onPress={() => onPreflightAll()}>
+                  Preflight transactions
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+        {!showExpanded &&
+          !sendDisabled &&
+          transactions.every((tx) => statusPassed(tx.status, 'preflight')) &&
+          transactions.find((tx) => tx.status === 'preflight') && (
             <Stack flexDirection={'column'} gap={'sm'}>
               <Text>
                 All transactions are signed. Now you can send them to the
