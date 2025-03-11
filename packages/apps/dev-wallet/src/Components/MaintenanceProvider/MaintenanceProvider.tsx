@@ -1,4 +1,5 @@
 import { Maintenance } from '@/pages/maintenance/maintenance';
+import { checkIfMaintenanceIsIgnored } from '@/utils/checkIfMaintenanceIsIgnored';
 import { env } from '@/utils/env';
 import {
   createContext,
@@ -30,12 +31,23 @@ export const MaintenanceProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    const date = Date.now();
+    const ignoreMaintenance = checkIfMaintenanceIsIgnored(
+      env.MAINTENANCE_STARTDATE,
+      env.MAINTENANCE_ENDDATE,
+    );
 
-    // there should be at least an enddate if you want to maintenance message to show
+    const date = Date.now();
     setIsInMaintenance(false);
-    if (!env.MAINTENANCE_STARTDATE && !env.MAINTENANCE_ENDDATE) return;
-    if (date > env.MAINTENANCE_STARTDATE && date < env.MAINTENANCE_ENDDATE) {
+
+    if (
+      (!env.MAINTENANCE_STARTDATE && !env.MAINTENANCE_ENDDATE) ||
+      ignoreMaintenance
+    )
+      return;
+    if (
+      (!env.MAINTENANCE_ENDDATE && date > env.MAINTENANCE_STARTDATE) ||
+      (date > env.MAINTENANCE_STARTDATE && date < env.MAINTENANCE_ENDDATE)
+    ) {
       setIsInMaintenance(true);
     }
   }, [env.MAINTENANCE_ENDDATE, env.MAINTENANCE_STARTDATE]);

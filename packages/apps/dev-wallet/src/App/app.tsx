@@ -23,12 +23,12 @@ function Providers({ children }: { children: React.ReactNode }) {
           <SessionProvider>
             <PromptProvider>
               <DatabaseProvider>
-                <WalletProvider>
-                  <MaintenanceProvider>
+                <MaintenanceProvider>
+                  <WalletProvider>
                     {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
                     <PromptProvider>{children}</PromptProvider>
-                  </MaintenanceProvider>
-                </WalletProvider>
+                  </WalletProvider>
+                </MaintenanceProvider>
               </DatabaseProvider>
             </PromptProvider>
           </SessionProvider>
