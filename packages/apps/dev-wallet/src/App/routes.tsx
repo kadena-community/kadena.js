@@ -91,17 +91,7 @@ export const Routes: FC = () => {
   const routes = createRoutesFromElements(
     <Route element={<CommunicationProvider children={<Outlet />} />}>
       <Route element={<RouteContext />}>
-        <Route element={<LayoutMini />}>
-          <Route element={<Redirect if={isUnlocked} to={origin} />}>
-            <Route path="/select-profile" element={<SelectProfile />} />
-            <Route path="/create-profile/*" element={<CreateProfile />} />
-            <Route
-              path="/wallet-recovery/recover-from-mnemonic"
-              element={<RecoverFromMnemonic />}
-            />
-            <Route path="/wallet-recovery" element={<WalletRecovery />} />
-          </Route>
-        </Route>
+        <Route element={<LayoutMini />}></Route>
         <Route
           element={
             <Redirect
@@ -171,6 +161,15 @@ export const Routes: FC = () => {
           <Route path="/ready" element={<Ready />} />
         </Route>
         <Route element={<LandingPageLayout />}>
+          <Route element={<Redirect if={isUnlocked} to={origin} />}>
+            <Route path="/select-profile" element={<SelectProfile />} />
+            <Route path="/create-profile/*" element={<CreateProfile />} />
+            <Route
+              path="/wallet-recovery/recover-from-mnemonic"
+              element={<RecoverFromMnemonic />}
+            />
+            <Route path="/wallet-recovery" element={<WalletRecovery />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
