@@ -1,10 +1,9 @@
-import { MonoChevronLeft, MonoChevronRight } from '@kadena/kode-icons';
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { MonoChevronLeft, MonoMoreVert } from '@kadena/kode-icons';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Avatar, Badge, Button, Link, Stack } from '..';
+import { Button, Link, Stack } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
-import { Box } from '../Layout/Box/Box';
 import type { IButtonGroupProps } from './ButtonGroup';
 import { ButtonGroup } from './ButtonGroup';
 import { buttonGroupRecipe } from './ButtonGroup.css';
@@ -54,7 +53,6 @@ type ButtonGroupStory = StoryObj<IButtonGroupProps>;
 export const Primary: ButtonGroupStory = {
   args: {
     variant: 'primary',
-    onPress: () => undefined,
   },
   render: (props: IButtonGroupProps) => {
     return (
@@ -63,6 +61,7 @@ export const Primary: ButtonGroupStory = {
           <Button>option1</Button>
           <Button>option2</Button>
           <Button endVisual={<MonoChevronLeft />} />
+          <Button endVisual={<MonoMoreVert />} />
         </ButtonGroup>
         <ButtonGroup {...props}>
           <Link>option1</Link>

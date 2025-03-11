@@ -5,12 +5,12 @@ import type { IButtonProps } from '../Button/Button';
 import { Stack } from '../Layout';
 import { buttonGroupClass, buttonGroupRecipe } from './ButtonGroup.css';
 
-interface IBUttonGroupProps extends PropsWithChildren {
+export interface IButtonGroupProps extends PropsWithChildren {
   variant: IButtonProps['variant'];
   isCompact: IButtonProps['isCompact'];
 }
 
-export const ButtonGroup: FC<IBUttonGroupProps> = ({
+export const ButtonGroup: FC<IButtonGroupProps> = ({
   children,
   variant,
   isCompact,

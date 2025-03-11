@@ -1,7 +1,6 @@
-import { globalStyle, recipe, style, token } from './../../../styles';
+import { globalStyle, recipe, style } from './../../styles';
 
 export const buttonGroupClass = style({});
-
 export const buttonGroupRecipe = recipe({
   base: {},
   variants: {
@@ -46,7 +45,6 @@ globalStyle(
     border: 0,
     borderInlineStartWidth: '1px',
     borderStyle: 'solid',
-    borderColor: 'yellow',
   },
 );
 
