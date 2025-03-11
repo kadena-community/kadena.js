@@ -53,8 +53,7 @@ export const Primary: ButtonGroupStory = {
       <Stack gap="lg" flexDirection="column">
         <ButtonGroup {...props}>
           <Button>option1</Button>
-          <Button>option2</Button>
-          <Button endVisual={<MonoChevronLeft />} />
+          <Button endVisual={<MonoChevronLeft />}>option2</Button>
           <Button endVisual={<MonoMoreVert />} />
         </ButtonGroup>
         <ButtonGroup {...props}>
