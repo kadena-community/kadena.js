@@ -1,6 +1,5 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
-import { env } from '@/utils/env';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
@@ -37,7 +36,7 @@ export const distributeTokens = async (
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
       withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.TRANSFERMANAGER),
-      withCap(`${getAsset()}.TRANSFER`, env.ZEROADDRESS, data.investorAccount, {
+      withCap(`${getAsset()}.TRANSFER`, '', data.investorAccount, {
         decimal: data.amount,
       }),
       withCap(`coin.GAS`),
