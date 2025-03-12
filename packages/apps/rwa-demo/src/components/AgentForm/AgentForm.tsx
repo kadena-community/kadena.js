@@ -102,18 +102,20 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
               />
 
               <CheckboxGroup direction="column" label="Roles" name="roles">
-                {Object.entries(AGENTROLES).map(([key, val]) => {
-                  return (
-                    <label key={key}>
-                      <input
-                        type="checkbox"
-                        value={val}
-                        {...register('roles')}
-                      />
-                      {val}
-                    </label>
-                  );
-                })}
+                {Object.entries(AGENTROLES)
+                  .filter((role) => role[1] !== AGENTROLES.OWNER)
+                  .map(([key, val]) => {
+                    return (
+                      <label key={key}>
+                        <input
+                          type="checkbox"
+                          value={val}
+                          {...register('roles')}
+                        />
+                        {val}
+                      </label>
+                    );
+                  })}
               </CheckboxGroup>
             </RightAsideContent>
             <RightAsideFooter>

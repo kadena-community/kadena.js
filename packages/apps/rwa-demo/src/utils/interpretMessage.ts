@@ -54,9 +54,12 @@ export const interpretMessage = (str: string, data?: ITransaction): string => {
     return `Amount to unfreeze must be positive.`;
   }
   if (str?.includes('ROL-001')) {
-    return `Caller must be either the owner or an agent-admin.`;
+    return `Too many roles are added.`;
   }
   if (str?.includes('ROL-002')) {
+    return `Role does not exist in predefined agent roles.`;
+  }
+  if (str?.includes('ROL-003')) {
     return `Role does not exist in predefined agent roles.`;
   }
   if (str?.includes('ROL-STS-001')) {
