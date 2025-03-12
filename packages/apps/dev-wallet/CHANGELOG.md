@@ -1,5 +1,20 @@
 # @kadena/dev-wallet
 
+## 0.5.5
+
+### Patch Changes
+
+- 51b2f5d: add maintenance mode option
+- d0465fe: add error pages
+- 8dd1868: not possible anymore to choose an existing profilename during
+  recovery
+- 2822382: autofocus the first field of forms
+- Updated dependencies \[24fb611]
+- Updated dependencies \[3759502]
+- Updated dependencies \[05168d0]
+  - @kadena/kode-ui\@0.21.0
+  - @kadena/chainweaver-pact-console-plugin\@0.0.5
+
 ## 0.5.4
 
 ### Patch Changes
