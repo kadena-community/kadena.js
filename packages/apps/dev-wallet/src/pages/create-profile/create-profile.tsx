@@ -290,70 +290,80 @@ export function CreateProfile() {
             </>
           )}
           {step === 'set-password' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Button
-                  variant="outlined"
-                  isCompact
-                  type="button"
-                  onPress={() => {
-                    setStep('profile');
-                  }}
+            <>
+              <CardContentBlock
+                title="Choose a password"
+                description="Carefully select your password as this will be your main
+                      security of your wallet"
+                visual={
+                  <ChainweaverAlphaLogoKdacolorLight width={64} height={64} />
+                }
+              >
+                <Stack
+                  flexDirection={'column'}
+                  gap={'lg'}
+                  className={wrapperClass}
                 >
-                  Back
-                </Button>
-              </Stack>
-              <Heading variant="h4">Choose a password</Heading>
-              <Stack marginBlockStart="sm">
-                <Text>
-                  Carefully select your password as this will be your main
-                  security of your wallet
-                </Text>
-              </Stack>
-              <Stack flexDirection="column" marginBlock="md" gap="sm">
-                <TextField
-                  id="password"
-                  type="password"
-                  label="Password"
-                  autoFocus
-                  defaultValue={getValues('password')}
-                  // react-hook-form uses uncontrolled elements;
-                  // and because we add and remove the fields we need to add key to prevent confusion for react
-                  key="password"
-                  {...register('password', {
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                    minLength: { value: 6, message: 'Minimum 6 symbols' },
-                  })}
-                  isInvalid={!isValid && !!errors.password}
-                  errorMessage={errors.password?.message}
-                />
-                <TextField
-                  id="confirmation"
-                  type="password"
-                  label="Confirm password"
-                  defaultValue={getValues('confirmation')}
-                  key="confirmation"
-                  {...register('confirmation', {
-                    validate: (value) => {
-                      return (
-                        getValues('password') === value ||
-                        'Passwords do not match'
-                      );
-                    },
-                  })}
-                  isInvalid={!isValid && !!errors.confirmation}
-                  errorMessage={errors.confirmation?.message}
-                />
-              </Stack>
-              <Stack flexDirection="column">
-                <Button type="submit" isDisabled={!isValid}>
-                  Continue
-                </Button>
-              </Stack>
-            </Stack>
+                  <Stack flexDirection="column" marginBlock="md" gap="sm">
+                    <TextField
+                      id="password"
+                      type="password"
+                      label="Password"
+                      autoFocus
+                      defaultValue={getValues('password')}
+                      // react-hook-form uses uncontrolled elements;
+                      // and because we add and remove the fields we need to add key to prevent confusion for react
+                      key="password"
+                      {...register('password', {
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                        minLength: { value: 6, message: 'Minimum 6 symbols' },
+                      })}
+                      isInvalid={!isValid && !!errors.password}
+                      errorMessage={errors.password?.message}
+                    />
+                    <TextField
+                      id="confirmation"
+                      type="password"
+                      label="Confirm password"
+                      defaultValue={getValues('confirmation')}
+                      key="confirmation"
+                      {...register('confirmation', {
+                        validate: (value) => {
+                          return (
+                            getValues('password') === value ||
+                            'Passwords do not match'
+                          );
+                        },
+                      })}
+                      isInvalid={!isValid && !!errors.confirmation}
+                      errorMessage={errors.confirmation?.message}
+                    />
+                  </Stack>
+                </Stack>
+              </CardContentBlock>
+              <CardFooterGroup>
+                <Stack width="100%">
+                  <Button
+                    variant="outlined"
+                    isCompact
+                    type="button"
+                    onPress={() => {
+                      setStep('profile');
+                    }}
+                  >
+                    Back
+                  </Button>
+                </Stack>
+                <CardFooterGroup>
+                  <Button type="submit" isDisabled={!isValid}>
+                    Continue
+                  </Button>
+                </CardFooterGroup>
+              </CardFooterGroup>
+            </>
           )}
           {step === 'backup-mnemonic' && (
             <BackupMnemonic
