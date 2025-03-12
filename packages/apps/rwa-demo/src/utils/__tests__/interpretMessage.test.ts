@@ -95,6 +95,7 @@ describe('interpretMessage', () => {
     expect(interpretMessage('This error ROL-002')).toEqual(
       'Role does not exist in predefined agent roles.',
     );
+
     expect(interpretMessage('This error ROL-003')).toEqual(
       'Too many roles are added.',
     );
