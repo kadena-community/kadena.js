@@ -90,6 +90,7 @@ export const bodyContent = style([
 
 export const footerGroup = style([
   {
+    width: '100%',
     selectors: {
       '& > &': {
         marginBlockStart: 0,

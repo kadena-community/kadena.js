@@ -2,6 +2,7 @@ import { style, token } from '../../styles';
 
 export const containerClass = style({
   display: 'flex',
+  alignItems: 'self-start',
   flexDirection: 'column',
   backgroundColor: token('color.background.layer.default'),
   color: token('color.text.base.default'),
