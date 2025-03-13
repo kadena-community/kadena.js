@@ -6,6 +6,7 @@ import { MonoRestore } from '@kadena/kode-icons/system';
 import {
   Box,
   Button,
+  Card,
   Heading,
   Notification,
   Stack,
@@ -44,7 +45,7 @@ export function WalletRecovery() {
     }
   }
   return (
-    <CardFixedContainer>
+    <Card>
       <CardContentBlock
         title="Wallet Recovery"
         visual={<MonoRestore width={36} height={36} />}
@@ -153,10 +154,10 @@ export function WalletRecovery() {
         </Stack>
       </CardContentBlock>
       <CardFooterGroup separated={true}>
-        <UiLink href="/" component={Link} variant="outlined">
+        <UiLink isCompact href="/" component={Link} variant="outlined">
           Back
         </UiLink>
       </CardFooterGroup>
-    </CardFixedContainer>
+    </Card>
   );
 }

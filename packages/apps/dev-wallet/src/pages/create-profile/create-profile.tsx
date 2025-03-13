@@ -10,6 +10,12 @@ import {
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { ChainweaverAlphaLogoKdacolorLight } from '@kadena/kode-icons/product';
+import {
+  MonoArrowForward,
+  MonoContacts,
+  MonoFingerprint,
+  MonoPassword,
+} from '@kadena/kode-icons/system';
 import { Button, Card, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -186,10 +192,9 @@ export function CreateProfile() {
           {step === 'profile' && (
             <>
               <CardContentBlock
-                title="Create Profile"
-                visual={
-                  <ChainweaverAlphaLogoKdacolorLight width={64} height={64} />
-                }
+                title="Profile"
+                description="Create profile copy to help users create their accounts"
+                visual={<MonoContacts width={40} height={40} />}
               >
                 <Stack
                   flexDirection={'column'}
@@ -282,6 +287,7 @@ export function CreateProfile() {
                     onClick={() => {
                       createWebAuthnCredential();
                     }}
+                    endVisual={<MonoFingerprint />}
                   >
                     Password-less
                   </Button>
@@ -295,9 +301,7 @@ export function CreateProfile() {
                 title="Choose a password"
                 description="Carefully select your password as this will be your main
                       security of your wallet"
-                visual={
-                  <ChainweaverAlphaLogoKdacolorLight width={64} height={64} />
-                }
+                visual={<MonoPassword width={40} height={40} />}
               >
                 <Stack
                   flexDirection={'column'}
@@ -358,8 +362,12 @@ export function CreateProfile() {
                   </Button>
                 </Stack>
                 <CardFooterGroup>
-                  <Button type="submit" isDisabled={!isValid}>
-                    Continue
+                  <Button
+                    type="submit"
+                    isDisabled={!isValid}
+                    endVisual={<MonoArrowForward />}
+                  >
+                    Next
                   </Button>
                 </CardFooterGroup>
               </CardFooterGroup>

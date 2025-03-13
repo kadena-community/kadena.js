@@ -11,7 +11,8 @@ import {
   PublicKeyCredentialCreate,
 } from '@/utils/webAuthn';
 
-import { MonoKey } from '@kadena/kode-icons/system';
+import { wrapperClass } from '@/pages/errors/styles.css';
+import { MonoKey, MonoPassword } from '@kadena/kode-icons/system';
 import {
   Button,
   Card,
@@ -23,6 +24,7 @@ import {
   TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
+import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -181,20 +183,164 @@ export function RecoverFromMnemonic() {
   const keyDerivation = watch('keyDerivation');
   return (
     <Card>
-      <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
-        <Stack></Stack>
-        <form
-          onSubmit={handleSubmit(async (data) => {
-            setImporting(true);
-            await importWallet(data);
-            setImporting(false);
-          })}
-          className={displayContentsClass}
-          ref={formRef}
-        >
-          {step === 'import' && (
-            <Stack gap={'lg'} flexDirection={'column'}>
-              <Stack>
+      <form
+        onSubmit={handleSubmit(async (data) => {
+          setImporting(true);
+          await importWallet(data);
+          setImporting(false);
+        })}
+        className={displayContentsClass}
+        ref={formRef}
+      >
+        {step === 'import' && (
+          <>
+            <CardContentBlock
+              title="Import mnemonic"
+              description=""
+              visual={<MonoPassword width={40} height={40} />}
+            >
+              <Stack
+                gap={'lg'}
+                flexDirection={'column'}
+                className={wrapperClass}
+              >
+                <Stack flexDirection="column" gap={'lg'}>
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <Controller
+                      control={control}
+                      name="mnemonic"
+                      rules={{
+                        validate: (value) =>
+                          value.trim().split(' ').length === 12,
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          type="text"
+                          label="Enter the 12 word recovery phrase"
+                          id="phrase"
+                          value={field.value}
+                          placeholder="e.g word1 word2 word3..."
+                          onChange={(e) => {
+                            field.onChange(e.target.value);
+                          }}
+                          onBlur={() => {
+                            createFirstKeys();
+                          }}
+                        />
+                      )}
+                    />
+                  </Stack>
+
+                  <Stack flexDirection={'column'} gap={'sm'}>
+                    <Controller
+                      control={control}
+                      name="keyDerivation"
+                      render={({ field }) => (
+                        <Select
+                          label="Select the wallet you wan to import from"
+                          defaultSelectedKey={'auto-detect'}
+                          onSelectionChange={(value) => field.onChange(value)}
+                        >
+                          {methodSelectItem({
+                            key: 'auto-detect',
+                            textValue: 'auto-detect',
+                            title: 'Auto Detect',
+                          })}
+                          {methodSelectItem({
+                            key: 'HD-chainweaver',
+                            textValue: 'HD-chainweaver',
+                            title: 'Legacy chainweaver (v1/v2)',
+                          })}
+                          {methodSelectItem({
+                            key: 'HD-eckoWALLET',
+                            textValue: 'HD-chainweaver',
+                            title: 'eckoWALLET',
+                          })}
+                          {methodSelectItem({
+                            key: 'HD-BIP44',
+                            textValue: 'HD-BIP44',
+                            title: 'BIP44 (chainweaver v3)',
+                          })}
+                        </Select>
+                      )}
+                    />
+                    {['HD-chainweaver', 'HD-eckoWALLET'].includes(
+                      keyDerivation,
+                    ) &&
+                      legacyKey && (
+                        <Text>
+                          <Stack gap={'sm'} alignItems={'center'}>
+                            <Text size="smallest">First key</Text>
+                            <MonoKey />
+                            <Text size="smallest" variant="code">
+                              {shorten(legacyKey, 10)}
+                            </Text>
+                          </Stack>
+                        </Text>
+                      )}
+
+                    {keyDerivation === 'HD-BIP44' && bip44key && (
+                      <Text>
+                        <Stack gap={'sm'} alignItems={'center'}>
+                          <Text size="smallest">First key</Text>
+                          <MonoKey />
+                          <Text size="smallest" variant="code">
+                            {shorten(bip44key, 10)}
+                          </Text>
+                        </Stack>
+                      </Text>
+                    )}
+                  </Stack>
+
+                  <Controller
+                    control={control}
+                    name="profileName"
+                    rules={{
+                      required: {
+                        value: true,
+                        message: 'This field is required',
+                      },
+                      minLength: { value: 6, message: 'Minimum 6 symbols' },
+                      maxLength: { value: 30, message: 'Maximym 30 symbols' },
+                      validate: {
+                        required: (value) => {
+                          const existingProfile = profileList.find(
+                            (profile) => profile.name === value,
+                          );
+                          if (existingProfile)
+                            return `The profile name ${value} already exists. Please use another name.`;
+                          return true;
+                        },
+                      },
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        label="Profile name"
+                        id="name"
+                        type="text"
+                        defaultValue={profileName}
+                        value={field.value}
+                        {...register('profileName')}
+                        isInvalid={!!errors.profileName}
+                        errorMessage={errors.profileName?.message}
+                      />
+                    )}
+                  />
+                </Stack>
+                <Stack flexDirection={'column'} gap={'lg'}>
+                  <Text size="smallest">
+                    Your system supports{' '}
+                    <Text bold size="smallest">
+                      WebAuthn
+                    </Text>{' '}
+                    so you can create a more secure and more convenient
+                    password-less profile!
+                  </Text>
+                </Stack>
+              </Stack>
+            </CardContentBlock>
+            <CardFooterGroup>
+              <Stack width="100%">
                 <UiLink
                   component={Link}
                   href="/wallet-recovery"
@@ -204,141 +350,7 @@ export function RecoverFromMnemonic() {
                   Back
                 </UiLink>
               </Stack>
-              <Heading variant="h5">Import mnemonic</Heading>
-              <Stack flexDirection="column" gap={'lg'}>
-                <Stack flexDirection={'column'} gap={'sm'}>
-                  <Controller
-                    control={control}
-                    name="mnemonic"
-                    rules={{
-                      validate: (value) =>
-                        value.trim().split(' ').length === 12,
-                    }}
-                    render={({ field }) => (
-                      <TextField
-                        type="text"
-                        label="Enter the 12 word recovery phrase"
-                        id="phrase"
-                        value={field.value}
-                        placeholder="e.g word1 word2 word3..."
-                        onChange={(e) => {
-                          field.onChange(e.target.value);
-                        }}
-                        onBlur={() => {
-                          createFirstKeys();
-                        }}
-                      />
-                    )}
-                  />
-                </Stack>
-
-                <Stack flexDirection={'column'} gap={'sm'}>
-                  <Controller
-                    control={control}
-                    name="keyDerivation"
-                    render={({ field }) => (
-                      <Select
-                        label="Select the wallet you wan to import from"
-                        defaultSelectedKey={'auto-detect'}
-                        onSelectionChange={(value) => field.onChange(value)}
-                      >
-                        {methodSelectItem({
-                          key: 'auto-detect',
-                          textValue: 'auto-detect',
-                          title: 'Auto Detect',
-                        })}
-                        {methodSelectItem({
-                          key: 'HD-chainweaver',
-                          textValue: 'HD-chainweaver',
-                          title: 'Legacy chainweaver (v1/v2)',
-                        })}
-                        {methodSelectItem({
-                          key: 'HD-eckoWALLET',
-                          textValue: 'HD-chainweaver',
-                          title: 'eckoWALLET',
-                        })}
-                        {methodSelectItem({
-                          key: 'HD-BIP44',
-                          textValue: 'HD-BIP44',
-                          title: 'BIP44 (chainweaver v3)',
-                        })}
-                      </Select>
-                    )}
-                  />
-                  {['HD-chainweaver', 'HD-eckoWALLET'].includes(
-                    keyDerivation,
-                  ) &&
-                    legacyKey && (
-                      <Text>
-                        <Stack gap={'sm'} alignItems={'center'}>
-                          <Text size="smallest">First key</Text>
-                          <MonoKey />
-                          <Text size="smallest" variant="code">
-                            {shorten(legacyKey, 10)}
-                          </Text>
-                        </Stack>
-                      </Text>
-                    )}
-
-                  {keyDerivation === 'HD-BIP44' && bip44key && (
-                    <Text>
-                      <Stack gap={'sm'} alignItems={'center'}>
-                        <Text size="smallest">First key</Text>
-                        <MonoKey />
-                        <Text size="smallest" variant="code">
-                          {shorten(bip44key, 10)}
-                        </Text>
-                      </Stack>
-                    </Text>
-                  )}
-                </Stack>
-
-                <Controller
-                  control={control}
-                  name="profileName"
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                    minLength: { value: 6, message: 'Minimum 6 symbols' },
-                    maxLength: { value: 30, message: 'Maximym 30 symbols' },
-                    validate: {
-                      required: (value) => {
-                        const existingProfile = profileList.find(
-                          (profile) => profile.name === value,
-                        );
-                        if (existingProfile)
-                          return `The profile name ${value} already exists. Please use another name.`;
-                        return true;
-                      },
-                    },
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      label="Profile name"
-                      id="name"
-                      type="text"
-                      defaultValue={profileName}
-                      value={field.value}
-                      {...register('profileName')}
-                      isInvalid={!!errors.profileName}
-                      errorMessage={errors.profileName?.message}
-                    />
-                  )}
-                />
-              </Stack>
-              <Stack flexDirection={'column'} gap={'lg'}>
-                <Text size="smallest">
-                  Your system supports{' '}
-                  <Text bold size="smallest">
-                    WebAuthn
-                  </Text>{' '}
-                  so you can create a more secure and more convenient
-                  password-less profile!
-                </Text>
-              </Stack>
-              <Stack flexDirection="row" gap={'sm'}>
+              <CardFooterGroup>
                 <Button
                   type="button"
                   isDisabled={!isValid}
@@ -356,12 +368,66 @@ export function RecoverFromMnemonic() {
                 >
                   Password-less
                 </Button>
+              </CardFooterGroup>
+            </CardFooterGroup>
+          </>
+        )}
+        {step === 'set-password' && (
+          <>
+            <CardContentBlock
+              title="Choose a password"
+              description="Carefully select your password as this will be your main
+                security of your wallet"
+              visual={<MonoPassword />}
+            >
+              <Stack
+                gap={'lg'}
+                flexDirection={'column'}
+                className={wrapperClass}
+              ></Stack>
+
+              <Stack flexDirection={'column'} gap={'lg'}>
+                <Stack flexDirection="column" marginBlock="md" gap="sm">
+                  <TextField
+                    id="password"
+                    type="password"
+                    label="Password"
+                    defaultValue={getValues('password')}
+                    // react-hook-form uses uncontrolled elements;
+                    // and because we add and remove the fields we need to add key to prevent confusion for react
+                    key="password"
+                    {...register('password', {
+                      required: {
+                        value: true,
+                        message: 'This field is required',
+                      },
+                      minLength: { value: 6, message: 'Minimum 6 symbols' },
+                    })}
+                    isInvalid={!isValid && !!errors.password}
+                    errorMessage={errors.password?.message}
+                  />
+                  <TextField
+                    id="confirmation"
+                    type="password"
+                    label="Confirm password"
+                    defaultValue={getValues('confirmation')}
+                    key="confirmation"
+                    {...register('confirmation', {
+                      validate: (value) => {
+                        return (
+                          getValues('password') === value ||
+                          'Passwords do not match'
+                        );
+                      },
+                    })}
+                    isInvalid={!isValid && !!errors.confirmation}
+                    errorMessage={errors.confirmation?.message}
+                  />
+                </Stack>
               </Stack>
-            </Stack>
-          )}
-          {step === 'set-password' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
+            </CardContentBlock>
+            <CardFooterGroup>
+              <Stack width="100%">
                 <Button
                   variant="outlined"
                   isCompact
@@ -373,51 +439,7 @@ export function RecoverFromMnemonic() {
                   Back
                 </Button>
               </Stack>
-              <Heading variant="h4">Choose a password</Heading>
-              <Stack marginBlockStart="sm">
-                <Text>
-                  Carefully select your password as this will be your main
-                  security of your wallet
-                </Text>
-              </Stack>
-              <Stack flexDirection="column" marginBlock="md" gap="sm">
-                <TextField
-                  id="password"
-                  type="password"
-                  label="Password"
-                  defaultValue={getValues('password')}
-                  // react-hook-form uses uncontrolled elements;
-                  // and because we add and remove the fields we need to add key to prevent confusion for react
-                  key="password"
-                  {...register('password', {
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                    minLength: { value: 6, message: 'Minimum 6 symbols' },
-                  })}
-                  isInvalid={!isValid && !!errors.password}
-                  errorMessage={errors.password?.message}
-                />
-                <TextField
-                  id="confirmation"
-                  type="password"
-                  label="Confirm password"
-                  defaultValue={getValues('confirmation')}
-                  key="confirmation"
-                  {...register('confirmation', {
-                    validate: (value) => {
-                      return (
-                        getValues('password') === value ||
-                        'Passwords do not match'
-                      );
-                    },
-                  })}
-                  isInvalid={!isValid && !!errors.confirmation}
-                  errorMessage={errors.confirmation?.message}
-                />
-              </Stack>
-              <Stack flexDirection="column">
+              <CardFooterGroup>
                 <Button
                   isDisabled={!isValid}
                   isLoading={importing}
@@ -426,12 +448,12 @@ export function RecoverFromMnemonic() {
                 >
                   Continue
                 </Button>
-              </Stack>
-            </Stack>
-          )}
-        </form>
-        {error && <Text>{error}</Text>}
-      </Stack>
+              </CardFooterGroup>
+            </CardFooterGroup>
+          </>
+        )}
+      </form>
+      {error && <Text>{error}</Text>}
     </Card>
   );
 }

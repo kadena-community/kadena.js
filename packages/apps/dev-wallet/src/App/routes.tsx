@@ -145,19 +145,8 @@ export const Routes: FC = () => {
             />
           </Route>
         </Route>
-        <Route element={<LayoutFull />}>
-          <Route path="/account-discovery" element={<AccountDiscovery />} />
-        </Route>
+        <Route element={<LayoutFull />}></Route>
         <Route element={<LayoutMini />}>
-          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
-          <Route
-            path="/settings/change-password"
-            element={<ChangePassword />}
-          />
-          <Route
-            path="/unlock-profile/:profileId"
-            element={<UnlockProfile origin={origin} />}
-          />
           <Route path="/ready" element={<Ready />} />
         </Route>
         <Route element={<LandingPageLayout />}>
@@ -168,8 +157,18 @@ export const Routes: FC = () => {
               path="/wallet-recovery/recover-from-mnemonic"
               element={<RecoverFromMnemonic />}
             />
+            <Route path="/account-discovery" element={<AccountDiscovery />} />
             <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
+          <Route
+            path="/unlock-profile/:profileId"
+            element={<UnlockProfile origin={origin} />}
+          />
+          <Route
+            path="/settings/change-password"
+            element={<ChangePassword />}
+          />
+          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
