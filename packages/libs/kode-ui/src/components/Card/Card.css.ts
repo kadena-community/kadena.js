@@ -1,6 +1,8 @@
 import { style, token } from '../../styles';
 
 export const containerClass = style({
+  display: 'flex',
+  flexDirection: 'column',
   backgroundColor: token('color.background.layer.default'),
   color: token('color.text.base.default'),
   paddingInline: token('spacing.xl'),

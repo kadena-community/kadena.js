@@ -1,5 +1,5 @@
 import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons/system';
-import { Button, Themes, useTheme } from '@kadena/kode-ui';
+import { Button, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
   FocussedLayout,
   FocussedLayoutFooter,
@@ -8,6 +8,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { FC, PropsWithChildren } from 'react';
 import { Outlet } from 'react-router-dom';
+import { focussedLayoutChildrenWrapperClass } from './layout.css';
 
 export const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
   const { theme, setTheme } = useTheme();
@@ -30,8 +31,10 @@ export const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
             }
           />
         </FocussedLayoutHeaderAside>
-        <Outlet />
-        {children}
+        <Stack className={focussedLayoutChildrenWrapperClass}>
+          <Outlet />
+          {children}
+        </Stack>
         <FocussedLayoutFooter />
       </FocussedLayout>
     </FocussedLayoutProvider>

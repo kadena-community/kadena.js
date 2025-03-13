@@ -29,7 +29,6 @@ export const SectionCard: FC<ISectionCardProps> = ({
   isLoading = false,
   background = 'default',
   ['data-testid']: dataTestId,
-  ...props
 }) => {
   return (
     <Card className={cardClass} data-testid={dataTestId}>

@@ -91,7 +91,6 @@ export const Routes: FC = () => {
   const routes = createRoutesFromElements(
     <Route element={<CommunicationProvider children={<Outlet />} />}>
       <Route element={<RouteContext />}>
-        <Route element={<LayoutMini />}></Route>
         <Route
           element={
             <Redirect
@@ -146,9 +145,7 @@ export const Routes: FC = () => {
           </Route>
         </Route>
         <Route element={<LayoutFull />}></Route>
-        <Route element={<LayoutMini />}>
-          <Route path="/ready" element={<Ready />} />
-        </Route>
+        <Route element={<LayoutMini />}></Route>
         <Route element={<LandingPageLayout />}>
           <Route element={<Redirect if={isUnlocked} to={origin} />}>
             <Route path="/select-profile" element={<SelectProfile />} />
@@ -168,6 +165,7 @@ export const Routes: FC = () => {
             path="/settings/change-password"
             element={<ChangePassword />}
           />
+          <Route path="/ready" element={<Ready />} />
           <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
           <Route path="*" element={<NotFound />} />
         </Route>
