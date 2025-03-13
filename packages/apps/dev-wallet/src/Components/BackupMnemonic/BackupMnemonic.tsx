@@ -1,6 +1,6 @@
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { MonoPassword } from '@kadena/kode-icons/system';
-import { Badge, Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useMemo, useState } from 'react';
 import { wordClass } from './style.css';

@@ -1,4 +1,3 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
@@ -9,14 +8,13 @@ import {
   extractPublicKeyHex,
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { ChainweaverAlphaLogoKdacolorLight } from '@kadena/kode-icons/product';
 import {
   MonoArrowForward,
   MonoContacts,
   MonoFingerprint,
   MonoPassword,
 } from '@kadena/kode-icons/system';
-import { Button, Card, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import { Button, Card, Stack, Text, TextField } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';

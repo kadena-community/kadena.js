@@ -13,11 +13,7 @@ import {
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import {
-  CardContentBlock,
-  CardFixedContainer,
-  CardFooterGroup,
-} from '@kadena/kode-ui/patterns';
+import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ILegacyBackup, LegacyImport } from './Components/LegacyImport';

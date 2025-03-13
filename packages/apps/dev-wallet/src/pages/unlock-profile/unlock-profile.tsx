@@ -13,7 +13,6 @@ import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import { wrapperClass } from '../errors/styles.css.ts';
-import { linkClass } from '../home/style.css.ts';
 import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 

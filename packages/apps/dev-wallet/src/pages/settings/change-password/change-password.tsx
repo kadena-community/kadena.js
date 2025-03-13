@@ -1,4 +1,3 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
 import { changePassword } from '@/modules/wallet/wallet.service';

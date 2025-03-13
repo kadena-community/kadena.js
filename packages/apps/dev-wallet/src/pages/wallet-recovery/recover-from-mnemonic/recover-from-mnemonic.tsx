@@ -16,7 +16,6 @@ import { MonoKey, MonoPassword } from '@kadena/kode-icons/system';
 import {
   Button,
   Card,
-  Heading,
   Select,
   SelectItem,
   Stack,
