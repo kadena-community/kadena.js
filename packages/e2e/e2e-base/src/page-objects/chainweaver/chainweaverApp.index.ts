@@ -73,10 +73,6 @@ export class ChainweaverAppIndex extends setupDatabase {
     typeName: string,
     full: boolean = true,
   ): Promise<ILoginDataProps | undefined> {
-    await actor.evaluate(() => {
-      window.localStorage.setItem('isInDevelopmentMessageShown', 'true');
-    });
-
     await actor.goto(`${this.getWalletUrl()}/?env=e2e`);
     await actor.waitForTimeout(1000);
 

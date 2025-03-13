@@ -1,12 +1,5 @@
-import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
 import { expect } from '@playwright/test';
-
-test.beforeEach(async ({ initiator }) => {
-  await initiator.goto('/');
-  await initiator.evaluate(() => {
-    window.localStorage.setItem('isInDevelopmentMessageShown', 'true');
-  });
-});
+import { test } from '../fixtures/wallet.fixture';
 
 test('Login passwordless', async ({ initiator, chainweaverApp }) => {
   await test.step('create profile', async () => {
