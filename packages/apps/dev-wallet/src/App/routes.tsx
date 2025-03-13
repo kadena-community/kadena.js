@@ -43,9 +43,7 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { LayoutFull } from './layout-full';
 import { LandingPageLayout } from './layout-landingpage';
-import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
 import { useGlobalState } from './providers/globalState';
 
@@ -144,8 +142,6 @@ export const Routes: FC = () => {
             />
           </Route>
         </Route>
-        <Route element={<LayoutFull />}></Route>
-        <Route element={<LayoutMini />}></Route>
         <Route element={<LandingPageLayout />}>
           <Route element={<Redirect if={isUnlocked} to={origin} />}>
             <Route path="/select-profile" element={<SelectProfile />} />
