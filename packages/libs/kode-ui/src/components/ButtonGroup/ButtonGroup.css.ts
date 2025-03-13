@@ -16,6 +16,8 @@ export const buttonGroupRecipe = recipe({
   },
 });
 
+export const buttonWrapperClass = style({});
+
 globalStyle(
   `${buttonGroupClass} button:not(:first-child):not(:last-child), ${buttonGroupClass} a:not(:first-child):not(:last-child)`,
   {
@@ -38,19 +40,17 @@ globalStyle(
   },
 );
 
-//variants
-// globalStyle(
-//   `${buttonGroupClass}[data-variant="outlined"] button:not(:first-child), ${buttonGroupClass}[data-variant="outlined"] a:not(:first-child)`,
-//   {
-//     border: 0,
-//     borderInlineStartWidth: '0px',
-//     borderStyle: 'solid',
-//   },
-// );
-
 globalStyle(
   `${buttonGroupClass} button:not(:last-child), ${buttonGroupClass} a:not(:last-child)`,
   {
     borderInlineEndWidth: '0',
+  },
+);
+
+globalStyle(
+  `${buttonGroupClass}[data-variant="outlined"] ${buttonWrapperClass}:not(:first-child) a:not(:has(button)), ${buttonGroupClass}[data-variant="outlined"] ${buttonWrapperClass}:not(:first-child) button`,
+  {
+    borderInlineStartWidth: '0px',
+    borderStyle: 'solid',
   },
 );

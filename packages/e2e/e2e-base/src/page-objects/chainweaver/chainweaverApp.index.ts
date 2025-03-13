@@ -111,7 +111,7 @@ export class ChainweaverAppIndex extends setupDatabase {
   public async createProfile(actor: Page): Promise<string> {
     await this._webAuthNHelper.enableVirtualAuthenticator(actor);
 
-    const button = actor.getByText('Add new profile');
+    const button = actor.getByText('New profile');
     await expect(button).toBeVisible();
     await button.click();
 
@@ -137,7 +137,7 @@ export class ChainweaverAppIndex extends setupDatabase {
     await actor
       .context()
       .grantPermissions(['clipboard-read', 'clipboard-write']);
-    const button = actor.getByText('Add new profile');
+    const button = actor.getByText('New profile');
     await expect(button).toBeVisible();
     await button.click();
 
@@ -156,7 +156,7 @@ export class ChainweaverAppIndex extends setupDatabase {
     ).toBeVisible();
 
     const continueButton = actor.getByRole('button', {
-      name: 'Continue',
+      name: 'Next',
     });
     await expect(continueButton).toBeDisabled();
 
@@ -269,7 +269,6 @@ export class ChainweaverAppIndex extends setupDatabase {
     await actor.getByRole('button', { name: 'Settings' }).click();
 
     const url = await actor.evaluate(() => window.location.href);
-
     await expect(url).toContain('/networks');
 
     return true;

@@ -174,6 +174,7 @@ export const blockClass = recipe({
   base: {
     display: 'grid!important',
     width: '100%',
+    flex: 1,
   },
   variants: {
     stack: {
@@ -181,6 +182,7 @@ export const blockClass = recipe({
         responsiveStyle({
           xs: {
             gridTemplateColumns: `1fr`,
+            gridTemplateRows: `min-content 1fr`,
             gridTemplateAreas: `
                   "header"
                   "body"
@@ -188,6 +190,7 @@ export const blockClass = recipe({
           },
           md: {
             gridTemplateColumns: `minmax(auto, 280px) 2fr`,
+            gridTemplateRows: `1fr`,
             gridTemplateAreas: `
                   "header body"
               `,
@@ -197,6 +200,7 @@ export const blockClass = recipe({
 
       vertical: {
         gridTemplateColumns: `1fr`,
+        gridTemplateRows: `min-content 1fr`,
         gridTemplateAreas: `
                   "header"
                   "body"

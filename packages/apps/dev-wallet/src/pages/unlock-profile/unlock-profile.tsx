@@ -1,17 +1,18 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
+import { MonoKey } from '@kadena/kode-icons/system';
 import {
   Button,
-  Heading,
+  Card,
   Stack,
   Text,
   TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
+import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
-import { linkClass } from '../home/style.css.ts';
+import { wrapperClass } from '../errors/styles.css.ts';
 import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
@@ -56,71 +57,80 @@ export function UnlockProfile({ origin }: { origin: string }) {
     return <Navigate to="/select-profile" replace />;
   }
   return (
-    <>
-      <AuthCard>
-        <Stack marginBlockEnd={'lg'}>
-          <UiLink
-            variant="outlined"
-            isCompact
-            type="button"
-            onPress={() => {
-              throw new Error('back');
-            }}
-            component={Link}
-            href="/"
-          >
-            Back
-          </UiLink>
-        </Stack>
-        <Stack
-          gap="md"
-          padding="sm"
-          display="inline-flex"
-          alignItems="center"
-          className={profileContainer}
+    <Card fullWidth>
+      <form onSubmit={handleSubmit(unlock)}>
+        <CardContentBlock
+          title="Unlock your profile"
+          description="Enter your password to unlock access"
+          visual={<MonoKey width={40} height={40} />}
         >
-          <InitialsAvatar
-            size="large"
-            name={profile.name}
-            accentColor={profile.accentColor}
-          />
-          <Text>{profile.name}</Text>
-        </Stack>
-        <Heading variant="h5">Unlock your profile</Heading>
-        <Text as="p">Enter your password to unlock access</Text>
-        <form onSubmit={handleSubmit(unlock)}>
-          <div className={passwordContainer}>
-            <TextField
-              id="password"
-              autoFocus
-              type="password"
-              placeholder="Password"
-              aria-label="Password"
-              isRequired
-              {...register('password', {
-                required: { value: true, message: 'This field is required' },
-              })}
-              isInvalid={!isValid && !!errors.password}
-              errorMessage={errors.password?.message}
-            />
-          </div>
-          <Stack flexDirection="column" gap="md">
+          <Stack
+            flexDirection="column"
+            marginBlockEnd={'lg'}
+            className={wrapperClass}
+            justifyContent="flex-start"
+          >
+            <Stack
+              gap="md"
+              display="inline-flex"
+              alignItems="center"
+              className={profileContainer}
+            >
+              <InitialsAvatar
+                size="large"
+                name={profile.name}
+                accentColor={profile.accentColor}
+              />
+              <Text>{profile.name}</Text>
+            </Stack>
+
+            <div className={passwordContainer}>
+              <TextField
+                id="password"
+                autoFocus
+                type="password"
+                placeholder="Password"
+                aria-label="Password"
+                isRequired
+                {...register('password', {
+                  required: { value: true, message: 'This field is required' },
+                })}
+                isInvalid={!isValid && !!errors.password}
+                errorMessage={errors.password?.message}
+              />
+            </div>
+          </Stack>
+        </CardContentBlock>
+
+        <CardFooterGroup>
+          <Stack width="100%">
+            <UiLink
+              variant="outlined"
+              isCompact
+              type="button"
+              onPress={() => {
+                throw new Error('back');
+              }}
+              component={Link}
+              href="/"
+            >
+              Back
+            </UiLink>
+          </Stack>
+          <CardFooterGroup>
+            <UiLink
+              variant="transparent"
+              component={Link}
+              href="/wallet-recovery"
+            >
+              Recover your wallet
+            </UiLink>
             <Button type="submit" isDisabled={!isValid}>
               Continue
             </Button>
-            <Stack gap="sm">
-              <Text as="p" size="small">
-                Forgot password?
-              </Text>
-              <Link to="/wallet-recovery" className={linkClass}>
-                <Text as="p" size="small" color="inherit">
-                  Recover your wallet
-                </Text>
-              </Link>
-            </Stack>
-          </Stack>
-        </form>
-      </AuthCard>
-    </>
+          </CardFooterGroup>
+        </CardFooterGroup>
+      </form>
+    </Card>
   );
 }

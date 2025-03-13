@@ -45,6 +45,7 @@ export const extendedContainer = style([
 
 export const bodyContainer = style([
   {
+    flex: 1,
     selectors: {
       '& + &': {
         marginBlockStart: token('size.n16'),
@@ -89,6 +90,7 @@ export const bodyContent = style([
 
 export const footerGroup = style([
   {
+    width: '100%',
     selectors: {
       '& > &': {
         marginBlockStart: 0,

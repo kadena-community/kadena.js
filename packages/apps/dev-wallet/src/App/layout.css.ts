@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/kode-ui/styles';
+import { atoms, globalStyle } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const mainColumnStyle = style([
@@ -29,3 +29,16 @@ export const backgroundStyle = style([
     filter: 'blur(100px)',
   },
 ]);
+
+export const focussedLayoutChildrenWrapperClass = style({});
+
+globalStyle(`${focussedLayoutChildrenWrapperClass} > *:only-child`, {
+  minHeight: '40dvh',
+});
+
+//fix for when the whole card content is wrapper in form
+globalStyle(`${focussedLayoutChildrenWrapperClass} > *:only-child > form`, {
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
+});
