@@ -1,3 +1,17 @@
+export type UUID = `${string}-${string}-${string}-${string}-${string}`;
+
+export interface KadenaAccount {
+  name: string;
+  contract: string;
+  chains: number[];
+}
+
+export interface AccountResponse {
+  account: string;
+  publicKey: string;
+  kadenaAccounts: KadenaAccount[];
+}
+
 export interface IAccount {
   uuid: string;
   networkUUID: any;
@@ -16,7 +30,7 @@ export interface IAccount {
 }
 
 export interface INetwork {
-  uuid: string;
+  uuid: UUID;
   networkId: string;
   name?: string;
   default?: boolean;
@@ -30,10 +44,40 @@ export interface INetwork {
   }>;
 }
 
+export interface IQuickSignResponseSuccess {
+  commandSigData: {
+    cmd: string,
+    sigs: Array<{ pubKey: string; sig: string | null; }>
+  },
+  outcome: {
+    result: "success" | "failure" | "noSig",
+    hash?: string,
+    msg?: string;
+  }
+}
+
+export interface IQuickSignResponseError {
+  error: {
+    type: "reject" | "emptyList" | "other",
+    msg?: string
+  }
+}
+
+export type QuickSignResponse = IQuickSignResponseSuccess | IQuickSignResponseError;
+
+export interface ISignResponse {
+  status: string;
+  transaction: {
+    cmd: string;
+    hash: string;
+    sigs: Array<{ pubKey: string; sig: string | null; }>
+  };
+}
+
 interface ResponsePayload {
   GET_ACCOUNTS: Array<IAccount>;
   GET_NETWORK_LIST: INetwork[];
-  SIGN_REQUEST: void;
+  SIGN_REQUEST: ISignResponse;
 }
 
 interface IResponseType<T extends MessageType> {

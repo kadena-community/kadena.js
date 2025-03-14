@@ -28,6 +28,7 @@
     "@reown/walletkit": "^1.2.0",
     "@scure/bip39": "1.2.1",
     "@tauri-apps/api": "^1.4.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/dynamic": "^2.1.2",
     "@vanilla-extract/recipes": "0.5.1",

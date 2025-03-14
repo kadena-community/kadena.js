@@ -1,7 +1,7 @@
 import '@kadena/kode-ui/global';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { WalletConnect } from './components/WalletConnect';
+import { WalletConnect } from './components/WalletConnect/WalletConnect';
 
 /**
  *

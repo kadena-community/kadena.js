@@ -1,40 +1,17 @@
-import WalletKit, { WalletKitTypes } from '@reown/walletkit';
-import Core from '@walletconnect/core';
+import { WalletKitTypes } from '@reown/walletkit';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { mainContainerClass } from '../style.css';
-// import { subscribeToSessionProposal } from './subscribe';
+import { mainContainerClass } from './style.css';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
-import { AccountPrompt } from './AccountPrompt/AccountPrompt';
-import { communicate, IAccount, INetwork } from './communicate';
-
-const core = new Core({
-  projectId: '77ef30356b9964645f55fa54c3e83988',
-});
-
-const metadata = {
-  name: 'Kadena Chainweaver v3',
-  description: 'AppKit Example',
-  url: 'http://localhost:4173/', // origin must match your domain & subdomain
-  icons: ['https://assets.reown.com/reown-profile-pic.png'],
-};
-
-interface KadenaAccount {
-  name: string;
-  contract: string;
-  chains: number[];
-}
-
-interface AccountResponse {
-  account: string;
-  publicKey: string;
-  kadenaAccounts: KadenaAccount[];
-}
+import { AccountPrompt } from '../AccountPrompt/AccountPrompt';
+import useAccountStore from '../../hooks/useAccountStore';
+import useWalletKit from '../../hooks/useWalletKit';
+import { handleGetAccountsV1, handleSignV1, handleQuickSignV1 } from '../../handlers';
+import { communicate, IAccount, INetwork } from '../../wallet-communication';
 
 export const WalletConnect: React.FC<{
   sessionId: string;
   target: Window;
 }> = ({ sessionId, target }) => {
-  const [walletKit, setWalletKit] = useState<WalletKit | undefined>();
   const [uri, setUri] = useState<string>('');
   const [session, setSession] = useState<any>();
   const [activeSessions, setActiveSessions] = useState<Array<any>>([]);
@@ -44,16 +21,15 @@ export const WalletConnect: React.FC<{
     [],
   );
   const [selectedAccounts, setSelectedAccounts] = useState<Array<IAccount>>([]);
-  const [accountStore, setAccountStore] = useState<{
-    [id: string]: Array<{ name: string; account: IAccount; publicKey: string }>;
-  }>({});
+  const [accountStore, setAccountStore, accountStoreRef] = useAccountStore();
+  const [walletKit, walletKitRef] = useWalletKit(onSessionProposal, handleSessionRequest);
 
   const message = useMemo(
     () =>
       communicate(
         window,
         target,
-        '@kadena/chainweaver-pact-console-plugin',
+        '@kadena/chainweaver-wallet-connect-plugin',
         sessionId,
       ),
     [sessionId, target],
@@ -61,45 +37,22 @@ export const WalletConnect: React.FC<{
 
   // Refs to track latest state
   const networksRef = useRef(networks);
-  const walletKitRef = useRef(walletKit);
   const selectedAccountsRef = useRef(selectedAccounts);
-  const accountStoreRef = useRef(accountStore);
 
   // Sync state to refs
   useEffect(() => {
     networksRef.current = networks;
-    walletKitRef.current = walletKit;
     selectedAccountsRef.current = selectedAccounts;
-    accountStoreRef.current = accountStore;
-  }, [networks, walletKit, selectedAccounts, accountStore]);
+  }, [networks, selectedAccounts]);
 
+  // Fetch the network list
   useEffect(() => {
-    const storedAccounts = localStorage.getItem('accountStore');
-    if (storedAccounts) {
-      setAccountStore(JSON.parse(storedAccounts));
-    }
-    async function initWalletKit() {
-      if (!walletKit) {
-        const newWalletKit = await WalletKit.init({
-          core, // <- pass the shared 'core' instance
-          metadata,
-        });
-        setWalletKit(newWalletKit);
-        newWalletKit.on('session_proposal', onSessionProposal);
-        newWalletKit.on('session_request', handleSessionRequest);
-      }
-    }
-    async function networkList() {
+    const fetchNetworkList = async () => {
       const response = await message('GET_NETWORK_LIST');
       setNetworks(response.payload as INetwork[]);
-    }
-    initWalletKit();
-    networkList();
+    };
+    fetchNetworkList();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('accountStore', JSON.stringify(accountStore));
-  }, [accountStore]);
 
   // TODO: find a more solid way to solve this
   function deriveKeyFromAccount(account: IAccount) {
@@ -139,7 +92,7 @@ export const WalletConnect: React.FC<{
         ),
       );
 
-      // ------- namespaces builder util ------------ //
+      // Build namespaces
       const approvedNamespaces = buildApprovedNamespaces({
         proposal: params,
         supportedNamespaces: {
@@ -166,7 +119,6 @@ export const WalletConnect: React.FC<{
         ...accountStoreRef.current,
         [session.topic]: accountStoreEntry,
       });
-      console.log(accountStoreRef.current);
       setSession(session);
     } catch (error) {
       console.error(error);
@@ -181,105 +133,34 @@ export const WalletConnect: React.FC<{
   async function handleSessionRequest(sessionRequest: any) {
     const request = sessionRequest.params.request;
     const { id, topic } = sessionRequest;
-    const { params, method } = request;
+    const { method } = request;
 
     const currentWalletKit = walletKitRef.current;
 
     if (!currentWalletKit) throw new Error('WalletKit not found');
 
     try {
-      if (method === 'kadena_getAccounts_v1') {
-        // Get accounts requested by the request
-        // const requestedAccountsArray = params.accounts;
-        const requestedAccountsArray = [params]; // Temp to support demo app that doesn't conform to the spec
-
-        const storedAccounts = accountStoreRef.current[topic];
-        if (!storedAccounts) {
-          // Handle case where no accounts are found for the given topic/session
-          console.warn('No accounts found for topic', topic);
+      switch (method) {
+        case 'kadena_getAccounts_v1':
+          await handleGetAccountsV1(request, sessionRequest, currentWalletKit, accountStoreRef.current);
+          break;
+        case 'kadena_sign_v1':
+          await handleSignV1(sessionRequest, currentWalletKit);
+          break;
+        case 'kadena_quicksign_v1':
+          await handleQuickSignV1(request, sessionRequest, currentWalletKit, message);
+          break;
+        default:
+          console.warn(`Unhandled method: ${method}`);
           await currentWalletKit.respondSessionRequest({
             topic,
             response: {
               id,
               jsonrpc: '2.0',
-              error: getSdkError('UNSUPPORTED_ACCOUNTS'),
+              error: getSdkError('INVALID_METHOD'),
             },
           });
-          return;
-        }
-
-        const accountsResponse = requestedAccountsArray.map(
-          (requestedAccount: { account: string; contracts: string[] }) => {
-            return storedAccounts
-              .filter((storedAccount) => {
-                return (
-                  requestedAccount.account === storedAccount.name &&
-                  (requestedAccount.contracts.length === 0 ||
-                    requestedAccount.contracts.includes(
-                      storedAccount.account.contract,
-                    ))
-                );
-              })
-              .map((acc) => {
-                return {
-                  account: acc.name,
-                  publicKey: acc.publicKey,
-                  kadenaAccounts: [
-                    {
-                      name: acc.account.address,
-                      contract: acc.account.contract,
-                      chains: acc.account.chains.map((chain) => chain.chainId),
-                    },
-                  ],
-                };
-              })
-              .reduce(
-                (result: AccountResponse | null, curr: AccountResponse) => {
-                  if (!result) {
-                    result = curr;
-                  } else {
-                    result.kadenaAccounts = [
-                      ...result.kadenaAccounts,
-                      ...curr.kadenaAccounts,
-                    ];
-                  }
-                  return result;
-                },
-                null,
-              );
-          },
-        );
-
-        await currentWalletKit.respondSessionRequest({
-          topic,
-          response: {
-            id,
-            jsonrpc: '2.0',
-            result: {
-              accounts: accountsResponse,
-            },
-          },
-        });
-      } else if (method === 'kadena_sign_v1') {
-        console.log(params);
-
-        // const signingRequest = params;
-        const response = await message('SIGN_REQUEST');
-        console.log(response);
-      } else if (method === 'kadena_quicksign_v1') {
-        const txObject = params.commandSigDatas[0];
-        const response = await message('SIGN_REQUEST', txObject);
-        console.log(response);
-      } else {
-        console.warn(`Unhandled method: ${method}`);
-        await currentWalletKit.respondSessionRequest({
-          topic,
-          response: {
-            id,
-            jsonrpc: '2.0',
-            error: getSdkError('INVALID_METHOD'),
-          },
-        });
+          break;
       }
     } catch (error) {
       console.log(error);
@@ -297,7 +178,6 @@ export const WalletConnect: React.FC<{
   }
 
   async function onAccountsSelected(accounts: IAccount[]) {
-    console.log(selectedAccounts);
     setSelectedAccounts(accounts);
     setShowAccountPrompt(false);
     if (accounts.length === 0) {
@@ -316,6 +196,8 @@ export const WalletConnect: React.FC<{
       reason: getSdkError('USER_DISCONNECTED'),
     });
 
+    const { [session.topic]: _, ...filteredAccountStore } = accountStore;
+    setAccountStore(filteredAccountStore);
     await getActiveSessions();
     setSession(undefined);
   }
@@ -324,7 +206,6 @@ export const WalletConnect: React.FC<{
     if (!walletKit) throw Error('WalletKit instance is undefined');
 
     const activeSessions = await walletKit.getActiveSessions();
-    console.log('active sessions', activeSessions);
     setActiveSessions(Object.values(activeSessions));
   }
 

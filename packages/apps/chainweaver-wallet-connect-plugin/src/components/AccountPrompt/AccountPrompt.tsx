@@ -1,4 +1,4 @@
-import { IAccount } from '../communicate.ts';
+import { IAccount } from '../../wallet-communication.ts';
 import {
   Button,
   Dialog,
