@@ -83,7 +83,7 @@ export function BackupMnemonic({
                     }}
                     justifyContent={'flex-end'}
                   >
-                    {index + 1}:
+                    <Text>{index + 1}:</Text>
                   </Stack>{' '}
                   <Badge size="lg" className={wordClass}>
                     {word}
@@ -167,7 +167,7 @@ export function BackupMnemonic({
                   }}
                   justifyContent={'flex-end'}
                 >
-                  {idx + 1}:
+                  <Text>{idx + 1}:</Text>
                 </Stack>{' '}
                 <Badge size="lg" className={wordClass}>
                   {selectedWords[index] || ''}
@@ -198,7 +198,12 @@ export function BackupMnemonic({
                     className={wordClass}
                     variant="outlined"
                     onClick={() => {
-                      setSelectedWords((prev) => [...prev, word]);
+                      setSelectedWords((prev) => {
+                        if (prev.length === 3) {
+                          return [word];
+                        }
+                        return [...prev, word];
+                      });
                     }}
                   >
                     {word}
@@ -210,8 +215,8 @@ export function BackupMnemonic({
           <Button
             isDisabled={
               selectedWords.length !== 3 ||
-              selectedWords.every(
-                (word, index) => word !== words[randomIndexes[index]],
+              !selectedWords.every(
+                (word, index) => word === words[randomIndexes[index]],
               )
             }
             onClick={onConfirm}
