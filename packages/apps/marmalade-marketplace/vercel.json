@@ -1,4 +1,10 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "main": false,
+      "release/marmalade-v*": true
+    }
+  },
   "crons": [
     {
       "path": "/api/cron",

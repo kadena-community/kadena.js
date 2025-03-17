@@ -1,4 +1,10 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "main": false,
+      "release/dev-wallet-v*": true
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
