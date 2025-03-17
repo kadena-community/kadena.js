@@ -22,7 +22,7 @@ const rotate = (max: number, start: number = 0) => {
   let index = start;
   return () => {
     index = (index + 1) % max;
-    console.log('index', index);
+    console.log('index:', index);
     return index;
   };
 };
