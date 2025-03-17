@@ -80,7 +80,8 @@ export function CreateProfile() {
     },
   });
 
-  //hack to do a form validation after load
+  // hack to do a form validation after load
+  // This is not supported by react-hook-form
   useEffect(() => {
     reset({});
     setTimeout(() => {
