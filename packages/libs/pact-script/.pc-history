@@ -1,0 +1,2 @@
+(defcap PAY (id:string) (enforce (!= id "") "empty id" )  )
+asd

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "@kadena/chainweaver-pact-console-plugin",
+    "name": "Pact Console",
+    "registry": "/internal-registry",
+    "description": "A console for interacting remotely with Pact on different networks (read-only)",
+    "version": "0.0.4",
+    "permissions": [
+      "GET_NETWORK_LIST"
+    ]
+  },
+  {
+    "id": "@kadena/chainweaver-wallet-connect-plugin",
+    "name": "Wallet Connect",
+    "registry": "/internal-registry",
+    "description": "Wallet Connect plugin for Kadena Chainweaver wallet",
+    "version": "0.0.4",
+    "permissions": [
+      "CONNECTION_REQUEST",
+      "SIGN_REQUEST",
+      "GET_STATUS",
+      "GET_NETWORK_LIST",
+      "GET_ACCOUNTS"
+    ]
+  }
+]
