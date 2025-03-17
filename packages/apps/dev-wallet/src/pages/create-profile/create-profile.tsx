@@ -55,6 +55,8 @@ export function CreateProfile() {
 
   const {
     register,
+    trigger,
+    reset,
     handleSubmit,
     getValues,
     setValue,
@@ -67,6 +69,7 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
+    mode: 'all',
     defaultValues: {
       password: '',
       confirmation: '',
@@ -76,6 +79,17 @@ export function CreateProfile() {
       accentColor: defaultColor,
     },
   });
+
+  const init = async () => {
+    await reset();
+    setTimeout(() => {
+      trigger();
+    }, 100);
+  };
+
+  useEffect(() => {
+    init();
+  }, [reset, trigger]);
 
   useEffect(() => {
     console.log('profileList', profileList);
@@ -206,9 +220,20 @@ export function CreateProfile() {
                       value: true,
                       message: 'This field is required',
                     },
+                    validate: {
+                      required: (value) => {
+                        const existingProfile = profileList.find(
+                          (profile) => profile.name === value,
+                        );
+                        if (existingProfile)
+                          return `The profile name ${value} already exists. Please use another name.`;
+                        return true;
+                      },
+                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
+                      {JSON.stringify(errors)}
                       <Label bold>Profile name</Label>
                       <Stack gap="sm" flexDirection={'row'}>
                         <InitialsAvatar
