@@ -21,6 +21,7 @@ const RootLayout = ({
         />
       </head>
       <body>
+        {/* release from 17 March 2025 12:26 */}
         <Providers>
           <Analytics />
           {children}
