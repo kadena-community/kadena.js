@@ -69,7 +69,7 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       password: '',
       confirmation: '',
@@ -80,19 +80,15 @@ export function CreateProfile() {
     },
   });
 
-  const init = async () => {
-    await reset();
+  //hack to do a form validation after load
+  useEffect(() => {
+    reset({});
     setTimeout(() => {
       trigger();
     }, 100);
-  };
-
-  useEffect(() => {
-    init();
   }, [reset, trigger]);
 
   useEffect(() => {
-    console.log('profileList', profileList);
     setValue(
       'profileName',
       profileList.length === 0
@@ -233,7 +229,6 @@ export function CreateProfile() {
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
-                      {JSON.stringify(errors)}
                       <Label bold>Profile name</Label>
                       <Stack gap="sm" flexDirection={'row'}>
                         <InitialsAvatar
@@ -282,6 +277,7 @@ export function CreateProfile() {
                   Prefer password
                 </Button>
                 <Button
+                  isDisabled={!isValid}
                   variant="primary"
                   onClick={() => {
                     createWebAuthnCredential();
