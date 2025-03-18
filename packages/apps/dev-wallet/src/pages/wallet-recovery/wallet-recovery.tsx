@@ -4,7 +4,6 @@ import { validateStructure } from '@/utils/chainweaver/validateStructure';
 import { browse, readContent } from '@/utils/select-file';
 import { MonoRestore } from '@kadena/kode-icons/system';
 import {
-  Box,
   Button,
   Card,
   Heading,

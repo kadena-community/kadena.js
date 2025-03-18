@@ -15,8 +15,20 @@ import {
   MonoPalette,
   MonoPassword,
 } from '@kadena/kode-icons/system';
-import { Button, Card, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
-import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
+import {
+  Button,
+  Card,
+  CompactStepper,
+  Heading,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
+import {
+  CardContentBlock,
+  CardFooterGroup,
+  FocussedLayoutHeaderContent,
+} from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -185,6 +197,12 @@ export function CreateProfile() {
 
   return (
     <>
+      <FocussedLayoutHeaderContent>
+        <CompactStepper
+          stepIdx={0}
+          steps={[{ label: 'test' }, { label: 'test' }]}
+        />
+      </FocussedLayoutHeaderContent>
       <Card>
         <form onSubmit={handleSubmit(create)} ref={formRef}>
           {step === 'authMethod' && (
