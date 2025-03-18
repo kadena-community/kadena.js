@@ -96,6 +96,7 @@ export function ChangePassword() {
       navigate('/settings');
     } catch (e) {
       setError(e as string);
+      setIsLoading(false);
     }
   };
 
@@ -238,7 +239,7 @@ export function ChangePassword() {
                   />
 
                   {error && (
-                    <Notification role="alert" intent="warning">
+                    <Notification role="alert" intent="negative">
                       <>{error.toString()}</>
                     </Notification>
                   )}
