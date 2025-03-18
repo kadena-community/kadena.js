@@ -2,7 +2,7 @@ import { MonoChevronLeft, MonoMoreVert } from '@kadena/kode-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Button, Link, Stack } from '..';
+import { Button, ContextMenu, ContextMenuItem, Link, Stack } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
 import { button } from '../Button/Button.css';
 import type { IButtonGroupProps } from './ButtonGroup';
@@ -58,8 +58,38 @@ export const Primary: ButtonGroupStory = {
         </ButtonGroup>
         <ButtonGroup {...props}>
           <Link>option1</Link>
-          <Link>option2</Link>
-          <Link endVisual={<MonoChevronLeft />} />
+          <a>
+            <Button isCompact variant="outlined">
+              option2
+            </Button>
+          </a>
+          <ContextMenu
+            trigger={
+              <Button
+                variant="outlined"
+                isCompact
+                endVisual={<MonoMoreVert />}
+              />
+            }
+          >
+            <ContextMenuItem onClick={() => {}} label="Recover your wallet" />
+          </ContextMenu>
+        </ButtonGroup>
+
+        <ButtonGroup {...props}>
+          <Button startVisual={<MonoChevronLeft />}>option2</Button>
+
+          <ContextMenu
+            trigger={
+              <Button
+                variant="outlined"
+                isCompact
+                endVisual={<MonoMoreVert />}
+              />
+            }
+          >
+            <ContextMenuItem onClick={() => {}} label="Recover your wallet" />
+          </ContextMenu>
         </ButtonGroup>
       </Stack>
     );

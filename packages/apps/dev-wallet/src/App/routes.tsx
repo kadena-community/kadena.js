@@ -43,9 +43,7 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { LayoutFull } from './layout-full';
 import { LandingPageLayout } from './layout-landingpage';
-import { LayoutMini } from './layout-mini';
 import { Layout } from './Layout/Layout';
 import { useGlobalState } from './providers/globalState';
 
@@ -91,17 +89,6 @@ export const Routes: FC = () => {
   const routes = createRoutesFromElements(
     <Route element={<CommunicationProvider children={<Outlet />} />}>
       <Route element={<RouteContext />}>
-        <Route element={<LayoutMini />}>
-          <Route element={<Redirect if={isUnlocked} to={origin} />}>
-            <Route path="/select-profile" element={<SelectProfile />} />
-            <Route path="/create-profile/*" element={<CreateProfile />} />
-            <Route
-              path="/wallet-recovery/recover-from-mnemonic"
-              element={<RecoverFromMnemonic />}
-            />
-            <Route path="/wallet-recovery" element={<WalletRecovery />} />
-          </Route>
-        </Route>
         <Route
           element={
             <Redirect
@@ -155,22 +142,27 @@ export const Routes: FC = () => {
             />
           </Route>
         </Route>
-        <Route element={<LayoutFull />}>
-          <Route path="/account-discovery" element={<AccountDiscovery />} />
-        </Route>
-        <Route element={<LayoutMini />}>
-          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
-          <Route
-            path="/settings/change-password"
-            element={<ChangePassword />}
-          />
+        <Route element={<LandingPageLayout />}>
+          <Route element={<Redirect if={isUnlocked} to={origin} />}>
+            <Route path="/select-profile" element={<SelectProfile />} />
+            <Route path="/create-profile/*" element={<CreateProfile />} />
+            <Route
+              path="/wallet-recovery/recover-from-mnemonic"
+              element={<RecoverFromMnemonic />}
+            />
+            <Route path="/account-discovery" element={<AccountDiscovery />} />
+            <Route path="/wallet-recovery" element={<WalletRecovery />} />
+          </Route>
           <Route
             path="/unlock-profile/:profileId"
             element={<UnlockProfile origin={origin} />}
           />
+          <Route
+            path="/settings/change-password"
+            element={<ChangePassword />}
+          />
           <Route path="/ready" element={<Ready />} />
-        </Route>
-        <Route element={<LandingPageLayout />}>
+          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

@@ -1,4 +1,3 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
@@ -9,11 +8,19 @@ import {
   extractPublicKeyHex,
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
+import {
+  MonoArrowForward,
+  MonoContacts,
+  MonoFingerprint,
+  MonoPassword,
+} from '@kadena/kode-icons/system';
+import { Button, Card, Stack, Text, TextField } from '@kadena/kode-ui';
+import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import { wrapperClass } from '../errors/styles.css';
 import { noStyleLinkClass } from '../home/style.css';
 import InitialsAvatar from '../select-profile/initials';
 import { Label } from '../transaction/components/helpers';
@@ -178,160 +185,191 @@ export function CreateProfile() {
 
   return (
     <>
-      <AuthCard>
+      <Card>
         <form onSubmit={handleSubmit(create)} ref={formRef}>
           {step === 'profile' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Link to="/" className={noStyleLinkClass}>
+            <>
+              <CardContentBlock
+                title="Profile"
+                description="Create profile copy to help users create their accounts"
+                visual={<MonoContacts width={40} height={40} />}
+              >
+                <Stack
+                  flexDirection={'column'}
+                  gap={'lg'}
+                  className={wrapperClass}
+                >
+                  <Stack flexDirection={'column'}>
+                    <Controller
+                      name="profileName"
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                      }}
+                      render={({ field, fieldState: { error } }) => (
+                        <Stack
+                          flexDirection={'column'}
+                          gap={'md'}
+                          marginBlock="md"
+                        >
+                          <Label bold>Profile name</Label>
+                          <Stack gap="sm" flexDirection={'row'}>
+                            <InitialsAvatar
+                              name={field.value}
+                              accentColor={accentColor}
+                              onClick={() => {
+                                console.log('click');
+                                setValue(
+                                  'accentColor',
+                                  config.colorList[rotateColor.current()],
+                                );
+                              }}
+                            />
+                            <TextField
+                              id="profileName"
+                              type="text"
+                              autoFocus
+                              defaultValue={field.value}
+                              value={field.value}
+                              onChange={field.onChange}
+                              key="profileName"
+                              isInvalid={!isValid && !!error}
+                              errorMessage={error && error.message}
+                            />
+                          </Stack>
+                        </Stack>
+                      )}
+                    />
+                  </Stack>
+                  <Stack flexDirection={'column'} gap={'lg'}>
+                    <Text size="smallest">
+                      Your system supports{' '}
+                      <Text bold size="smallest">
+                        WebAuthn
+                      </Text>{' '}
+                      so you can create a more secure and more convenient
+                      password-less profile!
+                    </Text>
+                  </Stack>
+                  <Stack flexDirection="row" gap={'sm'}></Stack>
+                </Stack>
+              </CardContentBlock>
+              <CardFooterGroup>
+                <Stack width="100%">
+                  <Link to="/" className={noStyleLinkClass}>
+                    <Button
+                      variant="outlined"
+                      isCompact
+                      type="button"
+                      onPress={() => {
+                        throw new Error('back');
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Link>
+                </Stack>
+                <CardFooterGroup>
+                  <Button
+                    type="button"
+                    variant="transparent"
+                    onClick={() => setStep('set-password')}
+                  >
+                    Prefer password
+                  </Button>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      createWebAuthnCredential();
+                    }}
+                    endVisual={<MonoFingerprint />}
+                  >
+                    Password-less
+                  </Button>
+                </CardFooterGroup>
+              </CardFooterGroup>
+            </>
+          )}
+          {step === 'set-password' && (
+            <>
+              <CardContentBlock
+                title="Choose a password"
+                description="Carefully select your password as this will be your main
+                      security of your wallet"
+                visual={<MonoPassword width={40} height={40} />}
+              >
+                <Stack
+                  flexDirection={'column'}
+                  gap={'lg'}
+                  className={wrapperClass}
+                >
+                  <Stack flexDirection="column" marginBlock="md" gap="sm">
+                    <TextField
+                      id="password"
+                      type="password"
+                      label="Password"
+                      autoFocus
+                      defaultValue={getValues('password')}
+                      // react-hook-form uses uncontrolled elements;
+                      // and because we add and remove the fields we need to add key to prevent confusion for react
+                      key="password"
+                      {...register('password', {
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                        minLength: { value: 6, message: 'Minimum 6 symbols' },
+                      })}
+                      isInvalid={!isValid && !!errors.password}
+                      errorMessage={errors.password?.message}
+                    />
+                    <TextField
+                      id="confirmation"
+                      type="password"
+                      label="Confirm password"
+                      defaultValue={getValues('confirmation')}
+                      key="confirmation"
+                      {...register('confirmation', {
+                        validate: (value) => {
+                          return (
+                            getValues('password') === value ||
+                            'Passwords do not match'
+                          );
+                        },
+                      })}
+                      isInvalid={!isValid && !!errors.confirmation}
+                      errorMessage={errors.confirmation?.message}
+                    />
+                  </Stack>
+                </Stack>
+              </CardContentBlock>
+              <CardFooterGroup>
+                <Stack width="100%">
                   <Button
                     variant="outlined"
                     isCompact
                     type="button"
                     onPress={() => {
-                      throw new Error('back');
+                      setStep('profile');
                     }}
                   >
                     Back
                   </Button>
-                </Link>
-              </Stack>
-              <Stack flexDirection={'column'}>
-                <Heading variant="h4">Create Profile</Heading>
-                <Controller
-                  name="profileName"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                  }}
-                  render={({ field, fieldState: { error } }) => (
-                    <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
-                      <Label bold>Profile name</Label>
-                      <Stack gap="sm" flexDirection={'row'}>
-                        <InitialsAvatar
-                          name={field.value}
-                          accentColor={accentColor}
-                          onClick={() => {
-                            console.log('click');
-                            setValue(
-                              'accentColor',
-                              config.colorList[rotateColor.current()],
-                            );
-                          }}
-                        />
-                        <TextField
-                          id="profileName"
-                          type="text"
-                          autoFocus
-                          defaultValue={field.value}
-                          value={field.value}
-                          onChange={field.onChange}
-                          key="profileName"
-                          isInvalid={!isValid && !!error}
-                          errorMessage={error && error.message}
-                        />
-                      </Stack>
-                    </Stack>
-                  )}
-                />
-              </Stack>
-              <Stack flexDirection={'column'} gap={'lg'}>
-                <Text size="smallest">
-                  Your system supports{' '}
-                  <Text bold size="smallest">
-                    WebAuthn
-                  </Text>{' '}
-                  so you can create a more secure and more convenient
-                  password-less profile!
-                </Text>
-              </Stack>
-              <Stack flexDirection="row" gap={'sm'}>
-                <Button
-                  type="button"
-                  variant="transparent"
-                  onClick={() => setStep('set-password')}
-                >
-                  Prefer password
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    createWebAuthnCredential();
-                  }}
-                >
-                  Password-less
-                </Button>
-              </Stack>
-            </Stack>
-          )}
-          {step === 'set-password' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Button
-                  variant="outlined"
-                  isCompact
-                  type="button"
-                  onPress={() => {
-                    setStep('profile');
-                  }}
-                >
-                  Back
-                </Button>
-              </Stack>
-              <Heading variant="h4">Choose a password</Heading>
-              <Stack marginBlockStart="sm">
-                <Text>
-                  Carefully select your password as this will be your main
-                  security of your wallet
-                </Text>
-              </Stack>
-              <Stack flexDirection="column" marginBlock="md" gap="sm">
-                <TextField
-                  id="password"
-                  type="password"
-                  label="Password"
-                  autoFocus
-                  defaultValue={getValues('password')}
-                  // react-hook-form uses uncontrolled elements;
-                  // and because we add and remove the fields we need to add key to prevent confusion for react
-                  key="password"
-                  {...register('password', {
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                    minLength: { value: 6, message: 'Minimum 6 symbols' },
-                  })}
-                  isInvalid={!isValid && !!errors.password}
-                  errorMessage={errors.password?.message}
-                />
-                <TextField
-                  id="confirmation"
-                  type="password"
-                  label="Confirm password"
-                  defaultValue={getValues('confirmation')}
-                  key="confirmation"
-                  {...register('confirmation', {
-                    validate: (value) => {
-                      return (
-                        getValues('password') === value ||
-                        'Passwords do not match'
-                      );
-                    },
-                  })}
-                  isInvalid={!isValid && !!errors.confirmation}
-                  errorMessage={errors.confirmation?.message}
-                />
-              </Stack>
-              <Stack flexDirection="column">
-                <Button type="submit" isDisabled={!isValid}>
-                  Continue
-                </Button>
-              </Stack>
-            </Stack>
+                </Stack>
+                <CardFooterGroup>
+                  <Button
+                    type="submit"
+                    isDisabled={!isValid}
+                    endVisual={<MonoArrowForward />}
+                  >
+                    Next
+                  </Button>
+                </CardFooterGroup>
+              </CardFooterGroup>
+            </>
           )}
           {step === 'backup-mnemonic' && (
             <BackupMnemonic
@@ -342,7 +380,7 @@ export function CreateProfile() {
             />
           )}
         </form>
-      </AuthCard>
+      </Card>
     </>
   );
 }

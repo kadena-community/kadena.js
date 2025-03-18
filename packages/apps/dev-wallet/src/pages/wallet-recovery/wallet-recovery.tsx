@@ -6,17 +6,14 @@ import { MonoRestore } from '@kadena/kode-icons/system';
 import {
   Box,
   Button,
+  Card,
   Heading,
   Notification,
   Stack,
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import {
-  CardContentBlock,
-  CardFixedContainer,
-  CardFooterGroup,
-} from '@kadena/kode-ui/patterns';
+import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ILegacyBackup, LegacyImport } from './Components/LegacyImport';
@@ -44,7 +41,7 @@ export function WalletRecovery() {
     }
   }
   return (
-    <CardFixedContainer>
+    <Card>
       <CardContentBlock
         title="Wallet Recovery"
         visual={<MonoRestore width={36} height={36} />}
@@ -153,10 +150,10 @@ export function WalletRecovery() {
         </Stack>
       </CardContentBlock>
       <CardFooterGroup separated={true}>
-        <UiLink href="/" component={Link} variant="outlined">
+        <UiLink isCompact href="/" component={Link} variant="outlined">
           Back
         </UiLink>
       </CardFooterGroup>
-    </CardFixedContainer>
+    </Card>
   );
 }
