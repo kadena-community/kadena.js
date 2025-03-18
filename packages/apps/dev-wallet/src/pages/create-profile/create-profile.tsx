@@ -12,6 +12,7 @@ import {
   MonoArrowForward,
   MonoContacts,
   MonoFingerprint,
+  MonoPalette,
   MonoPassword,
 } from '@kadena/kode-icons/system';
 import { Button, Card, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
@@ -345,7 +346,13 @@ export function CreateProfile() {
               <CardContentBlock
                 title="Personalize profile"
                 description="The color will be a tool to visually differentiate your profiles when in use"
-                visual={<MonoContacts width={40} height={40} />}
+                visual={
+                  <MonoPalette
+                    style={{ color: accentColor }}
+                    width={40}
+                    height={40}
+                  />
+                }
               >
                 <Stack
                   flexDirection={'column'}
