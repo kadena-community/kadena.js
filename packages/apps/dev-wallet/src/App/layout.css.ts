@@ -41,6 +41,7 @@ globalStyle(`${focussedLayoutChildrenWrapperClass} > *:only-child > form`, {
   display: 'flex',
   flexDirection: 'column',
   flex: 1,
+  width: '100%',
 });
 
 globalStyle(`${focussedLayoutChildrenWrapperClass} [class^="Card"]`, {

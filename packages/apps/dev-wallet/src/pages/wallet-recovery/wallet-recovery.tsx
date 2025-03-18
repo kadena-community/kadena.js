@@ -16,6 +16,7 @@ import {
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { wrapperClass } from '../errors/styles.css';
 import { ILegacyBackup, LegacyImport } from './Components/LegacyImport';
 import { IV3Backup, RecoveredV3 } from './Components/RecoveredV3';
 
@@ -45,14 +46,11 @@ export function WalletRecovery() {
       <CardContentBlock
         title="Wallet Recovery"
         visual={<MonoRestore width={36} height={36} />}
-        extendedContent={<Box width="100%" paddingBlock={{ md: 'xxxl' }} />}
         supportingContent={
-          <Box width="100%" paddingBlock="lg" textAlign="left">
-            You can recover your wallet using one these methods.
-          </Box>
+          <>You can recover your wallet using one these methods.</>
         }
       >
-        <Stack flexDirection={'column'} gap={'lg'}>
+        <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
           <Stack
             marginBlockEnd="md"
             flexDirection={'column'}
@@ -61,7 +59,7 @@ export function WalletRecovery() {
             gap={'sm'}
           >
             <Heading variant="h5">Backup File</Heading>
-            <Text>
+            <Text size="smallest">
               Select this option if you want to use the backup file from
               Chainweaver. Also use this option when you have the mnemonic{' '}
               <strong>and</strong> the backup file.
@@ -127,7 +125,7 @@ export function WalletRecovery() {
             gap={'sm'}
           >
             <Heading variant="h5">Recovery Phrase</Heading>
-            <Text>
+            <Text size="smallest">
               If you only have your mnemonic select this option, we will try
               later to discover your accounts from blockchain
             </Text>
