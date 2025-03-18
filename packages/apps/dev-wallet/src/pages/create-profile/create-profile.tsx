@@ -70,6 +70,7 @@ export function CreateProfile() {
     activeNetwork,
   } = useWallet();
   const [step, setStep] = useState<IStepKeys>('authMethod');
+  const [previousStep, setPreviousStep] = useState<IStepKeys>('authMethod');
   const { createHDWallet } = useHDWallet();
   const [profileId, setProfileId] = useState<string | null>(null);
   const [mnemonic, setMnemonic] = useState('');
@@ -84,6 +85,12 @@ export function CreateProfile() {
     () => config.colorList[rotateColor.current()],
     [],
   );
+
+  const handleSetStep = (key: IStepKeys) => {
+    const prevStep = step;
+    setStep(key);
+    setPreviousStep(prevStep);
+  };
 
   const {
     register,
@@ -178,7 +185,7 @@ export function CreateProfile() {
     setMnemonic(mnemonic);
     setProfileId(profile.uuid);
     setPassword(pass);
-    setStep('backup-mnemonic');
+    handleSetStep('backup-mnemonic');
 
     // TODO: navigate to the backup recovery phrase page
   }
@@ -192,7 +199,7 @@ export function CreateProfile() {
       setValue('password', 'WEB_AUTHN_PROTECTED');
       setValue('confirmation', 'WEB_AUTHN_PROTECTED');
 
-      setStep('profile');
+      handleSetStep('profile');
     } else {
       console.error('Error creating credential');
     }
@@ -268,7 +275,7 @@ export function CreateProfile() {
                   <Button
                     type="button"
                     variant="transparent"
-                    onClick={() => setStep('set-password')}
+                    onClick={() => handleSetStep('set-password')}
                   >
                     Prefer password
                   </Button>
@@ -345,7 +352,7 @@ export function CreateProfile() {
                     isCompact
                     type="button"
                     onPress={() => {
-                      setStep('authMethod');
+                      handleSetStep('authMethod');
                     }}
                   >
                     Back
@@ -353,7 +360,7 @@ export function CreateProfile() {
                 </Stack>
                 <CardFooterGroup>
                   <Button
-                    onClick={() => setStep('profile')}
+                    onClick={() => handleSetStep('profile')}
                     isDisabled={!isValid}
                     endVisual={<MonoArrowForward />}
                   >
@@ -442,18 +449,17 @@ export function CreateProfile() {
               </CardContentBlock>
               <CardFooterGroup>
                 <Stack width="100%">
-                  <Link to="/" className={noStyleLinkClass}>
-                    <Button
-                      variant="outlined"
-                      isCompact
-                      type="button"
-                      onPress={() => {
-                        throw new Error('back');
-                      }}
-                    >
-                      Back
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="outlined"
+                    isCompact
+                    type="button"
+                    onPress={() => {
+                      console.log(previousStep);
+                      handleSetStep(previousStep);
+                    }}
+                  >
+                    Back
+                  </Button>
                 </Stack>
                 <CardFooterGroup>
                   <Button
