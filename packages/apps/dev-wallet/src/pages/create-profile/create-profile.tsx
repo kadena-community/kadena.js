@@ -14,7 +14,7 @@ import {
   MonoFingerprint,
   MonoPassword,
 } from '@kadena/kode-icons/system';
-import { Button, Card, Stack, Text, TextField } from '@kadena/kode-ui';
+import { Button, Card, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 import { wrapperClass } from '../errors/styles.css';
 import { noStyleLinkClass } from '../home/style.css';
-import InitialsAvatar from '../select-profile/initials';
+import { ChooseColor } from '../select-profile/ChooseColor';
 import { Label } from '../transaction/components/helpers';
 
 const rotate = (max: number, start: number = 0) => {
@@ -43,8 +43,8 @@ export function CreateProfile() {
     activeNetwork,
   } = useWallet();
   const [step, setStep] = useState<
-    'profile' | 'set-password' | 'backup-mnemonic' | 'confirm'
-  >('profile');
+    'authMethod' | 'set-password' | 'backup-mnemonic' | 'confirm' | 'profile'
+  >('authMethod');
   const { createHDWallet } = useHDWallet();
   const [profileId, setProfileId] = useState<string | null>(null);
   const [mnemonic, setMnemonic] = useState('');
@@ -166,9 +166,8 @@ export function CreateProfile() {
       setWebAuthnCredential(result.credential);
       setValue('password', 'WEB_AUTHN_PROTECTED');
       setValue('confirmation', 'WEB_AUTHN_PROTECTED');
-      setTimeout(() => {
-        formRef.current?.requestSubmit();
-      }, 200);
+
+      setStep('profile');
     } else {
       console.error('Error creating credential');
     }
@@ -187,11 +186,11 @@ export function CreateProfile() {
     <>
       <Card>
         <form onSubmit={handleSubmit(create)} ref={formRef}>
-          {step === 'profile' && (
+          {step === 'authMethod' && (
             <>
               <CardContentBlock
                 title="Profile"
-                description="Create profile copy to help users create their accounts"
+                description="Select your prefered authentication method"
                 visual={<MonoContacts width={40} height={40} />}
               >
                 <Stack
@@ -200,51 +199,7 @@ export function CreateProfile() {
                   className={wrapperClass}
                 >
                   <Stack flexDirection={'column'}>
-                    <Controller
-                      name="profileName"
-                      control={control}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: 'This field is required',
-                        },
-                      }}
-                      render={({ field, fieldState: { error } }) => (
-                        <Stack
-                          flexDirection={'column'}
-                          gap={'md'}
-                          marginBlock="md"
-                        >
-                          <Label bold>Profile name</Label>
-                          <Stack gap="sm" flexDirection={'row'}>
-                            <InitialsAvatar
-                              name={field.value}
-                              accentColor={accentColor}
-                              onClick={() => {
-                                console.log('click');
-                                setValue(
-                                  'accentColor',
-                                  config.colorList[rotateColor.current()],
-                                );
-                              }}
-                            />
-                            <TextField
-                              id="profileName"
-                              type="text"
-                              autoFocus
-                              defaultValue={field.value}
-                              value={field.value}
-                              onChange={field.onChange}
-                              key="profileName"
-                              isInvalid={!isValid && !!error}
-                              errorMessage={error && error.message}
-                            />
-                          </Stack>
-                        </Stack>
-                      )}
-                    />
-                  </Stack>
-                  <Stack flexDirection={'column'} gap={'lg'}>
+                    <Heading as="h5">How would you like to login</Heading>
                     <Text size="smallest">
                       Your system supports{' '}
                       <Text bold size="smallest">
@@ -254,7 +209,13 @@ export function CreateProfile() {
                       password-less profile!
                     </Text>
                   </Stack>
-                  <Stack flexDirection="row" gap={'sm'}></Stack>
+
+                  <Stack flexDirection={'column'}>
+                    <Heading as="h6">Classic method</Heading>
+                    <Text size="smallest">
+                      Prefer using a password instead.
+                    </Text>
+                  </Stack>
                 </Stack>
               </CardContentBlock>
               <CardFooterGroup>
@@ -353,7 +314,7 @@ export function CreateProfile() {
                     isCompact
                     type="button"
                     onPress={() => {
-                      setStep('profile');
+                      setStep('authMethod');
                     }}
                   >
                     Back
@@ -361,7 +322,7 @@ export function CreateProfile() {
                 </Stack>
                 <CardFooterGroup>
                   <Button
-                    type="submit"
+                    onClick={() => setStep('profile')}
                     isDisabled={!isValid}
                     endVisual={<MonoArrowForward />}
                   >
@@ -378,6 +339,96 @@ export function CreateProfile() {
               onDecrypt={() => Promise.resolve()}
               onConfirm={() => onLockTheWallet()}
             />
+          )}
+          {step === 'profile' && (
+            <>
+              <CardContentBlock
+                title="Personalize profile"
+                description="The color will be a tool to visually differentiate your profiles when in use"
+                visual={<MonoContacts width={40} height={40} />}
+              >
+                <Stack
+                  flexDirection={'column'}
+                  gap={'lg'}
+                  className={wrapperClass}
+                >
+                  <Stack flexDirection="column" gap="lg">
+                    <Controller
+                      name="profileName"
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                      }}
+                      render={({ field, fieldState: { error } }) => (
+                        <Stack
+                          flexDirection={'column'}
+                          gap={'md'}
+                          marginBlock="md"
+                        >
+                          <Label bold>Name</Label>
+                          <Stack gap="sm" flexDirection={'row'}>
+                            <TextField
+                              id="profileName"
+                              type="text"
+                              autoFocus
+                              defaultValue={field.value}
+                              value={field.value}
+                              onChange={field.onChange}
+                              key="profileName"
+                              isInvalid={!isValid && !!error}
+                              errorMessage={error && error.message}
+                            />
+                          </Stack>
+                          <Stack flexDirection="column">
+                            <Label bold>Color</Label>
+
+                            <Stack gap="xs" flexWrap="wrap">
+                              {config.colorList.map((color) => (
+                                <ChooseColor
+                                  isActive={color === accentColor}
+                                  accentColor={color}
+                                  onClick={() => {
+                                    setValue('accentColor', color);
+                                  }}
+                                />
+                              ))}
+                            </Stack>
+                          </Stack>
+                        </Stack>
+                      )}
+                    />
+                  </Stack>
+                </Stack>
+              </CardContentBlock>
+              <CardFooterGroup>
+                <Stack width="100%">
+                  <Link to="/" className={noStyleLinkClass}>
+                    <Button
+                      variant="outlined"
+                      isCompact
+                      type="button"
+                      onPress={() => {
+                        throw new Error('back');
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Link>
+                </Stack>
+                <CardFooterGroup>
+                  <Button
+                    type="submit"
+                    isDisabled={!isValid}
+                    endVisual={<MonoArrowForward />}
+                  >
+                    Next
+                  </Button>
+                </CardFooterGroup>
+              </CardFooterGroup>
+            </>
           )}
         </form>
       </Card>

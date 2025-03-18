@@ -62,9 +62,9 @@ export function SelectProfile() {
       >
         <Box width="100%" className={wrapperClass}>
           {profileList.length ? (
-            <>
+            <Stack flexDirection="column">
               <Heading as="h5">Available Profiles</Heading>
-              <Text>
+              <Text size="smallest">
                 The user has already created some profiles and can access those
                 with the leading icon as authentication method.
               </Text>
@@ -80,20 +80,20 @@ export function SelectProfile() {
                   <ProfileListItem key={profile.uuid} profile={profile} />
                 ))}
               </Stack>
-            </>
+            </Stack>
           ) : (
             <Stack flexDirection="column" gap="md">
               <Stack flexDirection="column">
                 <Heading as="h5">Get Started</Heading>
-                <Text>
+                <Text size="smallest">
                   The user doesn’t have an account yet this copy should give a
                   very short intro to the action of creating one
                 </Text>
               </Stack>
 
               <Stack flexDirection="column">
-                <Heading as="h5">Recover your wallet</Heading>
-                <Text>
+                <Heading as="h6">Recover your wallet</Heading>
+                <Text size="smallest">
                   Setup a profile by using the wallet recovery feature.
                 </Text>
               </Stack>
