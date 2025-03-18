@@ -179,6 +179,50 @@ pnpm changeset publish # Use your npm OTP token
 git push --tags
 ```
 
+## Publishing Apps
+
+Apps are published manually. To publish a new version of an app, please make a
+PR to the relevant `release/<app-name>` branch, where `<app-name>` is the short
+app name (without `@kadena/`).
+
+### Regular release
+
+For regular releases make a PR from `main` -> `release/<app-name>`.
+
+### Hotfix
+
+Create a hotfix from the `release/<app-name>` branch and publish it to the
+release branch
+
+1. Checkout branch `release/<app-name>`.
+2. Create a new branch `a-branch` from `release/<app-name>`.
+   ```sh
+   git checkout -b a-branch
+   ```
+3. Make the necessary changes.
+4. Push the branch to the remote.
+   ```sh
+   git push origin a-branch
+   ```
+5. Create a PR from `a-branch` -> `release/<app-name>`.
+6. Get a review on the PR.
+7. Merge the PR.
+8. Create a new PR from `release/<app-name>` -> `main` to keep the `main` branch
+   up.
+9. Get a review on the PR.
+10. Merge the PR
+
+Vercel configuration is setup so it'll ONLY release the app when it's pushed to
+`release/<app-name>`.
+
+### How does it work?
+
+- We've protected the `release/*` branches so no one can push directly to them.
+- We modified Vercel config for each app to only deploy when the branch is
+  `release/<app-name>`.
+- When a PR is merged to `release/<app-name>`, Vercel will automatically deploy
+  the app
+
 [1]: https://github.com/kadena-community/kadena.js/issues/new/choose
 [2]: https://nodejs.org/en/download/package-manager
 [3]: ./docs/troubleshooting.md
