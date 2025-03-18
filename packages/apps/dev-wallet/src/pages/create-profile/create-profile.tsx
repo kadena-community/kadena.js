@@ -55,6 +55,8 @@ export function CreateProfile() {
 
   const {
     register,
+    trigger,
+    reset,
     handleSubmit,
     getValues,
     setValue,
@@ -67,6 +69,7 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
+    mode: 'onChange',
     defaultValues: {
       password: '',
       confirmation: '',
@@ -77,8 +80,16 @@ export function CreateProfile() {
     },
   });
 
+  // hack to do a form validation after load
+  // This is not supported by react-hook-form
   useEffect(() => {
-    console.log('profileList', profileList);
+    reset({});
+    setTimeout(() => {
+      trigger();
+    }, 100);
+  }, [reset, trigger]);
+
+  useEffect(() => {
     setValue(
       'profileName',
       profileList.length === 0
@@ -206,6 +217,16 @@ export function CreateProfile() {
                       value: true,
                       message: 'This field is required',
                     },
+                    validate: {
+                      required: (value) => {
+                        const existingProfile = profileList.find(
+                          (profile) => profile.name === value,
+                        );
+                        if (existingProfile)
+                          return `The profile name ${value} already exists. Please use another name.`;
+                        return true;
+                      },
+                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
@@ -257,6 +278,7 @@ export function CreateProfile() {
                   Prefer password
                 </Button>
                 <Button
+                  isDisabled={!isValid}
                   variant="primary"
                   onClick={() => {
                     createWebAuthnCredential();
