@@ -1,17 +1,19 @@
 import z from 'zod';
 
-const installedGuards = new Set<string>();
+let globalContext: PactContext | null = null;
 
 export const enforceGuard = (guard: guard) => {
+  enforce(globalContext !== null, 'NO_CONTEXT', 'No context found');
+  const keyset = globalContext?.getByPrincipal(guard.principal)!;
   return enforce(
-    installedGuards.has(guard),
+    keyset.principal === guard.principal && keyset.signed === true,
     'GUARD_VERIFICATION_FAILED',
-    'Guard verification failed',
+    `Guard verification failed for "${guard.principal}"`,
   );
 };
 
 export type decimal = number;
-export type guard = string;
+export type guard = IKeyset;
 export class DataMap<
   T extends z.ZodRawShape,
   O extends z.ZodType<any, any, any> = ReturnType<typeof z.object<T>>,
@@ -57,6 +59,9 @@ export class DataMap<
 
 export class PactContract {
   protected capability = capabilityFactory();
+  constructor(protected context: PactContext) {
+    globalContext = context;
+  }
 }
 
 export class NonUpgradableContract extends PactContract {
@@ -69,6 +74,7 @@ interface CapabilityFns {
   grant<T>(scoped: () => T): T;
   require(): void;
   compose(): void;
+  isInstalled(ksName): boolean;
 }
 
 let sharedState = {
@@ -145,6 +151,29 @@ export function capabilityFactory() {
           capabilityBody(...args);
           sharedState.composed!.push(key);
         },
+        isInstalled(ksName: string) {
+          enforce(globalContext !== null, 'NO_CONTEXT', 'No context found');
+          const ks = globalContext!.getKeyset(ksName);
+          enforce(
+            ks !== undefined,
+            'KEYSET_NOT_FOUND',
+            `Keyset not found: ${ksName}`,
+          );
+          enforce(
+            ks.signed === true,
+            'KEYSET_NOT_SIGNED',
+            `Keyset not signed: ${ksName}`,
+          );
+          enforce(
+            ks.installedCaps !== undefined &&
+              ks.installedCaps?.findIndex(
+                (cap) => key === `${cap.cap}:${JSON.stringify(cap.args)}`,
+              ) !== -1,
+            'CAPABILITY_NOT_INSTALLED',
+            `Capability not installed: ${key}`,
+          );
+          return true;
+        },
       };
     };
   };
@@ -160,5 +189,61 @@ export function enforce(
   }
 }
 
-// TODO: IMPLEMENT
-export const environment = null as any;
+export interface IKeyset {
+  keys: string[];
+  pred: 'keys-all' | 'keys-any' | 'keys-2';
+  principal: string;
+  signed?: boolean;
+  installedCaps?: { cap: string; args: any[] }[];
+}
+
+export interface IPactContext {
+  data: Record<
+    string,
+    { keys: string[]; pred: 'keys-all' | 'keys-any' | 'keys-2' }
+  >;
+}
+
+function withPrincipal(keyset: IPactContext['data'][string]): IKeyset {
+  return {
+    ...keyset,
+    principal: `k:${keyset.keys.sort().join(':')}:${keyset.pred}`,
+  };
+}
+
+export class PactContext {
+  private keysets: Map<string, IKeyset> = new Map();
+
+  constructor(env: IPactContext) {
+    if (env) {
+      Object.entries(env.data).forEach(([key, value]) => {
+        this.keysets.set(key, withPrincipal(value));
+      });
+    }
+  }
+
+  getKeyset(name: string) {
+    if (!this.keysets.has(name)) {
+      throw new Error(`Keyset not found: ${name}`);
+    }
+    return this.keysets.get(name)!;
+  }
+
+  sign(key: string, installedCaps?: { cap: string; args: any[] }[]) {
+    const keyset = this.getKeyset(key);
+    keyset.signed = true;
+    if (installedCaps) {
+      keyset.installedCaps = installedCaps;
+    }
+    return this;
+  }
+
+  getByPrincipal(principal: string) {
+    for (const keyset of this.keysets.values()) {
+      if (keyset.principal === principal) {
+        return keyset;
+      }
+    }
+    throw new Error(`Keyset not found: ${principal}`);
+  }
+}
