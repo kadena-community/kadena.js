@@ -5,6 +5,7 @@ import { stepClass, WIDTH } from '../CompactStepper.css';
 
 export interface IStep {
   label: string;
+  key: string;
   isActive?: boolean;
 }
 

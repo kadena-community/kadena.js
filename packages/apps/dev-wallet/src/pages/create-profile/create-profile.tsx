@@ -20,6 +20,7 @@ import {
   Card,
   CompactStepper,
   Heading,
+  ICompactStepperItemProps,
   Stack,
   Text,
   TextField,
@@ -47,6 +48,19 @@ const rotate = (max: number, start: number = 0) => {
   };
 };
 
+type IStepKeys =
+  | 'authMethod'
+  | 'set-password'
+  | 'backup-mnemonic'
+  | 'confirm'
+  | 'profile';
+const steps: ICompactStepperItemProps[] = [
+  { label: 'Auth method', key: 'authMethod' },
+  { label: 'Choose password', key: 'set-password' },
+  { label: 'Mnemonic', key: 'backup-mnemonic' },
+  { label: 'profile', key: 'profile' },
+] as const;
+
 export function CreateProfile() {
   const {
     createProfile,
@@ -55,9 +69,7 @@ export function CreateProfile() {
     unlockProfile,
     activeNetwork,
   } = useWallet();
-  const [step, setStep] = useState<
-    'authMethod' | 'set-password' | 'backup-mnemonic' | 'confirm' | 'profile'
-  >('authMethod');
+  const [step, setStep] = useState<IStepKeys>('authMethod');
   const { createHDWallet } = useHDWallet();
   const [profileId, setProfileId] = useState<string | null>(null);
   const [mnemonic, setMnemonic] = useState('');
@@ -195,13 +207,13 @@ export function CreateProfile() {
 
   const accentColor = watch('accentColor');
 
+  const getStepIdx = (key: IStepKeys): number => {
+    return steps.findIndex((step) => step.key === key) ?? 0;
+  };
   return (
     <>
       <FocussedLayoutHeaderContent>
-        <CompactStepper
-          stepIdx={0}
-          steps={[{ label: 'test' }, { label: 'test' }]}
-        />
+        <CompactStepper stepIdx={getStepIdx(step)} steps={steps} />
       </FocussedLayoutHeaderContent>
       <Card>
         <form onSubmit={handleSubmit(create)} ref={formRef}>
