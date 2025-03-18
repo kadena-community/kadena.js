@@ -6,6 +6,7 @@ import type { ICardContentBlockProps } from './CardContentBlock';
 import { CardContentBlock } from './CardContentBlock';
 import { CardFixedContainer } from './CardFixedContainer';
 import { CardFooterGroup } from './CardFooterGroup';
+import { CardWrapperMinHeightClass } from './stories.css';
 
 const meta: Meta<ICardContentBlockProps> = {
   title: 'Patterns/Card Layout',
@@ -231,6 +232,37 @@ export const NoVisual: Story = {
           </CardFooterGroup>
         </CardFooterGroup>
       </CardFixedContainer>
+    );
+  },
+};
+
+export const CardMinHeight: Story = {
+  name: 'When Card Minheight ',
+
+  args: {},
+  render: ({}) => {
+    return (
+      <Stack className={CardWrapperMinHeightClass}>
+        <CardFixedContainer>
+          <CardContentBlock
+            title="MinHeight"
+            description="Sometimes the app will overwrite the minHeight of the Card (see wallet.kadena.io). Then the footercontent should still be at the bottom of the card"
+          >
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+          </CardContentBlock>
+          <CardFooterGroup separated={true}>
+            <Button variant="negative">Action</Button>
+            <CardFooterGroup>
+              <Button variant="outlined">Cancel</Button>
+              <Button variant="primary">Next</Button>
+            </CardFooterGroup>
+          </CardFooterGroup>
+        </CardFixedContainer>
+      </Stack>
     );
   },
 };

@@ -4,7 +4,7 @@ import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBread
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoSettings } from '@kadena/kode-icons/system';
-import { Notification } from '@kadena/kode-ui';
+import { Card, Notification } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
@@ -62,14 +62,14 @@ export function RevealPhrase() {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       {
-        <AuthCard>
+        <Card>
           <BackupMnemonic
             mnemonic={mnemonic}
             onDecrypt={decryptMnemonic}
             onSkip={() => navigate('/settings')}
             onConfirm={() => navigate('/settings')}
           />
-        </AuthCard>
+        </Card>
       }
     </>
   );

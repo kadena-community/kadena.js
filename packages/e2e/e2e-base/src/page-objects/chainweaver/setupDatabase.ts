@@ -71,7 +71,7 @@ export class setupDatabase {
     const data = await actor.evaluate(async ({ profileName, phrase }) => {
       const dbs = await window.indexedDB.databases();
       const db = dbs[0];
-      const data = await (window as any).DevWallet.serializeTables();
+      const data = (await (window as any).DevWallet?.serializeTables()) ?? '{}';
 
       return {
         db,
