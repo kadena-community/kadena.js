@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   Heading,
+  Notification,
   Radio,
   RadioGroup,
   Stack,
@@ -29,6 +30,7 @@ interface ChangePasswordForm {
 
 export function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState('');
+  const [error, setError] = useState('');
   const { askForPassword, profile } = useWallet();
   const navigate = usePatchedNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -83,16 +85,22 @@ export function ChangePassword() {
     if (authMode !== 'PASSWORD') return;
     if (password !== confirmation) return;
     setIsLoading(true);
-    await changePassword(profile.uuid, currentPassword, password);
-    await walletRepository.updateProfile({
-      ...profile!,
-      options: {
-        authMode: 'PASSWORD',
-        rememberPassword: profile.options.rememberPassword || 'session',
-      },
-    });
-    setIsLoading(false);
-    navigate('/settings');
+    setError('');
+    try {
+      await changePassword(profile.uuid, currentPassword, password);
+      await walletRepository.updateProfile({
+        ...profile!,
+        options: {
+          authMode: 'PASSWORD',
+          rememberPassword: profile.options.rememberPassword || 'session',
+        },
+      });
+      setIsLoading(false);
+      navigate('/settings');
+    } catch (e) {
+      setError(e as string);
+      setIsLoading(false);
+    }
   };
 
   const authMode = watch('authMode');
@@ -226,6 +234,12 @@ export function ChangePassword() {
                       isInvalid={!isValid && !!errors.confirmation}
                       errorMessage={errors.confirmation?.message}
                     />
+
+                    {error && (
+                      <Notification role="alert" intent="negative">
+                        <>{error.toString()}</>
+                      </Notification>
+                    )}
                   </Stack>
                 )}
               </Stack>
