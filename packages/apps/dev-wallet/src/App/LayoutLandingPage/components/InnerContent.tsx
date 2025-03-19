@@ -27,7 +27,7 @@ export const InnerContent: FC<PropsWithChildren> = ({ children }) => {
                 key={content.id}
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5, translateX: 100 }}
+                exit={{ opacity: 0, scale: 1, translateX: 50 }}
                 transition={{ duration: 0.5 }}
                 style={{ position: 'absolute' }}
               >
