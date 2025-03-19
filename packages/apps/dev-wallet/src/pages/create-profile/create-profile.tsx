@@ -31,7 +31,14 @@ import {
   CardFooterGroup,
   FocussedLayoutHeaderContent,
 } from '@kadena/kode-ui/patterns';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FC,
+  ReactElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -84,6 +91,17 @@ const steps: ICardContentProps[] = [
     visual: <MonoPassword width={40} height={40} />,
   },
 ] as const;
+
+const VisualIcon: FC<{
+  accentColor: string;
+  visual?: ReactElement;
+}> = ({ accentColor, visual }) => {
+  if (!visual) return null;
+  return React.cloneElement(visual, {
+    ...visual.props,
+    style: { color: accentColor },
+  });
+};
 
 export function CreateProfile() {
   const {
@@ -244,7 +262,16 @@ export function CreateProfile() {
 
   return (
     <>
-      <CardContent {...steps[getStepIdx(step)]} />
+      <CardContent
+        {...steps[getStepIdx(step)]}
+        visual={
+          <VisualIcon
+            accentColor={step === 'profile' ? accentColor : ''}
+            visual={steps[getStepIdx(step)].visual}
+          />
+        }
+        refreshDependencies={[accentColor]}
+      />
       <FocussedLayoutHeaderContent>
         <CompactStepper
           stepIdx={getStepIdx(step)}
