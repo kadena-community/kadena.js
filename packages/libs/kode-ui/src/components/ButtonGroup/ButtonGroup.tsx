@@ -9,11 +9,7 @@ export interface IButtonGroupProps extends PropsWithChildren {
   isCompact?: IButtonProps['isCompact'];
 }
 
-export const ButtonGroup: FC<IButtonGroupProps> = ({
-  children,
-  variant,
-  isCompact,
-}) => {
+export const ButtonGroup: FC<IButtonGroupProps> = ({ children, variant }) => {
   return (
     <Stack as="section" data-variant={variant} className={buttonGroupClass}>
       {React.Children.map(children, (child) => {
@@ -22,8 +18,6 @@ export const ButtonGroup: FC<IButtonGroupProps> = ({
           <Stack as="span" className={buttonWrapperClass}>
             {React.cloneElement(child, {
               ...child.props,
-              variant,
-              isCompact,
             })}
           </Stack>
         );

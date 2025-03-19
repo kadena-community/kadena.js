@@ -57,7 +57,9 @@ export const Primary: ButtonGroupStory = {
           <Button endVisual={<MonoMoreVert />} />
         </ButtonGroup>
         <ButtonGroup {...props}>
-          <Link>option1</Link>
+          <Link isCompact variant="outlined">
+            option1
+          </Link>
           <a>
             <Button isCompact variant="outlined">
               option2
@@ -77,7 +79,13 @@ export const Primary: ButtonGroupStory = {
         </ButtonGroup>
 
         <ButtonGroup {...props}>
-          <Button startVisual={<MonoChevronLeft />}>option2</Button>
+          <Button
+            variant="outlined"
+            isCompact
+            startVisual={<MonoChevronLeft />}
+          >
+            option2
+          </Button>
 
           <ContextMenu
             trigger={

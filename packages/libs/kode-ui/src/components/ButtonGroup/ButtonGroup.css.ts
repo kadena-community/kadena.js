@@ -41,7 +41,7 @@ globalStyle(
 );
 
 globalStyle(
-  `${buttonGroupClass} button:not(:last-child), ${buttonGroupClass} a:not(:last-child)`,
+  `${buttonGroupClass} ${buttonWrapperClass}:not(:last-child) button, ${buttonGroupClass}:not(:last-child) a`,
   {
     borderInlineEndWidth: '0',
   },

@@ -1,4 +1,4 @@
-import { LandingPageLayout } from '@/App/layout-landingpage';
+import { LandingPageLayout } from '@/App/LayoutLandingPage/Layout';
 import { useIsInDevelopment } from '@/Components/InDevelopmentProvider/InDevelopmentProvider';
 import { MonoWarning } from '@kadena/kode-icons/system';
 import { Button, Card, Heading, Stack, Text } from '@kadena/kode-ui';

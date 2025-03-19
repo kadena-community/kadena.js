@@ -1,4 +1,4 @@
-import { LandingPageLayout } from '@/App/layout-landingpage';
+import { LandingPageLayout } from '@/App/LayoutLandingPage/Layout';
 import { useMaintenance } from '@/Components/MaintenanceProvider/MaintenanceProvider';
 import { env } from '@/utils/env';
 import { MonoPrivacyTip } from '@kadena/kode-icons/system';

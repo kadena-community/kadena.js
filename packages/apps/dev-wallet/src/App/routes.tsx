@@ -43,8 +43,8 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { LandingPageLayout } from './layout-landingpage';
 import { Layout } from './Layout/Layout';
+import { LandingPageLayout } from './LayoutLandingPage/Layout';
 import { useGlobalState } from './providers/globalState';
 
 const Redirect: FC<

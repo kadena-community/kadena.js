@@ -83,7 +83,7 @@ export const Primary: Story = {
     };
 
     return (
-      <Stack width="100%" flexDirection="column" gap="xl">
+      <Stack flexDirection="column" gap="xl">
         <CompactStepper
           endVisual={idx === 1 ? endVisual : undefined}
           showLabel={showLabel}
