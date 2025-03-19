@@ -164,7 +164,7 @@ export const createTransactionCommandNew = createCommand(
     const result = await createAndWriteTransaction(
       templateVariables.templateVariables,
       outputFile.outFile,
-      template.template,
+      template.templateConfig.template,
     );
 
     assertCommandError(result);
