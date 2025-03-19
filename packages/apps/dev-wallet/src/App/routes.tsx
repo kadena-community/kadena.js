@@ -150,9 +150,9 @@ export const Routes: FC = () => {
               path="/wallet-recovery/recover-from-mnemonic"
               element={<RecoverFromMnemonic />}
             />
-            <Route path="/account-discovery" element={<AccountDiscovery />} />
             <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
+          <Route path="/account-discovery" element={<AccountDiscovery />} />
           <Route
             path="/unlock-profile/:profileId"
             element={<UnlockProfile origin={origin} />}

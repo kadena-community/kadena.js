@@ -435,7 +435,9 @@ export function RecoverFromMnemonic() {
                   isDisabled={!isValid}
                   isLoading={importing}
                   loadingLabel="Importing"
-                  type="submit"
+                  onPress={() => {
+                    formRef.current?.requestSubmit();
+                  }}
                 >
                   Continue
                 </Button>
