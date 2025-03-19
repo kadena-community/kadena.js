@@ -19,7 +19,7 @@ import {
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { CardFooterGroup } from '@kadena/kode-ui/patterns';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
@@ -30,6 +30,7 @@ interface ChangePasswordForm {
 }
 
 export function ChangePassword() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [currentPassword, setCurrentPassword] = useState('');
   const [error, setError] = useState('');
   const { askForPassword, profile } = useWallet();
@@ -106,6 +107,7 @@ export function ChangePassword() {
 
   const authMode = watch('authMode');
 
+  console.log({ form: formRef });
   return !currentPassword ? (
     <>
       <CardContent
@@ -144,7 +146,11 @@ export function ChangePassword() {
       </CardFooterContent>
     </>
   ) : (
-    <form style={{ display: 'contents' }}>
+    <form
+      style={{ display: 'contents' }}
+      ref={formRef}
+      onSubmit={handleSubmit(onSubmitPassword)}
+    >
       <>
         <CardContent
           label="Choose Authentication Mode"
@@ -259,7 +265,7 @@ export function ChangePassword() {
             {authMode === 'WEB_AUTHN' && (
               <Button
                 onClick={() => {
-                  handleSubmit(onSubmitPassword);
+                  formRef.current?.requestSubmit();
                   setWebAuthnPassword();
                 }}
                 isLoading={isLoading}
@@ -273,7 +279,10 @@ export function ChangePassword() {
 
             {authMode === 'PASSWORD' && (
               <Button
-                onClick={handleSubmit(onSubmitPassword)}
+                onClick={() => {
+                  console.log(1111);
+                  formRef.current?.requestSubmit();
+                }}
                 isDisabled={!isValid}
                 isLoading={isLoading}
               >

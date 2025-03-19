@@ -279,7 +279,7 @@ export function CreateProfile() {
         />
       </FocussedLayoutHeaderContent>
 
-      <form ref={formRef}>
+      <form ref={formRef} onSubmit={handleSubmit(create)}>
         {step === 'authMethod' && (
           <>
             <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
@@ -478,7 +478,9 @@ export function CreateProfile() {
               </Stack>
               <CardFooterGroup>
                 <Button
-                  onClick={handleSubmit(create)}
+                  onClick={() => {
+                    formRef.current?.requestSubmit();
+                  }}
                   isDisabled={!isValid}
                   endVisual={<MonoArrowForward />}
                 >

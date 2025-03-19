@@ -10,6 +10,7 @@ import {
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -18,6 +19,7 @@ import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
 export function UnlockProfile({ origin }: { origin: string }) {
+  const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
     handleSubmit,
@@ -58,7 +60,7 @@ export function UnlockProfile({ origin }: { origin: string }) {
     return <Navigate to="/select-profile" replace />;
   }
   return (
-    <form>
+    <form onSubmit={handleSubmit(unlock)} ref={formRef}>
       <CardContent
         label="Unlock your profile"
         id="unlockprofile"
@@ -116,7 +118,12 @@ export function UnlockProfile({ origin }: { origin: string }) {
           >
             Recover your wallet
           </UiLink>
-          <Button onClick={handleSubmit(unlock)} isDisabled={!isValid}>
+          <Button
+            onClick={() => {
+              formRef.current?.requestSubmit();
+            }}
+            isDisabled={!isValid}
+          >
             Continue
           </Button>
         </CardFooterGroup>
