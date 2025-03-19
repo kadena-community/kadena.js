@@ -4,13 +4,12 @@ import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
 import { MonoKey } from '@kadena/kode-icons/system';
 import {
   Button,
-  Card,
   Stack,
   Text,
   TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';

@@ -44,6 +44,9 @@ globalStyle(`${focussedLayoutChildrenWrapperClass} > *:only-child > form`, {
   width: '100%',
 });
 
-globalStyle(`${focussedLayoutChildrenWrapperClass} [class^="Card"]`, {
-  width: '100%',
-});
+globalStyle(
+  `${focussedLayoutChildrenWrapperClass} [class^="Card"], ${focussedLayoutChildrenWrapperClass} [class^="Card"] > div`,
+  {
+    width: '100%',
+  },
+);

@@ -22,7 +22,6 @@ import {
 } from '@kadena/kode-icons/system';
 import {
   Button,
-  Card,
   CompactStepper,
   Heading,
   ICompactStepperItemProps,
@@ -31,12 +30,10 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import {
-  CardContentBlock,
   CardFooterGroup,
   FocussedLayoutHeaderContent,
 } from '@kadena/kode-ui/patterns';
-import { AnimatePresence, motion } from 'framer-motion';
-import { FC, ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -52,11 +49,6 @@ const rotate = (max: number, start: number = 0) => {
     console.log('index', index);
     return index;
   };
-};
-
-type IExtendedCompactStepperItemProps = ICompactStepperItemProps & {
-  description: string;
-  visual: (accentColor?: string) => ReactElement;
 };
 
 type IStepKeys =
@@ -262,7 +254,10 @@ export function CreateProfile() {
   return (
     <>
       <FocussedLayoutHeaderContent>
-        <CompactStepper stepIdx={getStepIdx(step)} steps={steps} />
+        <CompactStepper
+          stepIdx={getStepIdx(step)}
+          steps={steps as ICompactStepperItemProps[]}
+        />
       </FocussedLayoutHeaderContent>
 
       <form ref={formRef}>

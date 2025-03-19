@@ -7,14 +7,12 @@ import { browse, readContent } from '@/utils/select-file';
 import { MonoRestore } from '@kadena/kode-icons/system';
 import {
   Button,
-  Card,
   Heading,
   Notification,
   Stack,
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { wrapperClass } from '../errors/styles.css';

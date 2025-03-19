@@ -1,12 +1,14 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
+import { useCardLayout } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
+import { ProfileListItem } from '@/Components/ProfileListItem/ProfileListItem';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons';
 import { ChainweaverAlphaLogoKdacolorLight } from '@kadena/kode-icons/product';
 import {
   Box,
   Button,
   ButtonGroup,
-  Card,
   ContextMenu,
   ContextMenuItem,
   Heading,
@@ -14,14 +16,9 @@ import {
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { wrapperClass } from '../errors/styles.css';
-
-import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
-import { useCardLayout } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
-import { ProfileListItem } from '@/Components/ProfileListItem/ProfileListItem';
-import { useEffect } from 'react';
 
 export function SelectProfile() {
   const { profileList } = useWallet();
