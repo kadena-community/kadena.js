@@ -1,7 +1,7 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
-import { useCardLayout } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
 import { ProfileListItem } from '@/Components/ProfileListItem/ProfileListItem';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons';
 import { ChainweaverAlphaLogoKdacolorLight } from '@kadena/kode-icons/product';
@@ -16,54 +16,12 @@ import {
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { wrapperClass } from '../errors/styles.css';
 
 export function SelectProfile() {
   const { profileList } = useWallet();
-  const { setContent } = useCardLayout();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setContent({
-      label: 'Chainweaver v3',
-      key: 'chainweaverv3',
-      description:
-        'Access your profile securely and start managing your assets instantly',
-      visual: <ChainweaverAlphaLogoKdacolorLight width={40} height={40} />,
-      supportingContent:
-        profileList.length > 0 ? (
-          <ButtonGroup variant="outlined">
-            <UiLink
-              href="/create-profile"
-              component={Link}
-              isCompact
-              variant="outlined"
-              startVisual={<MonoAdd />}
-            >
-              New Profile
-            </UiLink>
-            <ContextMenu
-              trigger={
-                <Button
-                  variant="outlined"
-                  isCompact
-                  endVisual={<MonoMoreVert />}
-                />
-              }
-            >
-              <ContextMenuItem
-                onClick={handleRecover}
-                label="Recover your wallet"
-              />
-            </ContextMenu>
-          </ButtonGroup>
-        ) : (
-          <></>
-        ),
-    });
-  }, [profileList]);
 
   const handleRecover = () => {
     navigate('/wallet-recovery');
@@ -71,6 +29,44 @@ export function SelectProfile() {
 
   return (
     <>
+      <CardContent
+        label="Chainweaver v3"
+        id="chainweaverv3"
+        description="Access your profile securely and start managing your assets instantly"
+        visual={<ChainweaverAlphaLogoKdacolorLight width={40} height={40} />}
+        refreshDependencies={[profileList.length]}
+        supportingContent={
+          profileList.length > 0 ? (
+            <ButtonGroup variant="outlined">
+              <UiLink
+                href="/create-profile"
+                component={Link}
+                isCompact
+                variant="outlined"
+                startVisual={<MonoAdd />}
+              >
+                New Profile
+              </UiLink>
+              <ContextMenu
+                trigger={
+                  <Button
+                    variant="outlined"
+                    isCompact
+                    endVisual={<MonoMoreVert />}
+                  />
+                }
+              >
+                <ContextMenuItem
+                  onClick={handleRecover}
+                  label="Recover your wallet"
+                />
+              </ContextMenu>
+            </ButtonGroup>
+          ) : (
+            <></>
+          )
+        }
+      />
       <Box width="100%" className={wrapperClass}>
         {profileList.length ? (
           <Stack flexDirection="column">

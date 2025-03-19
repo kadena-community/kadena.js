@@ -16,7 +16,6 @@ export const InnerContent: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Card fullWidth>
       <CardContentBlock
-        id="cardcontent"
         title={content.label}
         description={content.description}
         supportingContent={content.supportingContent}
@@ -25,7 +24,7 @@ export const InnerContent: FC<PropsWithChildren> = ({ children }) => {
             <AnimatePresence mode="sync">
               <motion.div
                 layout
-                key={content.key}
+                key={content.id}
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5, translateX: 100 }}

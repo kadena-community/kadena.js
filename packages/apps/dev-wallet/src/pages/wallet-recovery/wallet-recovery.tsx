@@ -1,5 +1,5 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
-import { useCardLayout } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
 import { IDBBackup, parseBackup } from '@/modules/db/backup/backup';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { validateStructure } from '@/utils/chainweaver/validateStructure';
@@ -13,25 +13,15 @@ import {
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { wrapperClass } from '../errors/styles.css';
 import { ILegacyBackup, LegacyImport } from './Components/LegacyImport';
 import { IV3Backup, RecoveredV3 } from './Components/RecoveredV3';
 
 export function WalletRecovery() {
-  const { setContent } = useCardLayout();
   const [fileContent, setFileContent] = useState<IV3Backup | ILegacyBackup>();
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setContent({
-      label: 'Wallet Recovery',
-      key: 'walletrecovery',
-      description: 'You can recover your wallet using one these methods.',
-      visual: <MonoRestore width={40} height={40} />,
-    });
-  }, []);
 
   if (fileContent) {
     if (fileContent.scheme === 'v3') {
@@ -54,6 +44,12 @@ export function WalletRecovery() {
 
   return (
     <>
+      <CardContent
+        label="Wallet Recovery"
+        id="walletrecovery"
+        description="You can recover your wallet using one these methods."
+        visual={<MonoRestore width={40} height={40} />}
+      />
       <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
         <Stack
           marginBlockEnd="md"

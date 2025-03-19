@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from 'react';
 
 export interface ICardContentProps {
   label: string;
-  key?: string;
+  id?: string;
   description: string;
   visual?: ReactElement;
   supportingContent?: ReactElement;
@@ -38,12 +38,7 @@ export const CardLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   };
 
   const setContent = (stateProps: ICardContentProps) => {
-    const newState: ICardContentProps = {
-      ...stateProps,
-      key: stateProps.key ?? 'default',
-    };
-
-    setContentState(newState);
+    setContentState(stateProps);
   };
 
   return (

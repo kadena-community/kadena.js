@@ -11,8 +11,8 @@ import {
   PublicKeyCredentialCreate,
 } from '@/utils/webAuthn';
 
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
-import { useCardLayout } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { MonoKey, MonoPassword } from '@kadena/kode-icons/system';
 import {
@@ -45,7 +45,6 @@ type Inputs = {
 };
 
 export function RecoverFromMnemonic() {
-  const { setContent } = useCardLayout();
   const { setOrigin } = useGlobalState();
   const [step, setStep] = useState<'import' | 'set-password'>('import');
   const [bip44key, setBip44Key] = useState<string | null>(null);
@@ -71,16 +70,6 @@ export function RecoverFromMnemonic() {
       keyDerivation: 'auto-detect',
     },
   });
-
-  useEffect(() => {
-    setContent({
-      label: 'Import mnemonic',
-      key: 'importmnemonic',
-      description:
-        'Access your profile securely and start managing your assets instantly',
-      visual: <MonoPassword width={40} height={40} />,
-    });
-  }, []);
 
   useEffect(() => {
     const name = getValues('profileName');
@@ -194,7 +183,21 @@ export function RecoverFromMnemonic() {
   const keyDerivation = watch('keyDerivation');
   return (
     <>
-      <form className={displayContentsClass} ref={formRef}>
+      <CardContent
+        label="Import mnemonic"
+        key="importmnemonic"
+        description="Access your profile securely and start managing your assets instantly"
+        visual={<MonoPassword width={40} height={40} />}
+      />
+      <form
+        onSubmit={handleSubmit(async (data) => {
+          setImporting(true);
+          await importWallet(data);
+          setImporting(false);
+        })}
+        className={displayContentsClass}
+        ref={formRef}
+      >
         {step === 'import' && (
           <>
             <Stack gap={'lg'} flexDirection={'column'} className={wrapperClass}>
@@ -432,11 +435,7 @@ export function RecoverFromMnemonic() {
                   isDisabled={!isValid}
                   isLoading={importing}
                   loadingLabel="Importing"
-                  onClick={handleSubmit(async (data) => {
-                    setImporting(true);
-                    await importWallet(data);
-                    setImporting(false);
-                  })}
+                  type="submit"
                 >
                   Continue
                 </Button>

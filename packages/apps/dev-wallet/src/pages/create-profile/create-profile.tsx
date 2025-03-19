@@ -1,8 +1,6 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
-import {
-  ICardContentProps,
-  useCardLayout,
-} from '@/App/LayoutLandingPage/components/CardLayoutProvider';
+import { ICardContentProps } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
@@ -60,27 +58,27 @@ type IStepKeys =
 const steps: ICardContentProps[] = [
   {
     label: 'Auth method',
-    key: 'authMethod',
+    id: 'authMethod',
     description: 'Select your prefered authentication method',
     visual: <MonoContacts width={40} height={40} />,
   },
   {
     label: 'Choose password',
-    key: 'set-password',
+    id: 'set-password',
     description:
       'Carefully select your password as this will be your main security of your wallet',
     visual: <MonoPassword width={40} height={40} />,
   },
   {
     label: 'Personalize Profile',
-    key: 'profile',
+    id: 'profile',
     description:
       'The color will be a tool to visually differentiate your profiles when in use',
     visual: <MonoPalette width={40} height={40} />,
   },
   {
     label: 'Write your recovery phrase down',
-    key: 'backup-mnemonic',
+    id: 'backup-mnemonic',
     description:
       'Make sure no one is watching you; consider some malware might take screenshot of your screen',
     visual: <MonoPassword width={40} height={40} />,
@@ -95,7 +93,6 @@ export function CreateProfile() {
     unlockProfile,
     activeNetwork,
   } = useWallet();
-  const { setContent } = useCardLayout();
   const [step, setStep] = useState<IStepKeys>('authMethod');
   const [previousStep, setPreviousStep] = useState<IStepKeys>('authMethod');
   const { createHDWallet } = useHDWallet();
@@ -154,12 +151,6 @@ export function CreateProfile() {
     rotateColor.current = rotate(config.colorList.length, profileList.length);
     setValue('accentColor', config.colorList[rotateColor.current()]);
   }, [profileList, setValue]);
-
-  useEffect(() => {
-    const currentStep = steps[getStepIdx(step)];
-
-    setContent(currentStep);
-  }, [step]);
 
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();
@@ -248,11 +239,12 @@ export function CreateProfile() {
   const accentColor = watch('accentColor');
 
   const getStepIdx = (key: IStepKeys): number => {
-    return steps.findIndex((step) => step.key === key) ?? 0;
+    return steps.findIndex((step) => step.id === key) ?? 0;
   };
 
   return (
     <>
+      <CardContent {...steps[getStepIdx(step)]} />
       <FocussedLayoutHeaderContent>
         <CompactStepper
           stepIdx={getStepIdx(step)}

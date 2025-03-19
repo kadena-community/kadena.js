@@ -55,19 +55,19 @@ export const Primary: Story = {
     const steps = [
       {
         label: 'Orko',
-        key: 'orko',
+        id: 'orko',
       },
       {
         label: 'Skeletor',
-        key: 'skeletor',
+        id: 'skeletor',
       },
       {
         label: 'He-man',
-        key: 'heman',
+        id: 'heman',
       },
       {
         label: 'Master of the Universe',
-        key: 'masteroftheuniverse',
+        id: 'masteroftheuniverse',
       },
     ];
 

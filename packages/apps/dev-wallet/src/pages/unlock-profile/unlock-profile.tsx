@@ -1,5 +1,5 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent.tsx';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent.tsx';
-import { useCardLayout } from '@/App/LayoutLandingPage/components/CardLayoutProvider.tsx';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
 import { MonoKey } from '@kadena/kode-icons/system';
 import {
@@ -10,7 +10,6 @@ import {
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { CardFooterGroup } from '@kadena/kode-ui/patterns';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -19,7 +18,6 @@ import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
 export function UnlockProfile({ origin }: { origin: string }) {
-  const { setContent } = useCardLayout();
   const {
     register,
     handleSubmit,
@@ -31,15 +29,6 @@ export function UnlockProfile({ origin }: { origin: string }) {
   const { profileList, unlockProfile, isUnlocked } = useWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   const incorrectPasswordMsg = 'Password is incorrect';
-
-  useEffect(() => {
-    setContent({
-      label: 'Unlock your profile',
-      key: 'unlockprofile',
-      description: 'Enter your password to unlock access',
-      visual: <MonoKey width={40} height={40} />,
-    });
-  }, []);
 
   async function unlock({ password }: { password: string }) {
     try {
@@ -70,6 +59,12 @@ export function UnlockProfile({ origin }: { origin: string }) {
   }
   return (
     <form>
+      <CardContent
+        label="Unlock your profile"
+        id="unlockprofile"
+        description="Enter your password to unlock access"
+        visual={<MonoKey width={40} height={40} />}
+      />
       <Stack flexDirection="column" className={wrapperClass}>
         <Stack
           gap="md"

@@ -1,10 +1,9 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoSettings } from '@kadena/kode-icons/system';
-import { Card, Notification } from '@kadena/kode-ui';
+import { Notification } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
@@ -34,21 +33,17 @@ export function RevealPhrase() {
 
   if (profile?.securityPhraseId === undefined) {
     return (
-      <AuthCard>
-        <Notification intent="negative" role="alert">
-          No recovery phrase found
-        </Notification>
-      </AuthCard>
+      <Notification intent="negative" role="alert">
+        No recovery phrase found
+      </Notification>
     );
   }
 
   if (error) {
     return (
-      <AuthCard>
-        <Notification intent="negative" role="alert">
-          {error}
-        </Notification>
-      </AuthCard>
+      <Notification intent="negative" role="alert">
+        {error}
+      </Notification>
     );
   }
   return (
@@ -62,14 +57,12 @@ export function RevealPhrase() {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       {
-        <Card>
-          <BackupMnemonic
-            mnemonic={mnemonic}
-            onDecrypt={decryptMnemonic}
-            onSkip={() => navigate('/settings')}
-            onConfirm={() => navigate('/settings')}
-          />
-        </Card>
+        <BackupMnemonic
+          mnemonic={mnemonic}
+          onDecrypt={decryptMnemonic}
+          onSkip={() => navigate('/settings')}
+          onConfirm={() => navigate('/settings')}
+        />
       }
     </>
   );
