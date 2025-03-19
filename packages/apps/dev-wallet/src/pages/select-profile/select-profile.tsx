@@ -2,9 +2,9 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 
 import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
+import { ChainWeaverLogo } from '@/Components/ChainweaverLogo/ChainweaverLogo';
 import { ProfileListItem } from '@/Components/ProfileListItem/ProfileListItem';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons';
-import { ChainweaverAlphaLogoKdacolorLight } from '@kadena/kode-icons/product';
 import {
   Box,
   Button,
@@ -33,7 +33,7 @@ export function SelectProfile() {
         label="Chainweaver v3"
         id="chainweaverv3"
         description="Access your profile securely and start managing your assets instantly"
-        visual={<ChainweaverAlphaLogoKdacolorLight width={40} height={40} />}
+        visual={<ChainWeaverLogo width={40} height={40} />}
         refreshDependencies={[profileList.length]}
         supportingContent={
           profileList.length > 0 ? (
