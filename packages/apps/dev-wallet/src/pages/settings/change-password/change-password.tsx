@@ -278,7 +278,6 @@ export function ChangePassword() {
             {authMode === 'PASSWORD' && (
               <Button
                 onClick={() => {
-                  console.log(1111);
                   formRef.current?.requestSubmit();
                 }}
                 isDisabled={!isValid}
