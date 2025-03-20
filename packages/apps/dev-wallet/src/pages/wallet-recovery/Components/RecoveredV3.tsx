@@ -1,3 +1,5 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
@@ -9,7 +11,6 @@ import InitialsAvatar from '@/pages/select-profile/initials';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoConstruction, MonoDoDisturb } from '@kadena/kode-icons/system';
 import {
-  Box,
   Button,
   Checkbox,
   Heading,
@@ -17,11 +18,7 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import {
-  CardContentBlock,
-  CardFixedContainer,
-  CardFooterGroup,
-} from '@kadena/kode-ui/patterns';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
 export interface IV3Backup {
@@ -57,109 +54,106 @@ export function RecoveredV3({
       .map((profile) => profile.uuid),
   );
   return (
-    <CardFixedContainer>
-      <CardContentBlock
-        title="Chainweaver 3 Recovery"
+    <>
+      <CardContent
+        label="Chainweaver 3 Recovery"
+        id="chainweaverrecovery"
         visual={<MonoConstruction width={36} height={36} />}
-        extendedContent={<Box width="100%" paddingBlock={{ md: 'xxxl' }} />}
-        supportingContent={
-          <Box width="100%" paddingBlock="lg" textAlign="left">
-            This file contains {profiles.length} profiles. Select the profiles
-            you want to import.
-          </Box>
-        }
-      >
-        <Stack flexDirection={'column'} textAlign="left" gap={'sm'}>
-          <Heading variant="h5">Detected Profiles</Heading>
-          <Stack flexDirection={'column'}>
-            {profiles.map((profile) => {
-              const selected = selectedProfiles.includes(profile.uuid);
+        description="This file contains {profiles.length} profiles. Select the profiles you want to import."
+      />
+      <Stack flexDirection={'column'} textAlign="left" gap={'sm'}>
+        <Heading variant="h5">Detected Profiles</Heading>
+        <Stack flexDirection={'column'}>
+          {profiles.map((profile) => {
+            const selected = selectedProfiles.includes(profile.uuid);
 
-              const toggleSelect = () => {
-                if (selected) {
-                  setSelectedProfiles(
-                    selectedProfiles.filter((uuid) => uuid !== profile.uuid),
-                  );
-                } else {
-                  setSelectedProfiles([...selectedProfiles, profile.uuid]);
-                }
-              };
-              return (
-                <ButtonItem
-                  onClick={toggleSelect}
-                  selected={selected}
-                  disabled={profile.alreadyExists}
-                >
-                  <Stack alignItems={'center'} gap={'sm'}>
-                    <Checkbox
-                      isSelected={selectedProfiles.includes(profile.uuid)}
-                      onChange={toggleSelect}
-                    >
-                      {''}
-                    </Checkbox>
-                    <Stack
-                      key={profile.uuid}
-                      alignItems={'center'}
-                      gap={'sm'}
-                      width="100%"
-                    >
-                      <InitialsAvatar
-                        name={profile.name}
-                        accentColor={profile.accentColor}
-                        size="small"
-                      />
-                      <Text>{profile.name}</Text>
-                      {profile.alreadyExists && (
-                        <Stack flex={1} justifyContent={'flex-end'}>
-                          <Text>
-                            <MonoDoDisturb />
-                          </Text>
-                        </Stack>
-                      )}
-                    </Stack>
-                  </Stack>
-                </ButtonItem>
-              );
-            })}
-          </Stack>
-          {!bypassAvailableCheck &&
-            profiles.find((profile) => profile.alreadyExists) && (
-              <Notification intent="info" role="status">
-                All profiles that are already available will be skipped to avoid
-                missing funds.
-                <Stack>
-                  <Button
-                    variant="negative"
-                    isCompact
-                    onPress={async () => {
-                      await prompt((resolve, reject) => (
-                        <ConfirmDeletion
-                          title="Bypass profile check"
-                          description="The profile you select will be deleted and reimported again, So any update after the backup file will be gone! are you sure?"
-                          onDelete={resolve}
-                          onCancel={reject}
-                          deleteText="Bypass"
-                        />
-                      ));
-                      setBypassAvailableCheck(true);
-                    }}
+            const toggleSelect = () => {
+              if (selected) {
+                setSelectedProfiles(
+                  selectedProfiles.filter((uuid) => uuid !== profile.uuid),
+                );
+              } else {
+                setSelectedProfiles([...selectedProfiles, profile.uuid]);
+              }
+            };
+            return (
+              <ButtonItem
+                onClick={toggleSelect}
+                selected={selected}
+                disabled={profile.alreadyExists}
+              >
+                <Stack alignItems={'center'} gap={'sm'}>
+                  <Checkbox
+                    isSelected={selectedProfiles.includes(profile.uuid)}
+                    onChange={toggleSelect}
                   >
-                    Bypass this check
-                  </Button>
+                    {''}
+                  </Checkbox>
+                  <Stack
+                    key={profile.uuid}
+                    alignItems={'center'}
+                    gap={'sm'}
+                    width="100%"
+                  >
+                    <InitialsAvatar
+                      name={profile.name}
+                      accentColor={profile.accentColor}
+                      size="small"
+                    />
+                    <Text>{profile.name}</Text>
+                    {profile.alreadyExists && (
+                      <Stack flex={1} justifyContent={'flex-end'}>
+                        <Text>
+                          <MonoDoDisturb />
+                        </Text>
+                      </Stack>
+                    )}
+                  </Stack>
                 </Stack>
-              </Notification>
-            )}
-          {error && (
-            <Notification intent="negative" role="alert">
-              {error}
+              </ButtonItem>
+            );
+          })}
+        </Stack>
+        {!bypassAvailableCheck &&
+          profiles.find((profile) => profile.alreadyExists) && (
+            <Notification intent="info" role="status">
+              All profiles that are already available will be skipped to avoid
+              missing funds.
+              <Stack>
+                <Button
+                  variant="negative"
+                  isCompact
+                  onPress={async () => {
+                    await prompt((resolve, reject) => (
+                      <ConfirmDeletion
+                        title="Bypass profile check"
+                        description="The profile you select will be deleted and reimported again, So any update after the backup file will be gone! are you sure?"
+                        onDelete={resolve}
+                        onCancel={reject}
+                        deleteText="Bypass"
+                      />
+                    ));
+                    setBypassAvailableCheck(true);
+                  }}
+                >
+                  Bypass this check
+                </Button>
+              </Stack>
             </Notification>
           )}
+        {error && (
+          <Notification intent="negative" role="alert">
+            {error}
+          </Notification>
+        )}
+      </Stack>
+
+      <CardFooterContent>
+        <Stack width="100%">
+          <Button variant="outlined" onClick={cancel}>
+            Back
+          </Button>
         </Stack>
-      </CardContentBlock>
-      <CardFooterGroup separated={true}>
-        <Button variant="outlined" onClick={cancel}>
-          Back
-        </Button>
         <CardFooterGroup>
           <Button
             variant="primary"
@@ -179,7 +173,7 @@ export function RecoveredV3({
             import
           </Button>
         </CardFooterGroup>
-      </CardFooterGroup>
-    </CardFixedContainer>
+      </CardFooterContent>
+    </>
   );
 }

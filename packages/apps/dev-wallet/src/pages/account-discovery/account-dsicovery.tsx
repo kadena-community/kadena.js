@@ -5,20 +5,21 @@ import {
 } from '@/modules/wallet/wallet.repository';
 import {
   Button,
-  Card,
   Checkbox,
   Heading,
+  maskValue,
   Stack,
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { useState } from 'react';
 
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { IOwnedAccount } from '@/modules/account/account.repository';
 import {
-  IWalletDiscoveredAccount,
   accountDiscovery,
+  IWalletDiscoveredAccount,
 } from '@/modules/account/account.service';
 import { keySourceManager } from '@/modules/key-source/key-source-manager';
 import { keySourceRepository } from '@/modules/key-source/key-source.repository';
@@ -26,15 +27,18 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
-import { MonoKey, MonoLoading } from '@kadena/kode-icons/system';
+import { MonoKey, MonoLoading, MonoSearch } from '@kadena/kode-icons/system';
 import { PactNumber } from '@kadena/pactjs';
 import { Link } from 'react-router-dom';
+import { wrapperClass } from '../errors/styles.css';
 import { Label } from '../transaction/components/helpers';
 import { pendingClass } from '../transaction/components/style.css';
+import { wordWrapClass } from './style.css';
 
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
+  console.log(2222);
   const navigate = usePatchedNavigate();
   const { profile, keySources, unlockKeySource, networks } = useWallet();
   const [key, setKey] = useState<{ [key: string]: IKeyItem }>({});
@@ -114,8 +118,14 @@ export function AccountDiscovery() {
   }
 
   return (
-    <Stack style={{ width: '100vw', maxWidth: '1200px' }}>
-      <Card fullWidth>
+    <>
+      <CardContent
+        label="Find Your Assets"
+        id="findyourassets"
+        description="We will identify all accounts associated with the mnemonic you imported. This process may take a few minutes."
+        visual={<MonoSearch width={40} height={40} />}
+      />
+      <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
         <Stack
           margin="md"
           flexDirection={'column'}
@@ -125,11 +135,6 @@ export function AccountDiscovery() {
           justifyContent={'flex-start'}
           textAlign="left"
         >
-          <Heading variant="h2">Find Your Assets</Heading>
-          <Text>
-            We will identify all accounts associated with the mnemonic you
-            imported. This process may take a few minutes.
-          </Text>
           {discoveryStatus === 'idle' && (
             <>
               <Stack flexDirection={'column'}>
@@ -188,7 +193,7 @@ export function AccountDiscovery() {
             keySources.map((keySource) => (
               <Stack gap={'md'} key={keySource.uuid}>
                 <Text>
-                  {keySource.source}
+                  d{keySource.source}
                   {key[keySource.source]?.index === undefined
                     ? ''
                     : `(${key[keySource.source]?.index})`}
@@ -196,7 +201,7 @@ export function AccountDiscovery() {
                 <Stack gap={'sm'}>
                   {key[keySource.source]?.publicKey ? (
                     <>
-                      <Text color="emphasize" bold>
+                      <Text color="emphasize" bold className={wordWrapClass}>
                         k:{key[keySource.source]?.publicKey}
                       </Text>
                     </>
@@ -238,14 +243,14 @@ export function AccountDiscovery() {
           )}
           {discoveryStatus === 'finished' && (
             <Stack marginBlockStart={'lg'} flexDirection={'column'} gap={'lg'}>
-              <Heading variant="h4">Discoverd Accounts</Heading>
+              <Heading variant="h4">Discovered Accounts</Heading>
               {!accounts?.length && <Text>no accounts found</Text>}
               <Stack flexDirection={'column'} flex={1}>
                 {accounts?.map((account, index) => (
                   <ListItem key={index}>
-                    <Stack gap={'md'} flex={1}>
+                    <Stack gap={'md'} flex={1} alignItems="center">
                       <Stack gap={'sm'} flex={1}>
-                        <Text>{account.address}</Text>
+                        <Text>{maskValue(account.address)}</Text>
                       </Stack>
 
                       <Stack gap={'md'}>
@@ -278,7 +283,7 @@ export function AccountDiscovery() {
             </Stack>
           )}
         </Stack>
-      </Card>
-    </Stack>
+      </Stack>
+    </>
   );
 }

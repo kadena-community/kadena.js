@@ -1,7 +1,9 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { MonoPassword } from '@kadena/kode-icons/system';
 import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
-import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useMemo, useState } from 'react';
 import { wordClass } from './style.css';
 
@@ -34,21 +36,21 @@ export function BackupMnemonic({
     <>
       {step === 'start' && (
         <>
-          <CardContentBlock
-            title="Write your recovery phrase down"
+          <CardContent
+            label="Write your recovery phrase down"
+            id="recoveryphrase"
             description="Make sure no one is watching you; consider some malware might take
               screenshot of your screen"
             visual={<MonoPassword width={40} height={40} />}
-          >
-            <Stack flexDirection={'column'} gap="lg" className={wrapperClass}>
-              <Text>
-                you should consider everyone with the phrase have access to your
-                assets
-              </Text>
-            </Stack>
-          </CardContentBlock>
-          <CardFooterGroup>
-            <Stack width="100%"></Stack>
+          />
+          <Stack flexDirection={'column'} gap="lg" className={wrapperClass}>
+            <Text>
+              you should consider everyone with the phrase have access to your
+              assets
+            </Text>
+          </Stack>
+
+          <CardFooterContent>
             <CardFooterGroup>
               <Button variant="transparent" onClick={onSkip}>
                 Skip
@@ -63,63 +65,65 @@ export function BackupMnemonic({
                 Show Phrase
               </Button>
             </CardFooterGroup>
-          </CardFooterGroup>
+          </CardFooterContent>
         </>
       )}
       {step === 'view' && (
         <>
-          <CardContentBlock
-            title="Write down your recovery phrase"
+          <CardContent
+            refreshDependencies={[copied]}
+            label="Write down your recovery phrase"
+            id="recoveryphrase"
             description="Your recovery phrase is the key to your account. Write it down and
             keep it safe."
             visual={<MonoPassword width={40} height={40} />}
-          >
-            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
-              <Stack
-                flexDirection={'column'}
-                gap={'lg'}
-                marginBlockStart={'sm'}
-              >
-                <Stack justifyContent="center" flexWrap="wrap" gap={'sm'}>
-                  {words.map((word, index) => (
+            supportingContent={
+              <>
+                <Button
+                  onClick={copyToClipboard}
+                  isDisabled={copied}
+                  isCompact
+                  variant="outlined"
+                >
+                  {copied ? 'Copied' : 'Copy to clipboard'}
+                </Button>
+              </>
+            }
+          />
+          <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
+            <Stack flexDirection={'column'} gap={'lg'} marginBlockStart={'sm'}>
+              <Stack justifyContent="center" flexWrap="wrap" gap={'sm'}>
+                {words.map((word, index) => (
+                  <Stack
+                    key={word}
+                    gap={'sm'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    style={{
+                      minWidth: '120px',
+                    }}
+                  >
                     <Stack
-                      key={word}
-                      gap={'sm'}
-                      alignItems={'center'}
-                      justifyContent={'center'}
                       style={{
-                        minWidth: '120px',
+                        minWidth: '25px',
                       }}
+                      justifyContent={'flex-end'}
                     >
-                      <Stack
-                        style={{
-                          minWidth: '25px',
-                        }}
-                        justifyContent={'flex-end'}
-                      >
-                        <Text>{index + 1}:</Text>
-                      </Stack>{' '}
-                      <Badge size="lg" className={wordClass}>
-                        {word}
-                      </Badge>
-                    </Stack>
-                  ))}
-                </Stack>
+                      <Text>{index + 1}:</Text>
+                    </Stack>{' '}
+                    <Badge size="lg" className={wordClass}>
+                      {word}
+                    </Badge>
+                  </Stack>
+                ))}
               </Stack>
             </Stack>
-          </CardContentBlock>
-          <CardFooterGroup>
-            <Stack width="100%">
-              <Button
-                onClick={copyToClipboard}
-                isDisabled={copied}
-                variant="outlined"
-              >
-                {copied ? 'Copied' : 'Copy to clipboard'}
-              </Button>
-            </Stack>
-
+          </Stack>
+          <CardFooterContent>
             <CardFooterGroup>
+              <Button variant="transparent" onClick={onSkip}>
+                Skip
+              </Button>
               <Button
                 onClick={() => {
                   setRandomizedMnemonic(randomizeMnemonic());
@@ -134,30 +138,54 @@ export function BackupMnemonic({
               >
                 Confirm
               </Button>
-              <Button variant="transparent" onClick={onSkip}>
-                Skip
-              </Button>
             </CardFooterGroup>
-          </CardFooterGroup>
+          </CardFooterContent>
         </>
       )}
       {step === 'confirm' && (
         <>
-          <CardContentBlock
-            title="Confirm you have the phrases"
+          <CardContent
+            label="Confirm you have the phrases"
+            id="recoveryphrase"
             description="Select the correct words in the correct order to confirm you have"
             visual={<MonoPassword width={40} height={40} />}
-          >
-            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
-              <Stack flexWrap="wrap" gap={'xs'} justifyContent="center">
-                {randomIndexes.map((idx, index) => (
+          />
+          <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
+            <Stack flexWrap="wrap" gap={'xs'} justifyContent="center">
+              {randomIndexes.map((idx, index) => (
+                <Stack
+                  key={idx}
+                  gap={'sm'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  style={{
+                    minWidth: '10px',
+                  }}
+                >
                   <Stack
-                    key={idx}
+                    style={{
+                      minWidth: '25px',
+                    }}
+                    justifyContent={'flex-end'}
+                  >
+                    <Text>{idx + 1}:</Text>
+                  </Stack>{' '}
+                  <Badge size="lg" className={wordClass}>
+                    {selectedWords[index] || ''}
+                  </Badge>
+                </Stack>
+              ))}
+            </Stack>
+            <Stack flexDirection={'column'} gap={'lg'} marginBlockStart={'sm'}>
+              <Stack flexWrap="wrap" gap={'sm'} justifyContent="center">
+                {randomizedMnemonic.map((word) => (
+                  <Stack
+                    key={word}
                     gap={'sm'}
                     alignItems={'center'}
                     justifyContent={'center'}
                     style={{
-                      minWidth: '10px',
+                      minWidth: '120px',
                     }}
                   >
                     <Stack
@@ -165,65 +193,35 @@ export function BackupMnemonic({
                         minWidth: '25px',
                       }}
                       justifyContent={'flex-end'}
+                    ></Stack>{' '}
+                    <Button
+                      isCompact
+                      className={wordClass}
+                      variant="outlined"
+                      onClick={() => {
+                        setSelectedWords((prev) => {
+                          if (prev.length === 3) {
+                            return [word];
+                          }
+                          return [...prev, word];
+                        });
+                      }}
                     >
-                      <Text>{idx + 1}:</Text>
-                    </Stack>{' '}
-                    <Badge size="lg" className={wordClass}>
-                      {selectedWords[index] || ''}
-                    </Badge>
+                      {word}
+                    </Button>
                   </Stack>
                 ))}
               </Stack>
-              <Stack
-                flexDirection={'column'}
-                gap={'lg'}
-                marginBlockStart={'sm'}
-              >
-                <Stack flexWrap="wrap" gap={'sm'} justifyContent="center">
-                  {randomizedMnemonic.map((word) => (
-                    <Stack
-                      key={word}
-                      gap={'sm'}
-                      alignItems={'center'}
-                      justifyContent={'center'}
-                      style={{
-                        minWidth: '120px',
-                      }}
-                    >
-                      <Stack
-                        style={{
-                          minWidth: '25px',
-                        }}
-                        justifyContent={'flex-end'}
-                      ></Stack>{' '}
-                      <Button
-                        isCompact
-                        className={wordClass}
-                        variant="outlined"
-                        onClick={() => {
-                          setSelectedWords((prev) => {
-                            if (prev.length === 3) {
-                              return [word];
-                            }
-                            return [...prev, word];
-                          });
-                        }}
-                      >
-                        {word}
-                      </Button>
-                    </Stack>
-                  ))}
-                </Stack>
-              </Stack>
             </Stack>
-          </CardContentBlock>
-          <CardFooterGroup>
+          </Stack>
+
+          <CardFooterContent>
             <Stack width="100%">
               <Button
                 variant="outlined"
-                isCompact
                 type="button"
                 onPress={() => {
+                  setCopied(false);
                   setStep('view');
                 }}
               >
@@ -244,7 +242,7 @@ export function BackupMnemonic({
                 Continue
               </Button>
             </CardFooterGroup>
-          </CardFooterGroup>
+          </CardFooterContent>
         </>
       )}
     </>

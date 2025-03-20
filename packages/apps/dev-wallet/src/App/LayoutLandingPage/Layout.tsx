@@ -8,7 +8,9 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { FC, PropsWithChildren } from 'react';
 import { Outlet } from 'react-router-dom';
-import { focussedLayoutChildrenWrapperClass } from './layout.css';
+import { focussedLayoutChildrenWrapperClass } from './../layout.css';
+import { CardLayoutProvider } from './components/CardLayoutProvider';
+import { InnerContent } from './components/InnerContent';
 
 export const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
   const { theme, setTheme } = useTheme();
@@ -31,10 +33,14 @@ export const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
             }
           />
         </FocussedLayoutHeaderAside>
-        <Stack className={focussedLayoutChildrenWrapperClass}>
-          <Outlet />
-          {children}
-        </Stack>
+        <CardLayoutProvider>
+          <Stack className={focussedLayoutChildrenWrapperClass}>
+            <InnerContent>
+              <Outlet />
+              {children}
+            </InnerContent>
+          </Stack>
+        </CardLayoutProvider>
         <FocussedLayoutFooter />
       </FocussedLayout>
     </FocussedLayoutProvider>

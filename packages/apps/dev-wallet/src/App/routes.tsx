@@ -43,8 +43,8 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { LandingPageLayout } from './layout-landingpage';
 import { Layout } from './Layout/Layout';
+import { LandingPageLayout } from './LayoutLandingPage/Layout';
 import { useGlobalState } from './providers/globalState';
 
 const Redirect: FC<
@@ -150,9 +150,9 @@ export const Routes: FC = () => {
               path="/wallet-recovery/recover-from-mnemonic"
               element={<RecoverFromMnemonic />}
             />
-            <Route path="/account-discovery" element={<AccountDiscovery />} />
             <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
+          <Route path="/account-discovery" element={<AccountDiscovery />} />
           <Route
             path="/unlock-profile/:profileId"
             element={<UnlockProfile origin={origin} />}

@@ -47,6 +47,7 @@ export const CompactStepper: FC<ICompactStepperProps> = ({
           <AnimatePresence>
             <motion.div
               key={label}
+              layout="position"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

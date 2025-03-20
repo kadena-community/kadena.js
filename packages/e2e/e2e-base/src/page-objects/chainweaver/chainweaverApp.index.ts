@@ -111,16 +111,21 @@ export class ChainweaverAppIndex extends setupDatabase {
   public async createProfile(actor: Page): Promise<string> {
     await this._webAuthNHelper.enableVirtualAuthenticator(actor);
 
-    const button = actor.getByText('New profile');
+    const button = actor.getByRole('link', { name: 'Add new profile' });
+    await button.waitFor();
     await expect(button).toBeVisible();
     await button.click();
 
     const passwordlessButton = actor.getByRole('button', {
       name: 'Password-less',
     });
+
     await expect(passwordlessButton).toBeVisible();
-    await actor.fill('#profileName', this._PROFILENAME);
     await passwordlessButton.click();
+
+    const nextButton = actor.getByRole('button', { name: 'Next' });
+    await actor.fill('#profileName', this._PROFILENAME);
+    await nextButton.click();
 
     const skipButton = actor.getByRole('button', {
       name: 'Skip',
@@ -145,13 +150,13 @@ export class ChainweaverAppIndex extends setupDatabase {
       name: 'Prefer password',
     });
     await expect(passwordButton).toBeVisible();
-    await actor.fill('#profileName', this._PROFILENAME_WITHPASSWORD);
+
     await passwordButton.click();
 
     //create password
     await expect(
       actor.getByRole('heading', {
-        name: 'Choose a password',
+        name: 'Choose password',
       }),
     ).toBeVisible();
 
@@ -165,6 +170,15 @@ export class ChainweaverAppIndex extends setupDatabase {
 
     await expect(continueButton).toBeEnabled();
     await continueButton.click();
+
+    const continueButton2 = actor.getByRole('button', {
+      name: 'Next',
+    });
+    await continueButton2.waitFor();
+    await actor.fill('#profileName', this._PROFILENAME_WITHPASSWORD);
+    await expect(continueButton2).toBeEnabled();
+
+    await continueButton2.click();
 
     const skipButton = actor.getByRole('button', {
       name: 'Show Phrase',

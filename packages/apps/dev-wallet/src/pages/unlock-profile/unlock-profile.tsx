@@ -1,14 +1,16 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent.tsx';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent.tsx';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
 import { MonoKey } from '@kadena/kode-icons/system';
 import {
   Button,
-  Card,
   Stack,
   Text,
   TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -17,6 +19,7 @@ import InitialsAvatar from '../select-profile/initials.tsx';
 import { passwordContainer, profileContainer } from './styles.css.ts';
 
 export function UnlockProfile({ origin }: { origin: string }) {
+  const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
     handleSubmit,
@@ -57,80 +60,69 @@ export function UnlockProfile({ origin }: { origin: string }) {
     return <Navigate to="/select-profile" replace />;
   }
   return (
-    <Card fullWidth>
-      <form onSubmit={handleSubmit(unlock)}>
-        <CardContentBlock
-          title="Unlock your profile"
-          description="Enter your password to unlock access"
-          visual={<MonoKey width={40} height={40} />}
+    <form onSubmit={handleSubmit(unlock)} ref={formRef}>
+      <CardContent
+        label="Unlock your profile"
+        id="unlockprofile"
+        description="Enter your password to unlock access"
+        visual={<MonoKey width={40} height={40} />}
+      />
+      <Stack flexDirection="column" className={wrapperClass}>
+        <Stack
+          gap="md"
+          display="inline-flex"
+          alignItems="center"
+          className={profileContainer}
         >
-          <Stack
-            flexDirection="column"
-            marginBlockEnd={'lg'}
-            className={wrapperClass}
-            justifyContent="flex-start"
-          >
-            <Stack
-              gap="md"
-              display="inline-flex"
-              alignItems="center"
-              className={profileContainer}
-            >
-              <InitialsAvatar
-                size="large"
-                name={profile.name}
-                accentColor={profile.accentColor}
-              />
-              <Text>{profile.name}</Text>
-            </Stack>
+          <InitialsAvatar
+            size="large"
+            name={profile.name}
+            accentColor={profile.accentColor}
+          />
+          <Text>{profile.name}</Text>
+        </Stack>
 
-            <div className={passwordContainer}>
-              <TextField
-                id="password"
-                autoFocus
-                type="password"
-                placeholder="Password"
-                aria-label="Password"
-                isRequired
-                {...register('password', {
-                  required: { value: true, message: 'This field is required' },
-                })}
-                isInvalid={!isValid && !!errors.password}
-                errorMessage={errors.password?.message}
-              />
-            </div>
-          </Stack>
-        </CardContentBlock>
+        <div className={passwordContainer}>
+          <TextField
+            id="password"
+            autoFocus
+            type="password"
+            placeholder="Password"
+            aria-label="Password"
+            isRequired
+            {...register('password', {
+              required: { value: true, message: 'This field is required' },
+            })}
+            isInvalid={!isValid && !!errors.password}
+            errorMessage={errors.password?.message}
+          />
+        </div>
+      </Stack>
 
+      <CardFooterContent>
+        <Stack width="100%">
+          <UiLink variant="outlined" component={Link} href="/select-profile">
+            Back
+          </UiLink>
+        </Stack>
         <CardFooterGroup>
-          <Stack width="100%">
-            <UiLink
-              variant="outlined"
-              isCompact
-              type="button"
-              onPress={() => {
-                throw new Error('back');
-              }}
-              component={Link}
-              href="/"
-            >
-              Back
-            </UiLink>
-          </Stack>
-          <CardFooterGroup>
-            <UiLink
-              variant="transparent"
-              component={Link}
-              href="/wallet-recovery"
-            >
-              Recover your wallet
-            </UiLink>
-            <Button type="submit" isDisabled={!isValid}>
-              Continue
-            </Button>
-          </CardFooterGroup>
+          <UiLink
+            variant="transparent"
+            component={Link}
+            href="/wallet-recovery"
+          >
+            Recover your wallet
+          </UiLink>
+          <Button
+            onClick={() => {
+              formRef.current?.requestSubmit();
+            }}
+            isDisabled={!isValid}
+          >
+            Continue
+          </Button>
         </CardFooterGroup>
-      </form>
-    </Card>
+      </CardFooterContent>
+    </form>
   );
 }

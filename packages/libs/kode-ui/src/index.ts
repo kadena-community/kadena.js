@@ -10,6 +10,7 @@ export type {
   ICheckboxGroupProps,
   ICheckboxProps,
   IComboboxProps,
+  ICompactStepperItemProps,
   ICompactStepperProps,
   IContentHeaderProps,
   IContextMenuDividerProps,
