@@ -146,12 +146,7 @@ export function WalletRecovery() {
       </Stack>
       <CardFooterContent>
         <Stack width="100%">
-          <UiLink
-            isCompact
-            href="/select-profile"
-            component={Link}
-            variant="outlined"
-          >
+          <UiLink href="/select-profile" component={Link} variant="outlined">
             Back
           </UiLink>
         </Stack>

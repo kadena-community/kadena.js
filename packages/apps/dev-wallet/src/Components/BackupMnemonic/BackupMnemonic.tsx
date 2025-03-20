@@ -71,11 +71,24 @@ export function BackupMnemonic({
       {step === 'view' && (
         <>
           <CardContent
+            refreshDependencies={[copied]}
             label="Write down your recovery phrase"
             id="recoveryphrase"
             description="Your recovery phrase is the key to your account. Write it down and
             keep it safe."
             visual={<MonoPassword width={40} height={40} />}
+            supportingContent={
+              <>
+                <Button
+                  onClick={copyToClipboard}
+                  isDisabled={copied}
+                  isCompact
+                  variant="outlined"
+                >
+                  {copied ? 'Copied' : 'Copy to clipboard'}
+                </Button>
+              </>
+            }
           />
           <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
             <Stack flexDirection={'column'} gap={'lg'} marginBlockStart={'sm'}>
@@ -106,19 +119,11 @@ export function BackupMnemonic({
               </Stack>
             </Stack>
           </Stack>
-
           <CardFooterContent>
-            <Stack width="100%">
-              <Button
-                onClick={copyToClipboard}
-                isDisabled={copied}
-                variant="outlined"
-              >
-                {copied ? 'Copied' : 'Copy to clipboard'}
-              </Button>
-            </Stack>
-
             <CardFooterGroup>
+              <Button variant="transparent" onClick={onSkip}>
+                Skip
+              </Button>
               <Button
                 onClick={() => {
                   setRandomizedMnemonic(randomizeMnemonic());
@@ -132,9 +137,6 @@ export function BackupMnemonic({
                 }}
               >
                 Confirm
-              </Button>
-              <Button variant="transparent" onClick={onSkip}>
-                Skip
               </Button>
             </CardFooterGroup>
           </CardFooterContent>
@@ -217,9 +219,9 @@ export function BackupMnemonic({
             <Stack width="100%">
               <Button
                 variant="outlined"
-                isCompact
                 type="button"
                 onPress={() => {
+                  setCopied(false);
                   setStep('view');
                 }}
               >

@@ -122,7 +122,6 @@ export function ChangePassword() {
           <UiLink
             variant="outlined"
             component={Link}
-            isCompact
             type="button"
             href="/settings"
           >
@@ -253,7 +252,6 @@ export function ChangePassword() {
             <UiLink
               variant="outlined"
               component={Link}
-              isCompact
               type="button"
               href="/settings"
             >

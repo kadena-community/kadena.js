@@ -101,12 +101,7 @@ export function UnlockProfile({ origin }: { origin: string }) {
 
       <CardFooterContent>
         <Stack width="100%">
-          <UiLink
-            variant="outlined"
-            isCompact
-            component={Link}
-            href="/select-profile"
-          >
+          <UiLink variant="outlined" component={Link} href="/select-profile">
             Back
           </UiLink>
         </Stack>

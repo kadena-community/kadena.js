@@ -306,7 +306,6 @@ export function CreateProfile() {
                 <Link to="/select-profile" className={noStyleLinkClass}>
                   <Button
                     variant="outlined"
-                    isCompact
                     type="button"
                     onPress={() => {
                       throw new Error('back');
@@ -384,7 +383,6 @@ export function CreateProfile() {
               <Stack width="100%">
                 <Button
                   variant="outlined"
-                  isCompact
                   type="button"
                   onPress={() => {
                     handleSetStep('authMethod');
@@ -467,7 +465,6 @@ export function CreateProfile() {
               <Stack width="100%">
                 <Button
                   variant="outlined"
-                  isCompact
                   type="button"
                   onPress={() => {
                     handleSetStep(previousStep);

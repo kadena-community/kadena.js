@@ -342,7 +342,6 @@ export function RecoverFromMnemonic() {
                   component={Link}
                   href="/wallet-recovery"
                   variant="outlined"
-                  isCompact
                 >
                   Back
                 </UiLink>
@@ -421,7 +420,6 @@ export function RecoverFromMnemonic() {
               <Stack width="100%">
                 <Button
                   variant="outlined"
-                  isCompact
                   type="button"
                   onPress={() => {
                     setStep('import');
