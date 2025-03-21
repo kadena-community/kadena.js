@@ -1,4 +1,4 @@
-import { MonoChevronLeft, MonoMoreVert } from '@kadena/kode-icons';
+import { MonoAdd, MonoChevronLeft, MonoMoreVert } from '@kadena/kode-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -98,6 +98,58 @@ export const Primary: ButtonGroupStory = {
           >
             <ContextMenuItem onClick={() => {}} label="Recover your wallet" />
           </ContextMenu>
+        </ButtonGroup>
+      </Stack>
+    );
+  },
+};
+
+export const FullWidth: ButtonGroupStory = {
+  args: {
+    variant: 'outlined',
+    isCompact: true,
+  },
+  render: (props: IButtonGroupProps) => {
+    return (
+      <Stack
+        gap="lg"
+        flexDirection="column"
+        style={{
+          width: '300px',
+        }}
+      >
+        <ButtonGroup {...props} fullWidth>
+          <Link isCompact variant="outlined">
+            option1
+          </Link>
+          <Button isCompact variant="outlined" endVisual={<MonoMoreVert />} />
+        </ButtonGroup>
+
+        <ButtonGroup {...props} fullWidth>
+          <Button isCompact variant="outlined">
+            option1
+          </Button>
+          <Button isCompact variant="outlined" endVisual={<MonoMoreVert />} />
+        </ButtonGroup>
+
+        <ButtonGroup {...props} fullWidth>
+          <Button isCompact variant="outlined" endVisual={<MonoAdd />}>
+            option1
+          </Button>
+          <Link isCompact variant="outlined">
+            option2
+          </Link>
+          <Button isCompact variant="outlined" endVisual={<MonoMoreVert />} />
+        </ButtonGroup>
+
+        <ButtonGroup {...props} fullWidth>
+          <Link isCompact variant="outlined">
+            option2
+          </Link>
+          <Button isCompact variant="outlined" endVisual={<MonoAdd />}>
+            option1
+          </Button>
+          <Button isCompact variant="outlined" endVisual={<MonoMoreVert />} />
         </ButtonGroup>
       </Stack>
     );

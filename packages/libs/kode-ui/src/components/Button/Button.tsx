@@ -103,6 +103,7 @@ const Button = forwardRef(
         style={style}
         title={title}
         aria-disabled={isLoading || undefined}
+        data-icononly={!children?.toString()}
         data-disabled={isDisabled || undefined}
         data-pressed={isPressed || undefined}
         data-hovered={(!isPressed && isHovered) || undefined}
