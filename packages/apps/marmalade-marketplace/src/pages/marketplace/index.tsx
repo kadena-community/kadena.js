@@ -1,4 +1,5 @@
 import * as styles from '@/styles/global.css';
+
 import { Heading } from '@kadena/kode-ui';
 
 export default function Marketplace() {
