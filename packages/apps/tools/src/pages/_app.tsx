@@ -1,11 +1,10 @@
 // load global styles from @kadena/kode-ui
-import '@kadena/kode-ui/global';
-
 import { Layout } from '@/components/Common';
 import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
 import '@/resources/styles/globals.css';
 import { RouterProvider } from '@kadena/kode-ui';
+import '@kadena/kode-ui/global';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
