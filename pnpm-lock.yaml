@@ -1577,7 +1577,7 @@ importers:
         specifier: workspace:*
         version: link:../../libs/pactjs-generator
       '@ledgerhq/hw-app-kda':
-        specifier: git+ssh://git@github.com:obsidiansystems/hw-app-kda
+        specifier: https://github.com/obsidiansystems/hw-app-kda
         version: hw-app-kda@https://codeload.github.com/obsidiansystems/hw-app-kda/tar.gz/37e1b863b0e8c28023efde9ff1fd26cd25bc3997(typescript@5.4.5)
       '@ledgerhq/hw-transport-webhid':
         specifier: ^6.28.3
