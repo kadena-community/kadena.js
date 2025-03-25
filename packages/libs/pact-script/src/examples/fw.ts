@@ -71,21 +71,6 @@ export class PactContract {
   constructor(protected context: PactContext) {
     globalContext = context;
   }
-  // this should commit the changes to the contract
-  commit() {
-    Object.values(this).forEach((value) => {
-      if (value instanceof DataMap) {
-        value.commit();
-      }
-    });
-  }
-  rollback() {
-    Object.values(this).forEach((value) => {
-      if (value instanceof DataMap) {
-        value.rollback();
-      }
-    });
-  }
 }
 
 export class NonUpgradableContract extends PactContract {
@@ -385,6 +370,21 @@ export function manage<T>(
 }
 
 export function createPactContract<T extends PactContract>(contract: T) {
+  const commit = (obj) => {
+    Object.values(obj).forEach((value) => {
+      if (value instanceof DataMap) {
+        value.commit();
+      }
+    });
+  };
+  const rollback = (obj) => {
+    Object.values(obj).forEach((value) => {
+      if (value instanceof DataMap) {
+        value.rollback();
+      }
+    });
+  };
+
   return new Proxy(contract, {
     get(target, prop) {
       const value = target[prop];
@@ -392,14 +392,14 @@ export function createPactContract<T extends PactContract>(contract: T) {
 
       return (...args) => {
         try {
-          contract.commit();
+          commit(contract);
           globalContext?.commit();
           const result = value.apply(target, args);
-          contract.commit();
+          commit(contract);
           globalContext?.commit();
           return result;
         } catch (e) {
-          contract.rollback();
+          rollback(contract);
           globalContext?.rollback();
           throw e;
         }
