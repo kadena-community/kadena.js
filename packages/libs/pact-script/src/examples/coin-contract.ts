@@ -1,6 +1,6 @@
 import type { decimal, guard, PactContext } from './fw';
 
-import { DataMap, enforce, enforceGuard, PactContract } from './fw';
+import { DataMap, enforce, enforceGuard, manage, PactContract } from './fw';
 
 import PactScheme from 'zod';
 
@@ -48,6 +48,14 @@ export class CoinContract extends PactContract {
   private TRANSFER = this.capability(
     'TRANSFER',
     (sender: string, receiver: string, amount: decimal) => {
+      manage('amount', (managed: number, requested: number) => {
+        enforce(
+          managed >= requested,
+          'INSUFFICIENT_FUND',
+          'Insufficient funds',
+        );
+        return managed - requested;
+      });
       enforce(sender !== receiver, 'SAME_ACCOUNT', 'same sender and receiver');
       this.DEBIT(sender, amount).compose();
       this.CREDIT(receiver, amount).compose();
@@ -146,11 +154,6 @@ export class CoinContract extends PactContract {
   }
 
   changeAdminGuard(guard: guard) {
-    enforce(
-      this.CHANGE_ADMIN_GUARD(guard).isInstalled('admin-ks'),
-      'CAPABILITY_NOT_INSTALLED',
-      'CHANGE_ADMIN_GUARD capability not installed',
-    );
     return this.CHANGE_ADMIN_GUARD(guard).grant(() => {
       this.accounts.edit('admin', { guard });
       return true;

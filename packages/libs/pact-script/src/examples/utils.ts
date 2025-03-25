@@ -52,5 +52,10 @@ export function enforceValidateAccount(account: string) {
             )))))
  */
 export function enforceReserved(account: string, guard: guard) {
-  return true;
+  const columnIndex = account.search(':');
+  enforce(
+    columnIndex === -1,
+    'INVALID ACCOUNT',
+    `Reserved protocol guard violation: ${account}`,
+  );
 }
