@@ -132,6 +132,7 @@ export const cardContentWrapperClass = style([
     },
     md: {
       flexDirection: 'column',
+      flexWrap: 'unset',
     },
   }),
 ]);
