@@ -6,6 +6,7 @@ import {
   style,
   token,
 } from './../../styles';
+import { topbannerHeightCSS } from './aside.css';
 import { minHeaderHeight, sideBarMinWidth, sideBarWidth } from './styles.css';
 
 export const menuBackdropClass = recipe({
@@ -75,13 +76,13 @@ export const menuWrapperClass = recipe({
         zIndex: token('zIndex.overlay'),
         backgroundColor: token('color.background.base.default'),
         padding: token('spacing.lg'),
-        paddingBlockStart: token('spacing.sm'),
+        paddingBlockStart: `calc(${token('spacing.sm')} + ${topbannerHeightCSS})`,
       },
       md: {
         display: 'flex',
         width: '45px',
         padding: token('spacing.md'),
-        paddingBlockStart: token('spacing.sm'),
+        paddingBlockStart: `calc(${token('spacing.sm')} + ${topbannerHeightCSS})`,
         paddingInline: token('spacing.xs'),
         gridArea: 'sidebarlayout-sidebar',
         transform: 'translateX(0%)',
