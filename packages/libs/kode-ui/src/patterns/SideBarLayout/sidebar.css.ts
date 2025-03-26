@@ -76,6 +76,9 @@ export const menuWrapperClass = recipe({
         zIndex: token('zIndex.overlay'),
         backgroundColor: token('color.background.base.default'),
         padding: token('spacing.lg'),
+        paddingBlockStart: `${token('spacing.sm')}`,
+      },
+      sm: {
         paddingBlockStart: `calc(${token('spacing.sm')} + ${topbannerHeightCSS})`,
       },
       md: {
