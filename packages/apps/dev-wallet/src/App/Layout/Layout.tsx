@@ -6,6 +6,7 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
+import { PreviewBanner } from '@/Components/PreviewBanner/PreviewBanner';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Badge, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
@@ -25,6 +26,7 @@ import {
   isNotExpandedClass,
   mainContainerClass,
   mobileNetworkClass,
+  topBannerClass,
 } from './style.css';
 
 export const Layout: FC = () => {
@@ -71,6 +73,19 @@ export const Layout: FC = () => {
           </Stack>
         }
         sidebar={<SideBar />}
+        topBanner={
+          <Stack
+            flexDirection={'column'}
+            className={classNames(
+              mainContainerClass,
+              topBannerClass,
+              isExpanded ? isExpandedMainClass : isNotExpandedClass,
+            )}
+            flex={1}
+          >
+            <PreviewBanner />
+          </Stack>
+        }
         footer={
           <SideBarFooter>
             <SideBarFooterItem
