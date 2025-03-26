@@ -26,6 +26,7 @@ export {
   SideBarItemsInline,
   SideBarLayout,
   LayoutProvider as SideBarLayoutProvider,
+  TopBanner as SideBarTopBanner,
   SideBarTree,
   SideBarTreeItem,
   useLayout as useSideBarLayout,
