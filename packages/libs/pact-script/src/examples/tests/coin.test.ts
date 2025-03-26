@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { CoinContract } from '../examples/coin-contract';
-import { IPactContext, PactContext, pactRunner } from '../fw';
+import { IPactContext, PactContext, pactRunner } from '../../fw';
+import { CoinContract } from '../coin-contract';
 
 describe('coinContract', () => {
   const env: IPactContext = {
@@ -42,6 +42,53 @@ describe('coinContract', () => {
       expect(() => contract.transfer('admin', 'alice', 1)).toThrow(
         'ACCOUNT_NOT_FOUND',
       );
+    });
+
+    it('TransferCreate fails if account name is reserved', () => {
+      const context = new PactContext(env);
+      const contract = CoinContract.create(context);
+
+      expect(() =>
+        contract.transferCreate(
+          'admin',
+          // this is against the reserved protocol
+          'k:alice',
+          context.getKeyset('alice-ks'),
+          1,
+        ),
+      ).toThrow('INVALID ACCOUNT');
+    });
+
+    it('TransferCreate works if account name is valid', () => {
+      const context = new PactContext({
+        data: {
+          'admin-ks': {
+            keys: ['admin-key'],
+            pred: 'keys-all',
+            signed: true,
+            installedCaps: [
+              {
+                cap: 'coin.TRANSFER',
+                args: ['admin', 'k:alice-key:keys-all', 1],
+              },
+            ],
+          },
+          'alice-ks': {
+            keys: ['alice-key'],
+            pred: 'keys-all',
+          },
+        },
+      });
+      const contract = CoinContract.create(context);
+
+      expect(
+        contract.transferCreate(
+          'admin',
+          'k:alice-key:keys-all',
+          context.getKeyset('alice-ks'),
+          1,
+        ),
+      ).toBe(true);
     });
 
     it('Creates account and transfer 1 kda form admin to alice using transferCreate', () => {

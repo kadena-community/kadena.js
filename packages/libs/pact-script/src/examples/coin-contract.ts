@@ -123,11 +123,11 @@ export class CoinContract extends PactContract {
     );
   }
 
-  transfer(sender: string, receiver: string, amount: number): string {
+  transfer(sender: string, receiver: string, amount: number): true {
     return this.TRANSFER(sender, receiver, amount).grant(() => {
       this.debit(sender, amount);
       this.credit(receiver, amount);
-      return 'TRANSFER_SUCCESS';
+      return true;
     });
   }
 
@@ -147,11 +147,7 @@ export class CoinContract extends PactContract {
         `Guard mismatch ${existingGuard.principal} !== ${guard.principal}`,
       );
     }
-    return this.TRANSFER(sender, receiver, amount).grant(() => {
-      this.debit(sender, amount);
-      this.credit(receiver, amount);
-      return true;
-    });
+    return this.transfer(sender, receiver, amount);
   }
 
   changeAdminGuard(guard: guard) {
