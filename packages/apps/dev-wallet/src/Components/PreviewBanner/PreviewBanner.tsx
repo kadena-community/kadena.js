@@ -31,7 +31,7 @@ export const PreviewBanner: FC = () => {
       testing only.
       <NotificationFooter>
         <a className={buttonClass} href="https://wallet.kadena.io">
-          <NotificationButton icon={<MonoWallet />}>
+          <NotificationButton icon={<MonoWallet />} intent="info">
             Go to live wallet
           </NotificationButton>
         </a>
