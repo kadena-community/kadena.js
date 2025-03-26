@@ -1,4 +1,4 @@
-import { enforce, guard } from './fw';
+import { enforce, guard } from '../fw';
 
 /*
   (defun validate-account (account:string)

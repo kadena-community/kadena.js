@@ -1,13 +1,14 @@
-import type { decimal, guard, PactContext } from './fw';
+import type { decimal, guard, PactContext } from '../fw';
 
-import { DataMap, enforce, enforceGuard, manage, PactContract } from './fw';
+import { DataMap, enforce, enforceGuard, PactContract } from '../fw';
 
 import PactScheme from 'zod';
 
 import { enforceReserved, enforceValidateAccount } from './utils';
 
 export class CoinContract extends PactContract {
-  // the map for storing account details
+  public static readonly moduleName = 'coin';
+
   private accounts = new DataMap({
     guard: PactScheme.any(),
     balance: PactScheme.number().min(0),
@@ -48,7 +49,7 @@ export class CoinContract extends PactContract {
   private TRANSFER = this.capability(
     'TRANSFER',
     (sender: string, receiver: string, amount: decimal) => {
-      manage('amount', (managed: number, requested: number) => {
+      this.manage('amount', (managed: number, requested: number) => {
         enforce(
           managed >= requested,
           'INSUFFICIENT_FUND',

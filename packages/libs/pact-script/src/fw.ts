@@ -66,57 +66,38 @@ export class DataMap<
   }
 }
 
-export class PactContract {
-  protected capability = capabilityFactory();
+export abstract class PactContract {
+  public static readonly moduleName;
+
   constructor(protected context: PactContext) {
     globalContext = context;
   }
-}
 
-export class NonUpgradableContract extends PactContract {
-  GOVERNANCE() {
-    throw new Error('NON-UPGRADEABILITY: This contract is not upgradable');
+  public static create<T extends PactContract>(
+    this: new (context: PactContext) => T,
+    context: PactContext,
+  ): T {
+    if (!(this as any).moduleName) {
+      console.warn(
+        `Module name is not set for ${this.name}; using class name instead. Set the static property "moduleName" to the desired module name.`,
+      );
+    }
+    const instance = new this(context);
+    return pactRunner(instance);
   }
-}
 
-interface CapabilityFns {
-  grant<T>(scoped: () => T): T;
-  require(): void;
-  compose(): void;
-  isInstalled(ksName): boolean;
-}
+  private calls = new Map<string, { isGranted: boolean }>();
 
-let sharedState = {
-  composed: undefined as string[] | undefined,
-};
-
-let activeCap: {
-  name: string;
-  args: any[];
-  parameters: string[];
-} | null = null;
-
-function getParameterNames<T extends (...args) => any>(func: T) {
-  const code = func.toString();
-  const match = code.match(/^[^(]*\(([^)]*)\)/);
-
-  if (!match) return [];
-
-  // Split by commas, trim whitespace, and filter out any empty strings
-  return match[1]
-    .split(',')
-    .map((param) => param.trim())
-    .filter((param) => param);
-}
-
-export function capabilityFactory() {
-  const calls = new Map<string, { isGranted }>();
-  return function capability<T extends (...args: any) => void>(
+  protected capability<T extends (...args: any) => void>(
     name: string,
     capabilityBody: T,
   ) {
+    const calls = this.calls;
+    const moduleName =
+      (this.constructor as any).moduleName || this.constructor.name;
+
     return (...args: Parameters<T>): CapabilityFns => {
-      const key = `${name}:${JSON.stringify(args)}`;
+      const key = `${moduleName}.${name}:${JSON.stringify(args)}`;
       const parameters = getParameterNames(capabilityBody);
       if (!calls.has(key)) {
         calls.set(key, {
@@ -150,6 +131,7 @@ export function capabilityFactory() {
           };
           try {
             activeCap = {
+              moduleName,
               name,
               args,
               parameters,
@@ -173,7 +155,7 @@ export function capabilityFactory() {
         require() {
           const data = calls.get(key);
           enforce(
-            data && data.isGranted,
+            data !== undefined && data.isGranted,
             'CAPABILITY_NOT_GRANTED',
             `Capability not granted: ${key}`,
           );
@@ -187,32 +169,78 @@ export function capabilityFactory() {
           capabilityBody(...args);
           sharedState.composed!.push(key);
         },
-        isInstalled(ksName: string) {
-          enforce(globalContext !== null, 'NO_CONTEXT', 'No context found');
-          const ks = globalContext!.getKeyset(ksName);
-          enforce(
-            ks !== undefined,
-            'KEYSET_NOT_FOUND',
-            `Keyset not found: ${ksName}`,
-          );
-          enforce(
-            ks.signed === true,
-            'KEYSET_NOT_SIGNED',
-            `Keyset not signed: ${ksName}`,
-          );
-          enforce(
-            ks.installedCaps !== undefined &&
-              ks.installedCaps?.findIndex(
-                (cap) => key === `${cap.cap}:${JSON.stringify(cap.args)}`,
-              ) !== -1,
-            'CAPABILITY_NOT_INSTALLED',
-            `Capability not installed: ${key}`,
-          );
-          return true;
-        },
       };
     };
-  };
+  }
+
+  protected manage<T>(property: string, fn: (managed: T, requested: T) => T) {
+    enforce(this.context !== null, 'NO_CONTEXT', 'No context found');
+    enforce(
+      activeCap !== null,
+      'MANAGE_CALLED_OUTSIDE_CAPABILITY',
+      'manage called outside capability',
+    );
+    const installedPropertyIndex = activeCap!.parameters.indexOf(property);
+    enforce(
+      installedPropertyIndex !== -1,
+      'MANAGE_PROPERTY_NOT_FOUND',
+      `Property not found: ${property}`,
+    );
+    const installedCap = this.context.getInstalledValue(
+      `${activeCap!.moduleName}.${activeCap!.name}`,
+      activeCap!.args,
+      installedPropertyIndex,
+    );
+    enforce(
+      installedCap !== undefined,
+      'CAPABILITY_NOT_INSTALLED',
+      `the : ${property} in not installed for ${activeCap!.moduleName}.${
+        activeCap!.name
+      }`,
+    );
+
+    installedCap!.mangedValue = fn(
+      installedCap!.mangedValue,
+      activeCap!.args[installedPropertyIndex],
+    );
+  }
+}
+
+export class NonUpgradableContract extends PactContract {
+  GOVERNANCE() {
+    throw new Error('NON-UPGRADEABILITY: This contract is not upgradable');
+  }
+}
+
+interface CapabilityFns {
+  grant<T>(scoped: () => T): T;
+  require(): void;
+  compose(): void;
+}
+
+let sharedState = {
+  composed: undefined as string[] | undefined,
+};
+
+let activeCap: {
+  namespace?: string;
+  moduleName: string;
+  name: string;
+  args: any[];
+  parameters: string[];
+} | null = null;
+
+function getParameterNames<T extends (...args) => any>(func: T) {
+  const code = func.toString();
+  const match = code.match(/^[^(]*\(([^)]*)\)/);
+
+  if (!match) return [];
+
+  // Split by commas, trim whitespace, and filter out any empty strings
+  return match[1]
+    .split(',')
+    .map((param) => param.trim())
+    .filter((param) => param);
 }
 
 export function enforce(
@@ -236,7 +264,12 @@ export interface IKeyset {
 export interface IPactContext {
   data: Record<
     string,
-    { keys: string[]; pred: 'keys-all' | 'keys-any' | 'keys-2' }
+    {
+      keys: string[];
+      pred: 'keys-all' | 'keys-any' | 'keys-2';
+      signed?: boolean;
+      installedCaps?: { cap: string; args: any[]; mangedValue?: any }[];
+    }
   >;
 }
 
@@ -255,7 +288,8 @@ export class PactContext {
 
   constructor(env: IPactContext) {
     if (env) {
-      Object.entries(env.data).forEach(([key, value]) => {
+      const clone: IPactContext = structuredClone(env);
+      Object.entries(clone.data).forEach(([key, value]) => {
         this.tempKeysets.set(key, withPrincipal(value));
       });
     }
@@ -335,41 +369,7 @@ export class PactContext {
   }
 }
 
-export function manage<T>(
-  property: string,
-  fn: (managed: T, requested: T) => T,
-) {
-  enforce(globalContext !== null, 'NO_CONTEXT', 'No context found');
-  enforce(
-    activeCap !== null,
-    'MANAGE_CALLED_OUTSIDE_CAPABILITY',
-    'manage called outside capability',
-  );
-  const installedPropertyIndex = activeCap!.parameters.indexOf(property);
-  enforce(
-    installedPropertyIndex !== -1,
-    'MANAGE_PROPERTY_NOT_FOUND',
-    `Property not found: ${property}`,
-  );
-  const installedCap = globalContext!.getInstalledValue(
-    activeCap!.name,
-    activeCap!.args,
-    installedPropertyIndex,
-  );
-  enforce(
-    installedCap !== undefined,
-    'CAPABILITY_NOT_INSTALLED',
-    `cant find installed value for : ${property}`,
-  );
-
-  // TODO: we need a way to rollback the changes if the fn throws
-  installedCap!.mangedValue = fn(
-    installedCap!.mangedValue,
-    activeCap!.args[installedPropertyIndex],
-  );
-}
-
-export function createPactContract<T extends PactContract>(contract: T) {
+export function pactRunner<T extends PactContract>(contract: T) {
   const commit = (obj) => {
     Object.values(obj).forEach((value) => {
       if (value instanceof DataMap) {
@@ -392,15 +392,19 @@ export function createPactContract<T extends PactContract>(contract: T) {
 
       return (...args) => {
         try {
+          globalContext =
+            'context' in contract ? (contract as any).context : null;
           commit(contract);
           globalContext?.commit();
           const result = value.apply(target, args);
           commit(contract);
           globalContext?.commit();
+          globalContext = null;
           return result;
         } catch (e) {
           rollback(contract);
           globalContext?.rollback();
+          globalContext = null;
           throw e;
         }
       };
