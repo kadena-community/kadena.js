@@ -1,3 +1,4 @@
+// load global styles from @kadena/kode-ui
 import { Analytics } from '@/components/Analytics/Analytics';
 import { ToastProvider } from '@/components/Toast/ToastContext/ToastContext';
 import { NetworkContextProvider } from '@/context/networksContext';
@@ -5,7 +6,6 @@ import { QueryContextProvider } from '@/context/queryContext';
 import { SearchContextProvider } from '@/context/searchContext';
 import { useRouter } from '@/hooks/router';
 import { useIphoneInputFix } from '@/hooks/useIphoneInputFix';
-// load global styles from @kadena/kode-ui
 import '@components/globalstyles.css';
 import {
   MediaContextProvider,
