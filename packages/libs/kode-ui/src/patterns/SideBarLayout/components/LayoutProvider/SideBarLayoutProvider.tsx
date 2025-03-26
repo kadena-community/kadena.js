@@ -3,6 +3,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -36,6 +37,8 @@ export interface ILayoutContext {
   isActiveUrl: (url?: string) => boolean;
   rightAsideTitle?: string;
   setRightAsideTitle: (value?: string) => void;
+  topbannerRef?: HTMLDivElement | null;
+  setTopbannerRef: (value?: HTMLDivElement | null) => void;
   rightAsideRef?: HTMLDivElement | null;
   setRightAsideRef: (value?: HTMLDivElement | null) => void;
   isRightAsideExpanded: boolean;
@@ -64,6 +67,8 @@ export const LayoutContext = createContext<ILayoutContext>({
   isRightAsideExpanded: false,
   setIsRightAsideExpanded: () => {},
   setRightAsideOnClose: () => {},
+  topbannerRef: null,
+  setTopbannerRef: () => {},
   setRightAsideRef: () => {},
   setBreadcrumbsRef: () => {},
   setHeaderContextRef: () => {},
@@ -76,7 +81,9 @@ export interface ILayoutProvider extends PropsWithChildren {}
 export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [rightAsideRef, setRightAsideRefState] =
     useState<HTMLDivElement | null>(null);
-
+  const [topbannerRef, setTopbannerRefState] = useState<HTMLDivElement | null>(
+    null,
+  );
   const [breadcrumbsRef, setBreadcrumbsRefState] =
     useState<HTMLDivElement | null>(null);
   const [headerContextRef, setHeaderContextRefState] =
@@ -141,6 +148,9 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
     setRightAsideRefState(value ? value : null);
   };
 
+  const setTopbannerRef = (value?: HTMLDivElement | null) => {
+    setTopbannerRefState(value ? value : null);
+  };
   const setBreadcrumbsRef = (value?: HTMLDivElement | null) => {
     setBreadcrumbsRefState(value ? value : null);
   };
@@ -171,6 +181,8 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         isActiveUrl,
         rightAsideTitle,
         setRightAsideTitle,
+        topbannerRef,
+        setTopbannerRef,
         rightAsideRef,
         setRightAsideRef,
         isRightAsideExpanded,

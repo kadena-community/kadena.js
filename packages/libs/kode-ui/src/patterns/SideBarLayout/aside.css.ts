@@ -1,3 +1,4 @@
+import { createVar } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import {
   atoms,
@@ -7,6 +8,8 @@ import {
   token,
 } from './../../styles';
 import { minHeaderHeight, rightAsBarMinWidth } from './styles.css';
+
+export const topbannerHeightCSS = createVar();
 
 export const asideWrapperTempClass = recipe({
   base: [
@@ -55,6 +58,9 @@ export const asideWrapperTempClass = recipe({
 export const asideWrapperClass = recipe({
   base: [
     {
+      vars: {
+        [topbannerHeightCSS]: '20px',
+      },
       position: 'fixed',
       paddingBlockEnd: token('spacing.md'),
       backgroundColor: token('color.background.base.default'),
@@ -86,7 +92,8 @@ export const asideWrapperClass = recipe({
         transform: 'translateX(0%)',
         marginInlineEnd: token('spacing.md'),
         zIndex: token('zIndex.overlay'),
-        height: `100dvh`,
+        height: `calc(100dvh - ${topbannerHeightCSS})`,
+        marginBlockStart: topbannerHeightCSS,
       },
     }),
   ],
