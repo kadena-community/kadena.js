@@ -13,7 +13,6 @@ import {
   MonoSwapHoriz,
   MonoTableRows,
   MonoWallet,
-  MonoWarning,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
@@ -42,7 +41,6 @@ import {
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
-import { BetaHeader } from '../BetaHeader';
 import { KLogo } from './KLogo';
 
 export const SideBar: FC<{ topbannerHeight?: number }> = ({
@@ -132,23 +130,6 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       }
       context={
         <>
-          <SideBarItem visual={<MonoWarning />} label="warning">
-            {isExpanded ? (
-              <BetaHeader />
-            ) : (
-              <Stack
-                backgroundColor="semantic.warning.default"
-                justifyContent={'center'}
-                alignItems={'center'}
-                padding={'sm'}
-              >
-                <Text>
-                  <MonoWarning />
-                </Text>
-              </Stack>
-            )}
-          </SideBarItem>
-
           <SideBarItemsInline>
             <SideBarItem visual={<MonoContacts />} label="Profile">
               <ContextMenu
