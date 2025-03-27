@@ -1,12 +1,5 @@
-import { MonoWallet } from '@kadena/kode-icons/system';
-import {
-  Notification,
-  NotificationButton,
-  NotificationFooter,
-  NotificationHeading,
-} from '@kadena/kode-ui';
+import { Notification, NotificationHeading } from '@kadena/kode-ui';
 import { useEffect, useState, type FC } from 'react';
-import { buttonClass } from './styles.css';
 
 const DISMISSED_PREVIEWBANNERKEY = 'DISMISSED_PREVIEWBANNER';
 export const PreviewBanner: FC<{ maxWidth?: number }> = ({ maxWidth }) => {
