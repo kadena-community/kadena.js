@@ -2967,7 +2967,7 @@ importers:
         specifier: ^8.4.4
         version: 8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))
       '@storybook/addon-webpack5-compiler-swc':
-        specifier: ^1.0.5
+        specifier: ^1.0.4
         version: 1.0.5(@swc/helpers@0.5.11)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11))(esbuild@0.21.5))
       '@storybook/csf':
         specifier: ^0.1.11
