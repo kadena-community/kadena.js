@@ -2948,9 +2948,6 @@ importers:
       '@storybook/addon-controls':
         specifier: ^8.4.4
         version: 8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))
-      '@storybook/addon-docs':
-        specifier: ^8.4.4
-        version: 8.4.4(@types/react@18.3.3)(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))
       '@storybook/addon-essentials':
         specifier: ^8.4.4
         version: 8.4.4(@types/react@18.3.3)(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))
@@ -2960,9 +2957,6 @@ importers:
       '@storybook/addon-links':
         specifier: ^8.4.4
         version: 8.4.4(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))
-      '@storybook/addon-mdx-gfm':
-        specifier: ^8.4.4
-        version: 8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))
       '@storybook/addon-webpack5-compiler-swc':
         specifier: ^1.0.5
         version: 1.0.5(@swc/helpers@0.5.11)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11))(esbuild@0.21.5))
@@ -8491,11 +8485,6 @@ packages:
     peerDependenciesMeta:
       react:
         optional: true
-
-  '@storybook/addon-mdx-gfm@8.4.4':
-    resolution: {integrity: sha512-dj98NGWowhSwWYn2LUaLMxHNvBY+73n9CFsELrttg24nOxmeRfku0uh2hp5epMmRMX3Fej7nCkKNJaU1fihZ+Q==}
-    peerDependencies:
-      storybook: ^8.4.4
 
   '@storybook/addon-measure@8.4.4':
     resolution: {integrity: sha512-KsjrwrXwrI+z7hKKfjyY1w1b0gLSLZmp15vIRJMELybWV0+4bZFLJGwMBOQFx+aWBED8yZrRV9OjTmoczawsZg==}
@@ -24048,13 +24037,15 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -24114,7 +24105,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -24529,7 +24520,7 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -26816,14 +26807,6 @@ snapshots:
       ts-dedent: 2.2.0
     optionalDependencies:
       react: 18.3.1
-
-  '@storybook/addon-mdx-gfm@8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))':
-    dependencies:
-      remark-gfm: 4.0.0
-      storybook: 8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10)
-      ts-dedent: 2.2.0
-    transitivePeerDependencies:
-      - supports-color
 
   '@storybook/addon-measure@8.4.4(storybook@8.4.4(bufferutil@4.0.9)(prettier@3.2.5)(utf-8-validate@5.0.10))':
     dependencies:
