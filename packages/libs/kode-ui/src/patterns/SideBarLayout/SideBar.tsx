@@ -1,5 +1,5 @@
 import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
-import { assignInlineVars } from '@vanilla-extract/dynamic';
+
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
@@ -64,9 +64,6 @@ export const SideBar: FC<ISideBarProps> = ({
         data-testid="leftaside"
         className={classNames(menuWrapperClass({ expanded: isExpanded }), {
           [menuWrapperMobileExpandedClass]: isExpanded,
-        })}
-        style={assignInlineVars({
-          [topbannerHeightCSS]: `${topbannerHeight}px`,
         })}
       >
         <Stack className={classNames(menuMenuIconClass)}>
