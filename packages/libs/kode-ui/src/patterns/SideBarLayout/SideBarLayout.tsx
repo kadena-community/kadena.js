@@ -6,7 +6,12 @@ import { MediaContextProvider, Stack } from './../../components';
 import { useLayout } from './components/LayoutProvider';
 import { SideBarAside } from './components/SideBarAside';
 import { SideBarHeader } from './components/SideBarHeader';
-import { bodyWrapperClass, layoutWrapperClass, mainClass } from './styles.css';
+import {
+  bodyWrapperClass,
+  layoutWrapperClass,
+  mainClass,
+  topbannerWrapperClass,
+} from './styles.css';
 import type { ISideBarLayoutLocation } from './types';
 
 export interface ISideBarLayout extends PropsWithChildren {
@@ -71,7 +76,6 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
         position="relative"
         className={bodyWrapperClass}
       >
-        <div id="topbanners" ref={ref} />
         <Stack
           className={classNames(
             layoutWrapperClass({
@@ -80,10 +84,11 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
             }),
           )}
         >
-          <SideBarHeader logo={logo} />
+          <div id="topbanners" ref={ref} className={topbannerWrapperClass} />
+          <SideBarHeader logo={logo} topbannerHeight={topbannerHeight} />
           {sidebar &&
             React.cloneElement(sidebar, { ...sidebar?.props, topbannerHeight })}
-          <main className={mainClass}>
+          <main className={mainClass} style={{ top: topbannerHeight }}>
             <Stack width="100%" flexDirection="column" marginInlineEnd="sm">
               <Stack flex={1}>{children}</Stack>
             </Stack>
