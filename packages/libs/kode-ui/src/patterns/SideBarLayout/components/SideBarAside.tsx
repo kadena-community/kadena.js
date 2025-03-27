@@ -1,4 +1,5 @@
 import { MonoClose } from '@kadena/kode-icons/system';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 import {
