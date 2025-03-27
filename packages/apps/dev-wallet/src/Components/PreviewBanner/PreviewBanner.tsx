@@ -31,26 +31,14 @@ export const PreviewBanner: FC<{ maxWidth?: number }> = ({ maxWidth }) => {
   return (
     <Notification
       role="status"
-      type="inlineStacked"
+      type="inline"
       intent="warning"
       contentMaxWidth={maxWidth}
       isDismissable
       onDismiss={handleDismiss}
     >
-      <NotificationHeading>Preview</NotificationHeading>
-      This a preview / canary release of the app.
-      <br />
-      This app is under constant development
-      <br />
-      and therefor could be less stable than the production app and is for
-      testing only.
-      <NotificationFooter>
-        <a className={buttonClass} href="https://wallet.kadena.io">
-          <NotificationButton icon={<MonoWallet />} intent="warning">
-            Go to live wallet
-          </NotificationButton>
-        </a>
-      </NotificationFooter>
+      <NotificationHeading>Caution</NotificationHeading>
+      This is an unreleased version of the Kadena Wallet. Use with caution!
     </Notification>
   );
 };
