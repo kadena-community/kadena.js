@@ -32,7 +32,7 @@ export const PreviewBanner: FC<{ maxWidth?: number }> = ({ maxWidth }) => {
     <Notification
       role="status"
       type="inlineStacked"
-      intent="info"
+      intent="warning"
       contentMaxWidth={maxWidth}
       isDismissable
       onDismiss={handleDismiss}
@@ -46,7 +46,7 @@ export const PreviewBanner: FC<{ maxWidth?: number }> = ({ maxWidth }) => {
       testing only.
       <NotificationFooter>
         <a className={buttonClass} href="https://wallet.kadena.io">
-          <NotificationButton icon={<MonoWallet />} intent="info">
+          <NotificationButton icon={<MonoWallet />} intent="warning">
             Go to live wallet
           </NotificationButton>
         </a>
