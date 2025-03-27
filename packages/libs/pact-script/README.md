@@ -5,20 +5,20 @@ Writing smart contracts in TypeScript/JavaScript
 ## Motivation
 
 - Using a popular and relatively simple programming language for writing smart
-  contracts which makes on boarding developers much easier to the kadena
-  blockchain.
-- Reduce the need for creates dev tools in favour of using the whole available
-  tooling for the language
-- Makes pact specific concept easier to understand by removing the need to learn
-  new syntax
+  contracts, which makes onboarding developers to the Kadena blockchain much
+  easier.
+- Reduces the need for creating new development tools by leveraging the existing
+  tooling available for the language.
+- Simplifies understanding Pact-specific concepts by removing the need to learn
+  a new syntax.
 
 ## Smart Contract
 
-A smart contract is a `class` that extends `PactContract` class. The contract
-should define a static member `moduleName` that will be used for deploying
-contracts. the contract can use `DataMap` for keeping state and exposes some
-public methods to update this state. The smart contract uses `capabilities` to
-validate and authorize accessing to the methods.
+A smart contract is a `class` that extends the `PactContract` class. The
+contract must define a static member `moduleName`, which is used for deploying
+contracts. The contract can use `DataMap` to maintain state and expose public
+methods to update it. The smart contract uses `capabilities` to validate and
+authorize access to its methods.
 
 ### Example of a contract
 
@@ -62,12 +62,12 @@ class CoinContract extends PactContract {
 
 ## Smart Contract Methods
 
-Smart contracts can have three different type of methods
+Smart contracts can have three different types of methods.
 
 ### public methods
 
-theses are the public API that contracts exposes so user can call them via
-transactions or in test files.
+These are the public API methods that the contract exposes, allowing users to
+call them via transactions or test files.
 
 ```TypeScript
 class CoinContract extends PactContract {
@@ -84,8 +84,8 @@ class CoinContract extends PactContract {
 
 ### private methods
 
-The methods that public methods use internally but they are not accessible in
-transactions and test files
+These are internal methods used by public methods but are not accessible in
+transactions or test files.
 
 ```TypeScript
 class CoinContract extends PactContract {
@@ -104,22 +104,20 @@ class CoinContract extends PactContract {
 
 ### capabilities
 
-This is exactly the same as Pact language
+A capability is a protected method defined using the `this.capability` function,
+serving three main purposes:
 
-A capability is a protected method that is defined with `this.capability`
-function and have three purposes
+- Validating inputs: Inputs are primarily validated within capabilities, and if
+  something is not valid, the capability throws an exception.
 
-- Validating inputs: the inputs mostly validate inside capabilities and whenever
-  something is not valid the capability throws an exception
+- Authorization: Inside the capability method, you check if the correct user
+  requested the function. For example, you verify if the transfer was requested
+  by the owner of the account. Additionally, a user can explicitly mention (in
+  the transaction) that they expect the contract to grant the capability.
 
-- Authorization: inside the capability method you also check if the correct user
-  requested the function. for example if transfer requested from the owner of
-  the account. Also a user can explicitly mention (in the transaction) that he
-  expects the contract to grant the capability
-
-- Scoping the transaction access: via managing the state during a tx e.g the
-  maximum amount the user allows that be deducted from his account during the
-  transaction
+- Scoping the transaction access: This involves managing the state during a
+  transaction, such as the maximum amount the user allows to be deducted from
+  their account during the transaction.
 
 ```TypeScript
 class CoinContract extends PactContract {
@@ -130,7 +128,7 @@ class CoinContract extends PactContract {
    * - the tx signed by the correct user via "enforceGuard" (Authorization)
    * - amount is positive
    * - amount is less than or equal to the account's balance
-   * after these check it's safe to update the account balance in the debit method
+   * after these checks, it's safe to update the account balance in the debit method
    */
    protected DEBIT = this.capability(
     'DEBIT',
@@ -151,40 +149,51 @@ class CoinContract extends PactContract {
 
 ## Capability Phases
 
-A capability has three phase
+A capability has three phases:
 
 ### installation
 
-this happens when the capability expects managed values, e.g. max amount the
-user want to be deducted from their accounts when calling a method.
-
-the installation could happen from the tx with `caps` field. (or via the code
-that guards the account which is not implemented in this POC )
+This occurs when the capability expects managed values, such as the maximum
+amount the user wants to be deducted from their accounts when calling a method.
+The installation could happen from the transaction with the `caps` field (or via
+the code that guards the account, which is not implemented in this POC).
 
 ### Granting a capability
 
-This happens when a method calls `grant` function of a capability then the body
-of capability will be ran and all validations happen.
+This happens when a method calls the `grant` function of a capability, at this
+point the body of the capability will be executed, and all validations will
+occur.
+
+```TypeScript
+this.TRANSFER(sender, receiver, amount).grant(()=>{
+  // the code
+})
+```
 
 ### Requiring a capability
 
-This happens by calling `require` method of capability, so it checks if the
-capability already granted.
+This happens by calling the `require` method of the capability, which checks if
+the capability has already been granted.
+
+```TypeScript
+// checks if DEBIT is granted with the arguments
+this.DEBIT(account, amount).require();
+```
 
 ## Test your contract
 
-After creating the contract you can use your favorite testing framework and test
-the function, we used vitest in this repo.
+After creating the contract, you can use your favorite testing framework to test
+the function; we used Vitest in this repo.
 
-The following tests are based of
-[CoinContract](./src/examples/coin-contract.ts); you also can check the
-[coin.test.ts](./src/examples/tests/coin.test.ts)
+The following tests are based on
+[CoinContract](./src/examples/coin-contract.ts); you can also check the
+[coin.test.ts](./src/examples/tests/coin.test.ts).
 
 ### Testing account creation
 
 ```TypeScript
 it('creates an account and transfer 1 token', () => {
-  // define a proper context for the calling tge method
+  // define a proper context for the calling the method
   const context = new PactContext({
     data: {
       'admin-ks': {
@@ -249,7 +258,7 @@ it('Transfer fails if account is not created', () => {
 
 ```TypeScript
 it('creates an account and transfer 1 token', () => {
-  // define a proper context for the calling tge method
+  // define a proper context for the calling the method
   const context = new PactContext({
     data: {
       'admin-ks': {
@@ -273,7 +282,7 @@ it('creates an account and transfer 1 token', () => {
   const contract = CoinContract.create(context);
 
   expect(
-    ()=>
+    () =>
       contract.transferCreate(
         'admin',
         'k:alice-key:keys-all',
