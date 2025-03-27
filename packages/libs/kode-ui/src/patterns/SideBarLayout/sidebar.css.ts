@@ -60,6 +60,7 @@ export const menuWrapperClass = recipe({
     }),
     {
       height: '100%',
+      pointerEvents: 'none',
     },
     responsiveStyle({
       xs: {
@@ -119,6 +120,7 @@ export const menuMenuIconClass = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+  pointerEvents: 'all',
 });
 
 export const menuNavWrapperClass = style([
@@ -128,6 +130,7 @@ export const menuNavWrapperClass = style([
   }),
   {
     overflowY: 'hidden',
+    pointerEvents: 'all',
   },
 ]);
 
