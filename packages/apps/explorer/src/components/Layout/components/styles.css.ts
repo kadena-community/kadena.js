@@ -120,6 +120,7 @@ export const cardContentWrapperClass = style([
   atoms({
     gap: 'sm',
     width: '100%',
+    display: 'grid',
   }),
   {},
   responsiveStyle({
@@ -127,11 +128,14 @@ export const cardContentWrapperClass = style([
       flexDirection: 'column',
     },
     sm: {
+      display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
     },
     md: {
+      display: 'grid',
       flexDirection: 'column',
+      flexWrap: 'unset',
     },
   }),
 ]);
