@@ -180,7 +180,7 @@ describe('coinContract', () => {
       const contract = CoinContract.create(context);
 
       expect(() => contract.transfer('admin', 'alice', 4)).toThrow(
-        'INSUFFICIENT_FUND',
+        'REACHED_MAX_ALLOWED',
       );
     });
 
