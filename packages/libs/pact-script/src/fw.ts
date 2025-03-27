@@ -4,7 +4,7 @@ let globalContext: PactContext | null = null;
 
 export const enforceGuard = (guard: guard) => {
   enforce(globalContext !== null, 'NO_CONTEXT', 'No context found');
-  const keyset = globalContext?.getByPrincipal(guard.principal)!;
+  const keyset = globalContext.getByPrincipal(guard.principal);
   return enforce(
     keyset.principal === guard.principal && keyset.signed === true,
     'GUARD_VERIFICATION_FAILED',
@@ -31,7 +31,7 @@ export class DataMap<
     enforce(key !== '', 'INVALID_KEY', 'Key cannot be empty');
     const value = this.tempData.get(key);
     enforce(value !== undefined, 'KEY_NOT_FOUND', `Key ${key} not found`);
-    return value!;
+    return value;
   }
   has(key: string) {
     return this.tempData.has(key);
@@ -45,7 +45,7 @@ export class DataMap<
 
     enforce(!this.tempData.has(key), 'KEY_EXISTS', `Key ${key} already exists`);
     this.tempData.set(key, value);
-    return 'KEY VALUE PAIR ADDED';
+    return true;
   }
   edit(key: string, value: Partial<z.infer<O>>) {
     enforce(key !== '', 'INVALID_KEY', 'Key cannot be empty');
@@ -56,7 +56,7 @@ export class DataMap<
       enforce(result.success, 'INVALID_VALUE', result.error.message);
     }
     this.tempData.set(key, { ...oldValue, ...value });
-    return 'VALUE EDITED';
+    return true;
   }
   commit() {
     this.data = new Map(this.tempData.entries());
@@ -167,7 +167,7 @@ export abstract class PactContract {
             'compose must be called within a capability block',
           );
           capabilityBody(...args);
-          sharedState.composed!.push(key);
+          sharedState.composed.push(key);
         },
       };
     };
@@ -180,15 +180,15 @@ export abstract class PactContract {
       'MANAGE_CALLED_OUTSIDE_CAPABILITY',
       'manage called outside capability',
     );
-    const installedPropertyIndex = activeCap!.parameters.indexOf(property);
+    const installedPropertyIndex = activeCap.parameters.indexOf(property);
     enforce(
       installedPropertyIndex !== -1,
       'MANAGE_PROPERTY_NOT_FOUND',
       `Property not found: ${property}`,
     );
     const installedCap = this.context.getInstalledValue(
-      `${activeCap!.moduleName}.${activeCap!.name}`,
-      activeCap!.args,
+      `${activeCap.moduleName}.${activeCap.name}`,
+      activeCap.args,
       installedPropertyIndex,
     );
     enforce(
@@ -199,9 +199,9 @@ export abstract class PactContract {
       }`,
     );
 
-    installedCap!.mangedValue = fn(
-      installedCap!.mangedValue,
-      activeCap!.args[installedPropertyIndex],
+    installedCap.mangedValue = fn(
+      installedCap.mangedValue,
+      activeCap.args[installedPropertyIndex],
     );
   }
 }
@@ -247,7 +247,7 @@ export function enforce(
   condition: boolean,
   code: string = 'FAILED',
   message: string = 'Enforcement failed',
-) {
+): asserts condition {
   if (!condition) {
     throw new Error(`${code}: ${message}`);
   }

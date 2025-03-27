@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { IPactContext, PactContext, pactRunner } from '../../fw';
 import { CoinContract } from '../coin-contract';
+import { MyCoin } from '../my-coin';
 
 describe('coinContract', () => {
   const env: IPactContext = {
@@ -225,6 +226,77 @@ describe('coinContract', () => {
 
       const contract = CoinContract.create(context);
       contract.changeAdminGuard(context.getKeyset('new-admin-ks'));
+    });
+  });
+});
+describe('my-coin', () => {
+  describe('transfer', () => {
+    it('fails if module name in installed capabilities is not my-coin', () => {
+      const env: IPactContext = {
+        data: {
+          'admin-ks': {
+            keys: ['admin-key'],
+            pred: 'keys-all',
+            signed: true,
+            installedCaps: [
+              {
+                cap: 'coin.TRANSFER',
+                args: ['admin', 'alice', 3],
+              },
+            ],
+          },
+          'alice-ks': {
+            keys: ['alice-key'],
+            pred: 'keys-all',
+            signed: true,
+            installedCaps: [
+              {
+                cap: 'coin.TRANSFER',
+                args: ['alice', 'bob', 1],
+              },
+            ],
+          },
+        },
+      };
+
+      const context = new PactContext(env);
+      const contract = MyCoin.create(context);
+
+      expect(
+        () =>
+          contract.transferCreate(
+            'admin',
+            // this is against the reserved protocol
+            'alice',
+            context.getKeyset('alice-ks'),
+            1,
+          ),
+        // error contains the capability that is not installed
+      ).toThrow(/CAPABILITY_NOT_INSTALLED.*my-coin.TRANSFER/);
+    });
+  });
+  describe('CHANGE_GUARD', () => {
+    it('throws exception for my-coin contract', () => {
+      const env: IPactContext = {
+        data: {
+          'admin-ks': {
+            keys: ['admin-key'],
+            pred: 'keys-all',
+          },
+          'new-admin-ks': {
+            keys: ['new-admin-key'],
+            pred: 'keys-all',
+          },
+        },
+      };
+
+      const context = new PactContext(env);
+      context.sign('admin-ks');
+
+      const contract = MyCoin.create(context);
+      expect(() =>
+        contract.changeAdminGuard(context.getKeyset('new-admin-ks')),
+      ).toThrow('NOT_CHANGEABLE');
     });
   });
 });

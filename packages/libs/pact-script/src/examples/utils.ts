@@ -59,3 +59,11 @@ export function enforceReserved(account: string, guard: guard) {
     `account guard protocol violation: ${account}`,
   );
 }
+
+export function enforceSameGuard(guard1: guard, guard2: guard) {
+  enforce(
+    guard1.principal === guard2.principal,
+    'GUARD_MISMATCH',
+    `guards do not match: ${guard1.principal} !== ${guard2.principal}`,
+  );
+}

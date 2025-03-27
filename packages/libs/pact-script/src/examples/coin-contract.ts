@@ -4,12 +4,16 @@ import { DataMap, enforce, enforceGuard, PactContract } from '../fw';
 
 import PactScheme from 'zod';
 
-import { enforceReserved, enforceValidateAccount } from './utils';
+import {
+  enforceReserved,
+  enforceSameGuard,
+  enforceValidateAccount,
+} from './utils';
 
 export class CoinContract extends PactContract {
-  public static readonly moduleName = 'coin';
+  public static readonly moduleName: string = 'coin';
 
-  private accounts = new DataMap({
+  protected accounts = new DataMap({
     guard: PactScheme.any(),
     balance: PactScheme.number().min(0),
   });
@@ -19,7 +23,7 @@ export class CoinContract extends PactContract {
     this.fundAdmin();
   }
 
-  private DEBIT = this.capability(
+  protected DEBIT = this.capability(
     'DEBIT',
     (sender: string, amount: decimal) => {
       const account = this.accounts.get(sender);
@@ -33,7 +37,7 @@ export class CoinContract extends PactContract {
     },
   );
 
-  private CREDIT = this.capability(
+  protected CREDIT = this.capability(
     'CREDIT',
     (receiver: string, amount: decimal) => {
       enforce(
@@ -46,7 +50,7 @@ export class CoinContract extends PactContract {
     },
   );
 
-  private TRANSFER = this.capability(
+  protected TRANSFER = this.capability(
     'TRANSFER',
     (sender: string, receiver: string, amount: decimal) => {
       this.manage('amount', (managed: number, requested: number) => {
@@ -63,7 +67,7 @@ export class CoinContract extends PactContract {
     },
   );
 
-  private CREATE_ACCOUNT = this.capability(
+  protected CREATE_ACCOUNT = this.capability(
     'CREATE_ACCOUNT',
     (account: string, guard: guard) => {
       enforce(
@@ -71,22 +75,21 @@ export class CoinContract extends PactContract {
         'ACCOUNT_EXISTS',
         'Account already exists',
       );
-      enforce(account !== '', 'EMPTY_ACCOUNT', 'account name cannot be empty');
       enforceValidateAccount(account);
       enforceReserved(account, guard);
     },
   );
 
-  private CHANGE_ADMIN_GUARD = this.capability(
+  protected CHANGE_ADMIN_GUARD = this.capability(
     'CHANGE_ADMIN_GUARD',
     (guard: guard) => {
       const admin = this.accounts.get('admin');
+      enforceGuard(admin.guard);
       enforce(
         guard.principal !== admin.guard.principal,
         'SAME_GUARD',
         'same guard',
       );
-      enforceGuard(admin.guard);
     },
   );
 
@@ -103,21 +106,19 @@ export class CoinContract extends PactContract {
     });
   }
 
-  private debit(account: string, amount: decimal): string {
+  private debit(account: string, amount: decimal) {
     this.DEBIT(account, amount).require();
     const { balance } = this.accounts.get(account);
     return this.accounts.edit(account, { balance: balance - amount });
   }
 
-  private credit(account: string, amount: decimal): string {
+  private credit(account: string, amount: decimal) {
     this.CREDIT(account, amount).require();
     const { balance } = this.accounts.get(account);
-    return this.accounts.edit(account, {
-      balance: balance + amount,
-    });
+    return this.accounts.edit(account, { balance: balance + amount });
   }
 
-  createAccount(account: string, guard: guard): string {
+  createAccount(account: string, guard: guard) {
     return this.CREATE_ACCOUNT(account, guard).grant(() =>
       this.accounts.add(account, { balance: 0, guard }),
     );
@@ -137,24 +138,19 @@ export class CoinContract extends PactContract {
     guard: guard,
     amount: number,
   ): true {
-    if (!this.accounts.has(receiver)) {
-      this.createAccount(receiver, guard);
+    if (this.accounts.has(receiver)) {
+      const account = this.accounts.get(receiver);
+      enforceSameGuard(guard, account.guard);
     } else {
-      const { guard: existingGuard } = this.accounts.get(receiver);
-      enforce(
-        existingGuard.principal === guard.principal,
-        'GUARD_MISMATCH',
-        `Guard mismatch ${existingGuard.principal} !== ${guard.principal}`,
-      );
+      this.createAccount(receiver, guard);
     }
     return this.transfer(sender, receiver, amount);
   }
 
   changeAdminGuard(guard: guard) {
-    return this.CHANGE_ADMIN_GUARD(guard).grant(() => {
-      this.accounts.edit('admin', { guard });
-      return true;
-    });
+    return this.CHANGE_ADMIN_GUARD(guard).grant(() =>
+      this.accounts.edit('admin', { guard }),
+    );
   }
 
   getBalance(account: string): decimal {
