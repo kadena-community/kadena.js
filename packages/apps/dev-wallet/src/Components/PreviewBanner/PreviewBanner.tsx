@@ -8,20 +8,35 @@ import {
 import { useEffect, useState, type FC } from 'react';
 import { buttonClass } from './styles.css';
 
-export const PreviewBanner: FC = () => {
+const DISMISSED_PREVIEWBANNERKEY = 'DISMISSED_PREVIEWBANNER';
+export const PreviewBanner: FC<{ maxWidth?: number }> = ({ maxWidth }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     const { origin } = window.location;
     setShow(false);
-    if (!origin.includes('https://wallet.kadena.io')) {
+    const isDismissed = window.sessionStorage.getItem(
+      DISMISSED_PREVIEWBANNERKEY,
+    );
+    if (!origin.includes('https://wallet.kadena.io') && !isDismissed) {
       setShow(true);
     }
   }, []);
 
+  const handleDismiss = () => {
+    window.sessionStorage.setItem(DISMISSED_PREVIEWBANNERKEY, 'true');
+  };
+
   if (!show) return null;
   return (
-    <Notification role="status" type="stacked" intent="info">
+    <Notification
+      role="status"
+      type="inlineStacked"
+      intent="info"
+      contentMaxWidth={maxWidth}
+      isDismissable
+      onDismiss={handleDismiss}
+    >
       <NotificationHeading>Preview</NotificationHeading>
       This a preview / canary release of the app.
       <br />
