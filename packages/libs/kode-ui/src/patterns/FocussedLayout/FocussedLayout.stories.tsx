@@ -155,6 +155,50 @@ export const WithTopBanner: Story = {
               />
             </SectionCardContentBlock>
           </SectionCard>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
           <Footer>
             <FooterContent>FOOTERCONTENT</FooterContent>
           </Footer>
