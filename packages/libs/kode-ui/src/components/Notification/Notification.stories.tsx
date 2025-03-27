@@ -116,37 +116,3 @@ export const Primary: Story = {
     );
   },
 };
-
-export const MaxWidth: Story = {
-  name: 'MaxWidth Content',
-  args: {
-    isDismissable: true,
-    intent: undefined,
-  },
-  render: ({ heading, isDismissable, intent, children, type }) => {
-    return (
-      <Notification
-        intent={intent}
-        type="inlineStacked"
-        isDismissable={isDismissable}
-        onDismiss={() => {
-          alert('Close button clicked');
-        }}
-        role="none"
-        contentMaxWidth={300}
-      >
-        <NotificationHeading>Content is centered</NotificationHeading>
-        When you have a fullWidth notification, but you want to have a maxWidth
-        of the content
-        <NotificationFooter>
-          <NotificationButton intent="positive" icon={<MonoCheck />}>
-            Accept
-          </NotificationButton>
-          <NotificationButton intent="negative" icon={<MonoClose />}>
-            Reject
-          </NotificationButton>
-        </NotificationFooter>
-      </Notification>
-    );
-  },
-};
