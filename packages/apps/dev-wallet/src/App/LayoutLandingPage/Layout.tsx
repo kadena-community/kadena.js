@@ -6,6 +6,7 @@ import {
   FocussedLayoutFooter,
   FocussedLayoutHeaderAside,
   FocussedLayoutProvider,
+  FocussedLayoutTopBanner,
 } from '@kadena/kode-ui/patterns';
 import { FC, PropsWithChildren } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -23,6 +24,9 @@ export const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <FocussedLayoutProvider>
+      <FocussedLayoutTopBanner>
+        <PreviewBanner maxWidth={1000} />
+      </FocussedLayoutTopBanner>
       <FocussedLayout>
         <FocussedLayoutHeaderAside>
           <Button
@@ -35,7 +39,6 @@ export const LandingPageLayout: FC<PropsWithChildren> = ({ children }) => {
           />
         </FocussedLayoutHeaderAside>
         <CardLayoutProvider>
-          <PreviewBanner />
           <Stack className={focussedLayoutChildrenWrapperClass}>
             <InnerContent>
               <Outlet />

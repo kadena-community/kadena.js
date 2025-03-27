@@ -73,6 +73,7 @@ export {
   HeaderAside as FocussedLayoutHeaderAside,
   HeaderContent as FocussedLayoutHeaderContent,
   LayoutProvider as FocussedLayoutProvider,
+  TopBanner as FocussedLayoutTopBanner,
   useLayout as useFocussedLayout,
 } from './FocussedLayout';
 

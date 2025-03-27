@@ -45,7 +45,9 @@ import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { BetaHeader } from '../BetaHeader';
 import { KLogo } from './KLogo';
 
-export const SideBar: FC = () => {
+export const SideBar: FC<{ topbannerHeight?: number }> = ({
+  topbannerHeight = 0,
+}) => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
@@ -58,6 +60,7 @@ export const SideBar: FC = () => {
 
   return (
     <SideBarUI
+      topbannerHeight={topbannerHeight}
       logo={
         <>
           <Link to="/">

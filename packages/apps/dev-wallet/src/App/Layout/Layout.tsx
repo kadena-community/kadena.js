@@ -13,6 +13,7 @@ import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
+  SideBarTopBanner,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
@@ -26,7 +27,6 @@ import {
   isNotExpandedClass,
   mainContainerClass,
   mobileNetworkClass,
-  topBannerClass,
 } from './style.css';
 
 export const Layout: FC = () => {
@@ -54,6 +54,9 @@ export const Layout: FC = () => {
 
   return (
     <>
+      <SideBarTopBanner>
+        <PreviewBanner />
+      </SideBarTopBanner>
       <SideBarLayout
         location={innerLocation}
         logo={
@@ -73,19 +76,6 @@ export const Layout: FC = () => {
           </Stack>
         }
         sidebar={<SideBar />}
-        topBanner={
-          <Stack
-            flexDirection={'column'}
-            className={classNames(
-              mainContainerClass,
-              topBannerClass,
-              isExpanded ? isExpandedMainClass : isNotExpandedClass,
-            )}
-            flex={1}
-          >
-            <PreviewBanner />
-          </Stack>
-        }
         footer={
           <SideBarFooter>
             <SideBarFooterItem
