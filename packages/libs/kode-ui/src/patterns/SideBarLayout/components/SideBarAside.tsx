@@ -58,6 +58,9 @@ export const SideBarAside: FC<{
         className={asideWrapperClass({
           expanded: isRightAsideExpanded,
         })}
+        style={assignInlineVars({
+          [topbannerHeightCSS]: `${topbannerHeight}px`,
+        })}
       >
         <header className={asideHeaderClass}>
           <Stack

@@ -125,3 +125,41 @@ export const WithFooter: Story = {
     );
   },
 };
+
+export const WithTopBanner: Story = {
+  name: 'Foccused Layout with a topbanner',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    children: 'This is the content for our section',
+  },
+  render: () => {
+    return (
+      <LayoutProvider>
+        <TopBanner>
+          <Notification role="status" type="inline">
+            <NotificationHeading>This is a header</NotificationHeading>
+          </Notification>
+        </TopBanner>
+        <HeaderContent>LEFT CONTENT</HeaderContent>
+        <HeaderAside>RIGHT ASIDE</HeaderAside>
+        <FocussedLayout>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <Footer>
+            <FooterContent>FOOTERCONTENT</FooterContent>
+          </Footer>
+        </FocussedLayout>
+      </LayoutProvider>
+    );
+  },
+};

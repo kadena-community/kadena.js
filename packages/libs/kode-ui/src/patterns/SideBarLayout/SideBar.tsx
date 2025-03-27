@@ -65,6 +65,9 @@ export const SideBar: FC<ISideBarProps> = ({
         className={classNames(menuWrapperClass({ expanded: isExpanded }), {
           [menuWrapperMobileExpandedClass]: isExpanded,
         })}
+        style={assignInlineVars({
+          [topbannerHeightCSS]: `${topbannerHeight}px`,
+        })}
       >
         <Stack className={classNames(menuMenuIconClass)}>
           {isExpanded ? ShowLogo() : ShowSmallLogo()}
