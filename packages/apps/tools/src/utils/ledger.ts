@@ -11,8 +11,8 @@ import type {
   BuildTransactionResult,
   TransferCrossChainTxParams,
   TransferTxParams,
-} from 'hw-app-kda';
-import AppKda from 'hw-app-kda';
+} from 'hw-app-kda-clone';
+import AppKda from 'hw-app-kda-clone';
 import type Transport from '@ledgerhq/hw-transport';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import { isTestEnvironment } from './isDevEnvironment';
@@ -189,6 +189,8 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
   }
 }
 
+type TransportType = typeof Transport;
+
 export const getKadenaLedgerApp = async (): Promise<
   AppKda | IKadenaLedgerAppLike
 > => {
@@ -197,6 +199,6 @@ export const getKadenaLedgerApp = async (): Promise<
     return app;
   }
   const transport = await getTransport();
-  const app = new AppKda(transport);
+  const app = new AppKda(transport as unknown as TransportType);
   return app;
 };

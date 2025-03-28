@@ -26,7 +26,7 @@ import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
 import { MonoKeyboardArrowRight, MonoRefresh } from '@kadena/kode-icons/system';
 import type { ChainId } from '@kadena/types';
-import type { PactCommandObject } from 'hw-app-kda';
+import type { PactCommandObject } from 'hw-app-kda-clone';
 import { z } from 'zod';
 import { SignFormReceiver } from './sign-form-receiver';
 import type { SenderType } from './sign-form-sender';
