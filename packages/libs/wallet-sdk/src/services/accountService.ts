@@ -36,7 +36,7 @@ export async function getAccountDetails(
           accountDetails,
         };
       } catch (error) {
-        if (error.message.includes('row not found') === true) {
+        if (error.message.includes('No value found') === true) {
           return {
             chainId,
             accountDetails: null,
