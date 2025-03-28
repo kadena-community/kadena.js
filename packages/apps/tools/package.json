@@ -20,7 +20,8 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "pnpm run generate:contracts && tsc --noEmit"
+    "verify": "pnpm run generate:contracts && tsc --noEmit",
+    "prepare": "pnpm --version"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
@@ -33,7 +34,7 @@
     "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
-    "@ledgerhq/hw-app-kda": "git+ssh://git@github.com:obsidiansystems/hw-app-kda",
+    "hw-app-kda": "git+ssh://git@github.com:obsidiansystems/hw-app-kda",
     "@ledgerhq/hw-transport-webhid": "^6.28.3",
     "@ledgerhq/logs": "^6.12.0",
     "@tanstack/react-query": "^5.32.0",
