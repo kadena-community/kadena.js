@@ -1,5 +1,12 @@
 # @kadena/kadena-cli
 
+## 1.4.2
+
+### Patch Changes
+
+- fdfd6d3: fix a bug where a template filename is passed to
+  createAndWriteTransaction instead of the actual template string
+
 ## 1.4.1
 
 ### Patch Changes
