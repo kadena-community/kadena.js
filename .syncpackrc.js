@@ -14,6 +14,7 @@ const config = {
         '@kadena-dev/eslint-plugin',
         '@kadena/spirekey-sdk',
         'remark-gfm',
+        'hw-app-kda-clone',
       ],
       isIgnored: true, // Toggle flag or or remove group to see inconsistencies
     },

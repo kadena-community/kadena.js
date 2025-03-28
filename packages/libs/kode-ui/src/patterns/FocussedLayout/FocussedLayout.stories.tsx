@@ -8,13 +8,14 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '../SectionCard';
-import { Button } from './../../components';
+import { Button, Notification, NotificationHeading } from './../../components';
 import { FocussedLayout } from './FocussedLayout';
 import { Footer } from './components/Footer/Footer';
 import { FooterContent } from './components/Footer/FooterContent';
 import { HeaderAside } from './components/Header/HeaderAside';
 import { HeaderContent } from './components/Header/HeaderContent';
 import { LayoutProvider } from './components/LayoutProvider';
+import { TopBanner } from './components/TopBanner/TopBanner';
 
 interface IProps {}
 
@@ -105,6 +106,88 @@ export const WithFooter: Story = {
         <HeaderContent>LEFT CONTENT</HeaderContent>
         <HeaderAside>RIGHT ASIDE</HeaderAside>
         <FocussedLayout>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <Footer>
+            <FooterContent>FOOTERCONTENT</FooterContent>
+          </Footer>
+        </FocussedLayout>
+      </LayoutProvider>
+    );
+  },
+};
+
+export const WithTopBanner: Story = {
+  name: 'Foccused Layout with a topbanner',
+  args: {
+    title: 'Our section',
+    description: <>Our section is awesome</>,
+    children: 'This is the content for our section',
+  },
+  render: () => {
+    return (
+      <LayoutProvider>
+        <TopBanner>
+          <Notification role="status" type="inline">
+            <NotificationHeading>This is a header</NotificationHeading>
+          </Notification>
+        </TopBanner>
+        <HeaderContent>LEFT CONTENT</HeaderContent>
+        <HeaderAside>RIGHT ASIDE</HeaderAside>
+        <FocussedLayout>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
+          <SectionCard stack="horizontal" intent="info">
+            <SectionCardContentBlock>
+              <SectionCardBody>
+                <>He-man!</>
+              </SectionCardBody>
+              <SectionCardHeader
+                title="Masters of the Universe"
+                description={<>I have the Power</>}
+              />
+            </SectionCardContentBlock>
+          </SectionCard>
           <SectionCard stack="horizontal" intent="info">
             <SectionCardContentBlock>
               <SectionCardBody>

@@ -8,11 +8,14 @@ export interface ILayoutContext {
   setHeaderAsideRef: (value?: HTMLDivElement | null) => void;
   footerContentRef?: HTMLDivElement | null;
   setFooterContentRef: (value?: HTMLDivElement | null) => void;
+  topbannerRef?: HTMLDivElement | null;
+  setTopbannerRef: (value?: HTMLDivElement | null) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   setHeaderContentRef: () => {},
   setHeaderAsideRef: () => {},
   setFooterContentRef: () => {},
+  setTopbannerRef: () => {},
 });
 
 export const useLayout = () => useContext(LayoutContext);
@@ -26,6 +29,9 @@ export const FocussedLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
     useState<HTMLDivElement | null>(null);
   const [footerContentRef, setFooterContentState] =
     useState<HTMLDivElement | null>(null);
+  const [topbannerRef, setTopbannerRefState] = useState<HTMLDivElement | null>(
+    null,
+  );
 
   const setHeaderContentRef = (value?: HTMLDivElement | null) => {
     setHeaderContentRefState(value ? value : null);
@@ -37,6 +43,10 @@ export const FocussedLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
     setFooterContentState(value ? value : null);
   };
 
+  const setTopbannerRef = (value?: HTMLDivElement | null) => {
+    setTopbannerRefState(value ? value : null);
+  };
+
   return (
     <LayoutContext.Provider
       value={{
@@ -46,6 +56,8 @@ export const FocussedLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
         setHeaderAsideRef,
         footerContentRef,
         setFooterContentRef,
+        topbannerRef,
+        setTopbannerRef,
       }}
     >
       {children}
