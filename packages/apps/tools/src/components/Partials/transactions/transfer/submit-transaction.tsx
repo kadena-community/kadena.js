@@ -31,8 +31,8 @@ import {
   MonoContentCopy,
   MonoKeyboardArrowRight,
 } from '@kadena/kode-icons/system';
-import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { useQueryClient } from '@tanstack/react-query';
+import type { PactCommandObject } from 'hw-app-kda-clone';
 import Trans from 'next-translate/Trans';
 import Link from 'next/link';
 

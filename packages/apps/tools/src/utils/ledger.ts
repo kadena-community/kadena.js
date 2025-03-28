@@ -7,14 +7,14 @@ import {
   readKeyset,
 } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import type Transport from '@ledgerhq/hw-transport';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import type {
   BuildTransactionResult,
   TransferCrossChainTxParams,
   TransferTxParams,
-} from '@ledgerhq/hw-app-kda';
-import AppKda from '@ledgerhq/hw-app-kda';
-import type Transport from '@ledgerhq/hw-transport';
-import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+} from 'hw-app-kda-clone';
+import AppKda from 'hw-app-kda-clone';
 import { isTestEnvironment } from './isDevEnvironment';
 import { stripAccountPrefix } from './string';
 
@@ -189,6 +189,8 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
   }
 }
 
+type TransportType = typeof Transport;
+
 export const getKadenaLedgerApp = async (): Promise<
   AppKda | IKadenaLedgerAppLike
 > => {
@@ -197,6 +199,6 @@ export const getKadenaLedgerApp = async (): Promise<
     return app;
   }
   const transport = await getTransport();
-  const app = new AppKda(transport);
+  const app = new AppKda(transport as unknown as TransportType);
   return app;
 };
