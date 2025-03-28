@@ -17,14 +17,6 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-interactions'),
     getAbsolutePath('storybook-dark-mode'),
     getAbsolutePath('@etchteam/storybook-addon-status'),
-    {
-      name: '@storybook/addon-docs',
-      options: {
-        configureJSX: true,
-        transcludeMarkdown: true,
-      },
-    },
-    getAbsolutePath('@storybook/addon-mdx-gfm'),
     getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
     '@chromatic-com/storybook',
   ],
