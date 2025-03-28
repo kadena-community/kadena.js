@@ -19,9 +19,10 @@ import { KLogoText } from './Logo/KLogoText';
 
 interface IProps extends PropsWithChildren {
   logo?: ReactElement;
+  topbannerHeight?: number;
 }
 
-export const SideBarHeader: FC<IProps> = ({ logo }) => {
+export const SideBarHeader: FC<IProps> = ({ logo, topbannerHeight = 0 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const contextRef = useRef<HTMLDivElement | null>(null);
   const {
@@ -47,7 +48,10 @@ export const SideBarHeader: FC<IProps> = ({ logo }) => {
   }, [ref.current, contextRef.current]);
 
   return (
-    <header className={headerWrapperClass({ sideBarExpanded: isExpanded })}>
+    <header
+      className={headerWrapperClass({ sideBarExpanded: isExpanded })}
+      style={{ top: topbannerHeight }}
+    >
       <Stack
         className={classNames(headerClass, {
           [headerExpandedClass]: !isExpanded,

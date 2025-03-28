@@ -30,7 +30,9 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { KLogo } from './KLogo';
 
-export const SideBar: FC = () => {
+export const SideBar: FC<{ topbannerHeight?: number }> = ({
+  topbannerHeight = 0,
+}) => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const { logout, account, isMounted, isAgent, isOwner, isComplianceOwner } =
@@ -56,6 +58,7 @@ export const SideBar: FC = () => {
 
   return (
     <SideBarLayout
+      topbannerHeight={topbannerHeight}
       logo={
         <>
           <Link href="/">

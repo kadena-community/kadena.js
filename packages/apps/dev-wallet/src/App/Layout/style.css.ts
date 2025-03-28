@@ -1,4 +1,4 @@
-import { token } from '@kadena/kode-ui/styles';
+import { atoms, token } from '@kadena/kode-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 
 const contentWidth = createVar();
@@ -29,6 +29,15 @@ export const mainContainerClass = style({
     },
   },
 });
+
+export const topBannerClass = style([
+  atoms({
+    marginBlockEnd: 'md',
+  }),
+  {
+    minHeight: 'unset!important',
+  },
+]);
 
 export const mobileNetworkClass = style({
   display: 'flex',

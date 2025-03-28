@@ -6,12 +6,14 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
+import { PreviewBanner } from '@/Components/PreviewBanner/PreviewBanner';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { Badge, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
   SideBarFooter,
   SideBarFooterItem,
   SideBarLayout,
+  SideBarTopBanner,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
@@ -52,6 +54,9 @@ export const Layout: FC = () => {
 
   return (
     <>
+      <SideBarTopBanner>
+        <PreviewBanner />
+      </SideBarTopBanner>
       <SideBarLayout
         location={innerLocation}
         logo={

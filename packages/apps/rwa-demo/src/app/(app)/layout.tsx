@@ -5,6 +5,7 @@ import {
   RightAsideHeader,
   SideBarHeaderContext,
   SideBarLayout,
+  SideBarTopBanner,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 
@@ -59,6 +60,13 @@ const RootLayout = ({
   return (
     <>
       <SideBarHeaderContext>
+        <SideBarTopBanner>
+          <DemoBanner />
+          <CookieConsent />
+          <GraphOnlineBanner />
+          <FrozenInvestorBanner />
+          <GasPayableBanner />
+        </SideBarTopBanner>
         <Button
           ref={txsButtonRef}
           variant="transparent"
@@ -91,15 +99,6 @@ const RootLayout = ({
         </RightAside>
       )}
       <SideBarLayout
-        topBanner={
-          <Stack width="100%" gap="xs" flexDirection="column">
-            <DemoBanner />
-            <CookieConsent />
-            <GraphOnlineBanner />
-            <FrozenInvestorBanner />
-            <GasPayableBanner />
-          </Stack>
-        }
         logo={
           <Link href="/">
             <KLogo />
