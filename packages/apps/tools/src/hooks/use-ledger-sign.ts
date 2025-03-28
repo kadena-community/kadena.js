@@ -7,7 +7,7 @@ import type {
   transferCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
-import type { TransferCrossChainTxParams } from 'hw-app-kda';
+import type { TransferCrossChainTxParams } from 'hw-app-kda-clone';
 import { useAsyncFn } from 'react-use';
 
 export type ITransferInput = Parameters<typeof transferCommand>[0];
