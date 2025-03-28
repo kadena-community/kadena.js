@@ -11,8 +11,8 @@ import type {
   BuildTransactionResult,
   TransferCrossChainTxParams,
   TransferTxParams,
-} from '@ledgerhq/hw-app-kda';
-import AppKda from '@ledgerhq/hw-app-kda';
+} from 'hw-app-kda';
+import AppKda from 'hw-app-kda';
 import type Transport from '@ledgerhq/hw-transport';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import { isTestEnvironment } from './isDevEnvironment';
