@@ -17,6 +17,7 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-interactions'),
     getAbsolutePath('storybook-dark-mode'),
     getAbsolutePath('@etchteam/storybook-addon-status'),
+    getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
     '@chromatic-com/storybook',
   ],
   framework: {
