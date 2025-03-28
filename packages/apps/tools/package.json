@@ -20,8 +20,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "pnpm run generate:contracts && tsc --noEmit",
-    "prepare": "pnpm --version"
+    "verify": "pnpm run generate:contracts && tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
@@ -34,7 +33,7 @@
     "@kadena/kode-ui": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
-    "hw-app-kda-clone": "workspace:*",
+    "@ledgerhq/hw-transport": "^6.30.3",
     "@ledgerhq/hw-transport-webhid": "^6.28.3",
     "@ledgerhq/logs": "^6.12.0",
     "@tanstack/react-query": "^5.32.0",
@@ -46,6 +45,7 @@
     "ace-builds": "~1.30.0",
     "classnames": "^2.3.1",
     "fuse.js": "^7.0.0",
+    "hw-app-kda-clone": "workspace:*",
     "js-cookie": "~3.0.5",
     "next": "14.2.26",
     "next-themes": "^0.2.1",

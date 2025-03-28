@@ -7,14 +7,14 @@ import {
   readKeyset,
 } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import type Transport from '@ledgerhq/hw-transport';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import type {
   BuildTransactionResult,
   TransferCrossChainTxParams,
   TransferTxParams,
 } from 'hw-app-kda-clone';
 import AppKda from 'hw-app-kda-clone';
-import type Transport from '@ledgerhq/hw-transport';
-import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import { isTestEnvironment } from './isDevEnvironment';
 import { stripAccountPrefix } from './string';
 

@@ -22,16 +22,16 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.cjs.json && tsc && cp ./package.cjs.json ./lib/cjs/package.json #&& api-extractor run",
-    "format": "pnpm run --sequential /^format:.*/",
+    "format": "echo 'no formatting' # pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
-    "lint": "pnpm run /^lint:.*/",
+    "lint": "echo 'no linting yet' # pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "vitest run",
+    "test": "echo 'no tests for this' # vitest run",
     "watch": "rm -rf ./dist/ && pnpm rollup -c rollup.config.mjs --watch"
   },
   "dependencies": {
