@@ -33,15 +33,17 @@ describe('template to live test', () => {
     };
 
     await services.filesystem.ensureDirectoryExists(process.cwd());
-    const transaction = await createAndWriteTransaction(
+    const result = await createAndWriteTransaction(
       variables,
       'transaction-test.json',
       defaultTemplates.transfer,
     );
-    assertCommandError(transaction);
+    assertCommandError(result);
+
+    const { filePath } = result.data[0];
 
     const signed = await signTransactionFileWithKeyPairAction({
-      files: [transaction.data.filePath],
+      files: [filePath],
       keyPairs: [{ publicKey, secretKey }],
     });
     assertCommandError(signed);
