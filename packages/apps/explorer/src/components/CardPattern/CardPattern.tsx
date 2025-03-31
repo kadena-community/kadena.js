@@ -1,6 +1,5 @@
-import { SpireKeyLogoKdacolorLight } from '@kadena/kode-icons/product';
 import { Box, Heading, Stack, Text } from '@kadena/kode-ui';
-import { atoms, token } from '@kadena/kode-ui/styles';
+import { atoms } from '@kadena/kode-ui/styles';
 import React from 'react';
 import { bodyContent, container, paddingContainer } from './CardPattern.css';
 
@@ -72,17 +71,3 @@ export const CardFooter = ({
     </Stack>
   );
 };
-
-export const SpireKeyCardContentBlock = (
-  props: Omit<CardContentBlockProps, 'visual'>,
-) => (
-  <CardContentBlock
-    {...props}
-    visual={
-      <SpireKeyLogoKdacolorLight
-        aria-label="SpireKey"
-        fontSize={token('typography.fontSize.9xl')}
-      />
-    }
-  />
-);
