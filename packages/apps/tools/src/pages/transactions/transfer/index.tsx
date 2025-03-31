@@ -14,7 +14,7 @@ import Head from 'next/head';
 
 import { CHAINS } from '@kadena/chainweb-node-client';
 import type { ChainId } from '@kadena/types';
-import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
+import type { PactCommandObject } from 'hw-app-kda-clone';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { containerClass } from '../styles.css';

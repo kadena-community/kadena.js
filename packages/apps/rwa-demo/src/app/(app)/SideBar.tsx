@@ -22,7 +22,7 @@ import {
   SideBarItem,
   SideBarItemsInline,
   SideBar as SideBarLayout,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -30,9 +30,11 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { KLogo } from './KLogo';
 
-export const SideBar: FC = () => {
+export const SideBar: FC<{ topbannerHeight?: number }> = ({
+  topbannerHeight = 0,
+}) => {
   const { theme, setTheme } = useTheme();
-  const { isExpanded } = useLayout();
+  const { isExpanded } = useSideBarLayout();
   const { logout, account, isMounted, isAgent, isOwner, isComplianceOwner } =
     useAccount();
   const router = useRouter();
@@ -56,6 +58,7 @@ export const SideBar: FC = () => {
 
   return (
     <SideBarLayout
+      topbannerHeight={topbannerHeight}
       logo={
         <>
           <Link href="/">

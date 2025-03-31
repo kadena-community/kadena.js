@@ -1,12 +1,16 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
 import { changePassword } from '@/modules/wallet/wallet.service';
+import { wrapperClass } from '@/pages/errors/styles.css';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { createCredential, extractPublicKeyHex } from '@/utils/webAuthn';
+import { MonoFingerprint, MonoPassword } from '@kadena/kode-icons/system';
 import {
   Button,
   Heading,
+  Notification,
   Radio,
   RadioGroup,
   Stack,
@@ -14,7 +18,8 @@ import {
   TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
@@ -25,7 +30,9 @@ interface ChangePasswordForm {
 }
 
 export function ChangePassword() {
-  const [currenPassword, setCurrentPassword] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [error, setError] = useState('');
   const { askForPassword, profile } = useWallet();
   const navigate = usePatchedNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +65,7 @@ export function ChangePassword() {
       throw new Error('Public key not found');
     }
     const newPassword = extractPublicKeyHex(pk);
-    await changePassword(profile.uuid, currenPassword, newPassword);
+    await changePassword(profile.uuid, currentPassword, newPassword);
     await walletRepository.updateProfile({
       ...profile!,
       options: {
@@ -80,169 +87,208 @@ export function ChangePassword() {
     if (authMode !== 'PASSWORD') return;
     if (password !== confirmation) return;
     setIsLoading(true);
-    await changePassword(profile.uuid, currenPassword, password);
-    await walletRepository.updateProfile({
-      ...profile!,
-      options: {
-        authMode: 'PASSWORD',
-        rememberPassword: profile.options.rememberPassword || 'session',
-      },
-    });
-    setIsLoading(false);
-    navigate('/settings');
+    setError('');
+    try {
+      await changePassword(profile.uuid, currentPassword, password);
+      await walletRepository.updateProfile({
+        ...profile!,
+        options: {
+          authMode: 'PASSWORD',
+          rememberPassword: profile.options.rememberPassword || 'session',
+        },
+      });
+      setIsLoading(false);
+      navigate('/settings');
+    } catch (e) {
+      setError(e as string);
+      setIsLoading(false);
+    }
   };
 
   const authMode = watch('authMode');
 
-  return (
-    <AuthCard>
-      <Stack flexDirection={'column'} gap={'lg'}>
-        <Stack>
+  console.log({ form: formRef });
+  return !currentPassword ? (
+    <>
+      <CardContent
+        label="Confirm Password"
+        id="confirmpassword"
+        description="Please confirm your current password to proceed with changing your
+              password"
+        visual={<MonoPassword width={40} height={40} />}
+      />
+      <CardFooterContent>
+        <Stack width="100%">
           <UiLink
             variant="outlined"
             component={Link}
-            isCompact
             type="button"
             href="/settings"
           >
             Back
           </UiLink>
         </Stack>
-        {!currenPassword ? (
-          <Stack
-            flexDirection={'column'}
-            alignItems={'flex-start'}
-            textAlign="left"
+        <CardFooterGroup>
+          <Button
+            onPress={async () => {
+              const pass = await askForPassword(true, {
+                storePassword: false,
+              });
+              if (pass) {
+                setCurrentPassword(pass);
+              }
+            }}
           >
-            <Heading variant="h4">Confirm Password</Heading>
-            <Text>
-              Please confirm your current password to proceed with changing your
-              password
-            </Text>
-            <Stack marginBlockStart="sm">
-              <Button
-                onPress={async () => {
-                  const pass = await askForPassword(true, {
-                    storePassword: false,
-                  });
-                  if (pass) {
-                    setCurrentPassword(pass);
-                  }
-                }}
+            Confirm
+          </Button>
+        </CardFooterGroup>
+      </CardFooterContent>
+    </>
+  ) : (
+    <form
+      style={{ display: 'contents' }}
+      ref={formRef}
+      onSubmit={handleSubmit(onSubmitPassword)}
+    >
+      <>
+        <CardContent
+          label="Choose Authentication Mode"
+          id="chooseauthmethod"
+          description=""
+          visual={<MonoPassword width={40} height={40} />}
+        />
+        <Stack
+          flexDirection={'column'}
+          alignItems={'flex-start'}
+          justifyContent={'flex-start'}
+          textAlign="left"
+          gap={'lg'}
+          className={wrapperClass}
+        >
+          <Controller
+            control={control}
+            name="authMode"
+            render={({ field }) => (
+              <RadioGroup
+                direction="column"
+                defaultValue={field.value}
+                onChange={(val) => field.onChange(val)}
               >
-                Confirm
-              </Button>
+                <Radio value="WEB_AUTHN">Web-Authn</Radio>
+                <Radio value="PASSWORD">Password</Radio>
+              </RadioGroup>
+            )}
+          ></Controller>
+          {authMode === 'WEB_AUTHN' && (
+            <Stack
+              flexDirection={'column'}
+              justifyContent={'flex-start'}
+              gap={'sm'}
+            >
+              <Heading variant="h4">Use Web-Authn</Heading>
+              <Text>
+                You can use web-authn for tacking care of your profile
+                authentication
+              </Text>
             </Stack>
-          </Stack>
-        ) : (
-          <Stack
-            flexDirection={'column'}
-            alignItems={'flex-start'}
-            justifyContent={'flex-start'}
-            textAlign="left"
-            gap={'lg'}
-          >
-            <Heading variant="h4">Choose Authentication Mode</Heading>
-            <Controller
-              control={control}
-              name="authMode"
-              render={({ field }) => (
-                <RadioGroup
-                  direction="column"
-                  defaultValue={field.value}
-                  onChange={(val) => field.onChange(val)}
-                >
-                  <Radio value="WEB_AUTHN">Web-Authn</Radio>
-                  <Radio value="PASSWORD">Password</Radio>
-                </RadioGroup>
-              )}
-            ></Controller>
-            {authMode === 'WEB_AUTHN' && (
-              <Stack
-                flexDirection={'column'}
-                justifyContent={'flex-start'}
-                gap={'sm'}
-              >
-                <Heading variant="h4">Use Web-Authn</Heading>
+          )}
+          {authMode === 'PASSWORD' && (
+            <Stack flexDirection="column" marginBlock="md" gap="sm">
+              <Heading variant="h4">Use Password</Heading>
+              <Stack marginBlockStart="sm">
                 <Text>
-                  You can use web-authn for tacking care of your profile
-                  authentication
+                  Carefully select your password as this will be your main
+                  security of your wallet
                 </Text>
-
-                <Button
-                  type="submit"
-                  onClick={() => setWebAuthnPassword()}
-                  isLoading={isLoading}
-                >
-                  {profile?.options.authMode === 'WEB_AUTHN'
-                    ? 'Switch Credentials'
-                    : 'Password-less'}
-                </Button>
               </Stack>
-            )}
-            {authMode === 'PASSWORD' && (
-              <form
-                style={{ display: 'contents' }}
-                onSubmit={handleSubmit(onSubmitPassword)}
-              >
-                <Stack flexDirection="column" marginBlock="md" gap="sm">
-                  <Heading variant="h4">Use Password</Heading>
-                  <Stack marginBlockStart="sm">
-                    <Text>
-                      Carefully select your password as this will be your main
-                      security of your wallet
-                    </Text>
-                  </Stack>
-                  <TextField
-                    id="password"
-                    type="password"
-                    label="Password"
-                    defaultValue={getValues('password')}
-                    // react-hook-form uses uncontrolled elements;
-                    // and because we add and remove the fields we need to add key to prevent confusion for react
-                    key="password"
-                    {...register('password', {
-                      required: {
-                        value: true,
-                        message: 'This field is required',
-                      },
-                      minLength: { value: 6, message: 'Minimum 6 symbols' },
-                    })}
-                    isInvalid={!isValid && !!errors.password}
-                    errorMessage={errors.password?.message}
-                  />
-                  <TextField
-                    id="confirmation"
-                    type="password"
-                    label="Confirm password"
-                    defaultValue={getValues('confirmation')}
-                    key="confirmation"
-                    {...register('confirmation', {
-                      validate: (value) => {
-                        return (
-                          getValues('password') === value ||
-                          'Passwords do not match'
-                        );
-                      },
-                    })}
-                    isInvalid={!isValid && !!errors.confirmation}
-                    errorMessage={errors.confirmation?.message}
-                  />
-                  <Stack flexDirection="column">
-                    <Button
-                      type="submit"
-                      isDisabled={!isValid}
-                      isLoading={isLoading}
-                    >
-                      Set Password
-                    </Button>
-                  </Stack>
-                </Stack>
-              </form>
-            )}
+              <TextField
+                id="password"
+                type="password"
+                label="Password"
+                autoFocus
+                defaultValue={getValues('password')}
+                // react-hook-form uses uncontrolled elements;
+                // and because we add and remove the fields we need to add key to prevent confusion for react
+                key="password"
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: 'This field is required',
+                  },
+                  minLength: { value: 6, message: 'Minimum 6 symbols' },
+                })}
+                isInvalid={!isValid && !!errors.password}
+                errorMessage={errors.password?.message}
+              />
+              <TextField
+                id="confirmation"
+                type="password"
+                label="Confirm password"
+                defaultValue={getValues('confirmation')}
+                key="confirmation"
+                {...register('confirmation', {
+                  validate: (value) => {
+                    return (
+                      getValues('password') === value ||
+                      'Passwords do not match'
+                    );
+                  },
+                })}
+                isInvalid={!isValid && !!errors.confirmation}
+                errorMessage={errors.confirmation?.message}
+              />
+
+              {error && (
+                <Notification role="alert" intent="negative">
+                  <>{error.toString()}</>
+                </Notification>
+              )}
+            </Stack>
+          )}
+        </Stack>
+
+        <CardFooterContent>
+          <Stack flex={1}>
+            <UiLink
+              variant="outlined"
+              component={Link}
+              type="button"
+              href="/settings"
+            >
+              Back
+            </UiLink>
           </Stack>
-        )}
-      </Stack>
-    </AuthCard>
+
+          <CardFooterGroup>
+            {authMode === 'WEB_AUTHN' && (
+              <Button
+                onClick={() => {
+                  formRef.current?.requestSubmit();
+                  setWebAuthnPassword();
+                }}
+                isLoading={isLoading}
+                endVisual={<MonoFingerprint />}
+              >
+                {profile?.options.authMode === 'WEB_AUTHN'
+                  ? 'Switch Credentials'
+                  : 'Password-less'}
+              </Button>
+            )}
+
+            {authMode === 'PASSWORD' && (
+              <Button
+                onClick={() => {
+                  formRef.current?.requestSubmit();
+                }}
+                isDisabled={!isValid}
+                isLoading={isLoading}
+              >
+                Set Password
+              </Button>
+            )}
+          </CardFooterGroup>
+        </CardFooterContent>
+      </>
+    </form>
   );
 }

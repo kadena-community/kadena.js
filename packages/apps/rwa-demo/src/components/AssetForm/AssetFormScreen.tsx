@@ -2,7 +2,7 @@ import {
   RightAside,
   RightAsideContent,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
@@ -17,7 +17,7 @@ interface IProps {
 
 export const AssetFormScreen: FC<IProps> = ({ trigger, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
 
   const handleOpen = () => {
     setIsRightAsideExpanded(true);

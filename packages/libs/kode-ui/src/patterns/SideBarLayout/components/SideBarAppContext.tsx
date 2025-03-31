@@ -10,7 +10,7 @@ export const SideBarAppContext: FC<ISideBarAppContext> = ({ children }) => {
   const { isExpanded, appContext } = useLayout();
 
   return (
-    <header>
+    <header style={{ pointerEvents: 'all' }}>
       <ul
         className={listClass({ direction: 'vertical', expanded: isExpanded })}
       >

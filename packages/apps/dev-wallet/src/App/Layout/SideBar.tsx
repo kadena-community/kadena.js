@@ -13,7 +13,6 @@ import {
   MonoSwapHoriz,
   MonoTableRows,
   MonoWallet,
-  MonoWarning,
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
@@ -37,17 +36,18 @@ import {
   SideBarItem,
   SideBarItemsInline,
   SideBar as SideBarUI,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
-import { BetaHeader } from '../BetaHeader';
 import { KLogo } from './KLogo';
 
-export const SideBar: FC = () => {
+export const SideBar: FC<{ topbannerHeight?: number }> = ({
+  topbannerHeight = 0,
+}) => {
   const { theme, setTheme } = useTheme();
-  const { isExpanded } = useLayout();
+  const { isExpanded } = useSideBarLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
   const navigate = usePatchedNavigate();
 
@@ -58,6 +58,7 @@ export const SideBar: FC = () => {
 
   return (
     <SideBarUI
+      topbannerHeight={topbannerHeight}
       logo={
         <>
           <Link to="/">
@@ -129,23 +130,6 @@ export const SideBar: FC = () => {
       }
       context={
         <>
-          <SideBarItem visual={<MonoWarning />} label="warning">
-            {isExpanded ? (
-              <BetaHeader />
-            ) : (
-              <Stack
-                backgroundColor="semantic.warning.default"
-                justifyContent={'center'}
-                alignItems={'center'}
-                padding={'sm'}
-              >
-                <Text>
-                  <MonoWarning />
-                </Text>
-              </Stack>
-            )}
-          </SideBarItem>
-
           <SideBarItemsInline>
             <SideBarItem visual={<MonoContacts />} label="Profile">
               <ContextMenu

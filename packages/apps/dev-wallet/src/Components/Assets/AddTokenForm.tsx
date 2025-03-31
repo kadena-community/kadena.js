@@ -20,7 +20,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -66,7 +66,7 @@ export function AddTokenForm({
   });
 
   const { activeNetwork, fungibles } = useWallet();
-  const { setIsRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useSideBarLayout();
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: TokenForm) {
@@ -157,6 +157,7 @@ export function AddTokenForm({
               <Heading variant={'h5'}>Add New Token</Heading>
               <Stack width="100%" flexDirection="column" gap="md">
                 <TextField
+                  autoFocus
                   label="SmartContract"
                   {...register('contract', { required: true })}
                 />

@@ -22,8 +22,8 @@ const InitialsAvatar = ({
         backgroundColor: accentColor,
         ...(onClick ? { cursor: 'pointer' } : {}),
         ...(size === 'small'
-          ? { width: 25, height: 25 }
-          : { width: 40, height: 40 }),
+          ? { width: 25, height: 25, minWidth: 25 }
+          : { width: 40, height: 40, minWidth: 40 }),
       }}
     >
       <div

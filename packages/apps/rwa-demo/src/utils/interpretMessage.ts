@@ -59,6 +59,9 @@ export const interpretMessage = (str: string, data?: ITransaction): string => {
   if (str?.includes('ROL-002')) {
     return `Role does not exist in predefined agent roles.`;
   }
+  if (str?.includes('ROL-003')) {
+    return `Too many roles are added.`;
+  }
   if (str?.includes('ROL-STS-001')) {
     return `Agent cannot be added if the agent is already active.`;
   }

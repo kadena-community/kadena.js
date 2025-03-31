@@ -5,7 +5,8 @@ import {
   RightAsideHeader,
   SideBarHeaderContext,
   SideBarLayout,
-  useLayout,
+  SideBarTopBanner,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
@@ -33,7 +34,7 @@ const RootLayout = ({
 }>) => {
   const { account, isMounted } = useAccount();
   const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { transactions, setTxsButtonRef, setTxsAnimationRef } =
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -59,6 +60,13 @@ const RootLayout = ({
   return (
     <>
       <SideBarHeaderContext>
+        <SideBarTopBanner>
+          <DemoBanner />
+          <CookieConsent />
+          <GraphOnlineBanner />
+          <FrozenInvestorBanner />
+          <GasPayableBanner />
+        </SideBarTopBanner>
         <Button
           ref={txsButtonRef}
           variant="transparent"
@@ -91,15 +99,6 @@ const RootLayout = ({
         </RightAside>
       )}
       <SideBarLayout
-        topBanner={
-          <Stack width="100%" gap="xs" flexDirection="column">
-            <DemoBanner />
-            <CookieConsent />
-            <GraphOnlineBanner />
-            <FrozenInvestorBanner />
-            <GasPayableBanner />
-          </Stack>
-        }
         logo={
           <Link href="/">
             <KLogo />

@@ -35,7 +35,10 @@ import {
   TextLink,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
+import {
+  SideBarBreadcrumbsItem,
+  useSideBarLayout,
+} from '@kadena/kode-ui/patterns';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { getGuardInfo } from '../../Components/Guard/Guard';
@@ -47,7 +50,7 @@ import { addressBreakClass } from './style.css';
 
 export function AccountPage() {
   const { accountId } = useParams();
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const prompt = usePrompt();
   const {
     activeNetwork,

@@ -3,6 +3,7 @@ import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
+import { AGENTROLES } from './addAgent';
 
 export interface IRemoveAgentProps {
   agent: string;
@@ -19,7 +20,7 @@ export const removeAgent = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-OWNER`, ''),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.agent)

@@ -1,3 +1,4 @@
+//check that the string is actually a number
 export const setComplianceValue = (
   value: string | number | undefined,
   defaultValue?: string | number,
@@ -6,7 +7,7 @@ export const setComplianceValue = (
   const defaultNumber = parseInt(`${defaultValue}`);
   return number >= 0
     ? `${number}`
-    : defaultNumber >= 0
+    : !Number.isNaN(defaultNumber)
       ? `${defaultValue}`
       : '';
 };

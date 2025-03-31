@@ -1,9 +1,11 @@
 import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../components';
 import { Button, Stack } from './../../components';
+import { topbannerHeightCSS } from './aside.css';
 import { useLayout } from './components/LayoutProvider';
 import { KLogo } from './components/Logo/KLogo';
 import { KLogoText } from './components/Logo/KLogoText';
@@ -19,6 +21,7 @@ import {
 import type { ISideBarLayoutLocation } from './types';
 
 export interface ISideBarProps extends PropsWithChildren {
+  topbannerHeight?: number;
   location?: ISideBarLayoutLocation;
   appContext?: ReactElement;
   navigation?: ReactElement;
@@ -27,6 +30,7 @@ export interface ISideBarProps extends PropsWithChildren {
 }
 
 export const SideBar: FC<ISideBarProps> = ({
+  topbannerHeight = 0,
   children,
   appContext,
   navigation,
@@ -60,6 +64,9 @@ export const SideBar: FC<ISideBarProps> = ({
         data-testid="leftaside"
         className={classNames(menuWrapperClass({ expanded: isExpanded }), {
           [menuWrapperMobileExpandedClass]: isExpanded,
+        })}
+        style={assignInlineVars({
+          [topbannerHeightCSS]: `${topbannerHeight}px`,
         })}
       >
         <Stack className={classNames(menuMenuIconClass)}>

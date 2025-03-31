@@ -3,12 +3,17 @@ import { recipe, style, token } from '../../styles';
 
 const iconColorVar = createVar();
 
+export const wrapperClass = style({
+  width: '100%',
+  marginInline: 'auto',
+  gap: token('spacing.sm'),
+  alignItems: 'flex-start',
+});
+
 export const notificationRecipe = recipe({
   base: {
     display: 'flex',
-    alignItems: 'flex-start',
     padding: token('spacing.md'),
-    gap: token('spacing.sm'),
     width: '100%',
     backdropFilter: 'blur(12px)',
   },

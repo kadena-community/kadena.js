@@ -1,5 +1,5 @@
-import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
 import { expect } from '@playwright/test';
+import { test } from '../fixtures/wallet.fixture';
 
 test('Network creation', async ({ initiator, chainweaverApp }) => {
   await test.step('setup', async () => {

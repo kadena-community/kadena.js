@@ -4,6 +4,7 @@ import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { AGENTROLES } from './addAgent';
+import { getKeysetService } from './getKeyset';
 
 export interface IRegisterIdentityProps {
   accountName: string;
@@ -12,20 +13,15 @@ export interface IRegisterIdentityProps {
   alreadyExists?: boolean;
 }
 
-const createPubKeyFromAccount = (account: string): string => {
-  return account.replace('k:', '').replace('r:', '');
-};
-
 export const registerIdentity = async (data: IRegisterIdentityProps) => {
+  const investorKeyset = await getKeysetService(data.accountName);
+
   return Pact.builder
     .execution(
-      `(${getAsset()}.register-identity (read-string 'investor) (read-keyset 'investor-keyset) (read-string 'agent) 1)
+      `(${getAsset()}.register-identity (read-string 'investor) (read-msg 'investor-keyset) (read-string 'agent) 1)
       `,
     )
-    .addData('investor-keyset', {
-      keys: [createPubKeyFromAccount(data.accountName)],
-      pred: 'keys-all',
-    })
+    .addData('investor-keyset', investorKeyset)
     .addData('investor', data.accountName)
     .addData('agent', data.agent.address)
     .setMeta({
@@ -33,7 +29,7 @@ export const registerIdentity = async (data: IRegisterIdentityProps) => {
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
-      withCap(`${getAsset()}.ONLY-OWNER`, ''),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
       withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])

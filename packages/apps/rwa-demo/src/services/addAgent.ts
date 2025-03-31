@@ -1,10 +1,11 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
-import { getPubkeyFromAccount } from '@/utils/getPubKey';
+import { getKeyset, getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 
 export const AGENTROLES = {
+  OWNER: 'owner',
   AGENTADMIN: 'agent-admin',
   FREEZER: 'freezer',
   TRANSFERMANAGER: 'transfer-manager',
@@ -17,10 +18,6 @@ export interface IAddAgentProps {
   alreadyExists?: boolean;
   roles: string[];
 }
-
-const createPubKeyFromAccount = (account: string): string => {
-  return account.replace('k:', '').replace('r:', '');
-};
 
 export const addAgent = async (
   data: IAddAgentProps,
@@ -35,14 +32,11 @@ export const addAgent = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-OWNER`, ''),
+      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.accountName)
-    .addData('agent_guard', {
-      keys: [createPubKeyFromAccount(data.accountName)],
-      pred: 'keys-all',
-    })
+    .addData('agent_guard', getKeyset(account))
     .addData('roles', data.roles)
 
     .setNetworkId(getNetwork().networkId)

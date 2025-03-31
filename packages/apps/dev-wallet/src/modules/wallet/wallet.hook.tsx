@@ -220,6 +220,7 @@ export const useWallet = () => {
             keepPolicy: 'session',
           });
         }
+        console.log({ res });
         return res;
       }
       return null;

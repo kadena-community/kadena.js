@@ -15,7 +15,7 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import { useLayout } from '@kadena/kode-ui/patterns';
+import { useSideBarLayout } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { panelClass } from '../../home/style.css.ts';
 import { AddKeySourceForm } from './AddKeySourceForm.tsx';
@@ -23,7 +23,7 @@ import { AddSpecificKey } from './AddSpecificKey.tsx';
 
 export function Keys() {
   const { keySources, profile, askForPassword, createKey } = useWallet();
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const [asideTarget, setAsideTarget] = useState<
     'add-key-source' | 'add-specific-key'
   >();

@@ -1,6 +1,7 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
-import { getPubkeyFromAccount } from '@/utils/getPubKey';
+import { getKeyset } from '@/utils/getPubKey';
+import { setSigner } from '@/utils/setSigner';
 import { Pact } from '@kadena/client';
 import { getContract } from './pact/modelcontract';
 
@@ -16,37 +17,28 @@ export const createContract = async (
   return Pact.builder
     .execution(
       `
-      (define-namespace (ns.create-principal-namespace (read-keyset 'keyset))
-        (read-keyset 'keyset)
-        (read-keyset 'keyset)
+      (define-namespace (ns.create-principal-namespace (read-msg 'keyset))
+        (read-msg 'keyset)
+        (read-msg 'keyset)
       )
-      (namespace (ns.create-principal-namespace (read-keyset 'keyset)))
-      (let ((keyset-name:string (format "{}.{}" [(ns.create-principal-namespace (read-keyset 'keyset)) 'admin-keyset]) ))
-        (define-keyset keyset-name (read-keyset 'keyset))
+      (namespace (ns.create-principal-namespace (read-msg 'keyset)))
+      (let ((keyset-name:string (format "{}.{}" [(ns.create-principal-namespace (read-msg 'keyset)) 'admin-keyset]) ))
+        (define-keyset keyset-name (read-msg 'keyset))
         (enforce-keyset keyset-name)
         keyset-name
       )
       ${getContract(data)}`,
     )
+    .addData('keyset', getKeyset(account))
     .addData('ns', data.namespace)
-    .addData('keyset', {
-      keys: [getPubkeyFromAccount(account)],
-      pred: 'keys-all',
-    })
-    .addData('owner_guard', {
-      keys: [getPubkeyFromAccount(account)],
-      pred: 'keys-all',
-    })
-    .addData('compliance-owner', {
-      keys: [getPubkeyFromAccount(account)],
-      pred: 'keys-all',
-    })
+    .addData('owner_guard', getKeyset(account))
+    .addData('compliance-owner', getKeyset(account))
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
       gasLimit: 150000,
     })
-    .addSigner(getPubkeyFromAccount(account), (withCap) => [])
+    .addSigner(setSigner(account), (withCap) => [])
     .setNetworkId(getNetwork().networkId)
     .createTransaction();
 };

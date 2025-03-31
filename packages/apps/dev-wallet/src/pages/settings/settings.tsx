@@ -30,7 +30,10 @@ import {
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem, useLayout } from '@kadena/kode-ui/patterns';
+import {
+  SideBarBreadcrumbsItem,
+  useSideBarLayout,
+} from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { linkClass } from '../home/style.css';
@@ -43,7 +46,7 @@ import { ProfileNameColorForm } from './components/ProfileNameColorForm';
 import { downloadAsFile } from './utils/download-file';
 
 export function Settings() {
-  const { isRightAsideExpanded, setIsRightAsideExpanded } = useLayout();
+  const { isRightAsideExpanded, setIsRightAsideExpanded } = useSideBarLayout();
   const { keySources, profile, lockProfile } = useWallet();
   const prompt = usePrompt();
   const [error, setError] = useState<string | undefined>();

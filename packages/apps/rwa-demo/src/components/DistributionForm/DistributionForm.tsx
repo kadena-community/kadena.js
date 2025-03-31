@@ -8,7 +8,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useRef, useState } from 'react';
@@ -38,7 +38,7 @@ export const DistributionForm: FC<IProps> = ({
   const resolveRef = useRef<Function | null>(null);
   const { submit, isAllowed } = useDistributeTokens({ investorAccount });
   const [isOpen, setIsOpen] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const {
     control,
     handleSubmit,

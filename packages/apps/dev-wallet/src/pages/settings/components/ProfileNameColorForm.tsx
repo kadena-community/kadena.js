@@ -9,7 +9,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -20,15 +20,21 @@ interface ProfileForm {
 }
 
 export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
-  const { profile } = useWallet();
-  const { register, handleSubmit, control } = useForm<ProfileForm>({
+  const { profile, profileList } = useWallet();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { isValid, errors },
+  } = useForm<ProfileForm>({
+    mode: 'onChange',
     defaultValues: {
       name: profile?.name ?? '',
       color: profile?.accentColor ?? '',
     },
   });
 
-  const { setIsRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useSideBarLayout();
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: ProfileForm) {
@@ -49,10 +55,25 @@ export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
         <RightAsideContent>
           <Stack width="100%" flexDirection="column" gap="md">
             <TextField
+              autoFocus
               label="Profile Name"
               placeholder="Enter profile name"
               defaultValue={profile?.name}
-              {...register('name', { required: true })}
+              isInvalid={!!errors['name']}
+              errorMessage={errors['name']?.message}
+              {...register('name', {
+                required: true,
+                validate: {
+                  required: (value) => {
+                    const existingProfile = profileList.find(
+                      (p) => p.name === value && profile?.name !== value,
+                    );
+                    if (existingProfile)
+                      return `The profile name ${value} already exists. Please use another name.`;
+                    return true;
+                  },
+                },
+              })}
             />
             <Label size="small" bold>
               Accent Color
@@ -94,7 +115,9 @@ export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
           >
             Cancel
           </Button>
-          <Button type="submit">Save</Button>
+          <Button isDisabled={!isValid} type="submit">
+            Save
+          </Button>
         </RightAsideFooter>
       </form>
     </RightAside>

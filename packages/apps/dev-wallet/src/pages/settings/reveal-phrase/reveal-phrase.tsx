@@ -1,4 +1,3 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -34,21 +33,17 @@ export function RevealPhrase() {
 
   if (profile?.securityPhraseId === undefined) {
     return (
-      <AuthCard>
-        <Notification intent="negative" role="alert">
-          No recovery phrase found
-        </Notification>
-      </AuthCard>
+      <Notification intent="negative" role="alert">
+        No recovery phrase found
+      </Notification>
     );
   }
 
   if (error) {
     return (
-      <AuthCard>
-        <Notification intent="negative" role="alert">
-          {error}
-        </Notification>
-      </AuthCard>
+      <Notification intent="negative" role="alert">
+        {error}
+      </Notification>
     );
   }
   return (
@@ -62,14 +57,12 @@ export function RevealPhrase() {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       {
-        <AuthCard>
-          <BackupMnemonic
-            mnemonic={mnemonic}
-            onDecrypt={decryptMnemonic}
-            onSkip={() => navigate('/settings')}
-            onConfirm={() => navigate('/settings')}
-          />
-        </AuthCard>
+        <BackupMnemonic
+          mnemonic={mnemonic}
+          onDecrypt={decryptMnemonic}
+          onSkip={() => navigate('/settings')}
+          onConfirm={() => navigate('/settings')}
+        />
       }
     </>
   );

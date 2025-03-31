@@ -1,6 +1,6 @@
 import { WALLETTYPES } from '@/constants';
 import { useAccount } from '@/hooks/account';
-import { Button } from '@kadena/kode-ui';
+import { ContextMenuItem } from '@kadena/kode-ui';
 import type { FC } from 'react';
 
 export const ChainweaverWalletConnect: FC = () => {
@@ -9,5 +9,5 @@ export const ChainweaverWalletConnect: FC = () => {
     await login(WALLETTYPES.CHAINWEAVER);
   };
 
-  return <Button onPress={handleConnect}>Chainweaver Connect</Button>;
+  return <ContextMenuItem label="Chainweaver" onClick={handleConnect} />;
 };

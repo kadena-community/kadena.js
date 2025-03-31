@@ -3,18 +3,19 @@ import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
-import { Button, CheckboxGroup, TextField } from '@kadena/kode-ui';
+import { Button, CheckboxGroup } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
+import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   agent?: IRecord;
@@ -28,7 +29,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   });
   const { submit, isAllowed } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
 
   const {
     handleSubmit,
@@ -94,27 +95,27 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                 control={control}
               />
 
-              <Controller
-                name="alias"
+              <AliasField
+                error={errors.alias}
+                alias={agent?.alias}
                 control={control}
-                render={({ field }) => (
-                  <TextField id="alias" label="Alias" {...field} />
-                )}
               />
 
               <CheckboxGroup direction="column" label="Roles" name="roles">
-                {Object.entries(AGENTROLES).map(([key, val]) => {
-                  return (
-                    <label key={key}>
-                      <input
-                        type="checkbox"
-                        value={val}
-                        {...register('roles')}
-                      />
-                      {val}
-                    </label>
-                  );
-                })}
+                {Object.entries(AGENTROLES)
+                  .filter((role) => role[1] !== AGENTROLES.OWNER)
+                  .map(([key, val]) => {
+                    return (
+                      <label key={key}>
+                        <input
+                          type="checkbox"
+                          value={val}
+                          {...register('roles')}
+                        />
+                        {val}
+                      </label>
+                    );
+                  })}
               </CheckboxGroup>
             </RightAsideContent>
             <RightAsideFooter>

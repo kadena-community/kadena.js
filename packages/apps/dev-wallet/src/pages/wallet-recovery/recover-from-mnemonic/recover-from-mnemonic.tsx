@@ -11,11 +11,12 @@ import {
   PublicKeyCredentialCreate,
 } from '@/utils/webAuthn';
 
-import { MonoKey } from '@kadena/kode-icons/system';
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
+import { wrapperClass } from '@/pages/errors/styles.css';
+import { MonoKey, MonoPassword } from '@kadena/kode-icons/system';
 import {
   Button,
-  Card,
-  Heading,
   Select,
   SelectItem,
   Stack,
@@ -23,6 +24,7 @@ import {
   TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -57,12 +59,10 @@ export function RecoverFromMnemonic() {
     control,
     formState: { isValid, errors },
   } = useForm<Inputs>({
+    mode: 'onChange',
     defaultValues: {
       mnemonic: '',
-      profileName:
-        profileList.length === 0
-          ? 'default'
-          : `profile-${profileList.length + 1}`,
+      profileName: '',
       accentColor:
         config.colorList[profileList.length % config.colorList.length],
       password: '',
@@ -182,31 +182,25 @@ export function RecoverFromMnemonic() {
   const profileName = watch('profileName');
   const keyDerivation = watch('keyDerivation');
   return (
-    <Card>
-      <Stack gap={'lg'} flexDirection={'column'} textAlign="left">
-        <Stack></Stack>
-        <form
-          onSubmit={handleSubmit(async (data) => {
-            setImporting(true);
-            await importWallet(data);
-            setImporting(false);
-          })}
-          className={displayContentsClass}
-          ref={formRef}
-        >
-          {step === 'import' && (
-            <Stack gap={'lg'} flexDirection={'column'}>
-              <Stack>
-                <UiLink
-                  component={Link}
-                  href="/wallet-recovery"
-                  variant="outlined"
-                  isCompact
-                >
-                  Back
-                </UiLink>
-              </Stack>
-              <Heading variant="h5">Import mnemonic</Heading>
+    <>
+      <CardContent
+        label="Import mnemonic"
+        key="importmnemonic"
+        description="Access your profile securely and start managing your assets instantly"
+        visual={<MonoPassword width={40} height={40} />}
+      />
+      <form
+        onSubmit={handleSubmit(async (data) => {
+          setImporting(true);
+          await importWallet(data);
+          setImporting(false);
+        })}
+        className={displayContentsClass}
+        ref={formRef}
+      >
+        {step === 'import' && (
+          <>
+            <Stack gap={'lg'} flexDirection={'column'} className={wrapperClass}>
               <Stack flexDirection="column" gap={'lg'}>
                 <Stack flexDirection={'column'} gap={'sm'}>
                   <Controller
@@ -295,13 +289,39 @@ export function RecoverFromMnemonic() {
                   )}
                 </Stack>
 
-                <TextField
-                  label="Profile name"
-                  id="name"
-                  type="text"
-                  defaultValue={profileName}
-                  value={profileName}
-                  {...register('profileName')}
+                <Controller
+                  control={control}
+                  name="profileName"
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    minLength: { value: 6, message: 'Minimum 6 symbols' },
+                    maxLength: { value: 30, message: 'Maximym 30 symbols' },
+                    validate: {
+                      required: (value) => {
+                        const existingProfile = profileList.find(
+                          (profile) => profile.name === value,
+                        );
+                        if (existingProfile)
+                          return `The profile name ${value} already exists. Please use another name.`;
+                        return true;
+                      },
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      label="Profile name"
+                      id="name"
+                      type="text"
+                      defaultValue={profileName}
+                      value={field.value}
+                      {...register('profileName')}
+                      isInvalid={!!errors.profileName}
+                      errorMessage={errors.profileName?.message}
+                    />
+                  )}
                 />
               </Stack>
               <Stack flexDirection={'column'} gap={'lg'}>
@@ -314,7 +334,19 @@ export function RecoverFromMnemonic() {
                   password-less profile!
                 </Text>
               </Stack>
-              <Stack flexDirection="row" gap={'sm'}>
+            </Stack>
+
+            <CardFooterContent>
+              <Stack width="100%">
+                <UiLink
+                  component={Link}
+                  href="/wallet-recovery"
+                  variant="outlined"
+                >
+                  Back
+                </UiLink>
+              </Stack>
+              <CardFooterGroup>
                 <Button
                   type="button"
                   isDisabled={!isValid}
@@ -332,30 +364,19 @@ export function RecoverFromMnemonic() {
                 >
                   Password-less
                 </Button>
-              </Stack>
-            </Stack>
-          )}
-          {step === 'set-password' && (
+              </CardFooterGroup>
+            </CardFooterContent>
+          </>
+        )}
+        {step === 'set-password' && (
+          <>
+            <Stack
+              gap={'lg'}
+              flexDirection={'column'}
+              className={wrapperClass}
+            ></Stack>
+
             <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Button
-                  variant="outlined"
-                  isCompact
-                  type="button"
-                  onPress={() => {
-                    setStep('import');
-                  }}
-                >
-                  Back
-                </Button>
-              </Stack>
-              <Heading variant="h4">Choose a password</Heading>
-              <Stack marginBlockStart="sm">
-                <Text>
-                  Carefully select your password as this will be your main
-                  security of your wallet
-                </Text>
-              </Stack>
               <Stack flexDirection="column" marginBlock="md" gap="sm">
                 <TextField
                   id="password"
@@ -393,22 +414,38 @@ export function RecoverFromMnemonic() {
                   errorMessage={errors.confirmation?.message}
                 />
               </Stack>
-              <Stack flexDirection="column">
+            </Stack>
+
+            <CardFooterContent>
+              <Stack width="100%">
+                <Button
+                  variant="outlined"
+                  type="button"
+                  onPress={() => {
+                    setStep('import');
+                  }}
+                >
+                  Back
+                </Button>
+              </Stack>
+              <CardFooterGroup>
                 <Button
                   isDisabled={!isValid}
                   isLoading={importing}
                   loadingLabel="Importing"
-                  type="submit"
+                  onPress={() => {
+                    formRef.current?.requestSubmit();
+                  }}
                 >
                   Continue
                 </Button>
-              </Stack>
-            </Stack>
-          )}
-        </form>
-        {error && <Text>{error}</Text>}
-      </Stack>
-    </Card>
+              </CardFooterGroup>
+            </CardFooterContent>
+          </>
+        )}
+      </form>
+      {error && <Text>{error}</Text>}
+    </>
   );
 }
 

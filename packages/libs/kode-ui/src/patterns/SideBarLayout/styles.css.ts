@@ -16,23 +16,26 @@ export const layoutWrapperClass = recipe({
     responsiveStyle({
       xs: {
         gridTemplateColumns: 'auto',
-        gridTemplateRows: `${minHeaderHeight} 1fr 60px`,
+        gridTemplateRows: `min-content ${minHeaderHeight} 1fr 60px`,
         gridTemplateAreas: `
+        "sidebarlayout-topbanner"
         "sidebarlayout-header"
         "sidebarlayout-main"
         "sidebarlayout-footer"
       `,
       },
       md: {
-        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateRows: `min-content ${minHeaderHeight} 1fr`,
         gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-topbanner"
         "sidebarlayout-sidebar sidebarlayout-header"
         "sidebarlayout-sidebar sidebarlayout-main"
       `,
       },
       xxl: {
-        gridTemplateRows: `${minHeaderHeight} 1fr`,
+        gridTemplateRows: `min-content ${minHeaderHeight} 1fr`,
         gridTemplateAreas: `
+        "sidebarlayout-sidebar sidebarlayout-topbanner"
         "sidebarlayout-sidebar sidebarlayout-header"
         "sidebarlayout-sidebar sidebarlayout-main"
       `,
@@ -128,4 +131,12 @@ export const bodyWrapperClass = style({
 
 export const mainClass = style({
   gridArea: 'sidebarlayout-main',
+  position: 'relative',
+});
+
+export const topbannerWrapperClass = style({
+  gridArea: 'sidebarlayout-topbanner',
+  position: 'fixed',
+  zIndex: token('zIndex.overlay'),
+  width: '100%',
 });

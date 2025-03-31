@@ -4,6 +4,7 @@ import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
+import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import {
   Button,
@@ -19,7 +20,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
@@ -40,7 +41,7 @@ export const TransferForm: FC<IProps> = ({
   investorAccount,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { account } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
   const { data: investors } = useGetInvestors();
@@ -56,7 +57,7 @@ export const TransferForm: FC<IProps> = ({
     control,
     handleSubmit,
     formState: { isValid, errors },
-  } = useForm<ITransferTokensProps>({
+  } = useForm<ITransferTokensProps | IForcedTransferTokensProps>({
     values: {
       amount: 0,
       investorFromAccount: investorAccount,
@@ -77,7 +78,9 @@ export const TransferForm: FC<IProps> = ({
     if (onClose) onClose();
   };
 
-  const onSubmit = async (data: ITransferTokensProps) => {
+  const onSubmit = async (
+    data: IForcedTransferTokensProps | ITransferTokensProps,
+  ) => {
     if (data.isForced) {
       await forcedSubmit(data);
     } else {

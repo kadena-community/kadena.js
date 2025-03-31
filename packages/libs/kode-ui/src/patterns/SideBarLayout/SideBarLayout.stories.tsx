@@ -11,14 +11,11 @@ import {
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
+import { useNotifications } from '../LayoutUtils';
 import { Button, Dialog, DialogHeader, Stack } from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
-import {
-  LayoutProvider,
-  useLayout,
-  useNotifications,
-} from './components/LayoutProvider';
+import { LayoutProvider, useLayout } from './components/LayoutProvider';
 import { KLogoText } from './components/Logo/KLogoText';
 import {
   RightAside,
@@ -32,6 +29,7 @@ import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
 import { SideBarTree } from './components/SideBarTree';
 import { SideBarTreeItem } from './components/SideBarTreeItem';
+import { TopBanner } from './components/TopBanner/TopBanner';
 import type { ISideBarProps } from './SideBar';
 import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
@@ -103,6 +101,7 @@ const InnerLayout = () => {
   const [hasOpenSidebar, setHasOpenSidebar] = useState(false);
   const [hasOpenOtherSidebar, setHasOpenOtherSidebar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [hideTopBanner, setHideTopBanner] = useState(false);
 
   return (
     <>
@@ -160,13 +159,6 @@ const InnerLayout = () => {
           url: 'https://kadena.io',
           push: console.log,
         }}
-        topBanner={
-          <div
-            style={{ paddingBlock: '10px', background: 'green', width: '100%' }}
-          >
-            topbanner
-          </div>
-        }
         sidebar={
           <SideBar
             logo={
@@ -232,6 +224,30 @@ const InnerLayout = () => {
         }
         footer={<InnerFooter />}
       >
+        <TopBanner>
+          {!hideTopBanner ? (
+            <Stack
+              style={{
+                paddingBlock: '10px',
+                background: 'green',
+                width: '100%',
+                paddingInline: '10px',
+              }}
+            >
+              topbanner
+              <Stack flex={1} />
+              <Button
+                onPress={() => {
+                  setHideTopBanner(true);
+                }}
+              >
+                Hide
+              </Button>
+            </Stack>
+          ) : (
+            <></>
+          )}
+        </TopBanner>
         <Stack
           flexDirection="column"
           style={{ maxWidth: '800px', height: '400px' }}
@@ -491,7 +507,7 @@ const NotificationsLayout = () => {
                 addNotification({
                   icon: <MonoAccountTree />,
                   label: 'This is an info Notification',
-                  message: 'And this is the message',
+                  message: 'And this is the info message',
                   isDismissable: true,
                   url: 'https://explorer.kadena.io',
                 });

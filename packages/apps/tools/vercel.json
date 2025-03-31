@@ -1,4 +1,10 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "main": false,
+      "release/tools-v*": true
+    }
+  },
   "crons": [
     {
       "path": "/api/faucet",

@@ -2,8 +2,8 @@ import {
   interpretErrorMessage,
   TXTYPES,
 } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
 import { forcedTransferTokens } from '@/services/forcedTransferTokens';
-import type { ITransferTokensProps } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ export const useForcedTransferTokens = () => {
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
-  const submit = async (data: ITransferTokensProps) => {
+  const submit = async (data: IForcedTransferTokensProps) => {
     try {
       const tx = await forcedTransferTokens(data, account!);
       const signedTransaction = await sign(tx);
@@ -32,7 +32,7 @@ export const useForcedTransferTokens = () => {
         type: TXTYPES.TRANSFERTOKENS,
         accounts: [
           account?.address!,
-          data.investorFromAccount,
+          data.investorFromAccount!,
           data.investorToAccount,
         ],
       });

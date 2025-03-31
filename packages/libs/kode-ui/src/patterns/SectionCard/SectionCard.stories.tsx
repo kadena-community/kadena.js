@@ -10,6 +10,7 @@ import { SectionCardBody } from './SectionCardBody';
 import { SectionCardContentBlock } from './SectionCardContentBlock';
 import type { ISectionCardHeaderProps } from './SectionCardHeader';
 import { SectionCardHeader } from './SectionCardHeader';
+import { CardWrapperMinHeightClass } from './stories.css';
 import { iconWrapperClass } from './style.css';
 
 const intentVariants = getVariants(iconWrapperClass);
@@ -91,7 +92,7 @@ export const Primary: Story = {
   render: ({ stack, title, description, children, actions, intent }) => {
     return (
       <Stack width="100%" padding="lg">
-        <SectionCard stack={stack} intent={intent} data-testid="sdsf">
+        <SectionCard stack={stack} intent={intent}>
           <SectionCardContentBlock>
             <SectionCardBody
               title="Content title"
@@ -249,6 +250,62 @@ export const reverseBackground: Story = {
               <Text>this is content</Text>
               <Text>this is content</Text>
               <Text>this is content</Text>
+              <Text>this is content</Text>
+            </SectionCardBody>
+            <SectionCardHeader
+              title={title}
+              description={description}
+              actions={actions}
+            />
+          </SectionCardContentBlock>
+        </SectionCard>
+      </Stack>
+    );
+  },
+};
+
+export const WhenMinHeight: Story = {
+  name: 'SectionCard with MinHeight',
+  args: {
+    title: 'MinHeight',
+    description: (
+      <>
+        Sometimes the app will overwrite the minHeight of the Card (see
+        wallet.kadena.io). The backgrounds should show correctly (100% height)
+      </>
+    ),
+  },
+  render: ({ stack, title, description, actions }) => {
+    return (
+      <Stack
+        width="100%"
+        padding="lg"
+        flexDirection="column"
+        gap="lg"
+        className={CardWrapperMinHeightClass}
+      >
+        <SectionCard stack={stack}>
+          <SectionCardContentBlock>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
+              <Text>this is content</Text>
+            </SectionCardBody>
+            <SectionCardHeader
+              title={title}
+              description={description}
+              actions={actions}
+            />
+          </SectionCardContentBlock>
+        </SectionCard>
+
+        <SectionCard stack={stack} background="reversed">
+          <SectionCardContentBlock>
+            <SectionCardBody
+              title="Content title"
+              description="small description"
+            >
               <Text>this is content</Text>
             </SectionCardBody>
             <SectionCardHeader

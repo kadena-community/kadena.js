@@ -10,6 +10,7 @@ import {
 } from './CardPattern.css';
 
 export interface ICardContentBlockProps {
+  id?: string;
   title: string;
   visual?: React.ReactNode;
   description?: string;
@@ -20,6 +21,7 @@ export interface ICardContentBlockProps {
 }
 
 export const CardContentBlock = ({
+  id,
   title,
   visual,
   description,
@@ -30,6 +32,7 @@ export const CardContentBlock = ({
 }: ICardContentBlockProps) => {
   return (
     <Stack
+      id="id"
       flexDirection={{ xs: 'column', md: 'row' }}
       gap="xl"
       className={cn(bodyContainer, className)}

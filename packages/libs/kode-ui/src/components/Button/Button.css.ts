@@ -196,8 +196,7 @@ export const button = recipe({
       minWidth: 'fit-content',
       color: textColor,
       backgroundColor: backgroundColor,
-      transition:
-        'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+      transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
       selectors: {
         '&[data-hovered]': {
           cursor: 'pointer',
@@ -316,9 +315,8 @@ export const button = recipe({
         },
       },
       outlined: {
-        boxShadow: `0px 0px 0px 1px ${token(
-          'color.border.base.default',
-        )} inset`,
+        border: token('border.hairline'),
+        borderColor: token('color.border.base.default'),
         vars: {
           [backgroundColor]: 'transparent',
           [hoverBackgroundColor]: token('color.background.base.@hover'),

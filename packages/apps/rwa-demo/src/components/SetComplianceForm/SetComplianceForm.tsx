@@ -8,7 +8,7 @@ import {
   RightAsideContent,
   RightAsideFooter,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ interface IProps {
 export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
   const { submit, isAllowed } = useSetCompliance();
   const { asset } = useAsset();
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const [isOpen, setIsOpen] = useState(false);
   const {
     handleSubmit,

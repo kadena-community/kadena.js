@@ -14,7 +14,7 @@ import {
   RightAside,
   RightAsideContent,
   RightAsideHeader,
-  useLayout,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 
@@ -29,7 +29,7 @@ export function AddSpecificKey({
   const { createKey } = useWallet();
   const isAvailable = !keySource.keys.find((k) => k.index === parseInt(index));
   const [error, setError] = useState<string | null>(null);
-  const { setIsRightAsideExpanded } = useLayout();
+  const { setIsRightAsideExpanded } = useSideBarLayout();
   return (
     <RightAside isOpen={isOpen}>
       <RightAsideHeader label="Add Specific Key" />
