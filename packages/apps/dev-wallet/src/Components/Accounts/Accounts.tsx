@@ -7,15 +7,22 @@ import {
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { panelClass } from '@/pages/home/style.css';
-import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
+import { MonoMoreVert } from '@kadena/kode-icons/system';
 import {
   Button,
+  ButtonGroup,
   ContextMenu,
   ContextMenuItem,
   Heading,
   Stack,
   Text,
 } from '@kadena/kode-ui';
+import {
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+} from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { AccountItem } from '../AccountItem/AccountItem';
@@ -57,7 +64,7 @@ export function Accounts({
   };
 
   return (
-    <Stack flexDirection={'column'}>
+    <>
       <WatchAccountsForm
         onClose={closeWatchAccount}
         isOpen={isWatchAccountExpanded}
@@ -70,81 +77,98 @@ export function Accounts({
         onClose={closeMultiSig}
         contract={contract}
       />
-      <Stack justifyContent={'space-between'}>
-        <Stack gap={'sm'}>
-          <Stack
-            className={classNames(
-              accountTypeClass,
-              show === 'owned' && 'selected',
-            )}
-            alignItems={'center'}
-            onClick={() => setShow('owned')}
-          >
-            <Heading as="h6">Owned({accounts.length})</Heading>
-          </Stack>
-          <Stack
-            onClick={() => setShow('watched')}
-            className={classNames(
-              accountTypeClass,
-              show === 'watched' && 'selected',
-            )}
-            padding={'sm'}
-            alignItems={'center'}
-          >
-            <Heading as="h6">Watched({watchedAccounts.length})</Heading>
-          </Stack>
-        </Stack>
-        <Stack gap={'sm'}>
-          <ContextMenu
-            placement="bottom end"
-            trigger={
-              <Button
-                startVisual={<MonoAdd />}
-                endVisual={<MonoMoreVert />}
-                variant="outlined"
-                isCompact
-              >
-                Account
-              </Button>
+
+      <SectionCard stack="vertical">
+        <SectionCardContentBlock>
+          <SectionCardHeader
+            title="Accounts"
+            description={<>Your accounts for the {contract} asset</>}
+            actions={
+              <ButtonGroup>
+                <Button
+                  isCompact
+                  variant="outlined"
+                  onClick={() => createNextAccount({ contract })}
+                >
+                  New Account
+                </Button>
+                <ContextMenu
+                  placement="bottom end"
+                  trigger={
+                    <Button
+                      endVisual={<MonoMoreVert />}
+                      variant="outlined"
+                      isCompact
+                    ></Button>
+                  }
+                >
+                  <ContextMenuItem
+                    label="Create Account"
+                    onClick={() => createNextAccount({ contract })}
+                  />
+                  <ContextMenuItem
+                    label="Watch/Add existing"
+                    onClick={() => expandWatchAccount()}
+                  />
+                  <ContextMenuItem
+                    label="create Multi-Sig"
+                    onClick={() => expandMultiSig()}
+                  />
+                </ContextMenu>
+              </ButtonGroup>
             }
-          >
-            <ContextMenuItem
-              label="Create Account"
-              onClick={() => createNextAccount({ contract })}
-            />
-            <ContextMenuItem
-              label="Watch/Add existing"
-              onClick={() => expandWatchAccount()}
-            />
-            <ContextMenuItem
-              label="create Multi-Sig"
-              onClick={() => expandMultiSig()}
-            />
-          </ContextMenu>
-        </Stack>
-      </Stack>
-      {accountsToShow.length ? (
-        <ul className={listClass} data-testid="assetList">
-          {accountsToShow.map((account) => (
-            <li key={account.uuid}>
-              <AccountItem account={account} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <Stack
-          data-testid="assetList"
-          padding={'sm'}
-          marginBlockStart="md"
-          className={classNames(panelClass)}
-        >
-          <Text>
-            {show === 'owned'
-              ? 'No accounts created yet!'
-              : 'No Accounts watched yet'}
-          </Text>
-        </Stack>
-      )}
-    </Stack>
+          />
+          <SectionCardBody>
+            <Stack justifyContent={'space-between'}>
+              <Stack gap={'sm'}>
+                <Stack
+                  className={classNames(
+                    accountTypeClass,
+                    show === 'owned' && 'selected',
+                  )}
+                  alignItems={'center'}
+                  onClick={() => setShow('owned')}
+                >
+                  <Heading as="h6">Owned({accounts.length})</Heading>
+                </Stack>
+                <Stack
+                  onClick={() => setShow('watched')}
+                  className={classNames(
+                    accountTypeClass,
+                    show === 'watched' && 'selected',
+                  )}
+                  padding={'sm'}
+                  alignItems={'center'}
+                >
+                  <Heading as="h6">Watched({watchedAccounts.length})</Heading>
+                </Stack>
+              </Stack>
+            </Stack>
+            {accountsToShow.length ? (
+              <ul className={listClass} data-testid="assetList">
+                {accountsToShow.map((account) => (
+                  <li key={account.uuid}>
+                    <AccountItem account={account} profile={profile} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Stack
+                data-testid="assetList"
+                padding={'sm'}
+                marginBlockStart="md"
+                className={classNames(panelClass)}
+              >
+                <Text>
+                  {show === 'owned'
+                    ? 'No accounts created yet!'
+                    : 'No Accounts watched yet'}
+                </Text>
+              </Stack>
+            )}
+          </SectionCardBody>
+        </SectionCardContentBlock>
+      </SectionCard>
+    </>
   );
 }

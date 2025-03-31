@@ -18,9 +18,13 @@ export const panelClass = style([
 
 export const listClass = style([
   atoms({
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
     listStyleType: 'none',
     marginBlockStart: 'md',
     padding: 'n0',
+    gap: 'sm',
   }),
 ]);
 
