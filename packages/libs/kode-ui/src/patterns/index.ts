@@ -26,6 +26,7 @@ export {
   SideBarItemsInline,
   SideBarLayout,
   LayoutProvider as SideBarLayoutProvider,
+  TopBanner as SideBarTopBanner,
   SideBarTree,
   SideBarTreeItem,
   useLayout as useSideBarLayout,
@@ -72,6 +73,7 @@ export {
   HeaderAside as FocussedLayoutHeaderAside,
   HeaderContent as FocussedLayoutHeaderContent,
   LayoutProvider as FocussedLayoutProvider,
+  TopBanner as FocussedLayoutTopBanner,
   useLayout as useFocussedLayout,
 } from './FocussedLayout';
 

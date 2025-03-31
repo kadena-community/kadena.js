@@ -1,4 +1,5 @@
 import { MonoClose } from '@kadena/kode-icons/system';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   asideWrapperClass,
   asideWrapperTempClass,
   menuBackdropClass,
+  topbannerHeightCSS,
 } from '../aside.css';
 import type { ISideBarLayoutLocation } from '../types';
 import type { PressEvent } from './../../../components';
@@ -17,7 +19,8 @@ import { useLayout } from './LayoutProvider';
 
 export const SideBarAside: FC<{
   location: ISideBarLayoutLocation;
-}> = () => {
+  topbannerHeight: number;
+}> = ({ topbannerHeight }) => {
   const {
     setIsRightAsideExpanded,
     isRightAsideExpanded,
@@ -55,6 +58,9 @@ export const SideBarAside: FC<{
         data-testid="rightaside"
         className={asideWrapperClass({
           expanded: isRightAsideExpanded,
+        })}
+        style={assignInlineVars({
+          [topbannerHeightCSS]: `${topbannerHeight}px`,
         })}
       >
         <header className={asideHeaderClass}>

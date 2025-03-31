@@ -1,112 +1,128 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
-import { MonoAdd } from '@kadena/kode-icons';
-import { Box, Heading, Stack } from '@kadena/kode-ui';
-import { tokens } from '@kadena/kode-ui/styles';
-import { Link, useSearchParams } from 'react-router-dom';
-import InitialsAvatar from './initials';
+
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
+import { ChainWeaverLogo } from '@/Components/ChainweaverLogo/ChainweaverLogo';
+import { ProfileListItem } from '@/Components/ProfileListItem/ProfileListItem';
+import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons';
 import {
-  aliasClass,
-  cardClass,
-  imgClass,
-  linkBlockClass,
-  linkClass,
-  subtitleClass,
-  titleClass,
-} from './select-profile.css';
+  Box,
+  Button,
+  ButtonGroup,
+  ContextMenu,
+  ContextMenuItem,
+  Heading,
+  Stack,
+  Text,
+  Link as UiLink,
+} from '@kadena/kode-ui';
+import { Link, useNavigate } from 'react-router-dom';
+import { wrapperClass } from '../errors/styles.css';
 
 export function SelectProfile() {
-  const { profileList, unlockProfile } = useWallet();
-  const [params] = useSearchParams();
+  const { profileList } = useWallet();
+  const navigate = useNavigate();
 
-  const redirect = params.get('redirect');
-  const qs = new URLSearchParams();
-  if (redirect) {
-    qs.set('redirect', redirect);
-  }
-
-  const searchParam = qs.toString();
+  const handleRecover = () => {
+    navigate('/wallet-recovery');
+  };
 
   return (
-    <Box width="100%">
-      <Heading variant="h1" className={titleClass}>
-        Welcome to <br /> Chainweaver v3.0
-      </Heading>
-      <Heading variant="h5" as="h2" className={subtitleClass}>
-        Access your profile securely and start <br />
-        managing your assets instantly
-      </Heading>
-      <Stack
-        flexDirection="column"
-        alignItems="center"
-        gap="sm"
-        flexWrap="wrap"
-        marginBlock="lg"
-        width="100%"
-      >
-        {profileList.map((profile) =>
-          profile.options.authMode === 'WEB_AUTHN' ? (
-            <button
-              key={profile.uuid}
-              className={cardClass}
-              onClick={async () => {
-                const pass = await getWebAuthnPass(profile);
-                if (pass) {
-                  await unlockProfile(profile.uuid, pass);
-                }
-              }}
-            >
-              <Stack alignItems="center" gap="md">
-                <InitialsAvatar
-                  name={profile.name}
-                  accentColor={profile.accentColor}
-                />
-
-                <div className={aliasClass}> {profile.name}</div>
-              </Stack>
-            </button>
-          ) : (
-            <Link
-              key={profile.uuid}
-              to={`/unlock-profile/${profile.uuid}${searchParam ? `?${searchParam}` : ''}`}
-              style={{ textDecoration: 'none' }}
-              className={cardClass}
-            >
-              <Stack alignItems="center" gap="md">
-                <div
-                  className={imgClass}
-                  style={{ backgroundColor: profile.accentColor }}
-                >
-                  <InitialsAvatar
-                    name={profile.name}
-                    accentColor={profile.accentColor}
+    <>
+      <CardContent
+        label="Chainweaver v3"
+        id="chainweaverv3"
+        description="Access your profile securely and start managing your assets instantly"
+        visual={<ChainWeaverLogo width={40} height={40} />}
+        refreshDependencies={[profileList.length]}
+        supportingContent={
+          profileList.length > 0 ? (
+            <ButtonGroup variant="outlined">
+              <UiLink
+                href="/create-profile"
+                component={Link}
+                isCompact
+                variant="outlined"
+                startVisual={<MonoAdd />}
+              >
+                New Profile
+              </UiLink>
+              <ContextMenu
+                trigger={
+                  <Button
+                    variant="outlined"
+                    isCompact
+                    endVisual={<MonoMoreVert />}
                   />
-                </div>
-                <div className={aliasClass}> {profile.name}</div>
-              </Stack>
-            </Link>
-          ),
-        )}
-        <Link
-          to="/create-profile"
-          style={{ textDecoration: 'none' }}
-          className={cardClass}
-        >
-          <Stack alignItems="center" gap="md">
-            <div className={imgClass}>
-              <MonoAdd color={tokens.kda.foundation.color.neutral.n100} />
-            </div>
-
-            <div className={aliasClass}>Add new profile</div>
+                }
+              >
+                <ContextMenuItem
+                  onClick={handleRecover}
+                  label="Recover your wallet"
+                />
+              </ContextMenu>
+            </ButtonGroup>
+          ) : (
+            <></>
+          )
+        }
+      />
+      <Box width="100%" className={wrapperClass}>
+        {profileList.length ? (
+          <Stack flexDirection="column">
+            <Heading as="h5">Available Profiles</Heading>
+            <Text size="smallest">
+              The user has already created some profiles and can access those
+              with the leading icon as authentication method.
+            </Text>
+            <Stack
+              flexDirection="column"
+              alignItems="center"
+              gap="sm"
+              flexWrap="wrap"
+              marginBlock="lg"
+              width="100%"
+            >
+              {profileList.map((profile) => (
+                <ProfileListItem key={profile.uuid} profile={profile} />
+              ))}
+            </Stack>
           </Stack>
-        </Link>
-      </Stack>
-      <Stack flexDirection="column" className={linkBlockClass}>
-        <Heading as="h6">Own a wallet?</Heading>
-        <Link to="/wallet-recovery" className={linkClass}>
-          Recover your wallet
-        </Link>
-      </Stack>
-    </Box>
+        ) : (
+          <Stack flexDirection="column" gap="md">
+            <Stack flexDirection="column">
+              <Heading as="h5">Get Started</Heading>
+              <Text size="smallest">
+                The user doesn’t have an account yet this copy should give a
+                very short intro to the action of creating one
+              </Text>
+            </Stack>
+
+            <Stack flexDirection="column">
+              <Heading as="h6">Recover your wallet</Heading>
+              <Text size="smallest">
+                Setup a profile by using the wallet recovery feature.
+              </Text>
+            </Stack>
+          </Stack>
+        )}
+      </Box>
+
+      {profileList.length === 0 && (
+        <CardFooterContent>
+          <Button variant="outlined" onPress={handleRecover}>
+            Recover
+          </Button>
+          <UiLink
+            href="/create-profile"
+            component={Link}
+            variant="primary"
+            endVisual={<MonoAdd />}
+          >
+            Add new profile
+          </UiLink>
+        </CardFooterContent>
+      )}
+    </>
   );
 }

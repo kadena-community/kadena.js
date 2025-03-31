@@ -6,7 +6,10 @@ export type { IButtonProps, IToggleButtonProps, PressEvent } from './Button';
 export type { IButtonGroupProps } from './ButtonGroup';
 export type { ICardProps } from './Card';
 export { CompactStepper } from './CompactStepper';
-export type { ICompactStepperProps } from './CompactStepper';
+export type {
+  ICompactStepperItemProps,
+  ICompactStepperProps,
+} from './CompactStepper';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
   IDialogContentProps,

@@ -1,3 +1,5 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile, walletRepository } from '@/modules/wallet/wallet.repository';
@@ -6,7 +8,6 @@ import { Label } from '@/pages/transaction/components/helpers';
 import { ExportFromChainweaver } from '@/utils/chainweaver/chainweaver';
 import { MonoConstruction } from '@kadena/kode-icons/system';
 import {
-  Box,
   Button,
   Heading,
   Notification,
@@ -15,11 +16,7 @@ import {
   TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import {
-  CardContentBlock,
-  CardFixedContainer,
-  CardFooterGroup,
-} from '@kadena/kode-ui/patterns';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createProfileFromChainweaverData } from '../import-chainweaver-export/createProfileFromChainweaverData';
@@ -85,46 +82,40 @@ export function LegacyImport({
   return (
     <>
       {step === 'input-data' && (
-        <CardFixedContainer>
-          <CardContentBlock
-            title="Chainweaver Legacy (v1/v2) Import"
+        <>
+          <CardContent
+            label="Chainweaver Legacy (v1/v2) Import"
+            id="inputdata"
             visual={<MonoConstruction width={36} height={36} />}
-            extendedContent={<Box width="100%" paddingBlock={{ md: 'xxxl' }} />}
-            supportingContent={
-              <Box width="100%" paddingBlock="lg" textAlign="left">
-                In order to import your Chainweaver v1/v2 backup, you need to
-                enter the password.
-              </Box>
-            }
-          >
-            <Stack flexDirection={'column'} textAlign="left" gap={'sm'}>
-              <Stack flexDirection={'column'} gap={'lg'}>
+            description="In order to import your Chainweaver v1/v2 backup, you need to enter the password."
+          />
+          <Stack flexDirection={'column'} textAlign="left" gap={'sm'}>
+            <Stack flexDirection={'column'} gap={'lg'}>
+              <TextField
+                label="Password"
+                type="password"
+                placeholder="Enter the your old chainweaver password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Stack flexDirection={'column'} gap={'sm'}>
+                <Label bold size="small">
+                  Recovery Phrase (optional)
+                </Label>
+                <Text size="small">
+                  Then we can validate the rootKey and let you use your mnemonic
+                  to create BIP44 keys.
+                </Text>
                 <TextField
-                  label="Password"
-                  type="password"
-                  placeholder="Enter the your old chainweaver password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="text"
+                  placeholder="e.g hobby corn regret phone thought seek ..."
+                  value={mnemonic}
+                  onChange={(e) => setMnemonic(e.target.value)}
                 />
-                <Stack flexDirection={'column'} gap={'sm'}>
-                  <Label bold size="small">
-                    Recovery Phrase (optional)
-                  </Label>
-                  <Text size="small">
-                    Then we can validate the rootKey and let you use your
-                    mnemonic to create BIP44 keys.
-                  </Text>
-                  <TextField
-                    type="text"
-                    placeholder="e.g hobby corn regret phone thought seek ..."
-                    value={mnemonic}
-                    onChange={(e) => setMnemonic(e.target.value)}
-                  />
-                </Stack>
               </Stack>
             </Stack>
-          </CardContentBlock>
-          <CardFooterGroup separated={true}>
+          </Stack>
+          <CardFooterContent>
             <Button variant="outlined" onClick={cancel}>
               Back
             </Button>
@@ -151,33 +142,29 @@ export function LegacyImport({
                 Import
               </Button>
             </CardFooterGroup>
-          </CardFooterGroup>
-        </CardFixedContainer>
+          </CardFooterContent>
+        </>
       )}
       {step === 'import' && (
-        <CardFixedContainer>
-          <CardContentBlock
-            title="Chainweaver Legacy (v1/v2) Import"
+        <>
+          {' '}
+          <CardContent
+            label="Chainweaver Legacy (v1/v2) Import"
+            id="inputdata"
             visual={<MonoConstruction width={36} height={36} />}
-            extendedContent={<Box width="100%" paddingBlock={{ md: 'xxxl' }} />}
-            supportingContent={
-              <Box width="100%" paddingBlock="lg" textAlign="left">
-                importing Chainweaver v2 backup.
-              </Box>
-            }
-          >
-            {!error && (
-              <Stack flexDirection={'column'} textAlign="left" gap={'sm'}>
-                Please wait while we import your data.
-              </Stack>
-            )}
-            {error && (
-              <Notification intent="negative" role="alert">
-                {error}
-              </Notification>
-            )}
-          </CardContentBlock>
-          <CardFooterGroup separated={true}>
+            description="importing Chainweaver v2 backup."
+          />
+          {!error && (
+            <Stack flexDirection={'column'} textAlign="left" gap={'sm'}>
+              Please wait while we import your data.
+            </Stack>
+          )}
+          {error && (
+            <Notification intent="negative" role="alert">
+              {error}
+            </Notification>
+          )}
+          <CardFooterContent>
             <Button variant="outlined" isDisabled={!error} onClick={cancel}>
               Back
             </Button>
@@ -186,43 +173,39 @@ export function LegacyImport({
                 Import
               </Button>
             </CardFooterGroup>
-          </CardFooterGroup>
-        </CardFixedContainer>
+          </CardFooterContent>
+        </>
       )}
       {step === 'success' && profile && (
-        <CardFixedContainer>
-          <CardContentBlock
-            title="Chainweaver Legacy (v1/v2) Import"
+        <>
+          <CardContent
+            label="Chainweaver Legacy (v1/v2) Import"
+            id="inputdata"
             visual={<MonoConstruction width={36} height={36} />}
-            extendedContent={<Box width="100%" paddingBlock={{ md: 'xxxl' }} />}
-            supportingContent={
-              <Box width="100%" paddingBlock="lg" textAlign="left">
-                importing Chainweaver v2 backup.
-              </Box>
-            }
-          >
-            <Stack flexDirection={'column'} textAlign="left" gap={'md'}>
-              <Notification intent="positive" role="status">
-                All done! Your data has been imported.
-              </Notification>
-              <Heading variant="h5">Profile</Heading>
-              <ListItem>
-                <Stack gap={'md'}>
-                  <InitialsAvatar
-                    name={profile.name}
-                    accentColor={profile.accentColor}
-                    size="small"
-                  />
-                  <Text>{profile.name}</Text>
-                </Stack>
-              </ListItem>
-              <Text>
-                You can change the profile name and password later in the
-                setting page.
-              </Text>
-            </Stack>
-          </CardContentBlock>
-          <CardFooterGroup>
+            description="importing Chainweaver v2 backup."
+          />
+          <Stack flexDirection={'column'} textAlign="left" gap={'md'}>
+            <Notification intent="positive" role="status">
+              All done! Your data has been imported.
+            </Notification>
+            <Heading variant="h5">Profile</Heading>
+            <ListItem>
+              <Stack gap={'md'}>
+                <InitialsAvatar
+                  name={profile.name}
+                  accentColor={profile.accentColor}
+                  size="small"
+                />
+                <Text>{profile.name}</Text>
+              </Stack>
+            </ListItem>
+            <Text>
+              You can change the profile name and password later in the setting
+              page.
+            </Text>
+          </Stack>
+
+          <CardFooterContent>
             <UiLink
               component={Link}
               variant="primary"
@@ -230,8 +213,8 @@ export function LegacyImport({
             >
               Login
             </UiLink>
-          </CardFooterGroup>
-        </CardFixedContainer>
+          </CardFooterContent>
+        </>
       )}
     </>
   );

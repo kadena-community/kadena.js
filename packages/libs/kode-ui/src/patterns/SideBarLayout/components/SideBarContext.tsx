@@ -8,7 +8,7 @@ export interface ISideBarContext extends PropsWithChildren {}
 export const SideBarContext: FC<ISideBarContext> = ({ children }) => {
   const { isExpanded } = useLayout();
   return (
-    <footer>
+    <footer style={{ pointerEvents: 'all' }}>
       <ul
         className={listClass({ direction: 'vertical', expanded: isExpanded })}
       >

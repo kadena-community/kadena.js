@@ -1,4 +1,6 @@
-import { AuthCard } from '@/Components/AuthCard/AuthCard.tsx';
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
+import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
+import { ICardContentProps } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
@@ -9,13 +11,40 @@ import {
   extractPublicKeyHex,
 } from '@/utils/webAuthn';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { Button, Heading, Stack, Text, TextField } from '@kadena/kode-ui';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  MonoArrowForward,
+  MonoContacts,
+  MonoFingerprint,
+  MonoPalette,
+  MonoPassword,
+} from '@kadena/kode-icons/system';
+import {
+  Button,
+  CompactStepper,
+  Heading,
+  ICompactStepperItemProps,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
+import {
+  CardFooterGroup,
+  FocussedLayoutHeaderContent,
+} from '@kadena/kode-ui/patterns';
+import React, {
+  FC,
+  ReactElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
+import { wrapperClass } from '../errors/styles.css';
 import { noStyleLinkClass } from '../home/style.css';
-import InitialsAvatar from '../select-profile/initials';
+import { ChooseColor } from '../select-profile/ChooseColor';
 import { Label } from '../transaction/components/helpers';
 
 const rotate = (max: number, start: number = 0) => {
@@ -27,6 +56,53 @@ const rotate = (max: number, start: number = 0) => {
   };
 };
 
+type IStepKeys =
+  | 'authMethod'
+  | 'set-password'
+  | 'backup-mnemonic'
+  | 'confirm'
+  | 'profile';
+const steps: ICardContentProps[] = [
+  {
+    label: 'Auth method',
+    id: 'authMethod',
+    description: 'Select your prefered authentication method',
+    visual: <MonoContacts width={40} height={40} />,
+  },
+  {
+    label: 'Choose password',
+    id: 'set-password',
+    description:
+      'Carefully select your password as this will be your main security of your wallet',
+    visual: <MonoPassword width={40} height={40} />,
+  },
+  {
+    label: 'Personalize Profile',
+    id: 'profile',
+    description:
+      'The color will be a tool to visually differentiate your profiles when in use',
+    visual: <MonoPalette width={40} height={40} />,
+  },
+  {
+    label: 'Write your recovery phrase down',
+    id: 'backup-mnemonic',
+    description:
+      'Make sure no one is watching you; consider some malware might take screenshot of your screen',
+    visual: <MonoPassword width={40} height={40} />,
+  },
+] as const;
+
+const VisualIcon: FC<{
+  accentColor: string;
+  visual?: ReactElement;
+}> = ({ accentColor, visual }) => {
+  if (!visual) return null;
+  return React.cloneElement(visual, {
+    ...visual.props,
+    style: { color: accentColor },
+  });
+};
+
 export function CreateProfile() {
   const {
     createProfile,
@@ -35,9 +111,8 @@ export function CreateProfile() {
     unlockProfile,
     activeNetwork,
   } = useWallet();
-  const [step, setStep] = useState<
-    'profile' | 'set-password' | 'backup-mnemonic' | 'confirm'
-  >('profile');
+  const [step, setStep] = useState<IStepKeys>('authMethod');
+  const [previousStep, setPreviousStep] = useState<IStepKeys>('authMethod');
   const { createHDWallet } = useHDWallet();
   const [profileId, setProfileId] = useState<string | null>(null);
   const [mnemonic, setMnemonic] = useState('');
@@ -52,6 +127,12 @@ export function CreateProfile() {
     () => config.colorList[rotateColor.current()],
     [],
   );
+
+  const handleSetStep = (key: IStepKeys) => {
+    const prevStep = step;
+    setStep(key);
+    setPreviousStep(prevStep);
+  };
 
   const {
     register,
@@ -146,7 +227,7 @@ export function CreateProfile() {
     setMnemonic(mnemonic);
     setProfileId(profile.uuid);
     setPassword(pass);
-    setStep('backup-mnemonic');
+    handleSetStep('backup-mnemonic');
 
     // TODO: navigate to the backup recovery phrase page
   }
@@ -159,9 +240,8 @@ export function CreateProfile() {
       setWebAuthnCredential(result.credential);
       setValue('password', 'WEB_AUTHN_PROTECTED');
       setValue('confirmation', 'WEB_AUTHN_PROTECTED');
-      setTimeout(() => {
-        formRef.current?.requestSubmit();
-      }, 200);
+
+      handleSetStep('profile');
     } else {
       console.error('Error creating credential');
     }
@@ -176,69 +256,35 @@ export function CreateProfile() {
 
   const accentColor = watch('accentColor');
 
+  const getStepIdx = (key: IStepKeys): number => {
+    return steps.findIndex((step) => step.id === key) ?? 0;
+  };
+
   return (
     <>
-      <AuthCard>
-        <form onSubmit={handleSubmit(create)} ref={formRef}>
-          {step === 'profile' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Link to="/" className={noStyleLinkClass}>
-                  <Button
-                    variant="outlined"
-                    isCompact
-                    type="button"
-                    onPress={() => {
-                      throw new Error('back');
-                    }}
-                  >
-                    Back
-                  </Button>
-                </Link>
-              </Stack>
+      <CardContent
+        {...steps[getStepIdx(step)]}
+        visual={
+          <VisualIcon
+            accentColor={step === 'profile' ? accentColor : ''}
+            visual={steps[getStepIdx(step)].visual}
+          />
+        }
+        refreshDependencies={[accentColor]}
+      />
+      <FocussedLayoutHeaderContent>
+        <CompactStepper
+          stepIdx={getStepIdx(step)}
+          steps={steps as ICompactStepperItemProps[]}
+        />
+      </FocussedLayoutHeaderContent>
+
+      <form ref={formRef} onSubmit={handleSubmit(create)}>
+        {step === 'authMethod' && (
+          <>
+            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
               <Stack flexDirection={'column'}>
-                <Heading variant="h4">Create Profile</Heading>
-                <Controller
-                  name="profileName"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                  }}
-                  render={({ field, fieldState: { error } }) => (
-                    <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
-                      <Label bold>Profile name</Label>
-                      <Stack gap="sm" flexDirection={'row'}>
-                        <InitialsAvatar
-                          name={field.value}
-                          accentColor={accentColor}
-                          onClick={() => {
-                            console.log('click');
-                            setValue(
-                              'accentColor',
-                              config.colorList[rotateColor.current()],
-                            );
-                          }}
-                        />
-                        <TextField
-                          id="profileName"
-                          type="text"
-                          autoFocus
-                          defaultValue={field.value}
-                          value={field.value}
-                          onChange={field.onChange}
-                          key="profileName"
-                          isInvalid={!isValid && !!error}
-                          errorMessage={error && error.message}
-                        />
-                      </Stack>
-                    </Stack>
-                  )}
-                />
-              </Stack>
-              <Stack flexDirection={'column'} gap={'lg'}>
+                <Heading as="h5">How would you like to login</Heading>
                 <Text size="smallest">
                   Your system supports{' '}
                   <Text bold size="smallest">
@@ -248,11 +294,32 @@ export function CreateProfile() {
                   password-less profile!
                 </Text>
               </Stack>
-              <Stack flexDirection="row" gap={'sm'}>
+
+              <Stack flexDirection={'column'}>
+                <Heading as="h6">Classic method</Heading>
+                <Text size="smallest">Prefer using a password instead.</Text>
+              </Stack>
+            </Stack>
+
+            <CardFooterContent>
+              <Stack width="100%">
+                <Link to="/select-profile" className={noStyleLinkClass}>
+                  <Button
+                    variant="outlined"
+                    type="button"
+                    onPress={() => {
+                      throw new Error('back');
+                    }}
+                  >
+                    Back
+                  </Button>
+                </Link>
+              </Stack>
+              <CardFooterGroup>
                 <Button
                   type="button"
                   variant="transparent"
-                  onClick={() => setStep('set-password')}
+                  onClick={() => handleSetStep('set-password')}
                 >
                   Prefer password
                 </Button>
@@ -261,33 +328,17 @@ export function CreateProfile() {
                   onClick={() => {
                     createWebAuthnCredential();
                   }}
+                  endVisual={<MonoFingerprint />}
                 >
                   Password-less
                 </Button>
-              </Stack>
-            </Stack>
-          )}
-          {step === 'set-password' && (
-            <Stack flexDirection={'column'} gap={'lg'}>
-              <Stack>
-                <Button
-                  variant="outlined"
-                  isCompact
-                  type="button"
-                  onPress={() => {
-                    setStep('profile');
-                  }}
-                >
-                  Back
-                </Button>
-              </Stack>
-              <Heading variant="h4">Choose a password</Heading>
-              <Stack marginBlockStart="sm">
-                <Text>
-                  Carefully select your password as this will be your main
-                  security of your wallet
-                </Text>
-              </Stack>
+              </CardFooterGroup>
+            </CardFooterContent>
+          </>
+        )}
+        {step === 'set-password' && (
+          <>
+            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
               <Stack flexDirection="column" marginBlock="md" gap="sm">
                 <TextField
                   id="password"
@@ -326,23 +377,117 @@ export function CreateProfile() {
                   errorMessage={errors.confirmation?.message}
                 />
               </Stack>
-              <Stack flexDirection="column">
-                <Button type="submit" isDisabled={!isValid}>
-                  Continue
+            </Stack>
+
+            <CardFooterContent>
+              <Stack width="100%">
+                <Button
+                  variant="outlined"
+                  type="button"
+                  onPress={() => {
+                    handleSetStep('authMethod');
+                  }}
+                >
+                  Back
                 </Button>
               </Stack>
+              <CardFooterGroup>
+                <Button
+                  onClick={() => handleSetStep('profile')}
+                  isDisabled={!isValid}
+                  endVisual={<MonoArrowForward />}
+                >
+                  Next
+                </Button>
+              </CardFooterGroup>
+            </CardFooterContent>
+          </>
+        )}
+        {step === 'backup-mnemonic' && (
+          <BackupMnemonic
+            mnemonic={mnemonic}
+            onSkip={() => onLockTheWallet()}
+            onDecrypt={() => Promise.resolve()}
+            onConfirm={() => onLockTheWallet()}
+          />
+        )}
+        {step === 'profile' && (
+          <>
+            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
+              <Stack flexDirection="column" gap="lg">
+                <Controller
+                  name="profileName"
+                  control={control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
+                      <Label bold>Name</Label>
+                      <Stack gap="sm" flexDirection={'row'}>
+                        <TextField
+                          id="profileName"
+                          type="text"
+                          autoFocus
+                          defaultValue={field.value}
+                          value={field.value}
+                          onChange={field.onChange}
+                          key="profileName"
+                          isInvalid={!isValid && !!error}
+                          errorMessage={error && error.message}
+                        />
+                      </Stack>
+                      <Stack flexDirection="column">
+                        <Label bold>Color</Label>
+
+                        <Stack gap="xs" flexWrap="wrap">
+                          {config.colorList.map((color) => (
+                            <ChooseColor
+                              isActive={color === accentColor}
+                              accentColor={color}
+                              onClick={() => {
+                                setValue('accentColor', color);
+                              }}
+                            />
+                          ))}
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  )}
+                />
+              </Stack>
             </Stack>
-          )}
-          {step === 'backup-mnemonic' && (
-            <BackupMnemonic
-              mnemonic={mnemonic}
-              onSkip={() => onLockTheWallet()}
-              onDecrypt={() => Promise.resolve()}
-              onConfirm={() => onLockTheWallet()}
-            />
-          )}
-        </form>
-      </AuthCard>
+
+            <CardFooterContent>
+              <Stack width="100%">
+                <Button
+                  variant="outlined"
+                  type="button"
+                  onPress={() => {
+                    handleSetStep(previousStep);
+                  }}
+                >
+                  Back
+                </Button>
+              </Stack>
+              <CardFooterGroup>
+                <Button
+                  onClick={() => {
+                    formRef.current?.requestSubmit();
+                  }}
+                  isDisabled={!isValid}
+                  endVisual={<MonoArrowForward />}
+                >
+                  Next
+                </Button>
+              </CardFooterGroup>
+            </CardFooterContent>
+          </>
+        )}
+      </form>
     </>
   );
 }
