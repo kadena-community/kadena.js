@@ -6,15 +6,7 @@ import { config } from './config';
 /* ************************************************************************** */
 /* Retries */
 
-const describeTempDisabled: () => (typeof describe)['skip'] = () => {
-  // disable till 1 may 2025
-  if (Date.now() < new Date('2025-05-01').getTime()) {
-    return describe.skip;
-  }
-  return describe;
-};
-
-describeTempDisabled()('retry', () => {
+describe('retry', () => {
   it('throws after 2 retries when address is invalid', async () => {
     let c = 0;
     const opts = { retries: 1, minTimeout: 20, onFailedAttempt: () => ++c };
