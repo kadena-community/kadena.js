@@ -7,8 +7,7 @@ export async function handleGetAccountsV1(request: any, sessionRequest: any, cur
   const { params } = request;
 
   // Get accounts requested by the request
-  // const requestedAccountsArray = params.accounts;
-  const requestedAccountsArray = [params]; // Temp to support demo app that doesn't conform to the spec
+  const requestedAccountsArray = params.accounts;
 
   const storedAccounts = accountStore[topic];
   if (!storedAccounts) {
