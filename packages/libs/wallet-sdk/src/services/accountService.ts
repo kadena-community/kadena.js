@@ -1,3 +1,4 @@
+import { getPactErrorCode } from '@kadena/client';
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import type { ChainwebHostGenerator } from '../sdk/host.js';
@@ -36,7 +37,11 @@ export async function getAccountDetails(
           accountDetails,
         };
       } catch (error) {
-        if (error.message.includes('No value found') === true) {
+        const errorCode = getPactErrorCode(error);
+        if (
+          errorCode === 'RECORD_NOT_FOUND' || // Account not found
+          errorCode === 'CANNOT_RESOLVE_MODULE' // Fungible or contract not found
+        ) {
           return {
             chainId,
             accountDetails: null,
