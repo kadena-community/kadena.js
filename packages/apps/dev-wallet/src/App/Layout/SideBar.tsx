@@ -86,7 +86,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
               variant="outlined"
               startVisual={<MonoControlPointDuplicate />}
             >
-              New Transfer
+              {isExpanded ? 'New Transfer' : <></>}
             </UILink>
           </SideBarItem>
         </>

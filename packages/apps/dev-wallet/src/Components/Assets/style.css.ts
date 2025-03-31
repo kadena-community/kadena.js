@@ -1,28 +1,37 @@
-import { atoms, tokens } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { atoms, responsiveStyle, style, token } from '@kadena/kode-ui/styles';
+import { globalStyle } from '@vanilla-extract/css';
 
-export const assetBoxClass = style([
+export const assetBoxClass = style([]);
+
+globalStyle(`${assetBoxClass} > button`, {
+  flex: 1,
+  gap: token('spacing.md'),
+  alignItems: 'center',
+});
+
+export const actionsWrapperClass = style([
   atoms({
-    padding: 'sm',
-    paddingInline: 'md',
-    marginBlockStart: 'xs',
-    textDecoration: 'none',
+    gap: 'sm',
+    flexWrap: 'wrap',
   }),
-  {
-    cursor: 'pointer',
-    border: 'none',
-    minHeight: '50px',
-    // background: tokens.kda.foundation.color.background.surface.default,
-    selectors: {
-      '&:hover': {
-        outline: `solid 1px ${tokens.kda.foundation.color.border.base.default}`,
-        background: tokens.kda.foundation.color.background.surface.default,
-      },
-      '&.selected': {
-        cursor: 'default',
-        outline: `solid 1px ${tokens.kda.foundation.color.border.base.default}`,
-        background: tokens.kda.foundation.color.background.surface.default,
-      },
-    },
-  },
+  {},
 ]);
+
+globalStyle(`${actionsWrapperClass} ${assetBoxClass}`, {
+  gap: token('breakpoint.sm'),
+  alignItems: 'stretch',
+  flex: '100%',
+  ...responsiveStyle({
+    xs: {
+      maxWidth: '100%',
+      textAlign: 'center',
+    },
+    sm: {
+      maxWidth: '49%',
+    },
+    md: {
+      maxWidth: '100%',
+    },
+    lg: { maxWidth: '49%' },
+  }),
+});

@@ -53,37 +53,39 @@ export const NetworkSelector: FC<{
           )
         }
       >
-        {activeNetwork?.name}
+        {showLabel ? activeNetwork?.name : undefined}
       </UILink>
 
-      <ContextMenu
-        trigger={
-          <Button
-            data-testid="networkselector"
-            variant={variant}
-            isCompact={isCompact}
-            startVisual={<MonoMoreVert />}
-          />
-        }
-      >
-        {networks.map((network) => (
+      {showLabel && (
+        <ContextMenu
+          trigger={
+            <Button
+              data-testid="networkselector"
+              variant={variant}
+              isCompact={isCompact}
+              startVisual={<MonoMoreVert />}
+            />
+          }
+        >
+          {networks.map((network) => (
+            <ContextMenuItem
+              aria-label={network.name}
+              key={network.networkId}
+              label={network.name ?? network.networkId}
+              endVisual={
+                network.uuid === activeNetwork?.uuid ? <MonoCheck /> : undefined
+              }
+              onClick={() => handleNetworkUpdate(network.uuid)}
+            />
+          ))}
+          <ContextMenuDivider />
           <ContextMenuItem
-            aria-label={network.name}
-            key={network.networkId}
-            label={network.name ?? network.networkId}
-            endVisual={
-              network.uuid === activeNetwork?.uuid ? <MonoCheck /> : undefined
-            }
-            onClick={() => handleNetworkUpdate(network.uuid)}
+            label="Settings"
+            endVisual={<MonoSettings />}
+            onClick={handlePress}
           />
-        ))}
-        <ContextMenuDivider />
-        <ContextMenuItem
-          label="Settings"
-          endVisual={<MonoSettings />}
-          onClick={handlePress}
-        />
-      </ContextMenu>
+        </ContextMenu>
+      )}
     </ButtonGroup>
   );
 };
