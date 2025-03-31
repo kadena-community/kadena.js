@@ -7,9 +7,9 @@ const coreConfig = {
 };
 const metadata = {
   name: 'Kadena Chainweaver v3',
-  description: 'AppKit Example',
-  url: 'http://localhost:4173/',
-  icons: ['https://assets.reown.com/reown-profile-pic.png'],
+  description: 'Wallet Connect plugin for Kadena Chainweaver v3',
+  url: 'https://chainweaver.kadena.io/',
+  icons: [],
 };
 
 const useWalletKit = (sessionProposalHandler: any, sessionRequestHandler: any): [WalletKit | undefined, React.MutableRefObject<WalletKit | undefined>] => {

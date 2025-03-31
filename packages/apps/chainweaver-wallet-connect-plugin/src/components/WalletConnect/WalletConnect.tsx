@@ -54,7 +54,6 @@ export const WalletConnect: React.FC<{
     fetchNetworkList();
   }, []);
 
-  // TODO: find a more solid way to solve this
   function deriveKeyFromAccount(account: IAccount) {
     const key = account.guard.keys[0];
     return key;
