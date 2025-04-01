@@ -7,11 +7,21 @@ import { buttonGroupClass, buttonWrapperClass } from './ButtonGroup.css';
 export interface IButtonGroupProps extends PropsWithChildren {
   variant?: IButtonProps['variant'];
   isCompact?: IButtonProps['isCompact'];
+  fullWidth?: boolean;
 }
 
-export const ButtonGroup: FC<IButtonGroupProps> = ({ children, variant }) => {
+export const ButtonGroup: FC<IButtonGroupProps> = ({
+  children,
+  variant,
+  fullWidth = false,
+}) => {
   return (
-    <Stack as="section" data-variant={variant} className={buttonGroupClass}>
+    <Stack
+      as="section"
+      data-fullwidth={fullWidth}
+      data-variant={variant}
+      className={buttonGroupClass}
+    >
       {React.Children.map(children, (child) => {
         if (!React.isValidElement(child)) return null;
         return (

@@ -1,13 +1,20 @@
 import { useRightAside } from '@/App/Layout/useRightAside';
 import { Fungible, IOwnedAccount } from '@/modules/account/account.repository';
-import { MonoWallet } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { MonoMoreHoriz } from '@kadena/kode-icons/system';
+import { Button, Heading, Stack } from '@kadena/kode-ui';
+import {
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+} from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
-import classNames from 'classnames';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { AssetAction } from './ AssetAction';
 import { AddTokenForm } from './AddTokenForm';
-import { assetBoxClass } from './style.css';
+import { actionsWrapperClass } from './style.css';
 
+const MAXASSETCOUNT = 4;
 export function Assets({
   selectedContract,
   setSelectedContract,
@@ -21,6 +28,7 @@ export function Assets({
   fungibles: Fungible[];
   showAddToken?: boolean;
 }) {
+  const [showAll, setShowAll] = useState(false);
   const [isAssetFormExpanded, expandAssetForm, closeAssetForm] =
     useRightAside();
   const assets = useMemo(() => {
@@ -36,52 +44,64 @@ export function Assets({
     });
   }, [accounts, fungibles]);
 
+  const { filteredAssets, hasShowAllButton } = useMemo(() => {
+    if (showAll || assets.length <= MAXASSETCOUNT) {
+      return { filteredAssets: assets, hasShowAllButton: false };
+    }
+
+    return {
+      filteredAssets: assets.slice(0, MAXASSETCOUNT - 1),
+      hasShowAllButton: true,
+    };
+  }, [showAll, assets]);
+
   return (
     <>
       <AddTokenForm isOpen={isAssetFormExpanded} onClose={closeAssetForm} />
-      <Stack flexDirection={'column'} gap={'md'}>
-        <Stack
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-        >
-          <Heading as="h4">Your Assets</Heading>
-          {showAddToken && (
-            <Button
-              variant="outlined"
-              isCompact
-              onPress={() => {
-                expandAssetForm();
-              }}
-            >
-              Add new asset
-            </Button>
-          )}
-        </Stack>
-        <Stack gap={'md'}>
-          {assets.map((asset) => (
-            <Stack
-              alignItems={'center'}
-              className={classNames(
-                assetBoxClass,
-                asset.contract === selectedContract && 'selected',
+      <SectionCard stack="horizontal">
+        <SectionCardContentBlock>
+          <SectionCardHeader
+            title="Your Assets"
+            description={<></>}
+            actions={
+              showAddToken ? (
+                <Button
+                  variant="outlined"
+                  isCompact
+                  onPress={() => {
+                    expandAssetForm();
+                  }}
+                >
+                  Add new asset
+                </Button>
+              ) : (
+                <></>
+              )
+            }
+          />
+          <SectionCardBody>
+            <Heading as="h5">Available Assets</Heading>
+            <Stack className={actionsWrapperClass}>
+              {filteredAssets.map((asset) => (
+                <AssetAction
+                  label={asset.symbol}
+                  body={asset.balance}
+                  isSelected={asset.contract === selectedContract}
+                  handleClick={() => setSelectedContract(asset.contract)}
+                />
+              ))}
+              {hasShowAllButton && (
+                <AssetAction
+                  label=""
+                  body={<MonoMoreHoriz />}
+                  isSelected={false}
+                  handleClick={() => setShowAll(true)}
+                />
               )}
-              gap={'lg'}
-              onClick={() => setSelectedContract(asset.contract)}
-            >
-              <Stack alignItems={'center'} gap={'sm'}>
-                <Text>
-                  <MonoWallet />
-                </Text>
-                <Text>{asset.symbol}</Text>
-              </Stack>
-              <Text color="emphasize" bold>
-                {asset.balance}
-              </Text>
             </Stack>
-          ))}
-        </Stack>
-      </Stack>
+          </SectionCardBody>
+        </SectionCardContentBlock>
+      </SectionCard>
     </>
   );
 }
