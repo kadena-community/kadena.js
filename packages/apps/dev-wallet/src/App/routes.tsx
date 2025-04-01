@@ -19,7 +19,6 @@ import { ConnectPage } from '@/pages/connect/connect';
 import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccountPage } from '@/pages/create-account/create-account';
 import { NotFound } from '@/pages/errors/404';
-import { FungiblePage } from '@/pages/fungible/fungible';
 import { KeysPage } from '@/pages/keys/keys-page';
 import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
@@ -115,7 +114,6 @@ export const Routes: FC = () => {
             />
             <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
-            <Route path="/fungible/:contract" element={<FungiblePage />} />
             <Route
               path="/account/:accountId/migrate"
               element={<MigrateAccount />}
