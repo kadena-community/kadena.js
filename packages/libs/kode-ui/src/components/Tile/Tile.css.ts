@@ -28,7 +28,7 @@ export const tileClass = style([
         borderWidth: '10px',
       },
 
-      '&:active, &[data-status="active"]': {
+      '&:active, &[data-status="active"], &[data-selected="true"]': {
         backgroundColor: token('color.background.brand.primary.subtlest'),
         borderColor: token('color.border.tint.@focus'),
       },

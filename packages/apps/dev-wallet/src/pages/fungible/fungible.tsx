@@ -7,7 +7,7 @@ import { linkClass, listClass, panelClass } from '../home/style.css';
 
 export function FungiblePage() {
   const { contract } = useParams<{ contract: string }>();
-  const { fungibles, accounts } = useWallet();
+  const { fungibles, accounts, profile } = useWallet();
   const asset = fungibles.find((f) => f.contract === contract);
 
   if (!asset) {
@@ -43,7 +43,7 @@ export function FungiblePage() {
             <ul className={listClass}>
               {accounts.map((account) => (
                 <li key={account.uuid}>
-                  <AccountItem account={account} />
+                  <AccountItem account={account} profile={profile} />
                 </li>
               ))}
             </ul>

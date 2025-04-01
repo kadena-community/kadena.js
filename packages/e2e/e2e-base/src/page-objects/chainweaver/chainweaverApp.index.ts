@@ -25,40 +25,40 @@ export class ChainweaverAppIndex extends setupDatabase {
   }
 
   public async createAccount(actor: Page): Promise<string> {
-    await actor.getByTestId('assetList').waitFor();
+    await actor.getByTestId('assetList').first().waitFor();
     await actor.waitForTimeout(500);
 
     const listItems = await actor
       .getByTestId('assetList')
+      .first()
       .getByRole('listitem')
       .all();
 
     const newAccountButton = actor.getByRole('button', {
-      name: 'Account',
+      name: 'New Account',
     });
     await newAccountButton.waitFor();
     await expect(newAccountButton).toBeVisible();
     await newAccountButton.click();
 
-    const createAccountButton = actor.getByRole('button', {
-      name: 'Create Account',
-    });
-    await createAccountButton.click();
-
     await this.signPopupWithPassword(actor);
 
-    await actor.getByTestId('assetList').waitFor();
+    await actor.getByTestId('assetList').first().waitFor();
     await actor.waitForTimeout(500);
 
     const newListItems = await actor
       .getByTestId('assetList')
+      .first()
       .getByRole('listitem')
       .all();
 
     await expect(newListItems.length).toEqual(listItems.length + 1);
 
-    const str = (await newListItems[0].allTextContents()).join('');
-    const account = str.match(/\(([^)]+)\)/);
+    const account = await newListItems[0].getAttribute('data-account');
+    // console.log('str', str);
+    // const account = str.match(/\(([^)]+)\)/);
+
+    console.log(account);
 
     if (!account) {
       await expect(true).toBe(false);
@@ -277,8 +277,10 @@ export class ChainweaverAppIndex extends setupDatabase {
       actor.getByRole('heading', { name: 'Your Assets' }),
     ).toBeVisible();
 
-    await actor.getByRole('button', { name: 'Mainnet' }).waitFor();
-    await actor.getByRole('button', { name: 'Mainnet' }).click();
+    const contextButton = actor.getByTestId('networkselector');
+    await contextButton.waitFor();
+    await contextButton.click();
+
     await actor.getByRole('button', { name: 'Settings' }).waitFor();
     await actor.getByRole('button', { name: 'Settings' }).click();
 
@@ -375,6 +377,11 @@ export class ChainweaverAppIndex extends setupDatabase {
     return true;
   }
   public async selectNetwork(actor: Page, network: string): Promise<boolean> {
+    // const contextButton = actor.getByTestId('networkselector');
+    // await contextButton.waitFor();
+    // await contextButton.click();
+
+    await actor.getByTestId('networkselector').waitFor();
     await actor.getByTestId('networkselector').first().click();
     await actor.getByRole('button', { name: network }).click();
 
