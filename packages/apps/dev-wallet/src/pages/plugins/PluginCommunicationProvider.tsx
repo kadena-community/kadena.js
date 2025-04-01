@@ -20,7 +20,7 @@ const messageHandle =
       if (
         event.data.type === type &&
         event.source &&
-        event.origin === 'null' &&
+        (event.origin === 'null' || event.data.pluginId) &&
         event.data.sessionId
       ) {
         if (!permissions.includes(type)) {

@@ -7,7 +7,6 @@ import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBread
 import { useRequests } from '@/modules/communication/communication.provider';
 import { addTransaction } from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
 import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
@@ -26,7 +25,6 @@ export const SignRequest = ({
   onSign?: () => void;
   onAbort?: () => void;
 }) => {
-  const navigate = usePatchedNavigate();
   const { profile, networks, activeNetwork } = useWallet();
   const requests = useRequests();
   const [tx, setTx] = useState<ITransaction>();
@@ -61,14 +59,7 @@ export const SignRequest = ({
       }
     };
     run();
-  }, [
-    requestId,
-    navigate,
-    profile?.uuid,
-    requests,
-    networks,
-    activeNetwork?.uuid,
-  ]);
+  }, [requestId, profile?.uuid, requests, networks, activeNetwork?.uuid]);
 
   return (
     <>
