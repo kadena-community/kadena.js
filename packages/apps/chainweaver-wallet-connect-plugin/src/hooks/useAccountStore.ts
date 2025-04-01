@@ -3,7 +3,7 @@ import { IAccount } from '../wallet-communication';
 
 const LOCALSTORAGE_KEY = 'accountStore';
 
-interface AccountStore {
+export interface AccountStore {
   [id: string]: Array<{ name: string; account: IAccount; publicKey: string }>;
 }
 

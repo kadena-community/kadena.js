@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import WalletKit from '@reown/walletkit';
+import WalletKit, { WalletKitTypes } from '@reown/walletkit';
 import { Core } from '@walletconnect/core';
 
 const coreConfig = {
@@ -12,7 +12,7 @@ const metadata = {
   icons: [],
 };
 
-const useWalletKit = (sessionProposalHandler: any, sessionRequestHandler: any): [WalletKit | undefined, React.MutableRefObject<WalletKit | undefined>] => {
+const useWalletKit = (sessionProposalHandler: (args: WalletKitTypes.SessionProposal) => void, sessionRequestHandler: (args: WalletKitTypes.SessionRequest) => void): [WalletKit | undefined, React.MutableRefObject<WalletKit | undefined>] => {
   const [walletKit, setWalletKit] = useState<WalletKit | undefined>();
   const walletKitRef = useRef(walletKit);
 
@@ -35,6 +35,7 @@ const useWalletKit = (sessionProposalHandler: any, sessionRequestHandler: any): 
     if (!walletKitRef.current) {
       initializeWalletKit();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [walletKit, walletKitRef];

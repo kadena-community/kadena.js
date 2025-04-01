@@ -1,5 +1,7 @@
 export type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
+export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
+
 export interface KadenaAccount {
   name: string;
   contract: string;
@@ -14,16 +16,19 @@ export interface AccountResponse {
 
 export interface IAccount {
   uuid: string;
-  networkUUID: any;
+  networkUUID: UUID;
   profileId: string;
   contract: string;
   address: string;
   overallBalance: string;
   chains: Array<{
-    chainId: any;
+    chainId: string;
     balance: string;
   }>;
-  guard: any;
+  guard: {
+    keys: string[];
+    pred: BuiltInPredicate;
+  };
   keysetId?: string;
   alias?: string;
   syncTime?: number;
@@ -80,14 +85,14 @@ interface ResponsePayload {
   SIGN_REQUEST: ISignResponse;
 }
 
-interface IResponseType<T extends MessageType> {
+export interface IResponseType<T extends MessageType> {
   id: string;
   type: string;
   payload: ResponsePayload[T];
   error: unknown;
 }
 
-type MessageType = 'GET_ACCOUNTS' | 'GET_NETWORK_LIST' | 'SIGN_REQUEST';
+export type MessageType = 'GET_ACCOUNTS' | 'GET_NETWORK_LIST' | 'SIGN_REQUEST';
 
 export const communicate =
   (client: Window, server: Window, pluginId: string, sessionId: string) =>

@@ -65,6 +65,7 @@
     "@vanilla-extract/esbuild-plugin": "^2.3.11",
     "@vanilla-extract/vite-plugin": "4.0.17",
     "@vitejs/plugin-react-swc": "^3.2.2",
+    "@walletconnect/types": "~2.8.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "eslint": "^8.45.0",

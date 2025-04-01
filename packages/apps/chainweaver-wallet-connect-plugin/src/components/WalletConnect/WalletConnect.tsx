@@ -1,4 +1,5 @@
 import { WalletKitTypes } from '@reown/walletkit';
+import { SessionTypes } from "@walletconnect/types";
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { mainContainerClass } from './style.css';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
@@ -13,8 +14,8 @@ export const WalletConnect: React.FC<{
   target: Window;
 }> = ({ sessionId, target }) => {
   const [uri, setUri] = useState<string>('');
-  const [session, setSession] = useState<any>();
-  const [activeSessions, setActiveSessions] = useState<Array<any>>([]);
+  const [session, setSession] = useState<SessionTypes.Struct>();
+  const [activeSessions, setActiveSessions] = useState<Array<SessionTypes.Struct>>([]);
   const [networks, setNetworks] = useState<INetwork[]>([]);
   const [showAccountPrompt, setShowAccountPrompt] = useState<boolean>(false);
   const [availableAccounts, setAvailableAccounts] = useState<Array<IAccount>>(
@@ -52,7 +53,7 @@ export const WalletConnect: React.FC<{
       setNetworks(response.payload as INetwork[]);
     };
     fetchNetworkList();
-  }, []);
+  }, [message]);
 
   function deriveKeyFromAccount(account: IAccount) {
     const key = account.guard.keys[0];
@@ -129,7 +130,7 @@ export const WalletConnect: React.FC<{
     }
   }
 
-  async function handleSessionRequest(sessionRequest: any) {
+  async function handleSessionRequest(sessionRequest: WalletKitTypes.SessionRequest) {
     const request = sessionRequest.params.request;
     const { id, topic } = sessionRequest;
     const { method } = request;
@@ -141,13 +142,13 @@ export const WalletConnect: React.FC<{
     try {
       switch (method) {
         case 'kadena_getAccounts_v1':
-          await handleGetAccountsV1(request, sessionRequest, currentWalletKit, accountStoreRef.current);
+          await handleGetAccountsV1(sessionRequest, currentWalletKit, accountStoreRef.current);
           break;
         case 'kadena_sign_v1':
           await handleSignV1(sessionRequest, currentWalletKit);
           break;
         case 'kadena_quicksign_v1':
-          await handleQuickSignV1(request, sessionRequest, currentWalletKit, message);
+          await handleQuickSignV1(sessionRequest, currentWalletKit, message);
           break;
         default:
           console.warn(`Unhandled method: ${method}`);
@@ -195,7 +196,8 @@ export const WalletConnect: React.FC<{
       reason: getSdkError('USER_DISCONNECTED'),
     });
 
-    const { [session.topic]: _, ...filteredAccountStore } = accountStore;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [session.topic]: omittedTopic, ...filteredAccountStore } = accountStore;
     setAccountStore(filteredAccountStore);
     await getActiveSessions();
     setSession(undefined);
