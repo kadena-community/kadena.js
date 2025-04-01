@@ -54,14 +54,13 @@ export async function handleGetAccountsV1(sessionRequest: WalletKitTypes.Session
         .reduce(
           (result: AccountResponse | null, curr: AccountResponse) => {
             if (!result) {
-              result = curr;
-            } else {
-              result.kadenaAccounts = [
-                ...result.kadenaAccounts,
-                ...curr.kadenaAccounts,
-              ];
+              return curr;
             }
-            return result;
+
+            return {
+              ...result,
+              kadenaAccounts: [...result.kadenaAccounts, ...curr.kadenaAccounts]
+            };
           },
           null,
         );

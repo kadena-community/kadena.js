@@ -5,7 +5,7 @@ export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
 export interface KadenaAccount {
   name: string;
   contract: string;
-  chains: number[];
+  chains: string[];
 }
 
 export interface AccountResponse {

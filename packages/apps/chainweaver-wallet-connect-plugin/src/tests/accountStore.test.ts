@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react-hooks';
 import useAccountStore from '../hooks/useAccountStore';
+import { IAccount } from '@/wallet-communication';
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -36,15 +37,15 @@ describe('useAccountStore', () => {
   it('saves accountStore to localStorage when accountStore changes', () => {
     const { result, rerender } = renderHook(() => useAccountStore());
 
-    const dummyAccount = {
+    const dummyAccount: IAccount = {
       uuid: '123',
-      networkUUID: '456',
+      networkUUID: '456-789-123-456-789',
       profileId: '789',
       contract: 'coin',
       address: 'address',
       overallBalance: '100',
       chains: [{ chainId: '0', balance: '100' }],
-      guard: { keys: ['key'] },
+      guard: { keys: ['key'], pred: 'keys-all' },
     }
 
     // Simulate a state change in accountStore
