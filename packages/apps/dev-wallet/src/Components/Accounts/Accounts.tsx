@@ -13,7 +13,6 @@ import {
   ButtonGroup,
   ContextMenu,
   ContextMenuItem,
-  Heading,
   Stack,
   Text,
 } from '@kadena/kode-ui';
@@ -24,27 +23,27 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
-import { useState } from 'react';
 import { AccountItem } from '../AccountItem/AccountItem';
 import { MultiSigForm } from './MultiSigForm';
-import { accountTypeClass, listClass } from './style.css';
+import { listClass } from './style.css';
 import { WatchAccountsForm } from './WatchAccountForm';
 
 export function Accounts({
   accounts,
   contract = 'coin',
-  watchedAccounts,
+  label,
+  show,
 }: {
-  accounts: Array<IOwnedAccount>;
-  watchedAccounts: Array<IWatchedAccount>;
+  accounts: Array<IOwnedAccount | IWatchedAccount>;
   contract: string;
+  label: string;
+  show: 'owned' | 'watched';
 }) {
-  const [show, setShow] = useState<'owned' | 'watched'>('owned');
   const { createNextAccount, activeNetwork, profile } = useWallet();
   const [isWatchAccountExpanded, expandWatchAccount, closeWatchAccount] =
     useRightAside();
   const [isMultiSigExpanded, expandMultiSig, closeMultiSig] = useRightAside();
-  const accountsToShow = show === 'owned' ? accounts : watchedAccounts;
+  const accountsToShow = accounts; // show === 'owned' ? accounts : watchedAccounts;
 
   const onWatch = async (accounts: IRetrievedAccount[]) => {
     const accountsToWatch: IWatchedAccount[] = accounts.map((account) => ({
@@ -81,69 +80,51 @@ export function Accounts({
       <SectionCard stack="vertical">
         <SectionCardContentBlock>
           <SectionCardHeader
-            title="Accounts"
-            description={<>Your accounts for the {contract} asset</>}
+            title={label}
+            description={<></>}
             actions={
-              <ButtonGroup>
+              show === 'owned' ? (
+                <ButtonGroup>
+                  <Button
+                    isCompact
+                    variant="outlined"
+                    onClick={() => createNextAccount({ contract })}
+                  >
+                    New Account
+                  </Button>
+                  <ContextMenu
+                    placement="bottom end"
+                    trigger={
+                      <Button
+                        endVisual={<MonoMoreVert />}
+                        variant="outlined"
+                        isCompact
+                      ></Button>
+                    }
+                  >
+                    <ContextMenuItem
+                      label="Create Account"
+                      onClick={() => createNextAccount({ contract })}
+                    />
+
+                    <ContextMenuItem
+                      label="create Multi-Sig"
+                      onClick={() => expandMultiSig()}
+                    />
+                  </ContextMenu>
+                </ButtonGroup>
+              ) : (
                 <Button
                   isCompact
                   variant="outlined"
-                  onClick={() => createNextAccount({ contract })}
+                  onPress={() => expandWatchAccount()}
                 >
-                  New Account
+                  Add account
                 </Button>
-                <ContextMenu
-                  placement="bottom end"
-                  trigger={
-                    <Button
-                      endVisual={<MonoMoreVert />}
-                      variant="outlined"
-                      isCompact
-                    ></Button>
-                  }
-                >
-                  <ContextMenuItem
-                    label="Create Account"
-                    onClick={() => createNextAccount({ contract })}
-                  />
-                  <ContextMenuItem
-                    label="Watch/Add existing"
-                    onClick={() => expandWatchAccount()}
-                  />
-                  <ContextMenuItem
-                    label="create Multi-Sig"
-                    onClick={() => expandMultiSig()}
-                  />
-                </ContextMenu>
-              </ButtonGroup>
+              )
             }
           />
           <SectionCardBody>
-            <Stack justifyContent={'space-between'}>
-              <Stack gap={'sm'}>
-                <Stack
-                  className={classNames(
-                    accountTypeClass,
-                    show === 'owned' && 'selected',
-                  )}
-                  alignItems={'center'}
-                  onClick={() => setShow('owned')}
-                >
-                  <Heading as="h6">Owned({accounts.length})</Heading>
-                </Stack>
-                <Stack
-                  onClick={() => setShow('watched')}
-                  className={classNames(
-                    accountTypeClass,
-                    show === 'watched' && 'selected',
-                  )}
-                  padding={'sm'}
-                  alignItems={'center'}
-                >
-                  <Heading as="h6">Watched({watchedAccounts.length})</Heading>
-                </Stack>
-              </Stack>
-            </Stack>
             {accountsToShow.length ? (
               <ul className={listClass} data-testid="assetList">
                 {accountsToShow.map((account) => (

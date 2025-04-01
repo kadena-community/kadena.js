@@ -29,9 +29,16 @@ export function AssetsCard() {
         setSelectedContract={setSelectedContract}
       />
       <Accounts
+        show="owned"
+        label="Accounts"
         accounts={filteredAccounts}
         contract={selectedContract}
-        watchedAccounts={filteredWatchedAccounts}
+      />
+      <Accounts
+        show="watched"
+        label="Watched Accounts"
+        accounts={filteredWatchedAccounts}
+        contract={selectedContract}
       />
     </>
   );
