@@ -27,15 +27,15 @@ test('Network creation', async ({ initiator, chainweaverApp }) => {
 
   await test.step('Select network', async () => {
     await initiator.goto('/');
-    await expect(initiator.getByTestId('networkselector').first()).toHaveText(
-      'Mainnet',
-    );
+    await expect(
+      initiator.getByTestId('networkselectorName').first(),
+    ).toHaveText('Mainnet');
     await expect(initiator.getByTestId('breadcrumbs')).toHaveText(/Mainnet*/);
     await chainweaverApp.selectNetwork(initiator, 'development');
 
-    await expect(initiator.getByTestId('networkselector').first()).toHaveText(
-      'development',
-    );
+    await expect(
+      initiator.getByTestId('networkselectorName').first(),
+    ).toHaveText('development');
     await expect(initiator.getByTestId('breadcrumbs')).toHaveText(
       /development*/,
     );
