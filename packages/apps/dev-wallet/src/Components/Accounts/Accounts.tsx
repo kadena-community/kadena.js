@@ -128,7 +128,7 @@ export function Accounts({
             {accountsToShow.length ? (
               <ul className={listClass} data-testid="assetList">
                 {accountsToShow.map((account) => (
-                  <li key={account.uuid}>
+                  <li key={account.uuid} data-account={account.address}>
                     <AccountItem account={account} profile={profile} />
                   </li>
                 ))}

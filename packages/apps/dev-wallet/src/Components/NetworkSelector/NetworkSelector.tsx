@@ -41,6 +41,7 @@ export const NetworkSelector: FC<{
   return (
     <ButtonGroup fullWidth>
       <UILink
+        data-testid="networkselectorName"
         isCompact
         variant="outlined"
         component={Link}
