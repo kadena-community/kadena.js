@@ -1,6 +1,9 @@
+import { wrapperClass } from '@/pages/errors/styles.css';
 import { useShow } from '@/utils/useShow';
+import { MonoSignature } from '@kadena/kode-icons/system';
 import {
   Button,
+  Card,
   Notification,
   Radio,
   RadioGroup,
@@ -8,6 +11,7 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import {
+  CardContentBlock,
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
@@ -48,10 +52,17 @@ export const SignOptionsCard: FC<IProps> = ({
 }) => {
   const [, , AdvancedMode] = useShow(true);
   return (
-    <SectionCard background="none">
-      <SectionCardContentBlock>
-        <SectionCardHeader title="Sign options" background="none" />
-        <SectionCardBody>
+    <Card fullWidth>
+      <CardContentBlock
+        title="Sign options"
+        visual={<MonoSignature width={36} height={36} />}
+      >
+        <Stack
+          flexDirection="column"
+          gap="xxl"
+          marginBlockEnd="xxxl"
+          className={wrapperClass}
+        >
           <AdvancedMode>
             <Controller
               name="type"
@@ -140,8 +151,8 @@ export const SignOptionsCard: FC<IProps> = ({
               </Notification>
             )}
           </Stack>
-        </SectionCardBody>
-      </SectionCardContentBlock>
-    </SectionCard>
+        </Stack>
+      </CardContentBlock>
+    </Card>
   );
 };

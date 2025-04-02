@@ -1,12 +1,9 @@
 import { Fungible } from '@/modules/account/account.repository';
+import { wrapperClass } from '@/pages/errors/styles.css';
 import { Label } from '@/pages/transaction/components/helpers';
-import { Select, SelectItem } from '@kadena/kode-ui';
-import {
-  SectionCard,
-  SectionCardBody,
-  SectionCardContentBlock,
-  SectionCardHeader,
-} from '@kadena/kode-ui/patterns';
+import { MonoSwipeRightAlt } from '@kadena/kode-icons/system';
+import { Card, Select, SelectItem, Stack } from '@kadena/kode-ui';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
@@ -23,10 +20,17 @@ export const TransferCard: FC<IProps> = ({
   fungibles,
 }) => {
   return (
-    <SectionCard background="none">
-      <SectionCardContentBlock>
-        <SectionCardHeader title="Transfer" />
-        <SectionCardBody>
+    <Card fullWidth>
+      <CardContentBlock
+        title="Transfer"
+        visual={<MonoSwipeRightAlt width={36} height={36} />}
+      >
+        <Stack
+          flexDirection="column"
+          gap="xxl"
+          marginBlockEnd="xxxl"
+          className={wrapperClass}
+        >
           <Controller
             name="fungible"
             control={control}
@@ -49,8 +53,8 @@ export const TransferCard: FC<IProps> = ({
               </Select>
             )}
           />
-        </SectionCardBody>
-      </SectionCardContentBlock>
-    </SectionCard>
+        </Stack>
+      </CardContentBlock>
+    </Card>
   );
 };

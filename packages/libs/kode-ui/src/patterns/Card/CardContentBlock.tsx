@@ -18,6 +18,7 @@ export interface ICardContentBlockProps {
   supportingContent?: React.ReactNode;
   extendedContent?: React.ReactNode;
   className?: string;
+  isCompact?: boolean;
 }
 
 export const CardContentBlock = ({
@@ -29,10 +30,11 @@ export const CardContentBlock = ({
   supportingContent,
   extendedContent,
   className,
+  isCompact = false,
 }: ICardContentBlockProps) => {
   return (
     <Stack
-      id="id"
+      id={id}
       flexDirection={{ xs: 'column', md: 'row' }}
       gap="xl"
       className={cn(bodyContainer, className)}

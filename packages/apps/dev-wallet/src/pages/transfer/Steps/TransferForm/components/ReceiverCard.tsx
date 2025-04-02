@@ -6,27 +6,28 @@ import {
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
+import { wrapperClass } from '@/pages/errors/styles.css';
 import { linkClass } from '@/pages/home/style.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
 import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
-import { MonoCopyAll, MonoDelete } from '@kadena/kode-icons/system';
+import {
+  MonoCopyAll,
+  MonoDelete,
+  MonoSaveAlt,
+} from '@kadena/kode-icons/system';
 import {
   Button,
+  Card,
   Heading,
   Select,
   SelectItem,
   Stack,
   TextField,
 } from '@kadena/kode-ui';
-import {
-  SectionCard,
-  SectionCardBody,
-  SectionCardContentBlock,
-  SectionCardHeader,
-} from '@kadena/kode-ui/patterns';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC, Fragment } from 'react';
 import {
   Control,
@@ -105,10 +106,17 @@ export const ReceiverCard: FC<IProps> = ({
 }) => {
   const [, , AdvancedMode] = useShow(true);
   return (
-    <SectionCard background="none">
-      <SectionCardContentBlock>
-        <SectionCardHeader title="Receiver" background="none" />
-        <SectionCardBody>
+    <Card fullWidth>
+      <CardContentBlock
+        title="Receiver"
+        visual={<MonoSaveAlt width={36} height={36} />}
+      >
+        <Stack
+          flexDirection="column"
+          gap="xxl"
+          marginBlockEnd="xxxl"
+          className={wrapperClass}
+        >
           <Controller
             control={control}
             name="receivers"
@@ -401,8 +409,8 @@ export const ReceiverCard: FC<IProps> = ({
               );
             }}
           />
-        </SectionCardBody>
-      </SectionCardContentBlock>
-    </SectionCard>
+        </Stack>
+      </CardContentBlock>
+    </Card>
   );
 };

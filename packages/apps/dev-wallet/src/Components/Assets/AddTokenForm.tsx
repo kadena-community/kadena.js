@@ -115,7 +115,7 @@ export function AddTokenForm({
         <RightAsideContent>
           <Stack flexDirection={'column'} gap={'lg'}>
             <Stack flexDirection={'column'} gap={'md'}>
-              <Heading variant={'h5'}>Add from existing Tokes</Heading>
+              <Heading variant={'h5'}>Add from existing Tokens</Heading>
               {fungibles.map((f) => {
                 const installed =
                   !f.networkUUIDs ||

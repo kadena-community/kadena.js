@@ -4,6 +4,7 @@ import {
 } from '@/modules/account/account.repository';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
+import { wrapperClass } from '@/pages/errors/styles.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
 import { CreationTime } from '@/pages/transfer/Components/CreationTime';
@@ -11,6 +12,7 @@ import { TTLSelect } from '@/pages/transfer/Components/TTLSelect';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
 import {
+  Card,
   Heading,
   Radio,
   RadioGroup,
@@ -18,12 +20,7 @@ import {
   Text,
   TextField,
 } from '@kadena/kode-ui';
-import {
-  SectionCard,
-  SectionCardBody,
-  SectionCardContentBlock,
-  SectionCardHeader,
-} from '@kadena/kode-ui/patterns';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
 import { FC } from 'react';
 import { Control, Controller, UseFormGetValues } from 'react-hook-form';
@@ -68,10 +65,9 @@ export const MetaCard: FC<IProps> = ({
 }) => {
   const [, , AdvancedMode] = useShow(true);
   return (
-    <SectionCard background="none">
-      <SectionCardContentBlock>
-        <SectionCardHeader title="Gas Info" background="none" />
-        <SectionCardBody>
+    <Card fullWidth>
+      <CardContentBlock title="Gas Info">
+        <Stack flexDirection="column" gap="xxl" marginBlockEnd="xxxl">
           <AdvancedMode>
             <Stack flexDirection="column" gap="sm">
               <Controller
@@ -269,8 +265,8 @@ export const MetaCard: FC<IProps> = ({
               />
             </AdvancedMode>
           </Stack>
-        </SectionCardBody>
-      </SectionCardContentBlock>
-    </SectionCard>
+        </Stack>
+      </CardContentBlock>
+    </Card>
   );
 };

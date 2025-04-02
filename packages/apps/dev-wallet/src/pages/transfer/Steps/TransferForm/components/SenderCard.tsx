@@ -6,18 +6,15 @@ import {
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
+import { wrapperClass } from '@/pages/errors/styles.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
 import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
-import { Select, SelectItem, Stack } from '@kadena/kode-ui';
-import {
-  SectionCard,
-  SectionCardBody,
-  SectionCardContentBlock,
-  SectionCardHeader,
-} from '@kadena/kode-ui/patterns';
+import { MonoSwipeRightAlt } from '@kadena/kode-icons/system';
+import { Card, Select, SelectItem, Stack } from '@kadena/kode-ui';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
@@ -61,10 +58,17 @@ export const SenderCard: FC<IProps> = ({
   const [, , AdvancedMode] = useShow(true);
 
   return (
-    <SectionCard background="none">
-      <SectionCardContentBlock>
-        <SectionCardHeader title="Sender" background="none" />
-        <SectionCardBody>
+    <Card fullWidth>
+      <CardContentBlock
+        title="Sender"
+        visual={<MonoSwipeRightAlt width={36} height={36} />}
+      >
+        <Stack
+          flexDirection="column"
+          gap="xxl"
+          marginBlockEnd="xxxl"
+          className={wrapperClass}
+        >
           <Controller
             name={`senderAccount`}
             control={control}
@@ -147,8 +151,8 @@ export const SenderCard: FC<IProps> = ({
               />
             </Stack>
           </AdvancedMode>
-        </SectionCardBody>
-      </SectionCardContentBlock>
-    </SectionCard>
+        </Stack>
+      </CardContentBlock>
+    </Card>
   );
 };
