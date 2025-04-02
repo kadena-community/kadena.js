@@ -4,7 +4,7 @@ import { statusPassed } from '@/pages/transaction/components/TxPipeLine';
 import { shorten } from '@/utils/helpers';
 import { ChainId } from '@kadena/client';
 import { Heading, Notification, Stack, Text } from '@kadena/kode-ui';
-import { TrG } from './TransferForm';
+import { TrG } from './TransferForm/TransferForm';
 
 export function Result({
   redistribution,
