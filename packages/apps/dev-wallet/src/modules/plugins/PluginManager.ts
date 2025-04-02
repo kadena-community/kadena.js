@@ -52,7 +52,7 @@ export class PluginManager {
     iframe.height = '100%';
     iframe.style.zIndex = '1000';
     iframe.style.border = 'none';
-    iframe.style.position = 'fixed';
+    iframe.style.position = 'absolute';
     iframe.style.display = 'none';
 
     const instance: LoadedPlugin = {
