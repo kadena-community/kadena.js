@@ -46,11 +46,8 @@ export class PluginManager {
     const sessionId = `${plugin.id}-${crypto.randomUUID()}`;
     const iframe = createPluginIframe(plugin, sessionId);
 
-    // iframe.style.position = 'fixed';
-    // iframe.style.display = 'none';
     iframe.width = '100%';
     iframe.height = '100%';
-    iframe.style.zIndex = '1000';
     iframe.style.border = 'none';
     iframe.style.position = 'absolute';
     iframe.style.display = 'none';
