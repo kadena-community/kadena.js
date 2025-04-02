@@ -11,6 +11,8 @@ export type IProps = Pick<AriaButtonProps<'button'>, 'aria-label'> & {
   isDisabled?: boolean;
   hasFocus?: boolean;
   onClick?: React.MouseEventHandler;
+  isSelected?: boolean;
+  stacked?: 'horizontal' | 'vertical';
 };
 
 export type ITileProps = PropsWithChildren<IProps>;
@@ -21,6 +23,8 @@ export const Tile: FC<ITileProps> = ({
   isDisabled = false,
   hasFocus,
   onClick,
+  isSelected = false,
+  stacked = 'horizontal',
   ...props
 }) => {
   const { focusProps, isFocused, isFocusVisible } = useFocusRing({
@@ -33,9 +37,11 @@ export const Tile: FC<ITileProps> = ({
       onClick={onClick}
       as={as}
       className={tileClass}
+      flexDirection={stacked === 'vertical' ? 'column' : 'row'}
       data-disabled={isDisabled || undefined}
       data-focused={isFocused || undefined}
       data-focus-visible={isFocusVisible || undefined}
+      data-selected={isSelected || undefined}
     >
       {children}
     </Stack>

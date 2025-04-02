@@ -1,4 +1,5 @@
 import { normalizeErrorObject } from '@/utils/getErrorMessage';
+import { normalizeSigs } from '@/utils/normalizeSigs';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import {
   ChainId,
@@ -18,10 +19,15 @@ import {
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
-import { isSignedCommand } from '@kadena/pactjs';
 import { networkRepository } from '../network/network.repository';
 import { UUID } from '../types';
 import { ITransaction, transactionRepository } from './transaction.repository';
+
+const isSignedCommand = (
+  command: IUnsignedCommand | ICommand,
+): command is ICommand => {
+  return command.sigs.every((s) => typeof s?.sig === 'string');
+};
 
 export async function addTransaction({
   transaction,
@@ -44,6 +50,7 @@ export async function addTransaction({
     profileId,
     networkUUID,
     status: isSignedCommand(transaction) ? 'signed' : 'initiated',
+    sigs: normalizeSigs(transaction),
     groupId,
     ...(crossChainId || autoContinue
       ? { continuation: { crossChainId, autoContinue } }

@@ -2,6 +2,7 @@ import {
   MonoCheck,
   MonoContacts,
   MonoContrast,
+  MonoControlPointDuplicate,
   MonoDarkMode,
   MonoExtension,
   MonoKey,
@@ -30,6 +31,7 @@ import {
   Stack,
   Text,
   Themes,
+  Link as UILink,
   useTheme,
 } from '@kadena/kode-ui';
 import {
@@ -67,13 +69,27 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
         </>
       }
       appContext={
-        <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
-          <NetworkSelector
-            showLabel={isExpanded}
-            variant="outlined"
-            isCompact
-          />
-        </SideBarItem>
+        <>
+          {' '}
+          <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
+            <NetworkSelector
+              showLabel={isExpanded}
+              variant="outlined"
+              isCompact
+            />
+          </SideBarItem>
+          <SideBarItem component={Link} visual={<></>} label="">
+            <UILink
+              isCompact
+              href="/transfer"
+              component={Link}
+              variant="outlined"
+              startVisual={<MonoControlPointDuplicate />}
+            >
+              {isExpanded ? 'New Transfer' : <></>}
+            </UILink>
+          </SideBarItem>
+        </>
       }
       navigation={
         <>

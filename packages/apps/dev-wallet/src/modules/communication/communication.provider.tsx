@@ -1,5 +1,7 @@
 import { useGlobalState } from '@/App/providers/globalState';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
+import { IUnsignedCommand } from '@kadena/client';
+import { hash as blakeHash } from '@kadena/cryptography-utils';
 import {
   FC,
   PropsWithChildren,
@@ -37,7 +39,13 @@ const messageHandle = (
   ) => Promise<{ payload: unknown } | { error: unknown }>,
 ) => {
   const cb = async (event: MessageEvent) => {
-    if (event.data.type === type && event.source && event.origin !== 'null') {
+    if (
+      event.data.type === type &&
+      event.source &&
+      event.origin !== 'null' &&
+      !event.data.pluginId
+    ) {
+      console.log('GLOBAL MESSAGE HANDEL', event.origin);
       const payload = await handler(event.data);
       event.source.postMessage(
         { id: event.data.id, type: event.data.type, ...payload },
@@ -132,7 +140,15 @@ export const CommunicationProvider: FC<
       });
     const handlers = [
       handleUIRequiredRequest('CONNECTION_REQUEST'),
-      handleUIRequiredRequest('SIGN_REQUEST'),
+      handle('SIGN_REQUEST', async (data) => {
+        const req = data.payload as Partial<IUnsignedCommand>;
+        if (!('hash' in req) && 'cmd' in req && req.cmd) {
+          req.hash = blakeHash(req.cmd);
+        }
+        const request = createRequest(data);
+        loadUiComponent(data.id, 'SIGN_REQUEST');
+        return request;
+      }),
       handle('GET_STATUS', async () => {
         if (!isUnlocked || !profile) return { payload: { isUnlocked: false } };
         const { uuid, name, accentColor } = profile;
@@ -174,12 +190,20 @@ export const CommunicationProvider: FC<
         return {
           payload: isUnlocked
             ? accounts.map(
-                ({ address, alias, overallBalance, chains, guard }) => ({
+                ({
                   address,
                   alias,
                   overallBalance,
                   chains,
                   guard,
+                  contract,
+                }) => ({
+                  address,
+                  alias,
+                  overallBalance,
+                  chains,
+                  guard,
+                  contract,
                 }),
               )
             : [],
