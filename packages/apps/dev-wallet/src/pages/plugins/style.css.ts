@@ -5,6 +5,7 @@ export const pluginContainerClass = style({
   borderRadius: '5px',
   border: '1px solid #ccc',
   overflow: 'hidden',
+  padding: '1px',
 });
 
 export const pluginIconClass = style({

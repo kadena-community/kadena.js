@@ -1,101 +1,36 @@
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { usePlugins } from '@/modules/plugins/plugin.provider';
 import { getInitials } from '@/utils/get-initials';
-import { logTap } from '@/utils/logTap';
 import { MonoApps } from '@kadena/kode-icons/system';
 import { Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { PluginCommunicationProvider } from '../../modules/plugins/PluginCommunicationProvider';
 import { noStyleLinkClass } from '../home/style.css';
-import { PluginCommunicationProvider } from './PluginCommunicationProvider';
 import { pluginContainerClass, pluginIconClass } from './style.css';
-import { Plugin } from './type';
-
-// plugin whitelist
-const registries = [
-  '/internal-registry',
-  // 'https://localhost:3000/test-plugins',
-];
-
-function escapeHTML(input: string) {
-  return input
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-const getDoc = (plugin: Plugin, sessionId: string) => {
-  const id = escapeHTML(plugin.id);
-  const host = escapeHTML(plugin.registry);
-  const src = `${host}/${id}/dist/index.es.js`;
-  const style = `${host}/${id}/dist/style.css`;
-
-  console.log('loading plugin: ', { id, host, src, style });
-
-  return `
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kadena Dev Wallet Plugin</title>
-    <link rel="stylesheet" href="${style}" />
-    <link rel="modulepreload" crossorigin href="${src}" />
-    </head>
-    <body class="boot">
-    <div id="plugin-root"></div>
-    <script type="module">
-      window.process =  window.process || { env: { NODE_ENV: 'production' } };
-    </script>
-    <script type="module">
-      import { createApp } from '${src}';
-      createApp(document.getElementById('plugin-root'), { sessionId: '${sessionId}' }, window.parent);
-    </script>
-  </body>
-</html>`;
-};
 
 export function Plugins() {
   const [searchParams] = useSearchParams();
-  const [pluginList, setPluginList] = useState<Plugin[]>([]);
-  const pluginId = searchParams.get('plugin-id') as
-    | null
-    | keyof typeof pluginList;
+  const { pluginList, pluginManager } = usePlugins();
+  const [sessionId, setSessionId] = useState<string | undefined>();
 
-  const plugin = pluginList.find((p) => p.id === pluginId);
-  const sessionId = useMemo(
-    () => `${pluginId?.toString()}:${crypto.randomUUID()}`,
-    [pluginId],
-  );
+  const pluginId = searchParams.get('plugin-id');
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const plugin = pluginId ? pluginList.get(pluginId) : undefined;
 
   useEffect(() => {
-    registries.map((registry) =>
-      fetch(`${registry}/plugins.json`)
-        .then((res) => res.json())
-        .then((list: Omit<Plugin, 'registry'>[]) =>
-          (list || []).map((p) => ({ ...p, registry })),
-        )
-        .then((list) =>
-          setPluginList((prev) => {
-            const newPlugins: Plugin[] = [];
-            list.forEach((p) => {
-              if (
-                !prev.find((pl) => pl.id === p.id && pl.registry === p.registry)
-              ) {
-                newPlugins.push(logTap('plugin found')(p));
-              }
-            });
-            return [...prev, ...newPlugins];
-          }),
-        ),
-    );
-  }, []);
-
-  const doc = useMemo(() => {
-    if (!plugin) return '';
-    return getDoc(plugin, sessionId);
-  }, [plugin, sessionId]);
+    if (!pluginManager || !wrapperRef.current) return;
+    if (plugin) {
+      const loadedPlugin = pluginManager.loadPlugin(plugin);
+      pluginManager.bringToFront(plugin.id, wrapperRef.current);
+      setSessionId(loadedPlugin.sessionId);
+      return () => {
+        pluginManager.bringToBackground(plugin.id);
+      };
+    }
+  }, [plugin, pluginManager]);
 
   if (plugin) {
     return (
@@ -128,11 +63,7 @@ export function Plugins() {
             marginBlockEnd={'md'}
             className={pluginContainerClass}
           >
-            <iframe
-              sandbox="allow-scripts allow-forms"
-              style={{ border: 'none', width: '100%', height: '100%' }}
-              srcDoc={doc}
-            />
+            <Stack ref={wrapperRef} width="100%" height="100%" />
           </Stack>
         </Stack>
       </PluginCommunicationProvider>
@@ -150,7 +81,7 @@ export function Plugins() {
       </Text>
       <Divider />
       <Stack flexWrap="wrap" gap={'md'}>
-        {pluginList.map(({ name, id }) => (
+        {[...pluginList.values()].map(({ name, id }) => (
           <Link to={`/plugins?plugin-id=${id}`} className={noStyleLinkClass}>
             <Stack
               alignItems={'center'}

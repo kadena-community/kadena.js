@@ -116,6 +116,7 @@ export const Layout: FC = () => {
         >
           <Outlet />
         </Stack>
+        <div id="plugins-container" />
       </SideBarLayout>
 
       <div id="modalportal"></div>

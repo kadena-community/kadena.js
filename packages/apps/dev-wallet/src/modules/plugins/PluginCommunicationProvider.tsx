@@ -4,8 +4,8 @@ import {
   RequestType,
 } from '@/modules/communication/communication.provider';
 import { ReactNode, useMemo, useState } from 'react';
-import { ConnectionRequest } from './components/ConnectionRequest';
-import { SignRequestDialog } from './components/SignRequestDialog';
+import { ConnectionRequest } from '../../pages/plugins/components/ConnectionRequest';
+import { SignRequestDialog } from '../../pages/plugins/components/SignRequestDialog';
 import { Plugin } from './type';
 
 const messageHandle =
@@ -65,11 +65,11 @@ export function PluginCommunicationProvider({
   plugin,
 }: {
   children: ReactNode;
-  sessionId: string;
+  sessionId?: string;
   plugin: Plugin;
 }) {
   const handle = useMemo(
-    () => messageHandle([sessionId], plugin.permissions),
+    () => messageHandle(sessionId ? [sessionId] : [], plugin.permissions),
     [sessionId, plugin.permissions],
   );
   const [uiComponent, setUiComponent] = useState<ReactNode | null>(null);

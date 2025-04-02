@@ -7,7 +7,7 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import { useState } from 'react';
-import { Plugin } from '../type';
+import { Plugin } from '../../../modules/plugins/type';
 
 export function ConnectionRequest({
   requestId,

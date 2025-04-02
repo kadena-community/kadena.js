@@ -6,4 +6,5 @@ export type Plugin = {
   registry: string;
   description: string;
   permissions: RequestType[];
+  keepInBackground: boolean;
 };
