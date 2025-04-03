@@ -8,6 +8,7 @@ import '@/resources/styles/globals.css';
 import { RouterProvider } from '@kadena/kode-ui';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -43,7 +44,9 @@ const App: FC<AppProps<IPageProps>> = ({
             <AppContextProvider>
               <LayoutContextProvider>
                 <Layout useFullWidth={pageProps.useFullPageWidth}>
-                  <Component {...pageProps} />
+                  <ReCaptchaProvider reCaptchaKey="6Lfv5wgrAAAAAB6FjE2K0-33hAJuhWVFxHXOLl0v">
+                    <Component {...pageProps} />
+                  </ReCaptchaProvider>
                 </Layout>
               </LayoutContextProvider>
             </AppContextProvider>
