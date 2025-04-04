@@ -92,7 +92,6 @@ const ExistingAccountFaucetPage: FC = () => {
 
       const token = await executeRecaptcha('form_submit');
 
-      console.log({ token });
       const result: Response = await fetch(`/api/faucet/evm`, {
         method: 'POST',
         body: JSON.stringify({ ...data, chainId, token }),
@@ -103,7 +102,7 @@ const ExistingAccountFaucetPage: FC = () => {
       if (!txData.hash) {
         setRequestStatus({
           status: 'erroneous',
-          message: t('No tx returned'),
+          message: t((txData as any).message),
         });
         return;
       }

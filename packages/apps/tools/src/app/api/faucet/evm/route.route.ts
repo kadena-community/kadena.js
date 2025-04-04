@@ -38,6 +38,16 @@ export async function POST(request: NextRequest) {
 
   const captchaResult: any = await checkRecaptcha(body.token);
   console.log({ captchaResult });
+
+  if (!body.name || !ethers.isAddress(body.name)) {
+    return NextResponse.json(
+      {
+        message: 'Invalid Ethereum address',
+      },
+      { status: 404 },
+    );
+  }
+
   if (!captchaResult?.success) {
     return NextResponse.json(
       {
@@ -48,15 +58,6 @@ export async function POST(request: NextRequest) {
   }
 
   const provider = getEVMProvider(body.chainId);
-
-  if (!body.name || !ethers.isAddress(body.name)) {
-    return NextResponse.json(
-      {
-        message: 'Invalid Ethereum address',
-      },
-      { status: 404 },
-    );
-  }
 
   const faucetWallet = new ethers.Wallet(PRIVATE_KEY, provider);
   const balance = await provider.getBalance(faucetWallet.address);
