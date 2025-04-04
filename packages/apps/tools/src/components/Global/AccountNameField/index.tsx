@@ -1,5 +1,5 @@
 import type { ITextFieldProps } from '@kadena/kode-ui';
-import { TextField } from '@kadena/kode-ui';
+import { Stack, TextField } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { ForwardedRef } from 'react';
 import React, { forwardRef } from 'react';
@@ -18,7 +18,7 @@ const BaseAccountNameField = (
   const { t } = useTranslation('common');
 
   return (
-    <div className={accountInputWrapperStyle}>
+    <Stack className={accountInputWrapperStyle} width="100%">
       <TextField
         {...props}
         label={props.label ?? t('Account Name')}
@@ -29,7 +29,7 @@ const BaseAccountNameField = (
         errorMessage={props.errorMessage}
         ref={forwardedRef}
       />
-    </div>
+    </Stack>
   );
 };
 
