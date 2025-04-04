@@ -44,7 +44,9 @@ const App: FC<AppProps<IPageProps>> = ({
             <AppContextProvider>
               <LayoutContextProvider>
                 <Layout useFullWidth={pageProps.useFullPageWidth}>
-                  <ReCaptchaProvider reCaptchaKey="6Lfv5wgrAAAAAB6FjE2K0-33hAJuhWVFxHXOLl0v">
+                  <ReCaptchaProvider
+                    reCaptchaKey={process.env.NEXT_PUBLIC_CAPTCHA_SITEKEY}
+                  >
                     <Component {...pageProps} />
                   </ReCaptchaProvider>
                 </Layout>

@@ -19,6 +19,8 @@ import {
   Button,
   Card,
   Heading,
+  Notification,
+  NotificationHeading,
   Stack,
 } from '@kadena/kode-ui';
 import type { ethers } from 'ethers';
@@ -147,6 +149,14 @@ const ExistingAccountFaucetPage: FC = () => {
         flexDirection="column"
       >
         <Heading as="h4">{t('Add Funds to EVM Account')}</Heading>
+
+        <Notification intent="warning" role="status" type="inlineStacked">
+          <NotificationHeading>
+            {t('The EVM Faucet is only working while running a hardhat')}
+          </NotificationHeading>
+          <div>{t('On other networks this is not yet available')}</div>
+        </Notification>
+
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{

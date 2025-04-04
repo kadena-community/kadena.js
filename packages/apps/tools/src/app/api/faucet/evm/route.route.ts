@@ -7,21 +7,15 @@ import { NextResponse } from 'next/server';
 const DEFAULT_AMOUNT = '20'; // KDA amount to send
 const PRIVATE_KEY = process.env.FAUCET_PRIVATE_KEY;
 const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL;
+const CAPTCHAKEY = process.env.CAPTCHA_SECRETKEY;
 
 const checkRecaptcha = async (token: string) => {
   console.log({
-    secret: '6Lfv5wgrAAAAAB6FjE2K0-33hAJuhWVFxHXOLl0v',
+    secret: CAPTCHAKEY,
     response: token,
   });
   const result = await fetch(
-    'https://www.google.com/recaptcha/api/siteverify',
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        secret: '6Lfv5wgrAAAAAB6FjE2K0-33hAJuhWVFxHXOLl0v',
-        response: token,
-      }),
-    },
+    `https://www.google.com/recaptcha/api/siteverify?secret=${CAPTCHAKEY}&response=${token}`,
   );
 
   const data = await result.json();
