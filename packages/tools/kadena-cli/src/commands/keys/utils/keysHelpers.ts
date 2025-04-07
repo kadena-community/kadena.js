@@ -32,28 +32,31 @@ export const fromHexStr = (hexStr: string): Uint8Array =>
  *                 or if required keys ('publicKey' or 'secretKey') are missing.
  */
 export function parseKeyPairsInput(input: string): IWalletKeyPair[] {
-  return input.split(';').map((pairStr) => {
-    const keyValuePairs = pairStr
-      .trim()
-      .split(',')
-      .reduce((acc: Partial<IWalletKeyPair>, keyValue) => {
-        const [key, value] = keyValue.split('=').map((item) => item.trim());
-        if (key === 'publicKey') {
-          acc.publicKey = value;
-        } else if (key === 'secretKey') {
-          acc.secretKey = value as EncryptedString | string;
-        }
-        return acc;
-      }, {});
+  return input
+    .split(';')
+    .filter((item) => item.trim().length > 0)
+    .map((pairStr) => {
+      const keyValuePairs = pairStr
+        .trim()
+        .split(',')
+        .reduce((acc: Partial<IWalletKeyPair>, keyValue) => {
+          const [key, value] = keyValue.split('=').map((item) => item.trim());
+          if (key === 'publicKey') {
+            acc.publicKey = value;
+          } else if (key === 'secretKey') {
+            acc.secretKey = value as EncryptedString | string;
+          }
+          return acc;
+        }, {});
 
-    if (
-      keyValuePairs.publicKey === undefined ||
-      keyValuePairs.secretKey === undefined
-    ) {
-      throw new Error(
-        'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
-      );
-    }
-    return keyValuePairs as IWalletKeyPair;
-  });
+      if (
+        keyValuePairs.publicKey === undefined ||
+        keyValuePairs.secretKey === undefined
+      ) {
+        throw new Error(
+          'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
+        );
+      }
+      return keyValuePairs as IWalletKeyPair;
+    });
 }

@@ -280,5 +280,11 @@
     "version": "0.0.1",
     "private": true,
     "path": "packages/apps/hw-app-kda-clone"
+  },
+  {
+    "name": "@kadena/wallet-adapter-core",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/wallet-adapter-core"
   }
 ]
