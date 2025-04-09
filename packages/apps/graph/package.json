@@ -83,7 +83,7 @@
     "prisma": "^5.16.1",
     "seedrandom": "~3.0.5",
     "ws": "^8.16.0",
-    "zod": "~3.23.0"
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
