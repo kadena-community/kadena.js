@@ -8,13 +8,13 @@ import { AccountInfo } from '@kadena/wallet-adapter-core';
 import { Adapter } from '@kadena/wallet-adapter-core';
 import { AdapterFactory } from '@kadena/wallet-adapter-core';
 import { AdapterFactoryData } from '@kadena/wallet-adapter-core';
-import { JSX } from 'react/jsx-runtime';
+import { JSX as JSX_2 } from 'react/jsx-runtime';
 import { NetworkInfo } from '@kadena/wallet-adapter-core';
 import { ReactNode } from 'react';
 import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 
 // @public
-export function KadenaWalletProvider({ children, adapters: inputAdapters, defaultAdapterName, }: KadenaWalletProviderProps): JSX.Element;
+export function KadenaWalletProvider({ children, adapters: inputAdapters, defaultAdapterName, }: KadenaWalletProviderProps): JSX_2.Element;
 
 // @public (undocumented)
 export interface KadenaWalletProviderProps {
