@@ -232,6 +232,7 @@ export const ReceiverCard: FC<IProps> = ({
                                     return (
                                       <Stack flexDirection={'column'}>
                                         <AccountSearchBox
+                                          label="Address:"
                                           accounts={filteredAccounts}
                                           hideKeySelector={!isSafeTransfer}
                                           watchedAccounts={

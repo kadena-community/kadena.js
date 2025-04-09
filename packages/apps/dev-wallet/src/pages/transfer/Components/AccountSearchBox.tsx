@@ -1,5 +1,6 @@
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ComboField } from '@/Components/ComboField/ComboField';
+import { KeySelector } from '@/Components/Guard/KeySelector';
 import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
@@ -9,24 +10,21 @@ import {
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { withRaceGuard } from '@/utils/promise-utils';
 import { debounce } from '@/utils/session';
 import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useEffect, useRef, useState } from 'react';
-
-import { KeySelector } from '@/Components/Guard/KeySelector';
-import { isKeysetGuard } from '@/modules/account/guards';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { PactNumber } from '@kadena/pactjs';
+import { useEffect, useRef, useState } from 'react';
 import { Guard } from '../../../Components/Guard/Guard';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
 import { discoverReceiver, needToSelectKeys } from '../utils';
 import { AccountItem } from './AccountItem';
-import { Label } from './Label';
 import { createAccountBoxClass, popoverClass } from './style.css';
 
 const discover = withRaceGuard(debounce(discoverReceiver, 500));

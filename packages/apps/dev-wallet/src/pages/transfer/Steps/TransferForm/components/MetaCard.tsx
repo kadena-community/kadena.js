@@ -87,6 +87,7 @@ export const MetaCard: FC<IProps> = ({
                   return (
                     <Stack flexDirection={'column'}>
                       <AccountSearchBox
+                        label="Address:"
                         isSenderAccount
                         accounts={filteredAccounts}
                         watchedAccounts={filteredWatchedAccounts}

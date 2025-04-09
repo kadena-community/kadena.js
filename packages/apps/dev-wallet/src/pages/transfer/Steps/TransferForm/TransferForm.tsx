@@ -456,12 +456,11 @@ export function TransferForm({
         />
 
         <SignOptionsCard
-          control={control}
           error={error}
-          forceRender={forceRender}
           hasXChain={hasXChain}
           crossChainMode={crossChainMode}
           setValue={setValue}
+          selectedType={getValues('type')}
           formState={formState}
         />
 
