@@ -1,7 +1,40 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Get list of monorepo packages from package.json non-dev-dependencies
+ * @returns {string[]} - list of package names
+ */
+function getMonorepoPackagesFromPackageJson() {
+  const packageJson = fs.readFileSync(
+    path.resolve(__dirname, './package.json'),
+    'utf-8',
+  );
+  const { dependencies } = JSON.parse(packageJson);
+  const packages = Object.keys(dependencies).filter((key) =>
+    dependencies[key].startsWith('workspace:'),
+  );
+
+  return packages;
+}
+
+const monorepoPackages = getMonorepoPackagesFromPackageJson();
+const monorepoPathsRegex = monorepoPackages.map(
+  (pkg) => new RegExp(`${pkg.replace('@kadena/', '')}`),
+);
+monorepoPackages.push('@kadena/client/fp');
 
 export default defineConfig({
   plugins: [vanillaExtractPlugin(), react()],
+  optimizeDeps: {
+    include: [...monorepoPackages],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/packages\//, /node_modules\//],
+    },
+  },
 });
