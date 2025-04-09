@@ -10,13 +10,7 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import {
-  CardContentBlock,
-  SectionCard,
-  SectionCardBody,
-  SectionCardContentBlock,
-  SectionCardHeader,
-} from '@kadena/kode-ui/patterns';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import {
   Control,

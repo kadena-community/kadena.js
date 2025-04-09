@@ -4,7 +4,6 @@ import {
 } from '@/modules/account/account.repository';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
-import { wrapperClass } from '@/pages/errors/styles.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
 import { CreationTime } from '@/pages/transfer/Components/CreationTime';
