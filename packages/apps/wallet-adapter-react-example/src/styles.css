@@ -1,0 +1,42 @@
+.wrap {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  background: #f4f4f4;
+  padding: 1rem;
+  border-radius: 5px;
+  font-size: 16px;
+  max-width: 100%;
+}
+button {
+  max-width: 640px;
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    font-size: 12px;
+    padding: 0.75rem;
+  }
+}
+
+.stack-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.stack-buttons button {
+  flex: 1;
+  min-width: 150px;
+  max-width: 25%;
+}
+
+@media (max-width: 600px) {
+  .stack-buttons button {
+    max-width: 100%;
+    flex: none;
+    width: 100%;
+  }
+}
