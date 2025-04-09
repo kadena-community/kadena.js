@@ -1,1 +1,1 @@
-export * from '../lib/fp';
+export * from '../lib/esm/fp';

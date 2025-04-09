@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "lib/cjs",
+    "declaration": true,
+    "declarationDir": "lib/cjs",
+    "sourceMap": true
+  },
+  "include": ["src/**/*", "src/__tests__"]
+}
