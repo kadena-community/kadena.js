@@ -129,7 +129,7 @@ export function Plugins() {
             className={pluginContainerClass}
           >
             <iframe
-              sandbox="allow-scripts allow-forms"
+              sandbox="allow-scripts allow-forms allow-same-origin"
               style={{ border: 'none', width: '100%', height: '100%' }}
               srcDoc={doc}
             />

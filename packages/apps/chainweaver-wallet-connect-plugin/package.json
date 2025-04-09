@@ -7,6 +7,7 @@
   "main": "dist/index.es.js",
   "scripts": {
     "build": "tsc && vite build",
+    "build:watch": "pnpm run build && concurrently \"chokidar './src/**' -s -t 500  --command './node_modules/.bin/vite build' \"",
     "dev": "vite --force",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "preview": "vite preview",
@@ -27,11 +28,12 @@
     "@reown/walletkit": "^1.2.0",
     "@scure/bip39": "1.2.1",
     "@tauri-apps/api": "^1.4.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/dynamic": "^2.1.2",
     "@vanilla-extract/recipes": "0.5.1",
     "@walletconnect/core": "^2.18.0",
-    "@walletconnect/utils": "~2.9.2",
+    "@walletconnect/utils": "^2.18.0",
     "asn1js": "^3.0.5",
     "cbor-web": "^9.0.2",
     "chrome-types": "^0.1.248",
@@ -63,6 +65,7 @@
     "@vanilla-extract/esbuild-plugin": "^2.3.11",
     "@vanilla-extract/vite-plugin": "4.0.17",
     "@vitejs/plugin-react-swc": "^3.2.2",
+    "@walletconnect/types": "~2.8.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "eslint": "^8.45.0",
@@ -79,7 +82,7 @@
     "description": "Wallet Connect plugin for Kadena Chainweaver wallet",
     "permissions": [
       "CONNECTION_REQUEST",
-      "SIGN",
+      "SIGN_REQUEST",
       "GET_STATUS",
       "GET_NETWORK_LIST",
       "GET_ACCOUNTS"

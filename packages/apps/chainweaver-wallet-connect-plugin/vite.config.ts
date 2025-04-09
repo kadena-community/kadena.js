@@ -86,6 +86,9 @@ export const config: UserConfig = {
   resolve: {
     // preserveSymlinks: true,\
   },
+  test: {
+    environment: 'jsdom'
+  }
 };
 
 export default defineConfig(config);
