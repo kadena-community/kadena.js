@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS", // Build as CommonJS modules
+    "outDir": "dist/cjs", // Output directory for CJS build
+    "declaration": false // Skip declarations (we already generate them in the ESM build)
+  }
+}
