@@ -1,24 +1,44 @@
+import { AssetCards } from '@/Components/Assets/AssetCards';
 import { Fungible } from '@/modules/account/account.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { wrapperClass } from '@/pages/errors/styles.css';
-import { Label } from '@/pages/transaction/components/helpers';
 import { MonoSwipeRightAlt } from '@kadena/kode-icons/system';
-import { Card, Select, SelectItem, Stack } from '@kadena/kode-ui';
+import { Card, Stack } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { FC } from 'react';
-import { Control, Controller } from 'react-hook-form';
+import { PactNumber } from '@kadena/pactjs';
+import { FC, useMemo } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
 
 interface IProps {
-  withEvaluate: any;
-  control: Control<ITransfer, any>;
   fungibles: Fungible[];
+  setValue: UseFormSetValue<ITransfer>;
+  selectedContract: string;
 }
 
 export const TransferCard: FC<IProps> = ({
-  withEvaluate,
-  control,
   fungibles,
+  setValue,
+  selectedContract,
 }) => {
+  const handleSetFungible = (fungible: string) => {
+    setValue('fungible', fungible);
+  };
+  const { accounts } = useWallet();
+
+  const assets = useMemo(() => {
+    return fungibles.map((item) => {
+      const acs = accounts.filter((a) => a.contract === item.contract);
+      return {
+        ...item,
+        accounts: acs,
+        balance: acs
+          .reduce((acc, a) => acc.plus(a.overallBalance), new PactNumber(0))
+          .toDecimal(),
+      } as unknown as Fungible & { balance: number };
+    });
+  }, [accounts, fungibles]);
+
   return (
     <Card fullWidth>
       <CardContentBlock
@@ -31,27 +51,10 @@ export const TransferCard: FC<IProps> = ({
           marginBlockEnd="xxxl"
           className={wrapperClass}
         >
-          <Controller
-            name="fungible"
-            control={control}
-            rules={{ required: true }}
-            render={({ field, fieldState: { error } }) => (
-              <Select
-                // label="Token"
-                aria-label="Asset"
-                placeholder="Asset"
-                startVisual={<Label>Asset:</Label>}
-                size="sm"
-                selectedKey={field.value}
-                onSelectionChange={withEvaluate(field.onChange)}
-                errorMessage={'Please select an asset'}
-                isInvalid={!!error}
-              >
-                {fungibles.map((f) => (
-                  <SelectItem key={f.contract}>{f.symbol}</SelectItem>
-                ))}
-              </Select>
-            )}
+          <AssetCards
+            assets={assets}
+            onClick={handleSetFungible}
+            selectedContract={selectedContract}
           />
         </Stack>
       </CardContentBlock>

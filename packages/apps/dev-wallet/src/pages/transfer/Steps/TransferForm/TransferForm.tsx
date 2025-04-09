@@ -100,6 +100,7 @@ export function TransferForm({
     control,
     watch,
     setValue,
+
     reset,
     getValues,
     handleSubmit,
@@ -230,13 +231,6 @@ export function TransferForm({
   const overallBalance = chains
     .reduce((acc, { balance }) => acc.plus(balance), new PactNumber(0))
     .toDecimal();
-
-  // console.log(watchReceivers);
-  // const watchReceivers = watch('receivers');
-
-  // const totalAmount = watchReceivers.reduce((acc, receiver) => {
-  //   return acc + +receiver.amount;
-  // }, 0);
 
   const totalAmount = watch('totalAmount');
 
@@ -416,9 +410,9 @@ export function TransferForm({
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <Stack flexDirection="column" width="100%" gap="lg">
         <TransferCard
-          withEvaluate={withEvaluate}
-          control={control}
           fungibles={fungibles}
+          setValue={setValue}
+          selectedContract={getValues('fungible')}
         />
         <SenderCard
           withEvaluate={withEvaluate}

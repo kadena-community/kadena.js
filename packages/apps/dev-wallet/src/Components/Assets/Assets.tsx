@@ -1,7 +1,6 @@
 import { useRightAside } from '@/App/Layout/useRightAside';
 import { Fungible, IOwnedAccount } from '@/modules/account/account.repository';
-import { MonoMoreHoriz } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack } from '@kadena/kode-ui';
+import { Button, Heading } from '@kadena/kode-ui';
 import {
   SectionCard,
   SectionCardBody,
@@ -9,12 +8,10 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
-import { useMemo, useState } from 'react';
-import { AssetAction } from './ AssetAction';
+import { useMemo } from 'react';
 import { AddTokenForm } from './AddTokenForm';
-import { actionsWrapperClass } from './style.css';
+import { AssetCards } from './AssetCards';
 
-const MAXASSETCOUNT = 4;
 export function Assets({
   selectedContract,
   setSelectedContract,
@@ -28,7 +25,6 @@ export function Assets({
   fungibles: Fungible[];
   showAddToken?: boolean;
 }) {
-  const [showAll, setShowAll] = useState(false);
   const [isAssetFormExpanded, expandAssetForm, closeAssetForm] =
     useRightAside();
   const assets = useMemo(() => {
@@ -40,20 +36,9 @@ export function Assets({
         balance: acs
           .reduce((acc, a) => acc.plus(a.overallBalance), new PactNumber(0))
           .toDecimal(),
-      };
+      } as unknown as Fungible & { balance: number };
     });
   }, [accounts, fungibles]);
-
-  const { filteredAssets, hasShowAllButton } = useMemo(() => {
-    if (showAll || assets.length <= MAXASSETCOUNT) {
-      return { filteredAssets: assets, hasShowAllButton: false };
-    }
-
-    return {
-      filteredAssets: assets.slice(0, MAXASSETCOUNT - 1),
-      hasShowAllButton: true,
-    };
-  }, [showAll, assets]);
 
   return (
     <>
@@ -81,24 +66,12 @@ export function Assets({
           />
           <SectionCardBody>
             <Heading as="h5">Available Assets</Heading>
-            <Stack className={actionsWrapperClass}>
-              {filteredAssets.map((asset) => (
-                <AssetAction
-                  label={asset.symbol}
-                  body={asset.balance}
-                  isSelected={asset.contract === selectedContract}
-                  handleClick={() => setSelectedContract(asset.contract)}
-                />
-              ))}
-              {hasShowAllButton && (
-                <AssetAction
-                  label=""
-                  body={<MonoMoreHoriz />}
-                  isSelected={false}
-                  handleClick={() => setShowAll(true)}
-                />
-              )}
-            </Stack>
+
+            <AssetCards
+              assets={assets}
+              selectedContract={selectedContract}
+              onClick={setSelectedContract}
+            />
           </SectionCardBody>
         </SectionCardContentBlock>
       </SectionCard>
