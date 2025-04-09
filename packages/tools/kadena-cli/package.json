@@ -73,7 +73,7 @@
     "sanitize-filename": "1.6.3",
     "seedrandom": "~3.0.5",
     "ttys": "0.0.3",
-    "zod": "^3.20.2"
+    "zod": "~3.23.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
