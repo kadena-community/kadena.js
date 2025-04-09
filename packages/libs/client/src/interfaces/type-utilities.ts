@@ -41,14 +41,29 @@ export type ExtractCapabilityType<TCommand> = TCommand extends {
     : IGeneralCapability
   : IGeneralCapability;
 
+/**
+ * Prettify transforms a type for clearer presentation or debugging.
+ *
+ * @internal
+ */
 export type Prettify<T extends Record<string, unknown>> = {
   [K in keyof T]: T[K];
 } & {};
 
+/**
+ * Makes specified properties required in T.
+ *
+ * @internal
+ */
 export type WithRequired<T, K extends keyof T> = Prettify<
   T & { [P in K]-?: T[P] }
 >;
 
+/**
+ * Recursively makes all properties optional.
+ *
+ * @internal
+ */
 export type AllPartial<T> = {
   [P in keyof T]?: T[P] extends {} ? AllPartial<T[P]> : T[P];
 } & {};
@@ -75,6 +90,9 @@ type ModuleWithNamespace<T> =
       : GetFuncReturnType<`${namespaceType}.${moduleType}`, func>
     : never;
 
+/**
+ * @internal
+ */
 export type ExtractPactModule<T> =
   | RootModule<T>
   | ModuleWithNamespace<T> extends never

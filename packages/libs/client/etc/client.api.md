@@ -29,6 +29,13 @@ export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
     pubKey?: string;
 }[]) => IUnsignedCommand | ICommand;
 
+// Warning: (ae-internal-missing-underscore) The name "AllPartial" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export type AllPartial<T> = {
+    [P in keyof T]?: T[P] extends {} ? AllPartial<T[P]> : T[P];
+} & {};
+
 // @public (undocumented)
 export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
 
@@ -79,6 +86,24 @@ export const createWalletConnectSign: typeof createSignWithWalletConnect;
 
 // @public
 export type EckoStatus = 'success' | 'fail';
+
+// Warning: (ae-internal-missing-underscore) The name "ExtractCapabilityType" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export type ExtractCapabilityType<TCommand> = TCommand extends {
+    payload: infer TPayload;
+} ? TPayload extends {
+    funs: infer TFunctions;
+} ? TFunctions extends Array<infer TFunction> ? UnionToIntersection<TFunction> extends {
+    capability: infer TCapability;
+} ? TCapability : IGeneralCapability : IGeneralCapability : IGeneralCapability : IGeneralCapability;
+
+// Warning: (ae-forgotten-export) The symbol "RootModule" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ModuleWithNamespace" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-missing-underscore) The name "ExtractPactModule" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export type ExtractPactModule<T> = RootModule<T> | ModuleWithNamespace<T> extends never ? string : RootModule<T> | ModuleWithNamespace<T>;
 
 // @public
 export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;
@@ -222,6 +247,16 @@ export interface IExecutionPayloadObject {
     };
 }
 
+// Warning: (ae-internal-missing-underscore) The name "IGeneralCapability" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export interface IGeneralCapability {
+    // (undocumented)
+    (name: string, ...args: unknown[]): ICap;
+    // (undocumented)
+    (name: 'coin.GAS'): ICap;
+}
+
 export { IKeyPair }
 
 // @public (undocumented)
@@ -276,7 +311,7 @@ export interface IPactCommand {
 export interface IPactModules {
 }
 
-// Warning: (ae-forgotten-export) The symbol "AllPartial" needs to be exported by the entry point index.d.ts
+// Warning: (ae-incompatible-release-tags) The symbol "IPartialPactCommand" is marked as @public, but its signature references "AllPartial" which is marked as @internal
 //
 // @public
 export interface IPartialPactCommand extends AllPartial<IPactCommand> {
@@ -517,6 +552,13 @@ export type PactReturnType<T extends (...args: any[]) => any> = T extends (...ar
 // @public (undocumented)
 export function parseAsPactValue(input: PactValue | (() => string) | Literal): string;
 
+// Warning: (ae-internal-missing-underscore) The name "Prettify" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export type Prettify<T extends Record<string, unknown>> = {
+    [K in keyof T]: T[K];
+} & {};
+
 // @public
 export const readKeyset: (key: string) => () => string;
 
@@ -534,12 +576,17 @@ export const signWithChainweaver: ISignFunction;
 // @public
 export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`;
 
+// Warning: (ae-internal-missing-underscore) The name "UnionToIntersection" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export type UnionToIntersection<T> = (T extends unknown ? (k: T) => void : never) extends (k: infer I) => void ? I : never;
+
 // Warning: (ae-internal-missing-underscore) The name "unpackLiterals" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
 export function unpackLiterals(value: string): string;
 
-// Warning: (ae-forgotten-export) The symbol "ExtractCapabilityType" needs to be exported by the entry point index.d.ts
+// Warning: (ae-incompatible-release-tags) The symbol "WithCapability" is marked as @public, but its signature references "ExtractCapabilityType" which is marked as @internal
 //
 // @public
 export type WithCapability<TCode extends string & {
@@ -548,6 +595,13 @@ export type WithCapability<TCode extends string & {
     payload: {
         funs: [TCode];
     };
+}>;
+
+// Warning: (ae-internal-missing-underscore) The name "WithRequired" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export type WithRequired<T, K extends keyof T> = Prettify<T & {
+    [P in K]-?: T[P];
 }>;
 
 // (No @packageDocumentation comment for this package)

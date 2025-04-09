@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/wallet-adapter-core",
+  "name": "@kadena/wallet-adapter-react",
   "version": "0.0.1",
   "exports": {
     "import": "./dist/esm/index.js",
@@ -14,17 +14,19 @@
     "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest"
   },
-  "dependencies": {
-    "@kadena/client": "workspace:*",
-    "@standard-schema/spec": "^1.0.0",
-    "eventemitter3": "^5.0.1",
-    "valibot": "^1.0.0"
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.43.1",
-    "@types/node": "^20.12.7",
     "typescript": "5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@testing-library/react": "^16.2.0"
+  },
+  "dependencies": {
+    "@kadena/wallet-adapter-core": "workspace:*"
   },
   "authors": [
     "Danillo Felixdaal",

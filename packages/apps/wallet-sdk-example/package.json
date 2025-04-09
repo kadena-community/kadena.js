@@ -2,6 +2,7 @@
   "name": "wallet-sdk-example-app",
   "version": "0.0.7",
   "private": true,
+  "authors": ["Danillo Felixdaal", "Bart Huijgen"],
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",

@@ -13,19 +13,27 @@
     "Javad Khalilian <javad@kadena.io>",
     "Ashwin van Dijk <ashwin@kadena.io>"
   ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
   "exports": {
-    ".": "./lib/index.js",
-    "./fp": "./lib/fp.js"
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js",
+      "types": "./lib/esm/index.d.ts"
+    },
+    "./fp": {
+      "import": "./lib/esm/fp.js",
+      "require": "./lib/cjs/fp.js",
+      "types": "./lib/esm/fp.d.ts"
+    }
   },
-  "main": "lib/index.js",
-  "types": "dist/client.d.ts",
   "files": [
-    "dist",
     "lib",
     "fp"
   ],
   "scripts": {
-    "build": "tsc && api-extractor run --verbose",
+    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && api-extractor run --verbose",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",

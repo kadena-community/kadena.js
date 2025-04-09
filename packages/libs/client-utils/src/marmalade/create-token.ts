@@ -1,12 +1,14 @@
 import type {
   ChainId,
   ICap,
+  IGeneralCapability,
   IPactModules,
   IPartialPactCommand,
   PactReference,
   PactReturnType,
 } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
+import type { ValidDataTypes } from '@kadena/client/fp';
 import {
   addData,
   addKeyset,
@@ -15,8 +17,6 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import type { ValidDataTypes } from '@kadena/client/lib/composePactCommand/utils/addData';
-import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
 import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';

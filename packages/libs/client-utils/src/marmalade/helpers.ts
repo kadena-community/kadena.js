@@ -1,6 +1,6 @@
-import type { ISigner } from '@kadena/client';
+import type { IGeneralCapability, ISigner } from '@kadena/client';
 import { addSigner } from '@kadena/client/fp';
-import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
+
 import type { ICap } from '@kadena/types';
 import type {
   CommonProps,

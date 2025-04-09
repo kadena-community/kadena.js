@@ -270,6 +270,12 @@
     "path": "packages/e2e/e2e-tools"
   },
   {
+    "name": "wallet-adapter-react-example",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/wallet-adapter-react-example"
+  },
+  {
     "name": "wallet-sdk-example-app",
     "version": "0.0.7",
     "private": true,
@@ -286,5 +292,17 @@
     "version": "0.0.1",
     "private": true,
     "path": "packages/libs/wallet-adapter-core"
+  },
+  {
+    "name": "@kadena/wallet-adapter-ecko",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/wallet-adapter-ecko"
+  },
+  {
+    "name": "@kadena/wallet-adapter-react",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/wallet-adapter-react"
   }
 ]

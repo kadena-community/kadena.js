@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/wallet-adapter-core",
+  "name": "@kadena/wallet-adapter-ecko",
   "version": "0.0.1",
   "exports": {
     "import": "./dist/esm/index.js",
@@ -15,10 +15,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@kadena/client": "workspace:*",
-    "@standard-schema/spec": "^1.0.0",
-    "eventemitter3": "^5.0.1",
-    "valibot": "^1.0.0"
+    "@kadena/wallet-adapter-core": "workspace:*"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.43.1",
