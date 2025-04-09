@@ -10,6 +10,7 @@ import { CreationTime } from '@/pages/transfer/Components/CreationTime';
 import { TTLSelect } from '@/pages/transfer/Components/TTLSelect';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
+import { MonoLocalGasStation } from '@kadena/kode-icons/system';
 import {
   Card,
   Heading,
@@ -65,7 +66,11 @@ export const MetaCard: FC<IProps> = ({
   const [, , AdvancedMode] = useShow(true);
   return (
     <Card fullWidth>
-      <CardContentBlock title="Gas Info">
+      <CardContentBlock
+        title="Fees"
+        level={2}
+        visual={<MonoLocalGasStation width={24} height={24} />}
+      >
         <Stack flexDirection="column" gap="xxl" marginBlockEnd="xxxl">
           <AdvancedMode>
             <Stack flexDirection="column" gap="sm">

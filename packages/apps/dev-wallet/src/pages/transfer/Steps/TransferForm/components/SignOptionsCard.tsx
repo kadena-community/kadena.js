@@ -48,8 +48,9 @@ export const SignOptionsCard: FC<IProps> = ({
   return (
     <Card fullWidth>
       <CardContentBlock
+        level={2}
         title="Sign options"
-        visual={<MonoSignature width={36} height={36} />}
+        visual={<MonoSignature width={24} height={24} />}
       >
         <Stack
           flexDirection="column"

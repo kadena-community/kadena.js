@@ -19,6 +19,7 @@ export interface ICardContentBlockProps {
   extendedContent?: React.ReactNode;
   className?: string;
   isCompact?: boolean;
+  level?: 1 | 2;
 }
 
 export const CardContentBlock = ({
@@ -30,6 +31,7 @@ export const CardContentBlock = ({
   supportingContent,
   extendedContent,
   className,
+  level = 1,
   isCompact = false,
 }: ICardContentBlockProps) => {
   return (
@@ -41,7 +43,12 @@ export const CardContentBlock = ({
     >
       <Stack flexDirection="column" alignItems="flex-start" flex={1}>
         <Box marginBlockEnd="sm">{visual}</Box>
-        {title && <Heading className={heading}>{title}</Heading>}
+
+        {title && (
+          <Heading className={heading({ level: `level${level}` })}>
+            {title}
+          </Heading>
+        )}
         {description && (
           <Text as="p" className={atoms({ marginBlockEnd: 'md' })}>
             {description}

@@ -108,8 +108,9 @@ export const ReceiverCard: FC<IProps> = ({
   return (
     <Card fullWidth>
       <CardContentBlock
+        level={2}
         title="Receiver"
-        visual={<MonoSaveAlt width={36} height={36} />}
+        visual={<MonoSaveAlt width={24} height={24} />}
       >
         <Stack
           flexDirection="column"

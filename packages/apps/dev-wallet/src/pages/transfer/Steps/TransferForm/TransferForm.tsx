@@ -3,7 +3,8 @@ import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ChainId } from '@kadena/client';
-import { Button, Stack } from '@kadena/kode-ui';
+import { Button, Divider, Stack } from '@kadena/kode-ui';
+import { token } from '@kadena/kode-ui/styles';
 import { PactNumber } from '@kadena/pactjs';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -133,6 +134,7 @@ export function TransferForm({
 
   const crossChainMode = watch('xchainMode');
   const [hasXChain, setHasXChain] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
   const crossChainText =
     crossChainMode === 'x-chain'
@@ -453,22 +455,6 @@ export function TransferForm({
           error={error}
         />
 
-        <MetaCard
-          control={control}
-          chains={chains}
-          withEvaluate={withEvaluate}
-          forceRender={forceRender}
-          hasXChain={hasXChain}
-          evaluateTransactions={evaluateTransactions}
-          filteredAccounts={filteredAccounts}
-          validateAccount={validateAccount}
-          getValues={getValues}
-          filteredWatchedAccounts={filteredWatchedAccounts}
-          contacts={contacts}
-          activeNetwork={activeNetwork}
-          watchFungibleType={watchFungibleType}
-        />
-
         <SignOptionsCard
           control={control}
           error={error}
@@ -479,10 +465,40 @@ export function TransferForm({
           formState={formState}
         />
 
+        {showAdvancedOptions ? (
+          <>
+            <Divider
+              label="Advance options"
+              bgColor={token('color.neutral.n1')}
+            />
+            <MetaCard
+              control={control}
+              chains={chains}
+              withEvaluate={withEvaluate}
+              forceRender={forceRender}
+              hasXChain={hasXChain}
+              evaluateTransactions={evaluateTransactions}
+              filteredAccounts={filteredAccounts}
+              validateAccount={validateAccount}
+              getValues={getValues}
+              filteredWatchedAccounts={filteredWatchedAccounts}
+              contacts={contacts}
+              activeNetwork={activeNetwork}
+              watchFungibleType={watchFungibleType}
+            />
+          </>
+        ) : null}
         <Stack>
           <Button variant="outlined">Abort</Button>
           <Stack justifyContent="flex-end" flex={1} gap="sm">
-            <Button variant="outlined">Advanced options</Button>
+            <Button
+              variant="outlined"
+              onPress={() => setShowAdvancedOptions((v) => !v)}
+            >
+              {showAdvancedOptions
+                ? 'Hide Advanced options'
+                : 'Show Advanced options'}
+            </Button>
             <Button isDisabled={!formState.isValid} type="submit">
               Create Transactions
             </Button>

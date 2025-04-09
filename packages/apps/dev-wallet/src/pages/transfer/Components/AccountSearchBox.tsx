@@ -44,6 +44,7 @@ export function AccountSearchBox({
   errorMessage,
   isInvalid,
   hideKeySelector,
+  label,
 }: {
   accounts?: IOwnedAccount[];
   contacts?: IContact[];
@@ -57,6 +58,7 @@ export function AccountSearchBox({
   errorMessage?: string;
   isInvalid?: boolean;
   hideKeySelector?: boolean;
+  label: string;
 }) {
   const prompt = usePrompt();
   const [showDisabled, setShowDisabled] = useState(false);
@@ -256,9 +258,9 @@ export function AccountSearchBox({
   return (
     <Stack flexDirection={'column'}>
       <ComboField
-        aria-label="Receiver Address"
+        label={label}
+        aria-label={label}
         placeholder="Select or Enter an address"
-        startVisual={<Label>Address:</Label>}
         description={getDescription()}
         type="text"
         size="sm"
