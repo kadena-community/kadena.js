@@ -324,7 +324,7 @@ export function AccountSearchBox({
             .filter((account) => showDisabled || !isDisabledAccount(account))
             .map((account) => (
               <ButtonItem
-                key={account.address}
+                key={account?.address}
                 disabled={isDisabledAccount(account)}
                 onClick={() => {
                   onSelectHandle({
@@ -362,7 +362,7 @@ export function AccountSearchBox({
             .filter((account) => showDisabled || !isDisabledAccount(account))
             .map((account) => (
               <ButtonItem
-                key={account.address}
+                key={account?.address}
                 disabled={isDisabledAccount(account)}
                 onClick={() => {
                   onSelectHandle({
@@ -402,7 +402,7 @@ export function AccountSearchBox({
             .filter(() => showDisabled || !isSenderAccount)
             .map((account) => (
               <ButtonItem
-                key={account.account.address}
+                key={account?.account?.address}
                 disabled={isSenderAccount}
                 onClick={() => {
                   onSelectHandle({
@@ -437,7 +437,7 @@ export function AccountSearchBox({
 
           const discoverdAccountsElement = discoverdAccount?.map((account) => (
             <ButtonItem
-              key={account.address}
+              key={account?.address}
               onClick={() => {
                 onSelectHandle(account);
                 close();

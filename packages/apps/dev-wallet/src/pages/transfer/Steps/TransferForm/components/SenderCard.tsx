@@ -100,7 +100,6 @@ export const SenderCard: FC<IProps> = ({
                     contract={watchFungibleType}
                     selectedAccount={field.value}
                     onSelect={withEvaluate((account: any) => {
-                      console.log('senderAccount', account);
                       field.onChange(account);
                       forceRender((prev) => prev + 1);
                     })}

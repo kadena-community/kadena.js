@@ -133,7 +133,7 @@ export function TransferForm({
   } = useForm<ITransfer>({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
-    defaultValues,
+    defaultValues: defaultValues as any,
   });
 
   const crossChainMode = watch('xchainMode');
@@ -241,7 +241,9 @@ export function TransferForm({
   const totalAmount = watch('totalAmount');
 
   const evaluateTransactions = useCallback(() => {
-    const receivers = getValues('receivers').filter((r) => r) as IReceiver[];
+    if (!senderAccount) return;
+
+    const receivers = getValues('receivers')?.filter((r) => r) as IReceiver[];
     const gasPrice = getValues('gasPrice');
     const gasLimit = getValues('gasLimit');
     const gasPayer = getValues('gasPayer') || getValues('senderAccount');
@@ -255,14 +257,14 @@ export function TransferForm({
     setRedistribution([]);
     setError(undefined);
     const usedChains = receivers
-      ?.filter((rec) => rec?.address === senderAccount?.address && rec.chain)
+      ?.filter((rec) => rec?.address === senderAccount.address && rec.chain)
       .flatMap(({ chain }) => chain);
-    const availableChains = senderAccount?.chains?.filter(
+    const availableChains = senderAccount.chains?.filter(
       (chain) => !usedChains.includes(chain.chainId),
     );
 
     const allChainsSet = receivers.every((receiver, index) => {
-      if (receiver.address === senderAccount?.address && !receiver.chain) {
+      if (receiver?.address === senderAccount.address && !receiver.chain) {
         setError({
           target: `receivers.${index}`,
           message:
@@ -273,6 +275,8 @@ export function TransferForm({
       return true;
     });
 
+    console.log({ allChainsSet });
+
     if (!allChainsSet) return;
 
     const receiversWithIndex = receivers.map((receiver, index) => ({
@@ -280,13 +284,13 @@ export function TransferForm({
       index,
     }));
 
-    const otherReceiversWithIndex = receiversWithIndex.filter(
-      ({ receiver: rec }) => rec.address !== senderAccount?.address,
+    const otherReceiversWithIndex = receiversWithIndex?.filter(
+      ({ receiver: rec }) => rec?.address !== senderAccount.address,
     );
 
     try {
       const sameAddressReceivers = receiversWithIndex
-        .filter(({ receiver: rec }) => rec.address === senderAccount.address)
+        ?.filter(({ receiver: rec }) => rec?.address === senderAccount.address)
         .map(({ receiver, index }) => ({
           index,
           amount: receiver.amount,
@@ -301,10 +305,10 @@ export function TransferForm({
         }),
       );
       const [transfers, redistributionRequest, xchain] = getTransfers(
-        availableChains.filter(
+        availableChains?.filter(
           (chain) => !selectedChain || chain.chainId === selectedChain,
         ),
-        !gasPayer || gasPayer.address === senderAccount?.address
+        !gasPayer || gasPayer?.address === senderAccount.address
           ? new PactNumber(gasPrice).times(gasLimit).toDecimal()
           : '0',
         otherReceivers,
@@ -314,13 +318,13 @@ export function TransferForm({
       let hasXchain = redistributionRequest.length > 0;
 
       const updatedReceivers = receiversWithIndex.map(({ receiver, index }) => {
-        if (receiver.address === senderAccount.address) {
+        if (receiver?.address === senderAccount.address) {
           hasXchain = true;
           return {
             ...receiver,
             xchain: true,
             address:
-              receiver.address || receiver.discoveredAccount?.address || '',
+              receiver?.address || receiver.discoveredAccount?.address || '',
           };
         }
         const idx = otherReceivers.findIndex((r) => r.index === index);
@@ -337,7 +341,7 @@ export function TransferForm({
         return {
           ...receiver,
           address:
-            receiver.address || receiver.discoveredAccount?.address || '',
+            receiver?.address || receiver?.discoveredAccount?.address || '',
           xchain,
           chunks: transfers[idx].chunks,
         };
