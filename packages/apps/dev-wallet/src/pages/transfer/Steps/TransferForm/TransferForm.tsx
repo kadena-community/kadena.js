@@ -3,7 +3,7 @@ import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ChainId } from '@kadena/client';
-import { Button, Divider, Stack } from '@kadena/kode-ui';
+import { Button, Divider, Notification, Stack } from '@kadena/kode-ui';
 import { token } from '@kadena/kode-ui/styles';
 import { PactNumber } from '@kadena/pactjs';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -97,39 +97,43 @@ export function TransferForm({
   const urlAccount = [...allAccounts, ...watchAccounts].find(
     (account) => account.uuid === accountId,
   ) as IOwnedAccount | undefined;
+
+  const defaultValues = {
+    fungible: urlAccount?.contract ?? fungibles[0].contract,
+    accountId: accountId ?? '',
+    senderAccount: accountId ? urlAccount : undefined,
+    chain: '',
+    receivers: [
+      {
+        amount: '',
+        address: '',
+        chain: '',
+        chunks: [],
+        discoveredAccount: undefined,
+      },
+    ],
+    gasPayer: undefined,
+    gasPrice: '0.00000001',
+    gasLimit: '2500',
+    type: 'normalTransfer',
+    ttl: 2 * 60 * 60,
+    totalAmount: 0,
+    xchainMode: 'x-chain',
+  } as const;
+
   const {
     control,
     watch,
     setValue,
-
     reset,
     getValues,
     handleSubmit,
     formState,
     resetField,
   } = useForm<ITransfer>({
-    defaultValues: {
-      fungible: urlAccount?.contract ?? fungibles[0].contract,
-      accountId: accountId ?? '',
-      senderAccount: accountId ? urlAccount : undefined,
-      chain: '',
-      receivers: [
-        {
-          amount: '',
-          address: '',
-          chain: '',
-          chunks: [],
-          discoveredAccount: undefined,
-        },
-      ],
-      gasPayer: undefined,
-      gasPrice: '0.00000001',
-      gasLimit: '2500',
-      type: 'normalTransfer',
-      ttl: 2 * 60 * 60,
-      totalAmount: 0,
-      xchainMode: 'x-chain',
-    },
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+    defaultValues,
   });
 
   const crossChainMode = watch('xchainMode');
@@ -251,14 +255,14 @@ export function TransferForm({
     setRedistribution([]);
     setError(undefined);
     const usedChains = receivers
-      .filter((rec) => rec.address === senderAccount.address && rec.chain)
+      ?.filter((rec) => rec?.address === senderAccount?.address && rec.chain)
       .flatMap(({ chain }) => chain);
-    const availableChains = senderAccount.chains.filter(
+    const availableChains = senderAccount?.chains?.filter(
       (chain) => !usedChains.includes(chain.chainId),
     );
 
     const allChainsSet = receivers.every((receiver, index) => {
-      if (receiver.address === senderAccount.address && !receiver.chain) {
+      if (receiver.address === senderAccount?.address && !receiver.chain) {
         setError({
           target: `receivers.${index}`,
           message:
@@ -277,7 +281,7 @@ export function TransferForm({
     }));
 
     const otherReceiversWithIndex = receiversWithIndex.filter(
-      ({ receiver: rec }) => rec.address !== senderAccount.address,
+      ({ receiver: rec }) => rec.address !== senderAccount?.address,
     );
 
     try {
@@ -366,7 +370,6 @@ export function TransferForm({
   );
 
   async function onSubmitForm(data: ITransfer) {
-    console.log('data', data);
     if (
       !profile ||
       !formState.isValid ||
@@ -412,9 +415,10 @@ export function TransferForm({
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <Stack flexDirection="column" width="100%" gap="lg">
         <TransferCard
+          defaultValues={defaultValues}
           fungibles={fungibles}
-          setValue={setValue}
           selectedContract={getValues('fungible')}
+          reset={reset}
         />
         <SenderCard
           withEvaluate={withEvaluate}
@@ -456,12 +460,10 @@ export function TransferForm({
         />
 
         <SignOptionsCard
-          error={error}
           hasXChain={hasXChain}
           crossChainMode={crossChainMode}
           setValue={setValue}
           selectedType={getValues('type')}
-          formState={formState}
         />
 
         {showAdvancedOptions ? (
@@ -487,20 +489,45 @@ export function TransferForm({
             />
           </>
         ) : null}
-        <Stack>
-          <Button variant="outlined">Abort</Button>
-          <Stack justifyContent="flex-end" flex={1} gap="sm">
-            <Button
-              variant="outlined"
-              onPress={() => setShowAdvancedOptions((v) => !v)}
-            >
-              {showAdvancedOptions
-                ? 'Hide Advanced options'
-                : 'Show Advanced options'}
-            </Button>
-            <Button isDisabled={!formState.isValid} type="submit">
-              Create Transactions
-            </Button>
+
+        <Stack width="100%" flexDirection="column">
+          {(error || !formState.isValid) && formState.isSubmitted && (
+            <Notification type="inline" role="alert" intent="negative">
+              Invalid Data, Please check the input(s) (
+              {[...Object.keys(formState.errors), error?.target.split('.')[0]]
+                .filter(Boolean)
+                .join(', ')}
+              )
+            </Notification>
+          )}
+          <Stack
+            alignItems={'flex-start'}
+            gap="lg"
+            marginBlockStart={'lg'}
+            flexDirection={'column'}
+          >
+            {!!error && error.target === 'general' && (
+              <Notification type="inline" role="alert" intent="negative">
+                {error.message}
+              </Notification>
+            )}
+          </Stack>
+
+          <Stack>
+            <Button variant="outlined">Abort</Button>
+            <Stack justifyContent="flex-end" flex={1} gap="sm">
+              <Button
+                variant="outlined"
+                onPress={() => setShowAdvancedOptions((v) => !v)}
+              >
+                {showAdvancedOptions
+                  ? 'Hide Advanced options'
+                  : 'Show Advanced options'}
+              </Button>
+              <Button isDisabled={!formState.isValid} type="submit">
+                Create Transactions
+              </Button>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>

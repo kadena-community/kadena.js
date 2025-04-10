@@ -7,13 +7,13 @@ import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
 import { wrapperClass } from '@/pages/errors/styles.css';
-import { linkClass } from '@/pages/home/style.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
 import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
 import {
+  MonoAdd,
   MonoCopyAll,
   MonoDelete,
   MonoSaveAlt,
@@ -104,13 +104,45 @@ export const ReceiverCard: FC<IProps> = ({
   crossChainText,
   error,
 }) => {
-  const [, , AdvancedMode] = useShow(true);
+  const [, setShowMore, AdvancedMode] = useShow(false);
+
   return (
     <Card fullWidth>
       <CardContentBlock
         level={2}
         title="Receiver"
         visual={<MonoSaveAlt width={24} height={24} />}
+        supportingContent={
+          <Stack width="100%" gap="sm">
+            <Button
+              isCompact
+              variant="outlined"
+              onPress={() => setShowMore((v) => !v)}
+            >
+              more Options
+            </Button>
+            <Button
+              isCompact
+              variant="outlined"
+              startVisual={<MonoAdd />}
+              onClick={() => {
+                const receivers = getValues('receivers');
+                setValue('receivers', [
+                  ...receivers,
+                  {
+                    amount: '',
+                    address: '',
+                    chain: '',
+                    chunks: [],
+                    discoveredAccount: undefined,
+                  },
+                ]);
+              }}
+            >
+              Add receiver
+            </Button>
+          </Stack>
+        }
       >
         <Stack
           flexDirection="column"
@@ -305,6 +337,7 @@ export const ReceiverCard: FC<IProps> = ({
                                     />
                                   )}
                                 />
+
                                 <AdvancedMode>
                                   <Stack flex={1} gap="sm">
                                     <Controller
@@ -382,28 +415,6 @@ export const ReceiverCard: FC<IProps> = ({
                               </Stack>
                             </Stack>
                           </Stack>
-                          {index === watchReceivers.length - 1 && (
-                            <Stack>
-                              <button
-                                className={linkClass}
-                                onClick={() => {
-                                  const receivers = getValues('receivers');
-                                  setValue('receivers', [
-                                    ...receivers,
-                                    {
-                                      amount: '',
-                                      address: '',
-                                      chain: '',
-                                      chunks: [],
-                                      discoveredAccount: undefined,
-                                    },
-                                  ]);
-                                }}
-                              >
-                                + Add Receiver
-                              </button>
-                            </Stack>
-                          )}
                         </Fragment>
                       );
                     })}

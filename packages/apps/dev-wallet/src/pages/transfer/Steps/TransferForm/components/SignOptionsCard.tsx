@@ -9,30 +9,20 @@ import {
 import { Button, Card, Heading, Notification, Stack } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { FormState, UseFormSetValue } from 'react-hook-form';
+import { UseFormSetValue } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
 
 interface IProps {
-  error:
-    | {
-        target: 'from' | `receivers.${number}` | 'gas' | 'meta' | 'general';
-        message: string;
-      }
-    | undefined;
-
   hasXChain: boolean;
   crossChainMode: 'x-chain' | 'redistribution';
   setValue: UseFormSetValue<ITransfer>;
-  formState: FormState<ITransfer>;
   selectedType: 'safeTransfer' | 'normalTransfer';
 }
 
 export const SignOptionsCard: FC<IProps> = ({
-  error,
   hasXChain,
   crossChainMode,
   setValue,
-  formState,
   selectedType,
 }) => {
   return (
@@ -84,28 +74,6 @@ export const SignOptionsCard: FC<IProps> = ({
                 </Stack>
               </Notification>
             )}
-
-          {(error || !formState.isValid) && formState.isSubmitted && (
-            <Notification role="alert" intent="negative">
-              Invalid Data, Please check the input(s) (
-              {[...Object.keys(formState.errors), error?.target.split('.')[0]]
-                .filter(Boolean)
-                .join(', ')}
-              )
-            </Notification>
-          )}
-          <Stack
-            alignItems={'flex-start'}
-            gap="lg"
-            marginBlockStart={'lg'}
-            flexDirection={'column'}
-          >
-            {!!error && error.target === 'general' && (
-              <Notification role="alert" intent="negative">
-                {error.message}
-              </Notification>
-            )}
-          </Stack>
         </Stack>
       </CardContentBlock>
     </Card>

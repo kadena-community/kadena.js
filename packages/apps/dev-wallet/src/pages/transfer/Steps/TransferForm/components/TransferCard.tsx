@@ -7,22 +7,24 @@ import { Card, Stack } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
 import { FC, useMemo } from 'react';
-import { UseFormSetValue } from 'react-hook-form';
+import { UseFormReset } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
 
 interface IProps {
+  defaultValues: Record<any, any>;
   fungibles: Fungible[];
-  setValue: UseFormSetValue<ITransfer>;
   selectedContract: string;
+  reset: UseFormReset<ITransfer>;
 }
 
 export const TransferCard: FC<IProps> = ({
   fungibles,
-  setValue,
   selectedContract,
+  reset,
+  defaultValues,
 }) => {
   const handleSetFungible = (fungible: string) => {
-    setValue('fungible', fungible);
+    reset({ ...defaultValues, fungible: fungible });
   };
   const { accounts } = useWallet();
 

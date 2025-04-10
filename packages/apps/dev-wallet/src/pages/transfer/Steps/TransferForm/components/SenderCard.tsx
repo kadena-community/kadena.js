@@ -15,7 +15,7 @@ import { ChainId } from '@kadena/client';
 import { MonoSwipeRightAlt } from '@kadena/kode-icons/system';
 import { Button, Card, Select, SelectItem, Stack } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
 
@@ -55,8 +55,7 @@ export const SenderCard: FC<IProps> = ({
   forceRender,
   chains,
 }) => {
-  const [, , AdvancedMode] = useShow(true);
-  const [showMore, setShowMore] = useState(false);
+  const [, setShowMore, AdvancedMode] = useShow(false);
 
   return (
     <Card fullWidth>
@@ -112,61 +111,59 @@ export const SenderCard: FC<IProps> = ({
               );
             }}
           />
-          {showMore ? (
-            <AdvancedMode>
-              <Stack flex={1}>
-                <Controller
-                  name="chain"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      aria-label="Chain"
-                      startVisual={<Label>Chain:</Label>}
-                      // label="Chain"
-                      size="sm"
-                      placeholder="Select a chain"
-                      selectedKey={field.value}
-                      onSelectionChange={withEvaluate(field.onChange)}
-                    >
-                      {senderAccount
-                        ? [
-                            <SelectItem key={''}>
+          <AdvancedMode>
+            <Stack flex={1}>
+              <Controller
+                name="chain"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    aria-label="Chain"
+                    startVisual={<Label>Chain:</Label>}
+                    // label="Chain"
+                    size="sm"
+                    placeholder="Select a chain"
+                    selectedKey={field.value}
+                    onSelectionChange={withEvaluate(field.onChange)}
+                  >
+                    {senderAccount
+                      ? [
+                          <SelectItem key={''}>
+                            <Stack
+                              flexDirection="row"
+                              alignItems="center"
+                              gap="sm"
+                            >
+                              <AutoBadge />
+                              {chains.length ? (
+                                <Chain
+                                  chainId={formatList(
+                                    chains.map((c) => +c.chainId),
+                                  )}
+                                />
+                              ) : null}
+                              (balance: {overallBalance})
+                            </Stack>
+                          </SelectItem>,
+                          ...chains.map((chain) => (
+                            <SelectItem key={chain.chainId}>
                               <Stack
                                 flexDirection="row"
                                 alignItems="center"
                                 gap="sm"
                               >
-                                <AutoBadge />
-                                {chains.length ? (
-                                  <Chain
-                                    chainId={formatList(
-                                      chains.map((c) => +c.chainId),
-                                    )}
-                                  />
-                                ) : null}
-                                (balance: {overallBalance})
+                                <Chain chainId={chain.chainId} />
+                                (balance: {chain.balance})
                               </Stack>
-                            </SelectItem>,
-                            ...chains.map((chain) => (
-                              <SelectItem key={chain.chainId}>
-                                <Stack
-                                  flexDirection="row"
-                                  alignItems="center"
-                                  gap="sm"
-                                >
-                                  <Chain chainId={chain.chainId} />
-                                  (balance: {chain.balance})
-                                </Stack>
-                              </SelectItem>
-                            )),
-                          ]
-                        : []}
-                    </Select>
-                  )}
-                />
-              </Stack>
-            </AdvancedMode>
-          ) : null}
+                            </SelectItem>
+                          )),
+                        ]
+                      : []}
+                  </Select>
+                )}
+              />
+            </Stack>
+          </AdvancedMode>
         </Stack>
       </CardContentBlock>
     </Card>

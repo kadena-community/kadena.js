@@ -41,6 +41,7 @@ export const AssetCards: FC<IProps> = ({
     <Stack className={actionsWrapperClass}>
       {filteredAssets.map((asset) => (
         <AssetAction
+          key={asset.contract}
           label={asset.symbol}
           body={`${asset.balance}`}
           isSelected={asset.contract === selectedContract}
