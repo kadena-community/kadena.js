@@ -46,7 +46,11 @@ export function CodeView({
               const senderAddress = parseArg(sender, decoration);
               const receiverAddress = parseArg(receiver, decoration);
               return (
-                <Stack gap={'sm'} flexDirection={'column'}>
+                <Stack
+                  key={`${code.function.module}${code.function.namespace}`}
+                  gap={'sm'}
+                  flexDirection={'column'}
+                >
                   <Heading variant="h5">Transfer</Heading>
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>from</Text>
@@ -141,7 +145,9 @@ export function CodeView({
     <Stack flexDirection={'column'} gap={'md'}>
       <>
         {describes.map((e) => (
-          <Card fullWidth>{e}</Card>
+          <Card key={e?.key} fullWidth>
+            {e}
+          </Card>
         ))}
         {command && (
           <Card fullWidth>

@@ -33,7 +33,13 @@ import {
   IReceiver,
 } from './utils';
 
-type IStepKeys = 'transfer' | 'sign' | 'success' | 'failure';
+type IStepKeys =
+  | 'transfer'
+  | 'sign'
+  | 'success'
+  | 'preflight'
+  | 'send'
+  | 'failure';
 
 const steps: ICompactStepperItemProps[] = [
   {
@@ -43,6 +49,14 @@ const steps: ICompactStepperItemProps[] = [
   {
     label: 'Sign',
     id: 'sign',
+  },
+  {
+    label: 'Preflight',
+    id: 'preflight',
+  },
+  {
+    label: 'Send',
+    id: 'send',
   },
   {
     label: 'Success',

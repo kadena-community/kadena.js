@@ -2,6 +2,7 @@ import { IOwnedAccount } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { ChainId } from '@kadena/client';
 import { Button, Divider, Notification, Stack } from '@kadena/kode-ui';
 import { token } from '@kadena/kode-ui/styles';
@@ -86,6 +87,8 @@ export function TransferForm({
   // so I use this state to force re-render on specific changes
   // TODO: find a better way to handle this
   const [, forceRender] = useState(0);
+  const navigate = usePatchedNavigate();
+
   const {
     accounts: allAccounts,
     fungibles,
@@ -518,7 +521,14 @@ export function TransferForm({
           </Stack>
 
           <Stack>
-            <Button variant="outlined">Abort</Button>
+            <Button
+              variant="outlined"
+              onPress={() => {
+                navigate('/activities');
+              }}
+            >
+              Abort
+            </Button>
             <Stack justifyContent="flex-end" flex={1} gap="sm">
               <Button
                 variant="outlined"
