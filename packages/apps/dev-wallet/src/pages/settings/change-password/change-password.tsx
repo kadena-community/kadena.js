@@ -1,5 +1,6 @@
 import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
+import { PasswordField } from '@/Components/PasswordField/PasswordField';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
 import { changePassword } from '@/modules/wallet/wallet.service';
@@ -15,7 +16,6 @@ import {
   RadioGroup,
   Stack,
   Text,
-  TextField,
   Link as UiLink,
 } from '@kadena/kode-ui';
 import { CardFooterGroup } from '@kadena/kode-ui/patterns';
@@ -201,41 +201,12 @@ export function ChangePassword() {
                   security of your wallet
                 </Text>
               </Stack>
-              <TextField
-                id="password"
-                type="password"
-                label="Password"
-                autoFocus
-                defaultValue={getValues('password')}
-                // react-hook-form uses uncontrolled elements;
-                // and because we add and remove the fields we need to add key to prevent confusion for react
-                key="password"
-                {...register('password', {
-                  required: {
-                    value: true,
-                    message: 'This field is required',
-                  },
-                  minLength: { value: 6, message: 'Minimum 6 symbols' },
-                })}
-                isInvalid={!isValid && !!errors.password}
-                errorMessage={errors.password?.message}
-              />
-              <TextField
-                id="confirmation"
-                type="password"
-                label="Confirm password"
-                defaultValue={getValues('confirmation')}
-                key="confirmation"
-                {...register('confirmation', {
-                  validate: (value) => {
-                    return (
-                      getValues('password') === value ||
-                      'Passwords do not match'
-                    );
-                  },
-                })}
-                isInvalid={!isValid && !!errors.confirmation}
-                errorMessage={errors.confirmation?.message}
+              <PasswordField
+                value={getValues('password')}
+                confirmationValue={getValues('confirmation')}
+                register={register}
+                isValid={isValid}
+                errors={errors}
               />
 
               {error && (

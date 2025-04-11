@@ -2,6 +2,7 @@ import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
 import { ICardContentProps } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
+import { PasswordField } from '@/Components/PasswordField/PasswordField';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
@@ -339,44 +340,13 @@ export function CreateProfile() {
         {step === 'set-password' && (
           <>
             <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
-              <Stack flexDirection="column" marginBlock="md" gap="sm">
-                <TextField
-                  id="password"
-                  type="password"
-                  label="Password"
-                  autoFocus
-                  defaultValue={getValues('password')}
-                  // react-hook-form uses uncontrolled elements;
-                  // and because we add and remove the fields we need to add key to prevent confusion for react
-                  key="password"
-                  {...register('password', {
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                    minLength: { value: 6, message: 'Minimum 6 symbols' },
-                  })}
-                  isInvalid={!isValid && !!errors.password}
-                  errorMessage={errors.password?.message}
-                />
-                <TextField
-                  id="confirmation"
-                  type="password"
-                  label="Confirm password"
-                  defaultValue={getValues('confirmation')}
-                  key="confirmation"
-                  {...register('confirmation', {
-                    validate: (value) => {
-                      return (
-                        getValues('password') === value ||
-                        'Passwords do not match'
-                      );
-                    },
-                  })}
-                  isInvalid={!isValid && !!errors.confirmation}
-                  errorMessage={errors.confirmation?.message}
-                />
-              </Stack>
+              <PasswordField
+                value={getValues('password')}
+                confirmationValue={getValues('confirmation')}
+                isValid={isValid}
+                errors={errors}
+                register={register}
+              />
             </Stack>
 
             <CardFooterContent>
