@@ -29,11 +29,16 @@ export const PasswordField: FC<IProps> = ({
         // and because we add and remove the fields we need to add key to prevent confusion for react
         key="password"
         {...register('password', {
-          required: {
-            value: true,
-            message: 'This field is required',
+          validate: (val: string) => {
+            if (!val.length) return 'This field is required';
+            if (!/^\S*$/.test(val)) return 'You are not allowed to use spaces';
+            if (val.length < 6) return 'Minimum 6 symbols';
+            if (!/[A-Z]/.test(val))
+              return 'You need at least 1 uppercase character';
+            if (!/[^A-Za-z0-9]/.test(val))
+              return 'You need at least 1 special character';
+            return true;
           },
-          minLength: { value: 6, message: 'Minimum 6 symbols' },
         })}
         isInvalid={!isValid && !!errors.password}
         errorMessage={errors.password?.message}

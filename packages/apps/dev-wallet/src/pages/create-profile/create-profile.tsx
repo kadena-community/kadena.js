@@ -149,6 +149,7 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
+    mode: 'all',
     defaultValues: {
       password: '',
       confirmation: '',

@@ -45,7 +45,7 @@ export function ChangePassword() {
     control,
     watch,
   } = useForm<ChangePasswordForm>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       authMode: 'WEB_AUTHN',
       password: '',
@@ -106,8 +106,6 @@ export function ChangePassword() {
   };
 
   const authMode = watch('authMode');
-
-  console.log({ form: formRef });
   return !currentPassword ? (
     <>
       <CardContent
