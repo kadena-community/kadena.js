@@ -218,7 +218,6 @@ export function CreateProfile() {
       mnemonic,
     );
 
-    console.log({ profile });
     setPasswordError(undefined);
     if (typeof profile === 'string') {
       setPasswordError(profile);
