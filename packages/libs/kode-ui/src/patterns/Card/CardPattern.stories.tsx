@@ -381,3 +381,62 @@ export const ExternalFooter: Story = {
     );
   },
 };
+
+export const CardLevels: Story = {
+  name: 'Cards with Different importance levels',
+  args: {},
+  render: ({}) => {
+    return (
+      <Box>
+        <CardFixedContainer>
+          <CardContentBlock
+            title="Level 1"
+            description="This card layout is a pattern within the design system. The only mandatory properties are title and children, but many optional properties are available so that users can configure what they need."
+            visual={<MonoNote width={36} height={36} />}
+          >
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+          </CardContentBlock>
+        </CardFixedContainer>
+
+        <CardFixedContainer>
+          <CardContentBlock
+            title="Level 2"
+            level={2}
+            description="This card layout is a pattern within the design system. The only mandatory properties are title and children, but many optional properties are available so that users can configure what they need."
+            visual={<MonoNote width={24} height={24} />}
+          >
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+            <Stack
+              backgroundColor="brand.primary.subtle"
+              padding="xl"
+              marginBlockEnd="md"
+            />
+          </CardContentBlock>
+        </CardFixedContainer>
+      </Box>
+    );
+  },
+};

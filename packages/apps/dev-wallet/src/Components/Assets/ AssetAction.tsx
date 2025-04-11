@@ -19,6 +19,7 @@ export const AssetAction: FC<IProps> = ({
     <Stack className={assetBoxClass}>
       <Tile
         as="button"
+        type="button"
         onClick={handleClick}
         isSelected={isSelected}
         stacked="vertical"

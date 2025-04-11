@@ -6,7 +6,7 @@ import { useFocusRing } from 'react-aria';
 import { Stack } from '../Layout/Stack/Stack';
 import { tileClass } from './Tile.css';
 
-export type IProps = Pick<AriaButtonProps<'button'>, 'aria-label'> & {
+export type IProps = Pick<AriaButtonProps<'button'>, 'aria-label' | 'type'> & {
   as?: ElementType;
   isDisabled?: boolean;
   hasFocus?: boolean;
@@ -42,6 +42,7 @@ export const Tile: FC<ITileProps> = ({
       data-focused={isFocused || undefined}
       data-focus-visible={isFocusVisible || undefined}
       data-selected={isSelected || undefined}
+      {...props}
     >
       {children}
     </Stack>

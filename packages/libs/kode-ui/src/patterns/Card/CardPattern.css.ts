@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, responsiveStyle, token } from '../../../src/styles';
+import { atoms, recipe, responsiveStyle, token } from '../../../src/styles';
 
 // NOTE: Padding is applied via this container instead of margin to the container to avoid margin collapse with the body
 export const paddingContainer = style({
@@ -46,6 +46,7 @@ export const extendedContainer = style([
 export const bodyContainer = style([
   {
     flex: 1,
+    width: '100%',
     selectors: {
       '& + &': {
         marginBlockStart: token('size.n16'),
@@ -54,21 +55,32 @@ export const bodyContainer = style([
   },
 ]);
 
-export const heading = style([
-  {
-    marginBlockEnd: token('spacing.md'),
-    selectors: {
-      [`${bodyContainer}:first-child &`]: {
-        fontSize: token('typography.fontSize.2xl'),
-        lineHeight: token('typography.lineHeight.2xl'),
+export const heading = recipe({
+  base: [
+    {
+      marginBlockEnd: token('spacing.md'),
+      selectors: {
+        [`${bodyContainer}:first-child &`]: {
+          lineHeight: token('typography.lineHeight.2xl'),
+        },
+        [`${bodyContainer}:not(:first-child) &`]: {
+          lineHeight: token('typography.lineHeight.xl'),
+        },
       },
-      [`${bodyContainer}:not(:first-child) &`]: {
-        fontSize: token('typography.fontSize.xl'),
-        lineHeight: token('typography.lineHeight.xl'),
+    },
+  ],
+
+  variants: {
+    level: {
+      level1: {
+        fontSize: `${token('typography.fontSize.2xl')} !important`,
+      },
+      level2: {
+        fontSize: `${token('typography.fontSize.lg')} !important`,
       },
     },
   },
-]);
+});
 
 export const bodyContent = style([
   { marginBlockStart: token('spacing.xl'), flex: 1.5 },

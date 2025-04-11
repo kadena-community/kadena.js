@@ -112,6 +112,7 @@ export function MigrateAccount() {
               </Stack>
 
               <AccountSearchBox
+                label="Address:"
                 accounts={accounts}
                 watchedAccounts={watchAccounts}
                 contacts={contacts}

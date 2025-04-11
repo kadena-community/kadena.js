@@ -27,11 +27,11 @@ globalStyle(`${actionsWrapperClass} ${assetBoxClass}`, {
       textAlign: 'center',
     },
     sm: {
-      maxWidth: '49%',
+      maxWidth: '48.5%',
     },
     md: {
       maxWidth: '100%',
     },
-    lg: { maxWidth: '49%' },
+    lg: { maxWidth: '48.5%' },
   }),
 });
