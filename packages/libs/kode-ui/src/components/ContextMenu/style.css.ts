@@ -6,6 +6,7 @@ export const contextMenuClass = style([
     borderStyle: 'solid',
     borderRadius: 'sm',
     borderWidth: 'hairline',
+    overflowY: 'auto',
   }),
   {
     borderColor: token('color.neutral.n20@alpha80'),

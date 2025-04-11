@@ -1,3 +1,4 @@
+import { validatePassword } from '@/utils/validatePassword';
 import { recoverPublicKey, retrieveCredential } from '@/utils/webAuthn';
 import {
   addSignatures,
@@ -127,6 +128,12 @@ export async function createProfile(
     );
   }
 
+  if (options.authMode === 'PASSWORD') {
+    //check if password is valid
+    const isValidated = validatePassword(password);
+    if (isValidated !== true) return isValidated;
+  }
+
   const profile: IProfile = {
     uuid: profileUUID,
     name: profileName,
@@ -214,6 +221,11 @@ export const changePassword = async (
   const keySources = await walletRepository.getProfileKeySources(profileId);
   const persistData: Array<() => Promise<void>> = [];
   if (!profile) return;
+
+  //check if password is valid
+  const isValidated = validatePassword(newPassword);
+  if (isValidated !== true) return isValidated;
+
   if (profile.securityPhraseId !== undefined) {
     const securityPhraseId = profile.securityPhraseId;
     const encryptedMnemonic =

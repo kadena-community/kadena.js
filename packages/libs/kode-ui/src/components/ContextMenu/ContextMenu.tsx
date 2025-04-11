@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from 'react';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { AriaMenuProps } from 'react-aria';
 import { FocusScope, useMenu, useMenuTrigger } from 'react-aria';
 import { useMenuTriggerState, useTreeState } from 'react-stately';
@@ -17,8 +17,8 @@ export const ContextMenu: FC<IContextMenuProps> = ({
   trigger,
   ...props
 }) => {
-  const ref = useRef(null);
-  const menuReref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const state = useMenuTriggerState({ defaultOpen: props.defaultOpen });
 
   const { menuTriggerProps, menuProps: menuWrapperProps } = useMenuTrigger(
@@ -34,6 +34,16 @@ export const ContextMenu: FC<IContextMenuProps> = ({
   } as AriaMenuProps<{}>);
   const { menuProps } = useMenu({ ...newMenuWrapperProps }, treeState, ref);
 
+  useEffect(() => {
+    if (!ref.current || !menuRef.current) return;
+
+    const popover = document.querySelector('.popover') as HTMLDivElement;
+    const maxHeight = popover?.style.maxHeight;
+
+    const style = menuRef.current?.style;
+    if (style) style.maxHeight = maxHeight ?? 'auto';
+  }, [ref.current, menuRef.current]);
+
   return (
     <>
       {React.cloneElement(trigger, {
@@ -45,7 +55,7 @@ export const ContextMenu: FC<IContextMenuProps> = ({
         <>
           <Popover {...props} triggerRef={ref} state={state}>
             <div
-              ref={menuReref}
+              ref={menuRef}
               {...menuProps}
               className={contextMenuClass}
               onClick={state.close}
