@@ -24,6 +24,8 @@ import {
   CompactStepper,
   Heading,
   ICompactStepperItemProps,
+  Notification,
+  NotificationHeading,
   Stack,
   Text,
   TextField,
@@ -112,6 +114,9 @@ export function CreateProfile() {
     unlockProfile,
     activeNetwork,
   } = useWallet();
+  const [passwordError, setPasswordError] = useState<string | undefined>(
+    undefined,
+  );
   const [step, setStep] = useState<IStepKeys>('authMethod');
   const [previousStep, setPreviousStep] = useState<IStepKeys>('authMethod');
   const { createHDWallet } = useHDWallet();
@@ -212,6 +217,14 @@ export function CreateProfile() {
           },
       mnemonic,
     );
+
+    console.log({ profile });
+    setPasswordError(undefined);
+    if (typeof profile === 'string') {
+      setPasswordError(profile);
+      return;
+    }
+
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
     const keySource = await createHDWallet(profile.uuid, 'HD-BIP44', pass);
@@ -364,7 +377,10 @@ export function CreateProfile() {
               </Stack>
               <CardFooterGroup>
                 <Button
-                  onClick={() => handleSetStep('profile')}
+                  onClick={() => {
+                    setPasswordError(undefined);
+                    handleSetStep('profile');
+                  }}
                   isDisabled={!isValid}
                   endVisual={<MonoArrowForward />}
                 >
@@ -430,6 +446,20 @@ export function CreateProfile() {
                   )}
                 />
               </Stack>
+
+              {passwordError && (
+                <Notification
+                  type="inlineStacked"
+                  role="alert"
+                  intent="negative"
+                >
+                  <NotificationHeading>
+                    Password backend error
+                  </NotificationHeading>
+
+                  {passwordError}
+                </Notification>
+              )}
             </Stack>
 
             <CardFooterContent>
@@ -449,7 +479,7 @@ export function CreateProfile() {
                   onClick={() => {
                     formRef.current?.requestSubmit();
                   }}
-                  isDisabled={!isValid}
+                  isDisabled={!isValid || !!passwordError}
                   endVisual={<MonoArrowForward />}
                 >
                   Next

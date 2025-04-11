@@ -12,6 +12,7 @@ import {
   Button,
   Heading,
   Notification,
+  NotificationHeading,
   Radio,
   RadioGroup,
   Stack,
@@ -31,6 +32,9 @@ interface ChangePasswordForm {
 
 export function ChangePassword() {
   const formRef = useRef<HTMLFormElement>(null);
+  const [passwordError, setPasswordError] = useState<string | undefined>(
+    undefined,
+  );
   const [currentPassword, setCurrentPassword] = useState('');
   const [error, setError] = useState('');
   const { askForPassword, profile } = useWallet();
@@ -89,7 +93,17 @@ export function ChangePassword() {
     setIsLoading(true);
     setError('');
     try {
-      await changePassword(profile.uuid, currentPassword, password);
+      setPasswordError(undefined);
+      const isValidated = await changePassword(
+        profile.uuid,
+        currentPassword,
+        password,
+      );
+      if (typeof isValidated === 'string') {
+        setIsLoading(false);
+        setPasswordError(isValidated);
+        return;
+      }
       await walletRepository.updateProfile({
         ...profile!,
         options: {
@@ -210,6 +224,20 @@ export function ChangePassword() {
               {error && (
                 <Notification role="alert" intent="negative">
                   <>{error.toString()}</>
+                </Notification>
+              )}
+
+              {passwordError && (
+                <Notification
+                  type="inlineStacked"
+                  role="alert"
+                  intent="negative"
+                >
+                  <NotificationHeading>
+                    Password backend error
+                  </NotificationHeading>
+
+                  {passwordError}
                 </Notification>
               )}
             </Stack>

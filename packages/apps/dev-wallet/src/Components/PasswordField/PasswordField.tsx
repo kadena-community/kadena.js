@@ -1,3 +1,4 @@
+import { validatePassword } from '@/utils/validatePassword';
 import { Stack, TextField } from '@kadena/kode-ui';
 import { FC } from 'react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
@@ -29,16 +30,7 @@ export const PasswordField: FC<IProps> = ({
         // and because we add and remove the fields we need to add key to prevent confusion for react
         key="password"
         {...register('password', {
-          validate: (val: string) => {
-            if (!val.length) return 'This field is required';
-            if (!/^\S*$/.test(val)) return 'You are not allowed to use spaces';
-            if (val.length < 6) return 'Minimum 6 symbols';
-            if (!/[A-Z]/.test(val))
-              return 'You need at least 1 uppercase character';
-            if (!/[^A-Za-z0-9]/.test(val))
-              return 'You need at least 1 special character';
-            return true;
-          },
+          validate: validatePassword,
         })}
         isInvalid={!isValid && !!errors.password}
         errorMessage={errors.password?.message}
