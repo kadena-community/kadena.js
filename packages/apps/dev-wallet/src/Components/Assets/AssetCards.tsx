@@ -22,6 +22,9 @@ export const AssetCards: FC<IProps> = ({
 }) => {
   const [showAll, setShowAll] = useState(false);
 
+  // we filter the assets to a max of 3. (when there is more than 4)
+  // so we can show the "Show more" button, as the 4th option
+  // when there is 4 options or less, we can show all options
   const { filteredAssets, hasShowAllButton } = useMemo(() => {
     if (showAll || assets.length <= MAXASSETCOUNT) {
       return { filteredAssets: assets, hasShowAllButton: false };
