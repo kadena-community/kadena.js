@@ -5,8 +5,8 @@
 ```ts
 
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
-import { BaseWalletAdapterOptions } from '@kadena/wallet-adapter-core';
-import { BaseWalletFactoryOptions } from '@kadena/wallet-adapter-core';
+import type { BaseWalletAdapterOptions } from '@kadena/wallet-adapter-core';
+import type { BaseWalletFactoryOptions } from '@kadena/wallet-adapter-core';
 import type { KdaMethodMap } from '@kadena/wallet-adapter-core';
 import { Provider } from '@kadena/wallet-adapter-core';
 

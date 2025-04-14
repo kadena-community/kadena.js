@@ -1,5 +1,5 @@
-import { StandardSchemaV1 } from "@standard-schema/spec";
-import { object, optional, string } from "valibot";
+import type { StandardSchemaV1 } from '@standard-schema/spec';
+import { object, optional, string } from 'valibot';
 
 export const defaultConnectSchema = object({
   networkId: optional(string()),
@@ -22,7 +22,7 @@ export class SchemaError extends Error {
    */
   constructor(issues: ReadonlyArray<StandardSchemaV1.Issue>) {
     super(issues[0].message);
-    this.name = "SchemaError";
+    this.name = 'SchemaError';
     this.issues = issues;
   }
 }

@@ -4,13 +4,13 @@
 
 ```ts
 
-import { AccountInfo } from '@kadena/wallet-adapter-core';
-import { Adapter } from '@kadena/wallet-adapter-core';
-import { AdapterFactory } from '@kadena/wallet-adapter-core';
-import { AdapterFactoryData } from '@kadena/wallet-adapter-core';
+import type { AccountInfo } from '@kadena/wallet-adapter-core';
+import type { Adapter } from '@kadena/wallet-adapter-core';
+import type { AdapterFactory } from '@kadena/wallet-adapter-core';
+import type { AdapterFactoryData } from '@kadena/wallet-adapter-core';
 import { JSX as JSX_2 } from 'react/jsx-runtime';
-import { NetworkInfo } from '@kadena/wallet-adapter-core';
-import { ReactNode } from 'react';
+import type { NetworkInfo } from '@kadena/wallet-adapter-core';
+import type { ReactNode } from 'react';
 import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 
 // @public

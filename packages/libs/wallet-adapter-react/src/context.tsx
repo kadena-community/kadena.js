@@ -1,14 +1,14 @@
-import {
+import type {
   AccountInfo,
   Adapter,
   AdapterFactory,
   AdapterFactoryData,
   NetworkInfo,
-  WalletAdapterClient,
 } from '@kadena/wallet-adapter-core';
+import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
+import type { ReactNode } from 'react';
 import {
   createContext,
-  ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -101,9 +101,14 @@ export function KadenaWalletProvider({
       { signal: controller.signal },
     );
 
-    client.init().then(() => {
-      setProviderData([...client.getProviders()]);
-    });
+    client
+      .init()
+      .then(() => {
+        setProviderData([...client.getProviders()]);
+      })
+      .catch((err) => {
+        console.error('Error initializing adapters', err);
+      });
     return () => controller.abort();
   }, [client]);
 

@@ -1,4 +1,4 @@
-import { JsonRpcResponse, JsonRpcSuccess } from '../types';
+import type { JsonRpcResponse, JsonRpcSuccess } from '../types';
 
 /**
  * @public

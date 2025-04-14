@@ -12,7 +12,7 @@ import type {
   IUnsignedCommand,
 } from '@kadena/client';
 import { addSignatures } from '@kadena/client';
-import { ISigningRequestPartial } from '../types';
+import type { ISigningRequestPartial } from '../types';
 import { ERRORS } from './constants';
 
 const isQuicksignResponseOutcomes = (

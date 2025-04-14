@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import {
+import type {
   AccountInfo,
   Adapter,
   AdapterFactory,
@@ -18,7 +18,7 @@ export class WalletAdapterClient {
   private adapters: Adapter[] = [];
   private eventEmitter = new EventEmitter();
 
-  constructor(adapters: (Adapter | AdapterFactory)[]) {
+  public constructor(adapters: (Adapter | AdapterFactory)[]) {
     for (const adapter of adapters) {
       if ('detect' in adapter && 'adapter' in adapter && 'name' in adapter) {
         this.adapterFactories.push(adapter);
@@ -35,11 +35,11 @@ export class WalletAdapterClient {
     }
   }
 
-  isDetected(name: string): boolean {
+  public isDetected(name: string): boolean {
     return !!this.getAdapter(name);
   }
 
-  async init() {
+  public async init() {
     const promises = this.adapterFactories.map(async (adapterFactory) => {
       const exists = this.getAdapter(adapterFactory.name);
       if (exists) return exists;

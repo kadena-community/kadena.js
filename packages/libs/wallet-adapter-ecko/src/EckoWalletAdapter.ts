@@ -25,14 +25,11 @@
 
 import type {
   AccountInfo,
+  BaseWalletAdapterOptions,
   ICommand,
   NetworkInfo,
-  Provider,
 } from '@kadena/wallet-adapter-core';
-import {
-  BaseWalletAdapter,
-  BaseWalletAdapterOptions,
-} from '@kadena/wallet-adapter-core';
+import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import { ERRORS } from './constants';
 import type {
   ExtendedMethod,
@@ -142,9 +139,14 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
       ) {
         const activeNetwork = await this.getActiveNetwork();
         this.networkId = activeNetwork.networkId;
-        finalParams.networkId = activeNetwork.networkId;
         try {
-          return await this._connect(finalParams, silent);
+          return await this._connect(
+            {
+              ...finalParams,
+              networkId: activeNetwork.networkId,
+            },
+            silent,
+          );
         } catch (fallbackErr) {
           if (silent) return null;
           throw fallbackErr;
