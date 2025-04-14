@@ -81,6 +81,11 @@ export async function createProfileFromChainweaverData(
     },
     mnemonic,
   );
+
+  if (typeof profile === 'string') {
+    return;
+  }
+
   console.log(`new profile with id ${profile.uuid}`);
   profileId = profile.uuid;
 
