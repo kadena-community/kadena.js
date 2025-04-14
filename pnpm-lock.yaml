@@ -3599,8 +3599,8 @@ importers:
         specifier: ~16.8.1
         version: 16.8.2
       valibot:
-        specifier: ^0.42.1
-        version: 0.42.1(typescript@5.4.5)
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.4.5)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: 5.0.2
@@ -19242,14 +19242,6 @@ packages:
   v8-to-istanbul@9.3.0:
     resolution: {integrity: sha512-kiGUalWN+rgBJ/1OHZsBtU4rXZOfj/7rKQxULKlIzwzQSvMJUUNgPwJEEh7gU6xEVxC0ahoOBvN2YI8GH6FNgA==}
     engines: {node: '>=10.12.0'}
-
-  valibot@0.42.1:
-    resolution: {integrity: sha512-3keXV29Ar5b//Hqi4MbSdV7lfVp6zuYLZuA9V1PvQUsXqogr+u5lvLPLk3A4f74VUXDnf/JfWMN6sB+koJ/FFw==}
-    peerDependencies:
-      typescript: '>=5'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   valibot@1.0.0:
     resolution: {integrity: sha512-1Hc0ihzWxBar6NGeZv7fPLY0QuxFMyxwYR2sF1Blu7Wq7EnremwY2W02tit2ij2VJT8HcSkHAQqmFfl77f73Yw==}
@@ -41804,10 +41796,6 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.25
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
-
-  valibot@0.42.1(typescript@5.4.5):
-    optionalDependencies:
-      typescript: 5.4.5
 
   valibot@1.0.0(typescript@5.4.5):
     optionalDependencies:
