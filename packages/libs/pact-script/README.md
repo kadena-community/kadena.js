@@ -293,3 +293,4 @@ it('creates an account and transfer 1 token', () => {
   ).toThrow('REACHED_MAX_ALLOWED');
 });
 ```
+

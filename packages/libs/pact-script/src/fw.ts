@@ -1,4 +1,4 @@
-import z from 'zod';
+import z, { input } from 'zod';
 
 let globalContext: PactContext | null = null;
 
@@ -66,12 +66,44 @@ export class DataMap<
   }
 }
 
+type GeneralFunction = (...args: any[]) => any;
+
 export abstract class PactContract {
   public static readonly moduleName;
 
   constructor(protected context: PactContext) {
     globalContext = context;
   }
+
+  public continue(continuation: any): any {}
+
+  // protected defpact = <T extends (...args: any[]) => ReturnType<ExecType>>(
+  //   cb: T,
+  // ) => {
+  //   const defpactFn = (...args: Parameters<T>) => {
+  //     const steps = cb(...args);
+  //     return { args, steps };
+  //   };
+  //   defpactFn.pactType = 'defpact';
+  //   return defpactFn;
+  // };
+
+  protected defpact = <T extends { (...args: any[]): any; pactType: 'step' }>(
+    exec,
+    ...conts: T[]
+  ) => {
+    const steps: T[] = [exec, ...conts];
+    const allStep = steps.every((step) => {
+      if (typeof step !== 'function' || step.pactType !== 'step') {
+        return false;
+      }
+      return true;
+    });
+    if (!allStep) {
+      throw new Error('All steps must be `step` functions');
+    }
+    return steps;
+  };
 
   public static create<T extends PactContract>(
     this: new (context: PactContext) => T,
@@ -169,6 +201,11 @@ export abstract class PactContract {
           capabilityBody(...args);
           sharedState.composed.push(key);
         },
+        emit() {
+          // TODO: implement emit
+          console.log('emit', key);
+          return key;
+        },
       };
     };
   }
@@ -212,8 +249,9 @@ export class NonUpgradableContract extends PactContract {
   }
 }
 
-interface CapabilityFns {
-  grant<T>(scoped: () => T): T;
+export interface CapabilityFns {
+  grant<T>(scoped?: () => T): T;
+  emit(): void;
   require(): void;
   compose(): void;
 }
@@ -271,6 +309,9 @@ export interface IPactContext {
       installedCaps?: { cap: string; args: any[]; mangedValue?: any }[];
     }
   >;
+  meta?: {
+    chainId: string;
+  };
 }
 
 function withPrincipal(keyset: IPactContext['data'][string]): IKeyset {
@@ -285,8 +326,11 @@ const isEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 export class PactContext {
   private tempKeysets: Map<string, IKeyset> = new Map();
   private keyset: Map<string, IKeyset> = new Map();
+  public get chainId() {
+    return this.env.meta?.chainId || '0';
+  }
 
-  constructor(env: IPactContext) {
+  constructor(private env: IPactContext) {
     if (env) {
       const clone: IPactContext = structuredClone(env);
       Object.entries(clone.data).forEach(([key, value]) => {
@@ -425,3 +469,38 @@ export function capability(
     })(...args);
   };
 }
+
+type ExecType<IN = undefined> = <
+  OUT /* extends undefined | Record<string, any> */, // TODO: check the valid return type
+>(
+  cb: (i: IN) => OUT,
+) => {
+  cont: ExecType<OUT>;
+  getSteps: () => ((i: any) => any)[];
+};
+
+export const exec: ExecType<undefined> = (cb) => {
+  const steps = [cb];
+  const getSteps = () => steps;
+
+  const cont = (cb) => {
+    steps.push(cb);
+    return { cont, getSteps };
+  };
+  return {
+    cont,
+    getSteps,
+  };
+};
+
+export const step = <T extends { (...args: any): any; pactType?: string }>(
+  cb: T,
+): T & { pactType: 'step' } => {
+  cb.pactType = 'step';
+  return cb as T & { pactType: 'step' };
+};
+
+export const withCapability = (c: CapabilityFns) => c.grant();
+export const requireCapability = (c: CapabilityFns) => c.require();
+export const composeCapability = (c: CapabilityFns) => c.compose();
+export const emitEvent = (c: CapabilityFns) => c.emit();

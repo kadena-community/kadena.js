@@ -228,6 +228,47 @@ describe('coinContract', () => {
       contract.changeAdminGuard(context.getKeyset('new-admin-ks'));
     });
   });
+
+  describe('CROSS_CHAIN', () => {
+    it('burns the token in the source chain', () => {
+      const chainOneContext = new PactContext({
+        ...env,
+        meta: {
+          chainId: '1',
+        },
+      });
+      const chainOneContract = CoinContract.create(chainOneContext);
+      // account admin is created with 1000000 KDA
+      expect(chainOneContract.getBalance('admin')).toBe(1000000);
+      const proof = chainOneContract.crossChain(
+        'admin',
+        'alice',
+        chainOneContext.getKeyset('alice-ks'),
+        1,
+        '2',
+      );
+      // the token is burned in the source chain
+      expect(chainOneContract.getBalance('admin')).toBe(999999);
+
+      // alice's account is not created in the destination chain
+      expect(() => chainOneContract.getBalance('alice')).toThrow(
+        'ACCOUNT_NOT_FOUND',
+      );
+      expect(proof).toBeTruthy();
+
+      const chainTwoContext = new PactContext({
+        ...env,
+        meta: {
+          chainId: '2',
+        },
+      });
+      const chainTwoContract = CoinContract.create(chainTwoContext);
+      const result = chainTwoContract.continue(proof);
+      expect(result).toBe(true);
+      // alice's account is created in the destination chain and has 1 KDA
+      expect(chainTwoContract.getBalance('alice')).toBe(1);
+    });
+  });
 });
 describe('my-coin', () => {
   describe('transfer', () => {
