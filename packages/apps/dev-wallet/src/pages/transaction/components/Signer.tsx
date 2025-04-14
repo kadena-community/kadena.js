@@ -81,7 +81,7 @@ export const RenderSigner = ({
         {signer.clist &&
           signer.clist.map((cap) => (
             <Stack
-              key={cap.name}
+              key={`${cap.name}${cap.args.toString()}`}
               gap={'sm'}
               justifyContent={'space-between'}
               className={codeClass}
