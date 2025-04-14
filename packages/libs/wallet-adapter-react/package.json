@@ -14,19 +14,20 @@
     "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest"
   },
+  "dependencies": {
+    "@kadena/wallet-adapter-core": "workspace:*",
+    "@microsoft/api-extractor": "^7.43.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "~14.0.0",
+    "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
+  },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "typescript": "5.4.5",
-    "vitest": "^1.6.0",
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
-    "@testing-library/react": "~14.0.0"
-  },
-  "dependencies": {
-    "@kadena/wallet-adapter-core": "workspace:*"
   },
   "authors": [
     "Danillo Felixdaal",

@@ -881,7 +881,7 @@ importers:
         specifier: ^8.16.0
         version: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       zod:
-        specifier: ^3.20.2
+        specifier: ~3.23.0
         version: 3.23.8
     devDependencies:
       '@kadena-dev/eslint-config':
@@ -1655,7 +1655,7 @@ importers:
         specifier: ^17.4.0
         version: 17.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zod:
-        specifier: ^3.20.2
+        specifier: ~3.23.0
         version: 3.23.8
     devDependencies:
       '@kadena-dev/eslint-config':
@@ -1797,7 +1797,7 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
       zod:
-        specifier: ^3.20.2
+        specifier: ~3.23.0
         version: 3.23.8
     devDependencies:
       '@testing-library/jest-dom':
@@ -3558,6 +3558,9 @@ importers:
       '@kadena/wallet-adapter-core':
         specifier: workspace:*
         version: link:../wallet-adapter-core
+      '@microsoft/api-extractor':
+        specifier: ^7.43.1
+        version: 7.47.0(@types/node@22.9.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -3596,8 +3599,8 @@ importers:
         specifier: ~16.8.1
         version: 16.8.2
       valibot:
-        specifier: ^1.0.0
-        version: 1.0.0(typescript@5.4.5)
+        specifier: ^0.42.1
+        version: 0.42.1(typescript@5.4.5)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: 5.0.2
@@ -3879,7 +3882,7 @@ importers:
         specifier: 0.0.3
         version: 0.0.3
       zod:
-        specifier: ^3.20.2
+        specifier: ~3.23.0
         version: 3.23.8
     devDependencies:
       '@kadena-dev/eslint-config':
@@ -4092,7 +4095,7 @@ importers:
         specifier: ~5.0.1
         version: 5.0.7
       zod:
-        specifier: ^3.20.2
+        specifier: ~3.23.0
         version: 3.23.8
     devDependencies:
       '@kadena-dev/eslint-config':
@@ -19239,6 +19242,14 @@ packages:
   v8-to-istanbul@9.3.0:
     resolution: {integrity: sha512-kiGUalWN+rgBJ/1OHZsBtU4rXZOfj/7rKQxULKlIzwzQSvMJUUNgPwJEEh7gU6xEVxC0ahoOBvN2YI8GH6FNgA==}
     engines: {node: '>=10.12.0'}
+
+  valibot@0.42.1:
+    resolution: {integrity: sha512-3keXV29Ar5b//Hqi4MbSdV7lfVp6zuYLZuA9V1PvQUsXqogr+u5lvLPLk3A4f74VUXDnf/JfWMN6sB+koJ/FFw==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   valibot@1.0.0:
     resolution: {integrity: sha512-1Hc0ihzWxBar6NGeZv7fPLY0QuxFMyxwYR2sF1Blu7Wq7EnremwY2W02tit2ij2VJT8HcSkHAQqmFfl77f73Yw==}
@@ -41793,6 +41804,10 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.25
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
+
+  valibot@0.42.1(typescript@5.4.5):
+    optionalDependencies:
+      typescript: 5.4.5
 
   valibot@1.0.0(typescript@5.4.5):
     optionalDependencies:
