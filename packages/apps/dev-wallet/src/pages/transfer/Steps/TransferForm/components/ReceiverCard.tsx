@@ -108,7 +108,7 @@ export const ReceiverCard: FC<IProps> = ({
 
   useEffect(() => {
     if (!error) return;
-    Object.entries(error).map(([_, value]) => {
+    Object.entries(error).map(([, value]) => {
       if (value.startsWith('receivers.')) {
         setShowMore(true);
       }
