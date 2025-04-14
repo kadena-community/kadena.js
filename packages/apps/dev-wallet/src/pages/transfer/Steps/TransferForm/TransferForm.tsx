@@ -467,10 +467,12 @@ export function TransferForm({
         />
 
         <SignOptionsCard
+          control={control}
           hasXChain={hasXChain}
           crossChainMode={crossChainMode}
           setValue={setValue}
           selectedType={getValues('type')}
+          selectedTxType={getValues('xchainMode')}
         />
 
         {showAdvancedOptions ? (

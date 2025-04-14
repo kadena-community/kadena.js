@@ -28,7 +28,7 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { FC, Fragment } from 'react';
+import { FC, Fragment, useEffect } from 'react';
 import {
   Control,
   Controller,
@@ -105,6 +105,15 @@ export const ReceiverCard: FC<IProps> = ({
   error,
 }) => {
   const [, setShowMore, AdvancedMode] = useShow(false);
+
+  useEffect(() => {
+    if (!error) return;
+    Object.entries(error).map(([_, value]) => {
+      if (value.startsWith('receivers.')) {
+        setShowMore(true);
+      }
+    });
+  }, [error]);
 
   return (
     <Card fullWidth>

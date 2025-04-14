@@ -11,15 +11,7 @@ import { TTLSelect } from '@/pages/transfer/Components/TTLSelect';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
 import { MonoLocalGasStation } from '@kadena/kode-icons/system';
-import {
-  Card,
-  Heading,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  TextField,
-} from '@kadena/kode-ui';
+import { Card, Stack, TextField } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { PactNumber } from '@kadena/pactjs';
 import { FC } from 'react';
@@ -65,128 +57,143 @@ export const MetaCard: FC<IProps> = ({
 }) => {
   const [, , AdvancedMode] = useShow(true);
   return (
-    <Card fullWidth>
-      <CardContentBlock
-        title="Fees"
-        level={2}
-        visual={<MonoLocalGasStation width={24} height={24} />}
-      >
-        <Stack flexDirection="column" gap="xxl" marginBlockEnd="xxxl">
-          <AdvancedMode>
-            <Stack flexDirection="column" gap="sm">
-              <Controller
-                name={`gasPayer`}
-                control={control}
-                rules={{
-                  validate: (value) =>
-                    validateAccount()(
-                      value === undefined ? getValues('senderAccount') : value,
-                    ),
-                }}
-                render={({ field, fieldState: { error } }) => {
-                  return (
-                    <Stack flexDirection={'column'}>
-                      <AccountSearchBox
-                        label="Address:"
-                        isSenderAccount
-                        accounts={filteredAccounts}
-                        watchedAccounts={filteredWatchedAccounts}
-                        contacts={contacts}
-                        network={activeNetwork!}
-                        contract={watchFungibleType}
-                        selectedAccount={
-                          field.value === undefined
-                            ? getValues('senderAccount')
-                            : field.value
+    <>
+      <Card fullWidth>
+        <CardContentBlock
+          title="Fees"
+          level={2}
+          visual={<MonoLocalGasStation width={24} height={24} />}
+        >
+          <Stack flexDirection="column" gap="xxl" marginBlockEnd="xxxl">
+            <AdvancedMode>
+              <Stack flexDirection="column" gap="sm">
+                <Controller
+                  name={`gasPayer`}
+                  control={control}
+                  rules={{
+                    validate: (value) =>
+                      validateAccount()(
+                        value === undefined
+                          ? getValues('senderAccount')
+                          : value,
+                      ),
+                  }}
+                  render={({ field, fieldState: { error } }) => {
+                    return (
+                      <Stack flexDirection={'column'}>
+                        <AccountSearchBox
+                          label="Address:"
+                          isSenderAccount
+                          accounts={filteredAccounts}
+                          watchedAccounts={filteredWatchedAccounts}
+                          contacts={contacts}
+                          network={activeNetwork!}
+                          contract={watchFungibleType}
+                          selectedAccount={
+                            field.value === undefined
+                              ? getValues('senderAccount')
+                              : field.value
+                          }
+                          onSelect={withEvaluate((account: any) => {
+                            console.log('gasPayer', account);
+                            field.onChange(account ? { ...account } : null);
+                            forceRender((prev) => prev + 1);
+                          })}
+                          errorMessage={
+                            error?.message || 'Please check the account'
+                          }
+                          isInvalid={!!error}
+                        />
+                      </Stack>
+                    );
+                  }}
+                />
+                <Controller
+                  name="gasPrice"
+                  control={control}
+                  rules={{ required: true, min: 0 }}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      aria-label="Gas Price"
+                      startVisual={<Label>Gas Price:</Label>}
+                      placeholder="Enter gas price"
+                      value={field.value}
+                      onChange={(e) => {
+                        if (!e.target.value) {
+                          field.onChange('');
+                          return;
                         }
-                        onSelect={withEvaluate((account: any) => {
-                          console.log('gasPayer', account);
-                          field.onChange(account ? { ...account } : null);
-                          forceRender((prev) => prev + 1);
-                        })}
-                        errorMessage={
-                          error?.message || 'Please check the account'
+                        try {
+                          const val = new PactNumber(e.target.value);
+                          if (val.lt(0)) {
+                            throw new Error('negative value');
+                          }
+                          const newValue =
+                            val.toString() +
+                            (e.target.value.endsWith('.') ? '.' : '');
+                          field.onChange(newValue);
+                        } catch (e) {
+                          // console.log('error', e);
                         }
-                        isInvalid={!!error}
-                      />
-                    </Stack>
-                  );
-                }}
-              />
-              <Controller
-                name="gasPrice"
-                control={control}
-                rules={{ required: true, min: 0 }}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    aria-label="Gas Price"
-                    startVisual={<Label>Gas Price:</Label>}
-                    placeholder="Enter gas price"
-                    value={field.value}
-                    onChange={(e) => {
-                      if (!e.target.value) {
-                        field.onChange('');
-                        return;
-                      }
-                      try {
-                        const val = new PactNumber(e.target.value);
-                        if (val.lt(0)) {
-                          throw new Error('negative value');
+                        // evaluateTransactions();
+                      }}
+                      onBlur={evaluateTransactions}
+                      size="sm"
+                      defaultValue="0.00000001"
+                      isInvalid={!!error}
+                      errorMessage={'Please enter a valid gas price'}
+                    />
+                  )}
+                />
+                <Controller
+                  name="gasLimit"
+                  control={control}
+                  rules={{ required: true, min: 0 }}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      aria-label="Enter gas limit"
+                      placeholder="Enter gas limit"
+                      startVisual={<Label>Gas Limit:</Label>}
+                      value={field.value}
+                      onChange={(e) => {
+                        if (!e.target.value) {
+                          field.onChange('');
+                          return;
                         }
-                        const newValue =
-                          val.toString() +
-                          (e.target.value.endsWith('.') ? '.' : '');
-                        field.onChange(newValue);
-                      } catch (e) {
-                        // console.log('error', e);
-                      }
-                      // evaluateTransactions();
-                    }}
-                    onBlur={evaluateTransactions}
-                    size="sm"
-                    defaultValue="0.00000001"
-                    isInvalid={!!error}
-                    errorMessage={'Please enter a valid gas price'}
-                  />
-                )}
-              />
-              <Controller
-                name="gasLimit"
-                control={control}
-                rules={{ required: true, min: 0 }}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    aria-label="Enter gas limit"
-                    placeholder="Enter gas limit"
-                    startVisual={<Label>Gas Limit:</Label>}
-                    value={field.value}
-                    onChange={(e) => {
-                      if (!e.target.value) {
-                        field.onChange('');
-                        return;
-                      }
-                      try {
-                        const val = new PactNumber(e.target.value);
-                        if (val.lt(0)) {
-                          throw new Error('negative value');
+                        try {
+                          const val = new PactNumber(e.target.value);
+                          if (val.lt(0)) {
+                            throw new Error('negative value');
+                          }
+                          field.onChange(val.toInteger());
+                        } catch (e) {
+                          // console.log('error', e);
                         }
-                        field.onChange(val.toInteger());
-                      } catch (e) {
-                        // console.log('error', e);
-                      }
-                    }}
-                    onBlur={evaluateTransactions}
-                    size="sm"
-                    defaultValue="2500"
-                    isInvalid={!!error}
-                    errorMessage={'Please enter a valid gas limit'}
-                  />
-                )}
-              />
-            </Stack>
-            <Stack marginBlockStart={'lg'}>
-              <Heading variant="h5">Meta Data</Heading>
-            </Stack>
+                      }}
+                      onBlur={evaluateTransactions}
+                      size="sm"
+                      defaultValue="2500"
+                      isInvalid={!!error}
+                      errorMessage={'Please enter a valid gas limit'}
+                    />
+                  )}
+                />
+              </Stack>
+            </AdvancedMode>
+
+            <Stack
+              gap="sm"
+              flexDirection={'column'}
+              paddingBlockEnd={'xxl'}
+              width="100%"
+              style={{ display: hasXChain ? 'flex' : 'none' }}
+            ></Stack>
+          </Stack>
+        </CardContentBlock>
+      </Card>
+      <Card fullWidth>
+        <CardContentBlock title="Meta Data" level={2}>
+          <Stack flexDirection="column" gap="xxl" marginBlockEnd="xxxl">
             <Controller
               name="creationTime"
               control={control}
@@ -211,67 +218,9 @@ export const MetaCard: FC<IProps> = ({
                 />
               )}
             />
-          </AdvancedMode>
-
-          <Stack
-            gap="sm"
-            flexDirection={'column'}
-            paddingBlockEnd={'xxl'}
-            width="100%"
-            style={{ display: hasXChain ? 'flex' : 'none' }}
-          >
-            <AdvancedMode>
-              <Stack marginBlockStart={'md'} marginBlockEnd={'sm'}>
-                <Heading variant="h5">Transfer options</Heading>
-              </Stack>
-
-              <Controller
-                control={control}
-                name="xchainMode"
-                render={({ field }) => (
-                  <RadioGroup
-                    aria-label="Sign Options"
-                    direction={'column'}
-                    defaultValue={'x-chain'}
-                    value={field.value}
-                    onChange={withEvaluate((value: any) => {
-                      console.log('value', value);
-                      field.onChange(value);
-                      forceRender((prev) => prev + 1);
-                    })}
-                  >
-                    <Radio value="x-chain">
-                      {
-                        (
-                          <Stack alignItems={'center'} gap={'sm'}>
-                            Cross chain transfer
-                            <Text size="small">
-                              Safe transfer doesn't support cross-chain transfer
-                            </Text>
-                          </Stack>
-                        ) as any
-                      }
-                    </Radio>
-
-                    <Radio value="redistribution">
-                      {
-                        (
-                          <Stack alignItems={'center'} gap={'sm'}>
-                            Redistribution
-                            <Text size="small">
-                              Redistribute balance first then do final transfer
-                            </Text>
-                          </Stack>
-                        ) as any
-                      }
-                    </Radio>
-                  </RadioGroup>
-                )}
-              />
-            </AdvancedMode>
           </Stack>
-        </Stack>
-      </CardContentBlock>
-    </Card>
+        </CardContentBlock>
+      </Card>
+    </>
   );
 };

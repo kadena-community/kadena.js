@@ -1,15 +1,23 @@
 import { AssetAction } from '@/Components/Assets/ AssetAction';
 import { actionsWrapperClass } from '@/Components/Assets/style.css';
 import { wrapperClass } from '@/pages/errors/styles.css';
+import { useShow } from '@/utils/useShow';
 import {
   MonoLockOpen,
   MonoRedo,
   MonoSignature,
 } from '@kadena/kode-icons/system';
-import { Button, Card, Heading, Notification, Stack } from '@kadena/kode-ui';
+import {
+  Button,
+  Card,
+  Heading,
+  Notification,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
-import { UseFormSetValue } from 'react-hook-form';
+import { Control, Controller, UseFormSetValue } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
 
 interface IProps {
@@ -17,6 +25,8 @@ interface IProps {
   crossChainMode: 'x-chain' | 'redistribution';
   setValue: UseFormSetValue<ITransfer>;
   selectedType: 'safeTransfer' | 'normalTransfer';
+  selectedTxType: 'x-chain' | 'redistribution';
+  control: Control<ITransfer, any>;
 }
 
 export const SignOptionsCard: FC<IProps> = ({
@@ -24,13 +34,28 @@ export const SignOptionsCard: FC<IProps> = ({
   crossChainMode,
   setValue,
   selectedType,
+  selectedTxType,
+  control,
 }) => {
+  const [, setShowMore, AdvancedMode] = useShow(false);
+
   return (
     <Card fullWidth>
       <CardContentBlock
         level={2}
         title="Signing"
         visual={<MonoSignature width={24} height={24} />}
+        supportingContent={
+          <Stack width="100%" gap="sm">
+            <Button
+              isCompact
+              variant="outlined"
+              onPress={() => setShowMore((v) => !v)}
+            >
+              more Options
+            </Button>
+          </Stack>
+        }
       >
         <Stack
           flexDirection="column"
@@ -54,6 +79,45 @@ export const SignOptionsCard: FC<IProps> = ({
             />
           </Stack>
 
+          <AdvancedMode>
+            <Stack marginBlockStart={'md'} marginBlockEnd={'sm'}>
+              <Heading variant="h5">Transfer options</Heading>
+            </Stack>
+
+            <Controller
+              control={control}
+              name="xchainMode"
+              render={() => (
+                <>
+                  <Stack className={actionsWrapperClass}>
+                    <AssetAction
+                      label="Cross chain transfer"
+                      body={
+                        <Text size="small">
+                          Safe transfer doesn't support cross-chain transfer
+                        </Text>
+                      }
+                      handleClick={() => setValue('xchainMode', 'x-chain')}
+                      isSelected={selectedTxType === 'x-chain'}
+                    />
+                    <AssetAction
+                      label="Redistribution"
+                      body={
+                        <Text size="small">
+                          Redistribute balance first then do final transfer
+                        </Text>
+                      }
+                      handleClick={() =>
+                        setValue('xchainMode', 'redistribution')
+                      }
+                      isSelected={selectedTxType === 'redistribution'}
+                    />
+                  </Stack>
+                </>
+              )}
+            />
+          </AdvancedMode>
+
           {hasXChain &&
             crossChainMode === 'x-chain' &&
             selectedType === 'safeTransfer' && (
@@ -66,6 +130,7 @@ export const SignOptionsCard: FC<IProps> = ({
                     isCompact
                     variant="outlined"
                     onClick={() => {
+                      setShowMore(true);
                       setValue('xchainMode', 'redistribution');
                     }}
                   >
