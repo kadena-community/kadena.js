@@ -1,5 +1,6 @@
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ComboField } from '@/Components/ComboField/ComboField';
+import { KeySelector } from '@/Components/Guard/KeySelector';
 import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
@@ -9,24 +10,21 @@ import {
   IWatchedAccount,
 } from '@/modules/account/account.repository';
 import { hasSameGuard } from '@/modules/account/account.service';
+import { isKeysetGuard } from '@/modules/account/guards';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { withRaceGuard } from '@/utils/promise-utils';
 import { debounce } from '@/utils/session';
 import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
-import { useEffect, useRef, useState } from 'react';
-
-import { KeySelector } from '@/Components/Guard/KeySelector';
-import { isKeysetGuard } from '@/modules/account/guards';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { PactNumber } from '@kadena/pactjs';
+import { useEffect, useRef, useState } from 'react';
 import { Guard } from '../../../Components/Guard/Guard';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
 import { discoverReceiver, needToSelectKeys } from '../utils';
 import { AccountItem } from './AccountItem';
-import { Label } from './Label';
 import { createAccountBoxClass, popoverClass } from './style.css';
 
 const discover = withRaceGuard(debounce(discoverReceiver, 500));
@@ -44,6 +42,7 @@ export function AccountSearchBox({
   errorMessage,
   isInvalid,
   hideKeySelector,
+  label,
 }: {
   accounts?: IOwnedAccount[];
   contacts?: IContact[];
@@ -57,6 +56,7 @@ export function AccountSearchBox({
   errorMessage?: string;
   isInvalid?: boolean;
   hideKeySelector?: boolean;
+  label: string;
 }) {
   const prompt = usePrompt();
   const [showDisabled, setShowDisabled] = useState(false);
@@ -72,8 +72,9 @@ export function AccountSearchBox({
   const asset = fungibles.find((f) => f.contract === contract);
 
   useEffect(() => {
-    if (selectedAccount) {
-      setValue(selectedAccount.address);
+    setValue(selectedAccount?.address ?? '');
+    if (!selectedAccount) {
+      setDiscoveredAccounts([]);
     }
   }, [selectedAccount]);
 
@@ -99,7 +100,7 @@ export function AccountSearchBox({
     return false;
   };
 
-  function onSelectHandel(account?: IRetrievedAccount) {
+  function onSelectHandle(account?: IRetrievedAccount) {
     if (isDisabledAccount(account)) return;
 
     onSelect(account);
@@ -209,10 +210,10 @@ export function AccountSearchBox({
   ) {
     if (accounts.length === 1) {
       const account = accounts[0];
-      onSelectHandel(account);
+      onSelectHandle(account);
     }
     if (accounts.length === 0) {
-      onSelectHandel(undefined);
+      onSelectHandle(undefined);
     }
     if (accounts.length > 1 && selectedAccount) {
       const result = accounts.find((account) => {
@@ -220,7 +221,7 @@ export function AccountSearchBox({
           hasSameGuard(selectedAccount.guard, account.guard);
       });
       if (!result) {
-        onSelectHandel(undefined);
+        onSelectHandle(undefined);
       }
     }
   }
@@ -256,9 +257,9 @@ export function AccountSearchBox({
   return (
     <Stack flexDirection={'column'}>
       <ComboField
-        aria-label="Receiver Address"
+        label={label}
+        aria-label={label}
         placeholder="Select or Enter an address"
-        startVisual={<Label>Address:</Label>}
         description={getDescription()}
         type="text"
         size="sm"
@@ -275,7 +276,7 @@ export function AccountSearchBox({
               isCompact
               onClick={() => {
                 setValue('');
-                onSelectHandel(undefined);
+                onSelectHandle(undefined);
               }}
             >
               <Text size="smallest">
@@ -323,9 +324,10 @@ export function AccountSearchBox({
             .filter((account) => showDisabled || !isDisabledAccount(account))
             .map((account) => (
               <ButtonItem
+                key={account?.address}
                 disabled={isDisabledAccount(account)}
                 onClick={() => {
-                  onSelectHandel({
+                  onSelectHandle({
                     address: account.address,
                     alias: account.alias,
                     overallBalance: account.overallBalance,
@@ -360,9 +362,10 @@ export function AccountSearchBox({
             .filter((account) => showDisabled || !isDisabledAccount(account))
             .map((account) => (
               <ButtonItem
+                key={account?.address}
                 disabled={isDisabledAccount(account)}
                 onClick={() => {
-                  onSelectHandel({
+                  onSelectHandle({
                     address: account.address,
                     alias: account.alias,
                     overallBalance: account.overallBalance,
@@ -399,9 +402,10 @@ export function AccountSearchBox({
             .filter(() => showDisabled || !isSenderAccount)
             .map((account) => (
               <ButtonItem
+                key={account?.account?.address}
                 disabled={isSenderAccount}
                 onClick={() => {
-                  onSelectHandel({
+                  onSelectHandle({
                     address: account.account.address,
                     alias: account.name,
                     overallBalance: '0',
@@ -433,8 +437,9 @@ export function AccountSearchBox({
 
           const discoverdAccountsElement = discoverdAccount?.map((account) => (
             <ButtonItem
+              key={account?.address}
               onClick={() => {
-                onSelectHandel(account);
+                onSelectHandle(account);
                 close();
               }}
             >
@@ -488,7 +493,7 @@ export function AccountSearchBox({
                       <KeySetForm close={reject} onChange={resolve} isOpen />
                     ))) as IGuard;
                     if (guard) {
-                      onSelectHandel({
+                      onSelectHandle({
                         address: value,
                         guard: guard,
                         chains: [],
@@ -588,7 +593,7 @@ export function AccountSearchBox({
                 guard={selectedAccount.guard}
                 selectedKeys={selectedAccount.keysToSignWith ?? []}
                 onSelect={(keys) => {
-                  onSelectHandel({
+                  onSelectHandle({
                     ...selectedAccount,
                     keysToSignWith: keys,
                   });
