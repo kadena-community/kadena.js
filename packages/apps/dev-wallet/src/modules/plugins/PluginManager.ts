@@ -21,7 +21,7 @@ export class PluginManager {
     const domElement = document.getElementById(this.containerId);
     if (!domElement) {
       this._pluginsContainer = document.createElement('div');
-      this._pluginsContainer.style.display = 'content';
+      this._pluginsContainer.style.display = 'contents';
       this._pluginsContainer.id = this.containerId;
       document.body.appendChild(this.pluginsContainer);
     } else {
@@ -71,8 +71,10 @@ export class PluginManager {
     if (!plugin) {
       throw new Error(`Plugin with id ${id} does not exist`);
     }
-    if(!plugin.config.permissions.includes('MODE:FOREGROUND')) {
-      throw new Error(`Plugin with id ${id} does not have foreground permission`);
+    if (!plugin.config.permissions.includes('MODE:FOREGROUND')) {
+      throw new Error(
+        `Plugin with id ${id} does not have foreground permission`,
+      );
     }
     const updatePosition = () => {
       const wrapperRect = wrapper.getBoundingClientRect();
@@ -85,17 +87,8 @@ export class PluginManager {
       const iframeHeight = wrapperRect.height || 400; // Default height
 
       // Ensure the iframe appears within the wrapper's boundaries
-      let left = Math.max(wrapperRect.left + pageXOffset, 0);
-      let top = Math.max(wrapperRect.top + pageYOffset, 0);
-
-      // Adjust position to keep it within the viewport
-      const maxRight = window.innerWidth - iframeWidth;
-      const maxBottom = window.innerHeight - iframeHeight;
-
-      left = Math.min(left, maxRight);
-      top = Math.min(top, maxBottom);
-
-      console.log({ left, top, wrapperRect });
+      const left = Math.max(wrapperRect.left + pageXOffset, 0);
+      const top = Math.max(wrapperRect.top + pageYOffset, 0);
 
       iframe.style.width = `${iframeWidth}px`;
       iframe.style.height = `${iframeHeight}px`;
@@ -113,6 +106,10 @@ export class PluginManager {
     // Observe DOM changes (e.g., layout shifts)
     const mutationObserver = new MutationObserver(updatePosition);
     mutationObserver.observe(wrapper, { attributes: true, subtree: true });
+    mutationObserver.observe(document.body, {
+      attributes: true,
+      subtree: true,
+    });
 
     plugin.disconnect = () => {
       resizeObserver.disconnect();
@@ -128,7 +125,7 @@ export class PluginManager {
     if (!plugin) {
       throw new Error(`Plugin with id ${id} does not exist`);
     }
-    if(!plugin.config.permissions.includes('MODE:BACKGROUND')) {
+    if (!plugin.config.permissions.includes('MODE:BACKGROUND')) {
       // If the plugin does not have BACKGROUND permission, remove it
       return this.removePlugin(id);
     }
