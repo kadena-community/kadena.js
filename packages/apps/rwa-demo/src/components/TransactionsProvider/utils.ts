@@ -16,8 +16,7 @@ export interface IState {
   accounts: IWalletAccount[];
 }
 
-const walletOrigin = () =>
-  (window as any).walletUrl || 'https://wallet.kadena.io';
+const walletOrigin = () => (window as any).walletUrl || 'http://localhost:1420';
 const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';

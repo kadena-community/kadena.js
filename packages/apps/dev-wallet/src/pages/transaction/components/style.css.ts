@@ -1,5 +1,5 @@
 import { tokens, vars } from '@kadena/kode-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const footerClass = style({
   paddingBlockStart: '10px',
@@ -16,11 +16,15 @@ export const cardClass = style({
 });
 
 export const codeClass = style({
-  padding: '10px',
-  borderRadius: '3px',
-  backgroundColor: tokens.kda.foundation.color.neutral.n10,
+  display: 'flex',
   flex: '1',
-  flexBasis: 0,
+  overflow: 'auto',
+  wordBreak: 'break-all',
+  width: '100%',
+});
+
+globalStyle(`${codeClass} > pre`, {
+  textWrap: 'wrap',
 });
 
 export const labelClass = style({

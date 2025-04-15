@@ -1,10 +1,12 @@
-import { ICommand, IUnsignedCommand } from '@kadena/client';
+import { ICommand, IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   Button,
+  Card,
   ContextMenu,
   ContextMenuItem,
   DialogContent,
   DialogHeader,
+  Divider,
   Heading,
   Notification,
   Stack,
@@ -14,25 +16,36 @@ import {
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
 
-import { codeClass, txDetailsClass, txExpandedWrapper } from './style.css.ts';
+import {
+  codeClass,
+  txDetailsClass,
+  txExpandedWrapper,
+} from './../style.css.ts';
 
-import { CopyButton } from '@/Components/CopyButton/CopyButton.tsx';
-import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
-import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
-import { panelClass } from '@/pages/home/style.css.ts';
+import { CopyButton } from '@/Components/CopyButton/CopyButton';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { panelClass } from '@/pages/home/style.css';
 
+import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary.tsx';
 import { shorten } from '@/utils/helpers.ts';
-import { normalizeTx } from '@/utils/normalizeSigs.ts';
+import { normalizeTx } from '@/utils/normalizeSigs';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
   MonoContentCopy,
   MonoMoreVert,
   MonoShare,
+  MonoTroubleshoot,
 } from '@kadena/kode-icons/system';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
+import { token } from '@kadena/kode-ui/styles';
+import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
-import { CommandView } from './CommandView.tsx';
-import { statusPassed, TxPipeLine } from './TxPipeLine.tsx';
+import { useEffect, useMemo, useState } from 'react';
+import { CodeView } from '../code-components/CodeView.tsx';
+import { RenderSigner } from '../Signer.tsx';
+import { CommandView } from './../CommandView';
+import { statusPassed, TxPipeLine } from './../TxPipeLine';
 
 export function ExpandedTransaction({
   transaction,
@@ -53,8 +66,9 @@ export function ExpandedTransaction({
   showTitle?: boolean;
   isDialog?: boolean;
 }) {
-  const { sign } = useWallet();
+  const { getPublicKeyData, sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
+  const [showCommandDetails, setShowCommandDetails] = useState(false);
 
   const copyTransactionAs =
     (format: 'json' | 'yaml', legacySig = false) =>
@@ -107,6 +121,30 @@ export function ExpandedTransaction({
     }
   }, [activeTabs.length]);
 
+  const command: IPactCommand = useMemo(
+    () => JSON.parse(transaction.cmd),
+    [transaction.cmd],
+  );
+
+  const parsedCode = useMemo(() => {
+    if ('exec' in command.payload) {
+      return execCodeParser(command.payload.exec.code);
+    }
+    return [];
+  }, [command.payload]);
+
+  const signers = useMemo(
+    () =>
+      command.signers.map((signer) => {
+        const info = getPublicKeyData(signer.pubKey);
+        return {
+          ...signer,
+          info,
+        };
+      }),
+    [command, getPublicKeyData],
+  );
+
   return (
     <>
       <Title>
@@ -116,33 +154,31 @@ export function ExpandedTransaction({
       </Title>
       <Content>
         <Stack gap={'lg'} width="100%" className={txExpandedWrapper}>
-          <Stack
-            gap={'lg'}
-            flexDirection={'column'}
-            style={{
-              minWidth: '260px',
-            }}
-            className={panelClass}
-          >
-            <Stack justifyContent={'space-between'} alignItems={'center'}>
-              <Heading variant="h6">Tx Status</Heading>
-            </Stack>
-            <TxPipeLine
-              tx={transaction}
-              contTx={contTx}
-              variant={'expanded'}
-              signAll={signAll}
-              onSubmit={onSubmit}
-              onPreflight={onPreflight}
-              sendDisabled={sendDisabled}
-            />
-          </Stack>
-          <Stack
-            flex={1}
-            gap={'xxl'}
-            flexDirection={'column'}
-            className={classNames(panelClass, txDetailsClass)}
-          >
+          <Card fullWidth>
+            <CardContentBlock title="Transaction">
+              <ErrorBoundary>
+                <CodeView codes={parsedCode} command={command} />
+              </ErrorBoundary>
+            </CardContentBlock>
+          </Card>
+          <Card fullWidth>
+            <CardContentBlock
+              title="In the queue"
+              visual={<MonoTroubleshoot />}
+            >
+              <TxPipeLine
+                tx={transaction}
+                contTx={contTx}
+                variant={'expanded'}
+                signAll={signAll}
+                onSubmit={onSubmit}
+                onPreflight={onPreflight}
+                sendDisabled={sendDisabled}
+              />
+            </CardContentBlock>
+          </Card>
+
+          <Stack flex={1} gap={'xxl'} flexDirection={'column'}>
             {statusPassed(transaction.status, 'success') &&
               (!transaction.continuation?.autoContinue ||
                 (contTx && statusPassed(contTx.status, 'success'))) && (
@@ -161,15 +197,24 @@ export function ExpandedTransaction({
                   </Notification>
                 </Stack>
               )}
-            <Tabs
-              isContained
-              selectedKey={selectedTab}
-              onSelectionChange={(key) => {
-                console.log('key', key);
-                setSelectedTab(key as any);
-              }}
-            >
-              <TabItem key="command-details" title="Command Details">
+
+            {signers.map((signer) => (
+              <RenderSigner
+                key={signer.pubKey}
+                transaction={transaction}
+                signer={signer}
+                transactionStatus={transaction.status}
+                onSign={onSign}
+              />
+            ))}
+
+            {showCommandDetails && (
+              <>
+                <Divider
+                  label="Command details"
+                  bgColor={token('color.neutral.n1')}
+                />
+
                 <Stack gap={'sm'} flexDirection={'column'}>
                   <Stack justifyContent={'space-between'}>
                     <Heading variant="h4">Command Details</Heading>
@@ -238,73 +283,70 @@ export function ExpandedTransaction({
                   </Stack>
                   <CommandView transaction={transaction} onSign={onSign} />
                 </Stack>
-              </TabItem>
+              </>
+            )}
 
-              {transaction.preflight &&
-                ((
-                  <TabItem key="preflight" title="Preflight Result">
-                    <JsonView
-                      title="Preflight Result"
-                      data={transaction.preflight}
-                    />
-                  </TabItem>
-                ) as any)}
-
-              {transaction.request && (
-                <TabItem key="request" title="Request">
-                  <JsonView title="Request" data={transaction.request} />
-                </TabItem>
-              )}
-              {'result' in transaction && transaction.result && (
-                <TabItem key="result" title="Result">
-                  <JsonView title="Result" data={transaction.result} />
-                </TabItem>
-              )}
-              {transaction.continuation?.proof && (
-                <TabItem key="spv" title="SPV Proof">
-                  <JsonView
-                    title="Result"
-                    data={transaction.continuation?.proof}
-                    shortening={40}
-                  />
-                </TabItem>
-              )}
-              {contTx && [
-                <TabItem
-                  key="cont-command-details"
-                  title="cont: Command Details"
+            <Stack>
+              <Button variant="outlined" onPress={() => {}}>
+                Abort
+              </Button>
+              <Stack justifyContent="flex-end" flex={1} gap="sm">
+                <Button
+                  variant="outlined"
+                  onPress={() => setShowCommandDetails((v) => !v)}
                 >
-                  <Stack gap={'sm'} flexDirection={'column'}>
-                    <Heading variant="h4">Command Details</Heading>
-                    <CommandView transaction={contTx} onSign={onSign} />
-                  </Stack>
-                </TabItem>,
-                contTx.preflight && (
-                  <TabItem key="cont-preflight" title="cont: Preflight Result">
-                    <JsonView
-                      title="Continuation Preflight Result"
-                      data={contTx.preflight}
-                    />
-                  </TabItem>
-                ),
-                contTx.request && (
-                  <TabItem key="cont-request" title="cont: Request">
-                    <JsonView
-                      title="Continuation Request"
-                      data={contTx.request}
-                    />
-                  </TabItem>
-                ),
-                'result' in contTx && contTx.result && (
-                  <TabItem key="cont-result" title="cont: Result">
-                    <JsonView
-                      title="Continuation Result"
-                      data={contTx.result}
-                    />
-                  </TabItem>
-                ),
-              ]}
-            </Tabs>
+                  {showCommandDetails
+                    ? 'Hide Command details'
+                    : 'Show Command details'}
+                </Button>
+                <Button
+                  isDisabled={!statusPassed(transaction.status, 'signed')}
+                  type="submit"
+                >
+                  Send Transaction
+                </Button>
+              </Stack>
+            </Stack>
+
+            {transaction.preflight &&
+              ((
+                <JsonView
+                  title="Preflight Result"
+                  data={transaction.preflight}
+                />
+              ) as any)}
+
+            {transaction.request && (
+              <JsonView title="Request" data={transaction.request} />
+            )}
+            {'result' in transaction && transaction.result && (
+              <JsonView title="Result" data={transaction.result} />
+            )}
+            {transaction.continuation?.proof && (
+              <JsonView
+                title="Result"
+                data={transaction.continuation?.proof}
+                shortening={40}
+              />
+            )}
+            {contTx && [
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Heading variant="h4">Command Details</Heading>
+                <CommandView transaction={contTx} onSign={onSign} />
+              </Stack>,
+              contTx.preflight && (
+                <JsonView
+                  title="Continuation Preflight Result"
+                  data={contTx.preflight}
+                />
+              ),
+              contTx.request && (
+                <JsonView title="Continuation Request" data={contTx.request} />
+              ),
+              'result' in contTx && contTx.result && (
+                <JsonView title="Continuation Result" data={contTx.result} />
+              ),
+            ]}
           </Stack>
         </Stack>
       </Content>

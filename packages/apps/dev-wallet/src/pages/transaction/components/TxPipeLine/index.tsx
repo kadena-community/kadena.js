@@ -1,3 +1,4 @@
+import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import {
   ITransaction,
   TransactionStatus,
@@ -12,6 +13,7 @@ import {
   MonoCheck,
   MonoClose,
   MonoCloudSync,
+  MonoFactCheck,
   MonoLoading,
   MonoPauseCircle,
   MonoRefresh,
@@ -19,9 +21,10 @@ import {
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
-import { Button, Notification, Stack, Text } from '@kadena/kode-ui';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
-import { failureClass, pendingClass, successClass } from './style.css';
+import { failureClass, pendingClass, successClass } from './../style.css';
+import { iconSuccessClass, statusListWrapperClass } from './style.css';
 
 export const steps: TransactionStatus[] = [
   'initiated',
@@ -37,6 +40,14 @@ export const statusPassed = (
   txStatus: ITransaction['status'],
   status: ITransaction['status'],
 ) => steps.indexOf(txStatus) >= steps.indexOf(status);
+
+export const statusPassedWithoutFailure = (
+  txStatus: ITransaction['status'],
+  status: ITransaction['status'],
+): 'failure' | 'success' | 'active' => {
+  if (txStatus === 'failure') return 'failure';
+  return statusPassed(txStatus, status) ? 'success' : 'active';
+};
 
 export const getStatusClass = (status: ITransaction['status']) => {
   if (statusPassed(status, 'success')) return successClass;
@@ -64,7 +75,7 @@ export function TxPipeLine({
 }) {
   const showAfterCont = !contTx || variant === 'expanded';
   return (
-    <Stack flexDirection={'column'} gap={'md'}>
+    <Stack width="100%" flexDirection={'column'} gap={'md'}>
       <TxStatusList
         {...{
           variant,
@@ -127,11 +138,11 @@ function TxStatusList({
 
   const statusList = [
     variant !== 'minimized' && (
-      <Stack justifyContent={'space-between'}>
-        <Text>
-          {tx.continuation?.autoContinue ? 'exec' : 'hash'}:{' '}
+      <Stack alignItems="center" gap="sm">
+        <Text id="hash" variant="code">
           {shorten(tx.hash, 6)}
         </Text>
+        <CopyButton data={tx.hash} />
       </Stack>
     ),
     showAfterCont &&
@@ -473,5 +484,16 @@ function TxStatusList({
     .filter(Boolean);
 
   if (variant === 'minimized') return statusList.pop() as JSX.Element;
-  return <>{statusList}</>;
+  return (
+    <>
+      <Heading variant="h6">Status</Heading>
+      <Stack className={statusListWrapperClass} gap="sm" width="100%">
+        <Stack gap="sm" className={iconSuccessClass}>
+          <MonoFactCheck width={16} height={16} />
+          <Text>Transaction is ready</Text>
+        </Stack>
+        {statusList}
+      </Stack>
+    </>
+  );
 }

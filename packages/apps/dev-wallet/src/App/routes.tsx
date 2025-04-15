@@ -100,6 +100,11 @@ export const Routes: FC = () => {
         >
           <Route element={<FocussedPageLayout />}>
             <Route path="/transfer" element={<Transfer />} />
+
+            <Route
+              path="/sign-request/:requestId"
+              element={<SignRequestPage />}
+            />
           </Route>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
@@ -138,10 +143,6 @@ export const Routes: FC = () => {
             >
               <Route path="/plugins" element={<Plugins />} />
             </Route>
-            <Route
-              path="/sign-request/:requestId"
-              element={<SignRequestPage />}
-            />
           </Route>
         </Route>
         <Route element={<LandingPageLayout />}>
@@ -159,12 +160,23 @@ export const Routes: FC = () => {
             path="/unlock-profile/:profileId"
             element={<UnlockProfile origin={origin} />}
           />
+
           <Route
-            path="/settings/change-password"
-            element={<ChangePassword />}
-          />
+            element={
+              <Redirect
+                if={isLocked}
+                to="/select-profile"
+                setOrigin={setOrigin}
+              />
+            }
+          >
+            <Route
+              path="/settings/change-password"
+              element={<ChangePassword />}
+            />
+            <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
+          </Route>
           <Route path="/ready" element={<Ready />} />
-          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
