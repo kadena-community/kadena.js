@@ -4,8 +4,8 @@ import {
   RequestType,
 } from '@/modules/communication/communication.provider';
 import { ReactNode, useMemo, useState } from 'react';
-import { ConnectionRequest } from '../../pages/plugins/components/ConnectionRequest';
-import { SignRequestDialog } from '../../pages/plugins/components/SignRequestDialog';
+import { ConnectionRequest } from './components/ConnectionRequest';
+import { SignRequestDialog } from './components/SignRequestDialog';
 import { Permission, Plugin } from './type';
 
 const messageHandle =

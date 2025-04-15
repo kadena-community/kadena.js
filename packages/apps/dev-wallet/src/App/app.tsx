@@ -12,7 +12,6 @@ import { SessionProvider } from './providers/session';
 import { Routes } from './routes';
 
 import { PluginProvider } from '@/modules/plugins/plugin.provider';
-import '../modules/plugins/PluginManager';
 
 function Providers({ children }: { children: React.ReactNode }) {
   useTheme();

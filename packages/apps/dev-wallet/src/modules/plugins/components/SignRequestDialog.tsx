@@ -2,7 +2,7 @@ import { SignRequest } from '@/pages/transaction/sign-request';
 import { Dialog, DialogContent, DialogHeader } from '@kadena/kode-ui';
 
 import { useState } from 'react';
-import { Plugin } from '../../../modules/plugins/type';
+import { Plugin } from '../type';
 
 export function SignRequestDialog({
   requestId,
