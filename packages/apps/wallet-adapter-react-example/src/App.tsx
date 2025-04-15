@@ -1,29 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useKadenaWallet } from "@kadena/wallet-adapter-react";
-import { createTransferCmd } from "./transferCmd";
-import { createTransferTx } from "./transferTx";
-import type {
-  Adapter,
-  AccountInfo,
-  NetworkInfo,
-  IUnsignedCommand,
-} from "@kadena/wallet-adapter-core";
+import { MonoWallet } from '@kadena/kode-icons';
 import {
+  Button,
   Card,
   ContentHeader,
-  Stack,
-  Select,
-  SelectItem,
-  TextField,
-  Button,
   Divider,
   Heading,
+  Select,
+  SelectItem,
+  Stack,
   Text,
-} from "@kadena/kode-ui";
-import { MonoWallet } from "@kadena/kode-icons";
-import { validateRpcResponse } from "./zodValidation";
+  TextField,
+} from '@kadena/kode-ui';
+import type {
+  AccountInfo,
+  Adapter,
+  IUnsignedCommand,
+  NetworkInfo,
+} from '@kadena/wallet-adapter-core';
+import { useKadenaWallet } from '@kadena/wallet-adapter-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createTransferCmd } from './transferCmd';
+import { createTransferTx } from './transferTx';
+import { validateRpcResponse } from './zodValidation';
 
-import "./styles.css";
+import './styles.css';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -35,7 +35,7 @@ const App = () => {
   const [activeAccount, setActiveAccount] = useState<AccountInfo | null>(null);
   const [network, setNetwork] = useState<NetworkInfo | null>(null);
   const [loading, setLoading] = useState(false);
-  const [accountTo, setAccountTo] = useState<string>("");
+  const [accountTo, setAccountTo] = useState<string>('');
   const [rpcResponse, setRpcResponse] = useState<any>(null);
 
   const [validationResult, setValidationResult] = useState<{
@@ -45,9 +45,9 @@ const App = () => {
     note?: string;
   } | null>(null);
 
-  const [changeNetworkId, setChangeNetworkId] = useState("mainnet01");
-  const [signCommandPayload, setSignCommandPayload] = useState("");
-  const [signTxPayload, setSignTxPayload] = useState("");
+  const [changeNetworkId, setChangeNetworkId] = useState('mainnet01');
+  const [signCommandPayload, setSignCommandPayload] = useState('');
+  const [signTxPayload, setSignTxPayload] = useState('');
 
   /**
    * Helper to set RPC response and run Zod validation
@@ -57,7 +57,7 @@ const App = () => {
     const result = validateRpcResponse(methodName, resp);
     setValidationResult(result);
     // scroll to response area
-    rpcResponseRef.current?.scrollIntoView({ behavior: "smooth" });
+    rpcResponseRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   /**
@@ -65,7 +65,7 @@ const App = () => {
    */
   const handleConnect = async () => {
     if (!selectedWallet) {
-      console.error("No wallet selected");
+      console.error('No wallet selected');
       return;
     }
 
@@ -73,11 +73,11 @@ const App = () => {
     try {
       const accountInfo = await client.connect(
         selectedWallet.name,
-        selectedWallet.name == "Chainweaver"
+        selectedWallet.name === 'Chainweaver'
           ? {
-              accountName: prompt("Input your account"),
-              tokenContract: "coin",
-              chainIds: ["0", "1"],
+              accountName: prompt('Input your account'),
+              tokenContract: 'coin',
+              chainIds: ['0', '1'],
             }
           : undefined,
       );
@@ -86,13 +86,18 @@ const App = () => {
       const networkInfo = await client.getActiveNetwork(selectedWallet.name);
       setNetwork(networkInfo);
 
-      console.log("Connected to", selectedWallet.name, "->", accountInfo?.accountName);
+      console.log(
+        'Connected to',
+        selectedWallet.name,
+        '->',
+        accountInfo?.accountName,
+      );
 
       setTimeout(() => {
-        activeAccountRef.current?.scrollIntoView({ behavior: "smooth" });
+        activeAccountRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 0);
     } catch (error) {
-      console.error("Connect error:", error);
+      console.error('Connect error:', error);
     } finally {
       setLoading(false);
     }
@@ -103,7 +108,7 @@ const App = () => {
    */
   const handleDisconnect = async () => {
     if (!selectedWallet) {
-      console.error("No wallet selected");
+      console.error('No wallet selected');
       return;
     }
 
@@ -114,9 +119,9 @@ const App = () => {
       setNetwork(null);
       setRpcResponse(null);
       setValidationResult(null);
-      console.log("Disconnected from", selectedWallet.name);
+      console.log('Disconnected from', selectedWallet.name);
     } catch (error) {
-      console.error("Disconnect error:", error);
+      console.error('Disconnect error:', error);
     } finally {
       setLoading(false);
     }
@@ -130,7 +135,7 @@ const App = () => {
     if (!selectedWallet) return;
     try {
       const resp = await client.getActiveAccount(selectedWallet.name);
-      validateAndSetRpcResponse("kadena_getAccount_v1", resp);
+      validateAndSetRpcResponse('kadena_getAccount_v1', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -141,7 +146,7 @@ const App = () => {
     if (!selectedWallet) return;
     try {
       const resp = await client.getAccounts(selectedWallet.name);
-      validateAndSetRpcResponse("kadena_getAccounts_v2", resp);
+      validateAndSetRpcResponse('kadena_getAccounts_v2', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -152,7 +157,7 @@ const App = () => {
     if (!selectedWallet) return;
     try {
       const resp = await client.getActiveNetwork(selectedWallet.name);
-      validateAndSetRpcResponse("kadena_getNetwork_v1", resp);
+      validateAndSetRpcResponse('kadena_getNetwork_v1', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -163,7 +168,7 @@ const App = () => {
     if (!selectedWallet) return;
     try {
       const resp = await client.getNetworks(selectedWallet.name);
-      validateAndSetRpcResponse("kadena_getNetworks_v1", resp);
+      validateAndSetRpcResponse('kadena_getNetworks_v1', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -178,7 +183,7 @@ const App = () => {
         ...command,
       };
       const resp = await client.signCommand(selectedWallet.name, cmd);
-      validateAndSetRpcResponse("kadena_signCommand", resp);
+      validateAndSetRpcResponse('kadena_signCommand', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -193,7 +198,7 @@ const App = () => {
         ...transaction,
       };
       const resp = await client.signTransaction(selectedWallet.name, tx);
-      validateAndSetRpcResponse("kadena_signTransaction", resp);
+      validateAndSetRpcResponse('kadena_signTransaction', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -207,7 +212,7 @@ const App = () => {
         networkName: changeNetworkId,
         networkId: changeNetworkId,
       });
-      validateAndSetRpcResponse("kadena_changeNetwork_v1", resp);
+      validateAndSetRpcResponse('kadena_changeNetwork_v1', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -222,12 +227,12 @@ const App = () => {
 
     if (client.isDetected(selectedWallet.name)) {
       client.onAccountChange(selectedWallet.name, (newAccount) => {
-        console.log("Account changed:", newAccount);
+        console.log('Account changed:', newAccount);
         setActiveAccount(newAccount);
       });
 
       client.onNetworkChange(selectedWallet.name, (newNetwork) => {
-        console.log("Network changed:", newNetwork);
+        console.log('Network changed:', newNetwork);
         setNetwork(newNetwork);
       });
     }
@@ -252,16 +257,22 @@ const App = () => {
           <Heading as="h3">Select Wallet</Heading>
           <Select
             aria-label="Wallet list"
-            selectedKey={selectedWallet?.name ?? "placeholder"}
-            onSelectionChange={(key) => setSelectedWallet(client.getAdapter(key as string) ?? null)}
+            selectedKey={selectedWallet?.name ?? 'placeholder'}
+            onSelectionChange={(key) =>
+              setSelectedWallet(client.getAdapter(key as string) ?? null)
+            }
           >
             {[
               <SelectItem key="placeholder" textValue="Placeholder">
                 -- select an option --
               </SelectItem>,
               ...providerData.map((providerData) => (
-                <SelectItem key={providerData.name} textValue={providerData.name}>
-                  {providerData.name} {providerData.detected ? "(Detected)" : "(Not found)"}
+                <SelectItem
+                  key={providerData.name}
+                  textValue={providerData.name}
+                >
+                  {providerData.name}{' '}
+                  {providerData.detected ? '(Detected)' : '(Not found)'}
                 </SelectItem>
               )),
             ]}
@@ -274,23 +285,26 @@ const App = () => {
             onPress={handleConnect}
             isDisabled={loading || !selectedWallet || !!activeAccount}
           >
-            {loading ? "Connecting..." : "Connect Wallet"}
+            {loading ? 'Connecting...' : 'Connect Wallet'}
           </Button>
           <Button
             onPress={handleDisconnect}
             isDisabled={loading || !selectedWallet || !activeAccount}
           >
-            {loading ? "Disconnecting..." : "Disconnect"}
+            {loading ? 'Disconnecting...' : 'Disconnect'}
           </Button>
         </Stack>
 
         {/* Display Active Account info */}
         {activeAccount && (
-          <div ref={activeAccountRef} style={{ width: "100%" }}>
+          <div ref={activeAccountRef} style={{ width: '100%' }}>
             <Stack flexDirection="column" gap="xs">
               <Heading as="h3">Active Account</Heading>
               <Text variant="body" as="code">
-                <pre className="wrap" style={{ background: "#f4f4f4", padding: "1rem" }}>
+                <pre
+                  className="wrap"
+                  style={{ background: '#f4f4f4', padding: '1rem' }}
+                >
                   {JSON.stringify(activeAccount, null, 2)}
                 </pre>
               </Text>
@@ -303,7 +317,10 @@ const App = () => {
           <Stack flexDirection="column" gap="xs">
             <Heading as="h3">Active Network</Heading>
             <Text variant="body" as="code">
-              <pre className="wrap" style={{ background: "#f4f4f4", padding: "1rem" }}>
+              <pre
+                className="wrap"
+                style={{ background: '#f4f4f4', padding: '1rem' }}
+              >
                 {JSON.stringify(network, null, 2)}
               </pre>
             </Text>
@@ -315,27 +332,31 @@ const App = () => {
 
       <Stack flexDirection="column" gap="md" padding="lg" flexWrap="wrap">
         <Heading as="h3">RPC Response</Heading>
-        <div ref={rpcResponseRef} style={{ width: "100%" }}>
+        <div ref={rpcResponseRef} style={{ width: '100%' }}>
           {rpcResponse && (
             <Stack flexDirection="column" gap="xs">
               <Text variant="body" as="code">
                 <pre
                   className="wrap"
                   style={{
-                    background: "#f4f4f4",
-                    padding: "1rem",
-                    whiteSpace: "pre-wrap",
+                    background: '#f4f4f4',
+                    padding: '1rem',
+                    whiteSpace: 'pre-wrap',
                   }}
                 >
                   {JSON.stringify(rpcResponse, null, 2)}
 
-                  {"\n"}
+                  {'\n'}
                   {validationResult?.success
                     ? `\n\n=== VALID ===\n${
-                        validationResult?.isError ? "(JSON-RPC Error object, but valid format)" : ""
+                        validationResult?.isError
+                          ? '(JSON-RPC Error object, but valid format)'
+                          : ''
                       }`
                     : `\n\n=== INVALID ===\n${JSON.stringify(validationResult?.issues, null, 2)}`}
-                  {validationResult?.note ? `\nNote: ${validationResult.note}` : ""}
+                  {validationResult?.note
+                    ? `\nNote: ${validationResult.note}`
+                    : ''}
                 </pre>
               </Text>
             </Stack>
@@ -345,7 +366,12 @@ const App = () => {
         <Divider />
         <Heading as="h3">Additional RPC Method Calls</Heading>
 
-        <Stack flexDirection="row" gap="sm" flexWrap="wrap" className="stack-buttons">
+        <Stack
+          flexDirection="row"
+          gap="sm"
+          flexWrap="wrap"
+          className="stack-buttons"
+        >
           <Button onPress={handleGetAccount} isDisabled={!activeAccount}>
             kadena_getAccount_v1
           </Button>
@@ -401,10 +427,10 @@ const App = () => {
                     client: client,
                   })
                     .then((result) => {
-                      console.log("Transaction result:", result);
+                      console.log('Transaction result:', result);
                     })
                     .catch((error) => {
-                      console.error("Transaction error:", error);
+                      console.error('Transaction error:', error);
                     });
                 }}
               >
@@ -422,10 +448,10 @@ const App = () => {
                     client: client,
                   })
                     .then((result) => {
-                      console.log("Transaction result:", result);
+                      console.log('Transaction result:', result);
                     })
                     .catch((error) => {
-                      console.error("Transaction error:", error);
+                      console.error('Transaction error:', error);
                     });
                 }}
               >

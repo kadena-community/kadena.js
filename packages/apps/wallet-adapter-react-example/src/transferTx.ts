@@ -1,5 +1,5 @@
-import type { ICommandResult } from "@kadena/client";
-import { createClient, isSignedTransaction, Pact } from "@kadena/client";
+import type { ICommandResult } from '@kadena/client';
+import { createClient, isSignedTransaction, Pact } from '@kadena/client';
 
 interface ITransfer {
   accountFrom: string;
@@ -17,53 +17,56 @@ export const createTransferTx = async ({
   client,
 }: ITransfer): Promise<ICommandResult> => {
   try {
-    console.log("PUBKEY", pubkey);
+    console.log('PUBKEY', pubkey);
     const transactionBuilder = Pact.builder
       .execution(
-        (Pact as any).modules["coin"]["transfer"](accountFrom, accountTo, {
+        (Pact as any).modules['coin']['transfer'](accountFrom, accountTo, {
           decimal: amount.toString(),
         }),
       )
       .addSigner(
         {
           pubKey: pubkey,
-          scheme: "ED25519",
+          scheme: 'ED25519',
         },
         (withCapability: any) => [
-          withCapability("coin.GAS"),
-          withCapability("coin.TRANSFER", accountFrom, accountTo, {
+          withCapability('coin.GAS'),
+          withCapability('coin.TRANSFER', accountFrom, accountTo, {
             decimal: amount.toString(),
           }),
         ],
       )
-      .setMeta({ chainId: "0", senderAccount: accountFrom })
-      .setNetworkId("mainnet01")
+      .setMeta({ chainId: '0', senderAccount: accountFrom })
+      .setNetworkId('mainnet01')
       .createTransaction();
 
-    console.log("tx", transactionBuilder);
+    console.log('tx', transactionBuilder);
 
-    const signedTx = await client.signTransaction("Chainweaver", transactionBuilder);
+    const signedTx = await client.signTransaction(
+      'Chainweaver',
+      transactionBuilder,
+    );
     const kadenaClient = createClient(
-      "https://chainweb.mindsend.xyz/chainweb/0.0/mainnet01/chain/0/pact",
+      'https://chainweb.mindsend.xyz/chainweb/0.0/mainnet01/chain/0/pact',
     );
 
     if (isSignedTransaction(signedTx)) {
       const transactionDescriptor = await kadenaClient.submit(signedTx);
       const response = await kadenaClient.listen(transactionDescriptor);
 
-      if (response.result.status === "success") {
+      if (response.result.status === 'success') {
         return response;
       } else {
         throw new Error(`Transaction failed: ${response.result.error}`);
       }
     } else {
-      throw new Error("Failed to sign transaction.");
+      throw new Error('Failed to sign transaction.');
     }
   } catch (e: unknown) {
     if (e instanceof Error) {
       throw new Error(`Transaction Error: ${e.message}`);
     } else {
-      throw new Error("An unknown error occurred during the transaction.");
+      throw new Error('An unknown error occurred during the transaction.');
     }
   }
 };

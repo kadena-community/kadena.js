@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 /**
  * Shared error schema (JSON-RPC 2.0 error)
  */
 const errorSchema = z.object({
-  jsonrpc: z.literal("2.0"),
+  jsonrpc: z.literal('2.0'),
   id: z.number(),
   error: z.object({
     code: z.number(),
@@ -72,7 +72,7 @@ const commandSchema = z.object({
  * @returns An object indicating success/failure and any validation errors.
  */
 export function validateRpcResponse(method: string, response: any) {
-  if (!response || typeof response !== "object") {
+  if (!response || typeof response !== 'object') {
     return {
       success: false,
       issues: [`Response is not an object; got: ${typeof response}`],
@@ -80,7 +80,7 @@ export function validateRpcResponse(method: string, response: any) {
   }
 
   // Check if it's an error response first
-  if ("error" in response) {
+  if ('error' in response) {
     const errCheck = errorSchema.safeParse(response);
     if (!errCheck.success) {
       // It's an invalid error format
@@ -97,7 +97,7 @@ export function validateRpcResponse(method: string, response: any) {
   }
 
   switch (method) {
-    case "kadena_getAccount_v1": {
+    case 'kadena_getAccount_v1': {
       const parsed = accountInfoSchema.safeParse(response);
       if (!parsed.success) {
         return { success: false, issues: parsed.error.format() };
@@ -105,7 +105,7 @@ export function validateRpcResponse(method: string, response: any) {
       return { success: true };
     }
 
-    case "kadena_getAccounts_v2": {
+    case 'kadena_getAccounts_v2': {
       const parsed = accountsInfoSchema.safeParse(response);
       if (!parsed.success) {
         return { success: false, issues: parsed.error.format() };
@@ -113,7 +113,7 @@ export function validateRpcResponse(method: string, response: any) {
       return { success: true };
     }
 
-    case "kadena_getNetwork_v1": {
+    case 'kadena_getNetwork_v1': {
       const parsed = networkInfoSchema.safeParse(response);
       if (!parsed.success) {
         return { success: false, issues: parsed.error.format() };
@@ -121,7 +121,7 @@ export function validateRpcResponse(method: string, response: any) {
       return { success: true };
     }
 
-    case "kadena_getNetworks_v1": {
+    case 'kadena_getNetworks_v1': {
       const parsed = networksInfoSchema.safeParse(response);
       if (!parsed.success) {
         return { success: false, issues: parsed.error.format() };
@@ -129,7 +129,7 @@ export function validateRpcResponse(method: string, response: any) {
       return { success: true };
     }
 
-    case "kadena_changeNetwork_v1": {
+    case 'kadena_changeNetwork_v1': {
       const parsed = networkInfoSchema.safeParse(response);
       if (!parsed.success) {
         return { success: false, issues: parsed.error.format() };
@@ -137,7 +137,7 @@ export function validateRpcResponse(method: string, response: any) {
       return { success: true };
     }
 
-    case "kadena_signCommand": {
+    case 'kadena_signCommand': {
       const parsed = commandSchema.safeParse(response);
       if (!parsed.success) {
         return { success: false, issues: parsed.error.format() };
@@ -145,7 +145,7 @@ export function validateRpcResponse(method: string, response: any) {
       return { success: true };
     }
 
-    case "kadena_signTransaction": {
+    case 'kadena_signTransaction': {
       const parsed = commandSchema.safeParse(response);
       if (!parsed.success) {
         return { success: false, issues: parsed.error.format() };
@@ -155,6 +155,6 @@ export function validateRpcResponse(method: string, response: any) {
 
     default:
       // If we haven’t defined a schema for this method, skip validation
-      return { success: true, note: "No specific validation for this method" };
+      return { success: true, note: 'No specific validation for this method' };
   }
 }

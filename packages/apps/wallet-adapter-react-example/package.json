@@ -2,14 +2,10 @@
   "name": "wallet-adapter-react-example",
   "version": "0.0.1",
   "private": true,
-  "authors": [
-    "Danillo Felixdaal",
-    "Bart Huijgen"
-  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .ts,.tsx",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -27,6 +23,8 @@
     "zod": "~3.23.0"
   },
   "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@rushstack/eslint-config": "~3.6.9",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "~14.0.0",
     "@types/react": "^18.2.79",
@@ -35,5 +33,9 @@
     "typescript": "5.4.5",
     "vite": "^5.4.8",
     "vitest": "^1.6.0"
-  }
+  },
+  "authors": [
+    "Danillo Felixdaal",
+    "Bart Huijgen"
+  ]
 }
