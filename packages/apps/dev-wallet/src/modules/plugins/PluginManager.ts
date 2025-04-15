@@ -23,7 +23,7 @@ export class PluginManager {
       this._pluginsContainer = document.createElement('div');
       this._pluginsContainer.style.display = 'contents';
       this._pluginsContainer.id = this.containerId;
-      document.body.appendChild(this.pluginsContainer);
+      document.body.appendChild(this._pluginsContainer);
     } else {
       this._pluginsContainer = domElement as HTMLDivElement;
     }
