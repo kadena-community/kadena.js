@@ -38,6 +38,7 @@ const getDoc = (plugin: Plugin, sessionId: string) => {
     <body class="boot">
     <div id="plugin-root"></div>
     <script type="module">
+      var pluginId = "${plugin.id}";
       window.process =  window.process || { env: { NODE_ENV: 'production' } };
     </script>
     <script type="module">
@@ -48,15 +49,23 @@ const getDoc = (plugin: Plugin, sessionId: string) => {
 </html>`;
 };
 
+/*
+TODO: this is a temporary solution to load plugins
+each plugin should have its own isolated origin (localstorage/indexed db ..). this is not achievable by loading plugin with docsrc or blob on the same url.
+for the web version we can create sub urls for each plugin like plugin1.wallet.kadena.io or any other unique domain
+this needs configuration in vercel so the server should serve app on *.wallet.kadena.io then handle different subdomains in client side.
+for the desktop version we need more investigation
+ */
 export function createPluginIframe(
   plugin: Plugin,
   sessionId: string,
 ): HTMLIFrameElement {
   const iframe = document.createElement('iframe');
-
   iframe.id = `plugin-${plugin.id}`;
   iframe.srcdoc = getDoc(plugin, sessionId);
-  iframe.setAttribute('sandbox', 'allow-scripts allow-forms');
-
+  // TODO: the plugin should have its own url for security reasons
+  iframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-same-origin');
   return iframe;
 }
+
+

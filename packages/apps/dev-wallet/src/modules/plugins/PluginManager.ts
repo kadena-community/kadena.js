@@ -30,8 +30,8 @@ export class PluginManager {
     return this._pluginsContainer;
   }
 
-  // plugin whitelist
-  registries = ['/internal-registry'];
+  // TODO: this should be a separate domain for security reasons otherwise the plugin can access the whole wallet
+  registries = [`/internal-registry`];
 
   constructor(private containerId: string = 'plugins-container') {}
 
@@ -70,6 +70,9 @@ export class PluginManager {
     const plugin = this.loadedPlugins.get(id);
     if (!plugin) {
       throw new Error(`Plugin with id ${id} does not exist`);
+    }
+    if(!plugin.config.permissions.includes('MODE:FOREGROUND')) {
+      throw new Error(`Plugin with id ${id} does not have foreground permission`);
     }
     const updatePosition = () => {
       const wrapperRect = wrapper.getBoundingClientRect();
@@ -125,6 +128,10 @@ export class PluginManager {
     if (!plugin) {
       throw new Error(`Plugin with id ${id} does not exist`);
     }
+    if(!plugin.config.permissions.includes('MODE:BACKGROUND')) {
+      // If the plugin does not have BACKGROUND permission, remove it
+      return this.removePlugin(id);
+    }
     // plugin.element.setAttribute('style', 'display: none;');
     plugin.disconnect();
     plugin.element.style.display = 'none';
@@ -134,6 +141,7 @@ export class PluginManager {
   removePlugin(id: string) {
     const plugin = this.loadedPlugins.get(id);
     if (plugin) {
+      plugin.disconnect();
       this.loadedPlugins.delete(id);
       plugin.element.remove();
     }
@@ -149,7 +157,6 @@ export class PluginManager {
             (list || []).map((p) => ({
               ...p,
               registry,
-              keepInBackground: p.keepInBackground || true, // temporary for testing
               permissions: p.permissions || [],
               sessionId: undefined,
             })),

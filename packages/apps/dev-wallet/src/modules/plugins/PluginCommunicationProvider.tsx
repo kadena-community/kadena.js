@@ -6,10 +6,10 @@ import {
 import { ReactNode, useMemo, useState } from 'react';
 import { ConnectionRequest } from '../../pages/plugins/components/ConnectionRequest';
 import { SignRequestDialog } from '../../pages/plugins/components/SignRequestDialog';
-import { Plugin } from './type';
+import { Permission, Plugin } from './type';
 
 const messageHandle =
-  (activeSessions: string[], permissions: RequestType[]) =>
+  (activeSessions: string[], permissions: Permission[]) =>
   (
     type: RequestType,
     handler: (
@@ -23,13 +23,14 @@ const messageHandle =
         (event.origin === 'null' || event.data.pluginId) &&
         event.data.sessionId
       ) {
-        if (!permissions.includes(type)) {
+        const msgPermission:Permission = `MSG:${type}`;
+        if (!permissions.includes(msgPermission)) {
           event.source.postMessage(
             {
               id: event.data.id,
               type: event.data.type,
               error:
-                'PERMISSION_DENIED: the plugin does not have the permission to perform this action',
+                `PERMISSION_DENIED: the plugin does not have the permission to perform this action - Missing permission: "${msgPermission}"`,
             },
             { targetOrigin: '*' },
           );
