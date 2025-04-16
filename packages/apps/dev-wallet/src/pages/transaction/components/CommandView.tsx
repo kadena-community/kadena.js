@@ -1,5 +1,4 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
-import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten, toISOLocalDateTime } from '@/utils/helpers';
@@ -15,10 +14,8 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { execCodeParser } from '@kadena/pactjs-generator';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
-import { CodeView } from './code-components/CodeView';
 import { Label, Value } from './helpers';
 import { RenderSigner } from './Signer';
 import { cardClass, codeClass, textEllipsis } from './style.css';
@@ -46,13 +43,6 @@ export function CommandView({
       }),
     [command, getPublicKeyData],
   );
-
-  const parsedCode = useMemo(() => {
-    if ('exec' in command.payload) {
-      return execCodeParser(command.payload.exec.code);
-    }
-    return [];
-  }, [command.payload]);
 
   const externalSigners = signers.filter((signer) => !signer.info);
   const internalSigners = signers.filter((signer) => signer.info);

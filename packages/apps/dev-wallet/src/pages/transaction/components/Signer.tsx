@@ -1,9 +1,4 @@
-import {
-  addSignatures,
-  IPactCommand,
-  IUnsignedCommand,
-  parseAsPactValue,
-} from '@kadena/client';
+import { addSignatures, IPactCommand, IUnsignedCommand } from '@kadena/client';
 import {
   Badge,
   Button,
@@ -15,25 +10,35 @@ import {
   Text,
   TextareaField,
 } from '@kadena/kode-ui';
-import { FC, PropsWithChildren, useMemo, useState } from 'react';
+import {
+  FC,
+  FormEventHandler,
+  PropsWithChildren,
+  useMemo,
+  useState,
+} from 'react';
 import {
   breakAllClass,
+  breakNoneClass,
   codeClass,
   readyToSignClass,
   signedClass,
   tagClass,
-} from './style.css.ts';
+} from './style.css';
 
-import { ITransaction } from '@/modules/transaction/transaction.repository.ts';
-import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
-import { normalizeSigs } from '@/utils/normalizeSigs.ts';
-import { MonoContentCopy, MonoDelete } from '@kadena/kode-icons/system';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
+import { normalizeSigs } from '@/utils/normalizeSigs';
 import classNames from 'classnames';
 
-import { getErrorMessage } from '@/utils/getErrorMessage.ts';
+import { CopyButton } from '@/Components/CopyButton/CopyButton';
+import { getErrorMessage } from '@/utils/getErrorMessage';
+import { MonoFactCheck } from '@kadena/kode-icons/system';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import yaml from 'js-yaml';
+import { Capability } from './Capability';
 import { statusPassed } from './TxPipeLine';
+import { iconSuccessClass } from './TxPipeLine/style.css';
 
 const Value: FC<PropsWithChildren<{ className?: string }>> = ({
   children,
@@ -66,11 +71,72 @@ export const RenderSigner = ({
     () => getKeyAlias(signer.pubKey),
     [signer.pubKey, getKeyAlias],
   );
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const signature = formData.get('signature') as string;
+    let sigObject;
+    if (!signature) return;
+    try {
+      const json:
+        | IUnsignedCommand
+        | {
+            pubKey: string;
+            sig?: string;
+          } = yaml.load(signature) as
+        | IUnsignedCommand
+        | {
+            pubKey: string;
+            sig?: string;
+          };
+
+      let sigs: Array<{
+        sig?: string;
+        pubKey: string;
+      }> = [];
+      if ('sig' in json) {
+        if (!json.pubKey) {
+          json.pubKey = signer.pubKey;
+        }
+        sigs = [json];
+      } else {
+        sigs = normalizeSigs(json as IUnsignedCommand);
+      }
+
+      const extSignature = sigs.find((item) => item.pubKey === signer.pubKey);
+
+      if (!extSignature || !extSignature.sig) {
+        return;
+      }
+      sigObject = extSignature as {
+        sig: string;
+        pubKey: string;
+      };
+    } catch (e) {
+      sigObject = {
+        sig: signature,
+        pubKey: signer.pubKey,
+      };
+    }
+    // TODO: verify signature before adding it
+    const sigs = addSignatures(transaction, sigObject);
+    onSign(sigs.sigs);
+  };
+
   return (
     <>
       <Card fullWidth>
         <CardContentBlock
+          level={2}
           title="Signer"
+          visual={
+            <MonoFactCheck
+              width={24}
+              height={24}
+              className={iconSuccessClass}
+            />
+          }
           supportingContent={
             <Stack gap="xs">
               <Button
@@ -125,79 +191,78 @@ export const RenderSigner = ({
             </Stack>
           }
         >
-          <Stack gap={'sm'}>
-            <Heading variant="h5">Public Key</Heading>
-            <Stack flex={1}>
-              {signature && <Text className={signedClass}>Signed</Text>}
-              {!signature && info && (
-                <Text className={readyToSignClass}>Owned</Text>
-              )}
+          <Stack
+            gap="md"
+            flexDirection="column"
+            style={{ marginBlockStart: '-80px' }}
+          >
+            <Stack gap={'sm'} alignItems="center">
+              <Heading variant="h6">Public Key</Heading>
+              <Stack flex={1}>
+                {signature && (
+                  <Badge size="sm" className={signedClass}>
+                    Signed
+                  </Badge>
+                )}
+                {!signature && info && (
+                  <Badge size="sm" className={readyToSignClass}>
+                    Owned
+                  </Badge>
+                )}
+              </Stack>
+
+              {<Text size="small">{info?.source ?? 'External'}</Text>}
             </Stack>
 
-            {<Text className={tagClass}>{info?.source ?? 'External'}</Text>}
-          </Stack>
+            <Stack gap={'sm'} alignItems={'flex-start'}>
+              {keyAlias && (
+                <Stack style={{ width: '120px' }}>
+                  <Badge size="sm" className={breakNoneClass}>
+                    {keyAlias}
+                  </Badge>
+                </Stack>
+              )}
 
-          <Stack gap={'sm'} alignItems={'center'}>
-            {keyAlias && <Badge size="sm">{keyAlias}</Badge>}
-            <Value className={breakAllClass}>{signer.pubKey}</Value>
+              <Value className={breakAllClass}>{signer.pubKey}</Value>
+            </Stack>
+            {signature && (
+              <Stack flexDirection="column">
+                <Stack
+                  justifyContent={'space-between'}
+                  alignItems={'flex-start'}
+                  gap={'sm'}
+                >
+                  <Heading as="h6">Signature</Heading>
+
+                  <CopyButton
+                    data={{
+                      sig: signature,
+                      pubKey: signer.pubKey,
+                    }}
+                  />
+                </Stack>
+                <Value className={classNames(breakAllClass, codeClass)}>
+                  {signature}
+                </Value>
+              </Stack>
+            )}
           </Stack>
 
           {showCapabilities && (
             <Stack gap={'sm'} flexDirection={'column'}>
               <Divider label="Capabilities" align="end" />
               {signer.clist &&
-                signer.clist.map((cap) => (
-                  <Stack
+                signer.clist.map((cap, idx) => (
+                  <Capability
                     key={`${cap.name}${cap.args.toString()}`}
-                    gap={'sm'}
-                    justifyContent={'space-between'}
-                    className={codeClass}
-                  >
-                    <Value>
-                      (
-                      {[
-                        cap.name,
-                        ...cap.args.map((data) =>
-                          typeof data === 'number'
-                            ? data
-                            : parseAsPactValue(data),
-                        ),
-                      ].join(' ')}
-                      )
-                    </Value>
-                  </Stack>
+                    capability={cap}
+                    isSigned={!!signature}
+                    idx={idx + 1}
+                  />
                 ))}
             </Stack>
           )}
-          {signature && (
-            <>
-              <Stack
-                justifyContent={'space-between'}
-                alignItems={'flex-start'}
-                gap={'sm'}
-              >
-                <Heading variant="h5">Signature</Heading>
-                <Stack gap={'sm'}>
-                  <Button
-                    isCompact
-                    variant="transparent"
-                    startVisual={<MonoContentCopy />}
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        JSON.stringify({
-                          sig: signature,
-                          pubKey: signer.pubKey,
-                        }),
-                      );
-                    }}
-                  />
-                </Stack>
-              </Stack>
-              <Value className={classNames(breakAllClass, codeClass)}>
-                {signature}
-              </Value>
-            </>
-          )}
+
           {!signature && info && (
             <Stack>
               {error && (
@@ -208,61 +273,7 @@ export const RenderSigner = ({
             </Stack>
           )}
           {!signature && !info && (
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                const formData = new FormData(event.target as HTMLFormElement);
-                const signature = formData.get('signature') as string;
-                let sigObject;
-                if (!signature) return;
-                try {
-                  const json:
-                    | IUnsignedCommand
-                    | {
-                        pubKey: string;
-                        sig?: string;
-                      } = yaml.load(signature) as
-                    | IUnsignedCommand
-                    | {
-                        pubKey: string;
-                        sig?: string;
-                      };
-
-                  let sigs: Array<{
-                    sig?: string;
-                    pubKey: string;
-                  }> = [];
-                  if ('sig' in json) {
-                    if (!json.pubKey) {
-                      json.pubKey = signer.pubKey;
-                    }
-                    sigs = [json];
-                  } else {
-                    sigs = normalizeSigs(json as IUnsignedCommand);
-                  }
-
-                  const extSignature = sigs.find(
-                    (item) => item.pubKey === signer.pubKey,
-                  );
-
-                  if (!extSignature || !extSignature.sig) {
-                    return;
-                  }
-                  sigObject = extSignature as {
-                    sig: string;
-                    pubKey: string;
-                  };
-                } catch (e) {
-                  sigObject = {
-                    sig: signature,
-                    pubKey: signer.pubKey,
-                  };
-                }
-                // TODO: verify signature before adding it
-                const sigs = addSignatures(transaction, sigObject);
-                onSign(sigs.sigs);
-              }}
-            >
+            <form onSubmit={handleSubmit}>
               <Stack
                 gap={'sm'}
                 flex={1}

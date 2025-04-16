@@ -67,7 +67,7 @@ export const SignRequest = ({
   }
 
   return (
-    <>
+    <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
       <Card fullWidth>
         <CardContentBlock
           title="Sign Request"
@@ -124,7 +124,7 @@ export const SignRequest = ({
           }}
         />
       </Stack>
-    </>
+    </Stack>
   );
 };
 

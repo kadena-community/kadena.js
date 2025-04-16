@@ -153,7 +153,12 @@ export function ExpandedTransaction({
         </Stack>
       </Title>
       <Content>
-        <Stack gap={'lg'} width="100%" className={txExpandedWrapper}>
+        <Stack
+          gap="md"
+          flexDirection={'column'}
+          width="100%"
+          marginBlockEnd={'md'}
+        >
           <Card fullWidth>
             <CardContentBlock title="Transaction">
               <ErrorBoundary>
@@ -163,18 +168,21 @@ export function ExpandedTransaction({
           </Card>
           <Card fullWidth>
             <CardContentBlock
+              level={2}
               title="In the queue"
-              visual={<MonoTroubleshoot />}
+              visual={<MonoTroubleshoot width={24} height={24} />}
             >
-              <TxPipeLine
-                tx={transaction}
-                contTx={contTx}
-                variant={'expanded'}
-                signAll={signAll}
-                onSubmit={onSubmit}
-                onPreflight={onPreflight}
-                sendDisabled={sendDisabled}
-              />
+              <Stack style={{ marginBlockStart: '-80px' }}>
+                <TxPipeLine
+                  tx={transaction}
+                  contTx={contTx}
+                  variant={'expanded'}
+                  signAll={signAll}
+                  onSubmit={onSubmit}
+                  onPreflight={onPreflight}
+                  sendDisabled={sendDisabled}
+                />
+              </Stack>
             </CardContentBlock>
           </Card>
 

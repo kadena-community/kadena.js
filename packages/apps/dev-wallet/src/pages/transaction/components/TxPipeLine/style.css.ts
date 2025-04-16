@@ -1,5 +1,5 @@
-import { style } from '@kadena/kode-ui';
-import { atoms } from '@kadena/kode-ui/styles';
+import { recipe, style } from '@kadena/kode-ui';
+import { atoms, token } from '@kadena/kode-ui/styles';
 
 export const statusListWrapperClass = style([
   atoms({
@@ -19,3 +19,27 @@ export const iconSuccessClass = style([
     color: 'icon.semantic.positive.default',
   }),
 ]);
+
+export const capabilityClass = recipe({
+  base: [
+    atoms({
+      borderRadius: 'sm',
+      borderWidth: 'hairline',
+      borderStyle: 'solid',
+      gap: 'sm',
+      padding: 'n3',
+    }),
+  ],
+  variants: {
+    isSigned: {
+      true: {
+        backgroundColor: token('color.background.semantic.positive.subtlest'),
+        borderColor: token('color.border.tint.@focus'),
+      },
+      false: {
+        backgroundColor: token('color.background.brand.secondary.subtlest'),
+        borderColor: token('color.border.tint.outline'),
+      },
+    },
+  },
+});

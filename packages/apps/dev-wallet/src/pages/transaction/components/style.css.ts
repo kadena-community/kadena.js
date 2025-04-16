@@ -9,6 +9,10 @@ export const breakAllClass = style({
   wordBreak: 'break-all',
 });
 
+export const breakNoneClass = style({
+  whiteSpace: 'nowrap',
+});
+
 export const cardClass = style({
   padding: '10px',
   border: `1px solid ${vars.colors.$layoutSurfaceCard}`,
