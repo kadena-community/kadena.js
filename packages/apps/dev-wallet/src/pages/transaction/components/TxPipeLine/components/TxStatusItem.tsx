@@ -31,7 +31,7 @@ export const TxStatusItem: FC<PropsWithChildren<IProps>> = ({
   status,
   children,
 }) => {
-  if (variant === 'minimized')
+  if (variant !== 'expanded')
     return (
       <Stack
         gap="sm"

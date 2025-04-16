@@ -393,10 +393,12 @@ function TxStatusList({
     <>
       <Heading variant="h6">Status</Heading>
       <Stack className={statusListWrapperClass} gap="sm" width="100%">
-        <Stack gap="sm" className={iconSuccessClass}>
-          <MonoFactCheck width={16} height={16} />
-          <Text>Transaction is ready</Text>
-        </Stack>
+        {variant === 'expanded' && (
+          <Stack gap="sm" className={iconSuccessClass}>
+            <MonoFactCheck width={16} height={16} />
+            <Text>Transaction is ready</Text>
+          </Stack>
+        )}
         {statusList}
       </Stack>
     </>

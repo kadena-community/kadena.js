@@ -111,7 +111,7 @@ export const tabClass = style({
 
 export const txTileClass = style({
   width: '250px',
-  height: '260px',
+  height: '280px',
   padding: '10px',
   border: `1px solid ${vars.colors.$borderDefault}`,
   borderRadius: '5px',

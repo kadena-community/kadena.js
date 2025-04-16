@@ -21,7 +21,9 @@ export const iconSuccessClass = style([
 export const pendingClass = style({});
 
 export const minimizedColorClass = recipe({
-  base: {},
+  base: {
+    fontSize: vars.fontSizes.$sm,
+  },
   variants: {
     status: {
       success: {
