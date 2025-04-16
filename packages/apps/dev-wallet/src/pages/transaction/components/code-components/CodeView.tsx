@@ -4,6 +4,7 @@ import { parseArg } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
 import { Badge, Card, Heading, Stack, Text } from '@kadena/kode-ui';
 import { IParsedCode } from '@kadena/pactjs-generator';
+import { breakAllClass } from '../style.css';
 
 const decoration = {
   shortening: Infinity,
@@ -95,7 +96,7 @@ export function CodeView({
                   </Stack>
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>amount</Text>
-                    <Text bold color="emphasize">
+                    <Text bold color="emphasize" className={breakAllClass}>
                       {parseArg(amount, decoration)}
                     </Text>
                   </Stack>
@@ -139,33 +140,6 @@ export function CodeView({
             }
           }
           return null;
-          //   const contract = code.
-          //    const [sender, receiver, , amount] = code.args;
-          //   const senderAddress = parseArg(sender, decoration);
-          //   const receiverAddress = parseArg(receiver, decoration);
-
-          //   return(
-          //     <Stack gap={'sm'} flexDirection={'column'}>
-          //   <Heading variant="h5">Transfer</Heading>
-          //   <Stack gap={'sm'} flexWrap="wrap">
-          //     <Text>from</Text>
-          //     <Text bold color="emphasize">
-          //       {getAccount(senderAddress, contract)}
-          //     </Text>
-          //   </Stack>
-          //   <Stack gap={'sm'} flexWrap="wrap">
-          //     <Text>to</Text>
-          //     <Text bold color="emphasize">
-          //       {getAccount(receiverAddress, contract)}
-          //     </Text>
-          //   </Stack>
-          //   <Stack gap={'sm'} flexWrap="wrap">
-          //     <Text>amount</Text>
-          //     <Text bold color="emphasize">
-          //       {parseArg(amount, decoration)}
-          //     </Text>
-          //   </Stack>
-          // </Stack>);
         })
         .filter(Boolean);
 

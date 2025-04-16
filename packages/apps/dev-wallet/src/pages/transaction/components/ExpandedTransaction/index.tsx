@@ -94,6 +94,7 @@ export function ExpandedTransaction({
     cmd: transaction.cmd,
     sigs: transaction.sigs,
   };
+
   const Title = isDialog ? DialogHeader : Stack;
   const Content = isDialog ? DialogContent : Stack;
   const [selectedTab, setSelectedTab] = useState('command-details');
