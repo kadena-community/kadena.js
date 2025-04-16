@@ -1,8 +1,5 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
-import {
-  ITransaction,
-  TransactionStatus,
-} from '@/modules/transaction/transaction.repository';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { syncTransactionStatus } from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { getErrorMessage } from '@/utils/getErrorMessage';
@@ -26,39 +23,9 @@ import {
   Tooltip,
 } from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
-import { failureClass, pendingClass, successClass } from './../style.css';
 import { TxStatusItem } from './components/TxStatusItem';
 import { iconSuccessClass, statusListWrapperClass } from './style.css';
-
-export const steps: TransactionStatus[] = [
-  'initiated',
-  'signed',
-  'preflight',
-  'submitted',
-  'failure',
-  'success',
-  'persisted',
-];
-
-export const statusPassed = (
-  txStatus: ITransaction['status'],
-  status: ITransaction['status'],
-) => steps.indexOf(txStatus) >= steps.indexOf(status);
-
-export const statusPassedWithoutFailure = (
-  txStatus: ITransaction['status'],
-  status: ITransaction['status'],
-): 'failure' | 'success' | 'active' => {
-  if (txStatus === 'failure') return 'failure';
-  return statusPassed(txStatus, status) ? 'success' : 'active';
-};
-
-export const getStatusClass = (status: ITransaction['status']) => {
-  if (statusPassed(status, 'success')) return successClass;
-  if (status === 'failure') return failureClass;
-  if (status === 'initiated') return '';
-  return pendingClass;
-};
+import { statusPassed } from './utils';
 
 export function TxPipeLine({
   tx,

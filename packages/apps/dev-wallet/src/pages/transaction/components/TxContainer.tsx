@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ExpandedTransaction } from './ExpandedTransaction';
 import { containerClass } from './style.css';
 import { TxMinimized } from './TxMinimized';
-import { steps } from './TxPipeLine';
+import { steps } from './TxPipeLine/utils';
 import { TxTile } from './TxTile';
 
 export const TxContainer = React.memo(
@@ -33,8 +33,6 @@ export const TxContainer = React.memo(
     const { sign, client } = useWallet();
     const syncing = useRef(false);
     const doneRef = useRef(false);
-
-    console.log(3333, { as, sendDisabled });
 
     const localTransaction = useSubscribe<ITransaction>(
       'transaction',

@@ -14,7 +14,7 @@ import React, { useCallback, useEffect } from 'react';
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { normalizeSigs } from '@/utils/normalizeSigs';
 import { TxContainer } from './TxContainer';
-import { statusPassed, steps } from './TxPipeLine';
+import { statusPassed, steps } from './TxPipeLine/utils';
 
 export const TxList = React.memo(
   ({

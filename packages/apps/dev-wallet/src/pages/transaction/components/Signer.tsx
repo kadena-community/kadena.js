@@ -36,8 +36,8 @@ import { MonoFactCheck } from '@kadena/kode-icons/system';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import yaml from 'js-yaml';
 import { Capability } from './Capability';
-import { statusPassed } from './TxPipeLine';
 import { iconSuccessClass } from './TxPipeLine/style.css';
+import { statusPassed } from './TxPipeLine/utils';
 
 const Value: FC<PropsWithChildren<{ className?: string }>> = ({
   children,

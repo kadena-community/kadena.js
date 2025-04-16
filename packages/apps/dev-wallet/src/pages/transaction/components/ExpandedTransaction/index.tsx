@@ -12,7 +12,6 @@ import {
   Stack,
   Tooltip,
 } from '@kadena/kode-ui';
-import yaml from 'js-yaml';
 
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary.tsx';
@@ -21,9 +20,8 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { shorten } from '@/utils/helpers.ts';
-import { normalizeTx } from '@/utils/normalizeSigs';
-import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
+import { copyTransactionAs } from '@/utils/copyTransactionAs';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
   MonoContentCopy,
@@ -35,11 +33,12 @@ import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { token } from '@kadena/kode-ui/styles';
 import { execCodeParser } from '@kadena/pactjs-generator';
 import { useEffect, useMemo, useState } from 'react';
-import { CodeView } from '../code-components/CodeView.tsx';
-import { RenderSigner } from '../Signer.tsx';
+import { CodeView } from '../code-components/CodeView';
+import { RenderSigner } from '../Signer';
+import { statusPassed } from '../TxPipeLine/utils';
 import { CommandView } from './../CommandView';
-import { codeClass } from './../style.css.ts';
-import { statusPassed, TxPipeLine } from './../TxPipeLine';
+import { TxPipeLine } from './../TxPipeLine';
+import { JsonView } from './JsonView';
 
 export function ExpandedTransaction({
   transaction,
@@ -64,26 +63,6 @@ export function ExpandedTransaction({
   const { getPublicKeyData, sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
   const [showCommandDetails, setShowCommandDetails] = useState(false);
-
-  const copyTransactionAs =
-    (format: 'json' | 'yaml', legacySig = false) =>
-    () => {
-      const tx = {
-        hash: transaction.hash,
-        cmd: transaction.cmd,
-        sigs: transaction.sigs,
-      };
-      const transactionData = legacySig ? normalizeTx(tx) : tx;
-
-      let formattedData: string;
-      if (format === 'json') {
-        formattedData = JSON.stringify(transactionData, null, 2);
-      } else {
-        formattedData = yaml.dump(transactionData);
-      }
-
-      navigator.clipboard.writeText(formattedData);
-    };
 
   const signAll = async () => {
     const signedTx = (await sign(transaction)) as IUnsignedCommand | ICommand;
@@ -267,22 +246,22 @@ export function ExpandedTransaction({
                         <ContextMenuItem
                           label="JSON"
                           endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('json')}
+                          onClick={copyTransactionAs('json', transaction)}
                         />
                         <ContextMenuItem
                           label="YAML"
                           endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('yaml')}
+                          onClick={copyTransactionAs('yaml', transaction)}
                         />
                         <ContextMenuItem
                           label="JSON Legacy (v2)"
                           endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('json', true)}
+                          onClick={copyTransactionAs('json', transaction, true)}
                         />
                         <ContextMenuItem
                           label="YAML Legacy (v2)"
                           endVisual={<MonoContentCopy />}
-                          onClick={copyTransactionAs('yaml', true)}
+                          onClick={copyTransactionAs('yaml', transaction, true)}
                         />
                       </ContextMenu>
                     </Stack>
@@ -372,29 +351,3 @@ export function ExpandedTransaction({
     </>
   );
 }
-
-const JsonView = ({
-  title,
-  data,
-  shortening = 0,
-}: {
-  title: string;
-  data: any;
-  shortening?: number;
-}) => (
-  <Stack gap={'sm'} flexDirection={'column'}>
-    <Stack gap={'sm'} flexDirection={'column'}>
-      <Stack justifyContent={'space-between'}>
-        <Heading variant="h4">{title}</Heading>
-        <CopyButton data={data} />
-      </Stack>
-      <pre className={codeClass}>
-        {data && typeof data === 'object'
-          ? JSON.stringify(data, null, 2)
-          : shortening
-            ? shorten(data, shortening)
-            : data}
-      </pre>
-    </Stack>
-  </Stack>
-);

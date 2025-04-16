@@ -1,10 +1,9 @@
-import { useWallet } from '@/modules/wallet/wallet.hook';
-import { shorten } from '@/utils/helpers';
 import { parseArg } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
-import { Badge, Card, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Card, Heading, Stack, Text } from '@kadena/kode-ui';
 import { IParsedCode } from '@kadena/pactjs-generator';
 import { breakAllClass } from '../style.css';
+import { CodeViewPart } from './CodeViewPart';
 
 const decoration = {
   shortening: Infinity,
@@ -19,24 +18,6 @@ export function CodeView({
   codes?: IParsedCode[];
   command: IPactCommand;
 }) {
-  console.log({ codes, command });
-
-  const { getAccountAlias } = useWallet();
-  const getAccount = (address: string, contract: string) => {
-    const value = address.replace(/"/gi, '');
-    const alias = getAccountAlias(value, contract);
-    const shortAddress = shorten(value, 20);
-    if (!alias) return shortAddress;
-    return (
-      <Stack gap={'sm'} flexWrap="wrap">
-        <Badge size="sm">{alias}</Badge>
-        <Text bold color="emphasize">
-          {shortAddress}
-        </Text>
-      </Stack>
-    );
-  };
-
   const describes = !codes
     ? []
     : codes
@@ -53,25 +34,13 @@ export function CodeView({
                   gap={'sm'}
                   flexDirection={'column'}
                 >
-                  <Heading variant="h5">Transfer</Heading>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>from</Text>
-                    <Text bold color="emphasize">
-                      {getAccount(senderAddress, contract)}
-                    </Text>
-                  </Stack>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>to</Text>
-                    <Text bold color="emphasize">
-                      {getAccount(receiverAddress, contract)}
-                    </Text>
-                  </Stack>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>amount</Text>
-                    <Text bold color="emphasize">
-                      {parseArg(amount, decoration)}
-                    </Text>
-                  </Stack>
+                  <CodeViewPart
+                    label="Transfer"
+                    senderAddress={senderAddress}
+                    receiverAddress={receiverAddress}
+                    contract={contract}
+                    amount={parseArg(amount, decoration)}
+                  />
                 </Stack>
               );
             }
@@ -81,25 +50,13 @@ export function CodeView({
               const receiverAddress = parseArg(receiver, decoration);
               return (
                 <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h5">Transfer</Heading>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>from</Text>
-                    <Text bold color="emphasize">
-                      {getAccount(senderAddress, contract)}
-                    </Text>
-                  </Stack>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>to</Text>
-                    <Text bold color="emphasize">
-                      {getAccount(receiverAddress, contract)}
-                    </Text>
-                  </Stack>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>amount</Text>
-                    <Text bold color="emphasize" className={breakAllClass}>
-                      {parseArg(amount, decoration)}
-                    </Text>
-                  </Stack>
+                  <CodeViewPart
+                    label="Transfer"
+                    senderAddress={senderAddress}
+                    receiverAddress={receiverAddress}
+                    contract={contract}
+                    amount={parseArg(amount, decoration)}
+                  />
                 </Stack>
               );
             }
@@ -110,28 +67,17 @@ export function CodeView({
               const receiverAddress = parseArg(receiver, decoration);
               return (
                 <Stack gap={'sm'} flexDirection={'column'}>
-                  <Heading variant="h5">Cross-chain Transfer</Heading>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>from</Text>
-                    <Text bold color="emphasize">
-                      {getAccount(senderAddress, contract)}
-                    </Text>
-                  </Stack>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>to</Text>
-                    <Text bold color="emphasize">
-                      {getAccount(receiverAddress, contract)}
-                    </Text>
-                  </Stack>
-                  <Stack gap={'sm'} flexWrap="wrap">
-                    <Text>amount</Text>
-                    <Text bold color="emphasize">
-                      {parseArg(amount, decoration)}
-                    </Text>
-                  </Stack>
+                  <CodeViewPart
+                    label="Cross-chain Transfer"
+                    senderAddress={senderAddress}
+                    receiverAddress={receiverAddress}
+                    contract={contract}
+                    amount={parseArg(amount, decoration)}
+                  />
+
                   <Stack gap={'sm'} flexWrap="wrap">
                     <Text>target chain</Text>
-                    <Text bold color="emphasize">
+                    <Text bold color="emphasize" className={breakAllClass}>
                       {parseArg(targetChain, decoration)}
                     </Text>
                   </Stack>

@@ -20,7 +20,7 @@ import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { FocussedLayoutHeaderContent } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
 import { TxList } from '../transaction/components/TxList';
-import { statusPassed } from '../transaction/components/TxPipeLine';
+import { statusPassed } from '../transaction/components/TxPipeLine/utils';
 import {
   ITransfer,
   Redistribution,
