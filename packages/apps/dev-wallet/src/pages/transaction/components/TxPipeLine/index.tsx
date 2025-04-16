@@ -155,6 +155,7 @@ function TxStatusList({
       variant !== 'tile' &&
       !statusPassed(tx.status, 'signed') && (
         <TxStatusItem
+          variant={variant}
           status="paused"
           label={signedByYou ? 'add external signatures' : 'Waiting for sign'}
         >
@@ -206,13 +207,14 @@ function TxStatusList({
         </TxStatusItem>
       ),
     showAfterCont && statusPassed(tx.status, 'signed') && (
-      <TxStatusItem status="success" label="Signed" />
+      <TxStatusItem variant={variant} status="success" label="Signed" />
     ),
     showAfterCont &&
       variant !== 'tile' &&
       statusPassed(tx.status, 'signed') &&
       !statusPassed(tx.status, 'preflight') && (
         <TxStatusItem
+          variant={variant}
           status="paused"
           label={sendDisabled ? 'Transaction is pending' : 'Ready to preflight'}
         >
@@ -254,6 +256,7 @@ function TxStatusList({
       ),
     showAfterCont && statusPassed(tx.status, 'preflight') && (
       <TxStatusItem
+        variant={variant}
         status={
           tx.preflight?.result.status === 'success' ? 'success' : 'failure'
         }
@@ -281,7 +284,7 @@ function TxStatusList({
       variant !== 'tile' &&
       tx.status === 'preflight' &&
       tx.preflight?.result.status === 'success' && (
-        <TxStatusItem status="paused" label="Ready to send">
+        <TxStatusItem variant={variant} status="paused" label="Ready to send">
           {variant === 'expanded' && (
             <>
               <Button
@@ -298,7 +301,11 @@ function TxStatusList({
         </TxStatusItem>
       ),
     showAfterCont && statusPassed(tx.status, 'submitted') && (
-      <TxStatusItem status={tx.request ? 'success' : 'failure'} label="Send">
+      <TxStatusItem
+        variant={variant}
+        status={tx.request ? 'success' : 'failure'}
+        label="Send"
+      >
         {variant === 'expanded' && !tx.request && (
           <Button isCompact onClick={() => onSubmit(true)}>
             <MonoRefresh />
@@ -309,10 +316,11 @@ function TxStatusList({
     showAfterCont &&
       statusPassed(tx.status, 'submitted') &&
       (!('result' in tx) || !tx.result) && (
-        <TxStatusItem status="active" label="Mining" />
+        <TxStatusItem variant={variant} status="active" label="Mining" />
       ),
     statusPassed(tx.status, 'success') && (
       <TxStatusItem
+        variant={variant}
         status="success"
         label={`Mined 
       ${
@@ -322,25 +330,37 @@ function TxStatusList({
       }`}
       />
     ),
-    tx.status === 'failure' && <TxStatusItem status="failure" label="Failed" />,
+    tx.status === 'failure' && (
+      <TxStatusItem variant={variant} status="failure" label="Failed" />
+    ),
     statusPassed(tx.status, 'success') && [
       tx.continuation?.autoContinue && !tx.continuation.proof && (
-        <TxStatusItem status="active" label="Fetching proof" />
+        <TxStatusItem
+          variant={variant}
+          status="active"
+          label="Fetching proof"
+        />
       ),
       showAfterCont &&
         tx.continuation?.autoContinue &&
         tx.continuation.proof && (
-          <TxStatusItem status="success" label=" proof fetched" />
+          <TxStatusItem
+            variant={variant}
+            status="success"
+            label=" proof fetched"
+          />
         ),
       contTx && [
         variant !== 'minimized' && (
           <TxStatusItem
+            variant={variant}
             status="active"
             label={`cont: ${shorten(contTx.hash, 6)}`}
           />
         ),
         statusPassed(contTx.status, 'preflight') && (
           <TxStatusItem
+            variant={variant}
             status={
               contTx.preflight?.result.status === 'success'
                 ? 'success'
@@ -350,17 +370,17 @@ function TxStatusList({
           />
         ),
         statusPassed(contTx.status, 'submitted') && (
-          <TxStatusItem status="success" label="Send" />
+          <TxStatusItem variant={variant} status="success" label="Send" />
         ),
         statusPassed(contTx.status, 'submitted') &&
           (!('result' in contTx) || !contTx.result) && (
-            <TxStatusItem status="active" label="Mining" />
+            <TxStatusItem variant={variant} status="active" label="Mining" />
           ),
         statusPassed(contTx.status, 'success') && (
-          <TxStatusItem status="success" label="Mined" />
+          <TxStatusItem variant={variant} status="success" label="Mined" />
         ),
         contTx.status === 'failure' && (
-          <TxStatusItem status="failure" label="Failed" />
+          <TxStatusItem variant={variant} status="failure" label="Failed" />
         ),
       ],
     ],

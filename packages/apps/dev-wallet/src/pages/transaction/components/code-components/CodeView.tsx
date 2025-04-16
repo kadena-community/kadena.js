@@ -18,13 +18,14 @@ export function CodeView({
   codes?: IParsedCode[];
   command: IPactCommand;
 }) {
+  console.log({ codes, command });
+
   const { getAccountAlias } = useWallet();
   const getAccount = (address: string, contract: string) => {
     const value = address.replace(/"/gi, '');
     const alias = getAccountAlias(value, contract);
     const shortAddress = shorten(value, 20);
     if (!alias) return shortAddress;
-    console.log('alias', alias);
     return (
       <Stack gap={'sm'} flexWrap="wrap">
         <Badge size="sm">{alias}</Badge>
@@ -138,6 +139,33 @@ export function CodeView({
             }
           }
           return null;
+          //   const contract = code.
+          //    const [sender, receiver, , amount] = code.args;
+          //   const senderAddress = parseArg(sender, decoration);
+          //   const receiverAddress = parseArg(receiver, decoration);
+
+          //   return(
+          //     <Stack gap={'sm'} flexDirection={'column'}>
+          //   <Heading variant="h5">Transfer</Heading>
+          //   <Stack gap={'sm'} flexWrap="wrap">
+          //     <Text>from</Text>
+          //     <Text bold color="emphasize">
+          //       {getAccount(senderAddress, contract)}
+          //     </Text>
+          //   </Stack>
+          //   <Stack gap={'sm'} flexWrap="wrap">
+          //     <Text>to</Text>
+          //     <Text bold color="emphasize">
+          //       {getAccount(receiverAddress, contract)}
+          //     </Text>
+          //   </Stack>
+          //   <Stack gap={'sm'} flexWrap="wrap">
+          //     <Text>amount</Text>
+          //     <Text bold color="emphasize">
+          //       {parseArg(amount, decoration)}
+          //     </Text>
+          //   </Stack>
+          // </Stack>);
         })
         .filter(Boolean);
 

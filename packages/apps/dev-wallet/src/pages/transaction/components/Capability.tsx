@@ -2,7 +2,6 @@ import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ICap, parseAsPactValue } from '@kadena/client';
 import { MonoSecurity } from '@kadena/kode-icons/system';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
-import { Boolean } from 'asn1js';
 import { FC } from 'react';
 import { breakAllClass } from './style.css';
 import { capabilityClass } from './TxPipeLine/style.css';

@@ -110,7 +110,7 @@ export const Routes: FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/sig-builder" element={<SignatureBuilder />} />
             <Route path="/networks" element={<Networks />} />
-            <Route path="/connect/:requestId" element={<ConnectPage />} />
+
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccountPage />} />
             <Route
@@ -155,6 +155,7 @@ export const Routes: FC = () => {
             />
             <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
+          <Route path="/connect/:requestId" element={<ConnectPage />} />
           <Route path="/account-discovery" element={<AccountDiscovery />} />
           <Route
             path="/unlock-profile/:profileId"

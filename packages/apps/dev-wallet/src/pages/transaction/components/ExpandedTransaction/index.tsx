@@ -10,26 +10,20 @@ import {
   Heading,
   Notification,
   Stack,
-  TabItem,
-  Tabs,
   Tooltip,
 } from '@kadena/kode-ui';
 import yaml from 'js-yaml';
 
-import {
-  codeClass,
-  txDetailsClass,
-  txExpandedWrapper,
-} from './../style.css.ts';
-
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
-import { ITransaction } from '@/modules/transaction/transaction.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
-import { panelClass } from '@/pages/home/style.css';
-
 import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary.tsx';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers.ts';
 import { normalizeTx } from '@/utils/normalizeSigs';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate.tsx';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
   MonoContentCopy,
@@ -44,6 +38,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CodeView } from '../code-components/CodeView.tsx';
 import { RenderSigner } from '../Signer.tsx';
 import { CommandView } from './../CommandView';
+import { codeClass } from './../style.css.ts';
 import { statusPassed, TxPipeLine } from './../TxPipeLine';
 
 export function ExpandedTransaction({
@@ -65,6 +60,7 @@ export function ExpandedTransaction({
   showTitle?: boolean;
   isDialog?: boolean;
 }) {
+  const navigate = usePatchedNavigate();
   const { getPublicKeyData, sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
   const [showCommandDetails, setShowCommandDetails] = useState(false);
@@ -158,13 +154,15 @@ export function ExpandedTransaction({
           width="100%"
           marginBlockEnd={'md'}
         >
-          <Card fullWidth>
-            <CardContentBlock title="Transaction">
-              <ErrorBoundary>
-                <CodeView codes={parsedCode} command={command} />
-              </ErrorBoundary>
-            </CardContentBlock>
-          </Card>
+          {parsedCode && (
+            <Card fullWidth>
+              <CardContentBlock title="Transaction">
+                <ErrorBoundary>
+                  <CodeView codes={parsedCode} command={command} />
+                </ErrorBoundary>
+              </CardContentBlock>
+            </Card>
+          )}
           <Card fullWidth>
             <CardContentBlock
               level={2}
@@ -293,27 +291,40 @@ export function ExpandedTransaction({
               </>
             )}
 
-            <Stack>
-              <Button variant="outlined" onPress={() => {}}>
-                Abort
-              </Button>
-              <Stack justifyContent="flex-end" flex={1} gap="sm">
+            {!sendDisabled && (
+              <Stack>
                 <Button
                   variant="outlined"
-                  onPress={() => setShowCommandDetails((v) => !v)}
+                  onPress={() => {
+                    if (transaction?.uuid) {
+                      transactionRepository.deleteTransaction(
+                        transaction?.uuid,
+                      );
+                    }
+
+                    navigate('/');
+                  }}
                 >
-                  {showCommandDetails
-                    ? 'Hide Command details'
-                    : 'Show Command details'}
+                  Abort
                 </Button>
-                <Button
-                  isDisabled={!statusPassed(transaction.status, 'signed')}
-                  type="submit"
-                >
-                  Send Transaction
-                </Button>
+                <Stack justifyContent="flex-end" flex={1} gap="sm">
+                  <Button
+                    variant="outlined"
+                    onPress={() => setShowCommandDetails((v) => !v)}
+                  >
+                    {showCommandDetails
+                      ? 'Hide Command details'
+                      : 'Show Command details'}
+                  </Button>
+                  <Button
+                    isDisabled={!statusPassed(transaction.status, 'signed')}
+                    type="submit"
+                  >
+                    Send Transaction
+                  </Button>
+                </Stack>
               </Stack>
-            </Stack>
+            )}
 
             {transaction.preflight &&
               ((

@@ -1,6 +1,5 @@
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten, toISOLocalDateTime } from '@/utils/helpers';
 import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
@@ -13,25 +12,11 @@ import { Label, Value } from './helpers';
 import { cardClass, codeClass, textEllipsis } from './style.css';
 
 export function CommandView({ transaction }: { transaction: ITransaction }) {
-  const { getPublicKeyData } = useWallet();
   const command: IPactCommand = useMemo(
     () => JSON.parse(transaction.cmd),
     [transaction.cmd],
   );
-  const signers = useMemo(
-    () =>
-      command.signers.map((signer) => {
-        const info = getPublicKeyData(signer.pubKey);
-        return {
-          ...signer,
-          info,
-        };
-      }),
-    [command, getPublicKeyData],
-  );
 
-  const externalSigners = signers.filter((signer) => !signer.info);
-  const internalSigners = signers.filter((signer) => signer.info);
   const [showShortenCode, setShowShortenCode] = useState(true);
   return (
     <Stack flexDirection={'column'} gap={'lg'}>

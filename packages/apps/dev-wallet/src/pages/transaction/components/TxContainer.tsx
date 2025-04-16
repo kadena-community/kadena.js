@@ -34,6 +34,8 @@ export const TxContainer = React.memo(
     const syncing = useRef(false);
     const doneRef = useRef(false);
 
+    console.log(3333, { as, sendDisabled });
+
     const localTransaction = useSubscribe<ITransaction>(
       'transaction',
       transaction.uuid,

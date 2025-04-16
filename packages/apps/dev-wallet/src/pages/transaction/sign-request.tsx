@@ -105,13 +105,19 @@ export const SignRequest = ({
           </Stack>
         </CardContentBlock>
       </Card>
-      <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
+      <Stack
+        flexDirection={'column'}
+        gap={'lg'}
+        overflow="auto"
+        marginBlockStart="md"
+      >
         <TxList
           onDone={() => {
             console.log('done');
           }}
           txIds={tx ? [tx.uuid] : []}
           showExpanded={true}
+          sendDisabled={true}
           onSign={(tx) => {
             if (requestId) {
               const request = requests.get(requestId);
