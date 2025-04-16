@@ -5,28 +5,14 @@ import { shorten, toISOLocalDateTime } from '@/utils/helpers';
 import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
 import { MonoTextSnippet } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Card,
-  Heading,
-  Notification,
-  Stack,
-  Text,
-} from '@kadena/kode-ui';
+import { Button, Card, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Label, Value } from './helpers';
-import { RenderSigner } from './Signer';
 import { cardClass, codeClass, textEllipsis } from './style.css';
 
-export function CommandView({
-  transaction,
-  onSign,
-}: {
-  transaction: ITransaction;
-  onSign: (sig: ITransaction['sigs']) => void;
-}) {
+export function CommandView({ transaction }: { transaction: ITransaction }) {
   const { getPublicKeyData } = useWallet();
   const command: IPactCommand = useMemo(
     () => JSON.parse(transaction.cmd),
@@ -187,65 +173,6 @@ export function CommandView({
           </Stack>
         </CardContentBlock>
       </Card>
-      <Stack flexDirection={'column'} gap={'xxl'}>
-        <Stack
-          title="Your Signatures"
-          key={'your-signatures'}
-          flexDirection={'column'}
-          gap={'sm'}
-        >
-          <Heading variant="h4">Your Signatures</Heading>
-          {internalSigners.length === 0 && (
-            <Notification intent="info" role="status">
-              Nothing to sign by you
-            </Notification>
-          )}
-          {internalSigners.map((signer) => {
-            return (
-              <Stack
-                gap={'sm'}
-                flexDirection={'column'}
-                className={cardClass}
-                key={signer.pubKey}
-              >
-                <RenderSigner
-                  transaction={transaction}
-                  signer={signer}
-                  transactionStatus={transaction.status}
-                  onSign={onSign}
-                />
-              </Stack>
-            );
-          })}
-        </Stack>
-        {externalSigners.length > 0 && (
-          <Stack
-            title="External Signers"
-            key={'external-signatures'}
-            flexDirection={'column'}
-            gap={'sm'}
-          >
-            <Heading variant="h4">External Signers</Heading>
-            {externalSigners.map((signer) => {
-              return (
-                <Stack
-                  gap={'sm'}
-                  flexDirection={'column'}
-                  className={cardClass}
-                  key={signer.pubKey}
-                >
-                  <RenderSigner
-                    transaction={transaction}
-                    signer={signer}
-                    transactionStatus={transaction.status}
-                    onSign={onSign}
-                  />
-                </Stack>
-              );
-            })}
-          </Stack>
-        )}
-      </Stack>
     </Stack>
   );
 }

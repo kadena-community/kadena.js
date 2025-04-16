@@ -10,20 +10,24 @@ import { shorten } from '@/utils/helpers';
 import { normalizeSigs } from '@/utils/normalizeSigs';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
-  MonoCheck,
-  MonoClose,
   MonoCloudSync,
   MonoFactCheck,
-  MonoLoading,
-  MonoPauseCircle,
+  MonoInfo,
   MonoRefresh,
-  MonoShare,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
-import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
+import {
+  Button,
+  Heading,
+  Notification,
+  Stack,
+  Text,
+  Tooltip,
+} from '@kadena/kode-ui';
 import { useMemo, useState } from 'react';
 import { failureClass, pendingClass, successClass } from './../style.css';
+import { TxStatusItem } from './components/TxStatusItem';
 import { iconSuccessClass, statusListWrapperClass } from './style.css';
 
 export const steps: TransactionStatus[] = [
@@ -113,14 +117,14 @@ function TxStatusList({
 }) {
   const { getPublicKeyData, client } = useWallet();
   const signers = useMemo(() => normalizeSigs(tx), [tx]);
-  const textSize = variant === 'tile' ? 'smallest' : 'base';
   const signedByYou = !signers.find(
     (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
   );
-  const [copied, setCopied] = useState(false);
+
+  const [showPreflightInfo, setShowPreflightInfo] = useState(false);
   const [signError, setSignError] = useState<string | null>(null);
 
-  const copyTx = () => {
+  const copyTx = useMemo(() => {
     const encodedTx = base64UrlEncodeArr(
       new TextEncoder().encode(
         JSON.stringify({
@@ -130,32 +134,30 @@ function TxStatusList({
         }),
       ),
     );
+
     const baseUrl = `${window.location.protocol}//${window.location.host}`;
-    navigator.clipboard.writeText(`${baseUrl}/sig-builder#${encodedTx}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+
+    return `${baseUrl}/sig-builder#${encodedTx}`;
+  }, [tx.hash, tx.cmd, tx.sigs]);
 
   const statusList = [
     variant !== 'minimized' && (
       <Stack alignItems="center" gap="sm">
-        <Text id="hash" variant="code">
-          {shorten(tx.hash, 6)}
-        </Text>
+        <Stack flex={1}>
+          <Text id="hash" variant="code">
+            {shorten(tx.hash, 6)}
+          </Text>
+        </Stack>
         <CopyButton data={tx.hash} />
       </Stack>
     ),
     showAfterCont &&
       variant !== 'tile' &&
       !statusPassed(tx.status, 'signed') && (
-        <Stack flexDirection={'column'} gap={'md'}>
-          <Text size={textSize} className={pendingClass}>
-            <Stack alignItems={'center'} gap={'xs'}>
-              <MonoPauseCircle />
-              {signedByYou ? 'add external signatures' : 'Waiting for sign'}
-            </Stack>
-          </Text>
-
+        <TxStatusItem
+          status="paused"
+          label={signedByYou ? 'add external signatures' : 'Waiting for sign'}
+        >
           {variant === 'expanded' && signedByYou && (
             <Stack gap={'sm'}>
               <Button
@@ -168,9 +170,7 @@ function TxStatusList({
               >
                 query chain
               </Button>
-              <Button startVisual={<MonoShare />} isCompact onClick={copyTx}>
-                {copied ? 'copied' : 'Share'}
-              </Button>
+              <CopyButton data={copyTx} />
             </Stack>
           )}
           {variant === 'expanded' && !signedByYou && (
@@ -199,46 +199,25 @@ function TxStatusList({
                 >
                   Sign Tx
                 </Button>
-                <Button
-                  variant="outlined"
-                  startVisual={<MonoShare />}
-                  isCompact
-                  onClick={copyTx}
-                >
-                  {copied ? 'copied' : 'Share'}
-                </Button>
+                <CopyButton data={copyTx} />
               </Stack>
             </Stack>
           )}
-        </Stack>
+        </TxStatusItem>
       ),
     showAfterCont && statusPassed(tx.status, 'signed') && (
-      <Stack>
-        <Text size={textSize} className={successClass}>
-          <Stack alignItems={'center'} gap={'xs'}>
-            <MonoCheck />
-            Signed
-          </Stack>
-        </Text>
-      </Stack>
+      <TxStatusItem status="success" label="Signed" />
     ),
     showAfterCont &&
       variant !== 'tile' &&
       statusPassed(tx.status, 'signed') &&
       !statusPassed(tx.status, 'preflight') && (
-        <Stack flexDirection={'column'} gap={'md'}>
-          <Text size={textSize} className={pendingClass}>
-            <Stack alignItems={'center'} gap={'xs'}>
-              <MonoPauseCircle />
-              {sendDisabled ? 'Transaction is pending' : 'Ready to preflight'}
-            </Stack>
-          </Text>
+        <TxStatusItem
+          status="paused"
+          label={sendDisabled ? 'Transaction is pending' : 'Ready to preflight'}
+        >
           {variant === 'expanded' && (
             <>
-              <Text size="small">
-                Preflight will test your transaction first to avoid paying gas
-                for a failed submission.
-              </Text>
               <Stack gap={'sm'}>
                 <Button
                   isCompact
@@ -248,42 +227,42 @@ function TxStatusList({
                 >
                   Preflight
                 </Button>
-                <Button
-                  variant="outlined"
-                  startVisual={<MonoShare />}
+
+                <Tooltip
+                  position="bottom"
                   isCompact
-                  onClick={copyTx}
+                  isOpen={showPreflightInfo}
+                  content={
+                    <>
+                      <div>Preflight will test your transaction first</div>
+                      <div>to avoid paying gas for a failed submission.</div>
+                    </>
+                  }
                 >
-                  {copied ? 'copied' : 'Share'}
-                </Button>
+                  <Button
+                    isCompact
+                    variant="transparent"
+                    startVisual={<MonoInfo />}
+                    onPress={() => setShowPreflightInfo((v) => !v)}
+                  />
+                </Tooltip>
+                <CopyButton data={copyTx} />
               </Stack>
             </>
           )}
-        </Stack>
+        </TxStatusItem>
       ),
     showAfterCont && statusPassed(tx.status, 'preflight') && (
-      <Stack gap={'sm'} alignItems={'center'}>
-        <Text
-          size={textSize}
-          className={
-            tx.preflight?.result.status === 'success'
-              ? successClass
-              : failureClass
-          }
-        >
-          <Stack alignItems={'center'} gap={'xs'}>
-            {tx.preflight?.result.status === 'success' ? (
-              <MonoCheck />
-            ) : (
-              <MonoClose />
-            )}
-            preflight
-          </Stack>
-        </Text>
+      <TxStatusItem
+        status={
+          tx.preflight?.result.status === 'success' ? 'success' : 'failure'
+        }
+        label="Preflight"
+      >
         {variant === 'expanded' &&
           tx.status === 'preflight' &&
           tx.preflight?.result.status === 'failure' && (
-            <Stack>
+            <>
               <Button isCompact onClick={() => onPreflight()}>
                 <MonoRefresh />
               </Button>
@@ -294,23 +273,17 @@ function TxStatusList({
               >
                 Skip
               </Button>
-            </Stack>
+            </>
           )}
-      </Stack>
+      </TxStatusItem>
     ),
     showAfterCont &&
       variant !== 'tile' &&
       tx.status === 'preflight' &&
       tx.preflight?.result.status === 'success' && (
-        <Stack flexDirection={'column'} gap={'md'}>
-          <Text size={textSize} className={pendingClass}>
-            <Stack alignItems={'center'} gap={'xs'}>
-              <MonoPauseCircle />
-              Ready to send
-            </Stack>
-          </Text>
+        <TxStatusItem status="paused" label="Ready to send">
           {variant === 'expanded' && (
-            <Stack gap={'sm'}>
+            <>
               <Button
                 isCompact
                 onClick={() => onSubmit()}
@@ -319,163 +292,75 @@ function TxStatusList({
               >
                 Send tx
               </Button>
-              <Button
-                variant="outlined"
-                startVisual={<MonoShare />}
-                isCompact
-                onClick={copyTx}
-              >
-                {copied ? 'copied' : 'Share'}
-              </Button>
-            </Stack>
+              <CopyButton data={copyTx} />
+            </>
           )}
-        </Stack>
+        </TxStatusItem>
       ),
     showAfterCont && statusPassed(tx.status, 'submitted') && (
-      <Stack gap={'sm'} alignItems={'center'}>
-        <Text
-          size={textSize}
-          className={tx.request ? successClass : failureClass}
-        >
-          <Stack alignItems={'center'} gap={'xs'}>
-            {tx.request ? <MonoCheck /> : <MonoClose />}
-            Send
-          </Stack>
-        </Text>
+      <TxStatusItem status={tx.request ? 'success' : 'failure'} label="Send">
         {variant === 'expanded' && !tx.request && (
-          <Stack>
-            <Button isCompact onClick={() => onSubmit(true)}>
-              <MonoRefresh />
-            </Button>
-          </Stack>
+          <Button isCompact onClick={() => onSubmit(true)}>
+            <MonoRefresh />
+          </Button>
         )}
-      </Stack>
+      </TxStatusItem>
     ),
     showAfterCont &&
       statusPassed(tx.status, 'submitted') &&
       (!('result' in tx) || !tx.result) && (
-        <Stack>
-          <Text size={textSize} className={pendingClass}>
-            <Stack alignItems={'center'} gap={'xs'}>
-              <MonoLoading />
-              Mining...
-            </Stack>
-          </Text>
-        </Stack>
+        <TxStatusItem status="active" label="Mining" />
       ),
     statusPassed(tx.status, 'success') && (
-      <Stack>
-        <Text size={textSize} className={successClass}>
-          <Stack alignItems={'center'} gap={'xs'}>
-            <MonoCheck />
-            Mined{' '}
-            {tx.continuation?.autoContinue && contTx
-              ? `in chain ${tx.purpose!.data.source as string}`
-              : ''}
-          </Stack>
-        </Text>
-      </Stack>
+      <TxStatusItem
+        status="success"
+        label={`Mined 
+      ${
+        tx.continuation?.autoContinue && contTx
+          ? `in chain ${tx.purpose!.data.source as string}`
+          : ''
+      }`}
+      />
     ),
-    tx.status === 'failure' && (
-      <Stack>
-        <Text size={textSize} className={failureClass}>
-          <Stack alignItems={'center'} gap={'xs'}>
-            <MonoClose />
-            Failed
-          </Stack>
-        </Text>
-      </Stack>
-    ),
+    tx.status === 'failure' && <TxStatusItem status="failure" label="Failed" />,
     statusPassed(tx.status, 'success') && [
       tx.continuation?.autoContinue && !tx.continuation.proof && (
-        <Stack>
-          <Text size={textSize} className={pendingClass}>
-            <Stack alignItems={'center'} gap={'xs'}>
-              <MonoLoading />
-              Fetching proof
-            </Stack>
-          </Text>
-        </Stack>
+        <TxStatusItem status="active" label="Fetching proof" />
       ),
       showAfterCont &&
         tx.continuation?.autoContinue &&
         tx.continuation.proof && (
-          <Stack>
-            <Text size={textSize} className={successClass}>
-              <Stack alignItems={'center'} gap={'xs'}>
-                <MonoCheck />
-                proof fetched
-              </Stack>
-            </Text>
-          </Stack>
+          <TxStatusItem status="success" label=" proof fetched" />
         ),
       contTx && [
         variant !== 'minimized' && (
-          <Stack justifyContent={'space-between'}>
-            <Text>cont: {shorten(contTx.hash, 6)}</Text>
-          </Stack>
+          <TxStatusItem
+            status="active"
+            label={`cont: ${shorten(contTx.hash, 6)}`}
+          />
         ),
         statusPassed(contTx.status, 'preflight') && (
-          <Stack>
-            <Text
-              size={textSize}
-              className={
-                contTx.preflight?.result.status === 'success'
-                  ? successClass
-                  : failureClass
-              }
-            >
-              <Stack alignItems={'center'} gap={'xs'}>
-                {contTx.preflight?.result.status === 'success' ? (
-                  <MonoCheck />
-                ) : (
-                  <MonoClose />
-                )}
-                preflight
-              </Stack>
-            </Text>
-          </Stack>
+          <TxStatusItem
+            status={
+              contTx.preflight?.result.status === 'success'
+                ? 'success'
+                : 'failure'
+            }
+            label="Preflight"
+          />
         ),
         statusPassed(contTx.status, 'submitted') && (
-          <Stack>
-            <Text size={textSize} className={successClass}>
-              <Stack alignItems={'center'} gap={'xs'}>
-                <MonoCheck />
-                Send
-              </Stack>
-            </Text>
-          </Stack>
+          <TxStatusItem status="success" label="Send" />
         ),
         statusPassed(contTx.status, 'submitted') &&
           (!('result' in contTx) || !contTx.result) && (
-            <Stack>
-              <Text size={textSize} className={pendingClass}>
-                <Stack alignItems={'center'} gap={'xs'}>
-                  <MonoLoading />
-                  Mining...
-                </Stack>
-              </Text>
-            </Stack>
+            <TxStatusItem status="active" label="Mining" />
           ),
         statusPassed(contTx.status, 'success') && (
-          <Stack>
-            <Text size={textSize} className={successClass}>
-              <Stack alignItems={'center'} gap={'xs'}>
-                <MonoCheck />
-                Mined
-              </Stack>
-            </Text>
-          </Stack>
+          <TxStatusItem status="success" label="Mined" />
         ),
         contTx.status === 'failure' && (
-          <Stack>
-            <Text size={textSize} className={successClass}>
-              <Stack alignItems={'center'} gap={'xs'}>
-                <MonoCheck />
-                Failed
-              </Stack>
-            </Text>
-          </Stack>
+          <TxStatusItem status="failure" label="Failed" />
         ),
       ],
     ],

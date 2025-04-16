@@ -23,7 +23,6 @@ import {
   codeClass,
   readyToSignClass,
   signedClass,
-  tagClass,
 } from './style.css';
 
 import { ITransaction } from '@/modules/transaction/transaction.repository';

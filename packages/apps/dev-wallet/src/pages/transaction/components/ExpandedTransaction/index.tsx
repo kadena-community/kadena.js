@@ -40,7 +40,6 @@ import {
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { token } from '@kadena/kode-ui/styles';
 import { execCodeParser } from '@kadena/pactjs-generator';
-import classNames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { CodeView } from '../code-components/CodeView.tsx';
 import { RenderSigner } from '../Signer.tsx';
@@ -289,7 +288,7 @@ export function ExpandedTransaction({
                       </ContextMenu>
                     </Stack>
                   </Stack>
-                  <CommandView transaction={transaction} onSign={onSign} />
+                  <CommandView transaction={transaction} />
                 </Stack>
               </>
             )}
@@ -340,7 +339,7 @@ export function ExpandedTransaction({
             {contTx && [
               <Stack gap={'sm'} flexDirection={'column'}>
                 <Heading variant="h4">Command Details</Heading>
-                <CommandView transaction={contTx} onSign={onSign} />
+                <CommandView transaction={contTx} />
               </Stack>,
               contTx.preflight && (
                 <JsonView
