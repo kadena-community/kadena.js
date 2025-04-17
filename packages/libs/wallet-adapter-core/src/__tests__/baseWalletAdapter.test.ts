@@ -1,3 +1,12 @@
+declare module '../types' {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  interface KdaMethodMap {
+    test: {
+      params: {};
+    };
+  }
+}
+
 import { describe, expect, it, vi } from 'vitest';
 import { BaseWalletAdapter } from '../BaseWalletAdapter';
 
