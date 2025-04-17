@@ -8,7 +8,6 @@ import {
   DialogHeader,
   Divider,
   Heading,
-  Notification,
   Stack,
   Tooltip,
 } from '@kadena/kode-ui';
@@ -38,6 +37,7 @@ import { RenderSigner } from '../Signer';
 import { statusPassed } from '../TxPipeLine/utils';
 import { CommandView } from './../CommandView';
 import { TxPipeLine } from './../TxPipeLine';
+import { CmdView } from './components/CmdView/CmdView';
 import { JsonView } from './JsonView';
 
 export function ExpandedTransaction({
@@ -248,6 +248,31 @@ export function ExpandedTransaction({
                     </Stack>
                   </Stack>
                   <CommandView transaction={transaction} />
+
+                  {contTx && [
+                    <Stack gap={'sm'} flexDirection={'column'}>
+                      <Heading variant="h4">Command Details</Heading>
+                      <CommandView transaction={contTx} />
+                    </Stack>,
+                    contTx.preflight && (
+                      <JsonView
+                        title="Continuation Preflight Result"
+                        data={contTx.preflight}
+                      />
+                    ),
+                    contTx.request && (
+                      <JsonView
+                        title="Continuation Request"
+                        data={contTx.request}
+                      />
+                    ),
+                    'result' in contTx && contTx.result && (
+                      <JsonView
+                        title="Continuation Result"
+                        data={contTx.result}
+                      />
+                    ),
+                  ]}
                 </Stack>
               </>
             )}
@@ -256,6 +281,7 @@ export function ExpandedTransaction({
               <Stack>
                 <Button
                   variant="outlined"
+                  isDisabled={statusPassed(transaction.status, 'submitted')}
                   onPress={() => {
                     if (transaction?.uuid) {
                       transactionRepository.deleteTransaction(
@@ -278,8 +304,11 @@ export function ExpandedTransaction({
                       : 'Show Command details'}
                   </Button>
                   <Button
-                    isDisabled={!statusPassed(transaction.status, 'signed')}
-                    type="submit"
+                    isDisabled={
+                      !statusPassed(transaction.status, 'preflight') ||
+                      statusPassed(transaction.status, 'submitted')
+                    }
+                    onPress={() => onSubmit(true)}
                   >
                     Send Transaction
                   </Button>
@@ -287,45 +316,26 @@ export function ExpandedTransaction({
               </Stack>
             )}
 
-            {transaction.preflight &&
-              ((
-                <JsonView
-                  title="Preflight Result"
-                  data={transaction.preflight}
-                />
-              ) as any)}
-
-            {transaction.request && (
-              <JsonView title="Request" data={transaction.request} />
-            )}
-            {'result' in transaction && transaction.result && (
-              <JsonView title="Result" data={transaction.result} />
-            )}
-            {transaction.continuation?.proof && (
-              <JsonView
-                title="Result"
-                data={transaction.continuation?.proof}
-                shortening={40}
-              />
-            )}
-            {contTx && [
-              <Stack gap={'sm'} flexDirection={'column'}>
-                <Heading variant="h4">Command Details</Heading>
-                <CommandView transaction={contTx} />
-              </Stack>,
-              contTx.preflight && (
-                <JsonView
-                  title="Continuation Preflight Result"
-                  data={contTx.preflight}
-                />
-              ),
-              contTx.request && (
-                <JsonView title="Continuation Request" data={contTx.request} />
-              ),
-              'result' in contTx && contTx.result && (
-                <JsonView title="Continuation Result" data={contTx.result} />
-              ),
-            ]}
+            <CmdView
+              views={[
+                {
+                  label: 'Preflight',
+                  data: transaction.preflight,
+                },
+                {
+                  label: 'Request',
+                  data: transaction.request,
+                },
+                {
+                  label: 'Result',
+                  data: transaction.result,
+                },
+                {
+                  label: 'Continuation Proof',
+                  data: transaction.continuation?.proof,
+                },
+              ]}
+            />
           </Stack>
         </Stack>
       </Content>

@@ -1,5 +1,5 @@
 import { recipe, style } from '@kadena/kode-ui';
-import { atoms, token, tokens } from '@kadena/kode-ui/styles';
+import { atoms, token } from '@kadena/kode-ui/styles';
 
 export const statusListWrapperClass = style([
   atoms({

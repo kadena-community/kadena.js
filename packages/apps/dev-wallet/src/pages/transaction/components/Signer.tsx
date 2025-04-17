@@ -133,7 +133,7 @@ export const RenderSigner = ({
             <MonoFactCheck
               width={24}
               height={24}
-              className={iconSuccessClass}
+              className={iconSuccessClass()}
             />
           }
           supportingContent={
