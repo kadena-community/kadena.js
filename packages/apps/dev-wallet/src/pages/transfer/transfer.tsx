@@ -39,6 +39,9 @@ export type IStepKeys =
   | 'success'
   | 'preflight'
   | 'send'
+  | 'mining'
+  | 'completed'
+  | 'success'
   | 'failure';
 
 const steps: ICompactStepperItemProps[] = [
@@ -59,8 +62,12 @@ const steps: ICompactStepperItemProps[] = [
     id: 'send',
   },
   {
-    label: 'Success',
-    id: 'success',
+    label: 'Mining',
+    id: 'mining',
+  },
+  {
+    label: 'Completed',
+    id: 'completed',
   },
 ] as const;
 
@@ -264,10 +271,12 @@ export function Transfer() {
   };
 
   const getStepIdx = (key: IStepKeys): number => {
-    return steps.findIndex((step) => step.id === key) ?? 0;
+    const idx = steps.findIndex((step) => step.id === key);
+    return idx === -1 ? steps.length - 1 : idx;
   };
 
-  const handleSetStep = (step: IStepKeys) => {
+  const handleSetStep = (step?: IStepKeys) => {
+    if (!step) return;
     setStep(step);
   };
 
@@ -346,7 +355,7 @@ export function Transfer() {
             }}
           />
         )}
-        {step === 'success' && (
+        {step === 'completed' && (
           <Stack marginBlock={'lg'}>
             <Notification role="status" intent="positive">
               Transfer is done!

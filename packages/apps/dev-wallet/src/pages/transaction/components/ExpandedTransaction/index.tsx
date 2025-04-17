@@ -164,25 +164,6 @@ export function ExpandedTransaction({
           </Card>
 
           <Stack flex={1} gap={'xxl'} flexDirection={'column'}>
-            {statusPassed(transaction.status, 'success') &&
-              (!transaction.continuation?.autoContinue ||
-                (contTx && statusPassed(contTx.status, 'success'))) && (
-                <Stack>
-                  <Notification intent="positive" role="status">
-                    Transaction is successful
-                  </Notification>
-                </Stack>
-              )}
-            {transaction.status === 'failure' &&
-              (!transaction.continuation?.autoContinue ||
-                (contTx && contTx.status === 'failure')) && (
-                <Stack>
-                  <Notification intent="negative" role="status">
-                    Transaction is failed
-                  </Notification>
-                </Stack>
-              )}
-
             {signers.map((signer) => (
               <RenderSigner
                 key={signer.pubKey}

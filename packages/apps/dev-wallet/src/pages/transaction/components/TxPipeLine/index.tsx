@@ -355,15 +355,42 @@ function TxStatusList({
     .flat(Infinity)
     .filter(Boolean);
 
+  const txCompletedStatus = () => {
+    if (
+      statusPassed(tx.status, 'success') &&
+      (!tx.continuation?.autoContinue ||
+        (contTx && statusPassed(contTx.status, 'success')))
+    )
+      return 'success';
+
+    if (
+      tx.status === 'failure' &&
+      (!tx.continuation?.autoContinue ||
+        (contTx && contTx.status === 'failure'))
+    )
+      return 'failure';
+
+    return;
+  };
+
   if (variant === 'minimized') return statusList.pop() as JSX.Element;
   return (
     <>
       <Heading variant="h6">Status</Heading>
       <Stack className={statusListWrapperClass} gap="sm" width="100%">
         {variant === 'expanded' && (
-          <Stack gap="sm" className={iconSuccessClass}>
+          <Stack
+            gap="sm"
+            className={iconSuccessClass({ variant: txCompletedStatus() })}
+          >
             <MonoFactCheck width={16} height={16} />
-            <Text>Transaction is ready</Text>
+            {txCompletedStatus() === 'success' && (
+              <Text>Transaction is successful</Text>
+            )}
+            {txCompletedStatus() === 'failure' && (
+              <Text>Transaction is failed</Text>
+            )}
+            {!txCompletedStatus() && <Text>Transaction is ready</Text>}
           </Stack>
         )}
         {statusList}

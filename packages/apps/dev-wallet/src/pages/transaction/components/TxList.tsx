@@ -49,7 +49,26 @@ export const TxList = React.memo(
     const updateTx = useCallback(
       (updatedTx: ITransaction) =>
         setTransactions((prev) => {
-          if (setStep) setStep('preflight');
+          if (setStep) {
+            console.log({ status: updatedTx?.status });
+            switch (updatedTx?.status) {
+              case 'initiated':
+                setStep('sign');
+                break;
+              case 'signed':
+                setStep('preflight');
+                break;
+              case 'preflight':
+                setStep('send');
+                break;
+              case 'submitted':
+                setStep('mining');
+                break;
+              case 'success':
+              case 'failure':
+                setStep('completed');
+            }
+          }
           if (updatedTx.status === 'signed' && onSign) {
             if (
               prev.find((tx) => tx.uuid === updatedTx.uuid)?.status !== 'signed'

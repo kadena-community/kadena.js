@@ -15,13 +15,13 @@ export const CodeViewPart: FC<{
       <Heading variant="h5">{label}</Heading>
       <Stack gap={'sm'} flexWrap="wrap">
         <Text>from</Text>
-        <Text bold color="emphasize">
+        <Text color="emphasize" className={breakAllClass}>
           <CodeViewAccount address={senderAddress} contract={contract} />
         </Text>
       </Stack>
       <Stack gap={'sm'} flexWrap="wrap">
         <Text>to</Text>
-        <Text bold color="emphasize">
+        <Text color="emphasize" className={breakAllClass}>
           <CodeViewAccount address={receiverAddress} contract={contract} />
         </Text>
       </Stack>

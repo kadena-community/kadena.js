@@ -1,5 +1,5 @@
 import { recipe, style } from '@kadena/kode-ui';
-import { atoms, token } from '@kadena/kode-ui/styles';
+import { atoms, token, tokens } from '@kadena/kode-ui/styles';
 
 export const statusListWrapperClass = style([
   atoms({
@@ -14,11 +14,21 @@ export const statusListWrapperClass = style([
   }),
 ]);
 
-export const iconSuccessClass = style([
-  atoms({
-    color: 'icon.semantic.positive.default',
-  }),
-]);
+export const iconSuccessClass = recipe({
+  base: {
+    color: token('color.icon.semantic.positive.default'),
+  },
+  variants: {
+    variant: {
+      success: {
+        color: token('color.icon.semantic.positive.default'),
+      },
+      failure: {
+        color: token('color.icon.semantic.negative.default'),
+      },
+    },
+  },
+});
 
 export const capabilityClass = recipe({
   base: [
