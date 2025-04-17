@@ -34,7 +34,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   protected networkId: string;
   public connectSchema: StandardSchemaV1 = defaultConnectSchema;
 
-  constructor(options: BaseWalletAdapterOptions) {
+  public constructor(options: BaseWalletAdapterOptions) {
     this.provider = options.provider;
     this.networkId = options?.networkId || DEFAULT_NETWORK_ID;
   }
@@ -45,7 +45,7 @@ export abstract class BaseWalletAdapter implements Adapter {
    * Validates that the response is a JSON-RPC 2.0 compliant response.
    * Throws an error if the response does not conform to the standard.
    */
-  async request<M extends KdaMethod>(
+  public async request<M extends KdaMethod>(
     args: KdaRequestArgs<M>,
   ): Promise<KdaMethodMap[M]['response']> {
     const response = await this.provider.request(args);
@@ -55,12 +55,12 @@ export abstract class BaseWalletAdapter implements Adapter {
     return response as KdaMethodMap[M]['response'];
   }
 
-  on(event: string, listener: (...args: any[]) => void): this {
+  public on(event: string, listener: (...args: any[]) => void): this {
     this.provider.on(event, listener);
     return this;
   }
 
-  off(event: string, listener: (...args: any[]) => void): this {
+  public off(event: string, listener: (...args: any[]) => void): this {
     this.provider.off(event, listener);
     return this;
   }
@@ -68,7 +68,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Connect: call `kadena_connect`. params are defined per specific adapter.
    */
-  async connect(
+  public async connect(
     params: StandardSchemaV1.InferInput<NonNullable<typeof this.connectSchema>>,
   ): Promise<AccountInfo | null> {
     let parsedParams = params as Record<string, any>;
@@ -94,7 +94,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Disconnect: call `kadena_disconnect` with optional networkId.
    */
-  async disconnect(): Promise<void> {
+  public async disconnect(): Promise<void> {
     await this.request({
       method: 'kadena_disconnect',
       params: {
@@ -106,7 +106,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Returns the currently active account by calling `kadena_getAccount_v1`.
    */
-  async getActiveAccount(): Promise<AccountInfo> {
+  public async getActiveAccount(): Promise<AccountInfo> {
     const response = await this.request({
       method: 'kadena_getAccount_v1',
     });
@@ -119,7 +119,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Retrieve all accounts via `kadena_getAccounts_v2`.
    */
-  async getAccounts(): Promise<AccountInfo[]> {
+  public async getAccounts(): Promise<AccountInfo[]> {
     const response = await this.request({
       method: 'kadena_getAccounts_v2',
     });
@@ -129,7 +129,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Get the currently active network by calling `kadena_getNetwork_v1`.
    */
-  async getActiveNetwork(): Promise<NetworkInfo> {
+  public async getActiveNetwork(): Promise<NetworkInfo> {
     const response = await this.request({
       method: 'kadena_getNetwork_v1',
     });
@@ -142,7 +142,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Retrieve all networks via `kadena_getNetworks_v1`.
    */
-  async getNetworks(): Promise<NetworkInfo[]> {
+  public async getNetworks(): Promise<NetworkInfo[]> {
     const response = await this.request({
       method: 'kadena_getNetworks_v1',
     });
@@ -153,7 +153,7 @@ export abstract class BaseWalletAdapter implements Adapter {
    * Sign a transaction: call `kadena_signTransaction`.
    * Uses kadena_quicksign_v1
    */
-  async signTransaction(
+  public async signTransaction(
     command: IUnsignedCommand | IUnsignedCommand[],
   ): Promise<(IUnsignedCommand | ICommand) | (IUnsignedCommand | ICommand)[]> {
     const { commandSigDatas, transactionHashes, transactions, isList } =
@@ -182,7 +182,7 @@ export abstract class BaseWalletAdapter implements Adapter {
    * Sign a command: call `kadena_signCommand`.
    * Uses kadena_sign_v1
    */
-  async signCommand(
+  public async signCommand(
     command: IUnsignedCommand | ISigningRequestPartial,
   ): Promise<ICommand | IUnsignedCommand> {
     const signingCmd = prepareSignCmd(command);
@@ -201,21 +201,21 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Subscribe to account-change events.
    */
-  onAccountChange(cb: (newAccount: AccountInfo) => void): void {
+  public onAccountChange(cb: (newAccount: AccountInfo) => void): void {
     this.on('kadena_accountChanged', cb);
   }
 
   /**
    * Subscribe to network-change events.
    */
-  onNetworkChange(cb: (newNetwork: NetworkInfo) => void): void {
+  public onNetworkChange(cb: (newNetwork: NetworkInfo) => void): void {
     this.on('kadena_networkChanged', cb);
   }
 
   /**
    * Change the wallet's network by calling `kadena_changeNetwork_v1`.
    */
-  async changeNetwork(
+  public async changeNetwork(
     network: NetworkInfo,
   ): Promise<{ success: boolean; reason?: string }> {
     try {

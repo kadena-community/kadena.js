@@ -50,7 +50,7 @@ import { safeJsonParse } from './utils/json';
  * functionality for connecting to the Ecko Wallet.
  */
 export class EckoWalletAdapter extends BaseWalletAdapter {
-  public name = 'Ecko';
+  public name: string = 'Ecko';
 
   // Listeners for 'kadena_networkChanged'.
   private _networkChangedListeners: Array<(network: NetworkInfo) => void> = [];
@@ -61,7 +61,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
    * Constructor for the EckoWalletAdapter.
    * @param options - Optional adapter options.
    */
-  constructor(options: BaseWalletAdapterOptions) {
+  public constructor(options: BaseWalletAdapterOptions) {
     super(options);
   }
 
@@ -198,7 +198,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
    * @param listener - The callback function.
    * @returns The instance of EckoWalletAdapter.
    */
-  on(event: string, listener: (...args: any[]) => void): this {
+  public on(event: string, listener: (...args: any[]) => void): this {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
     switch (event) {
       case 'kadena_accountChanged': {
@@ -257,7 +257,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
    * @param listener - The callback function.
    * @returns The instance of EckoWalletAdapter.
    */
-  off(event: string, listener: (...args: any[]) => void): this {
+  public off(event: string, listener: (...args: any[]) => void): this {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
     switch (event) {
       case 'kadena_accountChanged':
@@ -294,7 +294,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
    * This implementation supports extended methods from ExtendedMethodMap, including special handling
    * for 'kadena_checkStatus'.
    */
-  async request<M extends ExtendedMethod>(args: {
+  public async request<M extends ExtendedMethod>(args: {
     id: number;
     method: M;
     params?: ExtendedMethodMap[M]['params'];
@@ -494,7 +494,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
     }
   }
 
-  async disconnect(): Promise<void> {
+  public async disconnect(): Promise<void> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
     await this.provider.request({
       method: 'kda_disconnect',

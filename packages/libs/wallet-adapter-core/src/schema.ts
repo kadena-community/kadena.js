@@ -20,7 +20,7 @@ export class SchemaError extends Error {
    *
    * @param issues The schema issues.
    */
-  constructor(issues: ReadonlyArray<StandardSchemaV1.Issue>) {
+  public constructor(issues: ReadonlyArray<StandardSchemaV1.Issue>) {
     super(issues[0].message);
     this.name = 'SchemaError';
     this.issues = issues;

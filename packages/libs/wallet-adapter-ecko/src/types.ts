@@ -1,4 +1,4 @@
-import type { KdaMethodMap as StandardKdaMethodMap } from "@kadena/wallet-adapter-core";
+import type { KdaMethodMap as StandardKdaMethodMap } from '@kadena/wallet-adapter-core';
 
 /**
  * Represents a quicksign signature as defined in the quicksign API.
@@ -50,14 +50,14 @@ export interface IQuicksignResponseOutcomes {
     outcome:
       | {
           hash: string;
-          result: "success";
+          result: 'success';
         }
       | {
           msg: string;
-          result: "failure";
+          result: 'failure';
         }
       | {
-          result: "noSig";
+          result: 'noSig';
         };
   }[];
 }
@@ -69,13 +69,13 @@ export interface IQuicksignResponseOutcomes {
 export declare interface IQuicksignResponseError {
   error:
     | {
-        type: "reject";
+        type: 'reject';
       }
     | {
-        type: "emptyList";
+        type: 'emptyList';
       }
     | {
-        type: "other";
+        type: 'other';
         msg: string;
       };
 }
@@ -84,7 +84,9 @@ export declare interface IQuicksignResponseError {
  * Response from {@link https://github.com/kadena-io/KIPs/blob/master/kip-0017.md | quicksign API}
  * @public
  */
-export declare type IQuicksignResponse = IQuicksignResponseError | IQuicksignResponseOutcomes;
+export declare type IQuicksignResponse =
+  | IQuicksignResponseError
+  | IQuicksignResponseOutcomes;
 
 /**
  * Represents a raw response from the wallet adapter provider.
@@ -93,10 +95,10 @@ export declare type IQuicksignResponse = IQuicksignResponseError | IQuicksignRes
  *
  * @public
  */
-export type RawRequestResponse = {
-  status: "success" | "fail";
+export interface RawRequestResponse {
+  status: 'success' | 'fail';
   message?: string;
-};
+}
 
 /**
  * Represents a raw response containing account information from the provider.
@@ -105,11 +107,11 @@ export type RawRequestResponse = {
  *
  * @public
  */
-export type RawAccountResponse = {
+export interface RawAccountResponse {
   status: string;
   message?: string;
   wallet?: { account: string; publicKey: string };
-};
+}
 
 /**
  * Represents a raw network response from the provider.
@@ -118,11 +120,11 @@ export type RawAccountResponse = {
  *
  * @public
  */
-export type RawNetworkResponse = {
+export interface RawNetworkResponse {
   name: string;
   networkId: string;
   url: string;
-};
+}
 
 /**
  * Represents the response from a kadena_checkStatus RPC call.
@@ -155,19 +157,19 @@ export interface kadenaCheckStatusRPC {
  * @public
  */
 type IEckoQuicksignSuccessResponse = {
-  status: "success";
+  status: 'success';
 } & (
   | {
       /**
        * The quicksign response data for older versions of Ecko Wallet.
        */
-      quickSignData: IQuicksignResponseOutcomes["responses"];
+      quickSignData: IQuicksignResponseOutcomes['responses'];
     }
   | {
       /**
        * The quicksign response data for newer versions of Ecko Wallet.
        */
-      responses: IQuicksignResponseOutcomes["responses"];
+      responses: IQuicksignResponseOutcomes['responses'];
     }
 );
 
@@ -179,7 +181,7 @@ type IEckoQuicksignSuccessResponse = {
  * @public
  */
 export interface IEckoQuicksignFailResponse {
-  status: "fail";
+  status: 'fail';
   error: string;
   message?: string;
 }
@@ -191,7 +193,9 @@ export interface IEckoQuicksignFailResponse {
  *
  * @public
  */
-export type IEckoQuicksignResponse = IEckoQuicksignSuccessResponse | IEckoQuicksignFailResponse;
+export type IEckoQuicksignResponse =
+  | IEckoQuicksignSuccessResponse
+  | IEckoQuicksignFailResponse;
 
 /**
  * Represents the extended method map specific to Ecko Wallet.
