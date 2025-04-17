@@ -34,6 +34,7 @@ import { ERRORS } from './constants';
 import type {
   ExtendedMethod,
   ExtendedMethodMap,
+  IEckoQuicksignFailResponse,
   IEckoQuicksignResponse,
   IQuicksignResponse,
   kadenaCheckStatusRPC,
@@ -415,24 +416,31 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
           status: string;
           message: string;
           signedCmd: ICommand;
+          error?: string;
         };
+
+        if (response.status !== 'success') {
+          const err =
+            response.error ??
+            response.message ??
+            ERRORS.ERROR_SIGNING_TRANSACTION;
+          throw new Error(err);
+        }
+
         const result = {
           cmd: response.signedCmd.cmd,
           hash: response.signedCmd.hash,
           sigs: response.signedCmd.sigs,
         };
-        if (response.status === 'success') {
-          return {
-            id,
-            jsonrpc: '2.0',
-            result: {
-              body: result,
-              chainId: safeJsonParse(result.cmd)?.meta?.chainId,
-            },
-          } as ExtendedMethodMap[M]['response'];
-        } else {
-          throw new Error(response.message);
-        }
+
+        return {
+          id,
+          jsonrpc: '2.0',
+          result: {
+            body: result,
+            chainId: safeJsonParse(result.cmd)?.meta?.chainId,
+          },
+        } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_quicksign_v1': {
         const { commandSigDatas } = params as any;
@@ -443,22 +451,27 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
             commandSigDatas,
           },
         })) as IEckoQuicksignResponse;
-        if (response.status === 'success') {
-          const responses =
-            'responses' in response
-              ? response.responses
-              : response.quickSignData;
-          if (!Array.isArray(responses)) {
-            throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
-          }
-          return {
-            id,
-            jsonrpc: '2.0',
-            result: { responses } as IQuicksignResponse,
-          } as ExtendedMethodMap[M]['response'];
-        } else {
-          throw new Error(response.message);
+
+        if (response.status !== 'success') {
+          const err =
+            (response as IEckoQuicksignFailResponse).error ??
+            (response as IEckoQuicksignFailResponse).message ??
+            ERRORS.ERROR_SIGNING_TRANSACTION;
+          throw new Error(err);
         }
+
+        const responses =
+          'responses' in response ? response.responses : response.quickSignData;
+
+        if (!Array.isArray(responses)) {
+          throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
+        }
+
+        return {
+          id,
+          jsonrpc: '2.0',
+          result: { responses } as IQuicksignResponse,
+        } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_checkStatus': {
         return (await this.provider.request({
