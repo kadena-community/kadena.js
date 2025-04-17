@@ -3533,6 +3533,9 @@ importers:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
         version: link:../../tools/eslint-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../types
       '@microsoft/api-extractor':
         specifier: ^7.43.1
         version: 7.47.0(@types/node@20.16.5)
