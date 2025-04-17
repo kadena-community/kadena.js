@@ -10,6 +10,7 @@ import { PactNumber } from '@kadena/pactjs';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IRetrievedAccount } from '../../../../modules/account/IRetrievedAccount';
+import { IStepKeys } from '../../transfer';
 import {
   IReceiver,
   getAvailableChains,

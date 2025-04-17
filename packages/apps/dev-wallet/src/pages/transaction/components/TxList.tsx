@@ -12,6 +12,7 @@ import { isSignedCommand } from '@kadena/pactjs';
 import React, { useCallback, useEffect } from 'react';
 
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { IStepKeys } from '@/pages/transfer/transfer';
 import { normalizeSigs } from '@/utils/normalizeSigs';
 import { TxContainer } from './TxContainer';
 import { statusPassed, steps } from './TxPipeLine/utils';
@@ -23,12 +24,14 @@ export const TxList = React.memo(
     onDone,
     showExpanded,
     onSign,
+    setStep,
   }: {
     txIds: string[];
     showExpanded?: boolean;
     sendDisabled?: boolean;
     onDone?: () => void;
     onSign?: (tx: ICommand) => void;
+    setStep?: (step: IStepKeys) => void;
   }) => {
     const { sign, client, getPublicKeyData } = useWallet();
     const [transactions, setTransactions] = React.useState<ITransaction[]>([]);
@@ -46,6 +49,7 @@ export const TxList = React.memo(
     const updateTx = useCallback(
       (updatedTx: ITransaction) =>
         setTransactions((prev) => {
+          if (setStep) setStep('preflight');
           if (updatedTx.status === 'signed' && onSign) {
             if (
               prev.find((tx) => tx.uuid === updatedTx.uuid)?.status !== 'signed'

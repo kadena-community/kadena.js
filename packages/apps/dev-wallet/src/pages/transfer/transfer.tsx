@@ -33,7 +33,7 @@ import {
   IReceiver,
 } from './utils';
 
-type IStepKeys =
+export type IStepKeys =
   | 'transfer'
   | 'sign'
   | 'success'
@@ -213,6 +213,7 @@ export function Transfer() {
               console.log('update');
               reloadTxs();
             }}
+            setStep={handleSetStep}
             txIds={txGroups.transfer.txs.map(({ uuid }) => uuid)}
             showExpanded={true}
           />
@@ -225,6 +226,7 @@ export function Transfer() {
                 <Text>First we send required tokens to the target chains</Text>
               </Stack>
               <TxList
+                setStep={handleSetStep}
                 onDone={() => {
                   console.log('update');
                   reloadTxs();
@@ -242,6 +244,7 @@ export function Transfer() {
               <Text>These are the transactions for the final transfers</Text>
             </Stack>
             <TxList
+              setStep={handleSetStep}
               onDone={() => {
                 console.log('update');
                 reloadTxs();
@@ -262,6 +265,10 @@ export function Transfer() {
 
   const getStepIdx = (key: IStepKeys): number => {
     return steps.findIndex((step) => step.id === key) ?? 0;
+  };
+
+  const handleSetStep = (step: IStepKeys) => {
+    setStep(step);
   };
 
   return (
