@@ -1,36 +1,21 @@
-import type { IAccount, IChainAccount } from './../constants';
-import { MINBALANCE, faucetAccount } from './../constants';
+import { lowBalanceChains } from '../utils/lowBalanceChains';
+import type { IAccount, INETWORK } from './../constants';
+import { MINBALANCE, NETWORKS, faucetAccount } from './../constants';
 import { sendErrorMessage, sendMessage } from './messages';
 
-export const lowFaucetChains = (
-  chainAccounts: IChainAccount[] | undefined,
-  minBalance: number,
-): IChainAccount[] => {
-  if (!chainAccounts?.length) return [];
-
-  const lowChains = chainAccounts.filter(
-    (chainAccount) => chainAccount.balance < minBalance,
-  );
-
-  return lowChains;
-};
-
-export const creatLowChainsString = (chains: IChainAccount[]) => {
-  return chains
-    .map((chain) => {
-      return `*chain ${chain.chainId}:* (${chain.balance.toLocaleString()} KDA)`;
-    })
-    .join('\n');
+const getHackachainTestnet = (): INETWORK => {
+  return NETWORKS.find((network) => network.key === 'TESTNET') ?? NETWORKS[1];
 };
 
 const getFaucetAccount = async (): Promise<IAccount> => {
-  const result = await fetch('https://graph.testnet.kadena.network/graphql', {
+  const result = await fetch(getHackachainTestnet().url, {
     method: 'POST',
     headers: {
       accept:
         'application/graphql-response+json, application/json, multipart/mixed',
       'cache-control': 'no-cache',
       'content-type': 'application/json',
+      'x-api-key': process.env.HACKACHAIN_APIKEY ?? '',
       pragma: 'no-cache',
       'sec-fetch-mode': 'cors',
       'sec-fetch-site': 'cross-site',
@@ -64,7 +49,7 @@ export const runJob = async () => {
     }
 
     if (
-      !lowFaucetChains(
+      !lowBalanceChains(
         accountResult.data?.fungibleAccount.chainAccounts,
         MINBALANCE,
       ).length
