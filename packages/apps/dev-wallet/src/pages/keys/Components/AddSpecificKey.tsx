@@ -25,6 +25,7 @@ export function AddSpecificKey({
   keySource: IKeySource;
   isOpen: boolean;
 }) {
+  console.log({ keySource });
   const [index, setIndex] = useState('');
   const { createKey } = useWallet();
   const isAvailable = !keySource.keys.find((k) => k.index === parseInt(index));

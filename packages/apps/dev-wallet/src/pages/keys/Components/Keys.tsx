@@ -4,6 +4,7 @@ import { keySourceManager } from '@/modules/key-source/key-source-manager';
 import { keySourceRepository } from '@/modules/key-source/key-source.repository.ts';
 import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { KeySourceType } from '@/modules/wallet/wallet.repository.ts';
 import { shorten } from '@/utils/helpers.ts';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
 import {
@@ -25,14 +26,14 @@ export function Keys() {
   const { keySources, profile, askForPassword, createKey } = useWallet();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const [asideTarget, setAsideTarget] = useState<
-    'add-key-source' | 'add-specific-key'
+    'add-key-source' | KeySourceType | undefined
   >();
   const showKeySourceForm = () => {
     setAsideTarget('add-key-source');
     setIsRightAsideExpanded(true);
   };
-  const showAddSpecificKeyForm = () => {
-    setAsideTarget('add-specific-key');
+  const showAddSpecificKeyForm = (key: KeySourceType) => {
+    setAsideTarget(key);
     setIsRightAsideExpanded(true);
   };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -126,7 +127,7 @@ export function Keys() {
               <AddSpecificKey
                 keySource={keySource}
                 isOpen={
-                  isRightAsideExpanded && asideTarget === 'add-specific-key'
+                  isRightAsideExpanded && asideTarget === keySource.source
                 }
               />
               <Stack
@@ -164,7 +165,7 @@ export function Keys() {
                       <ContextMenuItem
                         label="Create specific key"
                         onClick={() => {
-                          showAddSpecificKeyForm();
+                          showAddSpecificKeyForm(keySource.source);
                         }}
                       />
                     ) : (
