@@ -18,7 +18,7 @@ export const JsonView = ({
         <Heading variant="h4">{title}</Heading>
         <CopyButton data={data} />
       </Stack>
-      <pre className={codeClass}>
+      <pre data-lang="json" className={codeClass}>
         {data && typeof data === 'object'
           ? JSON.stringify(data, null, 2)
           : shortening

@@ -1,6 +1,8 @@
+import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary';
 import { parseArg } from '@/utils/parsedCodeToPact';
 import { IPactCommand } from '@kadena/client';
 import { Card, Heading, Stack, Text } from '@kadena/kode-ui';
+import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { IParsedCode } from '@kadena/pactjs-generator';
 import { breakAllClass } from '../style.css';
 import { CodeViewPart } from './CodeViewPart';
@@ -90,25 +92,32 @@ export function CodeView({
         .filter(Boolean);
 
   return describes.length > 0 ? (
-    <Stack flexDirection={'column'} gap={'md'}>
-      <>
-        {describes.map((e) => (
-          <Card key={e?.key} fullWidth>
-            {e}
-          </Card>
-        ))}
-        {command && (
-          <Card fullWidth>
-            <Stack gap={'sm'} flexDirection={'column'}>
-              <Heading variant="h5">Max Gas Cost</Heading>
-              <Text bold color="emphasize">
-                {(command.meta.gasLimit ?? 0) * (command.meta.gasPrice ?? 0)}{' '}
-                KDA
-              </Text>
-            </Stack>
-          </Card>
-        )}
-      </>
-    </Stack>
+    <Card fullWidth>
+      <CardContentBlock title="Transaction">
+        <ErrorBoundary>
+          <Stack flexDirection={'column'} gap={'md'}>
+            <>
+              {describes.map((e) => (
+                <Card key={e?.key} fullWidth>
+                  {e}
+                </Card>
+              ))}
+              {command && (
+                <Card fullWidth>
+                  <Stack gap={'sm'} flexDirection={'column'}>
+                    <Heading variant="h5">Max Gas Cost</Heading>
+                    <Text bold color="emphasize">
+                      {(command.meta.gasLimit ?? 0) *
+                        (command.meta.gasPrice ?? 0)}{' '}
+                      KDA
+                    </Text>
+                  </Stack>
+                </Card>
+              )}
+            </>
+          </Stack>
+        </ErrorBoundary>
+      </CardContentBlock>
+    </Card>
   ) : null;
 }

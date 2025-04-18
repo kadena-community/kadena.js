@@ -144,7 +144,7 @@ export const RenderSigner = ({
                 endVisual={
                   signer.clist && (
                     <Badge size="sm" style="default">
-                      {signer.clist.length}
+                      {signer.clist.length + Number(!!signature)}
                     </Badge>
                   )
                 }
@@ -224,31 +224,33 @@ export const RenderSigner = ({
 
               <Value className={breakAllClass}>{signer.pubKey}</Value>
             </Stack>
-            {signature && (
-              <Stack flexDirection="column">
-                <Stack
-                  justifyContent={'space-between'}
-                  alignItems={'flex-start'}
-                  gap={'sm'}
-                >
-                  <Heading as="h6">Signature</Heading>
-
-                  <CopyButton
-                    data={{
-                      sig: signature,
-                      pubKey: signer.pubKey,
-                    }}
-                  />
-                </Stack>
-                <Value className={classNames(breakAllClass, codeClass)}>
-                  {signature}
-                </Value>
-              </Stack>
-            )}
           </Stack>
 
           {showCapabilities && (
-            <Stack gap={'sm'} flexDirection={'column'}>
+            <Stack gap={'sm'} flexDirection={'column'} marginBlockStart="md">
+              {signature && (
+                <>
+                  <Divider label="Signature" align="end" />
+                  <Stack flexDirection="column">
+                    <Stack
+                      justifyContent={'space-between'}
+                      alignItems={'flex-start'}
+                      gap={'sm'}
+                    >
+                      <CopyButton
+                        data={{
+                          sig: signature,
+                          pubKey: signer.pubKey,
+                        }}
+                      />
+                    </Stack>
+                    <Value className={classNames(breakAllClass, codeClass)}>
+                      {signature}
+                    </Value>
+                  </Stack>
+                </>
+              )}
+
               <Divider label="Capabilities" align="end" />
               {signer.clist &&
                 signer.clist.map((cap, idx) => (

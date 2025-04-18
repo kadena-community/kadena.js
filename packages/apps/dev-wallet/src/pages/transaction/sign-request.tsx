@@ -69,32 +69,7 @@ export const SignRequest = ({
   return (
     <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
       <Card fullWidth>
-        <CardContentBlock
-          title="Sign Request"
-          supportingContent={
-            <>
-              <Button
-                variant="negative"
-                isCompact
-                onClick={() => {
-                  if (tx?.uuid) {
-                    transactionRepository.deleteTransaction(tx?.uuid);
-                  }
-                  if (requestId) {
-                    const request = requests.get(requestId);
-                    if (request) {
-                      console.log('resolving request', request);
-                      request.reject({ status: 'rejected' });
-                    }
-                  }
-                  if (onAbort) onAbort();
-                }}
-              >
-                Reject
-              </Button>
-            </>
-          }
-        >
+        <CardContentBlock title="Sign Request">
           {!tx && <Text>No transaction</Text>}
 
           <Stack gap={'sm'} flexDirection={'row'}>
@@ -112,6 +87,27 @@ export const SignRequest = ({
         marginBlockStart="md"
       >
         <TxList
+          abortButtonContent={
+            <Button
+              variant="negative"
+              isCompact
+              onClick={() => {
+                if (tx?.uuid) {
+                  transactionRepository.deleteTransaction(tx?.uuid);
+                }
+                if (requestId) {
+                  const request = requests.get(requestId);
+                  if (request) {
+                    console.log('resolving request', request);
+                    request.reject({ status: 'rejected' });
+                  }
+                }
+                if (onAbort) onAbort();
+              }}
+            >
+              Reject
+            </Button>
+          }
           onDone={() => {
             console.log('done');
           }}

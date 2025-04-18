@@ -9,11 +9,12 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { ICommand, IUnsignedCommand } from '@kadena/client';
 import { MonoSignature } from '@kadena/kode-icons/system';
 import { isSignedCommand } from '@kadena/pactjs';
-import React, { useCallback, useEffect } from 'react';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 
 import * as transactionService from '@/modules/transaction/transaction.service';
 import { IStepKeys } from '@/pages/transfer/transfer';
 import { normalizeSigs } from '@/utils/normalizeSigs';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { TxContainer } from './TxContainer';
 import { statusPassed, steps } from './TxPipeLine/utils';
 
@@ -25,6 +26,7 @@ export const TxList = React.memo(
     showExpanded,
     onSign,
     setStep,
+    abortButtonContent,
   }: {
     txIds: string[];
     showExpanded?: boolean;
@@ -32,9 +34,11 @@ export const TxList = React.memo(
     onDone?: () => void;
     onSign?: (tx: ICommand) => void;
     setStep?: (step: IStepKeys) => void;
+    abortButtonContent?: ReactElement;
   }) => {
     const { sign, client, getPublicKeyData } = useWallet();
     const [transactions, setTransactions] = React.useState<ITransaction[]>([]);
+    const navigate = usePatchedNavigate();
 
     useEffect(() => {
       if (!txIds || txIds.length === 0) {
@@ -160,6 +164,25 @@ export const TxList = React.memo(
           {!showExpanded &&
             transactions.map((tx) => (
               <TxContainer
+                abortButtonContent={
+                  abortButtonContent ? (
+                    abortButtonContent
+                  ) : (
+                    <Button
+                      variant="negative"
+                      isDisabled={statusPassed(tx.status, 'submitted')}
+                      onPress={() => {
+                        if (tx?.uuid) {
+                          transactionRepository.deleteTransaction(tx?.uuid);
+                        }
+
+                        navigate('/');
+                      }}
+                    >
+                      Abort
+                    </Button>
+                  )
+                }
                 key={tx.uuid}
                 as="tile"
                 transaction={tx}
@@ -177,6 +200,25 @@ export const TxList = React.memo(
                 style={{ maxWidth: '100%' }}
               >
                 <TxContainer
+                  abortButtonContent={
+                    abortButtonContent ? (
+                      abortButtonContent
+                    ) : (
+                      <Button
+                        variant="negative"
+                        isDisabled={statusPassed(tx.status, 'submitted')}
+                        onPress={() => {
+                          if (tx?.uuid) {
+                            transactionRepository.deleteTransaction(tx?.uuid);
+                          }
+
+                          navigate('/');
+                        }}
+                      >
+                        Abort
+                      </Button>
+                    )
+                  }
                   key={tx.uuid}
                   as="expanded"
                   transaction={tx}

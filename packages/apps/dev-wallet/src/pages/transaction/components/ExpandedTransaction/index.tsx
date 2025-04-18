@@ -13,14 +13,9 @@ import {
 } from '@kadena/kode-ui';
 
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
-import { ErrorBoundary } from '@/Components/ErrorBoundary/ErrorBoundary.tsx';
-import {
-  ITransaction,
-  transactionRepository,
-} from '@/modules/transaction/transaction.repository';
+import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { copyTransactionAs } from '@/utils/copyTransactionAs';
-import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
   MonoContentCopy,
@@ -31,10 +26,9 @@ import {
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { token } from '@kadena/kode-ui/styles';
 import { execCodeParser } from '@kadena/pactjs-generator';
-import { useEffect, useMemo, useState } from 'react';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { CodeView } from '../code-components/CodeView';
 import { RenderSigner } from '../Signer';
-import { statusPassed } from '../TxPipeLine/utils';
 import { CommandView } from './../CommandView';
 import { TxPipeLine } from './../TxPipeLine';
 import { CmdView } from './components/CmdView/CmdView';
@@ -49,6 +43,7 @@ export function ExpandedTransaction({
   showTitle,
   isDialog,
   onPreflight,
+  abortButtonContent,
 }: {
   transaction: ITransaction;
   contTx?: ITransaction;
@@ -58,8 +53,8 @@ export function ExpandedTransaction({
   sendDisabled?: boolean;
   showTitle?: boolean;
   isDialog?: boolean;
+  abortButtonContent?: ReactElement;
 }) {
-  const navigate = usePatchedNavigate();
   const { getPublicKeyData, sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
   const [showCommandDetails, setShowCommandDetails] = useState(false);
@@ -134,20 +129,13 @@ export function ExpandedTransaction({
           width="100%"
           marginBlockEnd={'md'}
         >
-          {parsedCode && (
-            <Card fullWidth>
-              <CardContentBlock title="Transaction">
-                <ErrorBoundary>
-                  <CodeView codes={parsedCode} command={command} />
-                </ErrorBoundary>
-              </CardContentBlock>
-            </Card>
-          )}
+          <CodeView codes={parsedCode} command={command} />
           <Card fullWidth>
             <CardContentBlock
               level={2}
               title="In the queue"
               visual={<MonoTroubleshoot width={24} height={24} />}
+              supportingContent={abortButtonContent && abortButtonContent}
             >
               <Stack style={{ marginBlockStart: '-80px' }}>
                 <TxPipeLine
@@ -279,21 +267,6 @@ export function ExpandedTransaction({
 
             {!sendDisabled && (
               <Stack>
-                <Button
-                  variant="outlined"
-                  isDisabled={statusPassed(transaction.status, 'submitted')}
-                  onPress={() => {
-                    if (transaction?.uuid) {
-                      transactionRepository.deleteTransaction(
-                        transaction?.uuid,
-                      );
-                    }
-
-                    navigate('/');
-                  }}
-                >
-                  Abort
-                </Button>
                 <Stack justifyContent="flex-end" flex={1} gap="sm">
                   <Button
                     variant="outlined"
@@ -302,15 +275,6 @@ export function ExpandedTransaction({
                     {showCommandDetails
                       ? 'Hide Command details'
                       : 'Show Command details'}
-                  </Button>
-                  <Button
-                    isDisabled={
-                      !statusPassed(transaction.status, 'preflight') ||
-                      statusPassed(transaction.status, 'submitted')
-                    }
-                    onPress={() => onSubmit(true)}
-                  >
-                    Send Transaction
                   </Button>
                 </Stack>
               </Stack>
