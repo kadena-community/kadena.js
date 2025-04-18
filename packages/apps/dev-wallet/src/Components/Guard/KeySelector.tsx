@@ -22,9 +22,10 @@ export const KeySelector = ({
   const [innerSelectedKeys, setInnerSelectedKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    selectedKeys.length
-      ? setInnerSelectedKeys(selectedKeys)
-      : setInnerSelectedKeys(guard.keys);
+    const keys = selectedKeys.length ? selectedKeys : guard.keys;
+
+    setInnerSelectedKeys(keys);
+    onSelect(keys);
   }, []);
 
   return (
