@@ -17,13 +17,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import {
-  breakAllClass,
-  breakNoneClass,
-  codeClass,
-  readyToSignClass,
-  signedClass,
-} from './style.css';
+import { breakAllClass, breakNoneClass, codeClass } from './style.css';
 
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
@@ -31,8 +25,9 @@ import { normalizeSigs } from '@/utils/normalizeSigs';
 import classNames from 'classnames';
 
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
+import { getCopyTxString } from '@/utils/getCopyTxString';
 import { getErrorMessage } from '@/utils/getErrorMessage';
-import { MonoFactCheck } from '@kadena/kode-icons/system';
+import { MonoFactCheck, MonoSignature } from '@kadena/kode-icons/system';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import yaml from 'js-yaml';
 import { Capability } from './Capability';
@@ -130,11 +125,15 @@ export const RenderSigner = ({
           level={2}
           title="Signer"
           visual={
-            <MonoFactCheck
-              width={24}
-              height={24}
-              className={iconSuccessClass()}
-            />
+            signature ? (
+              <MonoFactCheck
+                width={24}
+                height={24}
+                className={iconSuccessClass()}
+              />
+            ) : (
+              <MonoSignature width={24} height={24} />
+            )
           }
           supportingContent={
             <Stack gap="xs">
@@ -168,7 +167,7 @@ export const RenderSigner = ({
                 >
                   Unsign
                 </Button>
-              ) : (
+              ) : info ? (
                 <Button
                   isCompact
                   variant="info"
@@ -186,6 +185,12 @@ export const RenderSigner = ({
                 >
                   Sign
                 </Button>
+              ) : (
+                <CopyButton
+                  data={getCopyTxString(transaction)}
+                  label="Share"
+                  variant="info"
+                />
               )}
             </Stack>
           }
@@ -197,20 +202,8 @@ export const RenderSigner = ({
           >
             <Stack gap={'sm'} alignItems="center">
               <Heading variant="h6">Public Key</Heading>
-              <Stack flex={1}>
-                {signature && (
-                  <Badge size="sm" className={signedClass}>
-                    Signed
-                  </Badge>
-                )}
-                {!signature && info && (
-                  <Badge size="sm" className={readyToSignClass}>
-                    Owned
-                  </Badge>
-                )}
-              </Stack>
-
-              {<Text size="small">{info?.source ?? 'External'}</Text>}
+              <Stack flex={1}>{info && <Badge size="sm">Owned</Badge>}</Stack>
+              {<Badge size="sm">{info?.source ?? 'External'}</Badge>}
             </Stack>
 
             <Stack gap={'sm'} alignItems={'flex-start'}>
@@ -288,9 +281,11 @@ export const RenderSigner = ({
                     placeholder="Paste signature or signed transaction here. the other party should provide you with the signature"
                   />
                 </Stack>
-                <Button variant="info" isCompact type="submit">
-                  Add External Signature
-                </Button>
+                <Stack justifyContent="flex-end" width="100%">
+                  <Button variant="info" isCompact type="submit">
+                    Add External Signature
+                  </Button>
+                </Stack>
               </Stack>
             </form>
           )}

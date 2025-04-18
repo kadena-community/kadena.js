@@ -1,9 +1,17 @@
 // import { MonoContentCopy } from '@kadena/kode-icons/system';
 import { MonoCheck, MonoContentCopy } from '@kadena/kode-icons/system';
-import { Button } from '@kadena/kode-ui';
+import { Button, IButtonProps } from '@kadena/kode-ui';
 import { useState } from 'react';
 
-export const CopyButton = ({ data }: { data: string | object }) => {
+export const CopyButton = ({
+  data,
+  label,
+  variant = 'transparent',
+}: {
+  data: string | object;
+  label?: string;
+  variant?: IButtonProps['variant'];
+}) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const handleCopy = () => {
     navigator.clipboard.writeText(
@@ -18,8 +26,13 @@ export const CopyButton = ({ data }: { data: string | object }) => {
   };
 
   return (
-    <Button variant="transparent" isCompact onPress={handleCopy}>
-      {isSuccess ? <MonoCheck /> : <MonoContentCopy />}
+    <Button
+      variant={variant}
+      isCompact
+      onPress={handleCopy}
+      endVisual={isSuccess ? <MonoCheck /> : <MonoContentCopy />}
+    >
+      {label}
     </Button>
   );
 };

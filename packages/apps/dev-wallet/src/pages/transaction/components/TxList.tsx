@@ -170,6 +170,7 @@ export const TxList = React.memo(
                   ) : (
                     <Button
                       variant="negative"
+                      isCompact
                       isDisabled={statusPassed(tx.status, 'submitted')}
                       onPress={() => {
                         if (tx?.uuid) {
@@ -206,6 +207,7 @@ export const TxList = React.memo(
                     ) : (
                       <Button
                         variant="negative"
+                        isCompact
                         isDisabled={statusPassed(tx.status, 'submitted')}
                         onPress={() => {
                           if (tx?.uuid) {

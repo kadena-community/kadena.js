@@ -2,10 +2,10 @@ import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
 import { syncTransactionStatus } from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { getCopyTxString } from '@/utils/getCopyTxString';
 import { getErrorMessage } from '@/utils/getErrorMessage';
 import { shorten } from '@/utils/helpers';
 import { normalizeSigs } from '@/utils/normalizeSigs';
-import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
   MonoCloudSync,
   MonoFactCheck,
@@ -91,21 +91,7 @@ function TxStatusList({
   const [showPreflightInfo, setShowPreflightInfo] = useState(false);
   const [signError, setSignError] = useState<string | null>(null);
 
-  const copyTx = useMemo(() => {
-    const encodedTx = base64UrlEncodeArr(
-      new TextEncoder().encode(
-        JSON.stringify({
-          hash: tx.hash,
-          cmd: tx.cmd,
-          sigs: tx.sigs,
-        }),
-      ),
-    );
-
-    const baseUrl = `${window.location.protocol}//${window.location.host}`;
-
-    return `${baseUrl}/sig-builder#${encodedTx}`;
-  }, [tx.hash, tx.cmd, tx.sigs]);
+  const copyTx = useMemo(() => getCopyTxString(tx), [tx.hash, tx.cmd, tx.sigs]);
 
   const statusList = [
     variant !== 'minimized' && (
@@ -319,11 +305,14 @@ function TxStatusList({
         ),
       contTx && [
         variant !== 'minimized' && (
-          <TxStatusItem
-            variant={variant}
-            status="active"
-            label={`cont: ${shorten(contTx.hash, 6)}`}
-          />
+          <Stack
+            gap="sm"
+            alignItems="center"
+            paddingInlineStart="md"
+            paddingBlock="sm"
+          >
+            <Text>{`cont: ${shorten(contTx.hash, 6)}`}</Text>
+          </Stack>
         ),
         statusPassed(contTx.status, 'preflight') && (
           <TxStatusItem
