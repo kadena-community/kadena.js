@@ -1,8 +1,9 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { BuiltInPredicate } from '@kadena/client';
-import { MonoKey } from '@kadena/kode-icons/system';
-import { Badge, Checkbox, Stack, Text } from '@kadena/kode-ui';
+import { Checkbox, Stack, Text } from '@kadena/kode-ui';
+import { useEffect, useState } from 'react';
+import { backgroundClass, labelClass } from './style.css';
 
 export const KeySelector = ({
   guard,
@@ -18,6 +19,14 @@ export const KeySelector = ({
     key,
     alias: getKeyAlias(key),
   }));
+  const [innerSelectedKeys, setInnerSelectedKeys] = useState<string[]>([]);
+
+  useEffect(() => {
+    selectedKeys.length
+      ? setInnerSelectedKeys(selectedKeys)
+      : setInnerSelectedKeys(guard.keys);
+  }, []);
+
   return (
     <Stack
       flexWrap="wrap"
@@ -26,27 +35,31 @@ export const KeySelector = ({
       paddingInline={'sm'}
       marginBlock={'xs'}
     >
-      <Text size="smallest">{guard.pred}:</Text>
-      {keysWithAlias.map(({ key, alias }) => (
-        <Stack key={key} gap="sm" alignItems={'center'}>
-          <Text size="smallest">
-            <MonoKey />
-          </Text>
-          {alias && <Badge size="sm">{alias}</Badge>}
-          <Text variant="code" size="smallest">
+      {keysWithAlias.map(({ key }) => (
+        <Stack
+          key={key}
+          gap="sm"
+          alignItems={'center'}
+          className={backgroundClass({
+            isSelected: innerSelectedKeys.includes(key),
+          })}
+          data-isselected={innerSelectedKeys.includes(key)}
+        >
+          <Text variant="code" size="smallest" className={labelClass}>
             <Checkbox
-              isSelected={selectedKeys.includes(key)}
+              isSelected={innerSelectedKeys.includes(key)}
               onChange={(isSelected) => {
-                let updated = [...selectedKeys];
+                let updated = [...innerSelectedKeys];
                 if (isSelected) {
-                  updated = [...selectedKeys, key];
+                  updated = [...innerSelectedKeys, key];
                 } else {
-                  updated = selectedKeys.filter((k) => k !== key);
+                  updated = innerSelectedKeys.filter((k) => k !== key);
                 }
+                setInnerSelectedKeys(updated);
                 onSelect(updated);
               }}
             >
-              {(<Text size="smallest">{shorten(key!)}</Text>) as any}
+              {shorten(key!)}
             </Checkbox>
           </Text>
         </Stack>
