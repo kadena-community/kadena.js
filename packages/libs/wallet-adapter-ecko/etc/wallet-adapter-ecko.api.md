@@ -65,7 +65,7 @@ export interface IEckoQuicksignFailResponse {
     // (undocumented)
     message?: string;
     // (undocumented)
-    status: "fail";
+    status: 'fail';
 }
 
 // Warning: (ae-forgotten-export) The symbol "IEckoQuicksignSuccessResponse" needs to be exported by the entry point index.d.ts
@@ -88,11 +88,11 @@ export interface IQuicksignResponseCommand {
 export interface IQuicksignResponseError {
     // (undocumented)
     error: {
-        type: "reject";
+        type: 'reject';
     } | {
-        type: "emptyList";
+        type: 'emptyList';
     } | {
-        type: "other";
+        type: 'other';
         msg: string;
     };
 }
@@ -104,12 +104,12 @@ export interface IQuicksignResponseOutcomes {
         commandSigData: IQuicksignResponseCommand;
         outcome: {
             hash: string;
-            result: "success";
+            result: 'success';
         } | {
             msg: string;
-            result: "failure";
+            result: 'failure';
         } | {
-            result: "noSig";
+            result: 'noSig';
         };
     }[];
 }
@@ -139,27 +139,35 @@ export interface kadenaCheckStatusRPC {
 }
 
 // @public
-export type RawAccountResponse = {
-    status: string;
+export interface RawAccountResponse {
+    // (undocumented)
     message?: string;
+    // (undocumented)
+    status: string;
+    // (undocumented)
     wallet?: {
         account: string;
         publicKey: string;
     };
-};
+}
 
 // @public
-export type RawNetworkResponse = {
+export interface RawNetworkResponse {
+    // (undocumented)
     name: string;
+    // (undocumented)
     networkId: string;
+    // (undocumented)
     url: string;
-};
+}
 
 // @public
-export type RawRequestResponse = {
-    status: "success" | "fail";
+export interface RawRequestResponse {
+    // (undocumented)
     message?: string;
-};
+    // (undocumented)
+    status: 'success' | 'fail';
+}
 
 // (No @packageDocumentation comment for this package)
 
