@@ -15,6 +15,7 @@ export interface IEnvInterface {
   QA_LEDGER_MOCK?: string;
   QA_LEDGER_MOCKED_PUBKEY?: string;
   QA_LEDGER_MOCKED_PRIVATEKEY?: string;
+  EVMFAUCET_CONTRACT_ADDRESS?: `0x${string}`;
 }
 
 type RequiredEnv = Required<IEnvInterface>;
@@ -36,6 +37,8 @@ export const dotenv: IEnvInterface = {
   QA_LEDGER_MOCK: process.env.QA_LEDGER_MOCK,
   QA_LEDGER_MOCKED_PUBKEY: process.env.QA_LEDGER_MOCKED_PUBKEY,
   QA_LEDGER_MOCKED_PRIVATEKEY: process.env.QA_LEDGER_MOCKED_PRIVATEKEY,
+  EVMFAUCET_CONTRACT_ADDRESS: process.env
+    .NEXT_PUBLIC_EVMFAUCET_CONTRACT_ADDRESS as `0x${string}`,
 };
 
 export const env = <T extends keyof RequiredEnv, TDefault>(

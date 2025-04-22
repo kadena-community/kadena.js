@@ -1,86 +1,86 @@
-import { getEVMProvider } from '@/utils/evm';
+import faucetABI from '@/contracts/faucet-abi.json';
+import { formatErrorMessage, getChainwebEVMChain } from '@/utils/evm';
 import type { ChainId } from '@kadena/types';
-import { ethers } from 'ethers';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { createPublicClient, createWalletClient, http } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { checkRecaptcha } from './utils/captcha';
 
-const DEFAULT_AMOUNT = '20'; // KDA amount to send
-const PRIVATE_KEY = process.env.FAUCET_PRIVATE_KEY;
-const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL;
-const CAPTCHAKEY = process.env.CAPTCHA_SECRETKEY;
+const PRIVATE_KEY = process.env.EVMFAUCET_PRIVATE_KEY as `0x${string}`;
+const EVMFAUCET_CONTRACT_ADDRESS = process.env.EVMFAUCET_CONTRACT_ADDRESS;
+const RPC_URL = process.env.NEXT_PUBLIC_EVMRPC_URL;
 
-const checkRecaptcha = async (token: string) => {
-  console.log({
-    secret: CAPTCHAKEY,
-    response: token,
-  });
-  const result = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${CAPTCHAKEY}&response=${token}`,
-  );
-
-  const data = await result.json();
-  return data;
-};
+// Create the faucet account from private key
 
 export async function POST(request: NextRequest) {
   const body = (await request.json()) as unknown as {
-    name: string;
+    recipient: string;
     chainId: ChainId;
     token: string; //this is for recaptcha check
   };
 
-  if (!PRIVATE_KEY || !RPC_URL) {
+  if (!PRIVATE_KEY || !RPC_URL || !EVMFAUCET_CONTRACT_ADDRESS) {
     return NextResponse.json(
-      { message: 'missing env variables' },
+      { error: 'missing env variables' },
       { status: 500 },
     );
   }
 
   const captchaResult: any = await checkRecaptcha(body.token);
-  console.log({ captchaResult });
-
-  if (!body.name || !ethers.isAddress(body.name)) {
-    return NextResponse.json(
-      {
-        message: 'Invalid Ethereum address',
-      },
-      { status: 404 },
-    );
-  }
-
   if (!captchaResult?.success) {
     return NextResponse.json(
       {
-        message: 'this is a bot',
+        error: 'this is a bot',
       },
       { status: 500 },
     );
   }
 
-  const provider = getEVMProvider(body.chainId);
+  // Create chain instance
+  const chainwebEVMChain = getChainwebEVMChain(body.chainId);
 
-  const faucetWallet = new ethers.Wallet(PRIVATE_KEY, provider);
-  const balance = await provider.getBalance(faucetWallet.address);
-  const sendAmount = ethers.parseEther(DEFAULT_AMOUNT);
+  // Create the public client for reading from the blockchain
+  const publicClient = createPublicClient({
+    chain: chainwebEVMChain,
+    transport: http(RPC_URL + body.chainId),
+  });
 
-  if (balance < sendAmount) {
+  const account = privateKeyToAccount(PRIVATE_KEY);
+
+  // Create the wallet client for writing to the blockchain
+  const walletClient = createWalletClient({
+    account,
+    chain: chainwebEVMChain,
+    transport: http(RPC_URL + body.chainId),
+  });
+
+  // First simulate the transaction to check for errors
+  try {
+    const { request: evmRequest } = await publicClient.simulateContract({
+      address: EVMFAUCET_CONTRACT_ADDRESS as `0x${string}`,
+      abi: faucetABI,
+      functionName: 'dispenseNativeToken',
+      args: [body.recipient],
+      account,
+    });
+
+    console.log('Simulation successful, sending transaction...');
+
+    console.log({ evmRequest });
+    // If simulation succeeds, send the actual transaction
+    const result = await walletClient.writeContract(evmRequest);
+    console.log('Transaction hash:', result);
+
+    return NextResponse.json(result, {
+      status: 200,
+    });
+  } catch (err) {
     return NextResponse.json(
+      { error: formatErrorMessage(err) },
       {
-        message: 'Faucet has insufficient funds',
+        status: 500,
       },
-      { status: 500 },
     );
   }
-
-  const tx = await faucetWallet.sendTransaction({
-    to: body.name,
-    value: sendAmount,
-  });
-
-  // console.log({ tx });
-  // const receipt = await tx.wait();
-
-  return NextResponse.json(tx, {
-    status: 200,
-  });
 }
