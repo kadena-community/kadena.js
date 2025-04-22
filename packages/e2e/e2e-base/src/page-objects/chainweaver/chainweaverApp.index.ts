@@ -12,7 +12,7 @@ export class ChainweaverAppIndex extends setupDatabase {
   private _webAuthNHelper: WebAuthNHelper = new WebAuthNHelper();
   private _PROFILENAME: string = 'He-man';
   private _PROFILENAME_WITHPASSWORD: string = 'Skeletor';
-  private _PASSWORD: string = '123456';
+  private _PASSWORD: string = 'M4ster-OfUn1v3rse';
 
   public constructor() {
     super();

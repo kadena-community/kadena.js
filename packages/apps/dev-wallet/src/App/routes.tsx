@@ -42,6 +42,7 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
+import { FocussedPageLayout } from './FocussedPageLayout/Layout';
 import { Layout } from './Layout/Layout';
 import { LandingPageLayout } from './LayoutLandingPage/Layout';
 import { useGlobalState } from './providers/globalState';
@@ -97,6 +98,9 @@ export const Routes: FC = () => {
             />
           }
         >
+          <Route element={<FocussedPageLayout />}>
+            <Route path="/transfer" element={<Transfer />} />
+          </Route>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/sig-builder" element={<SignatureBuilder />} />
@@ -115,7 +119,7 @@ export const Routes: FC = () => {
               element={<MigrateAccount />}
             />
             <Route path="/account/:accountId" element={<AccountPage />} />
-            <Route path="/transfer" element={<Transfer />} />
+
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/export-data" element={<ExportData />} />
