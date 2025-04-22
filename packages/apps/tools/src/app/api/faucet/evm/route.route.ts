@@ -8,7 +8,8 @@ import { privateKeyToAccount } from 'viem/accounts';
 import { checkRecaptcha } from './utils/captcha';
 
 const PRIVATE_KEY = process.env.EVMFAUCET_PRIVATE_KEY as `0x${string}`;
-const EVMFAUCET_CONTRACT_ADDRESS = process.env.EVMFAUCET_CONTRACT_ADDRESS;
+const EVMFAUCET_CONTRACT_ADDRESS =
+  process.env.NEXT_PUBLIC_EVMFAUCET_CONTRACT_ADDRESS;
 const RPC_URL = process.env.NEXT_PUBLIC_EVMRPC_URL;
 
 // Create the faucet account from private key
