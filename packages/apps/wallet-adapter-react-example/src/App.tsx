@@ -12,10 +12,10 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import type {
-  AccountInfo,
-  Adapter,
+  IAccountInfo,
+  IAdapter,
+  INetworkInfo,
   IUnsignedCommand,
-  NetworkInfo,
 } from '@kadena/wallet-adapter-core';
 import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import React, { useEffect, useRef, useState } from 'react';
@@ -31,9 +31,9 @@ const App = () => {
   const activeAccountRef = useRef<HTMLDivElement>(null);
   const rpcResponseRef = useRef<HTMLDivElement>(null);
 
-  const [selectedWallet, setSelectedWallet] = useState<Adapter | null>(null);
-  const [activeAccount, setActiveAccount] = useState<AccountInfo | null>(null);
-  const [network, setNetwork] = useState<NetworkInfo | null>(null);
+  const [selectedWallet, setSelectedWallet] = useState<IAdapter | null>(null);
+  const [activeAccount, setActiveAccount] = useState<IAccountInfo | null>(null);
+  const [network, setNetwork] = useState<INetworkInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [accountTo, setAccountTo] = useState<string>('');
   const [rpcResponse, setRpcResponse] = useState<any>(null);
@@ -45,7 +45,6 @@ const App = () => {
     note?: string;
   } | null>(null);
 
-  const [changeNetworkId, setChangeNetworkId] = useState('mainnet01');
   const [signCommandPayload, setSignCommandPayload] = useState('');
   const [signTxPayload, setSignTxPayload] = useState('');
 
@@ -199,20 +198,6 @@ const App = () => {
       };
       const resp = await client.signTransaction(selectedWallet.name, tx);
       validateAndSetRpcResponse('kadena_signTransaction', resp);
-    } catch (err) {
-      console.error(err);
-      setRpcResponse(err);
-    }
-  };
-
-  const handleChangeNetwork = async () => {
-    if (!selectedWallet) return;
-    try {
-      const resp = await client.changeNetwork(selectedWallet.name, {
-        networkName: changeNetworkId,
-        networkId: changeNetworkId,
-      });
-      validateAndSetRpcResponse('kadena_changeNetwork_v1', resp);
     } catch (err) {
       console.error(err);
       setRpcResponse(err);
@@ -479,21 +464,6 @@ const App = () => {
         </Stack>
 
         <Divider />
-
-        {/* changeNetwork */}
-        <Stack flexDirection="column" gap="sm" flexWrap="wrap">
-          <Heading as="h4">kadena_changeNetwork_v1</Heading>
-          <TextField
-            label="Network ID"
-            placeholder="e.g. testnet04"
-            value={changeNetworkId}
-            onValueChange={setChangeNetworkId}
-            isDisabled={!activeAccount}
-          />
-          <Button onPress={handleChangeNetwork} isDisabled={!activeAccount}>
-            Change Network
-          </Button>
-        </Stack>
       </Stack>
     </Card>
   );
