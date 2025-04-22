@@ -1,4 +1,3 @@
-import type { IAccount } from '../../constants';
 import { lowBalanceChains } from '../lowBalanceChains';
 
 describe('Utils', () => {
