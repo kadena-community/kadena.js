@@ -20,7 +20,9 @@ export function useEvmFaucet() {
   // State for token amount, faucet balance, and loading status
   const [dispenseAmount, setDispenseAmount] = useState('0');
   const [faucetBalance, setFaucetBalance] = useState('0');
-  const [innerChainId, setInnerChainId] = useState<ChainId>('0');
+  const [innerChainId, setInnerChainId] = useState<ChainId>(
+    process.env.NEXT_PUBLIC_STARTCHAIN_ID as ChainId,
+  );
 
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;

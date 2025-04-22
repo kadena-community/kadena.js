@@ -21,16 +21,20 @@ interface ChainSelectProps
   defaultSelectedKey?: ChainwebChainId;
   additionalInfoOptions?: any[];
   chainCount?: number;
+  chainCountStart?: number;
 }
 const ChainSelect: FC<ChainSelectProps> = ({
   onSelectionChange,
   additionalInfoOptions,
   id,
   chainCount = CHAINS.length,
+  chainCountStart = 0,
   ...rest
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [chains, _] = useState([...Array(chainCount).keys()]);
+  const [chains, _] = useState(
+    Array.from({ length: chainCount }, (_, i) => i + chainCountStart),
+  );
   const onSelectChange = useCallback(
     (selectedKey: string | number) => {
       const chainId = CHAINS.find((chainId) => {

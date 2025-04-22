@@ -108,6 +108,7 @@ const ExistingAccountFaucetPage: FC = () => {
                 selectedKey={chainId}
                 aria-label="Select Chain ID"
                 chainCount={2}
+                chainCountStart={0}
               />
             </Stack>
           </Card>
