@@ -45,7 +45,7 @@ const config = {
     return [
       {
         source: '/eth/:path*',
-        destination: `${process.env.NEXT_PUBLIC_EVMRPC_URL}:path*`,
+        destination: `${process.env.NEXT_PUBLIC_EVMRPC_URL ?? 'http://localhost:8545/chain/'}:path*`,
       },
     ];
   },
