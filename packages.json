@@ -280,5 +280,23 @@
     "version": "0.0.1",
     "private": true,
     "path": "packages/apps/hw-app-kda-clone"
+  },
+  {
+    "name": "@kadena/wallet-adapter-core",
+    "version": "0.0.1-beta.0",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-core"
+  },
+  {
+    "name": "@kadena/wallet-adapter-react",
+    "version": "0.0.1-beta.0",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-react"
+  },
+  {
+    "name": "@kadena/wallet-adapter-ecko",
+    "version": "0.0.1-beta.0",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-ecko"
   }
 ]
