@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BaseWalletAdapter } from '../BaseWalletAdapter';
 import type {
+  IKdaMethodMap,
   ISigningRequestPartial,
   IUnsignedCommand,
-  KdaMethodMap,
 } from '../types';
 
 declare module '../types' {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  interface KdaMethodMap {
+  interface IKdaMethodMap {
     test: {
       params: {};
       response: { id: number; jsonrpc: '2.0'; result: unknown };
@@ -78,7 +78,7 @@ describe('BaseWalletAdapter', () => {
       id: 1,
       jsonrpc: '2.0',
       result: { foo: 'bar' },
-    } as KdaMethodMap['test']['response'];
+    } as IKdaMethodMap['test']['response'];
     mockProvider.request.mockResolvedValueOnce(rpc);
 
     const response = await adapter.request({ method: 'test', params: {} });
@@ -102,7 +102,7 @@ describe('BaseWalletAdapter', () => {
   });
 
   it('connect returns null when JSON‑RPC connect call errors', async () => {
-    const errResp: KdaMethodMap['kadena_connect']['response'] = {
+    const errResp: IKdaMethodMap['kadena_connect']['response'] = {
       id: 3,
       jsonrpc: '2.0',
       error: { code: -32002, message: 'denied', data: {} },
@@ -118,7 +118,7 @@ describe('BaseWalletAdapter', () => {
       id: 2,
       jsonrpc: '2.0',
       result: { accountName: 'alice' },
-    } as KdaMethodMap['kadena_connect']['response'];
+    } as IKdaMethodMap['kadena_connect']['response'];
     mockProvider.request.mockResolvedValueOnce(success);
 
     const account = await adapter.connect({});
@@ -135,7 +135,7 @@ describe('BaseWalletAdapter', () => {
       id: 3,
       jsonrpc: '2.0',
       result: undefined,
-    } as KdaMethodMap['kadena_disconnect']['response'];
+    } as IKdaMethodMap['kadena_disconnect']['response'];
     mockProvider.request.mockResolvedValueOnce(resp);
 
     await adapter.disconnect();
@@ -151,7 +151,7 @@ describe('BaseWalletAdapter', () => {
       id: 4,
       jsonrpc: '2.0',
       result: { accountName: 'bob' },
-    } as KdaMethodMap['kadena_getAccount_v1']['response'];
+    } as IKdaMethodMap['kadena_getAccount_v1']['response'];
     mockProvider.request.mockResolvedValueOnce(resp);
 
     const account = await adapter.getActiveAccount();
@@ -163,7 +163,7 @@ describe('BaseWalletAdapter', () => {
       id: 5,
       jsonrpc: '2.0',
       result: [{ accountName: 'c1' }],
-    } as KdaMethodMap['kadena_getAccounts_v2']['response'];
+    } as IKdaMethodMap['kadena_getAccounts_v2']['response'];
     mockProvider.request.mockResolvedValueOnce(resp);
 
     const accounts = await adapter.getAccounts();
@@ -175,7 +175,7 @@ describe('BaseWalletAdapter', () => {
       id: 6,
       jsonrpc: '2.0',
       result: { networkName: 'n', networkId: 'testnet04' },
-    } as KdaMethodMap['kadena_getNetwork_v1']['response'];
+    } as IKdaMethodMap['kadena_getNetwork_v1']['response'];
     mockProvider.request.mockResolvedValueOnce(resp);
 
     const net = await adapter.getActiveNetwork();
@@ -187,7 +187,7 @@ describe('BaseWalletAdapter', () => {
       id: 7,
       jsonrpc: '2.0',
       result: [{ networkName: 'x', networkId: 'x1' }],
-    } as KdaMethodMap['kadena_getNetworks_v1']['response'];
+    } as IKdaMethodMap['kadena_getNetworks_v1']['response'];
     mockProvider.request.mockResolvedValueOnce(resp);
 
     const nets = await adapter.getNetworks();
@@ -195,7 +195,7 @@ describe('BaseWalletAdapter', () => {
   });
 
   it('throws if quicksign RPC returns a JSON‑RPC error', async () => {
-    const rpcError: KdaMethodMap['kadena_quicksign_v1']['response'] = {
+    const rpcError: IKdaMethodMap['kadena_quicksign_v1']['response'] = {
       id: 8,
       jsonrpc: '2.0',
       error: { code: -32000, message: 'fail', data: {} },
@@ -230,7 +230,7 @@ describe('BaseWalletAdapter', () => {
       id: 9,
       jsonrpc: '2.0',
       result: { body, chainId: '1' },
-    } as KdaMethodMap['kadena_sign_v1']['response'];
+    } as IKdaMethodMap['kadena_sign_v1']['response'];
     mockProvider.request.mockResolvedValueOnce(rpc);
 
     const req: ISigningRequestPartial = { caps: [], code: '' };
@@ -241,22 +241,5 @@ describe('BaseWalletAdapter', () => {
       params: expect.objectContaining({ code: '' }),
     });
     expect(signed).toEqual(body);
-  });
-
-  it('changeNetwork updates networkId and returns success', async () => {
-    const out = {
-      id: 10,
-      jsonrpc: '2.0',
-      result: { success: true },
-    } as KdaMethodMap['kadena_changeNetwork_v1']['response'];
-    mockProvider.request.mockResolvedValueOnce(out);
-
-    const resp = await adapter.changeNetwork({
-      networkName: '',
-      networkId: 'newnet',
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect((adapter as any).networkId).toBe('newnet');
-    expect(resp.success).toBe(true);
   });
 });

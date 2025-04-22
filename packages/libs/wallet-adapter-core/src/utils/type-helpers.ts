@@ -1,12 +1,12 @@
-import type { JsonRpcResponse, JsonRpcSuccess } from '../types';
+import type { IJsonRpcSuccess, JsonRpcResponse } from '../types';
 
 /**
  * @public
  */
 export const isJsonRpcSuccess = <T>(
   response: JsonRpcResponse<T>,
-): response is JsonRpcSuccess<T> => {
-  return !!(response as JsonRpcSuccess<T>)?.result;
+): response is IJsonRpcSuccess<T> => {
+  return !!(response as IJsonRpcSuccess<T>)?.result;
 };
 
 /**

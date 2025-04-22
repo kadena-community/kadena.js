@@ -1,12 +1,12 @@
 import EventEmitter from 'eventemitter3';
 import type {
-  AccountInfo,
-  Adapter,
   AdapterFactory,
+  IAccountInfo,
+  IAdapter,
   ICommand,
+  INetworkInfo,
   ISigningRequestPartial,
   IUnsignedCommand,
-  NetworkInfo,
 } from './types';
 
 /**
@@ -15,10 +15,10 @@ import type {
  */
 export class WalletAdapterClient {
   private adapterFactories: AdapterFactory[] = [];
-  private adapters: Adapter[] = [];
+  private adapters: IAdapter[] = [];
   private eventEmitter = new EventEmitter();
 
-  public constructor(adapters: (Adapter | AdapterFactory)[]) {
+  public constructor(adapters: (IAdapter | AdapterFactory)[]) {
     for (const adapter of adapters) {
       if ('detect' in adapter && 'adapter' in adapter && 'name' in adapter) {
         this.adapterFactories.push(adapter);
@@ -71,24 +71,24 @@ export class WalletAdapterClient {
     });
   }
 
-  public getDetectedAdapters(): Adapter[] {
+  public getDetectedAdapters(): IAdapter[] {
     return this.adapters;
   }
 
-  public getAdapter(adapterName: string): Adapter | undefined {
+  public getAdapter(adapterName: string): IAdapter | undefined {
     return this.adapters.find(
       (adapter) => adapter.name.toLowerCase() === adapterName.toLowerCase(),
     );
   }
 
   public onAdapterDetected(
-    cb: (adapter: Adapter) => void,
+    cb: (adapter: IAdapter) => void,
     options?: { signal?: AbortSignal },
   ) {
     this.eventEmitter.on('adapterDetected', cb, options);
   }
 
-  private getAdapterAsserted(adapterName: string): Adapter {
+  private getAdapterAsserted(adapterName: string): IAdapter {
     const adapter = this.getAdapter(adapterName);
     if (!adapter) {
       throw new Error(`Adapter ${adapterName} not found`);
@@ -114,9 +114,9 @@ export class WalletAdapterClient {
    * Connect using "kadena_connect".
    */
   public async connect(
-    adapterName: Adapter['name'],
+    adapterName: IAdapter['name'],
     params?: unknown,
-  ): Promise<AccountInfo | null> {
+  ): Promise<IAccountInfo | null> {
     return this.getAdapterAsserted(adapterName).connect(params);
   }
 
@@ -130,7 +130,7 @@ export class WalletAdapterClient {
   /**
    * Retrieve the active account via "kadena_getAccount_v1".
    */
-  public async getActiveAccount(adapterName: string): Promise<AccountInfo> {
+  public async getActiveAccount(adapterName: string): Promise<IAccountInfo> {
     return this.getAdapterAsserted(adapterName).getActiveAccount();
   }
 
@@ -138,14 +138,14 @@ export class WalletAdapterClient {
    * Retrieve all accounts (if multi-account is supported) via "kadena_getAccounts_v2".
    * Otherwise it will return a single Account wrapped in an Array.
    */
-  public async getAccounts(adapterName: string): Promise<AccountInfo[]> {
+  public async getAccounts(adapterName: string): Promise<IAccountInfo[]> {
     return this.getAdapterAsserted(adapterName).getAccounts();
   }
 
   /**
    * Retrieve the current network via "kadena_getNetwork_v1".
    */
-  public async getActiveNetwork(adapterName: string): Promise<NetworkInfo> {
+  public async getActiveNetwork(adapterName: string): Promise<INetworkInfo> {
     return this.getAdapterAsserted(adapterName).getActiveNetwork();
   }
 
@@ -153,7 +153,7 @@ export class WalletAdapterClient {
    * Retrieve all networks (if multi-network is supported) via "kadena_getNetworks_v1".
    * Otherwise it will return a single Network wrapped in an Array.
    */
-  public async getNetworks(adapterName: string): Promise<NetworkInfo[]> {
+  public async getNetworks(adapterName: string): Promise<INetworkInfo[]> {
     return this.getAdapterAsserted(adapterName).getNetworks();
   }
 
@@ -182,7 +182,7 @@ export class WalletAdapterClient {
    */
   public onAccountChange(
     adapterName: string,
-    cb: (newAccount: AccountInfo) => void,
+    cb: (newAccount: IAccountInfo) => void,
   ): void {
     this.getAdapterAsserted(adapterName).onAccountChange(cb);
   }
@@ -192,18 +192,8 @@ export class WalletAdapterClient {
    */
   public onNetworkChange(
     adapterName: string,
-    cb: (newNetwork: NetworkInfo) => void,
+    cb: (newNetwork: INetworkInfo) => void,
   ): void {
     this.getAdapterAsserted(adapterName).onNetworkChange(cb);
-  }
-
-  /**
-   * Change network via "kadena_changeNetwork_v1".
-   */
-  public async changeNetwork(
-    adapterName: string,
-    network: NetworkInfo,
-  ): Promise<{ success: boolean; reason?: string }> {
-    return this.getAdapterAsserted(adapterName).changeNetwork(network);
   }
 }

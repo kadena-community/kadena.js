@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { EckoProvider } from '../provider';
+import type { IEckoProvider } from '../provider';
 import { detectEckoProvider } from '../provider';
 
 describe('detectEckoProvider', () => {
@@ -16,7 +16,7 @@ describe('detectEckoProvider', () => {
   });
 
   it('resolves to provider when window.kadena exists and isKadena true', async () => {
-    const fakeProvider: EckoProvider = {
+    const fakeProvider: IEckoProvider = {
       isKadena: true,
       request: () => Promise.resolve(),
       on: () => {},

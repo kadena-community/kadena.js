@@ -12,7 +12,7 @@ import type {
  * Represents a Kadena Network (e.g., mainnet01).
  * Conforms to KIP-0039 and KIP-0040.
  */
-export interface NetworkInfo {
+export interface INetworkInfo {
   networkName: string; // The display name of the network (e.g., "mainnet").
   networkId: string; // The unique identifier for the network (e.g., "mainnet01").
   url?: string[]; // Optional: The root endpoint URL(s) of the network.
@@ -31,7 +31,7 @@ export type OptionalKeyPair = Omit<IKeyPair, 'secretKey'> & {
  * Represents a Kadena account.
  * Conforms to KIP-0037 and KIP-0038.
  */
-export interface AccountInfo {
+export interface IAccountInfo {
   accountName: string; // The unique identifier for the account.
   networkId: string; // The unique identifier for the network for this account.
   contract: string; // Identifier for the fungible token contract.
@@ -45,7 +45,7 @@ export interface AccountInfo {
 /**
  * @public
  */
-export interface Provider {
+export interface IProvider {
   request(args: { method: string; [key: string]: any }): Promise<unknown>;
   on(event: string, listener: (...args: any[]) => void): void;
   off(event: string, listener: (...args: any[]) => void): void;
@@ -78,27 +78,27 @@ export type CommandSigDatas = {
 /**
  * @public
  */
-export interface BaseWalletAdapterOptions {
-  provider: Provider;
+export interface IBaseWalletAdapterOptions {
+  provider: IProvider;
   networkId?: string;
 }
 
 /**
  * @public
  */
-export interface BaseWalletFactoryOptions {
+export interface IBaseWalletFactoryOptions {
   networkId?: string;
 }
 
 /**
  * @public
  */
-export type AdapterFactoryCreator = <T extends BaseWalletFactoryOptions>(
+export type AdapterFactoryCreator = <T extends IBaseWalletFactoryOptions>(
   options: T,
 ) => {
   name: string;
-  detect(): Promise<Provider | null>;
-  adapter(provider: Provider): Promise<Adapter>;
+  detect(): Promise<IProvider | null>;
+  adapter(provider: IProvider): Promise<IAdapter>;
 };
 
 /**
@@ -109,7 +109,7 @@ export type AdapterFactory = ReturnType<AdapterFactoryCreator>;
 /**
  * @public
  */
-export interface AdapterFactoryData {
+export interface IAdapterFactoryData {
   name: string;
   detected: boolean;
 }
@@ -119,19 +119,19 @@ export interface AdapterFactoryData {
  * The standardized Adapter interface.
  * (Wallets/Adapters implement these methods).
  */
-export interface Adapter {
+export interface IAdapter {
   name: string;
   request(args: { method: string; [key: string]: any }): Promise<unknown>;
 
   on(event: string, listener: (...args: any[]) => void): this;
   off(event: string, listener: (...args: any[]) => void): this;
 
-  connect(params?: unknown): Promise<AccountInfo | null>;
+  connect(params?: unknown): Promise<IAccountInfo | null>;
   disconnect(): Promise<void>;
-  getActiveAccount(): Promise<AccountInfo>;
-  getAccounts(): Promise<AccountInfo[]>;
-  getActiveNetwork(): Promise<NetworkInfo>;
-  getNetworks(): Promise<NetworkInfo[]>;
+  getActiveAccount(): Promise<IAccountInfo>;
+  getAccounts(): Promise<IAccountInfo[]>;
+  getActiveNetwork(): Promise<INetworkInfo>;
+  getNetworks(): Promise<INetworkInfo[]>;
   signTransaction(
     transaction: IUnsignedCommand | IUnsignedCommand[],
   ): Promise<(IUnsignedCommand | ICommand) | (IUnsignedCommand | ICommand)[]>;
@@ -139,18 +139,14 @@ export interface Adapter {
     command: ISigningRequestPartial | IUnsignedCommand,
   ): Promise<ICommand | IUnsignedCommand>;
 
-  onAccountChange(cb: (newAccount: AccountInfo) => void): void;
-  onNetworkChange(cb: (newNetwork: NetworkInfo) => void): void;
-
-  changeNetwork(
-    network: NetworkInfo,
-  ): Promise<{ success: boolean; reason?: string }>;
+  onAccountChange(cb: (newAccount: IAccountInfo) => void): void;
+  onNetworkChange(cb: (newNetwork: INetworkInfo) => void): void;
 }
 
 /**
  * @public
  */
-export interface JsonRpcSuccess<T> {
+export interface IJsonRpcSuccess<T> {
   id: number;
   jsonrpc: '2.0';
   result: T;
@@ -159,7 +155,7 @@ export interface JsonRpcSuccess<T> {
 /**
  * @public
  */
-export interface JsonRpcError {
+export interface IJsonRpcError {
   id: number;
   jsonrpc: '2.0';
   error: {
@@ -172,7 +168,7 @@ export interface JsonRpcError {
 /**
  * @public
  */
-export type JsonRpcResponse<T> = JsonRpcSuccess<T> | JsonRpcError;
+export type JsonRpcResponse<T> = IJsonRpcSuccess<T> | IJsonRpcError;
 
 /**
  * Core "kadena_*" method definitions (aligned with the spec).
@@ -182,7 +178,7 @@ export type JsonRpcResponse<T> = JsonRpcSuccess<T> | JsonRpcError;
 /**
  * @public
  */
-export interface KdaMethodMap {
+export interface IKdaMethodMap {
   kadena_connect: {
     params: KdaConnectOptions;
     response: JsonRpcResponse<any>;
@@ -193,23 +189,19 @@ export interface KdaMethodMap {
   };
   kadena_getAccount_v1: {
     params: {};
-    response: JsonRpcResponse<AccountInfo>;
+    response: JsonRpcResponse<IAccountInfo>;
   };
   kadena_getAccounts_v2: {
     params: {};
-    response: JsonRpcResponse<AccountInfo[]>;
+    response: JsonRpcResponse<IAccountInfo[]>;
   };
   kadena_getNetwork_v1: {
     params: {};
-    response: JsonRpcResponse<NetworkInfo>;
+    response: JsonRpcResponse<INetworkInfo>;
   };
   kadena_getNetworks_v1: {
     params: {};
-    response: JsonRpcResponse<NetworkInfo[]>;
-  };
-  kadena_changeNetwork_v1: {
-    params: { networkId: string };
-    response: JsonRpcResponse<{ success: boolean; reason?: string }>;
+    response: JsonRpcResponse<INetworkInfo[]>;
   };
   kadena_sign_v1: {
     params: ISigningRequestPartial;
@@ -227,13 +219,13 @@ export interface KdaMethodMap {
 /**
  * @public
  */
-export type KdaMethod = keyof KdaMethodMap;
+export type KdaMethod = keyof IKdaMethodMap;
 
 /**
  * @public
  */
 export type KdaRequestArgs<M extends KdaMethod> = {
   method: M;
-} & { params?: KdaMethodMap[M]['params'] };
+} & { params?: IKdaMethodMap[M]['params'] };
 
 export { ChainId, ICommand, IKeyPair, IUnsignedCommand } from '@kadena/client';

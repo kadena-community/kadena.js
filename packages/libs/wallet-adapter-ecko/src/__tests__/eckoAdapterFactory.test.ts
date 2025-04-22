@@ -1,4 +1,4 @@
-import type { Provider } from '@kadena/wallet-adapter-core';
+import type { IProvider } from '@kadena/wallet-adapter-core';
 import { describe, expect, it, vi } from 'vitest';
 import { eckoAdapter, EckoWalletAdapter } from '../eckoAdapterFactory';
 import * as providerModule from '../provider';
@@ -9,7 +9,7 @@ describe('eckoAdapter factory', () => {
   });
 
   it('detect() delegates to detectEckoProvider', async () => {
-    const fakeProvider: Provider = {
+    const fakeProvider: IProvider = {
       request: vi.fn(),
       on: vi.fn(),
       off: vi.fn(),
@@ -25,7 +25,7 @@ describe('eckoAdapter factory', () => {
   });
 
   it('adapter() returns an EckoWalletAdapter instance', async () => {
-    const fakeProvider: Provider = {
+    const fakeProvider: IProvider = {
       request: vi.fn(),
       on: vi.fn(),
       off: vi.fn(),

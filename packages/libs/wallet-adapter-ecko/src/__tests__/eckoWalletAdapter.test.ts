@@ -1,24 +1,22 @@
 import type {
-  AccountInfo,
+  IAccountInfo,
   ICommand,
-  JsonRpcError,
-  JsonRpcSuccess,
-  NetworkInfo,
-  Provider,
+  IJsonRpcSuccess,
+  INetworkInfo,
+  IProvider,
 } from '@kadena/wallet-adapter-core';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ERRORS } from '../constants';
 import { EckoWalletAdapter } from '../EckoWalletAdapter';
 import type {
   IEckoQuicksignResponse,
   IQuicksignResponseOutcomes,
-  RawAccountResponse,
-  RawNetworkResponse,
-  RawRequestResponse,
+  IRawAccountResponse,
+  IRawNetworkResponse,
+  IRawRequestResponse,
 } from '../types';
 
-class MockProvider implements Provider {
+class MockProvider implements IProvider {
   public request: (args: {
     method: string;
     [key: string]: unknown;
@@ -41,12 +39,12 @@ beforeEach(() => {
 describe('EckoWalletAdapter', () => {
   describe('kadena_connect', () => {
     it('performs status → connect → status → requestAccount flow on first connect', async () => {
-      const statusFail: RawRequestResponse = {
+      const statusFail: IRawRequestResponse = {
         status: 'fail',
         message: 'nope',
       };
-      const statusOK: RawRequestResponse = { status: 'success' };
-      const acctResp: RawAccountResponse = {
+      const statusOK: IRawRequestResponse = { status: 'success' };
+      const acctResp: IRawAccountResponse = {
         status: 'success',
         wallet: { account: 'alice', publicKey: 'pk1' },
       };
@@ -61,7 +59,7 @@ describe('EckoWalletAdapter', () => {
         id: 1,
         method: 'kadena_connect',
         params: {},
-      })) as JsonRpcSuccess<AccountInfo>;
+      })) as IJsonRpcSuccess<IAccountInfo>;
 
       expect(provider.request).toHaveBeenNthCalledWith(1, {
         method: 'kda_checkStatus',
@@ -94,7 +92,7 @@ describe('EckoWalletAdapter', () => {
     });
 
     it('throws if status stays fail', async () => {
-      const statusFail: RawRequestResponse = {
+      const statusFail: IRawRequestResponse = {
         status: 'fail',
         message: 'nope',
       };
@@ -119,7 +117,7 @@ describe('EckoWalletAdapter', () => {
         id: 3,
         method: 'kadena_disconnect',
         params: {},
-      })) as JsonRpcSuccess<void>;
+      })) as IJsonRpcSuccess<void>;
 
       expect(provider.request).toHaveBeenCalledWith({
         method: 'kda_disconnect',
@@ -131,7 +129,7 @@ describe('EckoWalletAdapter', () => {
 
   describe('kadena_getAccount_v1 & kadena_getAccounts_v2', () => {
     it('maps kda_requestAccount → single account', async () => {
-      const acct: RawAccountResponse = {
+      const acct: IRawAccountResponse = {
         status: 'success',
         wallet: { account: 'bob', publicKey: 'pk2' },
       };
@@ -143,13 +141,13 @@ describe('EckoWalletAdapter', () => {
         id: 4,
         method: 'kadena_getAccount_v1',
         params: {},
-      })) as JsonRpcSuccess<AccountInfo>;
+      })) as IJsonRpcSuccess<IAccountInfo>;
 
       expect(rpc.result.accountName).toBe('bob');
     });
 
     it('maps kda_requestAccount → array of accounts', async () => {
-      const acct: RawAccountResponse = {
+      const acct: IRawAccountResponse = {
         status: 'success',
         wallet: { account: 'carol', publicKey: 'pk3' },
       };
@@ -161,7 +159,7 @@ describe('EckoWalletAdapter', () => {
         id: 5,
         method: 'kadena_getAccounts_v2',
         params: {},
-      })) as JsonRpcSuccess<AccountInfo[]>;
+      })) as IJsonRpcSuccess<IAccountInfo[]>;
 
       expect(rpc.result).toEqual([
         {
@@ -177,7 +175,7 @@ describe('EckoWalletAdapter', () => {
 
   describe('kadena_getNetwork_v1 & kadena_getNetworks_v1', () => {
     it('maps kda_getNetwork → single network', async () => {
-      const net: RawNetworkResponse = {
+      const net: IRawNetworkResponse = {
         name: 'mainnet',
         networkId: 'mainnet01',
         url: 'https://api.kadena.io',
@@ -188,7 +186,7 @@ describe('EckoWalletAdapter', () => {
         id: 6,
         method: 'kadena_getNetwork_v1',
         params: {},
-      })) as JsonRpcSuccess<NetworkInfo>;
+      })) as IJsonRpcSuccess<INetworkInfo>;
 
       expect(rpc.result).toEqual({
         networkName: 'mainnet',
@@ -198,7 +196,7 @@ describe('EckoWalletAdapter', () => {
     });
 
     it('maps kda_getNetwork → array of networks', async () => {
-      const net: RawNetworkResponse = {
+      const net: IRawNetworkResponse = {
         name: 'testnet',
         networkId: 'testnet04',
         url: 'https://testnet.chainweb.com',
@@ -209,7 +207,7 @@ describe('EckoWalletAdapter', () => {
         id: 7,
         method: 'kadena_getNetworks_v1',
         params: {},
-      })) as JsonRpcSuccess<NetworkInfo[]>;
+      })) as IJsonRpcSuccess<INetworkInfo[]>;
 
       expect(rpc.result).toEqual([
         {
@@ -234,7 +232,7 @@ describe('EckoWalletAdapter', () => {
         id: 8,
         method: 'kadena_sign_v1',
         params: { caps: [], code: '' },
-      })) as JsonRpcSuccess<{ body: ICommand; chainId: string }>;
+      })) as IJsonRpcSuccess<{ body: ICommand; chainId: string }>;
 
       expect(rpc.result.body).toEqual(signedCmd);
     });
@@ -273,7 +271,7 @@ describe('EckoWalletAdapter', () => {
         id: 10,
         method: 'kadena_quicksign_v1',
         params: { commandSigDatas: [] },
-      })) as JsonRpcSuccess<IQuicksignResponseOutcomes>;
+      })) as IJsonRpcSuccess<IQuicksignResponseOutcomes>;
 
       expect(rpc.result.responses).toBe(responses);
     });
@@ -291,18 +289,6 @@ describe('EckoWalletAdapter', () => {
           params: { commandSigDatas: [] },
         }),
       ).rejects.toThrow('nope');
-    });
-  });
-
-  describe('kadena_changeNetwork_v1', () => {
-    it('returns JSON‑RPC error for unsupported network change', async () => {
-      const rpc = (await adapter.request({
-        id: 12,
-        method: 'kadena_changeNetwork_v1',
-        params: { networkId: 'foo' },
-      })) as JsonRpcError;
-
-      expect(rpc.error.message).toBe(ERRORS.KADENA_CHANGE_NETWORK_UNSUPPORTED);
     });
   });
 });

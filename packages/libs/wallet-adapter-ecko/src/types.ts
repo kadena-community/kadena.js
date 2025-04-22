@@ -1,4 +1,4 @@
-import type { KdaMethodMap as StandardKdaMethodMap } from '@kadena/wallet-adapter-core';
+import type { IKdaMethodMap as StandardKdaMethodMap } from '@kadena/wallet-adapter-core';
 
 /**
  * Represents a quicksign signature as defined in the quicksign API.
@@ -95,7 +95,7 @@ export declare type IQuicksignResponse =
  *
  * @public
  */
-export interface RawRequestResponse {
+export interface IRawRequestResponse {
   status: 'success' | 'fail';
   message?: string;
 }
@@ -107,7 +107,7 @@ export interface RawRequestResponse {
  *
  * @public
  */
-export interface RawAccountResponse {
+export interface IRawAccountResponse {
   status: string;
   message?: string;
   wallet?: { account: string; publicKey: string };
@@ -120,7 +120,7 @@ export interface RawAccountResponse {
  *
  * @public
  */
-export interface RawNetworkResponse {
+export interface IRawNetworkResponse {
   name: string;
   networkId: string;
   url: string;
@@ -133,7 +133,7 @@ export interface RawNetworkResponse {
  *
  * @public
  */
-export interface kadenaCheckStatusRPC {
+export interface IKadenaCheckStatusRPC {
   /**
    * The status of the checkStatus call.
    */
@@ -204,7 +204,7 @@ export type IEckoQuicksignResponse =
  *
  * @public
  */
-export interface EckoMethodMap {
+export interface IEckoMethodMap {
   /**
    * Custom method for checking wallet status.
    *
@@ -213,7 +213,7 @@ export interface EckoMethodMap {
    */
   kadena_checkStatus: {
     params: { networkId?: string };
-    response: kadenaCheckStatusRPC;
+    response: IKadenaCheckStatusRPC;
   };
 }
 
@@ -222,7 +222,7 @@ export interface EckoMethodMap {
  *
  * @public
  */
-export type ExtendedMethodMap = StandardKdaMethodMap & EckoMethodMap;
+export type ExtendedMethodMap = StandardKdaMethodMap & IEckoMethodMap;
 
 /**
  * ExtendedMethod represents the keys of the ExtendedMethodMap.

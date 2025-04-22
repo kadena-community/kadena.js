@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { WalletAdapterClient } from '../WalletAdapterClient';
-import type { Adapter } from '../types';
+import type { IAdapter } from '../types';
 
 describe('WalletAdapterClient', () => {
-  let mockAdapter: Adapter;
+  let mockAdapter: IAdapter;
   let client: WalletAdapterClient;
 
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe('WalletAdapterClient', () => {
       onAccountChange: vi.fn(),
       onNetworkChange: vi.fn(),
       changeNetwork: vi.fn().mockResolvedValue({ success: true }),
-    } as unknown as Adapter;
+    } as unknown as IAdapter;
 
     client = new WalletAdapterClient([mockAdapter]);
   });
@@ -104,13 +104,6 @@ describe('WalletAdapterClient', () => {
     const cb = vi.fn();
     client.onNetworkChange('Mock', cb);
     expect(mockAdapter.onNetworkChange).toHaveBeenCalledWith(cb);
-  });
-
-  it('changeNetwork calls adapter.changeNetwork and returns result', async () => {
-    const network = { networkName: '', networkId: 'x' };
-    const res = await client.changeNetwork('Mock', network);
-    expect(mockAdapter.changeNetwork).toHaveBeenCalledWith(network);
-    expect(res).toEqual({ success: true });
   });
 
   it('throws when adapter is not found', async () => {

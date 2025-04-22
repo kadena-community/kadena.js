@@ -10,12 +10,12 @@
  * can be reliably detected and integrated within the application.
  */
 
-import type { Provider } from '@kadena/wallet-adapter-core';
+import type { IProvider } from '@kadena/wallet-adapter-core';
 
 /**
  * The Ecko provider interface extends the core Provider.
  */
-export interface EckoProvider extends Provider {
+export interface IEckoProvider extends IProvider {
   isKadena?: boolean;
 }
 
@@ -29,14 +29,14 @@ export interface EckoProvider extends Provider {
 export async function detectEckoProvider(options?: {
   silent?: boolean;
   timeout?: number;
-}): Promise<EckoProvider | null> {
+}): Promise<IEckoProvider | null> {
   const { silent = false, timeout = 3000 } = options || {};
   return new Promise((resolve) => {
     let handled = false;
     function handleProvider() {
       if (handled) return;
       handled = true;
-      const provider = (window as any).kadena as EckoProvider;
+      const provider = (window as any).kadena as IEckoProvider;
       if (
         provider &&
         provider.isKadena &&

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import type { KadenaWalletState } from './context';
+import type { IKadenaWalletState } from './context';
 import { useKadenaWallet } from './context';
 
 let activeEventListenerName: string | boolean = false;
 
-export function useKadenaWalletState(): KadenaWalletState {
+export function useKadenaWalletState(): IKadenaWalletState {
   const wallet = useKadenaWallet();
 
   useEffect(() => {

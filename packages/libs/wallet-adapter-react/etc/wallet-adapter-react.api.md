@@ -4,22 +4,19 @@
 
 ```ts
 
-import type { AccountInfo } from '@kadena/wallet-adapter-core';
-import type { Adapter } from '@kadena/wallet-adapter-core';
 import type { AdapterFactory } from '@kadena/wallet-adapter-core';
-import type { AdapterFactoryData } from '@kadena/wallet-adapter-core';
+import type { IAccountInfo } from '@kadena/wallet-adapter-core';
+import type { IAdapter } from '@kadena/wallet-adapter-core';
+import type { IAdapterFactoryData } from '@kadena/wallet-adapter-core';
+import type { INetworkInfo } from '@kadena/wallet-adapter-core';
 import { JSX as JSX_2 } from 'react/jsx-runtime';
-import type { NetworkInfo } from '@kadena/wallet-adapter-core';
 import type { ReactNode } from 'react';
 import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 
-// @public
-export function KadenaWalletProvider({ children, adapters: inputAdapters, defaultAdapterName, }: KadenaWalletProviderProps): JSX_2.Element;
-
 // @public (undocumented)
-export interface KadenaWalletProviderProps {
+export interface IKadenaWalletProviderProps {
     // (undocumented)
-    adapters: (Adapter | AdapterFactory)[];
+    adapters: (IAdapter | AdapterFactory)[];
     // (undocumented)
     children: ReactNode;
     // (undocumented)
@@ -27,23 +24,26 @@ export interface KadenaWalletProviderProps {
 }
 
 // @public (undocumented)
-export interface KadenaWalletState {
+export interface IKadenaWalletState {
     // (undocumented)
-    accounts: AccountInfo[];
+    accounts: IAccountInfo[];
     // (undocumented)
-    activeAccount: AccountInfo | null;
+    activeAccount: IAccountInfo | null;
     // (undocumented)
-    activeNetwork: NetworkInfo | null;
+    activeNetwork: INetworkInfo | null;
     // (undocumented)
     loading: boolean;
     // (undocumented)
-    networks: NetworkInfo[];
+    networks: INetworkInfo[];
 }
 
-// Warning: (ae-forgotten-export) The symbol "KadenaWalletContextValue" needs to be exported by the entry point index.d.ts
+// @public
+export function KadenaWalletProvider({ children, adapters: inputAdapters, defaultAdapterName, }: IKadenaWalletProviderProps): JSX_2.Element;
+
+// Warning: (ae-forgotten-export) The symbol "IKadenaWalletContextValue" needs to be exported by the entry point index.d.ts
 //
 // @public
-export function useKadenaWallet(): KadenaWalletContextValue;
+export function useKadenaWallet(): IKadenaWalletContextValue;
 
 // (No @packageDocumentation comment for this package)
 

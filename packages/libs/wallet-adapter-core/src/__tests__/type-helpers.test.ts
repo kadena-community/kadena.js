@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { JsonRpcResponse, JsonRpcSuccess } from '../types';
+import type { IJsonRpcSuccess, JsonRpcResponse } from '../types';
 import { isJsonRpcResponse, isJsonRpcSuccess } from '../utils/type-helpers';
 
 describe('type-helpers', () => {
@@ -48,7 +48,7 @@ describe('type-helpers', () => {
 
   describe('isJsonRpcSuccess', () => {
     it('narrowly returns true for a JsonRpcSuccess response', () => {
-      const success: JsonRpcSuccess<{ x: number }> = {
+      const success: IJsonRpcSuccess<{ x: number }> = {
         id: 4,
         jsonrpc: '2.0',
         result: { x: 42 },

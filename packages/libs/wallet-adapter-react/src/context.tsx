@@ -1,9 +1,9 @@
 import type {
-  AccountInfo,
-  Adapter,
   AdapterFactory,
-  AdapterFactoryData,
-  NetworkInfo,
+  IAccountInfo,
+  IAdapter,
+  IAdapterFactoryData,
+  INetworkInfo,
 } from '@kadena/wallet-adapter-core';
 import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 import type { ReactNode } from 'react';
@@ -19,35 +19,35 @@ import {
 /**
  * @public
  */
-export interface KadenaWalletState {
+export interface IKadenaWalletState {
   loading: boolean;
-  accounts: AccountInfo[];
-  activeAccount: AccountInfo | null;
-  networks: NetworkInfo[];
-  activeNetwork: NetworkInfo | null;
+  accounts: IAccountInfo[];
+  activeAccount: IAccountInfo | null;
+  networks: INetworkInfo[];
+  activeNetwork: INetworkInfo | null;
 }
 
-interface KadenaWalletContextValue {
+interface IKadenaWalletContextValue {
   client: WalletAdapterClient;
   currentAdapterName: string | null;
   setCurrentAdapterName: (name: string | null) => void;
-  providerData: AdapterFactoryData[];
-  adapters: Adapter[];
+  providerData: IAdapterFactoryData[];
+  adapters: IAdapter[];
   /** Only populated if using the useKadenaWalletStore hook */
-  state: KadenaWalletState;
-  setState: (state: Partial<KadenaWalletState>) => void;
+  state: IKadenaWalletState;
+  setState: (state: Partial<IKadenaWalletState>) => void;
 }
 
-const KadenaWalletContext = createContext<KadenaWalletContextValue | null>(
+const KadenaWalletContext = createContext<IKadenaWalletContextValue | null>(
   null,
 );
 
 /**
  * @public
  */
-export interface KadenaWalletProviderProps {
+export interface IKadenaWalletProviderProps {
   children: ReactNode;
-  adapters: (Adapter | AdapterFactory)[];
+  adapters: (IAdapter | AdapterFactory)[];
   defaultAdapterName?: string;
 }
 
@@ -61,7 +61,7 @@ export function KadenaWalletProvider({
   children,
   adapters: inputAdapters,
   defaultAdapterName,
-}: KadenaWalletProviderProps) {
+}: IKadenaWalletProviderProps) {
   const [currentAdapterName, setCurrentAdapterName] = useState<string | null>(
     defaultAdapterName ?? null,
   );
@@ -72,11 +72,11 @@ export function KadenaWalletProvider({
   );
 
   // TODO: change to set
-  const [providerData, setProviderData] = useState<AdapterFactoryData[]>(
+  const [providerData, setProviderData] = useState<IAdapterFactoryData[]>(
     client.getProviders(),
   );
 
-  const [state, setState] = useState<KadenaWalletContextValue['state']>({
+  const [state, setState] = useState<IKadenaWalletContextValue['state']>({
     loading: false,
     accounts: [],
     activeAccount: null,
@@ -85,7 +85,7 @@ export function KadenaWalletProvider({
   });
 
   const setPartialState = useCallback(
-    (partialState: Partial<KadenaWalletState>) => {
+    (partialState: Partial<IKadenaWalletState>) => {
       setState((prevState) => ({ ...prevState, ...partialState }));
     },
     [setState],
@@ -128,7 +128,7 @@ export function KadenaWalletProvider({
         setCurrentAdapterName,
         state,
         setState: setPartialState,
-      }) as KadenaWalletContextValue,
+      }) as IKadenaWalletContextValue,
     [
       client,
       providerData,

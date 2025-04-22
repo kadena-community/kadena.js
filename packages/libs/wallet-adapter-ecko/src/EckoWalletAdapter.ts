@@ -24,10 +24,10 @@
  */
 
 import type {
-  AccountInfo,
-  BaseWalletAdapterOptions,
+  IAccountInfo,
+  IBaseWalletAdapterOptions,
   ICommand,
-  NetworkInfo,
+  INetworkInfo,
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import { ERRORS } from './constants';
@@ -36,11 +36,11 @@ import type {
   ExtendedMethodMap,
   IEckoQuicksignFailResponse,
   IEckoQuicksignResponse,
+  IKadenaCheckStatusRPC,
   IQuicksignResponse,
-  kadenaCheckStatusRPC,
-  RawAccountResponse,
-  RawNetworkResponse,
-  RawRequestResponse,
+  IRawAccountResponse,
+  IRawNetworkResponse,
+  IRawRequestResponse,
 } from './types';
 import { safeJsonParse } from './utils/json';
 
@@ -53,7 +53,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
   public name: string = 'Ecko';
 
   // Listeners for 'kadena_networkChanged'.
-  private _networkChangedListeners: Array<(network: NetworkInfo) => void> = [];
+  private _networkChangedListeners: Array<(network: INetworkInfo) => void> = [];
   // Stored account change listener references for later removal.
   private _accountChangeListeners: Array<(...args: any[]) => void> = [];
 
@@ -61,7 +61,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
    * Constructor for the EckoWalletAdapter.
    * @param options - Optional adapter options.
    */
-  public constructor(options: BaseWalletAdapterOptions) {
+  public constructor(options: IBaseWalletAdapterOptions) {
     super(options);
   }
 
@@ -83,14 +83,14 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
   private async _connect(
     finalParams: { networkId: string },
     silent = false,
-  ): Promise<AccountInfo | null> {
+  ): Promise<IAccountInfo | null> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
     try {
       // Check connection status.
       let statusResp = (await this.provider.request({
         method: 'kda_checkStatus',
         ...finalParams,
-      })) as RawRequestResponse;
+      })) as IRawRequestResponse;
 
       if (statusResp.status !== 'success') {
         // Request a connection if not connected.
@@ -101,7 +101,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
         statusResp = (await this.provider.request({
           method: 'kda_checkStatus',
           ...finalParams,
-        })) as RawRequestResponse;
+        })) as IRawRequestResponse;
         if (statusResp.status !== 'success') {
           throw new Error(statusResp.message || ERRORS.FAILED_TO_CONNECT);
         }
@@ -111,7 +111,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
       const accountResp = (await this.provider.request({
         method: 'kda_requestAccount',
         ...finalParams,
-      })) as RawAccountResponse;
+      })) as IRawAccountResponse;
       if (accountResp.status !== 'success' || !accountResp.wallet) {
         throw new Error(accountResp.message || ERRORS.COULD_NOT_FETCH_ACCOUNT);
       }
@@ -205,15 +205,15 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
         const mappedListener = async () => {
           try {
             const newNetwork = await this.getActiveNetwork();
-            let newAccount: AccountInfo | null = null;
+            let newAccount: IAccountInfo | null = null;
             try {
               const resp = (await this.getActiveAccount()) as
-                | AccountInfo
-                | RawRequestResponse;
+                | IAccountInfo
+                | IRawRequestResponse;
               if ('status' in resp && resp.status === 'fail') {
                 throw new Error(resp.message || ERRORS.COULD_NOT_FETCH_ACCOUNT);
               }
-              newAccount = resp as AccountInfo;
+              newAccount = resp as IAccountInfo;
             } catch (error) {
               // Use silent mode so that errors don't bubble up.
               newAccount = await this._connect(
@@ -240,7 +240,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
       }
       case 'kadena_networkChanged': {
         this._networkChangedListeners.push(
-          listener as (network: NetworkInfo) => void,
+          listener as (network: INetworkInfo) => void,
         );
         break;
       }
@@ -339,7 +339,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
         const resp = (await this.provider.request({
           method: 'kda_requestAccount',
           ...finalParams,
-        })) as RawAccountResponse;
+        })) as IRawAccountResponse;
         if (resp.status !== 'success' || !resp.wallet) {
           throw new Error(resp.message || ERRORS.COULD_NOT_FETCH_ACCOUNT);
         }
@@ -359,7 +359,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
         const resp = (await this.provider.request({
           method: 'kda_requestAccount',
           ...finalParams,
-        })) as RawAccountResponse;
+        })) as IRawAccountResponse;
         if (resp.status !== 'success' || !resp.wallet) {
           throw new Error(resp.message || ERRORS.COULD_NOT_FETCH_ACCOUNT);
         }
@@ -379,7 +379,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
       case 'kadena_getNetwork_v1': {
         const resp = (await this.provider.request({
           method: 'kda_getNetwork',
-        })) as RawNetworkResponse;
+        })) as IRawNetworkResponse;
         return {
           id,
           jsonrpc: '2.0',
@@ -393,7 +393,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
       case 'kadena_getNetworks_v1': {
         const resp = (await this.provider.request({
           method: 'kda_getNetwork',
-        })) as RawNetworkResponse;
+        })) as IRawNetworkResponse;
         const network = {
           networkName: resp.name,
           networkId: resp.networkId,
@@ -477,17 +477,7 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
         return (await this.provider.request({
           method: 'kda_checkStatus',
           ...finalParams,
-        })) as kadenaCheckStatusRPC;
-      }
-      case 'kadena_changeNetwork_v1': {
-        return {
-          id,
-          jsonrpc: '2.0',
-          error: {
-            code: -32004,
-            message: ERRORS.KADENA_CHANGE_NETWORK_UNSUPPORTED,
-          },
-        };
+        })) as IKadenaCheckStatusRPC;
       }
       default:
         return (await this.provider.request(args)) as any;

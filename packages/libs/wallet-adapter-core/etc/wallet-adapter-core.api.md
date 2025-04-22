@@ -14,96 +14,27 @@ import type { ISigningRequest } from '@kadena/client';
 import { IUnsignedCommand } from '@kadena/client';
 import { StandardSchemaV1 } from '@standard-schema/spec';
 
-// @public
-export interface AccountInfo {
-    // (undocumented)
-    accountName: string;
-    // (undocumented)
-    chainAccounts: string[];
-    // (undocumented)
-    contract: string;
-    // (undocumented)
-    guard: {
-        keys: string[];
-        pred: string;
-    };
-    // (undocumented)
-    networkId: string;
-}
-
-// @public
-export interface Adapter {
-    // (undocumented)
-    changeNetwork(network: NetworkInfo): Promise<{
-        success: boolean;
-        reason?: string;
-    }>;
-    // (undocumented)
-    connect(params?: unknown): Promise<AccountInfo | null>;
-    // (undocumented)
-    disconnect(): Promise<void>;
-    // (undocumented)
-    getAccounts(): Promise<AccountInfo[]>;
-    // (undocumented)
-    getActiveAccount(): Promise<AccountInfo>;
-    // (undocumented)
-    getActiveNetwork(): Promise<NetworkInfo>;
-    // (undocumented)
-    getNetworks(): Promise<NetworkInfo[]>;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    off(event: string, listener: (...args: any[]) => void): this;
-    // (undocumented)
-    on(event: string, listener: (...args: any[]) => void): this;
-    // (undocumented)
-    onAccountChange(cb: (newAccount: AccountInfo) => void): void;
-    // (undocumented)
-    onNetworkChange(cb: (newNetwork: NetworkInfo) => void): void;
-    // (undocumented)
-    request(args: {
-        method: string;
-        [key: string]: any;
-    }): Promise<unknown>;
-    // (undocumented)
-    signCommand(command: ISigningRequestPartial | IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
-    // (undocumented)
-    signTransaction(transaction: IUnsignedCommand | IUnsignedCommand[]): Promise<(IUnsignedCommand | ICommand) | (IUnsignedCommand | ICommand)[]>;
-}
-
 // @public (undocumented)
 export type AdapterFactory = ReturnType<AdapterFactoryCreator>;
 
 // @public (undocumented)
-export type AdapterFactoryCreator = <T extends BaseWalletFactoryOptions>(options: T) => {
+export type AdapterFactoryCreator = <T extends IBaseWalletFactoryOptions>(options: T) => {
     name: string;
-    detect(): Promise<Provider | null>;
-    adapter(provider: Provider): Promise<Adapter>;
+    detect(): Promise<IProvider | null>;
+    adapter(provider: IProvider): Promise<IAdapter>;
 };
 
-// @public (undocumented)
-export interface AdapterFactoryData {
-    // (undocumented)
-    detected: boolean;
-    // (undocumented)
-    name: string;
-}
-
 // @public
-export abstract class BaseWalletAdapter implements Adapter {
-    constructor(options: BaseWalletAdapterOptions);
-    changeNetwork(network: NetworkInfo): Promise<{
-        success: boolean;
-        reason?: string;
-    }>;
-    connect(params: StandardSchemaV1.InferInput<NonNullable<typeof BaseWalletAdapter.connectSchema>>): Promise<AccountInfo | null>;
+export abstract class BaseWalletAdapter implements IAdapter {
+    constructor(options: IBaseWalletAdapterOptions);
+    connect(params: StandardSchemaV1.InferInput<NonNullable<typeof BaseWalletAdapter.connectSchema>>): Promise<IAccountInfo | null>;
     // (undocumented)
     connectSchema: StandardSchemaV1;
     disconnect(): Promise<void>;
-    getAccounts(): Promise<AccountInfo[]>;
-    getActiveAccount(): Promise<AccountInfo>;
-    getActiveNetwork(): Promise<NetworkInfo>;
-    getNetworks(): Promise<NetworkInfo[]>;
+    getAccounts(): Promise<IAccountInfo[]>;
+    getActiveAccount(): Promise<IAccountInfo>;
+    getActiveNetwork(): Promise<INetworkInfo>;
+    getNetworks(): Promise<INetworkInfo[]>;
     // (undocumented)
     abstract name: string;
     // (undocumented)
@@ -112,27 +43,13 @@ export abstract class BaseWalletAdapter implements Adapter {
     off(event: string, listener: (...args: any[]) => void): this;
     // (undocumented)
     on(event: string, listener: (...args: any[]) => void): this;
-    onAccountChange(cb: (newAccount: AccountInfo) => void): void;
-    onNetworkChange(cb: (newNetwork: NetworkInfo) => void): void;
+    onAccountChange(cb: (newAccount: IAccountInfo) => void): void;
+    onNetworkChange(cb: (newNetwork: INetworkInfo) => void): void;
     // (undocumented)
-    protected provider: Provider;
-    request<M extends KdaMethod>(args: KdaRequestArgs<M>): Promise<KdaMethodMap[M]['response']>;
+    protected provider: IProvider;
+    request<M extends KdaMethod>(args: KdaRequestArgs<M>): Promise<IKdaMethodMap[M]['response']>;
     signCommand(command: IUnsignedCommand | ISigningRequestPartial): Promise<ICommand | IUnsignedCommand>;
     signTransaction(command: IUnsignedCommand | IUnsignedCommand[]): Promise<(IUnsignedCommand | ICommand) | (IUnsignedCommand | ICommand)[]>;
-}
-
-// @public (undocumented)
-export interface BaseWalletAdapterOptions {
-    // (undocumented)
-    networkId?: string;
-    // (undocumented)
-    provider: Provider;
-}
-
-// @public (undocumented)
-export interface BaseWalletFactoryOptions {
-    // (undocumented)
-    networkId?: string;
 }
 
 export { ChainId }
@@ -152,31 +69,84 @@ export const convertSignRequest: (parsedTransaction: IPactCommand) => ISigningRe
 // @public
 export const finalizeQuickSignTransaction: (response: IQuicksignResponse, transactionHashes: string[], transactions: (IUnsignedCommand | ICommand)[], isList: boolean) => IUnsignedCommand | (IUnsignedCommand | ICommand)[];
 
-export { ICommand }
-
-export { IKeyPair }
+// @public
+export interface IAccountInfo {
+    // (undocumented)
+    accountName: string;
+    // (undocumented)
+    chainAccounts: string[];
+    // (undocumented)
+    contract: string;
+    // (undocumented)
+    guard: {
+        keys: string[];
+        pred: string;
+    };
+    // (undocumented)
+    networkId: string;
+}
 
 // @public
-export function isExecCommand(parsedTransaction: IPactCommand): parsedTransaction is IPactCommand & {
-    payload: IExecutionPayloadObject;
-};
+export interface IAdapter {
+    // (undocumented)
+    connect(params?: unknown): Promise<IAccountInfo | null>;
+    // (undocumented)
+    disconnect(): Promise<void>;
+    // (undocumented)
+    getAccounts(): Promise<IAccountInfo[]>;
+    // (undocumented)
+    getActiveAccount(): Promise<IAccountInfo>;
+    // (undocumented)
+    getActiveNetwork(): Promise<INetworkInfo>;
+    // (undocumented)
+    getNetworks(): Promise<INetworkInfo[]>;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    off(event: string, listener: (...args: any[]) => void): this;
+    // (undocumented)
+    on(event: string, listener: (...args: any[]) => void): this;
+    // (undocumented)
+    onAccountChange(cb: (newAccount: IAccountInfo) => void): void;
+    // (undocumented)
+    onNetworkChange(cb: (newNetwork: INetworkInfo) => void): void;
+    // (undocumented)
+    request(args: {
+        method: string;
+        [key: string]: any;
+    }): Promise<unknown>;
+    // (undocumented)
+    signCommand(command: ISigningRequestPartial | IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
+    // (undocumented)
+    signTransaction(transaction: IUnsignedCommand | IUnsignedCommand[]): Promise<(IUnsignedCommand | ICommand) | (IUnsignedCommand | ICommand)[]>;
+}
 
 // @public (undocumented)
-export type ISigningRequestPartial = {
-    caps: ISigningRequest['caps'];
-    code: string;
-} & Omit<Partial<ISigningRequest>, 'caps' | 'pactCode'>;
+export interface IAdapterFactoryData {
+    // (undocumented)
+    detected: boolean;
+    // (undocumented)
+    name: string;
+}
 
 // @public (undocumented)
-export const isJsonRpcResponse: (response: any) => boolean;
+export interface IBaseWalletAdapterOptions {
+    // (undocumented)
+    networkId?: string;
+    // (undocumented)
+    provider: IProvider;
+}
 
 // @public (undocumented)
-export const isJsonRpcSuccess: <T>(response: JsonRpcResponse<T>) => response is JsonRpcSuccess<T>;
+export interface IBaseWalletFactoryOptions {
+    // (undocumented)
+    networkId?: string;
+}
 
-export { IUnsignedCommand }
+export { ICommand }
 
 // @public (undocumented)
-export interface JsonRpcError {
+export interface IJsonRpcError {
     // (undocumented)
     error: {
         code: number;
@@ -190,10 +160,7 @@ export interface JsonRpcError {
 }
 
 // @public (undocumented)
-export type JsonRpcResponse<T> = JsonRpcSuccess<T> | JsonRpcError;
-
-// @public (undocumented)
-export interface JsonRpcSuccess<T> {
+export interface IJsonRpcSuccess<T> {
     // (undocumented)
     id: number;
     // (undocumented)
@@ -203,23 +170,7 @@ export interface JsonRpcSuccess<T> {
 }
 
 // @public (undocumented)
-export type KdaConnectOptions = Record<string, any>;
-
-// @public (undocumented)
-export type KdaMethod = keyof KdaMethodMap;
-
-// @public (undocumented)
-export interface KdaMethodMap {
-    // (undocumented)
-    kadena_changeNetwork_v1: {
-        params: {
-            networkId: string;
-        };
-        response: JsonRpcResponse<{
-            success: boolean;
-            reason?: string;
-        }>;
-    };
+export interface IKdaMethodMap {
     // (undocumented)
     kadena_connect: {
         params: KdaConnectOptions;
@@ -235,22 +186,22 @@ export interface KdaMethodMap {
     // (undocumented)
     kadena_getAccount_v1: {
         params: {};
-        response: JsonRpcResponse<AccountInfo>;
+        response: JsonRpcResponse<IAccountInfo>;
     };
     // (undocumented)
     kadena_getAccounts_v2: {
         params: {};
-        response: JsonRpcResponse<AccountInfo[]>;
+        response: JsonRpcResponse<IAccountInfo[]>;
     };
     // (undocumented)
     kadena_getNetwork_v1: {
         params: {};
-        response: JsonRpcResponse<NetworkInfo>;
+        response: JsonRpcResponse<INetworkInfo>;
     };
     // (undocumented)
     kadena_getNetworks_v1: {
         params: {};
-        response: JsonRpcResponse<NetworkInfo[]>;
+        response: JsonRpcResponse<INetworkInfo[]>;
     };
     // (undocumented)
     kadena_quicksign_v1: {
@@ -269,15 +220,10 @@ export interface KdaMethodMap {
     };
 }
 
-// @public (undocumented)
-export type KdaRequestArgs<M extends KdaMethod> = {
-    method: M;
-} & {
-    params?: KdaMethodMap[M]['params'];
-};
+export { IKeyPair }
 
 // @public
-export interface NetworkInfo {
+export interface INetworkInfo {
     // (undocumented)
     networkId: string;
     // (undocumented)
@@ -285,6 +231,54 @@ export interface NetworkInfo {
     // (undocumented)
     url?: string[];
 }
+
+// @public (undocumented)
+export interface IProvider {
+    // (undocumented)
+    off(event: string, listener: (...args: any[]) => void): void;
+    // (undocumented)
+    on(event: string, listener: (...args: any[]) => void): void;
+    // (undocumented)
+    request(args: {
+        method: string;
+        [key: string]: any;
+    }): Promise<unknown>;
+}
+
+// @public
+export function isExecCommand(parsedTransaction: IPactCommand): parsedTransaction is IPactCommand & {
+    payload: IExecutionPayloadObject;
+};
+
+// @public (undocumented)
+export type ISigningRequestPartial = {
+    caps: ISigningRequest['caps'];
+    code: string;
+} & Omit<Partial<ISigningRequest>, 'caps' | 'pactCode'>;
+
+// @public (undocumented)
+export const isJsonRpcResponse: (response: any) => boolean;
+
+// @public (undocumented)
+export const isJsonRpcSuccess: <T>(response: JsonRpcResponse<T>) => response is IJsonRpcSuccess<T>;
+
+export { IUnsignedCommand }
+
+// @public (undocumented)
+export type JsonRpcResponse<T> = IJsonRpcSuccess<T> | IJsonRpcError;
+
+// @public (undocumented)
+export type KdaConnectOptions = Record<string, any>;
+
+// @public (undocumented)
+export type KdaMethod = keyof IKdaMethodMap;
+
+// @public (undocumented)
+export type KdaRequestArgs<M extends KdaMethod> = {
+    method: M;
+} & {
+    params?: IKdaMethodMap[M]['params'];
+};
 
 // @public
 export type OptionalKeyPair = Omit<IKeyPair, 'secretKey'> & {
@@ -311,38 +305,21 @@ export const prepareQuickSignCmd: (transactionList: IUnsignedCommand | Array<IUn
 // @public
 export function prepareSignCmd(transaction: IUnsignedCommand | ICommand | ISigningRequestPartial): ISigningRequestPartial;
 
-// @public (undocumented)
-export interface Provider {
-    // (undocumented)
-    off(event: string, listener: (...args: any[]) => void): void;
-    // (undocumented)
-    on(event: string, listener: (...args: any[]) => void): void;
-    // (undocumented)
-    request(args: {
-        method: string;
-        [key: string]: any;
-    }): Promise<unknown>;
-}
-
 export { StandardSchemaV1 }
 
 // @public
 export class WalletAdapterClient {
-    constructor(adapters: (Adapter | AdapterFactory)[]);
-    changeNetwork(adapterName: string, network: NetworkInfo): Promise<{
-        success: boolean;
-        reason?: string;
-    }>;
-    connect(adapterName: Adapter['name'], params?: unknown): Promise<AccountInfo | null>;
+    constructor(adapters: (IAdapter | AdapterFactory)[]);
+    connect(adapterName: IAdapter['name'], params?: unknown): Promise<IAccountInfo | null>;
     disconnect(adapterName: string): Promise<void>;
-    getAccounts(adapterName: string): Promise<AccountInfo[]>;
-    getActiveAccount(adapterName: string): Promise<AccountInfo>;
-    getActiveNetwork(adapterName: string): Promise<NetworkInfo>;
+    getAccounts(adapterName: string): Promise<IAccountInfo[]>;
+    getActiveAccount(adapterName: string): Promise<IAccountInfo>;
+    getActiveNetwork(adapterName: string): Promise<INetworkInfo>;
     // (undocumented)
-    getAdapter(adapterName: string): Adapter | undefined;
+    getAdapter(adapterName: string): IAdapter | undefined;
     // (undocumented)
-    getDetectedAdapters(): Adapter[];
-    getNetworks(adapterName: string): Promise<NetworkInfo[]>;
+    getDetectedAdapters(): IAdapter[];
+    getNetworks(adapterName: string): Promise<INetworkInfo[]>;
     // (undocumented)
     getProviders(): {
         name: string;
@@ -352,12 +329,12 @@ export class WalletAdapterClient {
     init(): Promise<void>;
     // (undocumented)
     isDetected(name: string): boolean;
-    onAccountChange(adapterName: string, cb: (newAccount: AccountInfo) => void): void;
+    onAccountChange(adapterName: string, cb: (newAccount: IAccountInfo) => void): void;
     // (undocumented)
-    onAdapterDetected(cb: (adapter: Adapter) => void, options?: {
+    onAdapterDetected(cb: (adapter: IAdapter) => void, options?: {
         signal?: AbortSignal;
     }): void;
-    onNetworkChange(adapterName: string, cb: (newNetwork: NetworkInfo) => void): void;
+    onNetworkChange(adapterName: string, cb: (newNetwork: INetworkInfo) => void): void;
     request(adapterName: string, args: {
         method: string;
         [key: string]: any;

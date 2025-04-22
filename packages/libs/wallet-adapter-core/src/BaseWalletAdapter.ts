@@ -1,17 +1,17 @@
 import type { StandardSchemaV1 } from '@standard-schema/spec';
 import { defaultConnectSchema, SchemaError } from './schema';
 import type {
-  AccountInfo,
-  Adapter,
-  BaseWalletAdapterOptions,
+  IAccountInfo,
+  IAdapter,
+  IBaseWalletAdapterOptions,
   ICommand,
+  IKdaMethodMap,
+  INetworkInfo,
+  IProvider,
   ISigningRequestPartial,
   IUnsignedCommand,
   KdaMethod,
-  KdaMethodMap,
   KdaRequestArgs,
-  NetworkInfo,
-  Provider,
 } from './types';
 import {
   finalizeQuickSignTransaction,
@@ -28,13 +28,13 @@ const DEFAULT_NETWORK_ID = 'mainnet01';
  * An abstract base adapter that implements common (and minimal) functionality.
  * Concrete adapters (e.g. Ecko, XWallet) can override or extend these behaviors.
  */
-export abstract class BaseWalletAdapter implements Adapter {
+export abstract class BaseWalletAdapter implements IAdapter {
   public abstract name: string;
-  protected provider: Provider;
+  protected provider: IProvider;
   protected networkId: string;
   public connectSchema: StandardSchemaV1 = defaultConnectSchema;
 
-  public constructor(options: BaseWalletAdapterOptions) {
+  public constructor(options: IBaseWalletAdapterOptions) {
     this.provider = options.provider;
     this.networkId = options?.networkId || DEFAULT_NETWORK_ID;
   }
@@ -47,12 +47,12 @@ export abstract class BaseWalletAdapter implements Adapter {
    */
   public async request<M extends KdaMethod>(
     args: KdaRequestArgs<M>,
-  ): Promise<KdaMethodMap[M]['response']> {
+  ): Promise<IKdaMethodMap[M]['response']> {
     const response = await this.provider.request(args);
     if (!isJsonRpcResponse(response)) {
       throw new Error('Provider response is not a valid JSON-RPC 2.0 response');
     }
-    return response as KdaMethodMap[M]['response'];
+    return response as IKdaMethodMap[M]['response'];
   }
 
   public on(event: string, listener: (...args: any[]) => void): this {
@@ -70,7 +70,7 @@ export abstract class BaseWalletAdapter implements Adapter {
    */
   public async connect(
     params: StandardSchemaV1.InferInput<NonNullable<typeof this.connectSchema>>,
-  ): Promise<AccountInfo | null> {
+  ): Promise<IAccountInfo | null> {
     let parsedParams = params as Record<string, any>;
     if (params !== undefined && this.connectSchema !== undefined) {
       const output = await this.connectSchema?.['~standard'].validate(params);
@@ -106,7 +106,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Returns the currently active account by calling `kadena_getAccount_v1`.
    */
-  public async getActiveAccount(): Promise<AccountInfo> {
+  public async getActiveAccount(): Promise<IAccountInfo> {
     const response = await this.request({
       method: 'kadena_getAccount_v1',
     });
@@ -119,7 +119,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Retrieve all accounts via `kadena_getAccounts_v2`.
    */
-  public async getAccounts(): Promise<AccountInfo[]> {
+  public async getAccounts(): Promise<IAccountInfo[]> {
     const response = await this.request({
       method: 'kadena_getAccounts_v2',
     });
@@ -129,7 +129,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Get the currently active network by calling `kadena_getNetwork_v1`.
    */
-  public async getActiveNetwork(): Promise<NetworkInfo> {
+  public async getActiveNetwork(): Promise<INetworkInfo> {
     const response = await this.request({
       method: 'kadena_getNetwork_v1',
     });
@@ -142,7 +142,7 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Retrieve all networks via `kadena_getNetworks_v1`.
    */
-  public async getNetworks(): Promise<NetworkInfo[]> {
+  public async getNetworks(): Promise<INetworkInfo[]> {
     const response = await this.request({
       method: 'kadena_getNetworks_v1',
     });
@@ -201,38 +201,14 @@ export abstract class BaseWalletAdapter implements Adapter {
   /**
    * Subscribe to account-change events.
    */
-  public onAccountChange(cb: (newAccount: AccountInfo) => void): void {
+  public onAccountChange(cb: (newAccount: IAccountInfo) => void): void {
     this.on('kadena_accountChanged', cb);
   }
 
   /**
    * Subscribe to network-change events.
    */
-  public onNetworkChange(cb: (newNetwork: NetworkInfo) => void): void {
+  public onNetworkChange(cb: (newNetwork: INetworkInfo) => void): void {
     this.on('kadena_networkChanged', cb);
-  }
-
-  /**
-   * Change the wallet's network by calling `kadena_changeNetwork_v1`.
-   */
-  public async changeNetwork(
-    network: NetworkInfo,
-  ): Promise<{ success: boolean; reason?: string }> {
-    try {
-      const response = await this.request({
-        method: 'kadena_changeNetwork_v1',
-        params: {
-          networkId: network.networkId,
-        },
-      });
-
-      if (isJsonRpcSuccess(response)) {
-        this.networkId = network.networkId;
-        return response.result;
-      }
-      return { success: false, reason: response.error.message };
-    } catch (error) {
-      return { success: false, reason: (error as Error).message };
-    }
   }
 }

@@ -5,39 +5,29 @@
 ```ts
 
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
-import type { BaseWalletAdapterOptions } from '@kadena/wallet-adapter-core';
-import type { BaseWalletFactoryOptions } from '@kadena/wallet-adapter-core';
-import type { KdaMethodMap } from '@kadena/wallet-adapter-core';
-import { Provider } from '@kadena/wallet-adapter-core';
+import type { IBaseWalletAdapterOptions } from '@kadena/wallet-adapter-core';
+import type { IBaseWalletFactoryOptions } from '@kadena/wallet-adapter-core';
+import type { IKdaMethodMap } from '@kadena/wallet-adapter-core';
+import { IProvider } from '@kadena/wallet-adapter-core';
 
-// Warning: (ae-forgotten-export) The symbol "EckoProvider" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "IEckoProvider" needs to be exported by the entry point index.d.ts
 //
 // @public
 export function detectEckoProvider(options?: {
     silent?: boolean;
     timeout?: number;
-}): Promise<EckoProvider | null>;
+}): Promise<IEckoProvider | null>;
 
 // @public
-export const eckoAdapter: <T extends BaseWalletFactoryOptions>(options?: BaseWalletFactoryOptions) => {
+export const eckoAdapter: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
     name: string;
-    detect: () => Promise<EckoProvider | null>;
-    adapter: (provider: Provider) => Promise<EckoWalletAdapter>;
+    detect: () => Promise<IEckoProvider | null>;
+    adapter: (provider: IProvider) => Promise<EckoWalletAdapter>;
 };
 
 // @public
-export interface EckoMethodMap {
-    kadena_checkStatus: {
-        params: {
-            networkId?: string;
-        };
-        response: kadenaCheckStatusRPC;
-    };
-}
-
-// @public
 export class EckoWalletAdapter extends BaseWalletAdapter {
-    constructor(options: BaseWalletAdapterOptions);
+    constructor(options: IBaseWalletAdapterOptions);
     destroy(): void;
     // (undocumented)
     disconnect(): Promise<void>;
@@ -56,7 +46,17 @@ export class EckoWalletAdapter extends BaseWalletAdapter {
 export type ExtendedMethod = keyof ExtendedMethodMap;
 
 // @public
-export type ExtendedMethodMap = KdaMethodMap & EckoMethodMap;
+export type ExtendedMethodMap = IKdaMethodMap & IEckoMethodMap;
+
+// @public
+export interface IEckoMethodMap {
+    kadena_checkStatus: {
+        params: {
+            networkId?: string;
+        };
+        response: IKadenaCheckStatusRPC;
+    };
+}
 
 // @public
 export interface IEckoQuicksignFailResponse {
@@ -72,6 +72,19 @@ export interface IEckoQuicksignFailResponse {
 //
 // @public
 export type IEckoQuicksignResponse = IEckoQuicksignSuccessResponse | IEckoQuicksignFailResponse;
+
+// @public
+export interface IKadenaCheckStatusRPC {
+    // (undocumented)
+    account?: {
+        chainId: string;
+        account: string;
+        publicKey: string;
+    };
+    // (undocumented)
+    message?: string;
+    status: string;
+}
 
 // @public
 export type IQuicksignResponse = IQuicksignResponseError | IQuicksignResponseOutcomes;
@@ -126,20 +139,7 @@ export interface IQuicksignSigner {
 }
 
 // @public
-export interface kadenaCheckStatusRPC {
-    // (undocumented)
-    account?: {
-        chainId: string;
-        account: string;
-        publicKey: string;
-    };
-    // (undocumented)
-    message?: string;
-    status: string;
-}
-
-// @public
-export interface RawAccountResponse {
+export interface IRawAccountResponse {
     // (undocumented)
     message?: string;
     // (undocumented)
@@ -152,7 +152,7 @@ export interface RawAccountResponse {
 }
 
 // @public
-export interface RawNetworkResponse {
+export interface IRawNetworkResponse {
     // (undocumented)
     name: string;
     // (undocumented)
@@ -162,7 +162,7 @@ export interface RawNetworkResponse {
 }
 
 // @public
-export interface RawRequestResponse {
+export interface IRawRequestResponse {
     // (undocumented)
     message?: string;
     // (undocumented)

@@ -1,6 +1,6 @@
 import type {
   AdapterFactoryCreator,
-  BaseWalletFactoryOptions,
+  IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
 import { detectEckoProvider } from './provider';
 
@@ -21,7 +21,7 @@ import { detectEckoProvider } from './provider';
  * @returns A wallet adapter factory for the Ecko wallet
  * @public
  */
-export const eckoAdapter = ((options?: BaseWalletFactoryOptions) => {
+export const eckoAdapter = ((options?: IBaseWalletFactoryOptions) => {
   return {
     name: 'Ecko',
     detect: async () => {
