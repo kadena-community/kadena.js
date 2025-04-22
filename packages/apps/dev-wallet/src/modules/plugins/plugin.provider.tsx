@@ -1,35 +1,36 @@
 import { Plugin } from '@/modules/plugins/type';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useWallet } from '../wallet/wallet.hook';
 import './PluginManager';
-import { PluginManager } from './PluginManager';
+import { pluginManager } from './PluginManager';
 
-const context = createContext<{
-  pluginManager: PluginManager | undefined;
-  pluginList: Map<string, Plugin>;
-}>({
-  pluginManager: undefined,
-  pluginList: new Map(),
-});
+const context = createContext<Map<string, Plugin> | undefined>(undefined);
 
 export function PluginProvider({ children }: React.PropsWithChildren) {
-  const [pluginManager] = useState<PluginManager>(() => new PluginManager());
+  const wallet = useWallet();
   const [pluginList, setPluginList] = useState(new Map<string, Plugin>());
 
   useEffect(() => {
-    pluginManager.fetchPluginList().then(setPluginList);
-  }, [pluginManager]);
+    if (wallet.profile?.showExperimentalFeatures) {
+      console.log('PluginManager: startup');
+      pluginManager.fetchPluginList().then(setPluginList);
+    }
+  }, [wallet.profile?.showExperimentalFeatures]);
 
-  const value = useMemo(
-    () => ({
-      pluginManager,
-      pluginList,
-    }),
-    [pluginManager, pluginList],
-  );
+  useEffect(() => {
+    if (!wallet.isUnlocked || !wallet.profile?.showExperimentalFeatures) {
+      console.log('PluginManager: cleanup');
+      pluginManager.cleanup();
+    }
+  }, [wallet.isUnlocked, wallet.profile?.showExperimentalFeatures]);
 
-  return <context.Provider value={value}>{children}</context.Provider>;
+  return <context.Provider value={pluginList}>{children}</context.Provider>;
 }
 
 export function usePlugins() {
-  return useContext(context);
+  const pluginList = useContext(context);
+  if (!pluginList) {
+    throw new Error('PluginManager is not initialized; use PluginProvider');
+  }
+  return pluginList;
 }

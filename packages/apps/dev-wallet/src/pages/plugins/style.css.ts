@@ -21,3 +21,17 @@ export const pluginIconClass = style({
   textDecoration: 'none',
   fontWeight: 'bold',
 });
+
+export const smallPluginIconClass = style({
+  height: '12px',
+  width: '12px',
+  borderRadius: '2px',
+  fontSize: '6px',
+  backgroundColor: tokens.kda.foundation.color.neutral.n100,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: tokens.kda.foundation.color.neutral.n1,
+  textDecoration: 'none',
+  fontWeight: 'bold',
+});

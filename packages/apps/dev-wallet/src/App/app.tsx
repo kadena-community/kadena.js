@@ -21,30 +21,30 @@ function Providers({ children }: { children: React.ReactNode }) {
     }
   }, []);
   return (
-    <PluginProvider>
-      <AnimatePresence mode="sync">
-        <GlobalStateProvider>
-          <MediaContextProvider>
-            <SideBarLayoutProvider>
-              <SessionProvider>
-                <PromptProvider>
-                  <DatabaseProvider>
-                    <MaintenanceProvider>
-                      <InDevelopmentProvider>
-                        <WalletProvider>
+    <AnimatePresence mode="sync">
+      <GlobalStateProvider>
+        <MediaContextProvider>
+          <SideBarLayoutProvider>
+            <SessionProvider>
+              <PromptProvider>
+                <DatabaseProvider>
+                  <MaintenanceProvider>
+                    <InDevelopmentProvider>
+                      <WalletProvider>
+                        <PluginProvider>
                           {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
                           <PromptProvider>{children}</PromptProvider>
-                        </WalletProvider>
-                      </InDevelopmentProvider>
-                    </MaintenanceProvider>
-                  </DatabaseProvider>
-                </PromptProvider>
-              </SessionProvider>
-            </SideBarLayoutProvider>
-          </MediaContextProvider>
-        </GlobalStateProvider>
-      </AnimatePresence>
-    </PluginProvider>
+                        </PluginProvider>
+                      </WalletProvider>
+                    </InDevelopmentProvider>
+                  </MaintenanceProvider>
+                </DatabaseProvider>
+              </PromptProvider>
+            </SessionProvider>
+          </SideBarLayoutProvider>
+        </MediaContextProvider>
+      </GlobalStateProvider>
+    </AnimatePresence>
   );
 }
 

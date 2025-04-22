@@ -1,7 +1,7 @@
 import { createPluginIframe } from './plugins.service';
 import { Plugin } from './type';
 
-interface LoadedPlugin {
+export interface LoadedPlugin {
   element: HTMLIFrameElement;
   state: 'background' | 'foreground';
   config: Plugin;
@@ -9,10 +9,16 @@ interface LoadedPlugin {
   disconnect: () => void;
 }
 
-export class PluginManager {
+class PluginManager {
   loadedPlugins: Map<string, LoadedPlugin> = new Map();
 
   availablePlugins: Map<string, Plugin> = new Map();
+
+  private emitter = new EventTarget();
+
+  get plugins() {
+    return Array.from(this.loadedPlugins.values());
+  }
 
   _pluginsContainer: HTMLDivElement | undefined;
 
@@ -118,6 +124,7 @@ export class PluginManager {
 
     // Update plugin state
     plugin.state = 'foreground';
+    this.emitter.dispatchEvent(new Event('plugin:updated'));
   }
 
   bringToBackground(id: string) {
@@ -133,6 +140,7 @@ export class PluginManager {
     plugin.disconnect();
     plugin.element.style.display = 'none';
     plugin.state = 'background';
+    this.emitter.dispatchEvent(new Event('plugin:updated'));
   }
 
   removePlugin(id: string) {
@@ -141,7 +149,17 @@ export class PluginManager {
       plugin.disconnect();
       this.loadedPlugins.delete(id);
       plugin.element.remove();
+      this.emitter.dispatchEvent(new Event('plugin:updated'));
     }
+  }
+
+  cleanup() {
+    this.loadedPlugins.forEach((plugin) => {
+      plugin.disconnect();
+      plugin.element.remove();
+    });
+    this.loadedPlugins.clear();
+    this.emitter.dispatchEvent(new Event('plugin:updated'));
   }
 
   async fetchPluginList() {
@@ -168,6 +186,29 @@ export class PluginManager {
       ),
     );
     this.availablePlugins = allPlugins;
+    let bgTasks = 0;
+    // Load plugins that have both BACKGROUND and ON_START permissions
+    this.availablePlugins.forEach((plugin) => {
+      if (
+        plugin.permissions.includes('MODE:BACKGROUND') &&
+        plugin.permissions.includes('MODE:ON_START')
+      ) {
+        this.loadPlugin(plugin);
+        bgTasks += 1;
+      }
+    });
+    if (bgTasks > 0) {
+      this.emitter.dispatchEvent(new Event('plugin:updated'));
+    }
     return allPlugins;
   }
+
+  onStatusChange(cb: () => void) {
+    this.emitter.addEventListener('plugin:updated', cb);
+    return () => {
+      this.emitter.removeEventListener('plugin:updated', cb);
+    };
+  }
 }
+
+export const pluginManager = new PluginManager();

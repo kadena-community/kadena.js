@@ -1,4 +1,5 @@
 import {
+  MonoCandlestickChart,
   MonoCheck,
   MonoContacts,
   MonoContrast,
@@ -18,6 +19,7 @@ import {
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 
+import { LoadedPlugin, pluginManager } from '@/modules/plugins/PluginManager';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import InitialsAvatar from '@/pages/select-profile/initials';
@@ -27,6 +29,7 @@ import {
   ContextMenu,
   ContextMenuDivider,
   ContextMenuItem,
+  Divider,
   Heading,
   Stack,
   Text,
@@ -40,7 +43,7 @@ import {
   SideBar as SideBarUI,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { KLogo } from './KLogo';
@@ -52,11 +55,23 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   const { isExpanded } = useSideBarLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
   const navigate = usePatchedNavigate();
+  const [loadedPlugins, setLoadedPlugins] = useState<LoadedPlugin[]>(
+    () => pluginManager.plugins,
+  );
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
+
+  useEffect(() => {
+    const unsubscribe = pluginManager.onStatusChange(() => {
+      setLoadedPlugins(pluginManager.plugins);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <SideBarUI
@@ -70,7 +85,6 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       }
       appContext={
         <>
-          {' '}
           <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
             <NetworkSelector
               showLabel={isExpanded}
@@ -135,12 +149,30 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
             href="/contacts"
           />
           {profile?.showExperimentalFeatures && (
-            <SideBarItem
-              visual={<MonoExtension />}
-              label="Plugins"
-              component={Link}
-              href="/plugins"
-            />
+            <>
+              <SideBarItem
+                visual={<MonoExtension />}
+                label="Plugins"
+                component={Link}
+                href="/plugins"
+              />
+              {loadedPlugins.length > 0 && (
+                <>
+                  <Divider />
+                  <Stack marginInlineStart={'md'} flexDirection={'column'}>
+                    <Text size="small">Loaded Plugins</Text>
+                  </Stack>
+                  {loadedPlugins.map((plugin) => (
+                    <SideBarItem
+                      visual={<MonoCandlestickChart />}
+                      label={plugin.config.name}
+                      component={Link}
+                      href={`/plugins?plugin-id=${plugin.config.id}`}
+                    />
+                  ))}
+                </>
+              )}
+            </>
           )}
         </>
       }

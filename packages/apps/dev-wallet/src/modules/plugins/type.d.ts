@@ -1,6 +1,11 @@
 import { RequestType } from '@/modules/communication/communication.provider';
 
-export type Permission = `MSG:${RequestType}` | `MODE:${"BACKGROUND" | "FOREGROUND"}`;
+type PluginMode =
+  | 'BACKGROUND' // the plugin can run in the background
+  | 'FOREGROUND' // the plugin can run in the foreground
+  | 'ON_START'; // the plugin runs on start
+
+export type Permission = `MSG:${RequestType}` | `MODE:${PluginMode}`;
 
 export type Plugin = {
   id: string;
