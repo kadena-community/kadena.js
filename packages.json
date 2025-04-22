@@ -288,15 +288,21 @@
     "path": "packages/e2e/e2e-tools"
   },
   {
+    "name": "hw-app-kda-clone",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/hw-app-kda-clone"
+  },
+  {
+    "name": "wallet-adapter-react-example",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/wallet-adapter-react-example"
+  },
+  {
     "name": "wallet-sdk-example-app",
     "version": "0.0.7",
     "private": true,
     "path": "packages/apps/wallet-sdk-example"
-  },
-  {
-    "name": "hw-app-kda-clone",
-    "version": "0.0.1",
-    "private": true,
-    "path": "packages/apps/hw-app-kda-clone"
   }
 ]
