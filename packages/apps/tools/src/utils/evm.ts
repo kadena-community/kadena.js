@@ -2,12 +2,18 @@ import type { ChainId } from '@kadena/types';
 import type { BaseError } from 'viem';
 import { ContractFunctionRevertedError, defineChain } from 'viem';
 
-const BLOCKCHAINWEBID_PREFIX = 62600;
+const STARTBLOCKCHAINWEB = process.env.NEXT_PUBLIC_STARTBLOCKCHAINWEB;
 
-const createBlockChainId = (chainId: ChainId) =>
-  parseInt(`${BLOCKCHAINWEBID_PREFIX}${chainId}`, 10);
+const createBlockChainId = (chainId: ChainId): number => {
+  if (!STARTBLOCKCHAINWEB) {
+    console.error('STARTBLOCKCHAINWEB env variable is not set');
+    throw new Error('STARTBLOCKCHAINWEB env variable is not set');
+  }
+  return parseInt(STARTBLOCKCHAINWEB, 10) + parseInt(chainId, 10);
+};
 
 export function createChainwebChain(chainId: ChainId) {
+  console.log(11111, createBlockChainId(chainId));
   return defineChain({
     id: createBlockChainId(chainId),
     name: 'Kadena Chainweb EVM',

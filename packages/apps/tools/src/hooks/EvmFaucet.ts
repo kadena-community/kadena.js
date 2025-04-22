@@ -103,10 +103,6 @@ export function useEvmFaucet() {
 
       const hash: any = await result.json();
 
-      console.log('result', { result });
-
-      console.log('hash', { hash });
-
       if (result.status !== 200) {
         throw new Error(hash.error);
       }
