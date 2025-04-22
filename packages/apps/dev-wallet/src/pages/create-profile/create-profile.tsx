@@ -54,7 +54,6 @@ const rotate = (max: number, start: number = 0) => {
   let index = start;
   return () => {
     index = (index + 1) % max;
-    console.log('index', index);
     return index;
   };
 };
@@ -142,6 +141,8 @@ export function CreateProfile() {
 
   const {
     register,
+    trigger,
+    reset,
     handleSubmit,
     getValues,
     setValue,
@@ -154,7 +155,7 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       password: '',
       confirmation: '',
@@ -165,8 +166,18 @@ export function CreateProfile() {
     },
   });
 
+  // hack to do a form validation after load
+  // This is not supported by react-hook-form
   useEffect(() => {
-    console.log('profileList', profileList);
+    if (!profileList.length) return;
+
+    reset({});
+    setTimeout(() => {
+      trigger();
+    }, 100);
+  }, [reset, trigger, profileList, step]);
+
+  useEffect(() => {
     setValue(
       'profileName',
       profileList.length === 0
@@ -338,6 +349,7 @@ export function CreateProfile() {
                   Prefer password
                 </Button>
                 <Button
+                  isDisabled={!isValid}
                   variant="primary"
                   onClick={() => {
                     createWebAuthnCredential();
@@ -409,6 +421,20 @@ export function CreateProfile() {
                       value: true,
                       message: 'This field is required',
                     },
+                    maxLength: {
+                      value: 25,
+                      message: 'The max length is 25 characters',
+                    },
+                    validate: {
+                      required: (value) => {
+                        const existingProfile = profileList.find(
+                          (profile) => profile.name === value,
+                        );
+                        if (existingProfile)
+                          return `The profile name ${value} already exists. Please use another name.`;
+                        return true;
+                      },
+                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
@@ -422,8 +448,8 @@ export function CreateProfile() {
                           value={field.value}
                           onChange={field.onChange}
                           key="profileName"
-                          isInvalid={!isValid && !!error}
-                          errorMessage={error && error.message}
+                          isInvalid={!!error}
+                          errorMessage={error?.message}
                         />
                       </Stack>
                       <Stack flexDirection="column">
