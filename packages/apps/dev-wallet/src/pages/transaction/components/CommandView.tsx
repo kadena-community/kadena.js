@@ -9,7 +9,7 @@ import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Label, Value } from './helpers';
-import { breakAllClass, cardClass, codeClass, textEllipsis } from './style.css';
+import { breakAllClass, cardClass, codeClass } from './style.css';
 
 export function CommandView({ transaction }: { transaction: ITransaction }) {
   const command: IPactCommand = useMemo(

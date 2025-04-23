@@ -32,7 +32,6 @@ import { RenderSigner } from '../Signer';
 import { CommandView } from './../CommandView';
 import { TxPipeLine } from './../TxPipeLine';
 import { CmdView } from './components/CmdView/CmdView';
-import { JsonView } from './JsonView';
 
 export function ExpandedTransaction({
   transaction,
