@@ -42,9 +42,14 @@ export const DiscoveredAccount: FC<IProps> = ({
             {(account.guard as any).pred}
           </Badge>
         </Stack>
-        <Text size="smallest">
-          {`${account.overallBalance} ${asset?.symbol || contract}`}
-        </Text>
+        <Stack gap={'xs'} alignItems="center">
+          <Text variant='code' bold size="smallest">
+            {account.overallBalance}
+          </Text>
+          <Text size="smallest">
+            {`${asset?.symbol ?? contract}`}
+          </Text>
+        </Stack>
       </Stack>
       {!hideKeySelector && needToSelectKeys(account.guard) ? (
         <KeySelector
