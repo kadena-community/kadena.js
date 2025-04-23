@@ -122,23 +122,22 @@ export function Accounts({
               )
             }
           />
-          {
-            accountsToShow.length ? (
-              <SectionCardBody>
-                <ul className={listClass} data-testid="assetList">
-                  {accountsToShow.map((account) => (
-                    <li key={account.uuid} data-account={account.address}>
-                      <AccountItem account={account} profile={profile} />
-                    </li>
-                  ))}
-                </ul>
-              </SectionCardBody>
-            ) : (<SectionCardBody>
+
+          <SectionCardBody>
+            <ul className={listClass} data-testid="assetList">
+              {accountsToShow.map((account) => (
+                <li key={account.uuid} data-account={account.address}>
+                  <AccountItem account={account} profile={profile} />
+                </li>
+              ))}
+            </ul>
+
+            {accountsToShow.length === 0 && (
               <Notification
-                intent='info'
+                intent="info"
                 isDismissable={false}
-                role='alert'
-                type='inlineStacked'
+                role="alert"
+                type="inlineStacked"
               >
                 <NotificationHeading>
                   {show === 'owned'
@@ -146,8 +145,8 @@ export function Accounts({
                     : 'No accounts watched yet'}
                 </NotificationHeading>
               </Notification>
-            </SectionCardBody>)
-          }
+            )}
+          </SectionCardBody>
         </SectionCardContentBlock>
       </SectionCard>
     </>
