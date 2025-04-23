@@ -143,7 +143,7 @@ export function Accounts({
                 <NotificationHeading>
                   {show === 'owned'
                     ? 'No accounts created yet!'
-                    : 'No Accounts watched yet'}
+                    : 'No accounts watched yet'}
                 </NotificationHeading>
               </Notification>
             </SectionCardBody>)
