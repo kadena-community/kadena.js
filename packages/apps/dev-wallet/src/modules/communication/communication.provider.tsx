@@ -61,7 +61,7 @@ const defaultMessageHandle = (
         }
       } else {
         // request from plugin
-        const plugins = pluginManager.plugins;
+        const plugins = pluginManager.loadedPluginsList;
         const plugin = plugins.find((p) => p.config.id === event.data.pluginId);
         if (!plugin) {
           event.source.postMessage(

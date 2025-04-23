@@ -1,5 +1,5 @@
+import { Plugin } from '@/modules/plugins/type';
 import { createPluginIframe } from './plugins.service';
-import { Plugin } from './type';
 
 export interface LoadedPlugin {
   element: HTMLIFrameElement;
@@ -16,7 +16,11 @@ class PluginManager {
 
   private emitter = new EventTarget();
 
-  get plugins() {
+  get pluginsList() {
+    return Array.from(this.availablePlugins.values());
+  }
+
+  get loadedPluginsList() {
     return Array.from(this.loadedPlugins.values());
   }
 

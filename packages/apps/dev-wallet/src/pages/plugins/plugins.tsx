@@ -4,12 +4,18 @@ import { usePlugins } from '@/modules/plugins/plugin.provider';
 import { pluginManager } from '@/modules/plugins/PluginManager';
 import { getInitials } from '@/utils/get-initials';
 import { MonoApps } from '@kadena/kode-icons/system';
-import { Divider, Heading, Stack, Text } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
+import { Stack, Text } from '@kadena/kode-ui';
+import {
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+  SideBarBreadcrumbsItem,
+} from '@kadena/kode-ui/patterns';
 import { useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
-import { pluginContainerClass, pluginIconClass } from './style.css';
+import { pluginContainerClass } from './style.css';
 
 export function Plugins() {
   const [searchParams] = useSearchParams();
@@ -33,7 +39,7 @@ export function Plugins() {
 
   if (plugin) {
     return (
-      <Stack flexDirection={'column'} gap={'md'} height="100%">
+      <>
         <SideBarBreadcrumbs icon={<MonoApps />} isGlobal>
           <SideBarBreadcrumbsItem href="/plugins">
             plugins
@@ -42,54 +48,80 @@ export function Plugins() {
             {plugin.name}
           </SideBarBreadcrumbsItem>
         </SideBarBreadcrumbs>
-        <Stack gap={'sm'} flexDirection={'column'}>
-          <Heading variant="h3">
-            <Stack gap={'sm'} alignItems={'center'}>
-              <div style={{ display: 'inline-block' }}>
-                <div className={pluginIconClass}>
-                  {getInitials(plugin.name).toUpperCase()}
-                </div>
-              </div>
-              {plugin.name}
-            </Stack>
-          </Heading>
 
-          <Text>{plugin.description}</Text>
+        <Stack marginBlockStart="xxxl">
+          <SectionCard
+            stack="vertical"
+            icon={<div>{getInitials(plugin.name).toUpperCase()}</div>}
+          >
+            <SectionCardContentBlock>
+              <SectionCardHeader
+                title={plugin.name}
+                description={<>{plugin.description}</>}
+              />
+
+              <SectionCardBody>
+                <Stack
+                  flex={1}
+                  marginBlockEnd={'md'}
+                  className={pluginContainerClass}
+                >
+                  <Stack
+                    ref={wrapperRef}
+                    width="100%"
+                    style={{ minHeight: '500px' }}
+                  />
+                </Stack>
+              </SectionCardBody>
+            </SectionCardContentBlock>
+          </SectionCard>
         </Stack>
-        <Stack flex={1} marginBlockEnd={'md'} className={pluginContainerClass}>
-          <Stack ref={wrapperRef} width="100%" height="100%" />
-        </Stack>
-      </Stack>
+      </>
     );
   }
   return (
-    <Stack flexDirection={'column'} gap={'md'}>
+    <>
       <SideBarBreadcrumbs icon={<MonoApps />} isGlobal>
         <SideBarBreadcrumbsItem href="/plugins">plugins</SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Heading variant="h3">Plugins</Heading>
-      <Text>
-        Plugins are mini-apps provided by third-parties that can installed
-        inside the wallet
-      </Text>
-      <Divider />
-      <Stack flexWrap="wrap" gap={'md'}>
-        {[...pluginList.values()].map(({ name, id }) => (
-          <Link to={`/plugins?plugin-id=${id}`} className={noStyleLinkClass}>
-            <Stack
-              alignItems={'center'}
-              justifyContent={'center'}
-              flexDirection={'column'}
-              gap={'xs'}
-            >
-              <PluginIcon name={name} />
-              <Text bold size="smallest">
-                {name}
-              </Text>
-            </Stack>
-          </Link>
-        ))}
+
+      <Stack marginBlockStart="xxxl">
+        <SectionCard stack="vertical">
+          <SectionCardContentBlock>
+            <SectionCardHeader
+              title="Plugins"
+              description={
+                <>
+                  Plugins are mini-apps provided by third-parties that can
+                  installed inside the wallet
+                </>
+              }
+            />
+            <SectionCardBody>
+              <Stack flexWrap="wrap" gap={'md'}>
+                {[...pluginList.values()].map(({ name, id }) => (
+                  <Link
+                    to={`/plugins?plugin-id=${id}`}
+                    className={noStyleLinkClass}
+                  >
+                    <Stack
+                      alignItems={'center'}
+                      justifyContent={'center'}
+                      flexDirection={'column'}
+                      gap={'xs'}
+                    >
+                      <PluginIcon name={name} />
+                      <Text bold size="smallest">
+                        {name}
+                      </Text>
+                    </Stack>
+                  </Link>
+                ))}
+              </Stack>
+            </SectionCardBody>
+          </SectionCardContentBlock>
+        </SectionCard>
       </Stack>
-    </Stack>
+    </>
   );
 }
