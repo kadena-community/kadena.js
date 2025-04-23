@@ -52,7 +52,7 @@ export const SignOptionsCard: FC<IProps> = ({
               variant="outlined"
               onPress={() => setShowMore((v) => !v)}
             >
-              more Options
+              More options
             </Button>
           </Stack>
         }

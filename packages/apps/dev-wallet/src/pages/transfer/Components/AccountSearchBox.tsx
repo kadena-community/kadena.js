@@ -256,12 +256,13 @@ export function AccountSearchBox({
   return (
     <Stack flexDirection={'column'}>
       <ComboField
+        fontType="code"
         label={label}
         aria-label={label}
         placeholder="Select or Enter an address"
         description={getDescription()}
         type="text"
-        size="sm"
+        size="md"
         isInvalid={isInvalid}
         errorMessage={errorMessage}
         info={selectedAccount?.alias ? `Alias: ${selectedAccount.alias}` : ''}
@@ -272,13 +273,13 @@ export function AccountSearchBox({
           (value || selectedAccount) && (
             <Button
               variant="transparent"
-              isCompact
+              // isCompact
               onClick={() => {
                 setValue('');
                 onSelectHandle(undefined);
               }}
             >
-              <Text size="smallest">
+              <Text size="base">
                 <MonoClose />
               </Text>
             </Button>
@@ -560,7 +561,7 @@ export function AccountSearchBox({
                   <Button
                     onClick={() => setShowDisabled((v) => !v)}
                     variant="transparent"
-                    isCompact
+                    // isCompact
                   >
                     {showDisabled ? 'hide disabled' : 'show disabled'}
                   </Button>
