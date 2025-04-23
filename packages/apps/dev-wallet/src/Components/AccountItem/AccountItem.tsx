@@ -41,8 +41,8 @@ export function AccountItem({
             <Stack flexDirection="column" flex={1}>
               {alias ? (
                 <>
-                  <Text variant="code">{alias}</Text>
-                  <Text size="small" className={subTitleClass}>
+                  <Text variant="ui">{alias}</Text>
+                  <Text variant='code' size="small" className={subTitleClass}>
                     {maskValue(address)}
                   </Text>
                 </>
@@ -57,10 +57,10 @@ export function AccountItem({
             </Stack>
 
             <Stack alignItems={'flex-start'} gap={'xs'}>
-              <Text bold color="emphasize">
+              <Text variant='code' bold color="emphasize">
                 {overallBalance}
               </Text>
-              <Text bold color="emphasize" className={subTitleClass}>
+              <Text bold className={subTitleClass}>
                 {getSymbol(contract)}
               </Text>
             </Stack>
