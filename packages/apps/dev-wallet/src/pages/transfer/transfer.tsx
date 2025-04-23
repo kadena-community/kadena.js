@@ -20,7 +20,7 @@ import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { FocussedLayoutHeaderContent } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
 import { TxList } from '../transaction/components/TxList';
-import { statusPassed } from '../transaction/components/TxPipeLine';
+import { statusPassed } from '../transaction/components/TxPipeLine/utils';
 import {
   ITransfer,
   Redistribution,
@@ -33,12 +33,15 @@ import {
   IReceiver,
 } from './utils';
 
-type IStepKeys =
+export type IStepKeys =
   | 'transfer'
   | 'sign'
   | 'success'
   | 'preflight'
   | 'send'
+  | 'mining'
+  | 'completed'
+  | 'success'
   | 'failure';
 
 const steps: ICompactStepperItemProps[] = [
@@ -59,8 +62,12 @@ const steps: ICompactStepperItemProps[] = [
     id: 'send',
   },
   {
-    label: 'Success',
-    id: 'success',
+    label: 'Mining',
+    id: 'mining',
+  },
+  {
+    label: 'Completed',
+    id: 'completed',
   },
 ] as const;
 
@@ -213,6 +220,7 @@ export function Transfer() {
               console.log('update');
               reloadTxs();
             }}
+            setStep={handleSetStep}
             txIds={txGroups.transfer.txs.map(({ uuid }) => uuid)}
             showExpanded={true}
           />
@@ -225,6 +233,7 @@ export function Transfer() {
                 <Text>First we send required tokens to the target chains</Text>
               </Stack>
               <TxList
+                setStep={handleSetStep}
                 onDone={() => {
                   console.log('update');
                   reloadTxs();
@@ -242,6 +251,7 @@ export function Transfer() {
               <Text>These are the transactions for the final transfers</Text>
             </Stack>
             <TxList
+              setStep={handleSetStep}
               onDone={() => {
                 console.log('update');
                 reloadTxs();
@@ -261,7 +271,13 @@ export function Transfer() {
   };
 
   const getStepIdx = (key: IStepKeys): number => {
-    return steps.findIndex((step) => step.id === key) ?? 0;
+    const idx = steps.findIndex((step) => step.id === key);
+    return idx === -1 ? steps.length - 1 : idx;
+  };
+
+  const handleSetStep = (step?: IStepKeys) => {
+    if (!step) return;
+    setStep(step);
   };
 
   return (
@@ -339,7 +355,7 @@ export function Transfer() {
             }}
           />
         )}
-        {step === 'success' && (
+        {step === 'completed' && (
           <Stack marginBlock={'lg'}>
             <Notification role="status" intent="positive">
               Transfer is done!

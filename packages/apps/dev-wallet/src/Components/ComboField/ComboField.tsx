@@ -124,7 +124,6 @@ export function ComboField({
               {isPopoverOpen ? (
                 <Button
                   variant="transparent"
-                  isCompact
                   onClick={() => closePopover()}
                 >
                   <MonoKeyboardArrowUp />
@@ -132,7 +131,6 @@ export function ComboField({
               ) : (
                 <Button
                   variant="transparent"
-                  isCompact
                   onClick={() => openPopover()}
                 >
                   <MonoKeyboardArrowDown />

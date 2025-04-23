@@ -1,6 +1,5 @@
 import { ButtonItem } from '@/Components/ButtonItem/ButtonItem';
 import { ComboField } from '@/Components/ComboField/ComboField';
-import { KeySelector } from '@/Components/Guard/KeySelector';
 import { KeySetForm } from '@/Components/KeySetForm/KeySetForm';
 import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
@@ -21,10 +20,10 @@ import { MonoClose, MonoInfo } from '@kadena/kode-icons/system';
 import { Button, Divider, Heading, Stack, Text } from '@kadena/kode-ui';
 import { PactNumber } from '@kadena/pactjs';
 import { useEffect, useRef, useState } from 'react';
-import { Guard } from '../../../Components/Guard/Guard';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
-import { discoverReceiver, needToSelectKeys } from '../utils';
+import { discoverReceiver } from '../utils';
 import { AccountItem } from './AccountItem';
+import { DiscoveredAccount } from './DiscoveredAccount/DiscoveredAccount';
 import { createAccountBoxClass, popoverClass } from './style.css';
 
 const discover = withRaceGuard(debounce(discoverReceiver, 500));
@@ -257,12 +256,13 @@ export function AccountSearchBox({
   return (
     <Stack flexDirection={'column'}>
       <ComboField
+        fontType="code"
         label={label}
         aria-label={label}
         placeholder="Select or Enter an address"
         description={getDescription()}
         type="text"
-        size="sm"
+        size="md"
         isInvalid={isInvalid}
         errorMessage={errorMessage}
         info={selectedAccount?.alias ? `Alias: ${selectedAccount.alias}` : ''}
@@ -273,13 +273,13 @@ export function AccountSearchBox({
           (value || selectedAccount) && (
             <Button
               variant="transparent"
-              isCompact
+              // isCompact
               onClick={() => {
                 setValue('');
                 onSelectHandle(undefined);
               }}
             >
-              <Text size="smallest">
+              <Text size="base">
                 <MonoClose />
               </Text>
             </Button>
@@ -561,7 +561,7 @@ export function AccountSearchBox({
                   <Button
                     onClick={() => setShowDisabled((v) => !v)}
                     variant="transparent"
-                    isCompact
+                    // isCompact
                   >
                     {showDisabled ? 'hide disabled' : 'show disabled'}
                   </Button>
@@ -573,39 +573,14 @@ export function AccountSearchBox({
         }}
       </ComboField>
       {!discovering && selectedAccount && (
-        <Stack
-          gap={'sm'}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-        >
-          <Stack gap={'sm'} alignItems={'center'}>
-            {selectedAccount?.alias ? (
-              <Stack paddingInlineStart={'sm'}>
-                <Text size="smallest" bold color="emphasize">
-                  {selectedAccount.alias}
-                </Text>
-              </Stack>
-            ) : (
-              ''
-            )}
-            {!hideKeySelector && needToSelectKeys(selectedAccount.guard) ? (
-              <KeySelector
-                guard={selectedAccount.guard}
-                selectedKeys={selectedAccount.keysToSignWith ?? []}
-                onSelect={(keys) => {
-                  onSelectHandle({
-                    ...selectedAccount,
-                    keysToSignWith: keys,
-                  });
-                }}
-              />
-            ) : (
-              <Guard guard={selectedAccount.guard} />
-            )}
-          </Stack>
-          <Text size="smallest">
-            {`${selectedAccount.overallBalance} ${asset?.symbol || contract}`}
-          </Text>
+        <Stack width="100%" marginBlockStart="sm">
+          <DiscoveredAccount
+            account={selectedAccount}
+            hideKeySelector={hideKeySelector}
+            asset={asset}
+            contract={contract}
+            onSelectHandle={onSelectHandle}
+          />
         </Stack>
       )}
       {discovering && (

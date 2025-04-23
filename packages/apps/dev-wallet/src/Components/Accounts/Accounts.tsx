@@ -6,15 +6,14 @@ import {
 } from '@/modules/account/account.repository';
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { panelClass } from '@/pages/home/style.css';
 import { MonoMoreVert } from '@kadena/kode-icons/system';
 import {
   Button,
   ButtonGroup,
   ContextMenu,
   ContextMenuItem,
-  Stack,
-  Text,
+  Notification,
+  NotificationHeading,
 } from '@kadena/kode-ui';
 import {
   SectionCard,
@@ -22,7 +21,6 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
-import classNames from 'classnames';
 import { AccountItem } from '../AccountItem/AccountItem';
 import { MultiSigForm } from './MultiSigForm';
 import { listClass } from './style.css';
@@ -124,28 +122,29 @@ export function Accounts({
               )
             }
           />
+
           <SectionCardBody>
-            {accountsToShow.length ? (
-              <ul className={listClass} data-testid="assetList">
-                {accountsToShow.map((account) => (
-                  <li key={account.uuid} data-account={account.address}>
-                    <AccountItem account={account} profile={profile} />
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <Stack
-                data-testid="assetList"
-                padding={'sm'}
-                marginBlockStart="md"
-                className={classNames(panelClass)}
+            <ul className={listClass} data-testid="assetList">
+              {accountsToShow.map((account) => (
+                <li key={account.uuid} data-account={account.address}>
+                  <AccountItem account={account} profile={profile} />
+                </li>
+              ))}
+            </ul>
+
+            {accountsToShow.length === 0 && (
+              <Notification
+                intent="info"
+                isDismissable={false}
+                role="alert"
+                type="inlineStacked"
               >
-                <Text>
+                <NotificationHeading>
                   {show === 'owned'
                     ? 'No accounts created yet!'
-                    : 'No Accounts watched yet'}
-                </Text>
-              </Stack>
+                    : 'No accounts watched yet'}
+                </NotificationHeading>
+              </Notification>
             )}
           </SectionCardBody>
         </SectionCardContentBlock>
