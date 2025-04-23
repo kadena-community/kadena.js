@@ -28,3 +28,8 @@ globalStyle(`${terminalWrapperClass} [data-selected][role="tab"]`, {
   borderRadius: 0,
   border: '1px solid white!important',
 });
+
+globalStyle(`${terminalWrapperClass} [data-selected="true"][role="tab"]`, {
+  backgroundColor: 'white',
+  color: 'black',
+});

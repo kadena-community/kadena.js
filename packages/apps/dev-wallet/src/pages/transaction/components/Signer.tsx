@@ -149,7 +149,7 @@ export const RenderSigner = ({
                 }
                 onPress={() => setShowCapabilities((v) => !v)}
               >
-                {showCapabilities ? 'Hide capabilities' : 'Show capabilities'}
+                {showCapabilities ? 'Hide details' : 'Show details'}
               </Button>
               {signature ? (
                 <Button

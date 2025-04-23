@@ -236,31 +236,6 @@ export function ExpandedTransaction({
                     </Stack>
                   </Stack>
                   <CommandView transaction={transaction} />
-
-                  {contTx && [
-                    <Stack gap={'sm'} flexDirection={'column'}>
-                      <Heading variant="h4">Command Details</Heading>
-                      <CommandView transaction={contTx} />
-                    </Stack>,
-                    contTx.preflight && (
-                      <JsonView
-                        title="Continuation Preflight Result"
-                        data={contTx.preflight}
-                      />
-                    ),
-                    contTx.request && (
-                      <JsonView
-                        title="Continuation Request"
-                        data={contTx.request}
-                      />
-                    ),
-                    'result' in contTx && contTx.result && (
-                      <JsonView
-                        title="Continuation Result"
-                        data={contTx.result}
-                      />
-                    ),
-                  ]}
                 </Stack>
               </>
             )}
@@ -297,6 +272,18 @@ export function ExpandedTransaction({
                 {
                   label: 'Continuation Proof',
                   data: transaction.continuation?.proof,
+                },
+                {
+                  label: 'Continuation Preflight Result',
+                  data: contTx?.preflight,
+                },
+                {
+                  label: 'Continuation Request',
+                  data: contTx?.request,
+                },
+                {
+                  label: 'Continuation Result',
+                  data: contTx?.result,
                 },
               ]}
             />
