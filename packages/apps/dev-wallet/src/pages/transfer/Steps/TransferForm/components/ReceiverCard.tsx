@@ -9,6 +9,7 @@ import { INetwork } from '@/modules/network/network.repository';
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
+import { IReceiver } from '@/pages/transfer/utils';
 import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
@@ -28,11 +29,12 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { FC, Fragment, useEffect } from 'react';
+import { FC, Fragment, useCallback, useEffect } from 'react';
 import {
   Control,
   Controller,
   UseFormGetValues,
+  UseFormReset,
   UseFormResetField,
   UseFormSetValue,
 } from 'react-hook-form';
@@ -52,6 +54,7 @@ interface IProps {
   senderChain: '' | ChainId;
   validateAccount: any;
   resetField: UseFormResetField<ITransfer>;
+  reset: UseFormReset<ITransfer>;
   setValue: UseFormSetValue<ITransfer>;
   evaluateTransactions: () => void;
   filteredAccounts: IOwnedAccount[];
@@ -91,7 +94,7 @@ export const ReceiverCard: FC<IProps> = ({
   senderAccount,
   senderChain,
   validateAccount,
-  resetField,
+  reset,
   setValue,
   evaluateTransactions,
   filteredAccounts,
@@ -114,6 +117,16 @@ export const ReceiverCard: FC<IProps> = ({
       }
     });
   }, [error]);
+
+  const resetReceiverFields = useCallback((idx: number) => {
+    const receivers = getValues('receivers');
+    const newReceivers = [...receivers];
+    newReceivers.splice(idx, 1);
+
+    const s = getValues();
+    console.log({ s });
+    reset({ ...s, receivers: newReceivers });
+  }, []);
 
   return (
     <Card fullWidth>
@@ -222,7 +235,7 @@ export const ReceiverCard: FC<IProps> = ({
                                       isCompact
                                       variant="transparent"
                                       onClick={withEvaluate(() => {
-                                        resetField(`receivers.${index}`);
+                                        resetReceiverFields(index);
                                       })}
                                     >
                                       <MonoDelete />

@@ -453,6 +453,7 @@ export function TransferForm({
           senderChain={senderChain}
           validateAccount={validateAccount}
           resetField={resetField}
+          reset={reset}
           setValue={setValue}
           evaluateTransactions={evaluateTransactions}
           filteredAccounts={filteredAccounts}
