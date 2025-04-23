@@ -216,7 +216,7 @@ export const ReceiverCard: FC<IProps> = ({
                                   <Badge size="sm" style="highContrast" className={titleBadgeClass}>
                                     {watchReceivers.length > 1
                                       ? renderIndex + 1
-                                      : ''}
+                                      : 1}
                                   </Badge>
                                   {' '}
                                   <span>Receiver</span>
