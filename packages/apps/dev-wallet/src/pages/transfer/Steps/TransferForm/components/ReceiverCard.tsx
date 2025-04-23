@@ -9,7 +9,7 @@ import { INetwork } from '@/modules/network/network.repository';
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
-import { IReceiver } from '@/pages/transfer/utils';
+import { titleBadgeClass } from '@/pages/transfer/Components/style.css';
 import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
@@ -40,7 +40,6 @@ import {
   UseFormSetValue,
 } from 'react-hook-form';
 import { ITransfer } from '../TransferForm';
-import { titleBadgeClass } from '@/pages/transfer/Components/style.css';
 
 interface IProps {
   control: Control<ITransfer, any>;
@@ -225,13 +224,20 @@ export const ReceiverCard: FC<IProps> = ({
                               justifyContent={'space-between'}
                             >
                               <Heading variant="h5">
-                                <Stack gap="sm" flexDirection="row" alignItems="center">
-                                  <Badge size="sm" style="highContrast" className={titleBadgeClass}>
+                                <Stack
+                                  gap="sm"
+                                  flexDirection="row"
+                                  alignItems="center"
+                                >
+                                  <Badge
+                                    size="sm"
+                                    style="highContrast"
+                                    className={titleBadgeClass}
+                                  >
                                     {watchReceivers.length > 1
                                       ? renderIndex + 1
                                       : 1}
-                                  </Badge>
-                                  {' '}
+                                  </Badge>{' '}
                                   <span>Receiver</span>
                                 </Stack>
                               </Heading>
@@ -353,7 +359,9 @@ export const ReceiverCard: FC<IProps> = ({
                                         field.onChange(value);
                                       }}
                                       placeholder="Enter the amount"
-                                      startVisual={<Label size='small'>Amount:</Label>}
+                                      startVisual={
+                                        <Label size="small">Amount:</Label>
+                                      }
                                       onBlur={evaluateTransactions}
                                       value={field.value}
                                       size="md"
@@ -376,7 +384,9 @@ export const ReceiverCard: FC<IProps> = ({
                                       render={({ field }) => (
                                         <Select
                                           aria-label="Chain"
-                                          startVisual={<Label size='small'>Chain:</Label>}
+                                          startVisual={
+                                            <Label size="small">Chain:</Label>
+                                          }
                                           // label={index === 0 ? 'Chain' : undefined}
                                           placeholder="Select a chain"
                                           description={
