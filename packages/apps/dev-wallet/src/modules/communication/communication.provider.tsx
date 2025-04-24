@@ -5,24 +5,31 @@ import { hash as blakeHash } from '@kadena/cryptography-utils';
 import {
   FC,
   PropsWithChildren,
+  ReactNode,
   createContext,
   useCallback,
   useContext,
   useEffect,
   useState,
 } from 'react';
+
+import { ConnectionRequest } from '../plugins/components/ConnectionRequest';
+import { SignRequestDialog } from '../plugins/components/SignRequestDialog';
+import { pluginManager } from '../plugins/PluginManager';
+import { Permission, Plugin } from '../plugins/type';
 import { useWallet } from '../wallet/wallet.hook';
 
 export type Message = {
   id: string;
+  sessionId?: string;
+  pluginId?: string;
   type: RequestType;
   payload: unknown;
 };
 
-export type UiRequiredRequest = 'CONNECTION_REQUEST' | 'SIGN_REQUEST';
-
 export type RequestType =
-  | UiRequiredRequest
+  | 'CONNECTION_REQUEST'
+  | 'SIGN_REQUEST'
   | 'GET_STATUS'
   | 'GET_NETWORK_LIST'
   | 'GET_ACCOUNTS';
@@ -32,27 +39,71 @@ type Request = Message & {
   reject: (error: unknown) => void;
 };
 
-const messageHandle = (
+const defaultMessageHandle = (
   type: RequestType,
   handler: (
     message: Message,
+    plugin?: Plugin,
   ) => Promise<{ payload: unknown } | { error: unknown }>,
 ) => {
   const cb = async (event: MessageEvent) => {
-    if (
-      event.data.type === type &&
-      event.source &&
-      event.origin !== 'null' &&
-      !event.data.pluginId
-    ) {
-      console.log('GLOBAL MESSAGE HANDEL', event.origin);
-      const payload = await handler(event.data);
-      event.source.postMessage(
-        { id: event.data.id, type: event.data.type, ...payload },
-        { targetOrigin: event.origin },
-      );
-      if (window.opener && event.origin) {
-        window.opener.focus();
+    if (event.data.type === type && event.source) {
+      // request from dApp
+      if (!event.data.pluginId) {
+        console.log('GLOBAL MESSAGE HANDEL', event.origin);
+        const payload = await handler(event.data);
+        event.source.postMessage(
+          { id: event.data.id, type: event.data.type, ...payload },
+          { targetOrigin: event.origin },
+        );
+        if (window.opener && event.origin) {
+          window.opener.focus();
+        }
+      } else {
+        // request from plugin
+        const plugins = pluginManager.loadedPluginsList;
+        const plugin = plugins.find((p) => p.config.id === event.data.pluginId);
+        if (!plugin) {
+          event.source.postMessage(
+            {
+              id: event.data.id,
+              type: event.data.type,
+              error: `PLUGIN_NOT_FOUND: the plugin is not loaded - pluginId: ${event.data.pluginId}`,
+            },
+            { targetOrigin: '*' },
+          );
+          return;
+        }
+        if (plugin.sessionId !== event.data.sessionId) {
+          event.source.postMessage(
+            {
+              id: event.data.id,
+              type: event.data.type,
+              error:
+                'SESSION_NOT_FOUND: the session is not active in the plugin',
+            },
+            { targetOrigin: '*' },
+          );
+          return;
+        }
+        const msgPermission: Permission = `MSG:${type}`;
+        if (!plugin.config.permissions.includes(msgPermission)) {
+          event.source.postMessage(
+            {
+              id: event.data.id,
+              type: event.data.type,
+              error: `PERMISSION_DENIED: the plugin does not have the permission to perform this action - Missing permission: "${msgPermission}"`,
+            },
+            { targetOrigin: '*' },
+          );
+          return;
+        }
+        const payload = await handler(event.data, plugin.config);
+        event.source.postMessage(
+          { id: event.data.id, type: event.data.type, ...payload },
+          // TODO: use sessionId of plugins, since 'null' happens for the iframe plugins that we need more proper handling
+          { targetOrigin: '*' },
+        );
       }
     }
   };
@@ -71,42 +122,71 @@ export const CommunicationProvider: FC<
   PropsWithChildren<{
     handle?: (
       type: RequestType,
-      handler: (message: Message) => Promise<
-        | {
-            payload: unknown;
-          }
-        | {
-            error: unknown;
-          }
-      >,
+      handler: (
+        message: Message,
+        plugin?: Plugin,
+      ) => Promise<{ payload: unknown } | { error: unknown }>,
     ) => () => void;
-    uiLoader?: (requestId: string, requestType: UiRequiredRequest) => void;
   }>
-> = ({ children, handle = messageHandle, uiLoader }) => {
+> = ({ children, handle = defaultMessageHandle }) => {
   const { setOrigin } = useGlobalState();
   const [requests] = useState(() => new Map<string, Request>());
   const routeNavigate = usePatchedNavigate();
-  const defaultUiLoader = useCallback(
-    (requestId: string, requestType: UiRequiredRequest) => {
-      const routeMap = {
+  const [uiComponent, setUiComponent] = useState<ReactNode | null>(null);
+  const dAppUiLoader = useCallback(
+    (requestId: string, requestType: RequestType) => {
+      const routeMap: Partial<Record<RequestType, string>> = {
         CONNECTION_REQUEST: '/connect',
-        PAYMENT_REQUEST: '/payment',
         SIGN_REQUEST: '/sign-request',
       };
       const route = routeMap[requestType];
-      if (!route) return;
+      if (!route) {
+        throw new Error(
+          `NO_UI_ACTION: No ui action is defined for the request type: ${requestType}`,
+        );
+      }
       const path = `${route}/${requestId}`;
       setOrigin(path);
       routeNavigate(path);
     },
     [routeNavigate, setOrigin],
   );
-  const loadUiComponent = useCallback(
-    (requestId: string, requestType: UiRequiredRequest) => {
-      const loader = uiLoader || defaultUiLoader;
-      return loader(requestId, requestType);
+  const pluginUiLoader = useCallback(
+    (requestId: string, type: RequestType, plugin: Plugin) => {
+      if (type === 'CONNECTION_REQUEST') {
+        setUiComponent(
+          <ConnectionRequest
+            requestId={requestId}
+            plugin={plugin}
+            onDone={() => {
+              setUiComponent(null);
+            }}
+          />,
+        );
+        return;
+      }
+      if (type === 'SIGN_REQUEST') {
+        setUiComponent(
+          <SignRequestDialog
+            requestId={requestId}
+            plugin={plugin}
+            onDone={() => {
+              setUiComponent(null);
+            }}
+          />,
+        );
+        return;
+      }
     },
-    [defaultUiLoader, uiLoader],
+    [],
+  );
+  const loadUiComponent = useCallback(
+    (requestId: string, requestType: RequestType, plugin?: Plugin) => {
+      return plugin
+        ? pluginUiLoader(requestId, requestType, plugin)
+        : dAppUiLoader(requestId, requestType);
+    },
+    [dAppUiLoader, pluginUiLoader],
   );
   const { isUnlocked, accounts, profile, networks, activeNetwork, keySources } =
     useWallet();
@@ -132,7 +212,9 @@ export const CommunicationProvider: FC<
         requests.delete(data.id);
       });
 
-    const handleUIRequiredRequest = (type: UiRequiredRequest) =>
+    const handleUIRequiredRequest = (
+      type: 'CONNECTION_REQUEST' | 'SIGN_REQUEST',
+    ) =>
       handle(type, async (payload) => {
         const request = createRequest(payload);
         loadUiComponent(payload.id, type);
@@ -229,6 +311,7 @@ export const CommunicationProvider: FC<
   return (
     <communicationContext.Provider value={requests}>
       {children}
+      {uiComponent}
     </communicationContext.Provider>
   );
 };

@@ -1,13 +1,13 @@
 import {
   MonoCheck,
   MonoContacts,
-  MonoContrast,
   MonoControlPointDuplicate,
   MonoDarkMode,
   MonoExtension,
   MonoKey,
   MonoLightMode,
   MonoLogout,
+  MonoMoreVert,
   MonoNetworkCheck,
   MonoSettings,
   MonoSignature,
@@ -17,13 +17,16 @@ import {
 } from '@kadena/kode-icons/system';
 
 import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
-
+import { LoadedPlugin, pluginManager } from '@/modules/plugins/PluginManager';
+import { Plugin } from '@/modules/plugins/type';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import InitialsAvatar from '@/pages/select-profile/initials';
 import { getInitials } from '@/utils/get-initials';
 import {
+  Badge,
   Button,
+  ButtonGroup,
   ContextMenu,
   ContextMenuDivider,
   ContextMenuItem,
@@ -36,11 +39,10 @@ import {
 } from '@kadena/kode-ui';
 import {
   SideBarItem,
-  SideBarItemsInline,
   SideBar as SideBarUI,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { KLogo } from './KLogo';
@@ -52,11 +54,27 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   const { isExpanded } = useSideBarLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
   const navigate = usePatchedNavigate();
+  const [loadedPlugins, setLoadedPlugins] = useState<LoadedPlugin[]>(
+    () => pluginManager.loadedPluginsList,
+  );
+  const [plugins, setPlugins] = useState<Plugin[]>(
+    () => pluginManager.pluginsList,
+  );
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
+  pluginManager.availablePlugins;
+  useEffect(() => {
+    const unsubscribe = pluginManager.onStatusChange(() => {
+      setLoadedPlugins(pluginManager.loadedPluginsList);
+      setPlugins(pluginManager.pluginsList);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <SideBarUI
@@ -70,7 +88,6 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       }
       appContext={
         <>
-          {' '}
           <SideBarItem visual={<MonoNetworkCheck />} label="Select network">
             <NetworkSelector
               showLabel={isExpanded}
@@ -134,20 +151,59 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
             component={Link}
             href="/contacts"
           />
-          {profile?.showExperimentalFeatures && (
-            <SideBarItem
-              visual={<MonoExtension />}
-              label="Plugins"
-              component={Link}
-              href="/plugins"
-            />
-          )}
         </>
       }
       context={
         <>
-          <SideBarItemsInline>
-            <SideBarItem visual={<MonoContacts />} label="Profile">
+          {profile?.showExperimentalFeatures && (
+            <SideBarItem visual={<MonoExtension />} label="plugins">
+              <ButtonGroup fullWidth>
+                <Button
+                  startVisual={<MonoExtension />}
+                  variant="outlined"
+                  isCompact
+                  onPress={() => {
+                    navigate('/plugins');
+                  }}
+                >
+                  Plugins
+                </Button>
+
+                <ContextMenu
+                  trigger={
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      startVisual={<MonoMoreVert />}
+                    />
+                  }
+                >
+                  {plugins.map((plugin) => (
+                    <ContextMenuItem
+                      key={plugin.id}
+                      onClick={() => {
+                        navigate(`/plugins?plugin-id=${plugin.id}`);
+                      }}
+                      label={plugin.name}
+                      endVisual={
+                        <>
+                          {loadedPlugins.find(
+                            (p) => p.config.name === plugin.name,
+                          ) ? (
+                            <Badge size="sm" style="positive">
+                              {''}
+                            </Badge>
+                          ) : null}
+                        </>
+                      }
+                    />
+                  ))}
+                </ContextMenu>
+              </ButtonGroup>
+            </SideBarItem>
+          )}
+          <SideBarItem visual={<MonoContacts />} label="Profile">
+            <ButtonGroup fullWidth>
               <ContextMenu
                 trigger={
                   <Button
@@ -220,22 +276,16 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
                   onClick={lockProfile}
                 />
               </ContextMenu>
-            </SideBarItem>
-            <SideBarItem
-              visual={<MonoContrast />}
-              onPress={toggleTheme}
-              label="Change theme"
-            >
               <Button
                 isCompact
-                variant="transparent"
-                onPress={() => toggleTheme()}
+                variant="outlined"
+                onPress={toggleTheme}
                 startVisual={
                   theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
                 }
               />
-            </SideBarItem>
-          </SideBarItemsInline>
+            </ButtonGroup>
+          </SideBarItem>
         </>
       }
     ></SideBarUI>

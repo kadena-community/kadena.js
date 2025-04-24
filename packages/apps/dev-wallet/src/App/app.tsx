@@ -11,6 +11,8 @@ import { GlobalStateProvider } from './providers/globalState';
 import { SessionProvider } from './providers/session';
 import { Routes } from './routes';
 
+import { PluginProvider } from '@/modules/plugins/plugin.provider';
+
 function Providers({ children }: { children: React.ReactNode }) {
   useTheme();
   useEffect(() => {
@@ -29,8 +31,10 @@ function Providers({ children }: { children: React.ReactNode }) {
                   <MaintenanceProvider>
                     <InDevelopmentProvider>
                       <WalletProvider>
-                        {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
-                        <PromptProvider>{children}</PromptProvider>
+                        <PluginProvider>
+                          {/* TODO: fixed the issue with prompt and remove this one in favor of the one above */}
+                          <PromptProvider>{children}</PromptProvider>
+                        </PluginProvider>
                       </WalletProvider>
                     </InDevelopmentProvider>
                   </MaintenanceProvider>
