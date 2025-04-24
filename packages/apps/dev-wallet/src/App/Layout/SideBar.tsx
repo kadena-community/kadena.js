@@ -156,135 +156,139 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       context={
         <>
           {profile?.showExperimentalFeatures && (
-            <SideBarItem visual={<MonoExtension />} label="plugins">
-              <ButtonGroup fullWidth>
-                <Button
-                  startVisual={<MonoExtension />}
-                  variant="outlined"
-                  isCompact
-                  onPress={() => {
-                    navigate('/plugins');
-                  }}
-                >
-                  Plugins
-                </Button>
+            <Stack data-isexpanded={isExpanded}>
+              <SideBarItem visual={<MonoExtension />} label="plugins">
+                <ButtonGroup fullWidth>
+                  <Button
+                    startVisual={<MonoExtension />}
+                    variant={isExpanded ? 'outlined' : 'transparent'}
+                    isCompact
+                    onPress={() => {
+                      navigate('/plugins');
+                    }}
+                  >
+                    {isExpanded ? 'Plugins' : ''}
+                  </Button>
 
+                  <ContextMenu
+                    trigger={
+                      <Button
+                        isCompact
+                        variant={isExpanded ? 'outlined' : 'transparent'}
+                        startVisual={<MonoMoreVert />}
+                      />
+                    }
+                  >
+                    {plugins.map((plugin) => (
+                      <ContextMenuItem
+                        key={plugin.id}
+                        onClick={() => {
+                          navigate(`/plugins?plugin-id=${plugin.id}`);
+                        }}
+                        label={plugin.name}
+                        endVisual={
+                          <>
+                            {loadedPlugins.find(
+                              (p) => p.config.name === plugin.name,
+                            ) ? (
+                              <Badge size="sm" style="positive">
+                                {''}
+                              </Badge>
+                            ) : null}
+                          </>
+                        }
+                      />
+                    ))}
+                  </ContextMenu>
+                </ButtonGroup>
+              </SideBarItem>
+            </Stack>
+          )}
+          <SideBarItem visual={<MonoContacts />} label="Profile">
+            <Stack data-isexpanded={isExpanded}>
+              <ButtonGroup fullWidth>
                 <ContextMenu
                   trigger={
                     <Button
                       isCompact
-                      variant="outlined"
-                      startVisual={<MonoMoreVert />}
-                    />
+                      variant={isExpanded ? 'outlined' : 'transparent'}
+                      startVisual={
+                        <InitialsAvatar
+                          name={getInitials(profile!.name)}
+                          accentColor={profile!.accentColor}
+                          size="small"
+                        />
+                      }
+                    >
+                      {isExpanded ? profile?.name : undefined}
+                    </Button>
                   }
                 >
-                  {plugins.map((plugin) => (
+                  <Stack
+                    paddingInline={'md'}
+                    paddingBlockStart={'md'}
+                    paddingBlockEnd={'sm'}
+                  >
+                    <Heading variant="h6">Switch Profile</Heading>
+                  </Stack>
+                  {profileList.map((prf) => (
                     <ContextMenuItem
-                      key={plugin.id}
-                      onClick={() => {
-                        navigate(`/plugins?plugin-id=${plugin.id}`);
-                      }}
-                      label={plugin.name}
+                      key={prf.uuid}
                       endVisual={
-                        <>
-                          {loadedPlugins.find(
-                            (p) => p.config.name === plugin.name,
-                          ) ? (
-                            <Badge size="sm" style="positive">
-                              {''}
-                            </Badge>
-                          ) : null}
-                        </>
+                        prf.uuid === profile?.uuid ? (
+                          <Text>
+                            <MonoCheck />
+                          </Text>
+                        ) : undefined
                       }
+                      label={
+                        (
+                          <Stack gap="sm">
+                            <InitialsAvatar
+                              name={getInitials(prf!.name)}
+                              accentColor={prf!.accentColor}
+                              size="small"
+                            />
+                            <Text>{prf.name}</Text>
+                          </Stack>
+                        ) as any
+                      }
+                      onClick={async () => {
+                        if (prf.uuid === profile?.uuid) return;
+                        if (prf.options.authMode === 'WEB_AUTHN') {
+                          const pass = await getWebAuthnPass(prf);
+                          if (pass) {
+                            lockProfile();
+                            await unlockProfile(prf.uuid, pass);
+                          }
+                        } else {
+                          navigate(`/unlock-profile/${prf.uuid}`);
+                        }
+                      }}
                     />
                   ))}
-                </ContextMenu>
-              </ButtonGroup>
-            </SideBarItem>
-          )}
-          <SideBarItem visual={<MonoContacts />} label="Profile">
-            <ButtonGroup fullWidth>
-              <ContextMenu
-                trigger={
-                  <Button
-                    isCompact
-                    variant={isExpanded ? 'outlined' : 'transparent'}
-                    startVisual={
-                      <InitialsAvatar
-                        name={getInitials(profile!.name)}
-                        accentColor={profile!.accentColor}
-                        size="small"
-                      />
-                    }
-                  >
-                    {isExpanded ? profile?.name : undefined}
-                  </Button>
-                }
-              >
-                <Stack
-                  paddingInline={'md'}
-                  paddingBlockStart={'md'}
-                  paddingBlockEnd={'sm'}
-                >
-                  <Heading variant="h6">Switch Profile</Heading>
-                </Stack>
-                {profileList.map((prf) => (
+                  <ContextMenuDivider />
                   <ContextMenuItem
-                    key={prf.uuid}
-                    endVisual={
-                      prf.uuid === profile?.uuid ? (
-                        <Text>
-                          <MonoCheck />
-                        </Text>
-                      ) : undefined
-                    }
-                    label={
-                      (
-                        <Stack gap="sm">
-                          <InitialsAvatar
-                            name={getInitials(prf!.name)}
-                            accentColor={prf!.accentColor}
-                            size="small"
-                          />
-                          <Text>{prf.name}</Text>
-                        </Stack>
-                      ) as any
-                    }
-                    onClick={async () => {
-                      if (prf.uuid === profile?.uuid) return;
-                      if (prf.options.authMode === 'WEB_AUTHN') {
-                        const pass = await getWebAuthnPass(prf);
-                        if (pass) {
-                          lockProfile();
-                          await unlockProfile(prf.uuid, pass);
-                        }
-                      } else {
-                        navigate(`/unlock-profile/${prf.uuid}`);
-                      }
-                    }}
+                    endVisual={<MonoSettings />}
+                    label="Settings"
+                    onClick={() => navigate('/settings')}
                   />
-                ))}
-                <ContextMenuDivider />
-                <ContextMenuItem
-                  endVisual={<MonoSettings />}
-                  label="Settings"
-                  onClick={() => navigate('/settings')}
+                  <ContextMenuItem
+                    endVisual={<MonoLogout />}
+                    label="Logout"
+                    onClick={lockProfile}
+                  />
+                </ContextMenu>
+                <Button
+                  isCompact
+                  variant={isExpanded ? 'outlined' : 'transparent'}
+                  onPress={toggleTheme}
+                  startVisual={
+                    theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
+                  }
                 />
-                <ContextMenuItem
-                  endVisual={<MonoLogout />}
-                  label="Logout"
-                  onClick={lockProfile}
-                />
-              </ContextMenu>
-              <Button
-                isCompact
-                variant="outlined"
-                onPress={toggleTheme}
-                startVisual={
-                  theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-                }
-              />
-            </ButtonGroup>
+              </ButtonGroup>
+            </Stack>
           </SideBarItem>
         </>
       }
