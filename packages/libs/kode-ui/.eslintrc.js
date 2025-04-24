@@ -12,6 +12,8 @@ module.exports = {
     'react/function-component-definition': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/naming-convention': 'off',
+    'max-lines': 'off',
   },
   parserOptions: {
     tsconfigRootDir: __dirname,

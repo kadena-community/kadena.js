@@ -46,7 +46,7 @@ const meta: Meta<INumberFieldProps> = {
     },
   },
   argTypes: {
-    startVisual: iconControl,
+    startVisual: iconControl as any,
     fontType: {
       control: {
         type: 'radio',
@@ -165,10 +165,7 @@ const meta: Meta<INumberFieldProps> = {
       control: {
         type: 'radio',
       },
-      options: {
-        Row: 'row',
-        Column: 'column',
-      },
+      options: ['row', 'column'],
       defaultValue: 'row',
     },
   },
@@ -325,7 +322,6 @@ export const CustomErrorMessage: Story = {
 };
 
 export const SmallWidth: Story = {
-  name: 'Small Width',
   args: {
     direction: 'column',
     placeholder: '0',

@@ -113,7 +113,7 @@ export const Primary: Story = {
   },
 };
 
-export const horizontal: Story = {
+export const Horizontal: Story = {
   name: 'SectionCard Horizontal',
   args: {
     title: 'Our section',
@@ -150,7 +150,7 @@ export const horizontal: Story = {
   },
 };
 
-export const withIcon: Story = {
+export const WithIcon: Story = {
   name: 'SectionCard card with Icon',
   args: {
     title: 'Our section',
@@ -186,7 +186,7 @@ export const withIcon: Story = {
   },
 };
 
-export const withIconIsLoading: Story = {
+export const WithIconIsLoading: Story = {
   name: 'SectionCard loading state',
   args: {
     title: 'Our section',
@@ -228,7 +228,7 @@ export const withIconIsLoading: Story = {
   },
 };
 
-export const reverseBackground: Story = {
+export const ReverseBackground: Story = {
   name: 'SectionCard Reversed background',
   args: {
     title: 'Our section',
@@ -319,7 +319,7 @@ export const WhenMinHeight: Story = {
     );
   },
 };
-export const noBackground: Story = {
+export const NoBackground: Story = {
   name: 'SectionCard No background',
   args: {
     title: 'Our section',

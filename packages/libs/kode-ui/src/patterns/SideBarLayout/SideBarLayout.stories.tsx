@@ -168,11 +168,7 @@ const InnerLayout = () => {
             }
             navigation={
               <>
-                <SideBarItem
-                  visual={<MonoWifiTethering />}
-                  label="Mainnet"
-                  href="javascript:void()"
-                />
+                <SideBarItem visual={<MonoWifiTethering />} label="Mainnet" />
                 <SideBarTree visual={<MonoWallet />} label="My Wallet">
                   <SideBarTreeItem label="Accounts" href="https://kadena.io" />
                   <SideBarTreeItem
@@ -432,11 +428,7 @@ const NotificationsLayout = () => {
             }
             navigation={
               <>
-                <SideBarItem
-                  visual={<MonoWifiTethering />}
-                  label="Mainnet"
-                  href="javascript:void()"
-                />
+                <SideBarItem visual={<MonoWifiTethering />} label="Mainnet" />
               </>
             }
             context={
@@ -523,8 +515,6 @@ const NotificationsLayout = () => {
 };
 
 export const Notifications: IStory = {
-  name: 'Notifications',
-
   args: {},
   render: () => {
     return (
