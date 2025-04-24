@@ -46,7 +46,6 @@ import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { usePatchedNavigate } from '../../utils/usePatchedNavigate';
 import { KLogo } from './KLogo';
-import { sidebarButtongroupClass } from './style.css';
 
 export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
@@ -157,7 +156,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       context={
         <>
           {profile?.showExperimentalFeatures && (
-            <Stack className={sidebarButtongroupClass({ isExpanded })}>
+            <Stack data-isexpanded={isExpanded}>
               <SideBarItem visual={<MonoExtension />} label="plugins">
                 <ButtonGroup fullWidth>
                   <Button
@@ -206,7 +205,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
             </Stack>
           )}
           <SideBarItem visual={<MonoContacts />} label="Profile">
-            <Stack className={sidebarButtongroupClass({ isExpanded })}>
+            <Stack data-isexpanded={isExpanded}>
               <ButtonGroup fullWidth>
                 <ContextMenu
                   trigger={
