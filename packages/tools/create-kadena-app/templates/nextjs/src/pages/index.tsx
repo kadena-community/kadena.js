@@ -13,6 +13,15 @@ const Home: React.FC = (): JSX.Element => {
   const [messageFromChain, setMessageFromChain] = useState<string>('');
   const [writeInProgress, setWriteInProgress] = useState<boolean>(false);
 
+  const handleConnect = async () => {
+    try {
+      const accountInfo = await client.connect('Ecko');
+      setAccount(accountInfo);
+    } catch {
+      console.log('Error Connecting Wallet');
+    }
+  };
+
   const handleAccountInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
@@ -28,7 +37,11 @@ const Home: React.FC = (): JSX.Element => {
   async function handleWriteMessageClick() {
     setWriteInProgress(true);
     try {
-      await writeMessage({ account, messageToWrite });
+      await writeMessage({
+        account: account.accountName,
+        messageToWrite,
+        walletClient: client,
+      });
       setMessageToWrite('');
     } catch (e) {
       console.log(e);
