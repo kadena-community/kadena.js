@@ -1,7 +1,11 @@
+import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { useRequests } from '@/modules/communication/communication.provider';
+import { MonoContacts } from '@kadena/kode-icons/system';
 import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
+import { CardFooterGroup } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { wrapperClass } from '../errors/styles.css';
 
 export function Connect({
   requestId,
@@ -29,49 +33,62 @@ export function Connect({
     return <div>Request not found</div>;
   }
   return (
-    <Stack padding={'sm'} gap={'lg'} flexDirection={'column'}>
-      <Heading as="h1">Connection Request</Heading>
-      <Text variant="code">{JSON.stringify(request)}</Text>
-      {result === 'none' && (
-        <Stack gap={'lg'}>
-          <Button
-            variant="primary"
-            onPress={() => {
-              request?.resolve({ status: 'accepted' });
-              setResult('accepted');
-              if (onAccept) {
-                onAccept();
-              }
-            }}
-          >
-            <div>Accept</div>
-          </Button>
-          <Button
-            onPress={() => {
-              request?.resolve({ status: 'rejected' });
-              setResult('rejected');
-              if (onReject) {
-                onReject();
-              }
-            }}
-          >
-            <div>reject</div>
-          </Button>
-        </Stack>
-      )}
-      {result === 'accepted' && (
-        <Notification role="status">
-          Request accepted - you can go back to{' '}
-          <Text bold> {(request.payload as any).name}</Text>
-        </Notification>
-      )}
-      {result === 'rejected' && (
-        <Notification role="alert">
-          Request rejected - you can go back to{' '}
-          <Text bold> {(request.payload as any).name}</Text>
-        </Notification>
-      )}
-    </Stack>
+    <>
+      <CardContent
+        label="Connection Request"
+        description="Connect with your account"
+        visual={<MonoContacts width={40} height={40} />}
+      />
+      <Stack
+        padding={'sm'}
+        gap={'lg'}
+        flexDirection={'column'}
+        className={wrapperClass}
+      >
+        <Heading as="h2">Login to: {(request.payload as any).name}</Heading>
+
+        {result === 'none' && (
+          <CardFooterGroup>
+            <Button
+              variant="outlined"
+              onPress={() => {
+                request?.resolve({ status: 'rejected' });
+                setResult('rejected');
+                if (onReject) {
+                  onReject();
+                }
+              }}
+            >
+              Reject
+            </Button>
+            <Button
+              variant="primary"
+              onPress={() => {
+                request?.resolve({ status: 'accepted' });
+                setResult('accepted');
+                if (onAccept) {
+                  onAccept();
+                }
+              }}
+            >
+              Accept
+            </Button>
+          </CardFooterGroup>
+        )}
+        {result === 'accepted' && (
+          <Notification role="status">
+            Request accepted - you can go back to{' '}
+            <Text bold> {(request.payload as any).name}</Text>
+          </Notification>
+        )}
+        {result === 'rejected' && (
+          <Notification role="alert">
+            Request rejected - you can go back to{' '}
+            <Text bold> {(request.payload as any).name}</Text>
+          </Notification>
+        )}
+      </Stack>
+    </>
   );
 }
 

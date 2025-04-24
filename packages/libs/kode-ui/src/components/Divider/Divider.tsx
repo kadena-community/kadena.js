@@ -12,6 +12,7 @@ export interface IDividerProps extends ComponentPropsWithRef<'hr'> {
   variant?: Variants['variant'];
   label?: string;
   bgColor?: string;
+  align?: 'start' | 'center' | 'end';
 }
 
 export const Divider: FC<IDividerProps> = ({
@@ -19,6 +20,7 @@ export const Divider: FC<IDividerProps> = ({
   variant = 'base',
   label,
   bgColor,
+  align = 'center',
   ...props
 }) => {
   const { separatorProps } = useSeparator({
@@ -29,7 +31,10 @@ export const Divider: FC<IDividerProps> = ({
 
   return (
     <hr
-      className={cn(dividerClass({ variant, label: !!label }), className)}
+      className={cn(
+        dividerClass({ variant, label: !!label, align }),
+        className,
+      )}
       data-label={label}
       style={assignInlineVars({
         [bgColorVar]: bgColor,

@@ -12,6 +12,7 @@ export type IProps = Pick<AriaButtonProps<'button'>, 'aria-label' | 'type'> & {
   hasFocus?: boolean;
   onClick?: React.MouseEventHandler;
   isSelected?: boolean;
+  hasError?: boolean;
   stacked?: 'horizontal' | 'vertical';
 };
 
@@ -24,6 +25,7 @@ export const Tile: FC<ITileProps> = ({
   hasFocus,
   onClick,
   isSelected = false,
+  hasError = false,
   stacked = 'horizontal',
   ...props
 }) => {
@@ -42,6 +44,7 @@ export const Tile: FC<ITileProps> = ({
       data-focused={isFocused || undefined}
       data-focus-visible={isFocusVisible || undefined}
       data-selected={isSelected || undefined}
+      data-haserror={hasError || undefined}
       {...props}
     >
       {children}

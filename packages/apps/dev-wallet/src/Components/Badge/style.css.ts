@@ -5,5 +5,6 @@ export const chainClass = style([
   {
     background: vars.colors.$layoutSurfaceCard,
     border: `1px solid ${vars.colors.$borderDefault}`,
+    fontSize: 'smaller',
   },
 ]);

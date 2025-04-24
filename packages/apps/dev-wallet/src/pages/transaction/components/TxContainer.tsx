@@ -8,11 +8,17 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IUnsignedCommand } from '@kadena/client';
 import { Dialog } from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { ExpandedTransaction } from './ExpandedTransaction';
 import { containerClass } from './style.css';
 import { TxMinimized } from './TxMinimized';
-import { steps } from './TxPipeLine';
+import { steps } from './TxPipeLine/utils';
 import { TxTile } from './TxTile';
 
 export const TxContainer = React.memo(
@@ -22,12 +28,14 @@ export const TxContainer = React.memo(
     sendDisabled,
     onUpdate,
     onDone,
+    abortButtonContent,
   }: {
     transaction: ITransaction;
     as: 'tile' | 'expanded' | 'minimized';
     sendDisabled?: boolean;
     onUpdate?: (tx: ITransaction) => void;
     onDone?: (tx: ITransaction) => void;
+    abortButtonContent?: ReactElement;
   }) => {
     const [expandedModal, setExpandedModal] = useState(false);
     const { sign, client } = useWallet();
@@ -90,6 +98,11 @@ export const TxContainer = React.memo(
 
     const onExpandedSign =
       (tx: ITransaction) => async (sigs: ITransaction['sigs']) => {
+        console.log({
+          status: tx.status,
+          d: steps.indexOf(tx.status),
+          e: sigs.every((data) => data?.sig),
+        });
         const updated = {
           ...tx,
           sigs,
@@ -97,7 +110,7 @@ export const TxContainer = React.memo(
             ? steps.indexOf(tx.status) < steps.indexOf('signed')
               ? 'signed'
               : tx.status
-            : tx.status,
+            : 'initiated',
         } as ITransaction;
         await transactionRepository.updateTransaction(updated);
         // setLocalTransaction(updated);
@@ -138,6 +151,7 @@ export const TxContainer = React.memo(
     const renderExpanded = (isDialog = false) => (
       <ExpandedTransaction
         transaction={localTransaction}
+        abortButtonContent={abortButtonContent && abortButtonContent}
         contTx={contTx}
         onSign={onExpandedSign(localTransaction)}
         onSubmit={(skipPreflight = false) =>
