@@ -8,6 +8,7 @@ import KadenaImage from '../../public/assets/k-community-icon.png';
 import styles from '../styles/main.module.css';
 
 const Home: React.FC = (): JSX.Element => {
+  const { client } = useKadenaWallet();
   const [account, setAccount] = useState<string>('');
   const [messageToWrite, setMessageToWrite] = useState<string>('');
   const [messageFromChain, setMessageFromChain] = useState<string>('');
@@ -16,7 +17,7 @@ const Home: React.FC = (): JSX.Element => {
   const handleConnect = async () => {
     try {
       const accountInfo = await client.connect('Ecko');
-      setAccount(accountInfo);
+      setAccount(accountInfo.accountName);
     } catch {
       console.log('Error Connecting Wallet');
     }
@@ -38,7 +39,7 @@ const Home: React.FC = (): JSX.Element => {
     setWriteInProgress(true);
     try {
       await writeMessage({
-        account: account.accountName,
+        account: account,
         messageToWrite,
         walletClient: client,
       });
@@ -93,16 +94,21 @@ const Home: React.FC = (): JSX.Element => {
             <div className={styles.card}>
               <h4 className={styles.cardTitle}>Write to the blockchain</h4>
               <fieldset className={styles.fieldset}>
-                <label htmlFor="account" className={styles.fieldLabel}>
-                  My Account
-                </label>
-                <input
+                <div className={styles.buttonWrapper}>
+                  <button onClick={handleConnect} className={styles.button}>
+                    Connect Wallet
+                  </button>
+                  <label htmlFor="account" className={styles.fieldLabel}>
+                    My Account
+                  </label>{' '}
+                </div>
+                <textarea
                   id="account"
-                  onChange={handleAccountInputChange}
                   value={account}
-                  placeholder="Please enter a valid k:account"
+                  placeholder="Your k:account will be displayed here"
                   className={`${styles.input} ${styles.codeFont}`}
-                ></input>
+                  readOnly
+                ></textarea>
               </fieldset>
               <fieldset className={styles.fieldset}>
                 <label htmlFor="write-message" className={styles.fieldLabel}>
@@ -155,6 +161,7 @@ const Home: React.FC = (): JSX.Element => {
               </div>
             </div>
           </div>
+
           <div className={styles.helperSection}>
             <div className={`${styles.card} ${styles.noBackground}`}>
               <h4 className={styles.cardTitle}>Resources</h4>
