@@ -18,8 +18,8 @@ export interface ICompactTableProps {
   setPage?: (page: ITablePaginationPageOptions) => void;
   variant?: ITableProps<HTMLTableElement>['variant'];
   pageInfo?: {
-    endCursor?: string | null;
-    startCursor?: string | null;
+    endCursor?: string;
+    startCursor?: string;
     hasNextPage?: boolean;
     hasPreviousPage?: boolean;
   };

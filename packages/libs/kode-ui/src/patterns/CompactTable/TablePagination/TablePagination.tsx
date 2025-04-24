@@ -9,18 +9,18 @@ import { PaginationButton } from './PaginationButton/PaginationButton';
 import { paginationClass } from './styles.css';
 
 export interface ITablePaginationPageOptions {
-  after?: string | null;
-  before?: string | null;
-  first?: number | null;
-  last?: number | null;
+  after?: string;
+  before?: string;
+  first?: number;
+  last?: number;
 }
 interface IProps {
   totalCount?: number;
   pageSize: number;
   setPage: (page: ITablePaginationPageOptions) => void;
   pageInfo: {
-    endCursor?: string | null;
-    startCursor?: string | null;
+    endCursor?: string;
+    startCursor?: string;
     hasNextPage?: boolean;
     hasPreviousPage?: boolean;
   };

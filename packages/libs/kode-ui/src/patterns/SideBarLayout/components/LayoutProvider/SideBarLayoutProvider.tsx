@@ -36,18 +36,18 @@ export interface ILayoutContext {
   isActiveUrl: (url?: string) => boolean;
   rightAsideTitle?: string;
   setRightAsideTitle: (value?: string) => void;
-  topbannerRef?: HTMLDivElement | null;
-  setTopbannerRef: (value?: HTMLDivElement | null) => void;
-  rightAsideRef?: HTMLDivElement | null;
-  setRightAsideRef: (value?: HTMLDivElement | null) => void;
+  topbannerRef?: HTMLDivElement;
+  setTopbannerRef: (value?: HTMLDivElement) => void;
+  rightAsideRef?: HTMLDivElement;
+  setRightAsideRef: (value?: HTMLDivElement) => void;
   isRightAsideExpanded: boolean;
   setIsRightAsideExpanded: (value: boolean) => void;
   rightAsideOnClose?: () => void;
   setRightAsideOnClose: (value: () => void) => void;
-  breadcrumbsRef?: HTMLDivElement | null;
-  setBreadcrumbsRef: (value?: HTMLDivElement | null) => void;
-  headerContextRef?: HTMLDivElement | null;
-  setHeaderContextRef: (value?: HTMLDivElement | null) => void;
+  breadcrumbsRef?: HTMLDivElement;
+  setBreadcrumbsRef: (value?: HTMLDivElement) => void;
+  headerContextRef?: HTMLDivElement;
+  setHeaderContextRef: (value?: HTMLDivElement) => void;
 }
 export const LayoutContext = createContext<ILayoutContext>({
   isExpanded: true,
@@ -66,7 +66,7 @@ export const LayoutContext = createContext<ILayoutContext>({
   isRightAsideExpanded: false,
   setIsRightAsideExpanded: () => {},
   setRightAsideOnClose: () => {},
-  topbannerRef: null,
+  topbannerRef: undefined,
   setTopbannerRef: () => {},
   setRightAsideRef: () => {},
   setBreadcrumbsRef: () => {},
@@ -78,15 +78,11 @@ export const useLayout = () => useContext(LayoutContext);
 export interface ILayoutProvider extends PropsWithChildren {}
 
 export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
-  const [rightAsideRef, setRightAsideRefState] =
-    useState<HTMLDivElement | null>(null);
-  const [topbannerRef, setTopbannerRefState] = useState<HTMLDivElement | null>(
-    null,
-  );
-  const [breadcrumbsRef, setBreadcrumbsRefState] =
-    useState<HTMLDivElement | null>(null);
+  const [rightAsideRef, setRightAsideRefState] = useState<HTMLDivElement>();
+  const [topbannerRef, setTopbannerRefState] = useState<HTMLDivElement>();
+  const [breadcrumbsRef, setBreadcrumbsRefState] = useState<HTMLDivElement>();
   const [headerContextRef, setHeaderContextRefState] =
-    useState<HTMLDivElement | null>(null);
+    useState<HTMLDivElement>();
   const [isRightAsideExpanded, setIsRightAsideExpanded] = useState(false);
   const rightAsideOnCloseRef = useRef();
   const [rightAsideTitle, setRightAsideTitleState] = useState<
@@ -143,18 +139,18 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
     setRightAsideTitleState(value);
   };
 
-  const setRightAsideRef = (value?: HTMLDivElement | null) => {
-    setRightAsideRefState(value ? value : null);
+  const setRightAsideRef = (value?: HTMLDivElement) => {
+    setRightAsideRefState(value ? value : undefined);
   };
 
-  const setTopbannerRef = (value?: HTMLDivElement | null) => {
-    setTopbannerRefState(value ? value : null);
+  const setTopbannerRef = (value?: HTMLDivElement) => {
+    setTopbannerRefState(value ? value : undefined);
   };
-  const setBreadcrumbsRef = (value?: HTMLDivElement | null) => {
-    setBreadcrumbsRefState(value ? value : null);
+  const setBreadcrumbsRef = (value?: HTMLDivElement) => {
+    setBreadcrumbsRefState(value ? value : undefined);
   };
-  const setHeaderContextRef = (value?: HTMLDivElement | null) => {
-    setHeaderContextRefState(value ? value : null);
+  const setHeaderContextRef = (value?: HTMLDivElement) => {
+    setHeaderContextRefState(value ? value : undefined);
   };
   const setRightAsideOnClose = (value?: any) => {
     rightAsideOnCloseRef.current = value;

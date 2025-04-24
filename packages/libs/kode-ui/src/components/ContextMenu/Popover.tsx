@@ -5,12 +5,12 @@ import { Overlay, usePopover } from 'react-aria';
 import type { OverlayTriggerState } from 'react-stately';
 import { underlayClass } from './style.css';
 
-interface PopoverProps extends Omit<AriaPopoverProps, 'popoverRef'> {
+interface IPopoverProps extends Omit<AriaPopoverProps, 'popoverRef'> {
   children: React.ReactNode;
   state: OverlayTriggerState;
 }
 
-export const Popover: FC<PopoverProps> = ({
+export const Popover: FC<IPopoverProps> = ({
   children,
   state,
   offset = 8,

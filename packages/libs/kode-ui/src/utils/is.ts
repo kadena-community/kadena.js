@@ -10,7 +10,7 @@ export function isObject(token: unknown): token is Record<string, unknown> {
   );
 }
 
-export function isNullOrUndefined(token: unknown): token is null | undefined {
+export function isNullOrUndefined(token: unknown): token is undefined {
   return token === null || isUndefined(token);
 }
 

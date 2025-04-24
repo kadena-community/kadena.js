@@ -47,7 +47,7 @@ type Story = StoryObj<ICardContentBlockProps>;
 export const Primary: Story = {
   name: 'Card Pattern',
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <CardFixedContainer>
         <CardContentBlock
@@ -99,9 +99,8 @@ export const Primary: Story = {
 };
 
 export const SupportingContent: Story = {
-  name: 'Supporting Content',
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <CardFixedContainer>
         <CardContentBlock
@@ -147,7 +146,7 @@ export const SupportingContent: Story = {
 export const ExtendedContent: Story = {
   name: 'Card with Extended Content',
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <CardFixedContainer>
         <CardContentBlock
@@ -194,7 +193,7 @@ export const ExtendedContent: Story = {
 export const NoVisual: Story = {
   name: 'Card Pattern with no `visual`',
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <CardFixedContainer>
         <CardContentBlock
@@ -238,9 +237,8 @@ export const NoVisual: Story = {
 
 export const CardMinHeight: Story = {
   name: 'When Card Minheight ',
-
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <Stack className={CardWrapperMinHeightClass}>
         <CardFixedContainer>
@@ -270,7 +268,7 @@ export const CardMinHeight: Story = {
 export const CardWithStackedContent: Story = {
   name: 'Card Pattern with stacked content blocks',
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <CardFixedContainer>
         <CardContentBlock
@@ -329,7 +327,7 @@ export const CardWithStackedContent: Story = {
 export const ExternalFooter: Story = {
   name: 'Card Pattern with external footer',
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <Box>
         <CardFixedContainer>
@@ -385,7 +383,7 @@ export const ExternalFooter: Story = {
 export const CardLevels: Story = {
   name: 'Cards with Different importance levels',
   args: {},
-  render: ({}) => {
+  render: () => {
     return (
       <Box>
         <CardFixedContainer>
