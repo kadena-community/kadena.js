@@ -1,4 +1,4 @@
-import { atoms, token } from '@kadena/kode-ui/styles';
+import { atoms, globalStyle, recipe, token } from '@kadena/kode-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 
 const contentWidth = createVar();
@@ -52,4 +52,23 @@ export const logoClass = style({
   color: token('color.text.brand.wordmark.default'),
   height: '32px',
   minHeight: '32px',
+});
+
+export const sidebarButtongroupClass = recipe({
+  base: {},
+  variants: {
+    isExpanded: {
+      true: { width: '100%' },
+      false: {},
+    },
+  },
+});
+
+globalStyle(`[class*="isExpanded_false"] > [class*="ButtonGroup"]`, {
+  flexDirection: 'column',
+  alignItems: 'center',
+});
+
+globalStyle(`[class*="isExpanded_true"] > [class*="ButtonGroup"]`, {
+  flex: 1,
 });

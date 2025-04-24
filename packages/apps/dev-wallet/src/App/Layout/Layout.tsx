@@ -76,35 +76,6 @@ export const Layout: FC = () => {
           </Stack>
         }
         sidebar={<SideBar />}
-        footer={
-          <SideBarFooter>
-            <SideBarFooterItem
-              href="/"
-              component={Link}
-              visual={<MonoWallet />}
-              label="Your Assets"
-            />
-
-            <SideBarFooterItem
-              href="/transfer"
-              component={Link}
-              visual={<MonoSwapHoriz />}
-              label="transfer"
-            />
-
-            <SideBarFooterItem
-              visual={<MonoWorkspaces />}
-              label="Select network"
-            >
-              <NetworkSelector variant="transparent" showLabel={false} />
-            </SideBarFooterItem>
-            <SideBarFooterItem
-              visual={<MonoLightMode />}
-              label="Change theme"
-              onPress={toggleTheme}
-            />
-          </SideBarFooter>
-        }
       >
         <Stack
           flexDirection={'column'}
