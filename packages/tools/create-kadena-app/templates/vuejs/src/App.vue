@@ -1,32 +1,64 @@
 <script lang="ts">
+import { defineComponent } from 'vue';
 import { HalfCircleSpinner } from 'epic-spinners';
 import writeMessage from './utils/writeMessage';
 import readMessage from './utils/readMessage';
+import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
+import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
 
 export default {
-  data: () => ({
-    account: '',
-    messageFromChain: '',
-    messageToWrite: '',
-    writeInProgress: false,
-  }),
+  name: 'App',
+  components: { HalfCircleSpinner },
+
+  data() {
+    return {
+      account: '' as string,
+      messageFromChain: '' as string,
+      messageToWrite: '' as string,
+      writeInProgress: false as boolean,
+      walletClient: null as WalletAdapterClient | null,
+    };
+  },
 
   methods: {
+    async connectWallet() {
+      try {
+        const adapter = await eckoAdapter();
+        if (!adapter) {
+          console.error('Ecko Wallet not found. Please install the extension.');
+          return;
+        }
+
+        this.walletClient = new WalletAdapterClient([adapter]);
+
+        await this.walletClient.init();
+
+        const { accountName } = await this.walletClient.connect(adapter.name);
+
+        this.account = accountName;
+      } catch (err) {
+        console.error('Wallet connection failed:', err);
+      }
+    },
+
     async readMessage() {
       this.messageFromChain = await readMessage({ account: this.account });
     },
+
     async writeMessage() {
       this.writeInProgress = true;
-      await writeMessage({
-        account: this.account,
-        messageToWrite: this.messageToWrite,
-      });
-      this.writeInProgress = false;
-      this.messageToWrite;
+      try {
+        await writeMessage({
+          account: this.account,
+          messageToWrite: this.messageToWrite,
+          walletClient: this.walletClient,
+        });
+        this.writeInProgress = false;
+      } catch (err) {
+        console.error('Error writing message', err);
+        this.writeInProgress = false;
+      }
     },
-  },
-  components: {
-    HalfCircleSpinner,
   },
 };
 </script>
@@ -57,6 +89,7 @@ export default {
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
           <fieldset class="fieldset">
+            <button @click="connectWallet" class="button">ConnectWallet</button>
             <label for="account" class="fieldLabel">My Account</label>
             <input
               id="account"
@@ -102,7 +135,9 @@ export default {
             ></textarea>
           </fieldset>
           <div class="buttonWrapper">
-            <button @click="readMessage" :disabled="!account">Read</button>
+            <button class="button" @click="readMessage" :disabled="!account">
+              Read
+            </button>
           </div>
         </div>
       </div>
