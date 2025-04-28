@@ -18,7 +18,7 @@ const Home: React.FC = (): JSX.Element => {
 
   const handleConnect = async () => {
     try {
-      const accountInfo = await client.connect('Ecko');
+      const accountInfo = await client.connect(selectedWallet);
       setAccount(accountInfo.accountName);
     } catch {
       console.log('Error Connecting Wallet');

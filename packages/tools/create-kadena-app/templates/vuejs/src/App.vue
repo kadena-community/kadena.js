@@ -12,6 +12,7 @@ export default {
 
   data() {
     return {
+      selectedWallet: '' as string,
       account: '' as string,
       messageFromChain: '' as string,
       messageToWrite: '' as string,
@@ -84,20 +85,40 @@ export default {
         </p>
       </div>
     </section>
+
+    <!-- Wallet / Message UI -->
     <section class="contentWrapper">
+      <!-- Wallet card -->
+      <div class="card">
+        <h4 class="cardTitle">Wallet</h4>
+
+        <fieldset class="fieldset">
+          <label for="wallet-select" class="fieldLabel">Select Wallet</label>
+          <select id="wallet-select" v-model="selectedWallet" class="input">
+            <option value="">-- select a wallet --</option>
+            <option value="Ecko">Ecko</option>
+          </select>
+        </fieldset>
+
+        <div class="buttonWrapper">
+          <button @click="connectWallet" class="button">Connect Wallet</button>
+        </div>
+
+        <fieldset class="fieldset">
+          <label for="account" class="fieldLabel">Connected Account</label>
+          <textarea
+            id="account"
+            v-model="account"
+            readonly
+            class="input codeFont"
+          ></textarea>
+        </fieldset>
+      </div>
       <div class="blockChain">
+        <!-- Write card -->
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
-          <fieldset class="fieldset">
-            <button @click="connectWallet" class="button">ConnectWallet</button>
-            <label for="account" class="fieldLabel">My Account</label>
-            <input
-              id="account"
-              v-model="account"
-              placeholder="Please enter a valid k:account"
-              class="input codeFont"
-            />
-          </fieldset>
+
           <fieldset class="fieldset">
             <label for="write-message" class="fieldLabel">Write Message</label>
             <textarea
@@ -107,12 +128,13 @@ export default {
               class="input"
             ></textarea>
           </fieldset>
+
           <div class="buttonWrapper">
             <half-circle-spinner
+              v-if="writeInProgress"
               :animation-duration="1000"
               :size="30"
               color="#ff1d5e"
-              v-show="writeInProgress"
             />
             <button
               @click="writeMessage"
@@ -123,6 +145,7 @@ export default {
             </button>
           </div>
         </div>
+
         <div class="card">
           <h4 class="cardTitle">Read from the blockchain</h4>
           <fieldset class="fieldset">
