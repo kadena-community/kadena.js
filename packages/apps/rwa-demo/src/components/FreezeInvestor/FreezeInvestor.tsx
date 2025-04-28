@@ -104,7 +104,7 @@ export const FreezeInvestor: FC<IProps> = ({
     <>
       <Stack className={complianceWrapperClass}>
         <Dialog isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
-          <form onSubmit={handleSubmit(handleFreeze)}>
+          <form onSubmit={handleSubmit(handleFreeze)} style={{ width: '100%' }}>
             <DialogHeader>Freeze the account</DialogHeader>
             <DialogHeaderSubtitle>
               <Text variant="code">{maskValue(investorAccount)}</Text>

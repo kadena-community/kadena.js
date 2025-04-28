@@ -5,9 +5,11 @@ import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
+import { isFrozen } from '@/services/isFrozen';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import {
   Button,
+  maskValue,
   Notification,
   NotificationHeading,
   Select,
@@ -51,6 +53,9 @@ export const TransferForm: FC<IProps> = ({
   const { data: frozenAmount } = useGetFrozenTokens({
     investorAccount,
   });
+  const [selectedAccountIsFrozen, setSelectedAccountIsFrozen] = useState<
+    boolean | undefined
+  >(undefined);
 
   const {
     register,
@@ -92,6 +97,17 @@ export const TransferForm: FC<IProps> = ({
   const filteredInvestors = investors.filter(
     (i) => i.accountName !== investorAccount,
   );
+  console.log({ filteredInvestors });
+
+  const handleAccountChange = (cb: any) => async (value: any) => {
+    setSelectedAccountIsFrozen(undefined);
+    if (!account) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    const res = await isFrozen({ investorAccount: value, account });
+    setSelectedAccountIsFrozen(res as boolean | undefined);
+
+    return cb(value);
+  };
 
   if (!account) return;
   const maxAmount = isForced ? balance : balance - frozenAmount;
@@ -148,17 +164,24 @@ export const TransferForm: FC<IProps> = ({
                     variant={
                       errors.investorToAccount?.message ? 'negative' : 'default'
                     }
-                    onSelectionChange={field.onChange}
+                    onSelectionChange={handleAccountChange(field.onChange)}
                     errorMessage={errors.investorToAccount?.message}
                   >
                     {(item) => (
                       <SelectItem key={item.accountName}>
-                        {item.accountName}
+                        {maskValue(item.accountName)}
                       </SelectItem>
                     )}
                   </Select>
                 )}
               />
+
+              {selectedAccountIsFrozen && (
+                <Notification role="status">
+                  The selected account is frozen and is not allowed to receive
+                  tokens
+                </Notification>
+              )}
             </RightAsideContent>
 
             <RightAsideFooter message={<AssetPausedMessage />}>
@@ -167,7 +190,9 @@ export const TransferForm: FC<IProps> = ({
               </Button>
               <Button
                 isDisabled={
-                  (isForced ? !isForcedAllowed : !isAllowed) || !isValid
+                  (isForced ? !isForcedAllowed : !isAllowed) ||
+                  !isValid ||
+                  selectedAccountIsFrozen === true
                 }
                 type="submit"
               >
