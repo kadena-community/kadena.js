@@ -16,12 +16,14 @@ export const chainweaverAccountLogin = async (): Promise<IWalletAccount[]> => {
   if ((response.payload as any).status !== 'accepted') {
     return [];
   }
+
   const { payload } = (await message('GET_STATUS', {
     name: 'RWA-demo',
   })) as { payload: IState };
 
   close();
 
+  console.log({ payload });
   return (
     payload.accounts.map((account) => ({
       ...account,
