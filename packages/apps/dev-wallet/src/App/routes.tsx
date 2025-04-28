@@ -155,13 +155,11 @@ export const Routes: FC = () => {
             />
             <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
-          <Route path="/connect/:requestId" element={<ConnectPage />} />
           <Route path="/account-discovery" element={<AccountDiscovery />} />
           <Route
             path="/unlock-profile/:profileId"
             element={<UnlockProfile origin={origin} />}
           />
-
           <Route
             element={
               <Redirect
@@ -171,6 +169,7 @@ export const Routes: FC = () => {
               />
             }
           >
+            <Route path="/connect/:requestId" element={<ConnectPage />} />
             <Route
               path="/settings/change-password"
               element={<ChangePassword />}

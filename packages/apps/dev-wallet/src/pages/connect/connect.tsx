@@ -47,6 +47,19 @@ export function Connect({
       >
         <Heading as="h2">Login to: {(request.payload as any).name}</Heading>
 
+        {result === 'accepted' && (
+          <Notification role="status">
+            Request accepted - you can go back to{' '}
+            <Text bold> {(request.payload as any).name}</Text>
+          </Notification>
+        )}
+        {result === 'rejected' && (
+          <Notification role="alert">
+            Request rejected - you can go back to{' '}
+            <Text bold> {(request.payload as any).name}</Text>
+          </Notification>
+        )}
+
         {result === 'none' && (
           <CardFooterGroup>
             <Button
@@ -74,18 +87,6 @@ export function Connect({
               Accept
             </Button>
           </CardFooterGroup>
-        )}
-        {result === 'accepted' && (
-          <Notification role="status">
-            Request accepted - you can go back to{' '}
-            <Text bold> {(request.payload as any).name}</Text>
-          </Notification>
-        )}
-        {result === 'rejected' && (
-          <Notification role="alert">
-            Request rejected - you can go back to{' '}
-            <Text bold> {(request.payload as any).name}</Text>
-          </Notification>
         )}
       </Stack>
     </>
