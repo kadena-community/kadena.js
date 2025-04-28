@@ -23,7 +23,6 @@ export const chainweaverAccountLogin = async (): Promise<IWalletAccount[]> => {
 
   close();
 
-  console.log({ payload });
   return (
     payload.accounts.map((account) => ({
       ...account,
