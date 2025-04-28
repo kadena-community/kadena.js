@@ -8,8 +8,10 @@ import KadenaImage from '../../public/assets/k-community-icon.png';
 import styles from '../styles/main.module.css';
 
 const Home: React.FC = (): JSX.Element => {
-  const { client } = useKadenaWallet();
+  const { client, providerData } = useKadenaWallet();
   const [account, setAccount] = useState<string>('');
+  const [network, setNetwork] = useState(null);
+  const [selectedWallet, setSelectedWallet] = useState<string>('');
   const [messageToWrite, setMessageToWrite] = useState<string>('');
   const [messageFromChain, setMessageFromChain] = useState<string>('');
   const [writeInProgress, setWriteInProgress] = useState<boolean>(false);
@@ -89,27 +91,59 @@ const Home: React.FC = (): JSX.Element => {
             </p>
           </div>
         </section>
+
+        <section className={styles.contentWrapper}>
+          <div className={styles.card}>
+            <h4 className={styles.cardTitle}>Wallet</h4>
+
+            <fieldset className={styles.fieldset}>
+              <label htmlFor="wallet-select" className={styles.fieldLabel}>
+                Select Wallet
+              </label>
+              <select
+                id="wallet-select"
+                value={selectedWallet}
+                onChange={(e) => setSelectedWallet(e.target.value)}
+                className={styles.input}
+              >
+                <option value="">-- select a wallet --</option>
+                {providerData.map((pd) => (
+                  <option key={pd.name} value={pd.name}>
+                    {pd.name} {pd.detected ? '(Detected)' : '(Not found)'}
+                  </option>
+                ))}
+              </select>
+            </fieldset>
+
+            <div className={styles.buttonWrapper} style={{ marginTop: 8 }}>
+              <button
+                onClick={handleConnect}
+                disabled={!selectedWallet}
+                className={styles.button}
+              >
+                Connect Wallet
+              </button>
+            </div>
+
+            <fieldset className={styles.fieldset} style={{ marginTop: 12 }}>
+              <label htmlFor="account" className={styles.fieldLabel}>
+                Connected Account
+              </label>
+              <textarea
+                id="account"
+                value={account}
+                readOnly
+                style={{ overflow: 'hidden', resize: 'none' }}
+                className={`${styles.input} ${styles.codeFont}`}
+              />
+            </fieldset>
+          </div>
+        </section>
+
         <section className={styles.contentWrapper}>
           <div className={styles.blockChain}>
             <div className={styles.card}>
               <h4 className={styles.cardTitle}>Write to the blockchain</h4>
-              <fieldset className={styles.fieldset}>
-                <div className={styles.buttonWrapper}>
-                  <button onClick={handleConnect} className={styles.button}>
-                    Connect Wallet
-                  </button>
-                  <label htmlFor="account" className={styles.fieldLabel}>
-                    My Account
-                  </label>{' '}
-                </div>
-                <textarea
-                  id="account"
-                  value={account}
-                  placeholder="Your k:account will be displayed here"
-                  className={`${styles.input} ${styles.codeFont}`}
-                  readOnly
-                ></textarea>
-              </fieldset>
               <fieldset className={styles.fieldset}>
                 <label htmlFor="write-message" className={styles.fieldLabel}>
                   Write Message
