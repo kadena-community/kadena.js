@@ -8,6 +8,7 @@ import { Pact } from '@kadena/client';
 export interface ITransferToken {
   to: string;
   amount: string;
+  isFrozen?: boolean;
 }
 
 export interface IBatchTransferTokensProps {

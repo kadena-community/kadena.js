@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks/account';
 import { useBatchTransferTokens } from '@/hooks/batchTransferTokens';
 import type {
   IBatchTransferTokensProps,
@@ -18,6 +19,8 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DragNDropCSV } from '../DragNDropCSV/DragNDropCSV';
+import { FormatAccount } from '../TableFormatters/FormatAccount';
+import { FormatCheckboxForFrozen } from './FormatCheckboxForFrozen';
 
 interface IProps {
   onClose?: () => void;
@@ -29,6 +32,7 @@ export interface IRegisterIdentityBatchProps {
 }
 
 export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
+  const { account } = useAccount();
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<ITransferToken[]>([]);
   const { submit } = useBatchTransferTokens();
@@ -66,6 +70,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
   };
 
   const handleResult = (data: ITransferToken[]) => {
+    if (!account) return;
     setData(data);
   };
 
@@ -86,7 +91,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
     <>
       {isOpen && (
         <Dialog isOpen={isOpen} onOpenChange={() => setIsOpen(false)}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
             <DialogHeader>Batch Transfer</DialogHeader>
             <DialogContent>
               <Stack flexDirection="column" width="100%" gap="sm">
@@ -113,7 +118,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                           key: 'to',
                           label: '',
                           width: '20%',
-                          render: CompactTableFormatters.FormatCheckbox({
+                          render: FormatCheckboxForFrozen({
                             name: 'select',
                           }),
                         },
@@ -121,7 +126,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                           key: 'to',
                           label: 'To',
                           width: '40%',
-                          render: CompactTableFormatters.FormatAccount(),
+                          render: FormatAccount(),
                         },
                         {
                           key: 'amount',
