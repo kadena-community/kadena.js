@@ -20,9 +20,11 @@ export const FormatAgentRoles = () => {
       return getAllAgentRoles().indexOf(value) >= 0 ? <MonoCheck /> : null;
     };
 
+    const roles = allRoles.filter((role) => role !== AGENTROLES.OWNER);
+
     return (
       <ul>
-        {allRoles.map((value) => {
+        {roles.map((value) => {
           return (
             <Stack as="li" key={value}>
               {value} {renderValue(value)}
