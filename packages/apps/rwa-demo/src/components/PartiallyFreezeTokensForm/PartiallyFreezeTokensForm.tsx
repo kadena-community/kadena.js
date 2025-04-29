@@ -98,7 +98,6 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
     return message;
   };
 
-  console.log({ errors });
   return (
     <>
       {isRightAsideExpanded && isOpen && (
