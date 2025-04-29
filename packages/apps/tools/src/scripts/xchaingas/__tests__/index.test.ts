@@ -75,7 +75,7 @@ describe('xchaingas Utils', () => {
                 chainAccounts: [
                   {
                     chainId: '0',
-                    balance: '0.9',
+                    balance: '0.8',
                   },
                 ],
               },
