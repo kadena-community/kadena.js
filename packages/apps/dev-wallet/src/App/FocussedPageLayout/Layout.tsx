@@ -1,6 +1,6 @@
 import { PreviewBanner } from '@/Components/PreviewBanner/PreviewBanner';
 import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons/system';
-import { Button, Stack, Themes, useTheme } from '@kadena/kode-ui';
+import { Button, Themes, useTheme } from '@kadena/kode-ui';
 import {
   FocussedLayout,
   FocussedLayoutFooter,
@@ -10,9 +10,6 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { FC, PropsWithChildren } from 'react';
 import { Outlet } from 'react-router-dom';
-import { focussedLayoutChildrenWrapperClass } from './../layout.css';
-import { CardLayoutProvider } from './components/CardLayoutProvider';
-import { InnerContent } from './components/InnerContent';
 
 export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
   const { theme, setTheme } = useTheme();
