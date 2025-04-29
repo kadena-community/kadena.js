@@ -5,7 +5,7 @@ export const tokenId = process.env.SLACK_TOKEN;
 export const faucetAccount = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
 export const xchainGasStationAccount = 'kadena-xchain-gas';
 export const MINBALANCE = 1000;
-export const MINXCHAINGASSTATIONBALANCE = 1;
+export const MINXCHAINGASSTATIONBALANCE = 0.9;
 
 //graph
 export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
