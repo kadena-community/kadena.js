@@ -55,21 +55,12 @@ export const useGetFrozenTokens = ({
   }, [account?.address, investorAccount]);
 
   useEffect(() => {
-    if (subscriptionData?.events?.length) {
-      subscriptionData.events?.map((event) => {
-        const params = JSON.parse(event.parameters ?? '[]');
-        if (params[0] === investorAccount && params.length === 2) {
-          setData(parseInt(params[1]));
-        }
-      });
-    }
-    if (subscriptionUnFreezeData?.events?.length) {
-      subscriptionUnFreezeData.events?.map((event) => {
-        const params = JSON.parse(event.parameters ?? '[]');
-        if (params[0] === investorAccount && params.length === 2) {
-          setData(parseInt(params[1]));
-        }
-      });
+    if (
+      subscriptionData?.events?.length ||
+      subscriptionUnFreezeData?.events?.length
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      init();
     }
   }, [subscriptionData, subscriptionUnFreezeData]);
 
