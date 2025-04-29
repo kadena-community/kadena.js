@@ -19,10 +19,17 @@
         </p>
       </div>
     </section>
+
     <section class="contentWrapper">
       <div class="blockChain">
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
+
+          <div class="buttonWrapper">
+            <button type="button" (click)="connectWallet()" class="button">
+              Connect Wallet
+            </button>
+          </div>
           <fieldset class="fieldset">
             <label for="account" class="fieldLabel">My Account</label>
             <input
