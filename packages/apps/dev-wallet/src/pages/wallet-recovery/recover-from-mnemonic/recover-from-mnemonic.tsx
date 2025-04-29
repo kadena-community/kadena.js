@@ -247,7 +247,7 @@ export function RecoverFromMnemonic() {
                     name="keyDerivation"
                     render={({ field }) => (
                       <Select
-                        label="Select the wallet you wan to import from"
+                        label="Select the wallet you want to import from"
                         defaultSelectedKey={'auto-detect'}
                         onSelectionChange={(value) => field.onChange(value)}
                       >

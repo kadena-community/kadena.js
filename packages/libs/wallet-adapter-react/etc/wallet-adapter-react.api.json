@@ -1,0 +1,558 @@
+{
+  "metadata": {
+    "toolPackage": "@microsoft/api-extractor",
+    "toolVersion": "7.47.0",
+    "schemaVersion": 1011,
+    "oldestForwardsCompatibleVersion": 1001,
+    "tsdocConfig": {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
+      "tagDefinitions": [
+        {
+          "tagName": "@alpha",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@beta",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@defaultValue",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@decorator",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@deprecated",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@eventProperty",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@example",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@experimental",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@inheritDoc",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@internal",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@label",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@link",
+          "syntaxKind": "inline",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@override",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@packageDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@param",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@privateRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@public",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@readonly",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@remarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@returns",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@sealed",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@see",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@throws",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@typeParam",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@virtual",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@betaDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@internalRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@preapproved",
+          "syntaxKind": "modifier"
+        }
+      ],
+      "supportForTags": {
+        "@alpha": true,
+        "@beta": true,
+        "@defaultValue": true,
+        "@decorator": true,
+        "@deprecated": true,
+        "@eventProperty": true,
+        "@example": true,
+        "@experimental": true,
+        "@inheritDoc": true,
+        "@internal": true,
+        "@label": true,
+        "@link": true,
+        "@override": true,
+        "@packageDocumentation": true,
+        "@param": true,
+        "@privateRemarks": true,
+        "@public": true,
+        "@readonly": true,
+        "@remarks": true,
+        "@returns": true,
+        "@sealed": true,
+        "@see": true,
+        "@throws": true,
+        "@typeParam": true,
+        "@virtual": true,
+        "@betaDocumentation": true,
+        "@internalRemarks": true,
+        "@preapproved": true
+      },
+      "reportUnsupportedHtmlElements": false
+    }
+  },
+  "kind": "Package",
+  "canonicalReference": "@kadena/wallet-adapter-react!",
+  "docComment": "",
+  "name": "@kadena/wallet-adapter-react",
+  "preserveMemberOrder": false,
+  "members": [
+    {
+      "kind": "EntryPoint",
+      "canonicalReference": "@kadena/wallet-adapter-react!",
+      "name": "",
+      "preserveMemberOrder": false,
+      "members": [
+        {
+          "kind": "Function",
+          "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletProvider:function(1)",
+          "docComment": "/**\n * KadenaWalletProvider instantiates a WalletAdapterClient with the provided adapters and manages the current adapter name.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare function KadenaWalletProvider({ children, "
+            },
+            {
+              "kind": "Reference",
+              "text": "adapters",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletProviderProps#adapters"
+            },
+            {
+              "kind": "Content",
+              "text": ": inputAdapters, defaultAdapterName, }: "
+            },
+            {
+              "kind": "Reference",
+              "text": "KadenaWalletProviderProps",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletProviderProps:interface"
+            },
+            {
+              "kind": "Content",
+              "text": "): "
+            },
+            {
+              "kind": "Content",
+              "text": "import(\"react/jsx-runtime\")."
+            },
+            {
+              "kind": "Reference",
+              "text": "JSX.Element",
+              "canonicalReference": "@types/react!JSX.Element:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/esm/context.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 5,
+            "endIndex": 7
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [
+            {
+              "parameterName": "{ children, adapters: inputAdapters, defaultAdapterName, }",
+              "parameterTypeTokenRange": {
+                "startIndex": 3,
+                "endIndex": 4
+              },
+              "isOptional": false
+            }
+          ],
+          "name": "KadenaWalletProvider"
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletProviderProps:interface",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface KadenaWalletProviderProps "
+            }
+          ],
+          "fileUrlPath": "dist/esm/context.d.ts",
+          "releaseTag": "Public",
+          "name": "KadenaWalletProviderProps",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletProviderProps#adapters:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "adapters: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "("
+                },
+                {
+                  "kind": "Reference",
+                  "text": "Adapter",
+                  "canonicalReference": "@kadena/wallet-adapter-core!Adapter:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "AdapterFactory",
+                  "canonicalReference": "@kadena/wallet-adapter-core!AdapterFactory:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ")[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "adapters",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 6
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletProviderProps#children:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "children: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "ReactNode",
+                  "canonicalReference": "@types/react!React.ReactNode:type"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "children",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletProviderProps#defaultAdapterName:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "defaultAdapterName?: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "string"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": true,
+              "releaseTag": "Public",
+              "name": "defaultAdapterName",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Interface",
+          "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletState:interface",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export interface KadenaWalletState "
+            }
+          ],
+          "fileUrlPath": "dist/esm/context.d.ts",
+          "releaseTag": "Public",
+          "name": "KadenaWalletState",
+          "preserveMemberOrder": false,
+          "members": [
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletState#accounts:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "accounts: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "AccountInfo",
+                  "canonicalReference": "@kadena/wallet-adapter-core!AccountInfo:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "accounts",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletState#activeAccount:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "activeAccount: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "AccountInfo",
+                  "canonicalReference": "@kadena/wallet-adapter-core!AccountInfo:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "activeAccount",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletState#activeNetwork:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "activeNetwork: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "NetworkInfo",
+                  "canonicalReference": "@kadena/wallet-adapter-core!NetworkInfo:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": " | null"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "activeNetwork",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletState#loading:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "loading: "
+                },
+                {
+                  "kind": "Content",
+                  "text": "boolean"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "loading",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 2
+              }
+            },
+            {
+              "kind": "PropertySignature",
+              "canonicalReference": "@kadena/wallet-adapter-react!KadenaWalletState#networks:member",
+              "docComment": "",
+              "excerptTokens": [
+                {
+                  "kind": "Content",
+                  "text": "networks: "
+                },
+                {
+                  "kind": "Reference",
+                  "text": "NetworkInfo",
+                  "canonicalReference": "@kadena/wallet-adapter-core!NetworkInfo:interface"
+                },
+                {
+                  "kind": "Content",
+                  "text": "[]"
+                },
+                {
+                  "kind": "Content",
+                  "text": ";"
+                }
+              ],
+              "isReadonly": false,
+              "isOptional": false,
+              "releaseTag": "Public",
+              "name": "networks",
+              "propertyTypeTokenRange": {
+                "startIndex": 1,
+                "endIndex": 3
+              }
+            }
+          ],
+          "extendsTokenRanges": []
+        },
+        {
+          "kind": "Function",
+          "canonicalReference": "@kadena/wallet-adapter-react!useKadenaWallet:function(1)",
+          "docComment": "/**\n * Hook to access the Kadena Wallet context.\n *\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "export declare function useKadenaWallet(): "
+            },
+            {
+              "kind": "Reference",
+              "text": "KadenaWalletContextValue",
+              "canonicalReference": "@kadena/wallet-adapter-react!~KadenaWalletContextValue:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ";"
+            }
+          ],
+          "fileUrlPath": "dist/esm/context.d.ts",
+          "returnTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          },
+          "releaseTag": "Public",
+          "overloadIndex": 1,
+          "parameters": [],
+          "name": "useKadenaWallet"
+        }
+      ]
+    }
+  ]
+}

@@ -55,10 +55,6 @@ export class ChainweaverAppIndex extends setupDatabase {
     await expect(newListItems.length).toEqual(listItems.length + 1);
 
     const account = await newListItems[0].getAttribute('data-account');
-    // console.log('str', str);
-    // const account = str.match(/\(([^)]+)\)/);
-
-    console.log(account);
 
     if (!account) {
       await expect(true).toBe(false);
