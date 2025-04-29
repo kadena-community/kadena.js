@@ -38,18 +38,7 @@ export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
             }
           />
         </FocussedLayoutHeaderAside>
-<<<<<<<< HEAD:packages/apps/dev-wallet/src/App/FocussedPageLayout/Layout.tsx
         {children ? children : <Outlet />}
-========
-        <CardLayoutProvider>
-          <Stack className={focussedLayoutChildrenWrapperClass}>
-            <InnerContent>
-              <Outlet />
-              {children}
-            </InnerContent>
-          </Stack>
-        </CardLayoutProvider>
->>>>>>>> release/tools:packages/apps/dev-wallet/src/App/LayoutLandingPage/Layout.tsx
         <FocussedLayoutFooter />
       </FocussedLayout>
     </FocussedLayoutProvider>
