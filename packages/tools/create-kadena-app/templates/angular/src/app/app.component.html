@@ -21,24 +21,38 @@
     </section>
 
     <section class="contentWrapper">
+      <div class="card">
+        <h4 class="cardTitle">Wallet</h4>
+
+        <fieldset class="fieldset">
+          <label for="wallet-select" class="fieldLabel">Select Wallet</label>
+          <select id="wallet-select" v-model="selectedWallet" class="input">
+            <option value="">-- select a wallet --</option>
+            <option value="Ecko">Ecko</option>
+          </select>
+        </fieldset>
+
+        <div class="buttonWrapper">
+          <button (click)="connectWallet()" class="button">
+            Connect Wallet
+          </button>
+        </div>
+
+        <fieldset class="fieldset">
+          <label for="account" class="fieldLabel">Connected Account</label>
+          <textarea
+            id="account"
+            [(ngModel)]="account"
+            readonly
+            class="input codeFont"
+          ></textarea>
+        </fieldset>
+      </div>
+
       <div class="blockChain">
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
 
-          <div class="buttonWrapper">
-            <button type="button" (click)="connectWallet()" class="button">
-              Connect Wallet
-            </button>
-          </div>
-          <fieldset class="fieldset">
-            <label for="account" class="fieldLabel">My Account</label>
-            <input
-              id="account"
-              [(ngModel)]="account"
-              placeholder="Please enter a valid k:account"
-              class="input codeFont"
-            />
-          </fieldset>
           <fieldset class="fieldset">
             <label for="messageToWrite" class="fieldLabel">Write Message</label>
             <textarea
