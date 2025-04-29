@@ -19,6 +19,7 @@ import { ConnectPage } from '@/pages/connect/connect';
 import { Contacts } from '@/pages/contacts/contacts';
 import { CreateAccountPage } from '@/pages/create-account/create-account';
 import { NotFound } from '@/pages/errors/404';
+import { FungiblePage } from '@/pages/fungible/fungible';
 import { KeysPage } from '@/pages/keys/keys-page';
 import { Keyset } from '@/pages/keyset/keyset';
 import { Networks } from '@/pages/networks/networks';
@@ -42,7 +43,6 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { FocussedPageLayout } from './FocussedPageLayout/Layout';
 import { Layout } from './Layout/Layout';
 import { LandingPageLayout } from './LayoutLandingPage/Layout';
 import { useGlobalState } from './providers/globalState';
@@ -98,19 +98,11 @@ export const Routes: FC = () => {
             />
           }
         >
-          <Route element={<FocussedPageLayout />}>
-            <Route path="/transfer" element={<Transfer />} />
-
-            <Route
-              path="/sign-request/:requestId"
-              element={<SignRequestPage />}
-            />
-          </Route>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/sig-builder" element={<SignatureBuilder />} />
             <Route path="/networks" element={<Networks />} />
-
+            <Route path="/connect/:requestId" element={<ConnectPage />} />
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccountPage />} />
             <Route
@@ -119,12 +111,13 @@ export const Routes: FC = () => {
             />
             <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
+            <Route path="/fungible/:contract" element={<FungiblePage />} />
             <Route
               path="/account/:accountId/migrate"
               element={<MigrateAccount />}
             />
             <Route path="/account/:accountId" element={<AccountPage />} />
-
+            <Route path="/transfer" element={<Transfer />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/export-data" element={<ExportData />} />
@@ -143,6 +136,10 @@ export const Routes: FC = () => {
             >
               <Route path="/plugins" element={<Plugins />} />
             </Route>
+            <Route
+              path="/sign-request/:requestId"
+              element={<SignRequestPage />}
+            />
           </Route>
         </Route>
         <Route element={<LandingPageLayout />}>
@@ -161,22 +158,11 @@ export const Routes: FC = () => {
             element={<UnlockProfile origin={origin} />}
           />
           <Route
-            element={
-              <Redirect
-                if={isLocked}
-                to="/select-profile"
-                setOrigin={setOrigin}
-              />
-            }
-          >
-            <Route path="/connect/:requestId" element={<ConnectPage />} />
-            <Route
-              path="/settings/change-password"
-              element={<ChangePassword />}
-            />
-            <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
-          </Route>
+            path="/settings/change-password"
+            element={<ChangePassword />}
+          />
           <Route path="/ready" element={<Ready />} />
+          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

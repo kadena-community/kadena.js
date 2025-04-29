@@ -2,7 +2,6 @@ import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
 import { ICardContentProps } from '@/App/LayoutLandingPage/components/CardLayoutProvider';
 import { BackupMnemonic } from '@/Components/BackupMnemonic/BackupMnemonic';
-import { PasswordField } from '@/Components/PasswordField/PasswordField';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
@@ -24,8 +23,6 @@ import {
   CompactStepper,
   Heading,
   ICompactStepperItemProps,
-  Notification,
-  NotificationHeading,
   Stack,
   Text,
   TextField,
@@ -54,6 +51,7 @@ const rotate = (max: number, start: number = 0) => {
   let index = start;
   return () => {
     index = (index + 1) % max;
+    console.log('index', index);
     return index;
   };
 };
@@ -113,9 +111,6 @@ export function CreateProfile() {
     unlockProfile,
     activeNetwork,
   } = useWallet();
-  const [passwordError, setPasswordError] = useState<string | undefined>(
-    undefined,
-  );
   const [step, setStep] = useState<IStepKeys>('authMethod');
   const [previousStep, setPreviousStep] = useState<IStepKeys>('authMethod');
   const { createHDWallet } = useHDWallet();
@@ -141,8 +136,6 @@ export function CreateProfile() {
 
   const {
     register,
-    trigger,
-    reset,
     handleSubmit,
     getValues,
     setValue,
@@ -155,7 +148,6 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
-    mode: 'onChange',
     defaultValues: {
       password: '',
       confirmation: '',
@@ -166,18 +158,8 @@ export function CreateProfile() {
     },
   });
 
-  // hack to do a form validation after load
-  // This is not supported by react-hook-form
   useEffect(() => {
-    if (!profileList.length) return;
-
-    reset({});
-    setTimeout(() => {
-      trigger();
-    }, 100);
-  }, [reset, trigger, profileList, step]);
-
-  useEffect(() => {
+    console.log('profileList', profileList);
     setValue(
       'profileName',
       profileList.length === 0
@@ -228,13 +210,6 @@ export function CreateProfile() {
           },
       mnemonic,
     );
-
-    setPasswordError(undefined);
-    if (typeof profile === 'string') {
-      setPasswordError(profile);
-      return;
-    }
-
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
     const keySource = await createHDWallet(profile.uuid, 'HD-BIP44', pass);
@@ -349,7 +324,6 @@ export function CreateProfile() {
                   Prefer password
                 </Button>
                 <Button
-                  isDisabled={!isValid}
                   variant="primary"
                   onClick={() => {
                     createWebAuthnCredential();
@@ -365,13 +339,44 @@ export function CreateProfile() {
         {step === 'set-password' && (
           <>
             <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
-              <PasswordField
-                value={getValues('password')}
-                confirmationValue={getValues('confirmation')}
-                isValid={isValid}
-                errors={errors}
-                register={register}
-              />
+              <Stack flexDirection="column" marginBlock="md" gap="sm">
+                <TextField
+                  id="password"
+                  type="password"
+                  label="Password"
+                  autoFocus
+                  defaultValue={getValues('password')}
+                  // react-hook-form uses uncontrolled elements;
+                  // and because we add and remove the fields we need to add key to prevent confusion for react
+                  key="password"
+                  {...register('password', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    minLength: { value: 6, message: 'Minimum 6 symbols' },
+                  })}
+                  isInvalid={!isValid && !!errors.password}
+                  errorMessage={errors.password?.message}
+                />
+                <TextField
+                  id="confirmation"
+                  type="password"
+                  label="Confirm password"
+                  defaultValue={getValues('confirmation')}
+                  key="confirmation"
+                  {...register('confirmation', {
+                    validate: (value) => {
+                      return (
+                        getValues('password') === value ||
+                        'Passwords do not match'
+                      );
+                    },
+                  })}
+                  isInvalid={!isValid && !!errors.confirmation}
+                  errorMessage={errors.confirmation?.message}
+                />
+              </Stack>
             </Stack>
 
             <CardFooterContent>
@@ -388,10 +393,7 @@ export function CreateProfile() {
               </Stack>
               <CardFooterGroup>
                 <Button
-                  onClick={() => {
-                    setPasswordError(undefined);
-                    handleSetStep('profile');
-                  }}
+                  onClick={() => handleSetStep('profile')}
                   isDisabled={!isValid}
                   endVisual={<MonoArrowForward />}
                 >
@@ -421,20 +423,6 @@ export function CreateProfile() {
                       value: true,
                       message: 'This field is required',
                     },
-                    maxLength: {
-                      value: 25,
-                      message: 'The max length is 25 characters',
-                    },
-                    validate: {
-                      required: (value) => {
-                        const existingProfile = profileList.find(
-                          (profile) => profile.name === value,
-                        );
-                        if (existingProfile)
-                          return `The profile name ${value} already exists. Please use another name.`;
-                        return true;
-                      },
-                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
@@ -448,8 +436,8 @@ export function CreateProfile() {
                           value={field.value}
                           onChange={field.onChange}
                           key="profileName"
-                          isInvalid={!!error}
-                          errorMessage={error?.message}
+                          isInvalid={!isValid && !!error}
+                          errorMessage={error && error.message}
                         />
                       </Stack>
                       <Stack flexDirection="column">
@@ -471,20 +459,6 @@ export function CreateProfile() {
                   )}
                 />
               </Stack>
-
-              {passwordError && (
-                <Notification
-                  type="inlineStacked"
-                  role="alert"
-                  intent="negative"
-                >
-                  <NotificationHeading>
-                    Password backend error
-                  </NotificationHeading>
-
-                  {passwordError}
-                </Notification>
-              )}
             </Stack>
 
             <CardFooterContent>
@@ -504,7 +478,7 @@ export function CreateProfile() {
                   onClick={() => {
                     formRef.current?.requestSubmit();
                   }}
-                  isDisabled={!isValid || !!passwordError}
+                  isDisabled={!isValid}
                   endVisual={<MonoArrowForward />}
                 >
                   Next

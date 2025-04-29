@@ -2,7 +2,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IProfile } from '@/modules/wallet/wallet.repository';
 import { getWebAuthnPass } from '@/modules/wallet/wallet.service';
 import InitialsAvatar from '@/pages/select-profile/initials';
-import { showIcon } from '@/utils/showIcon';
+import { MonoFingerprint, MonoKey } from '@kadena/kode-icons/system';
 import { Stack, Text } from '@kadena/kode-ui';
 import { FC } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -11,6 +11,17 @@ import { iconWrapperClass, profileItemClass } from './styles.css';
 interface IProps {
   profile: Pick<IProfile, 'options' | 'name' | 'uuid' | 'accentColor'>;
 }
+
+const showIcon = (type: IProfile['options']['authMode']) => {
+  switch (type) {
+    case 'PASSWORD':
+      return <MonoKey />;
+    case 'WEB_AUTHN':
+      return <MonoFingerprint />;
+  }
+
+  return '';
+};
 
 const InnerItem: FC<IProps> = ({ profile }) => {
   return (

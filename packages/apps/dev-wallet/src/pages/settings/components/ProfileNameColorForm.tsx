@@ -11,7 +11,7 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface ProfileForm {
@@ -23,8 +23,6 @@ export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
   const { profile, profileList } = useWallet();
   const {
     register,
-    reset,
-    trigger,
     handleSubmit,
     control,
     formState: { isValid, errors },
@@ -38,16 +36,6 @@ export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
 
   const { setIsRightAsideExpanded } = useSideBarLayout();
   const [error, setError] = useState<string | null>(null);
-
-  // hack to do a form validation after load
-  // This is not supported by react-hook-form
-  useEffect(() => {
-    console.log('profileList', profileList);
-    reset();
-    setTimeout(() => {
-      trigger();
-    }, 100);
-  }, [reset, trigger, profileList]);
 
   async function onSubmit(data: ProfileForm) {
     const { name, color } = data;
@@ -74,18 +62,11 @@ export function ProfileNameColorForm({ isOpen }: { isOpen: boolean }) {
               isInvalid={!!errors['name']}
               errorMessage={errors['name']?.message}
               {...register('name', {
-                required: {
-                  value: true,
-                  message: 'This field is required',
-                },
-                maxLength: {
-                  value: 25,
-                  message: 'The max length is 25 characters',
-                },
+                required: true,
                 validate: {
                   required: (value) => {
                     const existingProfile = profileList.find(
-                      (p) => p.name === value && p.name !== profile?.name,
+                      (p) => p.name === value && profile?.name !== value,
                     );
                     if (existingProfile)
                       return `The profile name ${value} already exists. Please use another name.`;

@@ -1,7 +1,17 @@
+import {
+  MonoLightMode,
+  MonoSwapHoriz,
+  MonoWallet,
+  MonoWorkspaces,
+} from '@kadena/kode-icons/system';
+
+import { NetworkSelector } from '@/Components/NetworkSelector/NetworkSelector';
 import { PreviewBanner } from '@/Components/PreviewBanner/PreviewBanner';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { Badge, Stack } from '@kadena/kode-ui';
+import { Badge, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
+  SideBarFooter,
+  SideBarFooterItem,
   SideBarLayout,
   SideBarTopBanner,
   useSideBarLayout,
@@ -20,6 +30,7 @@ import {
 } from './style.css';
 
 export const Layout: FC = () => {
+  const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = usePatchedNavigate();
   const { isExpanded } = useSideBarLayout();
@@ -33,6 +44,11 @@ export const Layout: FC = () => {
     }),
     [location],
   );
+
+  const toggleTheme = (): void => {
+    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
+    setTheme(newTheme);
+  };
 
   const network = activeNetwork?.name || activeNetwork?.networkId;
 
@@ -60,6 +76,35 @@ export const Layout: FC = () => {
           </Stack>
         }
         sidebar={<SideBar />}
+        footer={
+          <SideBarFooter>
+            <SideBarFooterItem
+              href="/"
+              component={Link}
+              visual={<MonoWallet />}
+              label="Your Assets"
+            />
+
+            <SideBarFooterItem
+              href="/transfer"
+              component={Link}
+              visual={<MonoSwapHoriz />}
+              label="transfer"
+            />
+
+            <SideBarFooterItem
+              visual={<MonoWorkspaces />}
+              label="Select network"
+            >
+              <NetworkSelector variant="transparent" showLabel={false} />
+            </SideBarFooterItem>
+            <SideBarFooterItem
+              visual={<MonoLightMode />}
+              label="Change theme"
+              onPress={toggleTheme}
+            />
+          </SideBarFooter>
+        }
       >
         <Stack
           flexDirection={'column'}
@@ -72,7 +117,7 @@ export const Layout: FC = () => {
           <Outlet />
         </Stack>
       </SideBarLayout>
-      <div id="plugins-container" />
+
       <div id="modalportal"></div>
     </>
   );

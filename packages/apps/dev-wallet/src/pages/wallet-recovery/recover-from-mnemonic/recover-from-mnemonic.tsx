@@ -13,13 +13,10 @@ import {
 
 import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
-import { PasswordField } from '@/Components/PasswordField/PasswordField';
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { MonoKey, MonoPassword } from '@kadena/kode-icons/system';
 import {
   Button,
-  Notification,
-  NotificationHeading,
   Select,
   SelectItem,
   Stack,
@@ -52,9 +49,6 @@ export function RecoverFromMnemonic() {
   const [step, setStep] = useState<'import' | 'set-password'>('import');
   const [bip44key, setBip44Key] = useState<string | null>(null);
   const [legacyKey, setLegacyKey] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | undefined>(
-    undefined,
-  );
   const { profileList } = useWallet();
   const {
     register,
@@ -141,13 +135,6 @@ export function RecoverFromMnemonic() {
           },
       mnemonic,
     );
-
-    setPasswordError(undefined);
-    if (typeof profile === 'string') {
-      setPasswordError(profile);
-      return;
-    }
-
     if (method === 'auto-detect') {
       await createHDWallet(profile.uuid, 'HD-chainweaver', pass);
       await createHDWallet(profile.uuid, 'HD-BIP44', pass);
@@ -247,7 +234,7 @@ export function RecoverFromMnemonic() {
                     name="keyDerivation"
                     render={({ field }) => (
                       <Select
-                        label="Select the wallet you want to import from"
+                        label="Select the wallet you wan to import from"
                         defaultSelectedKey={'auto-detect'}
                         onSelectionChange={(value) => field.onChange(value)}
                       >
@@ -391,27 +378,42 @@ export function RecoverFromMnemonic() {
 
             <Stack flexDirection={'column'} gap={'lg'}>
               <Stack flexDirection="column" marginBlock="md" gap="sm">
-                <PasswordField
-                  value={getValues('password')}
-                  confirmationValue={getValues('confirmation')}
-                  isValid={isValid}
-                  errors={errors}
-                  register={register}
+                <TextField
+                  id="password"
+                  type="password"
+                  label="Password"
+                  defaultValue={getValues('password')}
+                  // react-hook-form uses uncontrolled elements;
+                  // and because we add and remove the fields we need to add key to prevent confusion for react
+                  key="password"
+                  {...register('password', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    minLength: { value: 6, message: 'Minimum 6 symbols' },
+                  })}
+                  isInvalid={!isValid && !!errors.password}
+                  errorMessage={errors.password?.message}
+                />
+                <TextField
+                  id="confirmation"
+                  type="password"
+                  label="Confirm password"
+                  defaultValue={getValues('confirmation')}
+                  key="confirmation"
+                  {...register('confirmation', {
+                    validate: (value) => {
+                      return (
+                        getValues('password') === value ||
+                        'Passwords do not match'
+                      );
+                    },
+                  })}
+                  isInvalid={!isValid && !!errors.confirmation}
+                  errorMessage={errors.confirmation?.message}
                 />
               </Stack>
-              {passwordError && (
-                <Notification
-                  type="inlineStacked"
-                  role="alert"
-                  intent="negative"
-                >
-                  <NotificationHeading>
-                    Password backend error
-                  </NotificationHeading>
-
-                  {passwordError}
-                </Notification>
-              )}
             </Stack>
 
             <CardFooterContent>

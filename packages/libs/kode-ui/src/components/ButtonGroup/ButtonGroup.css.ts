@@ -41,17 +41,16 @@ globalStyle(
 );
 
 globalStyle(
-  `${buttonGroupClass} ${buttonWrapperClass}:not(:last-child) button, ${buttonGroupClass} ${buttonWrapperClass}:not(:last-child) a`,
+  `${buttonGroupClass} ${buttonWrapperClass}:not(:last-child) button, ${buttonGroupClass}:not(:last-child) a`,
   {
     borderInlineEndWidth: '0',
   },
 );
 
-//fullwidth
 globalStyle(
-  `${buttonGroupClass}[data-fullwidth="true"] > span:not(:has(button[data-icononly="true"])):not(:has(a[data-icononly="true"])), ${buttonGroupClass}[data-fullwidth="true"] button:not([data-icononly="true"]),${buttonGroupClass}[data-fullwidth="true"] a:not([data-icononly="true"])`,
+  `${buttonGroupClass}[data-variant="outlined"] ${buttonWrapperClass}:not(:first-child) a:not(:has(button)), ${buttonGroupClass}[data-variant="outlined"] ${buttonWrapperClass}:not(:first-child) button`,
   {
-    flex: 1,
-    width: '100%',
+    borderInlineStartWidth: '0px',
+    borderStyle: 'solid',
   },
 );
