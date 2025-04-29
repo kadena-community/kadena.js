@@ -33,7 +33,8 @@ export const TXTYPES: Record<
   | 'CREATECONTRACT'
   | 'FREEZEINVESTOR'
   | 'DISTRIBUTETOKENS'
-  | 'PARTIALLYFREEZETOKENS'
+  | 'TOKENSFROZEN'
+  | 'TOKENSUNFROZEN'
   | 'TRANSFERTOKENS'
   | 'FAUCET'
   | 'PAUSECONTRACT',
@@ -49,7 +50,8 @@ export const TXTYPES: Record<
   FREEZEINVESTOR: { name: 'FREEZEINVESTOR', overall: true },
   CREATECONTRACT: { name: 'CREATECONTRACT', overall: true },
   DISTRIBUTETOKENS: { name: 'DISTRIBUTETOKENS', overall: true },
-  PARTIALLYFREEZETOKENS: { name: 'PARTIALLYFREEZETOKENS', overall: true },
+  TOKENSFROZEN: { name: 'TOKENSFROZEN', overall: true },
+  TOKENSUNFROZEN: { name: 'TOKENSUNFROZEN', overall: true },
   TRANSFERTOKENS: { name: 'TRANSFERTOKENS', overall: true },
   FAUCET: { name: 'FAUCET', overall: false },
 } as const;

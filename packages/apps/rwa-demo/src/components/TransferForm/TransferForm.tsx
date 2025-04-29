@@ -97,7 +97,6 @@ export const TransferForm: FC<IProps> = ({
   const filteredInvestors = investors.filter(
     (i) => i.accountName !== investorAccount,
   );
-  console.log({ filteredInvestors });
 
   const handleAccountChange = (cb: any) => async (value: any) => {
     setSelectedAccountIsFrozen(undefined);

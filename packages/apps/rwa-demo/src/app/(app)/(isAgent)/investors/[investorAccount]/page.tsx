@@ -98,7 +98,7 @@ const InvestorPage = () => {
                     <AssetAction
                       icon={
                         <TransactionTypeSpinner
-                          type={TXTYPES.PARTIALLYFREEZETOKENS}
+                          type={[TXTYPES.TOKENSFROZEN, TXTYPES.TOKENSUNFROZEN]}
                           account={investorAccount}
                           fallbackIcon={<MonoAdd />}
                         />

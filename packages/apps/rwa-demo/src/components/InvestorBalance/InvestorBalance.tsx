@@ -29,7 +29,8 @@ export const InvestorBalance: FC<IProps> = ({
         <TransactionTypeSpinner
           type={[
             TXTYPES.DISTRIBUTETOKENS,
-            TXTYPES.PARTIALLYFREEZETOKENS,
+            TXTYPES.TOKENSFROZEN,
+            TXTYPES.TOKENSUNFROZEN,
             TXTYPES.TRANSFERTOKENS,
           ]}
           account={investorAccount}
@@ -47,7 +48,8 @@ export const InvestorBalance: FC<IProps> = ({
       <TransactionTypeSpinner
         type={[
           TXTYPES.DISTRIBUTETOKENS,
-          TXTYPES.PARTIALLYFREEZETOKENS,
+          TXTYPES.TOKENSFROZEN,
+          TXTYPES.TOKENSUNFROZEN,
           TXTYPES.TRANSFERTOKENS,
         ]}
         account={investorAccount}

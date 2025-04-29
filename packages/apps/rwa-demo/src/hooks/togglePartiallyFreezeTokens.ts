@@ -36,7 +36,7 @@ export const useTogglePartiallyFreezeTokens = ({
 
       return addTransaction({
         ...res,
-        type: TXTYPES.PARTIALLYFREEZETOKENS,
+        type: data.freeze ? TXTYPES.TOKENSFROZEN : TXTYPES.TOKENSUNFROZEN,
         accounts: [data.investorAccount],
       });
     } catch (e: any) {
