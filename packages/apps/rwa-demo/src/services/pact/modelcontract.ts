@@ -7,10 +7,10 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 (namespace "${namespace}")
 
 (module ${contractName} GOV
-  "\`${contractName}\` an example real-world asset (RWA) token, which extends fungible-v2        \
-  \ and provides mint, burn, forced-transfer, freezing of entire contract or investors.  \
-  \ The example also implements agent-role, and identity registry features, but does not \
-  \ implement the identity verification. "
+  "\`${contractName}\` an example real-world asset (RWA) token, which extends fungible-v2        \\
+  \\ and provides mint, burn, forced-transfer, freezing of entire contract or investors.  \\
+  \\ The example also implements agent-role, and identity registry features, but does not \\
+  \\ implement the identity verification. "
 
   (defconst GOV-KEYSET:string "${namespace}.admin-keyset")
 
@@ -105,11 +105,11 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defcap DEBIT (sender:string)
     @doc "Capability for managing debiting operations"
-    (enforce (!= sender EMPTY-ACCOUNT) "ACC-PRT-003"))
+    (enforce (!= sender EMPTY-ACCOUNT) "ACC-PRT-002"))
 
   (defcap CREDIT (receiver:string)
     @doc "Capability for managing crediting operations"
-    (enforce (!= receiver EMPTY-ACCOUNT) "ACC-PRT-003"))
+    (enforce (!= receiver EMPTY-ACCOUNT) "ACC-PRT-002"))
 
   (defun TRANSFER-mgr:decimal
     ( managed:decimal
@@ -130,7 +130,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
     @doc "Transfers tokens between two accounts. The transfer is valid if any   \\ 
     \\ of the following conditions apply:                                        \\ 
-    \\ 1. The sender signs the \`TRANSFER\` capability.                            \\ 
+    \\ 1. A valid sender signs the \`TRANSFER\` capability.                            \\ 
     \\ 2. An agent with the \`transfer-manager\` role signs the \`mint\` function    \\ 
     \\    with the \`ONLY-AGENT\` capability.                                      \\
     \\ 3. An agent with the \`transfer-manager\` role signs the \`burn\` function    \\ 
@@ -142,7 +142,14 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (enforce (> amount ZERO-DECIMAL) "TRF-AMT-002")
     (enforce (!= sender receiver) "TRF-ACC-001")
     (enforce-one "TRF-CAP-001" [
-      (enforce-guard (at 'guard (read investors sender)))
+      (do 
+        (with-read investors sender {
+          "guard":= g
+          }
+          (enforce-principal sender g)
+          (enforce-guard g) 
+        )
+      )
       (enforce (try false (require-capability (MINT))) "TRF-MINT-001")
       (enforce (try false (require-capability (BURN))) "TRF-BURN-001")
       (enforce (try false (require-capability (FORCED-TRANSFER))) "TRF-FRC-001")
@@ -315,7 +322,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
             "decimals":decimals,
             "paused": paused,
             "supply": ZERO-DECIMAL
-          })
+        })
         (insert agents OWNER {
           "roles": [OWNER],
           "guard": owner-guard,
@@ -506,7 +513,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       "compliance":= compliance-l:[module{${env.RWADEFAULT_NAMESPACE}.compliance-v1}]
       }
       (map (lambda (compliance:module{${env.RWADEFAULT_NAMESPACE}.compliance-v1})
-        (compliance::can-transfer TOKEN-ID EMPTY-ACCOUNT to amount)
+        (compliance::can-mint TOKEN-ID to amount)
         ) compliance-l
       )
       (with-capability (TRANSFER EMPTY-ACCOUNT to amount)
@@ -540,7 +547,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
       "compliance":=compliance-l
       }
       (map (lambda (compliance:module{${env.RWADEFAULT_NAMESPACE}.compliance-v1})
-        (compliance::can-transfer TOKEN-ID investor-address EMPTY-ACCOUNT amount)
+        (compliance::can-burn TOKEN-ID investor-address amount)
         ) compliance-l
       )
       (with-capability (TRANSFER investor-address EMPTY-ACCOUNT amount)
@@ -714,7 +721,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun delete-identity-internal:bool (investor-address:string)
     @doc "Deletes an identity contract corresponding to an investor address.                         \\
-    \\ Requires that the wallet does not have balance above 0.0                                       \\
+    \\ Requires that the wallet does not have balance above 0.0                                        \\
     \\ Only a wallet set as agent of the smart contract can call this function.                        \\
     \\ Emits an \`IDENTITY-REMOVED\` event."
     (require-capability (INTERNAL))
@@ -981,7 +988,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     @doc "Create ACCOUNT with 0.0 balance. Only principal accounts are accepted."
     (require-capability (INTERNAL))
     (enforce-contains-identity account)
-    (enforce-reserved account guard)
+    (enforce-principal account guard)
     (insert investors account {
       "account": account,
       "balance" : ZERO-DECIMAL,
@@ -992,25 +999,10 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     )
   )
 
-  (defun enforce-reserved:bool (account:string guard:guard)
+  (defun enforce-principal:bool (account:string guard:guard)
     @doc "Enforce reserved account name protocols."
-    (if (validate-principal guard account)
-      true
-      (let ((r (check-reserved account)))
-        (if (= r "")
-          true
-          (if (= r "k")
-            (enforce false "PRT-ACC-001")
-            (enforce false
-              (format "PRT-ACC-002: {}" [r]))
-            )))))
-
-  (defun check-reserved:string (account:string)
-    " Checks ACCOUNT for reserved name and returns type if \\
-    \\ found or empty string. Reserved names start with a \\
-    \\ single char and colon, e.g. 'c:foo', which would return 'c' as type."
-    (let ((pfx (take 2 account)))
-      (if (= ":" (take -1 pfx)) (take 1 pfx) "")))
+    (enforce (validate-principal guard account) "ACC-PRT-001")
+  )
 
   (defun transfer-ownership:bool (new-owner-guard:guard)
     @doc "Transfers ownership of the contract to a new owner-guard. Note: GOV-KEYSET also has to be modified."
@@ -1176,7 +1168,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
         (enforce (>= new-supply-limit current-supply) 
           "CMPL-SL-003")
         (enforce (>= new-max-investors current-investor-count) 
-          "CMPL-MI-003")
+          "CMPL-MI-004")
       )
     )
   )
@@ -1227,7 +1219,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
     (with-read compliance-parameters DEFAULT-ROW {
       "investor-count":= ct
       }
-      (enforce (>= (- ct 1) 0) "CMPL-MI-004")
+      (enforce (>= (- ct 1) 0) "CMPL-MI-005")
       (update compliance-parameters DEFAULT-ROW {
         "investor-count": (- ct 1)
       })
@@ -1340,7 +1332,7 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
   (defun add-agent:bool (agent:string guard:guard)
     @doc "Add a new agent. Re-activate an agent if already exists"
     (only-agent OWNER)
-    (enforce-reserved agent guard)
+    (enforce-principal agent guard)
     (let ((roles:[string] (sort (read-msg "roles"))))
       (verify-agent-roles roles)
       (with-default-read agents agent {
@@ -1440,7 +1432,6 @@ export const getContract = ({ contractName, namespace }: IAddContractProps) => `
 
   (defun investor-country:integer (investor-address:string)
     (enforce false "GEN-IMPL-001")
-    1
   )
 
   (defun issuers-registry:string ()
