@@ -19,7 +19,7 @@ export const GraphOnlineBanner: FC = () => {
 
   if (!error) return;
   return (
-    <Notification role="status" intent="warning">
+    <Notification role="status" intent="warning" type="inlineStacked">
       The Graphql backend is down
     </Notification>
   );

@@ -14,13 +14,13 @@ export const interpretMessage = (str: string, data?: ITransaction): string => {
   if (str?.includes('IDR-002')) {
     return `User must have a zero balance before identity removal.`;
   }
-  if (str?.includes('ACC-PRT-001')) {
-    return `Single-key account protocol violation.`;
+  if (str?.includes('IDR-REC-001')) {
+    return `User with balance of 0.0 cannot be recovered.`;
   }
-  if (str?.includes('ACC-PRT-002')) {
+  if (str?.includes('ACC-PRT-001')) {
     return `Reserved protocol guard violation.`;
   }
-  if (str?.includes('ACC-PRT-003')) {
+  if (str?.includes('ACC-PRT-002')) {
     return `Invalid sender or receiver.`;
   }
   if (str?.includes('ACC-FRZ-001')) {
@@ -48,7 +48,7 @@ export const interpretMessage = (str: string, data?: ITransaction): string => {
     return `Frozen amount exceeds available balance.`;
   }
   if (str?.includes('FRZ-AMT-003')) {
-    return `Amount to freeze must be positive.`;
+    return `Amount to freeze or unfreeze must be positive.`;
   }
   if (str?.includes('FRZ-AMT-004')) {
     return `Amount to unfreeze must be positive.`;
@@ -66,13 +66,52 @@ export const interpretMessage = (str: string, data?: ITransaction): string => {
     return `Agent cannot be added if the agent is already active.`;
   }
   if (str?.includes('ROL-STS-002')) {
-    return `Agent is not removed.`;
-  }
-  if (str?.includes('ROL-STS-003')) {
-    return `Agent does not contain the role.`;
+    return `Agent is not active.`;
   }
   if (str?.includes('GEN-IMPL-001')) {
     return `Function exists to implement interface, but is not being used.`;
+  }
+  if (str?.includes('GEN-IMPL-002')) {
+    return `Attempted to update value same as the current one.`;
+  }
+  if (str?.includes('CMPL-MBPI-001')) {
+    return `Max-investor-per-balance is invalid.`;
+  }
+  if (str?.includes('CMPL-MBPI-002')) {
+    return `Account balance exceeds max balance per investor after transfer.`;
+  }
+  if (str?.includes('CMPL-MBPI-003')) {
+    return `Account balance exceeds max balance per investor.`;
+  }
+  if (str?.includes('CMPL-MI-001')) {
+    return `Max investors is invalid.`;
+  }
+  if (str?.includes('CMPL-MI-002')) {
+    return `Investor count exceeds max investor after transfer.`;
+  }
+  if (str?.includes('CMPL-MI-003')) {
+    return `Investor count exceeds max investor after mint.`;
+  }
+  if (str?.includes('CMPL-MI-004')) {
+    return `Max investor set below current investor count.`;
+  }
+  if (str?.includes('CMPL-MI-005')) {
+    return `Investor count cannot be below 0.`;
+  }
+  if (str?.includes('CMPL-SL-001')) {
+    return `Supply limit parameter is invalid.`;
+  }
+  if (str?.includes('CMPL-SL-002')) {
+    return `Supply exceeds supply-limit after mint.`;
+  }
+  if (str?.includes('CMPL-SL-003')) {
+    return `Supply limit set below current supply limit.`;
+  }
+  if (str?.includes('CMPL-DUP-001')) {
+    return `Compliance list contains duplicates.`;
+  }
+  if (str?.includes('BATCH-ARR-001')) {
+    return `Input arrays have mismatching lengths.`;
   }
 
   // misc
