@@ -1,4 +1,3 @@
-import { ChainId } from '@kadena/types';
 import type { IChainAccount } from '../constants';
 
 export const lowBalanceChains = (
