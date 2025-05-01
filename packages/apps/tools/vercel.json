@@ -18,5 +18,9 @@
       "path": "/api/xchaingas",
       "schedule": "15 5,17 * * *"
     }
+    {
+      "path": "/api/galxe",
+      "schedule": "15 6,18 * * *"
+    }
   ]
 }

@@ -1,25 +1,27 @@
 import { fetchAccount } from '@/utils/fetchAccount';
+import { getMainNet } from '@/utils/network';
 import { lowBalanceChains } from '../utils/lowBalanceChains';
 import type { INETWORK } from './../constants';
-import {
-  MINXCHAINGASSTATIONBALANCE,
-  NETWORKS,
-  xchainGasStationAccount,
-} from './../constants';
+import { GalxeAccount, MINXGALXEBALANCE } from './../constants';
 import { sendErrorMessage, sendMessage } from './messages';
 
 const checkMessages = async (network: INETWORK) => {
-  const accountResult = await fetchAccount(network, xchainGasStationAccount);
+  const accountResult = await fetchAccount(network, GalxeAccount);
 
   if (accountResult?.errors?.length) {
     await sendErrorMessage(network);
     return;
   }
 
-  const lowBalanceChainsResult = lowBalanceChains(
-    accountResult.data?.fungibleAccount.chainAccounts,
-    MINXCHAINGASSTATIONBALANCE,
+  const chain6 = accountResult.data?.fungibleAccount.chainAccounts.find(
+    (chain) => chain.chainId === '6',
   );
+
+  if (!chain6) {
+    return;
+  }
+
+  const lowBalanceChainsResult = lowBalanceChains([chain6], MINXGALXEBALANCE);
 
   if (!lowBalanceChainsResult.length) {
     return;
@@ -29,7 +31,8 @@ const checkMessages = async (network: INETWORK) => {
 };
 
 export const runJob = async () => {
-  const promises = NETWORKS.map((network) => checkMessages(network));
+  const mainnet = getMainNet();
+  if (!mainnet) return;
 
-  await Promise.allSettled(promises);
+  await checkMessages(mainnet);
 };
