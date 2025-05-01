@@ -14,6 +14,7 @@
     "@kadena/kode-ui": "workspace:*",
     "@kadena/wallet-adapter-core": "workspace:*",
     "@kadena/wallet-adapter-ecko": "workspace:*",
+    "@kadena/wallet-adapter-chainweaver-legacy": "workspace:*",
     "@kadena/wallet-adapter-react": "workspace:*",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/vite-plugin": "4.0.17",
