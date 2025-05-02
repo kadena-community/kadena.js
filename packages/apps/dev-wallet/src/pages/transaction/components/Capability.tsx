@@ -34,7 +34,7 @@ export const Capability: FC<IProps> = ({
       <Stack gap="sm" alignItems="center">
         <Stack flex={1} gap="sm" alignItems="center">
           <MonoSecurity width={16} height={16} />
-          <Heading as="h5">Capbility {idx}</Heading>
+          <Heading as="h5">Capability {idx}</Heading>
         </Stack>
         <CopyButton data={data} />
       </Stack>
