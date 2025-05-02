@@ -18,6 +18,7 @@ import {
   Notification,
   NotificationHeading,
   Stack,
+  Text,
 } from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
@@ -81,10 +82,11 @@ const ExistingAccountFaucetPage: FC = () => {
 
         <Notification intent="warning" role="status" type="inlineStacked">
           <NotificationHeading>
-            {t('The EVM Faucet is only working while running a hardhat')}
+            {t('The EVM Faucet is running on DEVNET')}
           </NotificationHeading>
-          <div>{t('On other networks this is not yet available')}</div>
-          <div>faucetBalance: {faucetBalance}</div>
+          <Text variant="code">
+            faucetBalance: {faucetBalance} <Text color="emphasize">KDA</Text>
+          </Text>
         </Notification>
 
         <FormStatusNotification

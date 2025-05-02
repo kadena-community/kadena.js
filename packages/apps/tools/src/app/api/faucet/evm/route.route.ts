@@ -1,9 +1,14 @@
 import faucetABI from '@/contracts/faucet-abi.json';
-import { formatErrorMessage, getChainwebEVMChain } from '@/utils/evm';
+import {
+  createServerUrl,
+  formatErrorMessage,
+  getChainwebEVMChain,
+  getPublicClient,
+} from '@/utils/evm';
 import type { ChainId } from '@kadena/types';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { createPublicClient, createWalletClient, http } from 'viem';
+import { createWalletClient, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { checkRecaptcha } from './utils/captcha';
 
@@ -15,6 +20,8 @@ const RPC_URL = process.env.NEXT_PUBLIC_EVMRPC_URL;
 // Create the faucet account from private key
 
 export async function POST(request: NextRequest) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
   const body = (await request.json()) as unknown as {
     recipient: string;
     chainId: ChainId;
@@ -39,27 +46,24 @@ export async function POST(request: NextRequest) {
   }
 
   // Create chain instance
-  const chainwebEVMChain = getChainwebEVMChain(body.chainId);
-
-  // Create the public client for reading from the blockchain
-  const publicClient = createPublicClient({
-    chain: chainwebEVMChain,
-    transport: http(RPC_URL + body.chainId),
-  });
-
+  const chainwebEVMChain = getChainwebEVMChain(body.chainId, true);
   const account = privateKeyToAccount(PRIVATE_KEY);
 
   // Create the wallet client for writing to the blockchain
   const walletClient = createWalletClient({
     account,
     chain: chainwebEVMChain,
-    transport: http(RPC_URL + body.chainId),
+    transport: http(createServerUrl(body.chainId, true)),
   });
 
   // First simulate the transaction to check for errors
   try {
-    const { request: evmRequest } = await publicClient.simulateContract({
-      address: EVMFAUCET_CONTRACT_ADDRESS as `0x${string}`,
+    const { request: evmRequest } = await getPublicClient(
+      body.chainId,
+      true,
+    ).simulateContract({
+      address: process.env
+        .NEXT_PUBLIC_EVMFAUCET_CONTRACT_ADDRESS as `0x${string}`,
       abi: faucetABI,
       functionName: 'dispenseNativeToken',
       args: [body.recipient],
@@ -68,7 +72,6 @@ export async function POST(request: NextRequest) {
 
     console.log('Simulation successful, sending transaction...');
 
-    console.log({ evmRequest });
     // If simulation succeeds, send the actual transaction
     const result = await walletClient.writeContract(evmRequest);
     console.log('Transaction hash:', result);
@@ -77,6 +80,7 @@ export async function POST(request: NextRequest) {
       status: 200,
     });
   } catch (err) {
+    console.log({ err });
     return NextResponse.json(
       { error: formatErrorMessage(err) },
       {

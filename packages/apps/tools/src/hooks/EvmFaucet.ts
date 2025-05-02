@@ -1,20 +1,13 @@
 import type { FormStatus } from '@/components/Global';
 import faucetABI from '@/contracts/faucet-abi.json';
 import { env } from '@/utils/env';
-import { getChainwebEVMChain } from '@/utils/evm';
+import { getPublicClient } from '@/utils/evm';
 import type { ChainId } from '@kadena/types';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useEffect, useState } from 'react';
-import { createPublicClient, formatEther, http } from 'viem';
+import { formatEther } from 'viem';
 
 const TXHASH_LOCALSTORAGEKEY = 'TXHASH_LOCALSTORAGEKEY';
-
-const getPublicClient = (chainId: ChainId) => {
-  return createPublicClient({
-    chain: getChainwebEVMChain(chainId),
-    transport: http(`/eth/${chainId}`),
-  });
-};
 
 export function useEvmFaucet() {
   // State for token amount, faucet balance, and loading status

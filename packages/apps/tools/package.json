@@ -45,6 +45,7 @@
     "ace-builds": "~1.30.0",
     "classnames": "^2.3.1",
     "fuse.js": "^7.0.0",
+    "http-proxy-middleware": "^2.0.6",
     "hw-app-kda-clone": "workspace:*",
     "js-cookie": "~3.0.5",
     "next": "14.2.26",

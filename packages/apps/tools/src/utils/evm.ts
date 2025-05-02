@@ -1,6 +1,11 @@
 import type { ChainId } from '@kadena/types';
 import type { BaseError } from 'viem';
-import { ContractFunctionRevertedError, defineChain } from 'viem';
+import {
+  ContractFunctionRevertedError,
+  createPublicClient,
+  defineChain,
+  http,
+} from 'viem';
 
 const STARTBLOCKCHAINWEB = process.env.NEXT_PUBLIC_STARTBLOCKCHAINWEB;
 
@@ -12,10 +17,17 @@ const createBlockChainId = (chainId: ChainId): number => {
   return parseInt(STARTBLOCKCHAINWEB, 10) + parseInt(chainId, 10);
 };
 
-export function createChainwebChain(chainId: ChainId) {
-  console.log(11111, createBlockChainId(chainId));
+export const createServerUrl = (chainId: ChainId, isServer?: boolean) => {
+  if (isServer) {
+    return `${process.env.NEXT_PUBLIC_EVMRPC_URL}${chainId}/evm/rpc`;
+  }
+  return `/api/eth/${chainId}`;
+};
+
+export const getChainwebEVMChain = (chainId: ChainId, isServer?: boolean) => {
   return defineChain({
     id: createBlockChainId(chainId),
+
     name: 'Kadena Chainweb EVM',
     network: `kadena_${createBlockChainId(chainId)}`,
     nativeCurrency: {
@@ -24,14 +36,15 @@ export function createChainwebChain(chainId: ChainId) {
       symbol: 'KDA',
     },
     rpcUrls: {
-      default: { http: [process.env.NEXT_PUBLIC_EVMRPC_URL + chainId] },
-      public: { http: [process.env.NEXT_PUBLIC_EVMRPC_URL + chainId] },
+      default: {
+        http: [createServerUrl(chainId, isServer)],
+      },
+      public: {
+        http: [createServerUrl(chainId, isServer)],
+      },
     },
   });
-}
-
-export const getChainwebEVMChain = (chainId: ChainId) =>
-  createChainwebChain(chainId);
+};
 
 export const formatErrorMessage = (err: BaseError): string => {
   const revertError = err.walk(
@@ -58,4 +71,11 @@ export const formatErrorMessage = (err: BaseError): string => {
     }
   }
   return err.shortMessage || 'Transaction failed';
+};
+
+export const getPublicClient = (chainId: ChainId, isServer?: boolean) => {
+  return createPublicClient({
+    chain: getChainwebEVMChain(chainId, isServer),
+    transport: http(createServerUrl(chainId, isServer)),
+  });
 };
