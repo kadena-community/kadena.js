@@ -7,8 +7,6 @@ import { useReCaptcha } from 'next-recaptcha-v3';
 import { useEffect, useState } from 'react';
 import { formatEther } from 'viem';
 
-const TXHASH_LOCALSTORAGEKEY = 'TXHASH_LOCALSTORAGEKEY';
-
 export function useEvmFaucet() {
   // State for token amount, faucet balance, and loading status
   const [dispenseAmount, setDispenseAmount] = useState('0');
@@ -51,8 +49,7 @@ export function useEvmFaucet() {
     }
   };
 
-  const waitForTx = async () => {
-    const hash = localStorage.getItem(TXHASH_LOCALSTORAGEKEY) as `0x${string}`;
+  const waitForTx = async (hash: `0x${string}`) => {
     if (!hash) return;
     setRequestStatus({ status: 'processing' });
     try {
@@ -64,22 +61,18 @@ export function useEvmFaucet() {
         setRequestStatus({ status: 'successful' });
       }
 
-      localStorage.removeItem(TXHASH_LOCALSTORAGEKEY);
       await getAmounts();
     } catch (e) {
       setRequestStatus({
         status: 'erroneous',
         message: 'No transaction found',
       });
-      localStorage.removeItem(TXHASH_LOCALSTORAGEKEY);
     }
   };
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getAmounts();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    waitForTx();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [innerChainId]);
 
@@ -102,8 +95,7 @@ export function useEvmFaucet() {
         throw new Error(hash.error);
       }
 
-      localStorage.setItem(TXHASH_LOCALSTORAGEKEY, `${hash}`);
-      await waitForTx();
+      await waitForTx(hash);
     } catch (err) {
       console.log({ err });
       setRequestStatus({ status: 'erroneous', message: err.message });
