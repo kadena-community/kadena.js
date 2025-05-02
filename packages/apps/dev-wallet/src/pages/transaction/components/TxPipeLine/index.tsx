@@ -122,7 +122,7 @@ function TxStatusList({
                   syncTransactionStatus(tx, client);
                 }}
               >
-                query chain
+                Sync with chain
               </Button>
               <CopyButton data={copyTx} />
             </Stack>
