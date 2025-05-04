@@ -1,5 +1,6 @@
 import readMessage from '@/utils/readMessage';
 import writeMessage from '@/utils/writeMessage';
+import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -66,7 +67,7 @@ const Home: React.FC = (): JSX.Element => {
     <div>
       <Head>
         <title>Create Kadena App: Next template</title>
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.grid}>
         <section className={styles.headerWrapper}>

@@ -37,6 +37,8 @@
     "test:integration": "rimraf test-* && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
   "dependencies": {
+    "@kadena/wallet-adapter-core": "0.0.1-beta.2",
+    "@kadena/wallet-adapter-ecko": "0.0.1-beta.2",
     "chalk": "^5.2.0",
     "commander": "^11.0.0",
     "cross-fetch": "~3.1.5",
