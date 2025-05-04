@@ -138,7 +138,7 @@ export default {
             />
             <button
               @click="writeMessage"
-              :disabled="!messageToWrite || writeInProgress"
+              :disabled="!messageToWrite || writeInProgress || !account"
               class="button"
             >
               Write

@@ -11,6 +11,15 @@ describe('App page', () => {
     );
   });
 
+  it('should render the wallet connection section', () => {
+    render(App);
+
+    const heading = screen.queryByText('Wallet', {
+      selector: 'h4',
+    });
+    expect(heading).toBeInTheDocument();
+  });
+
   it('should render blockchain interaction section', () => {
     render(App);
 
@@ -46,7 +55,7 @@ describe('Blockchain interaction', () => {
     const readButton = screen.getByRole('button', { name: 'Read' });
     expect(readButton).toBeDisabled();
 
-    const accountInput = screen.getByLabelText('My Account');
+    const accountInput = screen.getByLabelText('Connected Account');
     await fireEvent.update(accountInput, account);
 
     expect(readButton).toBeEnabled();
@@ -59,7 +68,7 @@ describe('Blockchain interaction', () => {
     const writeButton = screen.getByRole('button', { name: 'Write' });
     expect(writeButton).toBeDisabled();
 
-    const accountInput = screen.getByLabelText('My Account');
+    const accountInput = screen.getByLabelText('Connected Account');
     await fireEvent.update(accountInput, account);
 
     const writeMessageInput = screen.getByLabelText('Write Message');
