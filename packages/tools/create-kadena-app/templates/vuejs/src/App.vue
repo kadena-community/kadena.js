@@ -110,7 +110,7 @@ export default {
             id="account"
             v-model="account"
             readonly
-            class="input codeFont"
+            class="input codeFont nonScrollable"
           ></textarea>
         </fieldset>
       </div>
@@ -118,7 +118,6 @@ export default {
         <!-- Write card -->
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
-
           <fieldset class="fieldset">
             <label for="write-message" class="fieldLabel">Write Message</label>
             <textarea
