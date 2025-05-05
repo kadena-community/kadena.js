@@ -62,7 +62,7 @@ export default {
               id="account"
               v-model="account"
               placeholder="Please enter a valid k:account"
-              class="input codeFont"
+              class="input codeFont nonScrollable"
             />
           </fieldset>
           <fieldset class="fieldset">
