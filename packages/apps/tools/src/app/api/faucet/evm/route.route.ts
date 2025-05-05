@@ -20,8 +20,6 @@ const RPC_URL = process.env.NEXT_PUBLIC_EVMRPC_URL;
 // Create the faucet account from private key
 
 export async function POST(request: NextRequest) {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
   const body = (await request.json()) as unknown as {
     recipient: string;
     chainId: ChainId;
