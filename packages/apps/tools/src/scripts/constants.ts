@@ -4,8 +4,10 @@ export const channelId = process.env.SLACK_CHANNELID;
 export const tokenId = process.env.SLACK_TOKEN;
 export const faucetAccount = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
 export const xchainGasStationAccount = 'kadena-xchain-gas';
+export const GalxeAccount = process.env.NEXT_PUBLIC_GALXE;
 export const MINBALANCE = 1000;
 export const MINXCHAINGASSTATIONBALANCE = 0.9;
+export const MINXGALXEBALANCE = 5;
 
 //graph
 export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
