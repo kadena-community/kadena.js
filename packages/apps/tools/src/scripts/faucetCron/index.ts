@@ -1,47 +1,12 @@
+import { fetchAccount } from '@/utils/fetchAccount';
+import { getTestNet } from '@/utils/network';
 import { lowBalanceChains } from '../utils/lowBalanceChains';
-import type { IAccount, INETWORK } from './../constants';
-import { MINBALANCE, NETWORKS, faucetAccount } from './../constants';
+import { MINBALANCE, faucetAccount } from './../constants';
 import { sendErrorMessage, sendMessage } from './messages';
-
-const getHackachainTestnet = (): INETWORK => {
-  return NETWORKS.find((network) => network.key === 'TESTNET') ?? NETWORKS[1];
-};
-
-const getFaucetAccount = async (): Promise<IAccount> => {
-  const result = await fetch(getHackachainTestnet().url, {
-    method: 'POST',
-    headers: {
-      accept:
-        'application/graphql-response+json, application/json, multipart/mixed',
-      'cache-control': 'no-cache',
-      'content-type': 'application/json',
-      'x-api-key': process.env.HACKACHAIN_APIKEY ?? '',
-      pragma: 'no-cache',
-      'sec-fetch-mode': 'cors',
-      'sec-fetch-site': 'cross-site',
-    },
-    body: JSON.stringify({
-      query: `query faucet {
-  fungibleAccount(accountName: "${faucetAccount}"){
-    chainAccounts {
-      balance
-      chainId
-    }
-  }
-}`,
-      variables: {},
-      operationName: 'faucet',
-      extensions: {},
-    }),
-  });
-
-  const data = (await result.json()) as IAccount;
-  return data;
-};
 
 export const runJob = async () => {
   try {
-    const accountResult = await getFaucetAccount();
+    const accountResult = await fetchAccount(getTestNet(), faucetAccount);
 
     if (accountResult?.errors?.length) {
       await sendErrorMessage();

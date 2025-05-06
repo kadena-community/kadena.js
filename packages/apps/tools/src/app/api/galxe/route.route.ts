@@ -1,8 +1,8 @@
-import { runJob } from '@/scripts/faucetCron';
+import { runJob } from '@/scripts/galxe';
 
 export async function GET(request: Request) {
   await runJob();
-  return new Response(`Faucet balance`);
+  return new Response(`galxe balance check`);
 }
 
 export const revalidate = 0;
