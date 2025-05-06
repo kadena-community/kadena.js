@@ -70,7 +70,7 @@ export const SenderCard: FC<IProps> = ({
               variant="outlined"
               onPress={() => setShowMore((v) => !v)}
             >
-              More options
+              Select chain
             </Button>
           </Stack>
         }
@@ -119,7 +119,7 @@ export const SenderCard: FC<IProps> = ({
                   <Select
                     aria-label="Chain"
                     startVisual={<Label>Chain:</Label>}
-                    // label="Chain"
+                    label="Chain"
                     size="md"
                     placeholder="Select a chain"
                     selectedKey={field.value}
@@ -145,7 +145,15 @@ export const SenderCard: FC<IProps> = ({
                                 ) : null}
                               </Stack>
                               <Stack gap="xs">
-                                {' '}<Text size="smallest">balance:</Text><Text size="smallest" color='inherit' variant='code'>{overallBalance}</Text>
+                                {' '}
+                                <Text size="smallest">balance:</Text>
+                                <Text
+                                  size="smallest"
+                                  color="inherit"
+                                  variant="code"
+                                >
+                                  {overallBalance}
+                                </Text>
                               </Stack>
                             </Stack>
                           </SelectItem>,
@@ -158,7 +166,13 @@ export const SenderCard: FC<IProps> = ({
                                 justifyContent={'space-between'}
                               >
                                 <Chain chainId={chain.chainId} />
-                                <Text size="smallest" color='inherit' variant='code'>{chain.balance}</Text>
+                                <Text
+                                  size="smallest"
+                                  color="inherit"
+                                  variant="code"
+                                >
+                                  {chain.balance}
+                                </Text>
                               </Stack>
                             </SelectItem>
                           )),

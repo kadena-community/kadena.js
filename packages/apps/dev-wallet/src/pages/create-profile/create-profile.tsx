@@ -34,6 +34,7 @@ import {
   CardFooterGroup,
   FocussedLayoutHeaderContent,
 } from '@kadena/kode-ui/patterns';
+import classNames from 'classnames';
 import React, {
   FC,
   ReactElement,
@@ -49,6 +50,7 @@ import { wrapperClass } from '../errors/styles.css';
 import { noStyleLinkClass } from '../home/style.css';
 import { ChooseColor } from '../select-profile/ChooseColor';
 import { Label } from '../transaction/components/helpers';
+import { showStepClass } from './styles.css';
 
 const rotate = (max: number, start: number = 0) => {
   let index = start;
@@ -148,6 +150,7 @@ export function CreateProfile() {
     setValue,
     control,
     watch,
+
     formState: { isValid, errors },
   } = useForm<{
     password: string;
@@ -200,11 +203,13 @@ export function CreateProfile() {
     password: string;
     accentColor: string;
   }) {
+    const innerAccentColor = accentColor ? accentColor : defaultColor;
+
     let pass = password;
     if (!activeNetwork) {
       return;
     }
-    if (webAuthnCredential && password === 'WEB_AUTHN_PROTECTED') {
+    if (webAuthnCredential) {
       const pk = webAuthnCredential.response.getPublicKey();
       if (!pk) {
         throw new Error('Public key not found');
@@ -215,7 +220,7 @@ export function CreateProfile() {
     const profile = await createProfile(
       profileName,
       pass,
-      accentColor,
+      innerAccentColor,
       webAuthnCredential
         ? {
             authMode: 'WEB_AUTHN',
@@ -263,9 +268,6 @@ export function CreateProfile() {
       // const pk = result.credential.response.getPublicKey();
       // setPublicKey(pk ? hex(new Uint8Array(extractPublicKeyBytes(pk))) : '');
       setWebAuthnCredential(result.credential);
-      setValue('password', 'WEB_AUTHN_PROTECTED');
-      setValue('confirmation', 'WEB_AUTHN_PROTECTED');
-
       handleSetStep('profile');
     } else {
       console.error('Error creating credential');
@@ -329,13 +331,7 @@ export function CreateProfile() {
             <CardFooterContent>
               <Stack width="100%">
                 <Link to="/select-profile" className={noStyleLinkClass}>
-                  <Button
-                    variant="outlined"
-                    type="button"
-                    onPress={() => {
-                      throw new Error('back');
-                    }}
-                  >
+                  <Button variant="outlined" type="button" onPress={() => {}}>
                     Back
                   </Button>
                 </Link>
@@ -349,7 +345,6 @@ export function CreateProfile() {
                   Prefer password
                 </Button>
                 <Button
-                  isDisabled={!isValid}
                   variant="primary"
                   onClick={() => {
                     createWebAuthnCredential();
@@ -362,9 +357,19 @@ export function CreateProfile() {
             </CardFooterContent>
           </>
         )}
-        {step === 'set-password' && (
+
+        {!webAuthnCredential && (
           <>
-            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
+            <Stack
+              flexDirection={'column'}
+              gap={'lg'}
+              className={classNames(
+                wrapperClass,
+                showStepClass({
+                  isVisible: step === 'set-password',
+                }),
+              )}
+            >
               <PasswordField
                 value={getValues('password')}
                 confirmationValue={getValues('confirmation')}
@@ -374,33 +379,36 @@ export function CreateProfile() {
               />
             </Stack>
 
-            <CardFooterContent>
-              <Stack width="100%">
-                <Button
-                  variant="outlined"
-                  type="button"
-                  onPress={() => {
-                    handleSetStep('authMethod');
-                  }}
-                >
-                  Back
-                </Button>
-              </Stack>
-              <CardFooterGroup>
-                <Button
-                  onClick={() => {
-                    setPasswordError(undefined);
-                    handleSetStep('profile');
-                  }}
-                  isDisabled={!isValid}
-                  endVisual={<MonoArrowForward />}
-                >
-                  Next
-                </Button>
-              </CardFooterGroup>
-            </CardFooterContent>
+            {step === 'set-password' && (
+              <CardFooterContent>
+                <Stack width="100%">
+                  <Button
+                    variant="outlined"
+                    type="button"
+                    onPress={() => {
+                      handleSetStep('authMethod');
+                    }}
+                  >
+                    Back
+                  </Button>
+                </Stack>
+                <CardFooterGroup>
+                  <Button
+                    onClick={() => {
+                      setPasswordError(undefined);
+                      handleSetStep('profile');
+                    }}
+                    isDisabled={!isValid}
+                    endVisual={<MonoArrowForward />}
+                  >
+                    Next
+                  </Button>
+                </CardFooterGroup>
+              </CardFooterContent>
+            )}
           </>
         )}
+
         {step === 'backup-mnemonic' && (
           <BackupMnemonic
             mnemonic={mnemonic}
@@ -458,7 +466,11 @@ export function CreateProfile() {
                         <Stack gap="xs" flexWrap="wrap">
                           {config.colorList.map((color) => (
                             <ChooseColor
-                              isActive={color === accentColor}
+                              isActive={
+                                accentColor
+                                  ? color === accentColor
+                                  : color === defaultColor
+                              }
                               accentColor={color}
                               onClick={() => {
                                 setValue('accentColor', color);
@@ -493,6 +505,7 @@ export function CreateProfile() {
                   variant="outlined"
                   type="button"
                   onPress={() => {
+                    setWebAuthnCredential(undefined);
                     handleSetStep(previousStep);
                   }}
                 >
