@@ -21,7 +21,7 @@ import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { createTransferCmd } from './transferCmd';
 import { createTransferTx } from './transferTx';
-import { validateRpcResponse } from './zodValidation';
+import { isRpcError, validateRpcResponse } from './zodValidation';
 
 import './styles.css';
 
@@ -137,6 +137,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getAccount_v1', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -148,6 +159,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getAccounts_v2', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -159,6 +181,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getNetwork_v1', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -170,6 +203,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getNetworks_v1', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -185,6 +229,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_signCommand', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -200,6 +255,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_signTransaction', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -330,15 +396,12 @@ const App = () => {
                   }}
                 >
                   {JSON.stringify(rpcResponse, null, 2)}
-
                   {'\n'}
-                  {validationResult?.success
-                    ? `\n\n=== VALID ===\n${
-                        validationResult?.isError
-                          ? '(JSON-RPC Error object, but valid format)'
-                          : ''
-                      }`
-                    : `\n\n=== INVALID ===\n${JSON.stringify(validationResult?.issues, null, 2)}`}
+                  {!('error' in rpcResponse)
+                    ? validationResult?.success
+                      ? `\n\n=== VALID ===\n${validationResult?.isError ? '(JSON-RPC Error object, but valid format)' : ''}`
+                      : `\n\n=== INVALID ===\n${JSON.stringify(validationResult?.issues, null, 2)}`
+                    : null}
                   {validationResult?.note
                     ? `\nNote: ${validationResult.note}`
                     : ''}
@@ -393,8 +456,8 @@ const App = () => {
         <div>
           <Stack flexDirection="column" gap="sm">
             <TextField
-              label="Input Account"
-              placeholder="Funded account"
+              label="To:"
+              placeholder="Account to fund"
               value={accountTo}
               onValueChange={setAccountTo}
               isDisabled={!activeAccount}

@@ -7,6 +7,7 @@ interface ITransfer {
   accountTo: string;
   amount: number;
   client: any;
+  networkId: string;
 }
 
 export const createTransferTx = async ({
@@ -15,9 +16,9 @@ export const createTransferTx = async ({
   accountTo,
   amount,
   client,
+  networkId = 'mainnet01',
 }: ITransfer): Promise<ICommandResult> => {
   try {
-    console.log('PUBKEY', pubkey);
     const transactionBuilder = Pact.builder
       .execution(
         (Pact as any).modules['coin']['transfer'](accountFrom, accountTo, {
@@ -37,7 +38,7 @@ export const createTransferTx = async ({
         ],
       )
       .setMeta({ chainId: '0', senderAccount: accountFrom })
-      .setNetworkId('mainnet01')
+      .setNetworkId(networkId)
       .createTransaction();
 
     console.log('tx', transactionBuilder);
