@@ -1,8 +1,7 @@
 {
   "git": {
     "deploymentEnabled": {
-      "main": false,
-      "release/tools-v*": true
+      "main": true
     }
   },
   "crons": [
