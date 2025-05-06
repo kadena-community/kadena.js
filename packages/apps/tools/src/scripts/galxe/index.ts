@@ -31,6 +31,8 @@ const checkMessages = async (network: INETWORK) => {
 };
 
 export const runJob = async () => {
+  console.log({ GalxeAccount, MINXGALXEBALANCE });
+
   const mainnet = getMainNet();
   if (!mainnet) return;
 
