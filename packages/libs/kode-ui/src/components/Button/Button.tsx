@@ -89,7 +89,6 @@ const Button = forwardRef(
       typeof children === 'string' ? children : props['aria-label'] ?? 'is'
     } loading`.trim();
 
-    console.log(!!props.onClick || !!props.onPress);
     return (
       <button
         {...mergeProps(buttonProps, hoverProps, focusProps)}
