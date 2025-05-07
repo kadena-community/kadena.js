@@ -1,20 +1,21 @@
-import {
+import type {
   IBaseWalletAdapterOptions,
   IProvider,
 } from '@kadena/wallet-adapter-core';
-import { SessionTypes } from '@walletconnect/types';
+import type { SessionTypes } from '@walletconnect/types';
 
 /**
  * WalletConnectKadenaProvider interface
  *
  * If WalletConnect is not set, detection can fallback or return null.
  */
-export interface WalletConnectAdapterOptions extends IBaseWalletAdapterOptions {
+export interface IWalletConnectAdapterOptions
+  extends IBaseWalletAdapterOptions {
   relayUrl: string;
   projectId: string;
 }
 
-export interface WalletConnectProvider extends IProvider {
+export interface IWalletConnectProvider extends IProvider {
   connected: boolean;
   accounts: string[];
   session?: SessionTypes.Struct;
@@ -23,7 +24,7 @@ export interface WalletConnectProvider extends IProvider {
 export async function detectWalletConnectProvider(options?: {
   silent?: boolean;
   timeout?: number;
-}): Promise<WalletConnectProvider | null> {
+}): Promise<IWalletConnectProvider | null> {
   const { silent, timeout } = options ?? {};
 
   if (silent !== undefined && typeof silent !== 'boolean') {
@@ -34,7 +35,7 @@ export async function detectWalletConnectProvider(options?: {
     throw new Error('Expected option "timeout" to be a number.');
   }
 
-  const provider: WalletConnectProvider = {
+  const provider: IWalletConnectProvider = {
     connected: false,
     accounts: [],
     request: async () => {},

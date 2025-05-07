@@ -6,7 +6,7 @@ import type {
 import type { SessionTypes } from '@walletconnect/types';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { WalletConnectAdapter } from '../WalletConnectAdapter';
-import type { WalletConnectProvider } from '../provider';
+import type { IWalletConnectProvider } from '../provider';
 
 // Default fallback network id for tests
 const DEFAULT_NETWORK_ID = 'mainnet01';
@@ -69,7 +69,7 @@ const mockSession: SessionTypes.Struct = {
 
 // Create a mock provider satisfying WalletConnectProvider.
 // Note: Our provider.request is used by the adapter.
-const mockProvider: WalletConnectProvider = {
+const mockProvider: IWalletConnectProvider = {
   connected: true,
   accounts: ['kadena:mainnet01:test-account'],
   session: mockSession,

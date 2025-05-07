@@ -17,13 +17,13 @@ import type { SessionTypes } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
 import { ERRORS } from './constants';
 import type {
-  WalletConnectAdapterOptions,
-  WalletConnectProvider,
+  IWalletConnectAdapterOptions,
+  IWalletConnectProvider,
 } from './provider';
 import type {
   ExtendedMethod,
   ExtendedMethodMap,
-  KadenaGetAccountsResponse,
+  IKadenaGetAccountsResponse,
 } from './types';
 import { safeJsonParse } from './utils';
 
@@ -34,17 +34,17 @@ const defaultNetworkId = 'testnet04';
 
 export class WalletConnectAdapter extends BaseWalletAdapter {
   public name: string = 'WalletConnect';
-  protected declare provider: WalletConnectProvider;
+  protected declare provider: IWalletConnectProvider;
   protected networkId: string;
   private client?: Client;
   private modal: WalletConnectModal;
-  private options: WalletConnectAdapterOptions;
+  private options: IWalletConnectAdapterOptions;
 
-  public constructor(options: Partial<WalletConnectAdapterOptions>) {
+  public constructor(options: Partial<IWalletConnectAdapterOptions>) {
     if (!options.provider) {
       throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
     }
-    const finalOptions: WalletConnectAdapterOptions = {
+    const finalOptions: IWalletConnectAdapterOptions = {
       ...options,
       provider: options.provider,
       projectId: options.projectId || projectId,
@@ -56,7 +56,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     this.modal = new WalletConnectModal({
       themeMode: 'light',
       projectId: finalOptions.projectId,
-      chains: ['kadena:mainnet01', 'kadena:testnet04', 'kadena:development'],
+      // chains: [`kadena:${this.networkId}`],
     });
   }
 
@@ -89,6 +89,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
             chainAccounts: firstAccount.chainAccounts,
           },
         };
+
       case 'kadena_sign_v1': {
         if (!this.client || !this.provider?.session) {
           throw new Error(ERRORS.FAILED_TO_CONNECT);
@@ -303,17 +304,10 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       reason: getSdkError('USER_DISCONNECTED'),
     });
   }
+
   // when the contracts[] param is omitted the wallet returns all known fungible accounts
   public async getAccounts(contracts?: string[]): Promise<IAccountInfo[]> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
-
-    console.log({
-      method: 'kadena_getAccounts_v1',
-      params: {
-        accounts: this.provider.accounts.map((account) => ({ account })),
-        contracts: contracts,
-      },
-    });
 
     const response = (await this.provider.request({
       method: 'kadena_getAccounts_v1',
@@ -321,7 +315,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         accounts: this.provider.accounts.map((account) => ({ account })),
         contracts: contracts,
       },
-    })) as KadenaGetAccountsResponse;
+    })) as IKadenaGetAccountsResponse;
 
     console.log('getAccounts_v1 response:', response);
     if (!response?.accounts?.length) {
@@ -355,11 +349,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         },
       }));
     }
-
-    const matchNetworkAccounts = accountInfoList.filter(
-      (account) => account.networkId === this.networkId,
-    );
-    console.log({ accountInfoList, matchNetworkAccounts });
 
     if (!accountInfoList.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);

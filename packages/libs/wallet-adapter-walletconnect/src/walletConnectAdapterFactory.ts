@@ -1,4 +1,4 @@
-import {
+import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';

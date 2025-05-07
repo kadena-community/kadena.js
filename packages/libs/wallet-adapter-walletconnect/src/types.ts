@@ -1,6 +1,6 @@
-import { ChainId, IKdaMethodMap } from '@kadena/wallet-adapter-core';
+import type { ChainId, IKdaMethodMap } from '@kadena/wallet-adapter-core';
 
-export interface KadenaGetAccountsRequest {
+export interface IKadenaGetAccountsRequest {
   method: 'kadena_getAccounts_v1';
   params: {
     accounts: {
@@ -9,7 +9,7 @@ export interface KadenaGetAccountsRequest {
     }[];
   };
 }
-export interface KadenaGetAccountsResponse {
+export interface IKadenaGetAccountsResponse {
   accounts: {
     account: string;
     publicKey: string;

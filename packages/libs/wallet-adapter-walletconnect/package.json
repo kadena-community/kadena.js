@@ -1,33 +1,34 @@
 {
   "name": "@kadena/wallet-adapter-walletconnect",
-  "version": "1.0.0",
-  "authors": [
-    "Francisco Miranda"
-  ],
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "version": "0.0.1-beta.0",
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
   },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "test": "vitest"
   },
   "dependencies": {
-    "@kadena/client": "^1.16.0",
+    "@kadena/client": "workspace:*",
     "@kadena/wallet-adapter-core": "workspace:*",
     "@walletconnect/client": "^1.8.0",
-    "@walletconnect/modal": "^2.7.0",
+    "@walletconnect/modal": "~2.6.1",
     "@walletconnect/qrcode-modal": "^1.8.0",
-    "@walletconnect/sign-client": "^2.18.1",
-    "@walletconnect/types": "^2.18.1",
-    "@walletconnect/utils": "^2.18.1"
+    "@walletconnect/sign-client": "~2.8.1",
+    "@walletconnect/types": "~2.8.1",
+    "@walletconnect/utils": "^2.18.0"
   },
   "devDependencies": {
-    "jsdom": "^26.0.0",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
-  }
+    "jsdom": "^22.1.0",
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "authors": [
+    "Francisco Miranda",
+    "Bart Huijgen"
+  ]
 }
