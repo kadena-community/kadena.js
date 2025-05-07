@@ -2,7 +2,9 @@ import type {
   CommandSigDatas,
   IAccountInfo,
   IBaseWalletAdapterOptions,
+  ICommand,
   ISigningRequestPartial,
+  IUnsignedCommand,
   JsonRpcResponse,
 } from '@kadena/wallet-adapter-core';
 import {
@@ -23,6 +25,7 @@ import type {
   ExtendedMethodMap,
   KadenaGetAccountsResponse,
 } from './types';
+import { safeJsonParse } from './utils';
 
 // Fallback default values
 const projectId = 'b56e18d47c72ab683b10814fe9495694'; // Public API key (localhost)
@@ -99,13 +102,30 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         })) as JsonRpcResponse<any>;
 
         console.log('/sign WalletConnect response:', response);
+        let command!: ICommand | IUnsignedCommand;
+
         if ('result' in response) {
+          command = response.result.body || response.result;
+        } else if ('body' in response) {
+          command = response.body as any;
+        }
+
+        const chainId =
+          'chainId' in response
+            ? response.chainId
+            : safeJsonParse(command.cmd)?.meta?.chainId;
+
+        if (command) {
           return {
             id,
             jsonrpc: '2.0',
-            result: response.result.body,
+            result: {
+              body: command,
+              chainId,
+            },
           };
         }
+
         throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
       }
       case 'kadena_quicksign_v1': {

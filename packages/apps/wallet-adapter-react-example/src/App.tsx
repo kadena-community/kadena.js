@@ -24,7 +24,7 @@ import { createTransferTx } from './transferTx';
 import { isRpcError, validateRpcResponse } from './zodValidation';
 
 import './styles.css';
-import { createExampleTransaction } from './utils';
+import { createExampleCommand, createExampleTransaction } from './utils';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -50,17 +50,31 @@ const App = () => {
   const [signTxPayload, setSignTxPayload] = useState('');
 
   useEffect(() => {
-    if (signTxPayload || !activeAccount) return;
-    setSignTxPayload(
-      JSON.stringify(
-        createExampleTransaction(
-          activeAccount.accountName,
-          'k:123',
-          '0',
-          network?.networkId || 'testnet04',
+    if (!activeAccount) return;
+    if (!signTxPayload) {
+      setSignTxPayload(
+        JSON.stringify(
+          createExampleTransaction(
+            activeAccount.accountName,
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
         ),
-      ),
-    );
+      );
+    }
+    if (!signCommandPayload) {
+      setSignCommandPayload(
+        JSON.stringify(
+          createExampleCommand(
+            activeAccount.accountName,
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
+        ),
+      );
+    }
   }, [activeAccount]);
 
   /**
