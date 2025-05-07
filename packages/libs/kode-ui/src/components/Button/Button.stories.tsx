@@ -1,7 +1,6 @@
 import { MonoChevronLeft, MonoChevronRight } from '@kadena/kode-icons';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
-
 import { Avatar, Badge, Stack, Text } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
 import { iconControl } from '../../storyDecorators/iconControl';
