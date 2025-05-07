@@ -7,7 +7,7 @@ import {
   isPactGuard,
   isUserGuard,
 } from '@/modules/account/guards';
-import { Stack, Text } from '@kadena/kode-ui';
+import { maskValue, Stack, Text } from '@kadena/kode-ui';
 import { ellipsis } from '@kadena/kode-ui/styles';
 import { Keyset } from './keyset';
 
@@ -78,7 +78,7 @@ export const Guard = ({
     >
       <Text size="smallest" className={ellipsis}>
         {type}
-        {value ? `: ${value}` : ''}
+        {value ? `: ${maskValue(value)}` : ''}
       </Text>
     </Stack>
   );
