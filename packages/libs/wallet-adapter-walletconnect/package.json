@@ -19,10 +19,10 @@
     "@walletconnect/modal": "~2.6.1",
     "@walletconnect/qrcode-modal": "^1.8.0",
     "@walletconnect/sign-client": "~2.8.1",
-    "@walletconnect/types": "~2.8.1",
     "@walletconnect/utils": "^2.18.0"
   },
   "devDependencies": {
+    "@walletconnect/types": "~2.8.1",
     "jsdom": "^22.1.0",
     "typescript": "5.4.5",
     "vitest": "^1.6.0"

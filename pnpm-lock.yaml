@@ -3514,13 +3514,13 @@ importers:
       '@walletconnect/sign-client':
         specifier: ~2.8.1
         version: 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@walletconnect/types':
-        specifier: ~2.8.1
-        version: 2.8.6
       '@walletconnect/utils':
         specifier: ^2.18.0
         version: 2.20.0(bufferutil@4.0.9)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.23.8)
     devDependencies:
+      '@walletconnect/types':
+        specifier: ~2.8.1
+        version: 2.8.6
       jsdom:
         specifier: ^22.1.0
         version: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
@@ -10687,7 +10687,7 @@ packages:
 
   '@walletconnect/sign-client@2.8.6':
     resolution: {integrity: sha512-rOFTKTHP7oJfXgYHX7+SdB8VbcsEE3ZFG/bMdmZboWaBim1mrY3vUyDdKrNr0VgI3AwBiEQezQDfKxBX0pMSQQ==}
-    deprecated: Reliability and performance greatly improved - please see https://github.com/WalletConnect/walletconnect-monorepo/releases
+    deprecated: 'Reliability and performance improvements. See: https://github.com/WalletConnect/walletconnect-monorepo/releases'
 
   '@walletconnect/socket-transport@1.8.0':
     resolution: {integrity: sha512-5DyIyWrzHXTcVp0Vd93zJ5XMW61iDM6bcWT4p8DTRfFsOtW46JquruMhxOLeCOieM4D73kcr3U7WtyR4JUsGuQ==}
