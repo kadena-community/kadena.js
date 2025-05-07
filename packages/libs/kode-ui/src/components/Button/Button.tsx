@@ -89,6 +89,7 @@ const Button = forwardRef(
       typeof children === 'string' ? children : props['aria-label'] ?? 'is'
     } loading`.trim();
 
+    console.log(!!props.onClick || !!props.onPress);
     return (
       <button
         {...mergeProps(buttonProps, hoverProps, focusProps)}
@@ -97,6 +98,7 @@ const Button = forwardRef(
             variant,
             isCompact,
             isLoading,
+            onPress: !!props.onClick || !!props.onPress,
           }),
           className,
         )}
@@ -109,7 +111,9 @@ const Button = forwardRef(
         data-hovered={(!isPressed && isHovered) || undefined}
         data-focused={isFocused || undefined}
         data-focus-visible={isFocusVisible || undefined}
+        data-noaction={!props.onClick && !props.onPress}
         ref={ref}
+        tabIndex={!(!!props.onClick || !!props.onPress) ? -1 : undefined}
       >
         <>
           {isLoading ? (
