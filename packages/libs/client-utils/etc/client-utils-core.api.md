@@ -405,7 +405,7 @@ export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign"
     }], [], T extends Promise<any> ? T : Promise<T>>;
 };
 
-// @alpha @deprecated
+// @alpha
 export const estimateGas: (command: IPartialPactCommand | ((cmd?: IPartialPactCommand | (() => IPartialPactCommand)) => IPartialPactCommand), host?: IClientConfig['host'], client?: IClient) => Promise<{
     gasLimit: unknown;
     gasPrice: number;

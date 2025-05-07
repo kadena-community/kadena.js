@@ -1,6 +1,7 @@
 import type { IPartialPactCommand } from '@kadena/client';
 import { createTransaction } from '@kadena/client';
 
+import { estimateGasPrice } from './estimateGasPrice';
 import { asyncPipe } from './utils/asyncPipe';
 import type { IClientConfig } from './utils/helpers';
 import { composeWithDefaults, getClient, throwIfFails } from './utils/helpers';
@@ -35,10 +36,9 @@ export const calculateGasConsumption = (
 };
 
 /**
- * estimate gas for a command;
- * this function always returns a gasPrice of 1.0e-8, if you want to estimate the gas price use `estimateGasPrice` which is more accurate
+ * estimate gasLimit and gasPrice for a command;
+ * This function might be slow since it needs to estimate the gasPrice on each call, use it with caution
  * @alpha
- * @deprecated for gasLimit use `calculateGasConsumption` and for gasPrice use `estimateGasPrice`
  * @see {@link estimateGasPrice}
  * @see {@link calculateGasConsumption}
  */
@@ -52,8 +52,16 @@ export const estimateGas = async (
   client = getClient(host),
 ) => {
   const gasLimit = await calculateGasConsumption(command, host, client);
+  const cmd = typeof command === 'function' ? command() : command;
+  if (!cmd.meta?.chainId) {
+    throw new Error('chainId is required in meta');
+  }
   return {
     gasLimit,
-    gasPrice: 1.0e-8,
+    gasPrice: await estimateGasPrice({
+      host: typeof host === 'string' ? host : undefined,
+      networkId: cmd.networkId,
+      chainId: cmd.meta.chainId,
+    }),
   };
 };
