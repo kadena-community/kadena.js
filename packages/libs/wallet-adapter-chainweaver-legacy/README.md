@@ -1,6 +1,6 @@
 # Chainweaver Wallet Adapter Legacy
 
-This package provides an adapter for the Chainweaver wallet on Kadena. It
+This package provides an adapter for the Chainweaver Legacy Wallet on Kadena. It
 extends a base adapter while preserving the `"kadena_"`‑prefixed methods
 expected by `BaseWalletAdapter` by mapping them to the Chainweaver local HTTP
 API.
@@ -68,8 +68,8 @@ import {
 
 ## Other Notes
 
-- The adapter internally calls methods like `kadena_connect`, `kadena_sign_v1`,
-  and `kadena_quicksign_v1`, mapping them to Chainweaver’s local HTTP endpoints
+- The adapter internally calls methods like `kadena_sign_v1`, and
+  `kadena_quicksign_v1`, mapping them to Chainweaver’s local HTTP endpoints
   (e.g. `http://127.0.0.1:9467/v1/sign` and `/v1/quicksign`).
 - If you support multiple wallets in your application, the lazy import in
   `chainweaverAdapterLegacy` helps reduce your initial bundle size by loading
