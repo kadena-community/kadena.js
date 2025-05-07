@@ -219,7 +219,7 @@ export const button = recipe({
     },
   ],
   variants: {
-    onPress: {
+    hasAction: {
       true: {},
       false: {
         cursor: 'auto!important',

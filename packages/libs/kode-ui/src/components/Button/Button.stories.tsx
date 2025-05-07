@@ -88,17 +88,16 @@ export const ButtonNoClick: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
+    onPress: undefined,
   },
   render: (props: IButtonProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { onPress, onClick, ...newProps } = props;
     return (
       <Stack flexDirection="column" width="100%" alignItems="center" gap="md">
         <Text>
           If there is no onClick or onPress prop, the button should act as a
           label. No hover and no cursor change
         </Text>
-        <Button {...newProps}>{newProps.children}</Button>
+        <Button {...props}>{props.children}</Button>
       </Stack>
     );
   },

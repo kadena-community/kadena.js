@@ -97,7 +97,7 @@ const Button = forwardRef(
             variant,
             isCompact,
             isLoading,
-            onPress: !!props.onClick || !!props.onPress,
+            hasAction: !!props.onClick || !!props.onPress,
           }),
           className,
         )}
@@ -110,8 +110,8 @@ const Button = forwardRef(
         data-hovered={(!isPressed && isHovered) || undefined}
         data-focused={isFocused || undefined}
         data-focus-visible={isFocusVisible || undefined}
-        data-noaction={!props.onClick && !props.onPress}
         ref={ref}
+        data-noaction={!props.onClick && !props.onPress}
         tabIndex={!(!!props.onClick || !!props.onPress) ? -1 : undefined}
       >
         <>
