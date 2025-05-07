@@ -24,6 +24,7 @@ import { createTransferTx } from './transferTx';
 import { isRpcError, validateRpcResponse } from './zodValidation';
 
 import './styles.css';
+import { createExampleTransaction } from './utils';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -47,6 +48,20 @@ const App = () => {
 
   const [signCommandPayload, setSignCommandPayload] = useState('');
   const [signTxPayload, setSignTxPayload] = useState('');
+
+  useEffect(() => {
+    if (signTxPayload || !activeAccount) return;
+    setSignTxPayload(
+      JSON.stringify(
+        createExampleTransaction(
+          activeAccount.accountName,
+          'k:123',
+          '0',
+          network?.networkId || 'testnet04',
+        ),
+      ),
+    );
+  }, [activeAccount]);
 
   /**
    * Helper to set RPC response and run Zod validation
@@ -251,6 +266,7 @@ const App = () => {
       const tx: IUnsignedCommand = {
         ...transaction,
       };
+      console.log('sign transaction', selectedWallet.name, tx);
       const resp = await client.signTransaction(selectedWallet.name, tx);
       validateAndSetRpcResponse('kadena_signTransaction', resp);
     } catch (err) {

@@ -2,11 +2,13 @@ import type {
   CommandSigDatas,
   IAccountInfo,
   IBaseWalletAdapterOptions,
-  ICommand,
   ISigningRequestPartial,
   JsonRpcResponse,
 } from '@kadena/wallet-adapter-core';
-import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
+import {
+  BaseWalletAdapter,
+  isJsonRpcSuccess,
+} from '@kadena/wallet-adapter-core';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
 import type { SessionTypes } from '@walletconnect/types';
@@ -85,15 +87,16 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
           },
         };
       case 'kadena_sign_v1': {
-        if (!this.client || !this.provider?.session)
+        if (!this.client || !this.provider?.session) {
           throw new Error(ERRORS.FAILED_TO_CONNECT);
+        }
 
         // Send the constructed payload
-        const response = await this.request({
+        const response = (await this.provider.request({
           id,
           method: 'kadena_sign_v1',
           params: params as ISigningRequestPartial,
-        });
+        })) as JsonRpcResponse<any>;
 
         console.log('/sign WalletConnect response:', response);
         if ('result' in response) {
@@ -106,42 +109,46 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
       }
       case 'kadena_quicksign_v1': {
-        if (!this.client || !this.provider?.session)
+        if (!this.client || !this.provider?.session) {
           throw new Error(ERRORS.FAILED_TO_CONNECT);
+        }
 
         const { commandSigDatas } = params as {
           commandSigDatas: CommandSigDatas;
         };
 
-        const response = (await this.request({
-          id: 1,
+        const response = (await this.provider.request({
+          id,
           method: 'kadena_quicksign_v1',
           params: { commandSigDatas },
-        })) as unknown as JsonRpcResponse<{ responses: any[] }>;
+        })) as JsonRpcResponse<any>;
 
         console.log('Quicksign response:', JSON.stringify(response));
 
-        if ('result' in response && Array.isArray(response.result.responses)) {
-          const quickRes = response.result.responses[0];
-          if (quickRes.outcome && quickRes.outcome.result === 'success') {
-            const commandSigData = quickRes.commandSigData;
-            const signedCommand: ICommand = {
-              cmd: commandSigData.cmd,
-              hash: quickRes.outcome.hash,
-              sigs: commandSigData.sigs,
-            };
-            return {
-              id,
-              jsonrpc: '2.0',
-              result: signedCommand,
-            };
-          } else {
-            // Outcome is either "failure", "noSig", etc.
-            const outcome = quickRes.outcome;
-            throw new Error(
-              `Transaction outcome error: ${outcome.result}${outcome.msg ? ' - ' + outcome.msg : ''}`,
-            );
-          }
+        let responses: any[] = [];
+        if ('results' in response) {
+          responses = response.results as any[];
+        } else if (isJsonRpcSuccess(response)) {
+          responses = response.result.responses;
+        }
+        console.log('quicksign responses', responses);
+        if (Array.isArray(responses) && responses.length > 0) {
+          return {
+            id,
+            jsonrpc: '2.0',
+            result: {
+              responses: responses.map((response) => ({
+                commandSigData: {
+                  cmd: response.commandSigData.cmd,
+                  sigs: response.commandSigData.sigs,
+                },
+                outcome: {
+                  hash: response.outcome.hash,
+                  result: response.outcome.result,
+                },
+              })),
+            },
+          };
         }
         throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
       }
@@ -230,11 +237,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
             'kadena_sign_v1',
             'kadena_quicksign_v1',
           ],
-          chains: [
-            'kadena:mainnet01',
-            'kadena:testnet04',
-            'kadena:development',
-          ],
+          chains: [`kadena:${this.networkId}`],
           events: [],
         },
       },
@@ -284,6 +287,14 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
   public async getAccounts(contracts?: string[]): Promise<IAccountInfo[]> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
+    console.log({
+      method: 'kadena_getAccounts_v1',
+      params: {
+        accounts: this.provider.accounts.map((account) => ({ account })),
+        contracts: contracts,
+      },
+    });
+
     const response = (await this.provider.request({
       method: 'kadena_getAccounts_v1',
       params: {
@@ -292,7 +303,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       },
     })) as KadenaGetAccountsResponse;
 
-    console.log('getAccounts_v1 response:', JSON.stringify(response));
+    console.log('getAccounts_v1 response:', response);
     if (!response?.accounts?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
@@ -310,6 +321,25 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
           },
         })),
     );
+
+    if (accountInfoList.length === 0) {
+      console.log('Fallback for no accounts in wallet connect response');
+      return response.accounts.map((accountData) => ({
+        accountName: `k:${accountData.account.split(':')[2]}`,
+        networkId: accountData.account.split(':')[1],
+        contract: 'coin',
+        chainAccounts: [],
+        guard: {
+          keys: [accountData.publicKey],
+          pred: 'keys-all',
+        },
+      }));
+    }
+
+    const matchNetworkAccounts = accountInfoList.filter(
+      (account) => account.networkId === this.networkId,
+    );
+    console.log({ accountInfoList, matchNetworkAccounts });
 
     if (!accountInfoList.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
