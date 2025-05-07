@@ -99,7 +99,8 @@ estimateGasPrice(parameters: IGasPriceEstimateProperties): Promise<number>
 - `host?` _(string)_: Optional base URL of the Chainweb API (defaults to
   Kadena's mainnet/testnet based on `networkId`).
 - `chainId` _(string)_: Chain ID (e.g., `"0"` through `"19"`).
-- `networkId` _(string)_: Network ID (e.g., `"mainnet01"`, `"testnet04"`).
+- `networkId?` _(string)_: Network ID (e.g., `"mainnet01"`, `"testnet04"` -
+  default `"mainnet01"` ).
 - `height?` _(number)_: Optional block max height ( default the chian height).
 - `items?` _(number)_: Number of blocks to fetch (default: `20`).
 
@@ -136,7 +137,8 @@ getBlocksGasInformation(parameters: IGasPriceEstimateProperties): Promise<IBlock
 - `host?` _(string)_: Optional base URL of the Chainweb API (defaults to
   Kadena's mainnet/testnet based on `networkId`).
 - `chainId` _(string)_: Chain ID (e.g., `"0"` through `"19"`).
-- `networkId` _(string)_: Network ID (e.g., `"mainnet01"`, `"testnet04"`).
+- `networkId?` _(string)_: Network ID (e.g., `"mainnet01"`, `"testnet04"` -
+  default `"mainnet01"` ).
 - `height?` _(number)_: Optional block max height ( default the chian height).
 - `items?` _(number)_: Number of blocks to fetch (default: `20`).
 

@@ -84,7 +84,7 @@ export const fetchBlockInformation = async ({
 export interface IGasPriceEstimateProperties {
   host?: string;
   chainId: ChainId;
-  networkId: string;
+  networkId?: string;
   height?: number | undefined;
   items?: number;
 }
@@ -108,7 +108,7 @@ export async function getBlocksGasInformation({
   host,
   height,
   chainId,
-  networkId,
+  networkId = 'mainnet01',
   items = 20,
 }: IGasPriceEstimateProperties) {
   let maxHeight: number | undefined = height;
