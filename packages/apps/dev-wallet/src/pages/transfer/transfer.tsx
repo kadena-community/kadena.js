@@ -22,6 +22,7 @@ import { MonoClose } from '@kadena/kode-icons/system';
 import {
   FocussedLayoutHeaderAside,
   FocussedLayoutHeaderContent,
+  useNotifications,
 } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'react-router-dom';
 import { TxList } from '../transaction/components/TxList';
@@ -78,11 +79,28 @@ const steps: ICompactStepperItemProps[] = [
 
 export function Transfer() {
   const { activeNetwork, profile } = useWallet();
-
+  const { addNotification } = useNotifications();
   const navigate = usePatchedNavigate();
   const [searchParams] = useSearchParams();
   const accountId = searchParams.get('accountId');
   const urlActivityId = searchParams.get('activityId');
+  const [step, setStep] = useState<IStepKeys>('transfer');
+  const [txGroups, setTxGroups] = useState<{
+    redistribution: TrG;
+    transfer: TrG;
+  }>({
+    redistribution: { groupId: '', txs: [] },
+    transfer: { groupId: '', txs: [] },
+  });
+
+  useEffect(() => {
+    if (step === 'completed') {
+      addNotification({
+        label: 'success',
+        message: 'Transfer is done!',
+      });
+    }
+  }, [step]);
 
   useEffect(() => {
     const run = async () => {
@@ -124,15 +142,6 @@ export function Transfer() {
     };
     run();
   }, [accountId, urlActivityId]);
-
-  const [step, setStep] = useState<IStepKeys>('transfer');
-  const [txGroups, setTxGroups] = useState<{
-    redistribution: TrG;
-    transfer: TrG;
-  }>({
-    redistribution: { groupId: '', txs: [] },
-    transfer: { groupId: '', txs: [] },
-  });
 
   function createTransaction(data: Required<ITransfer>) {
     if (!data.senderAccount || !profile) return;

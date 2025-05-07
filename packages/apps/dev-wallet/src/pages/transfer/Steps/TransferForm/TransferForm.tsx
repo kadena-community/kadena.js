@@ -518,19 +518,19 @@ export function TransferForm({
               </Notification>
             </Stack>
           )}
-          <Stack
-            alignItems={'flex-start'}
-            gap="lg"
-            marginBlockStart={'lg'}
-            marginBlockEnd={'xxxl'}
-            flexDirection={'column'}
-          >
-            {!!error && error.target === 'general' && (
+          {!!error && error.target === 'general' && (
+            <Stack
+              alignItems={'flex-start'}
+              gap="lg"
+              marginBlockStart={'lg'}
+              marginBlockEnd={'xxxl'}
+              flexDirection={'column'}
+            >
               <Notification type="inline" role="alert" intent="negative">
                 {error.message}
               </Notification>
-            )}
-          </Stack>
+            </Stack>
+          )}
 
           <Stack marginBlockEnd={'xxxl'}>
             <Button
