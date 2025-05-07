@@ -10,14 +10,14 @@
   "types": "dist/esm/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
-    "test": "vitest"
+    "format": "prettier . --cache --write",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest run"
   },
   "dependencies": {
     "@kadena/client": "workspace:*",
     "@kadena/wallet-adapter-core": "workspace:*",
-    "@walletconnect/client": "^1.8.0",
     "@walletconnect/modal": "~2.6.1",
-    "@walletconnect/qrcode-modal": "^1.8.0",
     "@walletconnect/sign-client": "~2.8.1",
     "@walletconnect/utils": "^2.18.0"
   },
@@ -29,6 +29,10 @@
   },
   "authors": [
     "Francisco Miranda",
-    "Bart Huijgen"
+
+  ],"contributors": [
+    "Bart Huijgen",
+    "Danillo Felixdaal"
   ]
+
 }

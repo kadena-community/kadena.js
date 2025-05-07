@@ -63,8 +63,8 @@ const mockSession: SessionTypes.Struct = {
       icons: ['https://dummy-dapp.com/icon.png'],
     },
   },
-  authentication: [],
-  transportType: 'relay',
+  // authentication: [],
+  // transportType: 'relay',
 };
 
 // Create a mock provider satisfying WalletConnectProvider.
