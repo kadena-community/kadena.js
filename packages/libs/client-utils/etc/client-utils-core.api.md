@@ -5,6 +5,7 @@
 ```ts
 
 import type { ChainId } from '@kadena/client';
+import type { ChainId as ChainId_2 } from '@kadena/types';
 import { IClient } from '@kadena/client';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
@@ -22,6 +23,10 @@ import type { PactValue } from '@kadena/types';
 export const asyncPipe: IAsyncPipe;
 
 // Warning: (ae-forgotten-export) The symbol "IClientConfig" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export const calculateGasConsumption: (command: IPartialPactCommand | ((cmd?: IPartialPactCommand | (() => IPartialPactCommand)) => IPartialPactCommand), host?: IClientConfig['host'], client?: IClient) => Promise<unknown>;
+
 // Warning: (ae-forgotten-export) The symbol "IAccount" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
@@ -400,8 +405,21 @@ export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign"
     }], [], T extends Promise<any> ? T : Promise<T>>;
 };
 
-// @alpha
-export const estimateGas: (command: IPartialPactCommand | ((cmd?: IPartialPactCommand | (() => IPartialPactCommand)) => IPartialPactCommand), host?: IClientConfig['host'], client?: IClient) => Promise<unknown>;
+// @alpha @deprecated
+export const estimateGas: (command: IPartialPactCommand | ((cmd?: IPartialPactCommand | (() => IPartialPactCommand)) => IPartialPactCommand), host?: IClientConfig['host'], client?: IClient) => Promise<{
+    gasLimit: unknown;
+    gasPrice: number;
+}>;
+
+// Warning: (ae-forgotten-export) The symbol "IGasPriceEstimateProperties" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function estimateGasPrice({ host, height, chainId: chain, networkId, items, }: IGasPriceEstimateProperties): Promise<number>;
+
+// Warning: (ae-forgotten-export) The symbol "IBlockGasInformation" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function getBlocksGasInformation({ host, height, chainId, networkId, items, }: IGasPriceEstimateProperties): Promise<IBlockGasInformation[]>;
 
 // @alpha (undocumented)
 export const
