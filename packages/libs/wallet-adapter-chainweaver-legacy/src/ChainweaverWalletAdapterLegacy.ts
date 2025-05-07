@@ -35,22 +35,24 @@ const connectSchema = v.object({
  * or minimal no-ops where necessary.
  */
 export class ChainweaverWalletAdapterLegacy extends BaseWalletAdapter {
-  public name = 'Chainweaver';
-  public nonce = 0;
+  public name: string = 'Chainweaver';
+  public nonce: number = 0;
   public connectSchema: StandardSchemaV1 = connectSchema;
 
   public constructor(options: IBaseWalletAdapterOptions) {
-    if (!options.provider) {
+    if (options.provider === undefined) {
       throw new Error('Missing required option: provider');
     }
 
     super(options);
   }
 
-  async request<M extends KdaMethod>(
+  public async request<M extends KdaMethod>(
     args: KdaRequestArgs<M>,
   ): Promise<IKdaMethodMap[M]['response']> {
-    if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
+    // strict-boolean-expressions: compare explicitly rather than coerce to boolean
+    if (this.provider === undefined)
+      throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
     this.nonce++;
     const method = args.method;
@@ -94,11 +96,13 @@ export class ChainweaverWalletAdapterLegacy extends BaseWalletAdapter {
       }
 
       case 'kadena_disconnect': {
-        return Promise.resolve() as any;
+        return Promise.resolve() as unknown as Promise<
+          IKdaMethodMap['kadena_disconnect']['response']
+        >;
       }
 
       case 'kadena_quicksign_v1': {
-        if (!parsedParams || !('commandSigDatas' in parsedParams)) {
+        if (!('commandSigDatas' in parsedParams)) {
           throw new Error(
             'commandSigDatas param is required for kadena_quicksign_v1',
           );
@@ -122,7 +126,7 @@ export class ChainweaverWalletAdapterLegacy extends BaseWalletAdapter {
           id: this.nonce,
           jsonrpc: '2.0',
           result: data,
-        } as JsonRpcResponse<any>;
+        } as JsonRpcResponse<unknown>;
       }
 
       case 'kadena_sign_v1': {

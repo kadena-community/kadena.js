@@ -1,12 +1,13 @@
 import { Pact, createClient } from '@kadena/client';
-import { ChainId } from '@kadena/wallet-adapter-core';
+import type { ChainId } from '@kadena/wallet-adapter-core';
 
-interface ChainResponse {
+interface IChainResponse {
   account: string;
   guard: { pred: string; keys: string[] };
 }
 
-export const formatChainResponse = (data: any): ChainResponse => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const formatChainResponse = (data: any): IChainResponse => {
   return { account: data.account, guard: data.guard };
 };
 
@@ -18,7 +19,7 @@ export const checkVerifiedAccount = async (
 ): Promise<{
   status: string;
   message: string;
-  data: ChainResponse | undefined;
+  data: IChainResponse | undefined;
 }> => {
   const client = createClient();
 
@@ -41,6 +42,7 @@ export const checkVerifiedAccount = async (
           data: formatChainResponse(result.data),
         };
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.warn(`Error checking account on chain ${chainId}:`, e.message);
       // Continue to next chain

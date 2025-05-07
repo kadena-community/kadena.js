@@ -494,6 +494,7 @@ const App = () => {
                     accountTo: accountTo,
                     amount: 0.0001,
                     client: client,
+                    networkId: network?.networkId ?? 'mainnet01',
                   })
                     .then((result) => {
                       console.log('Transaction result:', result);

@@ -6,7 +6,7 @@
  *
  */
 
-import { IProvider } from '@kadena/wallet-adapter-core';
+import type { IProvider } from '@kadena/wallet-adapter-core';
 
 export interface IChainweaverProviderLegacy extends IProvider {}
 
@@ -20,6 +20,7 @@ export interface IChainweaverProviderLegacy extends IProvider {}
 export async function detectChainweaverProviderLegacy(options?: {
   silent?: boolean;
   timeout?: number;
+  // eslint-disable-next-line @rushstack/no-new-null
 }): Promise<IChainweaverProviderLegacy | null> {
   const { silent, timeout } = options ?? {};
 
