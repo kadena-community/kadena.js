@@ -535,20 +535,21 @@ export function TransferForm({
           <Stack marginBlockEnd={'xxxl'}>
             <Button
               variant="outlined"
-              onPress={() => {
-                navigate('/activities');
-              }}
+              onPress={() => setShowAdvancedOptions((v) => !v)}
             >
-              Abort
+              {showAdvancedOptions
+                ? 'Hide Advanced options'
+                : 'Show Advanced options'}
             </Button>
+
             <Stack justifyContent="flex-end" flex={1} gap="sm">
               <Button
-                variant="outlined"
-                onPress={() => setShowAdvancedOptions((v) => !v)}
+                variant="negative"
+                onPress={() => {
+                  navigate('/');
+                }}
               >
-                {showAdvancedOptions
-                  ? 'Hide Advanced options'
-                  : 'Show Advanced options'}
+                Abort
               </Button>
               <Button isDisabled={!formState.isValid} type="submit">
                 Create Transactions
