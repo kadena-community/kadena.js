@@ -1,6 +1,6 @@
 {
     "name": "@kadena/wallet-adapter-chainweaver-legacy",
-    "version": "0.0.1-beta.0",
+    "version": "0.0.1-beta.1",
     "exports": {
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
@@ -8,6 +8,7 @@
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/esm/index.d.ts",
+    "files": ["dist"],
     "scripts": {
       "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && api-extractor run",
       "format": "prettier . --cache --write",

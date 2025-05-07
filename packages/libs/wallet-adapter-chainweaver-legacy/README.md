@@ -8,11 +8,11 @@ API.
 ## Installation
 
 ```bash
-npm install wallet-adapter-chainweaver-legacy
+npm install @kadena/wallet-adapter-chainweaver-legacy
 # or
-yarn add wallet-adapter-chainweaver-legacy
+yarn add @kadena/wallet-adapter-chainweaver-legacy
 # or
-pmpm add wallet-adapter-chainweaver-legacy
+pmpm add @kadena/wallet-adapter-chainweaver-legacy
 ```
 
 ## Factory Usage
@@ -22,7 +22,7 @@ detects the Chainweaver provider and, if found, returns an adapter instance. If
 the Chainweaver provider is not available, detection returns `null`:
 
 ```ts
-import { chainweaverAdapterLegacy } from 'wallet-adapter-chainweaver-legacy';
+import { chainweaverAdapterLegacy } from '@kadena/wallet-adapter-chainweaver-legacy';
 
 (async () => {
   const adapterFactory = chainweaverAdapterLegacy();
@@ -52,7 +52,7 @@ For lower-level access, the following exports are available:
 import {
   ChainweaverWalletAdapterLegacy,
   detectChainweaverProviderLegacy,
-} from 'wallet-adapter-chainweaver-legacy';
+} from '@kadena/wallet-adapter-chainweaver-legacy';
 
 (async () => {
   const provider = await detectChainweaverProviderLegacy({ silent: true });
