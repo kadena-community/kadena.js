@@ -172,10 +172,15 @@ hw-app-kda-clone:
 '@kadena/chainweaver-wallet-connect-plugin':
   - changed-files:
       - any-glob-to-any-file: packages/apps/chainweaver-wallet-connect-plugin/*
-'wallet-adapter':
+'@kadena/wallet-adapter-core':
   - changed-files:
-      - any-glob-to-any-file:
-          - packages/libs/wallet-adapter-core/*
-          - packages/libs/wallet-adapter-react/*
-          - packages/libs/wallet-adapter-ecko/*
-          - packages/apps/wallet-adapter-react-example/*
+      - any-glob-to-any-file: packages/libs/wallet-adapter-core/*
+'@kadena/wallet-adapter-ecko':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-ecko/*
+'@kadena/wallet-adapter-react':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-react/*
+wallet-adapter-react-example:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/wallet-adapter-react-example/*
