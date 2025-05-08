@@ -4,6 +4,12 @@ import type {
 } from '@kadena/wallet-adapter-core';
 import { detectWalletConnectProvider } from './provider';
 
+export interface IWalletConnectFactoryOptions
+  extends IBaseWalletFactoryOptions {
+  relayUrl?: string;
+  projectId?: string;
+}
+
 /**
  * WalletConnect Adapter Factory
  *
@@ -19,7 +25,9 @@ import { detectWalletConnectProvider } from './provider';
  * @param options The options object from BaseWalletAdapter.
  * @returns An object containing the adapter factory details for WalletConnect.
  */
-export const walletConnectAdapter = ((options?: IBaseWalletFactoryOptions) => {
+export const walletConnectAdapter = ((
+  options?: IWalletConnectFactoryOptions,
+) => {
   return {
     name: 'WalletConnect',
     detect: async () => {

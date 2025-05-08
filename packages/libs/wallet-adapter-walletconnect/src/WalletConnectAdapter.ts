@@ -30,7 +30,7 @@ import { safeJsonParse } from './utils';
 // Fallback default values
 const projectId = 'b56e18d47c72ab683b10814fe9495694'; // Public API key (localhost)
 const relayUrl = 'wss://relay.walletconnect.com';
-const defaultNetworkId = 'testnet04';
+const defaultNetworkId = 'mainnet01';
 
 export class WalletConnectAdapter extends BaseWalletAdapter {
   public name: string = 'WalletConnect';
@@ -149,10 +149,12 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         let responses: any[] = [];
         if ('results' in response) {
           responses = response.results as any[];
+        } else if ('responses' in response) {
+          responses = response.responses as any[];
         } else if (isJsonRpcSuccess(response)) {
           responses = response.result.responses;
         }
-        console.log('quicksign responses', responses);
+
         if (Array.isArray(responses) && responses.length > 0) {
           return {
             id,
@@ -336,21 +338,8 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         })),
     );
 
-    if (accountInfoList.length === 0) {
-      console.log('Fallback for no accounts in wallet connect response');
-      return response.accounts.map((accountData) => ({
-        accountName: `k:${accountData.account.split(':')[2]}`,
-        networkId: accountData.account.split(':')[1],
-        contract: 'coin',
-        chainAccounts: [],
-        guard: {
-          keys: [accountData.publicKey],
-          pred: 'keys-all',
-        },
-      }));
-    }
-
     if (!accountInfoList.length) {
+      console.error('No accounts found in wallet connect response', response);
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
 

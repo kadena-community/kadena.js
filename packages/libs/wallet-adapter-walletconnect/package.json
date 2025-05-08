@@ -1,6 +1,12 @@
 {
   "name": "@kadena/wallet-adapter-walletconnect",
   "version": "0.0.1-beta.0",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/wallet-adapter-walletconnect"
+  },
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
@@ -8,6 +14,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
+  "files": ["dist"],
   "scripts": {
     "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "format": "prettier . --cache --write",
@@ -28,11 +35,10 @@
     "vitest": "^1.6.0"
   },
   "authors": [
-    "Francisco Miranda",
-
-  ],"contributors": [
+    "Francisco Miranda"
+  ],
+  "contributors": [
     "Bart Huijgen",
     "Danillo Felixdaal"
   ]
-
 }
