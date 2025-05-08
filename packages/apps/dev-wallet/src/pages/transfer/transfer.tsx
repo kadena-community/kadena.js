@@ -1,5 +1,6 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
+  Button,
   CompactStepper,
   Divider,
   Heading,
@@ -10,6 +11,7 @@ import {
 } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 
+import { Confirmation } from '@/Components/Confirmation/Confirmation';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import {
@@ -17,7 +19,9 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
+import { MonoClose } from '@kadena/kode-icons/system';
 import {
+  FocussedLayoutHeaderAside,
   FocussedLayoutHeaderContent,
   useNotifications,
 } from '@kadena/kode-ui/patterns';
@@ -223,6 +227,7 @@ export function Transfer() {
       reTxs.length > 0 && reTxs.some((tx) => !tx.continuation?.done);
 
     const onlyOneTx = txGroups.transfer.txs.length === 1 && reTxs.length === 0;
+
     return (
       <Stack gap={'md'} flexDirection={'column'}>
         {onlyOneTx && (
@@ -299,72 +304,98 @@ export function Transfer() {
           steps={steps as ICompactStepperItemProps[]}
         />
       </FocussedLayoutHeaderContent>
+
       <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
         {step === 'transfer' && (
-          <TransferForm
-            accountId={accountId}
-            activityId={urlActivityId}
-            onSubmit={async (data, redistribution) => {
-              if (!data.senderAccount) {
-                throw new Error('Sender account not found');
-              }
-              const receivers = data.receivers.filter(
-                Boolean,
-              ) as Required<IReceiver>[];
-              if (!isKeysetGuard(data.senderAccount.guard)) return;
-              if (!receivers.every((receiver) => receiver.discoveredAccount)) {
-                throw new Error('Discovered account not found');
-              }
+          <>
+            <FocussedLayoutHeaderAside>
+              <Confirmation
+                label="Abort"
+                onPress={() => {
+                  navigate('/');
+                }}
+                trigger={
+                  <Button
+                    isCompact
+                    variant="transparent"
+                    startVisual={<MonoClose />}
+                  >
+                    Abort
+                  </Button>
+                }
+              >
+                Are you sure you want to abort this transaction?
+              </Confirmation>
+            </FocussedLayoutHeaderAside>
 
-              const getEmpty = () => ['', []] as [string, ITransaction[]];
-              let redistributionGroup = getEmpty();
+            <TransferForm
+              accountId={accountId}
+              activityId={urlActivityId}
+              onSubmit={async (data, redistribution) => {
+                if (!data.senderAccount) {
+                  throw new Error('Sender account not found');
+                }
+                const receivers = data.receivers.filter(
+                  Boolean,
+                ) as Required<IReceiver>[];
+                if (!isKeysetGuard(data.senderAccount.guard)) return;
+                if (
+                  !receivers.every((receiver) => receiver.discoveredAccount)
+                ) {
+                  throw new Error('Discovered account not found');
+                }
 
-              if (redistribution.length > 0) {
-                redistributionGroup =
-                  (await createRedistribution(data, redistribution)) ??
+                const getEmpty = () => ['', []] as [string, ITransaction[]];
+                let redistributionGroup = getEmpty();
+
+                if (redistribution.length > 0) {
+                  redistributionGroup =
+                    (await createRedistribution(data, redistribution)) ??
+                    getEmpty();
+                }
+                const txGroup =
+                  (await createTransaction({ ...data, receivers })) ??
                   getEmpty();
-              }
-              const txGroup =
-                (await createTransaction({ ...data, receivers })) ?? getEmpty();
-              const updatedTxGroups = {
-                redistribution: {
-                  groupId: redistributionGroup[0] ?? '',
-                  txs: redistributionGroup[1] ?? [],
-                },
-                transfer: {
-                  groupId: txGroup[0] ?? '',
-                  txs: txGroup[1] ?? [],
-                },
-              };
-              setTxGroups(updatedTxGroups);
-              const activityId = crypto.randomUUID();
-              await activityRepository.addActivity({
-                data: {
-                  transferData: {
-                    ...data,
-                    receivers,
+                const updatedTxGroups = {
+                  redistribution: {
+                    groupId: redistributionGroup[0] ?? '',
+                    txs: redistributionGroup[1] ?? [],
                   },
-                  txGroups: {
-                    transfer: {
-                      groupId: updatedTxGroups.transfer.groupId,
+                  transfer: {
+                    groupId: txGroup[0] ?? '',
+                    txs: txGroup[1] ?? [],
+                  },
+                };
+                setTxGroups(updatedTxGroups);
+                const activityId = crypto.randomUUID();
+                await activityRepository.addActivity({
+                  data: {
+                    transferData: {
+                      ...data,
+                      receivers,
                     },
-                    redistribution: {
-                      groupId: updatedTxGroups.redistribution.groupId,
+                    txGroups: {
+                      transfer: {
+                        groupId: updatedTxGroups.transfer.groupId,
+                      },
+                      redistribution: {
+                        groupId: updatedTxGroups.redistribution.groupId,
+                      },
                     },
                   },
-                },
-                account: data.senderAccount,
-                networkUUID: activeNetwork!.uuid,
-                profileId: profile?.uuid ?? '',
-                status: 'Initiated',
-                type: 'Transfer',
-                uuid: activityId,
-              });
-              setStep('sign');
-              // then the page will stay on the sign step if refresh
-              navigate(`/transfer?activityId=${activityId}`);
-            }}
-          />
+                  account: data.senderAccount,
+                  networkUUID: activeNetwork!.uuid,
+                  profileId: profile?.uuid ?? '',
+                  status: 'Initiated',
+                  type: 'Transfer',
+                  uuid: activityId,
+                });
+                setStep('sign');
+                // then the page will stay on the sign step if refresh
+                navigate(`/transfer?activityId=${activityId}`);
+              }}
+            />
+          </>
         )}
         {step === 'completed' && (
           <Stack marginBlock={'lg'}>

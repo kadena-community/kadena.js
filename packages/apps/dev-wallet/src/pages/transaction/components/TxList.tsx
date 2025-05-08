@@ -37,6 +37,7 @@ export const TxList = React.memo(
   }) => {
     const { sign, client, getPublicKeyData } = useWallet();
     const [transactions, setTransactions] = React.useState<ITransaction[]>([]);
+    const [unSubmittedTxs, setUnSubmittedTxs] = React.useState(0);
     const navigate = usePatchedNavigate();
 
     useEffect(() => {
@@ -48,6 +49,20 @@ export const TxList = React.memo(
         setTransactions,
       );
     }, [txIds]);
+
+    const countUnSubmittedTransactions = (
+      transactions: ITransaction[],
+    ): number => {
+      return transactions.reduce((acc, tx) => {
+        if (!statusPassed(tx.status, 'submitted')) acc++;
+        return acc;
+      }, 0);
+    };
+
+    useEffect(() => {
+      if (!transactions) return;
+      setUnSubmittedTxs(countUnSubmittedTransactions(transactions));
+    }, [transactions]);
 
     const updateTx = useCallback(
       (updatedTx: ITransaction) =>
@@ -129,11 +144,10 @@ export const TxList = React.memo(
       const txs = await Promise.all(
         txIds.map(transactionRepository.getTransaction),
       );
-      const result = await Promise.all(txs.map(onSubmit));
+      await Promise.all(txs.map(onSubmit));
       if (onDone) {
         onDone();
       }
-      console.log(result);
     };
 
     const onPreflightAll = async () => {
@@ -146,7 +160,6 @@ export const TxList = React.memo(
       );
       const result = await Promise.all(txs.map(onPreflight));
       result.forEach(updateTx);
-      console.log(result);
     };
 
     const signedByYou = (tx: ITransaction) => {
@@ -159,35 +172,50 @@ export const TxList = React.memo(
     return (
       <>
         <FocussedLayoutHeaderAside>
-          <Confirmation
-            label="Abort"
-            onPress={() => {
-              transactions.forEach((tx) => {
-                if (tx.uuid) {
-                  transactionRepository.deleteTransaction(tx?.uuid);
-                }
-              });
+          {unSubmittedTxs === 0 ? (
+            <Button
+              isCompact
+              variant="transparent"
+              startVisual={<MonoClose />}
+              onPress={() => {
+                navigate('/');
+              }}
+            >
+              Go Back
+            </Button>
+          ) : (
+            <Confirmation
+              label="Abort"
+              onPress={() => {
+                transactions.forEach((tx) => {
+                  if (tx.uuid) {
+                    transactionRepository.deleteTransaction(tx?.uuid);
+                  }
+                });
 
-              navigate('/');
-            }}
-            trigger={
-              <Button
-                isCompact
-                variant="transparent"
-                startVisual={<MonoClose />}
-                isDisabled={
-                  !transactions[0] ||
-                  statusPassed(transactions[0].status, 'submitted')
-                }
-              >
-                {transactions.length > 1 ? 'Abort all' : 'Abort'}
-              </Button>
-            }
-          >
-            {transactions.length > 1
-              ? 'Are you sure you want to abort these transactions?'
-              : 'Are you sure you want to abort this transaction?'}
-          </Confirmation>
+                navigate('/');
+              }}
+              trigger={
+                <Button
+                  isCompact
+                  isDisabled={
+                    !transactions[0] ||
+                    statusPassed(transactions[0].status, 'submitted')
+                  }
+                  variant="transparent"
+                  startVisual={<MonoClose />}
+                >
+                  {transactions.length > 1
+                    ? `Abort ${unSubmittedTxs} transactions`
+                    : 'Abort'}
+                </Button>
+              }
+            >
+              {transactions.length > 1
+                ? 'Are you sure you want to abort these transactions?'
+                : 'Are you sure you want to abort this transaction?'}
+            </Confirmation>
+          )}
         </FocussedLayoutHeaderAside>
         <Stack flexDirection={'column'} gap={'lg'}>
           <Stack flexDirection={'row'} flexWrap="wrap" gap="md">

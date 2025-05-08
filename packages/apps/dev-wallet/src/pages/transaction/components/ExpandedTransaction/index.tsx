@@ -12,12 +12,18 @@ import {
   Tooltip,
 } from '@kadena/kode-ui';
 
+import { Confirmation } from '@/Components/Confirmation/Confirmation';
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
-import { ITransaction } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { copyTransactionAs } from '@/utils/copyTransactionAs';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
 import {
+  MonoClose,
   MonoContentCopy,
   MonoMoreVert,
   MonoShare,
@@ -29,6 +35,7 @@ import { execCodeParser } from '@kadena/pactjs-generator';
 import { useEffect, useMemo, useState } from 'react';
 import { CodeView } from '../code-components/CodeView';
 import { RenderSigner } from '../Signer';
+import { statusPassed } from '../TxPipeLine/utils';
 import { CommandView } from './../CommandView';
 import { TxPipeLine } from './../TxPipeLine';
 import { CmdView } from './components/CmdView/CmdView';
@@ -55,6 +62,7 @@ export function ExpandedTransaction({
   const { getPublicKeyData, sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
   const [showCommandDetails, setShowCommandDetails] = useState(false);
+  const navigate = usePatchedNavigate();
 
   const signAll = async () => {
     const signedTx = (await sign(transaction)) as IUnsignedCommand | ICommand;
@@ -238,7 +246,48 @@ export function ExpandedTransaction({
 
             {!sendDisabled && (
               <Stack>
-                <Stack justifyContent="flex-end" flex={1} gap="sm">
+                <Stack justifyContent="space-between" flex={1}>
+                  {statusPassed(transaction.status, 'success') ? (
+                    <Button
+                      variant="outlined"
+                      startVisual={<MonoClose />}
+                      onPress={() => {
+                        navigate('/');
+                      }}
+                    >
+                      Go Back
+                    </Button>
+                  ) : (
+                    <Confirmation
+                      label="Abort"
+                      onPress={() => {
+                        if (transaction.uuid) {
+                          transactionRepository.deleteTransaction(
+                            transaction?.uuid,
+                          );
+                        }
+
+                        if (isDialog) {
+                          return;
+                        }
+                        navigate('/');
+                      }}
+                      trigger={
+                        <Button
+                          isDisabled={statusPassed(
+                            transaction.status,
+                            'submitted',
+                          )}
+                          variant="outlined"
+                          startVisual={<MonoClose />}
+                        >
+                          Abort
+                        </Button>
+                      }
+                    >
+                      Are you sure you want to abort this transaction?
+                    </Confirmation>
+                  )}
                   <Button
                     variant="outlined"
                     onPress={() => setShowCommandDetails((v) => !v)}
