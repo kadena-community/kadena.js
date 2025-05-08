@@ -62,6 +62,7 @@ export const estimateGas = async (
       host: typeof host === 'string' ? host : undefined,
       networkId: cmd.networkId,
       chainId: cmd.meta.chainId,
-    }),
+      // fallback to minimum gas price if estimation fails
+    }).catch(() => 1e-8),
   };
 };
