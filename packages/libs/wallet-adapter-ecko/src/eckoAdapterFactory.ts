@@ -8,11 +8,11 @@ import { detectEckoProvider } from './provider';
  * Ecko Wallet Adapter Factory
  *
  * This function creates an Ecko wallet adapter factory that detects the Ecko wallet provider
- * and returns a new instance of the `EckoWalletAdapter`. The adapter method **lazily** imports
- * the `EckoWalletAdapter` class. `detect` is seperated so `WalletAdapterClient` can use it
+ * and returns a new instance of the `EckoAdapter`. The adapter method **lazily** imports
+ * the `EckoAdapter` class. `detect` is seperated so `WalletAdapterClient` can use it
  * to detect the provider without creating an adapter instance.
  *
- * By using `await import("./EckoWalletAdapter")`, this function only loads the Ecko Wallet adapter code
+ * By using `await import("./EckoAdapter")`, this function only loads the Ecko Wallet adapter code
  * when it is actually needed. This **lazy loading** can significantly reduce your initial bundle size,
  * especially in scenarios where multiple wallet adapters might be registered but not all of them
  * are necessarily used.
@@ -28,11 +28,11 @@ export const eckoAdapter = ((options?: IBaseWalletFactoryOptions) => {
       return await detectEckoProvider({ silent: true });
     },
     adapter: async (provider) => {
-      const { EckoWalletAdapter } = await import('./EckoWalletAdapter');
-      return new EckoWalletAdapter({ ...options, provider });
+      const { EckoAdapter } = await import('./EckoAdapter');
+      return new EckoAdapter({ ...options, provider });
     },
   };
 }) satisfies AdapterFactoryCreator;
 
-export { EckoWalletAdapter } from './EckoWalletAdapter';
+export { EckoAdapter } from './EckoAdapter';
 export { detectEckoProvider } from './provider';

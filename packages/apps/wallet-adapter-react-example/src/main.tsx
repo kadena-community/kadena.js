@@ -2,11 +2,11 @@
  * To showcase the Kadena Wallet Adapter, this file sets up a React application
  *
  * Adapters provide a `AdapterFactory` that allow for lazy loading of the adapter
- * code. This is done by using `await import("./EckoWalletAdapter")` in the
+ * code. This is done by using `await import("./EckoAdapter")` in the
  * `adapter` method of the factory. This means that the adapter code is only loaded
  *
  * Steps to follow if you add more wallets:
- * - Import the respective adapter (e.g., `import { xWalletAdapter } from "@kadena/wallet-adapter-xwallet";`).
+ * - Import the respective adapter (e.g., `import { xAdapter } from "@kadena/wallet-adapter-xwallet";`).
  * - Include it in the array for `adapters`.
  */
 

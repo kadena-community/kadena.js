@@ -1,2 +1,6 @@
-export * from "./types";
-export { eckoAdapter, EckoWalletAdapter, detectEckoProvider } from "./eckoAdapterFactory";
+export {
+  EckoAdapter,
+  detectEckoProvider,
+  eckoAdapter,
+} from './eckoAdapterFactory';
+export * from './types';
