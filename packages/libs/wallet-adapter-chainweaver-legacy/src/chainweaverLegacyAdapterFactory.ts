@@ -2,17 +2,17 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
-import { detectChainweaverProviderLegacy } from './provider';
+import { detectChainweaverLegacyProvider } from './provider';
 
 /**
  * ChainWeaver Wallet Adapter Factory
  *
  * This function creates an ChainWeaver wallet adapter factory that detects the ChainWeaver wallet provider
- * and returns a new instance of the `ChainWeaverWalletAdapter`. The adapter method **lazily** imports
- * the `ChainWeaverWalletAdapter` class. `detect` is seperated so `WalletAdapterClient` can use it
+ * and returns a new instance of the `ChainweaverAdapterLegacy`. The adapter method **lazily** imports
+ * the `ChainweaverAdapterLegacy` class. `detect` is seperated so `WalletAdapterClient` can use it
  * to detect the provider without creating an adapter instance.
  *
- * By using `await import("./ChainWeaverWalletAdapter")`, this function only loads the ChainWeaver Wallet adapter code
+ * By using `await import("./ChainweaverAdapterLegacy")`, this function only loads the ChainWeaver Wallet adapter code
  * when it is actually needed. This **lazy loading** can significantly reduce your initial bundle size,
  * especially in scenarios where multiple wallet adapters might be registered but not all of them
  * are necessarily used.
@@ -21,22 +21,22 @@ import { detectChainweaverProviderLegacy } from './provider';
  * @returns A wallet adapter factory for the Chainweaver Legacy wallet
  * @public
  */
-export const chainweaverAdapterLegacy = ((
+export const chainweaverLegacyAdapter = ((
   options?: IBaseWalletFactoryOptions,
 ) => {
   return {
     name: 'Chainweaver',
     detect: async () => {
-      return await detectChainweaverProviderLegacy({ silent: true });
+      return await detectChainweaverLegacyProvider({ silent: true });
     },
     adapter: async (provider) => {
-      const { ChainweaverWalletAdapterLegacy } = await import(
-        './ChainweaverWalletAdapterLegacy'
+      const { ChainweaverLegacyAdapter } = await import(
+        './ChainweaverLegacyAdapter'
       );
-      return new ChainweaverWalletAdapterLegacy({ ...options, provider });
+      return new ChainweaverLegacyAdapter({ ...options, provider });
     },
   };
 }) satisfies AdapterFactoryCreator;
 
-export { ChainweaverWalletAdapterLegacy } from './ChainweaverWalletAdapterLegacy';
-export { detectChainweaverProviderLegacy } from './provider';
+export { ChainweaverLegacyAdapter } from './ChainweaverLegacyAdapter';
+export { detectChainweaverLegacyProvider } from './provider';

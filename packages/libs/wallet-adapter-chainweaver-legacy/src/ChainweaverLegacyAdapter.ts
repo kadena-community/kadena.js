@@ -29,12 +29,12 @@ const connectSchema = v.object({
 
 /**
  * @public
- * ChainweaverWalletAdapterLegacy
+ * ChainweaverLegacyAdapter
  *
  * Overrides BaseWalletAdapter to map "kadena_*" calls to local Chainweaver endpoints
  * or minimal no-ops where necessary.
  */
-export class ChainweaverWalletAdapterLegacy extends BaseWalletAdapter {
+export class ChainweaverLegacyAdapter extends BaseWalletAdapter {
   public name: string = 'Chainweaver';
   public nonce: number = 0;
   public connectSchema: StandardSchemaV1 = connectSchema;

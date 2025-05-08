@@ -1776,8 +1776,8 @@ importers:
         specifier: workspace:*
         version: link:../../libs/kode-ui
       '@kadena/wallet-adapter-chainweaver-legacy':
-        specifier: workspace:*
-        version: link:../../libs/wallet-adapter-chainweaver-legacy
+        specifier: 0.0.1-beta.1
+        version: 0.0.1-beta.1(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.4.5)(utf-8-validate@5.0.10)
       '@kadena/wallet-adapter-core':
         specifier: workspace:*
         version: link:../../libs/wallet-adapter-core
@@ -6545,11 +6545,17 @@ packages:
   '@kadena/chainweb-node-client@0.7.0':
     resolution: {integrity: sha512-fyrwIJK80oYJReyFJGLORFp2NUckLbVUKlBElVn3RlPQa46YXkqabHsXQtbGipIs5L9N4W0ipmReQZxcamaGXQ==}
 
+  '@kadena/chainweb-node-client@0.9.1':
+    resolution: {integrity: sha512-UT3/udj/QuMM8HiN2cMqEEgX0RGRYVJm/iJgqCtXLizKMM9fpaZDl+BlrB2TM9lyC9KrFPHI3aDAmtfzBQ9ERg==}
+
   '@kadena/client@1.13.0':
     resolution: {integrity: sha512-bKkSh0hQ5eGP7L6YfBv8n2ZseVExzLFOy7nLF1Tcp21MbixDsRvq8VDZ0AoHsNBSrlXRfqvBqDp2Q2rgbjIHjA==}
 
   '@kadena/client@1.15.0':
     resolution: {integrity: sha512-XEIRKd+VG6z5/EqDz00T0lC6S5dp2qBp/xgO50aZ9a+WjB3I3Tz4x3oTm5Ev/LPlG92xcfC6LvbrkY1EqsAYYQ==}
+
+  '@kadena/client@1.17.1':
+    resolution: {integrity: sha512-ZUVLa9HArJlBJRBKtfacbPocC0BGTROx1txMq0eipIPBp2QgLA5hAUs6edNGWZRe1UwWK7XajkOQtkMNsJL8rg==}
 
   '@kadena/cryptography-utils@0.4.4':
     resolution: {integrity: sha512-8xUcGlmBuuR9PSW88eqJuW49EmcQeiplDlsvN1N++1Bw6KV4lXlBKlJn5TM8lxctGNpewtzlIUimQFIlMqm9aw==}
@@ -6574,6 +6580,12 @@ packages:
 
   '@kadena/spirekey-sdk@1.0.0':
     resolution: {integrity: sha512-4Un54uRvraKv654eb+OHdB0BXdmMM9v7eRMrPnH6C7XSX1D6Y+VocwSqfH2c1OEDxsIDmaGqac2Y+UXeEFHF5Q==}
+
+  '@kadena/wallet-adapter-chainweaver-legacy@0.0.1-beta.1':
+    resolution: {integrity: sha512-/c8SuxeLuefizCRMnwjqYslV3dqjzQah9G4ShGUwSATkO85sFPY46AbxT5VPGRJ9SyRmii/YL6AJzR9bldY5tA==}
+
+  '@kadena/wallet-adapter-core@0.0.1-beta.0':
+    resolution: {integrity: sha512-mM2MDqcFcxKbQjR4SCp32VLMScpjOdI7ENCuOP+CnvRVNjMNaH4EJjF3zRnIXkHRqeoiV9DqlNx2QP8/URJD+g==}
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
@@ -23593,6 +23605,14 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  '@kadena/chainweb-node-client@0.9.1(encoding@0.1.13)':
+    dependencies:
+      '@kadena/cryptography-utils': 0.4.4
+      '@kadena/pactjs': 0.4.3
+      cross-fetch: 3.1.8(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+
   '@kadena/client@1.13.0(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)':
     dependencies:
       '@kadena/chainweb-node-client': 0.6.3(encoding@0.1.13)
@@ -23624,6 +23644,34 @@ snapshots:
   '@kadena/client@1.15.0(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)':
     dependencies:
       '@kadena/chainweb-node-client': 0.7.0(encoding@0.1.13)
+      '@kadena/cryptography-utils': 0.4.4
+      '@kadena/pactjs': 0.4.3
+      '@walletconnect/sign-client': 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      cross-fetch: 3.1.8(encoding@0.1.13)
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - bufferutil
+      - encoding
+      - ioredis
+      - supports-color
+      - uWebSockets.js
+      - utf-8-validate
+
+  '@kadena/client@1.17.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@kadena/chainweb-node-client': 0.9.1(encoding@0.1.13)
       '@kadena/cryptography-utils': 0.4.4
       '@kadena/pactjs': 0.4.3
       '@walletconnect/sign-client': 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -23766,6 +23814,41 @@ snapshots:
       - supports-color
       - uWebSockets.js
       - utf-8-validate
+
+  '@kadena/wallet-adapter-chainweaver-legacy@0.0.1-beta.1(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.4.5)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@kadena/client': 1.17.1(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)
+      '@kadena/wallet-adapter-core': 0.0.1-beta.0(typescript@5.4.5)
+      valibot: 1.0.0(typescript@5.4.5)
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - bufferutil
+      - encoding
+      - ioredis
+      - supports-color
+      - typescript
+      - uWebSockets.js
+      - utf-8-validate
+
+  '@kadena/wallet-adapter-core@0.0.1-beta.0(typescript@5.4.5)':
+    dependencies:
+      '@kadena/client': link:packages/libs/client
+      '@standard-schema/spec': 1.0.0
+      eventemitter3: 5.0.1
+      valibot: 1.0.0(typescript@5.4.5)
+    transitivePeerDependencies:
+      - typescript
 
   '@kamilkisiela/fast-url-parser@1.1.4': {}
 
@@ -30336,7 +30419,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -42110,44 +42193,7 @@ snapshots:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
-
-  vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1):
-    dependencies:
-      '@vitest/expect': 1.6.0
-      '@vitest/runner': 1.6.0
-      '@vitest/snapshot': 1.6.0
-      '@vitest/spy': 1.6.0
-      '@vitest/utils': 1.6.0
-      acorn-walk: 8.3.3
-      chai: 4.4.1
-      debug: 4.3.4
-      execa: 8.0.1
-      local-pkg: 0.5.0
-      magic-string: 0.30.10
-      pathe: 1.1.2
-      picocolors: 1.0.1
-      std-env: 3.7.0
-      strip-literal: 2.1.0
-      tinybench: 2.8.0
-      tinypool: 0.8.4
-      vite: 5.4.9(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)
-      vite-node: 1.6.0(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)
-      why-is-node-running: 2.2.2
-    optionalDependencies:
-      '@types/node': 20.14.9
-      '@vitest/ui': 1.6.0(vitest@1.6.0)
-      happy-dom: 12.10.3
-      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
+      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1):
     dependencies:

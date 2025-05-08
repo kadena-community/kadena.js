@@ -1,5 +1,5 @@
 export {
-  ChainweaverWalletAdapterLegacy,
-  chainweaverAdapterLegacy,
-  detectChainweaverProviderLegacy,
-} from './chainweaverAdapterFactoryLegacy';
+  ChainweaverLegacyAdapter,
+  chainweaverLegacyAdapter,
+  detectChainweaverLegacyProvider,
+} from './chainweaverLegacyAdapterFactory';

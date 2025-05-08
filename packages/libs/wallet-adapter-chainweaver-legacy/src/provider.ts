@@ -8,7 +8,7 @@
 
 import type { IProvider } from '@kadena/wallet-adapter-core';
 
-export interface IChainweaverProviderLegacy extends IProvider {}
+export interface IChainweaverLegacyProvider extends IProvider {}
 
 /**
  * Detects the Chainweaver Legacy wallet provider.
@@ -17,11 +17,11 @@ export interface IChainweaverProviderLegacy extends IProvider {}
  * @returns A promise resolving to the Chainweaver Legacy provider or null.
  * @public
  */
-export async function detectChainweaverProviderLegacy(options?: {
+export async function detectChainweaverLegacyProvider(options?: {
   silent?: boolean;
   timeout?: number;
   // eslint-disable-next-line @rushstack/no-new-null
-}): Promise<IChainweaverProviderLegacy | null> {
+}): Promise<IChainweaverLegacyProvider | null> {
   const { silent, timeout } = options ?? {};
 
   if (silent !== undefined && typeof silent !== 'boolean') {
@@ -32,7 +32,7 @@ export async function detectChainweaverProviderLegacy(options?: {
     throw new Error('Expected option "timeout" to be a number.');
   }
 
-  const provider: IChainweaverProviderLegacy = {
+  const provider: IChainweaverLegacyProvider = {
     request: async () => {},
     on: () => {},
     off: () => {},

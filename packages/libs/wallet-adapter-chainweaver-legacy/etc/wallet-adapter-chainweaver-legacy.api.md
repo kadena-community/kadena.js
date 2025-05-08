@@ -14,14 +14,7 @@ import type { KdaRequestArgs } from '@kadena/wallet-adapter-core';
 import type { StandardSchemaV1 } from '@kadena/wallet-adapter-core';
 
 // @public
-export const chainweaverAdapterLegacy: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
-    name: string;
-    detect: () => Promise<IChainweaverProviderLegacy | null>;
-    adapter: (provider: IProvider) => Promise<ChainweaverWalletAdapterLegacy>;
-};
-
-// @public
-export class ChainweaverWalletAdapterLegacy extends BaseWalletAdapter {
+export class ChainweaverLegacyAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);
     // (undocumented)
     connectSchema: StandardSchemaV1;
@@ -34,14 +27,21 @@ export class ChainweaverWalletAdapterLegacy extends BaseWalletAdapter {
 }
 
 // @public
-export function detectChainweaverProviderLegacy(options?: {
+export const chainweaverLegacyAdapter: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
+    name: string;
+    detect: () => Promise<IChainweaverLegacyProvider | null>;
+    adapter: (provider: IProvider) => Promise<ChainweaverLegacyAdapter>;
+};
+
+// @public
+export function detectChainweaverLegacyProvider(options?: {
     silent?: boolean;
     timeout?: number;
-}): Promise<IChainweaverProviderLegacy | null>;
+}): Promise<IChainweaverLegacyProvider | null>;
 
 // Warnings were encountered during analysis:
 //
-// dist/esm/chainweaverAdapterFactoryLegacy.d.ts:21:5 - (ae-forgotten-export) The symbol "IChainweaverProviderLegacy" needs to be exported by the entry point index.d.ts
+// dist/esm/chainweaverLegacyAdapterFactory.d.ts:21:5 - (ae-forgotten-export) The symbol "IChainweaverLegacyProvider" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
