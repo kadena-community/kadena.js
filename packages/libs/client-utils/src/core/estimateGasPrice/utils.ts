@@ -75,16 +75,27 @@ export function calculateGasInformation(
   const gasData = blocks.items.map((block) => {
     const txData = block.payloadWithOutputs.transactions.map(
       ([payload, result]) => {
-        const tx = JSON.parse(base64UrlDecode(payload));
-        const command = JSON.parse(tx.cmd);
-        const gasConsumed = JSON.parse(base64UrlDecode(result)).gas;
-        return {
-          hash: tx.hash,
-          gasPrice: command.meta.gasPrice,
-          gasLimit: command.meta.gasLimit,
-          consumedGas: gasConsumed,
-          gasPaid: command.meta.gasPrice * gasConsumed,
-        };
+        try {
+          const tx = JSON.parse(base64UrlDecode(payload));
+          const command = JSON.parse(tx.cmd);
+          const gasConsumed = JSON.parse(base64UrlDecode(result)).gas;
+          return {
+            hash: tx.hash,
+            gasPrice: command.meta.gasPrice,
+            gasLimit: command.meta.gasLimit,
+            consumedGas: gasConsumed ?? command.meta.gasLimit,
+            gasPaid: command.meta.gasPrice * gasConsumed,
+          };
+        } catch (e) {
+          console.error('Error parsing transaction data:', e);
+          return {
+            hash: 'N/A',
+            gasPrice: 0,
+            gasLimit: 0,
+            consumedGas: 0,
+            gasPaid: 0,
+          };
+        }
       },
     );
 
@@ -151,5 +162,5 @@ export function calculateGasPrice(
 
   const estimate = median(mins);
 
-  return estimate || MINIMUM_GAS_PRICE;
+  return Math.max(estimate ?? 0, MINIMUM_GAS_PRICE);
 }
