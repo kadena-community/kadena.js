@@ -21,7 +21,7 @@ import { detectEckoProvider } from './provider';
  * @returns A wallet adapter factory for the Ecko wallet
  * @public
  */
-export const eckoAdapter = ((options?: IBaseWalletFactoryOptions) => {
+export const createEckoAdapter = ((options?: IBaseWalletFactoryOptions) => {
   return {
     name: 'Ecko',
     detect: async () => {

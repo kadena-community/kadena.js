@@ -1,6 +1,6 @@
 export {
   EckoAdapter,
+  createEckoAdapter,
   detectEckoProvider,
-  eckoAdapter,
 } from './eckoAdapterFactory';
 export * from './types';
