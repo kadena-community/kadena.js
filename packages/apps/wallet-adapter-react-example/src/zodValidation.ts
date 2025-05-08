@@ -1,5 +1,20 @@
 import { z } from 'zod';
 
+export interface IRPCError {
+  code: number;
+  message: string;
+  data?: any;
+}
+
+export function isRpcError(e: any): e is IRPCError {
+  return (
+    e !== null &&
+    typeof e === 'object' &&
+    typeof e.code === 'number' &&
+    typeof e.message === 'string'
+  );
+}
+
 /**
  * Shared error schema (JSON-RPC 2.0 error)
  */
