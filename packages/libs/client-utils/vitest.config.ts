@@ -24,6 +24,8 @@ const localConfig = defineConfig({
         'src/scripts/**/*',
         // its a script and auxiliary files that deploys marmalade namespaces and contracts
         'src/nodejs/marmalade/deployment/**/*',
+        // we have integration for this
+        'src/core/estimateGasPrice/estimateGasPrice.ts',
         'src/webauthn/**/*',
       ],
       provider: 'v8',

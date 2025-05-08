@@ -36,7 +36,7 @@ describe('fundExistingAccountOnTestnetCommand', () => {
         gasLimit: 2500,
         gasPrice: 1e-8,
         sender: 'faucetAccount',
-        ttl: 28800,
+        ttl: 900,
         chainId: '1',
       },
       networkId: 'testnet04',

@@ -76,7 +76,7 @@ describe('signWithKeypair', () => {
       {
         pubKey:
           '09e82da78d531e2d16852a923e9fe0f80f3b67a9b8d92c7f05e4782222252e12',
-        sig: '5bdcceab829c628afc2afe28d18e5efdc724f0ebc18e1aa10b03c07123f23bdd698a197aba39fc035c0a71c5c821f2f8e12fd6fb138dc33e6d2323b3bbd1b40e',
+        sig: '6d4db9f196afaa8dfb056aee782a5d74edc6fcd91d0eab06883007bf267d63f3c2b0f4bc91e1e3c50d434148eabfb21201c63fcccdfb44da086b347a35fa530e',
       },
       {
         pubKey:
@@ -89,12 +89,12 @@ describe('signWithKeypair', () => {
       {
         pubKey:
           '09e82da78d531e2d16852a923e9fe0f80f3b67a9b8d92c7f05e4782222252e12',
-        sig: '5bdcceab829c628afc2afe28d18e5efdc724f0ebc18e1aa10b03c07123f23bdd698a197aba39fc035c0a71c5c821f2f8e12fd6fb138dc33e6d2323b3bbd1b40e',
+        sig: '6d4db9f196afaa8dfb056aee782a5d74edc6fcd91d0eab06883007bf267d63f3c2b0f4bc91e1e3c50d434148eabfb21201c63fcccdfb44da086b347a35fa530e',
       },
       {
         pubKey:
           '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
-        sig: 'b921a16a15e2ffa36bda28fb1dcb98ef75e83d94ac2f2736013981d73759ead51945b1df21de254429772cdd6bfe8ea3c63001dfd06a2e0b0322abd3de2c7600',
+        sig: '3f554a1d62a81e67e3bc6d6779ab62b1e4d8dbe6bcd0e611985065a9d124653012eb37e085ddfb3505cd704ea2666bf3404eadee2d915308543583e7581d7d0d',
       },
     ]);
   });
@@ -151,7 +151,7 @@ describe('signWithKeypair', () => {
       {
         pubKey:
           '09e82da78d531e2d16852a923e9fe0f80f3b67a9b8d92c7f05e4782222252e12',
-        sig: 'fbc3819d977cf8f770c5fc6b5a75a3099969a7945cec6a5d2bd1e7dd0130a68935d52f1cfce62046db885370511904e00a9a9d2fee84f653f5d324dce9a82a00',
+        sig: '3725906aaa22b8fa6651c591343e3463539d9e64f774390aff0332f8bcbe7b2315bef57ef4d9b65a2893faebee33890ddaadb6bdf69d176e51be07e4c112200a',
       },
     ]);
   });
@@ -185,12 +185,12 @@ describe('signWithKeypair', () => {
       {
         pubKey:
           '09e82da78d531e2d16852a923e9fe0f80f3b67a9b8d92c7f05e4782222252e12',
-        sig: '5bdcceab829c628afc2afe28d18e5efdc724f0ebc18e1aa10b03c07123f23bdd698a197aba39fc035c0a71c5c821f2f8e12fd6fb138dc33e6d2323b3bbd1b40e',
+        sig: '6d4db9f196afaa8dfb056aee782a5d74edc6fcd91d0eab06883007bf267d63f3c2b0f4bc91e1e3c50d434148eabfb21201c63fcccdfb44da086b347a35fa530e',
       },
       {
         pubKey:
           '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
-        sig: 'b921a16a15e2ffa36bda28fb1dcb98ef75e83d94ac2f2736013981d73759ead51945b1df21de254429772cdd6bfe8ea3c63001dfd06a2e0b0322abd3de2c7600',
+        sig: '3f554a1d62a81e67e3bc6d6779ab62b1e4d8dbe6bcd0e611985065a9d124653012eb37e085ddfb3505cd704ea2666bf3404eadee2d915308543583e7581d7d0d',
       },
     ]);
   });
@@ -232,15 +232,15 @@ describe('signWithKeypair', () => {
 
     expect(signedTx1.sigs).toEqual([
       {
-        sig: '522264b48dfefacd06ac6edc4b72e37629f946dbb464396b069b035d7c11e0b4852ea0c9ef4da8aeafb964ed348c1d0a416d9736af87e8d936bbb2c1bc7d5c0e',
         pubKey:
           '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
+        sig: '7a71acbd6031af32a9ac3310307c094862cebc495b0444fd812b88e5a81511fb3ec7b43dcac84cf976fe5868342e3c858e236913b86ac483bff36e79c02dff0b',
       },
     ]);
 
     expect(signedTx2.sigs).toEqual([
       {
-        sig: 'fbc3819d977cf8f770c5fc6b5a75a3099969a7945cec6a5d2bd1e7dd0130a68935d52f1cfce62046db885370511904e00a9a9d2fee84f653f5d324dce9a82a00',
+        sig: '3725906aaa22b8fa6651c591343e3463539d9e64f774390aff0332f8bcbe7b2315bef57ef4d9b65a2893faebee33890ddaadb6bdf69d176e51be07e4c112200a',
         pubKey:
           '09e82da78d531e2d16852a923e9fe0f80f3b67a9b8d92c7f05e4782222252e12',
       },

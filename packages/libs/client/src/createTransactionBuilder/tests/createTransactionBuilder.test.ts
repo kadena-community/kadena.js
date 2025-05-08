@@ -140,7 +140,7 @@ describe('createTransactionBuilder', () => {
         gasLimit: 2500,
         gasPrice: 1e-8,
         sender: '',
-        ttl: 28800,
+        ttl: 900,
       },
       nonce: 'kjs:nonce:1690416000000',
     });
