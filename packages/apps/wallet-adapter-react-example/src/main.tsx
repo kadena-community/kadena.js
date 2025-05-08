@@ -12,7 +12,7 @@
 
 import '@kadena/kode-ui/global';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
-import { chainweaverAdapterLegacy } from '@kadena/wallet-adapter-chainweaver-legacy';
+import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweaver-legacy';
 import type { AdapterFactory } from '@kadena/wallet-adapter-core';
 import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
 import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
@@ -22,7 +22,10 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 // List all adapters you want to use here.
-const adapters: AdapterFactory[] = [eckoAdapter(), chainweaverAdapterLegacy()];
+const adapters: AdapterFactory[] = [
+  eckoAdapter(),
+  createChainweaverLegacyAdapter(),
+];
 
 // Render the React application, providing the adapters to KadenaWalletProvider.
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

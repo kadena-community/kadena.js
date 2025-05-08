@@ -21,7 +21,7 @@ import { detectChainweaverLegacyProvider } from './provider';
  * @returns A wallet adapter factory for the Chainweaver Legacy wallet
  * @public
  */
-export const chainweaverLegacyAdapter = ((
+export const createChainweaverLegacyAdapter = ((
   options?: IBaseWalletFactoryOptions,
 ) => {
   return {

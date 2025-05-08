@@ -27,7 +27,7 @@ export class ChainweaverLegacyAdapter extends BaseWalletAdapter {
 }
 
 // @public
-export const chainweaverLegacyAdapter: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
+export const createChainweaverLegacyAdapter: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
     name: string;
     detect: () => Promise<IChainweaverLegacyProvider | null>;
     adapter: (provider: IProvider) => Promise<ChainweaverLegacyAdapter>;
