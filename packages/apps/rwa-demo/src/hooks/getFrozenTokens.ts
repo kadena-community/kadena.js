@@ -31,6 +31,12 @@ export const useGetFrozenTokens = ({
     },
   });
 
+  const { data: subscriptionUnFreezeData } = useEventSubscriptionSubscription({
+    variables: {
+      qualifiedName: `${getAsset()}.TOKENS-UNFROZEN`,
+    },
+  });
+
   const init = async () => {
     if (!account || !investorAccount) return;
     const frozenRes = await getFrozenTokens({
@@ -49,15 +55,14 @@ export const useGetFrozenTokens = ({
   }, [account?.address, investorAccount]);
 
   useEffect(() => {
-    if (!subscriptionData?.events?.length) return;
-
-    subscriptionData.events?.map((event) => {
-      const params = JSON.parse(event.parameters ?? '[]');
-      if (params[0] === investorAccount && params.length === 2) {
-        setData(parseInt(params[1]));
-      }
-    });
-  }, [subscriptionData]);
+    if (
+      subscriptionData?.events?.length ||
+      subscriptionUnFreezeData?.events?.length
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      init();
+    }
+  }, [subscriptionData, subscriptionUnFreezeData]);
 
   return { data };
 };

@@ -1,59 +1,56 @@
 'use client';
 
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
+import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { Card, Stack, Text } from '@kadena/kode-ui';
-import { NotificationSlot } from '@kadena/kode-ui/patterns';
-import React from 'react';
+import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
+import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons';
+import { Button, Card, Stack, Themes, useTheme } from '@kadena/kode-ui';
 import {
-  cardClass,
-  cardWrapperClass,
-  footerClass,
-  wrapperClass,
-} from './style.css';
+  FocussedLayout,
+  FocussedLayoutFooter,
+  FocussedLayoutHeaderAside,
+  FocussedLayoutProvider,
+  FocussedLayoutTopBanner,
+} from '@kadena/kode-ui/patterns';
+import React from 'react';
+import { cardClass, focussedLayoutChildrenWrapperClass } from './style.css';
 
 const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return (
-    <Stack
-      width="100%"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      className={wrapperClass}
-    >
-      <NotificationSlot />
-      <Stack flexDirection="column" className={cardWrapperClass}>
-        <Card className={cardClass}>
-          <CookieConsent />
-          <GasPayableBanner />
-          {children}
-        </Card>
-        <Stack
-          className={footerClass}
-          width="100%"
-          justifyContent="space-between"
-          padding="md"
-        >
-          <Text>
-            Powered by{' '}
-            <a href="https://kadena.io" target="_blank" rel="noreferrer">
-              kadena.io
-            </a>
-          </Text>
+  const { theme, setTheme } = useTheme();
 
-          <Stack gap="md">
-            <a href="https://discord.com/invite/kadena">Discord</a>
-            <a href="https://docs.kadena.io">Help</a>
-            <a href="https://www.kadena.io/privacy-policy">Privacy</a>
-            <a href="https://www.kadena.io/terms-and-conditions">Terms</a>
-          </Stack>
+  const toggleTheme = (): void => {
+    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
+    setTheme(newTheme);
+  };
+
+  return (
+    <FocussedLayoutProvider>
+      <FocussedLayoutTopBanner>
+        <DemoBanner />
+        <CookieConsent />
+        <GraphOnlineBanner />
+        <GasPayableBanner />
+      </FocussedLayoutTopBanner>
+      <FocussedLayoutHeaderAside>
+        <Button
+          isCompact
+          variant="transparent"
+          onPress={() => toggleTheme()}
+          startVisual={theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />}
+        />
+      </FocussedLayoutHeaderAside>
+      <FocussedLayout>
+        <Stack className={focussedLayoutChildrenWrapperClass}>
+          <Card className={cardClass}>{children}</Card>
         </Stack>
-      </Stack>
-    </Stack>
+        <FocussedLayoutFooter />
+      </FocussedLayout>
+    </FocussedLayoutProvider>
   );
 };
 

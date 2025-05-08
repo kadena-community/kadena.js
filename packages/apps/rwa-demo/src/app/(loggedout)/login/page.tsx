@@ -4,7 +4,7 @@ import { EckoWalletConnect } from '@/components/EckoWalletConnect/EckoWalletConn
 import { MagicConnect } from '@/components/MagicConnect/MagicConnect';
 import { useAccount } from '@/hooks/account';
 import { MonoKeyboardArrowDown } from '@kadena/kode-icons';
-import { Button, ContextMenu, Stack, Text } from '@kadena/kode-ui';
+import { Button, ContextMenu, maskValue, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
@@ -29,7 +29,9 @@ const Home = () => {
                       onPress={() => selectAccount(account)}
                       style={{ width: '100%' }}
                     >
-                      {account.alias}
+                      {account.alias
+                        ? account.alias
+                        : maskValue(account.address)}
                     </Button>
                   </Stack>
                 ))}

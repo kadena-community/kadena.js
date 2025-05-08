@@ -1,4 +1,5 @@
 import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import { env } from '@/utils/env';
 
 interface ResponseType {
   id: string;
@@ -16,8 +17,7 @@ export interface IState {
   accounts: IWalletAccount[];
 }
 
-const walletOrigin = () =>
-  (window as any).walletUrl || 'https://wallet.kadena.io';
+const walletOrigin = () => (window as any).walletUrl || env.WALLET_URL;
 const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';
@@ -62,6 +62,7 @@ export async function getWalletConnection(page: string = '') {
   if (!wallet) {
     throw new Error('POPUP_BLOCKED');
   }
+
   const message = communicate(window, wallet);
   const waitForWallet = async () => {
     for (let i = 0; i < 50; i++) {
