@@ -47,7 +47,7 @@ export function Networks() {
     <>
       <SideBarBreadcrumbs icon={<MonoWifiTethering />} isGlobal>
         <SideBarBreadcrumbsItem href="/networks">
-          Networks
+          Network settings
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
@@ -84,7 +84,7 @@ export function Networks() {
             alignItems={'center'}
             marginBlockEnd={'md'}
           >
-            <Heading as="h4">Networks</Heading>
+            <Heading as="h4">Network settings</Heading>
 
             <Button
               variant="outlined"
