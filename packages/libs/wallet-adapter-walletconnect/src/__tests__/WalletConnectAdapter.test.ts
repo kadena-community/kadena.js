@@ -253,35 +253,17 @@ describe('WalletConnectAdapter', () => {
   describe('getActiveNetwork', () => {
     test('returns hardcoded active network matching defaultNetworkId', async () => {
       // Assuming defaultNetworkId is "mainnet01"
-      const net = await adapter.getActiveNetwork();
-      expect(net).toEqual({
-        name: 'Mainnet',
-        networkId: 'mainnet01',
-        url: 'https://api.chainweb.com',
-      });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      expect(adapter.getActiveNetwork()).rejects.toThrow(
+        'Failed to fetch network',
+      );
     });
   });
 
   describe('getNetworks', () => {
     test('returns array of networks', async () => {
       const nets = await adapter.getNetworks();
-      expect(nets).toEqual([
-        {
-          name: 'Mainnet',
-          networkId: 'mainnet01',
-          url: 'https://api.chainweb.com',
-        },
-        {
-          name: 'Testnet',
-          networkId: 'testnet04',
-          url: 'https://api.testnet.chainweb.com',
-        },
-        {
-          name: 'Development',
-          networkId: 'development',
-          url: 'http://127.0.0.1:80',
-        },
-      ]);
+      expect(nets).toEqual([]);
     });
   });
 

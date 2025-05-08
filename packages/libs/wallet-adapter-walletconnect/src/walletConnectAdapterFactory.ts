@@ -25,7 +25,7 @@ export interface IWalletConnectFactoryOptions
  * @param options The options object from BaseWalletAdapter.
  * @returns An object containing the adapter factory details for WalletConnect.
  */
-export const walletConnectAdapter = ((
+export const createWalletConnectAdapter = ((
   options?: IWalletConnectFactoryOptions,
 ) => {
   return {

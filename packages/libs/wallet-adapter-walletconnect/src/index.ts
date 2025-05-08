@@ -1,3 +1,3 @@
-export { walletConnectAdapter } from "./walletConnectAdapterFactory";
-export { WalletConnectAdapter } from "./WalletConnectAdapter";
-export { detectWalletConnectProvider } from "./provider";
+export { detectWalletConnectProvider } from './provider';
+export { WalletConnectAdapter } from './WalletConnectAdapter';
+export { createWalletConnectAdapter } from './walletConnectAdapterFactory';
