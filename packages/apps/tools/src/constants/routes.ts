@@ -8,6 +8,7 @@ export default {
   MODULE_EXPLORER: '/modules/explorer',
   FAUCET_EXISTING: '/faucet/existing',
   FAUCET_NEW: '/faucet/new',
+  FAUCET_EVM: '/faucet/evm',
   BALANCE: '/balance',
   TRANSFER: '/transactions/transfer',
 } as const;
