@@ -26,7 +26,7 @@ import {
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { token } from '@kadena/kode-ui/styles';
 import { execCodeParser } from '@kadena/pactjs-generator';
-import { ReactElement, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CodeView } from '../code-components/CodeView';
 import { RenderSigner } from '../Signer';
 import { CommandView } from './../CommandView';
@@ -42,7 +42,6 @@ export function ExpandedTransaction({
   showTitle,
   isDialog,
   onPreflight,
-  abortButtonContent,
 }: {
   transaction: ITransaction;
   contTx?: ITransaction;
@@ -52,7 +51,6 @@ export function ExpandedTransaction({
   sendDisabled?: boolean;
   showTitle?: boolean;
   isDialog?: boolean;
-  abortButtonContent?: ReactElement;
 }) {
   const { getPublicKeyData, sign } = useWallet();
   const [showShareTooltip, setShowShareTooltip] = useState(false);
@@ -134,7 +132,6 @@ export function ExpandedTransaction({
               level={2}
               title="In the queue"
               visual={<MonoTroubleshoot width={24} height={24} />}
-              supportingContent={abortButtonContent && abortButtonContent}
             >
               <Stack style={{ marginBlockStart: '-80px' }}>
                 <TxPipeLine

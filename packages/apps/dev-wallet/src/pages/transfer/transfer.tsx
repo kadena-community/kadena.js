@@ -1,6 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
-  Button,
   CompactStepper,
   Divider,
   Heading,
@@ -18,9 +17,7 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
-import { MonoClose } from '@kadena/kode-icons/system';
 import {
-  FocussedLayoutHeaderAside,
   FocussedLayoutHeaderContent,
   useNotifications,
 } from '@kadena/kode-ui/patterns';
@@ -296,17 +293,6 @@ export function Transfer() {
 
   return (
     <>
-      <FocussedLayoutHeaderAside>
-        <Button
-          isCompact
-          variant="transparent"
-          startVisual={<MonoClose />}
-          onPress={() => {
-            navigate('/');
-          }}
-        />
-      </FocussedLayoutHeaderAside>
-
       <FocussedLayoutHeaderContent>
         <CompactStepper
           stepIdx={getStepIdx(step)}

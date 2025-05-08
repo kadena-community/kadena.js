@@ -8,13 +8,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IUnsignedCommand } from '@kadena/client';
 import { Dialog } from '@kadena/kode-ui';
 import { isSignedCommand } from '@kadena/pactjs';
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ExpandedTransaction } from './ExpandedTransaction';
 import { containerClass } from './style.css';
 import { TxMinimized } from './TxMinimized';
@@ -28,14 +22,12 @@ export const TxContainer = React.memo(
     sendDisabled,
     onUpdate,
     onDone,
-    abortButtonContent,
   }: {
     transaction: ITransaction;
     as: 'tile' | 'expanded' | 'minimized';
     sendDisabled?: boolean;
     onUpdate?: (tx: ITransaction) => void;
     onDone?: (tx: ITransaction) => void;
-    abortButtonContent?: ReactElement;
   }) => {
     const [expandedModal, setExpandedModal] = useState(false);
     const { sign, client } = useWallet();
@@ -151,7 +143,6 @@ export const TxContainer = React.memo(
     const renderExpanded = (isDialog = false) => (
       <ExpandedTransaction
         transaction={localTransaction}
-        abortButtonContent={abortButtonContent && abortButtonContent}
         contTx={contTx}
         onSign={onExpandedSign(localTransaction)}
         onSubmit={(skipPreflight = false) =>

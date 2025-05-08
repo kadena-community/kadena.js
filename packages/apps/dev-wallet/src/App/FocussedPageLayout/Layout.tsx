@@ -35,7 +35,7 @@ export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
         <FocussedLayoutHeaderAside>
           <Button
             isCompact
-            variant="transparent"
+            variant="outlined"
             onPress={() => toggleTheme()}
             startVisual={
               theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />

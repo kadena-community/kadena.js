@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { TxList } from './components/TxList';
+import { statusPassed } from './components/TxPipeLine/utils';
 
 export const TransactionPage = () => {
   const navigate = usePatchedNavigate();
@@ -39,17 +40,25 @@ export const TransactionPage = () => {
     run();
   }, [transactionId, navigate, profile?.uuid]);
 
+  console.log('status', tx?.status);
   return (
     <>
       <FocussedLayoutHeaderAside>
         <Button
           isCompact
           variant="transparent"
-          startVisual={<MonoClose />}
+          isDisabled={!tx || statusPassed(tx.status, 'submitted')}
+          endVisual={<MonoClose />}
           onPress={() => {
+            if (tx?.uuid) {
+              transactionRepository.deleteTransaction(tx?.uuid);
+            }
+
             navigate('/');
           }}
-        />
+        >
+          Abort
+        </Button>
       </FocussedLayoutHeaderAside>
 
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>

@@ -37,6 +37,7 @@ export const Header: FC<IProps> = ({ logo }) => {
         marginInlineEnd="xs"
         justifyContent="flex-end"
         textAlign="right"
+        flexDirection="row-reverse"
         ref={rightRef}
       />
     </Stack>

@@ -5,16 +5,17 @@ import {
 
 import { Button, Stack, Text } from '@kadena/kode-ui';
 
-import { useWallet } from '@/modules/wallet/wallet.hook';
-import { ICommand, IUnsignedCommand } from '@kadena/client';
-import { MonoSignature } from '@kadena/kode-icons/system';
-import { isSignedCommand } from '@kadena/pactjs';
-import React, { ReactElement, useCallback, useEffect } from 'react';
-
+import { Confirmation } from '@/Components/Confirmation/Confirmation';
 import * as transactionService from '@/modules/transaction/transaction.service';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IStepKeys } from '@/pages/transfer/transfer';
 import { normalizeSigs } from '@/utils/normalizeSigs';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
+import { ICommand, IUnsignedCommand } from '@kadena/client';
+import { MonoClose, MonoSignature } from '@kadena/kode-icons/system';
+import { FocussedLayoutHeaderAside } from '@kadena/kode-ui/patterns';
+import { isSignedCommand } from '@kadena/pactjs';
+import React, { useCallback, useEffect } from 'react';
 import { TxContainer } from './TxContainer';
 import { statusPassed, steps } from './TxPipeLine/utils';
 
@@ -26,7 +27,6 @@ export const TxList = React.memo(
     showExpanded,
     onSign,
     setStep,
-    abortButtonContent,
   }: {
     txIds: string[];
     showExpanded?: boolean;
@@ -34,7 +34,6 @@ export const TxList = React.memo(
     onDone?: () => void;
     onSign?: (tx: ICommand) => void;
     setStep?: (step: IStepKeys) => void;
-    abortButtonContent?: ReactElement;
   }) => {
     const { sign, client, getPublicKeyData } = useWallet();
     const [transactions, setTransactions] = React.useState<ITransaction[]>([]);
@@ -158,133 +157,126 @@ export const TxList = React.memo(
     };
 
     return (
-      <Stack flexDirection={'column'} gap={'lg'}>
-        <Stack flexDirection={'row'} flexWrap="wrap" gap="md">
-          {transactions.length === 0 && <Text>No transactions</Text>}
-          {!showExpanded &&
-            transactions.map((tx) => (
-              <TxContainer
-                abortButtonContent={
-                  abortButtonContent ? (
-                    abortButtonContent
-                  ) : (
-                    <Button
-                      variant="negative"
-                      isCompact
-                      isDisabled={statusPassed(tx.status, 'submitted')}
-                      onPress={() => {
-                        if (tx?.uuid) {
-                          transactionRepository.deleteTransaction(tx?.uuid);
-                        }
-
-                        navigate('/');
-                      }}
-                    >
-                      Abort
-                    </Button>
-                  )
+      <>
+        <FocussedLayoutHeaderAside>
+          <Confirmation
+            label="Abort"
+            onPress={() => {
+              transactions.forEach((tx) => {
+                if (tx.uuid) {
+                  transactionRepository.deleteTransaction(tx?.uuid);
                 }
-                key={tx.uuid}
-                as="tile"
-                transaction={tx}
-                sendDisabled={sendDisabled}
-                onUpdate={updateTx}
-              />
-            ))}
-          {showExpanded &&
-            transactions.map((tx) => (
-              <Stack
-                key={tx.uuid}
-                flexDirection={'column'}
-                justifyContent={'flex-start'}
-                flex={1}
-                style={{ maxWidth: '100%' }}
-              >
-                <TxContainer
-                  abortButtonContent={
-                    abortButtonContent ? (
-                      abortButtonContent
-                    ) : (
-                      <Button
-                        variant="negative"
-                        isCompact
-                        isDisabled={statusPassed(tx.status, 'submitted')}
-                        onPress={() => {
-                          if (tx?.uuid) {
-                            transactionRepository.deleteTransaction(tx?.uuid);
-                          }
+              });
 
-                          navigate('/');
-                        }}
-                      >
-                        Abort
-                      </Button>
-                    )
-                  }
+              navigate('/');
+            }}
+            trigger={
+              <Button
+                isCompact
+                variant="transparent"
+                startVisual={<MonoClose />}
+                isDisabled={
+                  !transactions[0] ||
+                  statusPassed(transactions[0].status, 'submitted')
+                }
+              >
+                {transactions.length > 1 ? 'Abort all' : 'Abort'}
+              </Button>
+            }
+          >
+            {transactions.length > 1
+              ? 'Are you sure you want to abort these transactions?'
+              : 'Are you sure you want to abort this transaction?'}
+          </Confirmation>
+        </FocussedLayoutHeaderAside>
+        <Stack flexDirection={'column'} gap={'lg'}>
+          <Stack flexDirection={'row'} flexWrap="wrap" gap="md">
+            {transactions.length === 0 && <Text>No transactions</Text>}
+            {!showExpanded &&
+              transactions.map((tx) => (
+                <TxContainer
                   key={tx.uuid}
-                  as="expanded"
+                  as="tile"
                   transaction={tx}
                   sendDisabled={sendDisabled}
                   onUpdate={updateTx}
                 />
-              </Stack>
-            ))}
-        </Stack>
-        {!showExpanded && !transactions.every((tx) => signedByYou(tx)) && (
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Text>You can sign all transactions at once.</Text>
-            <Stack>
-              <Button isCompact onClick={signAll}>
-                <Stack>
-                  <MonoSignature scale={0.5} />
-                  Sign All Transactions
+              ))}
+            {showExpanded &&
+              transactions.map((tx) => (
+                <Stack
+                  key={tx.uuid}
+                  flexDirection={'column'}
+                  justifyContent={'flex-start'}
+                  flex={1}
+                  style={{ maxWidth: '100%' }}
+                >
+                  <TxContainer
+                    key={tx.uuid}
+                    as="expanded"
+                    transaction={tx}
+                    sendDisabled={sendDisabled}
+                    onUpdate={updateTx}
+                  />
                 </Stack>
-              </Button>
-            </Stack>
+              ))}
           </Stack>
-        )}
-        {!showExpanded &&
-          transactions.every((tx) => signedByYou(tx)) &&
-          !transactions.every((tx) => statusPassed(tx.status, 'signed')) && (
+          {!showExpanded && !transactions.every((tx) => signedByYou(tx)) && (
             <Stack gap={'sm'} flexDirection={'column'}>
-              <Text>
-                There is no action at the moment; share the transactions with
-                other signers to sign
-              </Text>
-            </Stack>
-          )}
-        {!showExpanded &&
-          !sendDisabled &&
-          transactions.every((tx) => statusPassed(tx.status, 'signed')) &&
-          transactions.find((tx) => tx.status === 'signed') && (
-            <Stack flexDirection={'column'} gap={'sm'}>
-              <Text>
-                All transactions are signed. Now you can call preflight
-              </Text>
+              <Text>You can sign all transactions at once.</Text>
               <Stack>
-                <Button isCompact onPress={() => onPreflightAll()}>
-                  Preflight transactions
+                <Button isCompact onClick={signAll}>
+                  <Stack>
+                    <MonoSignature scale={0.5} />
+                    Sign All Transactions
+                  </Stack>
                 </Button>
               </Stack>
             </Stack>
           )}
-        {!showExpanded &&
-          !sendDisabled &&
-          transactions.every((tx) => statusPassed(tx.status, 'preflight')) &&
-          transactions.find((tx) => tx.status === 'preflight') && (
-            <Stack flexDirection={'column'} gap={'sm'}>
-              <Text>
-                All transactions are signed. Now you can send them to the
-                blockchain
-              </Text>
-              <Stack>
-                <Button isCompact onPress={() => onSendAll()}>
-                  Send transactions
-                </Button>
+          {!showExpanded &&
+            transactions.every((tx) => signedByYou(tx)) &&
+            !transactions.every((tx) => statusPassed(tx.status, 'signed')) && (
+              <Stack gap={'sm'} flexDirection={'column'}>
+                <Text>
+                  There is no action at the moment; share the transactions with
+                  other signers to sign
+                </Text>
               </Stack>
-            </Stack>
-          )}
-      </Stack>
+            )}
+          {!showExpanded &&
+            !sendDisabled &&
+            transactions.every((tx) => statusPassed(tx.status, 'signed')) &&
+            transactions.find((tx) => tx.status === 'signed') && (
+              <Stack flexDirection={'column'} gap={'sm'}>
+                <Text>
+                  All transactions are signed. Now you can call preflight
+                </Text>
+                <Stack>
+                  <Button isCompact onPress={() => onPreflightAll()}>
+                    Preflight transactions
+                  </Button>
+                </Stack>
+              </Stack>
+            )}
+          {!showExpanded &&
+            !sendDisabled &&
+            transactions.every((tx) => statusPassed(tx.status, 'preflight')) &&
+            transactions.find((tx) => tx.status === 'preflight') && (
+              <Stack flexDirection={'column'} gap={'sm'}>
+                <Text>
+                  All transactions are signed. Now you can send them to the
+                  blockchain
+                </Text>
+                <Stack>
+                  <Button isCompact onPress={() => onSendAll()}>
+                    Send transactions
+                  </Button>
+                </Stack>
+              </Stack>
+            )}
+        </Stack>
+      </>
     );
   },
   (prev, next) => {
