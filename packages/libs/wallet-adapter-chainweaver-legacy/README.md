@@ -44,7 +44,7 @@ For lower-level access, the following exports are available:
 
 - **`ChainweaverWalletAdapterLegacy`**: The adapter class you can instantiate
   directly.
-- **`detectChainweaverProvider:egacy`**: A standalone function that checks
+- **`detectChainweaverProviderLegacy`**: A standalone function that checks
   whether the Chainweaver wallet provider is present. It returns the provider if
   found, or `null` otherwise.
 
