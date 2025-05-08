@@ -1,32 +1,65 @@
 <script lang="ts">
+import { defineComponent } from 'vue';
 import { HalfCircleSpinner } from 'epic-spinners';
 import writeMessage from './utils/writeMessage';
 import readMessage from './utils/readMessage';
+import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
+import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
 
 export default {
-  data: () => ({
-    account: '',
-    messageFromChain: '',
-    messageToWrite: '',
-    writeInProgress: false,
-  }),
+  name: 'App',
+  components: { HalfCircleSpinner },
+
+  data() {
+    return {
+      selectedWallet: '' as string,
+      account: '' as string,
+      messageFromChain: '' as string,
+      messageToWrite: '' as string,
+      writeInProgress: false as boolean,
+      walletClient: null as WalletAdapterClient | null,
+    };
+  },
 
   methods: {
+    async connectWallet() {
+      try {
+        const adapter = await eckoAdapter();
+        if (!adapter) {
+          console.error('Ecko Wallet not found. Please install the extension.');
+          return;
+        }
+
+        this.walletClient = new WalletAdapterClient([adapter]);
+
+        await this.walletClient.init();
+
+        const { accountName } = await this.walletClient.connect(adapter.name);
+
+        this.account = accountName;
+      } catch (err) {
+        console.error('Wallet connection failed:', err);
+      }
+    },
+
     async readMessage() {
       this.messageFromChain = await readMessage({ account: this.account });
     },
+
     async writeMessage() {
       this.writeInProgress = true;
-      await writeMessage({
-        account: this.account,
-        messageToWrite: this.messageToWrite,
-      });
-      this.writeInProgress = false;
-      this.messageToWrite;
+      try {
+        await writeMessage({
+          account: this.account,
+          messageToWrite: this.messageToWrite,
+          walletClient: this.walletClient,
+        });
+        this.writeInProgress = false;
+      } catch (err) {
+        console.error('Error writing message', err);
+        this.writeInProgress = false;
+      }
     },
-  },
-  components: {
-    HalfCircleSpinner,
   },
 };
 </script>
@@ -47,24 +80,44 @@ export default {
         </p>
         <p class="note">
           Use the form below to interact with the Kadena blockchain using
-          <code>@kadena/client</code> and edit
-          <code>src/pages/index.tsx</code> to get started.
+          <code>@kadena/client</code> and edit <code>src/App.vue</code> to get
+          started.
         </p>
       </div>
     </section>
+
+    <!-- Wallet / Message UI -->
     <section class="contentWrapper">
+      <!-- Wallet card -->
+      <div class="card">
+        <h4 class="cardTitle">Wallet</h4>
+
+        <fieldset class="fieldset">
+          <label for="wallet-select" class="fieldLabel">Select Wallet</label>
+          <select id="wallet-select" v-model="selectedWallet" class="input">
+            <option value="">-- select a wallet --</option>
+            <option value="Ecko">Ecko</option>
+          </select>
+        </fieldset>
+
+        <div class="buttonWrapper">
+          <button @click="connectWallet" class="button">Connect Wallet</button>
+        </div>
+
+        <fieldset class="fieldset">
+          <label for="account" class="fieldLabel">Connected Account</label>
+          <textarea
+            id="account"
+            v-model="account"
+            readonly
+            class="input codeFont nonScrollable"
+          ></textarea>
+        </fieldset>
+      </div>
       <div class="blockChain">
+        <!-- Write card -->
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
-          <fieldset class="fieldset">
-            <label for="account" class="fieldLabel">My Account</label>
-            <input
-              id="account"
-              v-model="account"
-              placeholder="Please enter a valid k:account"
-              class="input codeFont"
-            />
-          </fieldset>
           <fieldset class="fieldset">
             <label for="write-message" class="fieldLabel">Write Message</label>
             <textarea
@@ -74,22 +127,24 @@ export default {
               class="input"
             ></textarea>
           </fieldset>
+
           <div class="buttonWrapper">
             <half-circle-spinner
+              v-if="writeInProgress"
               :animation-duration="1000"
               :size="30"
               color="#ff1d5e"
-              v-show="writeInProgress"
             />
             <button
               @click="writeMessage"
-              :disabled="!messageToWrite || writeInProgress"
+              :disabled="!messageToWrite || writeInProgress || !account"
               class="button"
             >
               Write
             </button>
           </div>
         </div>
+
         <div class="card">
           <h4 class="cardTitle">Read from the blockchain</h4>
           <fieldset class="fieldset">
@@ -102,7 +157,9 @@ export default {
             ></textarea>
           </fieldset>
           <div class="buttonWrapper">
-            <button @click="readMessage" :disabled="!account">Read</button>
+            <button class="button" @click="readMessage" :disabled="!account">
+              Read
+            </button>
           </div>
         </div>
       </div>
