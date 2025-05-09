@@ -518,37 +518,38 @@ export function TransferForm({
               </Notification>
             </Stack>
           )}
-          <Stack
-            alignItems={'flex-start'}
-            gap="lg"
-            marginBlockStart={'lg'}
-            marginBlockEnd={'xxxl'}
-            flexDirection={'column'}
-          >
-            {!!error && error.target === 'general' && (
+          {!!error && error.target === 'general' && (
+            <Stack
+              alignItems={'flex-start'}
+              gap="lg"
+              marginBlockStart={'lg'}
+              marginBlockEnd={'xxxl'}
+              flexDirection={'column'}
+            >
               <Notification type="inline" role="alert" intent="negative">
                 {error.message}
               </Notification>
-            )}
-          </Stack>
+            </Stack>
+          )}
 
           <Stack marginBlockEnd={'xxxl'}>
             <Button
               variant="outlined"
-              onPress={() => {
-                navigate('/activities');
-              }}
+              onPress={() => setShowAdvancedOptions((v) => !v)}
             >
-              Abort
+              {showAdvancedOptions
+                ? 'Hide Advanced options'
+                : 'Show Advanced options'}
             </Button>
+
             <Stack justifyContent="flex-end" flex={1} gap="sm">
               <Button
-                variant="outlined"
-                onPress={() => setShowAdvancedOptions((v) => !v)}
+                variant="negative"
+                onPress={() => {
+                  navigate('/');
+                }}
               >
-                {showAdvancedOptions
-                  ? 'Hide Advanced options'
-                  : 'Show Advanced options'}
+                Abort
               </Button>
               <Button isDisabled={!formState.isValid} type="submit">
                 Create Transactions

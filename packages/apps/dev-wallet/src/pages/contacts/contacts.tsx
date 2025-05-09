@@ -1,5 +1,4 @@
 import { ConfirmDeletion } from '@/Components/ConfirmDeletion/ConfirmDeletion';
-import { ListItem } from '@/Components/ListItem/ListItem';
 import { usePrompt } from '@/Components/PromptProvider/Prompt';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import {
@@ -7,25 +6,19 @@ import {
   IContact,
 } from '@/modules/contact/contact.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { MonoContacts } from '@kadena/kode-icons/system';
+import { Button, Notification, NotificationHeading } from '@kadena/kode-ui';
 import {
-  MonoAccountBalanceWallet,
-  MonoContacts,
-  MonoMoreVert,
-} from '@kadena/kode-icons/system';
-import {
-  Button,
-  ContextMenu,
-  ContextMenuItem,
-  Heading,
-  Stack,
-  Text,
-} from '@kadena/kode-ui';
-import {
+  CompactTable,
+  CompactTableFormatters,
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
   SideBarBreadcrumbsItem,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useState } from 'react';
-import { panelClass } from '../home/style.css';
 import { ContactForm } from './Components/ContactForm';
 
 export function Contacts() {
@@ -56,89 +49,89 @@ export function Contacts() {
         />
       )}
 
-      <Stack
-        width="100%"
-        flexDirection={'column'}
-        className={panelClass}
-        gap={'md'}
-      >
-        <Stack justifyContent={'space-between'}>
-          <Heading variant="h3">Contacts</Heading>
-
-          <Button
-            onPress={() => {
-              setEditContact(undefined);
-              setIsRightAsideExpanded(true);
-            }}
-            variant="outlined"
-            isCompact
-          >
-            Add Contact
-          </Button>
-        </Stack>
-        <Stack flexDirection={'column'}>
-          {contacts.map((contact) => (
-            <ListItem key={contact.uuid}>
-              <Stack
-                key={contact.uuid}
-                gap="sm"
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                flex={1}
+      <SectionCard stack="vertical" variant="main">
+        <SectionCardContentBlock>
+          <SectionCardHeader
+            title="Contacts"
+            actions={
+              <Button
+                onPress={() => {
+                  setEditContact(undefined);
+                  setIsRightAsideExpanded(true);
+                }}
+                variant="outlined"
+                isCompact
               >
-                <Stack gap={'sm'}>
-                  <Heading variant="h6">{contact.name}</Heading>
-                  {contact.email && <Text>({contact.email})</Text>}
-                </Stack>
-                <Stack flexDirection={'row'} gap={'sm'} alignItems={'center'}>
-                  <Stack gap={'sm'}>
-                    <Text>
-                      <MonoAccountBalanceWallet />
-                    </Text>
-                    <Text>{contact.account.address}</Text>
-                  </Stack>
-
-                  <ContextMenu
-                    placement="bottom end"
-                    trigger={
-                      <Button
-                        endVisual={<MonoMoreVert />}
-                        variant="transparent"
-                        isCompact
-                      />
-                    }
-                  >
-                    <ContextMenuItem
-                      label="Edit"
-                      onClick={() => {
-                        setIsRightAsideExpanded(true);
-                        setEditContact(contact);
-                      }}
-                    />
-
-                    <ContextMenuItem
-                      label="Delete"
-                      onClick={async () => {
-                        const confirm = await prompt((resolve, reject) => (
-                          <ConfirmDeletion
-                            onCancel={() => reject()}
-                            onDelete={() => resolve(true)}
-                            title="Delete Contact"
-                            description="Are you sure you want to delete this contact?"
-                          />
-                        ));
-                        if (confirm) {
-                          await contactRepository.deleteContact(contact.uuid);
-                        }
-                      }}
-                    />
-                  </ContextMenu>
-                </Stack>
-              </Stack>
-            </ListItem>
-          ))}
-        </Stack>
-      </Stack>
+                Add Contact
+              </Button>
+            }
+          />
+          <SectionCardBody>
+            {contacts.length > 0 ? (
+              <CompactTable
+                fields={[
+                  { label: 'Name', key: 'name', width: '15%' },
+                  { label: 'Email', key: 'email', width: '35%' },
+                  {
+                    label: 'Address',
+                    key: 'account.address',
+                    width: '50%',
+                    render: CompactTableFormatters.FormatAccount({
+                      headLength: 15,
+                      tailLength: 15,
+                    }),
+                  },
+                  {
+                    label: '',
+                    key: '',
+                    width: '10%',
+                    render: CompactTableFormatters.FormatContextMenu([
+                      {
+                        label: 'Edit',
+                        trigger: (value) => {
+                          setIsRightAsideExpanded(true);
+                          setEditContact(value);
+                        },
+                      },
+                      {
+                        label: 'Delete',
+                        trigger: async (value) => {
+                          const confirm = await prompt((resolve, reject) => {
+                            return (
+                              <ConfirmDeletion
+                                onCancel={() => reject()}
+                                onDelete={() => resolve(true)}
+                                title="Delete Contact"
+                                description="Are you sure you want to delete this contact?"
+                              />
+                            );
+                          });
+                          if (confirm) {
+                            await contactRepository.deleteContact(value.uuid);
+                          }
+                        },
+                      },
+                    ]),
+                  },
+                ]}
+                data={contacts}
+                variant="open"
+              />
+            ) : (
+              <Notification
+                intent="info"
+                isDismissable={false}
+                role="alert"
+                type="inlineStacked"
+              >
+                <NotificationHeading>
+                  No contacts created yet
+                </NotificationHeading>
+              </Notification>
+            )}
+          </SectionCardBody>
+        </SectionCardContentBlock>
+      </SectionCard>
     </>
   );
 }

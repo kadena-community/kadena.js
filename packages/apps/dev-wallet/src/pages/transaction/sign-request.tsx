@@ -7,8 +7,12 @@ import { useRequests } from '@/modules/communication/communication.provider';
 import { addTransaction } from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
+import { MonoClose } from '@kadena/kode-icons/system';
 import { Button, Card, Notification, Stack, Text } from '@kadena/kode-ui';
-import { CardContentBlock } from '@kadena/kode-ui/patterns';
+import {
+  CardContentBlock,
+  FocussedLayoutHeaderAside,
+} from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TxList } from './components/TxList';
@@ -67,66 +71,69 @@ export const SignRequest = ({
   }
 
   return (
-    <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
-      <Card fullWidth>
-        <CardContentBlock title="Sign Request">
-          {!tx && <Text>No transaction</Text>}
-
-          <Stack gap={'sm'} flexDirection={'row'}>
-            <Text bold color="emphasize">
-              Request ID:
-            </Text>
-            <Text variant="code">{requestId}</Text>
-          </Stack>
-        </CardContentBlock>
-      </Card>
-      <Stack
-        flexDirection={'column'}
-        gap={'lg'}
-        overflow="auto"
-        marginBlockStart="md"
-      >
-        <TxList
-          abortButtonContent={
-            <Button
-              variant="negative"
-              isCompact
-              onClick={() => {
-                if (tx?.uuid) {
-                  transactionRepository.deleteTransaction(tx?.uuid);
-                }
-                if (requestId) {
-                  const request = requests.get(requestId);
-                  if (request) {
-                    console.log('resolving request', request);
-                    request.reject({ status: 'rejected' });
-                  }
-                }
-                if (onAbort) onAbort();
-              }}
-            >
-              Reject
-            </Button>
-          }
-          onDone={() => {
-            console.log('done');
-          }}
-          txIds={tx ? [tx.uuid] : []}
-          showExpanded={true}
-          sendDisabled={true}
-          onSign={(tx) => {
+    <>
+      <FocussedLayoutHeaderAside>
+        <Button
+          isCompact
+          variant="transparent"
+          endVisual={<MonoClose />}
+          onPress={() => {
+            if (tx?.uuid) {
+              transactionRepository.deleteTransaction(tx?.uuid);
+            }
             if (requestId) {
               const request = requests.get(requestId);
               if (request) {
                 console.log('resolving request', request);
-                request.resolve({ status: 'signed', transaction: tx });
-                if (onSign) onSign();
+                request.reject({ status: 'rejected' });
               }
             }
+            if (onAbort) onAbort();
           }}
-        />
+        >
+          Abort
+        </Button>
+      </FocussedLayoutHeaderAside>
+      <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
+        <Card fullWidth>
+          <CardContentBlock title="Sign Request">
+            {!tx && <Text>No transaction</Text>}
+
+            <Stack gap={'sm'} flexDirection={'row'}>
+              <Text bold color="emphasize">
+                Request ID:
+              </Text>
+              <Text variant="code">{requestId}</Text>
+            </Stack>
+          </CardContentBlock>
+        </Card>
+        <Stack
+          flexDirection={'column'}
+          gap={'lg'}
+          overflow="auto"
+          marginBlockStart="md"
+        >
+          <TxList
+            onDone={() => {
+              console.log('done');
+            }}
+            txIds={tx ? [tx.uuid] : []}
+            showExpanded={true}
+            sendDisabled={true}
+            onSign={(tx) => {
+              if (requestId) {
+                const request = requests.get(requestId);
+                if (request) {
+                  console.log('resolving request', request);
+                  request.resolve({ status: 'signed', transaction: tx });
+                  if (onSign) onSign();
+                }
+              }
+            }}
+          />
+        </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };
 

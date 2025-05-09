@@ -10,6 +10,7 @@ import {
   MonoCloudSync,
   MonoFactCheck,
   MonoInfo,
+  MonoOpenInFull,
   MonoRefresh,
   MonoSignature,
   MonoViewInAr,
@@ -35,6 +36,7 @@ export function TxPipeLine({
   onSubmit,
   sendDisabled,
   onPreflight,
+  onView,
 }: {
   tx: ITransaction;
   contTx?: ITransaction;
@@ -43,6 +45,7 @@ export function TxPipeLine({
   onSubmit?: (skipPreflight?: boolean) => void;
   onPreflight?: () => void;
   sendDisabled?: boolean;
+  onView?: () => void;
 }) {
   const showAfterCont = !contTx || variant === 'expanded';
   return (
@@ -57,6 +60,7 @@ export function TxPipeLine({
           onPreflight,
           sendDisabled,
           contTx,
+          onView,
         }}
       />
     </Stack>
@@ -72,6 +76,7 @@ function TxStatusList({
   sendDisabled,
   contTx,
   onPreflight = () => {},
+  onView,
 }: {
   variant: 'tile' | 'expanded' | 'minimized';
   showAfterCont: boolean;
@@ -81,6 +86,7 @@ function TxStatusList({
   onPreflight?: () => void;
   sendDisabled?: boolean;
   contTx?: ITransaction | null;
+  onView?: () => void;
 }) {
   const { getPublicKeyData, client } = useWallet();
   const signers = useMemo(() => normalizeSigs(tx), [tx]);
@@ -365,7 +371,19 @@ function TxStatusList({
   if (variant === 'minimized') return statusList.pop() as JSX.Element;
   return (
     <>
-      <Heading variant="h6">Status</Heading>
+      <Stack alignItems="center" justifyContent="space-between">
+        <Heading variant="h6">Status</Heading>
+        {onView && (
+          <Button
+            variant="outlined"
+            isCompact
+            startVisual={<MonoOpenInFull />}
+            onPress={onView}
+          >
+            Expand
+          </Button>
+        )}
+      </Stack>
       <Stack className={statusListWrapperClass} gap="sm" width="100%">
         {variant === 'expanded' && (
           <Stack

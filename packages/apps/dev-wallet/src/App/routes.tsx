@@ -100,7 +100,10 @@ export const Routes: FC = () => {
         >
           <Route element={<FocussedPageLayout />}>
             <Route path="/transfer" element={<Transfer />} />
-
+            <Route
+              path="/transaction/:transactionId"
+              element={<TransactionPage />}
+            />
             <Route
               path="/sign-request/:requestId"
               element={<SignRequestPage />}
@@ -113,10 +116,7 @@ export const Routes: FC = () => {
 
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccountPage />} />
-            <Route
-              path="/transaction/:transactionId"
-              element={<TransactionPage />}
-            />
+
             <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
             <Route

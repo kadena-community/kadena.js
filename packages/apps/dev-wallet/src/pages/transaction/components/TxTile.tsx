@@ -1,8 +1,11 @@
-import { ITransaction } from '@/modules/transaction/transaction.repository';
+import {
+  ITransaction,
+  transactionRepository,
+} from '@/modules/transaction/transaction.repository';
 
 import {
   MonoCheck,
-  MonoOpenInFull,
+  MonoDelete,
   MonoPending,
   MonoShare,
   MonoSignature,
@@ -12,6 +15,7 @@ import { Button, Stack, Text } from '@kadena/kode-ui';
 
 import { IPactCommand } from '@kadena/client';
 
+import { Confirmation } from '@/Components/Confirmation/Confirmation';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { normalizeSigs } from '@/utils/normalizeSigs';
 import { shortenPactCode } from '@/utils/parsedCodeToPact';
@@ -26,6 +30,7 @@ import {
   txTileContentClass,
 } from './style.css';
 import { TxPipeLine } from './TxPipeLine';
+import { statusPassed } from './TxPipeLine/utils';
 
 export const TxTile = ({
   tx,
@@ -80,7 +85,7 @@ export const TxTile = ({
       gap={'sm'}
     >
       <Stack flexDirection={'column'} gap={'sm'} flex={1}>
-        <TxPipeLine tx={tx} variant="tile" contTx={contTx} />
+        <TxPipeLine tx={tx} variant="tile" contTx={contTx} onView={onView} />
         {tx.status === 'initiated' && !nothingLeftToSignByUser && (
           <>
             {'exec' in command.payload && (
@@ -180,48 +185,69 @@ export const TxTile = ({
         )}
       </Stack>
       <Stack justifyContent={'space-between'} alignItems={'center'}>
-        <Stack alignItems={'center'}>
-          {tx.status === 'initiated' && !nothingLeftToSignByUser && (
-            <Button isCompact onClick={onSign} variant="outlined">
-              <Stack gap={'sm'} alignItems={'center'}>
-                <MonoSignature scale={0.5} />
-                Sign
-              </Stack>
+        <Confirmation
+          label="Abort"
+          onPress={() => {
+            if (tx.uuid) {
+              transactionRepository.deleteTransaction(tx?.uuid);
+            }
+          }}
+          trigger={
+            <Button
+              isDisabled={!tx || statusPassed(tx.status, 'submitted')}
+              variant="outlined"
+              isCompact
+              startVisual={<MonoDelete />}
+            >
+              Abort
+            </Button>
+          }
+        >
+          Are you sure you want to abort this transaction?
+        </Confirmation>
+
+        {tx.status === 'initiated' && !nothingLeftToSignByUser && (
+          <Button
+            isCompact
+            onClick={onSign}
+            variant="positive"
+            startVisual={<MonoSignature />}
+          >
+            Sign
+          </Button>
+        )}
+        {tx.status === 'initiated' && nothingLeftToSignByUser && (
+          <Button
+            isCompact
+            variant="positive"
+            onClick={shareTx}
+            startVisual={<MonoShare />}
+          >
+            {shareClicked ? 'Copied!' : 'Share'}
+          </Button>
+        )}
+        {tx.status === 'signed' && !sendDisabled && (
+          <Button
+            isCompact
+            variant="positive"
+            onClick={onPreflight}
+            startVisual={<MonoViewInAr />}
+          >
+            Preflight
+          </Button>
+        )}
+        {tx.status === 'preflight' &&
+          tx.preflight.result.status === 'success' &&
+          !sendDisabled && (
+            <Button
+              variant="positive"
+              isCompact
+              onClick={onSubmit}
+              startVisual={<MonoViewInAr />}
+            >
+              Send
             </Button>
           )}
-          {tx.status === 'initiated' && nothingLeftToSignByUser && (
-            <Button isCompact variant="outlined" onClick={shareTx}>
-              <Stack gap={'sm'} alignItems={'center'}>
-                <MonoShare />
-                {shareClicked ? 'Copied!' : 'Share'}
-              </Stack>
-            </Button>
-          )}
-          {tx.status === 'signed' && !sendDisabled && (
-            <Button isCompact variant="outlined">
-              <Stack gap={'sm'} alignItems={'center'} onClick={onPreflight}>
-                <MonoViewInAr />
-                Preflight
-              </Stack>
-            </Button>
-          )}
-          {tx.status === 'preflight' &&
-            tx.preflight.result.status === 'success' &&
-            !sendDisabled && (
-              <Button isCompact variant="outlined">
-                <Stack gap={'sm'} alignItems={'center'} onClick={onSubmit}>
-                  <MonoViewInAr />
-                  Send
-                </Stack>
-              </Button>
-            )}
-        </Stack>
-        <Button variant="outlined" isCompact onClick={onView}>
-          <Stack gap={'sm'} alignItems={'center'}>
-            <MonoOpenInFull />
-            Expand
-          </Stack>
-        </Button>
       </Stack>
     </Stack>
   );
