@@ -207,9 +207,7 @@ export class SnapAdapter extends BaseWalletAdapter {
         return {
           id,
           jsonrpc: '2.0',
-          result: {
-            result,
-          },
+          result: result,
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_getAccounts_v2': {
@@ -226,9 +224,7 @@ export class SnapAdapter extends BaseWalletAdapter {
         return {
           id,
           jsonrpc: '2.0',
-          result: {
-            resp,
-          },
+          result: resp,
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_getNetworks_v1': {
@@ -236,7 +232,7 @@ export class SnapAdapter extends BaseWalletAdapter {
         return {
           id,
           jsonrpc: '2.0',
-          result: [resp],
+          result: resp,
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
