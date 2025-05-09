@@ -1,8 +1,7 @@
 import { MonoChevronLeft, MonoChevronRight } from '@kadena/kode-icons';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
-
-import { Avatar, Badge } from '..';
+import { Avatar, Badge, Stack, Text } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
 import { iconControl } from '../../storyDecorators/iconControl';
 import { Box } from '../Layout/Box/Box';
@@ -81,6 +80,25 @@ export const _Button: ButtonStory = {
   },
   render: (props: IButtonProps) => {
     return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const ButtonNoClick: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    onPress: undefined,
+  },
+  render: (props: IButtonProps) => {
+    return (
+      <Stack flexDirection="column" width="100%" alignItems="center" gap="md">
+        <Text>
+          If there is no onClick or onPress prop, the button should act as a
+          label. No hover and no cursor change
+        </Text>
+        <Button {...props}>{props.children}</Button>
+      </Stack>
+    );
   },
 };
 

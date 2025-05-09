@@ -34,8 +34,14 @@ export class ChainweaverAppIndex extends setupDatabase {
       .getByRole('listitem')
       .all();
 
+    await actor
+      .getByRole('button', {
+        name: 'Account',
+      })
+      .click();
+
     const newAccountButton = actor.getByRole('button', {
-      name: 'New Account',
+      name: 'Create Account',
     });
     await newAccountButton.waitFor();
     await expect(newAccountButton).toBeVisible();

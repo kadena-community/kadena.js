@@ -6,10 +6,9 @@ import {
 } from '@/modules/account/account.repository';
 import { IRetrievedAccount } from '@/modules/account/IRetrievedAccount';
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { MonoMoreVert } from '@kadena/kode-icons/system';
+import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
 import {
   Button,
-  ButtonGroup,
   ContextMenu,
   ContextMenuItem,
   Notification,
@@ -82,43 +81,34 @@ export function Accounts({
             description={<></>}
             actions={
               show === 'owned' ? (
-                <ButtonGroup>
-                  <Button
-                    isCompact
-                    variant="outlined"
-                    onClick={() => createNextAccount({ contract })}
-                  >
-                    New Account
-                  </Button>
-                  <ContextMenu
-                    placement="bottom end"
-                    trigger={
-                      <Button
-                        endVisual={<MonoMoreVert />}
-                        variant="outlined"
-                        isCompact
-                      ></Button>
-                    }
-                  >
-                    <ContextMenuItem
-                      label="Create Account"
-                      onClick={() => createNextAccount({ contract })}
-                    />
-
-                    <ContextMenuItem
-                      label="create Multi-Sig"
-                      onClick={() => expandMultiSig()}
-                    />
-                  </ContextMenu>
-                </ButtonGroup>
-              ) : (
-                <Button
-                  isCompact
-                  variant="outlined"
-                  onPress={() => expandWatchAccount()}
+                <ContextMenu
+                  placement="bottom end"
+                  trigger={
+                    <Button
+                      startVisual={<MonoAdd />}
+                      endVisual={<MonoMoreVert />}
+                      variant="outlined"
+                      isCompact
+                    >
+                      Account
+                    </Button>
+                  }
                 >
-                  Add account
-                </Button>
+                  <ContextMenuItem
+                    label="Create Account"
+                    onClick={() => createNextAccount({ contract })}
+                  />
+                  <ContextMenuItem
+                    label="Watch/Add existing"
+                    onClick={() => expandWatchAccount()}
+                  />
+                  <ContextMenuItem
+                    label="create Multi-Sig"
+                    onClick={() => expandMultiSig()}
+                  />
+                </ContextMenu>
+              ) : (
+                <></>
               )
             }
           />
