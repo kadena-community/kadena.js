@@ -1,50 +1,41 @@
-# Ecko Wallet Adapter
+# MetaMask Snaps Wallet Adapter
 
-This package provides an adapter for the Ecko Wallet extension on Kadena. It
-extends a base adapter but uses the `"kda_"` RPC prefix (required by Ecko)
-rather than the standard `"kadena_"` prefix.
+This package provides an adapter for the **MetaMask Snap for Kadena**. It extends a base adapter but uses the `"kda_"` RPC prefix defined by the Snap (matching Ecko Wallet's prefix for compatibility).
 
 ## Installation
 
 ```bash
-npm install @kadena/wallet-adapter-ecko
+npm install @kadena/wallet-adapter-snap
 # or
-yarn add @kadena/wallet-adapter-ecko
+yarn add @kadena/wallet-adapter-snap
 # or
-pmpm add @kadena/wallet-adapter-ecko
+pnpm add @kadena/wallet-adapter-snap
 ```
 
 ## Manual Usage of the Adapter or Detection
 
 If you need lower-level access, the following are also exported:
 
-- **`EckoAdapter`**: The actual adapter class, in case you want to instantiate
-  it manually without relying on the lazy-loading factory.
-- **`detectEckoProvider`**: A standalone function that checks whether the Ecko
-  wallet is present. It returns the provider if found, or `null` otherwise.
+* **`SnapAdapter`**: The actual adapter class, in case you want to instantiate it manually without relying on the lazy-loading factory.
+* **`detectSnapProvider`**: A standalone function that checks whether the Kadena Snap is available in MetaMask. It returns the provider if found, or `null` otherwise.
 
 ```ts
-import { EckoAdapter, detectEckoProvider } from '@kadena/wallet-adapter-ecko';
+import { SnapAdapter, detectSnapProvider } from '@kadena/wallet-adapter-snap';
 
 (async () => {
-  const provider = await detectEckoProvider({ silent: true });
+  const provider = await detectSnapProvider({ silent: true });
   if (!provider) {
-    console.log('Ecko not available.');
+    console.log('MetaMask Snap not available.');
     return;
   }
-  const adapter = new EckoWalletAdapter({ provider });
+  const adapter = new SnapAdapter({ provider });
   await adapter.connect();
-  console.log('Connected to Ecko directly!');
+  console.log('Connected to MetaMask Snap directly!');
 })();
 ```
 
 ## Other Notes
 
-- The adapter internally calls `kda_connect`, `kda_requestSign`,
-  `kda_disconnect`, and similar Ecko-specific RPC methods (all `"kda_"`
-  prefixed).
-- If you support multiple wallets in your app, the lazy import in `eckoAdapter`
-  can help reduce your initial bundle size, because the Ecko adapter code is
-  only loaded if the provider is actually detected.
-- Make sure the user has installed the Ecko Wallet extension. Otherwise,
-  detection will yield `null`.
+* The adapter internally calls `kda_connect`, `kda_requestSign`, `kda_disconnect`, etc., using the `"kda_"` RPC prefix required by the Snap.
+* If you support multiple wallets in your app, the lazy import in `snapAdapter` helps reduce initial bundle size, loading only when MetaMask with the Snap is detected.
+* Ensure the user has MetaMask installed **and** the Kadena Snap enabled. Detection will return `null` otherwise.
