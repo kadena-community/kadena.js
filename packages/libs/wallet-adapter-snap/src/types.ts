@@ -42,25 +42,12 @@ export interface IAddAccountResponse {
 }
 
 /** @public */
-export type GetNetworksResponse = ISnapNetwork[];
-
-/** @public */
 export interface ISnapAccount {
   id: string;
   index: number;
   address: string;
   name: string;
   publicKey: string;
-}
-
-/** @public */
-export interface IStoreAccount {
-  id: string;
-  index: number;
-  address: string;
-  name: string;
-  publicKey: string;
-  isHardware: boolean;
 }
 
 /**

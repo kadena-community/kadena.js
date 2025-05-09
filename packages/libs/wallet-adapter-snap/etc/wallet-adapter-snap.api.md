@@ -30,9 +30,6 @@ export type ExtendedMethod = keyof ExtendedMethodMap;
 export type ExtendedMethodMap = IKdaMethodMap & IEckoMethodMap;
 
 // @public (undocumented)
-export type GetNetworksResponse = ISnapNetwork[];
-
-// @public (undocumented)
 export type GetSnapsResult = Record<string, ISnapMetadata>;
 
 // @public (undocumented)
@@ -214,32 +211,12 @@ export interface ISnapNetwork {
     transactionListUrl: string;
 }
 
-// @public (undocumented)
-export interface IStoreAccount {
-    // (undocumented)
-    address: string;
-    // (undocumented)
-    id: string;
-    // (undocumented)
-    index: number;
-    // (undocumented)
-    isHardware: boolean;
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    publicKey: string;
-}
-
 // @public
 export class SnapAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);
-    destroy(): void;
-    // (undocumented)
     disconnect(): Promise<void>;
     // (undocumented)
     name: string;
-    off(event: string, listener: (...args: any[]) => void): this;
-    on(event: string, listener: (...args: any[]) => void): this;
     request<M extends ExtendedMethod>(args: {
         id: number;
         method: M;

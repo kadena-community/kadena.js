@@ -38,15 +38,11 @@ import type {
   ExtendedMethodMap,
   IEckoQuicksignFailResponse,
   IEckoQuicksignResponse,
-  IKadenaCheckStatusRPC,
   IQuicksignResponse,
-  IRawAccountResponse,
-  IRawNetworkResponse,
-  IRawRequestResponse,
   ISnapAccount,
+  ISnapNetwork,
 } from './types';
 import { safeJsonParse } from './utils/json';
-
 /**
  * @public
  * EckoAdapter is a class that extends BaseWalletAdapter to provide
@@ -55,97 +51,60 @@ import { safeJsonParse } from './utils/json';
 export class SnapAdapter extends BaseWalletAdapter {
   public name: string = 'Snap';
 
-  // Listeners for 'kadena_networkChanged'.
-  private _networkChangedListeners: Array<(network: INetworkInfo) => void> = [];
-  // Stored account change listener references for later removal.
-  private _accountChangeListeners: Array<(...args: any[]) => void> = [];
-
   /**
-   * Constructor for the EckoAdapter.
+   * Constructor for the SnapAdapter.
    * @param options - Optional adapter options.
    */
   public constructor(options: IBaseWalletAdapterOptions) {
     super(options);
   }
 
-  private async _connect(
-    finalParams: { networkId: string },
-    silent = false,
-  ): Promise<IAccountInfo | null> {
-    if (!this.provider) {
-      throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
-    }
-
-    // Helper to wrap all wallet_invokeSnap calls
-    const invokeSnap = async <T>(
-      method: string,
-      params?: Record<string, unknown>,
-    ): Promise<T> => {
-      return this.provider!.request({
-        method: 'wallet_invokeSnap',
-        params: {
-          snapId: defaultSnapOrigin,
-          request: { method, ...params },
-        },
-      }) as T;
-    };
-
-    try {
-      // 1. Check if the Snap is connected
-      const isConnected = await invokeSnap<boolean>('kda_checkConnection');
-      if (!isConnected) {
-        // prompt the user to connect the Snap
-        await this.provider.request({
-          method: 'wallet_requestPermissions',
-          params: [{ snapId: defaultSnapOrigin, permissions: {} }],
-        });
-        // re-check
-        if (!(await invokeSnap<boolean>('kda_checkConnection'))) {
-          throw new Error(ERRORS.FAILED_TO_CONNECT);
-        }
-      }
-
-      // 2. Fetch all accounts and pick the first one
-      const accounts = await invokeSnap<ISnapAccount[]>('kda_getAccounts');
-      if (!accounts?.length) {
-        throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
-      }
-      const wallet = accounts[0];
-
-      // 3️⃣ Record the networkId and return normalized IAccountInfo
-      this.networkId = finalParams.networkId;
-      return {
-        accountName: wallet.name,
-        networkId: finalParams.networkId,
-        contract: 'coin',
-        guard: { keys: [wallet.publicKey], pred: 'keys-all' },
-        chainAccounts: [],
-      };
-    } catch (err: any) {
-      // If the Snap complains about an invalid network, re-sync and retry once
-      if (
-        err instanceof Error &&
-        err.message.toLowerCase().includes('invalid')
-      ) {
-        try {
-          const activeNetwork = await invokeSnap<string>(
-            'kda_getActiveNetwork',
-          );
-          this.networkId = activeNetwork;
-          return await this._connect({ networkId: activeNetwork }, silent);
-        } catch (fallbackErr) {
-          if (silent) return null;
-          throw fallbackErr;
-        }
-      }
-
-      if (silent) {
-        return null;
-      }
-      throw err;
-    }
+  /**
+   * Wraps wallet_invokeSnap calls
+   */
+  private async invokeSnap<T>(
+    method: string,
+    params?: Record<string, unknown>,
+  ): Promise<T> {
+    return this.provider.request({
+      method: 'wallet_invokeSnap',
+      params: { snapId: defaultSnapOrigin, request: { method, ...params } },
+    }) as Promise<T>;
   }
 
+  private async _checkStatus(): Promise<boolean> {
+    return await this.invokeSnap<boolean>('kda_checkConnection');
+  }
+  /** Fetches and maps all networks from the Snap to INetworkInfo[] */
+  private async _getNetworks(): Promise<INetworkInfo[]> {
+    const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
+    return networks.map((net) => ({
+      networkName: net.name,
+      networkId: net.networkId,
+      url: [net.nodeUrl],
+    }));
+  }
+
+  private async _getActiveNetwork(): Promise<INetworkInfo> {
+    return (await this._getNetworks())[0];
+  }
+  /**
+   * Fetches all accounts from the Snap to IAccountInfo[]
+   */
+  private async _getAccounts(): Promise<IAccountInfo[]> {
+    const wallets = await this.invokeSnap<ISnapAccount[]>('kda_getAccounts');
+    const network = await this._getActiveNetwork();
+    if (!wallets?.length) {
+      throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
+    }
+    return wallets.map((wallet) => ({
+      accountName: wallet.address,
+      networkId: network.networkId,
+      contract: 'coin',
+      guard: { keys: [wallet.publicKey], pred: 'keys-all' },
+      chainAccounts: [],
+    }));
+  }
   // --------------------------------------------------------------------------
   // CONNECTION LOGIC
   // --------------------------------------------------------------------------
@@ -161,127 +120,51 @@ export class SnapAdapter extends BaseWalletAdapter {
    * @param silent - If true, errors are swallowed and null is returned.
    * @returns Promise resolving to the AccountInfo or null if silent and an error occurs.
    */
-  // --------------------------------------------------------------------------
-  // EVENT HANDLERS
-  // --------------------------------------------------------------------------
-  /**
-   * === Handling Wallet Switching in Ecko Wallet ===
-   *
-   * When the 'selectedWallet' key in storage (within the chrome plugin) changes, it indicates that the user has
-   * switched to a different account. This triggers the following behavior:
-   *
-   * 1. The 'activeDapps' array is reset to an empty state (`[]`).
-   *    - This means all currently active dApps lose their active status.
-   *    - This is due to Ecko’s connection logic, which requires a domain
-   *      to be present in both `connectedSites` and `activeDapps` to maintain an active session.
-   *
-   * 2. Reconnection is required per account:
-   *    - The `connectedSites` list is stored within the `selectedWallet` object.
-   *    - Each account maintains its own list of connected domains.
-   *    - Switching to a new wallet/account requires re-establishing dApp connections.
-   *
-   * In summary, every time a user switches accounts, previously connected dApps
-   * need to be reconnected to regain an active status.
-   *
-   * Yet by design, this kinda sucks, because it will force the reconnect modal on the user
-   * note: We wont do page-refreshes, as implemented by some to bypass this, by doing window.location.reload(),
-   *
-   * But we will need to reconnect to the wallet)
-   * Source: [Ecko Wallet Background.js](https://github.com/eckoDAO-org/ecko-wallet/blob/main/public/app/background.js)
-   */
-  /**
-   *
-   *
-  /**
-   * Handle events emitted by the provider.
-   * For "kadena_accountChanged", this method retrieves the new account info
-   * (using the connection logic with silent mode) and also fires network change events if needed.
-   *
-   * @param event - The event name.
-   * @param listener - The callback function.
-   * @returns The instance of EckoAdapter.
-   */
-  public on(event: string, listener: (...args: any[]) => void): this {
-    if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
-    switch (event) {
-      case 'kadena_accountChanged': {
-        const mappedListener = async () => {
-          try {
-            const newNetwork = await this.getActiveNetwork();
-            let newAccount: IAccountInfo | null = null;
-            try {
-              const resp = (await this.getActiveAccount()) as
-                | IAccountInfo
-                | IRawRequestResponse;
-              if ('status' in resp && resp.status === 'fail') {
-                throw new Error(resp.message || ERRORS.COULD_NOT_FETCH_ACCOUNT);
-              }
-              newAccount = resp as IAccountInfo;
-            } catch (error) {
-              // Use silent mode so that errors don't bubble up.
-              newAccount = await this._connect(
-                { networkId: newNetwork.networkId },
-                true,
-              );
-              if (!newAccount) return;
-            }
-
-            this.networkId = newNetwork.networkId;
-            for (const netListener of this._networkChangedListeners) {
-              netListener(newNetwork);
-            }
-            if (newAccount) {
-              listener(newAccount);
-            }
-          } catch (err) {
-            console.error('Error handling account change event:', err);
-          }
-        };
-        this._accountChangeListeners.push(mappedListener);
-        this.provider.on('res_accountChange', mappedListener);
-        break;
-      }
-      case 'kadena_networkChanged': {
-        this._networkChangedListeners.push(
-          listener as (network: INetworkInfo) => void,
-        );
-        break;
-      }
-      default:
-        this.provider.on(event, listener);
+  private async _connect(silent = false): Promise<IAccountInfo | null> {
+    if (!this.provider) {
+      throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
     }
-    return this;
-  }
 
-  /**
-   * Remove a specific event listener.
-   *
-   * @param event - The event name.
-   * @param listener - The callback function.
-   * @returns The instance of EckoAdapter.
-   */
-  public off(event: string, listener: (...args: any[]) => void): this {
-    if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
-    switch (event) {
-      case 'kadena_accountChanged':
-        if (typeof this.provider.off === 'function') {
-          this.provider.off('res_accountChange', listener);
+    try {
+      // 1. Check if the Snap is connected
+      const isConnected = await this._checkStatus();
+      console.debug('Metamask Snap Connected?', isConnected);
+      if (!isConnected) {
+        // prompt the user to connect the Snap
+        await this.provider.request({
+          method: 'wallet_requestPermissions',
+          params: [{ snapId: defaultSnapOrigin, permissions: {} }],
+        });
+        // re-check
+        if (!(await this._checkStatus())) {
+          throw new Error(ERRORS.FAILED_TO_CONNECT);
         }
-        this._accountChangeListeners = this._accountChangeListeners.filter(
-          (l) => l !== listener,
-        );
-        break;
-      case 'kadena_networkChanged':
-        this._networkChangedListeners = this._networkChangedListeners.filter(
-          (l) => l !== listener,
-        );
-        break;
-      default:
-        if (typeof this.provider.off === 'function') {
-          this.provider.off(event, listener);
+      }
+
+      // 2. Fetch all accounts and pick the first one
+      const accounts = await this._getAccounts();
+      return accounts[0];
+    } catch (err: any) {
+      // If the Snap complains about an invalid network, re-sync and retry once
+      if (
+        err instanceof Error &&
+        err.message.toLowerCase().includes('invalid')
+      ) {
+        try {
+          const activeNetwork = await this._getActiveNetwork();
+          this.networkId = activeNetwork.networkId;
+          return await this._connect(silent);
+        } catch (fallbackErr) {
+          if (silent) return null;
+          throw fallbackErr;
         }
+      }
+
+      if (silent) {
+        return null;
+      }
+      throw err;
     }
-    return this;
   }
 
   // --------------------------------------------------------------------------
@@ -305,17 +188,11 @@ export class SnapAdapter extends BaseWalletAdapter {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
     const { id, method, params = {} } = args;
-    const finalParams = {
-      networkId: this.networkId,
-      // id, (id is not used, but included for completeness)
-      // jsonrpc: "2.0", (jsonrpc is not used, but included for completeness)
-      ...params,
-    };
 
     switch (method) {
       case 'kadena_connect': {
         // In request mode, we do not use silent mode.
-        const account = await this._connect(finalParams, false);
+        const account = await this._connect(false);
         if (!account) {
           throw new Error(ERRORS.FAILED_TO_CONNECT);
         }
@@ -325,87 +202,41 @@ export class SnapAdapter extends BaseWalletAdapter {
           result: account,
         } as ExtendedMethodMap[M]['response'];
       }
-      case 'kadena_disconnect': {
-        if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
-        await this.provider.request({
-          method: 'kda_disconnect',
-          ...finalParams,
-        });
-        this.destroy();
-        return {
-          id,
-          jsonrpc: '2.0',
-          result: undefined,
-        } as ExtendedMethodMap[M]['response'];
-      }
       case 'kadena_getAccount_v1': {
-        const resp = (await this.provider.request({
-          method: 'kda_requestAccount',
-          ...finalParams,
-        })) as IRawAccountResponse;
-        if (resp.status !== 'success' || !resp.wallet) {
-          throw new Error(resp.message || ERRORS.COULD_NOT_FETCH_ACCOUNT);
-        }
+        const result = (await this._getAccounts())[0];
         return {
           id,
           jsonrpc: '2.0',
           result: {
-            accountName: resp.wallet.account,
-            networkId: this.networkId!,
-            contract: 'coin',
-            guard: { keys: [resp.wallet.publicKey], pred: 'keys-all' },
-            chainAccounts: [],
+            result,
           },
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_getAccounts_v2': {
-        const resp = (await this.provider.request({
-          method: 'kda_requestAccount',
-          ...finalParams,
-        })) as IRawAccountResponse;
-        if (resp.status !== 'success' || !resp.wallet) {
-          throw new Error(resp.message || ERRORS.COULD_NOT_FETCH_ACCOUNT);
-        }
-        const account = {
-          accountName: resp.wallet.account,
-          networkId: this.networkId!,
-          contract: 'coin',
-          guard: { keys: [resp.wallet.publicKey], pred: 'keys-all' },
-          chainAccounts: [],
-        };
+        // _getAccounts() returns ISnapAccount[]
+        const result = await this._getAccounts();
         return {
           id,
           jsonrpc: '2.0',
-          result: [account],
+          result, // IAccountInfo[]
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_getNetwork_v1': {
-        const resp = (await this.provider.request({
-          method: 'kda_getNetwork',
-        })) as IRawNetworkResponse;
+        const resp = await this._getActiveNetwork();
         return {
           id,
           jsonrpc: '2.0',
           result: {
-            networkName: resp.name,
-            networkId: resp.networkId,
-            url: [resp.url],
+            resp,
           },
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_getNetworks_v1': {
-        const resp = (await this.provider.request({
-          method: 'kda_getNetwork',
-        })) as IRawNetworkResponse;
-        const network = {
-          networkName: resp.name,
-          networkId: resp.networkId,
-          url: [resp.url],
-        };
+        const resp = await this._getNetworks();
         return {
           id,
           jsonrpc: '2.0',
-          result: [network],
+          result: [resp],
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
@@ -479,35 +310,24 @@ export class SnapAdapter extends BaseWalletAdapter {
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_checkStatus': {
-        return (await this.provider.request({
-          method: 'kda_checkStatus',
-          ...finalParams,
-        })) as IKadenaCheckStatusRPC;
+        const status = await this._checkStatus();
+        return {
+          id,
+          jsonrpc: '2.0',
+          result: status,
+        } as ExtendedMethodMap[M]['response'];
       }
       default:
         return (await this.provider.request(args)) as any;
     }
   }
 
-  public async disconnect(): Promise<void> {
-    if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
-    await this.provider.request({
-      method: 'kda_disconnect',
-      networkId: this.networkId,
-    });
-    this.destroy();
-  }
-
   /**
-   * Remove all event listeners attached by this adapter.
-   * Use this when the adapter is no longer needed to prevent memory leaks.
+   * “Disconnect” from the Snap by tearing down local state and listeners.
+   * There’s no provider RPC for this in your list, so we just destroy.
    */
-  public destroy(): void {
-    if (this.provider && typeof this.provider.off === 'function') {
-      this._accountChangeListeners.forEach((listener) => {
-        this.provider!.off('res_accountChange', listener);
-      });
-    }
-    this._accountChangeListeners = [];
+  public async disconnect(): Promise<void> {
+    // Clear any adapter-side state
+    //this.provider = undefined;
   }
 }

@@ -15,7 +15,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@kadena/wallet-adapter-core": "workspace:*"
+    "@kadena/wallet-adapter-core": "workspace:*",
+    "@metamask/providers": "^22.1.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -25,5 +26,8 @@
     "typescript": "5.4.5",
     "vitest": "^1.6.0"
   },
-  "authors": ["Francisco Miranda", "Ariel Serranoni"]
+  "authors": [
+    "Francisco Miranda",
+    "Ariel Serranoni"
+  ]
 }
