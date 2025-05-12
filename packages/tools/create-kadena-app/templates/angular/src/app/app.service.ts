@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
+import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 import readMessage from '../utils/readMessage';
 import writeMessage from '../utils/writeMessage';
 
 @Injectable({ providedIn: 'root' })
 export class AppService {
-  async writeMessage(account: string, message: string) {
+  async writeMessage(
+    account: string,
+    message: string,
+    walletClient: WalletAdapterClient,
+  ) {
     try {
-      await writeMessage({ account, messageToWrite: message });
+      await writeMessage({ account, messageToWrite: message, walletClient });
     } catch (e) {
       console.log(e);
     }
