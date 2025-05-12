@@ -639,13 +639,21 @@ const CrossChainTransferFinisher: FC = () => {
           </Stack>
         </section>
         <section className={formButtonStyle}>
-          <Button
-            type="submit"
-            isLoading={processingTx}
-            endVisual={<MonoKeyboardArrowRight />}
-          >
-            {t('Finish Transaction')}
-          </Button>
+          {pollResults.tx?.result?.status !== 'success' ? (
+            <Button
+              type="submit"
+              isLoading={processingTx}
+              endVisual={<MonoKeyboardArrowRight />}
+            >
+              {t('Finish Transaction')}
+            </Button>
+          ) : (
+            <Notification role="status">
+              <NotificationHeading>
+                Transaction already completed
+              </NotificationHeading>
+            </Notification>
+          )}
         </section>
       </form>
 
