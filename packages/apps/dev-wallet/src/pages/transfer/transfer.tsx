@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { Confirmation } from '@/Components/Confirmation/Confirmation';
 import { isKeysetGuard } from '@/modules/account/guards';
 import { activityRepository } from '@/modules/activity/activity.repository';
+import { dbService } from '@/modules/db/db.service';
 import {
   ITransaction,
   transactionRepository,
@@ -142,6 +143,15 @@ export function Transfer() {
       }
     };
     run();
+
+    dbService.subscribe((type, store) => {
+      if (
+        store === 'transaction' &&
+        ['add', 'update', 'delete'].includes(type)
+      ) {
+        run();
+      }
+    });
   }, [accountId, urlActivityId]);
 
   function createTransaction(data: Required<ITransfer>) {
