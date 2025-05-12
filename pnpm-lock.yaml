@@ -759,7 +759,7 @@ importers:
         version: 4.3.1(vite@6.2.5(@types/node@20.14.9)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cache-sh:
         specifier: ^1.2.1
         version: 1.3.1
@@ -780,7 +780,7 @@ importers:
         version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0)
+        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/graph:
     dependencies:
@@ -1030,163 +1030,6 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
 
-  packages/apps/marmalade-marketplace:
-    dependencies:
-      '@kadena/client':
-        specifier: workspace:*
-        version: link:../../libs/client
-      '@kadena/client-utils':
-        specifier: workspace:*
-        version: link:../../libs/client-utils
-      '@kadena/cryptography-utils':
-        specifier: workspace:*
-        version: link:../../libs/cryptography-utils
-      '@kadena/kode-icons':
-        specifier: workspace:*
-        version: link:../../libs/kode-icons
-      '@kadena/kode-ui':
-        specifier: workspace:*
-        version: link:../../libs/kode-ui
-      '@kadena/pactjs':
-        specifier: workspace:*
-        version: link:../../libs/pactjs
-      '@kadena/spirekey-sdk':
-        specifier: 0.0.1-dev-12
-        version: 0.0.1-dev-12(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      '@pinata/sdk':
-        specifier: ^2.1.0
-        version: 2.1.0
-      firebase:
-        specifier: ^10.8.0
-        version: 10.12.3
-      formidable:
-        specifier: ^3.5.1
-        version: 3.5.1
-      next:
-        specifier: 14.2.26
-        version: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      next-themes:
-        specifier: ^0.2.1
-        version: 0.2.1(next@14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-aria-components:
-        specifier: ^1.0.1
-        version: 1.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-device-detect:
-        specifier: ^2.2.3
-        version: 2.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@graphql-codegen/cli':
-        specifier: 5.0.2
-        version: 5.0.2(@parcel/watcher@2.4.1)(@types/node@20.14.9)(bufferutil@4.0.9)(encoding@0.1.13)(enquirer@2.4.1)(graphql@16.8.2)(typescript@5.8.3)(utf-8-validate@5.0.10)
-      '@graphql-codegen/typescript':
-        specifier: ^4.0.6
-        version: 4.0.9(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-codegen/typescript-operations':
-        specifier: ~4.2.0
-        version: 4.2.3(encoding@0.1.13)(graphql@16.8.2)
-      '@kadena-dev/eslint-config':
-        specifier: workspace:*
-        version: link:../../tools/eslint-config
-      '@kadena-dev/lint-package':
-        specifier: workspace:*
-        version: link:../../tools/lint-package
-      '@kadena-dev/shared-config':
-        specifier: workspace:*
-        version: link:../../tools/shared-config
-      '@kadena/fonts':
-        specifier: ~0.0.1
-        version: 0.0.1
-      '@rushstack/eslint-config':
-        specifier: ~3.6.9
-        version: 3.6.10(eslint@8.57.0)(typescript@5.8.3)
-      '@tanstack/eslint-plugin-query':
-        specifier: ^5.28.11
-        version: 5.50.0(eslint@8.57.0)(typescript@5.8.3)
-      '@testing-library/react':
-        specifier: ~14.0.0
-        version: 14.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/css-modules':
-        specifier: ^1.0.5
-        version: 1.0.5
-      '@types/formidable':
-        specifier: ^3.4.5
-        version: 3.4.5
-      '@types/gtag.js':
-        specifier: ~0.0.12
-        version: 0.0.20
-      '@types/node':
-        specifier: ^20.12.7
-        version: 20.14.9
-      '@types/node-cron':
-        specifier: ^3.0.11
-        version: 3.0.11
-      '@types/react':
-        specifier: ^18.2.79
-        version: 18.3.3
-      '@types/react-dom':
-        specifier: ^18.2.25
-        version: 18.3.0
-      '@types/webpack-env':
-        specifier: ^1.18.5
-        version: 1.18.5
-      '@vanilla-extract/css':
-        specifier: 1.14.2
-        version: 1.14.2
-      '@vanilla-extract/next-plugin':
-        specifier: 2.4.0
-        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
-      '@vanilla-extract/vite-plugin':
-        specifier: 4.0.17
-        version: 4.0.17(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(vite@6.2.5(@types/node@20.14.9)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
-      '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@6.2.5(@types/node@20.14.9)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
-      '@vitest/coverage-v8':
-        specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
-      dotenv:
-        specifier: ~16.4.5
-        version: 16.4.5
-      eslint:
-        specifier: ^8.45.0
-        version: 8.57.0
-      eslint-import-resolver-typescript:
-        specifier: 3.5.5
-        version: 3.5.5(eslint-plugin-import@2.27.5)(eslint@8.57.0)
-      eslint-plugin-import:
-        specifier: ~2.27.5
-        version: 2.27.5(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
-      form-data:
-        specifier: ^4.0.0
-        version: 4.0.0
-      happy-dom:
-        specifier: ^12.9.1
-        version: 12.10.3
-      next-router-mock:
-        specifier: ^0.9.10
-        version: 0.9.13(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      node-cron:
-        specifier: ^3.0.3
-        version: 3.0.3
-      prettier:
-        specifier: ~3.2.5
-        version: 3.2.5
-      ts-node:
-        specifier: ~10.9.2
-        version: 10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.11))(@types/node@20.14.9)(typescript@5.8.3)
-      vitest:
-        specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
-      vitest-dom:
-        specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0)
-
   packages/apps/proof-of-us:
     dependencies:
       '@apollo/client':
@@ -1336,7 +1179,7 @@ importers:
         version: 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cache-sh:
         specifier: ^1.2.1
         version: 1.3.1
@@ -1384,7 +1227,7 @@ importers:
         version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0)
+        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/rwa-demo:
     dependencies:
@@ -1520,7 +1363,7 @@ importers:
         version: 4.3.1(vite@6.2.5(@types/node@20.16.5)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -1544,7 +1387,7 @@ importers:
         version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0)
+        version: 0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/spirekey-example:
     dependencies:
@@ -1723,7 +1566,7 @@ importers:
         version: 4.3.1(vite@6.2.5(@types/node@20.16.5)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       '@walletconnect/types':
         specifier: ~2.8.1
         version: 2.8.6
@@ -1762,7 +1605,7 @@ importers:
         version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0)
+        version: 0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/wallet-adapter-react-example:
     dependencies:
@@ -2332,7 +2175,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2384,7 +2227,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2436,7 +2279,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2491,7 +2334,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2558,7 +2401,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       '@walletconnect/types':
         specifier: ~2.8.1
         version: 2.8.6
@@ -2704,7 +2547,7 @@ importers:
         version: 0.29.12
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cache-sh:
         specifier: ^1.2.1
         version: 1.3.1
@@ -2765,7 +2608,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2832,7 +2675,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cpy-cli:
         specifier: ^5.0.0
         version: 5.0.0
@@ -2905,7 +2748,7 @@ importers:
         version: 20.16.5
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cpy-cli:
         specifier: ^5.0.0
         version: 5.0.0
@@ -3186,7 +3029,7 @@ importers:
         version: 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11))(esbuild@0.21.5))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       '@vitest/ui':
         specifier: ^1.6.0
         version: 1.6.0(vitest@1.6.0)
@@ -3249,7 +3092,7 @@ importers:
         version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0)
+        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/libs/pactjs:
     dependencies:
@@ -3283,7 +3126,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -3338,7 +3181,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       chokidar:
         specifier: ^3.5.3
         version: 3.6.0
@@ -3688,7 +3531,7 @@ importers:
         version: 20.16.5
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cpy-cli:
         specifier: ^5.0.0
         version: 5.0.0
@@ -3965,7 +3808,7 @@ importers:
         version: 3.0.8
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cache-sh:
         specifier: ^1.2.1
         version: 1.3.1
@@ -4160,7 +4003,7 @@ importers:
         version: 3.0.2
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0)
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -6523,17 +6366,8 @@ packages:
   '@kadena/fonts@0.0.1':
     resolution: {integrity: sha512-epUOJbW96Yd827XQD2/6Ibow9qcevgPhVKsUhfzG9L26U4PLMMWZ0KXxIoFQ6DKpQa9xE4GK8DkPzn30pJb+3Q==}
 
-  '@kadena/kode-icons@0.1.0':
-    resolution: {integrity: sha512-DBHPg0ze/34FYR4BG+nTzR/jS9kxbjMtxgdVTN4HZIydmPLTs7CU15mWTkkFOaYRx0phK2rhH2TwVwhoqIujQw==}
-
-  '@kadena/kode-ui@0.13.0':
-    resolution: {integrity: sha512-zC8gIwduMKxDonoclMvYlcHSWwVzD4ZRWaM9s4Sgs5AK2zAZK17ioPW7SNxQV9+bNcCChcAuUMUZAyshT5YzPw==}
-
   '@kadena/pactjs@0.4.3':
     resolution: {integrity: sha512-EYqIrhw5YbGz7+10rq4QnqC9I22OfApCRfNIvrcq6Lwg0I04grFXCspgEFrgZO1ThTvG4nN0gs8DZl72HBleGw==}
-
-  '@kadena/spirekey-sdk@0.0.1-dev-12':
-    resolution: {integrity: sha512-jSys4wSIixY7GeSuJ1PjWA0oMXytl1r28arZ0JNL6IkcV6TcQni/ymWI+Efz/Ves6hU3Roox1zIC3g1WAJqTwA==}
 
   '@kadena/spirekey-sdk@0.0.1-dev-16':
     resolution: {integrity: sha512-7rytH7mXX5R4VeMsaaW8PSSeKHQZCzy+ftVYAXb78sXHEMO6DBnZIxe8XDVO9x/tLuusw5vENNmQ268g38fdvw==}
@@ -9788,9 +9622,6 @@ packages:
   '@types/cross-spawn@6.0.6':
     resolution: {integrity: sha512-fXRhhUkG4H3TQk5dBhQ7m/JDdSNHKwR2BBia62lhwEIq9xGiQKLxd6LymNhn47SjXhsUEPmxi+PKw2OkW4LLjA==}
 
-  '@types/css-modules@1.0.5':
-    resolution: {integrity: sha512-oeKafs/df9lwOvtfiXVliZsocFVOexK9PZtLQWuPeuVCFR7jwiqlg60lu80JTe5NFNtH3tnV6Fs/ySR8BUPHAw==}
-
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
@@ -9835,9 +9666,6 @@ packages:
 
   '@types/express@4.17.3':
     resolution: {integrity: sha512-I8cGRJj3pyOLs/HndoP+25vOqhqWkAZsWMEmq1qXy/b/M3ppufecUwaK2/TVDVxcV61/iSdhykUjQQ2DLSrTdg==}
-
-  '@types/formidable@3.4.5':
-    resolution: {integrity: sha512-s7YPsNVfnsng5L8sKnG/Gbb2tiwwJTY1conOkJzTMRvJAlLFW1nEua+ADsJQu8N1c0oTHx9+d5nqg10WuT9gHQ==}
 
   '@types/fs-extra@11.0.4':
     resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
@@ -9986,9 +9814,6 @@ packages:
   '@types/nearley@2.11.5':
     resolution: {integrity: sha512-dM7TrN0bVxGGXTYGx4YhGear8ysLO5SOuouAWM9oltjQ3m9oYa13qi8Z1DJp5zxVMPukvQdsrnZmgzpeuTSEQA==}
 
-  '@types/node-cron@3.0.11':
-    resolution: {integrity: sha512-0ikrnug3/IyneSHqCBeslAhlK2aBfYek1fGo4bP4QnZPmiqSGRK+Oy7ZMisLWkesffJvQ1cqAcBnJC+8+nxIAg==}
-
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
@@ -10117,9 +9942,6 @@ packages:
 
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
-
-  '@types/webpack-env@1.18.5':
-    resolution: {integrity: sha512-wz7kjjRRj8/Lty4B+Kr0LN6Ypc/3SymeCCGSbaXp2leH0ZVg/PriNiOwNj4bD4uphI7A8NXS4b6Gl373sfO5mA==}
 
   '@types/wrap-ansi@3.0.0':
     resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==}
@@ -12419,9 +12241,6 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
-  dezalgo@1.0.4:
-    resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
-
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
 
@@ -13406,9 +13225,6 @@ packages:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
     engines: {node: '>=0.4.x'}
 
-  formidable@3.5.1:
-    resolution: {integrity: sha512-WJWKelbRHN41m5dumb0/k8TeAx7Id/y3a+Z7QfhxP/htI9Js5zYaEDtG8uMgG0vM0lOlqnmjE99/kfpOYi/0Og==}
-
   forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
@@ -13845,10 +13661,6 @@ packages:
 
   headers-polyfill@4.0.3:
     resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
-
-  hexoid@1.0.0:
-    resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
-    engines: {node: '>=8'}
 
   hey-listen@1.0.8:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
@@ -15978,10 +15790,6 @@ packages:
     resolution: {integrity: sha512-mNcltoe1R8o7STTegSOHdnJNN7s5EUvhoS7ShnTHDyOSd+8H+UdWODq6qSv67PjC8Zc5JRT8+oLAMCr0SIXw7g==}
     engines: {node: ^16 || ^18 || >= 20}
 
-  node-cron@3.0.3:
-    resolution: {integrity: sha512-dOal67//nohNgYWb+nWmg5dkFdIwDm8EpeGYMekPMrngV3637lqnX0lbUcCtgibHTz6SEz7DAIjKvKDFYCnO1A==}
-    engines: {node: '>=6.0.0'}
-
   node-fetch-native@1.6.4:
     resolution: {integrity: sha512-IhOigYzAKHd244OC0JIMIUrjzctirCmPkaIfhDeGcEETWof5zKYUW7e7MYvChGWh/4CJeXEgsRyGzuF334rOOQ==}
 
@@ -17238,12 +17046,6 @@ packages:
 
   react-console-emulator@5.0.2:
     resolution: {integrity: sha512-IqoL1lmvY+VS80GgXmOoSuFMVfitZY9NM5OYQ8nHBYzG3fPeqILJDwy3/sS5LIHq2Os1lrrDR5O/TF0LDcaB1Q==}
-
-  react-device-detect@2.2.3:
-    resolution: {integrity: sha512-buYY3qrCnQVlIFHrC5UcUoAj7iANs/+srdkwsnNjI7anr3Tt7UY6MqNxtMLlr0tMBied0O49UZVK8XKs3ZIiPw==}
-    peerDependencies:
-      react: '>= 0.14.0'
-      react-dom: '>= 0.14.0'
 
   react-docgen-typescript@2.2.2:
     resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
@@ -22401,56 +22203,6 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@graphql-codegen/cli@5.0.2(@parcel/watcher@2.4.1)(@types/node@20.14.9)(bufferutil@4.0.9)(encoding@0.1.13)(enquirer@2.4.1)(graphql@16.8.2)(typescript@5.8.3)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@babel/generator': 7.24.7
-      '@babel/template': 7.24.7
-      '@babel/types': 7.24.7
-      '@graphql-codegen/client-preset': 4.5.1(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-codegen/core': 4.0.2(graphql@16.8.2)
-      '@graphql-codegen/plugin-helpers': 5.1.0(graphql@16.8.2)
-      '@graphql-tools/apollo-engine-loader': 8.0.1(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-tools/code-file-loader': 8.1.2(graphql@16.8.2)
-      '@graphql-tools/git-loader': 8.0.6(graphql@16.8.2)
-      '@graphql-tools/github-loader': 8.0.1(@types/node@20.14.9)(encoding@0.1.13)(graphql@16.8.2)
-      '@graphql-tools/graphql-file-loader': 8.0.1(graphql@16.8.2)
-      '@graphql-tools/json-file-loader': 8.0.1(graphql@16.8.2)
-      '@graphql-tools/load': 8.0.2(graphql@16.8.2)
-      '@graphql-tools/prisma-loader': 8.0.4(@types/node@20.14.9)(bufferutil@4.0.9)(encoding@0.1.13)(graphql@16.8.2)(utf-8-validate@5.0.10)
-      '@graphql-tools/url-loader': 8.0.2(@types/node@20.14.9)(bufferutil@4.0.9)(encoding@0.1.13)(graphql@16.8.2)(utf-8-validate@5.0.10)
-      '@graphql-tools/utils': 10.2.3(graphql@16.8.2)
-      '@whatwg-node/fetch': 0.8.8
-      chalk: 4.1.2
-      cosmiconfig: 8.3.6(typescript@5.8.3)
-      debounce: 1.2.1
-      detect-indent: 6.1.0
-      graphql: 16.8.2
-      graphql-config: 5.0.3(@types/node@20.14.9)(bufferutil@4.0.9)(encoding@0.1.13)(graphql@16.8.2)(typescript@5.8.3)(utf-8-validate@5.0.10)
-      inquirer: 8.2.6
-      is-glob: 4.0.3
-      jiti: 1.21.6
-      json-to-pretty-yaml: 1.2.2
-      listr2: 4.0.5(enquirer@2.4.1)
-      log-symbols: 4.1.0
-      micromatch: 4.0.8
-      shell-quote: 1.8.1
-      string-env-interpolation: 1.0.1
-      ts-log: 2.2.5
-      tslib: 2.7.0
-      yaml: 2.4.5
-      yargs: 17.7.2
-    optionalDependencies:
-      '@parcel/watcher': 2.4.1
-    transitivePeerDependencies:
-      - '@types/node'
-      - bufferutil
-      - cosmiconfig-toml-loader
-      - encoding
-      - enquirer
-      - supports-color
-      - typescript
-      - utf-8-validate
-
   '@graphql-codegen/cli@5.0.2(@parcel/watcher@2.4.1)(@types/node@20.16.5)(bufferutil@4.0.9)(encoding@0.1.13)(enquirer@2.4.1)(graphql@16.8.2)(typescript@5.4.5)(utf-8-validate@5.0.10)':
     dependencies:
       '@babel/generator': 7.24.7
@@ -23625,63 +23377,9 @@ snapshots:
     dependencies:
       lodash.kebabcase: 4.1.1
 
-  '@kadena/kode-icons@0.1.0':
-    dependencies:
-      react: 18.3.1
-
-  '@kadena/kode-ui@0.13.0':
-    dependencies:
-      '@kadena/kode-icons': 0.1.0
-      '@react-aria/accordion': 3.0.0-alpha.25(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/focus': 3.17.1(react@18.3.1)
-      '@react-aria/selection': 3.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-aria/utils': 3.24.1(react@18.3.1)
-      '@react-stately/table': 3.11.8(react@18.3.1)
-      '@react-stately/utils': 3.10.1(react@18.3.1)
-      '@react-types/grid': 3.2.6(react@18.3.1)
-      '@react-types/table': 3.9.5(react@18.3.1)
-      '@vanilla-extract/css': 1.14.2
-      '@vanilla-extract/css-utils': 0.1.4
-      '@vanilla-extract/recipes': 0.5.1(@vanilla-extract/css@1.14.2)
-      '@vanilla-extract/sprinkles': 1.6.1(@vanilla-extract/css@1.14.2)
-      classnames: 2.5.1
-      lodash.get: 4.4.2
-      lodash.mapvalues: 4.6.0
-      lodash.omit: 4.5.0
-      react: 18.3.1
-      react-aria: 3.33.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-dom: 18.3.1(react@18.3.1)
-      react-stately: 3.31.1(react@18.3.1)
-
   '@kadena/pactjs@0.4.3':
     dependencies:
       bignumber.js: 9.1.2
-
-  '@kadena/spirekey-sdk@0.0.1-dev-12(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@kadena/client': 1.13.0(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)
-      '@kadena/kode-ui': 0.13.0
-      '@vanilla-extract/css': 1.16.1
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - babel-plugin-macros
-      - bufferutil
-      - encoding
-      - ioredis
-      - supports-color
-      - uWebSockets.js
-      - utf-8-validate
 
   '@kadena/spirekey-sdk@0.0.1-dev-16(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)':
     dependencies:
@@ -25093,13 +24791,15 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -25159,7 +24859,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -25172,7 +24872,7 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       abortcontroller-polyfill: 1.7.5
       base-x: 3.0.10
       browserslist: 4.24.2
@@ -25200,7 +24900,7 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
       '@parcel/watcher': 2.4.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -25274,7 +24974,7 @@ snapshots:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/rust': 2.12.0
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
 
   '@parcel/optimizer-svgo@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
@@ -25306,7 +25006,7 @@ snapshots:
       '@parcel/node-resolver-core': 3.3.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@swc/core': 1.3.107(@swc/helpers@0.5.11)
       semver: 7.6.3
     transitivePeerDependencies:
@@ -25495,7 +25195,7 @@ snapshots:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       nullthrows: 1.1.1
 
   '@parcel/transformer-js@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
@@ -25506,7 +25206,7 @@ snapshots:
       '@parcel/rust': 2.12.0
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@swc/helpers': 0.5.11
       browserslist: 4.24.2
       nullthrows: 1.1.1
@@ -25574,12 +25274,12 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       utility-types: 3.11.0
     transitivePeerDependencies:
       - '@parcel/core'
@@ -25657,7 +25357,7 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
 
-  '@parcel/workers@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
+  '@parcel/workers@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
@@ -25666,6 +25366,8 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@peculiar/asn1-schema@2.3.8':
     dependencies:
@@ -28461,14 +28163,6 @@ snapshots:
       - supports-color
       - typescript
 
-  '@tanstack/eslint-plugin-query@5.50.0(eslint@8.57.0)(typescript@5.8.3)':
-    dependencies:
-      '@typescript-eslint/utils': 8.0.0-alpha.30(eslint@8.57.0)(typescript@5.8.3)
-      eslint: 8.57.0
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
   '@tanstack/query-core@5.49.1': {}
 
   '@tanstack/react-query@5.49.2(react@18.3.1)':
@@ -28702,8 +28396,6 @@ snapshots:
     dependencies:
       '@types/node': 20.16.5
 
-  '@types/css-modules@1.0.5': {}
-
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 0.7.34
@@ -28759,10 +28451,6 @@ snapshots:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 4.19.5
       '@types/serve-static': 1.15.7
-
-  '@types/formidable@3.4.5':
-    dependencies:
-      '@types/node': 20.16.5
 
   '@types/fs-extra@11.0.4':
     dependencies:
@@ -28924,8 +28612,6 @@ snapshots:
 
   '@types/nearley@2.11.5': {}
 
-  '@types/node-cron@3.0.11': {}
-
   '@types/node@12.20.55': {}
 
   '@types/node@20.14.9':
@@ -29069,8 +28755,6 @@ snapshots:
   '@types/unist@3.0.2': {}
 
   '@types/uuid@9.0.8': {}
-
-  '@types/webpack-env@1.18.5': {}
 
   '@types/wrap-ansi@3.0.0': {}
 
@@ -29497,21 +29181,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/typescript-estree@8.0.0-alpha.30(typescript@5.8.3)':
-    dependencies:
-      '@typescript-eslint/types': 8.0.0-alpha.30
-      '@typescript-eslint/visitor-keys': 8.0.0-alpha.30
-      debug: 4.3.4
-      globby: 11.1.0
-      is-glob: 4.0.3
-      minimatch: 9.0.5
-      semver: 7.6.3
-      ts-api-utils: 1.3.0(typescript@5.8.3)
-    optionalDependencies:
-      typescript: 5.8.3
-    transitivePeerDependencies:
-      - supports-color
-
   '@typescript-eslint/typescript-estree@8.15.0(typescript@5.4.5)':
     dependencies:
       '@typescript-eslint/types': 8.15.0
@@ -29674,17 +29343,6 @@ snapshots:
       '@typescript-eslint/scope-manager': 8.0.0-alpha.30
       '@typescript-eslint/types': 8.0.0-alpha.30
       '@typescript-eslint/typescript-estree': 8.0.0-alpha.30(typescript@5.4.5)
-      eslint: 8.57.0
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
-  '@typescript-eslint/utils@8.0.0-alpha.30(eslint@8.57.0)(typescript@5.8.3)':
-    dependencies:
-      '@eslint-community/eslint-utils': 4.4.0(eslint@8.57.0)
-      '@typescript-eslint/scope-manager': 8.0.0-alpha.30
-      '@typescript-eslint/types': 8.0.0-alpha.30
-      '@typescript-eslint/typescript-estree': 8.0.0-alpha.30(typescript@5.8.3)
       eslint: 8.57.0
     transitivePeerDependencies:
       - supports-color
@@ -30037,23 +29695,6 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))':
-    dependencies:
-      '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
-      next: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/node'
-      - babel-plugin-macros
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - webpack
-
   '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(webpack@5.88.2)':
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
@@ -30285,7 +29926,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0)':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -30301,6 +29942,63 @@ snapshots:
       strip-literal: 2.1.0
       test-exclude: 6.0.0
       vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@bcoe/v8-coverage': 0.2.3
+      debug: 4.3.4
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 5.0.6
+      istanbul-reports: 3.1.7
+      magic-string: 0.30.10
+      magicast: 0.3.4
+      picocolors: 1.1.0
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      test-exclude: 6.0.0
+      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@bcoe/v8-coverage': 0.2.3
+      debug: 4.3.4
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 5.0.6
+      istanbul-reports: 3.1.7
+      magic-string: 0.30.10
+      magicast: 0.3.4
+      picocolors: 1.1.0
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      test-exclude: 6.0.0
+      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@bcoe/v8-coverage': 0.2.3
+      debug: 4.3.4
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 5.0.6
+      istanbul-reports: 3.1.7
+      magic-string: 0.30.10
+      magicast: 0.3.4
+      picocolors: 1.1.0
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      test-exclude: 6.0.0
+      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -32374,15 +32072,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.4.5
 
-  cosmiconfig@8.3.6(typescript@5.8.3):
-    dependencies:
-      import-fresh: 3.3.0
-      js-yaml: 4.1.0
-      parse-json: 5.2.0
-      path-type: 4.0.0
-    optionalDependencies:
-      typescript: 5.8.3
-
   cosmiconfig@9.0.0(typescript@5.4.5):
     dependencies:
       env-paths: 2.2.1
@@ -32865,11 +32554,6 @@ snapshots:
   devlop@1.1.0:
     dependencies:
       dequal: 2.0.3
-
-  dezalgo@1.0.4:
-    dependencies:
-      asap: 2.0.6
-      wrappy: 1.0.2
 
   didyoumean@1.2.2: {}
 
@@ -33392,7 +33076,7 @@ snapshots:
       debug: 4.3.4
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.27.5(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
       get-tsconfig: 4.7.5
       globby: 13.2.2
@@ -33410,7 +33094,7 @@ snapshots:
       debug: 4.3.4
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-plugin-import@2.27.5)(eslint@8.57.0))(eslint@8.57.0)
       eslint-plugin-import: 2.27.5(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
       get-tsconfig: 4.7.5
       globby: 13.2.2
@@ -33428,7 +33112,7 @@ snapshots:
       debug: 4.3.4
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
-      eslint-module-utils: 2.8.1(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(eslint-plugin-import@2.27.5)(eslint@8.57.0))(eslint@8.57.0)
       eslint-plugin-import: 2.27.5(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
       get-tsconfig: 4.7.5
       globby: 13.2.2
@@ -33441,7 +33125,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0):
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.27.5(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -33452,7 +33136,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0):
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-plugin-import@2.27.5)(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -33463,7 +33147,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.8.1(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0):
+  eslint-module-utils@2.8.1(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(eslint-plugin-import@2.27.5)(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -33512,7 +33196,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.27.5(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       has: 1.0.4
       is-core-module: 2.14.0
       is-glob: 4.0.3
@@ -33537,7 +33221,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-plugin-import@2.27.5)(eslint@8.57.0))(eslint@8.57.0)
       has: 1.0.4
       is-core-module: 2.14.0
       is-glob: 4.0.3
@@ -33562,7 +33246,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.5.5(eslint-plugin-import@2.27.5)(eslint@8.57.0))(eslint@8.57.0)
       has: 1.0.4
       is-core-module: 2.14.0
       is-glob: 4.0.3
@@ -34410,12 +34094,6 @@ snapshots:
 
   format@0.2.2: {}
 
-  formidable@3.5.1:
-    dependencies:
-      dezalgo: 1.0.4
-      hexoid: 1.0.0
-      once: 1.4.0
-
   forwarded@0.2.0: {}
 
   fraction.js@4.3.7: {}
@@ -34862,27 +34540,6 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  graphql-config@5.0.3(@types/node@20.14.9)(bufferutil@4.0.9)(encoding@0.1.13)(graphql@16.8.2)(typescript@5.8.3)(utf-8-validate@5.0.10):
-    dependencies:
-      '@graphql-tools/graphql-file-loader': 8.0.1(graphql@16.8.2)
-      '@graphql-tools/json-file-loader': 8.0.1(graphql@16.8.2)
-      '@graphql-tools/load': 8.0.2(graphql@16.8.2)
-      '@graphql-tools/merge': 9.0.4(graphql@16.8.2)
-      '@graphql-tools/url-loader': 8.0.2(@types/node@20.14.9)(bufferutil@4.0.9)(encoding@0.1.13)(graphql@16.8.2)(utf-8-validate@5.0.10)
-      '@graphql-tools/utils': 10.2.3(graphql@16.8.2)
-      cosmiconfig: 8.3.6(typescript@5.8.3)
-      graphql: 16.8.2
-      jiti: 1.21.6
-      minimatch: 4.2.3
-      string-env-interpolation: 1.0.1
-      tslib: 2.7.0
-    transitivePeerDependencies:
-      - '@types/node'
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-
   graphql-config@5.0.3(@types/node@20.16.5)(bufferutil@4.0.9)(encoding@0.1.13)(graphql@16.8.2)(typescript@5.4.5)(utf-8-validate@5.0.10):
     dependencies:
       '@graphql-tools/graphql-file-loader': 8.0.1(graphql@16.8.2)
@@ -35065,8 +34722,6 @@ snapshots:
       tslib: 2.7.0
 
   headers-polyfill@4.0.3: {}
-
-  hexoid@1.0.0: {}
 
   hey-listen@1.0.8: {}
 
@@ -37717,10 +37372,6 @@ snapshots:
 
   node-addon-api@7.1.0: {}
 
-  node-cron@3.0.3:
-    dependencies:
-      uuid: 8.3.2
-
   node-fetch-native@1.6.4: {}
 
   node-fetch@2.7.0(encoding@0.1.13):
@@ -39310,12 +38961,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - react
-
-  react-device-detect@2.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      ua-parser-js: 1.0.38
 
   react-docgen-typescript@2.2.2(typescript@5.4.5):
     dependencies:
@@ -41166,26 +40811,6 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.9.2(@swc/helpers@0.5.11)
 
-  ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.11))(@types/node@20.14.9)(typescript@5.8.3):
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.11
-      '@tsconfig/node12': 1.0.11
-      '@tsconfig/node14': 1.0.3
-      '@tsconfig/node16': 1.0.4
-      '@types/node': 20.14.9
-      acorn: 8.11.3
-      acorn-walk: 8.3.3
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
-      typescript: 5.8.3
-      v8-compile-cache-lib: 3.0.1
-      yn: 3.1.1
-    optionalDependencies:
-      '@swc/core': 1.9.2(@swc/helpers@0.5.11)
-
   ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.11))(@types/node@20.16.5)(typescript@5.4.5):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
@@ -42066,7 +41691,7 @@ snapshots:
       yaml: 2.4.5
     optional: true
 
-  vitest-dom@0.1.1(vitest@1.6.0):
+  vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
     dependencies:
       aria-query: 5.3.0
       chalk: 5.3.0
@@ -42075,6 +41700,36 @@ snapshots:
       lodash-es: 4.17.21
       redent: 4.0.0
       vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+
+  vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
+    dependencies:
+      aria-query: 5.3.0
+      chalk: 5.3.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.6.3
+      lodash-es: 4.17.21
+      redent: 4.0.0
+      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+
+  vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
+    dependencies:
+      aria-query: 5.3.0
+      chalk: 5.3.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.6.3
+      lodash-es: 4.17.21
+      redent: 4.0.0
+      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+
+  vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
+    dependencies:
+      aria-query: 5.3.0
+      chalk: 5.3.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.6.3
+      lodash-es: 4.17.21
+      redent: 4.0.0
+      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1):
     dependencies:
@@ -42137,6 +41792,43 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 20.14.9
+      '@vitest/ui': 1.6.0(vitest@1.6.0)
+      happy-dom: 12.10.3
+      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1):
+    dependencies:
+      '@vitest/expect': 1.6.0
+      '@vitest/runner': 1.6.0
+      '@vitest/snapshot': 1.6.0
+      '@vitest/spy': 1.6.0
+      '@vitest/utils': 1.6.0
+      acorn-walk: 8.3.3
+      chai: 4.4.1
+      debug: 4.3.4
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.10
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      tinybench: 2.8.0
+      tinypool: 0.8.4
+      vite: 5.4.9(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)
+      vite-node: 1.6.0(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)
+      why-is-node-running: 2.2.2
+    optionalDependencies:
+      '@types/node': 20.16.5
       '@vitest/ui': 1.6.0(vitest@1.6.0)
       happy-dom: 12.10.3
       jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
