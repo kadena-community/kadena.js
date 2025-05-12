@@ -39,6 +39,25 @@ yarn add @kadena/wallet-adapter-walletconnect
 pmpm add @kadena/wallet-adapter-walletconnect
 ```
 
+## Usage with wallet adapter React
+
+```ts
+import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
+import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const adapters = [
+  createWalletConnectAdapter(),
+];
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <KadenaWalletProvider adapters={adapters}>
+    <App />
+  </KadenaWalletProvider>
+);
+```
+
 ## Manual Usage of the Adapter or Detection
 
 If you need lower-level access, the following are also exported:
