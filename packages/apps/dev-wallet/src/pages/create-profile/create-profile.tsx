@@ -6,6 +6,7 @@ import { PasswordField } from '@/Components/PasswordField/PasswordField';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
+import { createDefaultProfileName } from '@/utils/createDefaultProfileName';
 import {
   PublicKeyCredentialCreate,
   createCredential,
@@ -124,7 +125,6 @@ export function CreateProfile() {
   const [profileId, setProfileId] = useState<string | null>(null);
   const [mnemonic, setMnemonic] = useState('');
   const [password, setPassword] = useState('');
-  const isShortFlow = profileList.length === 0;
   const formRef = useRef<HTMLFormElement>(null);
   const rotateColor = useRef(
     rotate(config.colorList.length, profileList.length),
@@ -143,14 +143,12 @@ export function CreateProfile() {
 
   const {
     register,
-    trigger,
     reset,
     handleSubmit,
     getValues,
     setValue,
     control,
     watch,
-
     formState: { isValid, errors },
   } = useForm<{
     password: string;
@@ -158,38 +156,23 @@ export function CreateProfile() {
     profileName: string;
     accentColor: string;
   }>({
-    mode: 'onChange',
+    mode: 'all',
     defaultValues: {
       password: '',
       confirmation: '',
-      profileName: isShortFlow
-        ? 'default'
-        : `profile-${profileList.length + 1}`,
+      profileName: createDefaultProfileName(profileList),
       accentColor: defaultColor,
     },
   });
 
-  // hack to do a form validation after load
-  // This is not supported by react-hook-form
   useEffect(() => {
-    if (!profileList.length) return;
-
-    reset({});
-    setTimeout(() => {
-      trigger();
-    }, 100);
-  }, [reset, trigger, profileList, step]);
-
-  useEffect(() => {
-    setValue(
-      'profileName',
-      profileList.length === 0
-        ? 'default'
-        : `profile-${profileList.length + 1}`,
-    );
     rotateColor.current = rotate(config.colorList.length, profileList.length);
-    setValue('accentColor', config.colorList[rotateColor.current()]);
-  }, [profileList, setValue]);
+    reset({
+      ...getValues(),
+      accentColor: config.colorList[rotateColor.current()],
+      profileName: createDefaultProfileName(profileList),
+    });
+  }, [profileList, step]);
 
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();
@@ -398,7 +381,12 @@ export function CreateProfile() {
                       setPasswordError(undefined);
                       handleSetStep('profile');
                     }}
-                    isDisabled={!isValid}
+                    isDisabled={
+                      !!errors.password ||
+                      !!errors.confirmation ||
+                      !getValues('password') ||
+                      !getValues('confirmation')
+                    }
                     endVisual={<MonoArrowForward />}
                   >
                     Next
@@ -417,90 +405,106 @@ export function CreateProfile() {
             onConfirm={() => onLockTheWallet()}
           />
         )}
-        {step === 'profile' && (
-          <>
-            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
-              <Stack flexDirection="column" gap="lg">
-                <Controller
-                  name="profileName"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                    maxLength: {
-                      value: 25,
-                      message: 'The max length is 25 characters',
-                    },
-                    validate: {
-                      required: (value) => {
-                        const existingProfile = profileList.find(
-                          (profile) => profile.name === value,
-                        );
-                        if (existingProfile)
-                          return `The profile name ${value} already exists. Please use another name.`;
-                        return true;
-                      },
-                    },
-                  }}
-                  render={({ field, fieldState: { error } }) => (
-                    <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
-                      <Label bold>Name</Label>
-                      <Stack gap="sm" flexDirection={'row'}>
-                        <TextField
-                          id="profileName"
-                          type="text"
-                          autoFocus
-                          defaultValue={field.value}
-                          value={field.value}
-                          onChange={field.onChange}
-                          key="profileName"
-                          isInvalid={!!error}
-                          errorMessage={error?.message}
-                        />
-                      </Stack>
-                      <Stack flexDirection="column">
-                        <Label bold>Color</Label>
 
-                        <Stack gap="xs" flexWrap="wrap">
-                          {config.colorList.map((color) => (
-                            <ChooseColor
-                              isActive={
-                                accentColor
-                                  ? color === accentColor
-                                  : color === defaultColor
-                              }
-                              accentColor={color}
-                              onClick={() => {
-                                setValue('accentColor', color);
-                              }}
-                            />
-                          ))}
-                        </Stack>
+        <>
+          <Stack
+            flexDirection={'column'}
+            gap={'lg'}
+            className={classNames(
+              wrapperClass,
+              showStepClass({
+                isVisible: step === 'profile',
+              }),
+            )}
+          >
+            <Stack flexDirection="column" gap="lg">
+              <Controller
+                name="profileName"
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'This field is required',
+                  },
+                  minLength: {
+                    value: 3,
+                    message: 'The min length is 3 characters',
+                  },
+                  maxLength: {
+                    value: 25,
+                    message: 'The max length is 25 characters',
+                  },
+                  validate: {
+                    validate: (value) => {
+                      const existingProfile = profileList.find(
+                        (profile) => profile.name === value,
+                      );
+                      if (existingProfile) {
+                        return `The profile name ${value} already exists. Please use another name.`;
+                      }
+                      return true;
+                    },
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => (
+                  <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
+                    <Label bold>Name</Label>
+                    <Stack gap="sm" flexDirection={'row'}>
+                      <TextField
+                        id="profileName"
+                        type="text"
+                        autoFocus
+                        defaultValue={field.value}
+                        value={field.value}
+                        onChange={field.onChange}
+                        key="profileName"
+                        isInvalid={!!error}
+                        errorMessage={error?.message}
+                      />
+                    </Stack>
+                    <Stack flexDirection="column">
+                      <Label bold>Color</Label>
+
+                      <Stack gap="xs" flexWrap="wrap">
+                        {config.colorList.map((color) => (
+                          <ChooseColor
+                            isActive={
+                              accentColor
+                                ? color === accentColor
+                                : color === defaultColor
+                            }
+                            accentColor={color}
+                            onClick={() => {
+                              setValue('accentColor', color);
+                            }}
+                          />
+                        ))}
                       </Stack>
                     </Stack>
-                  )}
-                />
-              </Stack>
-
-              {passwordError && (
-                <Notification
-                  type="inlineStacked"
-                  role="alert"
-                  intent="negative"
-                >
-                  <NotificationHeading>
-                    Password backend error
-                  </NotificationHeading>
-
-                  {passwordError}
-                </Notification>
-              )}
+                  </Stack>
+                )}
+              />
             </Stack>
 
+            {passwordError && (
+              <Notification type="inlineStacked" role="alert" intent="negative">
+                <NotificationHeading>
+                  Password backend error
+                </NotificationHeading>
+
+                {passwordError}
+              </Notification>
+            )}
+          </Stack>
+
+          {step === 'profile' && (
             <CardFooterContent>
-              <Stack width="100%">
+              <Stack
+                width="100%"
+                className={showStepClass({
+                  isVisible: step === 'profile',
+                })}
+              >
                 <Button
                   variant="outlined"
                   type="button"
@@ -524,8 +528,8 @@ export function CreateProfile() {
                 </Button>
               </CardFooterGroup>
             </CardFooterContent>
-          </>
-        )}
+          )}
+        </>
       </form>
     </>
   );

@@ -175,12 +175,12 @@ hw-app-kda-clone:
 '@kadena/wallet-adapter-core':
   - changed-files:
       - any-glob-to-any-file: packages/libs/wallet-adapter-core/*
-'@kadena/wallet-adapter-react':
-  - changed-files:
-      - any-glob-to-any-file: packages/libs/wallet-adapter-react/*
 '@kadena/wallet-adapter-ecko':
   - changed-files:
       - any-glob-to-any-file: packages/libs/wallet-adapter-ecko/*
+'@kadena/wallet-adapter-react':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-react/*
 wallet-adapter-react-example:
   - changed-files:
       - any-glob-to-any-file: packages/apps/wallet-adapter-react-example/*

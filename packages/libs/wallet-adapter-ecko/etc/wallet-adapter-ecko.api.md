@@ -10,8 +10,13 @@ import type { IBaseWalletFactoryOptions } from '@kadena/wallet-adapter-core';
 import type { IKdaMethodMap } from '@kadena/wallet-adapter-core';
 import { IProvider } from '@kadena/wallet-adapter-core';
 
-// Warning: (ae-forgotten-export) The symbol "IEckoProvider" needs to be exported by the entry point index.d.ts
-//
+// @public
+export const createEckoAdapter: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
+    name: string;
+    detect: () => Promise<IEckoProvider | null>;
+    adapter: (provider: IProvider) => Promise<EckoAdapter>;
+};
+
 // @public
 export function detectEckoProvider(options?: {
     silent?: boolean;
@@ -19,14 +24,7 @@ export function detectEckoProvider(options?: {
 }): Promise<IEckoProvider | null>;
 
 // @public
-export const eckoAdapter: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
-    name: string;
-    detect: () => Promise<IEckoProvider | null>;
-    adapter: (provider: IProvider) => Promise<EckoWalletAdapter>;
-};
-
-// @public
-export class EckoWalletAdapter extends BaseWalletAdapter {
+export class EckoAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);
     destroy(): void;
     // (undocumented)
@@ -168,6 +166,10 @@ export interface IRawRequestResponse {
     // (undocumented)
     status: 'success' | 'fail';
 }
+
+// Warnings were encountered during analysis:
+//
+// dist/esm/eckoAdapterFactory.d.ts:21:5 - (ae-forgotten-export) The symbol "IEckoProvider" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
