@@ -1,7 +1,7 @@
-import { vi } from "vitest";
+import { vi } from 'vitest';
 
 // Mock `window.matchMedia` before importing any modules that use it
-Object.defineProperty(window, "matchMedia", {
+Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
     matches: false,

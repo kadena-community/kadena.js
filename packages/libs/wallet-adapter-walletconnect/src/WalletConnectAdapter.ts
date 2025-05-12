@@ -114,7 +114,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         const chainId =
           'chainId' in response
             ? response.chainId
-            : safeJsonParse(command.cmd)?.meta?.chainId;
+            : safeJsonParse(command?.cmd)?.meta?.chainId;
 
         if (command) {
           return {

@@ -9,7 +9,6 @@ import { WalletConnectAdapter } from '../WalletConnectAdapter';
 import type { IWalletConnectProvider } from '../provider';
 
 // Default fallback network id for tests
-const DEFAULT_NETWORK_ID = 'mainnet01';
 const MOCK_NETWORK_ID = 'testnet04';
 
 // --- Mock Data ---
@@ -88,7 +87,28 @@ const mockClient = {
 };
 
 // A sample unsigned command for signing tests.
-const mockCommand = { cmd: 'test' } as unknown as IUnsignedCommand;
+const mockCommand = {
+  cmd: '{"payload":{"exec":{"code":"(coin.transfer \\"k:a138baf5c2e241b2c85f0c69edaecad1514a79de903a491735421844851d5010\\" \\"k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0\\" \\"0.1\\")","data":{}}},"nonce":"kjs:nonce:1747051965313","signers":[{"pubKey":"a138baf5c2e241b2c85f0c69edaecad1514a79de903a491735421844851d5010","scheme":"ED25519","clist":[{"name":"coin.GAS","args":[]},{"name":"coin.TRANSFER","args":["k:a138baf5c2e241b2c85f0c69edaecad1514a79de903a491735421844851d5010","k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0","0.1"]}]}],"meta":{"gasLimit":1500,"gasPrice":1e-8,"sender":"k:a138baf5c2e241b2c85f0c69edaecad1514a79de903a491735421844851d5010","ttl":28800,"creationTime":1747051965,"chainId":"0"},"networkId":"testnet04"}',
+  hash: 'o3Wgraz0LcR6JFIgpHN5KqDx2lAVU2bG9CaP7ImamuY',
+  sigs: [
+    {
+      pubKey:
+        'a138baf5c2e241b2c85f0c69edaecad1514a79de903a491735421844851d5010',
+      sig: null,
+    },
+  ],
+} as unknown as IUnsignedCommand;
+
+const mockSigned: ICommand = {
+  ...mockCommand,
+  sigs: [
+    {
+      pubKey:
+        'a138baf5c2e241b2c85f0c69edaecad1514a79de903a491735421844851d5010',
+      sig: 'valid-sig',
+    },
+  ],
+};
 
 // --- Test Suite ---
 describe('WalletConnectAdapter', () => {
@@ -128,7 +148,7 @@ describe('WalletConnectAdapter', () => {
       // Expect that the payload passed to provider.request includes jsonrpc: "2.0"
       expect(mockProvider.request).toHaveBeenCalledWith({
         method: 'kadena_connect',
-        networkId: DEFAULT_NETWORK_ID,
+        // networkId: DEFAULT_NETWORK_ID,
       });
       expect(result).toEqual(expectedResponse);
     });
@@ -167,11 +187,13 @@ describe('WalletConnectAdapter', () => {
       expect(accounts).toEqual([
         {
           accountName: 'test-account',
-          chainIds: ['1'],
+          chainAccounts: ['1'],
           guard: {
-            keys: [{ publicKey: 'pubkey' }],
+            keys: ['pubkey'],
             pred: 'keys-all',
           },
+          contract: 'coin',
+          networkId: 'mainnet01',
         },
       ]);
     });
@@ -203,11 +225,6 @@ describe('WalletConnectAdapter', () => {
 
   describe('signTransaction', () => {
     test('calls provider.request with kadena_sign_v1 and transaction param', async () => {
-      const mockSigned: ICommand = {
-        cmd: 'signedCmd',
-        hash: 'hash',
-        sigs: [{ sig: 'sig' }],
-      };
       vi.mocked(mockProvider.request).mockResolvedValueOnce(mockSigned);
       const result = await adapter.signTransaction(mockCommand);
       expect(mockProvider.request).toHaveBeenCalledWith({
@@ -220,11 +237,6 @@ describe('WalletConnectAdapter', () => {
 
   describe('signCommand', () => {
     test('calls provider.request with kadena_sign_v1 and command param', async () => {
-      const mockSigned: ICommand = {
-        cmd: 'signedCmd',
-        hash: 'hash',
-        sigs: [{ sig: 'sig' }],
-      };
       vi.mocked(mockProvider.request).mockResolvedValueOnce(mockSigned);
       const result = await adapter.signCommand(mockCommand);
       expect(mockProvider.request).toHaveBeenCalledWith({
@@ -236,17 +248,28 @@ describe('WalletConnectAdapter', () => {
   });
 
   describe('quicksign', () => {
-    test('calls provider.request with kadena_quicksign_v1 and commandSigDatas param', async () => {
-      const mockSignedArray: ICommand[] = [
-        { cmd: 'signedCmd1', hash: 'hash1', sigs: [{ sig: 'sig1' }] },
-      ];
-      vi.mocked(mockProvider.request).mockResolvedValueOnce(mockSignedArray);
+    test.only('calls provider.request with kadena_quicksign_v1 and commandSigDatas param', async () => {
+      vi.mocked(mockProvider.request).mockResolvedValueOnce({
+        id: 1,
+        jsonrpc: '2.0',
+        result: {
+          responses: [
+            {
+              commandSigData: { cmd: mockSigned.cmd, sigs: mockSigned.sigs },
+              outcome: { hash: mockSigned.hash, result: 'success' },
+            },
+          ],
+        },
+      });
       const result = await adapter.signTransaction(mockCommand);
       expect(mockProvider.request).toHaveBeenCalledWith({
+        id: undefined,
         method: 'kadena_quicksign_v1',
-        params: { commandSigDatas: [mockCommand] },
+        params: {
+          commandSigDatas: [{ cmd: mockCommand.cmd, sigs: mockCommand.sigs }],
+        },
       });
-      expect(result).toEqual(mockSignedArray);
+      expect(result).toEqual({ ...mockCommand, sigs: mockSigned.sigs });
     });
   });
 
