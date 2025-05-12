@@ -5,6 +5,15 @@ const withVanillaExtract = createVanillaExtractPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@kadena/kode-ui'],
+  async redirects() {
+    return [
+      {
+        source: '/((?!maintenance).*)',
+        destination: '/maintenance.html',
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
