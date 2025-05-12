@@ -399,7 +399,7 @@ const CrossChainTransferFinisher: FC = () => {
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Cross Chain Transfer Finisher')}</BreadcrumbsItem>
       </Breadcrumbs>
-      <Heading as="h4">{t('Finish transaction')}</Heading>
+      <Heading as="h4">{t('Finish transaction ')}</Heading>
 
       <div className={notificationContainerStyle}>
         <Notification
