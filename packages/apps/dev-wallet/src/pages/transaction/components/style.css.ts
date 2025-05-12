@@ -24,6 +24,7 @@ export const codeClass = style({
   flex: '1',
   overflow: 'auto',
   wordBreak: 'break-all',
+  whiteSpace: 'pre-wrap',
   width: '100%',
 });
 
@@ -111,7 +112,7 @@ export const tabClass = style({
 
 export const txTileClass = style({
   width: '250px',
-  height: '280px',
+  height: '300px',
   padding: '10px',
   border: `1px solid ${vars.colors.$borderDefault}`,
   borderRadius: '5px',

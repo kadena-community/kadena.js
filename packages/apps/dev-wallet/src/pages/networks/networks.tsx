@@ -41,7 +41,7 @@ export function Networks() {
         fetchNetworks();
       }
     });
-  });
+  }, []);
 
   return (
     <>
