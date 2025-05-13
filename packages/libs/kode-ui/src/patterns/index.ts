@@ -26,6 +26,7 @@ export {
   SideBarItemsInline,
   SideBarLayout,
   LayoutProvider as SideBarLayoutProvider,
+  KLogoText as SideBarLogo,
   TopBanner as SideBarTopBanner,
   SideBarTree,
   SideBarTreeItem,
@@ -76,6 +77,7 @@ export {
   TopBanner as FocussedLayoutTopBanner,
   useLayout as useFocussedLayout,
 } from './FocussedLayout';
+export { KLogoText as FocussedLayoutLogo } from './SideBarLayout/components/Logo/KLogoText';
 
 //notifications functionality
 export { NotificationSlot, useNotifications } from './LayoutUtils';

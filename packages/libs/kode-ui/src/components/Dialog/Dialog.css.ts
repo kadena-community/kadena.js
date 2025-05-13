@@ -15,6 +15,11 @@ export const overlayClass = style([
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
+    selectors: {
+      '&:focus-visible': {
+        outline: 0,
+      },
+    },
   },
   responsiveStyle({
     xs: {

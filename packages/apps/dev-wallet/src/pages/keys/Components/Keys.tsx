@@ -1,11 +1,10 @@
-import { ListItem } from '@/Components/ListItem/ListItem.tsx';
+import { FormatCopyPaste } from '@/Components/Table/FormatCopyPaste.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.tsx';
 import { keySourceManager } from '@/modules/key-source/key-source-manager';
 import { keySourceRepository } from '@/modules/key-source/key-source.repository.ts';
 import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository.ts';
-import { shorten } from '@/utils/helpers.ts';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
 import {
   Button,
@@ -13,10 +12,13 @@ import {
   ContextMenu,
   ContextMenuDivider,
   ContextMenuItem,
+  Notification,
+  NotificationHeading,
   Stack,
-  Text,
 } from '@kadena/kode-ui';
 import {
+  CompactTable,
+  CompactTableFormatters,
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
@@ -180,46 +182,45 @@ export function Keys() {
                     }
                   />
                   <SectionCardBody>
-                    {keySource.keys.map((key) => (
-                      <ListItem key={key.index}>
-                        <Stack
-                          key={key.index}
-                          flexDirection={'row'}
-                          flex={1}
-                          gap={'lg'}
-                          justifyContent={'space-between'}
-                          alignItems={'center'}
-                        >
-                          <Stack gap={'md'}>
-                            <Text> Idx: {key.index}</Text>
-                            <Text>{shorten(key.publicKey, 20)}</Text>
-                          </Stack>
-                          <ContextMenu
-                            placement="bottom end"
-                            trigger={
-                              <Button
-                                endVisual={<MonoMoreVert />}
-                                variant="transparent"
-                                isCompact
-                              />
-                            }
-                          >
-                            <ContextMenuItem
-                              label="Copy"
-                              onClick={() => {
-                                navigator.clipboard.writeText(key.publicKey);
-                              }}
-                            />
-                            <ContextMenuItem
-                              label="Disable key"
-                              onClick={() => {}}
-                            />
-                          </ContextMenu>
-                        </Stack>
-                      </ListItem>
-                    ))}
-                    {(!keySource.keys || keySource.keys.length === 0) && (
-                      <Text>No keys created yet</Text>
+                    {keySource.keys.length > 0 ? (
+                      <CompactTable
+                        variant="open"
+                        fields={[
+                          {
+                            label: 'Index',
+                            key: 'index',
+                            width: '10%',
+                          },
+                          {
+                            label: 'Pubkey',
+                            key: 'publicKey',
+                            width: '70%',
+                            render: CompactTableFormatters.FormatAccount({
+                              headLength: 20,
+                              tailLength: 20,
+                            }),
+                          },
+                          {
+                            label: '',
+                            key: 'publicKey',
+                            width: '20%',
+                            align: 'end',
+                            render: FormatCopyPaste(),
+                          },
+                        ]}
+                        data={keySource.keys}
+                      />
+                    ) : (
+                      <Notification
+                        intent="info"
+                        isDismissable={false}
+                        role="alert"
+                        type="inlineStacked"
+                      >
+                        <NotificationHeading>
+                          No keys created yet
+                        </NotificationHeading>
+                      </Notification>
                     )}
                   </SectionCardBody>
                 </SectionCardContentBlock>
