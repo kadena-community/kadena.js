@@ -1,14 +1,15 @@
 import { lowBalanceChains } from '@/scripts/utils/lowBalanceChains';
 import { fetchAccount } from '@/utils/fetchAccount';
 import type { IAlert } from './constants';
-import { sendErrorMessages, sendMessages } from './messages';
+import { sendBalanceErrorMessages } from './messages/balance/sendBalanceErrorMessages';
+import { sendBalanceMessages } from './messages/balance/sendBalanceMessages';
 
 export const balanceAlert = async (alert: IAlert): Promise<string[]> => {
   const promises = alert.networks.map(async (network) => {
     const account = await fetchAccount(network, alert.options?.account);
 
     if (account?.errors?.length) {
-      return sendErrorMessages(alert, network);
+      return sendBalanceErrorMessages(alert, network);
     }
 
     const lowBalanceChainsResult = lowBalanceChains(
@@ -17,7 +18,7 @@ export const balanceAlert = async (alert: IAlert): Promise<string[]> => {
     );
     if (!lowBalanceChainsResult.length) return;
 
-    return sendMessages(alert, lowBalanceChainsResult, network);
+    return sendBalanceMessages(alert, lowBalanceChainsResult, network);
   });
 
   const results = await Promise.all(promises);

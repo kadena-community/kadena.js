@@ -1,16 +1,19 @@
-import {
-  channelId,
-  faucetAccount,
-  GalxeAccount,
-  MINBALANCE,
-  MINXCHAINGASSTATIONBALANCE,
-  MINXGALXEBALANCE,
-  xchainGasStationAccount,
-} from '@/scripts/constants';
 import { getMainNet, getTestNet } from '@/utils/network';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import type { IAlert } from './utils/constants';
-import { ALERTCODES, MESSAGETYPES, NETWORKS } from './utils/constants';
+import {
+  ALERTCODES,
+  channelId,
+  faucetAccount,
+  GalxeAccount,
+  MAXBLOCKHEIGHT_DIFFERENCE,
+  MESSAGETYPES,
+  MINBALANCE,
+  MINXCHAINGASSTATIONBALANCE,
+  MINXGALXEBALANCE,
+  NETWORKS,
+  xchainGasStationAccount,
+} from './utils/constants';
 
 export async function GET() {
   const alerts: IAlert[] = [
@@ -51,6 +54,17 @@ export async function GET() {
       chainIds: ['6'],
       slackChannelIds: [channelId],
       messageType: MESSAGETYPES.BALANCEALERT,
+    },
+    {
+      title: `GRAPH DOWN!`,
+      code: ALERTCODES.GRAPHDOWN,
+      networks: [],
+      options: {
+        maxblockHeightDiff: MAXBLOCKHEIGHT_DIFFERENCE,
+      },
+      chainIds: CHAINS,
+      slackChannelIds: [channelId],
+      messageType: MESSAGETYPES.GRAPHDOWNALERT,
     },
   ];
 
