@@ -82,7 +82,7 @@ test.describe('Query: getTransactions', () => {
               gasLimit: 2500,
               gasPrice: 1e-8,
               sender: sourceAccount.account,
-              ttl: 28800,
+              ttl: 900,
               chainId: 0,
             },
             payload: {
@@ -347,7 +347,7 @@ test.describe('Query: getTransactions', () => {
               gasLimit: 2500,
               gasPrice: 1e-8,
               sender: sourceAccount.account,
-              ttl: 28800,
+              ttl: 900,
               chainId: 1,
             },
             payload: {
@@ -484,7 +484,7 @@ test.describe('Query: getTransactions', () => {
               gasLimit: 2500,
               gasPrice: 1e-8,
               sender: sourceAccount.account,
-              ttl: 28800,
+              ttl: 900,
               chainId: 0,
             },
             payload: {
