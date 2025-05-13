@@ -1,5 +1,15 @@
+import { getTestNet } from '@/utils/network';
+import { CHAINS } from '@kadena/chainweb-node-client';
+import {
+  ALERTCODES,
+  channelId,
+  faucetAccount,
+  MESSAGETYPES,
+  MINBALANCE,
+} from '../../../constants';
 import type { IAccount } from '../../constants';
 import { sendErrorMessage, sendMessage } from '../messages';
+import { sendBalanceMessages } from '../sendBalanceMessages';
 
 const mocks = vi.hoisted(() => {
   return {
@@ -7,29 +17,33 @@ const mocks = vi.hoisted(() => {
   };
 });
 
+const network = getTestNet();
+const alert = {
+  title: `Low Faucet alert! 🚨`,
+  code: ALERTCODES.LOWFAUCETBALANCE,
+  networks: [network],
+  options: {
+    account: faucetAccount,
+    minBalance: MINBALANCE,
+    gif: 'https://media.giphy.com/media/ZNnnp4wa17dZrDQKKI/giphy.gif?cid=790b7611li34xwh3ghrh6h6xwketcjop0mjayanqbp0n1enh&ep=v1_gifs_search&rid=giphy.gif&ct=g',
+  },
+  chainIds: CHAINS,
+  slackChannelIds: [channelId],
+  messageType: MESSAGETYPES.BALANCEALERT,
+};
+
 describe('messages', () => {
-  describe('sendErrorMessage', () => {
+  describe('sendBalanceMessages', () => {
     beforeEach(() => {
       vi.stubGlobal('fetch', mocks.fetch);
+      const mocked = vi.fn(() => 0.1);
+      Math.random = mocked;
     });
 
     afterEach(() => {
       vi.resetAllMocks();
     });
 
-    it('should send the correct message', async () => {
-      await sendErrorMessage();
-      expect(mocks.fetch).toBeCalledTimes(1);
-      expect(mocks.fetch.mock.calls[0][0]).toEqual(
-        'https://slack.com/api/chat.postMessage',
-      );
-    });
-  });
-  describe('sendMessages', () => {
-    beforeEach(() => {
-      const mocked = vi.fn(() => 0.1);
-      Math.random = mocked;
-    });
     it('should send the correct message with the correct chains', async () => {
       const account = {
         data: {
@@ -44,7 +58,11 @@ describe('messages', () => {
         },
       } as IAccount;
 
-      await sendMessage(account);
+      await sendBalanceMessages(
+        alert,
+        account.data.fungibleAccount.chainAccounts,
+        network,
+      );
       const body = JSON.parse(mocks.fetch.mock.calls[0][1].body) as any;
       expect(mocks.fetch).toBeCalledTimes(1);
 
