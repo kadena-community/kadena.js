@@ -186,6 +186,12 @@
     "path": "packages/libs/types"
   },
   {
+    "name": "@kadena/wallet-adapter-chainweaver-legacy",
+    "version": "0.0.1-beta.0",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-chainweaver-legacy"
+  },
+  {
     "name": "@kadena/wallet-adapter-core",
     "version": "0.0.1-beta.0",
     "private": false,
