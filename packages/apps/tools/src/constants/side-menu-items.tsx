@@ -21,6 +21,10 @@ const menuData: ISidebarToolbarItem[] = [
         title: 'Fund Existing Account',
         href: Routes.FAUCET_EXISTING,
       },
+      {
+        title: 'Fund EVM Account',
+        href: Routes.FAUCET_EVM,
+      },
     ],
   },
   {

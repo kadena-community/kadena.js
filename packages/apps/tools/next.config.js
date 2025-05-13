@@ -9,7 +9,7 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true, // lint is a different task/phase
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   pageExtensions:
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
       ? ['tsx', 'route.ts']
@@ -41,6 +41,7 @@ const config = {
 
     return config;
   },
+
   async redirects() {
     return [
       {
