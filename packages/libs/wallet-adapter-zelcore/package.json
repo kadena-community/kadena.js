@@ -1,6 +1,10 @@
 {
   "name": "@kadena/wallet-adapter-zelcore",
   "version": "0.0.1-beta.1",
+  "contributors": [
+    "Francisco Miranda",
+    "Ariel Serranoni"
+  ],
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
@@ -33,9 +37,5 @@
   "authors": [
     "Danillo Felixdaal",
     "Bart Huijgen"
-  ],
-  "contributors": [
-    "Francisco Miranda",
-    "Ariel Serranoni"
   ]
 }
