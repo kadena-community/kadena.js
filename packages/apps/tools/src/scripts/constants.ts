@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-export const channelId = process.env.SLACK_CHANNELID;
+export const channelId = process.env.SLACK_CHANNELID ?? '';
 export const tokenId = process.env.SLACK_TOKEN;
 export const faucetAccount = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
 export const xchainGasStationAccount = 'kadena-xchain-gas';

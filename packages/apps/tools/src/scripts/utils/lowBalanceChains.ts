@@ -1,12 +1,18 @@
+import type { IAlert } from '@/app/api/alerts/utils/constants';
 import type { IChainAccount } from '../constants';
 
 export const lowBalanceChains = (
+  alert: IAlert,
   chainAccounts: IChainAccount[] | undefined,
-  minBalance: number,
 ): IChainAccount[] => {
-  if (!chainAccounts?.length) return [];
+  const minBalance = alert.options?.minBalance;
+  if (!chainAccounts?.length || !minBalance) return [];
 
-  const lowChains = chainAccounts.filter(
+  const chainsToCheck = chainAccounts.filter(
+    (chain) => alert.chainIds.indexOf(chain.chainId) > -1,
+  );
+
+  const lowChains = chainsToCheck.filter(
     (chainAccount) => chainAccount.balance < minBalance,
   );
 
