@@ -16,6 +16,7 @@ export const listClass = style([
     padding: 'n0',
     gap: 'sm',
   }),
+  { minHeight: '1px' },
 ]);
 
 export const chainListClass = style([

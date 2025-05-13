@@ -14,10 +14,8 @@ import {
   ContextMenuDivider,
   ContextMenuItem,
   IButtonProps,
-  Link as UILink,
 } from '@kadena/kode-ui';
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
 
 export const NetworkSelector: FC<{
   showLabel?: boolean;
@@ -40,12 +38,10 @@ export const NetworkSelector: FC<{
 
   return (
     <ButtonGroup fullWidth>
-      <UILink
+      <Button
         data-testid="networkselectorName"
         isCompact
         variant="outlined"
-        component={Link}
-        href="/networks"
         startVisual={
           activeNetwork?.isHealthy === false ? (
             <MonoWifiTetheringOff />
@@ -55,7 +51,7 @@ export const NetworkSelector: FC<{
         }
       >
         {showLabel ? activeNetwork?.name : undefined}
-      </UILink>
+      </Button>
 
       {showLabel && (
         <ContextMenu
@@ -81,7 +77,7 @@ export const NetworkSelector: FC<{
           ))}
           <ContextMenuDivider />
           <ContextMenuItem
-            label="Settings"
+            label="Network settings"
             endVisual={<MonoSettings />}
             onClick={handlePress}
           />

@@ -7,7 +7,7 @@ import {
   isPactGuard,
   isUserGuard,
 } from '@/modules/account/guards';
-import { Stack, Text } from '@kadena/kode-ui';
+import { maskValue, Stack, Text } from '@kadena/kode-ui';
 import { ellipsis } from '@kadena/kode-ui/styles';
 import { Keyset } from './keyset';
 
@@ -51,11 +51,19 @@ export function getGuardInfo(guard: IGuard) {
   }
 }
 
-export const Guard = ({ guard }: { guard: IGuard }) => {
+export const Guard = ({
+  guard,
+  hidePred,
+  direction = 'row',
+}: {
+  guard: IGuard;
+  hidePred?: boolean;
+  direction?: 'column' | 'row';
+}) => {
   if (!guard) return null;
 
   if (isKeysetGuard(guard)) {
-    return <Keyset guard={guard} />;
+    return <Keyset direction={direction} hidePred={hidePred} guard={guard} />;
   }
 
   const { type, value } = getGuardInfo(guard);
@@ -70,7 +78,7 @@ export const Guard = ({ guard }: { guard: IGuard }) => {
     >
       <Text size="smallest" className={ellipsis}>
         {type}
-        {value ? `: ${value}` : ''}
+        {value ? `: ${maskValue(value)}` : ''}
       </Text>
     </Stack>
   );

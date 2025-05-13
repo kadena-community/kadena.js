@@ -15,7 +15,43 @@ export const dividerClass = recipe({
     borderTopStyle: 'solid',
     height: 'auto',
   },
+  compoundVariants: [
+    {
+      variants: {
+        label: true,
+        align: 'center',
+      },
+      style: {
+        selectors: {
+          '&:after': {
+            justifySelf: 'anchor-center',
+            marginInline: 'auto',
+          },
+        },
+      },
+    },
+    {
+      variants: {
+        label: true,
+        align: 'end',
+      },
+      style: {
+        selectors: {
+          '&:after': {
+            position: 'relative',
+            float: 'right',
+            marginBlockEnd: '-23px',
+          },
+        },
+      },
+    },
+  ],
   variants: {
+    align: {
+      start: {},
+      center: {},
+      end: {},
+    },
     label: {
       true: {
         position: 'relative',
@@ -23,9 +59,8 @@ export const dividerClass = recipe({
         selectors: {
           '&:after': {
             display: 'flex',
-            justifySelf: 'anchor-center',
             whiteSpace: 'nowrap',
-            marginInline: 'auto',
+
             paddingInline: token('spacing.sm'),
             content: 'attr(data-label)',
             position: 'absolute',

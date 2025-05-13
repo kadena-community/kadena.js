@@ -6,6 +6,7 @@ import { PasswordField } from '@/Components/PasswordField/PasswordField';
 import { config } from '@/config';
 import { createKAccount } from '@/modules/account/account.service';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet';
+import { createDefaultProfileName } from '@/utils/createDefaultProfileName';
 import {
   PublicKeyCredentialCreate,
   createCredential,
@@ -34,6 +35,7 @@ import {
   CardFooterGroup,
   FocussedLayoutHeaderContent,
 } from '@kadena/kode-ui/patterns';
+import classNames from 'classnames';
 import React, {
   FC,
   ReactElement,
@@ -49,12 +51,12 @@ import { wrapperClass } from '../errors/styles.css';
 import { noStyleLinkClass } from '../home/style.css';
 import { ChooseColor } from '../select-profile/ChooseColor';
 import { Label } from '../transaction/components/helpers';
+import { showStepClass } from './styles.css';
 
 const rotate = (max: number, start: number = 0) => {
   let index = start;
   return () => {
     index = (index + 1) % max;
-    console.log('index', index);
     return index;
   };
 };
@@ -123,7 +125,6 @@ export function CreateProfile() {
   const [profileId, setProfileId] = useState<string | null>(null);
   const [mnemonic, setMnemonic] = useState('');
   const [password, setPassword] = useState('');
-  const isShortFlow = profileList.length === 0;
   const formRef = useRef<HTMLFormElement>(null);
   const rotateColor = useRef(
     rotate(config.colorList.length, profileList.length),
@@ -142,6 +143,7 @@ export function CreateProfile() {
 
   const {
     register,
+    reset,
     handleSubmit,
     getValues,
     setValue,
@@ -158,24 +160,19 @@ export function CreateProfile() {
     defaultValues: {
       password: '',
       confirmation: '',
-      profileName: isShortFlow
-        ? 'default'
-        : `profile-${profileList.length + 1}`,
+      profileName: createDefaultProfileName(profileList),
       accentColor: defaultColor,
     },
   });
 
   useEffect(() => {
-    console.log('profileList', profileList);
-    setValue(
-      'profileName',
-      profileList.length === 0
-        ? 'default'
-        : `profile-${profileList.length + 1}`,
-    );
     rotateColor.current = rotate(config.colorList.length, profileList.length);
-    setValue('accentColor', config.colorList[rotateColor.current()]);
-  }, [profileList, setValue]);
+    reset({
+      ...getValues(),
+      accentColor: config.colorList[rotateColor.current()],
+      profileName: createDefaultProfileName(profileList),
+    });
+  }, [profileList, step]);
 
   const [webAuthnCredential, setWebAuthnCredential] =
     useState<PublicKeyCredentialCreate>();
@@ -189,11 +186,13 @@ export function CreateProfile() {
     password: string;
     accentColor: string;
   }) {
+    const innerAccentColor = accentColor ? accentColor : defaultColor;
+
     let pass = password;
     if (!activeNetwork) {
       return;
     }
-    if (webAuthnCredential && password === 'WEB_AUTHN_PROTECTED') {
+    if (webAuthnCredential) {
       const pk = webAuthnCredential.response.getPublicKey();
       if (!pk) {
         throw new Error('Public key not found');
@@ -204,7 +203,7 @@ export function CreateProfile() {
     const profile = await createProfile(
       profileName,
       pass,
-      accentColor,
+      innerAccentColor,
       webAuthnCredential
         ? {
             authMode: 'WEB_AUTHN',
@@ -252,9 +251,6 @@ export function CreateProfile() {
       // const pk = result.credential.response.getPublicKey();
       // setPublicKey(pk ? hex(new Uint8Array(extractPublicKeyBytes(pk))) : '');
       setWebAuthnCredential(result.credential);
-      setValue('password', 'WEB_AUTHN_PROTECTED');
-      setValue('confirmation', 'WEB_AUTHN_PROTECTED');
-
       handleSetStep('profile');
     } else {
       console.error('Error creating credential');
@@ -318,13 +314,7 @@ export function CreateProfile() {
             <CardFooterContent>
               <Stack width="100%">
                 <Link to="/select-profile" className={noStyleLinkClass}>
-                  <Button
-                    variant="outlined"
-                    type="button"
-                    onPress={() => {
-                      throw new Error('back');
-                    }}
-                  >
+                  <Button variant="outlined" type="button" onPress={() => {}}>
                     Back
                   </Button>
                 </Link>
@@ -350,9 +340,19 @@ export function CreateProfile() {
             </CardFooterContent>
           </>
         )}
-        {step === 'set-password' && (
+
+        {!webAuthnCredential && (
           <>
-            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
+            <Stack
+              flexDirection={'column'}
+              gap={'lg'}
+              className={classNames(
+                wrapperClass,
+                showStepClass({
+                  isVisible: step === 'set-password',
+                }),
+              )}
+            >
               <PasswordField
                 value={getValues('password')}
                 confirmationValue={getValues('confirmation')}
@@ -362,33 +362,41 @@ export function CreateProfile() {
               />
             </Stack>
 
-            <CardFooterContent>
-              <Stack width="100%">
-                <Button
-                  variant="outlined"
-                  type="button"
-                  onPress={() => {
-                    handleSetStep('authMethod');
-                  }}
-                >
-                  Back
-                </Button>
-              </Stack>
-              <CardFooterGroup>
-                <Button
-                  onClick={() => {
-                    setPasswordError(undefined);
-                    handleSetStep('profile');
-                  }}
-                  isDisabled={!isValid}
-                  endVisual={<MonoArrowForward />}
-                >
-                  Next
-                </Button>
-              </CardFooterGroup>
-            </CardFooterContent>
+            {step === 'set-password' && (
+              <CardFooterContent>
+                <Stack width="100%">
+                  <Button
+                    variant="outlined"
+                    type="button"
+                    onPress={() => {
+                      handleSetStep('authMethod');
+                    }}
+                  >
+                    Back
+                  </Button>
+                </Stack>
+                <CardFooterGroup>
+                  <Button
+                    onClick={() => {
+                      setPasswordError(undefined);
+                      handleSetStep('profile');
+                    }}
+                    isDisabled={
+                      !!errors.password ||
+                      !!errors.confirmation ||
+                      !getValues('password') ||
+                      !getValues('confirmation')
+                    }
+                    endVisual={<MonoArrowForward />}
+                  >
+                    Next
+                  </Button>
+                </CardFooterGroup>
+              </CardFooterContent>
+            )}
           </>
         )}
+
         {step === 'backup-mnemonic' && (
           <BackupMnemonic
             mnemonic={mnemonic}
@@ -397,76 +405,111 @@ export function CreateProfile() {
             onConfirm={() => onLockTheWallet()}
           />
         )}
-        {step === 'profile' && (
-          <>
-            <Stack flexDirection={'column'} gap={'lg'} className={wrapperClass}>
-              <Stack flexDirection="column" gap="lg">
-                <Controller
-                  name="profileName"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                  }}
-                  render={({ field, fieldState: { error } }) => (
-                    <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
-                      <Label bold>Name</Label>
-                      <Stack gap="sm" flexDirection={'row'}>
-                        <TextField
-                          id="profileName"
-                          type="text"
-                          autoFocus
-                          defaultValue={field.value}
-                          value={field.value}
-                          onChange={field.onChange}
-                          key="profileName"
-                          isInvalid={!isValid && !!error}
-                          errorMessage={error && error.message}
-                        />
-                      </Stack>
-                      <Stack flexDirection="column">
-                        <Label bold>Color</Label>
 
-                        <Stack gap="xs" flexWrap="wrap">
-                          {config.colorList.map((color) => (
-                            <ChooseColor
-                              isActive={color === accentColor}
-                              accentColor={color}
-                              onClick={() => {
-                                setValue('accentColor', color);
-                              }}
-                            />
-                          ))}
-                        </Stack>
+        <>
+          <Stack
+            flexDirection={'column'}
+            gap={'lg'}
+            className={classNames(
+              wrapperClass,
+              showStepClass({
+                isVisible: step === 'profile',
+              }),
+            )}
+          >
+            <Stack flexDirection="column" gap="lg">
+              <Controller
+                name="profileName"
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'This field is required',
+                  },
+                  minLength: {
+                    value: 3,
+                    message: 'The min length is 3 characters',
+                  },
+                  maxLength: {
+                    value: 25,
+                    message: 'The max length is 25 characters',
+                  },
+                  validate: {
+                    validate: (value) => {
+                      const existingProfile = profileList.find(
+                        (profile) => profile.name === value,
+                      );
+                      if (existingProfile) {
+                        return `The profile name ${value} already exists. Please use another name.`;
+                      }
+                      return true;
+                    },
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => (
+                  <Stack flexDirection={'column'} gap={'md'} marginBlock="md">
+                    <Label bold>Name</Label>
+                    <Stack gap="sm" flexDirection={'row'}>
+                      <TextField
+                        id="profileName"
+                        type="text"
+                        autoFocus
+                        defaultValue={field.value}
+                        value={field.value}
+                        onChange={field.onChange}
+                        key="profileName"
+                        isInvalid={!!error}
+                        errorMessage={error?.message}
+                      />
+                    </Stack>
+                    <Stack flexDirection="column">
+                      <Label bold>Color</Label>
+
+                      <Stack gap="xs" flexWrap="wrap">
+                        {config.colorList.map((color) => (
+                          <ChooseColor
+                            isActive={
+                              accentColor
+                                ? color === accentColor
+                                : color === defaultColor
+                            }
+                            accentColor={color}
+                            onClick={() => {
+                              setValue('accentColor', color);
+                            }}
+                          />
+                        ))}
                       </Stack>
                     </Stack>
-                  )}
-                />
-              </Stack>
-
-              {passwordError && (
-                <Notification
-                  type="inlineStacked"
-                  role="alert"
-                  intent="negative"
-                >
-                  <NotificationHeading>
-                    Password backend error
-                  </NotificationHeading>
-
-                  {passwordError}
-                </Notification>
-              )}
+                  </Stack>
+                )}
+              />
             </Stack>
 
+            {passwordError && (
+              <Notification type="inlineStacked" role="alert" intent="negative">
+                <NotificationHeading>
+                  Password backend error
+                </NotificationHeading>
+
+                {passwordError}
+              </Notification>
+            )}
+          </Stack>
+
+          {step === 'profile' && (
             <CardFooterContent>
-              <Stack width="100%">
+              <Stack
+                width="100%"
+                className={showStepClass({
+                  isVisible: step === 'profile',
+                })}
+              >
                 <Button
                   variant="outlined"
                   type="button"
                   onPress={() => {
+                    setWebAuthnCredential(undefined);
                     handleSetStep(previousStep);
                   }}
                 >
@@ -485,8 +528,8 @@ export function CreateProfile() {
                 </Button>
               </CardFooterGroup>
             </CardFooterContent>
-          </>
-        )}
+          )}
+        </>
       </form>
     </>
   );

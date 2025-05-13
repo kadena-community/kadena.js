@@ -1,173 +1,127 @@
+import { PluginIcon } from '@/Components/PluginIcon/PluginIcon';
 import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { usePlugins } from '@/modules/plugins/plugin.provider';
+import { pluginManager } from '@/modules/plugins/PluginManager';
 import { getInitials } from '@/utils/get-initials';
-import { logTap } from '@/utils/logTap';
 import { MonoApps } from '@kadena/kode-icons/system';
-import { Divider, Heading, Stack, Text } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
-import { useEffect, useMemo, useState } from 'react';
+import { Stack, Text } from '@kadena/kode-ui';
+import {
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+  SideBarBreadcrumbsItem,
+} from '@kadena/kode-ui/patterns';
+import { useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { noStyleLinkClass } from '../home/style.css';
-import { PluginCommunicationProvider } from './PluginCommunicationProvider';
-import { pluginContainerClass, pluginIconClass } from './style.css';
-import { Plugin } from './type';
-
-// plugin whitelist
-const registries = [
-  '/internal-registry',
-  // 'https://localhost:3000/test-plugins',
-];
-
-function escapeHTML(input: string) {
-  return input
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-const getDoc = (plugin: Plugin, sessionId: string) => {
-  const id = escapeHTML(plugin.id);
-  const host = escapeHTML(plugin.registry);
-  const src = `${host}/${id}/dist/index.es.js`;
-  const style = `${host}/${id}/dist/style.css`;
-
-  console.log('loading plugin: ', { id, host, src, style });
-
-  return `
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kadena Dev Wallet Plugin</title>
-    <link rel="stylesheet" href="${style}" />
-    <link rel="modulepreload" crossorigin href="${src}" />
-    </head>
-    <body class="boot">
-    <div id="plugin-root"></div>
-    <script type="module">
-      window.process =  window.process || { env: { NODE_ENV: 'production' } };
-    </script>
-    <script type="module">
-      import { createApp } from '${src}';
-      createApp(document.getElementById('plugin-root'), { sessionId: '${sessionId}' }, window.parent);
-    </script>
-  </body>
-</html>`;
-};
+import { pluginContainerClass } from './style.css';
 
 export function Plugins() {
   const [searchParams] = useSearchParams();
-  const [pluginList, setPluginList] = useState<Plugin[]>([]);
-  const pluginId = searchParams.get('plugin-id') as
-    | null
-    | keyof typeof pluginList;
+  const pluginList = usePlugins();
 
-  const plugin = pluginList.find((p) => p.id === pluginId);
-  const sessionId = useMemo(
-    () => `${pluginId?.toString()}:${crypto.randomUUID()}`,
-    [pluginId],
-  );
+  const pluginId = searchParams.get('plugin-id');
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const plugin = pluginId ? pluginList.get(pluginId) : undefined;
 
   useEffect(() => {
-    registries.map((registry) =>
-      fetch(`${registry}/plugins.json`)
-        .then((res) => res.json())
-        .then((list: Omit<Plugin, 'registry'>[]) =>
-          (list || []).map((p) => ({ ...p, registry })),
-        )
-        .then((list) =>
-          setPluginList((prev) => {
-            const newPlugins: Plugin[] = [];
-            list.forEach((p) => {
-              if (
-                !prev.find((pl) => pl.id === p.id && pl.registry === p.registry)
-              ) {
-                newPlugins.push(logTap('plugin found')(p));
-              }
-            });
-            return [...prev, ...newPlugins];
-          }),
-        ),
-    );
-  }, []);
-
-  const doc = useMemo(() => {
-    if (!plugin) return '';
-    return getDoc(plugin, sessionId);
-  }, [plugin, sessionId]);
+    if (!wrapperRef.current) return;
+    if (plugin) {
+      pluginManager.loadPlugin(plugin);
+      pluginManager.bringToFront(plugin.id, wrapperRef.current);
+      return () => {
+        pluginManager.bringToBackground(plugin.id);
+      };
+    }
+  }, [plugin]);
 
   if (plugin) {
     return (
-      <PluginCommunicationProvider sessionId={sessionId} plugin={plugin}>
-        <Stack flexDirection={'column'} gap={'md'} height="100%">
-          <SideBarBreadcrumbs icon={<MonoApps />} isGlobal>
-            <SideBarBreadcrumbsItem href="/plugins">
-              plugins
-            </SideBarBreadcrumbsItem>
-            <SideBarBreadcrumbsItem href={`/plugins?plugin-id=${plugin.id}`}>
-              {plugin.name}
-            </SideBarBreadcrumbsItem>
-          </SideBarBreadcrumbs>
-          <Stack gap={'sm'} flexDirection={'column'}>
-            <Heading variant="h3">
-              <Stack gap={'sm'} alignItems={'center'}>
-                <div style={{ display: 'inline-block' }}>
-                  <div className={pluginIconClass}>
-                    {getInitials(plugin.name).toUpperCase()}
-                  </div>
-                </div>
-                {plugin.name}
-              </Stack>
-            </Heading>
+      <>
+        <SideBarBreadcrumbs icon={<MonoApps />} isGlobal>
+          <SideBarBreadcrumbsItem href="/plugins">
+            plugins
+          </SideBarBreadcrumbsItem>
+          <SideBarBreadcrumbsItem href={`/plugins?plugin-id=${plugin.id}`}>
+            {plugin.name}
+          </SideBarBreadcrumbsItem>
+        </SideBarBreadcrumbs>
 
-            <Text>{plugin.description}</Text>
-          </Stack>
-          <Stack
-            flex={1}
-            marginBlockEnd={'md'}
-            className={pluginContainerClass}
+        <Stack marginBlockStart="xxxl">
+          <SectionCard
+            stack="vertical"
+            icon={<div>{getInitials(plugin.name).toUpperCase()}</div>}
           >
-            <iframe
-              sandbox="allow-scripts allow-forms allow-same-origin"
-              style={{ border: 'none', width: '100%', height: '100%' }}
-              srcDoc={doc}
-            />
-          </Stack>
+            <SectionCardContentBlock>
+              <SectionCardHeader
+                title={plugin.name}
+                description={<>{plugin.description}</>}
+              />
+
+              <SectionCardBody>
+                <Stack
+                  flex={1}
+                  marginBlockEnd={'md'}
+                  className={pluginContainerClass}
+                >
+                  <Stack
+                    ref={wrapperRef}
+                    width="100%"
+                    style={{ minHeight: '500px' }}
+                  />
+                </Stack>
+              </SectionCardBody>
+            </SectionCardContentBlock>
+          </SectionCard>
         </Stack>
-      </PluginCommunicationProvider>
+      </>
     );
   }
   return (
-    <Stack flexDirection={'column'} gap={'md'}>
+    <>
       <SideBarBreadcrumbs icon={<MonoApps />} isGlobal>
         <SideBarBreadcrumbsItem href="/plugins">plugins</SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
-      <Heading variant="h3">Plugins</Heading>
-      <Text>
-        Plugins are mini-apps provided by third-parties that can installed
-        inside the wallet
-      </Text>
-      <Divider />
-      <Stack flexWrap="wrap" gap={'md'}>
-        {pluginList.map(({ name, id }) => (
-          <Link to={`/plugins?plugin-id=${id}`} className={noStyleLinkClass}>
-            <Stack
-              alignItems={'center'}
-              justifyContent={'center'}
-              flexDirection={'column'}
-              gap={'xs'}
-            >
-              <div className={pluginIconClass}>
-                {getInitials(name).toUpperCase()}
-              </div>
-              <Text bold size="smallest">
-                {name}
-              </Text>
-            </Stack>
-          </Link>
-        ))}
+
+      <Stack marginBlockStart="xxxl">
+        <SectionCard stack="vertical">
+          <SectionCardContentBlock>
+            <SectionCardHeader
+              title="Plugins"
+              description={
+                <>
+                  Plugins are mini-apps provided by third-parties that can
+                  installed inside the wallet
+                </>
+              }
+            />
+            <SectionCardBody>
+              <Stack flexWrap="wrap" gap={'md'}>
+                {[...pluginList.values()].map(({ name, id }) => (
+                  <Link
+                    to={`/plugins?plugin-id=${id}`}
+                    className={noStyleLinkClass}
+                  >
+                    <Stack
+                      alignItems={'center'}
+                      justifyContent={'center'}
+                      flexDirection={'column'}
+                      gap={'xs'}
+                    >
+                      <PluginIcon name={name} />
+                      <Text bold size="smallest">
+                        {name}
+                      </Text>
+                    </Stack>
+                  </Link>
+                ))}
+              </Stack>
+            </SectionCardBody>
+          </SectionCardContentBlock>
+        </SectionCard>
       </Stack>
-    </Stack>
+    </>
   );
 }

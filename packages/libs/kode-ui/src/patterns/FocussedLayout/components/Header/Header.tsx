@@ -1,13 +1,21 @@
-import type { FC } from 'react';
+import type { FC, ReactElement } from 'react';
 import React, { useEffect, useRef } from 'react';
 import { useLayout } from '../LayoutProvider';
 import { Stack } from './../../../../components';
 import { KLogoText } from './../../../SideBarLayout/components/Logo/KLogoText';
 
-export const Header: FC = () => {
+interface IProps {
+  logo?: ReactElement;
+}
+
+export const Header: FC<IProps> = ({ logo }) => {
   const { setHeaderContentRef, setHeaderAsideRef } = useLayout();
   const leftRef = useRef<HTMLDivElement | null>(null);
   const rightRef = useRef<HTMLDivElement | null>(null);
+
+  const ShowLogo = () => {
+    return logo ? logo : <KLogoText />;
+  };
 
   useEffect(() => {
     if (!leftRef.current || !rightRef.current) return;
@@ -22,13 +30,14 @@ export const Header: FC = () => {
       marginBlockEnd="xxxl"
       alignItems="center"
     >
-      <KLogoText />
+      {ShowLogo()}
       <Stack flex={1} ref={leftRef} />
       <Stack
         as="aside"
         marginInlineEnd="xs"
         justifyContent="flex-end"
         textAlign="right"
+        flexDirection="row-reverse"
         ref={rightRef}
       />
     </Stack>

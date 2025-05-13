@@ -34,8 +34,14 @@ export class ChainweaverAppIndex extends setupDatabase {
       .getByRole('listitem')
       .all();
 
+    await actor
+      .getByRole('button', {
+        name: 'Account',
+      })
+      .click();
+
     const newAccountButton = actor.getByRole('button', {
-      name: 'New Account',
+      name: 'Create Account',
     });
     await newAccountButton.waitFor();
     await expect(newAccountButton).toBeVisible();
@@ -55,10 +61,6 @@ export class ChainweaverAppIndex extends setupDatabase {
     await expect(newListItems.length).toEqual(listItems.length + 1);
 
     const account = await newListItems[0].getAttribute('data-account');
-    // console.log('str', str);
-    // const account = str.match(/\(([^)]+)\)/);
-
-    console.log(account);
 
     if (!account) {
       await expect(true).toBe(false);

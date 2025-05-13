@@ -1,9 +1,10 @@
-import { creatLowChainsString, lowFaucetChains } from '.';
+import { creatLowChainsString } from '../utils/creatLowChainsString';
+import { lowBalanceChains } from '../utils/lowBalanceChains';
 import type { IAccount } from './../constants';
 import { MINBALANCE, channelId, faucetAccount, tokenId } from './../constants';
 
 export const sendMessage = async (data: IAccount): Promise<void> => {
-  const lowChains = lowFaucetChains(
+  const lowChains = lowBalanceChains(
     data.data?.fungibleAccount.chainAccounts,
     MINBALANCE,
   );

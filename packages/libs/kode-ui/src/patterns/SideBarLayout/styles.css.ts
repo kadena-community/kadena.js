@@ -126,7 +126,6 @@ export const bodyWrapperClass = style({
   minHeight: '100dvh',
 
   backgroundColor: token('color.background.base.default'),
-  overflowX: 'hidden',
 });
 
 export const mainClass = style({

@@ -1,8 +1,7 @@
 {
   "git": {
     "deploymentEnabled": {
-      "main": false,
-      "release/tools-v*": true
+      "main": true
     }
   },
   "crons": [
@@ -13,6 +12,14 @@
     {
       "path": "/api/graph",
       "schedule": "15 4,16 * * *"
+    },
+    {
+      "path": "/api/xchaingas",
+      "schedule": "15 5,17 * * *"
+    },
+    {
+      "path": "/api/galxe",
+      "schedule": "15 6,18 * * *"
     }
   ]
 }

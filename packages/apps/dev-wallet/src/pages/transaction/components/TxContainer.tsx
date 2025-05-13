@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ExpandedTransaction } from './ExpandedTransaction';
 import { containerClass } from './style.css';
 import { TxMinimized } from './TxMinimized';
-import { steps } from './TxPipeLine';
+import { steps } from './TxPipeLine/utils';
 import { TxTile } from './TxTile';
 
 export const TxContainer = React.memo(
@@ -90,6 +90,11 @@ export const TxContainer = React.memo(
 
     const onExpandedSign =
       (tx: ITransaction) => async (sigs: ITransaction['sigs']) => {
+        console.log({
+          status: tx.status,
+          d: steps.indexOf(tx.status),
+          e: sigs.every((data) => data?.sig),
+        });
         const updated = {
           ...tx,
           sigs,
@@ -97,7 +102,7 @@ export const TxContainer = React.memo(
             ? steps.indexOf(tx.status) < steps.indexOf('signed')
               ? 'signed'
               : tx.status
-            : tx.status,
+            : 'initiated',
         } as ITransaction;
         await transactionRepository.updateTransaction(updated);
         // setLocalTransaction(updated);

@@ -9,6 +9,7 @@ import { INetwork } from '@/modules/network/network.repository';
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { Label } from '@/pages/transaction/components/helpers';
 import { AccountSearchBox } from '@/pages/transfer/Components/AccountSearchBox';
+import { titleBadgeClass } from '@/pages/transfer/Components/style.css';
 import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
@@ -19,6 +20,7 @@ import {
   MonoSaveAlt,
 } from '@kadena/kode-icons/system';
 import {
+  Badge,
   Button,
   Card,
   Heading,
@@ -28,11 +30,12 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { FC, Fragment, useEffect } from 'react';
+import { FC, Fragment, useCallback, useEffect } from 'react';
 import {
   Control,
   Controller,
   UseFormGetValues,
+  UseFormReset,
   UseFormResetField,
   UseFormSetValue,
 } from 'react-hook-form';
@@ -52,6 +55,7 @@ interface IProps {
   senderChain: '' | ChainId;
   validateAccount: any;
   resetField: UseFormResetField<ITransfer>;
+  reset: UseFormReset<ITransfer>;
   setValue: UseFormSetValue<ITransfer>;
   evaluateTransactions: () => void;
   filteredAccounts: IOwnedAccount[];
@@ -91,7 +95,7 @@ export const ReceiverCard: FC<IProps> = ({
   senderAccount,
   senderChain,
   validateAccount,
-  resetField,
+  reset,
   setValue,
   evaluateTransactions,
   filteredAccounts,
@@ -115,6 +119,16 @@ export const ReceiverCard: FC<IProps> = ({
     });
   }, [error]);
 
+  const resetReceiverFields = useCallback((idx: number) => {
+    const receivers = getValues('receivers');
+    const newReceivers = [...receivers];
+    newReceivers.splice(idx, 1);
+
+    const s = getValues();
+    console.log({ s });
+    reset({ ...s, receivers: newReceivers });
+  }, []);
+
   return (
     <Card fullWidth>
       <CardContentBlock
@@ -128,7 +142,7 @@ export const ReceiverCard: FC<IProps> = ({
               variant="outlined"
               onPress={() => setShowMore((v) => !v)}
             >
-              more Options
+              Select chain
             </Button>
             <Button
               isCompact
@@ -210,10 +224,22 @@ export const ReceiverCard: FC<IProps> = ({
                               justifyContent={'space-between'}
                             >
                               <Heading variant="h5">
-                                Receiver{' '}
-                                {watchReceivers.length > 1
-                                  ? `(${renderIndex + 1})`
-                                  : ''}
+                                <Stack
+                                  gap="sm"
+                                  flexDirection="row"
+                                  alignItems="center"
+                                >
+                                  <Badge
+                                    size="sm"
+                                    style="highContrast"
+                                    className={titleBadgeClass}
+                                  >
+                                    {watchReceivers.length > 1
+                                      ? renderIndex + 1
+                                      : 1}
+                                  </Badge>{' '}
+                                  <span>Receiver</span>
+                                </Stack>
                               </Heading>
                               <Stack>
                                 <>
@@ -222,7 +248,7 @@ export const ReceiverCard: FC<IProps> = ({
                                       isCompact
                                       variant="transparent"
                                       onClick={withEvaluate(() => {
-                                        resetField(`receivers.${index}`);
+                                        resetReceiverFields(index);
                                       })}
                                     >
                                       <MonoDelete />
@@ -327,18 +353,22 @@ export const ReceiverCard: FC<IProps> = ({
                                     fieldState: { error },
                                   }) => (
                                     <TextField
+                                      label="Amount"
                                       aria-label="Amount"
                                       onChange={(e) => {
                                         const value = e.target.value;
                                         field.onChange(value);
                                       }}
                                       placeholder="Enter the amount"
-                                      startVisual={<Label>Amount:</Label>}
+                                      startVisual={
+                                        <Label size="small">Amount:</Label>
+                                      }
                                       onBlur={evaluateTransactions}
                                       value={field.value}
-                                      size="sm"
+                                      size="md"
                                       type="number"
                                       step="1"
+                                      fontType="code"
                                       isInvalid={!!error}
                                       errorMessage={
                                         'Please enter a valid amount'
@@ -354,8 +384,11 @@ export const ReceiverCard: FC<IProps> = ({
                                       control={control}
                                       render={({ field }) => (
                                         <Select
+                                          label="Chain"
                                           aria-label="Chain"
-                                          startVisual={<Label>Chain:</Label>}
+                                          startVisual={
+                                            <Label size="small">Chain:</Label>
+                                          }
                                           // label={index === 0 ? 'Chain' : undefined}
                                           placeholder="Select a chain"
                                           description={
@@ -379,7 +412,7 @@ export const ReceiverCard: FC<IProps> = ({
                                             error.target ===
                                               `receivers.${index}`
                                           }
-                                          size="sm"
+                                          size="md"
                                           selectedKey={field.value}
                                           onSelectionChange={withEvaluate(
                                             field.onChange,

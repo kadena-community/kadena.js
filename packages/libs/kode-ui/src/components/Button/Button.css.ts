@@ -77,34 +77,37 @@ const defaultVars = {
 };
 
 const defaultSelectors = {
-  '&[data-hovered]': {
+  '&[data-hovered]:not([data-noaction="true"])': {
     vars: {
       [iconFill]: token('color.icon.base.@hover'),
       [textColor]: token('color.text.base.@hover'),
     },
   },
-  '&[data-pressed]': {
+  '&[data-pressed]:not([data-noaction="true"])': {
     vars: {
       [iconFill]: token('color.icon.base.@active'),
       [textColor]: token('color.text.base.@active'),
     },
   },
-  '&[data-focus-visible]': {
+  '&[data-focus-visible]:not([data-noaction="true"])': {
     vars: {
       [iconFill]: token('color.icon.base.@focus'),
       [textColor]: token('color.text.base.@focus'),
     },
   },
-  '&[data-selected]': {
+  '&[data-selected]:not([data-noaction="true"])': {
     vars: {
       [iconFill]: token('color.icon.base.@active'),
       [textColor]: token('color.text.base.@active'),
     },
   },
-  '&[data-disabled]': {
+  '&[data-disabled]:not([data-noaction="true"])': {
     vars: {
       [backgroundColor]: 'transparent',
     },
+  },
+  '&[data-noaction="true"]:focus-visible': {
+    outline: 0,
   },
 };
 
@@ -216,6 +219,19 @@ export const button = recipe({
     },
   ],
   variants: {
+    hasAction: {
+      true: {},
+      false: {
+        cursor: 'auto!important',
+        selectors: {
+          ...defaultSelectors,
+          '&[data-hovered], &:hover': {
+            backgroundColor: backgroundColor,
+            color: `${textColor}!important`,
+          },
+        },
+      },
+    },
     variant: {
       primary: {
         vars: {

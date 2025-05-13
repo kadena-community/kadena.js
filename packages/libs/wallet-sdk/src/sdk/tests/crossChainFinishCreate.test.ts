@@ -69,7 +69,7 @@ describe('simpleTransferCreateCommand', () => {
         gasLimit: 850,
         gasPrice: 1e-8,
         sender: 'k:gasPayerKey',
-        ttl: 28800,
+        ttl: 900,
         creationTime: expect.any(Number),
         chainId: '0',
       },

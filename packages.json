@@ -132,12 +132,6 @@
     "path": "packages/libs/kode-ui"
   },
   {
-    "name": "@kadena/marmalade-marketplace",
-    "version": "0.1.18",
-    "private": true,
-    "path": "packages/apps/marmalade-marketplace"
-  },
-  {
     "name": "@kadena/pactjs",
     "version": "0.4.3",
     "private": false,
@@ -190,6 +184,12 @@
     "version": "0.7.0",
     "private": false,
     "path": "packages/libs/types"
+  },
+  {
+    "name": "@kadena/wallet-adapter-chainweaver-legacy",
+    "version": "0.0.1-beta.0",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-chainweaver-legacy"
   },
   {
     "name": "@kadena/wallet-adapter-core",
