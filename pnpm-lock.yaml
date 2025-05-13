@@ -1453,8 +1453,8 @@ importers:
         specifier: 1.14.2
         version: 1.14.2
       '@walletconnect/modal':
-        specifier: ~2.6.1
-        version: 2.6.2(@types/react@18.3.14)(react@18.3.1)
+        specifier: ~2.7.0
+        version: 2.7.0(@types/react@18.3.14)(react@18.3.1)
       '@walletconnect/sign-client':
         specifier: ~2.8.1
         version: 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -1631,8 +1631,8 @@ importers:
         specifier: workspace:*
         version: link:../../libs/wallet-adapter-react
       '@kadena/wallet-adapter-walletconnect':
-        specifier: '*'
-        version: 0.0.1-beta.0(@types/react@18.3.14)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.23.8)
+        specifier: workspace:*
+        version: link:../../libs/wallet-adapter-walletconnect
       '@vanilla-extract/css':
         specifier: 1.14.2
         version: 1.14.2
@@ -3503,8 +3503,8 @@ importers:
         specifier: workspace:*
         version: link:../wallet-adapter-core
       '@walletconnect/modal':
-        specifier: ~2.6.1
-        version: 2.6.2(@types/react@18.3.14)(react@18.3.1)
+        specifier: ~2.7.0
+        version: 2.7.0(@types/react@18.3.14)(react@18.3.1)
       '@walletconnect/sign-client':
         specifier: ~2.8.1
         version: 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -6456,17 +6456,11 @@ packages:
   '@kadena/chainweb-node-client@0.7.0':
     resolution: {integrity: sha512-fyrwIJK80oYJReyFJGLORFp2NUckLbVUKlBElVn3RlPQa46YXkqabHsXQtbGipIs5L9N4W0ipmReQZxcamaGXQ==}
 
-  '@kadena/chainweb-node-client@0.9.1':
-    resolution: {integrity: sha512-UT3/udj/QuMM8HiN2cMqEEgX0RGRYVJm/iJgqCtXLizKMM9fpaZDl+BlrB2TM9lyC9KrFPHI3aDAmtfzBQ9ERg==}
-
   '@kadena/client@1.13.0':
     resolution: {integrity: sha512-bKkSh0hQ5eGP7L6YfBv8n2ZseVExzLFOy7nLF1Tcp21MbixDsRvq8VDZ0AoHsNBSrlXRfqvBqDp2Q2rgbjIHjA==}
 
   '@kadena/client@1.15.0':
     resolution: {integrity: sha512-XEIRKd+VG6z5/EqDz00T0lC6S5dp2qBp/xgO50aZ9a+WjB3I3Tz4x3oTm5Ev/LPlG92xcfC6LvbrkY1EqsAYYQ==}
-
-  '@kadena/client@1.17.1':
-    resolution: {integrity: sha512-ZUVLa9HArJlBJRBKtfacbPocC0BGTROx1txMq0eipIPBp2QgLA5hAUs6edNGWZRe1UwWK7XajkOQtkMNsJL8rg==}
 
   '@kadena/cryptography-utils@0.4.4':
     resolution: {integrity: sha512-8xUcGlmBuuR9PSW88eqJuW49EmcQeiplDlsvN1N++1Bw6KV4lXlBKlJn5TM8lxctGNpewtzlIUimQFIlMqm9aw==}
@@ -6482,12 +6476,6 @@ packages:
 
   '@kadena/spirekey-sdk@1.0.0':
     resolution: {integrity: sha512-4Un54uRvraKv654eb+OHdB0BXdmMM9v7eRMrPnH6C7XSX1D6Y+VocwSqfH2c1OEDxsIDmaGqac2Y+UXeEFHF5Q==}
-
-  '@kadena/wallet-adapter-core@0.0.1-beta.0':
-    resolution: {integrity: sha512-mM2MDqcFcxKbQjR4SCp32VLMScpjOdI7ENCuOP+CnvRVNjMNaH4EJjF3zRnIXkHRqeoiV9DqlNx2QP8/URJD+g==}
-
-  '@kadena/wallet-adapter-walletconnect@0.0.1-beta.0':
-    resolution: {integrity: sha512-5raZgLH+MgVw9G6vQpNim0UmwPO2UUltGlOQJCf+3CitySaeRCqVloB+U//BZGM5lEpl7UhKtUg9oEHG9forRw==}
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
@@ -10633,14 +10621,15 @@ packages:
   '@walletconnect/logger@2.1.2':
     resolution: {integrity: sha512-aAb28I3S6pYXZHQm5ESB+V6rDqIYfsnHaQyzFbwUUBFY4H0OXx/YtTl8lvhUNhMMfb9UxbwEBS253TlXUYJWSw==}
 
-  '@walletconnect/modal-core@2.6.2':
-    resolution: {integrity: sha512-cv8ibvdOJQv2B+nyxP9IIFdxvQznMz8OOr/oR/AaUZym4hjXNL/l1a2UlSQBXrVjo3xxbouMxLb3kBsHoYP2CA==}
+  '@walletconnect/modal-core@2.7.0':
+    resolution: {integrity: sha512-oyMIfdlNdpyKF2kTJowTixZSo0PGlCJRdssUN/EZdA6H6v03hZnf09JnwpljZNfir2M65Dvjm/15nGrDQnlxSA==}
 
-  '@walletconnect/modal-ui@2.6.2':
-    resolution: {integrity: sha512-rbdstM1HPGvr7jprQkyPggX7rP4XiCG85ZA+zWBEX0dVQg8PpAgRUqpeub4xQKDgY7pY/xLRXSiCVdWGqvG2HA==}
+  '@walletconnect/modal-ui@2.7.0':
+    resolution: {integrity: sha512-gERYvU7D7K1ANCN/8vUgsE0d2hnRemfAFZ2novm9aZBg7TEd/4EgB+AqbJ+1dc7GhOL6dazckVq78TgccHb7mQ==}
 
-  '@walletconnect/modal@2.6.2':
-    resolution: {integrity: sha512-eFopgKi8AjKf/0U4SemvcYw9zlLpx9njVN8sf6DAkowC2Md0gPU/UNEbH1Wwj407pEKnEds98pKWib1NN1ACoA==}
+  '@walletconnect/modal@2.7.0':
+    resolution: {integrity: sha512-RQVt58oJ+rwqnPcIvRFeMGKuXb9qkgSmwz4noF8JZGUym3gUAzVs+uW2NQ1Owm9XOJAV+sANrtJ+VoVq1ftElw==}
+    deprecated: Please follow the migration guide on https://docs.reown.com/appkit/upgrade/wcm
 
   '@walletconnect/relay-api@1.0.11':
     resolution: {integrity: sha512-tLPErkze/HmC9aCmdZOhtVmYZq1wKfWTJtygQHoWtgg722Jd4homo54Cs4ak2RUFUZIGO2RsOpIcWipaua5D5Q==}
@@ -23585,14 +23574,6 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@kadena/chainweb-node-client@0.9.1':
-    dependencies:
-      '@kadena/cryptography-utils': 0.4.4
-      '@kadena/pactjs': 0.4.3
-      cross-fetch: 3.1.8(encoding@0.1.13)
-    transitivePeerDependencies:
-      - encoding
-
   '@kadena/client@1.13.0(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)':
     dependencies:
       '@kadena/chainweb-node-client': 0.6.3(encoding@0.1.13)
@@ -23624,34 +23605,6 @@ snapshots:
   '@kadena/client@1.15.0(bufferutil@4.0.9)(encoding@0.1.13)(utf-8-validate@5.0.10)':
     dependencies:
       '@kadena/chainweb-node-client': 0.7.0(encoding@0.1.13)
-      '@kadena/cryptography-utils': 0.4.4
-      '@kadena/pactjs': 0.4.3
-      '@walletconnect/sign-client': 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      cross-fetch: 3.1.8(encoding@0.1.13)
-      debug: 4.3.4
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - bufferutil
-      - encoding
-      - ioredis
-      - supports-color
-      - uWebSockets.js
-      - utf-8-validate
-
-  '@kadena/client@1.17.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@kadena/chainweb-node-client': 0.9.1
       '@kadena/cryptography-utils': 0.4.4
       '@kadena/pactjs': 0.4.3
       '@walletconnect/sign-client': 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -23740,46 +23693,6 @@ snapshots:
       - supports-color
       - uWebSockets.js
       - utf-8-validate
-
-  '@kadena/wallet-adapter-core@0.0.1-beta.0(typescript@5.4.5)':
-    dependencies:
-      '@kadena/client': link:packages/libs/client
-      '@standard-schema/spec': 1.0.0
-      eventemitter3: 5.0.1
-      valibot: 1.0.0(typescript@5.4.5)
-    transitivePeerDependencies:
-      - typescript
-
-  '@kadena/wallet-adapter-walletconnect@0.0.1-beta.0(@types/react@18.3.14)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.23.8)':
-    dependencies:
-      '@kadena/client': 1.17.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@kadena/wallet-adapter-core': 0.0.1-beta.0(typescript@5.4.5)
-      '@walletconnect/modal': 2.6.2(@types/react@18.3.14)(react@18.3.1)
-      '@walletconnect/sign-client': 2.8.6(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@walletconnect/utils': 2.20.0(bufferutil@4.0.9)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.23.8)
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@types/react'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - bufferutil
-      - encoding
-      - ioredis
-      - react
-      - supports-color
-      - typescript
-      - uWebSockets.js
-      - utf-8-validate
-      - zod
 
   '@kamilkisiela/fast-url-parser@1.1.4': {}
 
@@ -30559,16 +30472,16 @@ snapshots:
       '@walletconnect/safe-json': 1.0.2
       pino: 7.11.0
 
-  '@walletconnect/modal-core@2.6.2(@types/react@18.3.14)(react@18.3.1)':
+  '@walletconnect/modal-core@2.7.0(@types/react@18.3.14)(react@18.3.1)':
     dependencies:
       valtio: 1.11.2(@types/react@18.3.14)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - react
 
-  '@walletconnect/modal-ui@2.6.2(@types/react@18.3.14)(react@18.3.1)':
+  '@walletconnect/modal-ui@2.7.0(@types/react@18.3.14)(react@18.3.1)':
     dependencies:
-      '@walletconnect/modal-core': 2.6.2(@types/react@18.3.14)(react@18.3.1)
+      '@walletconnect/modal-core': 2.7.0(@types/react@18.3.14)(react@18.3.1)
       lit: 2.8.0
       motion: 10.16.2
       qrcode: 1.5.3
@@ -30576,10 +30489,10 @@ snapshots:
       - '@types/react'
       - react
 
-  '@walletconnect/modal@2.6.2(@types/react@18.3.14)(react@18.3.1)':
+  '@walletconnect/modal@2.7.0(@types/react@18.3.14)(react@18.3.1)':
     dependencies:
-      '@walletconnect/modal-core': 2.6.2(@types/react@18.3.14)(react@18.3.1)
-      '@walletconnect/modal-ui': 2.6.2(@types/react@18.3.14)(react@18.3.1)
+      '@walletconnect/modal-core': 2.7.0(@types/react@18.3.14)(react@18.3.1)
+      '@walletconnect/modal-ui': 2.7.0(@types/react@18.3.14)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - react
