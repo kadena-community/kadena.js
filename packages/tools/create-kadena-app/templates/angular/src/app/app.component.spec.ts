@@ -1,9 +1,12 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: HTMLElement;
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
@@ -11,98 +14,91 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', waitForAsync(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    compiled = fixture.debugElement.nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should create the app', () => {
+    expect(fixture.componentInstance).toBeTruthy();
+  });
 
   describe('Home layout', () => {
-    it('should render title', waitForAsync(() => {
-      const fixture = TestBed.createComponent(AppComponent);
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelector('h1').textContent).toContain(
+    it('should render title', () => {
+      const h1 = compiled.querySelector('h1')!;
+      expect(h1.textContent).toContain(
         'Start Interacting with the Kadena Blockchain',
-      );
-    }));
-
-    it('should render blockchain interaction section', () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelectorAll('h4')[0].textContent).toContain(
-        'Write to the blockchain',
-      );
-      expect(compiled.querySelectorAll('h4')[1].textContent).toContain(
-        'Read from the blockchain',
       );
     });
 
+     it('should render the wallet connection section', () => {
+      const h4s = compiled.querySelectorAll('h4');
+      expect(h4s[0].textContent).toContain('Wallet');
+     });
+
+    it('should render the wallet connection button', () => {
+      it('should render blockchain interaction section', () => {
+          const h4s = compiled.querySelectorAll('h4');
+      // [0] is "Wallet"
+      expect(h4s[1].textContent).toContain('Write to the blockchain');
+      expect(h4s[2].textContent).toContain('Read from the blockchain');
+    });
+
     it('should render resources section', () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-      expect(compiled.querySelectorAll('h4')[2].textContent).toContain(
-        'Resources',
-      );
+      const h4s = compiled.querySelectorAll('h4');
+      expect(h4s[3].textContent).toContain('Resources');
     });
   });
 
   describe('Blockchain interaction', () => {
     it('should contain disabled read and write buttons', () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-
-      // Verify that the buttons are disabled
-      expect(compiled.querySelectorAll('button')[0].disabled).toBeTruthy();
-      expect(compiled.querySelectorAll('button')[1].disabled).toBeTruthy();
+      const buttons = Array.from(compiled.querySelectorAll('button'));
+      const writeBtn = buttons.find((b) => b.textContent?.trim() === 'Write')!;
+      const readBtn = buttons.find((b) => b.textContent?.trim() === 'Read')!;
+      expect(writeBtn.disabled).toBeTrue();
+      expect(readBtn.disabled).toBeTrue();
     });
 
-    it('should enable read button after entering account', () => {
-      const account = 'k:account';
-      const fixture = TestBed.createComponent(AppComponent);
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-      const readButton = compiled.querySelectorAll('button')[1];
+    it('should enable read button after entering account', waitForAsync(() => {
+      const buttons = Array.from(compiled.querySelectorAll('button'));
+      const readBtn = buttons.find((b) => b.textContent?.trim() === 'Read')!;
+      const accountInput = compiled.querySelector(
+        '#account',
+      ) as HTMLTextAreaElement;
 
-      // Verify that the read button is disabled
-      expect(readButton.disabled).toBeTruthy();
-
-      const accountInput = compiled.querySelector('#account');
-      accountInput.value = account;
+      accountInput.value = 'k:account';
       accountInput.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
 
       fixture.whenStable().then(() => {
-        // Verify that the read button is enabled
-        expect(readButton.disabled).toBeFalsy();
+        fixture.detectChanges();
+        expect(readBtn.disabled).toBeFalse();
       });
-    });
+    }));
 
-    it('should enable write button after entering account and message', () => {
-      const account = 'k:account';
-      const message = 'My message';
-      const fixture = TestBed.createComponent(AppComponent);
-      fixture.detectChanges();
-      const compiled = fixture.debugElement.nativeElement;
-      const writeButton = compiled.querySelectorAll('button')[0];
+    it('should enable write button after entering account and message', waitForAsync(() => {
+      const buttons = Array.from(compiled.querySelectorAll('button'));
+      const writeBtn = buttons.find((b) => b.textContent?.trim() === 'Write')!;
+      const accountInput = compiled.querySelector(
+        '#account',
+      ) as HTMLTextAreaElement;
+      const messageInput = compiled.querySelector(
+        '#messageToWrite',
+      ) as HTMLTextAreaElement;
 
-      // Verify that the write button is disabled
-      expect(writeButton.disabled).toBeTruthy();
-
-      const accountInput = compiled.querySelector('#account');
-      accountInput.value = account;
+      accountInput.value = 'k:account';
       accountInput.dispatchEvent(new Event('input'));
 
-      const messageInput = compiled.querySelector('#messageToWrite');
-      messageInput.value = message;
+      messageInput.value = 'My message';
       messageInput.dispatchEvent(new Event('input'));
 
+      fixture.detectChanges();
+
       fixture.whenStable().then(() => {
-        // Verify that the write button is enabled
-        expect(writeButton.disabled).toBeFalsy();
+        fixture.detectChanges();
+        expect(writeBtn.disabled).toBeFalse();
       });
-    });
+    }));
   });
-});
+  });
