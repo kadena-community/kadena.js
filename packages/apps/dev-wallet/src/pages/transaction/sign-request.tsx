@@ -114,9 +114,7 @@ export const SignRequest = ({
           marginBlockStart="md"
         >
           <TxList
-            onDone={() => {
-              console.log('done');
-            }}
+            onDone={() => {}}
             txIds={tx ? [tx.uuid] : []}
             showExpanded={true}
             sendDisabled={true}
@@ -124,7 +122,6 @@ export const SignRequest = ({
               if (requestId) {
                 const request = requests.get(requestId);
                 if (request) {
-                  console.log('resolving request', request);
                   request.resolve({ status: 'signed', transaction: tx });
                   if (onSign) onSign();
                 }

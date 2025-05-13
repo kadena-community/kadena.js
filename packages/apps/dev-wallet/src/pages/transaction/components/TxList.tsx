@@ -53,10 +53,9 @@ export const TxList = React.memo(
     const countUnSubmittedTransactions = (
       transactions: ITransaction[],
     ): number => {
-      return transactions.reduce((acc, tx) => {
-        if (!statusPassed(tx.status, 'submitted')) acc++;
-        return acc;
-      }, 0);
+      return transactions.filter((tx) => {
+        return !statusPassed(tx.status, 'submitted');
+      }).length;
     };
 
     useEffect(() => {
@@ -68,7 +67,6 @@ export const TxList = React.memo(
       (updatedTx: ITransaction) =>
         setTransactions((prev) => {
           if (setStep) {
-            console.log({ status: updatedTx?.status });
             switch (updatedTx?.status) {
               case 'initiated':
                 setStep('sign');
