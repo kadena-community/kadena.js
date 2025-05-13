@@ -1,5 +1,5 @@
-import type { IChainAccount } from '../../constants';
 import { creatLowChainsString } from '../creatLowChainsString';
+import type { IChainAccount } from './../constants';
 
 describe('Utils', () => {
   describe('creatLowChainsString', () => {

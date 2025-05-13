@@ -1,4 +1,4 @@
-import type { IChainAccount } from '../constants';
+import type { IChainAccount } from './constants';
 
 export const creatLowChainsString = (chains: IChainAccount[]) => {
   return chains

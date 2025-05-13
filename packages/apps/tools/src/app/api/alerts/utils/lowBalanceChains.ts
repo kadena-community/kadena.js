@@ -1,5 +1,4 @@
-import type { IAlert } from '@/app/api/alerts/utils/constants';
-import type { IChainAccount } from '../constants';
+import type { IAlert, IChainAccount } from './constants';
 
 export const lowBalanceChains = (
   alert: IAlert,

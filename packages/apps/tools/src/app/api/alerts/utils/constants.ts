@@ -1,7 +1,7 @@
 import type { ChainId } from '@kadena/types';
 import dotenv from 'dotenv';
-import { balanceAlert } from './balanceAlert';
-import { graphAlert } from './graphAlert';
+import { balanceAlert } from './alerts/balanceAlert';
+import { graphAlert } from './alerts/graphAlert';
 
 dotenv.config();
 export const channelId = process.env.SLACK_CHANNELID ?? '';

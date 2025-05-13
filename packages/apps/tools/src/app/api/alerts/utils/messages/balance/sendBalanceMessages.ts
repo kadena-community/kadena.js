@@ -1,5 +1,5 @@
-import { creatLowChainsString } from '@/scripts/utils/creatLowChainsString';
 import type { IAlert, IChainAccount, INETWORK } from '../../constants';
+import { creatLowChainsString } from '../../creatLowChainsString';
 import { createMessage } from './../createMessage';
 
 export const sendBalanceMessages = async (
