@@ -7,8 +7,6 @@ import {
   MESSAGETYPES,
   MINBALANCE,
 } from '../../../constants';
-import type { IAccount } from '../../constants';
-import { sendErrorMessage, sendMessage } from '../messages';
 import { sendBalanceMessages } from '../sendBalanceMessages';
 
 const mocks = vi.hoisted(() => {
@@ -45,29 +43,17 @@ describe('messages', () => {
     });
 
     it('should send the correct message with the correct chains', async () => {
-      const account = {
-        data: {
-          fungibleAccount: {
-            chainAccounts: [
-              { chainId: '0', balance: 500 },
-              { chainId: '2', balance: 1000 },
-              { chainId: '3', balance: 909 },
-              { chainId: '19', balance: 112000 },
-            ],
-          },
-        },
-      } as IAccount;
+      const chainAccounts = [
+        { chainId: '0', balance: 500 },
+        { chainId: '3', balance: 909 },
+      ];
 
-      await sendBalanceMessages(
-        alert,
-        account.data.fungibleAccount.chainAccounts,
-        network,
-      );
+      await sendBalanceMessages(alert, chainAccounts, network);
       const body = JSON.parse(mocks.fetch.mock.calls[0][1].body) as any;
       expect(mocks.fetch).toBeCalledTimes(1);
 
       expect(body.blocks).toEqual(
-        '[{"type":"header","text":{"type":"plain_text","text":"Low Faucet alert! 🚨"}},{"type":"section","accessory":{"type":"image","image_url":"https://media.giphy.com/media/ZNnnp4wa17dZrDQKKI/giphy.gif?cid=790b7611li34xwh3ghrh6h6xwketcjop0mjayanqbp0n1enh&ep=v1_gifs_search&rid=giphy.gif&ct=g","alt_text":"0.1"},"text":{"type":"mrkdwn","text":"The faucet (`c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA`) seems to be running low on funds (TESTNET):\\n *chain 0:* (500 KDA)\\n*chain 3:* (909 KDA)"}}]',
+        '[{"type":"header","text":{"type":"plain_text","text":"Low Faucet alert! 🚨"}},{"type":"section","accessory":{"type":"image","image_url":"https://media.giphy.com/media/ZNnnp4wa17dZrDQKKI/giphy.gif?cid=790b7611li34xwh3ghrh6h6xwketcjop0mjayanqbp0n1enh&ep=v1_gifs_search&rid=giphy.gif&ct=g","alt_text":"0.1"},"text":{"type":"mrkdwn","text":"The faucet (`c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA`) seems to be running low on funds (testnet04):\\n *chain 0:* (500 KDA)\\n*chain 3:* (909 KDA)"}}]',
       );
     });
   });

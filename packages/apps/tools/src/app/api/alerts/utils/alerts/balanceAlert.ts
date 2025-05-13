@@ -22,5 +22,6 @@ export const balanceAlert = async (alert: IAlert): Promise<string[]> => {
   });
 
   const results = await Promise.all(promises);
-  return results.filter((v) => v !== undefined);
+  const filteredResults = results.filter((v) => v !== undefined);
+  return filteredResults as string[];
 };

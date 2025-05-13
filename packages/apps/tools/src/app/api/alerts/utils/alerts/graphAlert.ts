@@ -119,25 +119,23 @@ export const runJobPerEnvironment =
       } = await countHeightOnGraph(network);
 
       if (Number.isNaN(totalHeightOnChainWeb)) {
-        await sendGraphErrorMessages(alert, network, {
+        return sendGraphErrorMessages(alert, network, {
           title: `${network.key} chainweb.com fail`,
           msg: `We were unable to retrieve the blockheights from chainweb. \n There seems to be an issue with ChainWeb (${network.chainweb})`,
         });
-        return;
       }
       if (Number.isNaN(totalCutHeightGraph)) {
-        await sendGraphErrorMessages(alert, network, {
+        return sendGraphErrorMessages(alert, network, {
           title: `${network.key} graph fail`,
           msg: `We were unable to retrieve the blockheights from the test graph. \n There seems to be an issue with test graph (${network.url})`,
         });
-        return;
       }
 
       if (
         Math.abs(totalHeightOnChainWeb - totalCutHeightGraph) >
         alert.options?.maxblockHeightDiff!
       ) {
-        await sendGraphErrorMessages(alert, network, {
+        return sendGraphErrorMessages(alert, network, {
           title: `${network.key} chainweb and graph blockheight difference`,
           msg: `There is a large difference in the totalCutHeight between ${network.key} chainweb and graph.
 
@@ -150,7 +148,7 @@ Total height difference: ${lastBlockHeightChainweb - lastBlockHeightGraph}
         });
       }
     } catch (e) {
-      await sendGraphErrorMessages(alert, network, {
+      return sendGraphErrorMessages(alert, network, {
         title: `There was a general issue with the ${network.key} graph cron job`,
         msg: JSON.stringify(e),
       });
@@ -160,5 +158,6 @@ Total height difference: ${lastBlockHeightChainweb - lastBlockHeightGraph}
 export const graphAlert = async (alert: IAlert): Promise<string[]> => {
   const results = await Promise.all(networks.map(runJobPerEnvironment(alert)));
 
-  return results.filter((v) => v !== undefined);
+  const filteredResults = results.filter((v) => v !== undefined);
+  return filteredResults as string[];
 };

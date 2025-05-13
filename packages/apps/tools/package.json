@@ -37,7 +37,6 @@
     "@ledgerhq/hw-transport-webhid": "^6.28.3",
     "@ledgerhq/logs": "^6.12.0",
     "@tanstack/react-query": "^5.32.0",
-    "@tryfabric/mack": "1.2.1",
     "@vanilla-extract/css": "1.14.2",
     "@walletconnect/modal": "~2.6.1",
     "@walletconnect/sign-client": "~2.8.1",
