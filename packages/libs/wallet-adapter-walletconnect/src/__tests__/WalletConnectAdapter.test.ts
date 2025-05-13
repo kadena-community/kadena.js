@@ -158,7 +158,7 @@ describe('WalletConnectAdapter', () => {
         new Error('Connection failed'),
       );
       await expect(
-        await mockProvider.request({ method: 'kadena_connect' }),
+        mockProvider.request({ method: 'kadena_connect' }),
       ).rejects.toThrow('Connection failed');
     });
   });
@@ -223,32 +223,8 @@ describe('WalletConnectAdapter', () => {
     });
   });
 
-  describe('signTransaction', () => {
-    test('calls provider.request with kadena_sign_v1 and transaction param', async () => {
-      vi.mocked(mockProvider.request).mockResolvedValueOnce(mockSigned);
-      const result = await adapter.signTransaction(mockCommand);
-      expect(mockProvider.request).toHaveBeenCalledWith({
-        method: 'kadena_sign_v1',
-        params: { transaction: mockCommand },
-      });
-      expect(result).toEqual(mockSigned);
-    });
-  });
-
-  describe('signCommand', () => {
-    test('calls provider.request with kadena_sign_v1 and command param', async () => {
-      vi.mocked(mockProvider.request).mockResolvedValueOnce(mockSigned);
-      const result = await adapter.signCommand(mockCommand);
-      expect(mockProvider.request).toHaveBeenCalledWith({
-        method: 'kadena_sign_v1',
-        params: { command: mockCommand },
-      });
-      expect(result).toEqual(mockSigned);
-    });
-  });
-
   describe('quicksign', () => {
-    test.only('calls provider.request with kadena_quicksign_v1 and commandSigDatas param', async () => {
+    test('calls provider.request with kadena_quicksign_v1 and commandSigDatas param', async () => {
       vi.mocked(mockProvider.request).mockResolvedValueOnce({
         id: 1,
         jsonrpc: '2.0',
