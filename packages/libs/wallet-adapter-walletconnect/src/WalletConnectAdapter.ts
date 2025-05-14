@@ -56,7 +56,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     this.modal = new WalletConnectModal({
       themeMode: 'light',
       projectId: finalOptions.projectId,
-      // chains: [`kadena:${this.networkId}`],
     });
   }
 
@@ -95,14 +94,12 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
           throw new Error(ERRORS.FAILED_TO_CONNECT);
         }
 
-        // Send the constructed payload
         const response = (await this.provider.request({
           id,
           method: 'kadena_sign_v1',
           params: params as ISigningRequestPartial,
         })) as JsonRpcResponse<any>;
 
-        console.log('/sign WalletConnect response:', response);
         let command!: ICommand | IUnsignedCommand;
 
         if ('result' in response) {
@@ -143,8 +140,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
           method: 'kadena_quicksign_v1',
           params: { commandSigDatas },
         })) as JsonRpcResponse<any>;
-
-        console.log('Quicksign response:', JSON.stringify(response));
 
         let responses: any[] = [];
         if ('results' in response) {
@@ -199,15 +194,15 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
   private async subscribeToEvents(): Promise<void> {
     if (!this.client) throw new Error(ERRORS.FAILED_TO_CONNECT);
     this.client.on('session_ping', (args) => {
-      console.log('EVENT', 'session_ping', args);
+      // console.log('[walletconnect]', 'session_ping', args);
     });
 
     this.client.on('session_event', (args) => {
-      console.log('EVENT', 'session_event', args);
+      console.log('[walletconnect]', 'session_event', args);
     });
 
     this.client.on('session_update', ({ topic, params }) => {
-      console.log('EVENT', 'session_update', { topic, params });
+      console.log('[walletconnect]', 'session_update', { topic, params });
       const { namespaces } = params;
       const _session = this.client!.session.get(topic);
       const updatedSession = { ..._session, namespaces };
@@ -217,7 +212,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     });
 
     this.client.on('session_delete', () => {
-      console.log('EVENT', 'session_delete');
+      console.log('[walletconnect]', 'session_delete');
     });
   }
 
@@ -319,7 +314,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       },
     })) as IKadenaGetAccountsResponse;
 
-    console.log('getAccounts_v1 response:', response);
     if (!response?.accounts?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
