@@ -11,7 +11,7 @@ export const xchainGasStationAccount = 'kadena-xchain-gas';
 export const GalxeAccount = process.env.NEXT_PUBLIC_GALXE || '';
 export const MINBALANCE = 1000;
 export const MINXCHAINGASSTATIONBALANCE = 0.9;
-export const MINXGALXEBALANCE = 5;
+export const MINXGALXEBALANCE = 5000;
 //graph
 export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
 
@@ -62,6 +62,13 @@ export const NETWORKS: INETWORK[] = [
   },
 ];
 
+// check at what interval this slack alert can be called
+export type ICronType = '12hours' | '1hour' | '15minutes';
+const cronTypes: ICronType[] = ['12hours', '15minutes', '1hour'];
+export const isCronType = (val: string): val is ICronType => {
+  return cronTypes.includes(val as ICronType);
+};
+
 export interface IAlert {
   title: string;
   code: keyof typeof ALERTCODES;
@@ -75,4 +82,5 @@ export interface IAlert {
   chainIds: readonly ChainId[];
   slackChannelIds: string[];
   messageType: (alert: IAlert) => Promise<string[]>;
+  cronType: ICronType;
 }
