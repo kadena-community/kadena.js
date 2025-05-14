@@ -1,10 +1,10 @@
-import { getTestNet } from '@/utils/network';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import type { IAccount, IAlert } from '../../../constants';
 import {
   ALERTCODES,
   channelId,
   faucetAccount,
+  getTestNet,
   MESSAGETYPES,
   MINBALANCE,
   slackAlerts,
@@ -12,6 +12,7 @@ import {
 
 const alert: IAlert = {
   title: `Low Faucet alert! 🚨`,
+  description: 'test',
   code: ALERTCODES.LOWFAUCETBALANCE,
   networks: [getTestNet()],
   options: {

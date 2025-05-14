@@ -1,9 +1,9 @@
-import { getTestNet } from '@/utils/network';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import {
   ALERTCODES,
   channelId,
   faucetAccount,
+  getTestNet,
   MESSAGETYPES,
   MINBALANCE,
 } from '../../../constants';
@@ -18,6 +18,7 @@ const mocks = vi.hoisted(() => {
 const network = getTestNet();
 const alert = {
   title: `Low Faucet alert! 🚨`,
+  description: 'test',
   code: ALERTCODES.LOWFAUCETBALANCE,
   networks: [network],
   options: {
