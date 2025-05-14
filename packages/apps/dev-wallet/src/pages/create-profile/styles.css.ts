@@ -1,4 +1,4 @@
-import { atoms } from '@kadena/kode-ui/styles';
+import { atoms, recipe } from '@kadena/kode-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
@@ -27,3 +27,14 @@ export const colorOptionClass = style([
     aspectRatio: '1 / 1',
   },
 ]);
+
+export const showStepClass = recipe({
+  variants: {
+    isVisible: {
+      true: {},
+      false: {
+        display: 'none!important',
+      },
+    },
+  },
+});

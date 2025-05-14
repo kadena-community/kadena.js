@@ -1,24 +1,31 @@
-import { ListItem } from '@/Components/ListItem/ListItem.tsx';
+import { FormatCopyPaste } from '@/Components/Table/FormatCopyPaste.tsx';
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.tsx';
 import { keySourceManager } from '@/modules/key-source/key-source-manager';
 import { keySourceRepository } from '@/modules/key-source/key-source.repository.ts';
 import { WebAuthnService } from '@/modules/key-source/web-authn/webauthn';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository.ts';
-import { shorten } from '@/utils/helpers.ts';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons/system';
 import {
   Button,
+  ButtonGroup,
   ContextMenu,
   ContextMenuDivider,
   ContextMenuItem,
-  Heading,
+  Notification,
+  NotificationHeading,
   Stack,
-  Text,
 } from '@kadena/kode-ui';
-import { useSideBarLayout } from '@kadena/kode-ui/patterns';
-import { useState } from 'react';
-import { panelClass } from '../../home/style.css.ts';
+import {
+  CompactTable,
+  CompactTableFormatters,
+  SectionCard,
+  SectionCardBody,
+  SectionCardContentBlock,
+  SectionCardHeader,
+  useSideBarLayout,
+} from '@kadena/kode-ui/patterns';
+import { Fragment, useState } from 'react';
 import { AddKeySourceForm } from './AddKeySourceForm.tsx';
 import { AddSpecificKey } from './AddSpecificKey.tsx';
 
@@ -102,10 +109,6 @@ export function Keys() {
       />
       <Stack flexDirection={'column'} gap={'lg'}>
         <Stack justifyContent={'space-between'} alignItems={'center'}>
-          <Stack marginBlock={'md'}>
-            <Heading variant="h3">Your Keys</Heading>
-          </Stack>
-
           <Button
             variant="outlined"
             isCompact
@@ -119,109 +122,110 @@ export function Keys() {
 
         <Stack flexDirection={'column'} gap="md">
           {keySources.map((keySource, index) => (
-            <Stack
-              key={keySource.uuid}
-              flexDirection={'column'}
-              className={panelClass}
-            >
+            <Fragment key={keySource.source}>
               <AddSpecificKey
                 keySource={keySource}
                 isOpen={
                   isRightAsideExpanded && asideTarget === keySource.source
                 }
               />
-              <Stack
-                gap={'lg'}
-                justifyContent={'space-between'}
-                marginBlockEnd={'sm'}
-              >
-                <Heading variant="h4">
-                  Method: {keySource.source}{' '}
-                  {defaultIndex === index && <Text>(Default method)</Text>}
-                </Heading>
 
-                <Stack flexDirection={'row'} gap={'sm'}>
-                  <Button
-                    startVisual={<MonoAdd />}
-                    variant="outlined"
-                    isCompact
-                    onPress={() => createKey(keySource)}
-                  >
-                    Create Next Key
-                  </Button>
-                  <ContextMenu
-                    placement="bottom end"
-                    trigger={
-                      <Button
-                        endVisual={<MonoMoreVert />}
-                        variant="transparent"
-                        isCompact
-                      />
+              <SectionCard stack="vertical" variant="main">
+                <SectionCardContentBlock>
+                  <SectionCardHeader
+                    title={`Method: ${keySource.source}  ${defaultIndex === index ? '(Default method)' : ''}`}
+                    actions={
+                      <>
+                        <ButtonGroup>
+                          <Button
+                            startVisual={<MonoAdd />}
+                            variant="outlined"
+                            isCompact
+                            onPress={() => createKey(keySource)}
+                          >
+                            Create Key
+                          </Button>
+                          <ContextMenu
+                            placement="bottom end"
+                            trigger={
+                              <Button
+                                endVisual={<MonoMoreVert />}
+                                variant="outlined"
+                                isCompact
+                              />
+                            }
+                          >
+                            {['HD-BIP44', 'HD-chainweaver'].includes(
+                              keySource.source,
+                            ) ? (
+                              <ContextMenuItem
+                                label="Create specific key"
+                                onClick={() => {
+                                  showAddSpecificKeyForm(keySource.source);
+                                }}
+                              />
+                            ) : (
+                              <ContextMenuDivider />
+                            )}
+                            <ContextMenuItem
+                              label="Set as default method"
+                              onClick={async () => {
+                                await keySourceRepository.setAsDefault(
+                                  keySource.uuid,
+                                  profile!.uuid,
+                                );
+                              }}
+                            />
+                          </ContextMenu>
+                        </ButtonGroup>
+                      </>
                     }
-                  >
-                    {['HD-BIP44', 'HD-chainweaver'].includes(
-                      keySource.source,
-                    ) ? (
-                      <ContextMenuItem
-                        label="Create specific key"
-                        onClick={() => {
-                          showAddSpecificKeyForm(keySource.source);
-                        }}
+                  />
+                  <SectionCardBody>
+                    {keySource.keys.length > 0 ? (
+                      <CompactTable
+                        variant="open"
+                        fields={[
+                          {
+                            label: 'Index',
+                            key: 'index',
+                            width: '10%',
+                          },
+                          {
+                            label: 'Pubkey',
+                            key: 'publicKey',
+                            width: '70%',
+                            render: CompactTableFormatters.FormatAccount({
+                              headLength: 20,
+                              tailLength: 20,
+                            }),
+                          },
+                          {
+                            label: '',
+                            key: 'publicKey',
+                            width: '20%',
+                            align: 'end',
+                            render: FormatCopyPaste(),
+                          },
+                        ]}
+                        data={keySource.keys}
                       />
                     ) : (
-                      <ContextMenuDivider />
+                      <Notification
+                        intent="info"
+                        isDismissable={false}
+                        role="alert"
+                        type="inlineStacked"
+                      >
+                        <NotificationHeading>
+                          No keys created yet
+                        </NotificationHeading>
+                      </Notification>
                     )}
-                    <ContextMenuItem
-                      label="Set as default method"
-                      onClick={async () => {
-                        await keySourceRepository.setAsDefault(
-                          keySource.uuid,
-                          profile!.uuid,
-                        );
-                      }}
-                    />
-                  </ContextMenu>
-                </Stack>
-              </Stack>
-              {keySource.keys.map((key) => (
-                <ListItem key={key.index}>
-                  <Stack
-                    key={key.index}
-                    flexDirection={'row'}
-                    flex={1}
-                    gap={'lg'}
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                  >
-                    <Stack gap={'md'}>
-                      <Text> Idx: {key.index}</Text>
-                      <Text>{shorten(key.publicKey, 20)}</Text>
-                    </Stack>
-                    <ContextMenu
-                      placement="bottom end"
-                      trigger={
-                        <Button
-                          endVisual={<MonoMoreVert />}
-                          variant="transparent"
-                          isCompact
-                        />
-                      }
-                    >
-                      <ContextMenuItem
-                        label="Copy"
-                        onClick={() => {
-                          navigator.clipboard.writeText(key.publicKey);
-                        }}
-                      />
-                      <ContextMenuItem label="Disable key" onClick={() => {}} />
-                    </ContextMenu>
-                  </Stack>
-                </ListItem>
-              ))}
-              {(!keySource.keys || keySource.keys.length === 0) && (
-                <Text>No keys created yet</Text>
-              )}
-            </Stack>
+                  </SectionCardBody>
+                </SectionCardContentBlock>
+              </SectionCard>
+            </Fragment>
           ))}
         </Stack>
       </Stack>

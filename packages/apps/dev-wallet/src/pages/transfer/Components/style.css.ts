@@ -9,6 +9,10 @@ export const popoverClass = style({
   border: `solid 1px ${tokens.kda.foundation.color.border.base.default}`,
 });
 
+export const titleBadgeClass = style({
+
+});
+
 export const createAccountBoxClass = style({
   backgroundColor:
     tokens.kda.foundation.color.background.semantic.warning.subtle,

@@ -100,18 +100,23 @@ export const Routes: FC = () => {
         >
           <Route element={<FocussedPageLayout />}>
             <Route path="/transfer" element={<Transfer />} />
+            <Route
+              path="/transaction/:transactionId"
+              element={<TransactionPage />}
+            />
+            <Route
+              path="/sign-request/:requestId"
+              element={<SignRequestPage />}
+            />
           </Route>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/sig-builder" element={<SignatureBuilder />} />
             <Route path="/networks" element={<Networks />} />
-            <Route path="/connect/:requestId" element={<ConnectPage />} />
+
             <Route path="/key-management/:tab" element={<KeysPage />} />
             <Route path="/create-account" element={<CreateAccountPage />} />
-            <Route
-              path="/transaction/:transactionId"
-              element={<TransactionPage />}
-            />
+
             <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
             <Route
@@ -138,10 +143,6 @@ export const Routes: FC = () => {
             >
               <Route path="/plugins" element={<Plugins />} />
             </Route>
-            <Route
-              path="/sign-request/:requestId"
-              element={<SignRequestPage />}
-            />
           </Route>
         </Route>
         <Route element={<LandingPageLayout />}>
@@ -160,11 +161,22 @@ export const Routes: FC = () => {
             element={<UnlockProfile origin={origin} />}
           />
           <Route
-            path="/settings/change-password"
-            element={<ChangePassword />}
-          />
+            element={
+              <Redirect
+                if={isLocked}
+                to="/select-profile"
+                setOrigin={setOrigin}
+              />
+            }
+          >
+            <Route path="/connect/:requestId" element={<ConnectPage />} />
+            <Route
+              path="/settings/change-password"
+              element={<ChangePassword />}
+            />
+            <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
+          </Route>
           <Route path="/ready" element={<Ready />} />
-          <Route path="/settings/reveal-phrase" element={<RevealPhrase />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

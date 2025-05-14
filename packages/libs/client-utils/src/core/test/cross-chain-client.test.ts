@@ -81,8 +81,8 @@ describe('crossChainClient', () => {
     )
       .on('sign', (tx) => {
         expect(tx).toEqual({
-          cmd: '{"networkId":"test-network","payload":{"exec":{"code":"(test 1 2 3)","data":{}}},"signers":[{"pubKey":"pk","scheme":"ED25519"}],"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"","ttl":28800,"creationTime":1698278400,"chainId":"1"},"nonce":"kjs:nonce:1698278400000"}',
-          hash: 'uoS6m3KFHVs-8ByRWfiOweZobK1YzV7WloA1DWM1gd4',
+          cmd: '{"networkId":"test-network","payload":{"exec":{"code":"(test 1 2 3)","data":{}}},"signers":[{"pubKey":"pk","scheme":"ED25519"}],"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"","ttl":900,"creationTime":1698278400,"chainId":"1"},"nonce":"kjs:nonce:1698278400000"}',
+          hash: '7dtowRVlY9CfyKCNOAkrbhfr1uHUEkBlu-CuvFezt5o',
           sigs: [{ sig: 'sig-hash' }],
         });
       })
@@ -131,8 +131,8 @@ describe('crossChainClient', () => {
       })
       .on('gas-station', (data) => {
         expect(data).toEqual({
-          cmd: '{"networkId":"test-network","payload":{"cont":{"data":{},"pactId":"test-pact-id","step":1,"proof":"test-spv-proof","rollback":false}},"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"test-gas-station","ttl":28800,"creationTime":1698278400,"chainId":"2"},"nonce":"kjs:nonce:1698278400000","signers":[]}',
-          hash: '5Wz0TmL_2kKEKpB2BiKwmOlesITo-I19nxrGFtN6mXw',
+          cmd: '{"networkId":"test-network","payload":{"cont":{"data":{},"pactId":"test-pact-id","step":1,"proof":"test-spv-proof","rollback":false}},"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"test-gas-station","ttl":900,"creationTime":1698278400,"chainId":"2"},"nonce":"kjs:nonce:1698278400000","signers":[]}',
+          hash: 'Q5hyJ2Ed_y15xgsPMIq3SICz_z8mRtogaEx7D9l1h-E',
           sigs: [],
         });
       })
@@ -214,8 +214,8 @@ describe('crossChainClient', () => {
     )
       .on('sign', (tx) => {
         expect(tx).toEqual({
-          cmd: '{"networkId":"test-network","payload":{"exec":{"code":"(test 1 2 3)","data":{}}},"signers":[{"pubKey":"pk","scheme":"ED25519"}],"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"","ttl":28800,"creationTime":1698278400,"chainId":"1"},"nonce":"kjs:nonce:1698278400000"}',
-          hash: 'uoS6m3KFHVs-8ByRWfiOweZobK1YzV7WloA1DWM1gd4',
+          cmd: '{"networkId":"test-network","payload":{"exec":{"code":"(test 1 2 3)","data":{}}},"signers":[{"pubKey":"pk","scheme":"ED25519"}],"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"","ttl":900,"creationTime":1698278400,"chainId":"1"},"nonce":"kjs:nonce:1698278400000"}',
+          hash: '7dtowRVlY9CfyKCNOAkrbhfr1uHUEkBlu-CuvFezt5o',
           sigs: [{ sig: 'sig-hash' }],
         });
       })
@@ -260,8 +260,8 @@ describe('crossChainClient', () => {
       })
       .on('sign-continuation', (tx) => {
         expect(tx).toEqual({
-          cmd: '{"networkId":"test-network","payload":{"cont":{"data":{},"pactId":"test-pact-id","step":1,"proof":"test-spv-proof","rollback":false}},"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"target-chain-gas-payer","ttl":28800,"creationTime":1698278400,"chainId":"2"},"nonce":"kjs:nonce:1698278400000","signers":[{"pubKey":"pk-target-chain-gas-payer","scheme":"ED25519","clist":[{"name":"coin.GAS","args":[]}]}]}',
-          hash: '98unmynMm1cd0PSZtIKTSrGrb4pXckPfFo2huVELHiI',
+          cmd: '{"networkId":"test-network","payload":{"cont":{"data":{},"pactId":"test-pact-id","step":1,"proof":"test-spv-proof","rollback":false}},"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"target-chain-gas-payer","ttl":900,"creationTime":1698278400,"chainId":"2"},"nonce":"kjs:nonce:1698278400000","signers":[{"pubKey":"pk-target-chain-gas-payer","scheme":"ED25519","clist":[{"name":"coin.GAS","args":[]}]}]}',
+          hash: 'OY3QVENpMQ3kHEfqcoqgH0Ze_mU78aTQEt7nyAISuYw',
           sigs: [{ sig: 'sig-cont-hash' }],
         });
       })

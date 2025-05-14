@@ -21,9 +21,10 @@ import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { createTransferCmd } from './transferCmd';
 import { createTransferTx } from './transferTx';
-import { validateRpcResponse } from './zodValidation';
+import { isRpcError, validateRpcResponse } from './zodValidation';
 
 import './styles.css';
+import { createExampleCommand, createExampleTransaction } from './utils';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -47,6 +48,34 @@ const App = () => {
 
   const [signCommandPayload, setSignCommandPayload] = useState('');
   const [signTxPayload, setSignTxPayload] = useState('');
+
+  useEffect(() => {
+    if (!activeAccount) return;
+    if (!signTxPayload) {
+      setSignTxPayload(
+        JSON.stringify(
+          createExampleTransaction(
+            activeAccount.accountName,
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
+        ),
+      );
+    }
+    if (!signCommandPayload) {
+      setSignCommandPayload(
+        JSON.stringify(
+          createExampleCommand(
+            activeAccount.accountName,
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
+        ),
+      );
+    }
+  }, [activeAccount]);
 
   /**
    * Helper to set RPC response and run Zod validation
@@ -137,6 +166,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getAccount_v1', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -148,6 +188,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getAccounts_v2', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -159,6 +210,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getNetwork_v1', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -170,6 +232,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getNetworks_v1', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -185,6 +258,17 @@ const App = () => {
       validateAndSetRpcResponse('kadena_signCommand', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -196,10 +280,22 @@ const App = () => {
       const tx: IUnsignedCommand = {
         ...transaction,
       };
+      console.log('sign transaction', selectedWallet.name, tx);
       const resp = await client.signTransaction(selectedWallet.name, tx);
       validateAndSetRpcResponse('kadena_signTransaction', resp);
     } catch (err) {
       console.error(err);
+
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
+
       setRpcResponse(err);
     }
   };
@@ -330,15 +426,12 @@ const App = () => {
                   }}
                 >
                   {JSON.stringify(rpcResponse, null, 2)}
-
                   {'\n'}
-                  {validationResult?.success
-                    ? `\n\n=== VALID ===\n${
-                        validationResult?.isError
-                          ? '(JSON-RPC Error object, but valid format)'
-                          : ''
-                      }`
-                    : `\n\n=== INVALID ===\n${JSON.stringify(validationResult?.issues, null, 2)}`}
+                  {!('error' in rpcResponse)
+                    ? validationResult?.success
+                      ? `\n\n=== VALID ===\n${validationResult?.isError ? '(JSON-RPC Error object, but valid format)' : ''}`
+                      : `\n\n=== INVALID ===\n${JSON.stringify(validationResult?.issues, null, 2)}`
+                    : null}
                   {validationResult?.note
                     ? `\nNote: ${validationResult.note}`
                     : ''}
@@ -393,8 +486,8 @@ const App = () => {
         <div>
           <Stack flexDirection="column" gap="sm">
             <TextField
-              label="Input Account"
-              placeholder="Funded account"
+              label="To:"
+              placeholder="Account to fund"
               value={accountTo}
               onValueChange={setAccountTo}
               isDisabled={!activeAccount}
@@ -431,6 +524,7 @@ const App = () => {
                     accountTo: accountTo,
                     amount: 0.0001,
                     client: client,
+                    networkId: network?.networkId ?? 'mainnet01',
                   })
                     .then((result) => {
                       console.log('Transaction result:', result);

@@ -98,3 +98,17 @@ export const Selected: Story = {
     );
   },
 };
+
+export const Error: Story = {
+  name: 'Tile has an error',
+  args: {},
+  render: (args) => {
+    return (
+      <Stack as="div" flexDirection="column" gap="md">
+        <Tile as="button" {...args} hasError={true}>
+          <Text>This is a tile</Text>
+        </Tile>
+      </Stack>
+    );
+  },
+};

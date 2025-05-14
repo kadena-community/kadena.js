@@ -1,0 +1,46 @@
+{
+  "name": "@kadena/wallet-adapter-walletconnect",
+  "version": "0.0.1-beta.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/wallet-adapter-walletconnect"
+  },
+  "license": "BSD-3-Clause",
+  "contributors": [
+    "Bart Huijgen",
+    "Danillo Felixdaal"
+  ],
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
+    "format": "prettier . --cache --write",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/wallet-adapter-core": "workspace:*",
+    "@walletconnect/modal": "~2.7.0",
+    "@walletconnect/sign-client": "~2.8.1",
+    "@walletconnect/utils": "^2.18.0"
+  },
+  "devDependencies": {
+    "@walletconnect/types": "~2.8.1",
+    "jsdom": "^22.1.0",
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "authors": [
+    "Francisco Miranda"
+  ]
+}

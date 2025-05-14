@@ -58,16 +58,13 @@ import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
 
 If you need lower-level access, the following are also exported:
 
-- **`EckoWalletAdapter`**: The actual adapter class, in case you want to
-  instantiate it manually without relying on the lazy-loading factory.
+- **`EckoAdapter`**: The actual adapter class, in case you want to instantiate
+  it manually without relying on the lazy-loading factory.
 - **`detectEckoProvider`**: A standalone function that checks whether the Ecko
   wallet is present. It returns the provider if found, or `null` otherwise.
 
 ```ts
-import {
-  EckoWalletAdapter,
-  detectEckoProvider,
-} from '@kadena/wallet-adapter-ecko';
+import { EckoAdapter, detectEckoProvider } from '@kadena/wallet-adapter-ecko';
 
 (async () => {
   const provider = await detectEckoProvider({ silent: true });

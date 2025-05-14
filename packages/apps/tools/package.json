@@ -39,7 +39,7 @@
     "@tanstack/react-query": "^5.32.0",
     "@tryfabric/mack": "1.2.1",
     "@vanilla-extract/css": "1.14.2",
-    "@walletconnect/modal": "~2.6.1",
+    "@walletconnect/modal": "~2.7.0",
     "@walletconnect/sign-client": "~2.8.1",
     "@walletconnect/utils": "^2.18.0",
     "ace-builds": "~1.30.0",

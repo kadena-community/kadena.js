@@ -1,16 +1,19 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { shorten } from '@/utils/helpers';
 import { BuiltInPredicate } from '@kadena/client';
-import { MonoKey } from '@kadena/kode-icons/system';
 import { Badge, Stack, Text } from '@kadena/kode-ui';
 import { useMemo } from 'react';
 
 export const Keyset = ({
   guard,
   alias,
+  hidePred,
+  direction = 'row',
 }: {
   guard: { keys: string[]; pred: BuiltInPredicate; principal: string };
   alias?: string;
+  hidePred?: boolean;
+  direction?: 'column' | 'row';
 }) => {
   const { getKeyAlias } = useWallet();
   const keysWithAlias = useMemo(
@@ -25,23 +28,22 @@ export const Keyset = ({
       paddingInline={'sm'}
       marginBlock={'xs'}
     >
-      <Text size="smallest">{guard.pred}:</Text>
-      {keysWithAlias.map(({ key, alias }) => (
-        <Stack key={key} gap="sm" alignItems={'center'}>
-          <Text size="smallest">
-            <MonoKey />
-          </Text>
-          {alias && <Badge size="sm">{alias}</Badge>}
-          <Text variant="code" size="smallest">
-            {shorten(key!)}
-          </Text>
-        </Stack>
-      ))}
-      {alias && (
-        <Stack flex={1} justifyContent={'flex-end'}>
-          <Badge size="sm">{alias}</Badge>
-        </Stack>
-      )}
+      <Stack width="100%" gap="xs" flexDirection={direction}>
+        {!hidePred && <Text size="smallest">{guard.pred}:</Text>}
+        {keysWithAlias.map(({ key, alias }) => (
+          <Stack key={key} gap="sm" alignItems={'center'}>
+            {alias && <Badge size="sm">{alias}</Badge>}
+            <Text variant="code" size="smallest">
+              {shorten(key!)}
+            </Text>
+          </Stack>
+        ))}
+        {alias && (
+          <Stack flex={1} justifyContent={'flex-end'}>
+            <Badge size="sm">{alias}</Badge>
+          </Stack>
+        )}
+      </Stack>
     </Stack>
   );
 };

@@ -3,17 +3,18 @@ import {
   transactionRepository,
 } from '@/modules/transaction/transaction.repository';
 
-import { SideBarBreadcrumbs } from '@/Components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useRequests } from '@/modules/communication/communication.provider';
 import { addTransaction } from '@/modules/transaction/transaction.service';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { IPactCommand, IUnsignedCommand } from '@kadena/client';
-import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
-import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
+import { MonoClose } from '@kadena/kode-icons/system';
+import { Button, Card, Notification, Stack, Text } from '@kadena/kode-ui';
+import {
+  CardContentBlock,
+  FocussedLayoutHeaderAside,
+} from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { panelClass } from '../home/style.css';
 import { TxList } from './components/TxList';
 
 export const SignRequest = ({
@@ -61,69 +62,66 @@ export const SignRequest = ({
     run();
   }, [requestId, profile?.uuid, requests, networks, activeNetwork?.uuid]);
 
+  if (error) {
+    return (
+      <Notification intent="negative" role="alert" type="inlineStacked">
+        {error}
+      </Notification>
+    );
+  }
+
   return (
     <>
-      <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
-        <SideBarBreadcrumbsItem href={`/transactions`}>
-          Activities
-        </SideBarBreadcrumbsItem>
-        <SideBarBreadcrumbsItem href={`/sign-request/${requestId}`}>
-          Sign Request
-        </SideBarBreadcrumbsItem>
-      </SideBarBreadcrumbs>
-
-      {error ? (
-        <Notification intent="negative" role="alert">
-          {error}
-        </Notification>
-      ) : (
-        <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
-          <Stack flexDirection={'column'} gap={'sm'}>
-            <Heading>Sign Request</Heading>
+      <FocussedLayoutHeaderAside>
+        <Button
+          isCompact
+          variant="transparent"
+          endVisual={<MonoClose />}
+          onPress={() => {
+            if (tx?.uuid) {
+              transactionRepository.deleteTransaction(tx?.uuid);
+            }
+            if (requestId) {
+              const request = requests.get(requestId);
+              if (request) {
+                console.log('resolving request', request);
+                request.reject({ status: 'rejected' });
+              }
+            }
+            if (onAbort) onAbort();
+          }}
+        >
+          Abort
+        </Button>
+      </FocussedLayoutHeaderAside>
+      <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>
+        <Card fullWidth>
+          <CardContentBlock title="Sign Request">
             {!tx && <Text>No transaction</Text>}
-          </Stack>
-          <Stack
-            flexDirection={'column'}
-            gap={'sm'}
-            className={panelClass}
-            alignItems={'flex-start'}
-          >
+
             <Stack gap={'sm'} flexDirection={'row'}>
               <Text bold color="emphasize">
                 Request ID:
               </Text>
               <Text variant="code">{requestId}</Text>
             </Stack>
-            <Button
-              variant="negative"
-              onClick={() => {
-                if (tx?.uuid) {
-                  transactionRepository.deleteTransaction(tx?.uuid);
-                }
-                if (requestId) {
-                  const request = requests.get(requestId);
-                  if (request) {
-                    console.log('resolving request', request);
-                    request.reject({ status: 'rejected' });
-                  }
-                }
-                if (onAbort) onAbort();
-              }}
-            >
-              Reject
-            </Button>
-          </Stack>
+          </CardContentBlock>
+        </Card>
+        <Stack
+          flexDirection={'column'}
+          gap={'lg'}
+          overflow="auto"
+          marginBlockStart="md"
+        >
           <TxList
-            onDone={() => {
-              console.log('done');
-            }}
+            onDone={() => {}}
             txIds={tx ? [tx.uuid] : []}
             showExpanded={true}
+            sendDisabled={true}
             onSign={(tx) => {
               if (requestId) {
                 const request = requests.get(requestId);
                 if (request) {
-                  console.log('resolving request', request);
                   request.resolve({ status: 'signed', transaction: tx });
                   if (onSign) onSign();
                 }
@@ -131,7 +129,7 @@ export const SignRequest = ({
             }}
           />
         </Stack>
-      )}
+      </Stack>
     </>
   );
 };

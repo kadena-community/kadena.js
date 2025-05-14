@@ -13,7 +13,7 @@ import { formatList } from '@/utils/helpers';
 import { useShow } from '@/utils/useShow';
 import { ChainId } from '@kadena/client';
 import { MonoSwipeRightAlt } from '@kadena/kode-icons/system';
-import { Button, Card, Select, SelectItem, Stack } from '@kadena/kode-ui';
+import { Button, Card, Select, SelectItem, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import { FC } from 'react';
 import { Control, Controller } from 'react-hook-form';
@@ -70,7 +70,7 @@ export const SenderCard: FC<IProps> = ({
               variant="outlined"
               onPress={() => setShowMore((v) => !v)}
             >
-              more Options
+              Select chain
             </Button>
           </Stack>
         }
@@ -119,8 +119,8 @@ export const SenderCard: FC<IProps> = ({
                   <Select
                     aria-label="Chain"
                     startVisual={<Label>Chain:</Label>}
-                    // label="Chain"
-                    size="sm"
+                    label="Chain"
+                    size="md"
                     placeholder="Select a chain"
                     selectedKey={field.value}
                     onSelectionChange={withEvaluate(field.onChange)}
@@ -131,17 +131,30 @@ export const SenderCard: FC<IProps> = ({
                             <Stack
                               flexDirection="row"
                               alignItems="center"
+                              justifyContent={'space-between'}
                               gap="sm"
                             >
-                              <AutoBadge />
-                              {chains.length ? (
-                                <Chain
-                                  chainId={formatList(
-                                    chains.map((c) => +c.chainId),
-                                  )}
-                                />
-                              ) : null}
-                              (balance: {overallBalance})
+                              <Stack gap="sm">
+                                <AutoBadge />
+                                {chains.length ? (
+                                  <Chain
+                                    chainId={formatList(
+                                      chains.map((c) => +c.chainId),
+                                    )}
+                                  />
+                                ) : null}
+                              </Stack>
+                              <Stack gap="xs">
+                                {' '}
+                                <Text size="smallest">balance:</Text>
+                                <Text
+                                  size="smallest"
+                                  color="inherit"
+                                  variant="code"
+                                >
+                                  {overallBalance}
+                                </Text>
+                              </Stack>
                             </Stack>
                           </SelectItem>,
                           ...chains.map((chain) => (
@@ -150,9 +163,16 @@ export const SenderCard: FC<IProps> = ({
                                 flexDirection="row"
                                 alignItems="center"
                                 gap="sm"
+                                justifyContent={'space-between'}
                               >
                                 <Chain chainId={chain.chainId} />
-                                (balance: {chain.balance})
+                                <Text
+                                  size="smallest"
+                                  color="inherit"
+                                  variant="code"
+                                >
+                                  {chain.balance}
+                                </Text>
                               </Stack>
                             </SelectItem>
                           )),

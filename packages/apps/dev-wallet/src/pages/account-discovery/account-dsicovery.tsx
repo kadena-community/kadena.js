@@ -38,7 +38,6 @@ import { wordWrapClass } from './style.css';
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
-  console.log(2222);
   const navigate = usePatchedNavigate();
   const { profile, keySources, unlockKeySource, networks } = useWallet();
   const [key, setKey] = useState<{ [key: string]: IKeyItem }>({});
