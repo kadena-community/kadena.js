@@ -18,6 +18,7 @@ import {
 export const alerts: IAlert[] = [
   {
     title: `Low Faucet alert! 🚨`,
+    description: 'check the balance of the testnet faucet account',
     code: ALERTCODES.LOWFAUCETBALANCE,
     networks: [getTestNet()],
     options: {
@@ -32,6 +33,7 @@ export const alerts: IAlert[] = [
   },
   {
     title: `Low XCHAIN GASSTATION alert! ⛽️`,
+    description: 'check the balance of the XChain gasstation account',
     code: ALERTCODES.LOWXCHAINGASBALANCE,
     networks: NETWORKS,
     options: {
@@ -46,6 +48,7 @@ export const alerts: IAlert[] = [
   },
   {
     title: `Low GALXE account alert! ⛽️`,
+    description: 'check the balance of the GALXE account',
     code: ALERTCODES.LOWXGALXEBALANCE,
     networks: [getMainNet()],
     options: {
@@ -60,6 +63,7 @@ export const alerts: IAlert[] = [
   },
   {
     title: `GRAPH DOWN!`,
+    description: 'check if the Graph is down',
     code: ALERTCODES.GRAPHDOWN,
     networks: [],
     options: {
@@ -67,7 +71,7 @@ export const alerts: IAlert[] = [
     },
     chainIds: CHAINS,
     slackChannelIds: [channelId],
-    messageType: MESSAGETYPES.GRAPHDOWNALERT,
+    messageType: MESSAGETYPES.GRAPHALERT,
     cronType: '12hours',
   },
 ] as const;

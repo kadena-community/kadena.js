@@ -82,6 +82,7 @@ export const MESSAGETYPES = Object.keys(slackAlerts).reduce((acc, val) => {
 
 export interface IAlert {
   title: string;
+  description: string;
   code: keyof typeof ALERTCODES;
   networks: INETWORK[];
   options?: {

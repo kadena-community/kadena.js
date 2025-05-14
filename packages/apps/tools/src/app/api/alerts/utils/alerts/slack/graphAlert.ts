@@ -158,6 +158,5 @@ Total height difference: ${lastBlockHeightChainweb - lastBlockHeightGraph}
 export const graphAlert = async (alert: IAlert): Promise<string[]> => {
   const results = await Promise.all(networks.map(runJobPerEnvironment(alert)));
 
-  const filteredResults = results.filter((v) => v !== undefined);
-  return filteredResults as string[];
+  return results.filter(Boolean);
 };

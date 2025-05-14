@@ -1,27 +1,48 @@
 import { fetchAccount } from '@/utils/fetchAccount';
-import { lowBalanceChains } from '../../lowBalanceChains';
+import { Client } from '@elastic/elasticsearch';
 import type { IAlert } from './../../constants';
-import { sendBalanceErrorMessages } from './../../messages/balance/sendBalanceErrorMessages';
-import { sendBalanceMessages } from './../../messages/balance/sendBalanceMessages';
 
 export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
+  const client = new Client({
+    cloud: { id: `${process.env.ELASTIC_CLOUD_ID}` },
+    auth: { apiKey: `${process.env.ELASTIC_CLOUD_APIKEY}` },
+  });
+
   const promises = alert.networks.map(async (network) => {
     const account = await fetchAccount(network, alert.options?.account);
-
+    let data: Record<string, any> = {
+      description: alert.description,
+      code: alert.code,
+      address: alert.options?.account,
+      minBalance: alert.options?.minBalance,
+      timestamp: Date.now(),
+      network: {
+        environment: network.key,
+        environmentLabel: network.label,
+      },
+    };
     if (account?.errors?.length) {
-      return sendBalanceErrorMessages(alert, network);
+      data = { ...data, error: 'no account was found' };
     }
 
-    const lowBalanceChainsResult = lowBalanceChains(
-      alert,
-      account?.data?.fungibleAccount.chainAccounts,
-    );
-    if (!lowBalanceChainsResult.length) return;
+    data = {
+      ...data,
+      balances: account.data?.fungibleAccount.chainAccounts,
+    };
 
-    return sendBalanceMessages(alert, lowBalanceChainsResult, network);
+    //send data
+    try {
+      await client.index({
+        index: 'balance-reporter',
+        document: data,
+      });
+
+      return `✅ elastic data send for ${alert.code} (${network.key})`;
+    } catch (e) {
+      return `❌ elastic data fail ${alert.code} (${network.label}): (${e.meta.body.error})`;
+    }
   });
 
   const results = await Promise.all(promises);
-  const filteredResults = results.filter((v) => v !== undefined);
-  return filteredResults as string[];
+  return results.filter(Boolean);
 };

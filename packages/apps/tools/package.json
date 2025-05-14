@@ -23,6 +23,7 @@
     "verify": "pnpm run generate:contracts && tsc --noEmit"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.18.2",
     "@hookform/resolvers": "^3.2.0",
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
