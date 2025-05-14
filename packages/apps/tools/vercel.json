@@ -16,6 +16,10 @@
     {
       "path": "/api/alerts?t=15minutes",
       "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/alerts/elastic",
+      "schedule": "*/15 * * * *"
     }
   ]
 }

@@ -56,6 +56,7 @@ export const alerts: IAlert[] = [
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCEALERT,
     cronType: '12hours',
+    isElastic: true,
   },
   {
     title: `GRAPH DOWN!`,

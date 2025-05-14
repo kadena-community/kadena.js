@@ -1,15 +1,16 @@
 import { getTestNet } from '@/utils/network';
 import { CHAINS } from '@kadena/chainweb-node-client';
-import type { IAccount } from '../../constants';
+import type { IAccount, IAlert } from '../../../constants';
 import {
   ALERTCODES,
   channelId,
   faucetAccount,
   MESSAGETYPES,
   MINBALANCE,
-} from '../../constants';
+  slackAlerts,
+} from '../../../constants';
 
-const alert = {
+const alert: IAlert = {
   title: `Low Faucet alert! 🚨`,
   code: ALERTCODES.LOWFAUCETBALANCE,
   networks: [getTestNet()],
@@ -21,6 +22,7 @@ const alert = {
   chainIds: CHAINS,
   slackChannelIds: [channelId],
   messageType: MESSAGETYPES.BALANCEALERT,
+  cronType: '12hours',
 };
 
 describe('balance alert Utils', () => {
@@ -36,7 +38,7 @@ describe('balance alert Utils', () => {
     vi.stubGlobal('fetch', mocks.fetch);
 
     vi.mock(
-      './../../messages/balance/sendBalanceErrorMessages',
+      './../../../messages/balance/sendBalanceErrorMessages',
       async (importOriginal) => {
         const actual = (await importOriginal()) as {};
         return {
@@ -47,7 +49,7 @@ describe('balance alert Utils', () => {
     );
 
     vi.mock(
-      './../../messages/balance/sendBalanceMessages',
+      './../../../messages/balance/sendBalanceMessages',
       async (importOriginal) => {
         const actual = (await importOriginal()) as {};
         return {
@@ -69,7 +71,7 @@ describe('balance alert Utils', () => {
       },
     });
 
-    await alert.messageType(alert);
+    await slackAlerts[alert.messageType](alert);
 
     expect(mocks.fetch).toBeCalledTimes(1);
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(1);
@@ -92,7 +94,7 @@ describe('balance alert Utils', () => {
       },
     });
 
-    await alert.messageType(alert);
+    await slackAlerts[alert.messageType](alert);
 
     expect(mocks.fetch).toBeCalledTimes(1);
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(0);
@@ -120,7 +122,7 @@ describe('balance alert Utils', () => {
       },
     });
 
-    await alert.messageType(alert);
+    await slackAlerts[alert.messageType](alert);
     expect(mocks.fetch).toBeCalledTimes(1);
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(0);
     expect(mocks.sendBalanceMessages).toBeCalledTimes(1);

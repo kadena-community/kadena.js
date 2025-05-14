@@ -1,7 +1,9 @@
 import type { ChainId } from '@kadena/types';
 import dotenv from 'dotenv';
-import { balanceAlert } from './alerts/balanceAlert';
-import { graphAlert } from './alerts/graphAlert';
+import { balanceCheck } from './alerts/elastic/balanceCheck';
+import { graphCheck } from './alerts/elastic/graphCheck';
+import { balanceAlert } from './alerts/slack/balanceAlert';
+import { graphAlert } from './alerts/slack/graphAlert';
 
 dotenv.config();
 export const channelId = process.env.SLACK_CHANNELID ?? '';
@@ -11,7 +13,7 @@ export const xchainGasStationAccount = 'kadena-xchain-gas';
 export const GalxeAccount = process.env.NEXT_PUBLIC_GALXE || '';
 export const MINBALANCE = 1000;
 export const MINXCHAINGASSTATIONBALANCE = 0.9;
-export const MINXGALXEBALANCE = 5000;
+export const MINXGALXEBALANCE = 5;
 //graph
 export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
 
@@ -34,11 +36,6 @@ export const ALERTCODES = {
   LOWXCHAINGASBALANCE: 'LOWXCHAINGASBALANCE',
   LOWXGALXEBALANCE: 'LOWXGALXEBALANCE',
   GRAPHDOWN: 'GRAPHDOWN',
-} as const;
-
-export const MESSAGETYPES = {
-  BALANCEALERT: balanceAlert,
-  GRAPHDOWNALERT: graphAlert,
 } as const;
 
 export interface INETWORK {
@@ -69,6 +66,20 @@ export const isCronType = (val: string): val is ICronType => {
   return cronTypes.includes(val as ICronType);
 };
 
+export const slackAlerts = {
+  BALANCEALERT: balanceAlert,
+  GRAPHALERT: graphAlert,
+} satisfies Record<string, (alert: IAlert) => Promise<string[]>>;
+
+export const elasticAlerts = {
+  BALANCEALERT: balanceCheck,
+  GRAPHALERT: graphCheck,
+} as typeof slackAlerts;
+
+export const MESSAGETYPES = Object.keys(slackAlerts).reduce((acc, val) => {
+  return { ...acc, [val.toUpperCase()]: [val.toUpperCase()] };
+}, {}) as Record<keyof typeof slackAlerts, keyof typeof slackAlerts>;
+
 export interface IAlert {
   title: string;
   code: keyof typeof ALERTCODES;
@@ -81,6 +92,7 @@ export interface IAlert {
   };
   chainIds: readonly ChainId[];
   slackChannelIds: string[];
-  messageType: (alert: IAlert) => Promise<string[]>;
+  messageType: keyof typeof MESSAGETYPES;
   cronType: ICronType;
+  isElastic?: boolean;
 }

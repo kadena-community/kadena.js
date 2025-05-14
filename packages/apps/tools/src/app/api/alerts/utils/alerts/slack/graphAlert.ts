@@ -1,5 +1,5 @@
-import type { IAlert, INETWORK } from './../constants';
-import { sendGraphErrorMessages } from './../messages/graph/sendGraphErrorMessages';
+import type { IAlert, INETWORK } from './../../constants';
+import { sendGraphErrorMessages } from './../../messages/graph/sendGraphErrorMessages';
 
 interface IChainwebCutResponse {
   hashes: Record<string, { height: number; hash: string }>;
