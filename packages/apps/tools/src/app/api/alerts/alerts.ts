@@ -1,4 +1,3 @@
-import { getMainNet, getTestNet } from '@/utils/network';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import type { IAlert } from './utils/constants';
 import {
@@ -6,6 +5,8 @@ import {
   channelId,
   faucetAccount,
   GalxeAccount,
+  getMainNet,
+  getTestNet,
   MAXBLOCKHEIGHT_DIFFERENCE,
   MESSAGETYPES,
   MINBALANCE,
@@ -73,5 +74,19 @@ export const alerts: IAlert[] = [
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.GRAPHALERT,
     cronType: '12hours',
+  },
+  {
+    title: `GRAPH DOWN!`,
+    description: 'Changes to the Kinesis Bridge balance on chain 2',
+    code: ALERTCODES.KINESISBRIDGEBALANCECHANGE,
+    networks: [getMainNet()],
+    options: {
+      account: process.env.KINESISBRIDGEACCOUNT ?? '',
+      maxblockHeightDiff: MAXBLOCKHEIGHT_DIFFERENCE,
+    },
+    chainIds: ['2'],
+    slackChannelIds: [channelId],
+    messageType: MESSAGETYPES.BALANCECHANGEALERT,
+    cronType: '15minutes',
   },
 ] as const;

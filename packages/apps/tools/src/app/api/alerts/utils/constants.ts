@@ -1,8 +1,10 @@
 import type { ChainId } from '@kadena/types';
 import dotenv from 'dotenv';
+import { balanceChangeCheck } from './alerts/elastic/balanceChangeCheck';
 import { balanceCheck } from './alerts/elastic/balanceCheck';
 import { graphCheck } from './alerts/elastic/graphCheck';
 import { balanceAlert } from './alerts/slack/balanceAlert';
+import { balanceChangeAlert } from './alerts/slack/balanceChangeAlert';
 import { graphAlert } from './alerts/slack/graphAlert';
 
 dotenv.config();
@@ -14,6 +16,7 @@ export const GalxeAccount = process.env.NEXT_PUBLIC_GALXE || '';
 export const MINBALANCE = 1000;
 export const MINXCHAINGASSTATIONBALANCE = 0.9;
 export const MINXGALXEBALANCE = 5;
+
 //graph
 export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
 
@@ -36,6 +39,7 @@ export const ALERTCODES = {
   LOWXCHAINGASBALANCE: 'LOWXCHAINGASBALANCE',
   LOWXGALXEBALANCE: 'LOWXGALXEBALANCE',
   GRAPHDOWN: 'GRAPHDOWN',
+  KINESISBRIDGEBALANCECHANGE: 'KINESISBRIDGEBALANCECHANGE',
 } as const;
 
 export interface INETWORK {
@@ -68,11 +72,13 @@ export const isCronType = (val: string): val is ICronType => {
 
 export const slackAlerts = {
   BALANCEALERT: balanceAlert,
+  BALANCECHANGEALERT: balanceChangeAlert,
   GRAPHALERT: graphAlert,
 } satisfies Record<string, (alert: IAlert) => Promise<string[]>>;
 
 export const elasticAlerts = {
   BALANCEALERT: balanceCheck,
+  BALANCECHANGEALERT: balanceChangeCheck,
   GRAPHALERT: graphCheck,
 } as typeof slackAlerts;
 
@@ -97,3 +103,11 @@ export interface IAlert {
   cronType: ICronType;
   isElastic?: boolean;
 }
+
+export const getMainNet = (): INETWORK => {
+  return NETWORKS.find((n) => n.key === 'mainnet01') ?? NETWORKS[0];
+};
+
+export const getTestNet = (): INETWORK => {
+  return NETWORKS.find((network) => network.key === 'testnet04') ?? NETWORKS[1];
+};
