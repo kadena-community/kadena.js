@@ -97,11 +97,11 @@ export interface IAlert {
     gif?: string;
     maxblockHeightDiff?: number;
   };
-  chainIds: readonly ChainId[];
-  slackChannelIds: string[];
+  chainIds: readonly ChainId[]; // which chains to check
+  slackChannelIds: string[]; // which slack channels to send the message to
   messageType: keyof typeof MESSAGETYPES;
-  cronType: ICronType;
-  isElastic?: boolean;
+  cronType: ICronType; // sets the interval of the cronjob
+  isElastic?: boolean; // if true, this data will be saved in elastic, for pager duty
 }
 
 export const getMainNet = (): INETWORK => {
