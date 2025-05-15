@@ -16,6 +16,9 @@ export async function GET(request: NextRequest) {
   const filteredAlerts = alerts.filter((alert) => alert.intervalGroup === t);
   const results = await getAllAlertPromises(filteredAlerts);
 
+  console.log(
+    `alerts triggered on ${t} (${results.flat().length}):\n${results.flat().join('\n')}`,
+  );
   return new Response(
     `alerts triggered on ${t} (${results.flat().length}):\n${results.flat().join('\n')}`,
   );
