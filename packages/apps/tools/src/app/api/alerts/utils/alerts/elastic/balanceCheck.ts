@@ -1,12 +1,10 @@
 import { fetchAccount } from '@/utils/fetchAccount';
 import { Client } from '@elastic/elasticsearch';
+import { getClient } from '../../elasticClient';
 import type { IAlert } from './../../constants';
 
 export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
-  const client = new Client({
-    cloud: { id: `${process.env.ELASTIC_CLOUD_ID}` },
-    auth: { apiKey: `${process.env.ELASTIC_CLOUD_APIKEY}` },
-  });
+  const client = getClient();
 
   const promises = alert.networks.map(async (network) => {
     const account = await fetchAccount(network, alert.options?.account);
@@ -32,10 +30,7 @@ export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
 
     //send data
     try {
-      await client.index({
-        index: 'balance-reporter',
-        document: data,
-      });
+      await client.index(data);
 
       return `✅ elastic data send for ${alert.code} (${network.key})`;
     } catch (e) {

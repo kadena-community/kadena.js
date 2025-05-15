@@ -44,6 +44,7 @@
     "@walletconnect/utils": "^2.18.0",
     "ace-builds": "~1.30.0",
     "classnames": "^2.3.1",
+    "date-fns": "~2.30.0",
     "fuse.js": "^7.0.0",
     "hw-app-kda-clone": "workspace:*",
     "js-cookie": "~3.0.5",

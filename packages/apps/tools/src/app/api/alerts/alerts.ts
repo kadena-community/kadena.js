@@ -31,6 +31,7 @@ export const alerts: IAlert[] = [
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCEALERT,
     cronType: '12hours',
+    isElastic: true,
   },
   {
     title: `Low XCHAIN GASSTATION alert! ⛽️`,
@@ -46,6 +47,7 @@ export const alerts: IAlert[] = [
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCEALERT,
     cronType: '12hours',
+    isElastic: true,
   },
   {
     title: `Low GALXE account alert! ⛽️`,
@@ -76,7 +78,7 @@ export const alerts: IAlert[] = [
     cronType: '12hours',
   },
   {
-    title: `GRAPH DOWN!`,
+    title: `Kinesis Bridge balance`,
     description: 'Changes to the Kinesis Bridge balance on chain 2',
     code: ALERTCODES.KINESISBRIDGEBALANCECHANGE,
     networks: [getMainNet()],
@@ -88,5 +90,6 @@ export const alerts: IAlert[] = [
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCECHANGEALERT,
     cronType: '15minutes',
+    isElastic: true,
   },
 ] as const;

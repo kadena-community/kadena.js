@@ -4,6 +4,7 @@ import {
   channelId,
   faucetAccount,
   getTestNet,
+  IAlert,
   MESSAGETYPES,
   MINBALANCE,
 } from '../../../constants';
@@ -16,7 +17,7 @@ const mocks = vi.hoisted(() => {
 });
 
 const network = getTestNet();
-const alert = {
+const alert: IAlert = {
   title: `Low Faucet alert! 🚨`,
   description: 'test',
   code: ALERTCODES.LOWFAUCETBALANCE,
@@ -29,6 +30,7 @@ const alert = {
   chainIds: CHAINS,
   slackChannelIds: [channelId],
   messageType: MESSAGETYPES.BALANCEALERT,
+  cronType: '12hours',
 };
 
 describe('messages', () => {
