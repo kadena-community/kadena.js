@@ -5,9 +5,9 @@ import {
   channelId,
   faucetAccount,
   getTestNet,
+  INTERVALGROUPS,
   MESSAGETYPES,
   MINBALANCE,
-  slackAlerts,
 } from '../../../constants';
 
 const alert: IAlert = {
@@ -22,8 +22,10 @@ const alert: IAlert = {
   },
   chainIds: CHAINS,
   slackChannelIds: [channelId],
-  messageType: MESSAGETYPES.BALANCEALERT,
-  cronType: '12hours',
+  messageType: {
+    slack: MESSAGETYPES.slack.BALANCEALERT,
+  },
+  intervalGroup: INTERVALGROUPS['12hours'],
 };
 
 describe('balance alert Utils', () => {
@@ -72,7 +74,9 @@ describe('balance alert Utils', () => {
       },
     });
 
-    await slackAlerts[alert.messageType](alert);
+    if (alert.messageType.slack) {
+      await alert.messageType.slack(alert);
+    }
 
     expect(mocks.fetch).toBeCalledTimes(1);
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(1);
@@ -95,7 +99,9 @@ describe('balance alert Utils', () => {
       },
     });
 
-    await slackAlerts[alert.messageType](alert);
+    if (alert.messageType.slack) {
+      await alert.messageType.slack(alert);
+    }
 
     expect(mocks.fetch).toBeCalledTimes(1);
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(0);
@@ -123,7 +129,9 @@ describe('balance alert Utils', () => {
       },
     });
 
-    await slackAlerts[alert.messageType](alert);
+    if (alert.messageType.slack) {
+      await alert.messageType.slack(alert);
+    }
     expect(mocks.fetch).toBeCalledTimes(1);
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(0);
     expect(mocks.sendBalanceMessages).toBeCalledTimes(1);

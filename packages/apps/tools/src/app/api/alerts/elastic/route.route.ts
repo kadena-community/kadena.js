@@ -4,8 +4,7 @@ import { alerts } from './../alerts';
 
 export async function GET(request: NextRequest) {
   // filter the alerts on crontype, so that we can differentiate between the intervals. see the t param in vercel.json
-  const filteredAlerts = alerts.filter((alert) => alert.isElastic);
-  const results = await getAllAlertPromises(filteredAlerts, true);
+  const results = await getAllAlertPromises(alerts, true);
 
   return new Response(
     `alerts triggered on elastic (${results.flat().length}):\n${results.flat().join('\n')}`,

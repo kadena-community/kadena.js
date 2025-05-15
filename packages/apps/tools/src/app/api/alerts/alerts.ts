@@ -30,9 +30,11 @@ export const alerts: IAlert[] = [
     },
     chainIds: CHAINS,
     slackChannelIds: [channelId],
-    messageType: MESSAGETYPES.BALANCEALERT,
+    messageType: {
+      slack: MESSAGETYPES.slack.BALANCEALERT,
+      elastic: MESSAGETYPES.elastic.BALANCEALERT,
+    },
     intervalGroup: INTERVALGROUPS['12hours'],
-    isElastic: true,
   },
   {
     title: `Low XCHAIN GASSTATION alert! ⛽️`,
@@ -46,9 +48,11 @@ export const alerts: IAlert[] = [
     },
     chainIds: CHAINS,
     slackChannelIds: [channelId],
-    messageType: MESSAGETYPES.BALANCEALERT,
+    messageType: {
+      slack: MESSAGETYPES.slack.BALANCEALERT,
+      elastic: MESSAGETYPES.elastic.BALANCEALERT,
+    },
     intervalGroup: INTERVALGROUPS['12hours'],
-    isElastic: true,
   },
   {
     title: `Low GALXE account alert! ⛽️`,
@@ -61,9 +65,11 @@ export const alerts: IAlert[] = [
     },
     chainIds: ['6'],
     slackChannelIds: [channelId],
-    messageType: MESSAGETYPES.BALANCEALERT,
+    messageType: {
+      slack: MESSAGETYPES.slack.BALANCEALERT,
+      elastic: MESSAGETYPES.elastic.BALANCEALERT,
+    },
     intervalGroup: INTERVALGROUPS['12hours'],
-    isElastic: true,
   },
   {
     title: `GRAPH DOWN!`,
@@ -75,7 +81,9 @@ export const alerts: IAlert[] = [
     },
     chainIds: CHAINS,
     slackChannelIds: [channelId],
-    messageType: MESSAGETYPES.GRAPHALERT,
+    messageType: {
+      slack: MESSAGETYPES.slack.GRAPHALERT,
+    },
     intervalGroup: INTERVALGROUPS['12hours'],
   },
   {
@@ -89,8 +97,10 @@ export const alerts: IAlert[] = [
     },
     chainIds: ['2'],
     slackChannelIds: [channelId],
-    messageType: MESSAGETYPES.BALANCECHANGEALERT,
+    messageType: {
+      slack: MESSAGETYPES.slack.BALANCECHANGEALERT,
+      elastic: MESSAGETYPES.elastic.BALANCECHANGEALERT,
+    },
     intervalGroup: INTERVALGROUPS['15minutes'],
-    isElastic: true,
   },
 ] as const;

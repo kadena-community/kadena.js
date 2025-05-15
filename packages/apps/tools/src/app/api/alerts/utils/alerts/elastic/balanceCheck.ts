@@ -1,5 +1,4 @@
 import { fetchAccount } from '@/utils/fetchAccount';
-import { Client } from '@elastic/elasticsearch';
 import { getClient } from '../../elasticClient';
 import type { IAlert } from './../../constants';
 
@@ -7,6 +6,9 @@ export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
   const client = getClient();
 
   const promises = alert.networks.map(async (network) => {
+    if (!alert.options?.account) {
+      return `❌ errormessage send for ${alert.code} (${network.label})`;
+    }
     const account = await fetchAccount(network, alert.options?.account);
     let data: Record<string, any> = {
       description: alert.description,

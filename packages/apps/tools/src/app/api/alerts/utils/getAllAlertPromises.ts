@@ -1,23 +1,31 @@
 import type { IAlert } from './constants';
-import { elasticAlerts, slackAlerts } from './constants';
-
-const runJob = (alert: IAlert, funcs: typeof slackAlerts) => {
-  if (!funcs[alert.messageType]) {
-    throw new Error(`message function ${alert.messageType} not found`);
-  }
-
-  return funcs[alert.messageType](alert);
-};
 
 export const getAllAlertPromises = (
   alerts: IAlert[],
   isElasticAlerts?: boolean,
 ): Promise<string[][]> => {
   if (isElasticAlerts) {
-    const promises = alerts.map((alert) => runJob(alert, elasticAlerts));
+    const promises = alerts
+      .map((alert) => {
+        if (alert.messageType.elastic) {
+          return alert.messageType.elastic(alert);
+        }
+
+        return;
+      })
+      .filter(Boolean);
+
     return Promise.all(promises);
   }
 
-  const promises = alerts.map((alert) => runJob(alert, slackAlerts));
+  const promises = alerts
+    .map((alert) => {
+      if (alert.messageType.slack) {
+        return alert.messageType.slack(alert);
+      }
+
+      return;
+    })
+    .filter(Boolean);
   return Promise.all(promises);
 };

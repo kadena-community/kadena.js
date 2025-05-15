@@ -1,8 +1,6 @@
 import type { ChainId } from '@kadena/types';
 import dotenv from 'dotenv';
-import { balanceChangeCheck } from './alerts/elastic/balanceChangeCheck';
 import { balanceCheck } from './alerts/elastic/balanceCheck';
-import { graphCheck } from './alerts/elastic/graphCheck';
 import { balanceAlert } from './alerts/slack/balanceAlert';
 import { balanceChangeAlert } from './alerts/slack/balanceChangeAlert';
 import { graphAlert } from './alerts/slack/graphAlert';
@@ -15,7 +13,7 @@ export const xchainGasStationAccount = 'kadena-xchain-gas';
 export const GalxeAccount = process.env.NEXT_PUBLIC_GALXE || '';
 export const MINBALANCE = 1000;
 export const MINXCHAINGASSTATIONBALANCE = 0.9;
-export const MINXGALXEBALANCE = 5;
+export const MINXGALXEBALANCE = 1000;
 
 //graph
 export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
@@ -82,13 +80,13 @@ export const slackAlerts = {
 
 export const elasticAlerts = {
   BALANCEALERT: balanceCheck,
-  BALANCECHANGEALERT: balanceChangeCheck,
-  GRAPHALERT: graphCheck,
-} as typeof slackAlerts;
+  BALANCECHANGEALERT: balanceCheck,
+} satisfies Record<string, (alert: IAlert) => Promise<string[]>>;
 
-export const MESSAGETYPES = Object.keys(slackAlerts).reduce((acc, val) => {
-  return { ...acc, [val.toUpperCase()]: [val.toUpperCase()] };
-}, {}) as Record<keyof typeof slackAlerts, keyof typeof slackAlerts>;
+export const MESSAGETYPES = {
+  slack: slackAlerts,
+  elastic: elasticAlerts,
+};
 
 export interface IAlert {
   title: string;
@@ -103,9 +101,11 @@ export interface IAlert {
   };
   chainIds: readonly ChainId[]; // which chains to check
   slackChannelIds: string[]; // which slack channels to send the message to
-  messageType: keyof typeof MESSAGETYPES;
+  messageType: {
+    slack?: (alert: IAlert) => Promise<string[]>;
+    elastic?: (alert: IAlert) => Promise<string[]>;
+  };
   intervalGroup: IIntervalGroup; // sets the interval of the cronjob
-  isElastic?: boolean; // if true, this data will be saved in elastic, for pager duty
 }
 
 export const getMainNet = (): INETWORK => {

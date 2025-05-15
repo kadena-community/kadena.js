@@ -1,7 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { alerts } from './alerts';
 
-import { IIntervalGroup, isIntervalGroup } from './utils/constants';
+import type { IIntervalGroup } from './utils/constants';
+import { isIntervalGroup } from './utils/constants';
 import { getAllAlertPromises } from './utils/getAllAlertPromises';
 
 export async function GET(request: NextRequest) {

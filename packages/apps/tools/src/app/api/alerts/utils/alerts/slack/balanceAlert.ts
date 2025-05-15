@@ -6,6 +6,9 @@ import { sendBalanceMessages } from './../../messages/balance/sendBalanceMessage
 
 export const balanceAlert = async (alert: IAlert): Promise<string[]> => {
   const promises = alert.networks.map(async (network) => {
+    if (!alert.options?.account) {
+      return sendBalanceErrorMessages(alert, network);
+    }
     const account = await fetchAccount(network, alert.options?.account);
 
     if (account?.errors?.length) {

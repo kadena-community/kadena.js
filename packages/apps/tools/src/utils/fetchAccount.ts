@@ -2,13 +2,8 @@ import type { IAccount, INETWORK } from '@/app/api/alerts/utils/constants';
 
 export const fetchAccount = async (
   network: INETWORK,
-  account?: string,
+  account: string,
 ): Promise<IAccount> => {
-  if (!account)
-    return {
-      errors: [{ message: 'No account given' }],
-    };
-
   const result = await fetch(network.url, {
     method: 'POST',
     headers: {

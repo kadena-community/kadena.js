@@ -1,5 +1,4 @@
 import type { IAlert, INETWORK } from '../../constants';
-import { sendBalanceErrorMessages } from '../balance/sendBalanceErrorMessages';
 import { createMessage } from '../createMessage';
 
 export const sendBalanceChangeErrorMessages = async (

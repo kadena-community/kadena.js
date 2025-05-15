@@ -1,5 +1,5 @@
 import { Client } from '@elastic/elasticsearch';
-import { IAlert } from './constants';
+import type { IAlert } from './constants';
 
 const ELASTICINDEX = 'balance-reporter';
 

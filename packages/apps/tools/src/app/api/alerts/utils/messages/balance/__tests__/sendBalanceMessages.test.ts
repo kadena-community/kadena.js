@@ -1,10 +1,10 @@
 import { CHAINS } from '@kadena/chainweb-node-client';
+import type { IAlert } from '../../../constants';
 import {
   ALERTCODES,
   channelId,
   faucetAccount,
   getTestNet,
-  IAlert,
   MESSAGETYPES,
   MINBALANCE,
 } from '../../../constants';

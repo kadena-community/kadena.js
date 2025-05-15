@@ -1,10 +1,11 @@
 import { CHAINS } from '@kadena/chainweb-node-client';
+import type { IAlert } from '../../../constants';
 import {
   ALERTCODES,
   channelId,
   faucetAccount,
   getTestNet,
-  IAlert,
+  INTERVALGROUPS,
   MESSAGETYPES,
   MINBALANCE,
 } from '../../../constants';
@@ -29,8 +30,10 @@ const alert: IAlert = {
   },
   chainIds: CHAINS,
   slackChannelIds: [channelId],
-  messageType: MESSAGETYPES.BALANCEALERT,
-  cronType: '12hours',
+  messageType: {
+    slack: MESSAGETYPES.slack.BALANCEALERT,
+  },
+  intervalGroup: INTERVALGROUPS['12hours'],
 };
 
 describe('messages', () => {
