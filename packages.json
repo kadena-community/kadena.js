@@ -216,6 +216,12 @@
     "path": "packages/libs/wallet-adapter-walletconnect"
   },
   {
+    "name": "@kadena/wallet-adapter-zelcore",
+    "version": "0.0.1-beta.1",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-zelcore"
+  },
+  {
     "name": "@kadena/wallet-sdk",
     "version": "0.2.1",
     "private": false,

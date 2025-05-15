@@ -16,6 +16,7 @@ import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweav
 import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
 import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
 import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
+import { createZelcoreAdapter } from '@kadena/wallet-adapter-zelcore';
 import { ThemeProvider } from 'next-themes';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -25,6 +26,7 @@ import App from './App';
 const adapters = [
   createEckoAdapter(),
   createChainweaverLegacyAdapter(),
+  createZelcoreAdapter(),
   createWalletConnectAdapter(),
 ];
 

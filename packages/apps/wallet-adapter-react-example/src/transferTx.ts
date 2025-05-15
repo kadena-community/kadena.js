@@ -8,6 +8,7 @@ interface ITransfer {
   amount: number;
   client: any;
   networkId: string;
+  walletName: string;
 }
 
 export const createTransferTx = async ({
@@ -17,6 +18,7 @@ export const createTransferTx = async ({
   amount,
   client,
   networkId = 'mainnet01',
+  walletName,
 }: ITransfer): Promise<ICommandResult> => {
   try {
     const transactionBuilder = Pact.builder
@@ -41,10 +43,10 @@ export const createTransferTx = async ({
       .setNetworkId(networkId)
       .createTransaction();
 
-    console.log('tx', transactionBuilder);
+    console.warn('tx:created:', transactionBuilder);
 
     const signedTx = await client.signTransaction(
-      'Chainweaver',
+      walletName,
       transactionBuilder,
     );
     const kadenaClient = createClient(
