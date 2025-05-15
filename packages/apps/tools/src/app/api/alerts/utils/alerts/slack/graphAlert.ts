@@ -147,6 +147,10 @@ Total height difference: ${lastBlockHeightChainweb - lastBlockHeightGraph}
 `,
         });
       }
+
+      return new Promise<string>((resolve) =>
+        resolve(`◻️ no need for a message ${alert.code} (${network.key})`),
+      );
     } catch (e) {
       return sendGraphErrorMessages(alert, network, {
         title: `There was a general issue with the ${network.key} graph cron job`,

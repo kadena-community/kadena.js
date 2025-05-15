@@ -16,7 +16,11 @@ export const balanceAlert = async (alert: IAlert): Promise<string[]> => {
       alert,
       account?.data?.fungibleAccount.chainAccounts,
     );
-    if (!lowBalanceChainsResult.length) return;
+    if (!lowBalanceChainsResult.length) {
+      return new Promise<string>((resolve) =>
+        resolve(`◻️ no need for a message ${alert.code} (${network.key})`),
+      );
+    }
 
     return sendBalanceMessages(alert, lowBalanceChainsResult, network);
   });

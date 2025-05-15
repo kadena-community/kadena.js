@@ -64,10 +64,14 @@ export const NETWORKS: INETWORK[] = [
 ];
 
 // check at what interval this slack alert can be called
-export type ICronType = '12hours' | '1hour' | '15minutes';
-const cronTypes: ICronType[] = ['12hours', '15minutes', '1hour'];
-export const isCronType = (val: string): val is ICronType => {
-  return cronTypes.includes(val as ICronType);
+export type IIntervalGroup = '12hours' | '1hour' | '15minutes';
+export const INTERVALGROUPS: Record<IIntervalGroup, IIntervalGroup> = {
+  '12hours': '12hours',
+  '15minutes': '15minutes',
+  '1hour': '1hour',
+};
+export const isIntervalGroup = (val: string): val is IIntervalGroup => {
+  return Object.keys(INTERVALGROUPS).includes(val as IIntervalGroup);
 };
 
 export const slackAlerts = {
@@ -100,7 +104,7 @@ export interface IAlert {
   chainIds: readonly ChainId[]; // which chains to check
   slackChannelIds: string[]; // which slack channels to send the message to
   messageType: keyof typeof MESSAGETYPES;
-  cronType: ICronType; // sets the interval of the cronjob
+  intervalGroup: IIntervalGroup; // sets the interval of the cronjob
   isElastic?: boolean; // if true, this data will be saved in elastic, for pager duty
 }
 

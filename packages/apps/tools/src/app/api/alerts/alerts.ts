@@ -7,6 +7,7 @@ import {
   GalxeAccount,
   getMainNet,
   getTestNet,
+  INTERVALGROUPS,
   MAXBLOCKHEIGHT_DIFFERENCE,
   MESSAGETYPES,
   MINBALANCE,
@@ -30,7 +31,7 @@ export const alerts: IAlert[] = [
     chainIds: CHAINS,
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCEALERT,
-    cronType: '12hours',
+    intervalGroup: INTERVALGROUPS['12hours'],
     isElastic: true,
   },
   {
@@ -46,7 +47,7 @@ export const alerts: IAlert[] = [
     chainIds: CHAINS,
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCEALERT,
-    cronType: '12hours',
+    intervalGroup: INTERVALGROUPS['12hours'],
     isElastic: true,
   },
   {
@@ -61,7 +62,7 @@ export const alerts: IAlert[] = [
     chainIds: ['6'],
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCEALERT,
-    cronType: '12hours',
+    intervalGroup: INTERVALGROUPS['12hours'],
     isElastic: true,
   },
   {
@@ -75,7 +76,7 @@ export const alerts: IAlert[] = [
     chainIds: CHAINS,
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.GRAPHALERT,
-    cronType: '12hours',
+    intervalGroup: INTERVALGROUPS['12hours'],
   },
   {
     title: `Kinesis Bridge balance`,
@@ -89,7 +90,7 @@ export const alerts: IAlert[] = [
     chainIds: ['2'],
     slackChannelIds: [channelId],
     messageType: MESSAGETYPES.BALANCECHANGEALERT,
-    cronType: '15minutes',
+    intervalGroup: INTERVALGROUPS['15minutes'],
     isElastic: true,
   },
 ] as const;

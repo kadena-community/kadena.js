@@ -35,7 +35,9 @@ export const balanceChangeAlert = async (alert: IAlert): Promise<string[]> => {
       );
     }
 
-    return;
+    return new Promise<string>((resolve) =>
+      resolve(`◻️ no need for a message ${alert.code} (${network.key})`),
+    );
   });
 
   const results = await Promise.all(promises);
