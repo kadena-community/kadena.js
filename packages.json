@@ -193,21 +193,27 @@
   },
   {
     "name": "@kadena/wallet-adapter-core",
-    "version": "0.0.1-beta.0",
+    "version": "0.0.1-beta.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-core"
   },
   {
     "name": "@kadena/wallet-adapter-ecko",
-    "version": "0.0.1-beta.0",
+    "version": "0.0.1-beta.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-ecko"
   },
   {
     "name": "@kadena/wallet-adapter-react",
-    "version": "0.0.1-beta.0",
+    "version": "0.0.1-beta.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-react"
+  },
+  {
+    "name": "@kadena/wallet-adapter-walletconnect",
+    "version": "0.0.1-beta.2",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-walletconnect"
   },
   {
     "name": "@kadena/wallet-adapter-zelcore",

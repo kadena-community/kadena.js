@@ -28,6 +28,7 @@ const openZelcore = (): void => {
 };
 
 import './styles.css';
+import { createExampleCommand, createExampleTransaction } from './utils';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -51,6 +52,34 @@ const App = () => {
 
   const [signCommandPayload, setSignCommandPayload] = useState('');
   const [signTxPayload, setSignTxPayload] = useState('');
+
+  useEffect(() => {
+    if (!activeAccount) return;
+    if (!signTxPayload) {
+      setSignTxPayload(
+        JSON.stringify(
+          createExampleTransaction(
+            activeAccount.accountName,
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
+        ),
+      );
+    }
+    if (!signCommandPayload) {
+      setSignCommandPayload(
+        JSON.stringify(
+          createExampleCommand(
+            activeAccount.accountName,
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
+        ),
+      );
+    }
+  }, [activeAccount]);
 
   /**
    * Helper to set RPC response and run Zod validation
@@ -252,7 +281,10 @@ const App = () => {
     if (!selectedWallet) return;
     try {
       const transaction = JSON.parse(signTxPayload);
-      const tx: IUnsignedCommand = { ...transaction };
+      const tx: IUnsignedCommand = {
+        ...transaction,
+      };
+      console.log('sign transaction', selectedWallet.name, tx);
       const resp = await client.signTransaction(selectedWallet.name, tx);
       validateAndSetRpcResponse('kadena_signTransaction', resp);
     } catch (err) {

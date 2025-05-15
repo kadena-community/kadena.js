@@ -1,6 +1,8 @@
 # Ecko Wallet Adapter
 
-This package provides an adapter for the Ecko Wallet extension on Kadena. It extends a base adapter but uses the `"kda_"` RPC prefix (required by Ecko) rather than the standard `"kadena_"` prefix.
+This package provides an adapter for the Ecko Wallet extension on Kadena. It
+extends a base adapter but uses the `"kda_"` RPC prefix (required by Ecko)
+rather than the standard `"kadena_"` prefix.
 
 ## Installation
 
@@ -12,35 +14,17 @@ yarn add @kadena/wallet-adapter-ecko
 pmpm add @kadena/wallet-adapter-ecko
 ```
 
-## Factory Usage
-
-The primary export is a factory function `eckoAdapter`, which detects the Ecko wallet provider and, if found, returns an instance of `EckoWalletAdapter`. If Ecko is not installed, it returns `null`:
-
-```ts
-import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
-
-(async () => {
-  const adapter = await eckoAdapter();
-  if (!adapter) {
-    console.log('Ecko Wallet not found.');
-    return;
-  }
-
-  await adapter.connect();
-  const account = await adapter.getActiveAccount();
-  console.log('Active account:', account);
-})();
-```
-
 ## Manual Usage of the Adapter or Detection
 
 If you need lower-level access, the following are also exported:
 
-- **`EckoWalletAdapter`**: The actual adapter class, in case you want to instantiate it manually without relying on the lazy-loading factory.
-- **`detectEckoProvider`**: A standalone function that checks whether the Ecko wallet is present. It returns the provider if found, or `null` otherwise.
+- **`EckoAdapter`**: The actual adapter class, in case you want to instantiate
+  it manually without relying on the lazy-loading factory.
+- **`detectEckoProvider`**: A standalone function that checks whether the Ecko
+  wallet is present. It returns the provider if found, or `null` otherwise.
 
 ```ts
-import { EckoWalletAdapter, detectEckoProvider } from '@kadena/wallet-adapter-ecko';
+import { EckoAdapter, detectEckoProvider } from '@kadena/wallet-adapter-ecko';
 
 (async () => {
   const provider = await detectEckoProvider({ silent: true });
@@ -56,7 +40,11 @@ import { EckoWalletAdapter, detectEckoProvider } from '@kadena/wallet-adapter-ec
 
 ## Other Notes
 
-- The adapter internally calls `kda_connect`, `kda_requestSign`, `kda_disconnect`, and similar Ecko-specific RPC methods (all `"kda_"` prefixed).
-- If you support multiple wallets in your app, the lazy import in `eckoAdapter` can help reduce your initial bundle size, because the Ecko adapter code is only loaded if the provider is actually detected.
-- Make sure the user has installed the Ecko Wallet extension. Otherwise, detection will yield `null`.
-
+- The adapter internally calls `kda_connect`, `kda_requestSign`,
+  `kda_disconnect`, and similar Ecko-specific RPC methods (all `"kda_"`
+  prefixed).
+- If you support multiple wallets in your app, the lazy import in `eckoAdapter`
+  can help reduce your initial bundle size, because the Ecko adapter code is
+  only loaded if the provider is actually detected.
+- Make sure the user has installed the Ecko Wallet extension. Otherwise,
+  detection will yield `null`.

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/wallet-adapter-ecko",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.2",
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
