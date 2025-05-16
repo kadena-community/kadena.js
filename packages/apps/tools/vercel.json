@@ -11,7 +11,7 @@
     },
     {
       "path": "/api/alerts?t=1hour",
-      "schedule": "* */1 * * *"
+      "schedule": "0 */1 * * *"
     },
     {
       "path": "/api/alerts?t=15minutes",
