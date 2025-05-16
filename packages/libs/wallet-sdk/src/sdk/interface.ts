@@ -231,3 +231,48 @@ export type INodeChainInfo = Pick<INetworkInfo, 'nodeChains' | 'nodeVersion'>;
  * @public
  */
 export type INodeNetworkInfo = Omit<INetworkInfo, 'nodeChains'>;
+
+/**
+ * Options for fetching fungible accounts.
+ */
+
+/**
+ * @public
+ */
+export interface IFungibleAccountsOptions {
+  publicKey: string;
+  fungibleName?: string;
+  networkId: string;
+}
+
+/**
+ * Represents a chain account associated with a fungible account.
+ */
+/**
+ * @public
+ */
+export interface IChainAccount {
+  accountName: string;
+  chainId: string;
+}
+
+/**
+ * Represents a fungible account.
+ */
+/**
+ * @public
+ */
+export interface IFungibleAccount {
+  accountName: string;
+  chainAccounts: IChainAccount[];
+}
+
+/**
+ * Response structure for fetching fungible accounts.
+ */
+/**
+ * @public
+ */
+export interface IFungibleAccountsResponse {
+  fungibleAccounts: IFungibleAccount[];
+}
