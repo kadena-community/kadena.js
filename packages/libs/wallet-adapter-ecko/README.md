@@ -14,6 +14,46 @@ yarn add @kadena/wallet-adapter-ecko
 pmpm add @kadena/wallet-adapter-ecko
 ```
 
+## Usage with wallet-adapter-core
+
+Wallet adapters are designed to work easily with `WalletAdapterClient` from
+`@kadena/wallet-adapter-core`. This allows loading in multiple adapters and
+automatically detecting which are available and providing a uniform api to
+interact with the adapters.
+
+```ts
+import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
+
+const client = new WalletAdapterClient([eckoAdapter]);
+await client.init();
+await client.connect('ecko');
+```
+
+## Factory Usage
+
+The primary export is a factory function `eckoAdapter`, which detects the Ecko
+wallet provider and, if found, returns an instance of `EckoWalletAdapter`. If
+Ecko is not installed, it returns `null`:
+
+```ts
+import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
+
+(async () => {
+  const provider = await eckoAdapter.detect();
+  if (!provider) {
+    console.log('Ecko Wallet not found.');
+    return;
+  }
+
+  const adapter = await eckoAdapter.adapter(provider);
+
+  await adapter.connect();
+  const account = await adapter.getActiveAccount();
+  console.log('Active account:', account);
+})();
+```
+
 ## Manual Usage of the Adapter or Detection
 
 If you need lower-level access, the following are also exported:
