@@ -236,6 +236,18 @@ export async function getXChainTransferInfo({
         };
       }
     }
+    console.log({ response, senderAccount, receiverChain });
+
+    if (
+      response?.result?.status !== 'success' &&
+      response?.result?.error?.message.includes('already completed')
+    ) {
+      return {
+        id: StatusId.Success,
+        status: t('Success'),
+        description: t('-'),
+      };
+    }
 
     if (response?.result?.status === 'success') {
       return {
