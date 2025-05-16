@@ -26,7 +26,7 @@ export const FocussedLayout: FC<PropsWithChildren<IProps>> = ({
     <Stack
       width="100%"
       flexDirection="column"
-      justifyContent="center"
+      justifyContent="flex-start"
       alignItems="center"
       className={wrapperClass}
     >

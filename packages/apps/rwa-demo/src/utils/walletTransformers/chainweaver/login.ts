@@ -16,6 +16,7 @@ export const chainweaverAccountLogin = async (): Promise<IWalletAccount[]> => {
   if ((response.payload as any).status !== 'accepted') {
     return [];
   }
+
   const { payload } = (await message('GET_STATUS', {
     name: 'RWA-demo',
   })) as { payload: IState };
