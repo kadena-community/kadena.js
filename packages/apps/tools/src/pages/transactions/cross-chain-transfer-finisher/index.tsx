@@ -320,7 +320,7 @@ const CrossChainTransferFinisher: FC = () => {
 
   const formattedSigData = `{
     "pred": "${pollResults.tx?.receiverGuard?.pred}",
-    "sigs": ${pollResults.tx?.receiverGuard?.keys.map((key) => `"${key}"`)}
+    "sigs": ${pollResults.tx?.receiverGuard?.keys?.map((key) => `"${key}"`)}
   }`;
 
   const linkToExplorer = `${getExplorerLink(
