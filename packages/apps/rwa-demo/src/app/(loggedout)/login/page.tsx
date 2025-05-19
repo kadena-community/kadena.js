@@ -4,14 +4,15 @@ import { EckoWalletConnect } from '@/components/EckoWalletConnect/EckoWalletConn
 import { MagicConnect } from '@/components/MagicConnect/MagicConnect';
 import { useAccount } from '@/hooks/account';
 import { MonoKeyboardArrowDown } from '@kadena/kode-icons';
-import { Button, ContextMenu, Stack, Text } from '@kadena/kode-ui';
+import { Button, Card, ContextMenu, Stack, Text } from '@kadena/kode-ui';
 import { CardContentBlock, CardFooterGroup } from '@kadena/kode-ui/patterns';
+import { cardWrapperClass } from '../style.css';
 
 const Home = () => {
   const { accounts, selectAccount } = useAccount();
 
   return (
-    <>
+    <Card fullWidth className={cardWrapperClass}>
       <CardContentBlock title="Login">
         {accounts ? (
           <Stack flexDirection="column" width="100%" gap="xl">
@@ -57,7 +58,7 @@ const Home = () => {
           </ContextMenu>
         </CardFooterGroup>
       )}
-    </>
+    </Card>
   );
 };
 

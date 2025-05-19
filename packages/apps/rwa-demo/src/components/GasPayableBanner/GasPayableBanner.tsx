@@ -34,7 +34,12 @@ export const GasPayableBanner: FC = () => {
   if (!isAllowed) return null;
 
   return (
-    <Notification intent="warning" role="status" type="stacked">
+    <Notification
+      intent="warning"
+      role="status"
+      type="inlineStacked"
+      contentMaxWidth={1000}
+    >
       <NotificationHeading>
         The account has no balance to pay the gas
       </NotificationHeading>

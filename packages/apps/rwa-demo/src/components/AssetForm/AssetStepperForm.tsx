@@ -178,7 +178,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
             <Stack
               width="100%"
-              justifyContent="center"
+              justifyContent="flex-end"
               alignItems="center"
               gap="xs"
             >
