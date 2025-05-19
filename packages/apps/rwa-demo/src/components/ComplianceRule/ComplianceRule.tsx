@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { IComplianceRuleTypes } from '@/services/getComplianceRules';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
@@ -5,7 +6,6 @@ import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { Confirmation } from '../Confirmation/Confirmation';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { complianceRuleClass } from './style.css';
 
 interface IProps {

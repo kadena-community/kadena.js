@@ -1,7 +1,6 @@
 'use client';
 import { WALLETTYPES } from '@/constants';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
-import type { IAgentHookProps } from '@/hooks/getAgentRoles';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { isAgent } from '@/services/isAgent';
@@ -12,6 +11,7 @@ import { isOwner } from '@/services/isOwner';
 
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 
+import { AccountContext } from '@/contexts/AccountContext/AccountContext';
 import { chainweaverAccountLogin } from '@/utils/walletTransformers/chainweaver/login';
 import { chainweaverAccountLogout } from '@/utils/walletTransformers/chainweaver/logout';
 import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
@@ -25,57 +25,8 @@ import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { IWalletAccount } from './AccountType';
-
-interface IAccountError {
-  message: string;
-}
-
-export interface IAccountContext {
-  account?: IWalletAccount;
-  accounts?: IWalletAccount[];
-  error?: IAccountError;
-  isMounted: boolean;
-  login: (type: keyof typeof WALLETTYPES) => void;
-  logout: () => void;
-  sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
-  isAgent: boolean;
-  isOwner: boolean;
-  isComplianceOwner: boolean;
-  isInvestor: boolean;
-  isFrozen: boolean;
-  selectAccount: (account: IWalletAccount) => void;
-  balance: number;
-  accountRoles: IAgentHookProps;
-  isGasPayable: boolean | undefined;
-}
-
-export const AccountContext = createContext<IAccountContext>({
-  account: undefined,
-  accounts: undefined,
-  isMounted: false,
-  login: () => {},
-  logout: () => {},
-  sign: async () => undefined,
-  isAgent: false,
-  isOwner: false,
-  isComplianceOwner: false,
-  isInvestor: false,
-  isFrozen: false,
-  selectAccount: () => {},
-  balance: 0,
-  accountRoles: {
-    isMounted: false,
-    getAll: () => [],
-    isAgentAdmin: () => {
-      return false;
-    },
-    isFreezer: () => false,
-    isTransferManager: () => false,
-  },
-  isGasPayable: undefined,
-});
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();

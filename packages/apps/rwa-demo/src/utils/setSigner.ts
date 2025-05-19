@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ISigner } from '@kadena/client';
 
 export const setSigner = (account: IWalletAccount): ISigner => {

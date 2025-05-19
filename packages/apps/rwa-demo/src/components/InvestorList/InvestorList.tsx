@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { loadingData } from '@/utils/loadingData';
@@ -23,7 +24,6 @@ import { FormatDeleteInvestor } from '../TableFormatters/FormatDeleteInvestor';
 import { FormatFreeze } from '../TableFormatters/FormatFreeze';
 import { FormatInvestorBalance } from '../TableFormatters/FormatInvestorBalance';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 export const InvestorList: FC = () => {
   const formRef = useRef<HTMLFormElement>(null);

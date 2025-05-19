@@ -1,3 +1,4 @@
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
@@ -17,7 +18,6 @@ import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 import { MaxSupplyMessage } from '../MaxSupplyMessage/MaxSupplyMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
-import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   onClose?: () => void;

@@ -1,10 +1,10 @@
+import { WALLETTYPES } from '@/constants';
 import type {
   IWalletAccount,
   KeysetGuard,
-} from '@/components/AccountProvider/AccountType';
-import type { IState } from '@/components/TransactionsProvider/utils';
-import { getWalletConnection } from '@/components/TransactionsProvider/utils';
-import { WALLETTYPES } from '@/constants';
+} from '@/providers/AccountProvider/AccountType';
+import type { IState } from '@/utils/getWalletConnection/getWalletConnection';
+import { getWalletConnection } from '@/utils/getWalletConnection/getWalletConnection';
 
 export const chainweaverAccountLogin = async (): Promise<IWalletAccount[]> => {
   const { message, focus, close } = await getWalletConnection();

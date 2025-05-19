@@ -1,4 +1,4 @@
-import type { TXTYPES } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const EVENT_NAMES = {

@@ -1,7 +1,8 @@
-import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { AssetProvider } from '@/components/AssetProvider/AssetProvider';
-import { NetworkProvider } from '@/components/NetworkProvider/NetworkProvider';
-import { TransactionsProvider } from '@/components/TransactionsProvider/TransactionsProvider';
+import { AccountProvider } from '@/providers/AccountProvider/AccountProvider';
+import { NetworkProvider } from '@/providers/NetworkProvider/NetworkProvider';
+import { OrganisationProvider } from '@/providers/OrganisationProvider/OrganisationProvider';
+import { TransactionsProvider } from '@/providers/TransactionsProvider/TransactionsProvider';
 import { MediaContextProvider } from '@kadena/kode-ui';
 import { SideBarLayoutProvider } from '@kadena/kode-ui/patterns';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
@@ -22,11 +23,13 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
       >
         <NetworkProvider>
           <SideBarLayoutProvider>
-            <AccountProvider>
-              <AssetProvider>
-                <TransactionsProvider>{children}</TransactionsProvider>
-              </AssetProvider>
-            </AccountProvider>
+            <OrganisationProvider>
+              <AccountProvider>
+                <AssetProvider>
+                  <TransactionsProvider>{children}</TransactionsProvider>
+                </AssetProvider>
+              </AccountProvider>
+            </OrganisationProvider>
           </SideBarLayoutProvider>
         </NetworkProvider>
       </ThemeProvider>
