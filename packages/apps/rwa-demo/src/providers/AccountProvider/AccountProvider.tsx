@@ -79,10 +79,14 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  const selectAccount = (account: IWalletAccount) => {
-    setAccount(account);
-
-    localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
+  const selectAccount = (address: string) => {
+    const found = userData?.accounts.find((a) => a.address === address);
+    setAccount(found);
+    if (found) {
+      localStorage.setItem(getAccountCookieName(), found.address);
+    } else {
+      localStorage.removeItem(getAccountCookieName());
+    }
     router.replace('/');
   };
 
@@ -123,11 +127,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         setAccount(tempAccount);
         addAccount2User(tempAccount);
 
-        localStorage.setItem(
-          getAccountCookieName(),
-          JSON.stringify(tempAccount),
-        );
-
         router.replace('/');
       }
     },
@@ -144,16 +143,15 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());
-
     if (storage && storage !== 'undefined') {
-      console.log({ account: JSON.parse(storage) });
       try {
-        setAccount(JSON.parse(storage));
+        const found = userData?.accounts.find((a) => a.address === storage);
+        setAccount(found);
       } catch (e) {
         localStorage.removeItem(getAccountCookieName());
       }
     }
-  }, [account?.address]);
+  }, [account?.address, userData?.accounts]);
 
   const initProps = async (accountProp?: IWalletAccount) => {
     if (!accountProp) {

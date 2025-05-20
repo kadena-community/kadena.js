@@ -3,7 +3,7 @@ import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
 import { useAccount } from '@/hooks/account';
-import { MonoDelete } from '@kadena/kode-icons';
+import { MonoAccountBox, MonoDelete } from '@kadena/kode-icons';
 import { Button, Stack } from '@kadena/kode-ui';
 import {
   CompactTable,
@@ -15,10 +15,14 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { accounts, removeAccount } = useAccount();
+  const { accounts, removeAccount, selectAccount } = useAccount();
 
   const handleRemove = (address: any) => {
     removeAccount(address);
+  };
+
+  const handleSelect = (address: any) => {
+    selectAccount(address);
   };
   return (
     <>
@@ -52,8 +56,8 @@ const Home = () => {
                   },
                   {
                     key: 'address',
-                    label: 'Address',
-                    width: '30%',
+                    label: '',
+                    width: '15%',
                     render: CompactTableFormatters.FormatActions({
                       trigger: (
                         <Confirmation
@@ -68,6 +72,21 @@ const Home = () => {
                         >
                           Are you sure you want to unlink your wallet?
                         </Confirmation>
+                      ),
+                    }),
+                  },
+                  {
+                    key: 'address',
+                    label: '',
+                    width: '15%',
+                    render: CompactTableFormatters.FormatActions({
+                      trigger: (
+                        <Button
+                          onPress={handleSelect}
+                          isCompact
+                          variant="outlined"
+                          startVisual={<MonoAccountBox />}
+                        />
                       ),
                     }),
                   },

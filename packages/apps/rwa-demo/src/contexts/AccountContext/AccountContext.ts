@@ -26,7 +26,7 @@ export interface IAccountContext {
   isComplianceOwner: boolean;
   isInvestor: boolean;
   isFrozen: boolean;
-  selectAccount: (account: IWalletAccount) => void;
+  selectAccount: (address: string) => void;
   balance: number;
   accountRoles: IAgentHookProps;
   isGasPayable: boolean | undefined;

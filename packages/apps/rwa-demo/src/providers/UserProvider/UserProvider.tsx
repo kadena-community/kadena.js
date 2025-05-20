@@ -11,6 +11,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
+  signOut as signOutFB,
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
@@ -58,11 +59,26 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
       .catch((error) => {
         addNotification({
           intent: 'negative',
-          label: 'Login issue',
+          label: 'Signin issue',
           message: error.message,
         });
       });
   }, []);
+
+  const signOut = () => {
+    const { auth } = getProvider();
+    signOutFB(auth)
+      .then(() => {
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        addNotification({
+          intent: 'negative',
+          label: 'Signout issue',
+          message: error.message,
+        });
+      });
+  };
 
   useEffect(() => {
     const { auth } = getProvider();
@@ -71,7 +87,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         // User is signed in, see docs for a list of available properties
         console.log('login');
         setUser(user);
-        // ...
+        router.push('/');
       } else {
         router.push('/login');
         console.log('not loggedin');
@@ -98,7 +114,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, userData, signIn, addAccount, removeAccount }}
+      value={{ user, userData, signIn, signOut, addAccount, removeAccount }}
     >
       {children}
     </UserContext.Provider>

@@ -1,5 +1,8 @@
 import { AssetSwitch } from '@/components/AssetSwitch/AssetSwitch';
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
+import { useUser } from '@/hooks/user';
+import { shortenString } from '@/utils/shortenString';
 import {
   MonoAccountBox,
   MonoApps,
@@ -8,6 +11,7 @@ import {
   MonoLightMode,
   MonoLogout,
   MonoNetworkCheck,
+  MonoSelectAll,
   MonoSupportAgent,
   MonoVpnLock,
 } from '@kadena/kode-icons';
@@ -25,7 +29,6 @@ import {
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { KLogo } from './KLogo';
 
@@ -35,7 +38,8 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const { account, isAgent, isOwner, isComplianceOwner } = useAccount();
-  const router = useRouter();
+  const { signOut, user } = useUser();
+  const { asset } = useAsset();
 
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
@@ -43,7 +47,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   };
 
   const handleLogout = async () => {
-    router.push('/login');
+    signOut();
   };
 
   return (
@@ -97,6 +101,12 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       }
       context={
         <>
+          <SideBarItem visual={<MonoAccountBox />} label="" onPress={() => {}}>
+            account: {account?.alias}
+          </SideBarItem>
+          <SideBarItem visual={<MonoSelectAll />} label="" onPress={() => {}}>
+            asset: {asset?.contractName}
+          </SideBarItem>
           <SideBarItemsInline>
             <SideBarItem
               label=""
@@ -106,7 +116,11 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
               <ContextMenu
                 trigger={
                   <Button isCompact variant="outlined">
-                    {isExpanded ? account?.alias : <MonoAccountBox />}
+                    {isExpanded ? (
+                      shortenString(user?.displayName ?? '')
+                    ) : (
+                      <MonoAccountBox />
+                    )}
                   </Button>
                 }
               >
