@@ -35,7 +35,7 @@ import { chainweaverAdapterLegacy } from '@kadena/wallet-adapter-chainweaver-leg
   await adapter.connect();
   const account = await adapter.getActiveAccount();
   console.log('Connected account:', account);
-})();
+})().catch((e) => console.error);
 ```
 
 ## Manual Usage of the Adapter or Detection
