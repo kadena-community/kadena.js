@@ -2,7 +2,6 @@
 import { useUser } from '@/hooks/user';
 import { Button, Card } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import 'firebaseui/dist/firebaseui.css';
 import { cardWrapperClass } from '../style.css';
 
 const Home = () => {
