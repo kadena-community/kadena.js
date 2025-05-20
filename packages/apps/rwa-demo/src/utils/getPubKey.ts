@@ -1,8 +1,8 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 import {
   isKeysetGuard,
   isKeysetRefGuard,
-} from '@/components/AccountProvider/AccountType';
+} from '@/providers/WalletProvider/WalletType';
 
 export const getPubkeyFromAccount = (account: IWalletAccount): string => {
   return account.publicKey;

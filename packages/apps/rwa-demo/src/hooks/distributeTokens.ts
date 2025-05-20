@@ -1,8 +1,6 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
 import { INFINITE_COMPLIANCE } from '@/constants';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { distributeTokens } from '@/services/distributeTokens';
 import { getClient } from '@/utils/client';

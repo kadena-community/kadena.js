@@ -20,10 +20,10 @@ const RootLayout = ({
           type="text/css"
         />
       </head>
-      <body>
+      <body style={{ height: 'auto' }}>
         <Providers>
-          <Analytics />
           {children}
+          <Analytics />
         </Providers>
       </body>
     </html>

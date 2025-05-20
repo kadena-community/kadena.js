@@ -1,5 +1,5 @@
-import type { ITransactionsContext } from '@/components/TransactionsProvider/TransactionsProvider';
-import { TransactionsContext } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransactionsContext } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TransactionsContext } from '@/contexts/TransactionsContext/TransactionsContext';
 
 import { useContext } from 'react';
 

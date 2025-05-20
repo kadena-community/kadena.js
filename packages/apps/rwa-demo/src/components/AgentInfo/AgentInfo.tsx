@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';

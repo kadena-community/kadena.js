@@ -10,6 +10,7 @@ import { getDatabase, ref } from 'firebase/database';
 
 let database: Database;
 let dbRef: DatabaseReference;
+
 if (
   process.env.NEXT_PUBLIC_FB_APIKEY &&
   process.env.NEXT_PUBLIC_FB_PROJECTID &&
@@ -18,6 +19,7 @@ if (
 ) {
   const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FB_APIKEY,
+    authDomain: process.env.NEXT_PUBLIC_FB_AUTHDOMAIN,
     projectId: process.env.NEXT_PUBLIC_FB_PROJECTID,
     appId: process.env.NEXT_PUBLIC_FB_APPID,
     databaseURL: process.env.NEXT_PUBLIC_FB_DBURL,

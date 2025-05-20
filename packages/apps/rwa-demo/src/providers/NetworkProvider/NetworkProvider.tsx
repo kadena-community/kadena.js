@@ -1,4 +1,9 @@
 'use client';
+import type { INetwork } from '@/contexts/NetworkContext/NetworkContext';
+import {
+  defaultNetworkContext,
+  NetworkContext,
+} from '@/contexts/NetworkContext/NetworkContext';
 import { checkNetwork } from '@/utils/checkNetwork';
 import { env } from '@/utils/env';
 import type { NormalizedCacheObject } from '@apollo/client';
@@ -10,10 +15,9 @@ import {
 } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import type { ChainId } from '@kadena/client';
 import { createClient } from 'graphql-ws';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
@@ -21,52 +25,6 @@ const { YogaLink } = require('@graphql-yoga/apollo-link');
 const cache = new InMemoryCache({
   resultCaching: true,
 });
-
-export interface INetwork {
-  name: string;
-  networkId: string;
-  host: string;
-  chainId: ChainId;
-  graphUrl: string;
-}
-
-export interface INetworkContext {
-  activeNetwork: INetwork;
-  networks: INetwork[];
-}
-
-const defaultContext: INetworkContext = {
-  activeNetwork: {
-    name: env.NETWORKNAME,
-    networkId: env.NETWORKID,
-    host: env.NETWORKHOST,
-    chainId: env.CHAINID,
-    graphUrl: env.GRAPHURL,
-  },
-  networks: [
-    {
-      networkId: 'testnet05',
-      name: 'Testnet(Pact5)',
-      host: 'https://api.testnet05.chainweb.com',
-      chainId: '0',
-      graphUrl: 'https://graph.testnet05.kadena.network/graphql',
-    },
-    {
-      networkId: 'testnet04',
-      name: 'Testnet',
-      host: 'https://api.testnet.chainweb.com',
-      graphUrl: 'https://graph.testnet.kadena.network/graphql',
-      chainId: '0',
-    },
-    {
-      networkId: 'development',
-      name: 'development',
-      host: 'https://localhost:8080',
-      graphUrl: 'http://localhost:8080/graphql',
-      chainId: '0',
-    },
-  ],
-};
 
 const getApolloClient = (network: INetwork) => {
   const httpLink = new YogaLink({
@@ -108,11 +66,11 @@ const getApolloClient = (network: INetwork) => {
   return client;
 };
 
-export const NetworkContext = createContext<INetworkContext>(defaultContext);
-
 export const NetworkProvider: FC<PropsWithChildren> = ({ children }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activeNetwork, _] = useState<INetwork>(defaultContext.activeNetwork);
+  const [activeNetwork, _] = useState<INetwork>(
+    defaultNetworkContext.activeNetwork,
+  );
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
   const stopServer = () => {
@@ -148,7 +106,7 @@ export const NetworkProvider: FC<PropsWithChildren> = ({ children }) => {
   if (!client) return null;
   return (
     <NetworkContext.Provider
-      value={{ activeNetwork, networks: defaultContext.networks }}
+      value={{ activeNetwork, networks: defaultNetworkContext.networks }}
     >
       <ApolloProvider client={client}>{children}</ApolloProvider>
     </NetworkContext.Provider>

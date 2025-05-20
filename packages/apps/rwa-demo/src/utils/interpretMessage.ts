@@ -1,4 +1,4 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 
 export const interpretMessage = (str: string, data?: ITransaction): string => {
   //error codes in the RWA contract which can be returned by the RWA contract

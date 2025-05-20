@@ -1,5 +1,6 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useFreeze } from '@/hooks/freeze';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button, MaskedValue, Stack, Text } from '@kadena/kode-ui';
@@ -7,7 +8,6 @@ import type { FC } from 'react';
 import React from 'react';
 import { InvestorBalance } from '../InvestorBalance/InvestorBalance';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   account: IRecord | IWalletAccount;

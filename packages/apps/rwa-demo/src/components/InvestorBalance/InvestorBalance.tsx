@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { MonoFilterTiltShift } from '@kadena/kode-icons';
@@ -5,7 +6,6 @@ import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { MaxInvestorBalanceCheck } from './MaxInvestorBalanceCheck';
 
 interface IProps {

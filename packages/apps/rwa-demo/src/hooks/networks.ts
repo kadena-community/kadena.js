@@ -1,6 +1,5 @@
-import type { INetworkContext } from '@/components/NetworkProvider/NetworkProvider';
-import { NetworkContext } from '@/components/NetworkProvider/NetworkProvider';
-
+import type { INetworkContext } from '@/contexts/NetworkContext/NetworkContext';
+import { NetworkContext } from '@/contexts/NetworkContext/NetworkContext';
 import { useContext } from 'react';
 
 export const useNetwork = (): INetworkContext => useContext(NetworkContext);

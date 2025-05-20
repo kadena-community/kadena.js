@@ -1,7 +1,6 @@
 'use client';
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import {
   INFINITE_COMPLIANCE,
   LOCALSTORAGE_ASSETS_KEY,
@@ -11,6 +10,7 @@ import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 import type {
   IComplianceProps,
   IComplianceRule,

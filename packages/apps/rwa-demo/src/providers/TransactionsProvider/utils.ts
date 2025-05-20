@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 
 interface ResponseType {
   id: string;
