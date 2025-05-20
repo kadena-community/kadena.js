@@ -9,8 +9,6 @@ import {
 } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { containerClass, notificationWrapperClass } from './styles.css';
-
 export const CookieConsent: FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
   const [mounted, setMounted] = useState<boolean>(false);
@@ -38,40 +36,37 @@ export const CookieConsent: FC = () => {
   if (cookieConsent !== null || !mounted) return null;
 
   return (
-    <section aria-labelledby="cookie-heading" className={containerClass}>
-      <div className={notificationWrapperClass}>
-        <Notification
-          intent="info"
-          type="inlineStacked"
-          icon={<MonoCookie />}
-          role="none"
+    <Notification
+      intent="info"
+      type="inlineStacked"
+      icon={<MonoCookie />}
+      role="none"
+      contentMaxWidth={1000}
+    >
+      <NotificationHeading id="cookie-heading">
+        Cookie Consent
+      </NotificationHeading>
+      <Text variant="ui">
+        This notification concerns the cookie policy requirement to ask users
+        for their consent to use <strong>Google Analytics</strong> or other
+        tracking tools for better optimizations/performances.
+      </Text>
+      <NotificationFooter>
+        <NotificationButton
+          intent={'positive'}
+          onClick={handleAccept}
+          icon={<MonoCheck />}
         >
-          <NotificationHeading id="cookie-heading">
-            Cookie Consent
-          </NotificationHeading>
-          <Text variant="ui">
-            This notification concerns the cookie policy requirement to ask
-            users for their consent to use <strong>Google Analytics</strong> or
-            other tracking tools for better optimizations/performances.
-          </Text>
-          <NotificationFooter>
-            <NotificationButton
-              intent={'positive'}
-              onClick={handleAccept}
-              icon={<MonoCheck />}
-            >
-              Accept
-            </NotificationButton>
-            <NotificationButton
-              intent={'negative'}
-              onClick={handleReject}
-              icon={<MonoClose />}
-            >
-              Reject
-            </NotificationButton>
-          </NotificationFooter>
-        </Notification>
-      </div>
-    </section>
+          Accept
+        </NotificationButton>
+        <NotificationButton
+          intent={'negative'}
+          onClick={handleReject}
+          icon={<MonoClose />}
+        >
+          Reject
+        </NotificationButton>
+      </NotificationFooter>
+    </Notification>
   );
 };

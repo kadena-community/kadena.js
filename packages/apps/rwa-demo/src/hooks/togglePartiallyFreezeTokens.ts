@@ -1,7 +1,5 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { togglePartiallyFreezeTokens } from '@/services/togglePartiallyFreezeTokens';
 import { getClient } from '@/utils/client';

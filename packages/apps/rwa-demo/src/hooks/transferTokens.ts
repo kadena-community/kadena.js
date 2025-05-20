@@ -1,7 +1,5 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
 import { getClient } from '@/utils/client';

@@ -1,10 +1,10 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useBatchTransferTokens } from '@/hooks/batchTransferTokens';
 import { MonoAdd } from '@kadena/kode-icons';
 import type { ITileProps } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { AssetAction } from '../AssetAction/AssetAction';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { BatchTransferAssetForm } from './BatchTransferAssetForm';
 
 interface IProps {

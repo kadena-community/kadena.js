@@ -1,3 +1,4 @@
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
@@ -16,7 +17,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
-import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   onClose?: () => void;

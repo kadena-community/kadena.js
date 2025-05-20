@@ -10,12 +10,12 @@ import {
   TextareaField,
 } from '@kadena/kode-ui';
 
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
 import type { ChangeEvent, FC } from 'react';
 import { useState } from 'react';
 import type { UseFormHandleSubmit, UseFormReset } from 'react-hook-form';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   pause: boolean;

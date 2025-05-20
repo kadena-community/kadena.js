@@ -1,9 +1,9 @@
+import type { ITxType } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useTransactions } from '@/hooks/transactions';
 import { Stack } from '@kadena/kode-ui';
 import type { FC, ReactElement } from 'react';
 import { useMemo } from 'react';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
-import type { ITxType } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   type: ITxType | ITxType[];

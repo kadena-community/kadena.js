@@ -2,58 +2,52 @@
 
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { Card, Stack, Text } from '@kadena/kode-ui';
-import { NotificationSlot } from '@kadena/kode-ui/patterns';
-import React from 'react';
+import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons';
+import { Button, Themes } from '@kadena/kode-ui';
 import {
-  cardClass,
-  cardWrapperClass,
-  footerClass,
-  wrapperClass,
-} from './style.css';
+  FocussedLayout,
+  FocussedLayoutFooter,
+  FocussedLayoutHeaderAside,
+  FocussedLayoutProvider,
+  FocussedLayoutTopBanner,
+} from '@kadena/kode-ui/patterns';
+import { useTheme } from 'next-themes';
+import React from 'react';
 
 const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const { theme, setTheme } = useTheme();
+  const toggleTheme = (): void => {
+    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
+    setTheme(newTheme);
+  };
+
   return (
-    <Stack
-      width="100%"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      className={wrapperClass}
-    >
-      <NotificationSlot />
-      <Stack flexDirection="column" className={cardWrapperClass}>
-        <Card className={cardClass}>
+    <>
+      <FocussedLayoutProvider>
+        <FocussedLayoutTopBanner>
           <CookieConsent />
           <GasPayableBanner />
+        </FocussedLayoutTopBanner>
+        <FocussedLayout>
+          <FocussedLayoutHeaderAside>
+            <Button
+              isCompact
+              variant="transparent"
+              onPress={() => toggleTheme()}
+              startVisual={
+                theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
+              }
+            />
+          </FocussedLayoutHeaderAside>
           {children}
-        </Card>
-        <Stack
-          className={footerClass}
-          width="100%"
-          justifyContent="space-between"
-          padding="md"
-        >
-          <Text>
-            Powered by{' '}
-            <a href="https://kadena.io" target="_blank" rel="noreferrer">
-              kadena.io
-            </a>
-          </Text>
-
-          <Stack gap="md">
-            <a href="https://discord.com/invite/kadena">Discord</a>
-            <a href="https://docs.kadena.io">Help</a>
-            <a href="https://www.kadena.io/privacy-policy">Privacy</a>
-            <a href="https://www.kadena.io/terms-and-conditions">Terms</a>
-          </Stack>
-        </Stack>
-      </Stack>
-    </Stack>
+          <FocussedLayoutFooter />
+        </FocussedLayout>
+      </FocussedLayoutProvider>
+    </>
   );
 };
 

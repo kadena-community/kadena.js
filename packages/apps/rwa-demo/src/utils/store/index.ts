@@ -1,5 +1,5 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
 import { LOCALSTORAGE_ACCOUNTS } from '@/constants';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';

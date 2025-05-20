@@ -1,8 +1,6 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IBatchRegisterIdentityProps } from '@/services/batchRegisterIdentity';
 import { batchRegisterIdentity } from '@/services/batchRegisterIdentity';
 import { getClient } from '@/utils/client';

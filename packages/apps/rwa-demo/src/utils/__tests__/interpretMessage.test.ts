@@ -1,4 +1,4 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { interpretMessage } from '../interpretMessage';
 
 describe('interpretMessage', () => {

@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useFreeze } from '@/hooks/freeze';
 import { useFreezeInvestor } from '@/hooks/freezeInvestor';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
@@ -20,7 +21,6 @@ import { useForm } from 'react-hook-form';
 import { complianceWrapperClass } from '../Confirmation/style.css';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 interface IProps {

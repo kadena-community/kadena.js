@@ -1,8 +1,6 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { ITogglePauseProps } from '@/services/togglePause';
 import { togglePause } from '@/services/togglePause';
 import { getClient } from '@/utils/client';

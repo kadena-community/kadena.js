@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgents } from '@/hooks/getAgents';
 import { useRemoveAgent } from '@/hooks/removeAgent';
@@ -17,7 +18,6 @@ import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
 import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 import { FormatEditAgent } from '../TableFormatters/FormatEditAgent';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 export const AgentsList: FC = () => {

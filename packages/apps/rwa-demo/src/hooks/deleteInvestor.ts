@@ -1,8 +1,6 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IDeleteIdentityProps } from '@/services/deleteIdentity';
 import { deleteIdentity } from '@/services/deleteIdentity';
 import { getClient } from '@/utils/client';

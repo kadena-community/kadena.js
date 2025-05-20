@@ -1,8 +1,8 @@
+import { WALLETTYPES } from '@/constants';
 import type {
   Guard,
   IWalletAccount,
-} from '@/components/AccountProvider/AccountType';
-import { WALLETTYPES } from '@/constants';
+} from '@/providers/WalletProvider/WalletType';
 import type { KadenaExtension } from '@magic-ext/kadena';
 import { magicInit } from './utils';
 
