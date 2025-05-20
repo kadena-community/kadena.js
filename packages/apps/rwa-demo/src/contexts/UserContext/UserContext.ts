@@ -11,6 +11,7 @@ export interface IUserContext {
   userData?: IUserData;
   signIn: () => void;
   addAccount: (account: IWalletAccount) => void;
+  removeAccount: (address: string) => void;
 }
 
 export const UserContext = createContext<IUserContext>({
@@ -18,4 +19,5 @@ export const UserContext = createContext<IUserContext>({
   userData: undefined,
   signIn: () => {},
   addAccount: (account: IWalletAccount) => {},
+  removeAccount: (address: string) => {},
 });

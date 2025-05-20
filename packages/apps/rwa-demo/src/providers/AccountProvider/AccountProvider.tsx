@@ -12,13 +12,10 @@ import { isInvestor } from '@/services/isInvestor';
 import { isOwner } from '@/services/isOwner';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import { chainweaverAccountLogin } from '@/utils/walletTransformers/chainweaver/login';
-import { chainweaverAccountLogout } from '@/utils/walletTransformers/chainweaver/logout';
 import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
 import { eckoAccountLogin } from '@/utils/walletTransformers/ecko/login';
-import { eckoAccountLogout } from '@/utils/walletTransformers/ecko/logout';
 import { eckoSignTx } from '@/utils/walletTransformers/ecko/signTx';
 import { magicAccountLogin } from '@/utils/walletTransformers/magic/login';
-import { magicAccountLogout } from '@/utils/walletTransformers/magic/logout';
 import { magicSignTx } from '@/utils/walletTransformers/magic/signTx';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
@@ -29,7 +26,11 @@ import type { IWalletAccount } from './AccountType';
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
-  const { addAccount: addAccount2User, userData } = useUser();
+  const {
+    addAccount: addAccount2User,
+    removeAccount: removeAccountFromUser,
+    userData,
+  } = useUser();
   const { addNotification } = useNotifications();
   const [isMounted, setIsMounted] = useState(false);
   const [isOwnerState, setIsOwnerState] = useState(false);
@@ -134,29 +135,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     [router, addAccount2User],
   );
 
-  const removeAccount = useCallback(async () => {
-    switch (account?.walletName) {
-      case WALLETTYPES.ECKO:
-        await eckoAccountLogout();
-        break;
-      case WALLETTYPES.CHAINWEAVER:
-        await chainweaverAccountLogout();
-        break;
-      case WALLETTYPES.MAGIC:
-        await magicAccountLogout();
-        break;
-      default:
-        addNotification({
-          intent: 'negative',
-          label: 'Provider does not exist',
-          message: `Provider (${account?.walletName}) does not exist`,
-        });
-    }
-
-    localStorage.removeItem(getAccountCookieName());
-    setAccount(undefined);
-    router.replace('/');
-  }, [account]);
+  const removeAccount = useCallback(
+    async (accountVal: string) => {
+      removeAccountFromUser(accountVal);
+    },
+    [removeAccountFromUser],
+  );
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());

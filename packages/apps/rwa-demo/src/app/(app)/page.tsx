@@ -1,9 +1,13 @@
 'use client';
+import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
 import { useAccount } from '@/hooks/account';
-import { Stack } from '@kadena/kode-ui';
+import { MonoDelete } from '@kadena/kode-icons';
+import { Button, Stack } from '@kadena/kode-ui';
 import {
+  CompactTable,
+  CompactTableFormatters,
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
@@ -11,7 +15,11 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { accounts } = useAccount();
+  const { accounts, removeAccount } = useAccount();
+
+  const handleRemove = (address: any) => {
+    removeAccount(address);
+  };
   return (
     <>
       <SideBarBreadcrumbs />
@@ -28,7 +36,44 @@ const Home = () => {
               }
             />
             <SectionCardBody>
-              {JSON.stringify(accounts, null, 2)}
+              <CompactTable
+                variant="open"
+                fields={[
+                  {
+                    key: 'alias',
+                    label: 'Alias',
+                    width: '30%',
+                  },
+                  {
+                    key: 'address',
+                    label: 'Address',
+                    width: '30%',
+                    render: CompactTableFormatters.FormatAccount(),
+                  },
+                  {
+                    key: 'address',
+                    label: 'Address',
+                    width: '30%',
+                    render: CompactTableFormatters.FormatActions({
+                      trigger: (
+                        <Confirmation
+                          onPress={handleRemove}
+                          trigger={
+                            <Button
+                              isCompact
+                              variant="outlined"
+                              startVisual={<MonoDelete />}
+                            />
+                          }
+                        >
+                          Are you sure you want to unlink your wallet?
+                        </Confirmation>
+                      ),
+                    }),
+                  },
+                ]}
+                data={accounts ?? []}
+              />
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>

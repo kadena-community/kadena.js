@@ -20,7 +20,25 @@ const UserStore = () => {
     account: IWalletAccount,
   ) => {
     const userFB = await getUser(organisation, user.uid);
-    const accounts = { ...userFB.accounts, [account.address]: account };
+    const accounts = { ...userFB?.accounts, [account.address]: account };
+    return await set(
+      ref(
+        database,
+        `/organisations/${organisation.id}/users/${user.uid}/accounts`,
+      ),
+      accounts,
+    );
+  };
+  const removeAccountAddress = async (
+    user: User,
+    organisation: IOrganisation,
+    address: string,
+  ) => {
+    const userFB = await getUser(organisation, user.uid);
+    const accounts = { ...userFB?.accounts };
+    delete accounts[address];
+
+    console.log({ accounts });
     return await set(
       ref(
         database,
@@ -42,13 +60,21 @@ const UserStore = () => {
     );
     onValue(userRef, async (snapshot) => {
       const data = { ...snapshot.val(), uid: snapshot.key } as IUserData;
-      setDataCallback(data);
+
+      const newData = {
+        ...data,
+        accounts: Object.entries(data.accounts).map(([, val]) => {
+          return val;
+        }),
+      };
+
+      setDataCallback(newData);
     });
 
     return () => off(userRef);
   };
 
-  return { listenToUser, addAccountAddress };
+  return { listenToUser, addAccountAddress, removeAccountAddress };
 };
 
 export const userStore = UserStore();

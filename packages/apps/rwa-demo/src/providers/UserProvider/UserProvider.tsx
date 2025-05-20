@@ -87,8 +87,19 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     [user, organisation],
   );
 
+  const removeAccount = useCallback(
+    async (address: string) => {
+      console.log({ address, user, organisation });
+      if (!user || !organisation) return;
+      await userStore.removeAccountAddress(user, organisation, address);
+    },
+    [user, organisation],
+  );
+
   return (
-    <UserContext.Provider value={{ user, userData, signIn, addAccount }}>
+    <UserContext.Provider
+      value={{ user, userData, signIn, addAccount, removeAccount }}
+    >
       {children}
     </UserContext.Provider>
   );
