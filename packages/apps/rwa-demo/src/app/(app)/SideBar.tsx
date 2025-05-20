@@ -27,7 +27,6 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect } from 'react';
 import { KLogo } from './KLogo';
 
 export const SideBar: FC<{ topbannerHeight?: number }> = ({
@@ -35,8 +34,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
 }) => {
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
-  const { logout, account, isMounted, isAgent, isOwner, isComplianceOwner } =
-    useAccount();
+  const { account, isAgent, isOwner, isComplianceOwner } = useAccount();
   const router = useRouter();
 
   const toggleTheme = (): void => {
@@ -45,16 +43,8 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   };
 
   const handleLogout = async () => {
-    await logout();
     router.push('/login');
   };
-
-  // useEffect(() => {
-  //   if (!isMounted) return;
-  //   if (!account) {
-  //     router.push('/login');
-  //   }
-  // }, [isMounted]);
 
   return (
     <SideBarLayout

@@ -1,10 +1,9 @@
 'use client';
 import { WALLETTYPES } from '@/constants';
-import { WalletContext } from '@/contexts/WalletContext/WalletContext';
+import { AccountContext } from '@/contexts/AccountContext/AccountContext';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
-import { useOrganisation } from '@/hooks/organisation';
 import { useUser } from '@/hooks/user';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
@@ -26,13 +25,12 @@ import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import type { IWalletAccount } from './WalletType';
+import type { IWalletAccount } from './AccountType';
 
-export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
+export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
-  const { addWallet: addWallet2User, userData } = useUser();
+  const { addAccount: addAccount2User, userData } = useUser();
   const { addNotification } = useNotifications();
-  const { organisation } = useOrganisation();
   const [isMounted, setIsMounted] = useState(false);
   const [isOwnerState, setIsOwnerState] = useState(false);
   const [isComplianceOwnerState, setIsComplianceOwnerState] = useState(false);
@@ -87,7 +85,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     router.replace('/');
   };
 
-  const addWallet = useCallback(
+  const addAccount = useCallback(
     async (
       name: keyof typeof WALLETTYPES,
       account?: IWalletAccount,
@@ -122,7 +120,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
       if (tempAccount) {
         setAccount(tempAccount);
-        addWallet2User(tempAccount);
+        addAccount2User(tempAccount);
 
         localStorage.setItem(
           getAccountCookieName(),
@@ -133,10 +131,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     },
 
-    [router, addWallet2User],
+    [router, addAccount2User],
   );
 
-  const removeWallet = useCallback(async () => {
+  const removeAccount = useCallback(async () => {
     switch (account?.walletName) {
       case WALLETTYPES.ECKO:
         await eckoAccountLogout();
@@ -224,12 +222,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <WalletContext.Provider
+    <AccountContext.Provider
       value={{
         account,
-        wallets: userData?.wallets ?? [],
-        addWallet,
-        removeWallet,
+        accounts: userData?.accounts ?? [],
+        addAccount,
+        removeAccount,
         sign,
         isMounted,
         isOwner: isOwnerState,
@@ -244,6 +242,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       {children}
-    </WalletContext.Provider>
+    </AccountContext.Provider>
   );
 };

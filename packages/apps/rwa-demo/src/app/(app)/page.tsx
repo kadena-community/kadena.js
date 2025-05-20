@@ -1,16 +1,9 @@
 'use client';
-
-import { ChainweaverWalletConnect } from '@/components/ChainweaverWalletConnect/ChainweaverWalletConnect';
-import { EckoWalletConnect } from '@/components/EckoWalletConnect/EckoWalletConnect';
-import { MagicConnect } from '@/components/MagicConnect/MagicConnect';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
 import { useAccount } from '@/hooks/account';
-import { useUser } from '@/hooks/user';
-import { MonoKeyboardArrowDown } from '@kadena/kode-icons';
-import { Button, Card, ContextMenu, Stack } from '@kadena/kode-ui';
+import { Stack } from '@kadena/kode-ui';
 import {
-  CardContentBlock,
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
@@ -18,7 +11,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { wallets } = useAccount();
+  const { accounts } = useAccount();
   return (
     <>
       <SideBarBreadcrumbs />
@@ -35,7 +28,7 @@ const Home = () => {
               }
             />
             <SectionCardBody>
-              {JSON.stringify(wallets, null, 2)}
+              {JSON.stringify(accounts, null, 2)}
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>

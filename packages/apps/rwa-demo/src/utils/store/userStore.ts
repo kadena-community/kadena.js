@@ -1,6 +1,6 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { IUserData } from '@/contexts/UserContext/UserContext';
-import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { User } from 'firebase/auth';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { database } from './firebase';
@@ -14,19 +14,19 @@ const UserStore = () => {
 
     return snapshot.val();
   };
-  const addWalletAddress = async (
+  const addAccountAddress = async (
     user: User,
     organisation: IOrganisation,
-    wallet: IWalletAccount,
+    account: IWalletAccount,
   ) => {
     const userFB = await getUser(organisation, user.uid);
-    const wallets = { ...userFB.wallets, [wallet.address]: wallet };
+    const accounts = { ...userFB.accounts, [account.address]: account };
     return await set(
       ref(
         database,
-        `/organisations/${organisation.id}/users/${user.uid}/wallets`,
+        `/organisations/${organisation.id}/users/${user.uid}/accounts`,
       ),
-      wallets,
+      accounts,
     );
   };
 
@@ -48,7 +48,7 @@ const UserStore = () => {
     return () => off(userRef);
   };
 
-  return { listenToUser, addWalletAddress };
+  return { listenToUser, addAccountAddress };
 };
 
 export const userStore = UserStore();

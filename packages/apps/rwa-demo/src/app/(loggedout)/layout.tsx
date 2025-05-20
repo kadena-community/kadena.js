@@ -2,7 +2,6 @@
 
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { useUser } from '@/hooks/user';
 import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons';
 import { Button, Themes } from '@kadena/kode-ui';
 import {
@@ -13,7 +12,6 @@ import {
   FocussedLayoutTopBanner,
 } from '@kadena/kode-ui/patterns';
 import { useTheme } from 'next-themes';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const RootLayout = ({
@@ -26,8 +24,6 @@ const RootLayout = ({
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
-
-  console.log('does ths rerender');
 
   return (
     <>

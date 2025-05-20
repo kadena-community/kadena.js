@@ -1,6 +1,6 @@
 import type { WALLETTYPES } from '@/constants';
 import type { IAgentHookProps } from '@/hooks/getAgentRoles';
-import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import type { User } from 'firebase/auth';
 import { createContext } from 'react';
@@ -9,17 +9,17 @@ interface IAccountError {
   message: string;
 }
 
-export interface IWalletContext {
+export interface IAccountContext {
   account?: IWalletAccount;
-  wallets?: IWalletAccount[];
+  accounts?: IWalletAccount[];
   error?: IAccountError;
   isMounted: boolean;
   user?: User;
-  addWallet: (
+  addAccount: (
     type: keyof typeof WALLETTYPES,
     account?: IWalletAccount,
   ) => Promise<IWalletAccount[] | undefined>;
-  removeWallet: (walletAddress: string) => void;
+  removeAccount: (address: string) => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
   isAgent: boolean;
   isOwner: boolean;
@@ -32,17 +32,17 @@ export interface IWalletContext {
   isGasPayable: boolean | undefined;
 }
 
-export const WalletContext = createContext<IWalletContext>({
+export const AccountContext = createContext<IAccountContext>({
   account: undefined,
-  wallets: [],
+  accounts: [],
   isMounted: false,
-  addWallet: async (
+  addAccount: async (
     type: keyof typeof WALLETTYPES,
     account?: IWalletAccount | undefined,
   ) => {
     return undefined;
   },
-  removeWallet: async () => {},
+  removeAccount: async () => {},
   sign: async () => undefined,
   isAgent: false,
   isOwner: false,
