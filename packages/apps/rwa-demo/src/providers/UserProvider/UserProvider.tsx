@@ -85,12 +85,10 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
-        console.log('login');
         setUser(user);
-        router.push('/');
       } else {
+        setUser(undefined);
         router.push('/login');
-        console.log('not loggedin');
       }
     });
   }, []);
