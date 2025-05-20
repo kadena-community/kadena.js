@@ -5,6 +5,7 @@ import { EckoWalletConnect } from '@/components/EckoWalletConnect/EckoWalletConn
 import { MagicConnect } from '@/components/MagicConnect/MagicConnect';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
+import { useAccount } from '@/hooks/account';
 import { useUser } from '@/hooks/user';
 import { MonoKeyboardArrowDown } from '@kadena/kode-icons';
 import { Button, Card, ContextMenu, Stack } from '@kadena/kode-ui';
@@ -17,8 +18,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 
 const Home = () => {
-  const { user } = useUser();
-
+  const { wallets } = useAccount();
   return (
     <>
       <SideBarBreadcrumbs />
@@ -34,7 +34,9 @@ const Home = () => {
                 </>
               }
             />
-            <SectionCardBody>user</SectionCardBody>
+            <SectionCardBody>
+              {JSON.stringify(wallets, null, 2)}
+            </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>
       </Stack>

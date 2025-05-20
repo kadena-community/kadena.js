@@ -11,15 +11,15 @@ interface IAccountError {
 
 export interface IWalletContext {
   account?: IWalletAccount;
-  accounts?: IWalletAccount[];
+  wallets?: string[];
   error?: IAccountError;
   isMounted: boolean;
   user?: User;
-  login: (
+  addWallet: (
     type: keyof typeof WALLETTYPES,
     account?: IWalletAccount,
   ) => Promise<IWalletAccount[] | undefined>;
-  logout: () => void;
+  removeWallet: (walletAddress: string) => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
   isAgent: boolean;
   isOwner: boolean;
@@ -34,10 +34,15 @@ export interface IWalletContext {
 
 export const WalletContext = createContext<IWalletContext>({
   account: undefined,
-  accounts: undefined,
+  wallets: [],
   isMounted: false,
-  login: () => {},
-  logout: () => {},
+  addWallet: async (
+    type: keyof typeof WALLETTYPES,
+    account?: IWalletAccount | undefined,
+  ) => {
+    return undefined;
+  },
+  removeWallet: async () => {},
   sign: async () => undefined,
   isAgent: false,
   isOwner: false,

@@ -22,17 +22,17 @@ import { MagicConnect } from '../MagicConnect/MagicConnect';
 export const WalletSelector: FC = () => {
   const [accounts, setAccounts] = useState<IWalletAccount[] | undefined>();
   const [type, setType] = useState<keyof typeof WALLETTYPES | undefined>();
-  const { login } = useAccount();
+  const { addWallet } = useAccount();
 
   const handleConnect = async (type: keyof typeof WALLETTYPES) => {
     setType(type);
-    const result = await login(type);
+    const result = await addWallet(type);
     setAccounts(result);
   };
 
   const selectAccount = async (account: IWalletAccount) => {
     if (!type) return;
-    await login(type, account);
+    await addWallet(type, account);
     setAccounts([]);
   };
 

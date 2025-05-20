@@ -1,6 +1,9 @@
 'use client';
 
+import type { IUserData } from '@/contexts/UserContext/UserContext';
 import { UserContext } from '@/contexts/UserContext/UserContext';
+import { useOrganisation } from '@/hooks/organisation';
+import { userStore } from '@/utils/store/userStore';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { User } from 'firebase/auth';
 import {
@@ -15,8 +18,21 @@ import { useCallback, useEffect, useState } from 'react';
 
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | undefined>();
+  const [userData, setUserData] = useState<IUserData | undefined>();
+  const { organisation } = useOrganisation();
   const router = useRouter();
   const { addNotification } = useNotifications();
+
+  const init = async (user: User) => {
+    if (!organisation?.id) return;
+    await userStore.listenToUser(organisation.id, user.uid, setUserData);
+  };
+
+  useEffect(() => {
+    if (!user || !organisation?.id) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    init(user);
+  }, [user, organisation?.id]);
 
   const getProvider = () => {
     const provider = new GoogleAuthProvider();
@@ -62,8 +78,16 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, []);
 
+  const addWallet = useCallback(
+    async (walletAddress: string) => {
+      if (!user || !organisation) return;
+      await userStore.addWalletAddress(user, organisation, walletAddress);
+    },
+    [user?.uid, organisation?.id],
+  );
+
   return (
-    <UserContext.Provider value={{ user, signIn }}>
+    <UserContext.Provider value={{ user, userData, signIn, addWallet }}>
       {children}
     </UserContext.Provider>
   );

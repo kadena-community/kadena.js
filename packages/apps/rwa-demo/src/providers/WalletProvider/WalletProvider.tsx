@@ -4,6 +4,8 @@ import { WalletContext } from '@/contexts/WalletContext/WalletContext';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
+import { useOrganisation } from '@/hooks/organisation';
+import { useUser } from '@/hooks/user';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
 import { isFrozen } from '@/services/isFrozen';
@@ -28,8 +30,9 @@ import type { IWalletAccount } from './WalletType';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
-  const [accounts, setAccounts] = useState<IWalletAccount[]>();
+  const { addWallet: addWallet2User, userData } = useUser();
   const { addNotification } = useNotifications();
+  const { organisation } = useOrganisation();
   const [isMounted, setIsMounted] = useState(false);
   const [isOwnerState, setIsOwnerState] = useState(false);
   const [isComplianceOwnerState, setIsComplianceOwnerState] = useState(false);
@@ -84,11 +87,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     router.replace('/');
   };
 
-  const login = useCallback(
+  const addWallet = useCallback(
     async (
       name: keyof typeof WALLETTYPES,
-      account: IWalletAccount,
+      account?: IWalletAccount,
     ): Promise<IWalletAccount[] | undefined> => {
+      console.log('wallet3', organisation);
       let tempAccount;
       switch (name) {
         case WALLETTYPES.ECKO:
@@ -118,8 +122,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
 
       if (tempAccount) {
-        setAccounts(undefined);
         setAccount(tempAccount);
+        console.log('wallet', organisation);
+        addWallet2User(tempAccount.address);
+
         localStorage.setItem(
           getAccountCookieName(),
           JSON.stringify(tempAccount),
@@ -129,10 +135,10 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     },
 
-    [router],
+    [router, organisation?.id],
   );
 
-  const logout = useCallback(async () => {
+  const removeWallet = useCallback(async () => {
     switch (account?.walletName) {
       case WALLETTYPES.ECKO:
         await eckoAccountLogout();
@@ -223,9 +229,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     <WalletContext.Provider
       value={{
         account,
-        accounts,
-        login,
-        logout,
+        wallets: userData?.wallets ?? [],
+        addWallet,
+        removeWallet,
         sign,
         isMounted,
         isOwner: isOwnerState,

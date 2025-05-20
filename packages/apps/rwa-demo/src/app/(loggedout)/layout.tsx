@@ -22,12 +22,12 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   const { theme, setTheme } = useTheme();
-  const router = useRouter();
-  const { user } = useUser();
   const toggleTheme = (): void => {
     const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
     setTheme(newTheme);
   };
+
+  console.log('does ths rerender');
 
   return (
     <>
