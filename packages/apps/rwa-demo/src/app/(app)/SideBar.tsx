@@ -49,12 +49,12 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
     router.push('/login');
   };
 
-  useEffect(() => {
-    if (!isMounted) return;
-    if (!account) {
-      router.push('/login');
-    }
-  }, [isMounted]);
+  // useEffect(() => {
+  //   if (!isMounted) return;
+  //   if (!account) {
+  //     router.push('/login');
+  //   }
+  // }, [isMounted]);
 
   return (
     <SideBarLayout

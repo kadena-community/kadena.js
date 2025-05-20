@@ -85,17 +85,23 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const login = useCallback(
-    async (name: keyof typeof WALLETTYPES) => {
+    async (
+      name: keyof typeof WALLETTYPES,
+      account: IWalletAccount,
+    ): Promise<IWalletAccount[] | undefined> => {
       let tempAccount;
       switch (name) {
         case WALLETTYPES.ECKO:
           tempAccount = await eckoAccountLogin();
           break;
         case WALLETTYPES.CHAINWEAVER:
+          if (account) {
+            tempAccount = account;
+            break;
+          }
           const result = await chainweaverAccountLogin();
           if (result.length > 1) {
-            setAccounts(result);
-            return;
+            return result;
           } else if (result.length === 1) {
             tempAccount = result[0];
           }

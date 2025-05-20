@@ -15,7 +15,10 @@ export interface IWalletContext {
   error?: IAccountError;
   isMounted: boolean;
   user?: User;
-  login: (type: keyof typeof WALLETTYPES) => void;
+  login: (
+    type: keyof typeof WALLETTYPES,
+    account?: IWalletAccount,
+  ) => Promise<IWalletAccount[] | undefined>;
   logout: () => void;
   sign: (tx: IUnsignedCommand) => Promise<ICommand | undefined>;
   isAgent: boolean;

@@ -11,12 +11,12 @@ const Home = () => {
   const { isMounted, account } = useAccount();
   const router = useRouter();
 
-  useEffect(() => {
-    if (isMounted && !account) {
-      router.replace('/login');
-      return;
-    }
-  }, [account, isMounted]);
+  // useEffect(() => {
+  //   if (isMounted && !account) {
+  //     router.replace('/login');
+  //     return;
+  //   }
+  // }, [account, isMounted]);
 
   if (!isMounted || !account) return null;
 

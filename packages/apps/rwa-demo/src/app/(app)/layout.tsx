@@ -47,15 +47,10 @@ const RootLayout = ({
     setTxsAnimationRef(transactionAnimationRef.current);
   }, [txsButtonRef.current, transactionAnimationRef.current]);
 
-  if (!getAsset()) {
-    router.replace('/assets/create');
-    return;
-  }
-
-  if (isMounted && !account) {
-    router.replace('/login');
-    return;
-  }
+  // if (!getAsset()) {
+  //   router.replace('/assets/create');
+  //   return;
+  // }
 
   return (
     <>
