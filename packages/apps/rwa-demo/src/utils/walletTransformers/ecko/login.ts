@@ -3,7 +3,7 @@ import { WALLETTYPES } from '@/constants';
 import type {
   Guard,
   IWalletAccount,
-} from '@/providers/AccountProvider/AccountType';
+} from '@/providers/WalletProvider/WalletType';
 import { getKeysetService } from '@/services/getKeyset';
 import { env } from '@/utils/env';
 

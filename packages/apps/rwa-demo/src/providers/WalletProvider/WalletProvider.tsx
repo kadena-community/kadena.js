@@ -1,5 +1,6 @@
 'use client';
 import { WALLETTYPES } from '@/constants';
+import { WalletContext } from '@/contexts/WalletContext/WalletContext';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
@@ -8,10 +9,7 @@ import { isComplianceOwner } from '@/services/isComplianceOwner';
 import { isFrozen } from '@/services/isFrozen';
 import { isInvestor } from '@/services/isInvestor';
 import { isOwner } from '@/services/isOwner';
-
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-
-import { AccountContext } from '@/contexts/AccountContext/AccountContext';
 import { chainweaverAccountLogin } from '@/utils/walletTransformers/chainweaver/login';
 import { chainweaverAccountLogout } from '@/utils/walletTransformers/chainweaver/logout';
 import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
@@ -26,9 +24,9 @@ import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import type { IWalletAccount } from './AccountType';
+import type { IWalletAccount } from './WalletType';
 
-export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
+export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
   const [accounts, setAccounts] = useState<IWalletAccount[]>();
   const { addNotification } = useNotifications();
@@ -216,7 +214,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <AccountContext.Provider
+    <WalletContext.Provider
       value={{
         account,
         accounts,
@@ -236,6 +234,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       {children}
-    </AccountContext.Provider>
+    </WalletContext.Provider>
   );
 };

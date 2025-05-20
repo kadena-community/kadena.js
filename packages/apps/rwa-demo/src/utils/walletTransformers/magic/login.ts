@@ -2,7 +2,7 @@ import { WALLETTYPES } from '@/constants';
 import type {
   Guard,
   IWalletAccount,
-} from '@/providers/AccountProvider/AccountType';
+} from '@/providers/WalletProvider/WalletType';
 import type { KadenaExtension } from '@magic-ext/kadena';
 import { magicInit } from './utils';
 

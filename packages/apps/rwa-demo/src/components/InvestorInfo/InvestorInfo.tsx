@@ -1,6 +1,6 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useFreeze } from '@/hooks/freeze';
-import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import { Button, MaskedValue, Stack, Text } from '@kadena/kode-ui';

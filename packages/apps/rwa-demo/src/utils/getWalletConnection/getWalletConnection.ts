@@ -1,6 +1,6 @@
-import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 
-interface ResponseType {
+interface IResponseType {
   id: string;
   type: string;
   payload: unknown;
@@ -31,7 +31,7 @@ export const sleep = (time: number) =>
 
 const communicate =
   (client: Window, server: Window) =>
-  (type: string, payload: Record<string, unknown>): Promise<ResponseType> => {
+  (type: string, payload: Record<string, unknown>): Promise<IResponseType> => {
     const id = crypto.randomUUID();
     return new Promise((resolve) => {
       const handler = (event: MessageEvent) => {
