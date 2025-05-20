@@ -1,10 +1,8 @@
 # Kadena Wallet Adapter Core
 
-# Wallet Adapter Core
-
 **wallet-adapter-core** is the foundation for integrating wallet providers into
 your Kadena dApps. It implements standardized JSON-RPC methods from KIP 15, 17
-and 37 through KIP 41 while also extending functionality with convenient helper
+and 37 through KIP 40 while also extending functionality with convenient helper
 methods that are not part of the JSON-RPC 2.0 spec. The package provides a
 robust, framework-agnostic foundation for integrating multiple Kadena wallet
 adapters into your applications. It standardizes wallet communication by
@@ -13,13 +11,12 @@ client for managing multiple adapters.
 
 ## What It Implements
 
-- **KIP 37–41 (Account & Network Management):**
+- **KIP 37–40 (Account & Network Management):**
 
   - **kadena_getAccount_v1:** Retrieve the active account.
   - **kadena_getAccounts_v2:** Retrieve all managed accounts.
   - **kadena_getNetwork_v1:** Get the currently active network.
   - **kadena_getNetworks_v1:** Get all supported networks.
-  - **kadena_changeNetwork_v1:** Change the active network.
 
 - **Extended Methods (Not in JSON-RPC 2.0):**
 
@@ -144,23 +141,8 @@ JavaScript/TypeScript projects), dedicated wrappers are available for popular
 frameworks:
 
 - **wallet-adapter-react** – For React applications.
-- **wallet-adapter-vue** – For Vue.js applications. // WIP
-- **wallet-adapter-angular** – For Angular projects. // WIP
 
 These wrappers simplify integration with their respective ecosystems.
-
---
-
-## Conclusion
-
-Wallet Adapter Core forms the backbone of wallet integration in the Kadena
-ecosystem. By combining standardized methods from KIP 37–41 with extended
-functionalities (such as connect/disconnect and event subscriptions) and
-flexible signing workflows (via KIP 15 and KIP 17), it offers a robust,
-developer-friendly framework for managing wallet interactions. Whether you build
-your application using vanilla JavaScript or with one of the available framework
-wrappers, Wallet Adapter Core ensures a consistent, reliable interface for
-integrating multiple wallet providers.
 
 ---
 
@@ -168,7 +150,7 @@ integrating multiple wallet providers.
 
 This comprehensive guide is designed for wallet developers looking to create a
 Kadena wallet adapter that conforms to the Kadena Improvement Proposals (KIPs),
-specifically KIP-15, KIP-17, and KIP-37 through KIP-41. These KIPs define a
+specifically KIP-15, KIP-17, and KIP-37 through KIP-40. These KIPs define a
 standardized JSON-RPC interface for wallet and decentralized application (dApp)
 communication within the Kadena ecosystem. By following this guide, you’ll learn
 how to build an adapter using the `@kadena/wallet-adapter-core` package,
@@ -189,10 +171,10 @@ Kadena’s KIP specifications.
 - **Knowledge**: Familiarity with TypeScript, JSON-RPC, and Kadena’s blockchain
   concepts (e.g., Pact, Chainweb).
 - **Tools**: Node.js, npm or yarn, and a code editor.
-- **Dependencies**: Install `@kadena/wallet-adapter-core` and `@kadena/client`.
+- **Dependencies**: Install `@kadena/wallet-adapter-core`.
 
 ```bash
-npm install @kadena/wallet-adapter-core @kadena/client
+npm install @kadena/wallet-adapter-core
 ```
 
 ---
@@ -316,10 +298,10 @@ type to match your wallet’s API.
    Define the provider interface and detection logic:
 
    ```typescript
-   import { Provider } from '@kadena/wallet-adapter-core';
+   import { IProvider } from '@kadena/wallet-adapter-core';
 
    // Extend the base Provider interface with your wallet-specific properties
-   export interface MyWalletProvider extends Provider {
+   export interface MyWalletProvider extends IProvider {
      isMyWallet?: boolean; // Optional flag to identify your wallet
    }
 
@@ -330,7 +312,7 @@ type to match your wallet’s API.
 
    // Detect the provider in the browser
    export async function detectMyWalletProvider<
-     T = DemoProvider,
+     T = MyWalletProvider,
    >(): Promise<T | null> {
      if (typeof window !== 'undefined') {
        const kadenaProvider = (window as KadenaWindow).kadena;
@@ -349,7 +331,34 @@ type to match your wallet’s API.
 
 ---
 
-### Step 3: Implement the Wallet Adapter
+### Step 3: Implement the Adapter Factory
+
+1. **Create `walletAdapterFactory.ts`**
+
+```ts
+import type {
+  IBaseWalletFactoryOptions,
+  AdapterFactoryCreator,
+} from '@kadena/wallet-adapter-core';
+
+export const myWalletAdapter = ((options?: IBaseWalletFactoryOptions) => {
+  return {
+    name: 'MyWallet',
+    detect: async () => {
+      return await detectMyWalletProvider();
+    },
+    adapter: async (provider) => {
+      const { MyWalletAdapter } = await import('./MyWalletAdapter');
+      return new MyWalletAdapter({ ...options, provider });
+    },
+  };
+}) satisfies AdapterFactoryCreator;
+
+export { MyWalletAdapter } from './MyWalletAdapter';
+export { detectMyWalletProvider } from './provider';
+```
+
+### Step 4: Implement the Wallet Adapter
 
 Extend the `BaseWalletAdapter` class to implement your wallet’s functionality.
 This involves overriding methods to match your wallet’s API while adhering to
@@ -361,50 +370,32 @@ KIP standards.
    ```typescript
    import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
    import type {
-     AccountInfo,
-     NetworkInfo,
+     IAccountInfo,
+     INetworkInfo,
      IUnsignedCommand,
      ICommand,
+     IBaseWalletAdapterOptions,
    } from '@kadena/wallet-adapter-core';
    import { detectMyWalletProvider, MyWalletProvider } from './provider';
 
    export class MyWalletAdapter extends BaseWalletAdapter {
      public name = 'MyWallet'; // Display name of your wallet
 
-     constructor(provider?: MyWalletProvider, networkId?: string) {
-       super(provider, networkId || 'mainnet01');
-     }
-
-     // Detect the wallet provider
-     async detect(): Promise<boolean> {
-       const provider = await detectMyWalletProvider();
-       if (provider) {
-         this.provider = provider;
-       }
-       return !!provider;
-     }
-
-     async connect(silent: boolean = false): Promise<AccountInfo | null> {
-       // your connect method
-     }
-
-     // Handle disconnection
-     async disconnect(): Promise<void> {
-       // your disconnect method
+     public constructor(options: IBaseWalletAdapterOptions) {
+       super(options);
      }
    }
    ```
 
    - **Key Methods**: (available in base-wallet-adapter)
-     - `detect()`: Checks for your wallet’s presence.
-     - `connect()`: Establishes a session (supports silent mode).
+     - `connect()`: Establishes a session.
+     - `disconnect()`: Ends a session.
      - `getActiveAccount()`: Returns the active account per KIP-37.
      - `getAccounts()`: Returns all managed accounts per KIP-38.
      - `getActiveNetwork()`: Returns the current network per KIP-39.
      - `getNetworks()`: Lists all supported networks per KIP-40.
      - `signTransaction()`: Signs a single transaction per KIP-17.
      - `signCommand()`: Signs multiple commands per KIP-15.
-     - `changeNetwork()`: Switches the network per KIP-41.
 
 2. **Export in `index.ts`**  
    Make your adapter available:
@@ -414,60 +405,9 @@ KIP standards.
    export { detectMyWalletProvider } from './provider';
    ```
 
-### Step 4: Test Your Adapter
-
-1. **Set Up Vitest**  
-   Create a `vitest.config.ts`:
-
-   ```typescript
-   import { defineConfig } from 'vitest/config';
-
-   export default defineConfig({
-     test: {
-       globals: true,
-       environment: 'node',
-       include: ['src/__tests__/**/*.{test,spec}.{ts,tsx}'],
-     },
-   });
-   ```
-
-2. **Write Tests**  
-   Create `src/__tests__/MyWalletAdapter.test.ts`:
-
-   ```typescript
-   import { describe, it, expect, vi } from 'vitest';
-   import { MyWalletAdapter } from '../MyWalletAdapter';
-
-   describe('MyWalletAdapter', () => {
-     it('detects the provider', async () => {
-       const adapter = new MyWalletAdapter();
-       const mockProvider = { request: vi.fn() };
-       vi.stubGlobal('kadena', mockProvider);
-       const detected = await adapter.detect();
-       expect(detected).toBe(true);
-       expect(adapter.isDetected()).toBe(true);
-     });
-
-     it('connects successfully', async () => {
-       const adapter = new MyWalletAdapter({
-         request: vi.fn().mockResolvedValue({ accountName: 'test' }),
-       });
-       const account = await adapter.connect();
-       expect(account).toHaveProperty('accountName', 'test');
-     });
-   });
-   ```
-
-3. **Run Tests**  
-   Execute your tests:
-
-   ```bash
-   npm run test
-   ```
-
 ---
 
-### Step 6: Build and Publish
+### Step 5: Build and Publish
 
 1. **Build the Project**  
    Compile your TypeScript code:
@@ -492,11 +432,12 @@ KIP standards.
 1. **Instantiate the Adapter**
 
    ```typescript
-   import { MyWalletAdapter } from '@kadena/wallet-adapter-my-wallet';
+   import { myWalletAdapter } from '@kadena/wallet-adapter-my-wallet';
    import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 
-   const adapter = new MyWalletAdapter();
-   const client = new WalletAdapterClient([adapter]);
+   const client = new WalletAdapterClient([myWalletAdapter]);
+
+   await client.init();
 
    client.connect('MyWallet').then((account) => {
      console.log('Connected:', account.accountName);
@@ -519,11 +460,11 @@ KIP standards.
    import React from 'react';
    import ReactDOM from 'react-dom/client';
    import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
-   import { MyWalletAdapter } from '@kadena/wallet-adapter-my-wallet';
+   import { myWalletAdapter } from '@kadena/wallet-adapter-my-wallet';
    import App from './App';
 
    ReactDOM.createRoot(document.getElementById('root')!).render(
-     <KadenaWalletProvider adapters={[new MyWalletAdapter()]}>
+     <KadenaWalletProvider adapters={[myWalletAdapter]}>
        <App />
      </KadenaWalletProvider>,
    );
