@@ -11,7 +11,7 @@ interface IAccountError {
 
 export interface IWalletContext {
   account?: IWalletAccount;
-  wallets?: string[];
+  wallets?: IWalletAccount[];
   error?: IAccountError;
   isMounted: boolean;
   user?: User;

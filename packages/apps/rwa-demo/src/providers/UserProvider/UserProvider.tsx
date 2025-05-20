@@ -15,6 +15,7 @@ import {
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import type { IWalletAccount } from '../WalletProvider/WalletType';
 
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | undefined>();
@@ -79,11 +80,11 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const addWallet = useCallback(
-    async (walletAddress: string) => {
+    async (wallet: IWalletAccount) => {
       if (!user || !organisation) return;
-      await userStore.addWalletAddress(user, organisation, walletAddress);
+      await userStore.addWalletAddress(user, organisation, wallet);
     },
-    [user?.uid, organisation?.id],
+    [user, organisation],
   );
 
   return (

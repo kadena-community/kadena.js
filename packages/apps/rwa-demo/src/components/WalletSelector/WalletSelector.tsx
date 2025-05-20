@@ -1,5 +1,6 @@
 import type { WALLETTYPES } from '@/constants';
 import { useAccount } from '@/hooks/account';
+import { useOrganisation } from '@/hooks/organisation';
 import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 import { MonoKeyboardArrowDown } from '@kadena/kode-icons';
 import {
@@ -23,6 +24,7 @@ export const WalletSelector: FC = () => {
   const [accounts, setAccounts] = useState<IWalletAccount[] | undefined>();
   const [type, setType] = useState<keyof typeof WALLETTYPES | undefined>();
   const { addWallet } = useAccount();
+  const { organisation } = useOrganisation();
 
   const handleConnect = async (type: keyof typeof WALLETTYPES) => {
     setType(type);

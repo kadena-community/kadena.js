@@ -92,7 +92,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       name: keyof typeof WALLETTYPES,
       account?: IWalletAccount,
     ): Promise<IWalletAccount[] | undefined> => {
-      console.log('wallet3', organisation);
       let tempAccount;
       switch (name) {
         case WALLETTYPES.ECKO:
@@ -123,8 +122,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
       if (tempAccount) {
         setAccount(tempAccount);
-        console.log('wallet', organisation);
-        addWallet2User(tempAccount.address);
+        addWallet2User(tempAccount);
 
         localStorage.setItem(
           getAccountCookieName(),
@@ -135,7 +133,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     },
 
-    [router, organisation?.id],
+    [router, addWallet2User],
   );
 
   const removeWallet = useCallback(async () => {

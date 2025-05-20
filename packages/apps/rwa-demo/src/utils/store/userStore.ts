@@ -1,5 +1,6 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { IUserData } from '@/contexts/UserContext/UserContext';
+import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
 import type { User } from 'firebase/auth';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { database } from './firebase';
@@ -16,20 +17,17 @@ const UserStore = () => {
   const addWalletAddress = async (
     user: User,
     organisation: IOrganisation,
-    address: string,
+    wallet: IWalletAccount,
   ) => {
     const userFB = await getUser(organisation, user.uid);
-
-    if (!userFB) {
-      const wallets = [address];
-      return await set(
-        ref(
-          database,
-          `/organisations/${organisation.id}/users/${user.uid}/wallets`,
-        ),
-        wallets,
-      );
-    }
+    const wallets = { ...userFB.wallets, [wallet.address]: wallet };
+    return await set(
+      ref(
+        database,
+        `/organisations/${organisation.id}/users/${user.uid}/wallets`,
+      ),
+      wallets,
+    );
   };
 
   const listenToUser = (
