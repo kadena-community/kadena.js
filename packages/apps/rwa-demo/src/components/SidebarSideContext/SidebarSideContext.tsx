@@ -25,7 +25,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
 export const SidebarSideContext: FC = () => {
-  const { signOut, user } = useUser();
+  const { signOut, user, userToken } = useUser();
   const { account } = useAccount();
   const { asset } = useAsset();
   const { theme, setTheme } = useTheme();
@@ -66,6 +66,14 @@ export const SidebarSideContext: FC = () => {
               </Button>
             }
           >
+            {userToken?.claims.rootAdmin ? (
+              <ContextMenuItem
+                label="root admin"
+                onClick={() => {
+                  router.push('/admin/root');
+                }}
+              />
+            ) : null}
             <ContextMenuItem
               label="org. admin"
               onClick={() => {

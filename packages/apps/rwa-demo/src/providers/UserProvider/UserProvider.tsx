@@ -5,7 +5,7 @@ import { UserContext } from '@/contexts/UserContext/UserContext';
 import { useOrganisation } from '@/hooks/organisation';
 import { userStore } from '@/utils/store/userStore';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import type { User } from 'firebase/auth';
+import type { IdTokenResult, User } from 'firebase/auth';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -19,7 +19,9 @@ import { useCallback, useEffect, useState } from 'react';
 import type { IWalletAccount } from '../AccountProvider/AccountType';
 
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<User | undefined>();
+  const [token, setToken] = useState<IdTokenResult | undefined>();
   const [userData, setUserData] = useState<IUserData | undefined>();
   const { organisation } = useOrganisation();
   const router = useRouter();
@@ -80,18 +82,69 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
       });
   };
 
+  const refreshToken = useCallback(
+    async (user: User) => {
+      const tokenResult = await user?.getIdTokenResult(true);
+      setToken(tokenResult);
+      return tokenResult;
+    },
+    [user, setToken],
+  );
+
+  const addClaim = useCallback(async () => {
+    try {
+      const data = await fetch('/api/admin/claims', {
+        method: 'POST',
+        body: JSON.stringify({
+          uid: user?.uid,
+        }),
+        headers: {
+          Authorization: `Bearer ${token?.token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (data.status !== 200) {
+        addNotification({
+          intent: 'negative',
+          label: 'claim issue',
+          message: data.statusText,
+        });
+        return;
+      }
+
+      await refreshToken(user!);
+    } catch (error) {
+      addNotification({
+        intent: 'negative',
+        label: 'claim issue',
+        message: error.message,
+      });
+    }
+  }, [user, token, refreshToken]);
+
   useEffect(() => {
     const { auth } = getProvider();
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         setUser(user);
+        await refreshToken(user);
       } else {
         setUser(undefined);
+        setToken(undefined);
         router.push('/login');
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (user?.uid && token?.token) {
+      setIsMounted(true);
+    } else {
+      setIsMounted(false);
+    }
+  }, [user, token]);
 
   const addAccount = useCallback(
     async (wallet: IWalletAccount) => {
@@ -103,7 +156,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const removeAccount = useCallback(
     async (address: string) => {
-      console.log({ address, user, organisation });
       if (!user || !organisation) return;
       await userStore.removeAccountAddress(user, organisation, address);
     },
@@ -112,7 +164,17 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, userData, signIn, signOut, addAccount, removeAccount }}
+      value={{
+        user,
+        userToken: token,
+        userData,
+        isMounted,
+        signIn,
+        signOut,
+        addAccount,
+        removeAccount,
+        addClaim,
+      }}
     >
       {children}
     </UserContext.Provider>

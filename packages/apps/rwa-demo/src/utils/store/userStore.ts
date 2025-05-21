@@ -38,7 +38,6 @@ const UserStore = () => {
     const accounts = { ...userFB?.accounts };
     delete accounts[address];
 
-    console.log({ accounts });
     return await set(
       ref(
         database,
@@ -56,14 +55,14 @@ const UserStore = () => {
     if (!organisationId) return;
     const userRef = ref(
       database,
-      `organisations/${organisationId}/users/${uid}`,
+      `/organisations/${organisationId}/users/${uid}`,
     );
     onValue(userRef, async (snapshot) => {
       const data = { ...snapshot.val(), uid: snapshot.key } as IUserData;
 
       const newData = {
         ...data,
-        accounts: Object.entries(data.accounts).map(([, val]) => {
+        accounts: Object.entries(data.accounts ?? {})?.map(([, val]) => {
           return val;
         }),
       };

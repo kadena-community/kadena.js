@@ -21,6 +21,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 
 import { KLogo } from '@/app/(app)/KLogo';
+import { useUser } from '@/hooks/user';
 import { SideBar } from './SideBar';
 
 const RootLayout = ({
@@ -34,12 +35,15 @@ const RootLayout = ({
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
+  const { isMounted } = useUser();
 
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
     setTxsButtonRef(txsButtonRef.current);
     setTxsAnimationRef(transactionAnimationRef.current);
   }, [txsButtonRef.current, transactionAnimationRef.current]);
+
+  if (!isMounted) return null;
 
   return (
     <>
