@@ -8,6 +8,7 @@ import {
 } from '@/constants';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
+import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
@@ -21,6 +22,7 @@ import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
 import { getAsset as getAssetUtil, getFullAsset } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
+import { assetStore } from '@/utils/store/assetStore';
 import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
@@ -78,6 +80,7 @@ export const getEventsDocument = (
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
+  const { organisation } = useOrganisation();
   const [assets, setAssets] = useState<IAsset[]>([]);
   const storageKey = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY) ?? '';
   const selectedKey =
@@ -94,19 +97,15 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   );
 
-  const getAssets = (): IAsset[] => {
-    const result = localStorage.getItem(storageKey);
-    const arr = JSON.parse(result ?? '[]');
-    setAssets(arr);
-    return arr ?? [];
+  const init = async (organisationId: string) => {
+    assetStore.listenToAssets(organisationId, setAssets);
   };
 
-  const storageListener = (event: StorageEvent | Event) => {
-    if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
-      return;
-
-    getAssets();
-  };
+  useEffect(() => {
+    if (!organisation?.id) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    init(organisation?.id);
+  }, [organisation]);
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
@@ -119,7 +118,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     uuid: string,
     account: IWalletAccount,
   ): Promise<IAsset | undefined> => {
-    const data = getAssets().find((a) => a.uuid === uuid);
+    const data = assets.find((a) => a.uuid === uuid);
     const extraAssetData = await getComplianceRules();
 
     const supplyResult = (await supplyService({
@@ -134,7 +133,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   };
   const removeAsset = (uuid: string) => {
-    const data = getAssets().filter((a) => a.uuid !== uuid);
+    const data = assets.filter((a) => a.uuid !== uuid);
     localStorage.setItem(storageKey, JSON.stringify(data));
     window.dispatchEvent(new Event(storageKey));
     setAssets(data);
@@ -172,19 +171,14 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       namespace,
     };
 
-    //check if the asset is already there?
-    const allAssets = getAssets();
     if (
-      !allAssets.find(
+      !assets.find(
         (a) =>
           a.namespace === asset.namespace &&
           a.contractName === asset.contractName,
       )
     ) {
-      const data = [...allAssets, asset];
-      localStorage.setItem(storageKey, JSON.stringify(data));
-      window.dispatchEvent(new Event(storageKey));
-      setAssets(data);
+      assetStore.addAsset(organisation!.id, asset);
     }
 
     return asset;
@@ -211,17 +205,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!asset || !rule || !rule.isActive) return INFINITE_COMPLIANCE;
     return rule.value;
   };
-
-  useEffect(() => {
-    getAssets();
-    window.addEventListener(storageKey, storageListener);
-    window.addEventListener('storage', storageListener);
-
-    return () => {
-      window.removeEventListener(storageKey, storageListener);
-      window.removeEventListener('storage', storageListener);
-    };
-  }, []);
 
   useEffect(() => {
     setAsset((old) => old && { ...old, investorCount });

@@ -8,6 +8,7 @@ import {
   MonoLightMode,
   MonoLogout,
   MonoSelectAll,
+  MonoSettings,
 } from '@kadena/kode-icons';
 import {
   Button,
@@ -82,6 +83,13 @@ export const SidebarSideContext: FC = () => {
                 }}
               />
             ) : null}
+            <ContextMenuItem
+              endVisual={<MonoSettings />}
+              label="Settings"
+              onClick={() => {
+                router.push('/settings');
+              }}
+            />
             <ContextMenuItem
               endVisual={<MonoLogout />}
               label="Logout"
