@@ -15,16 +15,25 @@ export const getTokenId = (request: NextRequest): string => {
   return authHeader.split(' ')[1]; // safely extract the token
 };
 
-if (!getApps().length) {
-  app = app = initializeApp({
-    credential: cert({
-      projectId: process.env.NEXT_PUBLIC_FB_PROJECTID ?? '',
-      clientEmail: process.env.FB_CLIENT_EMAIL ?? '',
-      privateKey: (process.env.FB_PRIVATEKEY ?? '')?.replace(/\\n/g, '\n'),
-    }),
-  });
-} else {
-  app = getApps()[0];
-}
+export const adminAuth = () => {
+  if (
+    !process.env.NEXT_PUBLIC_FB_PROJECTID ||
+    !process.env.FB_CLIENT_EMAIL ||
+    !process.env.FB_PRIVATEKEY
+  )
+    return;
 
-export const adminAuth = adminGetAuth(app);
+  if (!getApps().length) {
+    app = app = initializeApp({
+      credential: cert({
+        projectId: process.env.NEXT_PUBLIC_FB_PROJECTID ?? '',
+        clientEmail: process.env.FB_CLIENT_EMAIL ?? '',
+        privateKey: (process.env.FB_PRIVATEKEY ?? '')?.replace(/\\n/g, '\n'),
+      }),
+    });
+  } else {
+    app = getApps()[0];
+  }
+
+  return adminGetAuth(app);
+};

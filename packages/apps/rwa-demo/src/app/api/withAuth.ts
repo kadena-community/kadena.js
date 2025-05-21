@@ -7,16 +7,16 @@ export function withAuth(handler: Handler): Handler {
   return async (req, context) => {
     const tokenId = getTokenId(req);
 
-    if (!tokenId) {
+    if (!tokenId || !adminAuth()) {
       return new Response('un authorized', {
         status: 401,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    const decodedToken = await adminAuth.verifyIdToken(tokenId);
+    const decodedToken = await adminAuth()?.verifyIdToken(tokenId);
 
-    if (!decodedToken.uid) {
+    if (!decodedToken?.uid) {
       console.log('error');
       return new Response('invalid token', {
         status: 500,
