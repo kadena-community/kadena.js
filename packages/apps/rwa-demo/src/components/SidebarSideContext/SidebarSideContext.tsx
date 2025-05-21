@@ -74,12 +74,14 @@ export const SidebarSideContext: FC = () => {
                 }}
               />
             ) : null}
-            <ContextMenuItem
-              label="org. admin"
-              onClick={() => {
-                router.push('/admin');
-              }}
-            />
+            {userToken?.claims.orgAdmin ? (
+              <ContextMenuItem
+                label="org. admin"
+                onClick={() => {
+                  router.push('/admin');
+                }}
+              />
+            ) : null}
             <ContextMenuItem
               endVisual={<MonoLogout />}
               label="Logout"
