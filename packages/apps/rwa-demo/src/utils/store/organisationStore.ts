@@ -10,10 +10,10 @@ const OrganisationStore = () => {
     if (!organisationId) return;
     const orgRef = ref(database, `organisations/${organisationId}`);
     onValue(orgRef, async (snapshot) => {
-      const { data } = { ...snapshot.val(), id: snapshot.key } as {
+      const { data } = snapshot.val() as {
         data: IOrganisation;
       };
-      setDataCallback(data);
+      setDataCallback({ ...data, id: snapshot.key ?? '' });
     });
 
     return () => off(orgRef);

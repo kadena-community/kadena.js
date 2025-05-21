@@ -30,6 +30,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     addAccount: addAccount2User,
     removeAccount: removeAccountFromUser,
     userData,
+    user,
   } = useUser();
   const { addNotification } = useNotifications();
   const [isMounted, setIsMounted] = useState(false);

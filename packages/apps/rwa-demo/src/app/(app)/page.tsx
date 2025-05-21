@@ -24,6 +24,7 @@ const Home = () => {
   const handleSelect = (address: any) => {
     selectAccount(address);
   };
+
   return (
     <>
       <SideBarBreadcrumbs />

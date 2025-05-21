@@ -29,6 +29,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const init = async (user: User) => {
     if (!organisation?.id) return;
+
     await userStore.listenToUser(organisation.id, user.uid, setUserData);
   };
 
