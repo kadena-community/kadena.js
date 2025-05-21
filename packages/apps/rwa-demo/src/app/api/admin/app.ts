@@ -18,9 +18,9 @@ export const getTokenId = (request: NextRequest): string => {
 if (!getApps().length) {
   app = app = initializeApp({
     credential: cert({
-      projectId: process.env.NEXT_PUBLIC_FB_PROJECTID,
-      clientEmail: process.env.FB_CLIENT_EMAIL,
-      privateKey: process.env.FB_PRIVATEKEY?.replace(/\\n/g, '\n'),
+      projectId: process.env.NEXT_PUBLIC_FB_PROJECTID ?? '',
+      clientEmail: process.env.FB_CLIENT_EMAIL ?? '',
+      privateKey: (process.env.FB_PRIVATEKEY ?? '')?.replace(/\\n/g, '\n'),
     }),
   });
 } else {
