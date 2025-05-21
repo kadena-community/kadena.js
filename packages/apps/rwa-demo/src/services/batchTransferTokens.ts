@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAggregatedAccounts } from '@/utils/getAggregatedAccounts';
 import { getAsset } from '@/utils/getAsset';

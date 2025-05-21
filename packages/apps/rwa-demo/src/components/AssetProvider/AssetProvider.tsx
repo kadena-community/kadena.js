@@ -10,7 +10,7 @@ import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
   IComplianceProps,
   IComplianceRule,

@@ -1,9 +1,10 @@
 'use client';
 import { WALLETTYPES } from '@/constants';
-import { WalletContext } from '@/contexts/WalletContext/WalletContext';
+import { AccountContext } from '@/contexts/AccountContext/AccountContext';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
+import { useUser } from '@/hooks/user';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
 import { isFrozen } from '@/services/isFrozen';
@@ -11,24 +12,25 @@ import { isInvestor } from '@/services/isInvestor';
 import { isOwner } from '@/services/isOwner';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import { chainweaverAccountLogin } from '@/utils/walletTransformers/chainweaver/login';
-import { chainweaverAccountLogout } from '@/utils/walletTransformers/chainweaver/logout';
 import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
 import { eckoAccountLogin } from '@/utils/walletTransformers/ecko/login';
-import { eckoAccountLogout } from '@/utils/walletTransformers/ecko/logout';
 import { eckoSignTx } from '@/utils/walletTransformers/ecko/signTx';
 import { magicAccountLogin } from '@/utils/walletTransformers/magic/login';
-import { magicAccountLogout } from '@/utils/walletTransformers/magic/logout';
 import { magicSignTx } from '@/utils/walletTransformers/magic/signTx';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import type { IWalletAccount } from './WalletType';
+import type { IWalletAccount } from './AccountType';
 
-export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
+export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IWalletAccount>();
-  const [accounts, setAccounts] = useState<IWalletAccount[]>();
+  const {
+    addAccount: addAccount2User,
+    removeAccount: removeAccountFromUser,
+    userData,
+  } = useUser();
   const { addNotification } = useNotifications();
   const [isMounted, setIsMounted] = useState(false);
   const [isOwnerState, setIsOwnerState] = useState(false);
@@ -77,25 +79,35 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  const selectAccount = (account: IWalletAccount) => {
-    setAccount(account);
-
-    localStorage.setItem(getAccountCookieName(), JSON.stringify(account)!);
+  const selectAccount = (address: string) => {
+    const found = userData?.accounts.find((a) => a.address === address);
+    setAccount(found);
+    if (found) {
+      localStorage.setItem(getAccountCookieName(), found.address);
+    } else {
+      localStorage.removeItem(getAccountCookieName());
+    }
     router.replace('/');
   };
 
-  const login = useCallback(
-    async (name: keyof typeof WALLETTYPES) => {
+  const addAccount = useCallback(
+    async (
+      name: keyof typeof WALLETTYPES,
+      account?: IWalletAccount,
+    ): Promise<IWalletAccount[] | undefined> => {
       let tempAccount;
       switch (name) {
         case WALLETTYPES.ECKO:
           tempAccount = await eckoAccountLogin();
           break;
         case WALLETTYPES.CHAINWEAVER:
+          if (account) {
+            tempAccount = account;
+            break;
+          }
           const result = await chainweaverAccountLogin();
           if (result.length > 1) {
-            setAccounts(result);
-            return;
+            return result;
           } else if (result.length === 1) {
             tempAccount = result[0];
           }
@@ -112,56 +124,34 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }
 
       if (tempAccount) {
-        setAccounts(undefined);
         setAccount(tempAccount);
-        localStorage.setItem(
-          getAccountCookieName(),
-          JSON.stringify(tempAccount),
-        );
+        addAccount2User(tempAccount);
 
         router.replace('/');
       }
     },
 
-    [router],
+    [router, addAccount2User],
   );
 
-  const logout = useCallback(async () => {
-    switch (account?.walletName) {
-      case WALLETTYPES.ECKO:
-        await eckoAccountLogout();
-        break;
-      case WALLETTYPES.CHAINWEAVER:
-        await chainweaverAccountLogout();
-        break;
-      case WALLETTYPES.MAGIC:
-        await magicAccountLogout();
-        break;
-      default:
-        addNotification({
-          intent: 'negative',
-          label: 'Provider does not exist',
-          message: `Provider (${account?.walletName}) does not exist`,
-        });
-    }
-
-    localStorage.removeItem(getAccountCookieName());
-    setAccount(undefined);
-    router.replace('/');
-  }, [account]);
+  const removeAccount = useCallback(
+    async (accountVal: string) => {
+      removeAccountFromUser(accountVal);
+    },
+    [removeAccountFromUser],
+  );
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());
-
     if (storage && storage !== 'undefined') {
-      console.log({ account: JSON.parse(storage) });
       try {
-        setAccount(JSON.parse(storage));
+        const found = userData?.accounts.find((a) => a.address === storage);
+        setAccount(found);
       } catch (e) {
         localStorage.removeItem(getAccountCookieName());
       }
     }
-  }, [account?.address]);
+  }, [account?.address, userData?.accounts]);
 
   const initProps = async (accountProp?: IWalletAccount) => {
     if (!accountProp) {
@@ -214,12 +204,12 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <WalletContext.Provider
+    <AccountContext.Provider
       value={{
         account,
-        accounts,
-        login,
-        logout,
+        accounts: userData?.accounts ?? [],
+        addAccount,
+        removeAccount,
         sign,
         isMounted,
         isOwner: isOwnerState,
@@ -234,6 +224,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       {children}
-    </WalletContext.Provider>
+    </AccountContext.Provider>
   );
 };

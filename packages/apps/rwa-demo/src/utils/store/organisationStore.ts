@@ -1,9 +1,8 @@
-import type { IOrganisation } from '@/contexts/OrganisationContext/OrgainisationContext';
+import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { off, onValue, ref } from 'firebase/database';
 import { database } from './firebase';
 
 const OrganisationStore = () => {
-  //TODO: this needs to be more efficient
   const listenToOrganisation = (
     organisationId: IOrganisation['id'],
     setDataCallback: (organisation: IOrganisation) => void,

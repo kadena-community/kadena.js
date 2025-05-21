@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getPubkeyFromAccount } from '../getPubKey';
 
 describe('getPubKey utils', () => {

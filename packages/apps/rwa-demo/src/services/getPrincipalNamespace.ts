@@ -1,4 +1,4 @@
-import type { IWalletAccount } from '@/providers/WalletProvider/WalletType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getKeyset } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';

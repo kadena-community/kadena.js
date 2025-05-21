@@ -1,4 +1,15 @@
 'use client';
+import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
+import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
+import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
+import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
+import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
+import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
+import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
+import { useTransactions } from '@/hooks/transactions';
+import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
+import { Button, Link, Stack } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -8,21 +19,6 @@ import {
   SideBarTopBanner,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-
-import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
-import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
-import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
-import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
-import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
-import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
-import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
-import { useAccount } from '@/hooks/account';
-import { useTransactions } from '@/hooks/transactions';
-import { getAsset } from '@/utils/getAsset';
-import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
-import { Button, Link, Stack } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
@@ -32,30 +28,18 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { account, isMounted } = useAccount();
   const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { transactions, setTxsButtonRef, setTxsAnimationRef } =
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
     setTxsButtonRef(txsButtonRef.current);
     setTxsAnimationRef(transactionAnimationRef.current);
   }, [txsButtonRef.current, transactionAnimationRef.current]);
-
-  if (!getAsset()) {
-    router.replace('/assets/create');
-    return;
-  }
-
-  if (isMounted && !account) {
-    router.replace('/login');
-    return;
-  }
 
   return (
     <>

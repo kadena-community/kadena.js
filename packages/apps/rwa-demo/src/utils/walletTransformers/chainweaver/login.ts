@@ -2,7 +2,7 @@ import { WALLETTYPES } from '@/constants';
 import type {
   IWalletAccount,
   KeysetGuard,
-} from '@/providers/WalletProvider/WalletType';
+} from '@/providers/AccountProvider/AccountType';
 import type { IState } from '@/utils/getWalletConnection/getWalletConnection';
 import { getWalletConnection } from '@/utils/getWalletConnection/getWalletConnection';
 

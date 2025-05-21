@@ -17,7 +17,7 @@ import { useApolloClient } from '@apollo/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { IWalletAccount } from '../WalletProvider/WalletType';
+import type { IWalletAccount } from '../AccountProvider/AccountType';
 
 export const interpretErrorMessage = (
   result: any,

@@ -1,15 +1,14 @@
 import { WALLETTYPES } from '@/constants';
-import { useAccount } from '@/hooks/account';
 import { ContextMenuItem } from '@kadena/kode-ui';
 import type { FC } from 'react';
 
-export const MagicConnect: FC = () => {
-  const { login } = useAccount();
-  const handleConnect = async () => {
-    await login(WALLETTYPES.MAGIC);
-  };
-
+export const MagicConnect: FC<{
+  handleConnect: (type: keyof typeof WALLETTYPES) => void;
+}> = ({ handleConnect }) => {
   return (
-    <ContextMenuItem label="Magic Connect (spirekey)" onClick={handleConnect} />
+    <ContextMenuItem
+      label="Magic Connect (spirekey)"
+      onClick={() => handleConnect(WALLETTYPES.CHAINWEAVER)}
+    />
   );
 };

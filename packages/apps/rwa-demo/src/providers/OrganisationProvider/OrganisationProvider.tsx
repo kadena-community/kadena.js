@@ -1,7 +1,7 @@
 'use client';
 
-import type { IOrganisation } from '@/contexts/OrganisationContext/OrgainisationContext';
-import { OrganisationContext } from '@/contexts/OrganisationContext/OrgainisationContext';
+import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
+import { OrganisationContext } from '@/contexts/OrganisationContext/OrganisationContext';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { orgStore } from '@/utils/store/organisationStore';
 import type { FC, PropsWithChildren } from 'react';
