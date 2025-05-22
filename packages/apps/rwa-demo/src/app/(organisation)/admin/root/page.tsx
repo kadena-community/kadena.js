@@ -1,6 +1,7 @@
 'use client';
 
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { useOrganisation } from '@/hooks/organisation';
 import { useUser } from '@/hooks/user';
 import { Button, Stack } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
@@ -8,16 +9,17 @@ import Link from 'next/link';
 
 const Home = () => {
   const { addClaim } = useUser();
+  const { organisation } = useOrganisation();
 
   const handleAddAdmin = async () => {
-    await addClaim();
+    await addClaim({ rootAdmin: true });
   };
 
   return (
     <>
       <SideBarBreadcrumbs>
         <SideBarBreadcrumbsItem component={Link} href="/admin">
-          root
+          {organisation?.name}
         </SideBarBreadcrumbsItem>
         <SideBarBreadcrumbsItem component={Link} href="/admin/root">
           root

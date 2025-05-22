@@ -29,6 +29,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const init = async (user: User) => {
     if (!organisation?.id) return;
+
     await userStore.listenToUser(organisation.id, user.uid, setUserData);
   };
 
@@ -91,37 +92,41 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     [user, setToken],
   );
 
-  const addClaim = useCallback(async () => {
-    try {
-      const data = await fetch('/api/admin/claims', {
-        method: 'POST',
-        body: JSON.stringify({
-          uid: user?.uid,
-        }),
-        headers: {
-          Authorization: `Bearer ${token?.token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+  const addClaim = useCallback(
+    async (role: Record<string, boolean>) => {
+      try {
+        const data = await fetch('/api/admin/claims', {
+          method: 'POST',
+          body: JSON.stringify({
+            uid: user?.uid,
+            role,
+          }),
+          headers: {
+            Authorization: `Bearer ${token?.token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-      if (data.status !== 200) {
+        if (data.status !== 200) {
+          addNotification({
+            intent: 'negative',
+            label: 'claim issue',
+            message: data.statusText,
+          });
+          return;
+        }
+
+        await refreshToken(user!);
+      } catch (error) {
         addNotification({
           intent: 'negative',
           label: 'claim issue',
-          message: data.statusText,
+          message: error.message,
         });
-        return;
       }
-
-      await refreshToken(user!);
-    } catch (error) {
-      addNotification({
-        intent: 'negative',
-        label: 'claim issue',
-        message: error.message,
-      });
-    }
-  }, [user, token, refreshToken]);
+    },
+    [user, token, refreshToken],
+  );
 
   useEffect(() => {
     const { auth } = getProvider();

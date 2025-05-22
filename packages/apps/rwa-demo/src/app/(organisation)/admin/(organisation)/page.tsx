@@ -6,8 +6,10 @@ import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBread
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
+import { useOrganisation } from '@/hooks/organisation';
+import { useUser } from '@/hooks/user';
 import { MonoAdd, MonoDelete, MonoFindInPage } from '@kadena/kode-icons';
-import { Button } from '@kadena/kode-ui';
+import { Button, Stack } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -22,15 +24,22 @@ import {
   useNotifications,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
+import Link from 'next/link';
 import { useState } from 'react';
 
-const Assets = () => {
+const Home = () => {
+  const { addClaim } = useUser();
   const { account } = useAccount();
-  const { assets, removeAsset, setAsset, getAsset } = useAsset();
-  const { isAllowed } = useCreateContract();
   const { addNotification } = useNotifications();
+  const { isAllowed } = useCreateContract();
+  const { organisation } = useOrganisation();
+  const { assets, removeAsset, setAsset, getAsset } = useAsset();
   const [openSide, setOpenSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+
+  const handleAddAdmin = async () => {
+    await addClaim({ orgAdmin: true });
+  };
 
   const handleDelete = (value: any) => {
     removeAsset(value);
@@ -46,14 +55,23 @@ const Assets = () => {
       return;
     }
     setAsset(asset);
-    window.location.href = '/';
   };
 
   return (
     <>
       <SideBarBreadcrumbs>
-        <SideBarBreadcrumbsItem href="/assets">Assets</SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem component={Link} href="/admin">
+          {organisation?.name}
+        </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
+
+      <Stack flexDirection="column" width="100%">
+        organisation
+        <Stack gap="sm">
+          <Button onPress={handleAddAdmin}>add organisation admin role</Button>
+        </Stack>
+      </Stack>
+
       {isRightAsideExpanded && openSide && (
         <RightAside
           isOpen
@@ -70,7 +88,7 @@ const Assets = () => {
         <SectionCardContentBlock>
           <SectionCardHeader
             title="Assets"
-            description={<>List of all your selected contracts</>}
+            description={<>List the organisation contracts</>}
             actions={
               <AssetFormScreen
                 trigger={
@@ -140,4 +158,4 @@ const Assets = () => {
   );
 };
 
-export default Assets;
+export default Home;

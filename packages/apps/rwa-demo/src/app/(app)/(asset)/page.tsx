@@ -23,7 +23,7 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
-import { actionsWrapperClass } from '../../styles.css';
+import { actionsWrapperClass } from './../styles.css';
 
 const Home = () => {
   const { asset } = useAsset();

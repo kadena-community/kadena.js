@@ -1,6 +1,5 @@
 'use client';
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
-import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
 import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
@@ -91,7 +90,6 @@ const RootLayout = ({
         sidebar={<SideBar />}
       >
         <Stack width="100%" flexDirection="column" gap="sm">
-          <AssetInfo />
           {children}
         </Stack>
       </SideBarLayout>
