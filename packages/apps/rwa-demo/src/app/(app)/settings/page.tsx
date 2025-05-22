@@ -1,4 +1,5 @@
 'use client';
+import { AssetsList } from '@/components/AssetsList/AssetsList';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
@@ -102,6 +103,8 @@ const Home = () => {
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>
+
+        <AssetsList />
       </Stack>
     </>
   );

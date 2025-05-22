@@ -6,7 +6,6 @@ import {
   MonoAttachMoney,
   MonoNetworkCheck,
   MonoSupportAgent,
-  MonoVpnLock,
 } from '@kadena/kode-icons';
 import {
   SideBarItem,
@@ -58,13 +57,6 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
               href="/investors"
             />
           )}
-
-          <SideBarItem
-            visual={<MonoVpnLock />}
-            label="Assets"
-            component={Link}
-            href="/assets"
-          />
         </>
       }
       appContext={

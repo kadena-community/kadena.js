@@ -3,14 +3,15 @@ import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import {
   INFINITE_COMPLIANCE,
-  LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import { useAccount } from '@/hooks/account';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
+import { useUser } from '@/hooks/user';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
   IComplianceProps,
@@ -20,12 +21,12 @@ import type {
 import { getComplianceRules } from '@/services/getComplianceRules';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
-import { getAsset as getAssetUtil, getFullAsset } from '@/utils/getAsset';
+import { getAsset as getAssetUtil } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { assetStore } from '@/utils/store/assetStore';
 import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface IAsset {
   uuid: string;
@@ -80,9 +81,10 @@ export const getEventsDocument = (
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
+  const { account } = useAccount();
   const { organisation } = useOrganisation();
+  const { userToken } = useUser();
   const [assets, setAssets] = useState<IAsset[]>([]);
-  const storageKey = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY) ?? '';
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused();
@@ -99,19 +101,54 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const init = async (organisationId: string) => {
     assetStore.listenToAssets(organisationId, setAssets);
-  };
 
+    //
+    const result = localStorage.getItem(selectedKey);
+    if (!result) return;
+    const asset = JSON.parse(result);
+    assetStore.listenToAsset(organisationId, asset.uuid, setAsset);
+  };
   useEffect(() => {
     if (!organisation?.id) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(organisation?.id);
   }, [organisation]);
 
+  const storageListener = useCallback(
+    async (event: StorageEvent | Event) => {
+      if (
+        event.type !== selectedKey &&
+        'key' in event &&
+        event.key !== selectedKey
+      )
+        return;
+
+      const result = localStorage.getItem(selectedKey);
+      if (!result || !account || !organisation) return;
+
+      const storageAsset = JSON.parse(result);
+      const foundAsset = await getAsset(storageAsset.uuid, account);
+      if (!foundAsset) return;
+      assetStore.updateAsset(organisation.id, foundAsset);
+
+      window.location.href = '/';
+    },
+    [account, organisation],
+  );
+
+  useEffect(() => {
+    window.addEventListener(selectedKey, storageListener);
+    window.addEventListener('storage', storageListener);
+
+    return () => {
+      window.removeEventListener(selectedKey, storageListener);
+      window.removeEventListener('storage', storageListener);
+    };
+  }, [organisation, account]);
+
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
     window.dispatchEvent(new Event(selectedKey));
-
-    window.location.href = '/';
   };
 
   const getAsset = async (
@@ -126,17 +163,20 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     })) as number;
 
     if (!data) return;
-    return {
+
+    const foundAsset = {
       ...data,
       compliance: { ...extraAssetData },
       supply: supplyResult ?? 0,
     };
+
+    assetStore.updateAsset(organisation!.id, foundAsset);
+
+    return foundAsset;
   };
   const removeAsset = (uuid: string) => {
     const data = assets.filter((a) => a.uuid !== uuid);
-    localStorage.setItem(storageKey, JSON.stringify(data));
-    window.dispatchEvent(new Event(storageKey));
-    setAssets(data);
+    assetStore.removeAsset(organisation!.id, uuid, userToken);
   };
 
   const addAsset = ({
@@ -207,19 +247,16 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    setAsset((old) => old && { ...old, investorCount });
+    if (!asset || !organisation) return;
+    const data = { ...asset, investorCount } as IAsset;
+    assetStore.updateAsset(organisation.id, data);
   }, [investorCount]);
 
   useEffect(() => {
-    if (asset) return;
-    const innerAsset = getFullAsset();
-    setAsset(innerAsset);
-  }, [asset?.namespace, asset?.contractName]);
+    if (!asset || !organisation) return;
 
-  useEffect(() => {
-    if (!asset) return;
-
-    setAsset((old) => old && { ...old, supply });
+    const data = { ...asset, supply } as IAsset;
+    assetStore.updateAsset(organisation.id, data);
   }, [asset?.contractName, supply]);
 
   useEffect(() => {
@@ -233,33 +270,36 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
       const data = params[0];
 
-      setAsset(
-        (old) =>
-          old && {
-            ...old,
-            compliance: {
-              ...old.compliance,
-              maxSupply: {
-                ...old.compliance.maxSupply,
-                value: data['supply-limit'],
-              },
-              maxBalance: {
-                ...old.compliance.maxBalance,
-                value: data['max-balance-per-investor'],
-              },
-              maxInvestors: {
-                ...old.compliance.maxInvestors,
-                value: data['max-investors'].int,
-              },
-            },
+      if (!asset || !organisation) return;
+
+      const newData = {
+        ...asset,
+        compliance: {
+          ...asset.compliance,
+          maxSupply: {
+            ...asset.compliance.maxSupply,
+            value: data['supply-limit'],
           },
-      );
+          maxBalance: {
+            ...asset.compliance.maxBalance,
+            value: data['max-balance-per-investor'],
+          },
+          maxInvestors: {
+            ...asset.compliance.maxInvestors,
+            value: data['max-investors'].int,
+          },
+        },
+      } as IAsset;
+      assetStore.updateAsset(organisation.id, newData);
     }
   }, [complianceSubscriptionData]);
 
   useEffect(() => {
     if (!complianceRules) return;
-    setAsset((old) => old && { ...old, compliance: { ...complianceRules } });
+    if (!asset || !organisation) return;
+
+    const data = { ...asset, compliance: { ...complianceRules } } as IAsset;
+    assetStore.updateAsset(organisation.id, data);
   }, [complianceRules]);
 
   return (

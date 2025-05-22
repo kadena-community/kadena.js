@@ -1,4 +1,5 @@
 'use client';
+import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { useAccount } from '@/hooks/account';
 import type React from 'react';
 
@@ -9,7 +10,12 @@ const AgentLayout = ({
 }>) => {
   const { isAgent, account } = useAccount();
   if (!account && !isAgent) return null;
-  return children;
+  return (
+    <>
+      <AssetInfo />
+      {children}
+    </>
+  );
 };
 
 export default AgentLayout;

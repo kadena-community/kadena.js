@@ -55,7 +55,6 @@ const Home = () => {
       return;
     }
     setAsset(asset);
-    window.location.href = '/';
   };
 
   return (
