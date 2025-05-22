@@ -1,6 +1,7 @@
 {
   "name": "@kadena/wallet-adapter-zelcore",
   "version": "0.0.1-beta.2",
+  "license": "BSD-3-Clause",
   "contributors": [
     "Francisco Miranda",
     "Ariel Serranoni"
