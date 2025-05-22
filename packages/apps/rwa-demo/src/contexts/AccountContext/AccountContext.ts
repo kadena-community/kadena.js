@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { WALLETTYPES } from '@/constants';
 import type { IAgentHookProps } from '@/hooks/getAgentRoles';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
@@ -30,6 +31,7 @@ export interface IAccountContext {
   balance: number;
   accountRoles: IAgentHookProps;
   isGasPayable: boolean | undefined;
+  checkAccountAssetRoles: (asset: IAsset) => void;
 }
 
 export const AccountContext = createContext<IAccountContext>({
@@ -61,4 +63,5 @@ export const AccountContext = createContext<IAccountContext>({
     isTransferManager: () => false,
   },
   isGasPayable: undefined,
+  checkAccountAssetRoles: () => {},
 });

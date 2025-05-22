@@ -2,6 +2,7 @@ import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { IdTokenResult } from 'firebase/auth';
 import { get, off, onValue, ref, set } from 'firebase/database';
+import { getAssetFolder } from '.';
 import { database } from './firebase';
 
 const AssetStore = () => {
@@ -26,13 +27,14 @@ const AssetStore = () => {
 
   const listenToAsset = (
     organisationId: IOrganisation['id'],
-    assetId: string,
+    asset: IAsset,
     setDataCallback: (assets: IAsset) => void,
   ) => {
-    if (!organisationId || !assetId) return;
+    const assetFolderName = getAssetFolder(asset);
+    if (!organisationId || !assetFolderName) return;
     const assetRef = ref(
       database,
-      `organisations/${organisationId}/assets/${assetId}`,
+      `organisations/${organisationId}/assets/${assetFolderName}`,
     );
     onValue(assetRef, async (snapshot) => {
       const data = { ...snapshot.val() } as IAsset;
@@ -47,8 +49,19 @@ const AssetStore = () => {
     organisationId: IOrganisation['id'],
     asset: IAsset,
   ) => {
+    const assetFolderName = getAssetFolder(asset);
+    if (
+      !organisationId ||
+      !assetFolderName ||
+      !asset.namespace ||
+      !asset.contractName
+    )
+      return;
     return await set(
-      ref(database, `/organisations/${organisationId}/assets/${asset.uuid}`),
+      ref(
+        database,
+        `/organisations/${organisationId}/assets/${assetFolderName}`,
+      ),
       asset,
     );
   };
@@ -62,23 +75,35 @@ const AssetStore = () => {
 
   const removeAsset = async (
     organisationId: IOrganisation['id'],
-    assetId: string,
+    asset: IAsset,
     userToken?: IdTokenResult,
   ) => {
     if (!userToken?.claims.orgAdmin) return;
 
+    const assetFolderName = getAssetFolder(asset);
+    if (!organisationId || !assetFolderName) return;
+
     return await set(
-      ref(database, `/organisations/${organisationId}/assets/${assetId}`),
+      ref(
+        database,
+        `/organisations/${organisationId}/assets/${assetFolderName}`,
+      ),
       null,
     );
   };
 
   const getAsset = async (
     organisationId: IOrganisation['id'],
-    assetId: string,
+    asset: IAsset,
   ) => {
+    const assetFolderName = getAssetFolder(asset);
+    if (!organisationId || !assetFolderName) return;
+
     return await get(
-      ref(database, `/organisations/${organisationId}/assets/${assetId}`),
+      ref(
+        database,
+        `/organisations/${organisationId}/assets/${assetFolderName}`,
+      ),
     );
   };
 

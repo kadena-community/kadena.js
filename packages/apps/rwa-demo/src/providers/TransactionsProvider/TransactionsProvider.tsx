@@ -8,7 +8,9 @@ import {
   TXTYPES,
 } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { useNetwork } from '@/hooks/networks';
+import { useOrganisation } from '@/hooks/organisation';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { analyticsEvent } from '@/utils/analytics';
 import { interpretMessage } from '@/utils/interpretMessage';
@@ -32,6 +34,8 @@ export const interpretErrorMessage = (
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const client = useApolloClient();
+  const { organisation } = useOrganisation();
+  const { asset } = useAsset();
   const { addNotification } = useNotifications();
   const { account } = useAccount();
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -102,7 +106,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
             message: data?.result?.status,
           });
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          store.removeTransaction(data);
+          store.removeTransaction(data, organisation?.id, asset);
         },
       );
 
@@ -140,7 +144,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       return [...v, data];
     });
 
-    await store.addTransaction(data);
+    await store.addTransaction(data, organisation?.id, asset);
 
     return data;
   };
@@ -155,7 +159,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const init = async () => {
-    store.listenToTransactions(listenToTransactions);
+    store.listenToTransactions(listenToTransactions, organisation?.id, asset);
   };
   useEffect(() => {
     if (!account) return;

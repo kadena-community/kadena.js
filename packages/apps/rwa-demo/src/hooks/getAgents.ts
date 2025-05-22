@@ -12,6 +12,8 @@ import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
 import { store } from '@/utils/store';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { useOrganisation } from './organisation';
+import { useUser } from './user';
 
 export type EventQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
@@ -30,6 +32,8 @@ export const getEventsSubscription = (
 ): Apollo.DocumentNode => coreEvents;
 
 export const useGetAgents = () => {
+  const { organisation } = useOrganisation();
+  const { user } = useUser();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
   const {
     loading: addedLoading,
@@ -127,7 +131,7 @@ export const useGetAgents = () => {
       })
       .filter((v) => v !== undefined) ?? []) as IRecord[];
 
-    const aliases = await store.getAccounts();
+    const aliases = await store.getAccounts(organisation?.id, user);
     const filteredData = setAliasesToAccounts(
       [
         ...filterRemovedRecords([

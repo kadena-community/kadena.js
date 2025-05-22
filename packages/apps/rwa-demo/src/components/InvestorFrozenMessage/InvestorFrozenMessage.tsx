@@ -1,5 +1,7 @@
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { useFreeze } from '@/hooks/freeze';
+import { useOrganisation } from '@/hooks/organisation';
 import { store } from '@/utils/store';
 import { Notification, NotificationHeading } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -10,13 +12,19 @@ interface IProps {
 }
 
 export const InvestorFrozenMessage: FC<IProps> = ({ investorAccount }) => {
+  const { organisation } = useOrganisation();
+  const { asset } = useAsset();
   const { isInvestor, account } = useAccount();
   const { frozen } = useFreeze({ investorAccount });
   const [message, setMessage] = useState<string>();
 
   const init = async () => {
     if (!account) return;
-    const result = await store.getFrozenMessage(account.address);
+    const result = await store.getFrozenMessage(
+      account.address,
+      organisation?.id,
+      asset,
+    );
     setMessage(result);
   };
 

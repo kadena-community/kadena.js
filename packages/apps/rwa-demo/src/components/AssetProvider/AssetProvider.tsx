@@ -50,7 +50,7 @@ export interface IAssetContext {
     namespace: string;
   }) => IAsset | undefined;
   addExistingAsset: (name: string) => IAsset | undefined;
-  removeAsset: (uuid: string) => void;
+  removeAsset: (asset: IAsset) => void;
   getAsset: (
     uuid: string,
     account: IWalletAccount,
@@ -64,7 +64,7 @@ export const AssetContext = createContext<IAssetContext>({
   setAsset: () => {},
   addAsset: () => undefined,
   addExistingAsset: () => undefined,
-  removeAsset: (uuid: string) => undefined,
+  removeAsset: (asset: IAsset) => undefined,
   getAsset: async () => undefined,
   maxCompliance: () => -1,
 });
@@ -81,7 +81,7 @@ export const getEventsDocument = (
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
-  const { account } = useAccount();
+  const { account, checkAccountAssetRoles } = useAccount();
   const { organisation } = useOrganisation();
   const { userToken } = useUser();
   const [assets, setAssets] = useState<IAsset[]>([]);
@@ -94,7 +94,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
       variables: {
-        qualifiedName: `${getAssetUtil()}.COMPLIANCE-PARAMETERS`,
+        qualifiedName: `${getAssetUtil(asset)}.COMPLIANCE-PARAMETERS`,
       },
     },
   );
@@ -106,7 +106,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const result = localStorage.getItem(selectedKey);
     if (!result) return;
     const asset = JSON.parse(result);
-    assetStore.listenToAsset(organisationId, asset.uuid, setAsset);
+    assetStore.listenToAsset(organisationId, asset, setAsset);
   };
   useEffect(() => {
     if (!organisation?.id) return;
@@ -175,8 +175,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     window.dispatchEvent(new Event(selectedKey));
   };
 
-  const removeAsset = async (uuid: string) => {
-    await assetStore.removeAsset(organisation!.id, uuid, userToken);
+  const removeAsset = async (asset: IAsset) => {
+    await assetStore.removeAsset(organisation!.id, asset, userToken);
   };
 
   const addAsset = ({
@@ -263,6 +263,12 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     assetStore.updateAsset(organisation.id, data);
   }, [asset?.contractName, supply]);
+
+  // when the account or the asset changes, we need to check the roles of the account
+  useEffect(() => {
+    if (!asset || !account) return;
+    checkAccountAssetRoles(asset);
+  }, [asset?.contractName, account?.address]);
 
   useEffect(() => {
     if (

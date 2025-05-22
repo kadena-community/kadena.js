@@ -7,6 +7,7 @@ import { getAsset } from '@/utils/getAsset';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
 
 export type EventSubscriptionQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
@@ -24,6 +25,7 @@ export const useFreeze = ({
   investorAccount?: string;
 }) => {
   const { account } = useAccount();
+  const { asset } = useAsset();
   const [frozen, setFrozen] = useState<boolean>(true);
 
   const { data } = useEventSubscriptionSubscription({
@@ -39,6 +41,7 @@ export const useFreeze = ({
     const res = await isFrozen({
       investorAccount: investorAccountProp,
       account: accountProp,
+      asset,
     });
 
     if (typeof res === 'boolean') {
