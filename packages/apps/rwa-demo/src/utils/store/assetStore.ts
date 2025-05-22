@@ -1,6 +1,6 @@
-import { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
-import { IdTokenResult } from 'firebase/auth';
+import type { IdTokenResult } from 'firebase/auth';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { database } from './firebase';
 

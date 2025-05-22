@@ -114,6 +114,30 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     init(organisation?.id);
   }, [organisation]);
 
+  const getAsset = async (
+    uuid: string,
+    account: IWalletAccount,
+  ): Promise<IAsset | undefined> => {
+    const data = assets.find((a) => a.uuid === uuid);
+    const extraAssetData = await getComplianceRules();
+
+    const supplyResult = (await supplyService({
+      account: account!,
+    })) as number;
+
+    if (!data) return;
+
+    const foundAsset = {
+      ...data,
+      compliance: { ...extraAssetData },
+      supply: supplyResult ?? 0,
+    };
+
+    await assetStore.updateAsset(organisation!.id, foundAsset);
+
+    return foundAsset;
+  };
+
   const storageListener = useCallback(
     async (event: StorageEvent | Event) => {
       if (
@@ -129,7 +153,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       const storageAsset = JSON.parse(result);
       const foundAsset = await getAsset(storageAsset.uuid, account);
       if (!foundAsset) return;
-      assetStore.updateAsset(organisation.id, foundAsset);
+      await assetStore.updateAsset(organisation.id, foundAsset);
 
       window.location.href = '/';
     },
@@ -151,32 +175,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     window.dispatchEvent(new Event(selectedKey));
   };
 
-  const getAsset = async (
-    uuid: string,
-    account: IWalletAccount,
-  ): Promise<IAsset | undefined> => {
-    const data = assets.find((a) => a.uuid === uuid);
-    const extraAssetData = await getComplianceRules();
-
-    const supplyResult = (await supplyService({
-      account: account!,
-    })) as number;
-
-    if (!data) return;
-
-    const foundAsset = {
-      ...data,
-      compliance: { ...extraAssetData },
-      supply: supplyResult ?? 0,
-    };
-
-    assetStore.updateAsset(organisation!.id, foundAsset);
-
-    return foundAsset;
-  };
-  const removeAsset = (uuid: string) => {
-    const data = assets.filter((a) => a.uuid !== uuid);
-    assetStore.removeAsset(organisation!.id, uuid, userToken);
+  const removeAsset = async (uuid: string) => {
+    await assetStore.removeAsset(organisation!.id, uuid, userToken);
   };
 
   const addAsset = ({
@@ -218,6 +218,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
           a.contractName === asset.contractName,
       )
     ) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       assetStore.addAsset(organisation!.id, asset);
     }
 
@@ -249,6 +250,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!asset || !organisation) return;
     const data = { ...asset, investorCount } as IAsset;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     assetStore.updateAsset(organisation.id, data);
   }, [investorCount]);
 
@@ -256,6 +259,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!asset || !organisation) return;
 
     const data = { ...asset, supply } as IAsset;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     assetStore.updateAsset(organisation.id, data);
   }, [asset?.contractName, supply]);
 
@@ -290,6 +295,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
           },
         },
       } as IAsset;
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       assetStore.updateAsset(organisation.id, newData);
     }
   }, [complianceSubscriptionData]);
@@ -299,6 +305,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!asset || !organisation) return;
 
     const data = { ...asset, compliance: { ...complianceRules } } as IAsset;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     assetStore.updateAsset(organisation.id, data);
   }, [complianceRules]);
 

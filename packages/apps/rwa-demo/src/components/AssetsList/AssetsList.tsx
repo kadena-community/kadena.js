@@ -11,7 +11,7 @@ import {
   SectionCardHeader,
   useNotifications,
 } from '@kadena/kode-ui/patterns';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 export const AssetsList: FC = () => {
   const { assets, getAsset, setAsset } = useAsset();
