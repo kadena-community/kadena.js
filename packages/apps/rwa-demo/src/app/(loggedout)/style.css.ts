@@ -38,6 +38,12 @@ export const cardClass = style([
   },
 ]);
 
+export const focussedLayoutChildrenWrapperClass = style({});
+
+globalStyle(`${focussedLayoutChildrenWrapperClass} > *:only-child`, {
+  minHeight: '40dvh',
+});
+
 export const footerClass = style({});
 
 globalStyle(`${footerClass} *`, {
