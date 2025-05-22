@@ -40,6 +40,7 @@ export const AssetsList: FC = () => {
         />
         <SectionCardBody>
           <CompactTable
+            variant="open"
             fields={[
               {
                 key: 'contractName',
@@ -55,6 +56,7 @@ export const AssetsList: FC = () => {
                 label: '',
                 key: '',
                 width: '10%',
+                align: 'end',
                 render: CompactTableFormatters.FormatActions({
                   trigger: (
                     <Button
