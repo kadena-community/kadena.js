@@ -63,7 +63,7 @@ export const alerts: IAlert[] = [
       account: GalxeAccount,
       minBalance: MINXGALXEBALANCE,
     },
-    chainIds: ['6'],
+    chainIds: ['8'],
     slackChannelIds: [channelId],
     messageType: {
       slack: MESSAGETYPES.slack.BALANCEALERT,
