@@ -14,7 +14,7 @@ import { useOrganisation } from '@/hooks/organisation';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { analyticsEvent } from '@/utils/analytics';
 import { interpretMessage } from '@/utils/interpretMessage';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useApolloClient } from '@apollo/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
@@ -44,6 +44,11 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [txsButtonRef, setTxsButtonRefData] =
     useState<HTMLButtonElement | null>(null);
   const { activeNetwork } = useNetwork();
+
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const addListener = useCallback(
     (data: ITransaction, account: IWalletAccount) => {
@@ -106,7 +111,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
             message: data?.result?.status,
           });
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          store.removeTransaction(data, organisation?.id, asset);
+          store?.removeTransaction(data, asset);
         },
       );
 
@@ -144,7 +149,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       return [...v, data];
     });
 
-    await store.addTransaction(data, organisation?.id, asset);
+    await store?.addTransaction(data, asset);
 
     return data;
   };
@@ -159,7 +164,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const init = async () => {
-    store.listenToTransactions(listenToTransactions, organisation?.id, asset);
+    store?.listenToTransactions(listenToTransactions, asset);
   };
   useEffect(() => {
     if (!account) return;

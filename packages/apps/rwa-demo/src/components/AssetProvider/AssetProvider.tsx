@@ -11,7 +11,6 @@ import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import { useUser } from '@/hooks/user';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
   IComplianceProps,
@@ -23,10 +22,16 @@ import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
 import { getAsset as getAssetUtil } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
-import { assetStore } from '@/utils/store/assetStore';
+import { AssetStore } from '@/utils/store/assetStore';
 import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 export interface IAsset {
   uuid: string;
@@ -83,7 +88,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
   const { account, checkAccountAssetRoles } = useAccount();
   const { organisation } = useOrganisation();
-  const { userToken } = useUser();
   const [assets, setAssets] = useState<IAsset[]>([]);
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
@@ -99,14 +103,19 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   );
 
+  const assetStore = useMemo(() => {
+    if (!organisation) return;
+    return AssetStore(organisation);
+  }, [organisation]);
+
   const init = async (organisationId: string) => {
-    assetStore.listenToAssets(organisationId, setAssets);
+    assetStore?.listenToAssets(setAssets);
 
     //
     const result = localStorage.getItem(selectedKey);
     if (!result) return;
     const asset = JSON.parse(result);
-    assetStore.listenToAsset(organisationId, asset, setAsset);
+    assetStore?.listenToAsset(asset, setAsset);
   };
   useEffect(() => {
     if (!organisation?.id) return;
@@ -133,7 +142,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       supply: supplyResult ?? 0,
     };
 
-    await assetStore.updateAsset(organisation!.id, foundAsset);
+    await assetStore?.updateAsset(foundAsset);
 
     return foundAsset;
   };
@@ -153,7 +162,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       const storageAsset = JSON.parse(result);
       const foundAsset = await getAsset(storageAsset.uuid, account);
       if (!foundAsset) return;
-      await assetStore.updateAsset(organisation.id, foundAsset);
+      await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
     },
@@ -176,7 +185,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const removeAsset = async (asset: IAsset) => {
-    await assetStore.removeAsset(organisation!.id, asset, userToken);
+    await assetStore?.removeAsset(asset);
   };
 
   const addAsset = ({
@@ -219,7 +228,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       )
     ) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      assetStore.addAsset(organisation!.id, asset);
+      assetStore?.addAsset(asset);
     }
 
     return asset;
@@ -252,7 +261,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const data = { ...asset, investorCount } as IAsset;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore.updateAsset(organisation.id, data);
+    assetStore?.updateAsset(data);
   }, [investorCount]);
 
   useEffect(() => {
@@ -261,7 +270,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const data = { ...asset, supply } as IAsset;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore.updateAsset(organisation.id, data);
+    assetStore?.updateAsset(data);
   }, [asset?.contractName, supply]);
 
   // when the account or the asset changes, we need to check the roles of the account
@@ -302,7 +311,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         },
       } as IAsset;
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      assetStore.updateAsset(organisation.id, newData);
+      assetStore?.updateAsset(newData);
     }
   }, [complianceSubscriptionData]);
 
@@ -312,7 +321,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const data = { ...asset, compliance: { ...complianceRules } } as IAsset;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore.updateAsset(organisation.id, data);
+    assetStore?.updateAsset(data);
   }, [complianceRules]);
 
   return (

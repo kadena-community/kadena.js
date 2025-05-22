@@ -43,9 +43,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     useGetAccountKDABalance({
       accountAddress: account?.address,
     });
-  const { ...accountRoles } = useGetAgentRoles({
-    agent: account?.address,
-  });
+  const { setAssetRolesForAccount, ...accountRoles } = useGetAgentRoles();
   const { data: balance } = useGetInvestorBalance({
     investorAccount: account?.address,
   });
@@ -191,6 +189,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       Promise.allSettled([
+        setAssetRolesForAccount(account, asset),
         checkIsOwner(account, asset),
         checkIsComplianceOwner(account, asset),
         checkIsInvestor(account, asset),

@@ -1,5 +1,7 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import { IAsset } from '@/components/AssetProvider/AssetProvider';
+import { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { AGENTROLES } from '@/services/addAgent';
 import { getAgentRoles } from '@/services/getAgentRoles';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
@@ -31,37 +33,37 @@ export const getEventsSubscription = (
   },
 ): Apollo.DocumentNode => coreEvents;
 
-export const useGetAgentRoles = ({
-  agent,
-}: {
-  agent?: string;
-}): IAgentHookProps => {
+export const useGetAgentRoles = (): IAgentHookProps & {
+  setAssetRolesForAccount: (account: IWalletAccount, asset?: IAsset) => void;
+} => {
   const [innerData, setInnerData] = useState<string[]>([]);
   const [isMounted, setIsMounted] = useState(false);
+  const [agent, setAgent] = useState<IWalletAccount | undefined>();
+  const [asset, setAsset] = useState<IAsset | undefined>();
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-ROLES-UPDATED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-ROLES-UPDATED`,
     },
   });
 
   const { data: subscriptionAgentRemovedData } =
     useEventSubscriptionSubscription({
       variables: {
-        qualifiedName: `${getAsset()}.AGENT-REMOVED`,
+        qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
       },
     });
 
   const { data: subscriptionAgentAddedData } = useEventSubscriptionSubscription(
     {
       variables: {
-        qualifiedName: `${getAsset()}.AGENT-ADDED`,
+        qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
       },
     },
   );
 
   const initInnerData = async (agentArg: string) => {
-    const data = await getAgentRoles({ agent: agentArg });
+    const data = await getAgentRoles({ agent: agentArg, asset });
 
     setInnerData(data);
     setIsMounted(true);
@@ -74,7 +76,7 @@ export const useGetAgentRoles = ({
       return;
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData(agent);
+    initInnerData(agent.address);
   }, [agent]);
 
   useEffect(() => {
@@ -89,7 +91,7 @@ export const useGetAgentRoles = ({
         const params = JSON.parse(event.parameters ?? '[]');
         if (params[0] === agent && !!agent) {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          initInnerData(agent!);
+          initInnerData(agent.address);
         }
       });
   }, [
@@ -113,11 +115,22 @@ export const useGetAgentRoles = ({
     return innerData.indexOf(AGENTROLES.TRANSFERMANAGER) >= 0;
   }, [innerData]);
 
+  const setAssetRolesForAccount = async (
+    account: IWalletAccount,
+    asset?: IAsset,
+  ) => {
+    setAgent(account);
+    setAsset(asset);
+  };
+
+  console.log({ innerData });
+
   return {
     isMounted,
     getAll,
     isAgentAdmin,
     isFreezer,
     isTransferManager,
+    setAssetRolesForAccount,
   };
 };

@@ -4,11 +4,12 @@ import { interpretErrorMessage } from '@/providers/TransactionsProvider/Transact
 import type { IBatchRegisterIdentityProps } from '@/services/batchRegisterIdentity';
 import { batchRegisterIdentity } from '@/services/batchRegisterIdentity';
 import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
 
 export const useBatchAddInvestors = () => {
@@ -17,6 +18,11 @@ export const useBatchAddInvestors = () => {
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: Omit<IBatchRegisterIdentityProps, 'agent'>,
@@ -47,7 +53,7 @@ export const useBatchAddInvestors = () => {
       });
     } finally {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await store.setAllAccounts(data);
+      await store?.setAllAccounts(data);
     }
   };
 

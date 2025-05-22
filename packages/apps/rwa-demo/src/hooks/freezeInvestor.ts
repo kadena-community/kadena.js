@@ -4,11 +4,12 @@ import { interpretErrorMessage } from '@/providers/TransactionsProvider/Transact
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
 
 export const useFreezeInvestor = () => {
@@ -17,6 +18,11 @@ export const useFreezeInvestor = () => {
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: ISetAddressFrozenProps,
@@ -25,7 +31,7 @@ export const useFreezeInvestor = () => {
     try {
       const tx = await setAddressFrozen(data, account!);
 
-      await store.setFrozenMessage(data);
+      await store?.setFrozenMessage(data);
       const signedTransaction = await sign(tx);
 
       if (!signedTransaction) return;

@@ -4,12 +4,13 @@ import { interpretErrorMessage } from '@/providers/TransactionsProvider/Transact
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
 
 export const useAddInvestor = ({
@@ -23,6 +24,11 @@ export const useAddInvestor = ({
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
@@ -54,7 +60,7 @@ export const useAddInvestor = ({
         message: interpretErrorMessage(e.message),
       });
     } finally {
-      await store.setAccount(data);
+      await store?.setAccount(data);
     }
   };
 

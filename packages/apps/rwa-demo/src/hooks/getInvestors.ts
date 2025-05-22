@@ -8,8 +8,8 @@ import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
 import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
-import { store } from '@/utils/store';
-import { useEffect, useState } from 'react';
+import { RWAStore } from '@/utils/store';
+import { useEffect, useMemo, useState } from 'react';
 import { useOrganisation } from './organisation';
 import { useUser } from './user';
 
@@ -21,6 +21,11 @@ export const useGetInvestors = () => {
   const { organisation } = useOrganisation();
   const { user } = useUser();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
+
   const {
     loading: addedLoading,
     data: addedData,
@@ -85,7 +90,7 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
-    const aliases = await store.getAccounts(organisation?.id, user);
+    const aliases = (await store?.getAccounts(user)) ?? [];
 
     setInnerData(
       setAliasesToAccounts(
@@ -137,7 +142,7 @@ export const useGetInvestors = () => {
         } as IRecord;
       }) ?? [];
 
-    const aliases = await store.getAccounts(organisation?.id, user);
+    const aliases = (await store?.getAccounts(user)) ?? [];
 
     setInnerData((oldValues) =>
       setAliasesToAccounts(
@@ -163,7 +168,7 @@ export const useGetInvestors = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const off = store.listenToAccounts(listenToAccounts);
+    const off = store?.listenToAccounts(listenToAccounts);
     return off;
   }, []);
 

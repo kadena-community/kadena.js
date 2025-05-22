@@ -23,15 +23,16 @@ const GetAccountsLocalStorageKey = (asset?: IAsset) => {
   return `${getAssetFolder(asset)}_${LOCALSTORAGE_ACCOUNTS}`;
 };
 
-const RWAStore = () => {
-  const addTransaction = async (
-    data: ITransaction,
-    organisationId?: IOrganisation['id'],
-    asset?: IAsset,
-  ) => {
+export const RWAStore = (organisation: IOrganisation) => {
+  if (!organisation) {
+    throw new Error('no organisation or user found');
+  }
+  const dbLocationString = `/organisations/${organisation.id}`;
+
+  const addTransaction = async (data: ITransaction, asset?: IAsset) => {
     const assetFolder = getAssetFolder(asset);
 
-    if (!organisationId || !assetFolder) return;
+    if (!assetFolder) return;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { listener, ...newData } = data;
@@ -39,41 +40,33 @@ const RWAStore = () => {
     await set(
       ref(
         database,
-        `/organisations/${organisationId}/assets/${assetFolder}/transactions/${data.uuid}`,
+        `${dbLocationString}/assets/${assetFolder}/transactions/${data.uuid}`,
       ),
       newData,
     );
   };
 
-  const removeTransaction = async (
-    data: ITransaction,
-    organisationId?: IOrganisation['id'],
-    asset?: IAsset,
-  ) => {
+  const removeTransaction = async (data: ITransaction, asset?: IAsset) => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return;
+    if (!assetFolder) return;
 
     await set(
       ref(
         database,
-        `/organisations/${organisationId}/assets/${assetFolder}/transactions/${data.uuid}`,
+        `${dbLocationString}/assets/${assetFolder}/transactions/${data.uuid}`,
       ),
       null,
     );
   };
 
   const getOverallTransactions = async (
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
   ): Promise<ITransaction[]> => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return [];
+    if (!assetFolder) return [];
 
     const snapshot = await get(
-      ref(
-        database,
-        `/organisations/${organisationId}/assets/${assetFolder}/transactions`,
-      ),
+      ref(database, `${dbLocationString}/assets/${assetFolder}/transactions`),
     );
     const data = snapshot.toJSON() as ITransaction;
 
@@ -88,18 +81,17 @@ const RWAStore = () => {
   //TODO: this needs to be more efficient
   const listenToTransactions = (
     setDataCallback: (transactions: ITransaction[]) => void,
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return [];
+    if (!assetFolder) return [];
 
     const accountRef = ref(
       database,
-      `/organisations/${organisationId}/assets/${assetFolder}/transactions`,
+      `${dbLocationString}/assets/${assetFolder}/transactions`,
     );
     onValue(accountRef, async (snapshot) => {
-      const data = await getOverallTransactions(organisationId, asset);
+      const data = await getOverallTransactions(asset);
       setDataCallback(data);
     });
 
@@ -107,15 +99,11 @@ const RWAStore = () => {
   };
 
   const getAccounts = async (
-    organisationId?: IOrganisation['id'],
     user?: User,
   ): Promise<IRegisterIdentityProps[]> => {
-    if (!organisationId || !user) return [];
+    if (!user) return [];
 
-    const accounts = ref(
-      database,
-      `/organisations/${organisationId}/users/${user.uid}`,
-    );
+    const accounts = ref(database, `${dbLocationString}/users/${user.uid}`);
 
     return Object.entries(accounts).map(
       ([_, val]) => val as IRegisterIdentityProps,
@@ -128,28 +116,25 @@ const RWAStore = () => {
     }: {
       account: string;
     },
-
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
     user?: User,
   ): Promise<IRegisterIdentityProps | undefined> => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return;
+    if (!assetFolder) return;
 
-    const accounts = await getAccounts(organisationId, user);
+    const accounts = await getAccounts(user);
     return accounts.find((acc) => acc.accountName === account);
   };
 
   const setAccount = async (
     { accountName, alias }: Omit<IRegisterIdentityProps, 'agent'>,
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
     user?: User,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return;
+    if (!assetFolder) return;
 
-    const accounts = await getAccounts(organisationId, user);
+    const accounts = await getAccounts(user);
 
     let isNew = true;
     const newAccountsArray = accounts.map((account) => {
@@ -176,30 +161,24 @@ const RWAStore = () => {
 
   const setAllAccounts = async (
     { accounts }: { accounts: ICSVAccount[] },
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
   ) => {
     return accounts.map((account) =>
-      setAccount(
-        { accountName: account.account, alias: account.alias },
-        organisationId,
-        asset,
-      ),
+      setAccount({ accountName: account.account, alias: account.alias }, asset),
     );
   };
 
   const listenToAccount = (
     account: string,
     setDataCallback: (account: IRegisterIdentityProps) => void,
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
     user?: User,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder || !user) return;
+    if (!assetFolder || !user) return;
 
     const storageListener = async () => {
-      const accounts = await getAccounts(organisationId, user);
+      const accounts = await getAccounts(user);
 
       const foundAccount = accounts.find((acc) => acc.accountName === account);
       if (!foundAccount) return;
@@ -221,15 +200,14 @@ const RWAStore = () => {
 
   const listenToAccounts = (
     setDataCallback: (aliases: any[]) => void,
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
     user?: User,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return;
+    if (!assetFolder) return;
 
     const storageListener = async () => {
-      const accounts = await getAccounts(organisationId, user);
+      const accounts = await getAccounts(user);
       setDataCallback(accounts);
     };
 
@@ -247,16 +225,15 @@ const RWAStore = () => {
 
   const getFrozenMessage = async (
     account: string,
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
   ): Promise<string | undefined> => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return;
+    if (!assetFolder) return;
 
     const snapshot = await get(
       ref(
         database,
-        `/organisations/${organisationId}/assets/${assetFolder}/accounts/${getAccountVal(account)}/frozenMessage`,
+        `${dbLocationString}/assets/${assetFolder}/accounts/${getAccountVal(account)}/frozenMessage`,
       ),
     );
 
@@ -265,17 +242,16 @@ const RWAStore = () => {
 
   const setFrozenMessage = async (
     data: ISetAddressFrozenProps,
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return [];
+    if (!assetFolder) return [];
 
     if (data.message) {
       await set(
         ref(
           database,
-          `/organisations/${organisationId}/assets/${assetFolder}/accounts/${getAccountVal(data.investorAccount)}/frozenMessage`,
+          `${dbLocationString}/assets/${assetFolder}/accounts/${getAccountVal(data.investorAccount)}/frozenMessage`,
         ),
         data.message,
       );
@@ -283,7 +259,7 @@ const RWAStore = () => {
       await remove(
         ref(
           database,
-          `/organisations/${organisationId}/assets/${assetFolder}/accounts/${getAccountVal(data.investorAccount)}/frozenMessage`,
+          `${dbLocationString}/assets/${assetFolder}/accounts/${getAccountVal(data.investorAccount)}/frozenMessage`,
         ),
       );
     }
@@ -291,11 +267,10 @@ const RWAStore = () => {
 
   const setFrozenMessages = async (
     data: IBatchSetAddressFrozenProps,
-    organisationId?: IOrganisation['id'],
     asset?: IAsset,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!organisationId || !assetFolder) return [];
+    if (!assetFolder) return [];
 
     return data.investorAccounts.map((account) =>
       setFrozenMessage(
@@ -304,7 +279,6 @@ const RWAStore = () => {
           pause: data.pause,
           message: data.message,
         },
-        organisationId,
         asset,
       ),
     );
@@ -326,5 +300,3 @@ const RWAStore = () => {
     getFrozenMessage,
   };
 };
-
-export const store = RWAStore();

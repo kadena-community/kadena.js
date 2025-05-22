@@ -3,7 +3,7 @@
 import type { IUserData } from '@/contexts/UserContext/UserContext';
 import { UserContext } from '@/contexts/UserContext/UserContext';
 import { useOrganisation } from '@/hooks/organisation';
-import { userStore } from '@/utils/store/userStore';
+import { UserStore } from '@/utils/store/userStore';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { IdTokenResult, User } from 'firebase/auth';
 import {
@@ -15,7 +15,7 @@ import {
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { IWalletAccount } from '../AccountProvider/AccountType';
 
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -27,10 +27,15 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const { addNotification } = useNotifications();
 
+  const userStore = useMemo(() => {
+    if (!organisation || !user) return;
+    return UserStore(organisation, user);
+  }, [organisation, user]);
+
   const init = async (user: User) => {
     if (!organisation?.id) return;
 
-    await userStore.listenToUser(organisation.id, user.uid, setUserData);
+    await userStore?.listenToUser(setUserData);
   };
 
   useEffect(() => {
@@ -154,7 +159,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const addAccount = useCallback(
     async (wallet: IWalletAccount) => {
       if (!user || !organisation) return;
-      await userStore.addAccountAddress(user, organisation, wallet);
+      await userStore?.addAccountAddress(wallet);
     },
     [user, organisation],
   );
@@ -162,7 +167,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const removeAccount = useCallback(
     async (address: string) => {
       if (!user || !organisation) return;
-      await userStore.removeAccountAddress(user, organisation, address);
+      await userStore?.removeAccountAddress(address);
     },
     [user, organisation],
   );

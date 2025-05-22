@@ -5,11 +5,12 @@ import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { editAgent } from '@/services/editAgent';
 import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
 
 export const useEditAgent = () => {
@@ -18,6 +19,11 @@ export const useEditAgent = () => {
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: IAddAgentProps,
@@ -45,7 +51,7 @@ export const useEditAgent = () => {
         message: interpretErrorMessage(e.message),
       });
     } finally {
-      await store.setAccount(data);
+      await store?.setAccount(data);
     }
   };
 
