@@ -16,15 +16,23 @@ export const useTogglePartiallyFreezeTokens = ({
   investorAccount: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { account, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (data: ITogglePartiallyFreezeTokensProps) => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
     try {
-      const tx = await togglePartiallyFreezeTokens(data, account!);
+      const tx = await togglePartiallyFreezeTokens(data, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -61,6 +69,7 @@ export const useTogglePartiallyFreezeTokens = ({
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

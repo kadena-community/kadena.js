@@ -19,7 +19,7 @@ export const useAddInvestor = ({
   investorAccount?: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
@@ -33,6 +33,15 @@ export const useAddInvestor = ({
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     const newData: IRegisterIdentityProps = {
       ...data,
       agent: account!,
@@ -41,7 +50,7 @@ export const useAddInvestor = ({
       //if the account is already investor, no need to add it again
       if (data.alreadyExists) return;
 
-      const tx = await registerIdentity(newData);
+      const tx = await registerIdentity(newData, asset);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -82,6 +91,7 @@ export const useAddInvestor = ({
     isOwner,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

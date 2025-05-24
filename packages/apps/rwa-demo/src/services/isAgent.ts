@@ -5,14 +5,13 @@ import { Pact } from '@kadena/client';
 
 export interface IIsAgentProps {
   agent: string;
-  asset: IAsset;
 }
 
-export const isAgent = async (data: IIsAgentProps) => {
+export const isAgent = async (data: IIsAgentProps, asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset(data.asset)}.is-agent (read-string 'agent))`)
+    .execution(`(${getAsset(asset)}.is-agent (read-string 'agent))`)
     .setMeta({
       senderAccount: data.agent,
       chainId: getNetwork().chainId,

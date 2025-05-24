@@ -91,9 +91,9 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
-  const { paused } = usePaused();
-  const { data: supply } = useSupply();
-  const { data: investorCount } = useGetInvestorCount();
+  const { paused } = usePaused(asset);
+  const { data: supply } = useSupply(asset);
+  const { data: investorCount } = useGetInvestorCount(asset);
   const { data: complianceRules } = useGetComplianceRules({ asset });
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
@@ -128,13 +128,15 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     account: IWalletAccount,
   ): Promise<IAsset | undefined> => {
     const data = assets.find((a) => a.uuid === uuid);
-    const extraAssetData = await getComplianceRules();
-
-    const supplyResult = (await supplyService({
-      account: account!,
-    })) as number;
-
     if (!data) return;
+    const extraAssetData = await getComplianceRules(data);
+
+    const supplyResult = (await supplyService(
+      {
+        account: account!,
+      },
+      data,
+    )) as number;
 
     const foundAsset = {
       ...data,
@@ -275,9 +277,9 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // when the account or the asset changes, we need to check the roles of the account
   useEffect(() => {
-    if (!asset || !account) return;
+    if (!account || !asset) return;
     checkAccountAssetRoles(asset);
-  }, [asset?.contractName, account?.address]);
+  }, [asset?.contractName, account?.address, checkAccountAssetRoles]);
 
   useEffect(() => {
     if (

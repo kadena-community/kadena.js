@@ -161,7 +161,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!user || !organisation) return;
       await userStore?.addAccountAddress(wallet);
     },
-    [user, organisation],
+    [user, organisation, userStore],
   );
 
   const removeAccount = useCallback(
@@ -169,7 +169,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!user || !organisation) return;
       await userStore?.removeAccountAddress(address);
     },
-    [user, organisation],
+    [user, organisation, userStore],
   );
 
   return (

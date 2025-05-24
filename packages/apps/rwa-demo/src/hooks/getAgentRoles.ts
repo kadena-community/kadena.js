@@ -1,7 +1,7 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import { IAsset } from '@/components/AssetProvider/AssetProvider';
-import { IWalletAccount } from '@/providers/AccountProvider/AccountType';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { AGENTROLES } from '@/services/addAgent';
 import { getAgentRoles } from '@/services/getAgentRoles';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
@@ -62,24 +62,25 @@ export const useGetAgentRoles = (): IAgentHookProps & {
     },
   );
 
-  const initInnerData = async (agentArg: string) => {
-    const data = await getAgentRoles({ agent: agentArg, asset });
+  const initInnerData = async (agentArg: string, asset: IAsset) => {
+    const data = await getAgentRoles({ agent: agentArg }, asset);
 
     setInnerData(data);
     setIsMounted(true);
   };
 
   useEffect(() => {
-    if (!agent) {
+    if (!agent || !asset) {
       setInnerData([]);
       setIsMounted(true);
       return;
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData(agent.address);
-  }, [agent]);
+    initInnerData(agent.address, asset);
+  }, [agent, asset]);
 
   useEffect(() => {
+    if (!asset) return;
     const { events: rolesUpdatedEvents } = subscriptionData ?? {};
     const { events: agentRemovedEvents } = subscriptionAgentRemovedData ?? {};
     const { events: agentAddedEvents } = subscriptionAgentAddedData ?? {};
@@ -91,13 +92,14 @@ export const useGetAgentRoles = (): IAgentHookProps & {
         const params = JSON.parse(event.parameters ?? '[]');
         if (params[0] === agent && !!agent) {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          initInnerData(agent.address);
+          initInnerData(agent.address, asset);
         }
       });
   }, [
     subscriptionData,
     subscriptionAgentRemovedData,
     subscriptionAgentAddedData,
+    asset,
   ]);
 
   const getAll = useCallback(() => {
@@ -122,8 +124,6 @@ export const useGetAgentRoles = (): IAgentHookProps & {
     setAgent(account);
     setAsset(asset);
   };
-
-  console.log({ innerData });
 
   return {
     isMounted,

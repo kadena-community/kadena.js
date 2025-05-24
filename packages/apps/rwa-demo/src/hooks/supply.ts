@@ -1,5 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply } from '@/services/supply';
 import { getAsset } from '@/utils/getAsset';
@@ -17,21 +18,24 @@ export const getEventsDocument = (
   },
 ): Apollo.DocumentNode => coreEvents;
 
-export const useSupply = () => {
+export const useSupply = (asset?: IAsset) => {
   const [data, setData] = useState(0);
   const { account } = useAccount();
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.SUPPLY`,
+      qualifiedName: `${getAsset(asset)}.SUPPLY`,
     },
   });
 
-  const init = async () => {
+  const init = async (asset: IAsset) => {
     if (!account) return;
-    const res = await supply({
-      account: account,
-    });
+    const res = await supply(
+      {
+        account: account,
+      },
+      asset,
+    );
 
     if (typeof res === 'number') {
       setData(res);
@@ -39,9 +43,10 @@ export const useSupply = () => {
   };
 
   useEffect(() => {
+    if (!asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, [account]);
+    init(asset);
+  }, [account, asset]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

@@ -6,10 +6,9 @@ import { Pact } from '@kadena/client';
 
 export interface IIsOwnerProps {
   account: IWalletAccount;
-  asset: IAsset;
 }
 
-export const isOwner = async ({ account, asset }: IIsOwnerProps) => {
+export const isOwner = async ({ account }: IIsOwnerProps, asset: IAsset) => {
   const client = getClient();
   const transaction = Pact.builder
     .execution(

@@ -55,7 +55,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    const resIsAgent = await isAgent({ agent: account.address, asset });
+    const resIsAgent = await isAgent({ agent: account.address }, asset);
     setIsAgentState(!!resIsAgent);
   };
   const checkIsOwner = async (account: IWalletAccount, asset?: IAsset) => {
@@ -63,7 +63,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       setIsOwnerState(false);
       return;
     }
-    const resIsOwner = await isOwner({ account, asset });
+    const resIsOwner = await isOwner({ account }, asset);
     setIsOwnerState(!!resIsOwner);
   };
   const checkIsComplianceOwner = async (
@@ -85,7 +85,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       setIsInvestorState(false);
       return;
     }
-    const resIsInvestor = await isInvestor({ account, asset });
+    const resIsInvestor = await isInvestor({ account }, asset);
     setIsInvestorState(!!resIsInvestor);
   };
   const checkIsFrozen = async (account: IWalletAccount, asset?: IAsset) => {
@@ -94,11 +94,13 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    const res = await isFrozen({
-      investorAccount: account.address,
-      account: account!,
+    const res = await isFrozen(
+      {
+        investorAccount: account.address,
+        account: account!,
+      },
       asset,
-    });
+    );
 
     if (typeof res === 'boolean') {
       setIsFrozenState(res);
@@ -182,7 +184,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const initProps = useCallback(
     async (asset?: IAsset) => {
       setIsMounted(false);
-      if (!account) {
+      if (!account || !asset) {
         setIsMounted(true);
         return;
       }
@@ -203,7 +205,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const checkAccountAssetRoles = useCallback(
-    async (asset: IAsset) => {
+    async (asset?: IAsset) => {
       await initProps(asset);
     },
     [account],

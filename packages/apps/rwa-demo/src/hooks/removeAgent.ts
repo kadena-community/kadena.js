@@ -12,7 +12,7 @@ import { useTransactions } from './transactions';
 
 export const useRemoveAgent = () => {
   const { account, sign, isOwner, isMounted } = useAccount();
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -20,8 +20,17 @@ export const useRemoveAgent = () => {
   const submit = async (
     data: IRemoveAgentProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
-      const tx = await removeAgent(data, account!);
+      const tx = await removeAgent(data, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -47,7 +56,14 @@ export const useRemoveAgent = () => {
     if (!isMounted) return;
 
     setIsAllowed(!paused && !isActiveAccountChangeTx && isOwner);
-  }, [paused, account?.address, isMounted, isActiveAccountChangeTx, isOwner]);
+  }, [
+    paused,
+    account?.address,
+    isMounted,
+    isActiveAccountChangeTx,
+    isOwner,
+    asset,
+  ]);
 
   return { submit, isAllowed };
 };

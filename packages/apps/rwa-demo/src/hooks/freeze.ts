@@ -1,5 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { isFrozen } from '@/services/isFrozen';
@@ -30,19 +31,22 @@ export const useFreeze = ({
 
   const { data } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.ADDRESS-FROZEN`,
+      qualifiedName: `${getAsset(asset)}.ADDRESS-FROZEN`,
     },
   });
 
   const init = async (
     accountProp: IWalletAccount,
     investorAccountProp: string,
+    asset: IAsset,
   ) => {
-    const res = await isFrozen({
-      investorAccount: investorAccountProp,
-      account: accountProp,
+    const res = await isFrozen(
+      {
+        investorAccount: investorAccountProp,
+        account: accountProp,
+      },
       asset,
-    });
+    );
 
     if (typeof res === 'boolean') {
       setFrozen(res);
@@ -50,11 +54,11 @@ export const useFreeze = ({
   };
 
   useEffect(() => {
-    if (!account?.address || !investorAccount) return;
+    if (!account?.address || !investorAccount || !asset) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init(account, investorAccount);
-  }, [account?.address, investorAccount]);
+    init(account, investorAccount, asset);
+  }, [account?.address, investorAccount, asset]);
 
   useEffect(() => {
     if (!data?.events?.length) return;

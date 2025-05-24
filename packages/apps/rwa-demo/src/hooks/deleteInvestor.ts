@@ -19,7 +19,7 @@ export const useDeleteInvestor = ({
   useGetInvestorBalance;
   const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -28,8 +28,17 @@ export const useDeleteInvestor = ({
   const submit = async (
     data: IDeleteIdentityProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
-      const tx = await deleteIdentity(data, account!);
+      const tx = await deleteIdentity(data, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -78,6 +87,7 @@ export const useDeleteInvestor = ({
     isMounted,
     balance,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed, notAllowedReason };

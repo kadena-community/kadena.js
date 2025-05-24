@@ -6,16 +6,13 @@ import { Pact } from '@kadena/client';
 
 export interface IIsInvestorProps {
   account: IWalletAccount;
-  asset: IAsset;
 }
 
-export const isInvestor = async (data: IIsInvestorProps) => {
+export const isInvestor = async (data: IIsInvestorProps, asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(
-      `(${getAsset(data.asset)}.contains-identity (read-string 'investor))`,
-    )
+    .execution(`(${getAsset(asset)}.contains-identity (read-string 'investor))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

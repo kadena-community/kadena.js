@@ -7,17 +7,13 @@ import { Pact } from '@kadena/client';
 export interface IIsFrozenProps {
   investorAccount: string;
   account: IWalletAccount;
-  asset?: IAsset;
 }
 
-export const isFrozen = async (data: IIsFrozenProps) => {
-  if (!data.asset) return;
+export const isFrozen = async (data: IIsFrozenProps, asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(
-      `(${getAsset(data.asset)}.address-frozen (read-string 'investor))`,
-    )
+    .execution(`(${getAsset(asset)}.address-frozen (read-string 'investor))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

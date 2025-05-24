@@ -10,6 +10,7 @@ import { getAsset } from '@/utils/getAsset';
 import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
 import { RWAStore } from '@/utils/store';
 import { useEffect, useMemo, useState } from 'react';
+import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useUser } from './user';
 
@@ -19,6 +20,7 @@ export type EventQueryVariables = Exact<{
 
 export const useGetInvestors = () => {
   const { organisation } = useOrganisation();
+  const { asset } = useAsset();
   const { user } = useUser();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
   const store = useMemo(() => {
@@ -32,27 +34,27 @@ export const useGetInvestors = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: addedSubscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
   });
 
   const { data: removedSubscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
   });
 

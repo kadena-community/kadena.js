@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -15,11 +16,12 @@ export interface ISetComplianceParametersProps {
 export const setComplianceParameters = async (
   data: ISetComplianceParametersProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   return Pact.builder
     .execution(
       `
-      (${getAsset()}.set-compliance-parameters (read-msg "compliance-parameters"))`,
+      (${getAsset(asset)}.set-compliance-parameters (read-msg "compliance-parameters"))`,
     )
     .addData('compliance-parameters', {
       'supply-limit': new PactNumber(data.maxSupply).toPactDecimal(),
@@ -34,8 +36,8 @@ export const setComplianceParameters = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.OWNER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
 

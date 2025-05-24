@@ -1,33 +1,35 @@
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { getInvestorCount } from '@/services/getInvestorCount';
 import { getAsset } from '@/utils/getAsset';
 import { useEffect, useState } from 'react';
 
-export const useGetInvestorCount = () => {
+export const useGetInvestorCount = (asset?: IAsset) => {
   const [innerData, setInnerData] = useState<number>(0);
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.RECONCILE`,
+      qualifiedName: `${getAsset(asset)}.RECONCILE`,
     },
   });
 
-  const initInnerData = async () => {
-    const data = await getInvestorCount();
+  const initInnerData = async (asset: IAsset) => {
+    const data = await getInvestorCount(asset);
     setInnerData(data);
   };
 
   useEffect(() => {
+    if (!asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData();
-  }, []);
+    initInnerData(asset);
+  }, [asset]);
 
   useEffect(() => {
-    if (!subscriptionData?.events?.length) return;
+    if (!subscriptionData?.events?.length || !asset) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData();
-  }, [subscriptionData]);
+    initInnerData(asset);
+  }, [subscriptionData, asset]);
 
   return { data: innerData };
 };

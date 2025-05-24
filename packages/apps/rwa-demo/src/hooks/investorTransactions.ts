@@ -2,6 +2,7 @@ import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useInvestorTransfersEventsQuery } from '@/__generated__/sdk';
 import { getAsset } from '@/utils/getAsset';
 import { useEffect, useState } from 'react';
+import { useAsset } from './asset';
 
 export type EventSubscriptionQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
@@ -20,19 +21,20 @@ export const useInvestorTransactions = ({
 }: {
   investorAccount: string;
 }) => {
+  const { asset } = useAsset();
   const [loading, setLoading] = useState(true);
   const [innerData, setInnerData] = useState<ITransfer[]>([]);
 
   const { data: fromData } = useInvestorTransfersEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.RECONCILE`,
+      qualifiedName: `${getAsset(asset)}.RECONCILE`,
       parametersFilter: `{\"path\": [\"1\", \"account\"] ,\"string_contains\":\"${investorAccount}\"}`,
     },
   });
 
   const { data: toData } = useInvestorTransfersEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.RECONCILE`,
+      qualifiedName: `${getAsset(asset)}.RECONCILE`,
       parametersFilter: `{\"path\": [\"2\", \"account\"] ,\"string_contains\":\"${investorAccount}\"}`,
     },
   });

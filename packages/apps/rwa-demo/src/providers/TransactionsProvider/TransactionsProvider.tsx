@@ -117,7 +117,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       return r;
     },
-    [],
+    [store, asset],
   );
 
   const getTransactions = useCallback(
@@ -167,10 +167,10 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     store?.listenToTransactions(listenToTransactions, asset);
   };
   useEffect(() => {
-    if (!account) return;
+    if (!account || !asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [account]);
+  }, [account, asset]);
 
   useEffect(() => {
     if (!account && !transactions.find((v) => !v.listener)) return;

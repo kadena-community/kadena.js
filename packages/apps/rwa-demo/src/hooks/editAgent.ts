@@ -15,7 +15,7 @@ import { useTransactions } from './transactions';
 
 export const useEditAgent = () => {
   const { account, sign, isMounted, accountRoles, isOwner } = useAccount();
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -28,10 +28,19 @@ export const useEditAgent = () => {
   const submit = async (
     data: IAddAgentProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
       const tx = data.alreadyExists
-        ? await editAgent(data, account!)
-        : await addAgent(data, account!);
+        ? await editAgent(data, account!, asset)
+        : await addAgent(data, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -57,7 +66,6 @@ export const useEditAgent = () => {
 
   useEffect(() => {
     if (!isMounted) return;
-
     setIsAllowed(
       !paused &&
         !isActiveAccountChangeTx &&
@@ -70,6 +78,7 @@ export const useEditAgent = () => {
     isOwner,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

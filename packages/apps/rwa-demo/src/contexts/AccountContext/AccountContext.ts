@@ -31,7 +31,7 @@ export interface IAccountContext {
   balance: number;
   accountRoles: IAgentHookProps;
   isGasPayable: boolean | undefined;
-  checkAccountAssetRoles: (asset: IAsset) => void;
+  checkAccountAssetRoles: (asset?: IAsset) => void;
 }
 
 export const AccountContext = createContext<IAccountContext>({

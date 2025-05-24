@@ -14,7 +14,7 @@ import { useTransactions } from './transactions';
 
 export const useFreezeInvestor = () => {
   const { account, sign, isMounted, accountRoles } = useAccount();
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -27,9 +27,18 @@ export const useFreezeInvestor = () => {
   const submit = async (
     data: ISetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     if (!account) return;
     try {
-      const tx = await setAddressFrozen(data, account!);
+      const tx = await setAddressFrozen(data, account!, asset);
 
       await store?.setFrozenMessage(data);
       const signedTransaction = await sign(tx);
@@ -64,6 +73,7 @@ export const useFreezeInvestor = () => {
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

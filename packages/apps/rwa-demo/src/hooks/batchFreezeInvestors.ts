@@ -28,8 +28,17 @@ export const useBatchFreezeInvestors = () => {
   const submit = async (
     data: IBatchSetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
-      const tx = await batchSetAddressFrozen(data, account!);
+      const tx = await batchSetAddressFrozen(data, account!, asset);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       await store?.setFrozenMessages(data, asset);
       const signedTransaction = await sign(tx);
@@ -64,6 +73,7 @@ export const useBatchFreezeInvestors = () => {
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

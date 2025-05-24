@@ -12,6 +12,7 @@ import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
 import { RWAStore } from '@/utils/store';
 import type * as Apollo from '@apollo/client';
 import { useEffect, useMemo, useState } from 'react';
+import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useUser } from './user';
 
@@ -33,6 +34,7 @@ export const getEventsSubscription = (
 
 export const useGetAgents = () => {
   const { user } = useUser();
+  const { asset } = useAsset();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
   const { organisation } = useOrganisation();
   const store = useMemo(() => {
@@ -46,27 +48,27 @@ export const useGetAgents = () => {
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-ADDED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: subscriptionAddData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-ADDED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
     },
   });
 
   const { data: subscriptionRemoveData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
     },
   });
 

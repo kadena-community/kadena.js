@@ -1,3 +1,4 @@
+import { useAsset } from '@/hooks/asset';
 import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import type { IAddAgentProps } from '@/services/addAgent';
@@ -24,9 +25,7 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { getAll: getAllAgentRoles } = useGetAgentRoles({
-    agent: agent?.accountName,
-  });
+  const { getAll: getAllAgentRoles } = useGetAgentRoles();
   const { submit, isAllowed } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
