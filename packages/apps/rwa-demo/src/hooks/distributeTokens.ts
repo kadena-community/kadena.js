@@ -27,8 +27,17 @@ export const useDistributeTokens = ({
   const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (data: IDistributeTokensProps) => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
-      const tx = await distributeTokens(data, account!);
+      const tx = await distributeTokens(data, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -76,6 +85,7 @@ export const useDistributeTokens = ({
     isActiveAccountChangeTx,
     asset,
     investorBalance,
+    asset,
   ]);
 
   return { submit, isAllowed };

@@ -9,9 +9,12 @@ import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
 import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import type * as Apollo from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
+import { useUser } from './user';
 
 export type EventQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
@@ -30,34 +33,42 @@ export const getEventsSubscription = (
 ): Apollo.DocumentNode => coreEvents;
 
 export const useGetAgents = () => {
+  const { user } = useUser();
+  const { asset } = useAsset();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
+
   const {
     loading: addedLoading,
     data: addedData,
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-ADDED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: subscriptionAddData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-ADDED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
     },
   });
 
   const { data: subscriptionRemoveData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
     },
   });
 
@@ -127,7 +138,7 @@ export const useGetAgents = () => {
       })
       .filter((v) => v !== undefined) ?? []) as IRecord[];
 
-    const aliases = await store.getAccounts();
+    const aliases = (await store?.getAccounts(user)) ?? [];
     const filteredData = setAliasesToAccounts(
       [
         ...filterRemovedRecords([
@@ -163,7 +174,7 @@ export const useGetAgents = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const off = store.listenToAccounts(listenToAccounts);
+    const off = store?.listenToAccounts(listenToAccounts);
     return off;
   }, []);
 

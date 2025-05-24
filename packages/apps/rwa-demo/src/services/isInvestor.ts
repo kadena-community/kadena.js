@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -7,11 +8,11 @@ export interface IIsInvestorProps {
   account: IWalletAccount;
 }
 
-export const isInvestor = async (data: IIsInvestorProps) => {
+export const isInvestor = async (data: IIsInvestorProps, asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.contains-identity (read-string 'investor))`)
+    .execution(`(${getAsset(asset)}.contains-identity (read-string 'investor))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

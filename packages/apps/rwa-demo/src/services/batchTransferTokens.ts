@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAggregatedAccounts } from '@/utils/getAggregatedAccounts';
@@ -17,6 +18,7 @@ export interface IBatchTransferTokensProps {
 export const batchTransferTokens = async (
   data: ITransferToken[],
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   /**
    * for the TRANSFER capability:
@@ -28,7 +30,7 @@ export const batchTransferTokens = async (
   return Pact.builder
     .execution(
       `
-       (${getAsset()}.batch-transfer (read-string 'from) (read-msg 'to-list) (read-msg 'amounts))`,
+       (${getAsset(asset)}.batch-transfer (read-string 'from) (read-msg 'to-list) (read-msg 'amounts))`,
     )
     .addData('from', account.address)
     .addData(
@@ -47,7 +49,7 @@ export const batchTransferTokens = async (
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
       ...aggregatedAccounts.map((_, idx) =>
         withCap(
-          `${getAsset()}.TRANSFER`,
+          `${getAsset(asset)}.TRANSFER`,
           account.address,
           aggregatedAccounts[idx].to,
           {

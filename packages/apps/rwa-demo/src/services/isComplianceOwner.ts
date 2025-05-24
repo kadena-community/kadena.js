@@ -1,8 +1,10 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { getClient, getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IIsComplianceOwnerProps {
   owner: string;
+  asset: IAsset;
 }
 
 //@TODO: break this up in seperate owners:

@@ -1,14 +1,13 @@
-import { LOCALSTORAGE_ASSETS_SELECTED_KEY } from '@/constants';
-import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 
-export const getAsset = (): string => {
-  const data = localStorage.getItem(
-    getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY),
-  );
+export const getAsset = (asset?: IAsset): string => {
+  // const data = localStorage.getItem(
+  //   getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY),
+  // );
 
-  if (!data) return '';
+  // if (!data) return '';
 
-  const asset = JSON.parse(data);
+  // const asset = JSON.parse(data);
 
   if (!asset) {
     return '';

@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { INFINITE_COMPLIANCE } from '@/constants';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -19,11 +20,11 @@ export interface IComplianceProps {
   maxInvestors: IComplianceRule;
 }
 
-export const getActiveComplianceValues = async () => {
+export const getActiveComplianceValues = async (asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.get-compliance-parameters)`)
+    .execution(`(${getAsset(asset)}.get-compliance-parameters)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })
@@ -40,15 +41,11 @@ export const getActiveComplianceValues = async () => {
   return result.status === 'success' ? data : undefined;
 };
 
-export const getActiveComplianceRules = async (asset?: string) => {
+export const getActiveComplianceRules = async (assetName: string) => {
   const client = getClient();
 
-  const innerAsset = asset ? asset : getAsset();
-
-  if (!innerAsset) return [];
-
   const transaction = Pact.builder
-    .execution(`(${innerAsset}.compliance)`)
+    .execution(`(${assetName}.compliance)`)
     .setMeta({
       chainId: getNetwork().chainId,
     })
@@ -65,9 +62,11 @@ export const getActiveComplianceRules = async (asset?: string) => {
   return result.status === 'success' ? data : [];
 };
 
-export const getComplianceRules = async (): Promise<IComplianceProps> => {
-  const rules = (await getActiveComplianceRules()) ?? [];
-  const values = (await getActiveComplianceValues()) ?? {};
+export const getComplianceRules = async (
+  asset: IAsset,
+): Promise<IComplianceProps> => {
+  const rules = (await getActiveComplianceRules(getAsset(asset))) ?? [];
+  const values = (await getActiveComplianceValues(asset)) ?? {};
 
   return {
     maxBalance: {

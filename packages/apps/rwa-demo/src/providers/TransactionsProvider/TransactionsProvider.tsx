@@ -8,11 +8,13 @@ import {
   TXTYPES,
 } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { useNetwork } from '@/hooks/networks';
+import { useOrganisation } from '@/hooks/organisation';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { analyticsEvent } from '@/utils/analytics';
 import { interpretMessage } from '@/utils/interpretMessage';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useApolloClient } from '@apollo/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC, PropsWithChildren } from 'react';
@@ -32,6 +34,8 @@ export const interpretErrorMessage = (
 
 export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const client = useApolloClient();
+  const { organisation } = useOrganisation();
+  const { asset } = useAsset();
   const { addNotification } = useNotifications();
   const { account } = useAccount();
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -40,6 +44,11 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [txsButtonRef, setTxsButtonRefData] =
     useState<HTMLButtonElement | null>(null);
   const { activeNetwork } = useNetwork();
+
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const addListener = useCallback(
     (data: ITransaction, account: IWalletAccount) => {
@@ -102,13 +111,13 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
             message: data?.result?.status,
           });
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          store.removeTransaction(data);
+          store?.removeTransaction(data, asset);
         },
       );
 
       return r;
     },
-    [],
+    [store, asset],
   );
 
   const getTransactions = useCallback(
@@ -140,7 +149,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       return [...v, data];
     });
 
-    await store.addTransaction(data);
+    await store?.addTransaction(data, asset);
 
     return data;
   };
@@ -155,13 +164,13 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const init = async () => {
-    store.listenToTransactions(listenToTransactions);
+    store?.listenToTransactions(listenToTransactions, asset);
   };
   useEffect(() => {
-    if (!account) return;
+    if (!account || !asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [account]);
+  }, [account, asset]);
 
   useEffect(() => {
     if (!account && !transactions.find((v) => !v.listener)) return;

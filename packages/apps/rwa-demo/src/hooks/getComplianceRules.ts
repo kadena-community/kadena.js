@@ -14,12 +14,12 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
   const [data, setData] = useState<IComplianceProps | undefined>();
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.COMPLIANCE-UPDATED`,
+      qualifiedName: `${getAsset(asset)}.COMPLIANCE-UPDATED`,
     },
   });
 
-  const init = async () => {
-    const res = await getComplianceRules();
+  const init = async (asset: IAsset) => {
+    const res = await getComplianceRules(asset);
 
     if (typeof res !== 'number') {
       setData(res);
@@ -27,9 +27,10 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
   };
 
   useEffect(() => {
+    if (!asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, []);
+    init(asset);
+  }, [asset]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

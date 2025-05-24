@@ -22,7 +22,7 @@ export const getKeysetService = async (
   return result.status === 'success'
     ? (result.data as Guard)
     : {
-        pred: 'keys-any',
+        pred: 'keys-all',
         keys: [account.substring(2)],
       };
 };

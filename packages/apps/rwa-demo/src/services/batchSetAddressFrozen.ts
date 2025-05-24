@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -14,10 +15,11 @@ export interface IBatchSetAddressFrozenProps {
 export const batchSetAddressFrozen = async (
   data: IBatchSetAddressFrozenProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   return Pact.builder
     .execution(
-      `(${getAsset()}.batch-set-address-frozen (read-msg 'investors) (read-msg 'pause))
+      `(${getAsset(asset)}.batch-set-address-frozen (read-msg 'investors) (read-msg 'pause))
       `,
     )
     .addData('investors', data.investorAccounts)
@@ -31,7 +33,7 @@ export const batchSetAddressFrozen = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.FREEZER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.FREEZER),
       withCap(`coin.GAS`),
     ])
 

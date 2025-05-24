@@ -1,7 +1,7 @@
 import type { WALLETTYPES } from '@/constants';
 import { useAccount } from '@/hooks/account';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
-import { MonoKeyboardArrowDown } from '@kadena/kode-icons';
+import { MonoAddLink, MonoKeyboardArrowDown } from '@kadena/kode-icons';
 import {
   Button,
   ContextMenu,
@@ -70,7 +70,12 @@ export const WalletSelector: FC = () => {
 
       <ContextMenu
         trigger={
-          <Button endVisual={<MonoKeyboardArrowDown />}>Select a wallet</Button>
+          <Button
+            startVisual={<MonoAddLink />}
+            endVisual={<MonoKeyboardArrowDown />}
+          >
+            Select a wallet
+          </Button>
         }
       >
         <MagicConnect handleConnect={handleConnect} />

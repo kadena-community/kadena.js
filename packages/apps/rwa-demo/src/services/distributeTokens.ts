@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -18,11 +19,12 @@ const createPubKeyFromAccount = (account: string): string => {
 export const distributeTokens = async (
   data: IDistributeTokensProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   return Pact.builder
     .execution(
       `
-       (${getAsset()}.mint (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset(asset)}.mint (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('agent', account.address)
     .addData('investor', data.investorAccount)
@@ -35,8 +37,8 @@ export const distributeTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.TRANSFERMANAGER),
-      withCap(`${getAsset()}.TRANSFER`, '', data.investorAccount, {
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.TRANSFERMANAGER),
+      withCap(`${getAsset(asset)}.TRANSFER`, '', data.investorAccount, {
         decimal: data.amount,
       }),
       withCap(`coin.GAS`),

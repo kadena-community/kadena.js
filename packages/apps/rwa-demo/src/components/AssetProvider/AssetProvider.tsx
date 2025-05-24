@@ -11,7 +11,6 @@ import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
-import { useUser } from '@/hooks/user';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
   IComplianceProps,
@@ -23,10 +22,16 @@ import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
 import { getAsset as getAssetUtil } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
-import { assetStore } from '@/utils/store/assetStore';
+import { AssetStore } from '@/utils/store/assetStore';
 import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 export interface IAsset {
   uuid: string;
@@ -50,7 +55,7 @@ export interface IAssetContext {
     namespace: string;
   }) => IAsset | undefined;
   addExistingAsset: (name: string) => IAsset | undefined;
-  removeAsset: (uuid: string) => void;
+  removeAsset: (asset: IAsset) => void;
   getAsset: (
     uuid: string,
     account: IWalletAccount,
@@ -64,7 +69,7 @@ export const AssetContext = createContext<IAssetContext>({
   setAsset: () => {},
   addAsset: () => undefined,
   addExistingAsset: () => undefined,
-  removeAsset: (uuid: string) => undefined,
+  removeAsset: (asset: IAsset) => undefined,
   getAsset: async () => undefined,
   maxCompliance: () => -1,
 });
@@ -81,32 +86,36 @@ export const getEventsDocument = (
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
-  const { account } = useAccount();
+  const { account, checkAccountAssetRoles } = useAccount();
   const { organisation } = useOrganisation();
-  const { userToken } = useUser();
   const [assets, setAssets] = useState<IAsset[]>([]);
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
-  const { paused } = usePaused();
-  const { data: supply } = useSupply();
-  const { data: investorCount } = useGetInvestorCount();
+  const { paused } = usePaused(asset);
+  const { data: supply } = useSupply(asset);
+  const { data: investorCount } = useGetInvestorCount(asset);
   const { data: complianceRules } = useGetComplianceRules({ asset });
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
       variables: {
-        qualifiedName: `${getAssetUtil()}.COMPLIANCE-PARAMETERS`,
+        qualifiedName: `${getAssetUtil(asset)}.COMPLIANCE-PARAMETERS`,
       },
     },
   );
 
+  const assetStore = useMemo(() => {
+    if (!organisation) return;
+    return AssetStore(organisation);
+  }, [organisation]);
+
   const init = async (organisationId: string) => {
-    assetStore.listenToAssets(organisationId, setAssets);
+    assetStore?.listenToAssets(setAssets);
 
     //
     const result = localStorage.getItem(selectedKey);
     if (!result) return;
     const asset = JSON.parse(result);
-    assetStore.listenToAsset(organisationId, asset.uuid, setAsset);
+    assetStore?.listenToAsset(asset, setAsset);
   };
   useEffect(() => {
     if (!organisation?.id) return;
@@ -119,13 +128,15 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     account: IWalletAccount,
   ): Promise<IAsset | undefined> => {
     const data = assets.find((a) => a.uuid === uuid);
-    const extraAssetData = await getComplianceRules();
-
-    const supplyResult = (await supplyService({
-      account: account!,
-    })) as number;
-
     if (!data) return;
+    const extraAssetData = await getComplianceRules(data);
+
+    const supplyResult = (await supplyService(
+      {
+        account: account!,
+      },
+      data,
+    )) as number;
 
     const foundAsset = {
       ...data,
@@ -133,7 +144,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       supply: supplyResult ?? 0,
     };
 
-    await assetStore.updateAsset(organisation!.id, foundAsset);
+    await assetStore?.updateAsset(foundAsset);
 
     return foundAsset;
   };
@@ -153,7 +164,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       const storageAsset = JSON.parse(result);
       const foundAsset = await getAsset(storageAsset.uuid, account);
       if (!foundAsset) return;
-      await assetStore.updateAsset(organisation.id, foundAsset);
+      await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
     },
@@ -175,8 +186,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     window.dispatchEvent(new Event(selectedKey));
   };
 
-  const removeAsset = async (uuid: string) => {
-    await assetStore.removeAsset(organisation!.id, uuid, userToken);
+  const removeAsset = async (asset: IAsset) => {
+    await assetStore?.removeAsset(asset);
   };
 
   const addAsset = ({
@@ -219,7 +230,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       )
     ) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      assetStore.addAsset(organisation!.id, asset);
+      assetStore?.addAsset(asset);
     }
 
     return asset;
@@ -252,7 +263,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const data = { ...asset, investorCount } as IAsset;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore.updateAsset(organisation.id, data);
+    assetStore?.updateAsset(data);
   }, [investorCount]);
 
   useEffect(() => {
@@ -261,8 +272,14 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const data = { ...asset, supply } as IAsset;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore.updateAsset(organisation.id, data);
+    assetStore?.updateAsset(data);
   }, [asset?.contractName, supply]);
+
+  // when the account or the asset changes, we need to check the roles of the account
+  useEffect(() => {
+    if (!account || !asset) return;
+    checkAccountAssetRoles(asset);
+  }, [asset?.contractName, account?.address, checkAccountAssetRoles]);
 
   useEffect(() => {
     if (
@@ -296,7 +313,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         },
       } as IAsset;
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      assetStore.updateAsset(organisation.id, newData);
+      assetStore?.updateAsset(newData);
     }
   }, [complianceSubscriptionData]);
 
@@ -306,7 +323,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const data = { ...asset, compliance: { ...complianceRules } } as IAsset;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore.updateAsset(organisation.id, data);
+    assetStore?.updateAsset(data);
   }, [complianceRules]);
 
   return (

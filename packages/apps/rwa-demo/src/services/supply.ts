@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -7,13 +8,13 @@ export interface ISupplyProps {
   account: IWalletAccount;
 }
 
-export const supply = async (data: ISupplyProps) => {
+export const supply = async (data: ISupplyProps, asset: IAsset) => {
   const client = getClient();
 
   if (!data.account) return;
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.supply)`)
+    .execution(`(${getAsset(asset)}.supply)`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

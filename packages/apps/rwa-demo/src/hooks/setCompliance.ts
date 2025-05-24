@@ -23,11 +23,18 @@ export const useSetCompliance = () => {
     ruleKey: IComplianceRuleTypes,
     newState: boolean,
   ) => {
-    if (!asset) return;
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
     const rules = getActiveRulesKeys(asset.compliance, ruleKey, newState);
 
     try {
-      const tx = await setCompliance(rules, account!);
+      const tx = await setCompliance(rules, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -50,8 +57,16 @@ export const useSetCompliance = () => {
   };
 
   const submit = async (data: ISetComplianceParametersProps) => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
     try {
-      const tx = await setComplianceParameters(data, account!);
+      const tx = await setComplianceParameters(data, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -87,6 +102,7 @@ export const useSetCompliance = () => {
     accountRoles,
     isOwner,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed, toggleComplianceRule };

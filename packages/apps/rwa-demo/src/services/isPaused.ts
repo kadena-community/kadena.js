@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -7,11 +8,11 @@ export interface IIsPausedProps {
   account: IWalletAccount;
 }
 
-export const isPaused = async (data: IIsPausedProps) => {
+export const isPaused = async (data: IIsPausedProps, asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.paused)`)
+    .execution(`(${getAsset(asset)}.paused)`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

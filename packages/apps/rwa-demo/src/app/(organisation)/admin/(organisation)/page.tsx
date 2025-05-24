@@ -1,6 +1,7 @@
 'use client';
 
 import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useAccount } from '@/hooks/account';
@@ -42,7 +43,7 @@ const Home = () => {
   };
 
   const handleDelete = (value: any) => {
-    removeAsset(value);
+    removeAsset(value as IAsset);
   };
 
   const handleLink = async (assetProp: any) => {
@@ -106,6 +107,7 @@ const Home = () => {
           />
           <SectionCardBody>
             <CompactTable
+              variant="open"
               fields={[
                 {
                   key: 'contractName',
@@ -129,7 +131,7 @@ const Home = () => {
                 },
                 {
                   label: '',
-                  key: 'uuid',
+                  key: '',
                   width: '10%',
                   render: CompactTableFormatters.FormatActions({
                     trigger: (

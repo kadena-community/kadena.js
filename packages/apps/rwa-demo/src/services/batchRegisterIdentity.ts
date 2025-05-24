@@ -1,3 +1,4 @@
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
@@ -19,6 +20,7 @@ export interface IBatchRegisterIdentityProps {
 
 export const batchRegisterIdentity = async (
   data: IBatchRegisterIdentityProps,
+  asset: IAsset,
 ) => {
   const promises = data.accounts.map((account) =>
     getKeysetService(account.account),
@@ -27,7 +29,7 @@ export const batchRegisterIdentity = async (
 
   return Pact.builder
     .execution(
-      `(${getAsset()}.batch-register-identity (read-msg 'investors) (read-msg 'investor-keysets) (read-msg 'agents) (read-msg 'countries))
+      `(${getAsset(asset)}.batch-register-identity (read-msg 'investors) (read-msg 'investor-keysets) (read-msg 'agents) (read-msg 'countries))
       `,
     )
     .addData('investor-keysets', keys)
@@ -49,8 +51,8 @@ export const batchRegisterIdentity = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.OWNER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
 

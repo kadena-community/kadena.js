@@ -7,9 +7,11 @@ import { getClient } from '@/utils/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useAsset } from './asset';
 import { useTransactions } from './transactions';
 
 export const useTogglePause = () => {
+  const { asset } = useAsset();
   const { account, sign, isMounted, accountRoles } = useAccount();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
@@ -18,8 +20,16 @@ export const useTogglePause = () => {
   const submit = async (
     data: ITogglePauseProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
     try {
-      const tx = await togglePause(data, account!);
+      const tx = await togglePause(data, account!, asset);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -43,7 +53,13 @@ export const useTogglePause = () => {
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(accountRoles.isFreezer() && !isActiveAccountChangeTx);
-  }, [account?.address, isMounted, accountRoles, isActiveAccountChangeTx]);
+  }, [
+    account?.address,
+    isMounted,
+    accountRoles,
+    isActiveAccountChangeTx,
+    asset,
+  ]);
 
   return { submit, isAllowed };
 };
