@@ -211,6 +211,11 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     [account],
   );
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    initProps();
+  }, []);
+
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
     switch (account?.walletName) {
       case WALLETTYPES.ECKO:
