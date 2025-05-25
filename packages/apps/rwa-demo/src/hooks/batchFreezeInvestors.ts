@@ -4,27 +4,43 @@ import { interpretErrorMessage } from '@/providers/TransactionsProvider/Transact
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import { batchSetAddressFrozen } from '@/services/batchSetAddressFrozen';
 import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
 
 export const useBatchFreezeInvestors = () => {
+  const { asset } = useAsset();
   const { account, sign, isMounted, accountRoles } = useAccount();
   const { paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: IBatchSetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
-      const tx = await batchSetAddressFrozen(data, account!);
+      const tx = await batchSetAddressFrozen(data, account!, asset);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await store.setFrozenMessages(data);
+      await store?.setFrozenMessages(data, asset);
       const signedTransaction = await sign(tx);
 
       if (!signedTransaction) return;
@@ -57,6 +73,7 @@ export const useBatchFreezeInvestors = () => {
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

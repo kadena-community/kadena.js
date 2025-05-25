@@ -1,10 +1,16 @@
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
-import { store } from '@/utils/store';
-import { useEffect, useState } from 'react';
+import { RWAStore } from '@/utils/store';
+import { useEffect, useMemo, useState } from 'react';
+import { useOrganisation } from './organisation';
 
 export const useGetAgent = ({ account }: { account: string }) => {
   const [innerData, setInnerData] = useState<IRecord | undefined>();
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const listenToAccount = (result: IRegisterIdentityProps) => {
     setInnerData((v: any) => {
@@ -17,7 +23,7 @@ export const useGetAgent = ({ account }: { account: string }) => {
   };
 
   const initInnerData = async () => {
-    const data = await store.getAccount({ account });
+    const data = await store?.getAccount({ account });
 
     setInnerData({
       accountName: account,
@@ -29,7 +35,7 @@ export const useGetAgent = ({ account }: { account: string }) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData();
-    const off = store.listenToAccount(account, listenToAccount);
+    const off = store?.listenToAccount(account, listenToAccount);
     return off;
   }, [account]);
 

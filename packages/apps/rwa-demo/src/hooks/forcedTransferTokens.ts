@@ -11,14 +11,23 @@ import { useTransactions } from './transactions';
 
 export const useForcedTransferTokens = () => {
   const { account, sign, isMounted, accountRoles } = useAccount();
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
 
   const submit = async (data: IForcedTransferTokensProps) => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
-      const tx = await forcedTransferTokens(data, account!);
+      const tx = await forcedTransferTokens(data, account!, asset);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
@@ -46,7 +55,7 @@ export const useForcedTransferTokens = () => {
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!paused && accountRoles.isTransferManager());
-  }, [paused, isMounted, accountRoles]);
+  }, [paused, isMounted, accountRoles, asset]);
 
   return { submit, isAllowed };
 };

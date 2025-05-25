@@ -8,42 +8,53 @@ import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
 import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
-import { store } from '@/utils/store';
-import { useEffect, useState } from 'react';
+import { RWAStore } from '@/utils/store';
+import { useEffect, useMemo, useState } from 'react';
+import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
+import { useUser } from './user';
 
 export type EventQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
 }>;
 
 export const useGetInvestors = () => {
+  const { organisation } = useOrganisation();
+  const { asset } = useAsset();
+  const { user } = useUser();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
+
   const {
     loading: addedLoading,
     data: addedData,
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
     fetchPolicy: 'no-cache',
   });
 
   const { data: addedSubscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
   });
 
   const { data: removedSubscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
   });
 
@@ -81,7 +92,7 @@ export const useGetInvestors = () => {
         } as const;
       }) ?? [];
 
-    const aliases = await store.getAccounts();
+    const aliases = (await store?.getAccounts(user)) ?? [];
 
     setInnerData(
       setAliasesToAccounts(
@@ -133,7 +144,7 @@ export const useGetInvestors = () => {
         } as IRecord;
       }) ?? [];
 
-    const aliases = await store.getAccounts();
+    const aliases = (await store?.getAccounts(user)) ?? [];
 
     setInnerData((oldValues) =>
       setAliasesToAccounts(
@@ -159,7 +170,7 @@ export const useGetInvestors = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const off = store.listenToAccounts(listenToAccounts);
+    const off = store?.listenToAccounts(listenToAccounts);
     return off;
   }, []);
 

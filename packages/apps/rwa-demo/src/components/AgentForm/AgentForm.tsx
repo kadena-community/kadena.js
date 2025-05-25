@@ -24,9 +24,7 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { getAll: getAllAgentRoles } = useGetAgentRoles({
-    agent: agent?.accountName,
-  });
+  const { getAll: getAllAgentRoles } = useGetAgentRoles();
   const { submit, isAllowed } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();

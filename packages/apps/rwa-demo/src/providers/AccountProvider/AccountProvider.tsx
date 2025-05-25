@@ -1,4 +1,5 @@
 'use client';
+import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { WALLETTYPES } from '@/constants';
 import { AccountContext } from '@/contexts/AccountContext/AccountContext';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
@@ -42,37 +43,64 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     useGetAccountKDABalance({
       accountAddress: account?.address,
     });
-  const { ...accountRoles } = useGetAgentRoles({
-    agent: account?.address,
-  });
+  const { setAssetRolesForAccount, ...accountRoles } = useGetAgentRoles();
   const { data: balance } = useGetInvestorBalance({
     investorAccount: account?.address,
   });
   const router = useRouter();
 
-  const checkIsAgent = async (account: IWalletAccount) => {
-    const resIsAgent = await isAgent({ agent: account.address });
+  const checkIsAgent = async (account: IWalletAccount, asset?: IAsset) => {
+    if (!account || !asset) {
+      setIsAgentState(false);
+      return;
+    }
+
+    const resIsAgent = await isAgent({ agent: account.address }, asset);
     setIsAgentState(!!resIsAgent);
   };
-  const checkIsOwner = async (account: IWalletAccount) => {
-    const resIsOwner = await isOwner({ account });
+  const checkIsOwner = async (account: IWalletAccount, asset?: IAsset) => {
+    if (!account || !asset) {
+      setIsOwnerState(false);
+      return;
+    }
+    const resIsOwner = await isOwner({ account }, asset);
     setIsOwnerState(!!resIsOwner);
   };
-  const checkIsComplianceOwner = async (account: IWalletAccount) => {
+  const checkIsComplianceOwner = async (
+    account: IWalletAccount,
+    asset?: IAsset,
+  ) => {
+    if (!account || !asset) {
+      setIsComplianceOwnerState(false);
+      return;
+    }
     const resIsComplianceOwner = await isComplianceOwner({
       owner: account.address,
+      asset,
     });
     setIsComplianceOwnerState(!!resIsComplianceOwner);
   };
-  const checkIsInvestor = async (account: IWalletAccount) => {
-    const resIsInvestor = await isInvestor({ account });
+  const checkIsInvestor = async (account: IWalletAccount, asset?: IAsset) => {
+    if (!account || !asset) {
+      setIsInvestorState(false);
+      return;
+    }
+    const resIsInvestor = await isInvestor({ account }, asset);
     setIsInvestorState(!!resIsInvestor);
   };
-  const checkIsFrozen = async (account: IWalletAccount) => {
-    const res = await isFrozen({
-      investorAccount: account.address,
-      account: account!,
-    });
+  const checkIsFrozen = async (account: IWalletAccount, asset?: IAsset) => {
+    if (!account || !asset) {
+      setIsFrozenState(false);
+      return;
+    }
+
+    const res = await isFrozen(
+      {
+        investorAccount: account.address,
+        account: account!,
+      },
+      asset,
+    );
 
     if (typeof res === 'boolean') {
       setIsFrozenState(res);
@@ -153,38 +181,40 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [account?.address, userData?.accounts]);
 
-  const initProps = async (accountProp?: IWalletAccount) => {
-    if (!accountProp) {
-      setIsMounted(true);
-      return;
-    }
+  const initProps = useCallback(
+    async (asset?: IAsset) => {
+      setIsMounted(false);
+      if (!account || !asset) {
+        setIsMounted(true);
+        return;
+      }
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    Promise.allSettled([
-      checkIsOwner(accountProp),
-      checkIsComplianceOwner(accountProp),
-      checkIsInvestor(accountProp),
-      checkIsAgent(accountProp),
-      checkIsFrozen(accountProp),
-    ]).then((v) => {
-      setIsMounted(true);
-    });
-  };
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      Promise.allSettled([
+        setAssetRolesForAccount(account, asset),
+        checkIsOwner(account, asset),
+        checkIsComplianceOwner(account, asset),
+        checkIsInvestor(account, asset),
+        checkIsAgent(account, asset),
+        checkIsFrozen(account, asset),
+      ]).then((v) => {
+        setIsMounted(true);
+      });
+    },
+    [account],
+  );
+
+  const checkAccountAssetRoles = useCallback(
+    async (asset?: IAsset) => {
+      await initProps(asset);
+    },
+    [account],
+  );
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initProps(account);
-  }, [account?.address]);
-
-  useEffect(() => {
-    if (!account?.address) {
-      setIsAgentState(false);
-      setIsOwnerState(false);
-      setIsComplianceOwnerState(false);
-      setIsInvestorState(false);
-      return;
-    }
-  }, [account?.address]);
+    initProps();
+  }, []);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
     switch (account?.walletName) {
@@ -221,6 +251,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         balance,
         accountRoles,
         isGasPayable: !isBalanceMounted ? undefined : kdaBalance > 0,
+        checkAccountAssetRoles,
       }}
     >
       {children}

@@ -2,13 +2,16 @@ import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationC
 import { off, onValue, ref } from 'firebase/database';
 import { database } from './firebase';
 
-const OrganisationStore = () => {
+export const OrganisationStore = (organisationId: IOrganisation['id']) => {
+  if (!organisationId) {
+    throw new Error('no organisation or user found');
+  }
+  const dbLocationString = `/organisations/${organisationId}`;
+
   const listenToOrganisation = (
-    organisationId: IOrganisation['id'],
     setDataCallback: (organisation: IOrganisation) => void,
   ) => {
-    if (!organisationId) return;
-    const orgRef = ref(database, `/organisations/${organisationId}`);
+    const orgRef = ref(database, dbLocationString);
     onValue(orgRef, async (snapshot) => {
       const { data } = snapshot.val() as {
         data: IOrganisation;
@@ -21,5 +24,3 @@ const OrganisationStore = () => {
 
   return { listenToOrganisation };
 };
-
-export const orgStore = OrganisationStore();

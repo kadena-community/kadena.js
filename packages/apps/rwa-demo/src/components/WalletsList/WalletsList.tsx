@@ -1,7 +1,7 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
 import { useAccount } from '@/hooks/account';
-import { MonoAccountBox, MonoDelete } from '@kadena/kode-icons';
+import { MonoAccountBox, MonoLinkOff } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import {
   CompactTable,
@@ -15,7 +15,6 @@ import type { FC } from 'react';
 
 export const WalletsList: FC = () => {
   const { accounts, removeAccount, selectAccount } = useAccount();
-
   const handleRemove = (address: any) => {
     removeAccount(address);
   };
@@ -70,6 +69,7 @@ export const WalletsList: FC = () => {
                 key: 'address',
                 label: '',
                 width: '15%',
+                align: 'end',
                 render: CompactTableFormatters.FormatActions({
                   trigger: (
                     <Confirmation
@@ -78,7 +78,7 @@ export const WalletsList: FC = () => {
                         <Button
                           isCompact
                           variant="outlined"
-                          startVisual={<MonoDelete />}
+                          startVisual={<MonoLinkOff />}
                         />
                       }
                     >

@@ -5,27 +5,42 @@ import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { editAgent } from '@/services/editAgent';
 import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
+import { RWAStore } from '@/utils/store';
 import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
 
 export const useEditAgent = () => {
   const { account, sign, isMounted, accountRoles, isOwner } = useAccount();
-  const { paused } = useAsset();
+  const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: IAddAgentProps,
   ): Promise<ITransaction | undefined> => {
+    if (!asset) {
+      addNotification({
+        intent: 'negative',
+        label: 'asset not found',
+        message: '',
+      });
+      return;
+    }
+
     try {
       const tx = data.alreadyExists
-        ? await editAgent(data, account!)
-        : await addAgent(data, account!);
+        ? await editAgent(data, account!, asset)
+        : await addAgent(data, account!, asset);
 
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
@@ -45,13 +60,12 @@ export const useEditAgent = () => {
         message: interpretErrorMessage(e.message),
       });
     } finally {
-      await store.setAccount(data);
+      await store?.setAccount(data);
     }
   };
 
   useEffect(() => {
     if (!isMounted) return;
-
     setIsAllowed(
       !paused &&
         !isActiveAccountChangeTx &&
@@ -64,6 +78,7 @@ export const useEditAgent = () => {
     isOwner,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };
