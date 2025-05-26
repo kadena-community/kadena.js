@@ -11,15 +11,9 @@ export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
     }
     const account = await fetchAccount(network, alert.options?.account);
     let data: Record<string, any> = {
-      description: alert.description,
+      '@timestamp': Date.now(),
       code: alert.code,
       address: alert.options?.account,
-      minBalance: alert.options?.minBalance,
-      timestamp: Date.now(),
-      network: {
-        environment: network.key,
-        environmentLabel: network.label,
-      },
     };
     if (account?.errors?.length) {
       data = { ...data, error: 'no account was found' };
@@ -27,19 +21,36 @@ export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
 
     data = {
       ...data,
-      balances: account.data?.fungibleAccount.chainAccounts,
     };
 
-    //send data
-    try {
-      await client.index(data);
+    const promises = account.data?.fungibleAccount.chainAccounts.map(
+      async (chain) => {
+        const balanceData = {
+          ...data,
+          chain_id: chain.chainId,
+          balance: chain.balance,
+          balance_type: 'native',
+        };
+        return client.index(balanceData, network);
 
-      return `✅ elastic data send for ${alert.code} (${network.key})`;
-    } catch (e) {
-      return `❌ elastic data fail ${alert.code} (${network.label}): (${e.meta.body.error})`;
-    }
+        //send data
+        try {
+          return `✅ elastic data send for ${alert.code}:${chain.chainId} (${network.key})`;
+        } catch (e) {
+          return `❌ elastic data fail ${alert.code}:${chain.chainId} (${network.label}): (${e.meta.body.error})`;
+        }
+      },
+    );
+
+    return promises;
   });
 
-  const results = await Promise.all(promises);
+  const promiseResults = await Promise.all(promises);
+
+  const results = promiseResults.map((result) => {
+    console.log(11, result);
+    return '';
+  });
+
   return results.filter(Boolean);
 };
