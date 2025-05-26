@@ -1,5 +1,6 @@
 'use client';
 
+import { OrganisationsList } from '@/components/admin/OrganisationsList/OrganisationsList';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useOrganisation } from '@/hooks/organisation';
 import { useUser } from '@/hooks/user';
@@ -30,6 +31,8 @@ const Home = () => {
         root
         <Button onPress={handleAddAdmin}>add admin role</Button>
       </Stack>
+
+      <OrganisationsList />
     </>
   );
 };
