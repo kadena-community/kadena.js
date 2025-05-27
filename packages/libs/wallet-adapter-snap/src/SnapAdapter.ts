@@ -36,8 +36,6 @@ import { defaultSnapOrigin } from './provider';
 import type {
   ExtendedMethod,
   ExtendedMethodMap,
-  IEckoQuicksignFailResponse,
-  IEckoQuicksignResponse,
   IQuicksignResponse,
   ISnapAccount,
   ISnapNetwork,
@@ -45,8 +43,8 @@ import type {
 import { safeJsonParse } from './utils/json';
 /**
  * @public
- * EckoAdapter is a class that extends BaseWalletAdapter to provide
- * functionality for connecting to the Ecko Wallet.
+ * SnapAdapter is a class that extends BaseWalletAdapter to provide
+ * functionality for connecting to Kadena's Metamask snap.
  */
 export class SnapAdapter extends BaseWalletAdapter {
   public name: string = 'Snap';
@@ -78,6 +76,7 @@ export class SnapAdapter extends BaseWalletAdapter {
   /** Fetches and maps all networks from the Snap to INetworkInfo[] */
   private async _getNetworks(): Promise<INetworkInfo[]> {
     const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
+    console.log('NETWORKS ---------->', networks);
     return networks.map((net) => ({
       networkName: net.name,
       networkId: net.networkId,
@@ -86,7 +85,17 @@ export class SnapAdapter extends BaseWalletAdapter {
   }
 
   private async _getActiveNetwork(): Promise<INetworkInfo> {
-    return (await this._getNetworks())[0];
+    const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
+    const currentNetworkId = await this.invokeSnap<string>(
+      'kda_getActiveNetwork',
+    );
+    const currentNetwork = networks.find((e) => e.id == currentNetworkId);
+    console.log('Hello!!---------------------->', currentNetwork);
+    return {
+      networkName: currentNetwork?.name ?? 'a',
+      networkId: currentNetwork?.networkId ?? 'a',
+      url: [currentNetwork?.nodeUrl ?? 'a'],
+    };
   }
   /**
    * Fetches all accounts from the Snap to IAccountInfo[]
@@ -210,6 +219,7 @@ export class SnapAdapter extends BaseWalletAdapter {
           result: result,
         } as ExtendedMethodMap[M]['response'];
       }
+
       case 'kadena_getAccounts_v2': {
         // _getAccounts() returns ISnapAccount[]
         const result = await this._getAccounts();
@@ -236,6 +246,7 @@ export class SnapAdapter extends BaseWalletAdapter {
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
+        console.log(params);
         const response = (await this.provider.request({
           method: 'kda_requestSign',
           data: {
@@ -272,39 +283,40 @@ export class SnapAdapter extends BaseWalletAdapter {
           },
         } as ExtendedMethodMap[M]['response'];
       }
-      case 'kadena_quicksign_v1': {
-        const { commandSigDatas } = params as {
-          commandSigDatas: CommandSigDatas;
-        };
-        const response = (await this.provider.request({
-          method: 'kda_requestQuickSign',
-          data: {
-            networkId: this.networkId,
-            commandSigDatas,
-          },
-        })) as IEckoQuicksignResponse;
-
-        if (response.status !== 'success') {
-          const err =
-            (response as IEckoQuicksignFailResponse).error ??
-            (response as IEckoQuicksignFailResponse).message ??
-            ERRORS.ERROR_SIGNING_TRANSACTION;
-          throw new Error(err);
-        }
-
-        const responses =
-          'responses' in response ? response.responses : response.quickSignData;
-
-        if (!Array.isArray(responses)) {
-          throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
-        }
-
-        return {
-          id,
-          jsonrpc: '2.0',
-          result: { responses } as IQuicksignResponse,
-        } as ExtendedMethodMap[M]['response'];
-      }
+      //HACK: Doing a fallback to sign here is probably a good idea
+      // case 'kadena_quicksign_v1': {
+      //   const { commandSigDatas } = params as {
+      //     commandSigDatas: CommandSigDatas;
+      //   };
+      //   const response = (await this.provider.request({
+      //     method: 'kda_requestQuickSign',
+      //     data: {
+      //       networkId: this.networkId,
+      //       commandSigDatas,
+      //     },
+      //   })) as IEckoQuicksignResponse;
+      //
+      //   if (response.status !== 'success') {
+      //     const err =
+      //       (response as IEckoQuicksignFailResponse).error ??
+      //       (response as IEckoQuicksignFailResponse).message ??
+      //       ERRORS.ERROR_SIGNING_TRANSACTION;
+      //     throw new Error(err);
+      //   }
+      //
+      //   const responses =
+      //     'responses' in response ? response.responses : response.quickSignData;
+      //
+      //   if (!Array.isArray(responses)) {
+      //     throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
+      //   }
+      //
+      //   return {
+      //     id,
+      //     jsonrpc: '2.0',
+      //     result: { responses } as IQuicksignResponse,
+      //   } as ExtendedMethodMap[M]['response'];
+      // }
       case 'kadena_checkStatus': {
         const status = await this._checkStatus();
         return {
