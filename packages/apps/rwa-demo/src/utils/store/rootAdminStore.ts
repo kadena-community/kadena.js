@@ -36,10 +36,35 @@ export const RootAdminStore = () => {
     if (result.status !== 200) {
       return;
     }
+
+    return result.json();
+  };
+
+  const removeAdmin = async ({
+    uid,
+    token,
+  }: {
+    uid: string;
+    token: IdTokenResult;
+  }) => {
+    const result = await fetch(`/api/admin/claims?uid=${uid}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (result.status !== 200) {
+      return;
+    }
+
+    return result.json();
   };
 
   return {
     setAdmin,
+    removeAdmin,
     listenToRootAdmins,
   };
 };

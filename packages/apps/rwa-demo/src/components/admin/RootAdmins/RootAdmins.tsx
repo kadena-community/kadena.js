@@ -1,9 +1,11 @@
+import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { useUser } from '@/hooks/user';
 import { RootAdminStore } from '@/utils/store/rootAdminStore';
-import { MonoAdd } from '@kadena/kode-icons';
+import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
 import { Button, TextField } from '@kadena/kode-ui';
 import {
   CompactTable,
+  CompactTableFormatters,
   RightAside,
   RightAsideContent,
   RightAsideFooter,
@@ -89,6 +91,17 @@ export const RootAdmins: FC = () => {
       return;
     }
     await rootAdminStore.setAdmin({ email: data.email, token: userToken });
+  };
+
+  const handleRemove = async (uid: any) => {
+    if (!userToken) {
+      addNotification({
+        intent: 'negative',
+        label: 'usertoken not set',
+      });
+      return;
+    }
+    await rootAdminStore.removeAdmin({ uid, token: userToken });
   };
 
   return (
@@ -181,7 +194,29 @@ export const RootAdmins: FC = () => {
                 {
                   key: 'displayName',
                   label: 'Name',
-                  width: '30%',
+                  width: '25%',
+                },
+                {
+                  label: '',
+                  key: 'uid',
+                  width: '15%',
+                  align: 'end',
+                  render: CompactTableFormatters.FormatActions({
+                    trigger: (
+                      <Confirmation
+                        onPress={handleRemove}
+                        trigger={
+                          <Button
+                            isCompact
+                            variant="outlined"
+                            startVisual={<MonoDelete />}
+                          />
+                        }
+                      >
+                        Are you sure you want to remove admin rights?
+                      </Confirmation>
+                    ),
+                  }),
                 },
               ]}
               data={admins}

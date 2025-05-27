@@ -37,6 +37,7 @@ export const SidebarSideContext: FC = () => {
 
   const handleLogout = async () => {
     signOut();
+    router.push('/');
   };
 
   return (

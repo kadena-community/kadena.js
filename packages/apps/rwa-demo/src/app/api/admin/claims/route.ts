@@ -1,6 +1,6 @@
 import type { UserRecord } from 'firebase-admin/auth';
 import type { NextRequest } from 'next/server';
-import { withAuth } from '../../withAuth';
+import { withRootAdmin } from '../../withAuth';
 import { adminAuth, getDB, getTokenId } from '../app';
 
 const setClaims = async (user: UserRecord) => {
@@ -11,18 +11,16 @@ const setClaims = async (user: UserRecord) => {
   await getDB().ref(`/roles/root/${user.uid}`).push(user.uid);
 };
 
+const removeClaims = async (user: UserRecord) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { rootAdmin, ...existingClaims } = user?.customClaims || {};
+  await adminAuth()?.setCustomUserClaims(user.uid, existingClaims);
+
+  await getDB().ref(`/roles/root/${user.uid}`).remove();
+};
+
 const _POST = async (request: NextRequest) => {
   const { email } = await request.json();
-
-  const tokenId = getTokenId(request);
-  const currentUser = await adminAuth()?.verifyIdToken(tokenId);
-  //check if the current user has the rights to create this role
-  if (!currentUser?.rootAdmin) {
-    return new Response('UnAuthorized', {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
 
   try {
     const user = await adminAuth()?.getUserByEmail(email);
@@ -46,4 +44,35 @@ const _POST = async (request: NextRequest) => {
   });
 };
 
-export const POST = withAuth(_POST);
+const _DELETE = async (request: NextRequest) => {
+  const uid = new URL(request.url).searchParams.get('uid');
+  if (!uid) {
+    return new Response('uid not set', {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  const tokenId = getTokenId(request);
+  const currentUser = await adminAuth()?.verifyIdToken(tokenId);
+
+  try {
+    const user = await adminAuth()?.getUser(uid);
+
+    if (currentUser.uid === user.uid) {
+      return new Response('you can not delete your self as an admin', {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    await removeClaims(user);
+  } catch (e) {}
+
+  return new Response(JSON.stringify({ uid }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
+
+export const POST = withRootAdmin(_POST);
+export const DELETE = withRootAdmin(_DELETE);
