@@ -1,61 +1,46 @@
+import type { UserRecord } from 'firebase-admin/auth';
 import type { NextRequest } from 'next/server';
 import { withAuth } from '../../withAuth';
-import { adminAuth, getTokenId } from '../app';
+import { adminAuth, getDB, getTokenId } from '../app';
 
-const ALLOWEDROLES = ['rootAdmin', 'orgAdmin'];
+const setClaims = async (user: UserRecord) => {
+  const existingClaims = user?.customClaims || {};
+  const updatedClaims = { ...existingClaims, rootAdmin: true };
+  await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
+
+  await getDB().ref(`/roles/root/${user.uid}`).push(user.uid);
+};
 
 const _POST = async (request: NextRequest) => {
-  const { uid, role } = await request.json();
+  const { email } = await request.json();
 
   const tokenId = getTokenId(request);
   const currentUser = await adminAuth()?.verifyIdToken(tokenId);
-
-  //check if these roles are allowed
-
-  const isRoleAllowed = ALLOWEDROLES.reduce((acc, val) => {
-    if (role.hasOwnProperty(val)) return true;
-    return acc;
-  }, false);
-
-  if (!isRoleAllowed) {
-    return new Response('UnAuthorized', {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
   //check if the current user has the rights to create this role
-  if (!currentUser?.rootAdmin && role.hasOwnProperty('rootAdmin')) {
-    return new Response('UnAuthorized', {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-  if (
-    !currentUser?.rootAdmin &&
-    !currentUser?.orgAdmin &&
-    role.hasOwnProperty('orgAdmin')
-  ) {
+  if (!currentUser?.rootAdmin) {
     return new Response('UnAuthorized', {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  if (!currentUser?.rootAdmin && role.hasOwnProperty('rootAdmin')) {
-    return new Response('UnAuthorized', {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
+  try {
+    const user = await adminAuth()?.getUserByEmail(email);
+    await setClaims(user);
+  } catch (e) {
+    await adminAuth().createUser({
+      email: email,
+      emailVerified: false, // Optional
+      password: 'superSecret123', // Required if you want password login
+      displayName: 'Jane Doe', // Optional
+      disabled: false, // Optional
     });
+
+    const user = await adminAuth()?.getUserByEmail(email);
+    await setClaims(user);
   }
 
-  const user = await adminAuth()?.getUser(uid);
-  const existingClaims = user?.customClaims || {};
-  const updatedClaims = { ...existingClaims, ...role };
-
-  await adminAuth()?.setCustomUserClaims(uid, updatedClaims);
-
-  return new Response(JSON.stringify({ uid }), {
+  return new Response(JSON.stringify({ email }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });

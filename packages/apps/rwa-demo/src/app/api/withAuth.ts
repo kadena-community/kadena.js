@@ -28,3 +28,21 @@ export function withAuth(handler: Handler): Handler {
     return handler(req, context);
   };
 }
+
+export function withRootAdmin(handler: Handler): Handler {
+  return async (req, context) => {
+    const tokenId = getTokenId(req);
+
+    const currentUser = await adminAuth()?.verifyIdToken(tokenId);
+    //check if the current user has the rights to create this role
+    if (!currentUser?.rootAdmin) {
+      return new Response('UnAuthorized', {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // If authenticated, call the original handler
+    return handler(req, context);
+  };
+}
