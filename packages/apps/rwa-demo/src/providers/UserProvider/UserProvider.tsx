@@ -33,12 +33,15 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [organisation, user]);
 
   const init = async (user: User) => {
+    console.log({ organisation });
     if (!organisation?.id) return;
 
     await userStore?.listenToUser(setUserData);
   };
 
+  console.log({ organisation });
   useEffect(() => {
+    console.log({ user, organisation });
     if (!user || !organisation?.id) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(user);

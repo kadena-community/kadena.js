@@ -247,7 +247,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // return the value of the compliance
   const maxCompliance = (ruleKey: IComplianceRuleTypes): number => {
-    const returnValue = Object.entries(asset?.compliance ?? {}).find(
+    if (!asset?.compliance) return INFINITE_COMPLIANCE;
+    const returnValue = Object.entries(asset?.compliance).find(
       ([key, rule]) => rule.key === ruleKey,
     ) as [number, IComplianceRule] | undefined;
 

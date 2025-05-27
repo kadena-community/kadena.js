@@ -1,5 +1,5 @@
 import { useAsset } from '@/hooks/asset';
-import { MonoMoreVert, MonoSettings } from '@kadena/kode-icons';
+import { MonoMoreVert } from '@kadena/kode-icons';
 import {
   Button,
   ButtonGroup,
@@ -8,14 +8,12 @@ import {
   ContextMenuItem,
   Stack,
 } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { assetsSwitchWrapperClass } from './style.css';
 
 export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
   showLabel = true,
 }) => {
-  const router = useRouter();
   const { assets, asset, setAsset } = useAsset();
 
   return (
@@ -44,14 +42,9 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
             />
           ))}
           <ContextMenuDivider />
-
-          <ContextMenuItem
-            onClick={() => {
-              router.push('/assets');
-            }}
-            endVisual={<MonoSettings />}
-            label="Asset Settings"
-          />
+          {assets.length === 0 && (
+            <ContextMenuItem onClick={() => {}} label="No assets yet" />
+          )}
         </ContextMenu>
       </ButtonGroup>
     </Stack>
