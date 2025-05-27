@@ -17,6 +17,7 @@ import type {
   INetworkInfo,
   IUnsignedCommand,
 } from '@kadena/wallet-adapter-core';
+import { isKeySetGuard } from '@kadena/wallet-adapter-core';
 import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { createTransferCmd } from './transferCmd';
@@ -481,6 +482,11 @@ const App = () => {
                 isDisabled={!activeAccount}
                 onPress={() => {
                   if (!activeAccount) return;
+                  if (!isKeySetGuard(activeAccount.guard)) {
+                    return console.error(
+                      'Active account does not have a KeySet guard',
+                    );
+                  }
                   createTransferCmd({
                     accountFrom: activeAccount.accountName,
                     pubkey: activeAccount.guard.keys[0],
@@ -503,6 +509,11 @@ const App = () => {
                 isDisabled={!activeAccount}
                 onPress={() => {
                   if (!activeAccount) return;
+                  if (!isKeySetGuard(activeAccount.guard)) {
+                    return console.error(
+                      'Active account does not have a KeySet guard',
+                    );
+                  }
                   createTransferTx({
                     accountFrom: activeAccount.accountName,
                     pubkey: activeAccount.guard.keys[0],

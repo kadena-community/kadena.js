@@ -6,6 +6,7 @@ import type {
   ISigningRequest,
   IUnsignedCommand,
 } from '@kadena/client';
+import type { Guard } from './guard';
 
 /**
  * @public
@@ -35,10 +36,7 @@ export interface IAccountInfo {
   accountName: string; // The unique identifier for the account.
   networkId: string; // The unique identifier for the network for this account.
   contract: string; // Identifier for the fungible token contract.
-  guard: {
-    keys: string[]; // Array of public keys.
-    pred: string; // Predicate defining key validation (e.g., "keys-all", "keys-any").
-  };
+  guard: Guard;
   chainAccounts: string[]; // Array of chain IDs where this account exists.
 }
 
