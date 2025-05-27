@@ -14,27 +14,34 @@ import { SupplyCountContractDetails } from '@/components/SupplyCountContractDeta
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
+import { useOrganisation } from '@/hooks/organisation';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
-import { Button, Stack } from '@kadena/kode-ui';
+import { Button, Link, Stack } from '@kadena/kode-ui';
 import {
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
+  SideBarBreadcrumbsItem,
 } from '@kadena/kode-ui/patterns';
 import { actionsWrapperClass } from './../styles.css';
 
 const Home = () => {
   const { asset } = useAsset();
+  const { organisation } = useOrganisation();
   const { isInvestor, account } = useAccount();
   const { isAllowed: isSetComplianceAllowed, toggleComplianceRule } =
     useSetCompliance();
 
+  if (!organisation) return null;
   return (
     <>
-      <SideBarBreadcrumbs />
-
+      <SideBarBreadcrumbs>
+        <SideBarBreadcrumbsItem component={Link} href="/">
+          {organisation.name}
+        </SideBarBreadcrumbsItem>
+      </SideBarBreadcrumbs>
       <Stack width="100%" flexDirection="column" gap="md">
         <SectionCard data-testid="contractCard">
           <SectionCardContentBlock>

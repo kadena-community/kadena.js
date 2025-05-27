@@ -1,5 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { useAsset } from '@/hooks/asset';
 import { useUser } from '@/hooks/user';
 import { shortenString } from '@/utils/shortenString';
 import {
@@ -7,7 +6,6 @@ import {
   MonoDarkMode,
   MonoLightMode,
   MonoLogout,
-  MonoSelectAll,
   MonoSettings,
 } from '@kadena/kode-icons';
 import {
@@ -28,7 +26,6 @@ import type { FC } from 'react';
 export const SidebarSideContext: FC = () => {
   const { signOut, user, userToken } = useUser();
   const { account } = useAccount();
-  const { asset } = useAsset();
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const router = useRouter();
@@ -47,9 +44,7 @@ export const SidebarSideContext: FC = () => {
       <SideBarItem visual={<MonoAccountBox />} label="" onPress={() => {}}>
         account: {account?.alias}
       </SideBarItem>
-      <SideBarItem visual={<MonoSelectAll />} label="" onPress={() => {}}>
-        asset: {asset?.contractName}
-      </SideBarItem>
+
       <SideBarItemsInline>
         <SideBarItem
           label=""

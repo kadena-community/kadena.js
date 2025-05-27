@@ -5,28 +5,24 @@ import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationC
 import { OrganisationStore } from '@/utils/store/organisationStore';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Home = ({ params }: { params: { organisationId: string } }) => {
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
 
-  const orgStore = useMemo(() => {
-    if (!params.organisationId) return;
-    return OrganisationStore(params.organisationId);
-  }, [params.organisationId]);
-
   const init = async (organisationId: IOrganisation['id']) => {
+    const orgStore = await OrganisationStore(organisationId);
     if (!orgStore) return;
     const data = await orgStore.getOrganisation();
     setOrganisation(data);
   };
 
   useEffect(() => {
-    if (!orgStore || !params.organisationId) return;
+    if (!params.organisationId) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(params.organisationId);
-  }, [params.organisationId, orgStore]);
+  }, [params.organisationId]);
 
   if (!organisation) return null;
   return (

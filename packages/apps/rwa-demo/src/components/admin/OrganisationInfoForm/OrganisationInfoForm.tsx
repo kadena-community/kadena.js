@@ -10,7 +10,7 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 interface IProps {
@@ -18,14 +18,10 @@ interface IProps {
 }
 
 export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
+  const [orgStore, setOrgStore] = useState<any>();
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const addDomainRef = useRef<HTMLInputElement | null>(null);
-
-  const orgStore = useMemo(() => {
-    if (!organisationId) return;
-    return OrganisationStore(organisationId);
-  }, [organisationId]);
 
   const {
     handleSubmit,
@@ -47,21 +43,23 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
   });
 
   const init = async (organisationId: IOrganisation['id']) => {
-    if (!orgStore) return;
-    const data = await orgStore.getOrganisation();
+    const store = await OrganisationStore(organisationId);
+    if (!store) return;
+    setOrgStore(store);
+
+    const data = await store.getOrganisation();
     reset(data);
     setOrganisation(data);
   };
 
   useEffect(() => {
-    if (!orgStore || !organisationId) return;
-
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(organisationId);
-  }, [organisationId, orgStore]);
+  }, [organisationId]);
 
   const onSubmit = async (data: IOrganisation) => {
     setIsLoading(true);
+    console.log({ data, orgStore });
     if (!orgStore) return;
     const newOrganisation = { ...organisation, ...data };
 
@@ -125,7 +123,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                 <Controller
                   name={`domains.${index}.value`}
                   control={control}
-                  key={field.value}
+                  key={field.id}
                   rules={{
                     required: {
                       value: true,

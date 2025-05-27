@@ -1,21 +1,38 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { get, off, onValue, ref, set } from 'firebase/database';
+import { getOriginKey } from '../getOriginKey';
 import { database } from './firebase';
 
-export const OrganisationStore = (organisationId: IOrganisation['id']) => {
-  if (!organisationId) {
-    throw new Error('no organisation or user found');
+export const OrganisationStore = async (
+  organisationIdProp?: IOrganisation['id'],
+) => {
+  let organisationId: IOrganisation['id'] | undefined = organisationIdProp;
+  if (!organisationIdProp) {
+    try {
+      const result = await fetch('/api/origin', {});
+
+      if (result.status !== 200) {
+        return;
+      }
+
+      const data = await result.json();
+      organisationId = data.organisationId;
+    } catch (error) {
+      return;
+    }
   }
-  const dbLocationString = `/organisations/${organisationId}`;
+
+  if (!organisationId) {
+    return;
+  }
+  const dbLocationString = `/organisationsData/${organisationId}`;
 
   const listenToOrganisation = (
     setDataCallback: (organisation: IOrganisation) => void,
   ) => {
     const orgRef = ref(database, dbLocationString);
     onValue(orgRef, async (snapshot) => {
-      const { data } = snapshot.val() as {
-        data: IOrganisation;
-      };
+      const data = snapshot.val() as IOrganisation;
       setDataCallback({ ...data, id: snapshot.key ?? '' });
     });
 
@@ -46,10 +63,16 @@ export const OrganisationStore = (organisationId: IOrganisation['id']) => {
   };
 
   const updateOrganisation = async (organisation: IOrganisation) => {
-    return await set(
-      ref(database, `/organisationsData/${organisationId}`),
-      organisation,
-    );
+    const domains = organisation.domains?.reduce((acc, val) => {
+      const key = getOriginKey(val.value);
+      if (!key) return acc;
+      return { ...acc, [key]: val };
+    }, {});
+
+    return await set(ref(database, `/organisationsData/${organisationId}`), {
+      ...organisation,
+      domains,
+    });
   };
 
   return {

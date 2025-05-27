@@ -1,5 +1,4 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
-import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { OrganisationStore } from '@/utils/store/organisationStore';
 import { MonoFindInPage } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
@@ -13,28 +12,23 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const OrganisationsList: FC = () => {
   const [organisations, setOrganisations] = useState<IOrganisation[]>([]);
   const router = useRouter();
 
-  const orgStore = useMemo(() => {
-    const id = localStorage.getItem(getLocalStorageKey('orgId')) ?? '';
-    return OrganisationStore(id);
-  }, []);
-
   const init = async () => {
+    const orgStore = await OrganisationStore();
+    if (!orgStore) return;
     const result = await orgStore.getOrganisations();
-    console.log(result);
     setOrganisations(result);
   };
 
   useEffect(() => {
-    if (!orgStore) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [orgStore]);
+  }, []);
 
   const handleLink = (id: any) => {
     router.push(`/admin/root/organisation/${id}`);

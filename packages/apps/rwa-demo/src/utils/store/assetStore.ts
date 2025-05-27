@@ -33,8 +33,9 @@ export const AssetStore = (organisation: IOrganisation) => {
     if (!assetFolderName) return;
     const assetRef = ref(database, `${dbLocationString}/${assetFolderName}`);
     onValue(assetRef, async (snapshot) => {
-      const data = { ...snapshot.val() } as IAsset;
-
+      const val = snapshot.val();
+      if (!val) return;
+      const data = { ...val } as IAsset;
       setDataCallback(data);
     });
 
