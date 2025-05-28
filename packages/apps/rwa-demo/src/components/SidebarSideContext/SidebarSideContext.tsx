@@ -71,7 +71,7 @@ export const SidebarSideContext: FC = () => {
                 }}
               />
             ) : null}
-            {userToken?.claims.orgAdmin ? (
+            {userToken?.claims.orgAdmins ? (
               <ContextMenuItem
                 label="org. admin"
                 onClick={() => {

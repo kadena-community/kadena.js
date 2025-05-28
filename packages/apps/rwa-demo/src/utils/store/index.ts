@@ -84,7 +84,7 @@ export const RWAStore = (organisation: IOrganisation) => {
     asset?: IAsset,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!assetFolder) return [];
+    if (!assetFolder) return;
 
     const accountRef = ref(
       database,

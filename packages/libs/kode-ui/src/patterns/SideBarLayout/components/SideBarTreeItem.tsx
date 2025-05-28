@@ -42,6 +42,8 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
   const { handleSetExpanded, isActiveUrl } = useLayout();
   const isMediumDevice = useMedia(breakpoints.md, true);
   const handlePress: MouseEventHandler<HTMLLIElement> = (e) => {
+    e.stopPropagation();
+
     if (!isMediumDevice) {
       handleSetExpanded(false);
     }

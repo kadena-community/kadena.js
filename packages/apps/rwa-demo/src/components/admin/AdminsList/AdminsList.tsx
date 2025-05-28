@@ -1,5 +1,7 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
+import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { useUser } from '@/hooks/user';
+import { OrgAdminStore } from '@/utils/store/orgAdminStore';
 import { RootAdminStore } from '@/utils/store/rootAdminStore';
 import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
 import { Button, TextField } from '@kadena/kode-ui';
@@ -21,14 +23,19 @@ import type { FC } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-export const RootAdmins: FC = () => {
+export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
+  organisationId,
+}) => {
   const [admins, setAdmins] = useState<any[]>([]);
   const { userToken } = useUser();
   const { addNotification } = useNotifications();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
-  const rootAdminStore = useMemo(() => {
+  const adminstore = useMemo(() => {
+    if (organisationId) {
+      return OrgAdminStore(organisationId);
+    }
     return RootAdminStore();
-  }, []);
+  }, [organisationId]);
 
   const {
     handleSubmit,
@@ -75,12 +82,12 @@ export const RootAdmins: FC = () => {
   };
 
   useEffect(() => {
-    if (!rootAdminStore) return;
+    if (!adminstore) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const unlisten = rootAdminStore.listenToRootAdmins(handleSetAdmins);
+    const unlisten = adminstore.listenToAdmins(handleSetAdmins);
 
     return unlisten;
-  }, [rootAdminStore]);
+  }, [adminstore]);
 
   const onSubmit = async (data: { email: string }) => {
     if (!userToken) {
@@ -90,7 +97,7 @@ export const RootAdmins: FC = () => {
       });
       return;
     }
-    await rootAdminStore.setAdmin({ email: data.email, token: userToken });
+    await adminstore.setAdmin({ email: data.email, token: userToken });
   };
 
   const handleRemove = async (uid: any) => {
@@ -101,7 +108,7 @@ export const RootAdmins: FC = () => {
       });
       return;
     }
-    await rootAdminStore.removeAdmin({ uid, token: userToken });
+    await adminstore.removeAdmin({ uid, token: userToken });
   };
 
   return (
@@ -150,7 +157,7 @@ export const RootAdmins: FC = () => {
                 Cancel
               </Button>
               <Button type="submit" isDisabled={!isValid} onClick={() => {}}>
-                Make root admin
+                Make admin
               </Button>
             </RightAsideFooter>
           </form>
@@ -161,7 +168,7 @@ export const RootAdmins: FC = () => {
         <SectionCardContentBlock>
           <SectionCardHeader
             title="Admins"
-            description={<>List of all root admins</>}
+            description={<>List of all admins</>}
             actions={
               <>
                 <Button

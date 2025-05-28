@@ -40,18 +40,21 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
               />
             </SideBarTree>
           )}
-          <SideBarTree visual={<MonoBusiness />} label="Organisation">
-            <SideBarTreeItem
-              label="Organisation"
-              component={Link}
-              href={`/admin`}
-            />
-            <SideBarTreeItem
-              label="Assets"
-              component={Link}
-              href={`/admin/assets`}
-            />
-          </SideBarTree>
+
+          {userToken?.claims.orgAdmins && (
+            <SideBarTree visual={<MonoBusiness />} label="Organisation">
+              <SideBarTreeItem
+                label="Organisation"
+                component={Link}
+                href={`/admin`}
+              />
+              <SideBarTreeItem
+                label="Assets"
+                component={Link}
+                href={`/admin/assets`}
+              />
+            </SideBarTree>
+          )}
         </>
       }
       context={<SidebarSideContext />}

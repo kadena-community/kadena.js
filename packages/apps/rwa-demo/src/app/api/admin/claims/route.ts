@@ -1,41 +1,78 @@
+import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
+import { randomUUID } from 'crypto';
 import type { UserRecord } from 'firebase-admin/auth';
 import type { NextRequest } from 'next/server';
 import { withRootAdmin } from '../../withAuth';
 import { adminAuth, getDB, getTokenId } from '../app';
 
-const setClaims = async (user: UserRecord) => {
+const setClaims = async (
+  user: UserRecord,
+  organisationId?: IOrganisation['id'] | null,
+) => {
   const existingClaims = user?.customClaims || {};
-  const updatedClaims = { ...existingClaims, rootAdmin: true };
-  await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
 
-  await getDB().ref(`/roles/root/${user.uid}`).push(user.uid);
+  if (!organisationId) {
+    const updatedClaims = { ...existingClaims, rootAdmin: true };
+    await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
+    await getDB().ref(`/roles/root/${user.uid}`).push(user.uid);
+  } else {
+    //add the organisationId to the array
+    const orgAdmins = (existingClaims.orgAdmins ?? []).filter(
+      (v: string) => v !== organisationId,
+    );
+    const updatedClaims = {
+      ...existingClaims,
+      orgAdmins: [...orgAdmins, organisationId],
+    };
+    await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
+    await getDB().ref(`/roles/${organisationId}/${user.uid}`).push(user.uid);
+  }
 };
 
-const removeClaims = async (user: UserRecord) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { rootAdmin, ...existingClaims } = user?.customClaims || {};
-  await adminAuth()?.setCustomUserClaims(user.uid, existingClaims);
+const removeClaims = async (
+  user: UserRecord,
+  organisationId?: IOrganisation['id'] | null,
+) => {
+  if (!organisationId) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { rootAdmin, ...updatedClaims } = user?.customClaims || {};
+    await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
+    await getDB().ref(`/roles/root/${user.uid}`).remove();
+  } else {
+    const existingClaims = user?.customClaims || {};
 
-  await getDB().ref(`/roles/root/${user.uid}`).remove();
+    //add the organisationId to the array
+    const orgAdmins = (existingClaims.orgAdmins ?? []).filter(
+      (v: string) => v !== organisationId,
+    );
+    const updatedClaims = {
+      ...existingClaims,
+      orgAdmins: [...orgAdmins],
+    };
+
+    await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
+    await getDB().ref(`/roles/${organisationId}/${user.uid}`).remove();
+  }
 };
 
 const _POST = async (request: NextRequest) => {
-  const { email } = await request.json();
+  const { email, organisationId } = await request.json();
 
   try {
     const user = await adminAuth()?.getUserByEmail(email);
-    await setClaims(user);
+    console.log(11111);
+    await setClaims(user, organisationId);
   } catch (e) {
     await adminAuth().createUser({
       email: email,
       emailVerified: false, // Optional
-      password: 'superSecret123', // Required if you want password login
-      displayName: 'Jane Doe', // Optional
+      password: randomUUID(),
+      displayName: '-', // Optional
       disabled: false, // Optional
     });
 
     const user = await adminAuth()?.getUserByEmail(email);
-    await setClaims(user);
+    await setClaims(user, organisationId);
   }
 
   return new Response(JSON.stringify({ email }), {
@@ -46,6 +83,10 @@ const _POST = async (request: NextRequest) => {
 
 const _DELETE = async (request: NextRequest) => {
   const uid = new URL(request.url).searchParams.get('uid');
+  const organisationId = new URL(request.url).searchParams.get(
+    'organisationId',
+  );
+
   if (!uid) {
     return new Response('uid not set', {
       status: 500,
@@ -65,7 +106,7 @@ const _DELETE = async (request: NextRequest) => {
         headers: { 'Content-Type': 'application/json' },
       });
     }
-    await removeClaims(user);
+    await removeClaims(user, organisationId);
   } catch (e) {}
 
   return new Response(JSON.stringify({ uid }), {

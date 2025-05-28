@@ -1,10 +1,11 @@
+import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { IdTokenResult } from 'firebase/auth';
 import { off, onValue, ref } from 'firebase/database';
 import { database } from './firebase';
 
-export const RootAdminStore = () => {
+export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
   const listenToAdmins = (setDataCallback: (admins: string[]) => void) => {
-    const orgRef = ref(database, `/roles/root`);
+    const orgRef = ref(database, `/roles/${organisationId}`);
     onValue(orgRef, async (snapshot) => {
       const data = snapshot.val();
       const arr = Object.entries(data ?? []).map(
@@ -28,6 +29,7 @@ export const RootAdminStore = () => {
       method: 'POST',
       body: JSON.stringify({
         email: email,
+        organisationId,
       }),
       headers: {
         Authorization: `Bearer ${token.token}`,
@@ -49,13 +51,16 @@ export const RootAdminStore = () => {
     uid: string;
     token: IdTokenResult;
   }) => {
-    const result = await fetch(`/api/admin/claims?uid=${uid}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token.token}`,
-        'Content-Type': 'application/json',
+    const result = await fetch(
+      `/api/admin/claims?uid=${uid}&organisationId=${organisationId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
 
     if (result.status !== 200) {
       return;

@@ -1,4 +1,5 @@
 'use client';
+import { AdminsList } from '@/components/admin/AdminsList/AdminsList';
 import { OrganisationInfoForm } from '@/components/admin/OrganisationInfoForm/OrganisationInfoForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
@@ -39,6 +40,8 @@ const Home = ({ params }: { params: { organisationId: string } }) => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       <OrganisationInfoForm organisationId={organisation.id} />
+
+      <AdminsList organisationId={organisation?.id} />
     </>
   );
 };

@@ -16,7 +16,6 @@ export interface IUserContext {
   signOut: () => void;
   addAccount: (account: IWalletAccount) => void;
   removeAccount: (address: string) => void;
-  addClaim: (role: Record<string, boolean>) => void;
 }
 
 export const UserContext = createContext<IUserContext>({
@@ -28,5 +27,4 @@ export const UserContext = createContext<IUserContext>({
   signOut: () => {},
   addAccount: (account: IWalletAccount) => {},
   removeAccount: (address: string) => {},
-  addClaim: () => {},
 });
