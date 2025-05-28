@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { useMedia } from 'react-use';
-import { PressEvent, Stack } from './../../../components';
+import { Stack } from './../../../components';
 import { breakpoints } from './../../../styles';
 import { useLayout } from './LayoutProvider';
 import type { ISideBarItemProps } from './SideBarItem';
