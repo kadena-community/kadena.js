@@ -26,8 +26,30 @@
       }
     },
     "organisations": {
-      ".read": true,
-      ".write": true
+      "$organisationId": {
+        "assets": {
+          ".read": "auth != null",
+          ".write": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true"
+        },
+        "messages": {
+          "$assetId": {
+            "$userId": {
+              "$account": {
+                ".read": "auth != null && auth.uid === $userId",
+                ".write": "auth != null"
+              }
+            }
+          }
+        },
+        "users": {
+          "$userId": {
+            ".read": "auth != null && auth.uid === $userId",
+            "accounts": {
+              ".write": "auth != null && auth.uid === $userId"
+            }
+          }
+        }
+      }
     },
     "transactions": {
       ".read": true,

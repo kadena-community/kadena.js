@@ -11,9 +11,11 @@ import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useUser } from './user';
 
 export const useFreezeInvestor = () => {
   const { account, sign, isMounted, accountRoles } = useAccount();
+  const { user } = useUser();
   const { asset, paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
   const { addNotification } = useNotifications();
@@ -36,11 +38,11 @@ export const useFreezeInvestor = () => {
       return;
     }
 
-    if (!account) return;
+    if (!account || !user) return;
     try {
       const tx = await setAddressFrozen(data, account!, asset);
+      await store?.setFrozenMessage(data, user, asset);
 
-      await store?.setFrozenMessage(data);
       const signedTransaction = await sign(tx);
 
       if (!signedTransaction) return;

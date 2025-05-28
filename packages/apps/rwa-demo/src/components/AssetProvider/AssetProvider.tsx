@@ -109,6 +109,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [organisation]);
 
   useEffect(() => {
+    console.log(1111, organisation);
     if (!organisation?.id) return;
 
     const unlistenAssets = assetStore?.listenToAssets(setAssets);

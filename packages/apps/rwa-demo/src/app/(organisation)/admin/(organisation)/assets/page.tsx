@@ -8,8 +8,19 @@ import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useOrganisation } from '@/hooks/organisation';
-import { MonoAdd, MonoDelete, MonoFindInPage } from '@kadena/kode-icons';
-import { Button } from '@kadena/kode-ui';
+import {
+  MonoAdd,
+  MonoDelete,
+  MonoFindInPage,
+  MonoSettings,
+} from '@kadena/kode-icons';
+import {
+  Button,
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+} from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -25,6 +36,8 @@ import {
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import { useState } from 'react';
 
 const Home = () => {
@@ -35,6 +48,7 @@ const Home = () => {
   const { assets, removeAsset, setAsset, getAsset } = useAsset();
   const [openSide, setOpenSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+  const router = useRouter();
 
   const handleDelete = (value: any) => {
     removeAsset(value as IAsset);
@@ -74,6 +88,20 @@ const Home = () => {
           <RightAsideHeader label="Assets" />
           <RightAsideContent></RightAsideContent>
         </RightAside>
+      )}
+      {!account && (
+        <Notification intent="warning" role="alert">
+          <NotificationHeading>No account selected</NotificationHeading>
+          You don't have an account selected yet.
+          <NotificationFooter>
+            <NotificationButton
+              onClick={() => router.push('/settings')}
+              icon={<MonoSettings />}
+            >
+              Go to wallet selection
+            </NotificationButton>
+          </NotificationFooter>
+        </Notification>
       )}
       <SectionCard stack="vertical">
         <SectionCardContentBlock>

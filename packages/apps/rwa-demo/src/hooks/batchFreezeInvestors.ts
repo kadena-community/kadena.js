@@ -11,9 +11,11 @@ import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useUser } from './user';
 
 export const useBatchFreezeInvestors = () => {
   const { asset } = useAsset();
+  const { user } = useUser();
   const { account, sign, isMounted, accountRoles } = useAccount();
   const { paused } = useAsset();
   const { addTransaction, isActiveAccountChangeTx } = useTransactions();
@@ -28,7 +30,7 @@ export const useBatchFreezeInvestors = () => {
   const submit = async (
     data: IBatchSetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
-    if (!asset) {
+    if (!asset || !user) {
       addNotification({
         intent: 'negative',
         label: 'asset not found',
@@ -40,7 +42,7 @@ export const useBatchFreezeInvestors = () => {
     try {
       const tx = await batchSetAddressFrozen(data, account!, asset);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await store?.setFrozenMessages(data, asset);
+      await store?.setFrozenMessages(data, user, asset);
       const signedTransaction = await sign(tx);
 
       if (!signedTransaction) return;
