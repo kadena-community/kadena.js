@@ -92,7 +92,7 @@ const Home = () => {
       {!account && (
         <Notification intent="warning" role="alert">
           <NotificationHeading>No account selected</NotificationHeading>
-          You don't have an account selected yet.
+          You do not have an account selected yet.
           <NotificationFooter>
             <NotificationButton
               onClick={() => router.push('/settings')}

@@ -8,6 +8,13 @@ const _GET = async (request: NextRequest) => {
     'organisationId',
   );
 
+  if (!id) {
+    return new Response(`no id found`, {
+      status: 404,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const user = await adminAuth()?.getUser(id);
   const existingClaims = user?.customClaims || {};
 

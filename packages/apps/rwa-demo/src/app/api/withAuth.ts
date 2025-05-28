@@ -51,6 +51,12 @@ export function withOrgAdmin(handler: Handler): Handler {
   return async (req, context) => {
     const tokenId = getTokenId(req);
     const organisationId = new URL(req.url).searchParams.get('organisationId');
+    if (!organisationId) {
+      return new Response('UnAuthorized', {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     const currentUser = await adminAuth()?.verifyIdToken(tokenId);
     console.log({ organisationId, currentUser, url: req.url });

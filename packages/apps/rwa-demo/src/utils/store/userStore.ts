@@ -12,13 +12,6 @@ export const UserStore = (organisation: IOrganisation, user: User) => {
   const dbLocationString = `/organisations/${organisation.id}/users/${user.uid}`;
 
   //gets user info from FB
-  const getUser = async () => {
-    const snapshot = await get(ref(database, dbLocationString));
-
-    return snapshot.val();
-  };
-
-  //gets user info from FB
   const getUserAccounts = async () => {
     const snapshot = await get(ref(database, `${dbLocationString}/accounts`));
 

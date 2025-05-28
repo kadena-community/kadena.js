@@ -1,7 +1,8 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { randomUUID } from 'crypto';
 import type { UserRecord } from 'firebase-admin/auth';
-import { NextResponse, type NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withOrgAdmin } from '../../withAuth';
 import { adminAuth, getDB, getTokenId } from '../app';
 
