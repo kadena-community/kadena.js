@@ -31,9 +31,9 @@ export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
         //send data
         try {
           await client.index(balanceData, network);
-          return `✅ elastic data send for ${alert.code} chain:${chain.chainId} (${network.key})/n`;
+          return `✅ elastic data send for ${alert.code} chain:${chain.chainId} (${network.key})`;
         } catch (e) {
-          return `❌ elastic data fail ${alert.code} chain:${chain.chainId} (${network.key}): (${e.meta.body.error.reason})\n`;
+          return `❌ elastic data fail ${alert.code} chain:${chain.chainId} (${network.key}): (${e.meta.body.error.reason})`;
         }
       },
     );

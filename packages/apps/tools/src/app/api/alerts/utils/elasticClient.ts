@@ -29,8 +29,8 @@ export const getClient = () => {
       size: 2,
       sort: { '@timestamp': 'desc' },
       query: {
-        match: {
-          code: alert.code,
+        bool: {
+          must: [{ match: { code: alert.code } }, { match: { chain_id: '2' } }],
         },
       },
     });
