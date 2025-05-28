@@ -2,14 +2,8 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
+import type { IMagicAdapterOptions } from './MagicAdapter';
 import { detectMagicProvider } from './provider';
-
-export interface IMagicAdapterOptions extends IBaseWalletFactoryOptions {
-  CHAINWEBAPIURL: string;
-  CHAINID: string;
-  NETWORKID: string;
-  MAGIC_APIKEY: string;
-}
 
 /**
  * Magic Wallet Adapter Factory
@@ -28,11 +22,13 @@ export interface IMagicAdapterOptions extends IBaseWalletFactoryOptions {
  * @returns A wallet adapter factory for the Magic wallet
  * @public
  */
-export const createMagicAdapter = ((options: IMagicAdapterOptions) => {
+export const createMagicAdapter = ((
+  options: IMagicAdapterOptions & IBaseWalletFactoryOptions,
+) => {
   return {
     name: 'Magic',
     detect: async () => {
-      return await detectMagicProvider({ silent: true });
+      return await detectMagicProvider();
     },
     adapter: async (provider) => {
       const { MagicAdapter } = await import('./MagicAdapter');

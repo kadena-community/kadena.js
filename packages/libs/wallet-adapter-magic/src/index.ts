@@ -2,5 +2,5 @@ export {
   MagicAdapter,
   createMagicAdapter,
   detectMagicProvider,
-} from './eckoAdapterFactory';
+} from './magicAdapterFactory';
 export * from './types';

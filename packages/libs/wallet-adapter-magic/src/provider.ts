@@ -15,9 +15,7 @@ import type { IProvider } from '@kadena/wallet-adapter-core';
 /**
  * The Magic provider interface extends the core Provider.
  */
-export interface IMagicProvider extends IProvider {
-  isKadena?: boolean;
-}
+export interface IMagicProvider extends IProvider {}
 
 /**
  * Detects the Magic wallet provider.
@@ -26,35 +24,10 @@ export interface IMagicProvider extends IProvider {
  * @returns A promise resolving to the Magic provider or null.
  * @public
  */
-export async function detectMagicProvider(options?: {
-  silent?: boolean;
-  timeout?: number;
-}): Promise<IMagicProvider | null> {
-  const { silent = false, timeout = 3000 } = options || {};
-  return new Promise((resolve) => {
-    let handled = false;
-    function handleProvider() {
-      if (handled) return;
-      handled = true;
-      const provider = (window as any).kadena as IMagicProvider;
-      if (
-        provider &&
-        provider.isKadena &&
-        typeof provider.request === 'function'
-      ) {
-        resolve(provider);
-      } else {
-        if (!silent) console.error('Magic Wallet not detected');
-        resolve(null);
-      }
-    }
-    if ((window as any).kadena) {
-      handleProvider();
-    } else {
-      window.addEventListener('kadena#initialized', handleProvider, {
-        once: true,
-      });
-      setTimeout(handleProvider, timeout);
-    }
-  });
+export async function detectMagicProvider(options?: {}): Promise<IMagicProvider | null> {
+  return {
+    request: async () => {},
+    on: () => {},
+    off: () => {},
+  };
 }

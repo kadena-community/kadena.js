@@ -1630,6 +1630,9 @@ importers:
       '@kadena/wallet-adapter-ecko':
         specifier: workspace:*
         version: link:../../libs/wallet-adapter-ecko
+      '@kadena/wallet-adapter-magic':
+        specifier: workspace:*
+        version: link:../../libs/wallet-adapter-magic
       '@kadena/wallet-adapter-react':
         specifier: workspace:*
         version: link:../../libs/wallet-adapter-react

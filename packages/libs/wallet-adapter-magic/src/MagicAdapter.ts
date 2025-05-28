@@ -31,8 +31,14 @@ import type {
   IBaseWalletAdapterOptions,
   ICommand,
   ISigningRequestPartial,
+  KeySet,
+  KeySetRef,
 } from '@kadena/wallet-adapter-core';
-import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
+import {
+  BaseWalletAdapter,
+  isKeySetGuard,
+  isKeySetRefGuard,
+} from '@kadena/wallet-adapter-core';
 import { KadenaExtension } from '@magic-ext/kadena';
 import type { Extension } from 'magic-sdk';
 import { Magic } from 'magic-sdk';
@@ -44,29 +50,33 @@ import type {
 } from './types';
 import { safeJsonParse } from './utils/json';
 
-export interface IMagicAdapterOptions extends IBaseWalletAdapterOptions {
-  CHAINWEBAPIURL: string;
-  CHAINID: string;
-  NETWORKID: string;
-  MAGIC_APIKEY: string;
+export interface IMagicAdapterOptions {
+  chainwebApiUrl?: string;
+  chainId?: string;
+  magicApiKey?: string;
 }
+
+type IMagicAdapterOptionsWithProvider = IMagicAdapterOptions &
+  IBaseWalletAdapterOptions;
 
 const deriveGuardFromAccount = (
   account: Awaited<ReturnType<KadenaExtension['loginWithSpireKey']>>,
-) => {
-  if (account.guard && 'keys' in account.guard && 'pred' in account.guard) {
-    return {
-      keys: account.guard.keys,
-      pred: account.guard.pred,
-    };
+): KeySetRef | KeySet => {
+  if (
+    account.guard &&
+    (isKeySetGuard(account.guard) || isKeySetRefGuard(account.guard))
+  ) {
+    return account.guard;
   }
+
   if (account.accountName.startsWith('k:')) {
     return {
       keys: [account.accountName],
       pred: 'keys-all',
     };
   }
-  return null;
+
+  throw new Error(`${ERRORS.INVALID_GUARD}: ${JSON.stringify(account)}`);
 };
 
 /**
@@ -84,28 +94,28 @@ export class MagicAdapter extends BaseWalletAdapter {
    * Constructor for the MagicAdapter.
    * @param options - Optional adapter options.
    */
-  public constructor(options: IMagicAdapterOptions) {
+  public constructor(options: IMagicAdapterOptionsWithProvider) {
     super(options);
 
     if (
-      !options.MAGIC_APIKEY ||
-      !options.CHAINWEBAPIURL ||
-      !options.CHAINID ||
-      !options.NETWORKID
+      !options.magicApiKey ||
+      !options.chainwebApiUrl ||
+      !options.chainId ||
+      !options.networkId
     ) {
       throw new Error(
-        'Missing required options: MAGIC_APIKEY, CHAINWEBAPIURL, CHAINID, NETWORKID',
+        'Missing required options: magicApiKey, chainwebApiUrl, chainId, networkId',
       );
     }
 
     const kdaExtension = new KadenaExtension({
-      rpcUrl: options.CHAINWEBAPIURL,
-      chainId: options.CHAINID as ChainId,
-      networkId: options.NETWORKID,
+      rpcUrl: options.chainwebApiUrl,
+      chainId: options.chainId as ChainId,
+      networkId: options.networkId,
       createAccountsOnChain: true,
     }) as unknown as Extension<string>;
 
-    this._magic = new Magic(options.MAGIC_APIKEY, {
+    this._magic = new Magic(options.magicApiKey, {
       extensions: [kdaExtension],
     });
   }
@@ -119,9 +129,6 @@ export class MagicAdapter extends BaseWalletAdapter {
     ).loginWithSpireKey();
 
     const guard = deriveGuardFromAccount(account);
-    if (!guard) {
-      throw new Error(ERRORS.INVALID_GUARD);
-    }
 
     this._account = {
       accountName: account.accountName,
