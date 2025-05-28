@@ -42,6 +42,7 @@ import type {
   ExtendedMethod,
   ExtendedMethodMap,
   IQuicksignResponse,
+  IQuicksignResponseOutcomes,
   ISnapAccount,
   ISnapNetwork,
 } from './types';
@@ -129,7 +130,7 @@ export class SnapAdapter extends BaseWalletAdapter {
     }));
   }
 
-  private async _signTransaction(cmd: string): Promise<string> {
+  private async _signTransaction(cmd: string): Promise<any> {
     const response = await this.invokeSnap<string>('kda_signTransaction', {
       id: this.connectedAccountId,
       transaction: cmd,
@@ -320,29 +321,12 @@ export class SnapAdapter extends BaseWalletAdapter {
           const response = await this._signTransaction(
             p.commandSigDatas[0].cmd,
           );
-          const hash = createTransaction(
-            JSON.stringify(p.commandSigDatas[0].cmd),
-          );
-          console.log('RESPONSE --------------->', response, hash);
-          const result = {
-            cmd: p.commandSigDatas[0].cmd,
-            hash: hash.hash,
-            sigs: [
-              {
-                pubKey:
-                  'd9f2f65507423c79c468cc6b5f2d54091f56da89638974241fa04ba61ead2379',
-                sig: response,
-              },
-            ],
-          };
-          console.log('RESULT ------------>', result);
+          //const hash = createTransaction(p.commandSigDatas[0].cmd);
+          console.log('RESPONSE --------------->', response);
           return {
-            id,
+            id: 1,
             jsonrpc: '2.0',
-            result: {
-              body: result,
-              chainId: safeJsonParse(result.cmd)?.meta?.chainId,
-            },
+            result: JSON.parse(response) as IQuicksignResponse,
           } as ExtendedMethodMap[M]['response'];
         }
       }
