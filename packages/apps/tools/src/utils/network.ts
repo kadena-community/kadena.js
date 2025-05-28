@@ -1,7 +1,5 @@
 import type { NetworkId, NetworkIds } from '@/constants/kadena';
 import { kadenaDefaultNetworks, networksIds } from '@/constants/kadena';
-import type { INETWORK } from '@/scripts/constants';
-import { NETWORKS } from '@/scripts/constants';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
 interface IApiHostData {
@@ -98,11 +96,3 @@ export const getEstatsHost = ({
   chain,
 }: IEstatsHostData): string =>
   `https://${api}/txs/account/${account}?token=coin&chain=${chain}&limit=10`;
-
-export const getMainNet = (): INETWORK => {
-  return NETWORKS.find((n) => n.key === 'MAINNET') ?? NETWORKS[0];
-};
-
-export const getTestNet = (): INETWORK => {
-  return NETWORKS.find((network) => network.key === 'TESTNET') ?? NETWORKS[1];
-};

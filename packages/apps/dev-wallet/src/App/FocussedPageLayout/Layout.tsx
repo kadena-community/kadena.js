@@ -10,7 +10,7 @@ import {
   FocussedLayoutTopBanner,
 } from '@kadena/kode-ui/patterns';
 import { FC, PropsWithChildren } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
   const { theme, setTheme } = useTheme();
@@ -27,9 +27,9 @@ export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
       </FocussedLayoutTopBanner>
       <FocussedLayout
         logo={
-          <Link to="/">
+          <a href="/">
             <FocussedLayoutLogo />
-          </Link>
+          </a>
         }
       >
         <FocussedLayoutHeaderAside>

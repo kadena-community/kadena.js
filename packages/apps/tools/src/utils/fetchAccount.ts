@@ -1,4 +1,4 @@
-import type { IAccount, INETWORK } from '@/scripts/constants';
+import type { IAccount, INETWORK } from '@/app/api/alerts/utils/constants';
 
 export const fetchAccount = async (
   network: INETWORK,

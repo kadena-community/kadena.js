@@ -187,3 +187,9 @@ wallet-adapter-react-example:
 '@kadena/wallet-adapter-chainweaver-legacy':
   - changed-files:
       - any-glob-to-any-file: packages/libs/wallet-adapter-chainweaver-legacy/*
+'@kadena/wallet-adapter-zelcore':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-zelcore/*
+'@kadena/wallet-adapter-walletconnect':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-walletconnect/*

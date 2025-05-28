@@ -3,7 +3,7 @@ import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooter
 import { LandingPageLayout } from '@/App/LayoutLandingPage/Layout';
 import { useIsInDevelopment } from '@/Components/InDevelopmentProvider/InDevelopmentProvider';
 import { MonoWarning } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Box, Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import { FC } from 'react';
 import { wrapperClass } from '../errors/styles.css';
 import { iconColorClass } from './styles.css';
@@ -23,13 +23,7 @@ export const InDevelopment: FC = () => {
           </Stack>
         }
       />
-      <Stack
-        flexDirection="column"
-        gap="xxl"
-        style={{ marginBlockStart: '-80px' }}
-        marginBlockEnd="xxxl"
-        className={wrapperClass}
-      >
+      <Box width="100%" className={wrapperClass}>
         <Stack flexDirection="column">
           <Heading variant="h5">Under development</Heading>
           <Text>
@@ -37,7 +31,7 @@ export const InDevelopment: FC = () => {
             with caution!
           </Text>
         </Stack>
-      </Stack>
+      </Box>
 
       <CardFooterContent>
         <Button variant="negative" onPress={hideMessage}>
