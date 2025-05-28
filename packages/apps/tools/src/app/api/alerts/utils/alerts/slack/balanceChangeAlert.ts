@@ -8,7 +8,7 @@ export const balanceChangeAlert = async (alert: IAlert): Promise<string[]> => {
   const promises = alert.networks.map(async (network) => {
     const client = getClient();
 
-    const [latest, previous] = await client.getLastRecord(alert);
+    const [latest, previous] = await client.getLastRecord(alert, network);
 
     const latestTimeDiff = differenceInMinutes(
       Date.now(),
