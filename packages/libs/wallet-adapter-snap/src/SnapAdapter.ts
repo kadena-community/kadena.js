@@ -100,7 +100,6 @@ export class SnapAdapter extends BaseWalletAdapter {
       'kda_getActiveNetwork',
     );
     const currentNetwork = networks.find((e) => e.id == currentNetworkId);
-    console.log('Hello!!---------------------->', currentNetwork);
     return {
       networkName: currentNetwork?.name ?? 'a',
       networkId: currentNetwork?.networkId ?? 'a',
@@ -113,7 +112,6 @@ export class SnapAdapter extends BaseWalletAdapter {
   private async _getAccounts(): Promise<IAccountInfo[]> {
     const wallets = await this.invokeSnap<ISnapAccount[]>('kda_getAccounts');
     const network = await this._getActiveNetwork();
-    console.log('WALLETS ------------>', wallets);
     if (!wallets?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
@@ -128,6 +126,14 @@ export class SnapAdapter extends BaseWalletAdapter {
       },
       chainAccounts: [],
     }));
+  }
+
+  private async _changeNetwork(networkId: string) {
+    const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
+    const newNetworkId = networks.find((e) => e.networkId == networkId)?.id;
+    await this.invokeSnap('kda_setActiveNetwork', {
+      id: newNetworkId,
+    });
   }
 
   private async _signTransaction(cmd: string): Promise<any> {
@@ -221,7 +227,9 @@ export class SnapAdapter extends BaseWalletAdapter {
   }): Promise<ExtendedMethodMap[M]['response']> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
-    const { id, method, params = {} } = args;
+    const { id, method } = args;
+    const params = 'params' in args ? args.params : undefined;
+    const parsedParams = params ?? {};
 
     switch (method) {
       case 'kadena_connect': {
@@ -314,19 +322,46 @@ export class SnapAdapter extends BaseWalletAdapter {
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_quicksign_v1': {
-        const p = params as any;
-        if (params.hasOwnProperty('commandSigDatas')) {
-          console.log('TRANSACTION111 --------------->', p);
-          console.log('TRANSACTION222 --------------->', params);
-          const response = await this._signTransaction(
-            p.commandSigDatas[0].cmd,
+        if (!parsedParams || !('commandSigDatas' in parsedParams)) {
+          throw new Error(
+            'commandSigDatas param is required for kadena_quicksign_v1',
           );
-          //const hash = createTransaction(p.commandSigDatas[0].cmd);
-          console.log('RESPONSE --------------->', response);
+        }
+
+        const { commandSigDatas } = parsedParams as {
+          commandSigDatas: CommandSigDatas;
+        };
+
+        const response = await this._signTransaction(commandSigDatas[0].cmd);
+        //const hash = createTransaction(p.commandSigDatas[0].cmd);
+        return {
+          id: 1,
+          jsonrpc: '2.0',
+          result: JSON.parse(response) as IQuicksignResponse,
+        } as ExtendedMethodMap[M]['response'];
+      }
+      case 'kadena_changeNetwork_v1': {
+        if (!parsedParams || !('networkId' in parsedParams)) {
+          throw new Error(
+            'networkId param is required for kadena_changeNetwork_v1',
+          );
+        }
+        const { networkId } = parsedParams as {
+          networkId: string;
+        };
+        console.log('CHANGING TO', networkId);
+        try {
+          await this._changeNetwork(networkId);
           return {
             id: 1,
             jsonrpc: '2.0',
-            result: JSON.parse(response) as IQuicksignResponse,
+            result: { success: true },
+          } as ExtendedMethodMap[M]['response'];
+        } catch (e) {
+          return {
+            id: 1,
+            jsonrpc: '2.0',
+            result: { success: false, reason: 'Error changing network' },
           } as ExtendedMethodMap[M]['response'];
         }
       }
