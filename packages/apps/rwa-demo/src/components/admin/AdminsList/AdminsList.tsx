@@ -73,16 +73,17 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     const promises = adminIds.map(async (id) => {
       const admin = admins.find((a) => a.uid === id);
       if (!admin) {
-        const result = await fetch('/api/admin/user', {
-          method: 'POST',
-          body: JSON.stringify({
-            id,
-          }),
-          headers: {
-            Authorization: `Bearer ${userToken?.token}`,
-            'Content-Type': 'application/json',
+        const result = await fetch(
+          `/api/admin/user?organisationId=${organisationId}&uid=${id}`,
+          {
+            method: 'GET',
+
+            headers: {
+              Authorization: `Bearer ${userToken?.token}`,
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
 
         if (result.status !== 200) {
           return new Promise((resolve) => resolve(''));
@@ -106,7 +107,14 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     const unlisten = adminstore.listenToAdmins(handleSetAdmins);
 
     return unlisten;
-  }, [adminstore]);
+  }, [adminstore, organisationId]);
+
+  const addAdminIsAllowed = useMemo(() => {
+    return (
+      userToken?.claims.rootAdmin ||
+      (organisationId && (userToken?.claims.orgAdmins as any)[organisationId])
+    );
+  }, [userToken, organisationId]);
 
   const onSubmit = async (data: { email: string }) => {
     setIsLoading(true);
@@ -143,13 +151,15 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
       });
       return;
     }
+
     const result = await adminstore.removeAdmin({ uid, token: userToken });
 
     if (result.status !== 200) {
+      const data = await result.json();
       addNotification({
         intent: 'negative',
-        label: 'admin not added',
-        message: result.statusText,
+        label: 'admin not removed',
+        message: data.message,
       });
     }
 
@@ -204,7 +214,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
               <Button
                 isLoading={isLoading}
                 type="submit"
-                isDisabled={!isValid || isLoading}
+                isDisabled={!isValid || isLoading || !addAdminIsAllowed}
                 onClick={() => {}}
               >
                 Make admin
@@ -227,6 +237,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                   }}
                   isCompact
                   variant="outlined"
+                  isDisabled={!addAdminIsAllowed}
                   startVisual={<MonoAdd />}
                 >
                   Add admin

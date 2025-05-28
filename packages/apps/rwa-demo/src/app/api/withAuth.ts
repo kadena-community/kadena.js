@@ -46,3 +46,23 @@ export function withRootAdmin(handler: Handler): Handler {
     return handler(req, context);
   };
 }
+
+export function withOrgAdmin(handler: Handler): Handler {
+  return async (req, context) => {
+    const tokenId = getTokenId(req);
+    const organisationId = new URL(req.url).searchParams.get('organisationId');
+
+    const currentUser = await adminAuth()?.verifyIdToken(tokenId);
+    console.log({ organisationId, currentUser, url: req.url });
+    //check if the current user has the rights to create this role
+    if (!currentUser?.rootAdmin && !currentUser?.orgAdmins[organisationId]) {
+      return new Response('UnAuthorized', {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // If authenticated, call the original handler
+    return handler(req, context);
+  };
+}

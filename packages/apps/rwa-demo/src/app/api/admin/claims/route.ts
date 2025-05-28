@@ -1,8 +1,8 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { randomUUID } from 'crypto';
 import type { UserRecord } from 'firebase-admin/auth';
-import type { NextRequest } from 'next/server';
-import { withRootAdmin } from '../../withAuth';
+import { NextResponse, type NextRequest } from 'next/server';
+import { withOrgAdmin } from '../../withAuth';
 import { adminAuth, getDB, getTokenId } from '../app';
 
 const setClaims = async (
@@ -14,18 +14,19 @@ const setClaims = async (
   if (!organisationId) {
     const updatedClaims = { ...existingClaims, rootAdmin: true };
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
-    const result = await getDB().ref(`/roles/root/${user.uid}`).set(user.uid);
+    await getDB().ref(`/roles/root/${user.uid}`).set({ id: user.uid });
   } else {
     //add the organisationId to the array
-    const orgAdmins = (existingClaims.orgAdmins ?? []).filter(
-      (v: string) => v !== organisationId,
-    );
+    const orgAdmins = existingClaims.orgAdmins;
+
     const updatedClaims = {
       ...existingClaims,
-      orgAdmins: [...orgAdmins, organisationId],
+      orgAdmins: { ...orgAdmins, [organisationId]: true },
     };
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
-    await getDB().ref(`/roles/${organisationId}/${user.uid}`).set(user.uid);
+    await getDB()
+      .ref(`/roles/${organisationId}/${user.uid}`)
+      .set({ id: user.uid });
   }
 };
 
@@ -42,12 +43,11 @@ const removeClaims = async (
     const existingClaims = user?.customClaims || {};
 
     //add the organisationId to the array
-    const orgAdmins = (existingClaims.orgAdmins ?? []).filter(
-      (v: string) => v !== organisationId,
-    );
+    const orgAdmins = { ...existingClaims.orgAdmins };
+    delete orgAdmins[organisationId];
     const updatedClaims = {
       ...existingClaims,
-      orgAdmins: [...orgAdmins],
+      orgAdmins,
     };
 
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
@@ -100,10 +100,10 @@ const _DELETE = async (request: NextRequest) => {
     const user = await adminAuth()?.getUser(uid);
 
     if (currentUser.uid === user.uid) {
-      return new Response('you can not delete your self as an admin', {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return NextResponse.json(
+        { message: 'you can not delete your self as an admin' },
+        { status: 400 },
+      );
     }
     await removeClaims(user, organisationId);
   } catch (e) {}
@@ -114,5 +114,5 @@ const _DELETE = async (request: NextRequest) => {
   });
 };
 
-export const POST = withRootAdmin(_POST);
-export const DELETE = withRootAdmin(_DELETE);
+export const POST = withOrgAdmin(_POST);
+export const DELETE = withOrgAdmin(_DELETE);

@@ -1,0 +1,37 @@
+{
+  "rules": {
+    "$contractName": {
+      ".read": true,
+      ".write": true,
+      "acounts": {
+        "$accountName": {
+          "account": {
+            ".validate": "newData.hasChildren(['accountName', 'alias']) && newData.child('alias').isString() && newData.child('accountName').isString()"
+          }
+        }
+      }
+    },
+    "organisationsData": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["domains/httplocalhost3000/value"]
+    },
+    "roles": {
+      ".write": false,
+      "$organisationId": {
+        ".read": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true"
+      },
+      "root": {
+        ".read": "auth != null && auth.token.rootAdmin === true"
+      }
+    },
+    "organisations": {
+      ".read": true,
+      ".write": true
+    },
+    "transactions": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

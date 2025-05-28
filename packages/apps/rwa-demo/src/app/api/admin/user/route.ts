@@ -1,18 +1,33 @@
 import type { NextRequest } from 'next/server';
-import { withRootAdmin } from '../../withAuth';
+import { withOrgAdmin } from '../../withAuth';
 import { adminAuth } from '../app';
 
-const _POST = async (request: NextRequest) => {
-  const { id } = await request.json();
+const _GET = async (request: NextRequest) => {
+  const id = new URL(request.url).searchParams.get('uid');
+  const organisationId = new URL(request.url).searchParams.get(
+    'organisationId',
+  );
 
   const user = await adminAuth()?.getUser(id);
   const existingClaims = user?.customClaims || {};
 
-  if (!existingClaims.rootAdmin) {
-    return new Response(`${id}: not a root admin`, {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  if (!organisationId) {
+    if (!existingClaims.rootAdmin) {
+      return new Response(`${id}: not a root admin`, {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  } else {
+    if (
+      !existingClaims.orgAdmins ||
+      !existingClaims.orgAdmins[organisationId]
+    ) {
+      return new Response(`${id}: not an admin for ${organisationId}`, {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
   }
 
   return new Response(
@@ -28,4 +43,4 @@ const _POST = async (request: NextRequest) => {
   );
 };
 
-export const POST = withRootAdmin(_POST);
+export const GET = withOrgAdmin(_GET);

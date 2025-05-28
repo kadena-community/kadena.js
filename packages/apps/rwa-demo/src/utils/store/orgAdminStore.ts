@@ -25,23 +25,22 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     email: string;
     token: IdTokenResult;
   }) => {
-    const result = await fetch('/api/admin/claims', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: email,
-        organisationId,
-      }),
-      headers: {
-        Authorization: `Bearer ${token.token}`,
-        'Content-Type': 'application/json',
+    const result = await fetch(
+      `/api/admin/claims?organisationId=${organisationId}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: email,
+          organisationId,
+        }),
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
 
-    if (result.status !== 200) {
-      return;
-    }
-
-    return result.json();
+    return result;
   };
 
   const removeAdmin = async ({
@@ -62,11 +61,7 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
       },
     );
 
-    if (result.status !== 200) {
-      return;
-    }
-
-    return result.json();
+    return result;
   };
 
   return {
