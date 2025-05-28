@@ -7,6 +7,7 @@ export const RootAdminStore = () => {
     const orgRef = ref(database, `/roles/root`);
     onValue(orgRef, async (snapshot) => {
       const data = snapshot.val();
+
       const arr = Object.entries(data ?? []).map(
         ([key, value]) => key,
       ) as string[];
@@ -35,11 +36,7 @@ export const RootAdminStore = () => {
       },
     });
 
-    if (result.status !== 200) {
-      return;
-    }
-
-    return result.json();
+    return result;
   };
 
   const removeAdmin = async ({
@@ -57,11 +54,7 @@ export const RootAdminStore = () => {
       },
     });
 
-    if (result.status !== 200) {
-      return;
-    }
-
-    return result.json();
+    return result;
   };
 
   return {

@@ -27,8 +27,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const { addNotification } = useNotifications();
 
-  console.log({ token });
-
   const userStore = useMemo(() => {
     if (!organisation || !user) return;
     return UserStore(organisation, user);
@@ -132,7 +130,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     [user, organisation, userStore],
   );
 
-  console.log({ token });
   return (
     <UserContext.Provider
       value={{

@@ -23,10 +23,29 @@ import type { FC } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+const loadingData = [
+  {
+    id: '',
+    email: '',
+    displayName: '',
+  },
+  {
+    id: '',
+    email: '',
+    displayName: '',
+  },
+  {
+    id: '',
+    email: '',
+    displayName: '',
+  },
+];
+
 export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
   organisationId,
 }) => {
   const [admins, setAdmins] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useUser();
   const { addNotification } = useNotifications();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
@@ -50,7 +69,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
   const handleSetAdmins = async (adminIds: string[]) => {
     //check if we already retrieved info for a user
-    console.log({ adminIds });
+    setIsLoading(true);
     const promises = adminIds.map(async (id) => {
       const admin = admins.find((a) => a.uid === id);
       if (!admin) {
@@ -70,7 +89,6 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
         }
 
         const d = await result.json();
-        console.log(d);
         return d;
       }
 
@@ -79,6 +97,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
     const data = (await Promise.all(promises)).filter(Boolean);
     setAdmins(data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -90,6 +109,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
   }, [adminstore]);
 
   const onSubmit = async (data: { email: string }) => {
+    setIsLoading(true);
     if (!userToken) {
       addNotification({
         intent: 'negative',
@@ -97,10 +117,25 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
       });
       return;
     }
-    await adminstore.setAdmin({ email: data.email, token: userToken });
+    const result = await adminstore.setAdmin({
+      email: data.email,
+      token: userToken,
+    });
+
+    if (result.status !== 200) {
+      addNotification({
+        intent: 'negative',
+        label: 'admin not added',
+        message: result.statusText,
+      });
+    }
+
+    setIsLoading(false);
+    setIsRightAsideExpanded(false);
   };
 
   const handleRemove = async (uid: any) => {
+    setIsLoading(true);
     if (!userToken) {
       addNotification({
         intent: 'negative',
@@ -108,7 +143,17 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
       });
       return;
     }
-    await adminstore.removeAdmin({ uid, token: userToken });
+    const result = await adminstore.removeAdmin({ uid, token: userToken });
+
+    if (result.status !== 200) {
+      addNotification({
+        intent: 'negative',
+        label: 'admin not added',
+        message: result.statusText,
+      });
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -156,7 +201,12 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
               >
                 Cancel
               </Button>
-              <Button type="submit" isDisabled={!isValid} onClick={() => {}}>
+              <Button
+                isLoading={isLoading}
+                type="submit"
+                isDisabled={!isValid || isLoading}
+                onClick={() => {}}
+              >
                 Make admin
               </Button>
             </RightAsideFooter>
@@ -186,6 +236,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
           />
           <SectionCardBody>
             <CompactTable
+              isLoading={isLoading}
               variant="open"
               fields={[
                 {
@@ -226,7 +277,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                   }),
                 },
               ]}
-              data={admins}
+              data={isLoading ? loadingData : admins}
             />
           </SectionCardBody>
           <SectionCardBody></SectionCardBody>

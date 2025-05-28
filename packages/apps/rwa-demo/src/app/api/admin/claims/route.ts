@@ -14,7 +14,7 @@ const setClaims = async (
   if (!organisationId) {
     const updatedClaims = { ...existingClaims, rootAdmin: true };
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
-    await getDB().ref(`/roles/root/${user.uid}`).push(user.uid);
+    const result = await getDB().ref(`/roles/root/${user.uid}`).set(user.uid);
   } else {
     //add the organisationId to the array
     const orgAdmins = (existingClaims.orgAdmins ?? []).filter(
@@ -25,7 +25,7 @@ const setClaims = async (
       orgAdmins: [...orgAdmins, organisationId],
     };
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
-    await getDB().ref(`/roles/${organisationId}/${user.uid}`).push(user.uid);
+    await getDB().ref(`/roles/${organisationId}/${user.uid}`).set(user.uid);
   }
 };
 
@@ -60,7 +60,6 @@ const _POST = async (request: NextRequest) => {
 
   try {
     const user = await adminAuth()?.getUserByEmail(email);
-    console.log(11111);
     await setClaims(user, organisationId);
   } catch (e) {
     await adminAuth().createUser({
