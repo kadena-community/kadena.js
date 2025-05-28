@@ -15,6 +15,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@kadena/client": "^1.17.1",
+    "@kadena/types": "^0.7.0",
     "@kadena/wallet-adapter-core": "workspace:*",
     "@metamask/providers": "^22.1.0"
   },

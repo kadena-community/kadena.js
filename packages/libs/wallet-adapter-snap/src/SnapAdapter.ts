@@ -22,6 +22,8 @@
  *   changes must be managed externally if needed.
  */
 
+import { createTransaction } from '@kadena/client';
+import type { ICommandPayload } from '@kadena/types';
 import type {
   CommandSigDatas,
   IAccountInfo,
@@ -30,7 +32,10 @@ import type {
   INetworkInfo,
   ISigningRequestPartial,
 } from '@kadena/wallet-adapter-core';
-import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
+import {
+  BaseWalletAdapter,
+  prepareQuickSignCmd,
+} from '@kadena/wallet-adapter-core';
 import { ERRORS } from './constants';
 import { defaultSnapOrigin } from './provider';
 import type {
@@ -48,6 +53,7 @@ import { safeJsonParse } from './utils/json';
  */
 export class SnapAdapter extends BaseWalletAdapter {
   public name: string = 'Snap';
+  private connectedAccountId: string | undefined = undefined;
 
   /**
    * Constructor for the SnapAdapter.
@@ -57,16 +63,19 @@ export class SnapAdapter extends BaseWalletAdapter {
     super(options);
   }
 
-  /**
-   * Wraps wallet_invokeSnap calls
-   */
   private async invokeSnap<T>(
     method: string,
     params?: Record<string, unknown>,
   ): Promise<T> {
     return this.provider.request({
       method: 'wallet_invokeSnap',
-      params: { snapId: defaultSnapOrigin, request: { method, ...params } },
+      params: {
+        snapId: defaultSnapOrigin,
+        request: {
+          method,
+          ...(params ? { params } : {}), // wrap in `params`
+        },
+      },
     }) as Promise<T>;
   }
 
@@ -103,17 +112,32 @@ export class SnapAdapter extends BaseWalletAdapter {
   private async _getAccounts(): Promise<IAccountInfo[]> {
     const wallets = await this.invokeSnap<ISnapAccount[]>('kda_getAccounts');
     const network = await this._getActiveNetwork();
+    console.log('WALLETS ------------>', wallets);
     if (!wallets?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
+    this.connectedAccountId = wallets[0].id;
     return wallets.map((wallet) => ({
       accountName: wallet.address,
       networkId: network.networkId,
       contract: 'coin',
-      guard: { keys: [wallet.publicKey], pred: 'keys-all' },
+      guard: {
+        keys: [wallet.publicKey.replace(/^0x00/, '')],
+        pred: 'keys-all',
+      },
       chainAccounts: [],
     }));
   }
+
+  private async _signTransaction(cmd: string): Promise<string> {
+    const response = await this.invokeSnap<string>('kda_signTransaction', {
+      id: this.connectedAccountId,
+      transaction: cmd,
+    });
+
+    return response;
+  }
+
   // --------------------------------------------------------------------------
   // CONNECTION LOGIC
   // --------------------------------------------------------------------------
@@ -246,32 +270,37 @@ export class SnapAdapter extends BaseWalletAdapter {
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
-        console.log(params);
-        const response = (await this.provider.request({
-          method: 'kda_requestSign',
-          data: {
-            networkId: this.networkId,
-            signingCmd: params as ISigningRequestPartial,
-          },
-        })) as {
-          status: string;
-          message: string;
-          signedCmd: ICommand;
-          error?: string;
-        };
-
-        if (response.status !== 'success') {
-          const err =
-            response.error ??
-            response.message ??
-            ERRORS.ERROR_SIGNING_TRANSACTION;
-          throw new Error(err);
+        console.log('PARAMS   ----->', params as ISigningRequestPartial);
+        const paramsObj = params as ISigningRequestPartial;
+        if (
+          paramsObj.hasOwnProperty('code') &&
+          paramsObj.hasOwnProperty('data')
+        ) {
+          const response = await this.invokeSnap<string>(
+            'kda_signTransaction',
+            {
+              id: this.connectedAccountId,
+              transaction: JSON.stringify({
+                code: paramsObj.code,
+                data: paramsObj.data,
+              }),
+            },
+          );
+          console.log('RESPONSE ======>>>>', response);
         }
-
+        //
+        //         if (response.status !== 'success') {
+        //           const err =
+        //             response.error ??
+        //             response.message ??
+        //             ERRORS.ERROR_SIGNING_TRANSACTION;
+        //           throw new Error(err);
+        //         }
+        //
         const result = {
-          cmd: response.signedCmd.cmd,
-          hash: response.signedCmd.hash,
-          sigs: response.signedCmd.sigs,
+          cmd: 'aaaaa', //response.signedCmd.cmd,
+          hash: 'aaaaa', /// response.signedCmd.hash,
+          sigs: 'aaaaa', // response.signedCmd.sigs,
         };
 
         return {
@@ -283,40 +312,40 @@ export class SnapAdapter extends BaseWalletAdapter {
           },
         } as ExtendedMethodMap[M]['response'];
       }
-      //HACK: Doing a fallback to sign here is probably a good idea
-      // case 'kadena_quicksign_v1': {
-      //   const { commandSigDatas } = params as {
-      //     commandSigDatas: CommandSigDatas;
-      //   };
-      //   const response = (await this.provider.request({
-      //     method: 'kda_requestQuickSign',
-      //     data: {
-      //       networkId: this.networkId,
-      //       commandSigDatas,
-      //     },
-      //   })) as IEckoQuicksignResponse;
-      //
-      //   if (response.status !== 'success') {
-      //     const err =
-      //       (response as IEckoQuicksignFailResponse).error ??
-      //       (response as IEckoQuicksignFailResponse).message ??
-      //       ERRORS.ERROR_SIGNING_TRANSACTION;
-      //     throw new Error(err);
-      //   }
-      //
-      //   const responses =
-      //     'responses' in response ? response.responses : response.quickSignData;
-      //
-      //   if (!Array.isArray(responses)) {
-      //     throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
-      //   }
-      //
-      //   return {
-      //     id,
-      //     jsonrpc: '2.0',
-      //     result: { responses } as IQuicksignResponse,
-      //   } as ExtendedMethodMap[M]['response'];
-      // }
+      case 'kadena_quicksign_v1': {
+        const p = params as any;
+        if (params.hasOwnProperty('commandSigDatas')) {
+          console.log('TRANSACTION111 --------------->', p);
+          console.log('TRANSACTION222 --------------->', params);
+          const response = await this._signTransaction(
+            p.commandSigDatas[0].cmd,
+          );
+          const hash = createTransaction(
+            JSON.stringify(p.commandSigDatas[0].cmd),
+          );
+          console.log('RESPONSE --------------->', response, hash);
+          const result = {
+            cmd: p.commandSigDatas[0].cmd,
+            hash: hash.hash,
+            sigs: [
+              {
+                pubKey:
+                  'd9f2f65507423c79c468cc6b5f2d54091f56da89638974241fa04ba61ead2379',
+                sig: response,
+              },
+            ],
+          };
+          console.log('RESULT ------------>', result);
+          return {
+            id,
+            jsonrpc: '2.0',
+            result: {
+              body: result,
+              chainId: safeJsonParse(result.cmd)?.meta?.chainId,
+            },
+          } as ExtendedMethodMap[M]['response'];
+        }
+      }
       case 'kadena_checkStatus': {
         const status = await this._checkStatus();
         return {
