@@ -1,6 +1,5 @@
 'use client';
-
-import { OrganisationsList } from '@/components/admin/OrganisationsList/OrganisationsList';
+import { AdminsList } from '@/components/admin/AdminsList/AdminsList';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { useOrganisation } from '@/hooks/organisation';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
@@ -18,9 +17,12 @@ const Home = () => {
         <SideBarBreadcrumbsItem component={Link} href="/admin/root">
           root
         </SideBarBreadcrumbsItem>
+        <SideBarBreadcrumbsItem component={Link} href="/admin/root/admins">
+          admins
+        </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      <OrganisationsList />
+      <AdminsList />
     </>
   );
 };

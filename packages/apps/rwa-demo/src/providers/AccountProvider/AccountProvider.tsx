@@ -49,7 +49,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   });
   const router = useRouter();
 
-  console.log(userData);
   const checkIsAgent = async (account: IWalletAccount, asset?: IAsset) => {
     if (!account || !asset) {
       setIsAgentState(false);

@@ -59,7 +59,6 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
   const onSubmit = async (data: IOrganisation) => {
     setIsLoading(true);
-    console.log({ data, orgStore });
     if (!orgStore) return;
     const newOrganisation = { ...organisation, ...data };
 

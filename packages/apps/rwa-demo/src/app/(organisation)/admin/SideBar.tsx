@@ -1,6 +1,7 @@
 import { KLogo } from '@/app/(app)/KLogo';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
-import { MonoBusiness } from '@kadena/kode-icons';
+import { useUser } from '@/hooks/user';
+import { MonoBeenhere, MonoBusiness } from '@kadena/kode-icons';
 import {
   SideBar as SideBarLayout,
   SideBarTree,
@@ -12,6 +13,7 @@ import type { FC } from 'react';
 export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
 }) => {
+  const { userToken } = useUser();
   return (
     <SideBarLayout
       topbannerHeight={topbannerHeight}
@@ -24,18 +26,35 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       }
       navigation={
         <>
-          <SideBarTree visual={<MonoBusiness />} label="Organisation">
-            <SideBarTreeItem
-              label="Organisation"
-              component={Link}
-              href={`/admin`}
-            />
-            <SideBarTreeItem
-              label="Assets"
-              component={Link}
-              href={`/admin/assets`}
-            />
-          </SideBarTree>
+          {userToken?.claims.rootAdmin && (
+            <SideBarTree visual={<MonoBeenhere />} label="Root">
+              <SideBarTreeItem
+                label="Organisations"
+                component={Link}
+                href={`/admin/root`}
+              />
+              <SideBarTreeItem
+                label="Admins"
+                component={Link}
+                href={`/admin/root/admins`}
+              />
+            </SideBarTree>
+          )}
+
+          {userToken?.claims.orgAdmins && (
+            <SideBarTree visual={<MonoBusiness />} label="Organisation">
+              <SideBarTreeItem
+                label="Organisation"
+                component={Link}
+                href={`/admin`}
+              />
+              <SideBarTreeItem
+                label="Assets"
+                component={Link}
+                href={`/admin/assets`}
+              />
+            </SideBarTree>
+          )}
         </>
       }
       context={<SidebarSideContext />}

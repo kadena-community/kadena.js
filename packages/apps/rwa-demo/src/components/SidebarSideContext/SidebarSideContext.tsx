@@ -37,6 +37,7 @@ export const SidebarSideContext: FC = () => {
 
   const handleLogout = async () => {
     signOut();
+    router.push('/');
   };
 
   return (
@@ -70,7 +71,7 @@ export const SidebarSideContext: FC = () => {
                 }}
               />
             ) : null}
-            {userToken?.claims.orgAdmin ? (
+            {userToken?.claims.orgAdmins ? (
               <ContextMenuItem
                 label="org. admin"
                 onClick={() => {

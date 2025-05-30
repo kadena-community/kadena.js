@@ -1,0 +1,59 @@
+{
+  "rules": {
+    "$contractName": {
+      ".read": true,
+      ".write": true,
+      "acounts": {
+        "$accountName": {
+          "account": {
+            ".validate": "newData.hasChildren(['accountName', 'alias']) && newData.child('alias').isString() && newData.child('accountName').isString()"
+          }
+        }
+      }
+    },
+    "organisationsData": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["domains/httplocalhost3000/value"]
+    },
+    "roles": {
+      ".write": false,
+      "$organisationId": {
+        ".read": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true"
+      },
+      "root": {
+        ".read": "auth != null && auth.token.rootAdmin === true"
+      }
+    },
+    "organisations": {
+      "$organisationId": {
+        "assets": {
+          ".read": "auth != null",
+          ".write": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true"
+        },
+        "messages": {
+          "$assetId": {
+            "$userId": {
+              "$account": {
+                ".read": "auth != null && auth.uid === $userId",
+                ".write": "auth != null"
+              }
+            }
+          }
+        },
+        "users": {
+          "$userId": {
+            ".read": "auth != null && auth.uid === $userId",
+            "accounts": {
+              ".write": "auth != null && auth.uid === $userId"
+            }
+          }
+        }
+      }
+    },
+    "transactions": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

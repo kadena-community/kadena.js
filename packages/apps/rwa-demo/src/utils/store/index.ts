@@ -84,7 +84,7 @@ export const RWAStore = (organisation: IOrganisation) => {
     asset?: IAsset,
   ) => {
     const assetFolder = getAssetFolder(asset);
-    if (!assetFolder) return [];
+    if (!assetFolder) return;
 
     const accountRef = ref(
       database,
@@ -225,6 +225,7 @@ export const RWAStore = (organisation: IOrganisation) => {
 
   const getFrozenMessage = async (
     account: string,
+    user: User,
     asset?: IAsset,
   ): Promise<string | undefined> => {
     const assetFolder = getAssetFolder(asset);
@@ -233,7 +234,7 @@ export const RWAStore = (organisation: IOrganisation) => {
     const snapshot = await get(
       ref(
         database,
-        `${dbLocationString}/assets/${assetFolder}/accounts/${getAccountVal(account)}/frozenMessage`,
+        `${dbLocationString}/messages/${assetFolder}/${user.uid}/${getAccountVal(account)}/frozenMessage`,
       ),
     );
 
@@ -242,6 +243,7 @@ export const RWAStore = (organisation: IOrganisation) => {
 
   const setFrozenMessage = async (
     data: ISetAddressFrozenProps,
+    user: User,
     asset?: IAsset,
   ) => {
     const assetFolder = getAssetFolder(asset);
@@ -251,7 +253,7 @@ export const RWAStore = (organisation: IOrganisation) => {
       await set(
         ref(
           database,
-          `${dbLocationString}/assets/${assetFolder}/accounts/${getAccountVal(data.investorAccount)}/frozenMessage`,
+          `${dbLocationString}/messages/${assetFolder}/${user.uid}/${getAccountVal(data.investorAccount)}/frozenMessage`,
         ),
         data.message,
       );
@@ -267,6 +269,7 @@ export const RWAStore = (organisation: IOrganisation) => {
 
   const setFrozenMessages = async (
     data: IBatchSetAddressFrozenProps,
+    user: User,
     asset?: IAsset,
   ) => {
     const assetFolder = getAssetFolder(asset);
@@ -279,6 +282,7 @@ export const RWAStore = (organisation: IOrganisation) => {
           pause: data.pause,
           message: data.message,
         },
+        user,
         asset,
       ),
     );

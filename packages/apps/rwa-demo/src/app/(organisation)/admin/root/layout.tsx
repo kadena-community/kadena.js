@@ -11,7 +11,7 @@ const RootLayout = ({
   const { userToken } = useUser();
   const router = useRouter();
 
-  if (!userToken?.claims.orgAdmin) {
+  if (!userToken?.claims.rootAdmin) {
     router.replace('/');
     return null;
   }

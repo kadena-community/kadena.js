@@ -108,19 +108,24 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     return AssetStore(organisation);
   }, [organisation]);
 
-  const init = async (organisationId: string) => {
-    assetStore?.listenToAssets(setAssets);
+  useEffect(() => {
+    console.log(1111, organisation);
+    if (!organisation?.id) return;
 
-    //
+    const unlistenAssets = assetStore?.listenToAssets(setAssets);
     const result = localStorage.getItem(selectedKey);
     if (!result) return;
     const asset = JSON.parse(result);
-    assetStore?.listenToAsset(asset, setAsset);
-  };
-  useEffect(() => {
-    if (!organisation?.id) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init(organisation?.id);
+    const unlistenAsset = assetStore?.listenToAsset(asset, setAsset);
+
+    return () => {
+      if (unlistenAssets) {
+        unlistenAssets();
+      }
+      if (unlistenAsset) {
+        unlistenAsset();
+      }
+    };
   }, [organisation]);
 
   const getAsset = async (

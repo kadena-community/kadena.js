@@ -163,13 +163,10 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     setTransactions(filteredTransactions);
   };
 
-  const init = async () => {
-    store?.listenToTransactions(listenToTransactions, asset);
-  };
   useEffect(() => {
     if (!account || !asset) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
+    const unlisten = store?.listenToTransactions(listenToTransactions, asset);
+    return unlisten;
   }, [account, asset]);
 
   useEffect(() => {
