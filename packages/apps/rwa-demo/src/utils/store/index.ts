@@ -249,7 +249,6 @@ export const RWAStore = (organisation: IOrganisation) => {
     const assetFolder = getAssetFolder(asset);
     if (!assetFolder) return [];
 
-    console.log({ data, user });
     if (data.message) {
       await set(
         ref(
