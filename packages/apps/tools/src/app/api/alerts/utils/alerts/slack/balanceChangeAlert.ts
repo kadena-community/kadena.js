@@ -12,7 +12,7 @@ export const balanceChangeAlert = async (alert: IAlert): Promise<string[]> => {
 
     const latestTimeDiff = differenceInMinutes(
       Date.now(),
-      latest._source.timestamp,
+      new Date(latest._source['@timestamp']),
     );
     if (latestTimeDiff > 20) {
       return sendBalanceChangeErrorMessages(alert, network);
