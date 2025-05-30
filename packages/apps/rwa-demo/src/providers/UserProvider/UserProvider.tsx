@@ -107,12 +107,24 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (user?.uid && token?.token) {
+    console.log({ token });
+    if (user?.uid && token?.token && organisation) {
+      if (
+        !token.claims.allowedOrgs ||
+        !(token.claims.allowedOrgs as Record<string, boolean>)[organisation.id]
+      ) {
+        console.log('notallowed');
+        setIsMounted(false);
+        router.push('/404');
+        return;
+      }
+
+      console.log('allowed');
       setIsMounted(true);
     } else {
       setIsMounted(false);
     }
-  }, [user, token]);
+  }, [user, token, organisation]);
 
   const addAccount = useCallback(
     async (wallet: IWalletAccount) => {
@@ -130,6 +142,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     [user, organisation, userStore],
   );
 
+  console.log({ token });
   return (
     <UserContext.Provider
       value={{

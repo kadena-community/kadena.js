@@ -2,24 +2,15 @@
 import { useUser } from '@/hooks/user';
 import { Button, Card } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { cardWrapperClass } from '../style.css';
 
 const Home = () => {
-  const { signIn, userToken } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (userToken) {
-      router.push('/');
-    }
-  }, [userToken]);
+  const { signOut } = useUser();
 
   return (
     <Card fullWidth className={cardWrapperClass}>
-      <CardContentBlock title="Login">
-        <Button onPress={signIn}>sign in with google account</Button>
+      <CardContentBlock title="404">
+        <Button onClick={signOut}>Sign out</Button>
       </CardContentBlock>
     </Card>
   );

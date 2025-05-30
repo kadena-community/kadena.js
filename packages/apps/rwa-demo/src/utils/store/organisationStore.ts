@@ -8,6 +8,8 @@ export const OrganisationStore = async (
 ) => {
   let organisationId: IOrganisation['id'] | undefined = organisationIdProp;
   if (!organisationIdProp) {
+    //check if there is an organisation for this domain in the db
+    //if there is not, no store is returned. and the app will stop
     try {
       const result = await fetch('/api/origin', {});
 
@@ -27,16 +29,10 @@ export const OrganisationStore = async (
   }
   const dbLocationString = `/organisationsData/${organisationId}`;
 
-  const listenToOrganisation = (
-    setDataCallback: (organisation: IOrganisation) => void,
-  ) => {
-    const orgRef = ref(database, dbLocationString);
-    onValue(orgRef, async (snapshot) => {
-      const data = snapshot.val() as IOrganisation;
-      setDataCallback({ ...data, id: snapshot.key ?? '' });
-    });
-
-    return () => off(orgRef);
+  const getCurrentOrganisation = async () => {
+    const snapshot = await get(ref(database, dbLocationString));
+    const data = snapshot.toJSON();
+    return data as IOrganisation;
   };
 
   const getOrganisations = async (): Promise<IOrganisation[]> => {
@@ -76,7 +72,7 @@ export const OrganisationStore = async (
   };
 
   return {
-    listenToOrganisation,
+    getCurrentOrganisation,
     getOrganisations,
     getOrganisation,
     updateOrganisation,

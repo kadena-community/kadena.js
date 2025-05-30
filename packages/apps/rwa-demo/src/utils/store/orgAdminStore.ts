@@ -3,14 +3,34 @@ import type { IdTokenResult } from 'firebase/auth';
 import { off, onValue, ref } from 'firebase/database';
 import { database } from './firebase';
 
+export interface IUserListItem {
+  id: string;
+  displayName: string;
+  email: string;
+}
+
 export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
-  const listenToAdmins = (setDataCallback: (admins: string[]) => void) => {
-    const orgRef = ref(database, `/roles/${organisationId}`);
+  const listenToAdmins = (setDataCallback: (users: string[]) => void) => {
+    const orgRef = ref(database, `/organisationRoles/${organisationId}`);
     onValue(orgRef, async (snapshot) => {
       const data = snapshot.val();
       const arr = Object.entries(data ?? []).map(
         ([key, value]) => key,
       ) as string[];
+
+      setDataCallback(arr);
+    });
+
+    return () => off(orgRef);
+  };
+
+  const listenToUsers = (setDataCallback: (users: IUserListItem[]) => void) => {
+    const orgRef = ref(database, `/organisationsUsers/${organisationId}`);
+    onValue(orgRef, async (snapshot) => {
+      const data = snapshot.val();
+      const arr = Object.entries(data ?? []).map(
+        ([key, value]) => value,
+      ) as IUserListItem[];
 
       setDataCallback(arr);
     });
@@ -64,9 +84,58 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     return result;
   };
 
+  const setUser = async ({
+    email,
+    token,
+  }: {
+    email: string;
+    token: IdTokenResult;
+  }) => {
+    const result = await fetch(
+      `/api/admin/user?organisationId=${organisationId}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: email,
+          organisationId,
+        }),
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return result;
+  };
+
+  const removeUser = async ({
+    uid,
+    token,
+  }: {
+    uid: string;
+    token: IdTokenResult;
+  }) => {
+    const result = await fetch(
+      `/api/admin/user?uid=${uid}&organisationId=${organisationId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return result;
+  };
+
   return {
     setAdmin,
     removeAdmin,
     listenToAdmins,
+    listenToUsers,
+    setUser,
+    removeUser,
   };
 };
