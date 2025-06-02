@@ -24,21 +24,15 @@ import {
 import {
   CompactTable,
   CompactTableFormatters,
-  RightAside,
-  RightAsideContent,
-  RightAsideHeader,
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
   SideBarBreadcrumbsItem,
   useNotifications,
-  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-import { useState } from 'react';
 
 const Home = () => {
   const { account } = useAccount();
@@ -46,8 +40,6 @@ const Home = () => {
   const { isAllowed } = useCreateContract();
   const { organisation } = useOrganisation();
   const { assets, removeAsset, setAsset, getAsset } = useAsset();
-  const [openSide, setOpenSide] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const router = useRouter();
 
   const handleDelete = (value: any) => {
@@ -77,18 +69,6 @@ const Home = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
 
-      {isRightAsideExpanded && openSide && (
-        <RightAside
-          isOpen
-          onClose={() => {
-            setIsRightAsideExpanded(false);
-            setOpenSide(false);
-          }}
-        >
-          <RightAsideHeader label="Assets" />
-          <RightAsideContent></RightAsideContent>
-        </RightAside>
-      )}
       {!account && (
         <Notification intent="warning" role="alert">
           <NotificationHeading>No account selected</NotificationHeading>

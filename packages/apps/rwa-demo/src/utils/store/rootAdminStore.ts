@@ -4,7 +4,7 @@ import { database } from './firebase';
 
 export const RootAdminStore = () => {
   const listenToAdmins = (setDataCallback: (admins: string[]) => void) => {
-    const orgRef = ref(database, `/roles/root`);
+    const orgRef = ref(database, `/organisationRoles/root`);
     onValue(orgRef, async (snapshot) => {
       const data = snapshot.val();
 

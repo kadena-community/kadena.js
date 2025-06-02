@@ -9,24 +9,20 @@ import { useEffect, useState } from 'react';
 
 export const OrganisationProvider: FC<PropsWithChildren> = ({ children }) => {
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
-  const [orgStore, setOrgStore] = useState<any>();
   const router = useRouter();
 
   const init = async () => {
     const orgStore = await OrganisationStore();
 
+    //if there is no organisation found,
+    //it is not allowed to be on this domain
     if (!orgStore) {
       router.push('/404');
+      return;
     }
-
-    setOrgStore(orgStore);
+    const data = await orgStore.getCurrentOrganisation();
+    setOrganisation(data);
   };
-
-  useEffect(() => {
-    if (!orgStore) return;
-    const unlisten = orgStore.listenToOrganisation(setOrganisation);
-    return unlisten;
-  }, [orgStore]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

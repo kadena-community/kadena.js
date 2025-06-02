@@ -53,6 +53,11 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
                 component={Link}
                 href={`/admin/assets`}
               />
+              <SideBarTreeItem
+                label="Users"
+                component={Link}
+                href={`/admin/users`}
+              />
             </SideBarTree>
           )}
         </>

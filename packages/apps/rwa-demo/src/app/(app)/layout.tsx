@@ -7,6 +7,7 @@ import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner
 import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useTransactions } from '@/hooks/transactions';
+import { useUser } from '@/hooks/user';
 import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
 import { Button, Link, Stack } from '@kadena/kode-ui';
 import {
@@ -33,12 +34,15 @@ const RootLayout = ({
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
+  const { isMounted } = useUser();
 
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
     setTxsButtonRef(txsButtonRef.current);
     setTxsAnimationRef(transactionAnimationRef.current);
   }, [txsButtonRef.current, transactionAnimationRef.current]);
+
+  if (!isMounted) return 'loading';
 
   return (
     <>

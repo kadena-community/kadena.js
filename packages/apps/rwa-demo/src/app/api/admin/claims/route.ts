@@ -15,7 +15,9 @@ const setClaims = async (
   if (!organisationId) {
     const updatedClaims = { ...existingClaims, rootAdmin: true };
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
-    await getDB().ref(`/roles/root/${user.uid}`).set({ id: user.uid });
+    await getDB()
+      .ref(`/organisationRoles/root/${user.uid}`)
+      .set({ id: user.uid });
   } else {
     //add the organisationId to the array
     const orgAdmins = existingClaims.orgAdmins;
@@ -26,7 +28,7 @@ const setClaims = async (
     };
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
     await getDB()
-      .ref(`/roles/${organisationId}/${user.uid}`)
+      .ref(`/organisationRoles/${organisationId}/${user.uid}`)
       .set({ id: user.uid });
   }
 };
@@ -39,7 +41,7 @@ const removeClaims = async (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { rootAdmin, ...updatedClaims } = user?.customClaims || {};
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
-    await getDB().ref(`/roles/root/${user.uid}`).remove();
+    await getDB().ref(`/organisationRoles/root/${user.uid}`).remove();
   } else {
     const existingClaims = user?.customClaims || {};
 
@@ -52,7 +54,9 @@ const removeClaims = async (
     };
 
     await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
-    await getDB().ref(`/roles/${organisationId}/${user.uid}`).remove();
+    await getDB()
+      .ref(`/organisationRoles/${organisationId}/${user.uid}`)
+      .remove();
   }
 };
 
@@ -68,7 +72,6 @@ const _POST = async (request: NextRequest) => {
       emailVerified: false, // Optional
       password: randomUUID(),
       displayName: '-', // Optional
-      disabled: false, // Optional
     });
 
     const user = await adminAuth()?.getUserByEmail(email);

@@ -1,10 +1,10 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { useUser } from '@/hooks/user';
+import type { IUserListItem } from '@/utils/store/orgAdminStore';
 import { OrgAdminStore } from '@/utils/store/orgAdminStore';
-import { RootAdminStore } from '@/utils/store/rootAdminStore';
 import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
-import { Button, TextField } from '@kadena/kode-ui';
+import { Button, Notification, TextField } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -23,37 +23,18 @@ import type { FC } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-const loadingData = [
-  {
-    id: '',
-    email: '',
-    displayName: '',
-  },
-  {
-    id: '',
-    email: '',
-    displayName: '',
-  },
-  {
-    id: '',
-    email: '',
-    displayName: '',
-  },
-];
-
-export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
+export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
   organisationId,
 }) => {
-  const [admins, setAdmins] = useState<any[]>([]);
+  const [users, setUsers] = useState<IUserListItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useUser();
   const { addNotification } = useNotifications();
+
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const adminstore = useMemo(() => {
-    if (organisationId) {
-      return OrgAdminStore(organisationId);
-    }
-    return RootAdminStore();
+    if (!organisationId) return;
+    return OrgAdminStore(organisationId);
   }, [organisationId]);
 
   const {
@@ -67,44 +48,18 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     },
   });
 
-  const handleSetAdmins = async (adminIds: string[]) => {
+  const handleSetUsers = async (users: IUserListItem[]) => {
     //check if we already retrieved info for a user
     setIsLoading(true);
-    const promises = adminIds.map(async (id) => {
-      const admin = admins.find((a) => a.uid === id);
-      if (!admin) {
-        const result = await fetch(
-          `/api/admin/user?organisationId=${organisationId ? organisationId : ''}&uid=${id}`,
-          {
-            method: 'GET',
 
-            headers: {
-              Authorization: `Bearer ${userToken?.token}`,
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-
-        if (result.status !== 200) {
-          return new Promise((resolve) => resolve(''));
-        }
-
-        const d = await result.json();
-        return d;
-      }
-
-      return new Promise((resolve) => resolve(admin));
-    });
-
-    const data = (await Promise.all(promises)).filter(Boolean);
-    setAdmins(data);
+    setUsers(users);
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (!adminstore) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const unlisten = adminstore.listenToAdmins(handleSetAdmins);
+    const unlisten = adminstore.listenToUsers(handleSetUsers);
 
     return unlisten;
   }, [adminstore, organisationId]);
@@ -118,14 +73,14 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
   const onSubmit = async (data: { email: string }) => {
     setIsLoading(true);
-    if (!userToken) {
+    if (!userToken || !adminstore) {
       addNotification({
         intent: 'negative',
         label: 'usertoken not set',
       });
       return;
     }
-    const result = await adminstore.setAdmin({
+    const result = await adminstore.setUser({
       email: data.email,
       token: userToken,
     });
@@ -144,7 +99,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
   const handleRemove = async (uid: any) => {
     setIsLoading(true);
-    if (!userToken) {
+    if (!userToken || !adminstore) {
       addNotification({
         intent: 'negative',
         label: 'usertoken not set',
@@ -152,7 +107,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
       return;
     }
 
-    const result = await adminstore.removeAdmin({ uid, token: userToken });
+    const result = await adminstore.removeUser({ uid, token: userToken });
 
     if (result.status !== 200) {
       const data = await result.json();
@@ -176,7 +131,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <RightAsideHeader label="Add admin" />
+            <RightAsideHeader label="Invite User" />
             <RightAsideContent>
               <Controller
                 name="email"
@@ -217,7 +172,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                 isDisabled={!isValid || isLoading || !addAdminIsAllowed}
                 onClick={() => {}}
               >
-                Make admin
+                Invite User
               </Button>
             </RightAsideFooter>
           </form>
@@ -227,8 +182,8 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
       <SectionCard stack="vertical">
         <SectionCardContentBlock>
           <SectionCardHeader
-            title="Admins"
-            description={<>List of all admins</>}
+            title="Users"
+            description={<>List of all users</>}
             actions={
               <>
                 <Button
@@ -240,7 +195,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                   isDisabled={!addAdminIsAllowed}
                   startVisual={<MonoAdd />}
                 >
-                  Add admin
+                  invite user
                 </Button>
               </>
             }
@@ -282,14 +237,20 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                           />
                         }
                       >
-                        Are you sure you want to remove admin rights?
+                        Are you sure you want to remove this users?
                       </Confirmation>
                     ),
                   }),
                 },
               ]}
-              data={isLoading ? loadingData : admins}
+              data={users}
             />
+
+            {!users.length && (
+              <Notification role="status" type="inlineStacked" intent="info">
+                No users yet
+              </Notification>
+            )}
           </SectionCardBody>
           <SectionCardBody></SectionCardBody>
         </SectionCardContentBlock>
