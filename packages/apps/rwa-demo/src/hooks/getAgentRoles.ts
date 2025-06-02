@@ -1,7 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import type { IAsset } from '@/components/AssetProvider/AssetProvider';
-import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { AGENTROLES } from '@/services/addAgent';
 import { getAgentRoles } from '@/services/getAgentRoles';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
@@ -34,11 +33,11 @@ export const getEventsSubscription = (
 ): Apollo.DocumentNode => coreEvents;
 
 export const useGetAgentRoles = (): IAgentHookProps & {
-  setAssetRolesForAccount: (account: IWalletAccount, asset?: IAsset) => void;
+  setAssetRolesForAccount: (account: string, asset?: IAsset) => void;
 } => {
   const [innerData, setInnerData] = useState<string[]>([]);
   const [isMounted, setIsMounted] = useState(false);
-  const [agent, setAgent] = useState<IWalletAccount | undefined>();
+  const [agent, setAgent] = useState<string | undefined>();
   const [asset, setAsset] = useState<IAsset | undefined>();
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
@@ -77,7 +76,7 @@ export const useGetAgentRoles = (): IAgentHookProps & {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData(agent.address, asset);
+    initInnerData(agent, asset);
   }, [agent, asset]);
 
   useEffect(() => {
@@ -93,7 +92,7 @@ export const useGetAgentRoles = (): IAgentHookProps & {
         const params = JSON.parse(event.parameters ?? '[]');
         if (params[0] === agent && !!agent) {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          initInnerData(agent.address, asset);
+          initInnerData(agent, asset);
         }
       });
   }, [
@@ -118,10 +117,7 @@ export const useGetAgentRoles = (): IAgentHookProps & {
     return innerData.indexOf(AGENTROLES.TRANSFERMANAGER) >= 0;
   }, [innerData]);
 
-  const setAssetRolesForAccount = async (
-    account: IWalletAccount,
-    asset?: IAsset,
-  ) => {
+  const setAssetRolesForAccount = async (account: string, asset?: IAsset) => {
     setAgent(account);
     setAsset(asset);
   };

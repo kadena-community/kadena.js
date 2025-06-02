@@ -109,13 +109,25 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
                 control={control}
                 rules={{
                   required: true,
-                  min: -frozenData,
-                  max: balance - frozenData,
+                  min: {
+                    value: -frozenData,
+                    message: `no less than ${frozenData}`,
+                  },
+                  max: {
+                    value: balance - frozenData,
+                    message: `no more than ${balance - frozenData}`,
+                  },
+                  validate: (value) => {
+                    if (!/^-?\d+$/.test(value)) {
+                      return 'only numbers';
+                    }
+                  },
                 }}
                 render={({ field }) => (
                   <TextField
                     label="Amount"
                     {...field}
+                    isInvalid={!!errors.amount?.message}
                     errorMessage={errors.amount?.message}
                     description={`max amount: ${balance - frozenData} | min amount: ${-frozenData}`}
                   />

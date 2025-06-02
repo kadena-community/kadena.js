@@ -191,7 +191,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       Promise.allSettled([
-        setAssetRolesForAccount(account, asset),
+        setAssetRolesForAccount(account.address, asset),
         checkIsOwner(account, asset),
         checkIsComplianceOwner(account, asset),
         checkIsInvestor(account, asset),

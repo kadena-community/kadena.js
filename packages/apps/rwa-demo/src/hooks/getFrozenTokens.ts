@@ -34,37 +34,44 @@ export const useGetFrozenTokens = ({
     },
   });
 
+  const { data: subscriptionUnFreezeData } = useEventSubscriptionSubscription({
+    variables: {
+      qualifiedName: `${getAsset()}.TOKENS-UNFROZEN`,
+    },
+  });
+
+  const init = async (asset: IAsset) => {
+    if (!account || !investorAccount) return;
+    const frozenRes = await getFrozenTokens(
+      {
+        investorAccount,
+        account: account!,
+      },
+      asset,
+    );
+
+    if (typeof frozenRes === 'number') {
+      setData(frozenRes);
+    }
+  };
+
   useEffect(() => {
     if (!asset) return;
-    const init = async (asset: IAsset) => {
-      if (!account || !investorAccount) return;
-      const frozenRes = await getFrozenTokens(
-        {
-          investorAccount,
-          account: account!,
-        },
-        asset,
-      );
-
-      if (typeof frozenRes === 'number') {
-        setData(frozenRes);
-      }
-    };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
   }, [account?.address, investorAccount, asset]);
 
   useEffect(() => {
-    if (!subscriptionData?.events?.length) return;
-
-    subscriptionData.events?.map((event) => {
-      const params = JSON.parse(event.parameters ?? '[]');
-      if (params[0] === investorAccount && params.length === 2) {
-        setData(parseInt(params[1]));
-      }
-    });
-  }, [subscriptionData]);
+    if (
+      (subscriptionData?.events?.length ||
+        subscriptionUnFreezeData?.events?.length) &&
+      asset
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      init(asset);
+    }
+  }, [asset, subscriptionData, subscriptionUnFreezeData]);
 
   return { data };
 };

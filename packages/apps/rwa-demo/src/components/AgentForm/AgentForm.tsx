@@ -1,3 +1,4 @@
+import { useAsset } from '@/hooks/asset';
 import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import { useUser } from '@/hooks/user';
@@ -26,10 +27,19 @@ interface IProps {
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   const { userStore, findAliasByAddress } = useUser();
-  const { getAll: getAllAgentRoles } = useGetAgentRoles();
+  const { asset } = useAsset();
+  const { getAll: getAllAgentRoles, setAssetRolesForAccount } =
+    useGetAgentRoles();
   const { submit, isAllowed } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+
+  useEffect(() => {
+    console.log({ agent, asset });
+    if (!agent || !asset) return;
+
+    setAssetRolesForAccount(agent.accountName, asset);
+  }, [agent, asset]);
 
   const {
     handleSubmit,
