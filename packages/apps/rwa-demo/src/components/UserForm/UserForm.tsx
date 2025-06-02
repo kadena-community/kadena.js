@@ -7,7 +7,6 @@ import {
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import type { IAsset } from '../AssetProvider/AssetProvider';
-import { AssetStepperForm } from './AssetStepperForm';
 
 interface IProps {
   asset?: IAsset;

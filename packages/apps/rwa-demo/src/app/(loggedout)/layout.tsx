@@ -2,7 +2,6 @@
 
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { useUser } from '@/hooks/user';
 import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons';
 import { Button, Themes } from '@kadena/kode-ui';
 import {

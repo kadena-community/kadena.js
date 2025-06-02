@@ -16,6 +16,7 @@ export interface IUserContext {
   signOut: () => void;
   addAccount: (account: IWalletAccount) => void;
   removeAccount: (address: string) => void;
+  userStore?: any;
 }
 
 export const UserContext = createContext<IUserContext>({

@@ -17,7 +17,6 @@ export const OrganisationProvider: FC<PropsWithChildren> = ({ children }) => {
     //if there is no organisation found,
     //it is not allowed to be on this domain
     if (!orgStore) {
-      console.log('no organisation');
       router.push('/404');
       return;
     }

@@ -4,12 +4,7 @@ import { useUser } from '@/hooks/user';
 import type { IUserListItem } from '@/utils/store/orgAdminStore';
 import { OrgAdminStore } from '@/utils/store/orgAdminStore';
 import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
-import {
-  Button,
-  Notification,
-  NotificationHeading,
-  TextField,
-} from '@kadena/kode-ui';
+import { Button, Notification, TextField } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,

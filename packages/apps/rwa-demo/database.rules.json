@@ -11,12 +11,23 @@
         }
       }
     },
-    "organisationsData": {
-      ".read": true,
-      ".write": true,
-      ".indexOn": ["domains/httplocalhost3000/value"]
+    "organisationsUsers": {
+      "$organisationId": {
+        ".read": "auth != null",
+        "$userId": {
+          ".write": "auth != null && (auth.uid === $userId || auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true)"
+        }
+      }
     },
-    "roles": {
+    "organisationsData": {
+      ".indexOn": ["domains/httplocalhost3000/value"],
+      ".read": "auth.token.rootAdmin === true",
+      "$organisationId": {
+        ".read": true,
+        ".write": "(auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true)"
+      }
+    },
+    "organisationsRoles": {
       ".write": false,
       "$organisationId": {
         ".read": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true"
@@ -45,6 +56,7 @@
           "$userId": {
             ".read": "auth != null && auth.uid === $userId",
             "accounts": {
+              ".read": "auth != null && auth.uid === $userId",
               ".write": "auth != null && auth.uid === $userId"
             }
           }

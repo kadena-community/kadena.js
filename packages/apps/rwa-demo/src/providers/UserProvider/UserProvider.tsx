@@ -10,6 +10,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
+  onIdTokenChanged,
   signInWithPopup,
   signOut as signOutFB,
 } from 'firebase/auth';
@@ -93,7 +94,20 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const { auth } = getProvider();
+
+    onIdTokenChanged(auth, (user) => {
+      console.log(88, { user, auth });
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(undefined);
+        setToken(undefined);
+        router.push('/login');
+      }
+    });
+
     onAuthStateChanged(auth, async (user) => {
+      console.log(2324224234234);
       if (user) {
         // User is signed in, see docs for a list of available properties
         setUser(user);
@@ -107,19 +121,15 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log({ token });
     if (user?.uid && token?.token && organisation) {
       if (
         !token.claims.allowedOrgs ||
         !(token.claims.allowedOrgs as Record<string, boolean>)[organisation.id]
       ) {
-        console.log('notallowed');
         setIsMounted(false);
         router.push('/404');
         return;
       }
-
-      console.log('allowed');
       setIsMounted(true);
     } else {
       setIsMounted(false);
@@ -141,8 +151,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     [user, organisation, userStore],
   );
-
-  console.log({ token });
   return (
     <UserContext.Provider
       value={{
@@ -154,6 +162,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         signOut,
         addAccount,
         removeAccount,
+        userStore,
       }}
     >
       {children}
