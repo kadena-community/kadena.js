@@ -16,6 +16,7 @@ import {
 import type { FC } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
+import { FormatAccount } from '../TableFormatters/FormatAccount';
 import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 import { FormatEditAgent } from '../TableFormatters/FormatEditAgent';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
@@ -63,15 +64,10 @@ export const AgentsList: FC = () => {
               variant="open"
               fields={[
                 {
-                  label: 'Name',
-                  key: 'alias',
-                  width: '20%',
-                },
-                {
                   label: 'Account',
                   key: 'accountName',
-                  width: '20%',
-                  render: CompactTableFormatters.FormatAccount(),
+                  width: '40%',
+                  render: FormatAccount(),
                 },
                 {
                   label: 'Roles',

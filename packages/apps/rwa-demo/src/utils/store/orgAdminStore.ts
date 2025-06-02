@@ -6,7 +6,6 @@ import { database } from './firebase';
 export interface IUserListItem {
   id: string;
   displayName: string;
-  email: string;
 }
 
 export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
@@ -27,9 +26,13 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
   const listenToUsers = (setDataCallback: (users: IUserListItem[]) => void) => {
     const orgRef = ref(database, `/organisationsUsers/${organisationId}`);
     onValue(orgRef, async (snapshot) => {
-      const data = snapshot.val();
+      const data = snapshot.val() as Record<string, IUserListItem> | null;
+      if (!data) {
+        setDataCallback([]);
+        return;
+      }
       const arr = Object.entries(data ?? []).map(
-        ([key, value]) => value,
+        ([key, value]) => ({ ...value, uid: key }) as IUserListItem,
       ) as IUserListItem[];
 
       setDataCallback(arr);

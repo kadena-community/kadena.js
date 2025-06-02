@@ -5,6 +5,9 @@ import { createContext } from 'react';
 export interface IUserData {
   accounts: IWalletAccount[];
   uid: string;
+  data?: {
+    displayName?: string;
+  };
 }
 
 export interface IUserContext {

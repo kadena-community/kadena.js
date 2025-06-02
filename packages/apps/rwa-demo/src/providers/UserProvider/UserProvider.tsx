@@ -136,18 +136,18 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const addAccount = useCallback(
     async (wallet: IWalletAccount) => {
-      if (!user || !organisation) return;
+      if (!userData || !organisation) return;
       await userStore?.addAccountAddress(wallet);
     },
-    [user, organisation, userStore],
+    [userData, organisation, userStore],
   );
 
   const removeAccount = useCallback(
     async (address: string) => {
-      if (!user || !organisation) return;
+      if (!userData || !organisation) return;
       await userStore?.removeAccountAddress(address);
     },
-    [user, organisation, userStore],
+    [userData, organisation, userStore],
   );
   return (
     <UserContext.Provider

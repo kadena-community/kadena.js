@@ -71,6 +71,8 @@ export const WalletSelector: FC = () => {
       <ContextMenu
         trigger={
           <Button
+            isCompact
+            variant="outlined"
             startVisual={<MonoAddLink />}
             endVisual={<MonoKeyboardArrowDown />}
           >

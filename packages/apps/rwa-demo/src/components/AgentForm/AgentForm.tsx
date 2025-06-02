@@ -15,7 +15,6 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
-import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   agent?: IRecord;
@@ -90,12 +89,6 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
               <AccountNameField
                 error={errors.accountName}
                 accountName={agent?.accountName}
-                control={control}
-              />
-
-              <AliasField
-                error={errors.alias}
-                alias={agent?.alias}
                 control={control}
               />
 

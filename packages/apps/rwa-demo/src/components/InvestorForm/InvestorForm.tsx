@@ -13,7 +13,6 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
-import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   investor?: IRecord;
@@ -69,11 +68,6 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
               <AccountNameField
                 error={errors.accountName}
                 accountName={investor?.accountName}
-                control={control}
-              />
-              <AliasField
-                error={errors.alias}
-                alias={investor?.alias}
                 control={control}
               />
             </RightAsideContent>

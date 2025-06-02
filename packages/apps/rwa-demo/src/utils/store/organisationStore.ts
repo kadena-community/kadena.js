@@ -65,7 +65,7 @@ export const OrganisationStore = async (
       return { ...acc, [key]: val };
     }, {});
 
-    return await set(ref(database, `/organisationsData/${organisationId}`), {
+    await set(ref(database, `/organisationsData/${organisationId}`), {
       ...organisation,
       domains,
     });
