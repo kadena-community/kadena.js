@@ -28,22 +28,23 @@ export const useSupply = (asset?: IAsset) => {
     },
   });
 
-  const init = async (asset: IAsset) => {
-    if (!account) return;
-    const res = await supply(
-      {
-        account: account,
-      },
-      asset,
-    );
-
-    if (typeof res === 'number') {
-      setData(res);
-    }
-  };
-
   useEffect(() => {
     if (!asset) return;
+
+    const init = async (asset: IAsset) => {
+      if (!account) return;
+      const res = await supply(
+        {
+          account: account,
+        },
+        asset,
+      );
+
+      if (typeof res === 'number') {
+        setData(res);
+      }
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
   }, [account, asset]);

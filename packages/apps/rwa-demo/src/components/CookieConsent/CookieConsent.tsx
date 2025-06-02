@@ -8,32 +8,30 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 export const CookieConsent: FC = () => {
-  const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
-  const [mounted, setMounted] = useState<boolean>(false);
-
-  useEffect(() => {
-    setMounted(true);
+  const [cookieConsent, setCookieConsent] = useState<boolean | null>(() => {
     const stickyValue = localStorage.getItem('cookie_consent');
-    if (stickyValue === null) return;
-    setCookieConsent(JSON.parse(stickyValue));
-  }, []);
+    if (stickyValue === null) return null;
 
-  useEffect(() => {
-    if (cookieConsent === null) return;
-    updateConsent(cookieConsent);
-  }, [cookieConsent]);
+    const booleanValue = JSON.parse(stickyValue);
+
+    updateConsent(booleanValue);
+    return booleanValue;
+  });
 
   const handleAccept = useCallback(() => {
     setCookieConsent(true);
+    updateConsent(true);
   }, []);
 
   const handleReject = useCallback(() => {
     setCookieConsent(false);
+    updateConsent(false);
   }, []);
 
-  if (cookieConsent !== null || !mounted) return null;
+  console.log(123123123, cookieConsent);
+  if (cookieConsent !== null) return null;
 
   return (
     <Notification

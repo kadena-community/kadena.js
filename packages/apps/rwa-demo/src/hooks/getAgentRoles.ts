@@ -75,6 +75,7 @@ export const useGetAgentRoles = (): IAgentHookProps & {
       setIsMounted(true);
       return;
     }
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(agent.address, asset);
   }, [agent, asset]);

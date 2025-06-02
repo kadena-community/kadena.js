@@ -23,22 +23,23 @@ export const useGetInvestorBalance = ({
     },
   });
 
-  const init = async (asset: IAsset) => {
-    if (!investorAccount) return;
-    const res = await getInvestorBalance(
-      {
-        investorAccount,
-      },
-      asset,
-    );
-
-    if (typeof res === 'number') {
-      setData(res);
-    }
-  };
-
   useEffect(() => {
     if (!asset) return;
+
+    const init = async (asset: IAsset) => {
+      if (!investorAccount) return;
+      const res = await getInvestorBalance(
+        {
+          investorAccount,
+        },
+        asset,
+      );
+
+      if (typeof res === 'number') {
+        setData(res);
+      }
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
   }, [investorAccount, asset]);

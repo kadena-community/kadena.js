@@ -42,17 +42,17 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     name: 'domains',
   });
 
-  const init = async (organisationId: IOrganisation['id']) => {
-    const store = await OrganisationStore(organisationId);
-    if (!store) return;
-    setOrgStore(store);
-
-    const data = await store.getOrganisation();
-    reset(data);
-    setOrganisation(data);
-  };
-
   useEffect(() => {
+    const init = async (organisationId: IOrganisation['id']) => {
+      const store = await OrganisationStore(organisationId);
+      if (!store) return;
+      setOrgStore(store);
+
+      const data = await store.getOrganisation();
+      reset(data);
+      setOrganisation(data);
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(organisationId);
   }, [organisationId]);

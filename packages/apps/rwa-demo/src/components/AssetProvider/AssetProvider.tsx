@@ -125,7 +125,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         unlistenAsset();
       }
     };
-  }, [organisation]);
+  }, [organisation, assetStore]);
 
   const getAsset = async (
     uuid: string,
