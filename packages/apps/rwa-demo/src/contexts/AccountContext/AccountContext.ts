@@ -34,34 +34,4 @@ export interface IAccountContext {
   checkAccountAssetRoles: (asset?: IAsset) => void;
 }
 
-export const AccountContext = createContext<IAccountContext>({
-  account: undefined,
-  accounts: [],
-  isMounted: false,
-  addAccount: async (
-    type: keyof typeof WALLETTYPES,
-    account?: IWalletAccount | undefined,
-  ) => {
-    return undefined;
-  },
-  removeAccount: async () => {},
-  sign: async () => undefined,
-  isAgent: false,
-  isOwner: false,
-  isComplianceOwner: false,
-  isInvestor: false,
-  isFrozen: false,
-  selectAccount: () => {},
-  balance: 0,
-  accountRoles: {
-    isMounted: false,
-    getAll: () => [],
-    isAgentAdmin: () => {
-      return false;
-    },
-    isFreezer: () => false,
-    isTransferManager: () => false,
-  },
-  isGasPayable: undefined,
-  checkAccountAssetRoles: () => {},
-});
+export const AccountContext = createContext<IAccountContext | null>(null);

@@ -61,13 +61,6 @@ export interface ITransactionsContext {
   isActiveAccountChangeTx: boolean; //checks if the agentroles for this user are being changed. if so, stop all permissions until the tx is resolved
 }
 
-export const TransactionsContext = createContext<ITransactionsContext>({
-  transactions: [],
-  addTransaction: async (request) => {
-    return {} as ITransaction;
-  },
-  getTransactions: () => [],
-  setTxsButtonRef: () => {},
-  setTxsAnimationRef: () => {},
-  isActiveAccountChangeTx: false,
-});
+export const TransactionsContext = createContext<ITransactionsContext | null>(
+  null,
+);

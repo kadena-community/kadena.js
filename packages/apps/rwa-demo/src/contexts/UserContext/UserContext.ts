@@ -19,13 +19,4 @@ export interface IUserContext {
   userStore?: any;
 }
 
-export const UserContext = createContext<IUserContext>({
-  user: undefined,
-  userToken: undefined,
-  userData: undefined,
-  isMounted: false,
-  signIn: () => {},
-  signOut: () => {},
-  addAccount: (account: IWalletAccount) => {},
-  removeAccount: (address: string) => {},
-});
+export const UserContext = createContext<IUserContext | null>(null);

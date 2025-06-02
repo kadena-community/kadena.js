@@ -10,6 +10,6 @@ export interface IOrganisationContext {
   organisation?: IOrganisation;
 }
 
-export const OrganisationContext = createContext<IOrganisationContext>({
-  organisation: undefined,
-});
+export const OrganisationContext = createContext<IOrganisationContext | null>(
+  null,
+);

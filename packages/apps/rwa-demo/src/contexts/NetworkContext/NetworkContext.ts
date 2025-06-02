@@ -48,6 +48,4 @@ export const defaultNetworkContext: INetworkContext = {
   ],
 };
 
-export const NetworkContext = createContext<INetworkContext>(
-  defaultNetworkContext,
-);
+export const NetworkContext = createContext<INetworkContext | null>(null);
