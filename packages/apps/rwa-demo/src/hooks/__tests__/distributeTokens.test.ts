@@ -367,7 +367,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'supply-limit-compliance') {
+              if (arg === 'supply-limit-compliance-v1') {
                 return 1;
               }
               return -1;
@@ -413,7 +413,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'supply-limit-compliance') {
+              if (arg === 'supply-limit-compliance-v1') {
                 return 100;
               }
               return -1;

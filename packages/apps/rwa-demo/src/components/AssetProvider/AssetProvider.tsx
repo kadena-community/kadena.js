@@ -200,17 +200,17 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         maxSupply: {
           isActive: false,
           value: INFINITE_COMPLIANCE,
-          key: 'supply-limit-compliance',
+          key: 'supply-limit-compliance-v1',
         },
         maxBalance: {
           isActive: false,
           value: INFINITE_COMPLIANCE,
-          key: 'max-balance-compliance',
+          key: 'max-balance-compliance-v1',
         },
         maxInvestors: {
           isActive: false,
           value: INFINITE_COMPLIANCE,
-          key: 'max-investors-compliance',
+          key: 'max-investors-compliance-v1',
         },
       },
       investorCount: 0,

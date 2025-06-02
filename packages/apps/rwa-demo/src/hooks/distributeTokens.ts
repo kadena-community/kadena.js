@@ -62,8 +62,10 @@ export const useDistributeTokens = ({
   useEffect(() => {
     if (!isMounted || !asset) return;
 
-    const complianceMaxSupplyValue = maxCompliance('supply-limit-compliance');
-    const complianceMaxInvestors = maxCompliance('max-investors-compliance');
+    const complianceMaxSupplyValue = maxCompliance(
+      'supply-limit-compliance-v1',
+    );
+    const complianceMaxInvestors = maxCompliance('max-investors-compliance-v1');
 
     setIsAllowed(
       !frozen &&
