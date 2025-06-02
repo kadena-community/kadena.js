@@ -24,14 +24,18 @@ export const InvestorFrozenMessage: FC<IProps> = ({ investorAccount }) => {
     return RWAStore(organisation);
   }, [organisation]);
 
-  const init = async () => {
-    if (!account || !user) return;
-    const result = await store?.getFrozenMessage(account.address, user, asset);
-    setMessage(result);
-  };
-
   useEffect(() => {
     if (!isInvestor || !account) return;
+
+    const init = async () => {
+      if (!account || !user) return;
+      const result = await store?.getFrozenMessage(
+        account.address,
+        user,
+        asset,
+      );
+      setMessage(result);
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();

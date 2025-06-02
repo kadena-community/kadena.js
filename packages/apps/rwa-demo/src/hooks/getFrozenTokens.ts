@@ -34,23 +34,23 @@ export const useGetFrozenTokens = ({
     },
   });
 
-  const init = async (asset: IAsset) => {
-    if (!account || !investorAccount) return;
-    const frozenRes = await getFrozenTokens(
-      {
-        investorAccount,
-        account: account!,
-      },
-      asset,
-    );
-
-    if (typeof frozenRes === 'number') {
-      setData(frozenRes);
-    }
-  };
-
   useEffect(() => {
     if (!asset) return;
+    const init = async (asset: IAsset) => {
+      if (!account || !investorAccount) return;
+      const frozenRes = await getFrozenTokens(
+        {
+          investorAccount,
+          account: account!,
+        },
+        asset,
+      );
+
+      if (typeof frozenRes === 'number') {
+        setData(frozenRes);
+      }
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
   }, [account?.address, investorAccount, asset]);

@@ -16,13 +16,6 @@ export const useGetAccountKDABalance = ({
     },
   });
 
-  const init = async () => {
-    if (!accountAddress) return;
-    const res = await accountKDABalance({ accountName: accountAddress });
-    setInnerData(res);
-    setIsMounted(true);
-  };
-
   const formatData = (data: any) => {
     data?.events?.map(({ parameters }: any) => {
       const params = JSON.parse(parameters);
@@ -42,6 +35,14 @@ export const useGetAccountKDABalance = ({
 
   useEffect(() => {
     if (!accountAddress) return;
+
+    const init = async () => {
+      if (!accountAddress) return;
+      const res = await accountKDABalance({ accountName: accountAddress });
+      setInnerData(res);
+      setIsMounted(true);
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
   }, [accountAddress]);

@@ -18,16 +18,15 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
     },
   });
 
-  const init = async (asset: IAsset) => {
-    const res = await getComplianceRules(asset);
-
-    if (typeof res !== 'number') {
-      setData(res);
-    }
-  };
-
   useEffect(() => {
     if (!asset) return;
+    const init = async (asset: IAsset) => {
+      const res = await getComplianceRules(asset);
+
+      if (typeof res !== 'number') {
+        setData(res);
+      }
+    };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
   }, [asset]);

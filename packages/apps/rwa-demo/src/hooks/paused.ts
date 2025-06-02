@@ -5,7 +5,7 @@ import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { isPaused } from '@/services/isPaused';
 import { getAsset } from '@/utils/getAsset';
 import type * as Apollo from '@apollo/client';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 
 export type EventSubscriptionQueryVariables = Exact<{
@@ -33,21 +33,21 @@ export const usePaused = (asset?: IAsset) => {
     },
   });
 
-  const init = useCallback(async () => {
-    if (!account || !asset) return;
-    const res = await isPaused(
-      {
-        account: account,
-      },
-      asset,
-    );
-
-    if (typeof res === 'boolean') {
-      setPaused(res);
-    }
-  }, [account, asset]);
-
   useEffect(() => {
+    const init = async () => {
+      if (!account || !asset) return;
+      const res = await isPaused(
+        {
+          account: account,
+        },
+        asset,
+      );
+
+      if (typeof res === 'boolean') {
+        setPaused(res);
+      }
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
   }, [account?.address, asset]);

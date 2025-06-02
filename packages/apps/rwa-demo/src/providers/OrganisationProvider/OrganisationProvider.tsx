@@ -11,20 +11,20 @@ export const OrganisationProvider: FC<PropsWithChildren> = ({ children }) => {
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const router = useRouter();
 
-  const init = async () => {
-    const orgStore = await OrganisationStore();
-
-    //if there is no organisation found,
-    //it is not allowed to be on this domain
-    if (!orgStore) {
-      router.push('/404');
-      return;
-    }
-    const data = await orgStore.getCurrentOrganisation();
-    setOrganisation(data);
-  };
-
   useEffect(() => {
+    const init = async () => {
+      const orgStore = await OrganisationStore();
+
+      //if there is no organisation found,
+      //it is not allowed to be on this domain
+      if (!orgStore) {
+        router.push('/404');
+        return;
+      }
+      const data = await orgStore.getCurrentOrganisation();
+      setOrganisation(data);
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
   }, []);

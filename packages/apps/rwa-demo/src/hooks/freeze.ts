@@ -35,25 +35,25 @@ export const useFreeze = ({
     },
   });
 
-  const init = async (
-    accountProp: IWalletAccount,
-    investorAccountProp: string,
-    asset: IAsset,
-  ) => {
-    const res = await isFrozen(
-      {
-        investorAccount: investorAccountProp,
-        account: accountProp,
-      },
-      asset,
-    );
-
-    if (typeof res === 'boolean') {
-      setFrozen(res);
-    }
-  };
-
   useEffect(() => {
+    const init = async (
+      accountProp: IWalletAccount,
+      investorAccountProp: string,
+      asset: IAsset,
+    ) => {
+      const res = await isFrozen(
+        {
+          investorAccount: investorAccountProp,
+          account: accountProp,
+        },
+        asset,
+      );
+
+      if (typeof res === 'boolean') {
+        setFrozen(res);
+      }
+    };
+
     if (!account?.address || !investorAccount || !asset) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

@@ -18,14 +18,14 @@ export const OrganisationsList: FC = () => {
   const [organisations, setOrganisations] = useState<IOrganisation[]>([]);
   const router = useRouter();
 
-  const init = async () => {
-    const orgStore = await OrganisationStore();
-    if (!orgStore) return;
-    const result = await orgStore.getOrganisations();
-    setOrganisations(result);
-  };
-
   useEffect(() => {
+    const init = async () => {
+      const orgStore = await OrganisationStore();
+      if (!orgStore) return;
+      const result = await orgStore.getOrganisations();
+      setOrganisations(result);
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
   }, []);

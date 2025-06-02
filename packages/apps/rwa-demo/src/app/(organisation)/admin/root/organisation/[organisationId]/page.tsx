@@ -11,15 +11,15 @@ import { useEffect, useState } from 'react';
 const Home = ({ params }: { params: { organisationId: string } }) => {
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
 
-  const init = async (organisationId: IOrganisation['id']) => {
-    const orgStore = await OrganisationStore(organisationId);
-    if (!orgStore) return;
-    const data = await orgStore.getOrganisation();
-    setOrganisation(data);
-  };
-
   useEffect(() => {
     if (!params.organisationId) return;
+
+    const init = async (organisationId: IOrganisation['id']) => {
+      const orgStore = await OrganisationStore(organisationId);
+      if (!orgStore) return;
+      const data = await orgStore.getOrganisation();
+      setOrganisation(data);
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(params.organisationId);

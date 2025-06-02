@@ -25,13 +25,7 @@ import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { AssetStore } from '@/utils/store/assetStore';
 import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 
 export interface IAsset {
   uuid: string;
@@ -125,7 +119,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         unlistenAsset();
       }
     };
-  }, [organisation]);
+  }, [organisation, assetStore]);
 
   const getAsset = async (
     uuid: string,
@@ -153,8 +147,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     return foundAsset;
   };
 
-  const storageListener = useCallback(
-    async (event: StorageEvent | Event) => {
+  useEffect(() => {
+    const storageListener = async (event: StorageEvent | Event) => {
       if (
         event.type !== selectedKey &&
         'key' in event &&
@@ -171,11 +165,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
-    },
-    [account, organisation],
-  );
+    };
 
-  useEffect(() => {
     window.addEventListener(selectedKey, storageListener);
     window.addEventListener('storage', storageListener);
 
@@ -183,7 +174,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       window.removeEventListener(selectedKey, storageListener);
       window.removeEventListener('storage', storageListener);
     };
-  }, [organisation, account]);
+  }, [organisation, account, assetStore]);
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
@@ -269,7 +260,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     assetStore?.updateAsset(data);
-  }, [investorCount]);
+  }, [investorCount, assetStore]);
 
   useEffect(() => {
     if (!asset || !organisation) return;
@@ -278,7 +269,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     assetStore?.updateAsset(data);
-  }, [asset?.contractName, supply]);
+  }, [asset?.contractName, supply, assetStore]);
 
   // when the account or the asset changes, we need to check the roles of the account
   useEffect(() => {
@@ -320,7 +311,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       assetStore?.updateAsset(newData);
     }
-  }, [complianceSubscriptionData]);
+  }, [complianceSubscriptionData, assetStore]);
 
   useEffect(() => {
     if (!complianceRules) return;
@@ -329,7 +320,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const data = { ...asset, compliance: { ...complianceRules } } as IAsset;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     assetStore?.updateAsset(data);
-  }, [complianceRules]);
+  }, [complianceRules, assetStore]);
 
   return (
     <AssetContext.Provider

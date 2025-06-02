@@ -35,22 +35,22 @@ export const useGetInvestor = ({ account }: { account: string }) => {
     });
   };
 
-  const initInnerData = async () => {
-    const data = await store?.getAccount({ account });
-
-    setInnerData({
-      accountName: account,
-      alias: data?.alias,
-      creationTime: 0,
-    });
-  };
-
   useEffect(() => {
+    const initInnerData = async () => {
+      const data = await store?.getAccount({ account });
+
+      setInnerData({
+        accountName: account,
+        alias: data?.alias,
+        creationTime: 0,
+      });
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData();
     const off = store?.listenToAccount(account, listenToAccount);
     return off;
-  }, [account]);
+  }, [account, store]);
 
   return { data: innerData };
 };

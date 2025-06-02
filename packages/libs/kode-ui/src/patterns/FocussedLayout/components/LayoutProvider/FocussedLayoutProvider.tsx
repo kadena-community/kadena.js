@@ -11,14 +11,17 @@ export interface ILayoutContext {
   topbannerRef?: HTMLDivElement | null;
   setTopbannerRef: (value?: HTMLDivElement | null) => void;
 }
-export const LayoutContext = createContext<ILayoutContext>({
-  setHeaderContentRef: () => {},
-  setHeaderAsideRef: () => {},
-  setFooterContentRef: () => {},
-  setTopbannerRef: () => {},
-});
+export const LayoutContext = createContext<ILayoutContext | null>(null);
 
-export const useLayout = () => useContext(LayoutContext);
+export const useLayout = (): ILayoutContext => {
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      'useOrganisation must be used within a LayoutContextProvider',
+    );
+  }
+  return context;
+};
 
 export interface ILayoutProvider extends PropsWithChildren {}
 
