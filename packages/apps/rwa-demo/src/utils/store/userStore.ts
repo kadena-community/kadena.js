@@ -58,7 +58,6 @@ export const UserStore = (organisation: IOrganisation, user: User) => {
 
   const changeProfile = async (uid: string, userData: IUserData['data']) => {
     if (!uid) return;
-
     await set(ref(database, `${dbLocationString}/data`), userData);
     await set(
       ref(database, `/organisationsUsers/${organisation.id}/${uid}`),
@@ -67,10 +66,17 @@ export const UserStore = (organisation: IOrganisation, user: User) => {
     await set(ref(database, `${dbLocationString}/data`), userData);
   };
 
+  const addAccountAlias = async (address: string, alias: string) => {
+    await set(ref(database, `${dbLocationString}/aliases/${address}`), {
+      alias,
+    });
+  };
+
   return {
     listenToUser,
     addAccountAddress,
     removeAccountAddress,
     changeProfile,
+    addAccountAlias,
   } as const;
 };

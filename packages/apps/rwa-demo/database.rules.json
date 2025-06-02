@@ -60,7 +60,57 @@
         "users": {
           "$userId": {
             ".read": "auth != null && auth.uid === $userId",
-            ".write": "auth != null && auth.uid === $userId"
+            ".write": "auth != null && auth.uid === $userId",
+            "data": {
+              "displayName": {
+                ".validate": "newData.isString() && newData.val().length <= 40"
+              }
+            },
+            "accounts": {
+              "$address": {
+                "address": {
+                  ".validate": "newData.isString() && newData.val() === $address && newData.val().length <= 70"
+                },
+                "alias": {
+                  ".validate": "newData.isString() && newData.val().length <= 50"
+                },
+                "overallBalance": {
+                  ".validate": "newData.isString() && newData.val().length <= 50"
+                },
+                "publickey": {
+                  ".validate": "newData.isString() && newData.val().length <= 50"
+                },
+                "walletName": {
+                  ".validate": "newData.isString() && newData.val().length <= 50"
+                },
+                "guard": {
+                  "pred": {
+                    ".validate": "newData.isString() && newData.val().length <= 50"
+                  },
+                  "principal": {
+                    ".validate": "newData.isString() && newData.val().length <= 70"
+                  },
+                  "keys": {
+                    "$id": {
+                      ".validate": "newData.isString() && newData.val().length <= 70"
+                    }
+                  }
+                },
+                "keyset": {
+                  "pred": {
+                    ".validate": "newData.isString() && newData.val().length <= 50"
+                  },
+                  "principal": {
+                    ".validate": "newData.isString() && newData.val().length <= 70"
+                  },
+                  "keys": {
+                    "$id": {
+                      ".validate": "newData.isString() && newData.val().length <= 70"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

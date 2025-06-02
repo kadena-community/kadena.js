@@ -1,4 +1,5 @@
 import { useAddInvestor } from '@/hooks/addInvestor';
+import { useUser } from '@/hooks/user';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { Button } from '@kadena/kode-ui';
@@ -13,6 +14,7 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
+import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   investor?: IRecord;
@@ -21,6 +23,7 @@ interface IProps {
 }
 
 export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
+  const { findAliasByAddress, userStore } = useUser();
   const { submit, isAllowed } = useAddInvestor({
     investorAccount: investor?.accountName,
   });
@@ -34,7 +37,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
     mode: 'onChange',
     values: {
       accountName: investor?.accountName ?? '',
-      alias: investor?.alias ?? '',
+      alias: findAliasByAddress(investor?.accountName),
       alreadyExists: !!investor?.accountName,
     },
   });
@@ -52,6 +55,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
   };
 
   const onSubmit = async (data: Omit<IRegisterIdentityProps, 'agent'>) => {
+    await userStore?.addAccountAlias(data.accountName, data.alias);
     await submit(data);
     handleOnClose();
   };
@@ -70,6 +74,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
                 accountName={investor?.accountName}
                 control={control}
               />
+              <AliasField address={investor?.accountName} control={control} />
             </RightAsideContent>
             <RightAsideFooter>
               <Button onPress={handleOnClose} variant="transparent">

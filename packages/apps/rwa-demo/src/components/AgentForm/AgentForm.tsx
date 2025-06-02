@@ -1,5 +1,6 @@
 import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
+import { useUser } from '@/hooks/user';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
@@ -15,6 +16,7 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
+import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   agent?: IRecord;
@@ -23,6 +25,7 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
+  const { userStore, findAliasByAddress } = useUser();
   const { getAll: getAllAgentRoles } = useGetAgentRoles();
   const { submit, isAllowed } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +41,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     mode: 'onChange',
     defaultValues: {
       accountName: agent?.accountName ?? '',
-      alias: agent?.alias ?? '',
+      alias: findAliasByAddress(agent?.accountName),
       alreadyExists: !!agent?.accountName,
       roles: getAllAgentRoles(),
     },
@@ -47,7 +50,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   useEffect(() => {
     reset({
       accountName: agent?.accountName,
-      alias: agent?.alias,
+      alias: findAliasByAddress(agent?.accountName),
       alreadyExists: !!agent?.accountName,
       roles: getAllAgentRoles(),
     });
@@ -71,6 +74,8 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     }
 
     await submit(data);
+    await userStore?.addAccountAlias(data.accountName, data.alias);
+
     handleOnClose();
   };
 
@@ -89,6 +94,11 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
               <AccountNameField
                 error={errors.accountName}
                 accountName={agent?.accountName}
+                control={control}
+              />
+              <AliasField
+                error={errors.alias}
+                address={agent?.accountName}
                 control={control}
               />
 

@@ -149,6 +149,12 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     [userData, organisation, userStore],
   );
+
+  const findAliasByAddress = (address: string = ''): string => {
+    if (!address) return '';
+    const aliases = userData?.aliases ?? {};
+    return aliases[address].alias ?? '';
+  };
   return (
     <UserContext.Provider
       value={{
@@ -161,6 +167,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         addAccount,
         removeAccount,
         userStore,
+        findAliasByAddress,
       }}
     >
       {children}

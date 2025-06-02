@@ -1,5 +1,6 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useFreeze } from '@/hooks/freeze';
+import { useUser } from '@/hooks/user';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
@@ -21,15 +22,18 @@ const getAccountName = (account: IProps['account']) => {
 export const InvestorInfo: FC<IProps> = ({ account }) => {
   const accountName = getAccountName(account);
   const { frozen } = useFreeze({ investorAccount: accountName });
+  const { findAliasByAddress } = useUser();
 
+  const accountAlias = findAliasByAddress(accountName);
   if (!account) return null;
   return (
-    <Stack width="100%" flexDirection="column">
-      <Text>
-        {account.alias
-          ? account.alias
-          : accountName && <MaskedValue value={accountName} />}
-      </Text>
+    <Stack width="100%" flexDirection="column" gap="sm">
+      <Stack flexDirection="column">
+        <Text variant="code">
+          <MaskedValue value={accountName} />
+        </Text>
+        <Text size="smallest">{accountAlias}</Text>
+      </Stack>
 
       <Stack
         width="100%"
