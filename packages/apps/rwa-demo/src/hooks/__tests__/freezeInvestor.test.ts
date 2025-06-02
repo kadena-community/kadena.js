@@ -4,6 +4,19 @@ import { useFreezeInvestor } from '../freezeInvestor';
 describe('freezeInvestor hook', () => {
   const mocksHook = vi.hoisted(() => {
     return {
+      useUser: vi.fn().mockReturnValue({
+        user: {
+          address: 'k:1',
+          name: 'Test User',
+          email: 'heman@mastersoftheuniverse.com',
+        },
+      }),
+      useOrganisation: vi.fn().mockReturnValue({
+        organisation: {
+          id: 'org-123',
+          name: 'Test Organisation',
+        },
+      }),
       useAsset: vi.fn().mockReturnValue({
         paused: true,
       }),
@@ -30,6 +43,22 @@ describe('freezeInvestor hook', () => {
   });
 
   beforeEach(async () => {
+    vi.mock('./../user', async () => {
+      const actual = await vi.importActual('./../user');
+      return {
+        ...actual,
+        useUser: mocksHook.useUser,
+      };
+    });
+
+    vi.mock('./../organisation', async () => {
+      const actual = await vi.importActual('./../organisation');
+      return {
+        ...actual,
+        useOrganisation: mocksHook.useOrganisation,
+      };
+    });
+
     vi.mock('./../account', async () => {
       const actual = await vi.importActual('./../account');
       return {
