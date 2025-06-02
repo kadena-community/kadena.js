@@ -57,9 +57,8 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
   };
 
   useEffect(() => {
-    if (!adminstore) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const unlisten = adminstore.listenToUsers(handleSetUsers);
+    const unlisten = adminstore?.listenToUsers(handleSetUsers);
 
     return unlisten;
   }, [adminstore, organisationId]);

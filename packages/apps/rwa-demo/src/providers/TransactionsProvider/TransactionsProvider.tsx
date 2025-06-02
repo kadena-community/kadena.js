@@ -167,7 +167,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!account || !asset) return;
     const unlisten = store?.listenToTransactions(listenToTransactions, asset);
     return unlisten;
-  }, [account, asset]);
+  }, [account, asset, store]);
 
   useEffect(() => {
     if (!account && !transactions.find((v) => !v.listener)) return;

@@ -34,10 +34,10 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [organisation, user]);
 
   useEffect(() => {
-    if (!user || !organisation?.id) return;
+    if (!user?.uid || !organisation?.id) return;
     const unlisten = userStore?.listenToUser(setUserData);
     return unlisten;
-  }, [user, organisation?.id]);
+  }, [user?.uid, organisation?.id, userStore]);
 
   const getProvider = () => {
     const provider = new GoogleAuthProvider();
@@ -96,7 +96,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     const { auth } = getProvider();
 
     onIdTokenChanged(auth, (user) => {
-      console.log(88, { user, auth });
       if (user) {
         setUser(user);
       } else {
@@ -107,7 +106,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     onAuthStateChanged(auth, async (user) => {
-      console.log(2324224234234);
       if (user) {
         // User is signed in, see docs for a list of available properties
         setUser(user);

@@ -30,7 +30,6 @@ export const CookieConsent: FC = () => {
     updateConsent(false);
   }, []);
 
-  console.log(123123123, cookieConsent);
   if (cookieConsent !== null) return null;
 
   return (

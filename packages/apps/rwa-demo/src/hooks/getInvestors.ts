@@ -172,7 +172,7 @@ export const useGetInvestors = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     const off = store?.listenToAccounts(listenToAccounts);
     return off;
-  }, []);
+  }, [store]);
 
   return { data: innerData, error, isLoading: removedLoading || addedLoading };
 };

@@ -19,17 +19,10 @@ export const useGetInvestorCount = (asset?: IAsset) => {
   };
 
   useEffect(() => {
-    if (!asset) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData(asset);
-  }, [asset]);
-
-  useEffect(() => {
     if (!subscriptionData?.events?.length || !asset) return;
-
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(asset);
-  }, [subscriptionData, asset]);
+  }, [asset, subscriptionData]);
 
   return { data: innerData };
 };
