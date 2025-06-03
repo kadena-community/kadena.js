@@ -1,5 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
+import type { Auth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import type { Database, DatabaseReference } from 'firebase/database';
 import { getDatabase, ref } from 'firebase/database';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -10,6 +12,7 @@ import { getDatabase, ref } from 'firebase/database';
 
 let database: Database;
 let dbRef: DatabaseReference;
+let auth: Auth;
 
 if (
   process.env.NEXT_PUBLIC_FB_APIKEY &&
@@ -28,10 +31,11 @@ if (
   const app = initializeApp(firebaseConfig);
   database = getDatabase(app);
   dbRef = ref(getDatabase());
+  auth = getAuth(app);
 }
 
 // Initialize Firebase
 
-export { database, dbRef };
+export { auth, database, dbRef };
 
 //export const analytics = getAnalytics(app);

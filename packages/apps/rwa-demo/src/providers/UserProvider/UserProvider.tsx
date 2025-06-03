@@ -3,6 +3,7 @@
 import type { IUserData } from '@/contexts/UserContext/UserContext';
 import { UserContext } from '@/contexts/UserContext/UserContext';
 import { useOrganisation } from '@/hooks/organisation';
+import { auth } from '@/utils/store/firebase';
 import { UserStore } from '@/utils/store/userStore';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { IdTokenResult, User } from 'firebase/auth';
@@ -11,6 +12,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   onIdTokenChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut as signOutFB,
 } from 'firebase/auth';
@@ -48,7 +50,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     return { provider, auth };
   };
 
-  const signIn = useCallback(() => {
+  const signInByGoogle = useCallback(() => {
     const { provider, auth } = getProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -67,6 +69,25 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         });
       });
   }, []);
+
+  const signInByEmail = useCallback(
+    async (data: { email: string; password: string }) => {
+      signInWithEmailAndPassword(auth, data.email, data.password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          setUser(user);
+        })
+        .catch((error) => {
+          console.log({ error });
+          addNotification({
+            intent: 'negative',
+            label: 'Signin issue',
+            message: error.message,
+          });
+        });
+    },
+    [],
+  );
 
   const signOut = () => {
     const { auth } = getProvider();
@@ -162,7 +183,8 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         userToken: token,
         userData,
         isMounted,
-        signIn,
+        signInByGoogle,
+        signInByEmail,
         signOut,
         addAccount,
         removeAccount,

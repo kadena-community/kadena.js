@@ -33,6 +33,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     mode: 'all',
     defaultValues: {
       name: organisation?.name,
+      sendEmail: organisation?.sendEmail,
       domains: organisation?.domains ?? [],
     },
   });
@@ -104,6 +105,30 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                   isInvalid={!!errors.name?.message}
                   errorMessage={`${errors.name?.message}`}
                   label="Alias"
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              name="sendEmail"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: 'This field is required',
+                },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Simple email regex
+                  message: 'Invalid email address',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  id="sendEmail"
+                  isInvalid={!!errors.sendEmail?.message}
+                  errorMessage={`${errors.sendEmail?.message}`}
+                  label="Send Email"
                   {...field}
                 />
               )}

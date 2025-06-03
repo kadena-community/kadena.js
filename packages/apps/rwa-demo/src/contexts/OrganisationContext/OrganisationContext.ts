@@ -4,6 +4,7 @@ export interface IOrganisation {
   id: string;
   name: string;
   domains: { value: string }[];
+  sendEmail: string;
 }
 
 export interface IOrganisationContext {

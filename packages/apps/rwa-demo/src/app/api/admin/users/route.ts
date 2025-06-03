@@ -23,7 +23,6 @@ const _GET = async (request: NextRequest) => {
   const userIds = Object.entries(data).map(([key]) => ({
     uid: key,
   })) as { uid: string }[];
-  console.log({ data });
 
   // get the user info from firebase-admin
   const { users } = (await adminAuth().getUsers(userIds)) ?? [];

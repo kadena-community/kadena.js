@@ -2,7 +2,7 @@ import type { App } from 'firebase-admin/app';
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth as adminGetAuth } from 'firebase-admin/auth';
 import { getDatabase } from 'firebase-admin/database';
-import type { NextRequest } from 'next/dist/server/web/spec-extension/request';
+import type { NextRequest } from 'next/server';
 
 let app: App;
 
