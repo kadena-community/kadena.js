@@ -461,7 +461,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'max-investors-compliance') {
+              if (arg === 'max-investors-compliance-v1') {
                 return 1;
               }
               return -1;
@@ -507,7 +507,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'max-investors-compliance') {
+              if (arg === 'max-investors-compliance-v1') {
                 return 13;
               }
               return -1;
@@ -553,7 +553,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'max-investors-compliance') {
+              if (arg === 'max-investors-compliance-v1') {
                 return 2;
               }
               return -1;
