@@ -59,7 +59,7 @@ Special thanks to the wonderful people who have contributed to this project:
 
 [![Contributors][78]][77]
 
-<<<<<<< variant A
+
 [1]: https://docs.kadena.io
 [2]: https://discord.io/kadena
 [3]: https://stackoverflow.com/questions/tagged/kadena
@@ -161,7 +161,7 @@ Special thanks to the wonderful people who have contributed to this project:
 [76]: https://img.shields.io/npm/v/@kadena/wallet-sdk.svg
 [77]: https://github.com/kadena-community/kadena.js/graphs/contributors
 [78]: https://contrib.rocks/image?repo=kadena-community/kadena.js
->>>>>>> variant B
+
 ```sh
 npx @kadena/create-kadena-app
 ```
