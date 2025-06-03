@@ -176,6 +176,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     const aliases = userData?.aliases ?? {};
     return aliases[address].alias ?? '';
   };
+
   return (
     <UserContext.Provider
       value={{
