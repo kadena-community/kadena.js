@@ -23,7 +23,7 @@ const setOrgClaim = async (
   await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
   await getDB()
     .ref(`/organisationsUsers/${organisationId}/${user.uid}`)
-    .set({ uid: user.uid, displayName: user.displayName, email: user.email });
+    .set({ uid: user.uid, email: user.email });
 };
 
 const removeOrgClaim = async (
@@ -86,7 +86,6 @@ const _GET = async (request: NextRequest) => {
     JSON.stringify({
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
     }),
     {
       status: 200,
@@ -145,7 +144,35 @@ const _DELETE = async (request: NextRequest) => {
       );
     }
     await removeOrgClaim(user, organisationId);
-  } catch (e) {}
+
+    //remove user data from DB
+
+    try {
+      await getDB()
+        .ref(`/organisationsUsers/${organisationId}/${user.uid}`)
+        .remove();
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      await getDB()
+        .ref(`/organisations/${organisationId}/users/${user.uid}`)
+        .remove();
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      await getDB()
+        .ref(`/organisationRoles/${organisationId}/${user.uid}`)
+        .remove();
+    } catch (e) {
+      console.log(e);
+    }
+  } catch (e) {
+    console.log(e);
+  }
 
   return new Response(JSON.stringify({ uid }), {
     status: 200,

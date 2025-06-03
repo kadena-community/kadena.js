@@ -257,13 +257,9 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                 {
                   key: 'email',
                   label: 'Email',
-                  width: '30%',
+                  width: '55%',
                 },
-                {
-                  key: 'displayName',
-                  label: 'Name',
-                  width: '25%',
-                },
+
                 {
                   label: '',
                   key: 'uid',

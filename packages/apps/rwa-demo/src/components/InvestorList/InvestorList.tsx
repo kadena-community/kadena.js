@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form';
 import { BadgeFreezeForm } from '../BadgeFreezeForm/BadgeFreezeForm';
 import { InvestorBatchForm } from '../InvestorBatchForm/InvestorBatchForm';
 import { InvestorForm } from '../InvestorForm/InvestorForm';
+import { FormatAccount } from '../TableFormatters/FormatAccount';
 import { FormatCheckbox } from '../TableFormatters/FormatCheckbox';
 import { FormatDeleteInvestor } from '../TableFormatters/FormatDeleteInvestor';
 import { FormatFreeze } from '../TableFormatters/FormatFreeze';
@@ -120,15 +121,11 @@ export const InvestorList: FC = () => {
                   },
                   {
                     label: 'Name',
-                    key: 'alias',
-                    width: '20%',
-                  },
-                  {
-                    label: 'Account',
                     key: 'accountName',
-                    width: '35%',
-                    render: CompactTableFormatters.FormatAccount(),
+                    width: '20%',
+                    render: FormatAccount(),
                   },
+
                   {
                     label: 'Balance',
                     key: 'accountName',

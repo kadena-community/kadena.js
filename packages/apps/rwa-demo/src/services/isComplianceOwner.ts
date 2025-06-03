@@ -15,7 +15,7 @@ export const isComplianceOwner = async (data: IIsComplianceOwnerProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(max-balance-compliance.is-owner (read-string 'owner))`)
+    .execution(`(max-balance-compliance-v1.is-owner (read-string 'owner))`)
     .setMeta({
       senderAccount: data.owner,
       chainId: getNetwork().chainId,

@@ -212,11 +212,6 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                 {
                   key: 'email',
                   label: 'Email',
-                  width: '30%',
-                },
-                {
-                  key: 'displayName',
-                  label: 'Name',
                   width: '25%',
                 },
                 {

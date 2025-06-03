@@ -8,36 +8,28 @@ import {
   useNotifications,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 export const Profile: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { user, userToken, userStore } = useUser();
+  const { userStore, userData, user } = useUser();
 
   const { addNotification } = useNotifications();
 
   const onSubmit = async (data: { displayName: string }) => {
     setIsLoading(true);
-    if (!userToken || !userStore) {
+    if (!userStore || !userData || !user) {
       addNotification({
         intent: 'negative',
         label: 'usertoken not set',
       });
       return;
     }
-    const result = await userStore.changeProfile({
+    await userStore.changeProfile(user.uid, {
+      ...userData.data,
       displayName: data.displayName,
-      token: userToken,
     });
-
-    if (result.status !== 200) {
-      addNotification({
-        intent: 'negative',
-        label: 'profile not changed',
-        message: result.statusText,
-      });
-    }
 
     setIsLoading(false);
   };
@@ -45,13 +37,20 @@ export const Profile: FC = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { isValid, errors },
   } = useForm<{ displayName: string }>({
     mode: 'all',
     defaultValues: {
-      displayName: user?.displayName ?? '',
+      displayName: userData?.data?.displayName ?? '',
     },
   });
+
+  useEffect(() => {
+    reset({
+      displayName: userData?.data?.displayName ?? '',
+    });
+  }, [userData?.data?.displayName]);
 
   return (
     <SectionCard stack="vertical">
@@ -78,7 +77,7 @@ export const Profile: FC = () => {
                   defaultValue={field.value}
                   isInvalid={!!errors.displayName?.message}
                   errorMessage={`${errors.displayName?.message}`}
-                  label="displayName"
+                  label="Display name"
                   {...field}
                 />
               )}
@@ -91,7 +90,7 @@ export const Profile: FC = () => {
                 isDisabled={!isValid || isLoading}
                 onClick={() => {}}
               >
-                Edit name
+                Edit profile
               </Button>
             </Stack>
           </form>

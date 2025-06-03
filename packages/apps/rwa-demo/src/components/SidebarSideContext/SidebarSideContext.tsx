@@ -24,7 +24,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
 export const SidebarSideContext: FC = () => {
-  const { signOut, user, userToken } = useUser();
+  const { signOut, userToken, userData } = useUser();
   const { account } = useAccount();
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
@@ -56,7 +56,7 @@ export const SidebarSideContext: FC = () => {
             trigger={
               <Button isCompact variant="outlined">
                 {isExpanded ? (
-                  shortenString(user?.displayName ?? '')
+                  shortenString(userData?.data?.displayName ?? '')
                 ) : (
                   <MonoAccountBox />
                 )}

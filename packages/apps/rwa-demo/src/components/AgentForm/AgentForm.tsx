@@ -1,5 +1,7 @@
+import { useAsset } from '@/hooks/asset';
 import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
+import { useUser } from '@/hooks/user';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
@@ -24,10 +26,20 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { getAll: getAllAgentRoles } = useGetAgentRoles();
+  const { userStore, findAliasByAddress } = useUser();
+  const { asset } = useAsset();
+  const { getAll: getAllAgentRoles, setAssetRolesForAccount } =
+    useGetAgentRoles();
   const { submit, isAllowed } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+
+  useEffect(() => {
+    console.log({ agent, asset });
+    if (!agent || !asset) return;
+
+    setAssetRolesForAccount(agent.accountName, asset);
+  }, [agent, asset]);
 
   const {
     handleSubmit,
@@ -39,7 +51,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     mode: 'onChange',
     defaultValues: {
       accountName: agent?.accountName ?? '',
-      alias: agent?.alias ?? '',
+      alias: findAliasByAddress(agent?.accountName),
       alreadyExists: !!agent?.accountName,
       roles: getAllAgentRoles(),
     },
@@ -48,7 +60,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   useEffect(() => {
     reset({
       accountName: agent?.accountName,
-      alias: agent?.alias,
+      alias: findAliasByAddress(agent?.accountName),
       alreadyExists: !!agent?.accountName,
       roles: getAllAgentRoles(),
     });
@@ -72,6 +84,8 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     }
 
     await submit(data);
+    await userStore?.addAccountAlias(data.accountName, data.alias);
+
     handleOnClose();
   };
 
@@ -92,10 +106,9 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                 accountName={agent?.accountName}
                 control={control}
               />
-
               <AliasField
                 error={errors.alias}
-                alias={agent?.alias}
+                address={agent?.accountName}
                 control={control}
               />
 

@@ -5,9 +5,9 @@ import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
 
 export type IComplianceRuleTypes =
-  | 'max-balance-compliance'
-  | 'supply-limit-compliance'
-  | 'max-investors-compliance';
+  | 'max-balance-compliance-v1'
+  | 'supply-limit-compliance-v1'
+  | 'max-investors-compliance-v1';
 
 export interface IComplianceRule {
   key: IComplianceRuleTypes;
@@ -70,23 +70,23 @@ export const getComplianceRules = async (
 
   return {
     maxBalance: {
-      key: 'max-balance-compliance',
+      key: 'max-balance-compliance-v1',
       isActive: !!rules?.find(
-        (rule: any) => rule.refName.name === 'max-balance-compliance',
+        (rule: any) => rule.refName.name === 'max-balance-compliance-v1',
       ),
       value: values['max-balance-per-investor'] ?? INFINITE_COMPLIANCE,
     },
     maxSupply: {
-      key: 'supply-limit-compliance',
+      key: 'supply-limit-compliance-v1',
       isActive: !!rules?.find(
-        (rule: any) => rule.refName.name === 'supply-limit-compliance',
+        (rule: any) => rule.refName.name === 'supply-limit-compliance-v1',
       ),
       value: values['supply-limit'] ?? INFINITE_COMPLIANCE,
     },
     maxInvestors: {
-      key: 'max-investors-compliance',
+      key: 'max-investors-compliance-v1',
       isActive: !!rules?.find(
-        (rule: any) => rule.refName.name === 'max-investors-compliance',
+        (rule: any) => rule.refName.name === 'max-investors-compliance-v1',
       ),
       value: values['max-investors']?.int ?? INFINITE_COMPLIANCE,
     },

@@ -5,6 +5,10 @@ import { createContext } from 'react';
 export interface IUserData {
   accounts: IWalletAccount[];
   uid: string;
+  data?: {
+    displayName?: string;
+  };
+  aliases?: Record<string, { alias: string }>;
 }
 
 export interface IUserContext {
@@ -17,6 +21,7 @@ export interface IUserContext {
   addAccount: (account: IWalletAccount) => void;
   removeAccount: (address: string) => void;
   userStore?: any;
+  findAliasByAddress: (address?: string) => string;
 }
 
 export const UserContext = createContext<IUserContext | null>(null);

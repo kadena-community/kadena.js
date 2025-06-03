@@ -151,8 +151,8 @@ export const useGetInvestors = () => {
         [
           ...filterRemovedRecords([
             ...oldValues,
-            ...investorsSubscriptionRemoved,
             ...investorsSubscriptionAdded,
+            ...investorsSubscriptionRemoved,
           ]),
         ],
         aliases,
@@ -163,10 +163,7 @@ export const useGetInvestors = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     addSubscriptionData();
-  }, [
-    addedSubscriptionData?.events?.length ?? 0,
-    removedSubscriptionData?.events?.length ?? 0,
-  ]);
+  }, [addedSubscriptionData?.events, removedSubscriptionData?.events]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

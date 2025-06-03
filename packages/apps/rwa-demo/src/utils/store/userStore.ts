@@ -1,8 +1,9 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { IUserData } from '@/contexts/UserContext/UserContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
-import type { IdTokenResult, User } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import { get, off, onValue, ref, set } from 'firebase/database';
+
 import { database } from './firebase';
 
 export const UserStore = (organisation: IOrganisation, user: User) => {
@@ -13,19 +14,26 @@ export const UserStore = (organisation: IOrganisation, user: User) => {
 
   //gets user info from FB
   const getUserAccounts = async () => {
-    const snapshot = await get(ref(database, `${dbLocationString}/accounts`));
+    const snapshot = await get(
+      ref(
+        database,
+        `/organisations/${organisation.id}/users/${user.uid}/accounts`,
+      ),
+    );
 
-    return snapshot.val();
+    return snapshot.val() as Record<string, IWalletAccount>;
   };
 
   const addAccountAddress = async (account: IWalletAccount) => {
     const userFBAccounts = await getUserAccounts();
+
     const accounts = { ...userFBAccounts, [account.address]: account };
     return await set(ref(database, `${dbLocationString}/accounts`), accounts);
   };
   const removeAccountAddress = async (address: string) => {
     const userFBAccounts = await getUserAccounts();
-    const accounts = { ...userFBAccounts };
+    const accounts: Record<string, IWalletAccount> = userFBAccounts;
+    if (!accounts) return;
     delete accounts[address];
 
     return await set(ref(database, `${dbLocationString}/accounts`), accounts);
@@ -48,30 +56,20 @@ export const UserStore = (organisation: IOrganisation, user: User) => {
     return () => off(userRef);
   };
 
-  const changeProfile = async ({
-    displayName,
-    token,
-  }: {
-    displayName: string;
-    token: IdTokenResult;
-  }) => {
-    const result = await fetch(
-      `/api/admin/profile?organisationId=${organisation.id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          displayName,
-          uid: user.uid,
-          organisationId: organisation.id,
-        }),
-        headers: {
-          Authorization: `Bearer ${token.token}`,
-          'Content-Type': 'application/json',
-        },
-      },
+  const changeProfile = async (uid: string, userData: IUserData['data']) => {
+    if (!uid) return;
+    await set(ref(database, `${dbLocationString}/data`), userData);
+    await set(
+      ref(database, `/organisationsUsers/${organisation.id}/${uid}`),
+      userData,
     );
+    await set(ref(database, `${dbLocationString}/data`), userData);
+  };
 
-    return result;
+  const addAccountAlias = async (address: string, alias: string) => {
+    await set(ref(database, `${dbLocationString}/aliases/${address}`), {
+      alias,
+    });
   };
 
   return {
@@ -79,5 +77,6 @@ export const UserStore = (organisation: IOrganisation, user: User) => {
     addAccountAddress,
     removeAccountAddress,
     changeProfile,
-  };
+    addAccountAlias,
+  } as const;
 };
