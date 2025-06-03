@@ -23,7 +23,7 @@ const setOrgClaim = async (
   await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
   await getDB()
     .ref(`/organisationsUsers/${organisationId}/${user.uid}`)
-    .set({ uid: user.uid, email: user.email });
+    .set({ uid: user.uid });
 };
 
 const removeOrgClaim = async (
