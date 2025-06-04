@@ -3,7 +3,7 @@
  *
  * This module provides a comprehensive adapter implementation for the MetaMask Kadena Snap,
  * extending the BaseWalletAdapter from '@kadena/wallet-adapter-core'. It serves as a bridge
- * between your dApp and the MetaMask Snap, enabling you to:
+ * between your dApp and the snaK wallet, enabling you to:
  *
  * - Detect the MetaMask Snap provider and initialize connection parameters.
  * - Connect to the Snap and fetch account and network information.
@@ -22,20 +22,14 @@
  *   changes must be managed externally if needed.
  */
 
-import { createTransaction } from '@kadena/client';
-import type { ICommandPayload } from '@kadena/types';
 import type {
   CommandSigDatas,
   IAccountInfo,
   IBaseWalletAdapterOptions,
-  ICommand,
   INetworkInfo,
   ISigningRequestPartial,
 } from '@kadena/wallet-adapter-core';
-import {
-  BaseWalletAdapter,
-  prepareQuickSignCmd,
-} from '@kadena/wallet-adapter-core';
+import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import { ERRORS } from './constants';
 import { defaultSnapOrigin } from './provider';
 import type {
@@ -99,44 +93,34 @@ export class SnapAdapter extends BaseWalletAdapter {
     const currentNetworkId = await this.invokeSnap<string>(
       'kda_getActiveNetwork',
     );
-    const currentNetwork = networks.find((e) => e.id == currentNetworkId);
+    const currentNetwork = networks.find((e) => e.id === currentNetworkId);
     return {
-      networkName: currentNetwork?.name ?? 'a',
-      networkId: currentNetwork?.networkId ?? 'a',
-      url: [currentNetwork?.nodeUrl ?? 'a'],
+      networkName: currentNetwork?.name ?? '',
+      networkId: currentNetwork?.networkId ?? '',
+      url: [currentNetwork?.nodeUrl ?? ''],
     };
   }
   /**
    * Fetches all accounts from the Snap to IAccountInfo[]
    */
   private async _getAccounts(): Promise<IAccountInfo[]> {
-    const wallets = await this.invokeSnap<ISnapAccount[]>('kda_getAccounts');
-    const network = await this._getActiveNetwork();
+    const wallets = await this.invokeSnap<IAccountInfo[]>('kda_getAccounts_v2');
+    console.log('getaccounts_v2 resp:', wallets);
     if (!wallets?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
-    this.connectedAccountId = wallets[0].id;
-    return wallets.map((wallet) => ({
-      accountName: wallet.address,
-      networkId: network.networkId,
-      contract: 'coin',
-      guard: {
-        keys: [wallet.publicKey.replace(/^0x00/, '')],
-        pred: 'keys-all',
-      },
-      chainAccounts: [],
-    }));
+    return wallets;
   }
 
   private async _changeNetwork(networkId: string) {
     const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
-    const newNetworkId = networks.find((e) => e.networkId == networkId)?.id;
+    const newNetworkId = networks.find((e) => e.networkId === networkId)?.id;
     await this.invokeSnap('kda_setActiveNetwork', {
       id: newNetworkId,
     });
   }
 
-  private async _signTransaction(cmd: string): Promise<any> {
+  private async _signTransaction(cmd: string) {
     const response = await this.invokeSnap<string>('kda_signTransaction', {
       id: this.connectedAccountId,
       transaction: cmd,
@@ -180,10 +164,12 @@ export class SnapAdapter extends BaseWalletAdapter {
           throw new Error(ERRORS.FAILED_TO_CONNECT);
         }
       }
-
       // 2. Fetch all accounts and pick the first one
+      const wallets = await this.invokeSnap<ISnapAccount[]>('kda_getAccounts');
+      this.connectedAccountId = wallets[0].id;
       const accounts = await this._getAccounts();
-      return accounts[0];
+      if (accounts) return accounts[0];
+      else throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     } catch (err: any) {
       // If the Snap complains about an invalid network, re-sync and retry once
       if (
