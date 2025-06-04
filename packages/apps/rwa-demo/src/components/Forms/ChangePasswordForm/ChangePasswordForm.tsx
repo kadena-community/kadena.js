@@ -72,8 +72,6 @@ export const ChangePasswordForm: FC = () => {
       });
   };
 
-  console.log({ user });
-
   if (user?.providerData[0].providerId !== 'password') {
     return (
       <Stack flexDirection="column" gap="sm">
