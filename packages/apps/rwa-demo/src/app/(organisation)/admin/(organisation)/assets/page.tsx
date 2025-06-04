@@ -3,17 +3,13 @@
 import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import { FormatSelectAsset } from '@/components/TableFormatters/FormatSelectAsset';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useOrganisation } from '@/hooks/organisation';
-import {
-  MonoAdd,
-  MonoDelete,
-  MonoFindInPage,
-  MonoSettings,
-} from '@kadena/kode-icons';
+import { MonoAdd, MonoDelete, MonoSettings } from '@kadena/kode-icons';
 import {
   Button,
   Notification,
@@ -29,33 +25,19 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
   SideBarBreadcrumbsItem,
-  useNotifications,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 const Home = () => {
   const { account } = useAccount();
-  const { addNotification } = useNotifications();
   const { isAllowed } = useCreateContract();
   const { organisation } = useOrganisation();
-  const { assets, removeAsset, setAsset, getAsset } = useAsset();
+  const { assets, removeAsset } = useAsset();
   const router = useRouter();
 
   const handleDelete = (value: any) => {
     removeAsset(value as IAsset);
-  };
-
-  const handleLink = async (assetProp: any) => {
-    const asset = await getAsset(assetProp.uuid, account!);
-    if (!asset) {
-      addNotification({
-        intent: 'negative',
-        label: 'asset is not found',
-      });
-      return;
-    }
-    setAsset(asset);
   };
 
   return (
@@ -110,22 +92,18 @@ const Home = () => {
                 {
                   key: 'contractName',
                   label: 'name',
-                  width: '80%',
+                  width: '30%',
+                },
+                {
+                  key: 'namespace',
+                  label: 'ns',
+                  width: '50%',
                 },
                 {
                   label: '',
                   key: '',
                   width: '10%',
-                  render: CompactTableFormatters.FormatActions({
-                    trigger: (
-                      <Button
-                        isCompact
-                        variant="outlined"
-                        startVisual={<MonoFindInPage />}
-                        onPress={handleLink}
-                      />
-                    ),
-                  }),
+                  render: FormatSelectAsset(),
                 },
                 {
                   label: '',
