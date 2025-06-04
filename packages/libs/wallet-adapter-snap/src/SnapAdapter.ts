@@ -36,7 +36,6 @@ import type {
   ExtendedMethod,
   ExtendedMethodMap,
   IQuicksignResponse,
-  IQuicksignResponseOutcomes,
   ISnapAccount,
   ISnapNetwork,
 } from './types';
@@ -105,7 +104,6 @@ export class SnapAdapter extends BaseWalletAdapter {
    */
   private async _getAccounts(): Promise<IAccountInfo[]> {
     const wallets = await this.invokeSnap<IAccountInfo[]>('kda_getAccounts_v2');
-    console.log('getaccounts_v2 resp:', wallets);
     if (!wallets?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
@@ -125,7 +123,6 @@ export class SnapAdapter extends BaseWalletAdapter {
       id: this.connectedAccountId,
       transaction: cmd,
     });
-
     return response;
   }
 
@@ -271,41 +268,40 @@ export class SnapAdapter extends BaseWalletAdapter {
           paramsObj.hasOwnProperty('code') &&
           paramsObj.hasOwnProperty('data')
         ) {
-          const response = await this.invokeSnap<string>(
-            'kda_signTransaction',
-            {
+          const response = JSON.parse(
+            await this.invokeSnap<string>('kda_signTransaction', {
               id: this.connectedAccountId,
               transaction: JSON.stringify({
                 code: paramsObj.code,
                 data: paramsObj.data,
               }),
-            },
+            }),
           );
           console.log('RESPONSE ======>>>>', response);
-        }
-        //
-        //         if (response.status !== 'success') {
-        //           const err =
-        //             response.error ??
-        //             response.message ??
-        //             ERRORS.ERROR_SIGNING_TRANSACTION;
-        //           throw new Error(err);
-        //         }
-        //
-        const result = {
-          cmd: 'aaaaa', //response.signedCmd.cmd,
-          hash: 'aaaaa', /// response.signedCmd.hash,
-          sigs: 'aaaaa', // response.signedCmd.sigs,
-        };
 
-        return {
-          id,
-          jsonrpc: '2.0',
-          result: {
-            body: result,
-            chainId: safeJsonParse(result.cmd)?.meta?.chainId,
-          },
-        } as ExtendedMethodMap[M]['response'];
+          if (response.outcome.result !== 'success') {
+            const err =
+              response.outcome.result ?? ERRORS.ERROR_SIGNING_TRANSACTION;
+            throw new Error(err);
+          }
+
+          const result = {
+            cmd: response.commandSigData.cmd,
+            hash: response.outcome.hash,
+            sigs: response.commandSigData.sigs,
+          };
+
+          return {
+            id,
+            jsonrpc: '2.0',
+            result: {
+              body: result,
+              chainId: safeJsonParse(result.cmd)?.meta?.chainId,
+            },
+          } as ExtendedMethodMap[M]['response'];
+        } else {
+          throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
+        }
       }
       case 'kadena_quicksign_v1': {
         if (!parsedParams || !('commandSigDatas' in parsedParams)) {
@@ -319,6 +315,7 @@ export class SnapAdapter extends BaseWalletAdapter {
         };
 
         const response = await this._signTransaction(commandSigDatas[0].cmd);
+
         //const hash = createTransaction(p.commandSigDatas[0].cmd);
         return {
           id: 1,
