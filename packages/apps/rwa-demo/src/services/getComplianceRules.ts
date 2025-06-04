@@ -1,5 +1,5 @@
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { INFINITE_COMPLIANCE } from '@/constants';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';

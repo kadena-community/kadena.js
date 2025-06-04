@@ -1,3 +1,4 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import {
   RightAside,
   RightAsideContent,
@@ -6,7 +7,6 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
-import type { IAsset } from '../AssetProvider/AssetProvider';
 import { AssetStepperForm } from './AssetStepperForm';
 
 interface IProps {

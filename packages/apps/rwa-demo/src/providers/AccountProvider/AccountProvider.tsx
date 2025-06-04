@@ -1,10 +1,9 @@
 'use client';
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { WALLETTYPES } from '@/constants';
 import { AccountContext } from '@/contexts/AccountContext/AccountContext';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { useGetAccountKDABalance } from '@/hooks/getAccountKDABalance';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
-import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useUser } from '@/hooks/user';
 import { isAgent } from '@/services/isAgent';
 import { isComplianceOwner } from '@/services/isComplianceOwner';
@@ -44,9 +43,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       accountAddress: account?.address,
     });
   const { setAssetRolesForAccount, ...accountRoles } = useGetAgentRoles();
-  const { data: balance } = useGetInvestorBalance({
-    investorAccount: account?.address,
-  });
   const router = useRouter();
 
   const checkIsAgent = async (account: IWalletAccount, asset?: IAsset) => {
@@ -248,7 +244,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         isInvestor: isInvestorState,
         isFrozen: isFrozenState,
         selectAccount,
-        balance,
+
         accountRoles,
         isGasPayable: !isBalanceMounted ? undefined : kdaBalance > 0,
         checkAccountAssetRoles,

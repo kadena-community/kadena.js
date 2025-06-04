@@ -9,11 +9,15 @@ import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
+import { useGetInvestorBalance } from './getInvestorBalance';
 import { useGetInvestors } from './getInvestors';
 import { useTransactions } from './transactions';
 
 export const useBatchTransferTokens = () => {
-  const { account, sign, isMounted, isInvestor, balance } = useAccount();
+  const { account, sign, isMounted, isInvestor } = useAccount();
+  const { data: balance } = useGetInvestorBalance({
+    investorAccount: account?.address,
+  });
   const { data: investors } = useGetInvestors();
   const { frozen } = useFreeze({ investorAccount: account?.address });
   const { asset, paused } = useAsset();

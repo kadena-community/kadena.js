@@ -1,9 +1,9 @@
 'use client';
 
 import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';

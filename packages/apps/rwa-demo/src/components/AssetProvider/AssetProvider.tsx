@@ -5,6 +5,8 @@ import {
   INFINITE_COMPLIANCE,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { AssetContext } from '@/contexts/AssetContext/AssetContext';
 import { useAccount } from '@/hooks/account';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
@@ -13,7 +15,6 @@ import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
-  IComplianceProps,
   IComplianceRule,
   IComplianceRuleTypes,
 } from '@/services/getComplianceRules';
@@ -25,48 +26,7 @@ import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { AssetStore } from '@/utils/store/assetStore';
 import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useEffect, useMemo, useState } from 'react';
-
-export interface IAsset {
-  uuid: string;
-  contractName: string;
-  namespace: string;
-  supply: number;
-  investorCount: number;
-  compliance: IComplianceProps;
-}
-
-export interface IAssetContext {
-  asset?: IAsset;
-  assets: IAsset[];
-  paused: boolean;
-  setAsset: (asset: IAsset) => void;
-  addAsset: ({
-    contractName,
-    namespace,
-  }: {
-    contractName: string;
-    namespace: string;
-  }) => IAsset | undefined;
-  addExistingAsset: (name: string) => IAsset | undefined;
-  removeAsset: (asset: IAsset) => void;
-  getAsset: (
-    uuid: string,
-    account: IWalletAccount,
-  ) => Promise<IAsset | undefined>;
-  maxCompliance: (rule: IComplianceRuleTypes) => number;
-}
-
-export const AssetContext = createContext<IAssetContext>({
-  assets: [],
-  paused: false,
-  setAsset: () => {},
-  addAsset: () => undefined,
-  addExistingAsset: () => undefined,
-  removeAsset: (asset: IAsset) => undefined,
-  getAsset: async () => undefined,
-  maxCompliance: () => -1,
-});
+import { useEffect, useMemo, useState } from 'react';
 
 export type EventQueryVariables = Exact<{
   qualifiedName: Scalars['String']['input'];
