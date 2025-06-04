@@ -3,8 +3,15 @@ import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationC
 import { useUser } from '@/hooks/user';
 import type { IUserListItem } from '@/utils/store/orgAdminStore';
 import { OrgAdminStore } from '@/utils/store/orgAdminStore';
-import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
-import { Button, Notification, TextField } from '@kadena/kode-ui';
+import { MonoAdd, MonoDelete, MonoVerified } from '@kadena/kode-icons';
+import {
+  Badge,
+  Button,
+  Notification,
+  Stack,
+  Text,
+  TextField,
+} from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -22,6 +29,14 @@ import {
 import type { FC } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+
+const loadingData: IUserListItem[] = Array.from({ length: 3 }, (_, i) => ({
+  uid: '',
+  email: '',
+  emailVerified: false,
+  isOrgAdmin: false,
+  rootAdmin: false,
+}));
 
 export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
   organisationId,
@@ -48,20 +63,31 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     },
   });
 
-  const handleSetUsers = async (users: IUserListItem[]) => {
-    //check if we already retrieved info for a user
+  const loadData = async () => {
     setIsLoading(true);
+    if (!adminstore || !organisationId || !userToken) return;
+    // Listen to the user list
+    const result = await adminstore.getUserList(userToken);
+    if (result.status !== 200) {
+      addNotification({
+        intent: 'negative',
+        label: 'Failed to load users',
+        message: result?.statusText || 'Unknown error',
+      });
+      setIsLoading(false);
+      return;
+    }
 
-    setUsers(users);
+    const data = await result.json();
+
+    setUsers(data);
     setIsLoading(false);
   };
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const unlisten = adminstore?.listenToUsers(handleSetUsers);
-
-    return unlisten;
-  }, [adminstore, organisationId]);
+    loadData();
+  }, [adminstore, organisationId, userToken]);
 
   const addAdminIsAllowed = useMemo(() => {
     return (
@@ -92,7 +118,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
       });
     }
 
-    setIsLoading(false);
+    await loadData();
     setIsRightAsideExpanded(false);
   };
 
@@ -117,7 +143,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
       });
     }
 
-    setIsLoading(false);
+    await loadData();
   };
 
   return (
@@ -205,15 +231,38 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
               variant="open"
               fields={[
                 {
-                  key: 'uid',
-                  label: 'Id',
-                  width: '30%',
+                  key: 'emailVerified',
+                  label: 'Verified',
+                  width: '15%',
+                  render: ({ value }: { value: string }) => (
+                    <span>
+                      {value ? (
+                        <MonoVerified />
+                      ) : (
+                        <span style={{ opacity: '.2' }}>
+                          <MonoVerified />
+                        </span>
+                      )}
+                    </span>
+                  ),
                 },
                 {
-                  key: 'email',
-                  label: 'Email',
-                  width: '25%',
+                  key: ['email', 'isOrgAdmin'],
+                  label: 'Verified',
+                  width: '70%',
+                  render: ({ value: [email, isOrgAdmin] }: any) => (
+                    <Stack gap="xs" alignItems="center">
+                      <Text variant="code">{email}</Text>
+
+                      {Boolean(isOrgAdmin) && (
+                        <Badge size="sm" style="info">
+                          Org Admin
+                        </Badge>
+                      )}
+                    </Stack>
+                  ),
                 },
+
                 {
                   label: '',
                   key: 'uid',
@@ -237,10 +286,10 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                   }),
                 },
               ]}
-              data={users}
+              data={isLoading ? loadingData : users}
             />
 
-            {!users.length && (
+            {!users.length && !isLoading && (
               <Notification role="status" type="inlineStacked" intent="info">
                 No users yet
               </Notification>

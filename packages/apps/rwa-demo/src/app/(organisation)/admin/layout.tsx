@@ -22,6 +22,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { KLogo } from '@/app/(app)/KLogo';
 import { useUser } from '@/hooks/user';
+import { useRouter } from 'next/navigation';
 import { SideBar } from './SideBar';
 
 const RootLayout = ({
@@ -35,7 +36,8 @@ const RootLayout = ({
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
-  const { isMounted } = useUser();
+  const router = useRouter();
+  const { isMounted, user } = useUser();
 
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
@@ -43,7 +45,14 @@ const RootLayout = ({
     setTxsAnimationRef(transactionAnimationRef.current);
   }, [txsButtonRef.current, transactionAnimationRef.current]);
 
-  if (!isMounted) return null;
+  useEffect(() => {
+    if (isMounted && !user) {
+      router.push('/login');
+      return;
+    }
+  }, [user, isMounted]);
+
+  if (!isMounted || !user) return 'loading';
 
   return (
     <>

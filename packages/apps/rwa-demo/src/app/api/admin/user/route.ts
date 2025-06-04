@@ -1,4 +1,5 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
+import { sendVerificationMail } from '@/utils/sendVerificationMail';
 import { randomUUID } from 'crypto';
 import type { UserRecord } from 'firebase-admin/auth';
 import type { NextRequest } from 'next/server';
@@ -23,7 +24,7 @@ const setOrgClaim = async (
   await adminAuth()?.setCustomUserClaims(user.uid, updatedClaims);
   await getDB()
     .ref(`/organisationsUsers/${organisationId}/${user.uid}`)
-    .set({ uid: user.uid, email: user.email });
+    .set({ uid: user.uid });
 };
 
 const removeOrgClaim = async (
@@ -97,8 +98,9 @@ const _GET = async (request: NextRequest) => {
 const _POST = async (request: NextRequest) => {
   const { email, organisationId } = await request.json();
 
+  let user: UserRecord | null = null;
   try {
-    const user = await adminAuth()?.getUserByEmail(email);
+    user = await adminAuth()?.getUserByEmail(email);
     await setOrgClaim(user, organisationId);
   } catch (e) {
     await adminAuth().createUser({
@@ -108,9 +110,24 @@ const _POST = async (request: NextRequest) => {
       displayName: '-', // Optional
     });
 
-    const user = await adminAuth()?.getUserByEmail(email);
+    user = await adminAuth()?.getUserByEmail(email);
     await setOrgClaim(user, organisationId);
   }
+
+  if (!user || !user.email) {
+    return new Response('creation of email failed', {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  const emailLink = await adminAuth().generateEmailVerificationLink(user.email);
+
+  await sendVerificationMail({
+    user,
+    emailVerificationLink: emailLink,
+    organisationId,
+  });
 
   return new Response(JSON.stringify({ email }), {
     status: 200,

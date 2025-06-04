@@ -16,7 +16,8 @@ export interface IUserContext {
   userToken?: IdTokenResult;
   userData?: IUserData;
   isMounted: boolean; //set to true if all user data is loaded (user, userToken)
-  signIn: () => void;
+  signInByGoogle: () => void;
+  signInByEmail: (data: { email: string; password: string }) => void;
   signOut: () => void;
   addAccount: (account: IWalletAccount) => void;
   removeAccount: (address: string) => void;

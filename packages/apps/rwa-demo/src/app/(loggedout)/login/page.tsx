@@ -1,25 +1,15 @@
 'use client';
-import { useUser } from '@/hooks/user';
-import { Button, Card } from '@kadena/kode-ui';
+import { Card } from '@kadena/kode-ui';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+
+import { LoginForm } from '@/components/LoginForm/LoginForm';
 import { cardWrapperClass } from '../style.css';
 
 const Home = () => {
-  const { signIn, userToken } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (userToken) {
-      router.push('/');
-    }
-  }, [userToken]);
-
   return (
     <Card fullWidth className={cardWrapperClass}>
       <CardContentBlock title="Login">
-        <Button onPress={signIn}>sign in with google account</Button>
+        <LoginForm />
       </CardContentBlock>
     </Card>
   );

@@ -77,7 +77,6 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
           `/api/admin/user?organisationId=${organisationId ? organisationId : ''}&uid=${id}`,
           {
             method: 'GET',
-
             headers: {
               Authorization: `Bearer ${userToken?.token}`,
               'Content-Type': 'application/json',

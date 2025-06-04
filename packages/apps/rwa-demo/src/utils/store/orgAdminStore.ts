@@ -4,8 +4,11 @@ import { off, onValue, ref } from 'firebase/database';
 import { database } from './firebase';
 
 export interface IUserListItem {
-  id: string;
-  displayName: string;
+  uid: string;
+  email: string;
+  emailVerified: boolean;
+  isOrgAdmin: boolean;
+  rootAdmin: boolean;
 }
 
 export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
@@ -23,22 +26,14 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     return () => off(orgRef);
   };
 
-  const listenToUsers = (setDataCallback: (users: IUserListItem[]) => void) => {
-    const orgRef = ref(database, `/organisationsUsers/${organisationId}`);
-    onValue(orgRef, async (snapshot) => {
-      const data = snapshot.val() as Record<string, IUserListItem> | null;
-      if (!data) {
-        setDataCallback([]);
-        return;
-      }
-      const arr = Object.entries(data ?? []).map(
-        ([key, value]) => ({ ...value, uid: key }) as IUserListItem,
-      ) as IUserListItem[];
-
-      setDataCallback(arr);
+  const getUserList = async (token: IdTokenResult): Promise<Response> => {
+    return fetch(`/api/admin/users?organisationId=${organisationId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+        'Content-Type': 'application/json',
+      },
     });
-
-    return () => off(orgRef);
   };
 
   const setAdmin = async ({
@@ -137,7 +132,7 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     setAdmin,
     removeAdmin,
     listenToAdmins,
-    listenToUsers,
+    getUserList,
     setUser,
     removeUser,
   };
