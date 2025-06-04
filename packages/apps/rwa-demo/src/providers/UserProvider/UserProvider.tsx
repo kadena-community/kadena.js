@@ -54,11 +54,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     const { provider, auth } = getProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        // const token = credential?.accessToken;
-        // The signed-in user info.
-
         setUser(result.user);
       })
       .catch((error) => {
@@ -93,6 +88,10 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     const { auth } = getProvider();
     signOutFB(auth)
       .then(() => {
+        setUser(undefined);
+        setToken(undefined);
+        setUserData(undefined);
+
         // Sign-out successful.
       })
       .catch((error) => {
@@ -120,9 +119,9 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
       if (user) {
         setUser(user);
       } else {
+        setIsMounted(true);
         setUser(undefined);
         setToken(undefined);
-        router.push('/login');
       }
     });
 
@@ -132,9 +131,9 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         setUser(user);
         await refreshToken(user);
       } else {
+        setIsMounted(true);
         setUser(undefined);
         setToken(undefined);
-        router.push('/login');
       }
     });
   }, []);

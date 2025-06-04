@@ -47,8 +47,8 @@ export const ProfileForm: FC = () => {
   }, [userData?.data?.displayName]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack flexDirection="column" marginBlock="md" gap="sm">
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+      <Stack flexDirection="column" marginBlock="md" gap="sm" width="100%">
         <Controller
           name="displayName"
           control={control}

@@ -5,11 +5,19 @@ import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
 import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
 import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
+import { ProfileForm } from '@/components/Profile/ProfileForm';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useTransactions } from '@/hooks/transactions';
 import { useUser } from '@/hooks/user';
 import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
-import { Button, Link, Stack } from '@kadena/kode-ui';
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  Link,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -19,6 +27,7 @@ import {
   SideBarTopBanner,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
@@ -34,7 +43,8 @@ const RootLayout = ({
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
-  const { isMounted } = useUser();
+  const { isMounted, userData, user } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
@@ -42,10 +52,28 @@ const RootLayout = ({
     setTxsAnimationRef(transactionAnimationRef.current);
   }, [txsButtonRef.current, transactionAnimationRef.current]);
 
-  if (!isMounted) return 'loading';
+  useEffect(() => {
+    if (isMounted && !user) {
+      router.push('/login');
+      return;
+    }
+  }, [user, isMounted]);
+
+  if (!isMounted || !user) return 'loading...';
 
   return (
     <>
+      {userData && !userData?.data?.displayName && (
+        <Dialog isOpen size="sm">
+          <DialogHeader>Display name</DialogHeader>
+
+          <Text>
+            The displayname for your account is not set yet.
+            <br />
+          </Text>
+          <ProfileForm />
+        </Dialog>
+      )}
       <SideBarHeaderContext>
         <SideBarTopBanner>
           <DemoBanner />

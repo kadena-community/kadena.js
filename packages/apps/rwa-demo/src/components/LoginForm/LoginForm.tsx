@@ -77,8 +77,15 @@ export const LoginForm: FC = () => {
               />
             )}
           />
-          <Stack justifyContent={'flex-end'} gap="sm">
-            <Button isDisabled={!isValid} type="submit">
+          <Stack justifyContent={'flex-end'} alignItems="center" gap="sm">
+            <Button
+              isCompact
+              variant="transparent"
+              onPress={() => router.push('/forgot-password')}
+            >
+              forgot password?
+            </Button>
+            <Button isDisabled={!isValid} type="submit" onPress={() => {}}>
               Sign in
             </Button>
           </Stack>

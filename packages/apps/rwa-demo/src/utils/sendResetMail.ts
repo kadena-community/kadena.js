@@ -4,7 +4,7 @@ import type { UserRecord } from 'firebase-admin/auth';
 import FormData from 'form-data'; // or built-in FormData
 import Mailgun from 'mailgun.js';
 
-export const sendVerificationMail = async ({
+export const sendResetMail = async ({
   user,
   emailVerificationLink,
   organisationId,
@@ -35,7 +35,7 @@ export const sendVerificationMail = async ({
   const url = new URL(emailVerificationLink);
   const oobCode = url.searchParams.get('oobCode');
 
-  const link = `${Object.entries(organisation.domains)[0][1].value}/verify-email?oobCode=${oobCode}&email=${encodeURIComponent(user.email)}`;
+  const link = `${Object.entries(organisation.domains)[0][1].value}/forgot-password?oobCode=${oobCode}`;
 
   const mailgun = new Mailgun(FormData);
   const mg = mailgun.client({ username: 'api', key: apiKey });
@@ -45,9 +45,9 @@ export const sendVerificationMail = async ({
       {
         from: `${organisation.name} <${organisation.sendEmail}>`,
         to: user.email,
-        subject: `Verify your account for ${organisation.name}`,
-        text: `Hello ${user.email},\n\nPlease verify your account by clicking the link below:\n\n${link}\n\nThank you!`,
-        html: `<p>Hello ${user.email},</p><p>Please verify your account by clicking the link below:</p><p><a href="${link}">Verify Account</a></p><p>Thank you!</p>`,
+        subject: `reset your password for ${organisation.name}`,
+        text: `Hello ${user.email},\n\nPlease reset your password by clicking the link below:\n\n${link}\n\nThank you!`,
+        html: `<p>Hello ${user.email},</p><p>Please reset your password by clicking the link below:</p><p><a href="${link}">Reset Password</a></p><p>Thank you!</p>`,
         'h:Reply-To': organisation.sendEmail,
         'v:organisationName': organisation.name,
         'v:userEmail': user.email,

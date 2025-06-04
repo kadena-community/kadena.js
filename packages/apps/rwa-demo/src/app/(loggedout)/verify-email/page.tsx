@@ -1,6 +1,13 @@
 'use client';
 import type { ICompactStepperItemProps } from '@kadena/kode-ui';
-import { Button, Card, CompactStepper, Stack } from '@kadena/kode-ui';
+import {
+  Button,
+  Card,
+  CompactStepper,
+  Notification,
+  NotificationHeading,
+  Stack,
+} from '@kadena/kode-ui';
 import {
   CardContentBlock,
   FocussedLayoutHeaderContent,
@@ -49,12 +56,13 @@ const steps: ICardContentProps[] = [
 ] as const;
 
 const Home = () => {
-  const [step, setStep] = useState<IStepKeys>('set-password');
+  const [step, setStep] = useState<IStepKeys>('verify');
   const [isPending, setIsPending] = useState(false);
 
   const searchParams = useSearchParams();
   const { addNotification } = useNotifications();
   const oobCode = decodeURIComponent(searchParams.get('oobCode') ?? ''); // gets ?foo=value
+  const email = decodeURIComponent(searchParams.get('email') ?? ''); // gets ?foo=value
 
   const getStepIdx = (key: IStepKeys): number => {
     return steps.findIndex((step) => step.id === key) ?? 0;
@@ -64,23 +72,22 @@ const Home = () => {
     setIsPending(true);
     const result = await fetch('/api/verify', {
       method: 'POST',
-      body: JSON.stringify({ oobCode }),
+      body: JSON.stringify({ oobCode, email }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    if (result.status !== 200) {
-      addNotification({
-        intent: 'negative',
-        label: 'Verification Failed',
-        message: result.statusText || 'Unknown error',
-      });
 
-      return;
-    }
+    addNotification({
+      intent: result.status === 200 ? 'positive' : 'negative',
+      message: result.statusText || 'Unknown error',
+    });
 
     setIsPending(false);
-    setStep('set-password');
+
+    if (result.status === 200) {
+      setStep('set-password');
+    }
   };
 
   const stepContent = steps[getStepIdx(step)];
@@ -99,9 +106,31 @@ const Home = () => {
           visual={stepContent.visual}
         >
           {step === 'verify' && (
-            <Button isLoading={isPending} onPress={handleVerify}>
-              Verify your Email
-            </Button>
+            <>
+              {!oobCode ||
+                (!email && (
+                  <Notification role="status" intent="negative">
+                    <NotificationHeading>
+                      Missing Parameters
+                    </NotificationHeading>
+                    Please provide both oobCode and email in the URL query
+                    parameters.
+                  </Notification>
+                ))}
+
+              <Stack
+                flexDirection="column"
+                marginBlockStart="sm"
+                justifyContent="flex-end"
+                width="100%"
+              >
+                <Stack justifyContent="flex-end">
+                  <Button isLoading={isPending} onPress={handleVerify}>
+                    Verify your Email
+                  </Button>
+                </Stack>
+              </Stack>
+            </>
           )}
 
           {step === 'set-password' && <SetPasswordForm setStep={setStep} />}
