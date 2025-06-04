@@ -35,7 +35,6 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
 
   useEffect(() => {
-    console.log({ agent, asset });
     if (!agent || !asset) return;
 
     setAssetRolesForAccount(agent.accountName, asset);

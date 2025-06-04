@@ -40,7 +40,7 @@ export const sendVerificationMail = async ({
   const mailgun = new Mailgun(FormData);
   const mg = mailgun.client({ username: 'api', key: apiKey });
   try {
-    const data = await mg.messages.create(
+    await mg.messages.create(
       `sandbox82751cf702b4492eb83d87863e6ad350.mailgun.org`,
       {
         from: `${organisation.name} <${organisation.sendEmail}>`,
@@ -53,8 +53,6 @@ export const sendVerificationMail = async ({
         'v:userEmail': user.email,
       },
     );
-
-    console.log(data); // logs response data
   } catch (error) {
     console.log(error); //logs any error
   }
