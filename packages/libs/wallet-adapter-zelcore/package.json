@@ -1,7 +1,10 @@
 {
-  "name": "@kadena/wallet-adapter-ecko",
-  "version": "0.0.1-beta.2",
-  "license": "BSD-3-Clause",
+  "name": "@kadena/wallet-adapter-zelcore",
+  "version": "0.0.1-beta.1",
+  "contributors": [
+    "Francisco Miranda",
+    "Ariel Serranoni"
+  ],
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
@@ -16,10 +19,12 @@
     "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && api-extractor run",
     "format": "prettier . --cache --write",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "vitest run"
+    "test": "echo 'no tests' # vitest run"
   },
   "dependencies": {
-    "@kadena/wallet-adapter-core": "workspace:*"
+    "@kadena/client": "workspace:*",
+    "@kadena/wallet-adapter-core": "workspace:*",
+    "valibot": "^1.0.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
