@@ -78,26 +78,11 @@ export class SnapAdapter extends BaseWalletAdapter {
   }
   /** Fetches and maps all networks from the Snap to INetworkInfo[] */
   private async _getNetworks(): Promise<INetworkInfo[]> {
-    const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
-    console.log('NETWORKS ---------->', networks);
-    return networks.map((net) => ({
-      networkName: net.name,
-      networkId: net.networkId,
-      url: [net.nodeUrl],
-    }));
+    return await this.invokeSnap<INetworkInfo[]>('kda_getNetworks_v1');
   }
 
   private async _getActiveNetwork(): Promise<INetworkInfo> {
-    const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
-    const currentNetworkId = await this.invokeSnap<string>(
-      'kda_getActiveNetwork',
-    );
-    const currentNetwork = networks.find((e) => e.id === currentNetworkId);
-    return {
-      networkName: currentNetwork?.name ?? '',
-      networkId: currentNetwork?.networkId ?? '',
-      url: [currentNetwork?.nodeUrl ?? ''],
-    };
+    return await this.invokeSnap<INetworkInfo>('kda_getNetwork_v1');
   }
   /**
    * Fetches all accounts from the Snap to IAccountInfo[]
