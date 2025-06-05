@@ -9,4 +9,5 @@ export const ERRORS = {
     `Hash of the transaction signed by the wallet does not match. Our hash: ${expectedHash}, wallet hash: ${walletHash}`,
   MAGIC_NOT_INITIALIZED: 'Magic wallet not initialized',
   INVALID_GUARD: 'Invalid guard',
+  INVALID_PARAMS: 'Invalid parameters provided to the method',
 };

@@ -19,6 +19,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@kadena/client": "workspace:*",
     "@kadena/wallet-adapter-core": "workspace:*",
     "@magic-ext/kadena": "^0.11.0",
     "magic-sdk": "^28.21.1"
@@ -32,7 +33,6 @@
     "vitest": "^1.6.0"
   },
   "authors": [
-    "Danillo Felixdaal",
     "Bart Huijgen"
   ]
 }

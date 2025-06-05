@@ -23,6 +23,7 @@
  * - The adapter does not support network switching via `kadena_changeNetwork_v1`.
  */
 
+import type { IQuicksignResponse } from '@kadena/client';
 import { createTransaction } from '@kadena/client';
 import type {
   ChainId,
@@ -30,17 +31,15 @@ import type {
   IAccountInfo,
   IBaseWalletAdapterOptions,
   ICommand,
+  IKdaMethodMap,
+  KdaMethod,
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import { KadenaExtension } from '@magic-ext/kadena';
 import type { Extension } from 'magic-sdk';
 import { Magic } from 'magic-sdk';
 import { ERRORS } from './constants';
-import type {
-  ExtendedMethod,
-  ExtendedMethodMap,
-  IQuicksignResponse,
-} from './types';
+// import type { ExtendedMethod, IQuicksignResponse } from './types';
 import { safeJsonParse } from './utils/json';
 
 export interface IMagicAdapterOptions {
@@ -128,14 +127,14 @@ export class MagicAdapter extends BaseWalletAdapter {
    * @returns A promise resolving to the response, cast to the appropriate type.
    * @throws Error if the provider is not detected or the method is unsupported.
    *
-   * This implementation supports extended methods from ExtendedMethodMap, including special handling
+   * This implementation supports extended methods from IKdaMethodMap, including special handling
    * for 'kadena_checkStatus'.
    */
-  public async request<M extends ExtendedMethod>(args: {
+  public async request<M extends KdaMethod>(args: {
     id: number;
     method: M;
-    params?: ExtendedMethodMap[M]['params'];
-  }): Promise<ExtendedMethodMap[M]['response']> {
+    params?: IKdaMethodMap[M]['params'];
+  }): Promise<IKdaMethodMap[M]['response']> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
     if (!this._magic) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
@@ -152,14 +151,14 @@ export class MagicAdapter extends BaseWalletAdapter {
           id,
           jsonrpc: '2.0',
           result: account,
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       case 'kadena_disconnect': {
         return {
           id,
           jsonrpc: '2.0',
           result: undefined,
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       case 'kadena_getAccount_v1': {
         if (!this._account) {
@@ -169,7 +168,7 @@ export class MagicAdapter extends BaseWalletAdapter {
           id,
           jsonrpc: '2.0',
           result: this._account,
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       case 'kadena_getAccounts_v2': {
         if (!this._account) {
@@ -179,21 +178,21 @@ export class MagicAdapter extends BaseWalletAdapter {
           id,
           jsonrpc: '2.0',
           result: [this._account],
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       case 'kadena_getNetwork_v1': {
         return {
           id,
           jsonrpc: '2.0',
           error: { code: -32601, message: 'Not implemented', data: {} },
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       case 'kadena_getNetworks_v1': {
         return {
           id,
           jsonrpc: '2.0',
           error: { code: -32601, message: 'Not implemented', data: {} },
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
         return {
@@ -204,7 +203,7 @@ export class MagicAdapter extends BaseWalletAdapter {
             message: 'Not supported by Magic. Use kadena_quicksign_v1 instead.',
             data: {},
           },
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       case 'kadena_quicksign_v1': {
         const { commandSigDatas } = params as {
@@ -215,7 +214,12 @@ export class MagicAdapter extends BaseWalletAdapter {
           commandSigDatas.map(async (commandSigData) => {
             if (!this._magic) throw new Error(ERRORS.MAGIC_NOT_INITIALIZED);
 
-            const tx = createTransaction(safeJsonParse(commandSigData.cmd));
+            const parsed = safeJsonParse(commandSigData.cmd);
+            if (!parsed) {
+              throw new Error(ERRORS.INVALID_PARAMS);
+            }
+
+            const tx = createTransaction(parsed);
             tx.sigs = commandSigData.sigs.map((sig) => ({
               sig: sig.sig ?? undefined,
               pubKey: sig.pubKey,
@@ -244,7 +248,7 @@ export class MagicAdapter extends BaseWalletAdapter {
           id,
           jsonrpc: '2.0',
           result: { responses } as IQuicksignResponse,
-        } as ExtendedMethodMap[M]['response'];
+        } as IKdaMethodMap[M]['response'];
       }
       default:
         return (await this.provider.request(args)) as any;
