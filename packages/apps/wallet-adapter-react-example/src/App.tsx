@@ -29,7 +29,11 @@ const openZelcore = (): void => {
 };
 
 import './styles.css';
-import { createExampleCommand, createExampleTransaction } from './utils';
+import {
+  autoSelectPublicKey,
+  createExampleCommand,
+  createExampleTransaction,
+} from './utils';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -61,6 +65,7 @@ const App = () => {
         JSON.stringify(
           createExampleTransaction(
             activeAccount.accountName,
+            autoSelectPublicKey(activeAccount),
             'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
             '0',
             network?.networkId || 'testnet04',
@@ -73,6 +78,7 @@ const App = () => {
         JSON.stringify(
           createExampleCommand(
             activeAccount.accountName,
+            autoSelectPublicKey(activeAccount),
             'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
             '0',
             network?.networkId || 'testnet04',

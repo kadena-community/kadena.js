@@ -30,15 +30,8 @@ import type {
   IAccountInfo,
   IBaseWalletAdapterOptions,
   ICommand,
-  ISigningRequestPartial,
-  KeySet,
-  KeySetRef,
 } from '@kadena/wallet-adapter-core';
-import {
-  BaseWalletAdapter,
-  isKeySetGuard,
-  isKeySetRefGuard,
-} from '@kadena/wallet-adapter-core';
+import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import { KadenaExtension } from '@magic-ext/kadena';
 import type { Extension } from 'magic-sdk';
 import { Magic } from 'magic-sdk';
@@ -58,26 +51,6 @@ export interface IMagicAdapterOptions {
 
 type IMagicAdapterOptionsWithProvider = IMagicAdapterOptions &
   IBaseWalletAdapterOptions;
-
-const deriveGuardFromAccount = (
-  account: Awaited<ReturnType<KadenaExtension['loginWithSpireKey']>>,
-): KeySetRef | KeySet => {
-  if (
-    account.guard &&
-    (isKeySetGuard(account.guard) || isKeySetRefGuard(account.guard))
-  ) {
-    return account.guard;
-  }
-
-  if (account.accountName.startsWith('k:')) {
-    return {
-      keys: [account.accountName],
-      pred: 'keys-all',
-    };
-  }
-
-  throw new Error(`${ERRORS.INVALID_GUARD}: ${JSON.stringify(account)}`);
-};
 
 /**
  * @public
@@ -128,14 +101,18 @@ export class MagicAdapter extends BaseWalletAdapter {
       this._magic.kadena as KadenaExtension
     ).loginWithSpireKey();
 
-    const guard = deriveGuardFromAccount(account);
+    if (!account.keyset) {
+      console.error('Invalid account guard or keyset', account);
+      throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
+    }
 
     this._account = {
       accountName: account.accountName,
       contract: account.requestedFungibles?.[0].fungible ?? 'coin',
-      chainAccounts: account.chainIds,
+      existsOnChains: account.chainIds,
       networkId: account.networkId,
-      guard,
+      guard: account.guard,
+      keyset: account.keyset,
     };
 
     return this._account;
@@ -219,41 +196,13 @@ export class MagicAdapter extends BaseWalletAdapter {
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
-        if (!this._account) {
-          await this._connect();
-        }
-
-        const request = params as ISigningRequestPartial;
-
-        const tx = createTransaction({
-          payload: {
-            exec: {
-              code: request.code,
-              data: request.data,
-            },
-          },
-          meta: {
-            chainId: request.chainId,
-            gasLimit: request.gasLimit,
-            gasPrice: request.gasPrice,
-            sender: request.sender,
-            ttl: request.ttl,
-          },
-          nonce: request.nonce,
-        });
-
-        const { transactions } = await (
-          this._magic.kadena as KadenaExtension
-        ).signTransactionWithSpireKey(tx);
-
-        const transaction = transactions[0];
-
         return {
           id,
           jsonrpc: '2.0',
-          result: {
-            body: transaction,
-            chainId: safeJsonParse(transaction.cmd)?.meta?.chainId,
+          error: {
+            code: -32601,
+            message: 'Not supported by Magic. Use kadena_quicksign_v1 instead.',
+            data: {},
           },
         } as ExtendedMethodMap[M]['response'];
       }
