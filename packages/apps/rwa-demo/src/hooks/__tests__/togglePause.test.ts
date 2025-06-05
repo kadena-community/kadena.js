@@ -4,6 +4,7 @@ import { useTogglePause } from '../togglePause';
 describe('togglePause hook', () => {
   const mocksHook = vi.hoisted(() => {
     return {
+      useAsset: vi.fn().mockReturnValue({}),
       useAccount: vi.fn().mockReturnValue({
         account: {
           address: 'k:1',
@@ -25,6 +26,13 @@ describe('togglePause hook', () => {
   });
 
   beforeEach(async () => {
+    vi.mock('./../asset', async () => {
+      const actual = await vi.importActual('./../asset');
+      return {
+        ...actual,
+        useAsset: mocksHook.useAsset,
+      };
+    });
     vi.mock('./../account', async () => {
       const actual = await vi.importActual('./../account');
       return {

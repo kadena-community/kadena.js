@@ -1,4 +1,4 @@
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';

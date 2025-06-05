@@ -1,4 +1,4 @@
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 
 export const getAsset = (asset?: IAsset): string => {
   // const data = localStorage.getItem(

@@ -1,4 +1,3 @@
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import {
   useEventsQuery,
   useEventSubscriptionSubscription,
@@ -13,10 +12,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useUser } from './user';
-
-export type EventQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
 
 export const useGetInvestors = () => {
   const { organisation } = useOrganisation();

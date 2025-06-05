@@ -1,4 +1,4 @@
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { getAssetFolder } from '.';

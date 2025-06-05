@@ -1,6 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { getFrozenTokens } from '@/services/getFrozenTokens';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { getAsset } from '@/utils/getAsset';

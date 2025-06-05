@@ -7,6 +7,9 @@ describe('batchTransferTokens hook', () => {
       useAsset: vi.fn().mockReturnValue({
         paused: true,
       }),
+      useGetInvestorBalance: vi.fn().mockReturnValue({
+        data: 0,
+      }),
       useFreeze: vi.fn().mockReturnValue({
         frozen: false,
       }),
@@ -41,6 +44,13 @@ describe('batchTransferTokens hook', () => {
       return {
         ...actual,
         useAccount: mocksHook.useAccount,
+      };
+    });
+    vi.mock('./../getInvestorBalance', async () => {
+      const actual = await vi.importActual('./../getInvestorBalance');
+      return {
+        ...actual,
+        useGetInvestorBalance: mocksHook.useGetInvestorBalance,
       };
     });
 

@@ -1,6 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IComplianceProps } from '@/services/getComplianceRules';
 import { getComplianceRules } from '@/services/getComplianceRules';
 import { getAsset } from '@/utils/getAsset';

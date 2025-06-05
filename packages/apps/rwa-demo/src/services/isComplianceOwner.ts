@@ -1,4 +1,4 @@
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { getClient, getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 

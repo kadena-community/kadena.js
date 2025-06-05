@@ -70,6 +70,11 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       return;
     }
 
+    addAsset({
+      contractName: data.contractName,
+      namespace: data.namespace,
+    });
+
     const tx = await submitContract(data);
 
     setIsPending(false);
@@ -77,12 +82,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     if (tx) {
       setIsSuccess(true);
       setStep(STEPS.DONE);
-      const asset = addAsset({
-        contractName: data.contractName,
-        namespace: data.namespace,
-      });
-
-      if (!asset) return;
     }
   };
 

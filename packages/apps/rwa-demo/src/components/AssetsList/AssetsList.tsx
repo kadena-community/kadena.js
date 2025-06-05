@@ -1,36 +1,16 @@
-import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
-import { MonoFindInPage } from '@kadena/kode-icons';
-import { Button } from '@kadena/kode-ui';
 import {
   CompactTable,
-  CompactTableFormatters,
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
-  useNotifications,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
+import { FormatSelectAsset } from '../TableFormatters/FormatSelectAsset';
 
 export const AssetsList: FC = () => {
-  const { assets, getAsset, setAsset } = useAsset();
-  const { account } = useAccount();
-  const { addNotification } = useNotifications();
-
-  const handleLink = async (assetProp: any) => {
-    const asset = await getAsset(assetProp.uuid, account!);
-    if (!asset) {
-      addNotification({
-        intent: 'negative',
-        label: 'asset is not found',
-      });
-      return;
-    }
-    setAsset(asset);
-    window.location.href = '/';
-  };
-
+  const { assets } = useAsset();
   return (
     <SectionCard stack="vertical">
       <SectionCardContentBlock>
@@ -57,16 +37,7 @@ export const AssetsList: FC = () => {
                 key: '',
                 width: '10%',
                 align: 'end',
-                render: CompactTableFormatters.FormatActions({
-                  trigger: (
-                    <Button
-                      isCompact
-                      variant="outlined"
-                      startVisual={<MonoFindInPage />}
-                      onPress={handleLink}
-                    />
-                  ),
-                }),
+                render: FormatSelectAsset(),
               },
             ]}
             data={assets}

@@ -1,5 +1,5 @@
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { getInvestorCount } from '@/services/getInvestorCount';
 import { getAsset } from '@/utils/getAsset';
 import { useEffect, useState } from 'react';

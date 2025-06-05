@@ -1,5 +1,5 @@
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import type { WALLETTYPES } from '@/constants';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IAgentHookProps } from '@/hooks/getAgentRoles';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
@@ -28,7 +28,7 @@ export interface IAccountContext {
   isInvestor: boolean;
   isFrozen: boolean;
   selectAccount: (address: string) => void;
-  balance: number;
+
   accountRoles: IAgentHookProps;
   isGasPayable: boolean | undefined;
   checkAccountAssetRoles: (asset?: IAsset) => void;

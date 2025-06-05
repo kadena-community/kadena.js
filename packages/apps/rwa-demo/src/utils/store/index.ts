@@ -1,5 +1,5 @@
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
 import { LOCALSTORAGE_ACCOUNTS } from '@/constants';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
