@@ -20,6 +20,7 @@ const BaseAccountNameField = (
   return (
     <Stack className={accountInputWrapperStyle} width="100%">
       <TextField
+        minLength={30}
         {...props}
         label={props.label ?? t('Account Name')}
         fontType="code"

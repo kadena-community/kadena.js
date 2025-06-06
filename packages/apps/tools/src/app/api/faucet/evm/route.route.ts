@@ -26,6 +26,8 @@ export async function POST(request: NextRequest) {
     token: string; //this is for recaptcha check
   };
 
+  console.log('Faucet request body:', body);
+
   if (!PRIVATE_KEY || !RPC_URL || !EVMFAUCET_CONTRACT_ADDRESS) {
     return NextResponse.json(
       { error: 'missing env variables' },

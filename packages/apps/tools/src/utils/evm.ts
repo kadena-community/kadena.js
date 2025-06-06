@@ -8,13 +8,17 @@ import {
 } from 'viem';
 
 const STARTBLOCKCHAINWEB = process.env.NEXT_PUBLIC_STARTBLOCKCHAINWEB;
-
+const STARTCHAIN_ID = process.env.NEXT_PUBLIC_STARTCHAIN_ID ?? '0';
 const createBlockChainId = (chainId: ChainId): number => {
   if (!STARTBLOCKCHAINWEB) {
     console.error('STARTBLOCKCHAINWEB env variable is not set');
     throw new Error('STARTBLOCKCHAINWEB env variable is not set');
   }
-  return parseInt(STARTBLOCKCHAINWEB, 10) + parseInt(chainId, 10);
+  return (
+    parseInt(STARTBLOCKCHAINWEB, 10) +
+    parseInt(chainId, 10) -
+    parseInt(STARTCHAIN_ID, 10)
+  );
 };
 
 export const createServerUrl = (chainId: ChainId, isServer?: boolean) => {
