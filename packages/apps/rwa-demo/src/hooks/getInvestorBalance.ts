@@ -15,6 +15,7 @@ export const useGetInvestorBalance = ({
 }: {
   investorAccount?: string;
 }) => {
+  const [isPending, setIsPending] = useState(false);
   const [data, setData] = useState(0);
   const { asset } = useAsset();
   const { data: subscriptionData } = useEventSubscriptionSubscription({
@@ -28,6 +29,7 @@ export const useGetInvestorBalance = ({
 
     const init = async (asset: IAsset) => {
       if (!investorAccount) return;
+      setIsPending(true);
       const res = await getInvestorBalance(
         {
           investorAccount,
@@ -38,6 +40,8 @@ export const useGetInvestorBalance = ({
       if (typeof res === 'number') {
         setData(res);
       }
+
+      setIsPending(false);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -63,5 +67,5 @@ export const useGetInvestorBalance = ({
     });
   }, [subscriptionData]);
 
-  return { data };
+  return { data, isPending };
 };

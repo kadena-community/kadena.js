@@ -32,9 +32,11 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
   const {
     handleSubmit,
     control,
+    watch,
+    setError,
     formState: { isValid, errors },
   } = useForm<Omit<IRegisterIdentityProps, 'agent'>>({
-    mode: 'onChange',
+    mode: 'all',
     values: {
       accountName: investor?.accountName ?? '',
       alias: findAliasByAddress(investor?.accountName),
@@ -73,6 +75,8 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
                 error={errors.accountName}
                 accountName={investor?.accountName}
                 control={control}
+                value={watch('accountName')}
+                setError={setError}
               />
               <AliasField address={investor?.accountName} control={control} />
             </RightAsideContent>
