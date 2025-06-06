@@ -2,7 +2,7 @@ import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
-import { getKeyset, getPubkeyFromAccount } from '@/utils/getPubKey';
+import { getPubkeyFromAccount } from '@/utils/getPubKey';
 import { Pact } from '@kadena/client';
 import { getKeysetService } from './getKeyset';
 

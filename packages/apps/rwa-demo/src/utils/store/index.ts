@@ -127,7 +127,7 @@ export const RWAStore = (organisation: IOrganisation) => {
   };
 
   const setAccount = async (
-    { accountName, alias }: Omit<IRegisterIdentityProps, 'agent'>,
+    { accountName }: Omit<IRegisterIdentityProps, 'agent'>,
     asset?: IAsset,
     user?: User,
   ) => {
@@ -140,7 +140,6 @@ export const RWAStore = (organisation: IOrganisation) => {
     const newAccountsArray = accounts.map((account) => {
       if (account.accountName === accountName) {
         isNew = false;
-        account.alias = alias;
       }
       return account;
     });
@@ -148,7 +147,6 @@ export const RWAStore = (organisation: IOrganisation) => {
     if (isNew) {
       newAccountsArray.push({
         accountName,
-        alias,
       } as IRegisterIdentityProps);
     }
 
@@ -164,7 +162,7 @@ export const RWAStore = (organisation: IOrganisation) => {
     asset?: IAsset,
   ) => {
     return accounts.map((account) =>
-      setAccount({ accountName: account.account, alias: account.alias }, asset),
+      setAccount({ accountName: account.account }, asset),
     );
   };
 
