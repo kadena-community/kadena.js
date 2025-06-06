@@ -25,15 +25,15 @@ export const FormatAccount = () => {
     }, [isAliasFormOpen]);
 
     const displayName = findAliasByAddress(`${value}`);
+
+    const handleClose = () => {
+      setIsAliasFormOpen(false);
+    };
+
     return (
       <>
         {isAliasFormOpen && (
-          <RightAside
-            isOpen
-            onClose={() => {
-              setIsAliasFormOpen(false);
-            }}
-          >
+          <RightAside isOpen onClose={handleClose}>
             <RightAsideHeader label="Edit Alias" />
             <RightAsideContent>
               <Text>
@@ -46,7 +46,7 @@ export const FormatAccount = () => {
                 convenience.
               </Text>
               <Stack marginBlockStart="md" width="100%">
-                <AliasForm accountName={`${value}`} />
+                <AliasForm accountName={`${value}`} onDone={handleClose} />
               </Stack>
             </RightAsideContent>
           </RightAside>

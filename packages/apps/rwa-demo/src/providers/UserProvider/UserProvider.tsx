@@ -35,9 +35,13 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     return UserStore(organisation, user);
   }, [organisation, user]);
 
+  const handleSetUserData = (data: IUserData) => {
+    setUserData(data);
+  };
+
   useEffect(() => {
     if (!user?.uid || !organisation?.id) return;
-    const unlisten = userStore?.listenToUser(setUserData);
+    const unlisten = userStore?.listenToUser(handleSetUserData);
     return unlisten;
   }, [user?.uid, organisation?.id, userStore]);
 

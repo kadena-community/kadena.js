@@ -15,7 +15,6 @@ export const AGENTROLES = {
 export interface IAddAgentProps {
   accountName: string;
   agent: IWalletAccount;
-  alias: string;
   alreadyExists?: boolean;
   roles: string[];
 }

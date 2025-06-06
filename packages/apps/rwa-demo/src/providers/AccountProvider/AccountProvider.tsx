@@ -175,7 +175,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         localStorage.removeItem(getAccountCookieName());
       }
     }
-  }, [account?.address, userData?.accounts]);
+  }, [account?.address, userData?.accounts.length]);
 
   const initProps = useCallback(
     async (asset?: IAsset) => {

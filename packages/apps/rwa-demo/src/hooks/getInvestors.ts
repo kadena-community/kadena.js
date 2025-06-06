@@ -2,26 +2,15 @@ import {
   useEventsQuery,
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
-import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
-import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
-import { RWAStore } from '@/utils/store';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAsset } from './asset';
-import { useOrganisation } from './organisation';
-import { useUser } from './user';
 
 export const useGetInvestors = () => {
-  const { organisation } = useOrganisation();
   const { asset } = useAsset();
-  const { user } = useUser();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
-  const store = useMemo(() => {
-    if (!organisation) return;
-    return RWAStore(organisation);
-  }, [organisation]);
 
   const {
     loading: addedLoading,
@@ -68,7 +57,6 @@ export const useGetInvestors = () => {
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
           creationTime: edge.node.block.creationTime,
-          alias: '',
           result: true,
         } as const;
       }) ?? [];
@@ -82,25 +70,13 @@ export const useGetInvestors = () => {
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
           creationTime: edge.node.block.creationTime,
-          alias: '',
           result: true,
         } as const;
       }) ?? [];
 
-    const aliases = (await store?.getAccounts(user)) ?? [];
-
-    setInnerData(
-      setAliasesToAccounts(
-        [...filterRemovedRecords([...investorsAdded, ...investorsRemoved])],
-        aliases,
-      ),
-    );
-  };
-
-  const listenToAccounts = (aliases: IRegisterIdentityProps[]) => {
-    setInnerData((v) => {
-      return setAliasesToAccounts([...v], aliases);
-    });
+    setInnerData([
+      ...filterRemovedRecords([...investorsAdded, ...investorsRemoved]),
+    ]);
   };
 
   useEffect(() => {
@@ -139,32 +115,19 @@ export const useGetInvestors = () => {
         } as IRecord;
       }) ?? [];
 
-    const aliases = (await store?.getAccounts(user)) ?? [];
-
-    setInnerData((oldValues) =>
-      setAliasesToAccounts(
-        [
-          ...filterRemovedRecords([
-            ...oldValues,
-            ...investorsSubscriptionAdded,
-            ...investorsSubscriptionRemoved,
-          ]),
-        ],
-        aliases,
-      ),
-    );
+    setInnerData((oldValues) => [
+      ...filterRemovedRecords([
+        ...oldValues,
+        ...investorsSubscriptionAdded,
+        ...investorsSubscriptionRemoved,
+      ]),
+    ]);
   };
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     addSubscriptionData();
   }, [addedSubscriptionData?.events, removedSubscriptionData?.events]);
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const off = store?.listenToAccounts(listenToAccounts);
-    return off;
-  }, [store]);
 
   return { data: innerData, error, isLoading: removedLoading || addedLoading };
 };

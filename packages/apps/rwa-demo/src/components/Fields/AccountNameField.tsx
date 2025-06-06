@@ -58,10 +58,9 @@ export const AccountNameField: FC<IProps> = ({
   useEffect(() => {
     setDiscoveredAccounts(undefined);
     setNotFound(false);
-    console.log(12312123123, value, activeNetwork);
     if ((!value && !accountName) || !activeNetwork) return;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     const checkValue = value ? value : accountName ?? '';
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     debounced(checkValue, activeNetwork);
   }, [value, accountName, activeNetwork]);
 
