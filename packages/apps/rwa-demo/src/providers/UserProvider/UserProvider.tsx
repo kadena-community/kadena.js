@@ -35,9 +35,13 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     return UserStore(organisation, user);
   }, [organisation, user]);
 
+  const handleSetUserData = (data: IUserData) => {
+    setUserData(data);
+  };
+
   useEffect(() => {
     if (!user?.uid || !organisation?.id) return;
-    const unlisten = userStore?.listenToUser(setUserData);
+    const unlisten = userStore?.listenToUser(handleSetUserData);
     return unlisten;
   }, [user?.uid, organisation?.id, userStore]);
 
@@ -170,10 +174,10 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     [userData, organisation, userStore],
   );
 
-  const findAliasByAddress = (address: string = ''): string => {
+  const findAliasByAddress = (address?: string): string => {
     if (!address) return '';
     const aliases = userData?.aliases ?? {};
-    return aliases[address].alias ?? '';
+    return aliases[address]?.alias ?? '';
   };
 
   return (

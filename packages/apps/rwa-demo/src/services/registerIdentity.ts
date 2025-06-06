@@ -10,7 +10,6 @@ import { getKeysetService } from './getKeyset';
 export interface IRegisterIdentityProps {
   accountName: string;
   agent: IWalletAccount;
-  alias: string;
   alreadyExists?: boolean;
 }
 

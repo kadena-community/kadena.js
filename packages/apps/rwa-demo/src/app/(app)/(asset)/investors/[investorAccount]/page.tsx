@@ -4,7 +4,6 @@ import { actionsWrapperClass } from '@/app/(app)/styles.css';
 import { AssetAction } from '@/components/AssetAction/AssetAction';
 import { DistributionForm } from '@/components/DistributionForm/DistributionForm';
 import { FreezeInvestor } from '@/components/FreezeInvestor/FreezeInvestor';
-import { InvestorForm } from '@/components/InvestorForm/InvestorForm';
 import { InvestorInfo } from '@/components/InvestorInfo/InvestorInfo';
 import { PartiallyFreezeTokensForm } from '@/components/PartiallyFreezeTokensForm/PartiallyFreezeTokensForm';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
@@ -13,11 +12,10 @@ import { TransactionTypeSpinner } from '@/components/TransactionTypeSpinner/Tran
 import { TransferForm } from '@/components/TransferForm/TransferForm';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
-import { useAddInvestor } from '@/hooks/addInvestor';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestor } from '@/hooks/getInvestor';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
-import { MonoAdd, MonoEditNote } from '@kadena/kode-icons';
+import { MonoAdd } from '@kadena/kode-icons';
 import { Stack } from '@kadena/kode-ui';
 import {
   SectionCard,
@@ -40,11 +38,6 @@ const InvestorPage = () => {
   const { isAllowed: isDistributeTokensAllowed } = useDistributeTokens({
     investorAccount,
   });
-
-  const { isAllowed: isEditInvestorAllowed } = useAddInvestor({
-    investorAccount,
-  });
-
   const { data: investor } = useGetInvestor({ account: investorAccount });
 
   if (!investor) return null;
@@ -112,17 +105,6 @@ const InvestorPage = () => {
                 <FreezeInvestor
                   investorAccount={investorAccount}
                   trigger={<AssetAction label="" />}
-                />
-
-                <InvestorForm
-                  investor={investor}
-                  trigger={
-                    <AssetAction
-                      isDisabled={!isEditInvestorAllowed}
-                      icon={<MonoEditNote />}
-                      label="Edit Investor"
-                    />
-                  }
                 />
               </Stack>
             </SectionCardBody>

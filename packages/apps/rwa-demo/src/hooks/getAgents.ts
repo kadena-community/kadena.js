@@ -1,46 +1,17 @@
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import {
   useEventsQuery,
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
-import { coreEvents } from '@/services/graph/agent.graph';
 import { env } from '@/utils/env';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
-import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
-import { RWAStore } from '@/utils/store';
-import type * as Apollo from '@apollo/client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAsset } from './asset';
-import { useOrganisation } from './organisation';
-import { useUser } from './user';
-
-export type EventQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
-
-export const getEventsDocument = (
-  variables: EventQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
-
-export const getEventsSubscription = (
-  variables: EventQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
 
 export const useGetAgents = () => {
-  const { user } = useUser();
   const { asset } = useAsset();
   const [innerData, setInnerData] = useState<IRecord[]>([]);
-  const { organisation } = useOrganisation();
-  const store = useMemo(() => {
-    if (!organisation) return;
-    return RWAStore(organisation);
-  }, [organisation]);
 
   const {
     loading: addedLoading,
@@ -138,26 +109,16 @@ export const useGetAgents = () => {
       })
       .filter((v) => v !== undefined) ?? []) as IRecord[];
 
-    const aliases = (await store?.getAccounts(user)) ?? [];
-    const filteredData = setAliasesToAccounts(
-      [
-        ...filterRemovedRecords([
-          ...agentsAdded,
-          ...agentsRemoved,
-          ...addedSubscriptionData,
-          ...removedSubscriptionData,
-        ]),
-      ],
-      aliases,
-    );
+    const filteredData = [
+      ...filterRemovedRecords([
+        ...agentsAdded,
+        ...agentsRemoved,
+        ...addedSubscriptionData,
+        ...removedSubscriptionData,
+      ]),
+    ];
 
     setInnerData(filteredData ?? []);
-  };
-
-  const listenToAccounts = (aliases: IRecord[]) => {
-    setInnerData((v) => {
-      return setAliasesToAccounts([...v], aliases);
-    });
   };
 
   useEffect(() => {
@@ -171,12 +132,6 @@ export const useGetAgents = () => {
     subscriptionRemoveData,
     subscriptionAddData,
   ]);
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const off = store?.listenToAccounts(listenToAccounts);
-    return off;
-  }, [store]);
 
   return { data: innerData, error, isLoading: addedLoading || removedLoading };
 };
