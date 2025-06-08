@@ -77,7 +77,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
           setUser(user);
         })
         .catch((error) => {
-          console.log({ error });
           addNotification({
             intent: 'negative',
             label: 'Signin issue',
