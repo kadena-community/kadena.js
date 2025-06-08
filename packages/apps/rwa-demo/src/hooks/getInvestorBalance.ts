@@ -54,15 +54,14 @@ export const useGetInvestorBalance = ({
     subscriptionData.events?.map((event) => {
       const params = JSON.parse(event.parameters ?? '[]');
 
-      const txAmount = params.length >= 1 && params[0];
       const senderAccount = params.length >= 2 && params[1];
       const receiverAccount = params.length >= 3 && params[2];
 
       if (senderAccount && senderAccount.account === investorAccount) {
-        setData((prevValue) => prevValue - txAmount);
+        setData(() => senderAccount.current);
       }
       if (receiverAccount && receiverAccount.account === investorAccount) {
-        setData((prevValue) => prevValue + txAmount);
+        setData(() => receiverAccount.current);
       }
     });
   }, [subscriptionData]);
