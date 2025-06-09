@@ -1,41 +1,48 @@
-# Integrating Exchanges
+---
+title: Decentralized exchange (DEX) integration guide
+description: "Quick reference for common tasks that enable an exchange to interact with the Kadena blockchain."
+id: dex-integration
+sidebar_position: 5
+---
 
-This document provides a guide how Kadena blockchain can be integrated with
-exchanges.
+# Decentralized exchange (DEX) integration guide
 
-Typical features that exchanges may utilize include are listed below
+This guide provides a quick reference for how to perform the most common tasks when an exchange or a similar application needs to interact with the Kadena blockchain.
+The information is this guide is similar to topics covered elsewhere in the documentation.
+For example, you can see similar information in the following topics:
 
-- [Integrating Exchanges](#integrating-exchanges)
-  - [Low Level Client](#low-level-client)
-  - [Retrieve balance](#retrieve-balance)
-  - [Generate an account on the blockchain](#generate-an-account-on-the-blockchain)
-  - [Create, sign and send a transaction](#create-sign-and-send-a-transaction)
-  - [Check status of a transaction](#check-status-of-a-transaction)
-    - [Single check](#single-check)
-    - [Polling check](#polling-check)
-  - [Estimate Gas Usage](#estimate-gas-usage)
-  - [Listens for Events](#listens-for-events)
-    - [Chainweb Stream](#chainweb-stream)
-    - [Third-party Services](#third-party-services)
-    - [Custom implementation](#custom-implementation)
+- [Common task quick reference](/guides/howto-quick-ref)
+- [Create new accounts](/guides/accounts/howto-create-accounts)
+- [Check account balances](/guides/accounts/howto-get-balances)
+- [Sign and submit transactions](/guides/transactions/howto-sign-submit-tx)
 
-## Low Level Client
+However, this guide assumes that you are operating an exchange and need to interact with the Kadena blockchain programmatically using scripts and, potentially, automation.
 
-An exchange usually hosts their own node to interact with the Kadena blockchain.
+This guide also assumes the following:
 
-They might want to limit the sub-chains they work with, so a custom host
-generator function can be used to connect to specific chains.
+- You host one or more Chainweb nodes that you control and monitor.
+- You have one or more Chainweb nodes that connect to the Kadena test network or main production network.
+- You want to use the Kadena client libraries to write scripts that perform common tasks, like creating transactions and listening for events.
 
-Typically, an exchange want to wait for more confirmations than a regular user.
+This guide includes code examples written in TypeScript for all of the common exchange-related activity.
+If you aren't already hosting your own Chainweb node, see [Get started running a node](/guides/nodes/howto-node-operator) for an introduction to setting up a Chainweb node.
 
-See for more details on how to use the **low-level client**
-[docs.kadena.io](https://docs.kadena.io/reference/kadena-client#get-started-with-kadena-client)
+## Connect to specific chains
 
-```ts
+You can interact with the Kadena network through any of its separate chains.
+The chains—with chain identifiers 0 through 19—share a common view of state, but operate independently and in parallel.
+
+Because the chains operate independently and you must specify the chain identifier that you want to send transactions to, most exchanges limit the number of chains they work with.
+
+If you want to limit the chains you work with, you write a custom **host generator** function to connect to specific chains.
+The following example illustrates creating a Kadena **client** connection that only connects to chains 0, 1, and 2:
+
+```typescript
+// Import the createClient function from the library.
 import { createClient } from '@kadena/client';
 
-// An exchange may want to only work with a limited set of sub-chains.
-// Generally an Exchange will host their own node
+// Generally, exchanges host their own nodes and
+// only interact with a limited set of chains.
 const customHostGeneratorFunction = ({ networkId, chainId }) => {
   if (![0, 1, 2].includes(chainId)) {
     throw new Error('This Exchange only works with chains 0, 1, and 2');
@@ -45,43 +52,87 @@ const customHostGeneratorFunction = ({ networkId, chainId }) => {
   return `https://${hostname}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 };
 
-// This is a lower-level client that can be used to connect to the blockchain.
+// This call creates a client that can connect to the blockchain.
 const client = createClient(customHostGeneratorFunction, {
-  confirmationDepth: 10, // an Exchange may want to wait for more confirmations
+  // Exchanges typically wait for more blocks to be confirmed by consensus.
+  confirmationDepth: 10, 
 });
 ```
 
-## Retrieve balance
-
-```ts
-import { getBalance } from '@kadena/client-utils/coin';
-
-const balance = await getBalance(
-  'k:my-wallet-address',
-  'mainnet01',
-  '0', // chainId
-  customHostGeneratorFunction, // NOTE: you can pass both the hostname or a generator function
-);
-console.log(`Balance: ${balance}`);
-```
+If you haven't already downloaded and installed the `@kadena/client` libraries, see [Get started with Kadena client](/reference/kadena-client#get-started-with-kadena-client) for an introduction to creating and using client connections to interact with Chainweb nodes and the Kadena blockchain.
+You should also download and install the helper utilities defined in the `@kadena/client-utils` library.
+This library provides simplified functions for interacting with the Kadena coin contract and developing your own custom interfaces.
+For more information about the helper utilities, see the [client-utils](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils) repository and [@kadena/client-utils](https://www.npmjs.com/package/@kadena/client-utils) package registry.
 
 ## Generate an account on the blockchain
 
-It's higly recommended to use a **multisig account** to manage funds owned by
-the Exchange. This way the four-eye-principle can be applied. Built in
-predicates for multisig accounts are `keys-all`, `keys-2`, and `keys-any`.
-Generally `keys-2` is used for 2-out-of-n.
+For exchanges, the recommended best practice is to use a **multi-signature account** to manage the funds that are owned by the exchange. 
+With a multi-signature account, you can apply the **four-eyes** principle to require transactions to be approved by at least two people.
 
-Create keys using a wallet
+The four-eyes principle, sometimes referred to as the two-person rule, is a broadly-accepted security method that ensures certain activities—such as the transfer of assets—are approved by at least two authorized individuals. 
+Exchanges can apply this principle to prevent errors, fraud, or malicious behavior using the built-in
+predicates for multi-signature accounts:
 
-- [Chainweaver v3](https://wallet.kadena.io) (Built by Kadena)
-- [Kadena CLI Wallet](https://docs.kadena.io/reference/cli/cli-wallet)
-- [Other wallets](https://www.kadena.io/defi?topic=Wallets#:~:text=Wallets%20allow%20you%20to%20store%2C%20send%20and%20receive%20digital%20currencies%2C%20unlocking%20the%20speed%2C%20security%2C%20privacy%20and%20cost%20reduction%20benefits%20of%20blockchain%20for%20your%20business)
+- `keys-all` requires all authorized account keys to sign every transaction.
+- `keys-2` requires at least two of any number of authorized account keys to sign every transaction.
+- `keys-any` requires that any single authorized account key signs every transaction.
 
-To use mnemonics prorgammatically, you can use the
-[`@kadena/hd-wallet` library](https://www.npmjs.com/package/@kadena/hd-wallet)
+Typically, exchanges use the `keys-2` predicate for the account that manages funds owned by the exchange and two or more authorized account keys.
 
-```ts
+You can create a multi-signature account and associated keys by using any wallet that supports the Kadena network and native KDA currency.
+For example, you can create keys and accounts by using any of the following wallets:
+
+- [Chainweaver v3](https://wallet.kadena.io) (built by Kadena).
+  You can also import accounts and keys from previous versions of Chainweaver.
+
+- [Kadena CLI Wallet](https://docs.kadena.io/reference/cli/cli-wallet) (built by Kadena).
+  You can also use `@kadena/kadena-cli` to import accounts and keys from previous versions of Chainweaver, from other wallets, or from public and private key pairs you've generated using other tools.
+
+- [Other Kadena ecosystem wallets](https://www.kadena.io/defi/wallets?topic=Wallets).
+  
+  ![Kadena ecosystem wallets](/img/wallets-website.jpg)
+
+### Using Chainweaver
+
+1. Open [Chainweaver v3](https://wallet.kadena.io) and click **Add new profile** to create a wallet or **Recover your wallet** to import information from a backup file or recovery phrase.
+   
+   If creating a new wallet, type a **Profile name** and select a security method.
+   If recovering a wallet, provide the backup file or recovery phase to import keys and accounts.
+   
+   After creating or importing the wallet, the list of your assets on the Kadena **Mainnet** network is displayed by default.
+   You can change to the current network to Testnet or add another network by clicking **Settings**.
+
+   ![Chainweaver network selection](/img/chainweaver-your-assets.jpg)
+
+2. Click **+ Account**, then select **Create Multi-Sig**.
+3. Type an account alias name, select or enter the public keys for the account and a predicate, then click **Create account**.
+   
+   ![Select the keys and predicate for the account](/img/multi-sig-account.png)
+
+4. Verify the new account is listed with a `w:` prefix in the list of assets.
+   
+   ![Multi-signature account](/img/w-multi-sig.jpg)
+
+   Note that the account has no funds and isn't associated with an chain.
+   You must add funds on at least one specific chain in a network for the account to become active and available for use.
+   
+   If you are setting up this multi-signature account on the Testnet network, you can fund the account from Chainweaver using the Developer Tools Testnet faucet.
+
+5. Click the multi-signature account alias to view its details, then click **Fund on Testnet** to fund the account.
+   
+   After the transaction is mined into a block, you can click **Chain Distribution** to see the chain that received funds on the Testnet network.
+
+   If you're funding an account on the Mainnet network, you must acquire funds through another exchange.
+
+### Using mnemonic phrases
+
+To use mnemonic phrases programmatically, you can use the [`@kadena/hd-wallet`](https://www.npmjs.com/package/@kadena/hd-wallet) library.
+
+### Using client utilities
+
+The following example demonstrates how to create an Kadena account with two public keys and the `keys-2` predicate requiring both signatures to sign transaction on the Kadena main network and chain 0:
+
+```typescript
 import { createAccount } from '@kadena/client-utils/coin';
 
 const result = await createAccount(
@@ -114,14 +165,32 @@ const result = await createAccount(
   .execute();
 ```
 
-## Create, sign and send a transaction
+## Retrieve balances
+
+The following example illustrates using the getBalance function from the `@kadena/client-utils` library:
+
+```typescript
+import { getBalance } from '@kadena/client-utils/coin';
+
+const balance = await getBalance(
+  'k:my-wallet-address',
+  'mainnet01',
+  '0', // chainId
+  customHostGeneratorFunction, // NOTE: you can pass both the hostname or a generator function
+);
+console.log(`Balance: ${balance}`);
+```
+
+## Create, sign, and send a transaction
 
 To create a transaction manually, you can run the combined functions:
 
-- `Pact.builder` to create a transaction
-- `Pact.modules.<module>.<function>` to create a Pact expression
+- `Pact.builder` to create a transaction.
+- `Pact.modules.<module>.<function>` to create a Pact expression.
 
-```ts
+The following example demonstrates how create, sign, and send a `transfer` transaction manually using the `@kadena/client` library:
+
+```typescript
 async function transfer(
   sender: string,
   senderAPublicKey: string,
@@ -175,15 +244,16 @@ transfer(senderAccount, senderPublicKey, receiverAccount, {
 }).catch(console.error);
 ```
 
-## Check status of a transaction
+## Check the status of a transaction
 
-Checking the status of a transaction can be done in a few ways. You can
-incidentally check the status with `getStatus` or poll for the status until a
-certain state is reached
+There are two primary ways to check the status of a transaction programmatically:
+
+- You can check the status of a single transaction by passing the `requestKey` hash for the transaction when calling the `getStatus` function.
+- You can poll for the status of one or more transactions until the transaction request returned a result.
 
 ### Single check
 
-```ts
+```typescript
 const client = createClient(/* omitted options, see "Low Level Client"*/);
 // requestKey is the hash of the submitted transaction
 client.getStatus({ chainId, networkId, requestKey });
@@ -191,23 +261,23 @@ client.getStatus({ chainId, networkId, requestKey });
 
 ### Polling check
 
-```ts
+```typescript
 client.pollStatus(
   { networkId: 'mainnet01', chainId: '0', requestKey: 'tx-hash' },
   { confirmationDepth: 10 },
 );
 ```
 
-## Estimate Gas Usage
+## Estimate gas usage
 
-To get an estimation of the gas usage, a `local` call can be executed.
+To get an estimation of the gas usage, you can execute a `local` call.
 
-> NOTE: this isn't the real gas usage as state on the blockchain can influence
-> the branches which te code takes.
+Note that the gas estimation can be different from the actual gas by a transaction when the transaction is executed on the blockchain. 
+State changes that are recorded on the blockchain can influence the branches the code takes to keep included in a block.
 
-```ts
-// We do not need to send signatures to check gas estimation
-// This can however influence the direction of the code, thus gas usage
+```typescript
+// We do not need to send signatures to check gas estimation.
+// However, signatures can influence the direction of the code, thus gas usage.
 const response = await client.local(unsignedTx, {
   preflight: true,
   signatureVerification: false,
@@ -220,26 +290,15 @@ if (response.result.status === 'failure') {
 const gasEstimation = response.gas;
 ```
 
-## Listens for Events
+## Listens for events
 
-### Chainweb Stream
+There are several ways you can listen for events emitted by transactions that are executed on the blockchain.
+For example, you can listen for `coin.TRANSFER` events in the following ways:
 
-To listen to events from the blockchain, one can use the server package
-[Chainweb-stream](https://github.com/kadena-io/chainweb-stream) combined with
-[`@kadena/chainweb-stream-client`](https://www.npmjs.com/package/@kadena/chainweb-stream-client).
-This is a tool that can listen for certain events on the blockchain. In case of
-an Exchange, they likely want to listen to `coin.TRANSFER` events.
+- Use the [`chainweb-stream`](https://github.com/kadena-io/chainweb-stream) server package with the
+[`@kadena/chainweb-stream-client`](https://www.npmjs.com/package/@kadena/chainweb-stream-client) to listen for specific events.
 
-### Third-party Services
+- Use third-party indexing services such as [Kadindexer](https://www.kadindexer.io/) or [Tatum](https://www.tatum.io/) to listen for specific events.
 
-Alternatively a service can be used to get information from a third-party
-indexer. In no particular order:
-
-- [Kadindexer](https://www.kadindexer.io/)
-- [Tatum](https://www.tatum.io/)
-
-### Custom implementation
-
-You can also implement your own listener using the
-[`@kadena/chainwebjs`](https://www.npmjs.com/package/@kadena/chainwebjs)
+- Implement a custom listener using the [`@kadena/chainwebjs`](https://www.npmjs.com/package/@kadena/chainwebjs)
 package.
