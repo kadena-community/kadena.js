@@ -1,10 +1,9 @@
 import { useAsset } from '@/hooks/asset';
-import { MonoMoreVert } from '@kadena/kode-icons';
+import { MonoApps, MonoMoreVert } from '@kadena/kode-icons';
 import {
   Button,
   ButtonGroup,
   ContextMenu,
-  ContextMenuDivider,
   ContextMenuItem,
   Stack,
 } from '@kadena/kode-ui';
@@ -18,11 +17,14 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
 
   return (
     <Stack width="100%" className={assetsSwitchWrapperClass}>
-      <ButtonGroup>
+      <ButtonGroup fullWidth>
         {showLabel && (
-          <Button isCompact variant="outlined" style={{ flex: 1 }}>
-            {asset ? asset.contractName : 'Select an asset'}
-          </Button>
+          <>
+            <Button startVisual={<MonoApps />} isCompact variant="outlined" />
+            <Button isCompact variant="outlined" style={{ flex: 1 }}>
+              {asset ? asset.contractName : 'Select an asset'}
+            </Button>
+          </>
         )}
 
         <ContextMenu
@@ -30,7 +32,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
             <Button
               isCompact
               variant="outlined"
-              startVisual={<MonoMoreVert />}
+              startVisual={showLabel ? <MonoMoreVert /> : <MonoApps />}
             />
           }
         >
@@ -41,7 +43,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
               label={ass.contractName}
             />
           ))}
-          <ContextMenuDivider />
+
           {assets.length === 0 && (
             <ContextMenuItem onClick={() => {}} label="No assets yet" />
           )}

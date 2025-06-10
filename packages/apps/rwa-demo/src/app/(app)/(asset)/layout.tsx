@@ -14,7 +14,7 @@ const AgentLayout = ({
   const { asset } = useAsset();
 
   if (!isMounted) return null;
-  if (!account) return <WalletsList />;
+  if (!account) return <WalletsList init={true} />;
   if (!asset?.contractName) return <AssetsList />;
 
   return (

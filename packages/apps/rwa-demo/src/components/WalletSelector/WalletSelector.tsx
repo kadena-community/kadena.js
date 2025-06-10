@@ -1,7 +1,6 @@
 import type { WALLETTYPES } from '@/constants';
 import { useAccount } from '@/hooks/account';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
-import { MonoAddLink, MonoKeyboardArrowDown } from '@kadena/kode-icons';
 import {
   Button,
   ContextMenu,
@@ -12,13 +11,13 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import type { FC } from 'react';
+import type { FC, ReactElement } from 'react';
 import { useState } from 'react';
 import { ChainweaverWalletConnect } from '../ChainweaverWalletConnect/ChainweaverWalletConnect';
 import { EckoWalletConnect } from '../EckoWalletConnect/EckoWalletConnect';
 import { MagicConnect } from '../MagicConnect/MagicConnect';
 
-export const WalletSelector: FC = () => {
+export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
   const [accounts, setAccounts] = useState<IWalletAccount[] | undefined>();
   const [type, setType] = useState<keyof typeof WALLETTYPES | undefined>();
   const { addAccount } = useAccount();
@@ -68,18 +67,7 @@ export const WalletSelector: FC = () => {
         </Dialog>
       )}
 
-      <ContextMenu
-        trigger={
-          <Button
-            isCompact
-            variant="outlined"
-            startVisual={<MonoAddLink />}
-            endVisual={<MonoKeyboardArrowDown />}
-          >
-            Select a wallet
-          </Button>
-        }
-      >
+      <ContextMenu trigger={trigger}>
         <MagicConnect handleConnect={handleConnect} />
         <EckoWalletConnect handleConnect={handleConnect} />
         <ChainweaverWalletConnect handleConnect={handleConnect} />

@@ -105,10 +105,18 @@ export const Primary: Story = {
         <NotificationHeading>{heading}</NotificationHeading>
         {children}
         <NotificationFooter>
-          <NotificationButton intent="positive" icon={<MonoCheck />}>
+          <NotificationButton
+            intent="positive"
+            icon={<MonoCheck />}
+            onClick={() => alert('Accept clicked')}
+          >
             Accept
           </NotificationButton>
-          <NotificationButton intent="negative" icon={<MonoClose />}>
+          <NotificationButton
+            intent="negative"
+            icon={<MonoClose />}
+            onClick={() => alert('Accept clicked')}
+          >
             Reject
           </NotificationButton>
         </NotificationFooter>
