@@ -1,8 +1,20 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
 import { useAccount } from '@/hooks/account';
-import { MonoAccountBox, MonoLinkOff } from '@kadena/kode-icons';
-import { Button } from '@kadena/kode-ui';
+import {
+  MonoAccountBox,
+  MonoAdd,
+  MonoAddLink,
+  MonoKeyboardArrowDown,
+  MonoLinkOff,
+} from '@kadena/kode-icons';
+import {
+  Button,
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+} from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -13,7 +25,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 
-export const WalletsList: FC = () => {
+export const WalletsList: FC<{ init?: boolean }> = ({ init }) => {
   const { accounts, removeAccount, selectAccount } = useAccount();
   const handleRemove = (address: any) => {
     removeAccount(address);
@@ -28,9 +40,27 @@ export const WalletsList: FC = () => {
       <SectionCardContentBlock>
         <SectionCardHeader
           title="wallets"
+          description={
+            <>
+              {init
+                ? 'You have no wallet selected. Which wallet do you want to work with?'
+                : ''}
+            </>
+          }
           actions={
             <>
-              <WalletSelector />
+              <WalletSelector
+                trigger={
+                  <Button
+                    isCompact
+                    variant="outlined"
+                    startVisual={<MonoAddLink />}
+                    endVisual={<MonoKeyboardArrowDown />}
+                  >
+                    Select a wallet
+                  </Button>
+                }
+              />
             </>
           }
         />
@@ -90,6 +120,22 @@ export const WalletsList: FC = () => {
             ]}
             data={accounts ?? []}
           />
+          {accounts?.length === 0 && (
+            <Notification role="alert">
+              <NotificationHeading>No accounts linked yet</NotificationHeading>
+              You have no accounts linked to your wallet. Please select a wallet
+              to connect an account.
+              <NotificationFooter>
+                <WalletSelector
+                  trigger={
+                    <NotificationButton icon={<MonoAdd />}>
+                      Select an account
+                    </NotificationButton>
+                  }
+                />
+              </NotificationFooter>
+            </Notification>
+          )}
         </SectionCardBody>
       </SectionCardContentBlock>
     </SectionCard>

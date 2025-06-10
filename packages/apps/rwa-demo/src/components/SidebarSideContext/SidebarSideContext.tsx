@@ -1,4 +1,3 @@
-import { useAccount } from '@/hooks/account';
 import { useUser } from '@/hooks/user';
 import { shortenString } from '@/utils/shortenString';
 import {
@@ -10,8 +9,10 @@ import {
 } from '@kadena/kode-icons';
 import {
   Button,
+  ButtonGroup,
   ContextMenu,
   ContextMenuItem,
+  Stack,
   Themes,
   useTheme,
 } from '@kadena/kode-ui';
@@ -22,10 +23,10 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+import './style.css';
 
 export const SidebarSideContext: FC = () => {
   const { signOut, userToken, userData } = useUser();
-  const { account } = useAccount();
   const { theme, setTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const router = useRouter();
@@ -42,70 +43,67 @@ export const SidebarSideContext: FC = () => {
 
   return (
     <>
-      <SideBarItem visual={<MonoAccountBox />} label="" onPress={() => {}}>
-        account: {account?.alias}
-      </SideBarItem>
-
       <SideBarItemsInline>
         <SideBarItem
           label=""
           visual={<MonoAccountBox />}
           onPress={handleLogout}
         >
-          <ContextMenu
-            trigger={
-              <Button isCompact variant="outlined">
-                {isExpanded ? (
-                  shortenString(userData?.data?.displayName ?? '')
-                ) : (
-                  <MonoAccountBox />
-                )}
-              </Button>
-            }
-          >
-            {userToken?.claims.rootAdmin ? (
-              <ContextMenuItem
-                label="root admin"
-                onClick={() => {
-                  router.push('/admin/root');
-                }}
+          <Stack width="100%" data-isexpanded={isExpanded}>
+            <ButtonGroup fullWidth>
+              <ContextMenu
+                trigger={
+                  <Button
+                    isCompact
+                    variant={isExpanded ? 'outlined' : 'transparent'}
+                  >
+                    {isExpanded ? (
+                      shortenString(userData?.data?.displayName ?? '')
+                    ) : (
+                      <MonoAccountBox />
+                    )}
+                  </Button>
+                }
+              >
+                {userToken?.claims.rootAdmin ? (
+                  <ContextMenuItem
+                    label="root admin"
+                    onClick={() => {
+                      router.push('/admin/root');
+                    }}
+                  />
+                ) : null}
+                {userToken?.claims.orgAdmins ? (
+                  <ContextMenuItem
+                    label="org. admin"
+                    onClick={() => {
+                      router.push('/admin');
+                    }}
+                  />
+                ) : null}
+                <ContextMenuItem
+                  endVisual={<MonoSettings />}
+                  label="Settings"
+                  onClick={() => {
+                    router.push('/settings');
+                  }}
+                />
+                <ContextMenuItem
+                  endVisual={<MonoLogout />}
+                  label="Logout"
+                  onClick={handleLogout}
+                />
+              </ContextMenu>
+              <Button
+                isCompact
+                variant={isExpanded ? 'outlined' : 'transparent'}
+                onPress={() => toggleTheme()}
+                startVisual={
+                  theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
+                }
               />
-            ) : null}
-            {userToken?.claims.orgAdmins ? (
-              <ContextMenuItem
-                label="org. admin"
-                onClick={() => {
-                  router.push('/admin');
-                }}
-              />
-            ) : null}
-            <ContextMenuItem
-              endVisual={<MonoSettings />}
-              label="Settings"
-              onClick={() => {
-                router.push('/settings');
-              }}
-            />
-            <ContextMenuItem
-              endVisual={<MonoLogout />}
-              label="Logout"
-              onClick={handleLogout}
-            />
-          </ContextMenu>
-        </SideBarItem>
-        <SideBarItem
-          visual={theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />}
-          onPress={toggleTheme}
-          label="Change theme"
-        >
-          <Button
-            isCompact
-            variant="transparent"
-            onPress={() => toggleTheme()}
-            startVisual={
-              theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-            }
-          />
+            </ButtonGroup>
+          </Stack>
         </SideBarItem>
       </SideBarItemsInline>
     </>

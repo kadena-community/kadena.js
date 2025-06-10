@@ -1,4 +1,5 @@
 import { useAsset } from '@/hooks/asset';
+import { Notification, NotificationHeading } from '@kadena/kode-ui';
 import {
   CompactTable,
   SectionCard,
@@ -9,14 +10,20 @@ import {
 import type { FC } from 'react';
 import { FormatSelectAsset } from '../TableFormatters/FormatSelectAsset';
 
-export const AssetsList: FC = () => {
+export const AssetsList: FC<{ init?: boolean }> = ({ init }) => {
   const { assets } = useAsset();
   return (
     <SectionCard stack="vertical">
       <SectionCardContentBlock>
         <SectionCardHeader
           title="Assets"
-          description={<>List the organisation contracts</>}
+          description={
+            <>
+              {init
+                ? 'You have no asset selected. Which asset do you want to work with?'
+                : 'List the organisation contracts'}
+            </>
+          }
         />
         <SectionCardBody>
           <CompactTable
@@ -42,6 +49,14 @@ export const AssetsList: FC = () => {
             ]}
             data={assets}
           />
+
+          {assets?.length === 0 && (
+            <Notification role="alert">
+              <NotificationHeading>No assets found yet</NotificationHeading>
+              This organisation has no assets yet. The admins of this
+              organisation can add assets.
+            </Notification>
+          )}
         </SectionCardBody>
       </SectionCardContentBlock>
     </SectionCard>
