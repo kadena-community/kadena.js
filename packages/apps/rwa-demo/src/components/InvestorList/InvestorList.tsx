@@ -1,9 +1,22 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useAccount } from '@/hooks/account';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { loadingData } from '@/utils/loadingData';
-import { MonoAdd, MonoFindInPage } from '@kadena/kode-icons';
-import { Button, Stack } from '@kadena/kode-ui';
+import {
+  MonoAdd,
+  MonoFindInPage,
+  MonoMoreVert,
+  MonoPause,
+  MonoPlayArrow,
+} from '@kadena/kode-icons';
+import {
+  Button,
+  ButtonGroup,
+  ContextMenu,
+  ContextMenuItem,
+  Stack,
+} from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -14,7 +27,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BadgeFreezeForm } from '../BadgeFreezeForm/BadgeFreezeForm';
 import { InvestorBatchForm } from '../InvestorBatchForm/InvestorBatchForm';
@@ -27,9 +40,13 @@ import { FormatInvestorBalance } from '../TableFormatters/FormatInvestorBalance'
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 export const InvestorList: FC = () => {
+  const [batchFreezeType, setBatchFreezeType] = useState<
+    'freeze' | 'unfreeze'
+  >();
   const formRef = useRef<HTMLFormElement>(null);
   const { data, isLoading } = useGetInvestors();
   const router = useRouter();
+  const { account } = useAccount();
   const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
 
   const {
@@ -52,52 +69,81 @@ export const InvestorList: FC = () => {
   return (
     <>
       <form ref={formRef}>
+        <BadgeFreezeForm
+          type={batchFreezeType}
+          handleSubmit={handleSubmit}
+          handleReset={() => {
+            reset({ select: [] });
+            setBatchFreezeType(undefined);
+          }}
+          isDisabled={!isDirty}
+        />
+
         <SectionCard stack="vertical" data-testid="investorsCard">
           <SectionCardContentBlock>
             <SectionCardHeader
               title="Investors"
               actions={
                 <>
-                  <BadgeFreezeForm
-                    pause={true}
-                    handleSubmit={handleSubmit}
-                    handleReset={reset}
-                    isDisabled={!isDirty}
-                  />
-                  <BadgeFreezeForm
-                    pause={false}
-                    handleSubmit={handleSubmit}
-                    handleReset={reset}
-                    isDisabled={!isDirty}
-                  />
-
-                  <InvestorBatchForm
-                    trigger={
-                      <Button
-                        isCompact
-                        variant="outlined"
-                        isDisabled={!isAddInvestorAllowed}
-                        endVisual={<MonoAdd />}
-                      >
-                        Batch add investors
-                      </Button>
-                    }
-                  />
-                  <InvestorForm
-                    trigger={
-                      <Button
-                        isCompact
-                        variant="outlined"
-                        isDisabled={!isAddInvestorAllowed}
-                        endVisual={<MonoAdd />}
-                      >
-                        Add Investor
-                      </Button>
-                    }
-                  />
+                  <ButtonGroup>
+                    <InvestorForm
+                      trigger={
+                        <Button
+                          isCompact
+                          variant="outlined"
+                          isDisabled={!isAddInvestorAllowed}
+                          endVisual={<MonoAdd />}
+                        >
+                          Add Investor
+                        </Button>
+                      }
+                    />
+                    <ContextMenu
+                      trigger={
+                        <Button
+                          isCompact
+                          variant="outlined"
+                          startVisual={<MonoMoreVert />}
+                        />
+                      }
+                    >
+                      <InvestorBatchForm
+                        trigger={
+                          <ContextMenuItem
+                            label="Batch add investors"
+                            isDisabled={!isAddInvestorAllowed}
+                            endVisual={<MonoAdd />}
+                          />
+                        }
+                      />
+                      <ContextMenuItem
+                        label="Freeze"
+                        onClick={() => setBatchFreezeType('freeze')}
+                        endVisual={
+                          <TransactionTypeSpinner
+                            type={[TXTYPES.FREEZEINVESTOR]}
+                            account={account?.address}
+                            fallbackIcon={<MonoPlayArrow />}
+                          />
+                        }
+                      />
+                      <ContextMenuItem
+                        label="Unfreeze"
+                        onClick={() => setBatchFreezeType('unfreeze')}
+                        endVisual={
+                          <TransactionTypeSpinner
+                            type={[TXTYPES.FREEZEINVESTOR]}
+                            account={account?.address}
+                            fallbackIcon={<MonoPause />}
+                          />
+                        }
+                      />
+                    </ContextMenu>
+                  </ButtonGroup>
                 </>
               }
             />
+
             <SectionCardBody>
               <Stack data-testid="investorTableTxSpinner">
                 <TransactionTypeSpinner
