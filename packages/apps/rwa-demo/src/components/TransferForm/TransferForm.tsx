@@ -29,6 +29,7 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
+import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
 
 interface IProps {
   onClose?: () => void;
@@ -45,6 +46,7 @@ export const TransferForm: FC<IProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { asset } = useAsset();
+  const [investorToAccount, setInvestorToAccount] = useState<string>('');
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { account } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
@@ -102,6 +104,7 @@ export const TransferForm: FC<IProps> = ({
 
   const handleAccountChange = (cb: any) => async (value: any) => {
     setSelectedAccountIsFrozen(undefined);
+    setInvestorToAccount(value);
     if (!account || !asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     const res = await isFrozen({ investorAccount: value, account }, asset);
@@ -129,52 +132,60 @@ export const TransferForm: FC<IProps> = ({
                   </Notification>
                 </Stack>
               )}
-              <input type="hidden" {...register('isForced', {})} />
-              <TextField
-                label="Amount"
-                type="number"
-                {...register('amount', {
-                  required: {
-                    value: true,
-                    message: 'This field is required',
-                  },
-                  min: {
-                    value: 1,
-                    message: 'The value should be at least 1',
-                  },
-                  max: {
-                    value: maxAmount,
-                    message:
-                      'The value can not be more than your balance ( - frozen tokens)',
-                  },
-                })}
-                variant={errors.amount?.message ? 'negative' : 'default'}
-                description={`max amount tokens: ${maxAmount}`}
-                errorMessage={errors.amount?.message}
-              />
+              <Stack flexDirection="column" gap="md">
+                <input type="hidden" {...register('isForced', {})} />
+                <TextField
+                  label="Amount"
+                  type="number"
+                  {...register('amount', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    min: {
+                      value: 1,
+                      message: 'The value should be at least 1',
+                    },
+                    max: {
+                      value: maxAmount,
+                      message:
+                        'The value can not be more than your balance ( - frozen tokens)',
+                    },
+                  })}
+                  variant={errors.amount?.message ? 'negative' : 'default'}
+                  description={`max amount tokens: ${maxAmount}`}
+                  errorMessage={errors.amount?.message}
+                />
 
-              <Controller
-                name="investorToAccount"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <Select
-                    label="Select an option"
-                    items={filteredInvestors}
-                    selectedKey={field.value}
-                    variant={
-                      errors.investorToAccount?.message ? 'negative' : 'default'
-                    }
-                    onSelectionChange={handleAccountChange(field.onChange)}
-                    errorMessage={errors.investorToAccount?.message}
-                  >
-                    {(item) => (
-                      <SelectItem key={item.accountName}>
-                        {maskValue(item.accountName)}
-                      </SelectItem>
-                    )}
-                  </Select>
-                )}
+                <Controller
+                  name="investorToAccount"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      label="Select an investor"
+                      items={filteredInvestors}
+                      selectedKey={field.value}
+                      variant={
+                        errors.investorToAccount?.message
+                          ? 'negative'
+                          : 'default'
+                      }
+                      onSelectionChange={handleAccountChange(field.onChange)}
+                      errorMessage={errors.investorToAccount?.message}
+                    >
+                      {(item) => (
+                        <SelectItem key={item.accountName}>
+                          {maskValue(item.accountName)}
+                        </SelectItem>
+                      )}
+                    </Select>
+                  )}
+                />
+              </Stack>
+              <DiscoveredAccount
+                accountAddress={investorToAccount}
+                asset={asset}
               />
               {selectedAccountIsFrozen && (
                 <Notification role="status">

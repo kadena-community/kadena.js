@@ -25,7 +25,7 @@ export const InvestorBalance: FC<IProps> = ({
   const cleanedBalance = balance < 0 ? 0 : balance;
   if (short) {
     return (
-      <Stack alignItems="center" gap="xs" data-testid="balance-info">
+      <Stack alignItems="center" data-testid="balance-info">
         <TransactionTypeSpinner
           type={[
             TXTYPES.DISTRIBUTETOKENS,
@@ -36,7 +36,8 @@ export const InvestorBalance: FC<IProps> = ({
           account={investorAccount}
         />
         <MaxInvestorBalanceCheck balance={cleanedBalance} />
-        {cleanedBalance} (<MonoFilterTiltShift /> {frozenData})
+        {cleanedBalance} (<MonoFilterTiltShift />
+        &nbsp;{frozenData})
       </Stack>
     );
   }
