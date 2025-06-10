@@ -34,7 +34,7 @@ The chains—with chain identifiers 0 through 19—share a common view of state,
 
 Because the chains operate independently and you must specify the chain identifier that you want to send transactions to, most exchanges limit the number of chains they work with.
 
-If you want to limit the chains you work with, you write a custom **host generator** function to connect to specific chains.
+If you want to limit the chains you work with, you can write a custom **host generator** function to connect to specific chains.
 The following example illustrates creating a Kadena **client** connection that only connects to chains 0, 1, and 2:
 
 ```typescript
@@ -45,7 +45,7 @@ import { createClient } from '@kadena/client';
 // only interact with a limited set of chains.
 const customHostGeneratorFunction = ({ networkId, chainId }) => {
   if (![0, 1, 2].includes(chainId)) {
-    throw new Error('This Exchange only works with chains 0, 1, and 2');
+    throw new Error('Exchange only conducts business on chains 0, 1, and 2.');
   }
 
   const hostname = 'kadena-node.my-exchange.tld';
@@ -61,7 +61,7 @@ const client = createClient(customHostGeneratorFunction, {
 
 If you haven't already downloaded and installed the `@kadena/client` libraries, see [Get started with Kadena client](/reference/kadena-client#get-started-with-kadena-client) for an introduction to creating and using client connections to interact with Chainweb nodes and the Kadena blockchain.
 You should also download and install the helper utilities defined in the `@kadena/client-utils` library.
-This library provides simplified functions for interacting with the Kadena coin contract and developing your own custom interfaces.
+This library provides simplified functions for interacting with the Kadena `coin` contract and developing your own custom interfaces.
 For more information about the helper utilities, see the [client-utils](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils) repository and [@kadena/client-utils](https://www.npmjs.com/package/@kadena/client-utils) package registry.
 
 ## Generate an account on the blockchain
@@ -89,9 +89,10 @@ For example, you can create keys and accounts by using any of the following wall
   You can also use `@kadena/kadena-cli` to import accounts and keys from previous versions of Chainweaver, from other wallets, or from public and private key pairs you've generated using other tools.
 
 - [Other Kadena ecosystem wallets](https://www.kadena.io/defi/wallets?topic=Wallets).
+  You can also create an account using any of the wallets developed by third parties that support the Kadena network.
   
   ![Kadena ecosystem wallets](/img/wallets-website.jpg)
-
+  
 ### Using Chainweaver
 
 1. Open [Chainweaver v3](https://wallet.kadena.io) and click **Add new profile** to create a wallet or **Recover your wallet** to import information from a backup file or recovery phrase.
@@ -100,8 +101,8 @@ For example, you can create keys and accounts by using any of the following wall
    If recovering a wallet, provide the backup file or recovery phase to import keys and accounts.
    
    After creating or importing the wallet, the list of your assets on the Kadena **Mainnet** network is displayed by default.
-   You can change to the current network to Testnet or add another network by clicking **Settings**.
-
+   You can change the current network to **Testnet** or add another network by clicking **Settings**.
+   
    ![Chainweaver network selection](/img/chainweaver-your-assets.jpg)
 
 2. Click **+ Account**, then select **Create Multi-Sig**.
@@ -113,14 +114,16 @@ For example, you can create keys and accounts by using any of the following wall
    
    ![Multi-signature account](/img/w-multi-sig.jpg)
 
-   Note that the account has no funds and isn't associated with an chain.
-   You must add funds on at least one specific chain in a network for the account to become active and available for use.
+   Note that the account has no funds.
+   At this point, the account isn't associated with any of the chains in the network.
+   You must add funds on at least one specific chain in the network  you've selected for the account to become active and available for use.
    
-   If you are setting up this multi-signature account on the Testnet network, you can fund the account from Chainweaver using the Developer Tools Testnet faucet.
+   If you are setting up this multi-signature account on the Testnet network, you can fund the account directly from Chainweaver or by using the [Developer Tools](tools.kadena.io) Testnet faucet.
 
 5. Click the multi-signature account alias to view its details, then click **Fund on Testnet** to fund the account.
    
    After the transaction is mined into a block, you can click **Chain Distribution** to see the chain that received funds on the Testnet network.
+   If needed, you can transfer funds to your account on another chain.
 
    If you're funding an account on the Mainnet network, you must acquire funds through another exchange.
 
@@ -130,7 +133,7 @@ To use mnemonic phrases programmatically, you can use the [`@kadena/hd-wallet`](
 
 ### Using client utilities
 
-The following example demonstrates how to create an Kadena account with two public keys and the `keys-2` predicate requiring both signatures to sign transaction on the Kadena main network and chain 0:
+The following example demonstrates how to create a Kadena account with two public keys and the `keys-2` predicate requiring both signatures to sign transaction on the Kadena main network and chain 0:
 
 ```typescript
 import { createAccount } from '@kadena/client-utils/coin';
@@ -167,7 +170,7 @@ const result = await createAccount(
 
 ## Retrieve balances
 
-The following example illustrates using the getBalance function from the `@kadena/client-utils` library:
+The following example illustrates using the `getBalance` function from the `@kadena/client-utils` library:
 
 ```typescript
 import { getBalance } from '@kadena/client-utils/coin';
@@ -176,16 +179,16 @@ const balance = await getBalance(
   'k:my-wallet-address',
   'mainnet01',
   '0', // chainId
-  customHostGeneratorFunction, // NOTE: you can pass both the hostname or a generator function
+  customHostGeneratorFunction, // You can pass the hostname or a generator function.
 );
 console.log(`Balance: ${balance}`);
 ```
 
 ## Create, sign, and send a transaction
 
-To create a transaction manually, you can run the combined functions:
+To create a transaction manually, you can combine the `Pact.builder` and `Pact.modules` functions:
 
-- `Pact.builder` to create a transaction.
+- `Pact.builder` to create an unsigned transaction request to execute in the transaction request.
 - `Pact.modules.<module>.<function>` to create a Pact expression.
 
 The following example demonstrates how create, sign, and send a `transfer` transaction manually using the `@kadena/client` library:
