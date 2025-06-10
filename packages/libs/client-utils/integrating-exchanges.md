@@ -301,7 +301,7 @@ For example, you can listen for `coin.TRANSFER` events in the following ways:
 - Use the [`chainweb-stream`](https://github.com/kadena-io/chainweb-stream) server package with the
 [`@kadena/chainweb-stream-client`](https://www.npmjs.com/package/@kadena/chainweb-stream-client) to listen for specific events.
 
-- Use third-party indexing services such as [Kadindexer](https://www.kadindexer.io/) or [Tatum](https://www.tatum.io/) to listen for specific events.
+- Use third-party indexing services such as [Kadindexer](https://www.kadindexer.io/) or [Tatum](https://www.tatum.io/block/kadena) to listen for specific events.
 
 - Implement a custom listener using the [`@kadena/chainwebjs`](https://www.npmjs.com/package/@kadena/chainwebjs)
 package.
