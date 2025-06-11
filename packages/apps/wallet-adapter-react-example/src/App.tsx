@@ -495,7 +495,7 @@ const App = () => {
                   }
                   createTransferCmd({
                     accountFrom: activeAccount.accountName,
-                    pubkey: activeAccount.guard.keys[0],
+                    pubkey: activeAccount.keyset.keys[0],
                     accountTo: accountTo,
                     amount: 0.0001,
                     client: client,
@@ -522,7 +522,7 @@ const App = () => {
                   }
                   createTransferTx({
                     accountFrom: activeAccount.accountName,
-                    pubkey: activeAccount.guard.keys[0],
+                    pubkey: activeAccount.keyset.keys[0],
                     accountTo: accountTo,
                     amount: 0.0001,
                     client: client,
