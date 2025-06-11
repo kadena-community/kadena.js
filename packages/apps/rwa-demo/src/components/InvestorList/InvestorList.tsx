@@ -49,6 +49,7 @@ export const InvestorList: FC = () => {
   const { account } = useAccount();
   const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
 
+  console.log({ data });
   const {
     reset,
     register,

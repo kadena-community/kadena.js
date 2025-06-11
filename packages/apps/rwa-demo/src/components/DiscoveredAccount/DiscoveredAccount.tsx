@@ -1,29 +1,63 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
-import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
+import { useNetwork } from '@/hooks/networks';
 import { useUser } from '@/hooks/user';
+import type { IAddAgentProps } from '@/services/addAgent';
 import type { IRetrievedAccount } from '@/services/discoverAccount';
+import { discoverAccount } from '@/services/discoverAccount';
 import { MonoKey } from '@kadena/kode-icons';
-import { Badge, maskValue, Stack, Text } from '@kadena/kode-ui';
+import { Badge, maskValue, Notification, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import type { UseFormSetError } from 'react-hook-form';
+import { InvestorBalance } from '../InvestorBalance/InvestorBalance';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 import { wrapperClass } from './style.css';
 
 interface IProps {
-  account: IRetrievedAccount;
+  accountAddress: string;
   asset?: IAsset;
+  setError?: UseFormSetError<IAddAgentProps>;
 }
 
 export const DiscoveredAccount: FC<IProps> = ({
-  account,
-
+  accountAddress,
+  setError,
   asset,
 }) => {
-  const pred = (account.guard as any)?.pred;
+  const [account, setAccount] = useState<IRetrievedAccount | null>(null);
+  const { activeNetwork } = useNetwork();
+  const [isPending, setIsPending] = useState(false);
+  const [notFound, setNotFound] = useState(false);
   const { findAliasByAddress } = useUser();
-  const displayName = findAliasByAddress(account?.address);
-  const { data: balance, isPending } = useGetInvestorBalance({
-    investorAccount: account.address,
-  });
+
+  useEffect(() => {
+    const loadAccount = async () => {
+      if (!accountAddress?.startsWith('k:') || accountAddress?.length !== 66)
+        return;
+      setIsPending(true);
+
+      const [res] = await discoverAccount(accountAddress, activeNetwork);
+
+      setIsPending(false);
+
+      if (!res) {
+        setNotFound(true);
+        if (setError) {
+          setError('accountName', {
+            type: 'manual',
+            message: 'The account you entered does not exist on the network.',
+          });
+        }
+      }
+      setAccount(res);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    loadAccount();
+  }, [accountAddress, activeNetwork.networkId]);
+
+  const pred = (account?.guard as any)?.pred;
+  const displayName = findAliasByAddress(accountAddress);
 
   const renderGuard = (guard: any) => {
     return (
@@ -32,6 +66,22 @@ export const DiscoveredAccount: FC<IProps> = ({
       </Text>
     );
   };
+
+  if (isPending)
+    return (
+      <Stack gap={'sm'} alignItems="center" width="100%">
+        <TransactionPendingIcon />
+      </Stack>
+    );
+
+  if (notFound && !!accountAddress?.length)
+    return (
+      <Notification intent="negative" role="status" type="inlineStacked">
+        The account you entered does not exist on the network.
+      </Notification>
+    );
+
+  if (!account || !activeNetwork) return null;
 
   return (
     <Stack
@@ -72,13 +122,9 @@ export const DiscoveredAccount: FC<IProps> = ({
         >
           {pred && renderGuard(account.guard)}
 
-          {isPending ? (
-            <TransactionPendingIcon />
-          ) : (
-            <Text variant="code" size="smallest">
-              {balance} tkn
-            </Text>
-          )}
+          <Text variant="code" size="smallest">
+            <InvestorBalance investorAccount={account.address} short />
+          </Text>
         </Stack>
       </>
     </Stack>
