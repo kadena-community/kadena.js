@@ -32,7 +32,7 @@ export const DiscoveredAccount: FC<IProps> = ({
 
   useEffect(() => {
     const loadAccount = async () => {
-      if (!accountAddress.startsWith('k:') || accountAddress.length !== 66)
+      if (!accountAddress?.startsWith('k:') || accountAddress?.length !== 66)
         return;
       setIsPending(true);
 

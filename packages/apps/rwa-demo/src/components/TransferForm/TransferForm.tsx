@@ -5,17 +5,20 @@ import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
+import { useUser } from '@/hooks/user';
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
 import { isFrozen } from '@/services/isFrozen';
 import type { ITransferTokensProps } from '@/services/transferTokens';
+import { MonoWallet } from '@kadena/kode-icons';
 import {
   Button,
+  Combobox,
+  ComboboxItem,
   maskValue,
   Notification,
   NotificationHeading,
-  Select,
-  SelectItem,
   Stack,
+  Text,
   TextField,
 } from '@kadena/kode-ui';
 import {
@@ -44,8 +47,10 @@ export const TransferForm: FC<IProps> = ({
   isForced = false,
   investorAccount,
 }) => {
+  const [searchValue, setSearchValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
   const { asset } = useAsset();
+  const { findAliasByAddress } = useUser();
   const [investorToAccount, setInvestorToAccount] = useState<string>('');
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { account } = useAccount();
@@ -98,12 +103,18 @@ export const TransferForm: FC<IProps> = ({
     handleOnClose();
   };
 
-  const filteredInvestors = investors.filter(
-    (i) => i.accountName !== investorAccount,
-  );
+  const filteredInvestors = investors
+    .filter((i) => i.accountName !== investorAccount)
+    .map((account) => {
+      return {
+        accountName: account.accountName,
+        alias: findAliasByAddress(account.accountName),
+      };
+    });
 
   const handleAccountChange = (cb: any) => async (value: any) => {
     setSelectedAccountIsFrozen(undefined);
+
     setInvestorToAccount(value);
     if (!account || !asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -156,30 +167,55 @@ export const TransferForm: FC<IProps> = ({
                   description={`max amount tokens: ${maxAmount}`}
                   errorMessage={errors.amount?.message}
                 />
-
+                {searchValue}
                 <Controller
                   name="investorToAccount"
                   control={control}
                   rules={{ required: true }}
                   render={({ field }) => (
-                    <Select
-                      label="Select an investor"
-                      items={filteredInvestors}
-                      selectedKey={field.value}
+                    <Combobox
+                      startVisual={<MonoWallet />}
+                      autoFocus
+                      placeholder={
+                        investorToAccount
+                          ? investorToAccount
+                          : 'Select an investor'
+                      }
+                      onInputChange={(e) => {
+                        setSearchValue(e);
+                      }}
                       variant={
                         errors.investorToAccount?.message
                           ? 'negative'
                           : 'default'
                       }
+                      inputValue={searchValue}
                       onSelectionChange={handleAccountChange(field.onChange)}
                       errorMessage={errors.investorToAccount?.message}
+                      items={filteredInvestors.filter(
+                        (item) =>
+                          item.alias.includes(searchValue) ||
+                          item.accountName.includes(searchValue),
+                      )}
                     >
                       {(item) => (
-                        <SelectItem key={item.accountName}>
-                          {maskValue(item.accountName)}
-                        </SelectItem>
+                        <ComboboxItem key={item.accountName}>
+                          <Stack
+                            paddingBlock="sm"
+                            width="100%"
+                            flexDirection="column"
+                            justifyContent="flex-start"
+                            alignItems="flex-start"
+                          >
+                            <Text variant="code">
+                              {maskValue(`${item.accountName}`)}
+                            </Text>
+
+                            <Text size="smallest">{item.alias}</Text>
+                          </Stack>
+                        </ComboboxItem>
                       )}
-                    </Select>
+                    </Combobox>
                   )}
                 />
               </Stack>
