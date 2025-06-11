@@ -118,7 +118,7 @@ For example, you can create keys and accounts by using any of the following wall
    At this point, the account isn't associated with any of the chains in the network.
    You must add funds on at least one specific chain in the network  you've selected for the account to become active and available for use.
    
-   If you are setting up this multi-signature account on the Testnet network, you can fund the account directly from Chainweaver or by using the [Developer Tools](tools.kadena.io) Testnet faucet.
+   If you are setting up this multi-signature account on the Testnet network, you can fund the account directly from Chainweaver or by using the [Developer Tools](https://tools.kadena.io/) Testnet faucet.
 
 5. Click the multi-signature account alias to view its details, then click **Fund on Testnet** to fund the account.
    
