@@ -3,6 +3,7 @@ import type {
   IComplianceProps,
   IComplianceRuleTypes,
 } from '@/services/getComplianceRules';
+import type { IRecord } from '@/utils/filterRemovedRecords';
 
 import { createContext } from 'react';
 
@@ -34,6 +35,9 @@ export interface IAssetContext {
     account: IWalletAccount,
   ) => Promise<IAsset | undefined>;
   maxCompliance: (rule: IComplianceRuleTypes) => number;
+  investors: IRecord[];
+  initFetchInvestors: () => void;
+  investorsIsLoading: boolean;
 }
 
 export const AssetContext = createContext<IAssetContext | null>(null);

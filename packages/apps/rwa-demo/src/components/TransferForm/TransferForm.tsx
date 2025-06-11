@@ -3,7 +3,6 @@ import { useAsset } from '@/hooks/asset';
 import { useForcedTransferTokens } from '@/hooks/forcedTransferTokens';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
-import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
 import { useUser } from '@/hooks/user';
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
@@ -29,7 +28,7 @@ import {
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
-import { cloneElement, useState } from 'react';
+import { cloneElement, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
@@ -49,13 +48,12 @@ export const TransferForm: FC<IProps> = ({
 }) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
-  const { asset } = useAsset();
+  const { asset, investors, initFetchInvestors } = useAsset();
   const { findAliasByAddress } = useUser();
   const [investorToAccount, setInvestorToAccount] = useState<string>('');
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { account } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
-  const { data: investors } = useGetInvestors();
   const { submit: forcedSubmit, isAllowed: isForcedAllowed } =
     useForcedTransferTokens();
   const { submit, isAllowed } = useTransferTokens();
@@ -65,6 +63,10 @@ export const TransferForm: FC<IProps> = ({
   const [selectedAccountIsFrozen, setSelectedAccountIsFrozen] = useState<
     boolean | undefined
   >(undefined);
+
+  useEffect(() => {
+    initFetchInvestors();
+  }, []);
 
   const {
     register,
@@ -167,7 +169,6 @@ export const TransferForm: FC<IProps> = ({
                   description={`max amount tokens: ${maxAmount}`}
                   errorMessage={errors.amount?.message}
                 />
-                {searchValue}
                 <Controller
                   name="investorToAccount"
                   control={control}

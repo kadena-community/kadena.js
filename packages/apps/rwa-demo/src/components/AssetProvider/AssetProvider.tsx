@@ -10,6 +10,7 @@ import { AssetContext } from '@/contexts/AssetContext/AssetContext';
 import { useAccount } from '@/hooks/account';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
+import { useGetInvestors } from '@/hooks/getInvestors';
 import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
@@ -48,6 +49,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { paused } = usePaused(asset);
   const { data: supply } = useSupply(asset);
   const { data: investorCount } = useGetInvestorCount(asset);
+  const {
+    data: investors,
+    initFetchInvestors,
+    isLoading: investorsIsLoading,
+  } = useGetInvestors(asset);
   const { data: complianceRules } = useGetComplianceRules({ asset });
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
@@ -295,6 +301,9 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         removeAsset,
         paused,
         maxCompliance,
+        investors,
+        initFetchInvestors,
+        investorsIsLoading,
       }}
     >
       {children}
