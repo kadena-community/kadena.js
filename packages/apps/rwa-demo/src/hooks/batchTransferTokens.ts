@@ -90,7 +90,6 @@ export const useBatchTransferTokens = () => {
   };
 
   useEffect(() => {
-    console.log(11, initFetchInvestors);
     if (!isMounted) return;
     initFetchInvestors();
   }, [isMounted, initFetchInvestors]);
@@ -100,6 +99,5 @@ export const useBatchTransferTokens = () => {
     setIsAllowed(!frozen && !paused && isInvestor);
   }, [paused, isMounted, isInvestor, frozen, asset]);
 
-  console.log({ isAllowed, frozen, paused, isInvestor });
   return { submit, isAllowed };
 };
