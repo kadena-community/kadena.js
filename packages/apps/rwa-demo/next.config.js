@@ -1,5 +1,6 @@
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
+const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -17,4 +18,19 @@ const nextConfig = {
   },
 };
 
-module.exports = withVanillaExtract(nextConfig);
+const configWithSentry = withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  silent: !process.env.CI,
+  disableLogger: true,
+  reactComponentAnnotation: {
+    enabled: true,
+  },
+  automaticVercelMonitors: true,
+  tunnelRoute: '/monitoring',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  widenClientFileUpload: true,
+});
+
+module.exports = withVanillaExtract(configWithSentry);

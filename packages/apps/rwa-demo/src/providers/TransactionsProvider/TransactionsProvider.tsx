@@ -72,16 +72,16 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
                 nextData?.data.transaction?.result.badResult,
               ),
             });
+
+            const message = nextData?.errors
+              ? JSON.stringify(nextData?.errors)
+              : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
+                  .message;
+
             addNotification({
               intent: 'negative',
-              label: 'there was an error',
-              message: interpretErrorMessage(
-                nextData?.errors
-                  ? JSON.stringify(nextData?.errors)
-                  : JSON.parse(
-                      nextData?.data.transaction?.result.badResult ?? '{}',
-                    ).message,
-              ),
+              label: message,
+              message: interpretErrorMessage(message),
               url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
             });
             return;
