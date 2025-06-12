@@ -1,11 +1,11 @@
 ---
-title: Decentralized exchange (DEX) integration guide
+title: Exchange integration guide
 description: "Quick reference for common tasks that enable an exchange to interact with the Kadena blockchain."
 id: dex-integration
 sidebar_position: 5
 ---
 
-# Decentralized exchange (DEX) integration guide
+# Exchange integration guide
 
 This guide provides a quick reference for how to perform the most common tasks when an exchange or a similar application needs to interact with the Kadena blockchain.
 The information is this guide is similar to topics covered elsewhere in the documentation.
