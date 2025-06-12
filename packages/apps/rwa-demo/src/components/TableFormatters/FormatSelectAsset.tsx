@@ -5,7 +5,7 @@ import {
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { useAsset } from '@/hooks/asset';
 import { getAsset } from '@/utils/getAsset';
-import { MonoFindInPage } from '@kadena/kode-icons';
+import { MonoFindInPage, MonoWarning } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import type { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
 import { useNotifications } from '@kadena/kode-ui/patterns';
@@ -16,12 +16,13 @@ export interface IActionProps {}
 
 export const FormatSelectAsset = () => {
   const Component = ({ value }: ICompactTableFormatterProps) => {
-    const [isPending, setIsPending] = useState<boolean>(true);
+    const [hasError, setHasError] = useState(false);
+
     const { setAsset } = useAsset();
     const { addNotification } = useNotifications();
     const asset = value as unknown as IAsset | undefined;
 
-    const { data } = useEventsQuery({
+    const { data, loading } = useEventsQuery({
       variables: {
         qualifiedName: `${getAsset(asset)}.UPDATED-TOKEN-INFORMATION`,
       },
@@ -35,10 +36,11 @@ export const FormatSelectAsset = () => {
     });
 
     useEffect(() => {
-      if (data?.events.edges.length || subscriptionData?.events?.length) {
-        setIsPending(false);
+      if (loading) return;
+      if (data?.events.edges.length === 0) {
+        setHasError(true);
       }
-    }, [data?.events.edges, subscriptionData?.events]);
+    }, [data?.events.edges, subscriptionData?.events, loading]);
 
     const handleLink = async () => {
       if (!asset) {
@@ -52,7 +54,7 @@ export const FormatSelectAsset = () => {
       window.location.href = '/';
     };
 
-    if (isPending) {
+    if (loading) {
       return (
         <Button
           isDisabled
@@ -61,6 +63,14 @@ export const FormatSelectAsset = () => {
           title="creation transaction pending"
         >
           <TransactionPendingIcon />
+        </Button>
+      );
+    }
+
+    if (hasError) {
+      return (
+        <Button isDisabled isCompact variant="outlined" title="asset not found">
+          <MonoWarning />
         </Button>
       );
     }
