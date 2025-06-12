@@ -2,15 +2,15 @@ import {
   useEventsQuery,
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
 import { useEffect, useState } from 'react';
-import { useAsset } from './asset';
 
-export const useGetInvestors = () => {
-  const { asset } = useAsset();
+export const useGetInvestors = (asset?: IAsset) => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
+  const [shouldFetch, setShouldFetch] = useState(false);
 
   const {
     loading: addedLoading,
@@ -20,6 +20,7 @@ export const useGetInvestors = () => {
     variables: {
       qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
+    skip: !shouldFetch,
     fetchPolicy: 'no-cache',
   });
 
@@ -27,6 +28,7 @@ export const useGetInvestors = () => {
     variables: {
       qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
+    skip: !shouldFetch,
     fetchPolicy: 'no-cache',
   });
 
@@ -34,12 +36,14 @@ export const useGetInvestors = () => {
     variables: {
       qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
+    skip: !shouldFetch,
   });
 
   const { data: removedSubscriptionData } = useEventSubscriptionSubscription({
     variables: {
       qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
+    skip: !shouldFetch,
   });
 
   const initInnerData = async () => {
@@ -129,5 +133,19 @@ export const useGetInvestors = () => {
     addSubscriptionData();
   }, [addedSubscriptionData?.events, removedSubscriptionData?.events]);
 
-  return { data: innerData, error, isLoading: removedLoading || addedLoading };
+  useEffect(() => {
+    setInnerData([]);
+    setShouldFetch(false);
+  }, [asset?.uuid]);
+
+  const initFetchInvestors = () => {
+    setShouldFetch(true);
+  };
+
+  return {
+    data: innerData,
+    error,
+    isLoading: removedLoading || addedLoading,
+    initFetchInvestors,
+  };
 };

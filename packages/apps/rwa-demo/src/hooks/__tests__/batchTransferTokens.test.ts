@@ -2,22 +2,23 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useBatchTransferTokens } from '../batchTransferTokens';
 
 describe('batchTransferTokens hook', () => {
+  const mockinitFetchInvestors = vi.hoisted(() => vi.fn());
   const mocksHook = vi.hoisted(() => {
     return {
+      mockinitFetchInvestors,
       useAsset: vi.fn().mockReturnValue({
         paused: true,
+        initFetchInvestors: mockinitFetchInvestors,
+        investors: [
+          { accountName: 'k:he-man', alias: 'he-man' },
+          { accountName: 'k:skeletor', alias: 'skeletor' },
+        ],
       }),
       useGetInvestorBalance: vi.fn().mockReturnValue({
         data: 0,
       }),
       useFreeze: vi.fn().mockReturnValue({
         frozen: false,
-      }),
-      useGetInvestors: vi.fn().mockReturnValue({
-        data: [
-          { accountName: 'k:he-man', alias: 'he-man' },
-          { accountName: 'k:skeletor', alias: 'skeletor' },
-        ],
       }),
       useAccount: vi.fn().mockReturnValue({
         account: {
@@ -59,14 +60,6 @@ describe('batchTransferTokens hook', () => {
       return {
         ...actual,
         useFreeze: mocksHook.useFreeze,
-      };
-    });
-
-    vi.mock('./../getInvestors', async () => {
-      const actual = await vi.importActual('./../getInvestors');
-      return {
-        ...actual,
-        useGetInvestors: mocksHook.useGetInvestors,
       };
     });
 
@@ -115,6 +108,7 @@ describe('batchTransferTokens hook', () => {
 
       mocksHook.useAsset.mockImplementation(() => ({
         ...mocksHook.useAsset.getMockImplementation(),
+        initFetchInvestors: mockinitFetchInvestors,
         paused: false,
       }));
 
@@ -137,6 +131,7 @@ describe('batchTransferTokens hook', () => {
 
       mocksHook.useAsset.mockImplementation(() => ({
         ...mocksHook.useAsset.getMockImplementation(),
+        initFetchInvestors: mockinitFetchInvestors,
         paused: false,
       }));
 
@@ -159,6 +154,7 @@ describe('batchTransferTokens hook', () => {
 
       mocksHook.useAsset.mockImplementation(() => ({
         ...mocksHook.useAsset.getMockImplementation(),
+        initFetchInvestors: mockinitFetchInvestors,
         paused: true,
       }));
 
@@ -181,6 +177,7 @@ describe('batchTransferTokens hook', () => {
 
       mocksHook.useAsset.mockImplementation(() => ({
         ...mocksHook.useAsset.getMockImplementation(),
+        initFetchInvestors: mockinitFetchInvestors,
         paused: false,
       }));
 
@@ -203,6 +200,7 @@ describe('batchTransferTokens hook', () => {
 
       mocksHook.useAsset.mockImplementation(() => ({
         ...mocksHook.useAsset.getMockImplementation(),
+        initFetchInvestors: mockinitFetchInvestors,
         paused: false,
       }));
 

@@ -1,7 +1,7 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
 import { useAddInvestor } from '@/hooks/addInvestor';
-import { useGetInvestors } from '@/hooks/getInvestors';
+import { useAsset } from '@/hooks/asset';
 import { loadingData } from '@/utils/loadingData';
 import {
   MonoAdd,
@@ -27,7 +27,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BadgeFreezeForm } from '../BadgeFreezeForm/BadgeFreezeForm';
 import { InvestorBatchForm } from '../InvestorBatchForm/InvestorBatchForm';
@@ -44,12 +44,15 @@ export const InvestorList: FC = () => {
     'freeze' | 'unfreeze'
   >();
   const formRef = useRef<HTMLFormElement>(null);
-  const { data, isLoading } = useGetInvestors();
+  const {
+    investors: data,
+    initFetchInvestors,
+    investorsIsLoading: isLoading,
+  } = useAsset();
   const router = useRouter();
   const { account } = useAccount();
   const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
 
-  console.log({ data });
   const {
     reset,
     register,
@@ -66,6 +69,10 @@ export const InvestorList: FC = () => {
   const handleLink = async (accountName: any) => {
     router.push(`/investors/${accountName}`);
   };
+
+  useEffect(() => {
+    initFetchInvestors();
+  }, []);
 
   return (
     <>

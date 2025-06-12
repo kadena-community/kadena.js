@@ -10,7 +10,6 @@ import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
 import { useGetInvestorBalance } from './getInvestorBalance';
-import { useGetInvestors } from './getInvestors';
 import { useTransactions } from './transactions';
 
 export const useBatchTransferTokens = () => {
@@ -18,9 +17,9 @@ export const useBatchTransferTokens = () => {
   const { data: balance } = useGetInvestorBalance({
     investorAccount: account?.address,
   });
-  const { data: investors } = useGetInvestors();
+
   const { frozen } = useFreeze({ investorAccount: account?.address });
-  const { asset, paused } = useAsset();
+  const { asset, paused, investors, initFetchInvestors } = useAsset();
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
@@ -89,6 +88,11 @@ export const useBatchTransferTokens = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (!isMounted) return;
+    initFetchInvestors();
+  }, [isMounted, initFetchInvestors]);
 
   useEffect(() => {
     if (!isMounted) return;
