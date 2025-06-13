@@ -17,6 +17,7 @@ import { interpretMessage } from '@/utils/interpretMessage';
 import { RWAStore } from '@/utils/store';
 import { useApolloClient } from '@apollo/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import * as Sentry from '@sentry/nextjs';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { IWalletAccount } from '../AccountProvider/AccountType';
@@ -57,8 +58,11 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         variables: { requestKey: data.requestKey },
       });
 
+      console.log({ data });
+
       r.subscribe(
         (nextData: any) => {
+          console.log(1, { nextData });
           if (
             nextData?.errors?.length !== undefined ||
             nextData?.data?.transaction?.result.badResult
@@ -77,6 +81,32 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
               ? JSON.stringify(nextData?.errors)
               : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
                   .message;
+
+            console.log(
+              message,
+              `Error in transaction listener for ${data.type.name}:`,
+              nextData,
+              data,
+            );
+            Sentry.captureException(new Error(message), {
+              mechanism: {
+                handled: false,
+                type: 'transaction-listener',
+                data: {
+                  explorerUrl: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+                },
+              },
+              captureContext: {
+                level: 'error',
+                extra: {
+                  requestKey: data.requestKey,
+                  chainId: data.chainId,
+                  networkId: data.networkId,
+                  accounts: data.accounts,
+                  type: data.type.name,
+                },
+              },
+            });
 
             addNotification({
               intent: 'negative',

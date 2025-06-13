@@ -11,7 +11,6 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import * as Sentry from '@sentry/nextjs';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
