@@ -20,6 +20,7 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
+import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -106,8 +107,8 @@ const ExistingAccountFaucetPage: FC = () => {
               />
 
               <ChainSelect
-                onSelectionChange={setChainId}
-                selectedKey={chainId}
+                onSelectionChange={setChainId as any}
+                selectedKey={chainId as ChainId}
                 aria-label="Select Chain ID"
                 chainCount={5}
                 chainCountStart={20}

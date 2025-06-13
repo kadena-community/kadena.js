@@ -1,10 +1,10 @@
+import type { EVMChainId } from '@/utils/evm';
 import { createServerUrl } from '@/utils/evm';
-import type { ChainId } from '@kadena/types';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import type { Request, Response } from 'http-proxy-middleware/dist/types';
 
 export default function handler(req: Request, res: Response) {
-  const [chainId] = req.query.slug as [ChainId];
+  const [chainId] = req.query.slug as [EVMChainId];
 
   const proxyMiddleware = createProxyMiddleware({
     target: createServerUrl(chainId, true),

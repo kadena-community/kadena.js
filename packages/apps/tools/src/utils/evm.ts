@@ -1,4 +1,3 @@
-import type { ChainId } from '@kadena/types';
 import type { BaseError } from 'viem';
 import {
   ContractFunctionRevertedError,
@@ -7,9 +6,12 @@ import {
   http,
 } from 'viem';
 
+export type EVMChainId = '20' | '21' | '22' | '23' | '24';
+export const EVMCHAINS: EVMChainId[] = ['20', '21', '22', '23', '24'];
+
 const STARTBLOCKCHAINWEB = process.env.NEXT_PUBLIC_STARTBLOCKCHAINWEB;
 const STARTCHAIN_ID = process.env.NEXT_PUBLIC_STARTCHAIN_ID ?? '0';
-const createBlockChainId = (chainId: ChainId): number => {
+const createBlockChainId = (chainId: EVMChainId): number => {
   if (!STARTBLOCKCHAINWEB) {
     console.error('STARTBLOCKCHAINWEB env variable is not set');
     throw new Error('STARTBLOCKCHAINWEB env variable is not set');
@@ -21,14 +23,17 @@ const createBlockChainId = (chainId: ChainId): number => {
   );
 };
 
-export const createServerUrl = (chainId: ChainId, isServer?: boolean) => {
+export const createServerUrl = (chainId: EVMChainId, isServer?: boolean) => {
   if (isServer) {
     return `${process.env.NEXT_PUBLIC_EVMRPC_URL}${chainId}/evm/rpc`;
   }
   return `/api/eth/${chainId}`;
 };
 
-export const getChainwebEVMChain = (chainId: ChainId, isServer?: boolean) => {
+export const getChainwebEVMChain = (
+  chainId: EVMChainId,
+  isServer?: boolean,
+) => {
   return defineChain({
     id: createBlockChainId(chainId),
 
@@ -77,7 +82,7 @@ export const formatErrorMessage = (err: BaseError): string => {
   return err.shortMessage || 'Transaction failed';
 };
 
-export const getPublicClient = (chainId: ChainId, isServer?: boolean) => {
+export const getPublicClient = (chainId: EVMChainId, isServer?: boolean) => {
   return createPublicClient({
     chain: getChainwebEVMChain(chainId, isServer),
     transport: http(createServerUrl(chainId, isServer)),

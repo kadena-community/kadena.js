@@ -3,6 +3,7 @@ import { CHAINS } from '@kadena/chainweb-node-client';
 import { MonoLink } from '@kadena/kode-icons/system';
 import type { ISelectProps } from '@kadena/kode-ui';
 import { Select, SelectItem } from '@kadena/kode-ui';
+import type { ChainId } from '@kadena/types';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 
@@ -37,11 +38,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
   );
   const onSelectChange = useCallback(
     (selectedKey: string | number) => {
-      const chainId = CHAINS.find((chainId) => {
-        return chainId === selectedKey;
-      });
-
-      onSelectionChange?.(chainId!);
+      onSelectionChange?.((selectedKey as ChainId)!);
     },
     [onSelectionChange],
   );

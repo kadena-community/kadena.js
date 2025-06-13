@@ -1,11 +1,11 @@
 import faucetABI from '@/contracts/faucet-abi.json';
+import type { EVMChainId } from '@/utils/evm';
 import {
   createServerUrl,
   formatErrorMessage,
   getChainwebEVMChain,
   getPublicClient,
 } from '@/utils/evm';
-import type { ChainId } from '@kadena/types';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { createWalletClient, http } from 'viem';
@@ -22,7 +22,7 @@ const RPC_URL = process.env.NEXT_PUBLIC_EVMRPC_URL;
 export async function POST(request: NextRequest) {
   const body = (await request.json()) as unknown as {
     recipient: string;
-    chainId: ChainId;
+    chainId: EVMChainId;
     token: string; //this is for recaptcha check
   };
 

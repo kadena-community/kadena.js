@@ -1,8 +1,8 @@
 import type { FormStatus } from '@/components/Global';
 import faucetABI from '@/contracts/faucet-abi.json';
 import { env } from '@/utils/env';
+import type { EVMChainId } from '@/utils/evm';
 import { getPublicClient } from '@/utils/evm';
-import type { ChainId } from '@kadena/types';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useEffect, useState } from 'react';
 import { formatEther } from 'viem';
@@ -11,8 +11,8 @@ export function useEvmFaucet() {
   // State for token amount, faucet balance, and loading status
   const [dispenseAmount, setDispenseAmount] = useState('0');
   const [faucetBalance, setFaucetBalance] = useState('0');
-  const [innerChainId, setInnerChainId] = useState<ChainId>(
-    process.env.NEXT_PUBLIC_STARTCHAIN_ID as ChainId,
+  const [innerChainId, setInnerChainId] = useState<EVMChainId>(
+    process.env.NEXT_PUBLIC_STARTCHAIN_ID as EVMChainId,
   );
 
   const [requestStatus, setRequestStatus] = useState<{
@@ -102,7 +102,11 @@ export function useEvmFaucet() {
     }
   };
 
-  const setChainId = (chainId: ChainId) => {
+  const setChainId = (chainId: EVMChainId) => {
+    console.log('Setting chain ID to:', chainId);
+    if (!chainId) {
+      setInnerChainId(process.env.NEXT_PUBLIC_STARTCHAIN_ID as EVMChainId);
+    }
     setInnerChainId(chainId);
   };
 
