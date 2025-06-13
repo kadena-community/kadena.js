@@ -4,23 +4,42 @@ import * as Sentry from '@sentry/nextjs';
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const EVENT_NAMES = {
   'error:submitChain': 'error:submitChain',
+  'error:submit:addinvestor': 'error:submit:addinvestor',
+  'error:submit:batchaddinvestor': 'error:submit:batchaddinvestor',
+  'error:submit:batchfreezeinvestors': 'error:submit:batchfreezeinvestors',
+  'error:submit:transfertokens': 'error:submit:transfertokens',
+  'error:submit:togglepause': 'error:submit:togglepause',
+  'error:submit:removeagent': 'error:submit:removeagent',
+  'error:submit:freezeinvestor': 'error:submit:freezeinvestor',
+  'error:submit:forcedtransfertokens': 'error:submit:forcedtransfertokens',
+  'error:submit:faucet': 'error:submit:faucet',
+  'error:submit:editagent': 'error:submit:editagent',
+  'error:submit:distributetokens': 'error:submit:distributetokens',
+  'error:submit:deleteinvestor': 'error:submit:deleteinvestor',
+  'error:submit:setcompliance': 'error:submit:setcompliance',
+  'error:submit:togglecompliancerule': 'error:submit:togglecompliancerule',
+  'error:submit:createcontract': 'error:submit:createcontract',
+  'error:submit:batchtransfertokens': 'error:submit:batchtransfertokens',
+  'error:submit:togglePartiallyFreezeTokens':
+    'error:submit:togglePartiallyFreezeTokens',
 } as const;
 
 const COOKIE_CONSENTNAME = 'cookie_consent';
 
+type CaptureContext = {
+  level?: 'error' | 'warning' | 'info' | 'fatal' | 'debug';
+  extra?: Record<string, any>;
+};
 type SentryData = {
-  label: any;
-  handled: boolean;
-  type: any;
+  label?: any;
+  handled?: boolean;
+  type: 'submit_chain' | 'transaction-listener';
   data?: Record<string, any>;
-  captureContext?: {
-    level: 'error' | 'warning' | 'info' | 'fatal' | 'debug';
-    extra?: Record<string, any>;
-  };
+  captureContext?: CaptureContext;
 };
 
 // First define a base type for string-only keys excluding "sentryData"
-type IOptionsType = {
+export type IAnalyticsOptionsType = {
   sentryData?: SentryData;
   [key: string]: string | undefined | SentryData;
 };
@@ -30,22 +49,47 @@ interface IOptionsPageViewType {
   send_to?: string;
 }
 
+export type IAnalyticsEventType =
+  | keyof typeof EVENT_NAMES
+  | keyof typeof TXTYPES
+  | `error:${keyof typeof TXTYPES}`;
+
 export const analyticsEvent = (
-  name:
-    | keyof typeof EVENT_NAMES
-    | keyof typeof TXTYPES
-    | `error:${keyof typeof TXTYPES}`,
-  options: IOptionsType = {},
+  name: IAnalyticsEventType,
+  options: IAnalyticsOptionsType = {},
 ): void => {
   if (options.sentryData) {
-    Sentry.captureException(options.sentryData.label, {
+    const label =
+      options.sentryData.label || new Error(`${options.name || name}`);
+    const message = options.sentryData.data?.message || options.message;
+    const captureContextLevel: CaptureContext['level'] =
+      options.sentryData.captureContext?.level || 'error';
+    const handled =
+      options.sentryData.handled === undefined
+        ? true
+        : options.sentryData.handled;
+
+    let explorerUrl = options.sentryData.data?.explorerUrl;
+    if (
+      !explorerUrl &&
+      options.sentryData.captureContext?.extra?.res.requestKey
+    ) {
+      explorerUrl = `https://explorer.kadena.io/${options.networkId}/transaction/${options.sentryData.captureContext.extra.res.requestKey}`;
+    }
+
+    const sentryContent = {
       mechanism: {
-        handled: options.sentryData.handled,
+        handled: handled,
         type: options.sentryData.type,
-        data: options.sentryData.data,
+        data: { ...options.sentryData.data, message, explorerUrl },
       },
-      captureContext: options.sentryData.captureContext,
-    });
+      captureContext: {
+        ...options.sentryData.captureContext,
+        level: captureContextLevel,
+      },
+    };
+
+    Sentry.captureException(label, sentryContent);
   }
 
   if (process.env.NODE_ENV === 'development') {
@@ -53,7 +97,7 @@ export const analyticsEvent = (
   }
   if (window.gtag === undefined) return;
 
-  gtag('event', name, options);
+  gtag('event', name, { ...options, name: options.name || name });
 };
 
 export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {

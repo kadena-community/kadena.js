@@ -1,11 +1,12 @@
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useNotifications } from '@/hooks/notifications';
 import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
 import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import { useNotifications } from '@kadena/kode-ui/patterns';
+import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -34,34 +35,22 @@ export const useAddInvestor = ({
     data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
     if (!asset) {
-      addNotification({
-        intent: 'negative',
-        label: 'asset not found',
-        message: '',
-      });
-
-      analyticsEvent(`error:${data.type.name}`, {
-        name: data.type.name,
-        chainId: data?.chainId ?? '',
-        networkId: data?.networkId ?? '',
-        requestKey: data?.requestKey ?? '',
-        message: JSON.stringify(nextData?.data.transaction?.result.badResult),
-        sentryData: {
-          label: new Error(message),
-          handled: true,
-          type: 'transaction-listener',
-          data: {
-            message: interpretErrorMessage(message),
-            explorerUrl: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
-          },
-          captureContext: {
-            level: 'error',
-            extra: {
-              type: `${data.type.name}`,
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'asset not found',
+          message: '',
+        },
+        {
+          name: `error:submit:addinvestor`,
+          options: {
+            message: 'asset not found',
+            sentryData: {
+              type: 'submit_chain',
             },
           },
         },
-      });
+      );
 
       return;
     }
@@ -70,16 +59,18 @@ export const useAddInvestor = ({
       ...data,
       agent: account!,
     };
+    let res: ITransactionDescriptor | undefined = undefined;
+    let tx: IUnsignedCommand | undefined = undefined;
     try {
       //if the account is already investor, no need to add it again
       if (data.alreadyExists) return;
 
-      const tx = await registerIdentity(newData, asset);
+      tx = await registerIdentity(newData, asset);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
-      const res = await client.submit(signedTransaction);
+      res = await client.submit(signedTransaction);
 
       return addTransaction({
         ...res,
@@ -87,11 +78,29 @@ export const useAddInvestor = ({
         accounts: [account?.address!, data.accountName],
       });
     } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'there was an error',
+          message: interpretErrorMessage(e.message),
+        },
+        {
+          name: `error:submit:addinvestor`,
+          options: {
+            message: interpretErrorMessage(e.message),
+            sentryData: {
+              type: 'submit_chain',
+              captureContext: {
+                extra: {
+                  tx,
+                  data,
+                  res,
+                },
+              },
+            },
+          },
+        },
+      );
     } finally {
       await store?.setAccount(data);
     }

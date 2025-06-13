@@ -10,14 +10,13 @@ import {
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useNetwork } from '@/hooks/networks';
+import { useNotifications } from '@/hooks/notifications';
 import { useOrganisation } from '@/hooks/organisation';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { analyticsEvent } from '@/utils/analytics';
 import { interpretMessage } from '@/utils/interpretMessage';
 import { RWAStore } from '@/utils/store';
 import { useApolloClient } from '@apollo/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
-import * as Sentry from '@sentry/nextjs';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { IWalletAccount } from '../AccountProvider/AccountType';
@@ -69,69 +68,53 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
               : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
                   .message;
 
-            analyticsEvent(`error:${data.type.name}`, {
-              name: data.type.name,
-              chainId: data?.chainId ?? '',
-              networkId: data?.networkId ?? '',
-              requestKey: data?.requestKey ?? '',
-              message: JSON.stringify(
-                nextData?.data.transaction?.result.badResult,
-              ),
-              sentryData: {
-                label: new Error(message),
-                handled: true,
-                type: 'transaction-listener',
-                data: {
-                  message: interpretErrorMessage(message),
-                  explorerUrl: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
-                },
-                captureContext: {
-                  level: 'error',
-                  extra: {
-                    type: `${data.type.name}`,
+            addNotification(
+              {
+                intent: 'negative',
+                label: message,
+                message: interpretErrorMessage(message),
+                url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
+              },
+              {
+                name: `error:${data.type.name}`,
+                options: {
+                  requestKey: data?.requestKey ?? '',
+                  message,
+                  sentryData: {
+                    label: new Error(message),
+                    type: 'transaction-listener',
+                    captureContext: {
+                      extra: {
+                        message: JSON.stringify(
+                          nextData?.data.transaction?.result.badResult,
+                        ),
+                      },
+                    },
                   },
                 },
               },
-            });
-
-            addNotification({
-              intent: 'negative',
-              label: message,
-              message: interpretErrorMessage(message),
-              url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
-            });
+            );
             return;
           }
         },
         (errorData) => {
-          analyticsEvent(`error:${data.type.name}`, {
-            name: data.type.name,
-            chainId: data?.chainId ?? '',
-            networkId: data?.networkId ?? '',
-            requestKey: data?.requestKey ?? '',
-            message: JSON.stringify(errorData),
-            sentryData: {
+          addNotification(
+            {
+              intent: 'negative',
               label: 'invalid transaction',
-              handled: true,
-              type: 'transaction-listener',
-              data: {
-                explorerUrl: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
-              },
-              captureContext: {
-                level: 'error',
-                extra: {
-                  type: `${data.type.name}`,
+              message: JSON.stringify(errorData),
+              url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+            },
+            {
+              name: `error:${data.type.name}`,
+              options: {
+                requestKey: data?.requestKey ?? '',
+                sentryData: {
+                  type: 'transaction-listener',
                 },
               },
             },
-          });
-
-          addNotification({
-            intent: 'negative',
-            label: 'there was an error',
-            message: JSON.stringify(errorData),
-            url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
-          });
+          );
         },
         () => {
           analyticsEvent(data.type.name, {

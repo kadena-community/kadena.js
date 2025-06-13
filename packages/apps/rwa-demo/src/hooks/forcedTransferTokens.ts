@@ -1,9 +1,10 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useNotifications } from '@/hooks/notifications';
 import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
 import { forcedTransferTokens } from '@/services/forcedTransferTokens';
 import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
+import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -18,21 +19,34 @@ export const useForcedTransferTokens = () => {
 
   const submit = async (data: IForcedTransferTokensProps) => {
     if (!asset) {
-      addNotification({
-        intent: 'negative',
-        label: 'asset not found',
-        message: '',
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'asset not found',
+          message: '',
+        },
+        {
+          name: `error:submit:forcedtransfertokens`,
+          options: {
+            message: 'asset not found',
+            sentryData: {
+              type: 'submit_chain',
+            },
+          },
+        },
+      );
       return;
     }
 
+    let res: ITransactionDescriptor | undefined = undefined;
+    let tx: IUnsignedCommand | undefined = undefined;
     try {
-      const tx = await forcedTransferTokens(data, account!, asset);
+      tx = await forcedTransferTokens(data, account!, asset);
       const signedTransaction = await sign(tx);
       if (!signedTransaction) return;
 
       const client = getClient();
-      const res = await client.submit(signedTransaction);
+      res = await client.submit(signedTransaction);
 
       return addTransaction({
         ...res,
@@ -44,11 +58,29 @@ export const useForcedTransferTokens = () => {
         ],
       });
     } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'there was an error',
+          message: interpretErrorMessage(e.message),
+        },
+        {
+          name: `error:submit:forcedtransfertokens`,
+          options: {
+            message: interpretErrorMessage(e.message),
+            sentryData: {
+              type: 'submit_chain',
+              captureContext: {
+                extra: {
+                  tx,
+                  data,
+                  res,
+                },
+              },
+            },
+          },
+        },
+      );
     }
   };
 

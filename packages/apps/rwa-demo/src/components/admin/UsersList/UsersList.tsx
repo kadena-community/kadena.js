@@ -1,5 +1,6 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
+import { useNotifications } from '@/hooks/notifications';
 import { useUser } from '@/hooks/user';
 import type { IUserListItem } from '@/utils/store/orgAdminStore';
 import { OrgAdminStore } from '@/utils/store/orgAdminStore';
@@ -23,7 +24,6 @@ import {
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
-  useNotifications,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';

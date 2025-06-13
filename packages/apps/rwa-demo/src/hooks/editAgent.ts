@@ -1,12 +1,13 @@
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useNotifications } from '@/hooks/notifications';
 import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { editAgent } from '@/services/editAgent';
 import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import { useNotifications } from '@kadena/kode-ui/patterns';
+import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -29,16 +30,29 @@ export const useEditAgent = () => {
     data: IAddAgentProps,
   ): Promise<ITransaction | undefined> => {
     if (!asset) {
-      addNotification({
-        intent: 'negative',
-        label: 'asset not found',
-        message: '',
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'asset not found',
+          message: '',
+        },
+        {
+          name: `error:submit:editagent`,
+          options: {
+            message: 'asset not found',
+            sentryData: {
+              type: 'submit_chain',
+            },
+          },
+        },
+      );
       return;
     }
 
+    let res: ITransactionDescriptor | undefined = undefined;
+    let tx: IUnsignedCommand | undefined = undefined;
     try {
-      const tx = data.alreadyExists
+      tx = data.alreadyExists
         ? await editAgent(data, account!, asset)
         : await addAgent(data, account!, asset);
 
@@ -46,7 +60,7 @@ export const useEditAgent = () => {
       if (!signedTransaction) return;
 
       const client = getClient();
-      const res = await client.submit(signedTransaction);
+      res = await client.submit(signedTransaction);
 
       return addTransaction({
         ...res,
@@ -54,11 +68,29 @@ export const useEditAgent = () => {
         accounts: [data.accountName],
       });
     } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'there was an error',
+          message: interpretErrorMessage(e.message),
+        },
+        {
+          name: `error:submit:editagent`,
+          options: {
+            message: interpretErrorMessage(e.message),
+            sentryData: {
+              type: 'submit_chain',
+              captureContext: {
+                extra: {
+                  tx,
+                  data,
+                  res,
+                },
+              },
+            },
+          },
+        },
+      );
     } finally {
       await store?.setAccount(data);
     }

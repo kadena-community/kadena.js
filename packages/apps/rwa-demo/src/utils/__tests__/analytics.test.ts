@@ -106,6 +106,7 @@ describe('analytics', () => {
         {
           hash: '/he-man',
           label: 'Master of the universe',
+          name: 'error:submitChain',
         },
       );
     });
@@ -132,6 +133,7 @@ describe('analytics', () => {
         {
           hash: '/he-man',
           label: 'Master of the universe',
+          name: 'error:submitChain',
         },
       );
     });
