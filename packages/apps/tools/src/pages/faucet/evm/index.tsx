@@ -18,7 +18,6 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-  Text,
 } from '@kadena/kode-ui';
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
@@ -43,14 +42,8 @@ const ExistingAccountFaucetPage: FC = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useToolbar(menuData, router.pathname);
-  const {
-    dispenseTokens,
-    dispenseAmount,
-    requestStatus,
-    setChainId,
-    chainId,
-    faucetBalance,
-  } = useEvmFaucet();
+  const { dispenseTokens, dispenseAmount, requestStatus, setChainId, chainId } =
+    useEvmFaucet();
 
   const onFormSubmit = async (data: FormData) => {
     await dispenseTokens(data.name);
@@ -85,9 +78,6 @@ const ExistingAccountFaucetPage: FC = () => {
           <NotificationHeading>
             {t('This EVM Faucet is running on DEVNET')}
           </NotificationHeading>
-          <Text variant="code">
-            faucetBalance: {faucetBalance} <Text color="emphasize">KDA</Text>
-          </Text>
         </Notification>
 
         <FormStatusNotification
