@@ -58,15 +58,17 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         variables: { requestKey: data.requestKey },
       });
 
-      console.log({ data });
-
       r.subscribe(
         (nextData: any) => {
-          console.log(1, { nextData });
           if (
             nextData?.errors?.length !== undefined ||
             nextData?.data?.transaction?.result.badResult
           ) {
+            const message = nextData?.errors
+              ? JSON.stringify(nextData?.errors)
+              : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
+                  .message;
+
             analyticsEvent(`error:${data.type.name}`, {
               name: data.type.name,
               chainId: data?.chainId ?? '',
@@ -75,35 +77,19 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
               message: JSON.stringify(
                 nextData?.data.transaction?.result.badResult,
               ),
-            });
-
-            const message = nextData?.errors
-              ? JSON.stringify(nextData?.errors)
-              : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
-                  .message;
-
-            console.log(
-              message,
-              `Error in transaction listener for ${data.type.name}:`,
-              nextData,
-              data,
-            );
-            Sentry.captureException(new Error(message), {
-              mechanism: {
-                handled: false,
+              sentryData: {
+                label: new Error(message),
+                handled: true,
                 type: 'transaction-listener',
                 data: {
+                  message: interpretErrorMessage(message),
                   explorerUrl: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
                 },
-              },
-              captureContext: {
-                level: 'error',
-                extra: {
-                  requestKey: data.requestKey,
-                  chainId: data.chainId,
-                  networkId: data.networkId,
-                  accounts: data.accounts,
-                  type: data.type.name,
+                captureContext: {
+                  level: 'error',
+                  extra: {
+                    type: `${data.type.name}`,
+                  },
                 },
               },
             });
@@ -124,6 +110,20 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
             networkId: data?.networkId ?? '',
             requestKey: data?.requestKey ?? '',
             message: JSON.stringify(errorData),
+            sentryData: {
+              label: 'invalid transaction',
+              handled: true,
+              type: 'transaction-listener',
+              data: {
+                explorerUrl: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+              },
+              captureContext: {
+                level: 'error',
+                extra: {
+                  type: `${data.type.name}`,
+                },
+              },
+            },
           });
 
           addNotification({

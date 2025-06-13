@@ -1,4 +1,5 @@
 import type { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import * as Sentry from '@sentry/nextjs';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const EVENT_NAMES = {
@@ -7,7 +8,22 @@ export const EVENT_NAMES = {
 
 const COOKIE_CONSENTNAME = 'cookie_consent';
 
-type IOptionsType = Record<string, string | undefined>;
+type SentryData = {
+  label: any;
+  handled: boolean;
+  type: any;
+  data?: Record<string, any>;
+  captureContext?: {
+    level: 'error' | 'warning' | 'info' | 'fatal' | 'debug';
+    extra?: Record<string, any>;
+  };
+};
+
+// First define a base type for string-only keys excluding "sentryData"
+type IOptionsType = {
+  sentryData?: SentryData;
+  [key: string]: string | undefined | SentryData;
+};
 
 interface IOptionsPageViewType {
   page_path?: string;
@@ -21,6 +37,17 @@ export const analyticsEvent = (
     | `error:${keyof typeof TXTYPES}`,
   options: IOptionsType = {},
 ): void => {
+  if (options.sentryData) {
+    Sentry.captureException(options.sentryData.label, {
+      mechanism: {
+        handled: options.sentryData.handled,
+        type: options.sentryData.type,
+        data: options.sentryData.data,
+      },
+      captureContext: options.sentryData.captureContext,
+    });
+  }
+
   if (process.env.NODE_ENV === 'development') {
     console.warn('GTAG EVENT', { name, options });
   }

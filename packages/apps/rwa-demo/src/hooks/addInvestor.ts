@@ -39,6 +39,30 @@ export const useAddInvestor = ({
         label: 'asset not found',
         message: '',
       });
+
+      analyticsEvent(`error:${data.type.name}`, {
+        name: data.type.name,
+        chainId: data?.chainId ?? '',
+        networkId: data?.networkId ?? '',
+        requestKey: data?.requestKey ?? '',
+        message: JSON.stringify(nextData?.data.transaction?.result.badResult),
+        sentryData: {
+          label: new Error(message),
+          handled: true,
+          type: 'transaction-listener',
+          data: {
+            message: interpretErrorMessage(message),
+            explorerUrl: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+          },
+          captureContext: {
+            level: 'error',
+            extra: {
+              type: `${data.type.name}`,
+            },
+          },
+        },
+      });
+
       return;
     }
 

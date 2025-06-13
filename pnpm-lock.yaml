@@ -1276,6 +1276,9 @@ importers:
       '@sentry/tracing':
         specifier: ^7.120.3
         version: 7.120.3
+      '@sentry/types':
+        specifier: ^9.29.0
+        version: 9.29.0
       '@vanilla-extract/css':
         specifier: 1.14.2
         version: 1.14.2
@@ -8893,6 +8896,10 @@ packages:
     resolution: {integrity: sha512-RjuEq/34VjNmxlfzq+485jG63/Vst90svQapLwVgBZWgM8jxrLyCRXHU0wfBc7/1IhV/T9GYAplrJQAkG4J9Ow==}
     engines: {node: '>=14.18'}
 
+  '@sentry/core@9.29.0':
+    resolution: {integrity: sha512-wDyNe45PM+RCGtUn1tK7LzJ08ksv8i8KRUHrst7lsinEfRm83YH+wbWrPmwkVNEngUZvYkHwGLbNXM7xgFUuDQ==}
+    engines: {node: '>=18'}
+
   '@sentry/nextjs@8.15.0':
     resolution: {integrity: sha512-R0KQhnpz6lQAp2r08pZRdBXJSyxgs6X770Y/LGboCBzhzqNzsNLii9nZKt0PUFPGSCnQYS6J+daFXH7Kz+K+vg==}
     engines: {node: '>=14.18'}
@@ -8939,6 +8946,10 @@ packages:
   '@sentry/types@8.15.0':
     resolution: {integrity: sha512-AZc9nSHKuNH8P/7ihmq5fbZBiQ7Gr35kJq9Tad9eVuOgL8D+2b6Vqu/61ljVVlMFI0tBGFsSkWJ/00PfBcVKWg==}
     engines: {node: '>=14.18'}
+
+  '@sentry/types@9.29.0':
+    resolution: {integrity: sha512-OT4s7DBcTeuae6lWbvPkge4EZYEhUn1eU3o8VLYelrGsf2DgyTA4TACQWRFoTlTp+oYCX2xKm/peJjM20X9ufg==}
+    engines: {node: '>=18'}
 
   '@sentry/utils@7.120.3':
     resolution: {integrity: sha512-UDAOQJtJDxZHQ5Nm1olycBIsz2wdGX8SdzyGVHmD8EOQYAeDZQyIlQYohDe9nazdIOQLZCIc3fU0G9gqVLkaGQ==}
@@ -27728,6 +27739,8 @@ snapshots:
       '@sentry/types': 8.15.0
       '@sentry/utils': 8.15.0
 
+  '@sentry/core@9.29.0': {}
+
   '@sentry/nextjs@8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.88.2)':
     dependencies:
       '@opentelemetry/instrumentation-http': 0.52.1(@opentelemetry/api@1.9.0)
@@ -27858,6 +27871,10 @@ snapshots:
   '@sentry/types@7.120.3': {}
 
   '@sentry/types@8.15.0': {}
+
+  '@sentry/types@9.29.0':
+    dependencies:
+      '@sentry/core': 9.29.0
 
   '@sentry/utils@7.120.3':
     dependencies:
