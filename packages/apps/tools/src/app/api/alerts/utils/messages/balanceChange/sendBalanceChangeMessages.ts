@@ -1,11 +1,10 @@
 import { format } from 'date-fns';
-import type { IAlert, IChainAccount, INETWORK } from '../../constants';
-import { creatLowChainsString } from '../../creatLowChainsString';
+import type { IAlert, INETWORK } from '../../constants';
 import { createMessage } from './../createMessage';
 
 export const sendBalanceChangeMessages = async (
   alert: IAlert,
-  [latestChain2, previousChain2]: IChainAccount[],
+  [latestChain2, previousChain2]: string[],
   network: INETWORK,
   [latest, previous]: Record<string, any>[],
 ): Promise<string> => {
@@ -31,7 +30,7 @@ export const sendBalanceChangeMessages = async (
             : undefined,
           text: {
             type: 'mrkdwn',
-            text: `The balance for ${alert.code} (\`${alert.options?.account}\`) has changed (${network.key}):\n *previous balance* ${creatLowChainsString([previousChain2])} (elastic record: ${latest._id} - ${format(latest._source.timestamp, 'yyyy-mm-dd h:mm a')})\n *latest balance* ${creatLowChainsString([latestChain2])} (elastic record: ${previous._id} - ${format(previous._source.timestamp, 'yyyy-mm-dd h:mm a')})`,
+            text: `The balance for ${alert.code} (\`${alert.options?.account}\`) has changed (${network.key}):\n *previous balance* ${previousChain2} (elastic record: ${latest._id} - ${format(new Date(latest._source['@timestamp']), 'yyyy-mm-dd h:mm a')})\n *latest balance* ${latestChain2} (elastic record: ${previous._id} - ${format(new Date(previous._source['@timestamp']), 'yyyy-mm-dd h:mm a')})`,
           },
         },
       ]),
