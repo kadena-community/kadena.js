@@ -68,7 +68,7 @@ const ExistingAccountFaucetPage: FC = () => {
       </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Fund EVM Account')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Fund EVM Address')}</BreadcrumbsItem>
       </Breadcrumbs>
 
       <Stack
@@ -78,11 +78,11 @@ const ExistingAccountFaucetPage: FC = () => {
         width="100%"
         flexDirection="column"
       >
-        <Heading as="h4">{t('Add Funds to EVM Account')}</Heading>
+        <Heading as="h4">{t('Add Funds to EVM Address')}</Heading>
 
         <Notification intent="warning" role="status" type="inlineStacked">
           <NotificationHeading>
-            {t('The EVM Faucet is running on DEVNET')}
+            {t('This EVM Faucet is running on DEVNET')}
           </NotificationHeading>
           <Text variant="code">
             faucetBalance: {faucetBalance} <Text color="emphasize">KDA</Text>
@@ -92,7 +92,7 @@ const ExistingAccountFaucetPage: FC = () => {
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
-            successful: t('The coins have been funded to the given account.'),
+            successful: t('The coins have been funded to the given address.'),
           }}
           body={requestStatus.message}
         />
@@ -102,7 +102,7 @@ const ExistingAccountFaucetPage: FC = () => {
               <AccountNameField
                 {...register('name')}
                 errorMessage={errors.name?.message}
-                label={t('The account name to fund coins to')}
+                label={t('The EVM address to fund coins to')}
               />
 
               <ChainSelect
