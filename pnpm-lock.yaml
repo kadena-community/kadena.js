@@ -664,8 +664,8 @@ importers:
         specifier: ^2.4.1
         version: 2.4.1
       '@sentry/nextjs':
-        specifier: ^8
-        version: 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.88.2)
+        specifier: ^8.15.0
+        version: 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.88.2)
       '@vanilla-extract/dynamic':
         specifier: ^2.1.2
         version: 2.1.2
@@ -686,7 +686,7 @@ importers:
         version: 3.0.5
       next:
         specifier: 14.2.26
-        version: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -753,13 +753,13 @@ importers:
         version: 1.14.2
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
-        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)
+        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@6.2.5(@types/node@20.14.9)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cache-sh:
         specifier: ^1.2.1
         version: 1.3.1
@@ -768,7 +768,7 @@ importers:
         version: 8.2.2
       next-router-mock:
         specifier: ^0.9.10
-        version: 0.9.13(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.9.13(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -777,10 +777,10 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/graph:
     dependencies:
@@ -1019,7 +1019,7 @@ importers:
         version: 1.14.2
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
-        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)
+        version: 2.4.0(@types/node@20.14.9)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(webpack@5.88.2)
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
@@ -1097,10 +1097,10 @@ importers:
         version: 2.0.6(@types/express@4.17.21)
       next:
         specifier: 14.2.26
-        version: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.2.1(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -1170,7 +1170,7 @@ importers:
         version: 9.0.8
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
-        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
+        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
       '@vanilla-extract/vite-plugin':
         specifier: 4.0.17
         version: 4.0.17(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(vite@6.2.5(@types/node@20.14.9)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
@@ -1179,7 +1179,7 @@ importers:
         version: 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cache-sh:
         specifier: ^1.2.1
         version: 1.3.1
@@ -1212,7 +1212,7 @@ importers:
         version: 2.7.6(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
       next-router-mock:
         specifier: ^0.9.10
-        version: 0.9.13(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.9.13(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -1224,10 +1224,10 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/rwa-demo:
     dependencies:
@@ -1270,6 +1270,12 @@ importers:
       '@magic-ext/kadena':
         specifier: ^0.11.0
         version: 0.11.0
+      '@sentry/nextjs':
+        specifier: ^8.15.0
+        version: 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.88.2)
+      '@sentry/tracing':
+        specifier: ^7.120.3
+        version: 7.120.3
       '@vanilla-extract/css':
         specifier: 1.14.2
         version: 1.14.2
@@ -1278,7 +1284,7 @@ importers:
         version: 0.1.4
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
-        version: 2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)
+        version: 2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)
       '@vanilla-extract/recipes':
         specifier: 0.5.1
         version: 0.5.1(@vanilla-extract/css@1.14.2)
@@ -1311,10 +1317,10 @@ importers:
         version: 12.0.2
       next:
         specifier: 14.2.26
-        version: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 0.2.1(next@14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -1352,6 +1358,9 @@ importers:
       '@kadena/pactjs-generator':
         specifier: workspace:*
         version: link:../../libs/pactjs-generator
+      '@sentry/types':
+        specifier: ^9.29.0
+        version: 9.29.0
       '@testing-library/react-hooks':
         specifier: ^8.0.1
         version: 8.0.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1378,7 +1387,7 @@ importers:
         version: 4.3.1(vite@6.2.5(@types/node@20.16.5)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -1390,7 +1399,7 @@ importers:
         version: 12.10.3
       next-router-mock:
         specifier: ^0.9.10
-        version: 0.9.13(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        version: 0.9.13(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -1399,10 +1408,10 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
 
   packages/apps/spirekey-example:
     dependencies:
@@ -1620,7 +1629,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
         version: 0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
@@ -2202,7 +2211,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2214,7 +2223,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/chainweb-node-client:
     dependencies:
@@ -2254,7 +2263,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2269,7 +2278,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/chainweb-stream-client:
     dependencies:
@@ -2318,7 +2327,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/chainwebjs:
     dependencies:
@@ -2361,7 +2370,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -2376,7 +2385,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/client:
     dependencies:
@@ -2428,7 +2437,7 @@ importers:
         version: 20.14.9
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       '@walletconnect/types':
         specifier: ~2.8.1
         version: 2.8.6
@@ -2437,7 +2446,7 @@ importers:
         version: 8.57.0
       jsdom:
         specifier: ^22.1.0
-        version: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
+        version: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
       msw:
         specifier: ^2.2.14
         version: 2.3.1(typescript@5.4.5)
@@ -2452,7 +2461,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/client-examples:
     dependencies:
@@ -2595,7 +2604,7 @@ importers:
         version: 2.0.0(typescript@5.4.5)
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/cryptography-utils:
     dependencies:
@@ -2647,7 +2656,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/hd-wallet:
     dependencies:
@@ -2720,7 +2729,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/hw-app-kda-clone:
     dependencies:
@@ -2802,7 +2811,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/kode-icons:
     dependencies:
@@ -3116,7 +3125,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
       vitest-dom:
         specifier: ^0.1.1
         version: 0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
@@ -3165,7 +3174,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/pactjs-generator:
     dependencies:
@@ -3229,7 +3238,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/snap:
     dependencies:
@@ -3414,7 +3423,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/wallet-adapter-core:
     dependencies:
@@ -3451,7 +3460,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/wallet-adapter-ecko:
     dependencies:
@@ -3476,7 +3485,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/wallet-adapter-react:
     dependencies:
@@ -3538,7 +3547,7 @@ importers:
         version: 2.8.6
       jsdom:
         specifier: ^22.1.0
-        version: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
+        version: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
       typescript:
         specifier: 5.4.5
         version: 5.4.5
@@ -3575,7 +3584,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/libs/wallet-sdk:
     dependencies:
@@ -3651,7 +3660,7 @@ importers:
         version: 20.16.5
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       cpy-cli:
         specifier: ^5.0.0
         version: 5.0.0
@@ -3678,7 +3687,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/tools/create-kadena-app:
     dependencies:
@@ -3949,7 +3958,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/tools/lint-package:
     dependencies:
@@ -4123,7 +4132,7 @@ importers:
         version: 3.0.2
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))
       eslint:
         specifier: ^8.45.0
         version: 8.57.0
@@ -4135,7 +4144,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   packages/tools/scripts:
     dependencies:
@@ -8817,6 +8826,10 @@ packages:
     resolution: {integrity: sha512-d4cA8pjr0CGHkTe8ulqMROYCX3bMHBAi/7DJBr11i4MdNCUl+/pndA9C5TiFv0sFzk/hDZQZS3J+MfGp56ZQHw==}
     engines: {node: '>=14.18'}
 
+  '@sentry-internal/tracing@7.120.3':
+    resolution: {integrity: sha512-Ausx+Jw1pAMbIBHStoQ6ZqDZR60PsCByvHdw/jdH9AqPrNE9xlBSf9EwcycvmrzwyKspSLaB52grlje2cRIUMg==}
+    engines: {node: '>=8'}
+
   '@sentry/babel-plugin-component-annotate@2.20.1':
     resolution: {integrity: sha512-4mhEwYTK00bIb5Y9UWIELVUfru587Vaeg0DQGswv4aIRHIiMKLyNqCEejaaybQ/fNChIZOKmvyqXk430YVd7Qg==}
     engines: {node: '>= 14'}
@@ -8875,9 +8888,17 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
+  '@sentry/core@7.120.3':
+    resolution: {integrity: sha512-vyy11fCGpkGK3qI5DSXOjgIboBZTriw0YDx/0KyX5CjIjDDNgp5AGgpgFkfZyiYiaU2Ww3iFuKo4wHmBusz1uA==}
+    engines: {node: '>=8'}
+
   '@sentry/core@8.15.0':
     resolution: {integrity: sha512-RjuEq/34VjNmxlfzq+485jG63/Vst90svQapLwVgBZWgM8jxrLyCRXHU0wfBc7/1IhV/T9GYAplrJQAkG4J9Ow==}
     engines: {node: '>=14.18'}
+
+  '@sentry/core@9.29.0':
+    resolution: {integrity: sha512-wDyNe45PM+RCGtUn1tK7LzJ08ksv8i8KRUHrst7lsinEfRm83YH+wbWrPmwkVNEngUZvYkHwGLbNXM7xgFUuDQ==}
+    engines: {node: '>=18'}
 
   '@sentry/nextjs@8.15.0':
     resolution: {integrity: sha512-R0KQhnpz6lQAp2r08pZRdBXJSyxgs6X770Y/LGboCBzhzqNzsNLii9nZKt0PUFPGSCnQYS6J+daFXH7Kz+K+vg==}
@@ -8914,9 +8935,25 @@ packages:
     peerDependencies:
       react: ^16.14.0 || 17.x || 18.x || 19.x
 
+  '@sentry/tracing@7.120.3':
+    resolution: {integrity: sha512-B7bqyYFgHuab1Pn7w5KXsZP/nfFo4VDBDdSXDSWYk5+TYJ3IDruO3eJFhOrircfsz4YwazWm9kbeZhkpsHDyHg==}
+    engines: {node: '>=8'}
+
+  '@sentry/types@7.120.3':
+    resolution: {integrity: sha512-C4z+3kGWNFJ303FC+FxAd4KkHvxpNFYAFN8iMIgBwJdpIl25KZ8Q/VdGn0MLLUEHNLvjob0+wvwlcRBBNLXOow==}
+    engines: {node: '>=8'}
+
   '@sentry/types@8.15.0':
     resolution: {integrity: sha512-AZc9nSHKuNH8P/7ihmq5fbZBiQ7Gr35kJq9Tad9eVuOgL8D+2b6Vqu/61ljVVlMFI0tBGFsSkWJ/00PfBcVKWg==}
     engines: {node: '>=14.18'}
+
+  '@sentry/types@9.29.0':
+    resolution: {integrity: sha512-OT4s7DBcTeuae6lWbvPkge4EZYEhUn1eU3o8VLYelrGsf2DgyTA4TACQWRFoTlTp+oYCX2xKm/peJjM20X9ufg==}
+    engines: {node: '>=18'}
+
+  '@sentry/utils@7.120.3':
+    resolution: {integrity: sha512-UDAOQJtJDxZHQ5Nm1olycBIsz2wdGX8SdzyGVHmD8EOQYAeDZQyIlQYohDe9nazdIOQLZCIc3fU0G9gqVLkaGQ==}
+    engines: {node: '>=8'}
 
   '@sentry/utils@8.15.0':
     resolution: {integrity: sha512-1ISmyYFuRHJbGun0gUYscyz1aP6RfILUldNAUwQwF0Ycu8YOi4n8uwJRN0aov6cCi41tnZWOMBagSeLxbJiJgQ==}
@@ -21512,9 +21549,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       resolve-from: 5.0.0
-      rollup: 4.24.0
-      rollup-plugin-dts: 6.1.1(rollup@4.24.0)(typescript@5.4.5)
-      rollup-plugin-node-externals: 7.1.2(rollup@4.24.0)
+      rollup: 4.39.0
+      rollup-plugin-dts: 6.1.1(rollup@4.39.0)(typescript@5.4.5)
+      rollup-plugin-node-externals: 7.1.2(rollup@4.39.0)
       semver: 7.6.3
       serialize-javascript: 6.0.2
       serve-handler: 6.1.5
@@ -25186,7 +25223,7 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       abortcontroller-polyfill: 1.7.5
       base-x: 3.0.10
       browserslist: 4.24.2
@@ -25214,7 +25251,7 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
       '@parcel/watcher': 2.4.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -25288,7 +25325,7 @@ snapshots:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/rust': 2.12.0
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
 
   '@parcel/optimizer-svgo@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
@@ -25320,7 +25357,7 @@ snapshots:
       '@parcel/node-resolver-core': 3.3.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@swc/core': 1.3.107(@swc/helpers@0.5.11)
       semver: 7.6.3
     transitivePeerDependencies:
@@ -25509,7 +25546,7 @@ snapshots:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       nullthrows: 1.1.1
 
   '@parcel/transformer-js@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
@@ -25520,7 +25557,7 @@ snapshots:
       '@parcel/rust': 2.12.0
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@swc/helpers': 0.5.11
       browserslist: 4.24.2
       nullthrows: 1.1.1
@@ -25593,7 +25630,7 @@ snapshots:
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       utility-types: 3.11.0
     transitivePeerDependencies:
       - '@parcel/core'
@@ -25671,7 +25708,7 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
 
-  '@parcel/workers@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
+  '@parcel/workers@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
@@ -25680,8 +25717,6 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@peculiar/asn1-schema@2.3.8':
     dependencies:
@@ -27584,6 +27619,12 @@ snapshots:
       '@sentry/types': 8.15.0
       '@sentry/utils': 8.15.0
 
+  '@sentry-internal/tracing@7.120.3':
+    dependencies:
+      '@sentry/core': 7.120.3
+      '@sentry/types': 7.120.3
+      '@sentry/utils': 7.120.3
+
   '@sentry/babel-plugin-component-annotate@2.20.1': {}
 
   '@sentry/browser@8.15.0':
@@ -27598,7 +27639,7 @@ snapshots:
 
   '@sentry/bundler-plugin-core@2.20.1(encoding@0.1.13)':
     dependencies:
-      '@babel/core': 7.24.7
+      '@babel/core': 7.26.10
       '@sentry/babel-plugin-component-annotate': 2.20.1
       '@sentry/cli': 2.32.1(encoding@0.1.13)
       dotenv: 16.4.5
@@ -27650,10 +27691,46 @@ snapshots:
       - encoding
       - supports-color
 
+  '@sentry/core@7.120.3':
+    dependencies:
+      '@sentry/types': 7.120.3
+      '@sentry/utils': 7.120.3
+
   '@sentry/core@8.15.0':
     dependencies:
       '@sentry/types': 8.15.0
       '@sentry/utils': 8.15.0
+
+  '@sentry/core@9.29.0': {}
+
+  '@sentry/nextjs@8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.88.2)':
+    dependencies:
+      '@opentelemetry/instrumentation-http': 0.52.1(@opentelemetry/api@1.9.0)
+      '@rollup/plugin-commonjs': 26.0.1(rollup@3.29.4)
+      '@sentry/core': 8.15.0
+      '@sentry/node': 8.15.0
+      '@sentry/opentelemetry': 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)
+      '@sentry/react': 8.15.0(react@18.3.1)
+      '@sentry/types': 8.15.0
+      '@sentry/utils': 8.15.0
+      '@sentry/vercel-edge': 8.15.0
+      '@sentry/webpack-plugin': 2.20.1(encoding@0.1.13)(webpack@5.88.2)
+      chalk: 3.0.0
+      next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      resolve: 1.22.8
+      rollup: 3.29.4
+      stacktrace-parser: 0.1.10
+    optionalDependencies:
+      webpack: 5.88.2
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/core'
+      - '@opentelemetry/instrumentation'
+      - '@opentelemetry/sdk-trace-base'
+      - '@opentelemetry/semantic-conventions'
+      - encoding
+      - react
+      - supports-color
 
   '@sentry/nextjs@8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.1)(encoding@0.1.13)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.88.2)':
     dependencies:
@@ -27749,7 +27826,21 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       react: 18.3.1
 
+  '@sentry/tracing@7.120.3':
+    dependencies:
+      '@sentry-internal/tracing': 7.120.3
+
+  '@sentry/types@7.120.3': {}
+
   '@sentry/types@8.15.0': {}
+
+  '@sentry/types@9.29.0':
+    dependencies:
+      '@sentry/core': 9.29.0
+
+  '@sentry/utils@7.120.3':
+    dependencies:
+      '@sentry/types': 7.120.3
 
   '@sentry/utils@8.15.0':
     dependencies:
@@ -28727,7 +28818,7 @@ snapshots:
 
   '@types/eslint@8.56.10':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       '@types/json-schema': 7.0.15
 
   '@types/estree-jsx@1.0.5':
@@ -29971,10 +30062,10 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))':
+  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))':
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
-      next: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -29988,7 +30079,24 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)':
+  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)':
+    dependencies:
+      '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
+      next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - webpack
+
+  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(webpack@5.88.2)':
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
       next: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -30005,10 +30113,10 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)':
+  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.1)(webpack@5.88.2)':
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
-      next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -30219,25 +30327,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@bcoe/v8-coverage': 0.2.3
-      debug: 4.3.4
-      istanbul-lib-coverage: 3.2.2
-      istanbul-lib-report: 3.0.1
-      istanbul-lib-source-maps: 5.0.6
-      istanbul-reports: 3.1.7
-      magic-string: 0.30.10
-      magicast: 0.3.4
-      picocolors: 1.1.0
-      std-env: 3.7.0
-      strip-literal: 2.1.0
-      test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
-    transitivePeerDependencies:
-      - supports-color
-
   '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -30257,25 +30346,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@bcoe/v8-coverage': 0.2.3
-      debug: 4.3.4
-      istanbul-lib-coverage: 3.2.2
-      istanbul-lib-report: 3.0.1
-      istanbul-lib-source-maps: 5.0.6
-      istanbul-reports: 3.1.7
-      magic-string: 0.30.10
-      magicast: 0.3.4
-      picocolors: 1.1.0
-      std-env: 3.7.0
-      strip-literal: 2.1.0
-      test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
-    transitivePeerDependencies:
-      - supports-color
-
   '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -30291,7 +30361,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -30345,7 +30415,7 @@ snapshots:
       pathe: 1.1.2
       picocolors: 1.1.0
       sirv: 2.0.4
-      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
+      vitest: 1.6.0(@types/node@22.9.1)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   '@vitest/utils@1.6.0':
     dependencies:
@@ -36193,7 +36263,7 @@ snapshots:
       strip-json-comments: 3.1.1
       underscore: 1.13.6
 
-  jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10):
+  jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10):
     dependencies:
       abab: 2.0.6
       cssstyle: 3.0.0
@@ -39919,17 +39989,17 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.24.7
 
-  rollup-plugin-dts@6.1.1(rollup@4.24.0)(typescript@5.4.5):
+  rollup-plugin-dts@6.1.1(rollup@4.39.0)(typescript@5.4.5):
     dependencies:
       magic-string: 0.30.10
-      rollup: 4.24.0
+      rollup: 4.39.0
       typescript: 5.4.5
     optionalDependencies:
       '@babel/code-frame': 7.24.7
 
-  rollup-plugin-node-externals@7.1.2(rollup@4.24.0):
+  rollup-plugin-node-externals@7.1.2(rollup@4.39.0):
     dependencies:
-      rollup: 4.24.0
+      rollup: 4.39.0
 
   rollup-plugin-polyfill-node@0.13.0(rollup@4.24.0):
     dependencies:
@@ -42112,16 +42182,6 @@ snapshots:
       yaml: 2.4.5
     optional: true
 
-  vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
-    dependencies:
-      aria-query: 5.3.0
-      chalk: 5.3.0
-      css.escape: 1.5.1
-      dom-accessibility-api: 0.6.3
-      lodash-es: 4.17.21
-      redent: 4.0.0
-      vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
-
   vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
     dependencies:
       aria-query: 5.3.0
@@ -42132,16 +42192,6 @@ snapshots:
       redent: 4.0.0
       vitest: 1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
-  vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
-    dependencies:
-      aria-query: 5.3.0
-      chalk: 5.3.0
-      css.escape: 1.5.1
-      dom-accessibility-api: 0.6.3
-      lodash-es: 4.17.21
-      redent: 4.0.0
-      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
-
   vitest-dom@0.1.1(vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)):
     dependencies:
       aria-query: 5.3.0
@@ -42150,44 +42200,7 @@ snapshots:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
-
-  vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1):
-    dependencies:
-      '@vitest/expect': 1.6.0
-      '@vitest/runner': 1.6.0
-      '@vitest/snapshot': 1.6.0
-      '@vitest/spy': 1.6.0
-      '@vitest/utils': 1.6.0
-      acorn-walk: 8.3.3
-      chai: 4.4.1
-      debug: 4.3.4
-      execa: 8.0.1
-      local-pkg: 0.5.0
-      magic-string: 0.30.10
-      pathe: 1.1.2
-      picocolors: 1.0.1
-      std-env: 3.7.0
-      strip-literal: 2.1.0
-      tinybench: 2.8.0
-      tinypool: 0.8.4
-      vite: 5.4.9(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)
-      vite-node: 1.6.0(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)
-      why-is-node-running: 2.2.2
-    optionalDependencies:
-      '@types/node': 20.14.9
-      '@vitest/ui': 1.6.0(vitest@1.6.0)
-      happy-dom: 12.10.3
-      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
+      vitest: 1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
   vitest@1.6.0(@types/node@20.14.9)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1):
     dependencies:
@@ -42215,7 +42228,7 @@ snapshots:
       '@types/node': 20.14.9
       '@vitest/ui': 1.6.0(vitest@1.6.0)
       happy-dom: 12.10.3
-      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
+      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -42252,44 +42265,7 @@ snapshots:
       '@types/node': 20.16.5
       '@vitest/ui': 1.6.0(vitest@1.6.0)
       happy-dom: 12.10.3
-      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  vitest@1.6.0(@types/node@20.16.5)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1):
-    dependencies:
-      '@vitest/expect': 1.6.0
-      '@vitest/runner': 1.6.0
-      '@vitest/snapshot': 1.6.0
-      '@vitest/spy': 1.6.0
-      '@vitest/utils': 1.6.0
-      acorn-walk: 8.3.3
-      chai: 4.4.1
-      debug: 4.3.4
-      execa: 8.0.1
-      local-pkg: 0.5.0
-      magic-string: 0.30.10
-      pathe: 1.1.2
-      picocolors: 1.0.1
-      std-env: 3.7.0
-      strip-literal: 2.1.0
-      tinybench: 2.8.0
-      tinypool: 0.8.4
-      vite: 5.4.9(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)
-      vite-node: 1.6.0(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)
-      why-is-node-running: 2.2.2
-    optionalDependencies:
-      '@types/node': 20.16.5
-      '@vitest/ui': 1.6.0(vitest@1.6.0)
-      happy-dom: 12.10.3
-      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
+      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -42326,7 +42302,7 @@ snapshots:
       '@types/node': 22.9.1
       '@vitest/ui': 1.6.0(vitest@1.6.0)
       happy-dom: 12.10.3
-      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2)(utf-8-validate@5.0.10)
+      jsdom: 22.1.0(bufferutil@4.0.9)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - less
       - lightningcss

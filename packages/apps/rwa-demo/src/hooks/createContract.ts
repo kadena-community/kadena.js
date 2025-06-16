@@ -1,9 +1,9 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useNotifications } from '@/hooks/notifications';
 import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IAddContractProps } from '@/services/createContract';
 import { getClient } from '@/utils/client';
 import type { IUnsignedCommand } from '@kadena/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useOrganisation } from './organisation';
@@ -22,10 +22,21 @@ export const useCreateContract = () => {
     data: IAddContractProps,
   ): Promise<boolean | undefined> => {
     if (!userToken || !organisation) {
-      addNotification({
-        intent: 'negative',
-        label: 'User token is missing',
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'User token is missing',
+        },
+        {
+          name: `error:submit:createcontract`,
+          options: {
+            message: 'User token is missing',
+            sentryData: {
+              type: 'submit_chain',
+            },
+          },
+        },
+      );
       return;
     }
 
@@ -52,11 +63,27 @@ export const useCreateContract = () => {
     const { tx } = (await result.json()) as { tx: IUnsignedCommand };
 
     if (!tx) {
-      addNotification({
-        intent: 'negative',
-        label: 'Error creating contract',
-        message: 'Unknown error occurred',
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'Error creating contract',
+          message: 'Unknown error occurred',
+        },
+        {
+          name: `error:submit:createcontract`,
+          options: {
+            message: 'Unknown error occurred',
+            sentryData: {
+              type: 'submit_chain',
+              captureContext: {
+                extra: {
+                  result,
+                },
+              },
+            },
+          },
+        },
+      );
       return;
     }
 
@@ -64,11 +91,28 @@ export const useCreateContract = () => {
       const signedTransaction = await sign(tx);
 
       if (!signedTransaction) {
-        addNotification({
-          intent: 'negative',
-          label: 'Signing transaction failed',
-          message: 'Please check your account and try again.',
-        });
+        addNotification(
+          {
+            intent: 'negative',
+            label: 'Signing transaction failed',
+            message: 'Please check your account and try again.',
+          },
+          {
+            name: `error:submit:createcontract`,
+            options: {
+              message: 'Problem with signing transaction',
+              sentryData: {
+                type: 'submit_chain',
+                captureContext: {
+                  extra: {
+                    tx,
+                    result,
+                  },
+                },
+              },
+            },
+          },
+        );
         return;
       }
 

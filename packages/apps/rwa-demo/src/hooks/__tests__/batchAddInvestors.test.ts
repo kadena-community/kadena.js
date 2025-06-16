@@ -81,8 +81,8 @@ describe('batchAddInvestor hook', () => {
       };
     });
 
-    vi.mock('@kadena/kode-ui/patterns', async () => {
-      const actual = await vi.importActual('@kadena/kode-ui/patterns');
+    vi.mock('@/hooks/notifications', async () => {
+      const actual = await vi.importActual('@/hooks/notifications');
       return {
         ...actual,
         useNotifications: mocksHook.useNotifications,

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import {
   EVENT_NAMES,
   analyticsEvent,
@@ -106,6 +107,7 @@ describe('analytics', () => {
         {
           hash: '/he-man',
           label: 'Master of the universe',
+          name: 'error:submitChain',
         },
       );
     });
@@ -132,7 +134,127 @@ describe('analytics', () => {
         {
           hash: '/he-man',
           label: 'Master of the universe',
+          name: 'error:submitChain',
         },
+      );
+    });
+  });
+
+  describe('analyticsEvent Sentry', () => {
+    const OLD_ENV = process.env;
+    let sentrySpy: any;
+    beforeEach(() => {
+      sentrySpy = vi
+        .spyOn(Sentry, 'captureException')
+        .mockImplementation(() => undefined as any);
+      process.env = { ...OLD_ENV, NODE_ENV: 'production' };
+    });
+    afterAll(() => {
+      process.env = OLD_ENV;
+    });
+
+    it('calls Sentry.captureException with correct label and sentryContent', () => {
+      analyticsEvent(EVENT_NAMES['error:submitChain'], {
+        sentryData: {
+          type: 'submit_chain',
+          label: 'Test Error',
+          data: { message: 'fail', explorerUrl: 'url' },
+          captureContext: { level: 'error', extra: { foo: 'bar' } },
+        },
+        message: 'fail',
+        networkId: 'testnet',
+      });
+      expect(sentrySpy).toHaveBeenCalledWith(
+        'Test Error',
+        expect.objectContaining({
+          mechanism: expect.objectContaining({
+            handled: true,
+            type: 'submit_chain',
+            data: expect.objectContaining({
+              message: 'fail',
+              explorerUrl: 'url',
+            }),
+          }),
+          captureContext: expect.objectContaining({
+            level: 'error',
+            extra: { foo: 'bar' },
+          }),
+        }),
+      );
+    });
+
+    it('uses default label if none provided', () => {
+      analyticsEvent(EVENT_NAMES['error:submitChain'], {
+        sentryData: {
+          type: 'submit_chain',
+          data: { message: 'fail' },
+        },
+        message: 'fail',
+        networkId: 'testnet',
+      });
+      expect(sentrySpy).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          mechanism: expect.objectContaining({
+            type: 'submit_chain',
+          }),
+        }),
+      );
+    });
+
+    it('sets handled to true by default', () => {
+      analyticsEvent(EVENT_NAMES['error:submitChain'], {
+        sentryData: {
+          type: 'submit_chain',
+          data: {},
+        },
+      });
+      expect(sentrySpy).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          mechanism: expect.objectContaining({
+            handled: true,
+          }),
+        }),
+      );
+    });
+
+    it('sets handled to false if provided', () => {
+      analyticsEvent(EVENT_NAMES['error:submitChain'], {
+        sentryData: {
+          type: 'submit_chain',
+          handled: false,
+          data: {},
+        },
+      });
+      expect(sentrySpy).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          mechanism: expect.objectContaining({
+            handled: false,
+          }),
+        }),
+      );
+    });
+
+    it('adds explorerUrl from captureContext.extra.res.requestKey if not present', () => {
+      analyticsEvent(EVENT_NAMES['error:submitChain'], {
+        sentryData: {
+          type: 'submit_chain',
+          data: {},
+          captureContext: { extra: { res: { requestKey: 'abc123' } } },
+        },
+        networkId: 'testnet',
+      });
+      expect(sentrySpy).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          mechanism: expect.objectContaining({
+            data: expect.objectContaining({
+              explorerUrl: expect.stringContaining('abc123'),
+            }),
+          }),
+        }),
       );
     });
   });

@@ -1,4 +1,5 @@
 'use client';
+import { useNotifications } from '@/hooks/notifications';
 import type { ICompactStepperItemProps } from '@kadena/kode-ui';
 import {
   Button,
@@ -11,7 +12,6 @@ import {
 import {
   CardContentBlock,
   FocussedLayoutHeaderContent,
-  useNotifications,
 } from '@kadena/kode-ui/patterns';
 import { useSearchParams } from 'next/navigation';
 

@@ -1,11 +1,12 @@
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useNotifications } from '@/hooks/notifications';
 import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import { useNotifications } from '@kadena/kode-ui/patterns';
+import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -30,17 +31,31 @@ export const useFreezeInvestor = () => {
     data: ISetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
     if (!asset) {
-      addNotification({
-        intent: 'negative',
-        label: 'asset not found',
-        message: '',
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'asset not found',
+          message: '',
+        },
+        {
+          name: `error:submit:freezeinvestor`,
+          options: {
+            message: 'asset not found',
+            sentryData: {
+              type: 'submit_chain',
+            },
+          },
+        },
+      );
       return;
     }
 
     if (!account || !user) return;
+
+    let res: ITransactionDescriptor | undefined = undefined;
+    let tx: IUnsignedCommand | undefined = undefined;
     try {
-      const tx = await setAddressFrozen(data, account!, asset);
+      tx = await setAddressFrozen(data, account!, asset);
       await store?.setFrozenMessage(data, user, asset);
 
       const signedTransaction = await sign(tx);
@@ -48,7 +63,7 @@ export const useFreezeInvestor = () => {
       if (!signedTransaction) return;
 
       const client = getClient();
-      const res = await client.submit(signedTransaction);
+      res = await client.submit(signedTransaction);
 
       return addTransaction({
         ...res,
@@ -56,11 +71,29 @@ export const useFreezeInvestor = () => {
         accounts: [data.investorAccount],
       });
     } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'there was an error',
+          message: interpretErrorMessage(e.message),
+        },
+        {
+          name: `error:submit:freezeinvestor`,
+          options: {
+            message: interpretErrorMessage(e.message),
+            sentryData: {
+              type: 'submit_chain',
+              captureContext: {
+                extra: {
+                  tx,
+                  data,
+                  res,
+                },
+              },
+            },
+          },
+        },
+      );
     }
   };
 

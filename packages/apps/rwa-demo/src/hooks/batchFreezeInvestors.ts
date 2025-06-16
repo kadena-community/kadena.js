@@ -1,11 +1,12 @@
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useNotifications } from '@/hooks/notifications';
 import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import { batchSetAddressFrozen } from '@/services/batchSetAddressFrozen';
 import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import { useNotifications } from '@kadena/kode-ui/patterns';
+import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -31,16 +32,30 @@ export const useBatchFreezeInvestors = () => {
     data: IBatchSetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
     if (!asset || !user) {
-      addNotification({
-        intent: 'negative',
-        label: 'asset not found',
-        message: '',
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'asset not found',
+          message: '',
+        },
+        {
+          name: `error:submit:batchfreezeinvestors`,
+          options: {
+            message: 'asset not found',
+            sentryData: {
+              type: 'submit_chain',
+            },
+          },
+        },
+      );
+
       return;
     }
 
+    let res: ITransactionDescriptor | undefined = undefined;
+    let tx: IUnsignedCommand | undefined = undefined;
     try {
-      const tx = await batchSetAddressFrozen(data, account!, asset);
+      tx = await batchSetAddressFrozen(data, account!, asset);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       await store?.setFrozenMessages(data, user, asset);
       const signedTransaction = await sign(tx);
@@ -48,7 +63,7 @@ export const useBatchFreezeInvestors = () => {
       if (!signedTransaction) return;
 
       const client = getClient();
-      const res = await client.submit(signedTransaction);
+      res = await client.submit(signedTransaction);
 
       return addTransaction({
         ...res,
@@ -56,11 +71,29 @@ export const useBatchFreezeInvestors = () => {
         accounts: [...data.investorAccounts, account!.address],
       });
     } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'there was an error',
+          message: interpretErrorMessage(e.message),
+        },
+        {
+          name: `error:submit:batchfreezeinvestors`,
+          options: {
+            message: interpretErrorMessage(e.message),
+            sentryData: {
+              type: 'submit_chain',
+              captureContext: {
+                extra: {
+                  tx,
+                  data,
+                  res,
+                },
+              },
+            },
+          },
+        },
+      );
     }
   };
 

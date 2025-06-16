@@ -18,7 +18,6 @@ import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 import { MaxSupplyMessage } from '../MaxSupplyMessage/MaxSupplyMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
-
 interface IProps {
   onClose?: () => void;
   investorAccount: string;
