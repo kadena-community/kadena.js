@@ -30,7 +30,7 @@ describe('useNotifications', () => {
     vi.clearAllMocks();
   });
 
-  it.only('should call addNotification from UI notifications', () => {
+  it('should call addNotification from UI notifications', () => {
     const { result } = renderHook(() => useNotifications());
     const data = { intent: 'positive', message: 'Success!' };
     result.current.addNotification(data);
