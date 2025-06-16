@@ -318,19 +318,27 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
 
-    const accountInfoList: IAccountInfo[] = response.accounts.flatMap(
-      (accountData) =>
-        (accountData.kadenaAccounts || []).map((kdaAccount) => ({
-          accountName: kdaAccount.name,
-          networkId: accountData.account.split(':')[1],
-          contract: kdaAccount.contract,
-          chainAccounts: kdaAccount.chains,
-          guard: {
-            keys: [accountData.publicKey],
-            pred: 'keys-all',
-          },
-        })),
-    );
+    const accountInfoList: IAccountInfo[] = response.accounts.flatMap((accountData) => {
+      const { account, publicKey, kadenaAccounts = [] } = accountData;
+      const networkId = account.split(':')[1];
+      const baseGuard = { keys: [publicKey], pred: 'keys-all' };
+      
+      return kadenaAccounts.length > 0
+        ? kadenaAccounts.map(({ name, contract, chains }): IAccountInfo => ({
+            accountName: name,
+            networkId,
+            contract,
+            chainAccounts: chains,
+            guard: baseGuard
+          }))
+        : [{
+            accountName: `k:${publicKey}`,
+            networkId,
+            contract: null,
+            chainAccounts: [],
+            guard: baseGuard
+          }];
+    });
 
     if (!accountInfoList.length) {
       console.error('No accounts found in wallet connect response', response);
