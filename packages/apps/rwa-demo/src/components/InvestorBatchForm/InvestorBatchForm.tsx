@@ -1,6 +1,8 @@
 import { useBatchAddInvestors } from '@/hooks/batchAddInvestors';
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
-import { Button } from '@kadena/kode-ui';
+import { MonoCheckBox } from '@kadena/kode-icons';
+import type { PressEvent } from '@kadena/kode-ui';
+import { Button, Notification, Stack } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -10,22 +12,20 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC, ReactElement } from 'react';
-import { cloneElement, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DragNDropCSV } from '../DragNDropCSV/DragNDropCSV';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
 }
 
 export interface IRegisterIdentityBatchProps {
   select: string[];
 }
 
-export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
   const [accounts, setAccounts] = useState<ICSVAccount[]>([]);
   const { submit } = useBatchAddInvestors();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
@@ -35,15 +35,12 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
     },
   });
 
-  const handleOpen = () => {
+  useEffect(() => {
     setIsRightAsideExpanded(true);
-    setIsOpen(true);
-    if (trigger.props.onPress) trigger.props.onPress();
-  };
+  }, []);
 
   const handleOnClose = () => {
     setIsRightAsideExpanded(false);
-    setIsOpen(false);
     if (onClose) onClose();
   };
 
@@ -68,40 +65,76 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
     setAccounts(accounts);
   };
 
+  const toggleSelectAll = (evt: PressEvent) => {
+    const d = document.querySelectorAll('#investor-batch-form #select');
+    const notSelected = [].filter.call(d, function (el: HTMLInputElement) {
+      return el.checked === false;
+    });
+
+    const select = !notSelected.length;
+
+    [].forEach.call(d, function (el: HTMLInputElement) {
+      el.checked = !select;
+    });
+  };
+
   return (
     <>
-      {isRightAsideExpanded && isOpen && (
+      {isRightAsideExpanded && (
         <RightAside isOpen onClose={handleOnClose}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Batch add investors" />
             <RightAsideContent>
-              <DragNDropCSV
-                onResult={handleResult}
-                resultSchema={{ alias: 'string', account: 'string' }}
-              />
-
-              {accounts.length > 0 && (
-                <CompactTable
-                  fields={[
-                    {
-                      key: 'account',
-                      label: '',
-                      width: '20%',
-                      render: CompactTableFormatters.FormatCheckbox({
-                        name: 'select',
-                      }),
-                    },
-                    {
-                      key: 'account',
-                      label: 'Account',
-                      width: '40%',
-                      render: CompactTableFormatters.FormatAccount(),
-                    },
-                    { key: 'alias', label: 'Alias', width: '40%' },
-                  ]}
-                  data={accounts}
+              <Stack
+                flexDirection="column"
+                width="100%"
+                gap="sm"
+                id="investor-batch-form"
+              >
+                <Notification role="status" intent="info">
+                  Drag and drop a CSV file with the following schema:
+                  <pre>{JSON.stringify({ account: 'string' }, null, 2)}</pre>
+                </Notification>
+                <DragNDropCSV
+                  onResult={handleResult}
+                  resultSchema={{ account: 'string' }}
                 />
-              )}
+                {accounts.length > 0 && (
+                  <Stack width="100%" flexDirection="column" gap="sm">
+                    <Stack>
+                      <Button
+                        onPress={toggleSelectAll}
+                        startVisual={<MonoCheckBox />}
+                        isCompact
+                        variant="outlined"
+                      >
+                        Select all
+                      </Button>
+                    </Stack>
+                    <CompactTable
+                      variant="open"
+                      fields={[
+                        {
+                          key: 'account',
+                          label: '',
+                          width: '20%',
+                          render: CompactTableFormatters.FormatCheckbox({
+                            name: 'select',
+                          }),
+                        },
+                        {
+                          key: 'account',
+                          label: 'Account',
+                          width: '40%',
+                          render: CompactTableFormatters.FormatAccount(),
+                        },
+                        { key: 'alias', label: 'Alias', width: '40%' },
+                      ]}
+                      data={accounts}
+                    />
+                  </Stack>
+                )}
+              </Stack>
             </RightAsideContent>
             <RightAsideFooter>
               <Button onPress={handleOnClose} variant="transparent">
@@ -114,8 +147,6 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose, trigger }) => {
           </form>
         </RightAside>
       )}
-
-      {cloneElement(trigger, { ...trigger.props, onPress: handleOpen })}
     </>
   );
 };

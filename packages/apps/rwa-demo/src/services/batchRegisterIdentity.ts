@@ -29,17 +29,17 @@ export const batchRegisterIdentity = async (
 
   return Pact.builder
     .execution(
-      `(${getAsset(asset)}.batch-register-identity (read-msg 'investors) (read-msg 'investor-keysets) (read-msg 'agents) (read-msg 'countries))
+      `(${getAsset(asset)}.batch-register-identity (read-msg 'investor-addresses) (read-msg 'investor-guards) (read-msg 'identities) (read-msg 'countries))
       `,
     )
-    .addData('investor-keysets', keys)
+    .addData('investor-guards', keys)
     .addData(
-      'investors',
+      'investor-addresses',
       data.accounts.map((account) => account.account),
     )
     .addData('agent', data.agent.address)
     .addData(
-      'agents',
+      'identities',
       data.accounts.map(() => ''),
     )
     .addData(
