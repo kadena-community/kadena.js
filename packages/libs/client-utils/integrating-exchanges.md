@@ -22,6 +22,7 @@ This guide also assumes the following:
 
 - You host one or more Chainweb nodes that you control and monitor.
 - You have one or more Chainweb nodes that connect to the Kadena test network or main production network.
+- - You are familiar with Kadena single-key and multi-key accounts, account naming conventions, and the use of keysets.
 - You want to use the Kadena client libraries to write scripts that perform common tasks, like creating transactions and listening for events.
 
 This guide includes code examples written in TypeScript for all of the common exchange-related activity.
@@ -30,19 +31,18 @@ If you aren't already hosting your own Chainweb node, see [Get started running a
 ## Connect to specific chains
 
 You can interact with the Kadena network through any of its separate chains.
-The chains—with chain identifiers 0 through 19—share a common view of state, but operate independently and in parallel.
+The chains—with chain identifiers 0 through 19—share a common view of blockchain history through consensus, but operate independently and in parallel.
 
-Because the chains operate independently and you must specify the chain identifier that you want to send transactions to, most exchanges limit the number of chains they work with.
+Because the chains operate independently and you must specify the chain identifier that you want to send transactions to, you can write a custom **host generator** function that specifies the node host name or IP address of the node you manage and the specific chains you want to interact with.
 
-If you want to limit the chains you work with, you can write a custom **host generator** function to connect to specific chains.
-The following example illustrates creating a Kadena **client** connection that only connects to chains 0, 1, and 2:
+The following example illustrates creating a Kadena **client** connection that connects the host `kadena-node.my-exchange.tld` but only interacts with chains 0, 1, and 2:
 
 ```typescript
 // Import the createClient function from the library.
 import { createClient } from '@kadena/client';
 
-// Generally, exchanges host their own nodes and
-// only interact with a limited set of chains.
+// This customHostGeneratorFunction specifies the chainweb-node hostname
+// and specific chains for API calls.
 const customHostGeneratorFunction = ({ networkId, chainId }) => {
   if (![0, 1, 2].includes(chainId)) {
     throw new Error('Exchange only conducts business on chains 0, 1, and 2.');
@@ -59,10 +59,7 @@ const client = createClient(customHostGeneratorFunction, {
 });
 ```
 
-If you haven't already downloaded and installed the `@kadena/client` libraries, see [Get started with Kadena client](/reference/kadena-client#get-started-with-kadena-client) for an introduction to creating and using client connections to interact with Chainweb nodes and the Kadena blockchain.
-You should also download and install the helper utilities defined in the `@kadena/client-utils` library.
-This library provides simplified functions for interacting with the Kadena `coin` contract and developing your own custom interfaces.
-For more information about the helper utilities, see the [client-utils](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils) repository and [@kadena/client-utils](https://www.npmjs.com/package/@kadena/client-utils) package registry.
+For more information about the `@kadena/client` libraries, see [Get started with Kadena client](/reference/kadena-client#get-started-with-kadena-client) and [`@kadena/client-utils`](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils) or [npm package](https://www.npmjs.com/package/@kadena/client-utils).
 
 ## Generate an account on the blockchain
 
@@ -118,7 +115,7 @@ For example, you can create keys and accounts by using any of the following wall
    At this point, the account isn't associated with any of the chains in the network.
    You must add funds on at least one specific chain in the network  you've selected for the account to become active and available for use.
    
-   If you are setting up this multi-signature account on the Testnet network, you can fund the account directly from Chainweaver or by using the [Developer Tools](https://tools.kadena.io/) Testnet faucet.
+   If you are setting up this multi-signature account on the Testnet network, you can fund the account directly from Chainweaver by clicking **Fund on Testnet** in the account details, or by using the [Developer Tools Testnet faucet](https://tools.kadena.io/faucet/new).
 
 5. Click the multi-signature account alias to view its details, then click **Fund on Testnet** to fund the account.
    
@@ -130,6 +127,7 @@ For example, you can create keys and accounts by using any of the following wall
 ### Using mnemonic phrases
 
 To use mnemonic phrases programmatically, you can use the [`@kadena/hd-wallet`](https://www.npmjs.com/package/@kadena/hd-wallet) library.
+For more information about this library, see the [npm package](https://www.npmjs.com/package/@kadena/hd-wallet).
 
 ### Using client utilities
 
@@ -276,7 +274,7 @@ client.pollStatus(
 To get an estimation of the gas usage, you can execute a `local` call.
 
 Note that the gas estimation can be different from the actual gas by a transaction when the transaction is executed on the blockchain. 
-State changes that are recorded on the blockchain can influence the branches the code takes to keep included in a block.
+State changes that are recorded on the blockchain can influence the branches the code takes, and, as a result, affect the gas required to execute the transaction.
 
 ```typescript
 // We do not need to send signatures to check gas estimation.
