@@ -3,6 +3,7 @@ import { adminAuth, getTokenId } from './admin/app';
 
 type Handler = (req: NextRequest, context?: any) => Promise<Response>;
 
+//makes sure that the user is authenticated
 export function withAuth(handler: Handler): Handler {
   return async (req, context) => {
     const tokenId = getTokenId(req);
@@ -29,6 +30,7 @@ export function withAuth(handler: Handler): Handler {
   };
 }
 
+//makes sure that the user is authenticated and has the root admin role
 export function withRootAdmin(handler: Handler): Handler {
   return async (req, context) => {
     const tokenId = getTokenId(req);
@@ -47,13 +49,16 @@ export function withRootAdmin(handler: Handler): Handler {
   };
 }
 
+//makes sure that the user is authenticated and has the org admin role
+//for the organisationId passed in the query params or the current user is a root admin
 export function withOrgAdmin(handler: Handler): Handler {
   return async (req, context) => {
     const tokenId = getTokenId(req);
     const organisationId = new URL(req.url).searchParams.get('organisationId');
 
+    console.log(111, tokenId);
     const currentUser = await adminAuth()?.verifyIdToken(tokenId);
-
+    console.log(222, currentUser);
     //check if the current user has the rights to create this role
     if (
       !currentUser?.rootAdmin &&
