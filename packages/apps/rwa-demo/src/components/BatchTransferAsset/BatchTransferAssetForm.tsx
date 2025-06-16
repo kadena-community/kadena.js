@@ -9,8 +9,8 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
+  Notification,
   Stack,
 } from '@kadena/kode-ui';
 import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
@@ -32,7 +32,10 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<ITransferToken[]>([]);
   const { submit } = useBatchTransferTokens();
-  const { handleSubmit } = useForm<IBatchTransferTokensProps>({
+  const {
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<IBatchTransferTokensProps>({
     defaultValues: {
       select: [],
     },
@@ -86,10 +89,27 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
     <>
       {isOpen && (
         <Dialog isOpen={isOpen} onOpenChange={() => setIsOpen(false)}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogHeader>Batch Transfer</DialogHeader>
-            <DialogContent>
+          <DialogHeader>Batch Transfer</DialogHeader>
+          <DialogContent>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
               <Stack flexDirection="column" width="100%" gap="sm">
+                <Notification role="status" intent="info">
+                  Drag and drop a CSV file with the following schema:
+                  <pre>
+                    {JSON.stringify(
+                      { to: 'string', amount: 'number' },
+                      null,
+                      2,
+                    )}
+                  </pre>
+                </Notification>
                 <DragNDropCSV
                   onResult={handleResult}
                   resultSchema={{ to: 'string', amount: 'number' }}
@@ -108,6 +128,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                       </Button>
                     </Stack>
                     <CompactTable
+                      variant="outlined"
                       fields={[
                         {
                           key: 'to',
@@ -136,16 +157,23 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                   </Stack>
                 )}
               </Stack>
-            </DialogContent>
-            <DialogFooter>
-              <Button variant="outlined" onPress={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button variant="primary" type="submit">
-                Transfer
-              </Button>
-            </DialogFooter>
-          </form>
+              <Stack
+                width="100%"
+                flexDirection="row"
+                gap="md"
+                marginBlockStart="md"
+                justifyContent="flex-end"
+              >
+                <Button variant="outlined" onPress={() => setIsOpen(false)}>
+                  Cancel
+                </Button>
+
+                <Button isDisabled={!isValid} variant="primary" type="submit">
+                  Transfer
+                </Button>
+              </Stack>
+            </form>
+          </DialogContent>
         </Dialog>
       )}
 

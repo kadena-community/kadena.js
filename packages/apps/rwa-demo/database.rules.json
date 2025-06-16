@@ -45,7 +45,7 @@
       "$organisationId": {
         "assets": {
           ".read": "auth != null",
-          ".write": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true"
+          ".write": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true  || auth.token.allowedOrgs[$organisationId] === true"
         },
         "messages": {
           "$assetId": {
@@ -66,8 +66,16 @@
                 ".validate": "newData.isString() && newData.val().length <= 40"
               }
             },
+            "aliases": {
+              "$address": {
+                "alias": {
+                  ".validate": "newData.isString() && newData.val().length <= 40"
+                }
+              }
+            },
             "accounts": {
               "$address": {
+                ".validate": "newData.hasChildren(['address', 'alias', 'overallBalance', 'publicKey', 'walletName', 'guard', 'keyset'])",
                 "address": {
                   ".validate": "newData.isString() && newData.val() === $address && newData.val().length <= 70"
                 },

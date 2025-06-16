@@ -21,7 +21,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
 }) => {
   const { isExpanded } = useSideBarLayout();
-  const { isAgent, isOwner, isComplianceOwner } = useAccount();
+  const { isAgent, isOwner, isComplianceOwner, isInvestor } = useAccount();
 
   return (
     <SideBarLayout
@@ -50,7 +50,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
               href="/agents"
             />
           )}
-          {(isAgent || isOwner || isComplianceOwner) && (
+          {(isAgent || isOwner || isComplianceOwner || isInvestor) && (
             <SideBarItem
               visual={<MonoAttachMoney />}
               label="Investors"
