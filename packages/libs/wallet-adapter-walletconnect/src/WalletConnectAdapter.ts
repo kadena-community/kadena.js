@@ -77,17 +77,8 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         return {
           id,
           jsonrpc: '2.0',
-          result: {
-            accountName: firstAccount.accountName,
-            networkId: firstAccount.networkId,
-            contract: firstAccount.contract,
-            guard: {
-              keys: firstAccount.guard.keys,
-              pred: firstAccount.guard.pred,
-            },
-            chainAccounts: firstAccount.chainAccounts,
-          },
-        };
+          result: firstAccount,
+        } as JsonRpcResponse<IAccountInfo>;
 
       case 'kadena_sign_v1': {
         if (!this.client || !this.provider?.session) {
@@ -320,16 +311,23 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
 
     const accountInfoList: IAccountInfo[] = response.accounts.flatMap(
       (accountData) =>
-        (accountData.kadenaAccounts || []).map((kdaAccount) => ({
-          accountName: kdaAccount.name,
-          networkId: accountData.account.split(':')[1],
-          contract: kdaAccount.contract,
-          chainAccounts: kdaAccount.chains,
-          guard: {
-            keys: [accountData.publicKey],
-            pred: 'keys-all',
-          },
-        })),
+        (accountData.kadenaAccounts || []).map(
+          (kdaAccount) =>
+            ({
+              accountName: kdaAccount.name,
+              networkId: accountData.account.split(':')[1],
+              contract: kdaAccount.contract,
+              existsOnChains: kdaAccount.chains,
+              guard: {
+                keys: [accountData.publicKey],
+                pred: 'keys-all',
+              },
+              keyset: {
+                keys: [accountData.publicKey],
+                pred: 'keys-all',
+              },
+            }) as IAccountInfo,
+        ),
     );
 
     if (!accountInfoList.length) {
