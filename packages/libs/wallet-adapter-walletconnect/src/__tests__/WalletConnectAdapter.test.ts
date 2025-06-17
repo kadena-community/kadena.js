@@ -187,8 +187,12 @@ describe('WalletConnectAdapter', () => {
       expect(accounts).toEqual([
         {
           accountName: 'test-account',
-          chainAccounts: ['1'],
+          existsOnChains: ['1'],
           guard: {
+            keys: ['pubkey'],
+            pred: 'keys-all',
+          },
+          keyset: {
             keys: ['pubkey'],
             pred: 'keys-all',
           },
@@ -204,15 +208,17 @@ describe('WalletConnectAdapter', () => {
       const mockAccounts: IAccountInfo[] = [
         {
           accountName: 'acct1',
-          chainAccounts: ['1'],
+          existsOnChains: ['1'],
           guard: { keys: ['key1'], pred: 'keys-all' },
+          keyset: { keys: ['key1'], pred: 'keys-all' },
           networkId: 'development',
           contract: 'coin',
         },
         {
           accountName: 'acct2',
-          chainAccounts: ['1'],
+          existsOnChains: ['1'],
           guard: { keys: ['key2'], pred: 'keys-all' },
+          keyset: { keys: ['key2'], pred: 'keys-all' },
           networkId: 'development',
           contract: 'coin',
         },
@@ -270,8 +276,9 @@ describe('WalletConnectAdapter', () => {
     test('returns connected status with active account if provider exists', async () => {
       const mockActiveAccount: IAccountInfo = {
         accountName: 'acct1',
-        chainAccounts: ['1'],
+        existsOnChains: ['1'],
         guard: { keys: ['key1'], pred: 'keys-all' },
+        keyset: { keys: ['key1'], pred: 'keys-all' },
         networkId: 'development',
         contract: 'coin',
       };
