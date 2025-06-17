@@ -24,7 +24,7 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { asset } = useAsset();
+  const { asset, agents } = useAsset();
   const { getAll: getAllAgentRoles, setAssetRolesForAccount } =
     useGetAgentRoles();
   const { submit, isAllowed } = useEditAgent();
@@ -83,7 +83,6 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
     handleOnClose();
   };
 
-  // setError('accountName', { type: 'manual', message: 'test' });
   return (
     <>
       {isRightAsideExpanded && isOpen && (
@@ -98,6 +97,7 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
             <RightAsideContent>
               <Stack flexDirection="column" width="100%" gap="md">
                 <AccountNameField
+                  exemptAccounts={agents.map((a) => a.accountName)}
                   error={errors.accountName}
                   accountName={agent?.accountName}
                   control={control}

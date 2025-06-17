@@ -1,3 +1,4 @@
+import { useAsset } from '@/hooks/asset';
 import { useBatchTransferTokens } from '@/hooks/batchTransferTokens';
 import type {
   IBatchTransferTokensProps,
@@ -5,19 +6,21 @@ import type {
 } from '@/services/batchTransferTokens';
 import { MonoCheckBox } from '@kadena/kode-icons';
 import type { PressEvent } from '@kadena/kode-ui';
+import { Badge, Button, Notification, Stack } from '@kadena/kode-ui';
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  Notification,
-  Stack,
-} from '@kadena/kode-ui';
-import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
+  CompactTable,
+  CompactTableFormatters,
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
+  useSideBarLayout,
+} from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DragNDropCSV } from '../DragNDropCSV/DragNDropCSV';
+import { selectBoxClass } from './styles.css';
 
 interface IProps {
   onClose?: () => void;
@@ -29,9 +32,11 @@ export interface IRegisterIdentityBatchProps {
 }
 
 export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<ITransferToken[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { submit } = useBatchTransferTokens();
+  const { investors } = useAsset();
   const {
     handleSubmit,
     formState: { isValid },
@@ -42,11 +47,13 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
   });
 
   const handleOpen = () => {
+    setIsRightAsideExpanded(true);
     setIsOpen(true);
     if (trigger.props.onPress) trigger.props.onPress();
   };
 
   const handleOnClose = () => {
+    setIsRightAsideExpanded(false);
     setIsOpen(false);
     if (onClose) onClose();
   };
@@ -75,30 +82,34 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
   const toggleSelectAll = (evt: PressEvent) => {
     const d = document.querySelectorAll('#select');
     const notSelected = [].filter.call(d, function (el: HTMLInputElement) {
+      if (el.disabled) return false;
       return el.checked === false;
     });
 
     const select = !notSelected.length;
 
     [].forEach.call(d, function (el: HTMLInputElement) {
+      if (el.disabled) return false;
       el.checked = !select;
     });
   };
 
+  const investorsAccounts = investors.map((v) => v.accountName);
+
   return (
     <>
-      {isOpen && (
-        <Dialog isOpen={isOpen} onOpenChange={() => setIsOpen(false)}>
-          <DialogHeader>Batch Transfer</DialogHeader>
-          <DialogContent>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              style={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
+      {isRightAsideExpanded && isOpen && (
+        <RightAside isOpen onClose={handleOnClose}>
+          <RightAsideHeader label="Batch transfer tokens" />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <RightAsideContent>
               <Stack flexDirection="column" width="100%" gap="sm">
                 <Notification role="status" intent="info">
                   Drag and drop a CSV file with the following schema:
@@ -134,22 +145,53 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                           key: 'to',
                           label: '',
                           width: '20%',
-                          render: CompactTableFormatters.FormatCheckbox({
-                            name: 'select',
-                          }),
+                          render: ({ value }: { value: string }) => {
+                            const isDisabled = !investorsAccounts.includes(
+                              `${value}`.trim(),
+                            );
+
+                            return (
+                              <input
+                                className={selectBoxClass}
+                                disabled={isDisabled}
+                                type="checkbox"
+                                name="select"
+                                data-value={value}
+                                id="select"
+                                value={value}
+                              />
+                            );
+                          },
                         },
                         {
                           key: 'to',
                           label: 'To',
-                          width: '40%',
+                          width: '30%',
                           render: CompactTableFormatters.FormatAccount(),
                         },
                         {
                           key: 'amount',
                           label: 'Amount',
-                          width: '40%',
+                          width: '30%',
                           align: 'end',
                           render: CompactTableFormatters.FormatAmount(),
+                        },
+                        {
+                          key: 'to',
+                          label: 'Verified',
+                          width: '20%',
+                          render: ({ value }: { value: string }) => {
+                            const isDisabled = !investorsAccounts.includes(
+                              `${value}`.trim(),
+                            );
+
+                            if (!isDisabled) return null;
+                            return (
+                              <Badge size="sm" style="negative">
+                                no investor
+                              </Badge>
+                            );
+                          },
                         },
                       ]}
                       data={data}
@@ -157,24 +199,18 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                   </Stack>
                 )}
               </Stack>
-              <Stack
-                width="100%"
-                flexDirection="row"
-                gap="md"
-                marginBlockStart="md"
-                justifyContent="flex-end"
-              >
-                <Button variant="outlined" onPress={() => setIsOpen(false)}>
-                  Cancel
-                </Button>
+            </RightAsideContent>
+            <RightAsideFooter>
+              <Button variant="outlined" onPress={() => handleOnClose()}>
+                Cancel
+              </Button>
 
-                <Button isDisabled={!isValid} variant="primary" type="submit">
-                  Transfer
-                </Button>
-              </Stack>
-            </form>
-          </DialogContent>
-        </Dialog>
+              <Button isDisabled={!isValid} variant="primary" type="submit">
+                Transfer
+              </Button>
+            </RightAsideFooter>
+          </form>
+        </RightAside>
       )}
 
       {cloneElement(trigger, { ...trigger.props, onPress: handleOpen })}

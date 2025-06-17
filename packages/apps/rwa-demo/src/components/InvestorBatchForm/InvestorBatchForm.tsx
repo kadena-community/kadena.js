@@ -1,8 +1,9 @@
+import { useAsset } from '@/hooks/asset';
 import { useBatchAddInvestors } from '@/hooks/batchAddInvestors';
 import type { ICSVAccount } from '@/services/batchRegisterIdentity';
 import { MonoCheckBox } from '@kadena/kode-icons';
 import type { PressEvent } from '@kadena/kode-ui';
-import { Button, Notification, Stack } from '@kadena/kode-ui';
+import { Badge, Button, Notification, Stack } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -16,6 +17,7 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DragNDropCSV } from '../DragNDropCSV/DragNDropCSV';
+import { selectBoxClass } from './styles.css';
 
 interface IProps {
   onClose?: () => void;
@@ -26,6 +28,7 @@ export interface IRegisterIdentityBatchProps {
 }
 
 export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
+  const { investors } = useAsset();
   const [accounts, setAccounts] = useState<ICSVAccount[]>([]);
   const { submit } = useBatchAddInvestors();
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
@@ -68,15 +71,19 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
   const toggleSelectAll = (evt: PressEvent) => {
     const d = document.querySelectorAll('#investor-batch-form #select');
     const notSelected = [].filter.call(d, function (el: HTMLInputElement) {
+      if (el.disabled) return false;
       return el.checked === false;
     });
 
     const select = !notSelected.length;
 
     [].forEach.call(d, function (el: HTMLInputElement) {
+      if (el.disabled) return false;
       el.checked = !select;
     });
   };
+
+  const investorsAccounts = investors.map((v) => v.accountName);
 
   return (
     <>
@@ -115,20 +122,50 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
                       variant="open"
                       fields={[
                         {
-                          key: 'account',
+                          key: 'to',
                           label: '',
                           width: '20%',
-                          render: CompactTableFormatters.FormatCheckbox({
-                            name: 'select',
-                          }),
+                          render: ({ value }: { value: string }) => {
+                            const isDisabled = investorsAccounts.includes(
+                              `${value}`.trim(),
+                            );
+
+                            return (
+                              <input
+                                className={selectBoxClass}
+                                disabled={isDisabled}
+                                type="checkbox"
+                                name="select"
+                                data-value={value}
+                                id="select"
+                                value={value}
+                              />
+                            );
+                          },
                         },
                         {
                           key: 'account',
                           label: 'Account',
-                          width: '40%',
+                          width: '50%',
                           render: CompactTableFormatters.FormatAccount(),
                         },
-                        { key: 'alias', label: 'Alias', width: '40%' },
+                        {
+                          key: 'account',
+                          label: '',
+                          width: '35%',
+                          render: ({ value }: { value: string }) => {
+                            const isDisabled = investorsAccounts.includes(
+                              `${value}`.trim(),
+                            );
+
+                            if (!isDisabled) return null;
+                            return (
+                              <Badge size="sm" style="negative">
+                                exists
+                              </Badge>
+                            );
+                          },
+                        },
                       ]}
                       data={accounts}
                     />

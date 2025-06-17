@@ -2,16 +2,16 @@ import {
   useEventsQuery,
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { env } from '@/utils/env';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
 import { useEffect, useState } from 'react';
-import { useAsset } from './asset';
 
-export const useGetAgents = () => {
-  const { asset } = useAsset();
+export const useGetAgents = (asset?: IAsset) => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
+  const [shouldFetch, setShouldFetch] = useState(false);
 
   const {
     loading: addedLoading,
@@ -21,6 +21,7 @@ export const useGetAgents = () => {
     variables: {
       qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
     },
+    skip: !shouldFetch,
     fetchPolicy: 'no-cache',
   });
 
@@ -28,6 +29,7 @@ export const useGetAgents = () => {
     variables: {
       qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
     },
+    skip: !shouldFetch,
     fetchPolicy: 'no-cache',
   });
 
@@ -35,12 +37,14 @@ export const useGetAgents = () => {
     variables: {
       qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
     },
+    skip: !shouldFetch,
   });
 
   const { data: subscriptionRemoveData } = useEventSubscriptionSubscription({
     variables: {
       qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
     },
+    skip: !shouldFetch,
   });
 
   const initInnerData = async () => {
@@ -75,6 +79,21 @@ export const useGetAgents = () => {
         } as const;
       }) ?? [];
 
+    setInnerData([...filterRemovedRecords([...agentsAdded, ...agentsRemoved])]);
+  };
+
+  useEffect(() => {
+    if (removedLoading || addedLoading) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    initInnerData();
+  }, [
+    removedLoading,
+    addedLoading,
+    addedData?.events.edges.length ?? 0,
+    removedData?.events.edges.length ?? 0,
+  ]);
+
+  const addSubscriptionData = async () => {
     //listen to add events
     const addedSubscriptionData = (subscriptionAddData?.events
       ?.map((val) => {
@@ -109,29 +128,33 @@ export const useGetAgents = () => {
       })
       .filter((v) => v !== undefined) ?? []) as IRecord[];
 
-    const filteredData = [
+    setInnerData((oldValues) => [
       ...filterRemovedRecords([
-        ...agentsAdded,
-        ...agentsRemoved,
+        ...oldValues,
         ...addedSubscriptionData,
         ...removedSubscriptionData,
       ]),
-    ];
-
-    setInnerData(filteredData ?? []);
+    ]);
   };
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData();
-  }, [
-    addedData,
-    removedData,
-    removedLoading,
-    addedLoading,
-    subscriptionRemoveData,
-    subscriptionAddData,
-  ]);
+    addSubscriptionData();
+  }, [subscriptionAddData?.events, subscriptionRemoveData?.events]);
 
-  return { data: innerData, error, isLoading: addedLoading || removedLoading };
+  useEffect(() => {
+    setInnerData([]);
+    setShouldFetch(false);
+  }, [asset?.uuid]);
+
+  const initFetchAgents = () => {
+    setShouldFetch(true);
+  };
+
+  return {
+    data: innerData,
+    error,
+    isLoading: addedLoading || removedLoading,
+    initFetchAgents,
+  };
 };
