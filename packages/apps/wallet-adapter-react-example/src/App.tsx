@@ -17,6 +17,7 @@ import type {
   INetworkInfo,
   IUnsignedCommand,
 } from '@kadena/wallet-adapter-core';
+import { isKeySetGuard } from '@kadena/wallet-adapter-core';
 import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { createTransferCmd } from './transferCmd';
@@ -28,7 +29,11 @@ const openZelcore = (): void => {
 };
 
 import './styles.css';
-import { createExampleCommand, createExampleTransaction } from './utils';
+import {
+  autoSelectPublicKey,
+  createExampleCommand,
+  createExampleTransaction,
+} from './utils';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -60,6 +65,7 @@ const App = () => {
         JSON.stringify(
           createExampleTransaction(
             activeAccount.accountName,
+            autoSelectPublicKey(activeAccount),
             'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
             '0',
             network?.networkId || 'testnet04',
@@ -72,6 +78,7 @@ const App = () => {
         JSON.stringify(
           createExampleCommand(
             activeAccount.accountName,
+            autoSelectPublicKey(activeAccount),
             'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
             '0',
             network?.networkId || 'testnet04',
@@ -481,6 +488,11 @@ const App = () => {
                 isDisabled={!activeAccount}
                 onPress={() => {
                   if (!activeAccount) return;
+                  if (!isKeySetGuard(activeAccount.guard)) {
+                    return console.error(
+                      'Active account does not have a KeySet guard',
+                    );
+                  }
                   createTransferCmd({
                     accountFrom: activeAccount.accountName,
                     pubkey: activeAccount.guard.keys[0],
@@ -503,6 +515,11 @@ const App = () => {
                 isDisabled={!activeAccount}
                 onPress={() => {
                   if (!activeAccount) return;
+                  if (!isKeySetGuard(activeAccount.guard)) {
+                    return console.error(
+                      'Active account does not have a KeySet guard',
+                    );
+                  }
                   createTransferTx({
                     accountFrom: activeAccount.accountName,
                     pubkey: activeAccount.guard.keys[0],

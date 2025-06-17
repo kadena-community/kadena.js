@@ -86,7 +86,8 @@ describe('EckoAdapter', () => {
           networkId: 'testnet04',
           contract: 'coin',
           guard: { keys: ['pk1'], pred: 'keys-all' },
-          chainAccounts: [],
+          keyset: { keys: ['pk1'], pred: 'keys-all' },
+          existsOnChains: [],
         },
       });
     });
@@ -167,7 +168,8 @@ describe('EckoAdapter', () => {
           networkId: 'testnet04',
           contract: 'coin',
           guard: { keys: ['pk3'], pred: 'keys-all' },
-          chainAccounts: [],
+          keyset: { keys: ['pk3'], pred: 'keys-all' },
+          existsOnChains: [],
         },
       ]);
     });
