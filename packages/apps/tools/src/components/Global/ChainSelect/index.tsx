@@ -54,7 +54,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
     >
       {chains.map((chainId, index) => (
         <SelectItem key={chainId} textValue={`${chainId}`}>
-          <span>{chainId}</span>
+          <span style={{ marginInlineEnd: '16px' }}>{chainId}</span>
           {additionalInfoOptions && additionalInfoOptions.length ? (
             <span>{` (${additionalInfoOptions[index].data})`}</span>
           ) : null}

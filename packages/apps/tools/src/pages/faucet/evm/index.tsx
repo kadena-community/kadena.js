@@ -92,8 +92,9 @@ const ExistingAccountFaucetPage: FC = () => {
             <Stack width="100%" gap="lg">
               <AccountNameField
                 {...register('name')}
+                placeholder="Ethereum name or address (0x...)"
                 errorMessage={errors.name?.message}
-                label={t('The EVM address to fund coins to')}
+                label={t('Type the Ethereum account name or address to fund')}
               />
 
               <ChainSelect
