@@ -84,11 +84,15 @@ export interface IAccountInfo {
     // (undocumented)
     accountName: string;
     // (undocumented)
-    chainAccounts: string[];
-    // (undocumented)
     contract: string;
     // (undocumented)
+    existsOnChains: string[];
+    // (undocumented)
     guard: Guard;
+    // (undocumented)
+    keyset: KeySet;
+    // (undocumented)
+    label?: string;
     // (undocumented)
     networkId: string;
 }

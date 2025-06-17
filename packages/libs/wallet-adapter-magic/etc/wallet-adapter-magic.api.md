@@ -9,6 +9,7 @@ import type { IBaseWalletAdapterOptions } from '@kadena/wallet-adapter-core';
 import type { IBaseWalletFactoryOptions } from '@kadena/wallet-adapter-core';
 import type { IKdaMethodMap } from '@kadena/wallet-adapter-core';
 import { IProvider } from '@kadena/wallet-adapter-core';
+import type { KdaMethod } from '@kadena/wallet-adapter-core';
 
 // Warning: (ae-forgotten-export) The symbol "IMagicAdapterOptions" needs to be exported by the entry point index.d.ts
 //
@@ -20,137 +21,7 @@ export const createMagicAdapter: <T extends IBaseWalletFactoryOptions>(options: 
 };
 
 // @public
-export function detectMagicProvider(options?: {
-    silent?: boolean;
-    timeout?: number;
-}): Promise<IMagicProvider | null>;
-
-// @public
-export type ExtendedMethod = keyof ExtendedMethodMap;
-
-// @public
-export type ExtendedMethodMap = IKdaMethodMap & IEckoMethodMap;
-
-// @public
-export interface IEckoMethodMap {
-    kadena_checkStatus: {
-        params: {
-            networkId?: string;
-        };
-        response: IKadenaCheckStatusRPC;
-    };
-}
-
-// @public
-export interface IEckoQuicksignFailResponse {
-    // (undocumented)
-    error: string;
-    // (undocumented)
-    message?: string;
-    // (undocumented)
-    status: 'fail';
-}
-
-// Warning: (ae-forgotten-export) The symbol "IEckoQuicksignSuccessResponse" needs to be exported by the entry point index.d.ts
-//
-// @public
-export type IEckoQuicksignResponse = IEckoQuicksignSuccessResponse | IEckoQuicksignFailResponse;
-
-// @public
-export interface IKadenaCheckStatusRPC {
-    // (undocumented)
-    account?: {
-        chainId: string;
-        account: string;
-        publicKey: string;
-    };
-    // (undocumented)
-    message?: string;
-    status: string;
-}
-
-// @public
-export type IQuicksignResponse = IQuicksignResponseError | IQuicksignResponseOutcomes;
-
-// @public
-export interface IQuicksignResponseCommand {
-    // (undocumented)
-    cmd: string;
-    // (undocumented)
-    sigs: IQuicksignSigner[];
-}
-
-// @public
-export interface IQuicksignResponseError {
-    // (undocumented)
-    error: {
-        type: 'reject';
-    } | {
-        type: 'emptyList';
-    } | {
-        type: 'other';
-        msg: string;
-    };
-}
-
-// @public
-export interface IQuicksignResponseOutcomes {
-    // (undocumented)
-    responses: {
-        commandSigData: IQuicksignResponseCommand;
-        outcome: {
-            hash: string;
-            result: 'success';
-        } | {
-            msg: string;
-            result: 'failure';
-        } | {
-            result: 'noSig';
-        };
-    }[];
-}
-
-// @public
-export type IQuicksignSig = string | null;
-
-// @public
-export interface IQuicksignSigner {
-    // (undocumented)
-    pubKey: string;
-    // (undocumented)
-    sig: IQuicksignSig;
-}
-
-// @public
-export interface IRawAccountResponse {
-    // (undocumented)
-    message?: string;
-    // (undocumented)
-    status: string;
-    // (undocumented)
-    wallet?: {
-        account: string;
-        publicKey: string;
-    };
-}
-
-// @public
-export interface IRawNetworkResponse {
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    networkId: string;
-    // (undocumented)
-    url: string;
-}
-
-// @public
-export interface IRawRequestResponse {
-    // (undocumented)
-    message?: string;
-    // (undocumented)
-    status: 'success' | 'fail';
-}
+export function detectMagicProvider(options?: {}): Promise<IMagicProvider | null>;
 
 // @public
 export class MagicAdapter extends BaseWalletAdapter {
@@ -158,11 +29,11 @@ export class MagicAdapter extends BaseWalletAdapter {
     constructor(options: IMagicAdapterOptionsWithProvider);
     // (undocumented)
     name: string;
-    request<M extends ExtendedMethod>(args: {
+    request<M extends KdaMethod>(args: {
         id: number;
         method: M;
-        params?: ExtendedMethodMap[M]['params'];
-    }): Promise<ExtendedMethodMap[M]['response']>;
+        params?: IKdaMethodMap[M]['params'];
+    }): Promise<IKdaMethodMap[M]['response']>;
 }
 
 // Warnings were encountered during analysis:
