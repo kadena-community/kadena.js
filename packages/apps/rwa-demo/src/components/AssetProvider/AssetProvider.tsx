@@ -8,6 +8,7 @@ import {
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { AssetContext } from '@/contexts/AssetContext/AssetContext';
 import { useAccount } from '@/hooks/account';
+import { useGetAgents } from '@/hooks/getAgents';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { useGetInvestors } from '@/hooks/getInvestors';
@@ -54,6 +55,12 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     initFetchInvestors,
     isLoading: investorsIsLoading,
   } = useGetInvestors(asset);
+
+  const {
+    data: agents,
+    initFetchAgents,
+    isLoading: agentsIsLoading,
+  } = useGetAgents(asset);
   const { data: complianceRules } = useGetComplianceRules({ asset });
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
@@ -304,6 +311,9 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         investors,
         initFetchInvestors,
         investorsIsLoading,
+        agents,
+        initFetchAgents,
+        agentsIsLoading,
       }}
     >
       {children}

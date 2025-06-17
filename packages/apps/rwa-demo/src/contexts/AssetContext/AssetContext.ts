@@ -38,6 +38,9 @@ export interface IAssetContext {
   investors: IRecord[];
   initFetchInvestors: () => void;
   investorsIsLoading: boolean;
+  agents: IRecord[];
+  initFetchAgents: () => void;
+  agentsIsLoading: boolean;
 }
 
 export const AssetContext = createContext<IAssetContext | null>(null);
