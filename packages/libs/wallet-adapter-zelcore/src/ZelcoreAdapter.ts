@@ -78,7 +78,8 @@ export class ZelcoreAdapter extends BaseWalletAdapter {
               networkId: this.networkId,
               contract: tokenContract,
               guard: data.guard,
-              chainAccounts: chainIds,
+              keyset: data.guard,
+              existsOnChains: chainIds,
             },
           } as JsonRpcResponse<IAccountInfo>;
         } else {
@@ -142,6 +143,7 @@ export class ZelcoreAdapter extends BaseWalletAdapter {
         // Zelcore returns [ "k:...", "<pubKey>", ... ]
         const accountName = payload.data[0]; // "k:<pubkey>"
         const publicKey = payload.data[1]; // "<pubKey>"
+        const keyset = { keys: [publicKey], pred: 'keys-all' };
         return {
           id: this.nonce,
           jsonrpc: '2.0',
@@ -149,8 +151,9 @@ export class ZelcoreAdapter extends BaseWalletAdapter {
             accountName,
             networkId: this.networkId!,
             contract: 'coin',
-            guard: { keys: [publicKey], pred: 'keys-all' },
-            chainAccounts: [],
+            guard: keyset,
+            keyset,
+            existsOnChains: [],
           },
         } as JsonRpcResponse<IAccountInfo>;
       }
@@ -175,12 +178,14 @@ export class ZelcoreAdapter extends BaseWalletAdapter {
         for (let i = 0; i < payload.data.length; i += 2) {
           const accountName = payload.data[i]; // "k:<pubKey>"
           const publicKey = payload.data[i + 1]; // "<pubKey
+          const keyset = { keys: [publicKey], pred: 'keys-all' };
           accounts.push({
             accountName,
             networkId: this.networkId!,
             contract: 'coin',
-            guard: { keys: [publicKey], pred: 'keys-all' },
-            chainAccounts: [],
+            guard: keyset,
+            keyset,
+            existsOnChains: [],
           });
         }
         return {

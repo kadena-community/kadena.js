@@ -45,8 +45,17 @@ export class WalletAdapterClient {
       if (exists) return exists;
 
       const provider = await adapterFactory.detect();
+
       if (provider) {
-        const adapter = await adapterFactory.adapter(provider);
+        const adapter = await adapterFactory
+          .adapter(provider)
+          .catch((error) => {
+            console.log(
+              `Error lazy-loading adapter ${adapterFactory.name}:`,
+              error,
+            );
+            throw error;
+          });
 
         if (!adapter || !adapter.name) {
           console.warn('Invalid adapter', adapter);

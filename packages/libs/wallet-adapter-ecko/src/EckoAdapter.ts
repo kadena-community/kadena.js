@@ -120,13 +120,14 @@ export class EckoAdapter extends BaseWalletAdapter {
 
       // Update adapter's networkId on a successful connection.
       this.networkId = finalParams.networkId;
-
+      const keyset = { keys: [accountResp.wallet.publicKey], pred: 'keys-all' };
       return {
         accountName: accountResp.wallet.account,
         networkId: finalParams.networkId,
         contract: 'coin',
-        guard: { keys: [accountResp.wallet.publicKey], pred: 'keys-all' },
-        chainAccounts: [],
+        guard: keyset,
+        keyset,
+        existsOnChains: [],
       };
     } catch (err) {
       /*
@@ -353,8 +354,9 @@ export class EckoAdapter extends BaseWalletAdapter {
             networkId: this.networkId!,
             contract: 'coin',
             guard: { keys: [resp.wallet.publicKey], pred: 'keys-all' },
-            chainAccounts: [],
-          },
+            keyset: { keys: [resp.wallet.publicKey], pred: 'keys-all' },
+            existsOnChains: [],
+          } as IAccountInfo,
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_getAccounts_v2': {
@@ -370,8 +372,9 @@ export class EckoAdapter extends BaseWalletAdapter {
           networkId: this.networkId!,
           contract: 'coin',
           guard: { keys: [resp.wallet.publicKey], pred: 'keys-all' },
-          chainAccounts: [],
-        };
+          keyset: { keys: [resp.wallet.publicKey], pred: 'keys-all' },
+          existsOnChains: [],
+        } as IAccountInfo;
         return {
           id,
           jsonrpc: '2.0',
