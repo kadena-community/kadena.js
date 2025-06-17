@@ -33,6 +33,7 @@ export interface IRegisterIdentityBatchProps {
 
 export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
   const [data, setData] = useState<ITransferToken[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { submit } = useBatchTransferTokens();
   const { investors } = useAsset();
@@ -47,11 +48,13 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
 
   const handleOpen = () => {
     setIsRightAsideExpanded(true);
+    setIsOpen(true);
     if (trigger.props.onPress) trigger.props.onPress();
   };
 
   const handleOnClose = () => {
     setIsRightAsideExpanded(false);
+    setIsOpen(false);
     if (onClose) onClose();
   };
 
@@ -95,7 +98,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
 
   return (
     <>
-      {isRightAsideExpanded && (
+      {isRightAsideExpanded && isOpen && (
         <RightAside isOpen onClose={handleOnClose}>
           <RightAsideHeader label="Batch transfer tokens" />
           <form
