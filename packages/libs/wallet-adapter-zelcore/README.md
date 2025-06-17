@@ -66,6 +66,17 @@ import {
 })();
 ```
 
+## Supported methods
+
+| Method                | KIP         | Supported |
+| --------------------- | ----------- | --------- |
+| kadena_sign_v1        | [KIP-17][1] | Yes       |
+| kadena_quicksign_v1   | [KIP-17][1] | Yes       |
+| kadena_getAccount_v1  | [KIP-37][2] | Yes       |
+| kadena_getAccounts_v2 | [KIP-38][3] | Yes       |
+| kadena_getNetwork_v1  | [KIP-39][4] | No        |
+| kadena_getNetworks_v1 | [KIP-40][5] | No        |
+
 ## Other Notes
 
 - The adapter internally calls methods like `kadena_sign_v1`, and
