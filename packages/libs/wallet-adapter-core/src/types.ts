@@ -37,7 +37,7 @@ export interface IAccountInfo {
   label?: string;
   networkId: string; // The unique identifier for the network for this account.
   contract: string; // Identifier for the fungible token contract.
-  guard?: Guard;
+  guard: Guard; // If available, otherwise fall back to keyset.
   keyset: KeySet;
   existsOnChains: string[]; // Array of chain IDs where this account exists.
 }
