@@ -10,6 +10,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
 
 interface IProps {
+  exemptAccounts?: string[];
   error?: FieldErrors['accountName'];
   accountName?: string;
   control: Control<any, any>;
@@ -18,6 +19,7 @@ interface IProps {
 }
 
 export const AccountNameField: FC<IProps> = ({
+  exemptAccounts,
   error,
   accountName,
   control,
@@ -60,6 +62,12 @@ export const AccountNameField: FC<IProps> = ({
           pattern: {
             value: /^[a-z]:[a-zA-Z0-9_.]+$/,
             message: 'Fill in a correct ..:account',
+          },
+          validate: (value: string) => {
+            if (exemptAccounts?.includes(value)) {
+              return 'This account already exists';
+            }
+            return true;
           },
         }}
         render={({ field }) => (

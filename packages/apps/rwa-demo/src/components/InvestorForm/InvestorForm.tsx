@@ -1,4 +1,5 @@
 import { useAddInvestor } from '@/hooks/addInvestor';
+import { useAsset } from '@/hooks/asset';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { Button } from '@kadena/kode-ui';
@@ -21,6 +22,7 @@ interface IProps {
 }
 
 export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
+  const { investors } = useAsset();
   const { submit, isAllowed } = useAddInvestor({
     investorAccount: investor?.accountName,
   });
@@ -67,6 +69,7 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
             />
             <RightAsideContent>
               <AccountNameField
+                exemptAccounts={investors.map((i) => i.accountName)}
                 error={errors.accountName}
                 accountName={investor?.accountName}
                 control={control}
