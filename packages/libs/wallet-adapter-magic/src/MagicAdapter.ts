@@ -110,7 +110,7 @@ export class MagicAdapter extends BaseWalletAdapter {
       contract: account.requestedFungibles?.[0].fungible ?? 'coin',
       existsOnChains: account.chainIds,
       networkId: account.networkId,
-      guard: account.guard,
+      guard: account.guard ?? account.keyset,
       keyset: account.keyset,
     };
 
