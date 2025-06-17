@@ -116,7 +116,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                 />
 
                 {data.length > 0 && (
-                  <Stack width="100%" flexDirection="column">
+                  <Stack width="100%" flexDirection="column" gap="sm">
                     <Stack>
                       <Button
                         onPress={toggleSelectAll}
@@ -128,7 +128,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                       </Button>
                     </Stack>
                     <CompactTable
-                      variant="outlined"
+                      variant="open"
                       fields={[
                         {
                           key: 'to',

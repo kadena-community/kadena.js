@@ -49,6 +49,7 @@ export const InvestorList: FC = () => {
     initFetchInvestors,
     investorsIsLoading: isLoading,
   } = useAsset();
+  const [isOpenBatchAddInvestors, setIsOpenBatchAddInvestors] = useState(false);
   const router = useRouter();
   const { account } = useAccount();
   const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
@@ -87,6 +88,13 @@ export const InvestorList: FC = () => {
           isDisabled={!isDirty}
         />
 
+        {isOpenBatchAddInvestors && (
+          <InvestorBatchForm
+            onClose={() => {
+              setIsOpenBatchAddInvestors(false);
+            }}
+          />
+        )}
         <SectionCard stack="vertical" data-testid="investorsCard">
           <SectionCardContentBlock>
             <SectionCardHeader
@@ -115,15 +123,15 @@ export const InvestorList: FC = () => {
                         />
                       }
                     >
-                      <InvestorBatchForm
-                        trigger={
-                          <ContextMenuItem
-                            label="Batch add investors"
-                            isDisabled={!isAddInvestorAllowed}
-                            endVisual={<MonoAdd />}
-                          />
-                        }
+                      <ContextMenuItem
+                        label="Batch add investors"
+                        isDisabled={!isAddInvestorAllowed}
+                        endVisual={<MonoAdd />}
+                        onClick={() => {
+                          setIsOpenBatchAddInvestors(true);
+                        }}
                       />
+
                       <ContextMenuItem
                         label="Freeze"
                         onClick={() => setBatchFreezeType('freeze')}
