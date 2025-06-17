@@ -25,7 +25,7 @@ export const createChainweaverLegacyAdapter = ((
   options?: IBaseWalletFactoryOptions,
 ) => {
   return {
-    name: 'Chainweaver',
+    name: 'ChainweaverLegacy',
     detect: async () => {
       return await detectChainweaverLegacyProvider({ silent: true });
     },

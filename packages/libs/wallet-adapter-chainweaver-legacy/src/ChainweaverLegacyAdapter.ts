@@ -35,7 +35,7 @@ const connectSchema = v.object({
  * or minimal no-ops where necessary.
  */
 export class ChainweaverLegacyAdapter extends BaseWalletAdapter {
-  public name: string = 'Chainweaver';
+  public name: string = 'ChainweaverLegacy';
   public nonce: number = 0;
   public connectSchema: StandardSchemaV1 = connectSchema;
 
@@ -80,7 +80,8 @@ export class ChainweaverLegacyAdapter extends BaseWalletAdapter {
               networkId: this.networkId,
               contract: tokenContract,
               guard: data.guard,
-              chainAccounts: chainIds,
+              keyset: data.guard,
+              existsOnChains: chainIds,
             },
           } as JsonRpcResponse<IAccountInfo>;
         } else {
