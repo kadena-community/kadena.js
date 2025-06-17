@@ -66,7 +66,7 @@ export const useBatchAddInvestors = () => {
         type: TXTYPES.ADDINVESTOR,
         accounts: [
           account?.address!,
-          ...data.accounts.map((account) => account.account),
+          ...data.accounts.map((account) => account.account.trim()),
         ],
       });
     } catch (e: any) {

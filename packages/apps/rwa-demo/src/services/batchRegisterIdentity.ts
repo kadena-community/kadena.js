@@ -23,7 +23,7 @@ export const batchRegisterIdentity = async (
   asset: IAsset,
 ) => {
   const promises = data.accounts.map((account) =>
-    getKeysetService(account.account),
+    getKeysetService(account.account.trim()),
   );
   const keys = await Promise.all(promises);
 
@@ -35,9 +35,9 @@ export const batchRegisterIdentity = async (
     .addData('investor-guards', keys)
     .addData(
       'investor-addresses',
-      data.accounts.map((account) => account.account),
+      data.accounts.map((account) => account.account.trim()),
     )
-    .addData('agent', data.agent.address)
+    .addData('agent', data.agent.address.trim())
     .addData(
       'identities',
       data.accounts.map(() => ''),
@@ -47,7 +47,7 @@ export const batchRegisterIdentity = async (
       data.accounts.map(() => new PactNumber(0).toPactInteger() as never),
     )
     .setMeta({
-      senderAccount: data.agent.address,
+      senderAccount: data.agent.address.trim(),
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
