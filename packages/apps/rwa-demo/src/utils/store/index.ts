@@ -103,7 +103,8 @@ export const RWAStore = (organisation: IOrganisation) => {
   ): Promise<IRegisterIdentityProps[]> => {
     if (!user) return [];
 
-    const accounts = ref(database, `${dbLocationString}/users/${user.uid}`);
+    const accounts =
+      ref(database, `${dbLocationString}/users/${user.uid}`) ?? {};
 
     return Object.entries(accounts).map(
       ([_, val]) => val as IRegisterIdentityProps,
@@ -300,5 +301,6 @@ export const RWAStore = (organisation: IOrganisation) => {
     setFrozenMessage,
     setFrozenMessages,
     getFrozenMessage,
+    getOverallTransactions,
   };
 };
