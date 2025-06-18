@@ -142,7 +142,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log({ user, token, organisation });
     if (user?.uid && token?.token && organisation) {
       if (
         !token.claims.allowedOrgs ||
