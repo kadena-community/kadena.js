@@ -167,61 +167,6 @@ export const RWAStore = (organisation: IOrganisation) => {
     );
   };
 
-  const listenToAccount = (
-    account: string,
-    setDataCallback: (account: IRegisterIdentityProps) => void,
-    asset?: IAsset,
-    user?: User,
-  ) => {
-    const assetFolder = getAssetFolder(asset);
-    if (!assetFolder || !user) return;
-
-    const storageListener = async () => {
-      const accounts = await getAccounts(user);
-
-      const foundAccount = accounts.find((acc) => acc.accountName === account);
-      if (!foundAccount) return;
-
-      setDataCallback(foundAccount);
-    };
-
-    window.addEventListener(GetAccountsLocalStorageKey(asset), storageListener);
-    window.addEventListener('storage', storageListener);
-
-    return () => {
-      window.removeEventListener(
-        GetAccountsLocalStorageKey(asset),
-        storageListener,
-      );
-      window.removeEventListener('storage', storageListener);
-    };
-  };
-
-  const listenToAccounts = (
-    setDataCallback: (aliases: any[]) => void,
-    asset?: IAsset,
-    user?: User,
-  ) => {
-    const assetFolder = getAssetFolder(asset);
-    if (!assetFolder) return;
-
-    const storageListener = async () => {
-      const accounts = await getAccounts(user);
-      setDataCallback(accounts);
-    };
-
-    window.addEventListener(GetAccountsLocalStorageKey(asset), storageListener);
-    window.addEventListener('storage', storageListener);
-
-    return () => {
-      window.removeEventListener(
-        GetAccountsLocalStorageKey(asset),
-        storageListener,
-      );
-      window.removeEventListener('storage', storageListener);
-    };
-  };
-
   const getFrozenMessage = async (
     account: string,
     user: User,
@@ -291,13 +236,10 @@ export const RWAStore = (organisation: IOrganisation) => {
     addTransaction,
     removeTransaction,
     listenToTransactions,
-
     setAccount,
     setAllAccounts,
     getAccount,
     getAccounts,
-    listenToAccount,
-    listenToAccounts,
     setFrozenMessage,
     setFrozenMessages,
     getFrozenMessage,

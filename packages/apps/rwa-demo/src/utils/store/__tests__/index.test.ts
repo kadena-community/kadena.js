@@ -480,168 +480,7 @@ describe('RWAstore', () => {
         expect(setItemSpy).toHaveBeenCalled();
       });
     });
-    describe('listenToAccount', () => {
-      it('should listen to a specific account for an asset', () => {
-        const organisation: IOrganisation = {
-          id: 'org1',
-          name: '',
-          domains: [],
-          sendEmail: '',
-        };
-        const asset: IAsset = {
-          namespace: 'ns',
-          contractName: 'cn',
-          uuid: '',
-          supply: 0,
-          investorCount: 0,
-          compliance: {
-            maxSupply: {
-              key: 'supply-limit-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxBalance: {
-              key: 'max-balance-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxInvestors: {
-              key: 'max-investors-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-          },
-        };
-        const user = { uid: 'user1' };
-        const store = RWAStore(organisation);
-        const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
-        store.listenToAccount('acc1', vi.fn(), asset, user as any);
-        expect(addEventListenerSpy).toHaveBeenCalled();
-        addEventListenerSpy.mockRestore();
-      });
-      it('should call the callback with the correct account data', async () => {
-        const organisation: IOrganisation = {
-          id: 'org1',
-          name: '',
-          domains: [],
-          sendEmail: '',
-        };
-        const asset: IAsset = {
-          namespace: 'ns',
-          contractName: 'cn',
-          uuid: '',
-          supply: 0,
-          investorCount: 0,
-          compliance: {
-            maxSupply: {
-              key: 'supply-limit-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxBalance: {
-              key: 'max-balance-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxInvestors: {
-              key: 'max-investors-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-          },
-        };
-        const user = { uid: 'user1' };
-        const store = RWAStore(organisation);
-        store.getAccounts = vi
-          .fn()
-          .mockResolvedValue([{ accountName: 'acc1', agent: {} }]);
-        const cb = vi.fn();
-        const remove = store.listenToAccount('acc1', cb, asset, user as any);
-        await Promise.resolve();
-        expect(typeof remove).toBe('function');
-      });
-    });
-    describe('listenToAccounts', () => {
-      it('should listen to all accounts for an asset', () => {
-        const organisation: IOrganisation = {
-          id: 'org1',
-          name: '',
-          domains: [],
-          sendEmail: '',
-        };
-        const asset: IAsset = {
-          namespace: 'ns',
-          contractName: 'cn',
-          uuid: '',
-          supply: 0,
-          investorCount: 0,
-          compliance: {
-            maxSupply: {
-              key: 'supply-limit-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxBalance: {
-              key: 'max-balance-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxInvestors: {
-              key: 'max-investors-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-          },
-        };
-        const user = { uid: 'user1' };
-        const store = RWAStore(organisation);
-        const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
-        store.listenToAccounts(vi.fn(), asset, user as any);
-        expect(addEventListenerSpy).toHaveBeenCalled();
-        addEventListenerSpy.mockRestore();
-      });
-      it('should call the callback with the correct accounts data', async () => {
-        const organisation: IOrganisation = {
-          id: 'org1',
-          name: '',
-          domains: [],
-          sendEmail: '',
-        };
-        const asset: IAsset = {
-          namespace: 'ns',
-          contractName: 'cn',
-          uuid: '',
-          supply: 0,
-          investorCount: 0,
-          compliance: {
-            maxSupply: {
-              key: 'supply-limit-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxBalance: {
-              key: 'max-balance-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-            maxInvestors: {
-              key: 'max-investors-compliance-v1',
-              isActive: false,
-              value: 0,
-            },
-          },
-        };
-        const user = { uid: 'user1' };
-        const store = RWAStore(organisation);
-        store.getAccounts = vi
-          .fn()
-          .mockResolvedValue([{ accountName: 'acc1', agent: {} }]);
-        const cb = vi.fn();
-        const remove = store.listenToAccounts(cb, asset, user as any);
-        await Promise.resolve();
-        expect(typeof remove).toBe('function');
-      });
-    });
+
     describe('getFrozenMessage', () => {
       it('should return the frozen message for an account', async () => {
         mocks.getMock.mockResolvedValueOnce({
@@ -779,6 +618,46 @@ describe('RWAstore', () => {
         );
         expect(mocks.setMock).not.toHaveBeenCalled();
       });
+      it('should remove the frozen message if no data.message is provided', async () => {
+        const organisation: IOrganisation = {
+          id: 'org1',
+          name: '',
+          domains: [],
+          sendEmail: '',
+        };
+        const asset: IAsset = {
+          namespace: 'ns',
+          contractName: 'cn',
+          uuid: '',
+          supply: 0,
+          investorCount: 0,
+          compliance: {
+            maxSupply: {
+              key: 'supply-limit-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxBalance: {
+              key: 'max-balance-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxInvestors: {
+              key: 'max-investors-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+          },
+        };
+        const user = { uid: 'user1' };
+        const store = RWAStore(organisation);
+        await store.setFrozenMessage(
+          { investorAccount: 'acc1', pause: true },
+          user as any,
+          asset,
+        );
+        expect(mocks.removeMock).toHaveBeenCalled();
+      });
     });
     describe('setFrozenMessages', () => {
       it('should set frozen messages for multiple accounts', async () => {
@@ -850,6 +729,100 @@ describe('RWAstore', () => {
         await Promise.all(promises);
 
         expect(store.setFrozenMessage).not.toHaveBeenCalled();
+      });
+    });
+    describe('getOverallTransactions', () => {
+      it('should return an empty array if no asset folder is found', async () => {
+        const organisation: IOrganisation = {
+          id: 'org1',
+          name: '',
+          domains: [],
+          sendEmail: '',
+        };
+        const store = RWAStore(organisation);
+        const result = await store.getOverallTransactions(undefined);
+        expect(result).toEqual([]);
+      });
+
+      it('should return an empty array if no data is found in the snapshot', async () => {
+        mocks.getMock.mockResolvedValueOnce({ toJSON: () => undefined });
+        const organisation: IOrganisation = {
+          id: 'org1',
+          name: '',
+          domains: [],
+          sendEmail: '',
+        };
+        const asset: IAsset = {
+          namespace: 'ns',
+          contractName: 'cn',
+          uuid: '',
+          supply: 0,
+          investorCount: 0,
+          compliance: {
+            maxSupply: {
+              key: 'supply-limit-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxBalance: {
+              key: 'max-balance-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxInvestors: {
+              key: 'max-investors-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+          },
+        };
+        const store = RWAStore(organisation);
+        const result = await store.getOverallTransactions(asset);
+        expect(result).toEqual([]);
+      });
+
+      it('should return mapped transactions with flattened accounts', async () => {
+        const mockData = {
+          tx1: { uuid: 'tx1', accounts: { a: { id: 1 }, b: { id: 2 } } },
+          tx2: { uuid: 'tx2', accounts: undefined },
+        };
+        mocks.getMock.mockResolvedValueOnce({ toJSON: () => mockData });
+        const organisation: IOrganisation = {
+          id: 'org1',
+          name: '',
+          domains: [],
+          sendEmail: '',
+        };
+        const asset: IAsset = {
+          namespace: 'ns',
+          contractName: 'cn',
+          uuid: '',
+          supply: 0,
+          investorCount: 0,
+          compliance: {
+            maxSupply: {
+              key: 'supply-limit-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxBalance: {
+              key: 'max-balance-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxInvestors: {
+              key: 'max-investors-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+          },
+        };
+        const store = RWAStore(organisation);
+        const result = await store.getOverallTransactions(asset);
+        expect(result).toEqual([
+          { uuid: 'tx1', accounts: [{ id: 1 }, { id: 2 }] },
+          { uuid: 'tx2', accounts: undefined },
+        ]);
       });
     });
   });
