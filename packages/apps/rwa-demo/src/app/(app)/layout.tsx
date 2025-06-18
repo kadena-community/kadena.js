@@ -5,6 +5,7 @@ import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
 import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
 import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
+import { MainLoading } from '@/components/MainLoading/MainLoading';
 import { ProfileForm } from '@/components/Profile/ProfileForm';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useTransactions } from '@/hooks/transactions';
@@ -59,7 +60,7 @@ const RootLayout = ({
     }
   }, [user, isMounted]);
 
-  if (!isMounted || !user) return 'loading...';
+  if (!isMounted || !user) return <MainLoading />;
 
   return (
     <>
