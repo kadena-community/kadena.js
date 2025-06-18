@@ -24,9 +24,6 @@ export const GET = async (request: NextRequest) => {
   const snapshot = await orgRef.once('value');
   const data = snapshot.toJSON() ?? {};
 
-  console.log(orgRef, 'orgRef');
-  console.log('data', data);
-
   const organisationArray = Object.entries(data).map(([key, val]) => ({
     ...val,
     id: key,
