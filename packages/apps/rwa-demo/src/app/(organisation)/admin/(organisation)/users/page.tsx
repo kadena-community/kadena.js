@@ -5,6 +5,7 @@ import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBread
 import { useOrganisation } from '@/hooks/organisation';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
+import { AdminBar } from '../AdminBar';
 
 const Home = () => {
   const { organisation } = useOrganisation();
@@ -21,6 +22,7 @@ const Home = () => {
           Users
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
+      <AdminBar />
 
       <UsersList organisationId={organisation.id} />
     </>

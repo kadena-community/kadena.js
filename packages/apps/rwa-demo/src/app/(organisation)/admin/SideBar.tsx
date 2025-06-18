@@ -34,7 +34,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
                 href={`/admin/root`}
               />
               <SideBarTreeItem
-                label="Admins"
+                label="Root admins"
                 component={Link}
                 href={`/admin/root/admins`}
               />

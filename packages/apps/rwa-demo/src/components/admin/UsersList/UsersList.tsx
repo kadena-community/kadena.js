@@ -294,7 +294,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
             />
 
             {!users.length && !isLoading && (
-              <Notification role="status" type="inlineStacked" intent="info">
+              <Notification role="status" intent="info">
                 No users yet
               </Notification>
             )}
