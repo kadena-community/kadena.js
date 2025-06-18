@@ -16,9 +16,9 @@ export const getAssetFolder = (asset?: IAsset) => {
   return getAsset(asset).replace(/\./g, '');
 };
 
-const getAccountVal = (val: string) => val.replace(/\./g, '');
+export const getAccountVal = (val: string) => val.replace(/\./g, '');
 
-const GetAccountsLocalStorageKey = (asset?: IAsset) => {
+export const GetAccountsLocalStorageKey = (asset?: IAsset) => {
   if (!asset) return '';
   return `${getAssetFolder(asset)}_${LOCALSTORAGE_ACCOUNTS}`;
 };
