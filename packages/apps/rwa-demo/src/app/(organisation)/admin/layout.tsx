@@ -21,6 +21,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 
 import { KLogo } from '@/app/(app)/KLogo';
+import { MainLoading } from '@/components/MainLoading/MainLoading';
 import { useUser } from '@/hooks/user';
 import { useRouter } from 'next/navigation';
 import { SideBar } from './SideBar';
@@ -52,7 +53,7 @@ const RootLayout = ({
     }
   }, [user, isMounted]);
 
-  if (!isMounted || !user) return 'loading';
+  if (!isMounted || !user) return <MainLoading />;
 
   return (
     <>

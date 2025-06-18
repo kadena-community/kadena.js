@@ -1,6 +1,7 @@
 'use client';
 import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
 import { AssetsList } from '@/components/AssetsList/AssetsList';
+import { MainLoading } from '@/components/MainLoading/MainLoading';
 import { WalletsList } from '@/components/WalletsList/WalletsList';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
@@ -13,7 +14,7 @@ const AgentLayout = ({
   const { account, isMounted } = useAccount();
   const { asset } = useAsset();
 
-  if (!isMounted) return null;
+  if (!isMounted) return <MainLoading />;
   if (!account) return <WalletsList init={true} />;
   if (!asset?.contractName) return <AssetsList init={true} />;
 

@@ -14,16 +14,26 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
+const loadingData: IOrganisation[] = Array.from({ length: 3 }, (_, i) => ({
+  id: '',
+  name: '',
+  domains: [],
+  sendEmail: '',
+}));
+
 export const OrganisationsList: FC = () => {
   const [organisations, setOrganisations] = useState<IOrganisation[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
     const init = async () => {
+      setIsLoading(true);
       const orgStore = await OrganisationStore();
       if (!orgStore) return;
       const result = await orgStore.getOrganisations();
       setOrganisations(result);
+      setIsLoading(false);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -41,6 +51,7 @@ export const OrganisationsList: FC = () => {
 
         <SectionCardBody>
           <CompactTable
+            isLoading={isLoading}
             variant="open"
             fields={[
               { key: 'name', label: 'name', width: '85%' },
@@ -61,7 +72,7 @@ export const OrganisationsList: FC = () => {
                 }),
               },
             ]}
-            data={organisations}
+            data={isLoading ? loadingData : organisations}
           />
         </SectionCardBody>
       </SectionCardContentBlock>

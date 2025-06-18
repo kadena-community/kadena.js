@@ -45,6 +45,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
   organisationId,
 }) => {
   const [admins, setAdmins] = useState<any[]>([]);
+  const [formIsOpen, setFormIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useUser();
   const { addNotification } = useNotifications();
@@ -166,11 +167,12 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
   return (
     <>
-      {isRightAsideExpanded && (
+      {isRightAsideExpanded && formIsOpen && (
         <RightAside
           isOpen
           onClose={() => {
             setIsRightAsideExpanded(false);
+            setFormIsOpen(false);
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -205,6 +207,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                 variant="transparent"
                 onClick={() => {
                   setIsRightAsideExpanded(false);
+                  setFormIsOpen(false);
                 }}
               >
                 Cancel
@@ -232,6 +235,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                 <Button
                   onPress={() => {
                     setIsRightAsideExpanded(true);
+                    setFormIsOpen(true);
                   }}
                   isCompact
                   variant="outlined"

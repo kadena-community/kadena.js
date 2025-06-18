@@ -56,9 +56,7 @@ export function withOrgAdmin(handler: Handler): Handler {
     const tokenId = getTokenId(req);
     const organisationId = new URL(req.url).searchParams.get('organisationId');
 
-    console.log(111, tokenId);
     const currentUser = await adminAuth()?.verifyIdToken(tokenId);
-    console.log(222, currentUser);
     //check if the current user has the rights to create this role
     if (
       !currentUser?.rootAdmin &&

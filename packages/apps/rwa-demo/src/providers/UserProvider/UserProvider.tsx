@@ -148,6 +148,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         !(token.claims.allowedOrgs as Record<string, boolean>)[organisation.id]
       ) {
         setIsMounted(false);
+        console.log('404 - user not allowed in this organisation');
         router.push('/404');
         return;
       }

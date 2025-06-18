@@ -76,7 +76,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [organisation]);
 
   useEffect(() => {
-    if (!organisation?.id) return;
+    if (!organisation?.id || !assetStore) return;
 
     const unlistenAssets = assetStore?.listenToAssets(setAssets);
     const result = localStorage.getItem(selectedKey);

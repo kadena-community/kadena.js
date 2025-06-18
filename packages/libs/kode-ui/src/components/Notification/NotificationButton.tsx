@@ -11,6 +11,7 @@ export interface INotificationButtonProps extends Variants {
   onClick?: () => void;
   children: React.ReactElement | string;
   icon: React.ReactElement;
+  isDisabled?: boolean;
 }
 const NotificationButton: FC<INotificationButtonProps> = forwardRef(
   (

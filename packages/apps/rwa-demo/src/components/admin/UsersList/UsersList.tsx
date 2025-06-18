@@ -42,6 +42,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
   organisationId,
 }) => {
   const [users, setUsers] = useState<IUserListItem[]>([]);
+  const [formIsOpen, setFormIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useUser();
   const { addNotification } = useNotifications();
@@ -148,11 +149,12 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
   return (
     <>
-      {isRightAsideExpanded && (
+      {isRightAsideExpanded && formIsOpen && (
         <RightAside
           isOpen
           onClose={() => {
             setIsRightAsideExpanded(false);
+            setFormIsOpen(false);
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -187,6 +189,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                 variant="transparent"
                 onClick={() => {
                   setIsRightAsideExpanded(false);
+                  setFormIsOpen(false);
                 }}
               >
                 Cancel
@@ -214,6 +217,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                 <Button
                   onPress={() => {
                     setIsRightAsideExpanded(true);
+                    setFormIsOpen(true);
                   }}
                   isCompact
                   variant="outlined"
@@ -290,7 +294,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
             />
 
             {!users.length && !isLoading && (
-              <Notification role="status" type="inlineStacked" intent="info">
+              <Notification role="status" intent="info">
                 No users yet
               </Notification>
             )}

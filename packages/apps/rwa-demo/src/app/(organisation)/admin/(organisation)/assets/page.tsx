@@ -28,6 +28,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { AdminBar } from '../AdminBar';
 
 const Home = () => {
   const { account } = useAccount();
@@ -50,6 +51,8 @@ const Home = () => {
           Assets
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
+
+      <AdminBar />
 
       {!account && (
         <Notification intent="warning" role="alert">
