@@ -1,4 +1,11 @@
-import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
+import {
+  atoms,
+  globalStyle,
+  recipe,
+  responsiveStyle,
+  style,
+  token,
+} from './../../styles';
 
 export const minHeaderHeight = '60px';
 export const sideBarWidth = '232px';
@@ -122,6 +129,10 @@ export const layoutWrapperClass = recipe({
   },
 });
 
+globalStyle(`body`, {
+  backgroundColor: token('color.background.base.default'),
+});
+
 export const bodyWrapperClass = style({
   minHeight: '100dvh',
 
@@ -131,6 +142,15 @@ export const bodyWrapperClass = style({
 export const mainClass = style({
   gridArea: 'sidebarlayout-main',
   position: 'relative',
+  ...responsiveStyle({
+    xs: { paddingInline: token('spacing.xs') },
+    sm: {
+      paddingInline: token('spacing.sm'),
+    },
+    md: {
+      paddingInlineEnd: token('spacing.sm'),
+    },
+  }),
 });
 
 export const topbannerWrapperClass = style({
