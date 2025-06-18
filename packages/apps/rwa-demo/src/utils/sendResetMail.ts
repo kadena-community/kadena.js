@@ -41,7 +41,7 @@ export const sendResetMail = async ({
   const mg = mailgun.client({ username: 'api', key: apiKey });
   try {
     const data = await mg.messages.create(
-      `sandbox82751cf702b4492eb83d87863e6ad350.mailgun.org`,
+      `sandbox5b28a024a9a040a69e7a8dcc71ea51ed.mailgun.org`,
       {
         from: `${organisation.name} <${organisation.sendEmail}>`,
         to: user.email,
