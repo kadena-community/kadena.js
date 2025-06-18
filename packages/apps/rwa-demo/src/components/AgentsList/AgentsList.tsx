@@ -123,7 +123,7 @@ export const AgentsList: FC = () => {
               data={isLoading ? loadingData : data}
             />
 
-            {data?.length === 0 && (
+            {!isLoading && data?.length === 0 && (
               <Notification role="alert">
                 <NotificationHeading>No agents found yet</NotificationHeading>
                 This asset has no agents yet.

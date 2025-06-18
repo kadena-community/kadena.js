@@ -230,7 +230,7 @@ export const InvestorList: FC = () => {
                 data={isLoading ? loadingData : data}
               />
 
-              {data?.length === 0 && (
+              {!isLoading && data?.length === 0 && (
                 <Notification role="alert">
                   <NotificationHeading>
                     No investors found yet
