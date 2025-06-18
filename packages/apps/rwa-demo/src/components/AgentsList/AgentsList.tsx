@@ -3,8 +3,15 @@ import { useAsset } from '@/hooks/asset';
 import { useEditAgent } from '@/hooks/editAgent';
 import { useRemoveAgent } from '@/hooks/removeAgent';
 import { loadingData } from '@/utils/loadingData';
-import { MonoDelete, MonoSupportAgent } from '@kadena/kode-icons';
-import { Button, Stack } from '@kadena/kode-ui';
+import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
+import {
+  Button,
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+  Stack,
+} from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -52,7 +59,7 @@ export const AgentsList: FC = () => {
                   <Button
                     isDisabled={!isEditAgentAllowed}
                     isCompact
-                    endVisual={<MonoSupportAgent />}
+                    endVisual={<MonoAdd />}
                     variant="outlined"
                   >
                     Add Agent
@@ -115,6 +122,25 @@ export const AgentsList: FC = () => {
               ]}
               data={isLoading ? loadingData : data}
             />
+
+            {data?.length === 0 && (
+              <Notification role="alert">
+                <NotificationHeading>No agents found yet</NotificationHeading>
+                This asset has no agents yet.
+                <NotificationFooter>
+                  <AgentForm
+                    trigger={
+                      <NotificationButton
+                        isDisabled={!isEditAgentAllowed}
+                        icon={<MonoAdd />}
+                      >
+                        Add Agent
+                      </NotificationButton>
+                    }
+                  />
+                </NotificationFooter>
+              </Notification>
+            )}
           </SectionCardBody>
         </SectionCardContentBlock>
       </SectionCard>

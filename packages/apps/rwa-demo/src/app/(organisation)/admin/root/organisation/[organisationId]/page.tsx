@@ -1,6 +1,7 @@
 'use client';
 import { AdminsList } from '@/components/admin/AdminsList/AdminsList';
 import { OrganisationInfoForm } from '@/components/admin/OrganisationInfoForm/OrganisationInfoForm';
+import { UsersList } from '@/components/admin/UsersList/UsersList';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { OrganisationStore } from '@/utils/store/organisationStore';
@@ -42,6 +43,7 @@ const Home = ({ params }: { params: { organisationId: string } }) => {
       <OrganisationInfoForm organisationId={organisation.id} />
 
       <AdminsList organisationId={organisation?.id} />
+      <UsersList organisationId={organisation?.id} />
     </>
   );
 };

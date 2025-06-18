@@ -15,6 +15,10 @@ import {
   ButtonGroup,
   ContextMenu,
   ContextMenuItem,
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
   Stack,
 } from '@kadena/kode-ui';
 import {
@@ -225,6 +229,27 @@ export const InvestorList: FC = () => {
                 ]}
                 data={isLoading ? loadingData : data}
               />
+
+              {data?.length === 0 && (
+                <Notification role="alert">
+                  <NotificationHeading>
+                    No investors found yet
+                  </NotificationHeading>
+                  This asset has no investors yet.
+                  <NotificationFooter>
+                    <InvestorForm
+                      trigger={
+                        <NotificationButton
+                          isDisabled={!isAddInvestorAllowed}
+                          icon={<MonoAdd />}
+                        >
+                          Add Investor
+                        </NotificationButton>
+                      }
+                    />
+                  </NotificationFooter>
+                </Notification>
+              )}
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>
