@@ -90,6 +90,36 @@ describe('claims API', () => {
       });
       expect(res.status).toBe(200);
     });
+
+    it('should add the specified organisationId to orgAdmins when multiple orgs already exist', async () => {
+      const organisationId = 'org3';
+      const user = {
+        uid: 'uid6',
+        customClaims: {
+          orgAdmins: {
+            org1: true,
+            org2: true,
+          },
+        },
+      };
+      mocks.mockGetUserByEmail.mockResolvedValueOnce(user);
+      const req = createMockRequest({
+        email: 'multi@example.com',
+        organisationId,
+      });
+      const res = await POST(req);
+      expect(mocks.mockGetUserByEmail).toHaveBeenCalledWith(
+        'multi@example.com',
+      );
+      expect(mocks.mockSetCustomUserClaims).toHaveBeenCalledWith('uid6', {
+        orgAdmins: {
+          org1: true,
+          org2: true,
+          org3: true,
+        },
+      });
+      expect(res.status).toBe(200);
+    });
   });
 
   describe('DELETE', () => {
@@ -122,6 +152,32 @@ describe('claims API', () => {
       const data = await res.json();
       expect(res.status).toBe(400);
       expect(data.message).toMatch(/delete your self as an admin/);
+    });
+
+    it('should remove only the specified organisationId from orgAdmins when multiple orgs exist', async () => {
+      mocks.mockVerifyIdToken.mockResolvedValueOnce({ uid: 'admin' });
+      const user = {
+        uid: 'uid5',
+        customClaims: {
+          orgAdmins: {
+            org1: true,
+            org2: true,
+          },
+        },
+      };
+      mocks.mockGetUser.mockResolvedValueOnce(user);
+      const req = {
+        url: 'http://localhost/api?organisationId=org1&uid=uid5',
+        headers: new Map([['authorization', 'Bearer mock-token']]),
+      } as unknown as NextRequest;
+      const res = await DELETE(req);
+      expect(mocks.mockGetUser).toHaveBeenCalledWith('uid5');
+      expect(mocks.mockSetCustomUserClaims).toHaveBeenCalledWith('uid5', {
+        orgAdmins: {
+          org2: true,
+        },
+      });
+      expect(res.status).toBe(200);
     });
   });
 });
