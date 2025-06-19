@@ -198,6 +198,9 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, [transactions.length, account]);
 
+  // check if the account is an active account in one of the transactions
+  // this is used to determine if the account change transaction is active
+  // and should be displayed in the UI
   const isActiveAccountChangeTx: boolean = useMemo(() => {
     if (!account?.address) return false;
     const txs = getTransactions(TXTYPES.ADDAGENT);
