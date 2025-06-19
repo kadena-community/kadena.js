@@ -60,8 +60,9 @@ export function withOrgAdmin(handler: Handler): Handler {
     //check if the current user has the rights to create this role
     if (
       !currentUser?.rootAdmin &&
-      (!organisationId || !currentUser?.orgAdmins[organisationId])
+      (!organisationId || !(currentUser?.orgAdmins ?? {})[organisationId])
     ) {
+      console.log('UnAuthorized');
       return new Response('UnAuthorized', {
         status: 401,
         headers: { 'Content-Type': 'application/json' },

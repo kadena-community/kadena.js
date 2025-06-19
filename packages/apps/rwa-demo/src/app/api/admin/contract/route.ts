@@ -23,13 +23,6 @@ const _POST = async (request: NextRequest) => {
 
   const tokenId = getTokenId(request);
   const currentUser = await adminAuth()?.verifyIdToken(tokenId);
-  if (!currentUser) {
-    return new Response('Unauthorized', {
-      status: 401,
-      statusText: 'Unauthorized',
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
 
   //get user from firebase db
   const ref = await getDB().ref(

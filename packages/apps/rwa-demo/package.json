@@ -63,6 +63,8 @@
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
     "@sentry/types": "^9.29.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "~14.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/gtag.js": "~0.0.12",
     "@types/node": "^20.12.7",

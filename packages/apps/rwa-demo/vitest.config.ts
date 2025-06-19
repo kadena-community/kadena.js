@@ -17,7 +17,7 @@ export default mergeConfig(
       globals: true,
       globalSetup: './vitest-globals.ts',
       setupFiles: ['vitest.setup.ts'],
-      environment: 'happy-dom',
+      environment: 'jsdom',
       coverage: {
         provider: 'v8',
         thresholds: {

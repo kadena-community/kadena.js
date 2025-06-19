@@ -64,23 +64,11 @@ const _GET = async (request: NextRequest) => {
   const user = await adminAuth()?.getUser(id);
   const existingClaims = user?.customClaims || {};
 
-  if (!organisationId) {
-    if (!existingClaims.rootAdmin) {
-      return new Response(`${id}: not a root admin`, {
-        status: 403,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-  } else {
-    if (
-      !existingClaims.orgAdmins ||
-      !existingClaims.orgAdmins[organisationId]
-    ) {
-      return new Response(`${id}: not an admin for ${organisationId}`, {
-        status: 403,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+  if (!existingClaims.orgAdmins || !existingClaims.orgAdmins[organisationId!]) {
+    return new Response(`${id}: not an admin for ${organisationId}`, {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   return new Response(
@@ -101,6 +89,9 @@ const _POST = async (request: NextRequest) => {
   let user: UserRecord | null = null;
   try {
     user = await adminAuth()?.getUserByEmail(email);
+    if (!user) {
+      throw new Error('User not found');
+    }
     await setOrgClaim(user, organisationId);
   } catch (e) {
     await adminAuth().createUser({

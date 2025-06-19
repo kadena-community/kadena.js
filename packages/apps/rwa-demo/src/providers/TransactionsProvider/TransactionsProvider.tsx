@@ -167,42 +167,62 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     return data;
   };
 
-  const listenToTransactions = (transactions: ITransaction[]) => {
-    const filteredTransactions = transactions.filter(
-      (transaction) =>
-        transaction.type.overall ||
-        transaction.accounts.indexOf(account?.address!) >= 0,
-    );
-    setTransactions(filteredTransactions);
-  };
-
   useEffect(() => {
     if (!account || !asset) return;
+
+    const listenToTransactions = (transactions: ITransaction[]) => {
+      const filteredTransactions = transactions.filter(
+        (transaction) =>
+          transaction.type.overall ||
+          transaction.accounts.indexOf(account?.address!) >= 0,
+      );
+      setTransactions(filteredTransactions);
+    };
+
     const unlisten = store?.listenToTransactions(listenToTransactions, asset);
     return unlisten;
   }, [account, asset, store]);
 
   useEffect(() => {
-    if (!account && !transactions.find((v) => !v.listener)) return;
+    if (!account || !transactions.some((v) => !v.listener)) return;
+
+    // Keep track of subscriptions to clean them up
+    const subscriptions: { subscribe: { unsubscribe: () => void } }[] = [];
 
     setTransactions((v) => {
       const transactionsWithListeners = v.map((transaction) => {
         const newTx = { ...transaction };
         if (newTx.listener) return newTx;
-        newTx.listener = addListener(newTx, account!);
+
+        newTx.listener = addListener(newTx, account);
+        if (newTx.listener) {
+          subscriptions.push(newTx.listener);
+        }
 
         return newTx;
       });
 
       return transactionsWithListeners;
     });
+
+    // Cleanup subscriptions when the effect is re-run or unmounted
+    return () => {
+      subscriptions.forEach((subscription) => {
+        if (subscription?.subscribe?.unsubscribe) {
+          subscription.subscribe.unsubscribe();
+        }
+      });
+    };
   }, [transactions.length, account]);
 
+  // check if the account is an active account in one of the transactions
+  // this is used to determine if the account change transaction is active
+  // and should be displayed in the UI
   const isActiveAccountChangeTx: boolean = useMemo(() => {
     if (!account?.address) return false;
     const txs = getTransactions(TXTYPES.ADDAGENT);
     return !!txs.find((tx) => tx.accounts.indexOf(account.address) >= 0);
-  }, [getTransactions(TXTYPES.ADDAGENT), account?.address]);
+  }, [getTransactions, account?.address]);
 
   const setTxsButtonRef = (ref: HTMLButtonElement) => {
     setTxsButtonRefData(ref);

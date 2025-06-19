@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   EVENT_NAMES,
   analyticsEvent,
@@ -6,8 +7,11 @@ import {
   updateConsent,
 } from '../analytics';
 
+// Type definition is omitted to use the existing gtag definition
+
 describe('analytics', () => {
   beforeEach(() => {
+    // @ts-ignore - Ignore type issues with mocking gtag
     window.gtag = vi.fn();
   });
 
@@ -26,7 +30,22 @@ describe('analytics', () => {
     });
 
     it('should update the localstorage', () => {
-      const localStorageSpy = vi.spyOn(localStorage, 'setItem');
+      // Create a mock implementation for localStorage
+      const localStorageMock = {
+        getItem: vi.fn(),
+        setItem: vi.fn(),
+        clear: vi.fn(),
+        removeItem: vi.fn(),
+        length: 0,
+        key: vi.fn(),
+      };
+
+      // Replace the global localStorage with our mock
+      Object.defineProperty(window, 'localStorage', {
+        value: localStorageMock,
+        writable: true,
+      });
+
       updateConsent(false);
 
       expect(window.gtag).toHaveBeenNthCalledWith(1, 'consent', 'update', {
@@ -34,8 +53,11 @@ describe('analytics', () => {
         analytics_storage: 'denied',
       });
 
-      expect(localStorageSpy).toBeCalledTimes(1);
-      expect(localStorageSpy).toBeCalledWith('cookie_consent', 'false');
+      expect(localStorageMock.setItem).toHaveBeenCalledTimes(1);
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'cookie_consent',
+        'false',
+      );
     });
 
     it('should also console.warn when the nodeenv is development', () => {
@@ -142,11 +164,12 @@ describe('analytics', () => {
 
   describe('analyticsEvent Sentry', () => {
     const OLD_ENV = process.env;
-    let sentrySpy: any;
+    let sentrySpy: ReturnType<typeof vi.spyOn>;
     beforeEach(() => {
+      // @ts-ignore - The mock doesn't return the expected string value but that's ok for tests
       sentrySpy = vi
         .spyOn(Sentry, 'captureException')
-        .mockImplementation(() => undefined as any);
+        .mockImplementation(() => '');
       process.env = { ...OLD_ENV, NODE_ENV: 'production' };
     });
     afterAll(() => {

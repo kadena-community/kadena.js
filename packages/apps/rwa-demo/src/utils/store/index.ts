@@ -16,9 +16,9 @@ export const getAssetFolder = (asset?: IAsset) => {
   return getAsset(asset).replace(/\./g, '');
 };
 
-const getAccountVal = (val: string) => val.replace(/\./g, '');
+export const getAccountVal = (val: string) => val.replace(/\./g, '');
 
-const GetAccountsLocalStorageKey = (asset?: IAsset) => {
+export const GetAccountsLocalStorageKey = (asset?: IAsset) => {
   if (!asset) return '';
   return `${getAssetFolder(asset)}_${LOCALSTORAGE_ACCOUNTS}`;
 };
@@ -103,7 +103,8 @@ export const RWAStore = (organisation: IOrganisation) => {
   ): Promise<IRegisterIdentityProps[]> => {
     if (!user) return [];
 
-    const accounts = ref(database, `${dbLocationString}/users/${user.uid}`);
+    const accounts =
+      ref(database, `${dbLocationString}/users/${user.uid}`) ?? {};
 
     return Object.entries(accounts).map(
       ([_, val]) => val as IRegisterIdentityProps,
@@ -164,61 +165,6 @@ export const RWAStore = (organisation: IOrganisation) => {
     return accounts.map((account) =>
       setAccount({ accountName: account.account }, asset),
     );
-  };
-
-  const listenToAccount = (
-    account: string,
-    setDataCallback: (account: IRegisterIdentityProps) => void,
-    asset?: IAsset,
-    user?: User,
-  ) => {
-    const assetFolder = getAssetFolder(asset);
-    if (!assetFolder || !user) return;
-
-    const storageListener = async () => {
-      const accounts = await getAccounts(user);
-
-      const foundAccount = accounts.find((acc) => acc.accountName === account);
-      if (!foundAccount) return;
-
-      setDataCallback(foundAccount);
-    };
-
-    window.addEventListener(GetAccountsLocalStorageKey(asset), storageListener);
-    window.addEventListener('storage', storageListener);
-
-    return () => {
-      window.removeEventListener(
-        GetAccountsLocalStorageKey(asset),
-        storageListener,
-      );
-      window.removeEventListener('storage', storageListener);
-    };
-  };
-
-  const listenToAccounts = (
-    setDataCallback: (aliases: any[]) => void,
-    asset?: IAsset,
-    user?: User,
-  ) => {
-    const assetFolder = getAssetFolder(asset);
-    if (!assetFolder) return;
-
-    const storageListener = async () => {
-      const accounts = await getAccounts(user);
-      setDataCallback(accounts);
-    };
-
-    window.addEventListener(GetAccountsLocalStorageKey(asset), storageListener);
-    window.addEventListener('storage', storageListener);
-
-    return () => {
-      window.removeEventListener(
-        GetAccountsLocalStorageKey(asset),
-        storageListener,
-      );
-      window.removeEventListener('storage', storageListener);
-    };
   };
 
   const getFrozenMessage = async (
@@ -290,15 +236,13 @@ export const RWAStore = (organisation: IOrganisation) => {
     addTransaction,
     removeTransaction,
     listenToTransactions,
-
     setAccount,
     setAllAccounts,
     getAccount,
     getAccounts,
-    listenToAccount,
-    listenToAccounts,
     setFrozenMessage,
     setFrozenMessages,
     getFrozenMessage,
+    getOverallTransactions,
   };
 };
