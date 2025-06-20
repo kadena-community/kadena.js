@@ -62,13 +62,18 @@ export const useAddInvestor = ({
     let res: ITransactionDescriptor | undefined = undefined;
     let tx: IUnsignedCommand | undefined = undefined;
     try {
+      console.log(1, 'data', data);
       //if the account is already investor, no need to add it again
       if (data.alreadyExists) return;
 
+      console.log(2, 'data', data);
       tx = await registerIdentity(newData, asset);
+      console.log(3, 'tx', tx);
       const signedTransaction = await sign(tx);
+      console.log(4, 'signedTransaction', signedTransaction);
       if (!signedTransaction) return;
 
+      console.log(111111, getClient);
       const client = getClient();
       res = await client.submit(signedTransaction);
 
