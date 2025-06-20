@@ -30,6 +30,7 @@ export default mergeConfig(
           'src/**/*.tsx',
           'src/**/*.d.ts',
           'src/**/__fixtures__/**/*.ts',
+          'src/**/__tests__/**/*.ts',
           'src/graphql/**/*.ts',
           'src/**/*.graph.ts',
           'src/__generated__/**/*.ts',
