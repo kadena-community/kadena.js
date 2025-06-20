@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
+import { vi } from 'vitest';
 import { useFaucet } from '../faucet';
 
 describe('faucet hook', () => {
@@ -23,6 +24,9 @@ describe('faucet hook', () => {
       }),
       useNotifications: vi.fn().mockReturnValue({
         addNotification: vi.fn(),
+      }),
+      useSubmit2Chain: vi.fn().mockReturnValue({
+        submit2Chain: vi.fn(),
       }),
     };
   });
@@ -60,6 +64,14 @@ describe('faucet hook', () => {
         useNotifications: mocksHook.useNotifications,
       };
     });
+
+    vi.mock('./../useSubmit2Chain', async () => {
+      const actual = await vi.importActual('./../useSubmit2Chain');
+      return {
+        ...actual,
+        useSubmit2Chain: mocksHook.useSubmit2Chain,
+      };
+    });
   });
 
   afterEach(() => {
@@ -78,6 +90,7 @@ describe('faucet hook', () => {
         account: {
           address: 'k:he-man',
         },
+        sign: vi.fn(),
         isMounted: true,
         isGasPayable: false,
       }));
@@ -91,62 +104,111 @@ describe('faucet hook', () => {
 
       expect(result.current.isAllowed).toBe(true);
     });
+
+    it('should return true, when account is mounted, when gas is NOT payable, when network is testnet04', () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:he-man',
+        },
+        sign: vi.fn(),
+        isMounted: true,
+        isGasPayable: false,
+      }));
+
+      mocksHook.useNetwork.mockImplementation(() => ({
+        ...mocksHook.useNetwork.getMockImplementation(),
+        activeNetwork: { networkId: 'testnet04' },
+      }));
+
+      const { result } = renderHook(() => useFaucet());
+
+      expect(result.current.isAllowed).toBe(true);
+    });
+
+    it('should return false, when account is NOT mounted, when gas is NOT payable, when network is development', () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:he-man',
+        },
+        sign: vi.fn(),
+        isMounted: false,
+        isGasPayable: false,
+      }));
+
+      mocksHook.useNetwork.mockImplementation(() => ({
+        ...mocksHook.useNetwork.getMockImplementation(),
+        activeNetwork: { networkId: 'development' },
+      }));
+
+      const { result } = renderHook(() => useFaucet());
+
+      expect(result.current.isAllowed).toBe(false);
+    });
+
+    it('should return false, when account is mounted, when gas is payable, when network is development', () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:he-man',
+        },
+        sign: vi.fn(),
+        isMounted: true,
+        isGasPayable: true,
+      }));
+
+      mocksHook.useNetwork.mockImplementation(() => ({
+        ...mocksHook.useNetwork.getMockImplementation(),
+        activeNetwork: { networkId: 'development' },
+      }));
+
+      const { result } = renderHook(() => useFaucet());
+
+      expect(result.current.isAllowed).toBe(false);
+    });
+
+    it('should return false, when account is mounted, when gas is NOT payable, when network is mainnet', () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:he-man',
+        },
+        sign: vi.fn(),
+        isMounted: true,
+        isGasPayable: false,
+      }));
+
+      mocksHook.useNetwork.mockImplementation(() => ({
+        ...mocksHook.useNetwork.getMockImplementation(),
+        activeNetwork: { networkId: 'mainnet01' },
+      }));
+
+      const { result } = renderHook(() => useFaucet());
+
+      expect(result.current.isAllowed).toBe(false);
+    });
   });
+  describe('submit', () => {
+    it('should call submit2Chain with the correct parameters', async () => {
+      const mockSubmit2Chain = vi.fn().mockResolvedValue({
+        requestKey: 'test-request-key',
+        status: 'success',
+      });
 
-  it('should return false, when account is NOT mounted, when gas is NOT payable, when network is development', () => {
-    mocksHook.useAccount.mockImplementation(() => ({
-      account: {
-        address: 'k:he-man',
-      },
-      isMounted: false,
-      isGasPayable: false,
-    }));
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: mockSubmit2Chain,
+      });
 
-    mocksHook.useNetwork.mockImplementation(() => ({
-      ...mocksHook.useNetwork.getMockImplementation(),
-      activeNetwork: { networkId: 'development' },
-    }));
+      const { result } = renderHook(() => useFaucet());
 
-    const { result } = renderHook(() => useFaucet());
+      await result.current.submit();
 
-    expect(result.current.isAllowed).toBe(false);
-  });
-
-  it('should return false, when account is mounted, when gas is payable, when network is development', () => {
-    mocksHook.useAccount.mockImplementation(() => ({
-      account: {
-        address: 'k:he-man',
-      },
-      isMounted: true,
-      isGasPayable: true,
-    }));
-
-    mocksHook.useNetwork.mockImplementation(() => ({
-      ...mocksHook.useNetwork.getMockImplementation(),
-      activeNetwork: { networkId: 'development' },
-    }));
-
-    const { result } = renderHook(() => useFaucet());
-
-    expect(result.current.isAllowed).toBe(false);
-  });
-
-  it('should return false, when account is mounted, when gas is NOT payable, when network is mainnet', () => {
-    mocksHook.useAccount.mockImplementation(() => ({
-      account: {
-        address: 'k:he-man',
-      },
-      isMounted: false,
-      isGasPayable: false,
-    }));
-
-    mocksHook.useNetwork.mockImplementation(() => ({
-      ...mocksHook.useNetwork.getMockImplementation(),
-      activeNetwork: { networkId: 'mainnet01' },
-    }));
-
-    const { result } = renderHook(() => useFaucet());
-
-    expect(result.current.isAllowed).toBe(false);
+      expect(mockSubmit2Chain).toHaveBeenCalledWith(undefined, {
+        notificationSentryName: 'error:submit:faucet',
+        skipAssetCheck: true,
+        chainFunction: expect.any(Function),
+        transaction: {
+          type: expect.anything(),
+          accounts: expect.arrayContaining([expect.any(String)]),
+        },
+      });
+    });
   });
 });
