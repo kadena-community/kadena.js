@@ -1,28 +1,29 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { useNotifications } from '@/hooks/notifications';
-import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import { batchSetAddressFrozen } from '@/services/batchSetAddressFrozen';
-import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
 import { useUser } from './user';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useBatchFreezeInvestors = () => {
   const { asset } = useAsset();
   const { user } = useUser();
-  const { account, sign, isMounted, accountRoles } = useAccount();
+  const { account, isMounted, accountRoles } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { isActiveAccountChangeTx } = useTransactions();
+
   const [isAllowed, setIsAllowed] = useState(false);
   const { organisation } = useOrganisation();
+  const { submit2Chain } = useSubmit2Chain();
+
   const store = useMemo(() => {
     if (!organisation) return;
     return RWAStore(organisation);
@@ -31,70 +32,19 @@ export const useBatchFreezeInvestors = () => {
   const submit = async (
     data: IBatchSetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
-    if (!asset || !user) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'asset not found',
-          message: '',
-        },
-        {
-          name: `error:submit:batchfreezeinvestors`,
-          options: {
-            message: 'asset not found',
-            sentryData: {
-              type: 'submit_chain',
-            },
-          },
-        },
-      );
-
-      return;
-    }
-
-    let res: ITransactionDescriptor | undefined = undefined;
-    let tx: IUnsignedCommand | undefined = undefined;
-    try {
-      tx = await batchSetAddressFrozen(data, account!, asset);
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await store?.setFrozenMessages(data, user, asset);
-      const signedTransaction = await sign(tx);
-
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+    return submit2Chain<IBatchSetAddressFrozenProps>(data, {
+      notificationSentryName: 'error:submit:batchfreezeinvestors',
+      chainFunction: async (account: IWalletAccount, asset: IAsset) => {
+        if (!user) return Promise.resolve(undefined);
+        const tx = batchSetAddressFrozen(data, account!, asset);
+        (await store?.setFrozenMessages(data, user, asset)) as any;
+        return tx;
+      },
+      transaction: {
         type: TXTYPES.FREEZEINVESTOR,
         accounts: [...data.investorAccounts, account!.address],
-      });
-    } catch (e: any) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'there was an error',
-          message: interpretErrorMessage(e.message),
-        },
-        {
-          name: `error:submit:batchfreezeinvestors`,
-          options: {
-            message: interpretErrorMessage(e.message),
-            sentryData: {
-              type: 'submit_chain',
-              captureContext: {
-                extra: {
-                  tx,
-                  data,
-                  res,
-                },
-              },
-            },
-          },
-        },
-      );
-    }
+      },
+    });
   };
 
   useEffect(() => {

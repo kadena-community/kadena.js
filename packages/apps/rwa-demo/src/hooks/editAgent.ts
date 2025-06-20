@@ -1,26 +1,26 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { useNotifications } from '@/hooks/notifications';
-import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { addAgent } from '@/services/addAgent';
 import { editAgent } from '@/services/editAgent';
-import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useEditAgent = () => {
-  const { account, sign, isMounted, accountRoles, isOwner } = useAccount();
+  const { account, isMounted, accountRoles, isOwner } = useAccount();
   const { asset, paused } = useAsset();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { isActiveAccountChangeTx } = useTransactions();
   const [isAllowed, setIsAllowed] = useState(false);
   const { organisation } = useOrganisation();
+  const { submit2Chain } = useSubmit2Chain();
+
   const store = useMemo(() => {
     if (!organisation) return;
     return RWAStore(organisation);
@@ -29,71 +29,22 @@ export const useEditAgent = () => {
   const submit = async (
     data: IAddAgentProps,
   ): Promise<ITransaction | undefined> => {
-    if (!asset) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'asset not found',
-          message: '',
-        },
-        {
-          name: `error:submit:editagent`,
-          options: {
-            message: 'asset not found',
-            sentryData: {
-              type: 'submit_chain',
-            },
-          },
-        },
-      );
-      return;
-    }
-
-    let res: ITransactionDescriptor | undefined = undefined;
-    let tx: IUnsignedCommand | undefined = undefined;
-    try {
-      tx = data.alreadyExists
-        ? await editAgent(data, account!, asset)
-        : await addAgent(data, account!, asset);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
-        type: TXTYPES.ADDAGENT,
+    const tx = await submit2Chain<IAddAgentProps>(data, {
+      notificationSentryName: 'error:submit:editagent',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return data.alreadyExists
+          ? editAgent(data, account, asset)
+          : addAgent(data, account, asset);
+      },
+      transaction: {
         accounts: [data.accountName],
-      });
-    } catch (e: any) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'there was an error',
-          message: interpretErrorMessage(e.message),
-        },
-        {
-          name: `error:submit:editagent`,
-          options: {
-            message: interpretErrorMessage(e.message),
-            sentryData: {
-              type: 'submit_chain',
-              captureContext: {
-                extra: {
-                  tx,
-                  data,
-                  res,
-                },
-              },
-            },
-          },
-        },
-      );
-    } finally {
-      await store?.setAccount(data);
-    }
+        type: TXTYPES.ADDAGENT,
+      },
+    });
+
+    await store?.setAccount(data);
+
+    return tx;
   };
 
   useEffect(() => {

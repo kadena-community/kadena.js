@@ -48,8 +48,7 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
   };
 
   const onSubmit = async () => {
-    const d = document.querySelectorAll('#select');
-
+    const d = document.querySelectorAll('form#accounts #select');
     const filled: string[] = [].filter
       .call(d, function (el: HTMLInputElement) {
         return el.checked;
@@ -69,7 +68,7 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
   };
 
   const toggleSelectAll = (evt: PressEvent) => {
-    const d = document.querySelectorAll('#investor-batch-form #select');
+    const d = document.querySelectorAll('form#accounts #select');
     const notSelected = [].filter.call(d, function (el: HTMLInputElement) {
       if (el.disabled) return false;
       return el.checked === false;
@@ -89,7 +88,7 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
     <>
       {isRightAsideExpanded && (
         <RightAside isOpen onClose={handleOnClose}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form id="accounts" onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Batch add investors" />
             <RightAsideContent>
               <Stack
@@ -122,7 +121,7 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
                       variant="open"
                       fields={[
                         {
-                          key: 'to',
+                          key: 'account',
                           label: '',
                           width: '20%',
                           render: ({ value }: { value: string }) => {
