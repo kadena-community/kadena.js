@@ -64,7 +64,9 @@ export const AccountNameField: FC<IProps> = ({
             message: 'Fill in a correct ..:account',
           },
           validate: (value: string) => {
-            if (exemptAccounts?.includes(value)) {
+            if (
+              exemptAccounts?.filter((v) => v !== accountName).includes(value)
+            ) {
               return 'This account already exists';
             }
             return true;

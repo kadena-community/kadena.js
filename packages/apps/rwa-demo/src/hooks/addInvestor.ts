@@ -1,18 +1,17 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { useNotifications } from '@/hooks/notifications';
-import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
-import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
 import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useAddInvestor = ({
   investorAccount,
@@ -21,11 +20,11 @@ export const useAddInvestor = ({
 }) => {
   const { frozen } = useFreeze({ investorAccount });
   const { asset, paused } = useAsset();
-  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { account, isOwner, accountRoles, isMounted } = useAccount();
+  const { isActiveAccountChangeTx } = useTransactions();
   const [isAllowed, setIsAllowed] = useState(false);
   const { organisation } = useOrganisation();
+  const { submit2Chain } = useSubmit2Chain();
   const store = useMemo(() => {
     if (!organisation) return;
     return RWAStore(organisation);
@@ -34,76 +33,26 @@ export const useAddInvestor = ({
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
-    if (!asset) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'asset not found',
-          message: '',
-        },
-        {
-          name: `error:submit:addinvestor`,
-          options: {
-            message: 'asset not found',
-            sentryData: {
-              type: 'submit_chain',
-            },
-          },
-        },
-      );
+    const tx = await submit2Chain<Omit<IRegisterIdentityProps, 'agent'>>(data, {
+      notificationSentryName: 'error:submit:addinvestor',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        if (data.alreadyExists) return Promise.resolve(undefined);
 
-      return;
-    }
+        const newData: IRegisterIdentityProps = {
+          ...data,
+          agent: account!,
+        };
 
-    const newData: IRegisterIdentityProps = {
-      ...data,
-      agent: account!,
-    };
-    let res: ITransactionDescriptor | undefined = undefined;
-    let tx: IUnsignedCommand | undefined = undefined;
-    try {
-      //if the account is already investor, no need to add it again
-      if (data.alreadyExists) return;
-
-      tx = await registerIdentity(newData, asset);
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+        return registerIdentity(newData, asset);
+      },
+      transaction: {
         type: TXTYPES.ADDINVESTOR,
         accounts: [account?.address!, data.accountName],
-      });
-    } catch (e: any) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'there was an error',
-          message: interpretErrorMessage(e.message),
-        },
-        {
-          name: `error:submit:addinvestor`,
-          options: {
-            message: interpretErrorMessage(e.message),
-            sentryData: {
-              type: 'submit_chain',
-              captureContext: {
-                extra: {
-                  tx,
-                  data,
-                  res,
-                },
-              },
-            },
-          },
-        },
-      );
-    } finally {
-      await store?.setAccount(data);
-    }
+      },
+    });
+
+    await store?.setAccount(data);
+    return tx;
   };
 
   useEffect(() => {

@@ -1,64 +1,31 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { useNotifications } from '@/hooks/notifications';
-import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { faucet } from '@/services/faucet';
-import { getClient } from '@/utils/client';
-import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useNetwork } from './networks';
-import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useFaucet = () => {
-  const { account, sign, isMounted, isGasPayable } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { account, isMounted, isGasPayable } = useAccount();
   const { activeNetwork } = useNetwork();
-  const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { submit2Chain } = useSubmit2Chain();
 
   const submit = async (): Promise<ITransaction | undefined> => {
-    let res: ITransactionDescriptor | undefined = undefined;
-    let tx: IUnsignedCommand | undefined = undefined;
-    try {
-      if (!account) return;
-      tx = await faucet(account!);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+    return submit2Chain(undefined, {
+      notificationSentryName: 'error:submit:faucet',
+      skipAssetCheck: true,
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return faucet(account!);
+      },
+      transaction: {
         type: TXTYPES.FAUCET,
-        accounts: [account?.address],
-      });
-    } catch (e: any) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'there was an error',
-          message: interpretErrorMessage(e.message),
-        },
-        {
-          name: `error:submit:faucet`,
-          options: {
-            message: interpretErrorMessage(e.message),
-            sentryData: {
-              type: 'submit_chain',
-              captureContext: {
-                extra: {
-                  tx,
-                  res,
-                },
-              },
-            },
-          },
-        },
-      );
-    }
+        accounts: [account?.address ?? ''],
+      },
+    });
   };
 
   useEffect(() => {
