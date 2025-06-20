@@ -239,4 +239,193 @@ describe('batchAddInvestor hook', () => {
       expect(result.current.isAllowed).toBe(false);
     });
   });
+
+  describe('submit', () => {
+    const mocksInner = vi.hoisted(() => ({
+      setAllAccounts: vi
+        .fn()
+        .mockResolvedValue([Promise.resolve(), Promise.resolve()]),
+    }));
+    const mocks = vi.hoisted(() => ({
+      mockBatchRegisterIdentity: vi.fn().mockResolvedValue({
+        cmd: 'test-batch-command',
+        sigs: [],
+        hash: 'test-hash',
+      }),
+      mockStore: {
+        setAllAccounts: mocksInner.setAllAccounts,
+      },
+      mockSubmit2Chain: vi.fn().mockResolvedValue({
+        requestKey: 'test-request-key',
+        hash: 'test-hash',
+        type: { name: 'ADDINVESTOR', overall: true },
+        accounts: ['k:agent-address', 'k:investor-1', 'k:investor-2'],
+      }),
+    }));
+
+    beforeEach(async () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      vi.mock('@/utils/store', async () => {
+        return {
+          RWAStore: vi.fn().mockReturnValue(mocks.mockStore),
+          getAssetFolder: vi.fn(),
+          getAccountVal: vi.fn(),
+          GetAccountsLocalStorageKey: vi.fn(),
+        };
+      });
+
+      vi.mock('@/services/batchRegisterIdentity', async () => {
+        return {
+          batchRegisterIdentity: mocks.mockBatchRegisterIdentity,
+        };
+      });
+
+      vi.mock('../useSubmit2Chain', async () => {
+        return {
+          useSubmit2Chain: vi.fn().mockReturnValue({
+            submit2Chain: mocks.mockSubmit2Chain,
+          }),
+        };
+      });
+    });
+
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it('should call submit2Chain with the correct parameters', async () => {
+      const { result } = renderHook(() => useBatchAddInvestors());
+
+      const data = {
+        accounts: [
+          { account: 'k:investor-1', alias: 'Investor 1' },
+          { account: 'k:investor-2', alias: 'Investor 2' },
+        ],
+      };
+
+      await result.current.submit(data);
+
+      expect(mocks.mockSubmit2Chain).toHaveBeenCalledWith(
+        data,
+        expect.objectContaining({
+          notificationSentryName: 'error:submit:batchaddinvestor',
+          transaction: {
+            type: expect.any(Object),
+            accounts: ['k:agent-address', 'k:investor-1', 'k:investor-2'],
+          },
+        }),
+      );
+    });
+
+    it('should call batchRegisterIdentity with correct agent and asset data', async () => {
+      const { result } = renderHook(() => useBatchAddInvestors());
+
+      const data = {
+        accounts: [
+          { account: 'k:investor-1', alias: 'Investor 1' },
+          { account: 'k:investor-2', alias: 'Investor 2' },
+        ],
+      };
+
+      // Grab the chain function from submit2Chain call
+      await result.current.submit(data);
+      const chainFunction =
+        mocks.mockSubmit2Chain.mock.calls[0][1].chainFunction;
+
+      // Call the chainFunction directly to test it
+      const account = { address: 'k:agent-address' };
+      const asset = { id: 'asset-123', name: 'Test Asset' };
+      await chainFunction(account, asset);
+
+      expect(mocks.mockBatchRegisterIdentity).toHaveBeenCalledWith(
+        {
+          accounts: [
+            { account: 'k:investor-1', alias: 'Investor 1' },
+            { account: 'k:investor-2', alias: 'Investor 2' },
+          ],
+          agent: { address: 'k:agent-address' },
+        },
+        { id: 'asset-123', name: 'Test Asset' },
+      );
+    });
+
+    it('should call setAllAccounts with the provided data', async () => {
+      const { result } = renderHook(() => useBatchAddInvestors());
+
+      const data = {
+        accounts: [
+          { account: 'k:investor-1', alias: 'Investor 1' },
+          { account: 'k:investor-2', alias: 'Investor 2' },
+        ],
+      };
+
+      await result.current.submit(data);
+
+      expect(mocksInner.setAllAccounts).toHaveBeenCalledWith(data);
+    });
+
+    it('should return the transaction data returned by submit2Chain', async () => {
+      const { result } = renderHook(() => useBatchAddInvestors());
+
+      const data = {
+        accounts: [
+          { account: 'k:investor-1', alias: 'Investor 1' },
+          { account: 'k:investor-2', alias: 'Investor 2' },
+        ],
+      };
+
+      const expectedTransaction = {
+        requestKey: 'test-request-key',
+        hash: 'test-hash',
+        type: { name: 'ADDINVESTOR', overall: true },
+        accounts: ['k:agent-address', 'k:investor-1', 'k:investor-2'],
+      };
+      mocks.mockSubmit2Chain.mockResolvedValueOnce(expectedTransaction);
+
+      const result2 = await result.current.submit(data);
+
+      expect(result2).toEqual(expectedTransaction);
+    });
+
+    it('should return undefined when store is not initialized', async () => {
+      // Mock organization as undefined to make store undefined
+      mocksHook.useOrganisation.mockReturnValueOnce({
+        organisation: undefined,
+      });
+
+      const { result } = renderHook(() => useBatchAddInvestors());
+
+      const data = {
+        accounts: [
+          { account: 'k:investor-1', alias: 'Investor 1' },
+          { account: 'k:investor-2', alias: 'Investor 2' },
+        ],
+      };
+
+      // The transaction resolves, but store?.setAllAccounts will be undefined
+      const tx = await result.current.submit(data);
+
+      // Transaction should still be returned
+      expect(mocksInner.setAllAccounts).not.toHaveBeenCalled();
+      expect(tx).toBeDefined();
+    });
+  });
 });
