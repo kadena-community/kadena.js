@@ -1,25 +1,26 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { useNotifications } from '@/hooks/notifications';
-import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IBatchRegisterIdentityProps } from '@/services/batchRegisterIdentity';
 import { batchRegisterIdentity } from '@/services/batchRegisterIdentity';
-import { getClient } from '@/utils/client';
 import { RWAStore } from '@/utils/store';
-import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useBatchAddInvestors = () => {
   const { asset, paused } = useAsset();
-  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { account, isOwner, accountRoles, isMounted } = useAccount();
+  const { isActiveAccountChangeTx } = useTransactions();
+
   const [isAllowed, setIsAllowed] = useState(false);
   const { organisation } = useOrganisation();
+  const { submit2Chain } = useSubmit2Chain();
+
   const store = useMemo(() => {
     if (!organisation) return;
     return RWAStore(organisation);
@@ -28,75 +29,31 @@ export const useBatchAddInvestors = () => {
   const submit = async (
     data: Omit<IBatchRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
-    if (!asset) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'asset not found',
-          message: '',
+    const tx = await submit2Chain<Omit<IBatchRegisterIdentityProps, 'agent'>>(
+      data,
+      {
+        notificationSentryName: 'error:submit:batchaddinvestor',
+        chainFunction: (account: IWalletAccount, asset: IAsset) => {
+          const newData: IBatchRegisterIdentityProps = {
+            ...data,
+            agent: account!,
+          };
+
+          return batchRegisterIdentity(newData, asset);
         },
-        {
-          name: `error:submit:batchaddinvestor`,
-          options: {
-            message: 'asset not found',
-            sentryData: {
-              type: 'submit_chain',
-            },
-          },
+        transaction: {
+          type: TXTYPES.ADDINVESTOR,
+          accounts: [
+            account?.address!,
+            ...data.accounts.map((account) => account.account.trim()),
+          ],
         },
-      );
+      },
+    );
 
-      return;
-    }
-
-    const newData: IBatchRegisterIdentityProps = { ...data, agent: account! };
-    let res: ITransactionDescriptor | undefined = undefined;
-    let tx: IUnsignedCommand | undefined = undefined;
-    try {
-      tx = await batchRegisterIdentity(newData, asset);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
-        type: TXTYPES.ADDINVESTOR,
-        accounts: [
-          account?.address!,
-          ...data.accounts.map((account) => account.account.trim()),
-        ],
-      });
-    } catch (e: any) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'there was an error',
-          message: interpretErrorMessage(e.message),
-        },
-        {
-          name: `error:submit:batchaddinvestor`,
-          options: {
-            message: interpretErrorMessage(e.message),
-            sentryData: {
-              type: 'submit_chain',
-              captureContext: {
-                extra: {
-                  tx,
-                  data,
-                  res,
-                },
-              },
-            },
-          },
-        },
-      );
-    } finally {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await store?.setAllAccounts(data);
-    }
+    const promises = await store?.setAllAccounts(data);
+    await Promise.all(promises || []);
+    return tx;
   };
 
   useEffect(() => {

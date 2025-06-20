@@ -1,156 +1,53 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { useNotifications } from '@/hooks/notifications';
-import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IComplianceRuleTypes } from '@/services/getComplianceRules';
 import { setCompliance } from '@/services/setCompliance';
 import type { ISetComplianceParametersProps } from '@/services/setComplianceParameters';
 import { setComplianceParameters } from '@/services/setComplianceParameters';
-import { getClient } from '@/utils/client';
 import { getActiveRulesKeys } from '@/utils/getActiveRulesKeys';
-import type { ITransactionDescriptor, IUnsignedCommand } from '@kadena/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useSetCompliance = () => {
-  const { account, isOwner, sign, isMounted, accountRoles } = useAccount();
+  const { account, isOwner, isMounted, accountRoles } = useAccount();
   const { asset, paused } = useAsset();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { isActiveAccountChangeTx } = useTransactions();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { submit2Chain } = useSubmit2Chain();
 
   const toggleComplianceRule = async (
     ruleKey: IComplianceRuleTypes,
     newState: boolean,
   ) => {
-    if (!asset) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'asset not found',
-          message: '',
-        },
-        {
-          name: `error:submit:togglecompliancerule`,
-          options: {
-            message: 'asset not found',
-            sentryData: {
-              type: 'submit_chain',
-            },
-          },
-        },
-      );
-      return;
-    }
-    const rules = getActiveRulesKeys(asset.compliance, ruleKey, newState);
+    return submit2Chain(undefined, {
+      notificationSentryName: 'error:submit:togglecompliancerule',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        const rules = getActiveRulesKeys(asset.compliance, ruleKey, newState);
 
-    let res: ITransactionDescriptor | undefined = undefined;
-    let tx: IUnsignedCommand | undefined = undefined;
-    try {
-      tx = await setCompliance(rules, account!, asset);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+        return setCompliance(rules, account!, asset);
+      },
+      transaction: {
         type: TXTYPES.SETCOMPLIANCERULE,
         accounts: [account?.address!],
-      });
-    } catch (e: any) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'there was an error',
-          message: interpretErrorMessage(e.message),
-        },
-        {
-          name: `error:submit:togglecompliancerule`,
-          options: {
-            message: interpretErrorMessage(e.message),
-            sentryData: {
-              type: 'submit_chain',
-              captureContext: {
-                extra: {
-                  tx,
-                  ruleKey,
-                  newState,
-                  res,
-                },
-              },
-            },
-          },
-        },
-      );
-    }
+      },
+    });
   };
 
   const submit = async (data: ISetComplianceParametersProps) => {
-    if (!asset) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'asset not found',
-          message: '',
-        },
-        {
-          name: `error:submit:setcompliance`,
-          options: {
-            message: 'asset not found',
-            sentryData: {
-              type: 'submit_chain',
-            },
-          },
-        },
-      );
-      return;
-    }
-
-    let res: ITransactionDescriptor | undefined = undefined;
-    let tx: IUnsignedCommand | undefined = undefined;
-    try {
-      tx = await setComplianceParameters(data, account!, asset);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+    return submit2Chain<ISetComplianceParametersProps>(data, {
+      notificationSentryName: 'error:submit:setcompliance',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return setComplianceParameters(data, account!, asset);
+      },
+      transaction: {
         type: TXTYPES.SETCOMPLIANCE,
         accounts: [account?.address!],
-      });
-    } catch (e: any) {
-      addNotification(
-        {
-          intent: 'negative',
-          label: 'there was an error',
-          message: interpretErrorMessage(e.message),
-        },
-        {
-          name: `error:submit:setcompliance`,
-          options: {
-            message: interpretErrorMessage(e.message),
-            sentryData: {
-              type: 'submit_chain',
-              captureContext: {
-                extra: {
-                  tx,
-                  data,
-                  res,
-                },
-              },
-            },
-          },
-        },
-      );
-    }
+      },
+    });
   };
 
   useEffect(() => {
