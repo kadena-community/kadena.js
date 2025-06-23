@@ -1,5 +1,6 @@
+import { useAccount } from '@/hooks/account';
 import { useUser } from '@/hooks/user';
-import { maskValue, Stack, Text } from '@kadena/kode-ui';
+import { Badge, maskValue, Stack, Text } from '@kadena/kode-ui';
 import type { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
 import {
   RightAside,
@@ -10,13 +11,14 @@ import {
 import { useEffect, useState } from 'react';
 import { CopyButton } from '../CopyButton/CopyButton';
 import { AliasForm } from '../Forms/AliasForm/AliasForm';
-import { formatAliasEditClass, formatAliasWrapperClass } from './style.css';
+import { formatAliasEditClass } from './style.css';
 
 export interface IActionProps {}
 
 export const FormatAccount = () => {
   const Component = ({ value }: ICompactTableFormatterProps) => {
     const { findAliasByAddress } = useUser();
+    const { accounts } = useAccount();
     const [isAliasFormOpen, setIsAliasFormOpen] = useState(false);
     const { setIsRightAsideExpanded } = useSideBarLayout();
 
@@ -29,6 +31,8 @@ export const FormatAccount = () => {
     const handleClose = () => {
       setIsAliasFormOpen(false);
     };
+
+    const isMyAccount = accounts?.map((a) => a.address).includes(`${value}`);
 
     return (
       <>
@@ -51,19 +55,21 @@ export const FormatAccount = () => {
             </RightAsideContent>
           </RightAside>
         )}
-        <Stack flexDirection="column">
+        <Stack flexDirection="column" className="accountwrapperclass">
           <Stack gap="xs" alignItems="center">
-            <Text variant="code">{maskValue(`${value}`)}</Text>
+            <Text variant="code">{maskValue(`${value}`)} </Text>
             <CopyButton value={`${value}`} />
+            {isMyAccount && (
+              <Badge style="positive" size="sm">
+                Me
+              </Badge>
+            )}
           </Stack>
-          <Stack
-            gap="xs"
-            alignItems="center"
-            className={formatAliasWrapperClass}
-          >
+          <Stack gap="xs" alignItems="center">
             {displayName && (
               <Text size="smallest">{displayName ? displayName : ''}</Text>
             )}
+
             <Stack
               as="a"
               onClick={() => {
