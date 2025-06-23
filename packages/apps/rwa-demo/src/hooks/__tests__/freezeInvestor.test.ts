@@ -4,6 +4,18 @@ import { useFreezeInvestor } from '../freezeInvestor';
 describe('freezeInvestor hook', () => {
   const mocksHook = vi.hoisted(() => {
     return {
+      mockStore: {
+        setFrozenMessage: vi.fn().mockResolvedValue(undefined),
+      },
+      mockSetAddressFrozen: vi.fn().mockResolvedValue({
+        cmd: 'test-unsigned-command',
+      }),
+      mockGetClient: vi.fn().mockReturnValue({
+        submit: vi.fn().mockResolvedValue({
+          requestKey: 'test-request-key',
+          hash: 'test-hash',
+        }),
+      }),
       useUser: vi.fn().mockReturnValue({
         user: {
           address: 'k:1',
@@ -18,9 +30,12 @@ describe('freezeInvestor hook', () => {
         },
       }),
       useAsset: vi.fn().mockReturnValue({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
         paused: true,
       }),
-
       useAccount: vi.fn().mockReturnValue({
         account: {
           address: 'k:1',
@@ -31,13 +46,27 @@ describe('freezeInvestor hook', () => {
           isFreezer: vi.fn().mockReturnValue(false),
         },
       }),
-
       useTransactions: vi.fn().mockReturnValue({
         addTransaction: vi.fn(),
         isActiveAccountChangeTx: false,
       }),
       useNotifications: vi.fn().mockReturnValue({
         addNotification: vi.fn(),
+      }),
+      useSubmit2Chain: vi.fn().mockReturnValue({
+        submit2Chain: vi.fn().mockImplementation((data, options) => {
+          return options
+            .chainFunction(
+              {
+                address: 'k:freezer',
+              },
+              { id: 'asset-123', name: 'Test Asset' },
+            )
+            .then(() => ({
+              requestKey: 'test-request-key',
+              hash: 'test-hash',
+            }));
+        }),
       }),
     };
   });
@@ -88,6 +117,32 @@ describe('freezeInvestor hook', () => {
       return {
         ...actual,
         useNotifications: mocksHook.useNotifications,
+      };
+    });
+
+    vi.mock('./../useSubmit2Chain', async () => {
+      const actual = await vi.importActual('./../useSubmit2Chain');
+      return {
+        ...actual,
+        useSubmit2Chain: mocksHook.useSubmit2Chain,
+      };
+    });
+
+    vi.mock('@/services/setAddressFrozen', async () => {
+      return {
+        setAddressFrozen: mocksHook.mockSetAddressFrozen,
+      };
+    });
+
+    vi.mock('@/utils/client', async () => {
+      return {
+        getClient: mocksHook.mockGetClient,
+      };
+    });
+
+    vi.mock('@/utils/store', async () => {
+      return {
+        RWAStore: vi.fn().mockReturnValue(mocksHook.mockStore),
       };
     });
   });
@@ -230,6 +285,249 @@ describe('freezeInvestor hook', () => {
       const { result } = renderHook(() => useFreezeInvestor());
 
       expect(result.current.isAllowed).toBe(false);
+    });
+  });
+
+  describe('submit', () => {
+    it('should call setAddressFrozen with the correct parameters', async () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:he-man',
+        },
+        isMounted: true,
+        sign: vi.fn().mockResolvedValue({ cmd: 'test-signed-command' }),
+        accountRoles: {
+          isFreezer: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useUser.mockReturnValue({
+        user: {
+          address: 'k:1',
+          name: 'Test User',
+        },
+      });
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const { result } = renderHook(() => useFreezeInvestor());
+
+      const data = {
+        investorAccount: 'k:investor-account',
+        pause: true,
+        message: 'Regulatory compliance freeze',
+      };
+
+      await result.current.submit(data);
+
+      expect(mocksHook.mockSetAddressFrozen).toHaveBeenCalledWith(
+        data,
+        { address: 'k:freezer' },
+        { id: 'asset-123', name: 'Test Asset' },
+      );
+    });
+
+    it('should call store.setFrozenMessage with the correct parameters', async () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:freezer',
+        },
+        isMounted: true,
+        sign: vi.fn().mockResolvedValue({ cmd: 'test-signed-command' }),
+        accountRoles: {
+          isFreezer: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useUser.mockImplementation(() => ({
+        user: {
+          address: 'k:1',
+          name: 'Test User',
+          email: 'heman@mastersoftheuniverse.com',
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const { result } = renderHook(() => useFreezeInvestor());
+
+      const data = {
+        investorAccount: 'k:investor-account',
+        pause: true,
+        message: 'Regulatory compliance freeze',
+      };
+
+      await result.current.submit(data);
+
+      expect(mocksHook.mockStore.setFrozenMessage).toHaveBeenCalledWith(
+        data,
+        {
+          address: 'k:1',
+          name: 'Test User',
+          email: 'heman@mastersoftheuniverse.com',
+        },
+        { id: 'asset-123', name: 'Test Asset' },
+      );
+    });
+
+    it('should call submit2Chain with the correct parameters', async () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:freezer',
+        },
+        isMounted: true,
+        sign: vi.fn().mockResolvedValue({ cmd: 'test-signed-command' }),
+        accountRoles: {
+          isFreezer: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      const submit2ChainMock = vi.fn().mockResolvedValue({
+        requestKey: 'test-request-key',
+        hash: 'test-hash',
+      });
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: submit2ChainMock,
+      });
+
+      const { result } = renderHook(() => useFreezeInvestor());
+
+      const data = {
+        investorAccount: 'k:investor-account',
+        pause: true,
+        message: 'Regulatory compliance freeze',
+      };
+
+      await result.current.submit(data);
+
+      expect(submit2ChainMock).toHaveBeenCalledWith(
+        data,
+        expect.objectContaining({
+          notificationSentryName: 'error:submit:freezeinvestor',
+          transaction: {
+            type: { name: 'FREEZEINVESTOR', overall: true },
+            accounts: ['k:investor-account'],
+          },
+        }),
+      );
+    });
+
+    it('should handle successful transaction submission', async () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:freezer',
+        },
+        isMounted: true,
+        sign: vi.fn().mockResolvedValue({ cmd: 'test-signed-command' }),
+        accountRoles: {
+          isFreezer: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      const submit2ChainMock = vi.fn().mockResolvedValue({
+        requestKey: 'test-request-key',
+        hash: 'test-hash',
+      });
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: submit2ChainMock,
+      });
+
+      const { result } = renderHook(() => useFreezeInvestor());
+
+      const data = {
+        investorAccount: 'k:investor-account',
+        pause: true,
+        message: 'Regulatory compliance freeze',
+      };
+
+      const response = await result.current.submit(data);
+
+      expect(response).toEqual({
+        requestKey: 'test-request-key',
+        hash: 'test-hash',
+      });
+    });
+
+    it('should return early if no user is found', async () => {
+      mocksHook.useUser.mockReturnValue({
+        user: undefined,
+      });
+
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:freezer',
+        },
+        isMounted: true,
+        sign: vi.fn().mockResolvedValue({ cmd: 'test-signed-command' }),
+        accountRoles: {
+          isFreezer: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      const submit2ChainMock = vi.fn().mockImplementation((data, options) => {
+        return options.chainFunction(
+          { address: 'k:freezer' },
+          { id: 'asset-123', name: 'Test Asset' },
+        );
+      });
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: submit2ChainMock,
+      });
+
+      const { result } = renderHook(() => useFreezeInvestor());
+
+      const data = {
+        investorAccount: 'k:investor-account',
+        pause: true,
+        message: 'Regulatory compliance freeze',
+      };
+
+      await result.current.submit(data);
+
+      expect(mocksHook.mockStore.setFrozenMessage).not.toHaveBeenCalled();
+      expect(mocksHook.mockSetAddressFrozen).not.toHaveBeenCalled();
+    });
+
+    it('should return early if no organisation is found', async () => {
+      mocksHook.useOrganisation.mockReturnValue({
+        organisation: undefined,
+      });
+
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:freezer',
+        },
+        isMounted: true,
+        sign: vi.fn().mockResolvedValue({ cmd: 'test-signed-command' }),
+        accountRoles: {
+          isFreezer: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      const { result } = renderHook(() => useFreezeInvestor());
+
+      const data = {
+        investorAccount: 'k:investor-account',
+        pause: true,
+        message: 'Regulatory compliance freeze',
+      };
+
+      await result.current.submit(data);
+
+      // This won't be called due to the early return when organisation is undefined
+      expect(mocksHook.mockStore.setFrozenMessage).not.toHaveBeenCalled();
     });
   });
 });
