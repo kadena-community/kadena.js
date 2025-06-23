@@ -107,14 +107,14 @@ export const useGetAgentRoles = (): IAgentHookProps & {
   }, [innerData]);
 
   const isAgentAdmin = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.AGENTADMIN) >= 0;
+    return innerData?.indexOf(AGENTROLES.AGENTADMIN) >= 0;
   }, [innerData]);
   const isFreezer = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.FREEZER) >= 0;
+    return innerData?.indexOf(AGENTROLES.FREEZER) >= 0;
   }, [innerData]);
 
   const isTransferManager = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.TRANSFERMANAGER) >= 0;
+    return innerData?.indexOf(AGENTROLES.TRANSFERMANAGER) >= 0;
   }, [innerData]);
 
   const setAssetRolesForAccount = async (account: string, asset?: IAsset) => {
