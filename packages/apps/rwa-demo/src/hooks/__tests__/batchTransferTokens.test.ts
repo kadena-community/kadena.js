@@ -13,9 +13,14 @@ describe('batchTransferTokens hook', () => {
           { accountName: 'k:he-man', alias: 'he-man' },
           { accountName: 'k:skeletor', alias: 'skeletor' },
         ],
+        asset: {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        },
       }),
       useGetInvestorBalance: vi.fn().mockReturnValue({
-        data: 0,
+        data: 100,
       }),
       useFreeze: vi.fn().mockReturnValue({
         frozen: false,
@@ -35,6 +40,9 @@ describe('batchTransferTokens hook', () => {
       }),
       useNotifications: vi.fn().mockReturnValue({
         addNotification: vi.fn(),
+      }),
+      useSubmit2Chain: vi.fn().mockReturnValue({
+        submit2Chain: vi.fn(),
       }),
     };
   });
@@ -86,6 +94,28 @@ describe('batchTransferTokens hook', () => {
         useNotifications: mocksHook.useNotifications,
       };
     });
+
+    vi.mock('./../useSubmit2Chain', async () => {
+      const actual = await vi.importActual('./../useSubmit2Chain');
+      return {
+        ...actual,
+        useSubmit2Chain: mocksHook.useSubmit2Chain,
+      };
+    });
+
+    // Mock batchTransferTokens service
+    vi.mock('@/services/batchTransferTokens', () => ({
+      batchTransferTokens: vi
+        .fn()
+        .mockImplementation((data, account, asset) => {
+          return {
+            cmd: 'batch-transfer-tokens',
+            data,
+            account,
+            asset,
+          };
+        }),
+    }));
   });
 
   afterEach(() => {
@@ -202,6 +232,7 @@ describe('batchTransferTokens hook', () => {
         ...mocksHook.useAsset.getMockImplementation(),
         initFetchInvestors: mockinitFetchInvestors,
         paused: false,
+        investors: [{ accountName: 'k:he-man' }, { accountName: 'skeletor' }],
       }));
 
       mocksHook.useFreeze.mockImplementation(() => ({
@@ -212,6 +243,386 @@ describe('batchTransferTokens hook', () => {
       const { result } = renderHook(() => useBatchTransferTokens());
 
       expect(result.current.isAllowed).toBe(false);
+    });
+  });
+
+  describe('dataNotValid', () => {
+    it('should return false when balance is insufficient', async () => {
+      // Setup required mocks
+      mocksHook.useAsset.mockReturnValue({
+        paused: false,
+        initFetchInvestors: mockinitFetchInvestors,
+        investors: [
+          { accountName: 'k:he-man', alias: 'he-man' },
+          { accountName: 'k:skeletor', alias: 'skeletor' },
+        ],
+        asset: {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        },
+      });
+
+      mocksHook.useAccount.mockReturnValue({
+        account: { address: 'k:he-man' },
+        sign: vi.fn(),
+        isMounted: true,
+        isInvestor: true,
+      });
+
+      mocksHook.useFreeze.mockReturnValue({
+        frozen: false,
+      });
+
+      // Set up the balance to be less than total transfer amount
+      mocksHook.useGetInvestorBalance.mockReturnValue({
+        data: 50,
+      });
+
+      const { result } = renderHook(() => useBatchTransferTokens());
+
+      const transferData = [
+        { to: 'k:skeletor', amount: '30' },
+        { to: 'k:he-man', amount: '30' },
+      ];
+
+      const response = await result.current.submit(transferData);
+      expect(response).toBeUndefined();
+      expect(mocksHook.useNotifications().addNotification).toHaveBeenCalledWith(
+        {
+          intent: 'negative',
+          label: 'the Balance on the account is to low',
+          message:
+            'You are trying to transfer 60 tokens and your balance is 50 tokens',
+        },
+      );
+    });
+
+    it('should return false when a recipient account is not whitelisted', async () => {
+      // Setup required mocks
+      mocksHook.useAsset.mockReturnValue({
+        paused: false,
+        initFetchInvestors: mockinitFetchInvestors,
+        investors: [
+          { accountName: 'k:he-man', alias: 'he-man' },
+          { accountName: 'k:skeletor', alias: 'skeletor' },
+        ],
+        asset: {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        },
+      });
+
+      mocksHook.useAccount.mockReturnValue({
+        account: { address: 'k:he-man' },
+        sign: vi.fn(),
+        isMounted: true,
+        isInvestor: true,
+      });
+
+      mocksHook.useFreeze.mockReturnValue({
+        frozen: false,
+      });
+
+      // Set up sufficient balance
+      mocksHook.useGetInvestorBalance.mockReturnValue({
+        data: 100,
+      });
+
+      const { result } = renderHook(() => useBatchTransferTokens());
+
+      const transferData = [
+        { to: 'k:skeletor', amount: '30' },
+        { to: 'k:not-whitelisted', amount: '20' },
+      ];
+
+      const response = await result.current.submit(transferData);
+      expect(response).toBeUndefined();
+      expect(mocksHook.useNotifications().addNotification).toHaveBeenCalledWith(
+        {
+          intent: 'negative',
+          label: 'Some of the accounts are not whitelisted',
+          message: 'k:not-whitelisted',
+        },
+      );
+    });
+
+    it('should return true when all conditions are met', async () => {
+      mocksHook.useAsset.mockReturnValue({
+        paused: false,
+        initFetchInvestors: mockinitFetchInvestors,
+        investors: [
+          { accountName: 'k:he-man', alias: 'he-man' },
+          { accountName: 'k:skeletor', alias: 'skeletor' },
+        ],
+        asset: {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        },
+      });
+
+      mocksHook.useAccount.mockReturnValue({
+        account: { address: 'k:he-man' },
+        sign: vi.fn(),
+        isMounted: true,
+        isInvestor: true,
+      });
+
+      mocksHook.useFreeze.mockReturnValue({
+        frozen: false,
+      });
+
+      mocksHook.useGetInvestorBalance.mockReturnValue({
+        data: 100,
+      });
+
+      const mockSubmit2Chain = vi.fn().mockResolvedValue({
+        id: 'tx-123',
+        requestKey: 'req-123',
+        type: 'TRANSFERTOKENS',
+      });
+
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: mockSubmit2Chain,
+      });
+
+      const { result } = renderHook(() => useBatchTransferTokens());
+
+      const transferData = [
+        { to: 'k:skeletor', amount: '30' },
+        { to: 'k:he-man', amount: '20' },
+      ];
+
+      await result.current.submit(transferData);
+
+      expect(mockSubmit2Chain).toHaveBeenCalled();
+    });
+  });
+
+  describe('submit', () => {
+    const mocksSubmit = vi.hoisted(() => ({
+      mockBatchTransferTokens: vi
+        .fn()
+        .mockImplementation((data, account, asset) => {
+          return Promise.resolve({
+            cmd: 'batch-transfer-tokens',
+            data,
+            account,
+            asset,
+          });
+        }),
+    }));
+
+    it('should call submit2Chain with the correct data', async () => {
+      // Setup
+      const mockTransaction = {
+        id: 'tx-123',
+        requestKey: 'req-123',
+        type: 'TRANSFERTOKENS',
+      };
+
+      // Setup all required mocks
+      mocksHook.useAsset.mockReturnValue({
+        paused: false,
+        initFetchInvestors: mockinitFetchInvestors,
+        investors: [
+          { accountName: 'k:he-man', alias: 'he-man' },
+          { accountName: 'k:skeletor', alias: 'skeletor' },
+        ],
+        asset: {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        },
+      });
+
+      mocksHook.useAccount.mockReturnValue({
+        account: { address: 'k:he-man' },
+        sign: vi.fn(),
+        isMounted: true,
+        isInvestor: true,
+      });
+
+      mocksHook.useFreeze.mockReturnValue({
+        frozen: false,
+      });
+
+      mocksHook.useGetInvestorBalance.mockReturnValue({
+        data: 100,
+      });
+
+      const mockSubmit2Chain = vi.fn().mockResolvedValue(mockTransaction);
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: mockSubmit2Chain,
+      });
+
+      const { result } = renderHook(() => useBatchTransferTokens());
+
+      // Test data
+      const transferData = [{ to: 'k:skeletor', amount: '30' }];
+
+      // Execute
+      const response = await result.current.submit(transferData);
+
+      // Assert
+      expect(mockSubmit2Chain).toHaveBeenCalledWith(
+        transferData,
+        expect.objectContaining({
+          notificationSentryName: 'error:submit:batchtransfertokens',
+          chainFunction: expect.any(Function),
+          transaction: {
+            type: { name: 'TRANSFERTOKENS', overall: true },
+            accounts: ['k:skeletor', 'k:he-man'],
+          },
+        }),
+      );
+
+      expect(response).toEqual(mockTransaction);
+    });
+
+    it('should call batchTransferTokens with the correct parameters when chainFunction is executed', async () => {
+      // Setup mock for batchTransferTokens
+
+      // Mock the module directly
+      vi.mock('@/services/batchTransferTokens', () => ({
+        batchTransferTokens: mocksSubmit.mockBatchTransferTokens,
+      }));
+
+      // We need to re-import to get the mocked version
+      await import('@/services/batchTransferTokens');
+
+      // Setup required mocks
+      mocksHook.useAsset.mockReturnValue({
+        paused: false,
+        initFetchInvestors: mockinitFetchInvestors,
+        investors: [
+          { accountName: 'k:he-man', alias: 'he-man' },
+          { accountName: 'k:skeletor', alias: 'skeletor' },
+        ],
+        asset: {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        },
+      });
+
+      mocksHook.useAccount.mockReturnValue({
+        account: {
+          address: 'k:he-man',
+        },
+        sign: vi.fn(),
+        isMounted: true,
+        isInvestor: true,
+      });
+
+      mocksHook.useFreeze.mockReturnValue({
+        frozen: false,
+      });
+
+      // Setup mock for submit2Chain that calls the chainFunction with account and asset
+      const mockSubmit2Chain = vi.fn().mockImplementation((data, options) => {
+        const { chainFunction } = options;
+        const mockAccount = { address: 'k:he-man' };
+        const mockAsset = {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        };
+
+        return chainFunction(mockAccount, mockAsset).then(() => {
+          return {
+            id: 'tx-123',
+            requestKey: 'req-123',
+            type: 'TRANSFERTOKENS',
+          };
+        });
+      });
+
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: mockSubmit2Chain,
+      });
+
+      mocksHook.useGetInvestorBalance.mockReturnValue({
+        data: 100,
+      });
+
+      const { result } = renderHook(() => useBatchTransferTokens());
+
+      // Test data
+      const transferData = [{ to: 'k:skeletor', amount: '50' }];
+
+      // Execute
+      await result.current.submit(transferData);
+
+      // Assert
+      expect(mocksSubmit.mockBatchTransferTokens).toHaveBeenCalledWith(
+        transferData,
+        { address: 'k:he-man' },
+        { uuid: 'test-asset', contractName: 'test', namespace: 'ns' },
+      );
+    });
+
+    it('should return the transaction data from submit2Chain', async () => {
+      // Setup
+      const mockTransaction = {
+        id: 'tx-123',
+        requestKey: 'req-123',
+        type: 'TRANSFERTOKENS',
+        hash: 'hash-123',
+      };
+
+      // Setup required mocks
+      mocksHook.useAsset.mockReturnValue({
+        paused: false,
+        initFetchInvestors: mockinitFetchInvestors,
+        investors: [
+          { accountName: 'k:he-man', alias: 'he-man' },
+          { accountName: 'k:skeletor', alias: 'skeletor' },
+        ],
+        asset: {
+          uuid: 'test-asset',
+          contractName: 'test',
+          namespace: 'ns',
+        },
+      });
+
+      mocksHook.useAccount.mockReturnValue({
+        account: {
+          address: 'k:he-man',
+        },
+        sign: vi.fn(),
+        isMounted: true,
+        isInvestor: true,
+        balance: 0,
+      });
+
+      mocksHook.useFreeze.mockReturnValue({
+        frozen: false,
+      });
+
+      mocksHook.useGetInvestorBalance.mockReturnValue({
+        data: 100,
+      });
+
+      // Create a mock implementation of submit2Chain that returns the mock transaction
+      const mockSubmit2Chain = vi.fn().mockResolvedValue(mockTransaction);
+      mocksHook.useSubmit2Chain.mockReturnValue({
+        submit2Chain: mockSubmit2Chain,
+      });
+
+      const { result } = renderHook(() => useBatchTransferTokens());
+
+      // Test data
+      const transferData = [{ to: 'k:skeletor', amount: '30' }];
+
+      // Execute
+      const response = await result.current.submit(transferData);
+
+      // Assert
+      expect(mockSubmit2Chain).toHaveBeenCalled();
+      expect(response).toEqual(mockTransaction);
     });
   });
 });

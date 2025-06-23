@@ -6,7 +6,7 @@ import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useGetInvestors = (asset?: IAsset) => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
@@ -94,14 +94,13 @@ export const useGetInvestors = (asset?: IAsset) => {
     removedData?.events.edges.length ?? 0,
   ]);
 
-  const addSubscriptionData = async () => {
+  const addSubscriptionData = useCallback(async () => {
     const investorsSubscriptionAdded: IRecord[] =
       addedSubscriptionData?.events?.map((edge: any) => {
         const params = JSON.parse(edge.parameters);
         return {
           isRemoved: false,
           accountName: params[0],
-          alias: '',
           creationTime: Date.now(),
           result: true,
         } as IRecord;
@@ -113,7 +112,6 @@ export const useGetInvestors = (asset?: IAsset) => {
         return {
           isRemoved: true,
           accountName: params[0],
-          alias: '',
           creationTime: Date.now(),
           result: true,
         } as IRecord;
@@ -126,12 +124,12 @@ export const useGetInvestors = (asset?: IAsset) => {
         ...investorsSubscriptionRemoved,
       ]),
     ]);
-  };
+  }, [addedSubscriptionData?.events, removedSubscriptionData?.events]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     addSubscriptionData();
-  }, [addedSubscriptionData?.events, removedSubscriptionData?.events]);
+  }, [addSubscriptionData]);
 
   useEffect(() => {
     setInnerData([]);
