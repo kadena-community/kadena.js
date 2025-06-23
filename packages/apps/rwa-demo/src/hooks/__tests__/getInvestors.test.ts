@@ -121,18 +121,6 @@ describe('useGetInvestors', () => {
     },
   ];
 
-  const mockSubscriptionAddedEvents = [
-    {
-      parameters: '["investor3"]',
-    },
-  ];
-
-  const mockSubscriptionRemovedEvents = [
-    {
-      parameters: '["investor2"]',
-    },
-  ];
-
   beforeEach(() => {
     vi.clearAllMocks();
 
