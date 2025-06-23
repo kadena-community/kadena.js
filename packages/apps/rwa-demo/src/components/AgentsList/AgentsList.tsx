@@ -15,6 +15,7 @@ import {
 import type { FC } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
+import { FormatAccount } from '../TableFormatters/FormatAccount';
 import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 import { FormatEditAgent } from '../TableFormatters/FormatEditAgent';
 import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
@@ -71,7 +72,7 @@ export const AgentsList: FC = () => {
                   label: 'Account',
                   key: 'accountName',
                   width: '20%',
-                  render: CompactTableFormatters.FormatAccount(),
+                  render: FormatAccount(),
                 },
                 {
                   label: 'Roles',

@@ -43,7 +43,7 @@ export const CompactTableDesktop: FC<IProps> = ({
       >
         <TableHeader>
           {fields.map((field, idx) => (
-            <Column key={`${field.key.toString()}${idx}`} width={field.width}>
+            <Column key={`${field.key?.toString()}${idx}`} width={field.width}>
               <Stack
                 width="100%"
                 className={alignVariants({ align: field.align ?? 'start' })}
@@ -57,7 +57,7 @@ export const CompactTableDesktop: FC<IProps> = ({
           {data.map((item, idx) => (
             <Row key={`${item.toString()}${idx}`}>
               {fields.map((field, innerIdx) => (
-                <Cell key={`${field.key.toString()}${innerIdx}`}>
+                <Cell key={`${field.key?.toString()}${innerIdx}`}>
                   <FieldCell isLoading={isLoading} field={field} item={item} />
                 </Cell>
               ))}

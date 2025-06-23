@@ -1,8 +1,9 @@
 import { useInvestorTransactions } from '@/hooks/investorTransactions';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { loadingData } from '@/utils/loadingData';
-import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
+import { CompactTable } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
+import { FormatAccount } from '../TableFormatters/FormatAccount';
 import { FormatAmount } from '../TableFormatters/FormatAmount';
 import { FormatDate } from '../TableFormatters/FormatDate';
 
@@ -30,13 +31,13 @@ export const TransactionTable: FC<IProps> = ({ investor }) => {
           key: 'toAccount',
           label: 'To',
           width: '20%',
-          render: CompactTableFormatters.FormatAccount(),
+          render: FormatAccount(),
         },
         {
           key: 'fromAccount',
           label: 'From',
           width: '20%',
-          render: CompactTableFormatters.FormatAccount(),
+          render: FormatAccount(),
         },
         {
           key: 'creationTime',
