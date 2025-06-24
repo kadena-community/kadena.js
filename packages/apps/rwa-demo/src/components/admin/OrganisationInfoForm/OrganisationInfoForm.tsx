@@ -1,6 +1,8 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
+import { useNotifications } from '@/hooks/notifications';
 import { OrganisationStore } from '@/utils/store/organisationStore';
+import { RootAdminStore } from '@/utils/store/rootAdminStore';
 import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
 import { Button, Stack, TextField } from '@kadena/kode-ui';
 import {
@@ -9,9 +11,11 @@ import {
   SectionCardContentBlock,
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { OrganisationFormFields } from './OrganisationFormFields';
 
 interface IProps {
   organisationId: IOrganisation['id'];
@@ -22,7 +26,8 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const addDomainRef = useRef<HTMLInputElement | null>(null);
-
+  const router = useRouter();
+  const { addNotification } = useNotifications();
   const {
     handleSubmit,
     control,
@@ -67,6 +72,26 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     setIsLoading(false);
   };
 
+  const handleDelete = useCallback(async () => {
+    const rootStore = RootAdminStore();
+
+    if (!rootStore || !organisation?.id) return;
+    await rootStore.removeOrganisation(organisation.id);
+
+    addNotification(
+      {
+        intent: 'positive',
+        label: 'Organisation removed',
+        message: `Organisation ${organisation.name} has been removed successfully.`,
+      },
+      {
+        name: 'success:submit:removeorganisation',
+      },
+    );
+
+    router.push('/admin/root');
+  }, [organisation?.id]);
+
   const handleAddDomain = useCallback(() => {
     if (!addDomainRef.current) return;
     append({ value: addDomainRef.current.value });
@@ -82,57 +107,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
         <SectionCardContentBlock>
           <SectionCardHeader title="Organisation Info" />
           <SectionCardBody>
-            <Controller
-              name="name"
-              control={control}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'This field is required',
-                },
-                maxLength: {
-                  value: 40,
-                  message: 'This exceeds the maximum length',
-                },
-                pattern: {
-                  value: /^[a-zA-Z0-9_-]+$/,
-                  message: 'Only use allowed characters (a-z A-Z 0-9)',
-                },
-              }}
-              render={({ field }) => (
-                <TextField
-                  id="Name"
-                  isInvalid={!!errors.name?.message}
-                  errorMessage={`${errors.name?.message}`}
-                  label="Alias"
-                  {...field}
-                />
-              )}
-            />
-
-            <Controller
-              name="sendEmail"
-              control={control}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'This field is required',
-                },
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Simple email regex
-                  message: 'Invalid email address',
-                },
-              }}
-              render={({ field }) => (
-                <TextField
-                  id="sendEmail"
-                  isInvalid={!!errors.sendEmail?.message}
-                  errorMessage={`${errors.sendEmail?.message}`}
-                  label="Send Email"
-                  {...field}
-                />
-              )}
-            />
+            <OrganisationFormFields control={control} errors={errors} />
           </SectionCardBody>
         </SectionCardContentBlock>
         <SectionCardContentBlock>
@@ -196,7 +171,19 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
         </SectionCardContentBlock>
       </SectionCard>
 
-      <Stack width="100%" justifyContent="flex-end" marginBlockStart="md">
+      <Stack
+        width="100%"
+        justifyContent="flex-end"
+        marginBlockStart="md"
+        gap="md"
+      >
+        <Confirmation
+          onPress={handleDelete}
+          trigger={<Button variant="negative">Remove Organisation</Button>}
+        >
+          Are you sure you want to remove this organisation?
+        </Confirmation>
+
         <Button
           isLoading={isLoading}
           isDisabled={!isValid || isLoading}

@@ -1,18 +1,27 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
+import { useNotifications } from '@/hooks/notifications';
 import { OrganisationStore } from '@/utils/store/organisationStore';
-import { MonoFindInPage } from '@kadena/kode-icons';
+import { RootAdminStore } from '@/utils/store/rootAdminStore';
+import { MonoAdd, MonoFindInPage } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
+  RightAside,
+  RightAsideContent,
+  RightAsideFooter,
+  RightAsideHeader,
   SectionCard,
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { OrganisationFormFields } from '../OrganisationInfoForm/OrganisationFormFields';
 
 const loadingData: IOrganisation[] = Array.from({ length: 3 }, (_, i) => ({
   id: '',
@@ -24,7 +33,23 @@ const loadingData: IOrganisation[] = Array.from({ length: 3 }, (_, i) => ({
 export const OrganisationsList: FC = () => {
   const [organisations, setOrganisations] = useState<IOrganisation[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+  const { addNotification } = useNotifications();
   const router = useRouter();
+
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid, errors },
+  } = useForm<IOrganisation>({
+    mode: 'all',
+    defaultValues: {
+      name: '',
+      sendEmail: '',
+      domains: [],
+    },
+  });
 
   useEffect(() => {
     const init = async () => {
@@ -44,38 +69,119 @@ export const OrganisationsList: FC = () => {
     router.push(`/admin/root/organisation/${id}`);
   };
 
-  return (
-    <SectionCard stack="vertical">
-      <SectionCardContentBlock>
-        <SectionCardHeader title="Organisations" />
+  const onSubmit = async (data: IOrganisation) => {
+    setIsLoading(true);
+    const store = await RootAdminStore();
+    const orgId = await store.createOrganisation(data);
 
-        <SectionCardBody>
-          <CompactTable
-            isLoading={isLoading}
-            variant="open"
-            fields={[
-              { key: 'name', label: 'name', width: '85%' },
-              {
-                label: '',
-                key: 'id',
-                width: '15%',
-                align: 'end',
-                render: CompactTableFormatters.FormatActions({
-                  trigger: (
-                    <Button
-                      isCompact
-                      variant="outlined"
-                      startVisual={<MonoFindInPage />}
-                      onPress={handleLink}
-                    />
-                  ),
-                }),
-              },
-            ]}
-            data={isLoading ? loadingData : organisations}
+    setIsLoading(false);
+
+    if (!orgId) {
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'Organisation was not created',
+        },
+        {
+          name: `error:submit:createorganisation`,
+          options: {
+            sentryData: {
+              type: 'database-transaction',
+            },
+          },
+        },
+      );
+      return;
+    }
+
+    setIsAddOpen(false);
+    setIsRightAsideExpanded(false);
+
+    addNotification(
+      {
+        intent: 'positive',
+        label: 'Organisation removed',
+        message: `Organisation ${data.name} has been created successfully.`,
+      },
+      {
+        name: 'success:submit:createorganisation',
+      },
+    );
+
+    router.push(`/admin/root/organisation/${orgId}`);
+  };
+
+  return (
+    <>
+      {isRightAsideExpanded && isAddOpen && (
+        <RightAside
+          isOpen
+          onClose={() => {
+            setIsAddOpen(false);
+            setIsRightAsideExpanded(false);
+          }}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <RightAsideHeader label="Add Organisation" />
+            <RightAsideContent>
+              <OrganisationFormFields control={control} errors={errors} />
+            </RightAsideContent>
+            <RightAsideFooter>
+              <Button isDisabled={!isValid} type="submit">
+                Create Organisation
+              </Button>
+            </RightAsideFooter>
+          </form>
+        </RightAside>
+      )}
+      <SectionCard stack="vertical">
+        <SectionCardContentBlock>
+          <SectionCardHeader
+            title="Organisations"
+            actions={
+              <Button
+                isCompact
+                isLoading={isLoading}
+                variant="outlined"
+                endVisual={<MonoAdd />}
+                onPress={() => {
+                  setIsAddOpen(true);
+                  setIsRightAsideExpanded(true);
+                }}
+              >
+                Add organisation
+              </Button>
+            }
           />
-        </SectionCardBody>
-      </SectionCardContentBlock>
-    </SectionCard>
+
+          <SectionCardBody>
+            <CompactTable
+              isLoading={isLoading}
+              variant="open"
+              fields={[
+                { key: 'name', label: 'name', width: '85%' },
+                {
+                  label: '',
+                  key: 'id',
+                  width: '15%',
+                  align: 'end',
+                  render: CompactTableFormatters.FormatActions({
+                    trigger: (
+                      <Button
+                        isCompact
+                        variant="outlined"
+                        startVisual={<MonoFindInPage />}
+                        onPress={handleLink}
+                      />
+                    ),
+                  }),
+                },
+              ]}
+              data={isLoading ? loadingData : organisations}
+            />
+          </SectionCardBody>
+        </SectionCardContentBlock>
+      </SectionCard>
+    </>
   );
 };

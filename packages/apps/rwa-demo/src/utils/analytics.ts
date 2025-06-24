@@ -22,27 +22,31 @@ export const EVENT_NAMES = {
   'error:submit:batchtransfertokens': 'error:submit:batchtransfertokens',
   'error:submit:togglePartiallyFreezeTokens':
     'error:submit:togglePartiallyFreezeTokens',
+  'error:submit:createorganisation': 'error:submit:createorganisation',
+
+  'success:submit:createorganisation': 'success:submit:createorganisation',
+  'success:submit:removeorganisation': 'success:submit:removeorganisation',
 } as const;
 
 const COOKIE_CONSENTNAME = 'cookie_consent';
 
-type CaptureContext = {
+interface CaptureContext {
   level?: 'error' | 'warning' | 'info' | 'fatal' | 'debug';
   extra?: Record<string, any>;
-};
-type SentryData = {
+}
+interface SentryData {
   label?: any;
   handled?: boolean;
-  type: 'submit_chain' | 'transaction-listener';
+  type: 'submit_chain' | 'transaction-listener' | 'database-transaction';
   data?: Record<string, any>;
   captureContext?: CaptureContext;
-};
+}
 
 // First define a base type for string-only keys excluding "sentryData"
-export type IAnalyticsOptionsType = {
+export interface IAnalyticsOptionsType {
   sentryData?: SentryData;
   [key: string]: string | undefined | SentryData;
-};
+}
 
 interface IOptionsPageViewType {
   page_path?: string;
