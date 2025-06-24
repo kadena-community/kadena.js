@@ -50,16 +50,29 @@ export interface INETWORK {
 
 export const NETWORKS: INETWORK[] = [
   {
-    label: 'Hackachain MAINNET',
-    url: 'https://api.mainnet.kadindexer.io/v0',
+    label: 'MAINNET',
+    url: 'https://graph.kadena.network/graphql',
     key: 'mainnet01',
   },
   {
-    label: 'Hackachain TESTNET',
-    url: 'https://api.testnet.kadindexer.io/v0',
+    label: 'TESTNET',
+    url: 'https://graph.testnet.kadena.network/graphql',
     key: 'testnet04',
   },
 ];
+
+// export const NETWORKS: INETWORK[] = [
+//   {
+//     label: 'Hackachain MAINNET',
+//     url: 'https://api.mainnet.kadindexer.io/v0',
+//     key: 'mainnet01',
+//   },
+//   {
+//     label: 'Hackachain TESTNET',
+//     url: 'https://api.testnet.kadindexer.io/v0',
+//     key: 'testnet04',
+//   },
+// ];
 
 // check at what interval this slack alert can be called
 export type IIntervalGroup = '12hours' | '1hour' | '15minutes';

@@ -82,7 +82,7 @@ describe('balance alert Utils', () => {
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(1);
     expect(mocks.sendBalanceMessages).toBeCalledTimes(0);
     expect(mocks.fetch.mock.calls[0][0]).toEqual(
-      'https://api.testnet.kadindexer.io/v0',
+      'https://graph.testnet.kadena.network/graphql',
     );
   });
 
@@ -107,7 +107,7 @@ describe('balance alert Utils', () => {
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(0);
     expect(mocks.sendBalanceMessages).toBeCalledTimes(0);
     expect(mocks.fetch.mock.calls[0][0]).toEqual(
-      'https://api.testnet.kadindexer.io/v0',
+      'https://graph.testnet.kadena.network/graphql',
     );
   });
 
@@ -136,7 +136,7 @@ describe('balance alert Utils', () => {
     expect(mocks.sendBalanceErrorMessages).toBeCalledTimes(0);
     expect(mocks.sendBalanceMessages).toBeCalledTimes(1);
     expect(mocks.fetch.mock.calls[0][0]).toEqual(
-      'https://api.testnet.kadindexer.io/v0',
+      'https://graph.testnet.kadena.network/graphql',
     );
   });
 });
