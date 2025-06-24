@@ -1,4 +1,5 @@
 'use client';
+import { rootCertificates } from 'node:tls';
 import { useCallback, useEffect, useState } from 'react';
 import { darkThemeClass } from '../../styles';
 import type { ITheme } from './utils/constants';
@@ -92,15 +93,6 @@ export const useTheme = ({
     }
   };
 
-  const handleMediaQuery = useCallback(
-    (e: MediaQueryListEvent | MediaQueryList) => {
-      //console.log(getSystemTheme(e), e);
-      const resolved = lockedTheme ? lockedTheme : theme;
-      setTheme(resolved);
-    },
-    [],
-  );
-
   useEffect(() => {
     setRotateThemeState(theme);
   }, [theme]);
@@ -111,9 +103,18 @@ export const useTheme = ({
       setTheme(lockedTheme);
       return;
     }
-
     const media = window.matchMedia(MEDIA);
     const theme = window.localStorage.getItem(storageKey) as ITheme;
+
+    const handleMediaQuery = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (theme === 'system') {
+        setTheme('system');
+        return;
+      }
+      const resolved = lockedTheme ? lockedTheme : theme;
+      setTheme(resolved ?? 'system');
+    };
+
     if (theme) {
       setTheme(theme);
     } else {
@@ -123,27 +124,31 @@ export const useTheme = ({
     media.addEventListener('change', handleMediaQuery);
 
     return () => media.removeEventListener('change', handleMediaQuery);
-  }, []);
-
-  const storageListener = useCallback((event: StorageEvent | Event) => {
-    if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
-      return;
-
-    // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
-    const theme = lockedTheme
-      ? lockedTheme
-      : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
-    setTheme(theme, false);
-  }, []);
+  }, [rotateThemeState, theme, lockedTheme, setTheme]);
 
   useEffect(() => {
+    const storageListener = (event: StorageEvent | Event) => {
+      if (
+        event.type !== storageKey &&
+        'key' in event &&
+        event.key !== storageKey
+      )
+        return;
+
+      // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
+      const theme = lockedTheme
+        ? lockedTheme
+        : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
+      setTheme(theme, false);
+    };
+
     window.addEventListener(storageKey, storageListener);
     window.addEventListener('storage', storageListener);
     return () => {
       window.removeEventListener(storageKey, storageListener);
       window.removeEventListener('storage', storageListener);
     };
-  }, [storageListener]);
+  }, []);
 
   const rotateTheme = () => {
     switch (theme) {
