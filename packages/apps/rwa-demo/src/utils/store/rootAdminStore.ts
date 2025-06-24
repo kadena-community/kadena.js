@@ -68,10 +68,15 @@ export const RootAdminStore = () => {
     return orgRef.key;
   };
 
+  const removeOrganisation = async (organisationId: string) => {
+    return set(ref(database, `/organisationsData/${organisationId}`), null);
+  };
+
   return {
     setAdmin,
     removeAdmin,
     listenToAdmins,
     createOrganisation,
+    removeOrganisation,
   };
 };

@@ -96,6 +96,18 @@ export const OrganisationsList: FC = () => {
 
     setIsAddOpen(false);
     setIsRightAsideExpanded(false);
+
+    addNotification(
+      {
+        intent: 'positive',
+        label: 'Organisation removed',
+        message: `Organisation ${data.name} has been created successfully.`,
+      },
+      {
+        name: 'success:submit:createorganisation',
+      },
+    );
+
     router.push(`/admin/root/organisation/${orgId}`);
   };
 

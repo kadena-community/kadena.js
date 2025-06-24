@@ -23,6 +23,9 @@ export const EVENT_NAMES = {
   'error:submit:togglePartiallyFreezeTokens':
     'error:submit:togglePartiallyFreezeTokens',
   'error:submit:createorganisation': 'error:submit:createorganisation',
+
+  'success:submit:createorganisation': 'success:submit:createorganisation',
+  'success:submit:removeorganisation': 'success:submit:removeorganisation',
 } as const;
 
 const COOKIE_CONSENTNAME = 'cookie_consent';
