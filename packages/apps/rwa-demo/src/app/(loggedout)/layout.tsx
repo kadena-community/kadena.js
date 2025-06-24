@@ -2,8 +2,8 @@
 
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons';
-import { Button, Themes } from '@kadena/kode-ui';
+import { ThemeAnimateIcon } from '@/components/ThemeAnimateIcon/ThemeAnimateIcon';
+import { Button, Themes, useTheme } from '@kadena/kode-ui';
 import {
   FocussedLayout,
   FocussedLayoutFooter,
@@ -11,7 +11,6 @@ import {
   FocussedLayoutProvider,
   FocussedLayoutTopBanner,
 } from '@kadena/kode-ui/patterns';
-import { useTheme } from 'next-themes';
 import React from 'react';
 
 const RootLayout = ({
@@ -39,9 +38,7 @@ const RootLayout = ({
               isCompact
               variant="transparent"
               onPress={() => toggleTheme()}
-              startVisual={
-                theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-              }
+              startVisual={<ThemeAnimateIcon theme={theme} />}
             />
           </FocussedLayoutHeaderAside>
           {children}

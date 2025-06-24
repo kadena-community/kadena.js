@@ -1,12 +1,6 @@
 import { useUser } from '@/hooks/user';
 import { shortenString } from '@/utils/shortenString';
-import {
-  MonoAccountBox,
-  MonoDarkMode,
-  MonoLightMode,
-  MonoLogout,
-  MonoSettings,
-} from '@kadena/kode-icons';
+import { MonoAccountBox, MonoLogout, MonoSettings } from '@kadena/kode-icons';
 import {
   Button,
   ButtonGroup,
@@ -23,6 +17,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+import { ThemeAnimateIcon } from '../ThemeAnimateIcon/ThemeAnimateIcon';
 import './style.css';
 
 export const SidebarSideContext: FC = () => {
@@ -98,9 +93,7 @@ export const SidebarSideContext: FC = () => {
                 isCompact
                 variant={isExpanded ? 'outlined' : 'transparent'}
                 onPress={() => toggleTheme()}
-                startVisual={
-                  theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-                }
+                startVisual={<ThemeAnimateIcon theme={theme} />}
               />
             </ButtonGroup>
           </Stack>

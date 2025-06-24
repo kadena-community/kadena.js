@@ -1,5 +1,5 @@
 'use client';
-import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons';
+import { ThemeAnimateIcon } from '@/components/ThemeAnimateIcon/ThemeAnimateIcon';
 import {
   Button,
   Card,
@@ -39,9 +39,7 @@ const GlobalError = ({ error, componentStack, resetError }: any) => {
             isCompact
             variant="transparent"
             onPress={() => toggleTheme()}
-            startVisual={
-              theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-            }
+            startVisual={<ThemeAnimateIcon theme={theme} />}
           />
         </FocussedLayoutHeaderAside>
         <FocussedLayout>
