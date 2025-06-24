@@ -1,5 +1,4 @@
 'use client';
-import { rootCertificates } from 'node:tls';
 import { useCallback, useEffect, useState } from 'react';
 import { darkThemeClass } from '../../styles';
 import type { ITheme } from './utils/constants';

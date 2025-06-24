@@ -8,7 +8,6 @@ import {
   ContextMenuItem,
   Stack,
   ThemeAnimateIcon,
-  Themes,
   useTheme,
 } from '@kadena/kode-ui';
 import {

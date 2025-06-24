@@ -2,7 +2,7 @@
 
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { Button, ThemeAnimateIcon, Themes, useTheme } from '@kadena/kode-ui';
+import { Button, ThemeAnimateIcon, useTheme } from '@kadena/kode-ui';
 import {
   FocussedLayout,
   FocussedLayoutFooter,
