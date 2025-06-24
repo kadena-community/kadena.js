@@ -12,6 +12,7 @@ import {
 import type { FC } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { OrganisationFormFields } from './OrganisationFormFields';
 
 interface IProps {
   organisationId: IOrganisation['id'];
@@ -82,57 +83,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
         <SectionCardContentBlock>
           <SectionCardHeader title="Organisation Info" />
           <SectionCardBody>
-            <Controller
-              name="name"
-              control={control}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'This field is required',
-                },
-                maxLength: {
-                  value: 40,
-                  message: 'This exceeds the maximum length',
-                },
-                pattern: {
-                  value: /^[a-zA-Z0-9_-]+$/,
-                  message: 'Only use allowed characters (a-z A-Z 0-9)',
-                },
-              }}
-              render={({ field }) => (
-                <TextField
-                  id="Name"
-                  isInvalid={!!errors.name?.message}
-                  errorMessage={`${errors.name?.message}`}
-                  label="Alias"
-                  {...field}
-                />
-              )}
-            />
-
-            <Controller
-              name="sendEmail"
-              control={control}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'This field is required',
-                },
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Simple email regex
-                  message: 'Invalid email address',
-                },
-              }}
-              render={({ field }) => (
-                <TextField
-                  id="sendEmail"
-                  isInvalid={!!errors.sendEmail?.message}
-                  errorMessage={`${errors.sendEmail?.message}`}
-                  label="Send Email"
-                  {...field}
-                />
-              )}
-            />
+            <OrganisationFormFields control={control} errors={errors} />
           </SectionCardBody>
         </SectionCardContentBlock>
         <SectionCardContentBlock>
