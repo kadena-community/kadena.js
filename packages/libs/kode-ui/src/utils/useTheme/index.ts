@@ -27,7 +27,9 @@ interface IUseThemeProps {
 }
 interface IUseThemeReturnProps {
   theme: ITheme | undefined;
+  rotateThemeState: ITheme | undefined;
   setTheme: (value: ITheme) => void;
+  rotateTheme: () => void;
 }
 
 const getTheme = (key: string) => {
@@ -45,6 +47,9 @@ export const useTheme = ({
   overwriteTheme,
   lockedTheme,
 }: IUseThemeProps = {}): IUseThemeReturnProps => {
+  const [rotateThemeState, setRotateThemeState] = useState<
+    ITheme | undefined
+  >();
   const [theme, setThemeState] = useState(() =>
     lockedTheme ? lockedTheme : getTheme(storageKey),
   );
@@ -55,6 +60,7 @@ export const useTheme = ({
 
     // If theme is system, resolve it before setting theme
     if (innerTheme === 'system') {
+      //resolved = 'system';
       resolved = getSystemTheme();
     }
     if (lockedTheme) {
@@ -88,11 +94,16 @@ export const useTheme = ({
 
   const handleMediaQuery = useCallback(
     (e: MediaQueryListEvent | MediaQueryList) => {
-      const resolved = lockedTheme ? lockedTheme : getSystemTheme(e);
+      //console.log(getSystemTheme(e), e);
+      const resolved = lockedTheme ? lockedTheme : theme;
       setTheme(resolved);
     },
     [],
   );
+
+  useEffect(() => {
+    setRotateThemeState(theme);
+  }, [theme]);
 
   // Always listen to System preference
   useEffect(() => {
@@ -134,8 +145,27 @@ export const useTheme = ({
     };
   }, [storageListener]);
 
+  const rotateTheme = () => {
+    switch (theme) {
+      case 'light':
+        setTheme('dark');
+        return;
+      case 'dark':
+        setTheme('system');
+        return;
+      case 'system':
+        setTheme('light');
+        return;
+      default:
+        setTheme('system');
+        return;
+    }
+  };
+
   return {
+    rotateThemeState: overwriteTheme ? overwriteTheme : rotateThemeState,
     theme: overwriteTheme ? overwriteTheme : theme,
     setTheme,
+    rotateTheme,
   };
 };

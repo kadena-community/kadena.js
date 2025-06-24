@@ -1,11 +1,11 @@
 'use client';
-import { ThemeAnimateIcon } from '@/components/ThemeAnimateIcon/ThemeAnimateIcon';
 import {
   Button,
   Card,
   Heading,
   Stack,
   Text,
+  ThemeAnimateIcon,
   Themes,
   useTheme,
 } from '@kadena/kode-ui';
@@ -21,12 +21,7 @@ import React, { useEffect } from 'react';
 import { cardWrapperClass } from './(loggedout)/style.css';
 
 const GlobalError = ({ error, componentStack, resetError }: any) => {
-  const { theme, setTheme } = useTheme();
-
-  const toggleTheme = (): void => {
-    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
-    setTheme(newTheme);
-  };
+  const { theme, rotateTheme } = useTheme();
 
   useEffect(() => {
     Sentry.captureException(error);
@@ -38,7 +33,7 @@ const GlobalError = ({ error, componentStack, resetError }: any) => {
           <Button
             isCompact
             variant="transparent"
-            onPress={() => toggleTheme()}
+            onPress={rotateTheme}
             startVisual={<ThemeAnimateIcon theme={theme} />}
           />
         </FocussedLayoutHeaderAside>

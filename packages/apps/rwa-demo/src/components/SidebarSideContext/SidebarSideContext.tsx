@@ -7,6 +7,7 @@ import {
   ContextMenu,
   ContextMenuItem,
   Stack,
+  ThemeAnimateIcon,
   Themes,
   useTheme,
 } from '@kadena/kode-ui';
@@ -17,19 +18,14 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { ThemeAnimateIcon } from '../ThemeAnimateIcon/ThemeAnimateIcon';
+
 import './style.css';
 
 export const SidebarSideContext: FC = () => {
   const { signOut, userToken, userData } = useUser();
-  const { theme, setTheme } = useTheme();
+  const { theme, rotateTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const router = useRouter();
-
-  const toggleTheme = (): void => {
-    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
-    setTheme(newTheme);
-  };
 
   const handleLogout = async () => {
     signOut();
@@ -92,7 +88,7 @@ export const SidebarSideContext: FC = () => {
               <Button
                 isCompact
                 variant={isExpanded ? 'outlined' : 'transparent'}
-                onPress={() => toggleTheme()}
+                onPress={rotateTheme}
                 startVisual={<ThemeAnimateIcon theme={theme} />}
               />
             </ButtonGroup>
