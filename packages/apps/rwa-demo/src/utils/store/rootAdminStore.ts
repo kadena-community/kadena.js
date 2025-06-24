@@ -1,5 +1,6 @@
+import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { IdTokenResult } from 'firebase/auth';
-import { off, onValue, ref } from 'firebase/database';
+import { off, onValue, push, ref, set } from 'firebase/database';
 import { database } from './firebase';
 
 export const RootAdminStore = () => {
@@ -57,9 +58,20 @@ export const RootAdminStore = () => {
     return result;
   };
 
+  const createOrganisation = async (
+    data: IOrganisation,
+  ): Promise<string | null> => {
+    const orgRef = push(ref(database, `/organisationsData`));
+
+    await set(ref(database, `/organisationsData/${orgRef.key}`), data);
+
+    return orgRef.key;
+  };
+
   return {
     setAdmin,
     removeAdmin,
     listenToAdmins,
+    createOrganisation,
   };
 };

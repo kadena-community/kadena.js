@@ -1,5 +1,5 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
-import { TextField } from '@kadena/kode-ui';
+import { Stack, TextField } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import type { Control, FieldErrors } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -11,7 +11,7 @@ interface IProps {
 
 export const OrganisationFormFields: FC<IProps> = ({ control, errors }) => {
   return (
-    <>
+    <Stack width="100%" gap="md" flexDirection="column">
       <Controller
         name="name"
         control={control}
@@ -63,6 +63,6 @@ export const OrganisationFormFields: FC<IProps> = ({ control, errors }) => {
           />
         )}
       />
-    </>
+    </Stack>
   );
 };

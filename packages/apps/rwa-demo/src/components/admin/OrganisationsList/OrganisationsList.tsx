@@ -1,12 +1,15 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
+import { useNotifications } from '@/hooks/notifications';
 import { OrganisationStore } from '@/utils/store/organisationStore';
+import { RootAdminStore } from '@/utils/store/rootAdminStore';
 import { MonoAdd, MonoFindInPage } from '@kadena/kode-icons';
-import { Button, RightAsideFooter } from '@kadena/kode-ui';
+import { Button } from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
   RightAside,
   RightAsideContent,
+  RightAsideFooter,
   RightAsideHeader,
   SectionCard,
   SectionCardBody,
@@ -32,14 +35,13 @@ export const OrganisationsList: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+  const { addNotification } = useNotifications();
   const router = useRouter();
 
   const {
     handleSubmit,
     control,
-    getValues,
     formState: { isValid, errors },
-    reset,
   } = useForm<IOrganisation>({
     mode: 'all',
     defaultValues: {
@@ -67,6 +69,36 @@ export const OrganisationsList: FC = () => {
     router.push(`/admin/root/organisation/${id}`);
   };
 
+  const onSubmit = async (data: IOrganisation) => {
+    setIsLoading(true);
+    const store = await RootAdminStore();
+    const orgId = await store.createOrganisation(data);
+
+    setIsLoading(false);
+
+    if (!orgId) {
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'Organisation was not created',
+        },
+        {
+          name: `error:submit:createorganisation`,
+          options: {
+            sentryData: {
+              type: 'database-transaction',
+            },
+          },
+        },
+      );
+      return;
+    }
+
+    setIsAddOpen(false);
+    setIsRightAsideExpanded(false);
+    router.push(`/admin/root/organisation/${orgId}`);
+  };
+
   return (
     <>
       {isRightAsideExpanded && isAddOpen && (
@@ -77,13 +109,15 @@ export const OrganisationsList: FC = () => {
             setIsRightAsideExpanded(false);
           }}
         >
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Add Organisation" />
             <RightAsideContent>
               <OrganisationFormFields control={control} errors={errors} />
             </RightAsideContent>
             <RightAsideFooter>
-              <Button type="submit">Create Organisation</Button>
+              <Button isDisabled={!isValid} type="submit">
+                Create Organisation
+              </Button>
             </RightAsideFooter>
           </form>
         </RightAside>
@@ -95,6 +129,7 @@ export const OrganisationsList: FC = () => {
             actions={
               <Button
                 isCompact
+                isLoading={isLoading}
                 variant="outlined"
                 endVisual={<MonoAdd />}
                 onPress={() => {
