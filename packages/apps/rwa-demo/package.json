@@ -38,6 +38,7 @@
     "@vanilla-extract/recipes": "0.5.1",
     "@vanilla-extract/sprinkles": "1.6.1",
     "cache-sh": "^1.2.1",
+    "classnames": "^2.3.1",
     "firebase": "^10.8.0",
     "firebase-admin": "^13.4.0",
     "form-data": "^4.0.2",

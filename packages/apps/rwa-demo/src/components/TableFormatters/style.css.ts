@@ -16,10 +16,10 @@ export const formatAmountClass = recipe({
   },
 });
 
-export const formatAliasWrapperClass = style({});
 export const formatAliasEditClass = style([
   atoms({}),
   {
+    textDecoration: 'none',
     selectors: {
       '&:hover': {
         textDecoration: 'underline',
@@ -29,12 +29,12 @@ export const formatAliasEditClass = style([
   },
 ]);
 
-globalStyle(`${formatAliasWrapperClass} > a`, {
+globalStyle(`.accountwrapperclass ${formatAliasEditClass}`, {
   visibility: 'hidden',
   pointerEvents: 'none',
 });
 
-globalStyle(`${formatAliasWrapperClass}:hover > a`, {
+globalStyle(`.accountwrapperclass:hover ${formatAliasEditClass}`, {
   visibility: 'visible',
   pointerEvents: 'auto',
 });
