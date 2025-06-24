@@ -7,7 +7,7 @@ import type {
 } from '@kadena/wallet-adapter-core';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { EckoWalletAdapter } from '../EckoWalletAdapter';
+import { EckoAdapter } from '../EckoAdapter';
 import type {
   IEckoQuicksignResponse,
   IQuicksignResponseOutcomes,
@@ -28,15 +28,15 @@ class MockProvider implements IProvider {
 }
 
 let provider: MockProvider;
-let adapter: EckoWalletAdapter;
+let adapter: EckoAdapter;
 
 beforeEach(() => {
   provider = new MockProvider();
-  adapter = new EckoWalletAdapter({ provider, networkId: 'testnet04' });
+  adapter = new EckoAdapter({ provider, networkId: 'testnet04' });
   vi.clearAllMocks();
 });
 
-describe('EckoWalletAdapter', () => {
+describe('EckoAdapter', () => {
   describe('kadena_connect', () => {
     it('performs status → connect → status → requestAccount flow on first connect', async () => {
       const statusFail: IRawRequestResponse = {
@@ -86,7 +86,8 @@ describe('EckoWalletAdapter', () => {
           networkId: 'testnet04',
           contract: 'coin',
           guard: { keys: ['pk1'], pred: 'keys-all' },
-          chainAccounts: [],
+          keyset: { keys: ['pk1'], pred: 'keys-all' },
+          existsOnChains: [],
         },
       });
     });
@@ -167,7 +168,8 @@ describe('EckoWalletAdapter', () => {
           networkId: 'testnet04',
           contract: 'coin',
           guard: { keys: ['pk3'], pred: 'keys-all' },
-          chainAccounts: [],
+          keyset: { keys: ['pk3'], pred: 'keys-all' },
+          existsOnChains: [],
         },
       ]);
     });

@@ -2,7 +2,7 @@
   "git": {
     "deploymentEnabled": {
       "main": false,
-      "release/marmalade-v*": true
+      "release/marmalade-v*": false
     }
   },
   "crons": [

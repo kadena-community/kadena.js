@@ -15,7 +15,7 @@ export const backgroundClass = recipe({
     isSelected: {
       true: {
         borderColor: token('color.neutral.n99@alpha10'),
-        backgroundColor: token('color.background.base.inverse.default'),
+        backgroundColor: token('color.background.input.@active'),
       },
       false: {
         borderColor: token('color.neutral.n99@alpha10'),
@@ -28,5 +28,6 @@ export const backgroundClass = recipe({
 export const labelClass = style({});
 
 globalStyle(`${backgroundClass}[data-isselected="true"] [class^="Checkbox"]`, {
-  color: token('color.text.base.inverse.default'),
+  color: token('color.text.base.@active'),
+  backgroundColor: token('color.background.input.@active'),
 });

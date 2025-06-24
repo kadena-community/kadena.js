@@ -24,32 +24,35 @@ Overview of the main packages maintained in this repository:
 
 <!--packageTable start -->
 
-| Package                              | Release Notes        |
-| :----------------------------------- | :------------------- |
-| [@kadena-dev/eslint-config][5]       | [![version][7]][6]   |
-| [@kadena-dev/eslint-plugin][8]       | [![version][10]][9]  |
-| [@kadena-dev/shared-config][11]      | [![version][13]][12] |
-| [@kadena/chainweb-node-client][14]   | [![version][16]][15] |
-| [@kadena/chainweb-stream-client][17] | [![version][19]][18] |
-| [@kadena/chainwebjs][20]             | [![version][22]][21] |
-| [@kadena/client][23]                 | [![version][25]][24] |
-| [@kadena/client-utils][26]           | [![version][28]][27] |
-| [@kadena/create-kadena-app][29]      | [![version][31]][30] |
-| [@kadena/cryptography-utils][32]     | [![version][34]][33] |
-| [@kadena/graph][35]                  | [![version][37]][36] |
-| [@kadena/hd-wallet][38]              | [![version][40]][39] |
-| [@kadena/kadena-cli][41]             | [![version][43]][42] |
-| [@kadena/kode-icons][44]             | [![version][46]][45] |
-| [@kadena/kode-ui][47]                | [![version][49]][48] |
-| [@kadena/pactjs][50]                 | [![version][52]][51] |
-| [@kadena/pactjs-cli][53]             | [![version][55]][54] |
-| [@kadena/pactjs-generator][56]       | [![version][58]][57] |
-| [@kadena/snap][59]                   | [![version][61]][60] |
-| [@kadena/types][62]                  | [![version][64]][63] |
-| [@kadena/wallet-adapter-core][65]    | [![version][67]][66] |
-| [@kadena/wallet-adapter-ecko][68]    | [![version][70]][69] |
-| [@kadena/wallet-adapter-react][71]   | [![version][73]][72] |
-| [@kadena/wallet-sdk][74]             | [![version][76]][75] |
+| Package                                         | Release Notes        |
+| :---------------------------------------------- | :------------------- |
+| [@kadena-dev/eslint-config][5]                  | [![version][7]][6]   |
+| [@kadena-dev/eslint-plugin][8]                  | [![version][10]][9]  |
+| [@kadena-dev/shared-config][11]                 | [![version][13]][12] |
+| [@kadena/chainweb-node-client][14]              | [![version][16]][15] |
+| [@kadena/chainweb-stream-client][17]            | [![version][19]][18] |
+| [@kadena/chainwebjs][20]                        | [![version][22]][21] |
+| [@kadena/client][23]                            | [![version][25]][24] |
+| [@kadena/client-utils][26]                      | [![version][28]][27] |
+| [@kadena/create-kadena-app][29]                 | [![version][31]][30] |
+| [@kadena/cryptography-utils][32]                | [![version][34]][33] |
+| [@kadena/graph][35]                             | [![version][37]][36] |
+| [@kadena/hd-wallet][38]                         | [![version][40]][39] |
+| [@kadena/kadena-cli][41]                        | [![version][43]][42] |
+| [@kadena/kode-icons][44]                        | [![version][46]][45] |
+| [@kadena/kode-ui][47]                           | [![version][49]][48] |
+| [@kadena/pactjs][50]                            | [![version][52]][51] |
+| [@kadena/pactjs-cli][53]                        | [![version][55]][54] |
+| [@kadena/pactjs-generator][56]                  | [![version][58]][57] |
+| [@kadena/snap][59]                              | [![version][61]][60] |
+| [@kadena/types][62]                             | [![version][64]][63] |
+| [@kadena/wallet-adapter-chainweaver-legacy][65] | [![version][67]][66] |
+| [@kadena/wallet-adapter-core][68]               | [![version][70]][69] |
+| [@kadena/wallet-adapter-ecko][71]               | [![version][73]][72] |
+| [@kadena/wallet-adapter-react][74]              | [![version][76]][75] |
+| [@kadena/wallet-adapter-walletconnect][77]      | [![version][79]][78] |
+| [@kadena/wallet-adapter-zelcore][80]            | [![version][82]][81] |
+| [@kadena/wallet-sdk][83]                        | [![version][85]][84] |
 
 <!--packageTable end -->
 
@@ -57,7 +60,7 @@ Overview of the main packages maintained in this repository:
 
 Special thanks to the wonderful people who have contributed to this project:
 
-[![Contributors][78]][77]
+[![Contributors][87]][86]
 
 
 [1]: https://docs.kadena.io
@@ -144,112 +147,30 @@ Special thanks to the wonderful people who have contributed to this project:
 [63]: packages/libs/types/CHANGELOG.md
 [64]: https://img.shields.io/npm/v/@kadena/types.svg
 [65]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-core
-[66]: packages/libs/wallet-adapter-core/CHANGELOG.md
-[67]: https://img.shields.io/npm/v/@kadena/wallet-adapter-core.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-chainweaver-legacy
+[66]: packages/libs/wallet-adapter-chainweaver-legacy/CHANGELOG.md
+[67]: https://img.shields.io/npm/v/@kadena/wallet-adapter-chainweaver-legacy.svg
 [68]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-ecko
-[69]: packages/libs/wallet-adapter-ecko/CHANGELOG.md
-[70]: https://img.shields.io/npm/v/@kadena/wallet-adapter-ecko.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-core
+[69]: packages/libs/wallet-adapter-core/CHANGELOG.md
+[70]: https://img.shields.io/npm/v/@kadena/wallet-adapter-core.svg
 [71]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-react
-[72]: packages/libs/wallet-adapter-react/CHANGELOG.md
-[73]: https://img.shields.io/npm/v/@kadena/wallet-adapter-react.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-ecko
+[72]: packages/libs/wallet-adapter-ecko/CHANGELOG.md
+[73]: https://img.shields.io/npm/v/@kadena/wallet-adapter-ecko.svg
 [74]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-sdk
-[75]: packages/libs/wallet-sdk/CHANGELOG.md
-[76]: https://img.shields.io/npm/v/@kadena/wallet-sdk.svg
-[77]: https://github.com/kadena-community/kadena.js/graphs/contributors
-[78]: https://contrib.rocks/image?repo=kadena-community/kadena.js
-
-```sh
-npx @kadena/create-kadena-app
-```
-
-Create Kadena app allows you to pass command line arguments to set up a new
-project non-interactively. While we might further expand functionality in the
-future currently there's one command available, `generate-project`. See
-create-kadena-app generate --help:
-
-```sh
-Usage: create-kadena-app generate-project [options]
-
-Generate starter project
-
-Options:
-  -n, --name <value>      Project name
-  -t, --template <value>  Project template to use
-  -h, --help              display help for command
-```
-
-### Options:
-
-- `name` determines the name of the project but also the folder on the
-  filesystem that will contain the project. The same general operating system
-  folder name rules apply and are being validated.
-- `template` determines the template being used for the project that is being
-  created. Valid values are:
-  - nextjs
-  - vuejs
-  - angular
-- `help` displays the help menu
-
-## The Pact smart contract
-
-The smart contract is called `cka-message-store` and can be found [here][6]. The
-folder contains two files `message-store.pact` which is the smart contract
-written in Pact but also `message-store.repl` which contains a supporting test
-suite. The contract is also deployed on testnet chain 0 as
-`free.cka-message-store`.
-
-The two main functions of the contract are `read-message` and `write-message`
-which are shown below:
-
-```pact
-(defun read-message (account:string)
-  "Read a message for a specific account"
-
-  (with-default-read messages account
-    { "message": "You haven't written any message yet" }
-    { "message" := message }
-    message
-  )
-)
-```
-
-Reading a message is unrestricted, so everyone can access the smart contract and
-read the message a user has written, given the account is provided.
-
-```pact
-(defun write-message (account:string message:string)
-  "Write a message"
-
-  (enforce (<= (length message) 150) "Message can be a maximum of 150 characters long")
-
-  ;; Try to acquire the `ACCOUNT-OWNER` capability which checks
-  ;; that the transaction owner is also the owner of the KDA account provided as parameter to our `write-messages` function.
-  (with-capability (ACCOUNT-OWNER account)
-    (write messages account { "message" : message })
-  )
-)
-```
-
-Writing a message is guarded by a capability `ACCOUNT-OWNER`, so only the
-account owner kan write a message.
-
-The contract contains a single table `messages` that stores the messages for all
-users.
-
-This readme doesn't aim to be a tutorial for Pact therefore we aren't going into
-the complete details of the contract nor the Pact language. For more detailed
-info on Pact development visit the **Build** section on [docs.kadena.io][7].
-
-[1]: ##The-Pact-smart-contract
-[2]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-core
-[3]: https://nextjs.org/
-[4]: https://vuejs.org/
-[5]: https://angular.io/
-[6]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/create-kadena-app/pact
-[7]: https://docs.kadena.io/
-======= end
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-react
+[75]: packages/libs/wallet-adapter-react/CHANGELOG.md
+[76]: https://img.shields.io/npm/v/@kadena/wallet-adapter-react.svg
+[77]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-walletconnect
+[78]: packages/libs/wallet-adapter-walletconnect/CHANGELOG.md
+[79]: https://img.shields.io/npm/v/@kadena/wallet-adapter-walletconnect.svg
+[80]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-zelcore
+[81]: packages/libs/wallet-adapter-zelcore/CHANGELOG.md
+[82]: https://img.shields.io/npm/v/@kadena/wallet-adapter-zelcore.svg
+[84]: packages/libs/wallet-sdk/CHANGELOG.md
+[85]: https://img.shields.io/npm/v/@kadena/wallet-sdk.svg
+[86]: https://github.com/kadena-community/kadena.js/graphs/contributors
+[87]: https://contrib.rocks/image?repo=kadena-community/kadena.js

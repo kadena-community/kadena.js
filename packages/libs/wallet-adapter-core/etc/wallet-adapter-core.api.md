@@ -52,6 +52,13 @@ export abstract class BaseWalletAdapter implements IAdapter {
     signTransaction(command: IUnsignedCommand | IUnsignedCommand[]): Promise<(IUnsignedCommand | ICommand) | (IUnsignedCommand | ICommand)[]>;
 }
 
+// @public (undocumented)
+export type CapabilityGuard = {
+    cgName: string;
+    cgArgs: PactValue[];
+    cgPactId?: string;
+};
+
 export { ChainId }
 
 // @public (undocumented)
@@ -69,19 +76,23 @@ export const convertSignRequest: (parsedTransaction: IPactCommand) => ISigningRe
 // @public
 export const finalizeQuickSignTransaction: (response: IQuicksignResponse, transactionHashes: string[], transactions: (IUnsignedCommand | ICommand)[], isList: boolean) => IUnsignedCommand | (IUnsignedCommand | ICommand)[];
 
+// @public (undocumented)
+export type Guard = KeySet | KeySetRef | UserGuard | CapabilityGuard | ModuleGuard | PactGuard;
+
 // @public
 export interface IAccountInfo {
     // (undocumented)
     accountName: string;
     // (undocumented)
-    chainAccounts: string[];
-    // (undocumented)
     contract: string;
     // (undocumented)
-    guard: {
-        keys: string[];
-        pred: string;
-    };
+    existsOnChains: string[];
+    // (undocumented)
+    guard: Guard;
+    // (undocumented)
+    keyset: KeySet;
+    // (undocumented)
+    label?: string;
     // (undocumented)
     networkId: string;
 }
@@ -245,6 +256,9 @@ export interface IProvider {
     }): Promise<unknown>;
 }
 
+// @public (undocumented)
+export const isCapabilityGuard: (guard: Guard) => guard is CapabilityGuard;
+
 // @public
 export function isExecCommand(parsedTransaction: IPactCommand): parsedTransaction is IPactCommand & {
     payload: IExecutionPayloadObject;
@@ -261,6 +275,21 @@ export const isJsonRpcResponse: (response: any) => boolean;
 
 // @public (undocumented)
 export const isJsonRpcSuccess: <T>(response: JsonRpcResponse<T>) => response is IJsonRpcSuccess<T>;
+
+// @public (undocumented)
+export const isKeySetGuard: (guard: Guard) => guard is KeySet;
+
+// @public (undocumented)
+export const isKeySetRefGuard: (guard: Guard) => guard is KeySetRef;
+
+// @public (undocumented)
+export const isModuleGuard: (guard: Guard) => guard is ModuleGuard;
+
+// @public (undocumented)
+export const isPactGuard: (guard: Guard) => guard is PactGuard;
+
+// @public (undocumented)
+export const isUserGuard: (guard: Guard) => guard is UserGuard;
 
 export { IUnsignedCommand }
 
@@ -280,10 +309,45 @@ export type KdaRequestArgs<M extends KdaMethod> = {
     params?: IKdaMethodMap[M]['params'];
 };
 
+// @public (undocumented)
+export type KeySet = {
+    keys: string[];
+    pred: string;
+};
+
+// @public (undocumented)
+export type KeySetRef = {
+    keysetref: {
+        ns?: string;
+        ksn: string;
+    };
+};
+
+// @public (undocumented)
+export type ModuleGuard = {
+    moduleName: ModuleName;
+    name: string;
+};
+
+// @public (undocumented)
+export type ModuleName = {
+    name: string;
+    namespace?: string;
+};
+
 // @public
 export type OptionalKeyPair = Omit<IKeyPair, 'secretKey'> & {
     secretKey?: string;
 };
+
+// @public (undocumented)
+export type PactGuard = {
+    pactId: string;
+    name: string;
+};
+
+// @public (undocumented)
+export type PactValue = PvLiteral | PvList | Guard | PvObject | PvModRef | PvTime | PvCapToken;
 
 // @public
 export const parseTransactionCommand: (transaction: IUnsignedCommand | ICommand) => IPactCommand;
@@ -305,7 +369,53 @@ export const prepareQuickSignCmd: (transactionList: IUnsignedCommand | Array<IUn
 // @public
 export function prepareSignCmd(transaction: IUnsignedCommand | ICommand | ISigningRequestPartial): ISigningRequestPartial;
 
+// @public (undocumented)
+export type PvCapToken = {
+    ctName: string;
+    ctArgs: PactValue[];
+};
+
+// @public (undocumented)
+export type PvDecimal = number | {
+    decimal: string;
+};
+
+// @public (undocumented)
+export type PvInteger = {
+    int: number | string;
+};
+
+// @public (undocumented)
+export type PvList = PactValue[];
+
+// @public (undocumented)
+export type PvLiteral = string | PvInteger | PvDecimal | boolean;
+
+// @public (undocumented)
+export type PvModRef = {
+    refName: string;
+    refSpec: ModuleName[];
+};
+
+// @public (undocumented)
+export type PvObject = {
+    [key: string]: PactValue;
+};
+
+// @public (undocumented)
+export type PvTime = {
+    time: string;
+} | {
+    timep: string;
+};
+
 export { StandardSchemaV1 }
+
+// @public (undocumented)
+export type UserGuard = {
+    fun: string;
+    args: PactValue[];
+};
 
 // @public
 export class WalletAdapterClient {

@@ -23,6 +23,7 @@
     "verify": "pnpm run generate:contracts && tsc --noEmit"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.18.2",
     "@hookform/resolvers": "^3.2.0",
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
@@ -37,13 +38,13 @@
     "@ledgerhq/hw-transport-webhid": "^6.28.3",
     "@ledgerhq/logs": "^6.12.0",
     "@tanstack/react-query": "^5.32.0",
-    "@tryfabric/mack": "1.2.1",
     "@vanilla-extract/css": "1.14.2",
-    "@walletconnect/modal": "~2.6.1",
+    "@walletconnect/modal": "~2.7.0",
     "@walletconnect/sign-client": "~2.8.1",
     "@walletconnect/utils": "^2.18.0",
     "ace-builds": "~1.30.0",
     "classnames": "^2.3.1",
+    "date-fns": "~2.30.0",
     "fuse.js": "^7.0.0",
     "hw-app-kda-clone": "workspace:*",
     "js-cookie": "~3.0.5",

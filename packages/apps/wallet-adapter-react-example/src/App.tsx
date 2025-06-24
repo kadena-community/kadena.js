@@ -17,13 +17,23 @@ import type {
   INetworkInfo,
   IUnsignedCommand,
 } from '@kadena/wallet-adapter-core';
+import { isKeySetGuard } from '@kadena/wallet-adapter-core';
 import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { createTransferCmd } from './transferCmd';
 import { createTransferTx } from './transferTx';
-import { validateRpcResponse } from './zodValidation';
+import { isRpcError, validateRpcResponse } from './zodValidation';
+
+const openZelcore = (): void => {
+  window.open('zel:', '_self');
+};
 
 import './styles.css';
+import {
+  autoSelectPublicKey,
+  createExampleCommand,
+  createExampleTransaction,
+} from './utils';
 
 const App = () => {
   const { client, providerData } = useKadenaWallet();
@@ -48,6 +58,36 @@ const App = () => {
   const [signCommandPayload, setSignCommandPayload] = useState('');
   const [signTxPayload, setSignTxPayload] = useState('');
 
+  useEffect(() => {
+    if (!activeAccount) return;
+    if (!signTxPayload) {
+      setSignTxPayload(
+        JSON.stringify(
+          createExampleTransaction(
+            activeAccount.accountName,
+            autoSelectPublicKey(activeAccount),
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
+        ),
+      );
+    }
+    if (!signCommandPayload) {
+      setSignCommandPayload(
+        JSON.stringify(
+          createExampleCommand(
+            activeAccount.accountName,
+            autoSelectPublicKey(activeAccount),
+            'k:e96357af055f1eafca72e9f3eac355d4f5614bfbe21efd9986e2457eb154a2c0',
+            '0',
+            network?.networkId || 'testnet04',
+          ),
+        ),
+      );
+    }
+  }, [activeAccount]);
+
   /**
    * Helper to set RPC response and run Zod validation
    */
@@ -55,7 +95,6 @@ const App = () => {
     setRpcResponse(resp);
     const result = validateRpcResponse(methodName, resp);
     setValidationResult(result);
-    // scroll to response area
     rpcResponseRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -70,26 +109,42 @@ const App = () => {
 
     setLoading(true);
     try {
-      const accountInfo = await client.connect(
-        selectedWallet.name,
-        selectedWallet.name === 'Chainweaver'
-          ? {
-              accountName: prompt('Input your account'),
-              tokenContract: 'coin',
-              chainIds: ['0', '1'],
-            }
-          : undefined,
-      );
-      setActiveAccount(accountInfo);
+      if (selectedWallet.name === 'Zelcore') {
+        // trigger Zelcore app to start local server
+        openZelcore();
+        // wait a bit for Zelcore to launch its HTTP endpoint
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const accounts = await client.getAccounts('Zelcore');
+        if (Array.isArray(accounts) && accounts.length > 0) {
+          setActiveAccount(accounts[0]);
+        } else {
+          throw new Error('No accounts returned from Zelcore');
+        }
+        const netInfo = await client.getActiveNetwork('Zelcore');
+        setNetwork(netInfo);
+      } else {
+        // Chainweaver or others: use standard connect
+        const accountInfo = await client.connect(
+          selectedWallet.name,
+          selectedWallet.name === 'Chainweaver'
+            ? {
+                accountName: prompt('Input your account'),
+                tokenContract: 'coin',
+                chainIds: ['0', '1'],
+              }
+            : undefined,
+        );
+        setActiveAccount(accountInfo);
 
-      const networkInfo = await client.getActiveNetwork(selectedWallet.name);
-      setNetwork(networkInfo);
+        const networkInfo = await client.getActiveNetwork(selectedWallet.name);
+        setNetwork(networkInfo);
+      }
 
       console.log(
         'Connected to',
         selectedWallet.name,
         '->',
-        accountInfo?.accountName,
+        activeAccount?.accountName,
       );
 
       setTimeout(() => {
@@ -132,22 +187,40 @@ const App = () => {
 
   const handleGetAccount = async () => {
     if (!selectedWallet) return;
+    if (selectedWallet.name === 'Zelcore') openZelcore();
     try {
       const resp = await client.getActiveAccount(selectedWallet.name);
       validateAndSetRpcResponse('kadena_getAccount_v1', resp);
     } catch (err) {
       console.error(err);
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
       setRpcResponse(err);
     }
   };
 
   const handleGetAccounts = async () => {
     if (!selectedWallet) return;
+    if (selectedWallet.name === 'Zelcore') openZelcore();
     try {
       const resp = await client.getAccounts(selectedWallet.name);
       validateAndSetRpcResponse('kadena_getAccounts_v2', resp);
     } catch (err) {
       console.error(err);
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getAccounts_v2', err);
+        return;
+      }
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
       setRpcResponse(err);
     }
   };
@@ -159,6 +232,14 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getNetwork_v1', resp);
     } catch (err) {
       console.error(err);
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getNetworks_v1', err);
+        return;
+      }
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
       setRpcResponse(err);
     }
   };
@@ -170,6 +251,14 @@ const App = () => {
       validateAndSetRpcResponse('kadena_getNetworks_v1', resp);
     } catch (err) {
       console.error(err);
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_getNetworks_v1', err);
+        return;
+      }
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
       setRpcResponse(err);
     }
   };
@@ -178,13 +267,19 @@ const App = () => {
     if (!selectedWallet) return;
     try {
       const command = JSON.parse(signCommandPayload);
-      const cmd: IUnsignedCommand = {
-        ...command,
-      };
+      const cmd: IUnsignedCommand = { ...command };
       const resp = await client.signCommand(selectedWallet.name, cmd);
       validateAndSetRpcResponse('kadena_signCommand', resp);
     } catch (err) {
       console.error(err);
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_signCommand', err);
+        return;
+      }
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
       setRpcResponse(err);
     }
   };
@@ -196,10 +291,19 @@ const App = () => {
       const tx: IUnsignedCommand = {
         ...transaction,
       };
+      console.log('sign transaction', selectedWallet.name, tx);
       const resp = await client.signTransaction(selectedWallet.name, tx);
       validateAndSetRpcResponse('kadena_signTransaction', resp);
     } catch (err) {
       console.error(err);
+      if (isRpcError(err)) {
+        validateAndSetRpcResponse('kadena_signTransaction', err);
+        return;
+      }
+      if (err instanceof Error) {
+        setRpcResponse({ error: err.message });
+        return;
+      }
       setRpcResponse(err);
     }
   };
@@ -224,19 +328,16 @@ const App = () => {
   }, [selectedWallet, client]);
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Render UI
   // ---------------------------------------------------------------------------
   return (
     <Card fullWidth>
-      {/* A header with icon */}
       <ContentHeader
         heading="Kadena Wallet Adapter Example"
         description="(Ecko, Zelcore, etc.)"
         icon={<MonoWallet />}
       />
-
       <Divider />
-
       <Stack flexDirection="column" gap="lg" padding="lg">
         <Stack flexDirection="column" gap="sm">
           <Heading as="h3">Select Wallet</Heading>
@@ -263,8 +364,6 @@ const App = () => {
             ]}
           </Select>
         </Stack>
-
-        {/* Connect / Disconnect buttons */}
         <Stack flexDirection="row" gap="md">
           <Button
             onPress={handleConnect}
@@ -279,8 +378,6 @@ const App = () => {
             {loading ? 'Disconnecting...' : 'Disconnect'}
           </Button>
         </Stack>
-
-        {/* Display Active Account info */}
         {activeAccount && (
           <div ref={activeAccountRef} style={{ width: '100%' }}>
             <Stack flexDirection="column" gap="xs">
@@ -296,8 +393,6 @@ const App = () => {
             </Stack>
           </div>
         )}
-
-        {/* Display Active Network info */}
         {network && (
           <Stack flexDirection="column" gap="xs">
             <Heading as="h3">Active Network</Heading>
@@ -312,9 +407,7 @@ const App = () => {
           </Stack>
         )}
       </Stack>
-
       <Divider />
-
       <Stack flexDirection="column" gap="md" padding="lg" flexWrap="wrap">
         <Heading as="h3">RPC Response</Heading>
         <div ref={rpcResponseRef} style={{ width: '100%' }}>
@@ -330,15 +423,12 @@ const App = () => {
                   }}
                 >
                   {JSON.stringify(rpcResponse, null, 2)}
-
                   {'\n'}
-                  {validationResult?.success
-                    ? `\n\n=== VALID ===\n${
-                        validationResult?.isError
-                          ? '(JSON-RPC Error object, but valid format)'
-                          : ''
-                      }`
-                    : `\n\n=== INVALID ===\n${JSON.stringify(validationResult?.issues, null, 2)}`}
+                  {!('error' in rpcResponse)
+                    ? validationResult?.success
+                      ? `\n\n=== VALID ===\n${validationResult?.isError ? '(JSON-RPC Error object, but valid format)' : ''}`
+                      : `\n\n=== INVALID ===\n${JSON.stringify(validationResult?.issues, null, 2)}`
+                    : null}
                   {validationResult?.note
                     ? `\nNote: ${validationResult.note}`
                     : ''}
@@ -347,10 +437,8 @@ const App = () => {
             </Stack>
           )}
         </div>
-
         <Divider />
         <Heading as="h3">Additional RPC Method Calls</Heading>
-
         <Stack
           flexDirection="row"
           gap="sm"
@@ -370,10 +458,7 @@ const App = () => {
             kadena_getNetworks_v1
           </Button>
         </Stack>
-
         <Divider />
-
-        {/* signCommand */}
         <Stack flexDirection="column" gap="sm" flexWrap="wrap">
           <Heading as="h4">kadena_signCommand</Heading>
           <TextField
@@ -387,14 +472,13 @@ const App = () => {
             Sign Command
           </Button>
         </Stack>
-
         <Divider />
         <Heading as="h3">Send KDA</Heading>
         <div>
           <Stack flexDirection="column" gap="sm">
             <TextField
-              label="Input Account"
-              placeholder="Funded account"
+              label="To:"
+              placeholder="Account to fund"
               value={accountTo}
               onValueChange={setAccountTo}
               isDisabled={!activeAccount}
@@ -404,12 +488,18 @@ const App = () => {
                 isDisabled={!activeAccount}
                 onPress={() => {
                   if (!activeAccount) return;
+                  if (!isKeySetGuard(activeAccount.guard)) {
+                    return console.error(
+                      'Active account does not have a KeySet guard',
+                    );
+                  }
                   createTransferCmd({
                     accountFrom: activeAccount.accountName,
                     pubkey: activeAccount.guard.keys[0],
                     accountTo: accountTo,
                     amount: 0.0001,
                     client: client,
+                    walletName: selectedWallet?.name ?? 'Chainweaver',
                   })
                     .then((result) => {
                       console.log('Transaction result:', result);
@@ -425,12 +515,19 @@ const App = () => {
                 isDisabled={!activeAccount}
                 onPress={() => {
                   if (!activeAccount) return;
+                  if (!isKeySetGuard(activeAccount.guard)) {
+                    return console.error(
+                      'Active account does not have a KeySet guard',
+                    );
+                  }
                   createTransferTx({
                     accountFrom: activeAccount.accountName,
                     pubkey: activeAccount.guard.keys[0],
                     accountTo: accountTo,
                     amount: 0.0001,
                     client: client,
+                    networkId: network?.networkId ?? 'mainnet01',
+                    walletName: selectedWallet?.name ?? 'Chainweaver',
                   })
                     .then((result) => {
                       console.log('Transaction result:', result);
@@ -445,10 +542,7 @@ const App = () => {
             </Stack>
           </Stack>
         </div>
-
         <Divider />
-
-        {/* signTransaction */}
         <Stack flexDirection="column" gap="sm" flexWrap="wrap">
           <Heading as="h4">kadena_signTransaction</Heading>
           <TextField
@@ -462,7 +556,6 @@ const App = () => {
             Sign Transaction
           </Button>
         </Stack>
-
         <Divider />
       </Stack>
     </Card>
