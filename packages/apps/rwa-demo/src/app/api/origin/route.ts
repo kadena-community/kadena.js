@@ -3,10 +3,14 @@ import type { NextRequest } from 'next/server';
 import { getDB } from './../admin/app';
 
 export const GET = async (request: NextRequest) => {
-  const origin = request.headers.get('x-forwarded-host');
+  const origin =
+    request.headers.get('x-forwarded-host') ?? request.nextUrl.host;
 
   console.log('origin', origin, getOriginKey(origin));
-  console.log(request.headers, 'request.nextUrl');
+  console.log(
+    { headers: request.headers, nextUrl: request.nextUrl.host },
+    'request.headers',
+  );
 
   if (!origin) {
     return new Response('origin not found', {
