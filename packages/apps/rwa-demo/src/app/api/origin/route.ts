@@ -4,7 +4,9 @@ import { getDB } from './../admin/app';
 
 export const GET = async (request: NextRequest) => {
   const headerOrigin = `${request.headers.get('x-forwarded-proto')}://${request.headers.get('x-forwarded-host')}`;
-  const origin = headerOrigin ?? request.nextUrl.host;
+  const origin = request.headers.get('x-forwarded-host')
+    ? headerOrigin
+    : request.nextUrl.host;
 
   console.log('origin', origin, getOriginKey(origin));
   console.log(
