@@ -76,7 +76,9 @@ const ExistingAccountFaucetPage: FC = () => {
 
         <Notification intent="warning" role="status" type="inlineStacked">
           <NotificationHeading>
-            {t('This EVM Faucet is running on DEVNET')}
+            {t(
+              `This EVM Faucet is running on ${process.env.NEXT_PUBLIC_EVMFAUCET_ENV} environment.`,
+            )}
           </NotificationHeading>
         </Notification>
 
