@@ -1,3 +1,4 @@
+import { push, ref, set } from 'firebase/database';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { RootAdminStore } from '../rootAdminStore';
 
@@ -9,6 +10,8 @@ vi.mock('firebase/database', () => ({
     cb({ val: () => ({ admin1: true, admin2: true }) });
   }),
   off: vi.fn(),
+  push: vi.fn(() => ({ key: 'mock-org-key' })),
+  set: vi.fn(() => Promise.resolve()),
 }));
 
 // Mock fetch
@@ -88,5 +91,35 @@ describe('RootAdminStore', () => {
         }),
       }),
     );
+  });
+
+  it('createOrganisation creates organisation in database and returns key', async () => {
+    const store = RootAdminStore();
+    const mockOrganisation = {
+      id: 'org-123',
+      name: 'Test Organisation',
+      domains: [{ value: 'test.com' }, { value: 'example.com' }],
+      sendEmail: 'admin@test.com',
+    };
+
+    const result = await store.createOrganisation(mockOrganisation);
+
+    // Verify ref was called with the correct paths
+    expect(ref).toHaveBeenCalledWith(undefined, '/organisationsData');
+    expect(ref).toHaveBeenCalledWith(
+      undefined,
+      '/organisationsData/mock-org-key',
+    );
+
+    // Verify push was called with the result of ref()
+    expect(push).toHaveBeenCalledWith('/organisationsData');
+
+    // Verify set was called with the result of ref() and data
+    expect(set).toHaveBeenCalledWith(
+      '/organisationsData/mock-org-key',
+      mockOrganisation,
+    );
+
+    expect(result).toBe('mock-org-key');
   });
 });

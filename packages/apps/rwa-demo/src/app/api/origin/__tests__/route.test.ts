@@ -24,7 +24,9 @@ describe('GET /api/origin', () => {
 
   it('returns 500 if origin is missing', async () => {
     const request = {
-      nextUrl: { origin: undefined },
+      headers: {
+        get: vi.fn(() => null),
+      },
     } as unknown as NextRequest;
     const response = await GET(request);
     expect(response.status).toBe(500);
@@ -35,7 +37,9 @@ describe('GET /api/origin', () => {
   it('returns 500 if no correct domain found', async () => {
     mockOnce.mockResolvedValueOnce({ toJSON: () => ({}) });
     const request = {
-      nextUrl: { origin: 'https://mastersoftheuniverse.com' },
+      headers: {
+        get: vi.fn(() => 'https://mastersoftheuniverse.com'),
+      },
     } as unknown as NextRequest;
     const response = await GET(request);
     expect(response.status).toBe(500);
@@ -48,11 +52,60 @@ describe('GET /api/origin', () => {
       toJSON: () => ({ org1: { name: 'Org1', domains: {} } }),
     });
     const request = {
-      nextUrl: { origin: 'https://mastersoftheuniverse.com' },
+      headers: {
+        get: vi.fn(() => 'https://mastersoftheuniverse.com'),
+      },
     } as unknown as NextRequest;
     const response = await GET(request);
     expect(response.status).toBe(200);
     const json = await response.json();
     expect(json).toEqual({ organisationId: 'org1' });
+  });
+
+  it('calls getOriginKey with the correct origin', async () => {
+    const { getOriginKey } = await import('@/utils/getOriginKey');
+    mockOnce.mockResolvedValueOnce({ toJSON: () => ({}) });
+    const request = {
+      headers: {
+        get: vi.fn((header) =>
+          header === 'x-forwarded-host' ? 'header-origin.com' : undefined,
+        ),
+      },
+    } as unknown as NextRequest;
+    await GET(request);
+    expect(getOriginKey).toHaveBeenCalledWith('header-origin.com');
+  });
+
+  it('reads the origin from x-forwarded-host header', async () => {
+    mockOnce.mockResolvedValueOnce({ toJSON: () => ({}) });
+    const request = {
+      headers: {
+        get: vi.fn((header) =>
+          header === 'x-forwarded-host' ? 'header-origin.com' : undefined,
+        ),
+      },
+    } as unknown as NextRequest;
+    await GET(request);
+    expect(request.headers.get).toHaveBeenCalledWith('x-forwarded-host');
+  });
+
+  it('logs origin and headers', async () => {
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    mockOnce.mockResolvedValueOnce({ toJSON: () => ({}) });
+    const request = {
+      headers: {
+        get: vi.fn((header) =>
+          header === 'x-forwarded-host' ? 'header-origin.com' : undefined,
+        ),
+      },
+    } as unknown as NextRequest;
+    await GET(request);
+    expect(logSpy).toHaveBeenCalledWith(
+      'origin',
+      'header-origin.com',
+      'mocked-key-header-origin.com',
+    );
+    expect(logSpy).toHaveBeenCalledWith(request.headers, 'request.nextUrl');
+    logSpy.mockRestore();
   });
 });
