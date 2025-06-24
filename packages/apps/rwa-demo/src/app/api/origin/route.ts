@@ -3,12 +3,12 @@ import type { NextRequest } from 'next/server';
 import { getDB } from './../admin/app';
 
 export const GET = async (request: NextRequest) => {
-  const origin =
-    request.headers.get('x-forwarded-host') ?? request.nextUrl.host;
+  const headerOrigin = `${request.headers.get('x-forwarded-proto')}://${request.headers.get('x-forwarded-host')}`;
+  const origin = headerOrigin ?? request.nextUrl.host;
 
   console.log('origin', origin, getOriginKey(origin));
   console.log(
-    { headers: request.headers, nextUrl: request.nextUrl.host },
+    { headers: headerOrigin, nextUrl: request.nextUrl.host },
     'request.headers',
   );
 
