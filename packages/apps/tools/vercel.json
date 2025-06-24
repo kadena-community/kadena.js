@@ -1,22 +1,25 @@
 {
   "git": {
     "deploymentEnabled": {
-      "main": false,
-      "release/tools-v*": true
+      "main": true
     }
   },
   "crons": [
     {
-      "path": "/api/faucet",
+      "path": "/api/alerts?t=12hours",
       "schedule": "15 3,15 * * *"
     },
     {
-      "path": "/api/graph",
-      "schedule": "15 4,16 * * *"
+      "path": "/api/alerts?t=1hour",
+      "schedule": "0 */1 * * *"
     },
     {
-      "path": "/api/xchaingas",
-      "schedule": "15 5,17 * * *"
+      "path": "/api/alerts?t=15minutes",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/alerts/elastic",
+      "schedule": "*/15 * * * *"
     }
   ]
 }

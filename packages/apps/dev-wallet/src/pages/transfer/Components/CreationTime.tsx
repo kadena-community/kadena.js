@@ -43,7 +43,6 @@ export function CreationTime({
         ) : undefined
       }
       onChange={(e) => {
-        console.log('e.target.value', new Date(e.target.value));
         onChange(Math.round(new Date(e.target.value).getTime() / 1000));
       }}
       type="datetime-local"

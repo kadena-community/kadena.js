@@ -1,4 +1,5 @@
 export { LayoutProvider, useLayout } from './components/LayoutProvider';
+export { KLogoText } from './components/Logo/KLogoText';
 export { SideBarFooter } from './components/SideBarFooter';
 export { SideBarFooterItem } from './components/SideBarFooterItem';
 export type { ISideBarFooterItemProps } from './components/SideBarFooterItem';

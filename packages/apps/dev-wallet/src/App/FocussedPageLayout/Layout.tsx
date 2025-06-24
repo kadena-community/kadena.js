@@ -5,6 +5,7 @@ import {
   FocussedLayout,
   FocussedLayoutFooter,
   FocussedLayoutHeaderAside,
+  FocussedLayoutLogo,
   FocussedLayoutProvider,
   FocussedLayoutTopBanner,
 } from '@kadena/kode-ui/patterns';
@@ -24,11 +25,17 @@ export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
       <FocussedLayoutTopBanner>
         <PreviewBanner maxWidth={1000} />
       </FocussedLayoutTopBanner>
-      <FocussedLayout>
+      <FocussedLayout
+        logo={
+          <a href="/">
+            <FocussedLayoutLogo />
+          </a>
+        }
+      >
         <FocussedLayoutHeaderAside>
           <Button
             isCompact
-            variant="transparent"
+            variant="outlined"
             onPress={() => toggleTheme()}
             startVisual={
               theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />

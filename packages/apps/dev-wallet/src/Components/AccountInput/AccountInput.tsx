@@ -7,7 +7,7 @@ import {
   MonoLoading,
 } from '@kadena/kode-icons/system';
 import { Button, Notification, Stack, TextField } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeySetForm } from '../KeySetForm/KeySetForm';
 import { DiscoverdAccounts } from './DiscoverdAccounts';
 
@@ -26,7 +26,6 @@ export function AccountInput({
   setAddress: (address: string) => void;
   onAccount: (account?: IRetrievedAccount) => void;
 }) {
-  console.log('AccountInput', account);
   const [discoveredAccounts, setDiscoveredAccounts] = useState<
     IRetrievedAccount[] | undefined
   >(undefined);
@@ -34,6 +33,11 @@ export function AccountInput({
   const [showKeysetDialog, setShowKeysetDialog] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [discovering, setDiscovering] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (!address) return;
+    handleDiscover(address);
+  }, []);
 
   const handleDiscover = async (addressArg?: string) => {
     console.log('handleDiscover', addressArg, discovering);

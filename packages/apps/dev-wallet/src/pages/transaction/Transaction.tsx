@@ -8,7 +8,7 @@ import { useRequests } from '@/modules/communication/communication.provider';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoSwapHoriz } from '@kadena/kode-icons/system';
-import { Heading, Stack, Text } from '@kadena/kode-ui';
+import { Stack, Text } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -36,6 +36,7 @@ export const TransactionPage = () => {
     run();
   }, [transactionId, navigate, profile?.uuid]);
 
+  console.log('status', tx?.status);
   return (
     <>
       <SideBarBreadcrumbs icon={<MonoSwapHoriz />}>
@@ -49,7 +50,6 @@ export const TransactionPage = () => {
 
       <Stack flexDirection={'column'} gap={'lg'} overflow="auto">
         <Stack flexDirection={'column'} gap={'sm'}>
-          <Heading>Transaction</Heading>
           {!tx && <Text>No transaction</Text>}
         </Stack>
         <TxList

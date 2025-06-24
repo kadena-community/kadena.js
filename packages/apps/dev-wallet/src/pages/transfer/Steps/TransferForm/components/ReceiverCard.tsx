@@ -142,7 +142,7 @@ export const ReceiverCard: FC<IProps> = ({
               variant="outlined"
               onPress={() => setShowMore((v) => !v)}
             >
-              More options
+              Select chain
             </Button>
             <Button
               isCompact
@@ -353,6 +353,7 @@ export const ReceiverCard: FC<IProps> = ({
                                     fieldState: { error },
                                   }) => (
                                     <TextField
+                                      label="Amount"
                                       aria-label="Amount"
                                       onChange={(e) => {
                                         const value = e.target.value;
@@ -383,6 +384,7 @@ export const ReceiverCard: FC<IProps> = ({
                                       control={control}
                                       render={({ field }) => (
                                         <Select
+                                          label="Chain"
                                           aria-label="Chain"
                                           startVisual={
                                             <Label size="small">Chain:</Label>

@@ -1,8 +1,8 @@
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
 import fs from 'fs';
 import path from 'path';
+import { defineConfig } from 'vite';
 
 /**
  * Get list of monorepo packages from package.json non-dev-dependencies
@@ -26,6 +26,9 @@ monorepoPackages.push('@kadena/client/fp');
 
 export default defineConfig({
   plugins: [vanillaExtractPlugin(), react()],
+  define: {
+    global: 'window',
+  },
   optimizeDeps: {
     include: [...monorepoPackages],
   },

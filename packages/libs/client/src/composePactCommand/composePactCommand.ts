@@ -43,7 +43,7 @@ const finalizeCommand = (
       gasLimit: 2500,
       gasPrice: 1.0e-8,
       sender: '',
-      ttl: 8 * 60 * 60, // 8 hours,
+      ttl: 15 * 60, // 15 minutes,
       creationTime: Math.floor(Date.now() / 1000),
     };
     finalCommand.meta = {

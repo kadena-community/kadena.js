@@ -41,7 +41,6 @@ export const NetworkSelector: FC<{
       <Button
         data-testid="networkselectorName"
         isCompact
-        isDisabled
         variant="outlined"
         startVisual={
           activeNetwork?.isHealthy === false ? (
@@ -78,7 +77,7 @@ export const NetworkSelector: FC<{
           ))}
           <ContextMenuDivider />
           <ContextMenuItem
-            label="Settings"
+            label="Network settings"
             endVisual={<MonoSettings />}
             onClick={handlePress}
           />
