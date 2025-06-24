@@ -1,19 +1,13 @@
 import { useUser } from '@/hooks/user';
 import { shortenString } from '@/utils/shortenString';
-import {
-  MonoAccountBox,
-  MonoDarkMode,
-  MonoLightMode,
-  MonoLogout,
-  MonoSettings,
-} from '@kadena/kode-icons';
+import { MonoAccountBox, MonoLogout, MonoSettings } from '@kadena/kode-icons';
 import {
   Button,
   ButtonGroup,
   ContextMenu,
   ContextMenuItem,
   Stack,
-  Themes,
+  ThemeAnimateIcon,
   useTheme,
 } from '@kadena/kode-ui';
 import {
@@ -23,18 +17,14 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+
 import './style.css';
 
 export const SidebarSideContext: FC = () => {
   const { signOut, userToken, userData } = useUser();
-  const { theme, setTheme } = useTheme();
+  const { theme, rotateTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const router = useRouter();
-
-  const toggleTheme = (): void => {
-    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
-    setTheme(newTheme);
-  };
 
   const handleLogout = async () => {
     signOut();
@@ -97,10 +87,8 @@ export const SidebarSideContext: FC = () => {
               <Button
                 isCompact
                 variant={isExpanded ? 'outlined' : 'transparent'}
-                onPress={() => toggleTheme()}
-                startVisual={
-                  theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-                }
+                onPress={rotateTheme}
+                startVisual={<ThemeAnimateIcon theme={theme} />}
               />
             </ButtonGroup>
           </Stack>
