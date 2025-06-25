@@ -1,6 +1,6 @@
 import { useWallet } from '@/modules/wallet/wallet.hook.tsx';
 import { noStyleLinkClass } from '@/pages/home/style.css';
-import { MonoContrast, MonoLogout, MonoPublic } from '@kadena/kode-icons';
+import { MonoLogout, MonoPublic } from '@kadena/kode-icons';
 import {
   KadenaLogo,
   NavHeader,
@@ -11,7 +11,7 @@ import {
   SelectItem,
   Stack,
   Text,
-  Themes,
+  ThemeAnimateIcon,
   useTheme,
 } from '@kadena/kode-ui';
 import { atoms } from '@kadena/kode-ui/styles';
@@ -22,18 +22,13 @@ import { headerStyle, selectNetworkClass } from './style.css';
 export const MainHeader: FC = () => {
   const { networks, activeNetwork, setActiveNetwork } = useWallet();
 
-  const { theme, setTheme } = useTheme();
+  const { theme, rotateTheme } = useTheme();
 
   const handleNetworkUpdate = (uuid: string) => {
     const network = networks.find((network) => network.uuid === uuid);
     if (network && setActiveNetwork) {
       setActiveNetwork(network);
     }
-  };
-
-  const toggleTheme = (): void => {
-    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
-    setTheme(newTheme);
   };
 
   const { isUnlocked, lockProfile } = useWallet();
@@ -60,14 +55,10 @@ export const MainHeader: FC = () => {
             <NavHeaderButton
               aria-label="Toggle theme"
               title="Toggle theme"
-              onPress={() => toggleTheme()}
+              onPress={rotateTheme}
               className={atoms({ marginInlineEnd: 'sm' })}
             >
-              <MonoContrast
-                className={atoms({
-                  color: 'text.base.default',
-                })}
-              />
+              <ThemeAnimateIcon theme={theme} />
             </NavHeaderButton>
             {!isUnlocked && (
               <NavHeaderLinkList>
