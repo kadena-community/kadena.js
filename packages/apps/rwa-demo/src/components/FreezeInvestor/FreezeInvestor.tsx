@@ -28,9 +28,11 @@ interface IProps {
   isCompact?: IButtonProps['isCompact'];
   variant?: IButtonProps['variant'];
   iconOnly?: boolean;
+
   trigger?: ReactElement<
     Partial<IButtonProps> &
       Attributes & {
+        label?: string;
         icon: ReactElement;
         onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
       }
@@ -147,6 +149,7 @@ export const FreezeInvestor: FC<IProps> = ({
               isDisabled: !isAllowed,
               isCompact,
               variant,
+              label,
               children: label,
             })
           ) : (
