@@ -1,6 +1,6 @@
 import { useEventSubscriptionFilteredSubscription } from '@/__generated__/sdk';
 import { accountKDABalance } from '@/services/accountKDABalance';
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useGetAccountKDABalance } from '../getAccountKDABalance';
 
@@ -71,11 +71,12 @@ describe('useGetAccountKDABalance', () => {
       useGetAccountKDABalance({ accountAddress: testAccountAddress }),
     );
     expect(result.current.data).toBe(0);
-    // Advance timers to trigger useEffect
-    vi.runAllTimers();
 
-    // Give a chance for promises to resolve
-    await vi.runAllTimersAsync();
+    // Advance timers to trigger useEffect and wait for async operations
+    await act(async () => {
+      vi.runAllTimers();
+      await vi.runAllTimersAsync();
+    });
 
     // Assert
     expect(mockAccountKDABalance).toHaveBeenCalled();
@@ -119,13 +120,17 @@ describe('useGetAccountKDABalance', () => {
       );
 
       // Wait for initial balance to load
-      vi.runAllTimers();
-      await vi.runAllTimersAsync();
+      await act(async () => {
+        vi.runAllTimers();
+        await vi.runAllTimersAsync();
+      });
       expect(result.current.data).toBe(initialBalance);
 
       // Now simulate receiving transfer event
-      mockSubscriptionData.mockReturnValue({ data: mockEventData });
-      rerender();
+      await act(async () => {
+        mockSubscriptionData.mockReturnValue({ data: mockEventData });
+        rerender();
+      });
 
       expect(result.current.data).toBe(initialBalance + transferAmount);
     });
@@ -151,13 +156,17 @@ describe('useGetAccountKDABalance', () => {
       );
 
       // Wait for initial balance to load
-      vi.runAllTimers();
-      await vi.runAllTimersAsync();
+      await act(async () => {
+        vi.runAllTimers();
+        await vi.runAllTimersAsync();
+      });
       expect(result.current.data).toBe(initialBalance);
 
       // Now simulate sending transfer event
-      mockSubscriptionData.mockReturnValue({ data: mockEventData });
-      rerender();
+      await act(async () => {
+        mockSubscriptionData.mockReturnValue({ data: mockEventData });
+        rerender();
+      });
 
       expect(result.current.data).toBe(initialBalance - transferAmount);
     });
@@ -187,13 +196,17 @@ describe('useGetAccountKDABalance', () => {
       );
 
       // Wait for initial balance to load
-      vi.runAllTimers();
-      await vi.runAllTimersAsync();
+      await act(async () => {
+        vi.runAllTimers();
+        await vi.runAllTimersAsync();
+      });
       expect(result.current.data).toBe(initialBalance);
 
       // Process multiple events
-      mockSubscriptionData.mockReturnValue({ data: mockEventData });
-      rerender();
+      await act(async () => {
+        mockSubscriptionData.mockReturnValue({ data: mockEventData });
+        rerender();
+      });
 
       // Should be: 100 + 50 - 20 + 10 = 140
       expect(result.current.data).toBe(140);
@@ -220,13 +233,17 @@ describe('useGetAccountKDABalance', () => {
       );
 
       // Wait for initial balance to load
-      vi.runAllTimers();
-      await vi.runAllTimersAsync();
+      await act(async () => {
+        vi.runAllTimers();
+        await vi.runAllTimersAsync();
+      });
       expect(result.current.data).toBe(initialBalance);
 
       // Process events
-      mockSubscriptionData.mockReturnValue({ data: mockEventData });
-      rerender();
+      await act(async () => {
+        mockSubscriptionData.mockReturnValue({ data: mockEventData });
+        rerender();
+      });
 
       // Should only process the valid event
       expect(result.current.data).toBe(initialBalance + 25);
@@ -252,13 +269,17 @@ describe('useGetAccountKDABalance', () => {
       );
 
       // Wait for initial balance to load
-      vi.runAllTimers();
-      await vi.runAllTimersAsync();
+      await act(async () => {
+        vi.runAllTimers();
+        await vi.runAllTimersAsync();
+      });
       expect(result.current.data).toBe(initialBalance);
 
       // Process event that doesn't involve our account
-      mockSubscriptionData.mockReturnValue({ data: mockEventData });
-      rerender();
+      await act(async () => {
+        mockSubscriptionData.mockReturnValue({ data: mockEventData });
+        rerender();
+      });
 
       // Balance should remain unchanged
       expect(result.current.data).toBe(initialBalance);
@@ -284,13 +305,17 @@ describe('useGetAccountKDABalance', () => {
       );
 
       // Wait for initial balance to load
-      vi.runAllTimers();
-      await vi.runAllTimersAsync();
+      await act(async () => {
+        vi.runAllTimers();
+        await vi.runAllTimersAsync();
+      });
       expect(result.current.data).toBe(initialBalance);
 
       // Process events with invalid JSON
-      mockSubscriptionData.mockReturnValue({ data: mockEventData });
-      rerender();
+      await act(async () => {
+        mockSubscriptionData.mockReturnValue({ data: mockEventData });
+        rerender();
+      });
 
       // Should process only the valid event (the hook should handle JSON parse errors)
       expect(result.current.data).toBe(initialBalance + 15);
