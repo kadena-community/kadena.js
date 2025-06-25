@@ -66,7 +66,7 @@
     "verify": "tsc --noEmit"
   },
   "dependencies": {
-    "react": "^18.2.0"
+    "react": "^19.1.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -78,8 +78,8 @@
     "@svgr/plugin-prettier": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
     "@types/node": "^20.12.7",
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
     "eslint": "^8.45.0",
     "giget": "^1.2.1",
     "jiti": "^1.21.6",

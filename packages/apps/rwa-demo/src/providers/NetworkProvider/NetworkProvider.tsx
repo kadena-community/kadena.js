@@ -104,6 +104,7 @@ export const NetworkProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [activeNetwork]);
 
   if (!client) return null;
+
   return (
     <NetworkContext.Provider
       value={{ activeNetwork, networks: defaultNetworkContext.networks }}
