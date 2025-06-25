@@ -32,7 +32,7 @@ describe('GET /api/origin', () => {
         get: vi.fn(() => null),
       },
       nextUrl: {
-        host: testOrigin,
+        origin: testOrigin,
       },
     } as unknown as NextRequest;
 
@@ -59,7 +59,7 @@ describe('GET /api/origin', () => {
         ),
       },
       nextUrl: {
-        host: 'localhost:3000',
+        origin: 'localhost:3000',
       },
     } as unknown as NextRequest;
     const response = await GET(request);
@@ -83,7 +83,7 @@ describe('GET /api/origin', () => {
         ),
       },
       nextUrl: {
-        host: 'localhost:3000',
+        origin: 'localhost:3000',
       },
     } as unknown as NextRequest;
     const response = await GET(request);
@@ -105,7 +105,7 @@ describe('GET /api/origin', () => {
         ),
       },
       nextUrl: {
-        host: 'localhost:3000',
+        origin: 'localhost:3000',
       },
     } as unknown as NextRequest;
     await GET(request);
@@ -126,7 +126,7 @@ describe('GET /api/origin', () => {
         ),
       },
       nextUrl: {
-        host: '', // Empty host to make it falsy
+        origin: '', // Empty host to make it falsy
       },
     } as unknown as NextRequest;
     const response = await GET(request);
@@ -152,7 +152,7 @@ describe('GET /api/origin', () => {
         ),
       },
       nextUrl: {
-        host: 'localhost:3000',
+        origin: 'localhost:3000',
       },
     } as unknown as NextRequest;
 
