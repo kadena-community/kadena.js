@@ -6,13 +6,7 @@ export const GET = async (request: NextRequest) => {
   const headerOrigin = `${request.headers.get('x-forwarded-proto')}://${request.headers.get('x-forwarded-host')}`;
   const origin = request.headers.get('x-forwarded-host')
     ? headerOrigin
-    : request.nextUrl.host;
-
-  console.log('origin', origin, getOriginKey(origin));
-  console.log(
-    { headers: headerOrigin, nextUrl: request.nextUrl.host },
-    'request.headers',
-  );
+    : request.nextUrl.origin;
 
   if (!origin) {
     return new Response('origin not found', {
@@ -30,15 +24,10 @@ export const GET = async (request: NextRequest) => {
   const snapshot = await orgRef.once('value');
   const data = snapshot.toJSON() ?? {};
 
-  console.log('data', data);
-  console.log('getOriginKey', getOriginKey(origin));
-
   const organisationArray = Object.entries(data).map(([key, val]) => ({
     ...val,
     id: key,
   }));
-
-  console.log('organisationArray', organisationArray);
 
   if (organisationArray.length !== 1) {
     return new Response('no correct domain found', {
