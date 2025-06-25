@@ -30,10 +30,15 @@ export const GET = async (request: NextRequest) => {
   const snapshot = await orgRef.once('value');
   const data = snapshot.toJSON() ?? {};
 
+  console.log('data', data);
+  console.log('getOriginKey', getOriginKey(origin));
+
   const organisationArray = Object.entries(data).map(([key, val]) => ({
     ...val,
     id: key,
   }));
+
+  console.log('organisationArray', organisationArray);
 
   if (organisationArray.length !== 1) {
     return new Response('no correct domain found', {
