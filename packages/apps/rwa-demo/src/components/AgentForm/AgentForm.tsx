@@ -12,7 +12,7 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
@@ -20,7 +20,12 @@ import { AccountNameField } from '../Fields/AccountNameField';
 interface IProps {
   agent?: IRecord;
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {

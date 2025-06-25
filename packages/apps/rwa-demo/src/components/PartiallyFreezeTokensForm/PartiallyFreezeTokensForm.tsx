@@ -11,7 +11,7 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
@@ -21,7 +21,12 @@ import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransa
 interface IProps {
   onClose?: () => void;
   investorAccount: string;
-  trigger: ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
 }
 
 export const PartiallyFreezeTokensForm: FC<IProps> = ({

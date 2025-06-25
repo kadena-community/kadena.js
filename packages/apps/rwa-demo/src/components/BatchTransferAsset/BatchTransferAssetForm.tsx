@@ -16,7 +16,7 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DragNDropCSV } from '../DragNDropCSV/DragNDropCSV';
@@ -24,7 +24,12 @@ import { selectBoxClass } from './styles.css';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
 }
 
 export interface IRegisterIdentityBatchProps {

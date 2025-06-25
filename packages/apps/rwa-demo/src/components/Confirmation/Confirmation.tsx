@@ -7,12 +7,17 @@ import {
   Stack,
 } from '@kadena/kode-ui';
 
-import type { FC, PropsWithChildren } from 'react';
+import type { Attributes, FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useState } from 'react';
 import { complianceWrapperClass } from './style.css';
 
 interface IProps extends PropsWithChildren {
-  trigger: React.ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
   label?: string;
   onPress: (e: PressEvent) => void;
 }

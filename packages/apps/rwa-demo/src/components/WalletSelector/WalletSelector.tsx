@@ -11,13 +11,20 @@ import {
   Stack,
   Text,
 } from '@kadena/kode-ui';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import { useState } from 'react';
 import { ChainweaverWalletConnect } from '../ChainweaverWalletConnect/ChainweaverWalletConnect';
 import { EckoWalletConnect } from '../EckoWalletConnect/EckoWalletConnect';
 import { MagicConnect } from '../MagicConnect/MagicConnect';
 
-export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
+export const WalletSelector: FC<{
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
+}> = ({ trigger }) => {
   const [accounts, setAccounts] = useState<IWalletAccount[] | undefined>();
   const [type, setType] = useState<keyof typeof WALLETTYPES | undefined>();
   const { addAccount } = useAccount();

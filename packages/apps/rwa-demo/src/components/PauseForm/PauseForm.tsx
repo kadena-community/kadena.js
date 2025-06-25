@@ -1,11 +1,22 @@
 import { useAsset } from '@/hooks/asset';
 import { useTogglePause } from '@/hooks/togglePause';
-import type { Dispatch, FC, ReactElement, SetStateAction } from 'react';
+import type {
+  Attributes,
+  Dispatch,
+  FC,
+  ReactElement,
+  SetStateAction,
+} from 'react';
 import { useEffect } from 'react';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
 
 interface IProps {
-  trigger: ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
   handleSetIsLoading?: Dispatch<SetStateAction<boolean>>;
 }
 

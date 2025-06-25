@@ -15,7 +15,7 @@ import {
   Text,
   TextareaField,
 } from '@kadena/kode-ui';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import React, { cloneElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { complianceWrapperClass } from '../Confirmation/style.css';
@@ -28,7 +28,13 @@ interface IProps {
   isCompact?: IButtonProps['isCompact'];
   variant?: IButtonProps['variant'];
   iconOnly?: boolean;
-  trigger?: ReactElement;
+  trigger?: ReactElement<
+    Partial<IButtonProps> &
+      Attributes & {
+        icon: ReactElement;
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
 }
 
 const getVisual = (frozen: boolean, isLoading: boolean) => {
@@ -141,7 +147,6 @@ export const FreezeInvestor: FC<IProps> = ({
               isDisabled: !isAllowed,
               isCompact,
               variant,
-              label,
               children: label,
             })
           ) : (
