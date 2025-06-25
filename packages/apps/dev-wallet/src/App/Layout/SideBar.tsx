@@ -2,10 +2,8 @@ import {
   MonoCheck,
   MonoContacts,
   MonoControlPointDuplicate,
-  MonoDarkMode,
   MonoExtension,
   MonoKey,
-  MonoLightMode,
   MonoLogout,
   MonoMoreVert,
   MonoNetworkCheck,
@@ -33,7 +31,7 @@ import {
   Heading,
   Stack,
   Text,
-  Themes,
+  ThemeAnimateIcon,
   Link as UILink,
   useTheme,
 } from '@kadena/kode-ui';
@@ -50,7 +48,7 @@ import { KLogo } from './KLogo';
 export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
 }) => {
-  const { theme, setTheme } = useTheme();
+  const { theme, rotateTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const { lockProfile, profileList, unlockProfile, profile } = useWallet();
   const navigate = usePatchedNavigate();
@@ -61,10 +59,6 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
     () => pluginManager.pluginsList,
   );
 
-  const toggleTheme = (): void => {
-    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
-    setTheme(newTheme);
-  };
   pluginManager.availablePlugins;
   useEffect(() => {
     const unsubscribe = pluginManager.onStatusChange(() => {
@@ -282,10 +276,8 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
                 <Button
                   isCompact
                   variant={isExpanded ? 'outlined' : 'transparent'}
-                  onPress={toggleTheme}
-                  startVisual={
-                    theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-                  }
+                  onPress={rotateTheme}
+                  startVisual={<ThemeAnimateIcon theme={theme} />}
                 />
               </ButtonGroup>
             </Stack>

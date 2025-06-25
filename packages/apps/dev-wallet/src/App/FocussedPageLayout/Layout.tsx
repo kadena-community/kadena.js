@@ -1,6 +1,5 @@
 import { PreviewBanner } from '@/Components/PreviewBanner/PreviewBanner';
-import { MonoDarkMode, MonoLightMode } from '@kadena/kode-icons/system';
-import { Button, Themes, useTheme } from '@kadena/kode-ui';
+import { Button, ThemeAnimateIcon, useTheme } from '@kadena/kode-ui';
 import {
   FocussedLayout,
   FocussedLayoutFooter,
@@ -13,12 +12,7 @@ import { FC, PropsWithChildren } from 'react';
 import { Outlet } from 'react-router-dom';
 
 export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
-  const { theme, setTheme } = useTheme();
-
-  const toggleTheme = (): void => {
-    const newTheme = theme === Themes.dark ? Themes.light : Themes.dark;
-    setTheme(newTheme);
-  };
+  const { theme, rotateTheme } = useTheme();
 
   return (
     <FocussedLayoutProvider>
@@ -36,10 +30,8 @@ export const FocussedPageLayout: FC<PropsWithChildren> = ({ children }) => {
           <Button
             isCompact
             variant="outlined"
-            onPress={() => toggleTheme()}
-            startVisual={
-              theme === 'dark' ? <MonoDarkMode /> : <MonoLightMode />
-            }
+            onPress={rotateTheme}
+            startVisual={<ThemeAnimateIcon theme={theme} />}
           />
         </FocussedLayoutHeaderAside>
         {children ? children : <Outlet />}
