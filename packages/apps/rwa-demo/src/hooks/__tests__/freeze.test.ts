@@ -1,6 +1,6 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useFreeze } from '../freeze';
 
 // Create hoisted mocks
@@ -132,7 +132,7 @@ describe('useFreeze', () => {
     // Mock the isFrozen function to return our controllable promise
     mocks.isFrozen.mockReturnValue(frozenPromise);
 
-    const { result, waitForValueToChange } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFreeze({ investorAccount: mockInvestorAccount }),
     );
 
@@ -143,7 +143,9 @@ describe('useFreeze', () => {
     resolvePromise!(false);
 
     // Wait for the state to change
-    await waitForValueToChange(() => result.current.frozen);
+    await waitFor(() => {
+      expect(result.current.frozen).toBe(false);
+    });
 
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {
@@ -164,7 +166,7 @@ describe('useFreeze', () => {
 
     mocks.isFrozen.mockReturnValueOnce(initialFrozenPromise);
 
-    const { result, rerender, waitForValueToChange } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useFreeze({ investorAccount: mockInvestorAccount }),
     );
 
@@ -203,7 +205,9 @@ describe('useFreeze', () => {
     resolveSecondPromise!(false);
 
     // Wait for the value to change
-    await waitForValueToChange(() => result.current.frozen);
+    await waitFor(() => {
+      expect(result.current.frozen).toBe(false);
+    });
 
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {
@@ -224,7 +228,7 @@ describe('useFreeze', () => {
 
     mocks.isFrozen.mockReturnValueOnce(initialFrozenPromise);
 
-    const { result, rerender, waitForValueToChange } = renderHook(
+    const { result, rerender } = renderHook(
       ({ investorAccount }) => useFreeze({ investorAccount }),
       {
         initialProps: { investorAccount: mockInvestorAccount },
@@ -255,7 +259,9 @@ describe('useFreeze', () => {
     resolveSecondPromise!(false);
 
     // Wait for the value to change
-    await waitForValueToChange(() => result.current.frozen);
+    await waitFor(() => {
+      expect(result.current.frozen).toBe(false);
+    });
 
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {
@@ -276,7 +282,7 @@ describe('useFreeze', () => {
 
     mocks.isFrozen.mockReturnValueOnce(initialFrozenPromise);
 
-    const { result, rerender, waitForValueToChange } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useFreeze({ investorAccount: mockInvestorAccount }),
     );
 
@@ -313,7 +319,9 @@ describe('useFreeze', () => {
     resolveSecondPromise!(false);
 
     // Wait for the value to change
-    await waitForValueToChange(() => result.current.frozen);
+    await waitFor(() => {
+      expect(result.current.frozen).toBe(false);
+    });
 
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {

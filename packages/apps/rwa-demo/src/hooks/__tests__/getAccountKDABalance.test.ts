@@ -1,6 +1,6 @@
 import { useEventSubscriptionFilteredSubscription } from '@/__generated__/sdk';
 import { accountKDABalance } from '@/services/accountKDABalance';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useGetAccountKDABalance } from '../getAccountKDABalance';
 

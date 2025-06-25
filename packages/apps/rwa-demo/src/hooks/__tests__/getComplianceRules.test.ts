@@ -1,5 +1,5 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import { useGetComplianceRules } from '../getComplianceRules';
 
 // Create hoisted mocks
