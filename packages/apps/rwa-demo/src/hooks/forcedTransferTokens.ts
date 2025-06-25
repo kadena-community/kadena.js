@@ -1,54 +1,40 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
 import { forcedTransferTokens } from '@/services/forcedTransferTokens';
-import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
-import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useForcedTransferTokens = () => {
-  const { account, sign, isMounted, accountRoles } = useAccount();
-  const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { account, isMounted, accountRoles } = useAccount();
+  const { asset, paused } = useAsset();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { submit2Chain } = useSubmit2Chain();
 
   const submit = async (data: IForcedTransferTokensProps) => {
-    try {
-      const tx = await forcedTransferTokens(data, account!);
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+    return submit2Chain<IForcedTransferTokensProps>(data, {
+      notificationSentryName: 'error:submit:forcedtransfertokens',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return forcedTransferTokens(data, account!, asset);
+      },
+      transaction: {
         type: TXTYPES.TRANSFERTOKENS,
         accounts: [
           account?.address!,
           data.investorFromAccount!,
           data.investorToAccount,
         ],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    }
+      },
+    });
   };
 
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!paused && accountRoles.isTransferManager());
-  }, [paused, isMounted, accountRoles]);
+  }, [paused, isMounted, accountRoles, asset]);
 
   return { submit, isAllowed };
 };

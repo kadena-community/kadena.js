@@ -1,17 +1,15 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IDeleteIdentityProps } from '@/services/deleteIdentity';
 import { deleteIdentity } from '@/services/deleteIdentity';
-import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useGetInvestorBalance } from './getInvestorBalance';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useDeleteInvestor = ({
   investorAccount,
@@ -19,38 +17,27 @@ export const useDeleteInvestor = ({
   investorAccount?: string;
 }) => {
   useGetInvestorBalance;
-  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
+  const { account, isOwner, accountRoles, isMounted } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
-  const { paused } = useAsset();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { asset, paused } = useAsset();
+  const { isActiveAccountChangeTx } = useTransactions();
   const [isAllowed, setIsAllowed] = useState(false);
   const [notAllowedReason, setNotAllowedReason] = useState('');
+  const { submit2Chain } = useSubmit2Chain();
 
   const submit = async (
     data: IDeleteIdentityProps,
   ): Promise<ITransaction | undefined> => {
-    try {
-      const tx = await deleteIdentity(data, account!);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+    return submit2Chain<IDeleteIdentityProps>(data, {
+      notificationSentryName: 'error:submit:deleteinvestor',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return deleteIdentity(data, account!, asset);
+      },
+      transaction: {
         type: TXTYPES.DELETEINVESTOR,
         accounts: [account?.address!],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    }
+      },
+    });
   };
 
   useEffect(() => {
@@ -80,6 +67,7 @@ export const useDeleteInvestor = ({
     isMounted,
     balance,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed, notAllowedReason };

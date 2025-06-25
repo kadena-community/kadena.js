@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
@@ -14,10 +15,11 @@ export interface ISetAddressFrozenProps {
 export const setAddressFrozen = async (
   data: ISetAddressFrozenProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   return Pact.builder
     .execution(
-      `(${getAsset()}.set-address-frozen (read-string 'investor) ${data.pause})
+      `(${getAsset(asset)}.set-address-frozen (read-string 'investor) ${data.pause})
       `,
     )
     .addData('investor', data.investorAccount)
@@ -27,7 +29,7 @@ export const setAddressFrozen = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.FREEZER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.FREEZER),
       withCap(`coin.GAS`),
     ])
 

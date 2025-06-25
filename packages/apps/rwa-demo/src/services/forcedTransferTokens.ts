@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
@@ -16,11 +17,12 @@ export interface IForcedTransferTokensProps {
 export const forcedTransferTokens = async (
   data: IForcedTransferTokensProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   return Pact.builder
     .execution(
       `
-       (${getAsset()}.forced-transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset(asset)}.forced-transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('agent', account.address)
     .addData('investorFrom', data.investorFromAccount!)
@@ -30,9 +32,9 @@ export const forcedTransferTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.TRANSFERMANAGER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.TRANSFERMANAGER),
       withCap(
-        `${getAsset()}.TRANSFER`,
+        `${getAsset(asset)}.TRANSFER`,
         data.investorFromAccount,
         data.investorToAccount,
         {

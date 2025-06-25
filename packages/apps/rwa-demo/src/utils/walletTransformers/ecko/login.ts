@@ -1,9 +1,9 @@
+import type { IECKOWindow } from '@/components/EckoWalletConnect/eckotypes';
+import { WALLETTYPES } from '@/constants';
 import type {
   Guard,
   IWalletAccount,
-} from '@/components/AccountProvider/AccountType';
-import type { IECKOWindow } from '@/components/EckoWalletConnect/eckotypes';
-import { WALLETTYPES } from '@/constants';
+} from '@/providers/AccountProvider/AccountType';
 import { getKeysetService } from '@/services/getKeyset';
 import { env } from '@/utils/env';
 

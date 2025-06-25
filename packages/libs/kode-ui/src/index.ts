@@ -138,6 +138,7 @@ export {
   TextField,
   TextLink,
   TextareaField,
+  ThemeAnimateIcon,
   Tile,
   ToggleButton,
   Tooltip,

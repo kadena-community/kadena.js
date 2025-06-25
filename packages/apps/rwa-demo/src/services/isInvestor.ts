@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
@@ -7,11 +8,11 @@ export interface IIsInvestorProps {
   account: IWalletAccount;
 }
 
-export const isInvestor = async (data: IIsInvestorProps) => {
+export const isInvestor = async (data: IIsInvestorProps, asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.contains-identity (read-string 'investor))`)
+    .execution(`(${getAsset(asset)}.contains-identity (read-string 'investor))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

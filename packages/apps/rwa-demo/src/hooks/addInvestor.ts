@@ -1,18 +1,17 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import { registerIdentity } from '@/services/registerIdentity';
-import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
-import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { RWAStore } from '@/utils/store';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useAddInvestor = ({
   investorAccount,
@@ -20,44 +19,40 @@ export const useAddInvestor = ({
   investorAccount?: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
-  const { paused } = useAsset();
-  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { asset, paused } = useAsset();
+  const { account, isOwner, accountRoles, isMounted } = useAccount();
+  const { isActiveAccountChangeTx } = useTransactions();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const { submit2Chain } = useSubmit2Chain();
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: Omit<IRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
-    const newData: IRegisterIdentityProps = {
-      ...data,
-      agent: account!,
-    };
-    try {
-      //if the account is already investor, no need to add it again
-      if (data.alreadyExists) return;
+    const tx = await submit2Chain<Omit<IRegisterIdentityProps, 'agent'>>(data, {
+      notificationSentryName: 'error:submit:addinvestor',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        if (data.alreadyExists) return Promise.resolve(undefined);
 
-      const tx = await registerIdentity(newData);
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
+        const newData: IRegisterIdentityProps = {
+          ...data,
+          agent: account!,
+        };
 
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+        return registerIdentity(newData, asset);
+      },
+      transaction: {
         type: TXTYPES.ADDINVESTOR,
         accounts: [account?.address!, data.accountName],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    } finally {
-      await store.setAccount(data);
-    }
+      },
+    });
+
+    await store?.setAccount(data);
+    return tx;
   };
 
   useEffect(() => {
@@ -78,6 +73,7 @@ export const useAddInvestor = ({
     isOwner,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

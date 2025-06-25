@@ -1,22 +1,11 @@
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
-import { coreEvents } from '@/services/graph/eventSubscription.graph';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { isFrozen } from '@/services/isFrozen';
 import { getAsset } from '@/utils/getAsset';
-import type * as Apollo from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
-
-export type EventSubscriptionQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
-
-export const getEventsDocument = (
-  variables: EventSubscriptionQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
+import { useAsset } from './asset';
 
 export const useFreeze = ({
   investorAccount,
@@ -24,34 +13,39 @@ export const useFreeze = ({
   investorAccount?: string;
 }) => {
   const { account } = useAccount();
+  const { asset } = useAsset();
   const [frozen, setFrozen] = useState<boolean>(true);
 
   const { data } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.ADDRESS-FROZEN`,
+      qualifiedName: `${getAsset(asset)}.ADDRESS-FROZEN`,
     },
   });
 
-  const init = async (
-    accountProp: IWalletAccount,
-    investorAccountProp: string,
-  ) => {
-    const res = await isFrozen({
-      investorAccount: investorAccountProp,
-      account: accountProp,
-    });
-
-    if (typeof res === 'boolean') {
-      setFrozen(res);
-    }
-  };
-
   useEffect(() => {
-    if (!account?.address || !investorAccount) return;
+    const init = async (
+      accountProp: IWalletAccount,
+      investorAccountProp: string,
+      asset: IAsset,
+    ) => {
+      const res = await isFrozen(
+        {
+          investorAccount: investorAccountProp,
+          account: accountProp,
+        },
+        asset,
+      );
+
+      if (typeof res === 'boolean') {
+        setFrozen(res);
+      }
+    };
+
+    if (!account?.address || !investorAccount || !asset) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init(account, investorAccount);
-  }, [account?.address, investorAccount]);
+    init(account, investorAccount, asset);
+  }, [account?.address, investorAccount, asset]);
 
   useEffect(() => {
     if (!data?.events?.length) return;

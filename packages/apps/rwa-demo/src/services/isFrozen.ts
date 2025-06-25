@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
@@ -8,11 +9,11 @@ export interface IIsFrozenProps {
   account: IWalletAccount;
 }
 
-export const isFrozen = async (data: IIsFrozenProps) => {
+export const isFrozen = async (data: IIsFrozenProps, asset: IAsset) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.address-frozen (read-string 'investor))`)
+    .execution(`(${getAsset(asset)}.address-frozen (read-string 'investor))`)
     .setMeta({
       senderAccount: data.account.address,
       chainId: getNetwork().chainId,

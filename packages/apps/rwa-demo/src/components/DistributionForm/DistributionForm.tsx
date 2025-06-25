@@ -1,3 +1,4 @@
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
@@ -17,8 +18,6 @@ import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 import { MaxSupplyMessage } from '../MaxSupplyMessage/MaxSupplyMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
-import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
-
 interface IProps {
   onClose?: () => void;
   investorAccount: string;
@@ -87,8 +86,8 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  const maxBalance = maxCompliance('max-balance-compliance');
-  const maxSupply = maxCompliance('supply-limit-compliance');
+  const maxBalance = maxCompliance('max-balance-compliance-v1');
+  const maxSupply = maxCompliance('supply-limit-compliance-v1');
   const supply = asset?.supply ?? 0;
 
   let maxAmount = -1;

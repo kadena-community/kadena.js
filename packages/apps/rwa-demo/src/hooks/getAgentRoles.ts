@@ -1,5 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { AGENTROLES } from '@/services/addAgent';
 import { getAgentRoles } from '@/services/getAgentRoles';
 import { coreEvents } from '@/services/graph/eventSubscription.graph';
@@ -31,53 +32,55 @@ export const getEventsSubscription = (
   },
 ): Apollo.DocumentNode => coreEvents;
 
-export const useGetAgentRoles = ({
-  agent,
-}: {
-  agent?: string;
-}): IAgentHookProps => {
+export const useGetAgentRoles = (): IAgentHookProps & {
+  setAssetRolesForAccount: (account: string, asset?: IAsset) => void;
+} => {
   const [innerData, setInnerData] = useState<string[]>([]);
   const [isMounted, setIsMounted] = useState(false);
+  const [agent, setAgent] = useState<string | undefined>();
+  const [asset, setAsset] = useState<IAsset | undefined>();
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.AGENT-ROLES-UPDATED`,
+      qualifiedName: `${getAsset(asset)}.AGENT-ROLES-UPDATED`,
     },
   });
 
   const { data: subscriptionAgentRemovedData } =
     useEventSubscriptionSubscription({
       variables: {
-        qualifiedName: `${getAsset()}.AGENT-REMOVED`,
+        qualifiedName: `${getAsset(asset)}.AGENT-REMOVED`,
       },
     });
 
   const { data: subscriptionAgentAddedData } = useEventSubscriptionSubscription(
     {
       variables: {
-        qualifiedName: `${getAsset()}.AGENT-ADDED`,
+        qualifiedName: `${getAsset(asset)}.AGENT-ADDED`,
       },
     },
   );
 
-  const initInnerData = async (agentArg: string) => {
-    const data = await getAgentRoles({ agent: agentArg });
+  const initInnerData = async (agentArg: string, asset: IAsset) => {
+    const data = await getAgentRoles({ agent: agentArg }, asset);
 
     setInnerData(data);
     setIsMounted(true);
   };
 
   useEffect(() => {
-    if (!agent) {
+    if (!agent || !asset) {
       setInnerData([]);
       setIsMounted(true);
       return;
     }
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initInnerData(agent);
-  }, [agent]);
+    initInnerData(agent, asset);
+  }, [agent, asset]);
 
   useEffect(() => {
+    if (!asset) return;
     const { events: rolesUpdatedEvents } = subscriptionData ?? {};
     const { events: agentRemovedEvents } = subscriptionAgentRemovedData ?? {};
     const { events: agentAddedEvents } = subscriptionAgentAddedData ?? {};
@@ -89,13 +92,14 @@ export const useGetAgentRoles = ({
         const params = JSON.parse(event.parameters ?? '[]');
         if (params[0] === agent && !!agent) {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          initInnerData(agent!);
+          initInnerData(agent, asset);
         }
       });
   }, [
     subscriptionData,
     subscriptionAgentRemovedData,
     subscriptionAgentAddedData,
+    asset,
   ]);
 
   const getAll = useCallback(() => {
@@ -103,15 +107,20 @@ export const useGetAgentRoles = ({
   }, [innerData]);
 
   const isAgentAdmin = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.AGENTADMIN) >= 0;
+    return innerData?.indexOf(AGENTROLES.AGENTADMIN) >= 0;
   }, [innerData]);
   const isFreezer = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.FREEZER) >= 0;
+    return innerData?.indexOf(AGENTROLES.FREEZER) >= 0;
   }, [innerData]);
 
   const isTransferManager = useCallback(() => {
-    return innerData.indexOf(AGENTROLES.TRANSFERMANAGER) >= 0;
+    return innerData?.indexOf(AGENTROLES.TRANSFERMANAGER) >= 0;
   }, [innerData]);
+
+  const setAssetRolesForAccount = async (account: string, asset?: IAsset) => {
+    setAgent(account);
+    setAsset(asset);
+  };
 
   return {
     isMounted,
@@ -119,5 +128,6 @@ export const useGetAgentRoles = ({
     isAgentAdmin,
     isFreezer,
     isTransferManager,
+    setAssetRolesForAccount,
   };
 };

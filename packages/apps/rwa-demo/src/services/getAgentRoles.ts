@@ -1,3 +1,4 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { getClient, getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { Pact } from '@kadena/client';
@@ -8,11 +9,12 @@ export interface IGetAgentRolesProps {
 
 export const getAgentRoles = async (
   data: IGetAgentRolesProps,
+  asset: IAsset,
 ): Promise<string[]> => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(${getAsset()}.get-agent-roles (read-string 'agent))`)
+    .execution(`(${getAsset(asset)}.get-agent-roles (read-string 'agent))`)
     .setMeta({
       chainId: getNetwork().chainId,
     })

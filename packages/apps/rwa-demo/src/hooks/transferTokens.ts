@@ -1,55 +1,42 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
-import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
-import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useTransferTokens = () => {
-  const { account, sign, isMounted, isInvestor } = useAccount();
+  const { account, isMounted, isInvestor } = useAccount();
   const { frozen } = useFreeze({ investorAccount: account?.address });
-  const { paused } = useAsset();
-  const { addTransaction } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { asset, paused } = useAsset();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { submit2Chain } = useSubmit2Chain();
 
   const submit = async (data: ITransferTokensProps) => {
-    try {
-      const tx = await transferTokens(data, account!);
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
+    const accountStr = data.investorFromAccount
+      ? data.investorFromAccount
+      : account?.address!;
 
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      const accountStr = data.investorFromAccount
-        ? data.investorFromAccount
-        : account?.address!;
-      return addTransaction({
-        ...res,
+    return submit2Chain<ITransferTokensProps>(data, {
+      notificationSentryName: 'error:submit:transfertokens',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return transferTokens(data, account!, asset);
+      },
+      transaction: {
         type: TXTYPES.TRANSFERTOKENS,
         accounts: [accountStr, data.investorToAccount],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    }
+      },
+    });
   };
 
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!frozen && !paused && isInvestor);
-  }, [paused, isMounted, isInvestor, frozen]);
+  }, [paused, isMounted, isInvestor, frozen, asset]);
 
   return { submit, isAllowed };
 };

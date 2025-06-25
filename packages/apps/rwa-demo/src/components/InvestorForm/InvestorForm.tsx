@@ -1,4 +1,5 @@
 import { useAddInvestor } from '@/hooks/addInvestor';
+import { useAsset } from '@/hooks/asset';
 import type { IRegisterIdentityProps } from '@/services/registerIdentity';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { Button } from '@kadena/kode-ui';
@@ -13,7 +14,6 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
-import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   investor?: IRecord;
@@ -22,6 +22,7 @@ interface IProps {
 }
 
 export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
+  const { investors } = useAsset();
   const { submit, isAllowed } = useAddInvestor({
     investorAccount: investor?.accountName,
   });
@@ -30,12 +31,13 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
   const {
     handleSubmit,
     control,
+    watch,
+    setError,
     formState: { isValid, errors },
   } = useForm<Omit<IRegisterIdentityProps, 'agent'>>({
-    mode: 'onChange',
+    mode: 'all',
     values: {
       accountName: investor?.accountName ?? '',
-      alias: investor?.alias ?? '',
       alreadyExists: !!investor?.accountName,
     },
   });
@@ -67,14 +69,12 @@ export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {
             />
             <RightAsideContent>
               <AccountNameField
+                exemptAccounts={investors.map((i) => i.accountName)}
                 error={errors.accountName}
                 accountName={investor?.accountName}
                 control={control}
-              />
-              <AliasField
-                error={errors.alias}
-                alias={investor?.alias}
-                control={control}
+                value={watch('accountName')}
+                setError={setError}
               />
             </RightAsideContent>
             <RightAsideFooter>

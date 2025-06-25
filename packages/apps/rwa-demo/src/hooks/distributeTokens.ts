@@ -1,18 +1,16 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
 import { INFINITE_COMPLIANCE } from '@/constants';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
 import { distributeTokens } from '@/services/distributeTokens';
-import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
 import { useGetInvestorBalance } from './getInvestorBalance';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useDistributeTokens = ({
   investorAccount,
@@ -22,41 +20,32 @@ export const useDistributeTokens = ({
   const { frozen } = useFreeze({ investorAccount });
   const { paused, asset, maxCompliance } = useAsset();
 
-  const { account, sign, accountRoles, isMounted } = useAccount();
+  const { account, accountRoles, isMounted } = useAccount();
   const { data: investorBalance } = useGetInvestorBalance({ investorAccount });
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { isActiveAccountChangeTx } = useTransactions();
   const [isAllowed, setIsAllowed] = useState(false);
+  const { submit2Chain } = useSubmit2Chain();
 
   const submit = async (data: IDistributeTokensProps) => {
-    try {
-      const tx = await distributeTokens(data, account!);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+    return submit2Chain<IDistributeTokensProps>(data, {
+      notificationSentryName: 'error:submit:distributetokens',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return distributeTokens(data, account!, asset);
+      },
+      transaction: {
         type: TXTYPES.DISTRIBUTETOKENS,
         accounts: [investorAccount],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    }
+      },
+    });
   };
 
   useEffect(() => {
     if (!isMounted || !asset) return;
 
-    const complianceMaxSupplyValue = maxCompliance('supply-limit-compliance');
-    const complianceMaxInvestors = maxCompliance('max-investors-compliance');
+    const complianceMaxSupplyValue = maxCompliance(
+      'supply-limit-compliance-v1',
+    );
+    const complianceMaxInvestors = maxCompliance('max-investors-compliance-v1');
 
     setIsAllowed(
       !frozen &&
@@ -78,6 +67,7 @@ export const useDistributeTokens = ({
     isActiveAccountChangeTx,
     asset,
     investorBalance,
+    asset,
   ]);
 
   return { submit, isAllowed };

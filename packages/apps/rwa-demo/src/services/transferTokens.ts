@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
@@ -15,11 +16,12 @@ export interface ITransferTokensProps {
 export const transferTokens = async (
   data: ITransferTokensProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   return Pact.builder
     .execution(
       `
-       (${getAsset()}.transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset(asset)}.transfer (read-string 'investorFrom) (read-string 'investorTo) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('investorFrom', account.address)
     .addData('investorTo', data.investorToAccount)
@@ -29,7 +31,7 @@ export const transferTokens = async (
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
       withCap(
-        `${getAsset()}.TRANSFER`,
+        `${getAsset(asset)}.TRANSFER`,
         account.address,
         data.investorToAccount,
         {

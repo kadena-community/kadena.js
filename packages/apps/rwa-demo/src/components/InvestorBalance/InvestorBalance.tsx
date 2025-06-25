@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { MonoFilterTiltShift } from '@kadena/kode-icons';
@@ -5,7 +6,6 @@ import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { MaxInvestorBalanceCheck } from './MaxInvestorBalanceCheck';
 
 interface IProps {
@@ -25,17 +25,19 @@ export const InvestorBalance: FC<IProps> = ({
   const cleanedBalance = balance < 0 ? 0 : balance;
   if (short) {
     return (
-      <Stack alignItems="center" gap="xs" data-testid="balance-info">
+      <Stack alignItems="center" data-testid="balance-info">
         <TransactionTypeSpinner
           type={[
             TXTYPES.DISTRIBUTETOKENS,
-            TXTYPES.PARTIALLYFREEZETOKENS,
+            TXTYPES.TOKENSFROZEN,
+            TXTYPES.TOKENSUNFROZEN,
             TXTYPES.TRANSFERTOKENS,
           ]}
           account={investorAccount}
         />
         <MaxInvestorBalanceCheck balance={cleanedBalance} />
-        {cleanedBalance} (<MonoFilterTiltShift /> {frozenData})
+        {cleanedBalance} (<MonoFilterTiltShift />
+        &nbsp;{frozenData})
       </Stack>
     );
   }
@@ -47,7 +49,8 @@ export const InvestorBalance: FC<IProps> = ({
       <TransactionTypeSpinner
         type={[
           TXTYPES.DISTRIBUTETOKENS,
-          TXTYPES.PARTIALLYFREEZETOKENS,
+          TXTYPES.TOKENSFROZEN,
+          TXTYPES.TOKENSUNFROZEN,
           TXTYPES.TRANSFERTOKENS,
         ]}
         account={investorAccount}

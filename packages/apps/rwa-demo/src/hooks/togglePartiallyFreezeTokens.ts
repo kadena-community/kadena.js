@@ -1,16 +1,14 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { togglePartiallyFreezeTokens } from '@/services/togglePartiallyFreezeTokens';
-import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
 import { useFreeze } from './freeze';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useTogglePartiallyFreezeTokens = ({
   investorAccount,
@@ -18,34 +16,24 @@ export const useTogglePartiallyFreezeTokens = ({
   investorAccount: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
-  const { paused } = useAsset();
-  const { account, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { asset, paused } = useAsset();
+  const { account, accountRoles, isMounted } = useAccount();
+  const { isActiveAccountChangeTx } = useTransactions();
+
   const [isAllowed, setIsAllowed] = useState(false);
+  const { submit2Chain } = useSubmit2Chain();
 
   const submit = async (data: ITogglePartiallyFreezeTokensProps) => {
-    try {
-      const tx = await togglePartiallyFreezeTokens(data, account!);
-
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
-        type: TXTYPES.PARTIALLYFREEZETOKENS,
+    return await submit2Chain<ITogglePartiallyFreezeTokensProps>(data, {
+      notificationSentryName: 'error:submit:togglePartiallyFreezeTokens',
+      chainFunction: (account: IWalletAccount, asset: IAsset) => {
+        return togglePartiallyFreezeTokens(data, account!, asset);
+      },
+      transaction: {
+        type: data.freeze ? TXTYPES.TOKENSFROZEN : TXTYPES.TOKENSUNFROZEN,
         accounts: [data.investorAccount],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    }
+      },
+    });
   };
 
   useEffect(() => {
@@ -63,6 +51,7 @@ export const useTogglePartiallyFreezeTokens = ({
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

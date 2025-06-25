@@ -1,56 +1,59 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IBatchRegisterIdentityProps } from '@/services/batchRegisterIdentity';
 import { batchRegisterIdentity } from '@/services/batchRegisterIdentity';
-import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
-import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { RWAStore } from '@/utils/store';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useBatchAddInvestors = () => {
-  const { paused } = useAsset();
-  const { account, isOwner, sign, accountRoles, isMounted } = useAccount();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { asset, paused } = useAsset();
+  const { account, isOwner, accountRoles, isMounted } = useAccount();
+  const { isActiveAccountChangeTx } = useTransactions();
+
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const { submit2Chain } = useSubmit2Chain();
+
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: Omit<IBatchRegisterIdentityProps, 'agent'>,
   ): Promise<ITransaction | undefined> => {
-    const newData: IBatchRegisterIdentityProps = { ...data, agent: account! };
-    try {
-      const tx = await batchRegisterIdentity(newData);
+    const tx = await submit2Chain<Omit<IBatchRegisterIdentityProps, 'agent'>>(
+      data,
+      {
+        notificationSentryName: 'error:submit:batchaddinvestor',
+        chainFunction: (account: IWalletAccount, asset: IAsset) => {
+          const newData: IBatchRegisterIdentityProps = {
+            ...data,
+            agent: account!,
+          };
 
-      const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
+          return batchRegisterIdentity(newData, asset);
+        },
+        transaction: {
+          type: TXTYPES.ADDINVESTOR,
+          accounts: [
+            account?.address!,
+            ...data.accounts.map((account) => account.account.trim()),
+          ],
+        },
+      },
+    );
 
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
-        type: TXTYPES.ADDINVESTOR,
-        accounts: [
-          account?.address!,
-          ...data.accounts.map((account) => account.account),
-        ],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    } finally {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await store.setAllAccounts(data);
-    }
+    const promises = await store?.setAllAccounts(data);
+    await Promise.all(promises || []);
+    return tx;
   };
 
   useEffect(() => {
@@ -61,7 +64,14 @@ export const useBatchAddInvestors = () => {
         (accountRoles.isAgentAdmin() || isOwner) &&
         !isActiveAccountChangeTx,
     );
-  }, [paused, isOwner, isMounted, accountRoles, isActiveAccountChangeTx]);
+  }, [
+    paused,
+    isOwner,
+    isMounted,
+    accountRoles,
+    isActiveAccountChangeTx,
+    asset,
+  ]);
 
   return { submit, isAllowed };
 };

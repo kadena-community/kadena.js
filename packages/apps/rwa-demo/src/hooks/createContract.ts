@@ -1,17 +1,19 @@
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useNotifications } from '@/hooks/notifications';
+import { interpretErrorMessage } from '@/providers/TransactionsProvider/TransactionsProvider';
 import type { IAddContractProps } from '@/services/createContract';
-import { createContract } from '@/services/createContract';
 import { getClient } from '@/utils/client';
-import { useNotifications } from '@kadena/kode-ui/patterns';
+import type { IUnsignedCommand } from '@kadena/client';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useUser } from './user';
 
 export const useCreateContract = () => {
   const { account, isMounted, sign, isGasPayable } = useAccount();
+  const { userToken } = useUser();
+  const { organisation } = useOrganisation();
   const [isAllowed, setIsAllowed] = useState(false);
   const { addTransaction } = useTransactions();
   const { addNotification } = useNotifications();
@@ -19,10 +21,100 @@ export const useCreateContract = () => {
   const submit = async (
     data: IAddContractProps,
   ): Promise<boolean | undefined> => {
+    if (!userToken || !organisation) {
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'User token is missing',
+        },
+        {
+          name: `error:submit:createcontract`,
+          options: {
+            message: 'User token is missing',
+            sentryData: {
+              type: 'submit_chain',
+            },
+          },
+        },
+      );
+      return;
+    }
+
+    const result = await fetch(
+      `/api/admin/contract?organisationId=${organisation.id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken.token}`,
+        },
+        body: JSON.stringify({ ...data, accountAddress: account?.address }),
+      },
+    );
+
+    if (result.status !== 200) {
+      addNotification({
+        intent: 'negative',
+        label: 'Error creating contract',
+        message: `Status: ${result.status}, Message: ${result.statusText}`,
+      });
+      return;
+    }
+    const { tx } = (await result.json()) as { tx: IUnsignedCommand };
+
+    if (!tx) {
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'Error creating contract',
+          message: 'Unknown error occurred',
+        },
+        {
+          name: `error:submit:createcontract`,
+          options: {
+            message: 'Unknown error occurred',
+            sentryData: {
+              type: 'submit_chain',
+              captureContext: {
+                extra: {
+                  result,
+                },
+              },
+            },
+          },
+        },
+      );
+      return;
+    }
+
     try {
-      const tx = await createContract(data, account!);
       const signedTransaction = await sign(tx);
-      if (!signedTransaction) return;
+
+      if (!signedTransaction) {
+        addNotification(
+          {
+            intent: 'negative',
+            label: 'Signing transaction failed',
+            message: 'Please check your account and try again.',
+          },
+          {
+            name: `error:submit:createcontract`,
+            options: {
+              message: 'Problem with signing transaction',
+              sentryData: {
+                type: 'submit_chain',
+                captureContext: {
+                  extra: {
+                    tx,
+                    result,
+                  },
+                },
+              },
+            },
+          },
+        );
+        return;
+      }
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
@@ -55,7 +147,6 @@ export const useCreateContract = () => {
         label: 'there was an error',
         message: interpretErrorMessage(e.message),
       });
-      return false;
     }
   };
 

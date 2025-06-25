@@ -1,3 +1,4 @@
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import { useTogglePartiallyFreezeTokens } from '@/hooks/togglePartiallyFreezeTokens';
@@ -16,7 +17,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
-import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   onClose?: () => void;
@@ -109,13 +109,25 @@ export const PartiallyFreezeTokensForm: FC<IProps> = ({
                 control={control}
                 rules={{
                   required: true,
-                  min: -frozenData,
-                  max: balance - frozenData,
+                  min: {
+                    value: -frozenData,
+                    message: `no less than ${frozenData}`,
+                  },
+                  max: {
+                    value: balance - frozenData,
+                    message: `no more than ${balance - frozenData}`,
+                  },
+                  validate: (value) => {
+                    if (!/^-?\d+$/.test(value)) {
+                      return 'only numbers';
+                    }
+                  },
                 }}
                 render={({ field }) => (
                   <TextField
                     label="Amount"
                     {...field}
+                    isInvalid={!!errors.amount?.message}
                     errorMessage={errors.amount?.message}
                     description={`max amount: ${balance - frozenData} | min amount: ${-frozenData}`}
                   />

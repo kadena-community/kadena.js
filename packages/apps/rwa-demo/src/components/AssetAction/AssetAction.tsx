@@ -21,7 +21,7 @@ export const AssetAction: FC<IProps> = ({
   return (
     <Stack className={assetActionWrapper}>
       <Tile
-        data-testId={dataTestId}
+        data-testid={dataTestId}
         isDisabled={isDisabled}
         as={onPress ? 'button' : 'div'}
         onClick={!isDisabled ? onPress : () => {}}

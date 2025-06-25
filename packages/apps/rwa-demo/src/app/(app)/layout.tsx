@@ -1,4 +1,24 @@
 'use client';
+import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
+import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
+import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
+import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
+import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
+import { MainLoading } from '@/components/MainLoading/MainLoading';
+import { ProfileForm } from '@/components/Profile/ProfileForm';
+import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
+import { useTransactions } from '@/hooks/transactions';
+import { useUser } from '@/hooks/user';
+import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  Link,
+  Stack,
+  Text,
+} from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -8,20 +28,6 @@ import {
   SideBarTopBanner,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-
-import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
-import { AssetInfo } from '@/components/AssetInfo/AssetInfo';
-import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
-import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
-import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
-import { GasPayableBanner } from '@/components/GasPayableBanner/GasPayableBanner';
-import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBanner';
-import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
-import { useAccount } from '@/hooks/account';
-import { useTransactions } from '@/hooks/transactions';
-import { getAsset } from '@/utils/getAsset';
-import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
-import { Button, Link, Stack } from '@kadena/kode-ui';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { KLogo } from './KLogo';
@@ -32,13 +38,13 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { account, isMounted } = useAccount();
   const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { transactions, setTxsButtonRef, setTxsAnimationRef } =
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
+  const { isMounted, userData, user } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -47,18 +53,28 @@ const RootLayout = ({
     setTxsAnimationRef(transactionAnimationRef.current);
   }, [txsButtonRef.current, transactionAnimationRef.current]);
 
-  if (!getAsset()) {
-    router.replace('/assets/create');
-    return;
-  }
+  useEffect(() => {
+    if (isMounted && !user) {
+      router.push('/login');
+      return;
+    }
+  }, [user, isMounted]);
 
-  if (isMounted && !account) {
-    router.replace('/login');
-    return;
-  }
+  if (!isMounted || !user) return <MainLoading />;
 
   return (
     <>
+      {userData && !userData?.data?.displayName && (
+        <Dialog isOpen size="sm">
+          <DialogHeader>Display name</DialogHeader>
+
+          <Text>
+            The displayname for your account is not set yet.
+            <br />
+          </Text>
+          <ProfileForm />
+        </Dialog>
+      )}
       <SideBarHeaderContext>
         <SideBarTopBanner>
           <DemoBanner />
@@ -107,7 +123,6 @@ const RootLayout = ({
         sidebar={<SideBar />}
       >
         <Stack width="100%" flexDirection="column" gap="sm">
-          <AssetInfo />
           {children}
         </Stack>
       </SideBarLayout>

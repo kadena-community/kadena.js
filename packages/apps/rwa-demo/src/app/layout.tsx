@@ -1,9 +1,7 @@
 'use client';
-
+import { Analytics } from '@/components/Analytics/Analytics';
 import { mediaProviderStyles } from '@kadena/kode-ui';
 import React from 'react';
-
-import { Analytics } from '@/components/Analytics/Analytics';
 import { Providers } from './Providers';
 
 const RootLayout = ({
@@ -20,10 +18,10 @@ const RootLayout = ({
           type="text/css"
         />
       </head>
-      <body>
+      <body style={{ height: 'auto' }}>
         <Providers>
-          <Analytics />
           {children}
+          <Analytics />
         </Providers>
       </body>
     </html>

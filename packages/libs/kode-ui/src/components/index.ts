@@ -96,7 +96,7 @@ export {
   TextField,
   TextareaField,
 } from './Form';
-export { ProductIcon } from './Icon';
+export { ProductIcon, ThemeAnimateIcon } from './Icon';
 export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { KadenaLogo } from './Logo';

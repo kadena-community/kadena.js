@@ -4,6 +4,31 @@ import { useAddInvestor } from '../addInvestor';
 describe('addInvestor hook', () => {
   const mocksHook = vi.hoisted(() => {
     return {
+      mockStore: {
+        setAccount: vi.fn().mockResolvedValue(undefined),
+      },
+      mockRegisterIdentity: vi.fn().mockResolvedValue({
+        cmd: 'test-unsigned-command',
+      }),
+      mockGetClient: vi.fn().mockReturnValue({
+        submit: vi.fn().mockResolvedValue({
+          requestKey: 'test-request-key',
+          hash: 'test-hash',
+        }),
+      }),
+      useUser: vi.fn().mockReturnValue({
+        user: {
+          address: 'k:1',
+          name: 'Test User',
+          email: 'heman@mastersoftheuniverse.com',
+        },
+      }),
+      useOrganisation: vi.fn().mockReturnValue({
+        organisation: {
+          id: 'org-123',
+          name: 'Test Organisation',
+        },
+      }),
       useFreeze: vi.fn().mockReturnValue({
         frozen: true,
       }),
@@ -13,7 +38,7 @@ describe('addInvestor hook', () => {
 
       useAccount: vi.fn().mockReturnValue({
         account: {
-          address: 'k:1',
+          address: 'k:he-man',
         },
         sign: vi.fn(),
         isMounted: true,
@@ -34,6 +59,21 @@ describe('addInvestor hook', () => {
   });
 
   beforeEach(async () => {
+    vi.mock('./../user', async () => {
+      const actual = await vi.importActual('./../user');
+      return {
+        ...actual,
+        useUser: mocksHook.useUser,
+      };
+    });
+
+    vi.mock('./../organisation', async () => {
+      const actual = await vi.importActual('./../organisation');
+      return {
+        ...actual,
+        useOrganisation: mocksHook.useOrganisation,
+      };
+    });
     vi.mock('./../account', async () => {
       const actual = await vi.importActual('./../account');
       return {
@@ -66,11 +106,29 @@ describe('addInvestor hook', () => {
       };
     });
 
-    vi.mock('@kadena/kode-ui/patterns', async () => {
-      const actual = await vi.importActual('@kadena/kode-ui/patterns');
+    vi.mock('@/hooks/notifications', async () => {
+      const actual = await vi.importActual('@/hooks/notifications');
       return {
         ...actual,
         useNotifications: mocksHook.useNotifications,
+      };
+    });
+
+    vi.mock('@/services/registerIdentity', async () => {
+      return {
+        registerIdentity: mocksHook.mockRegisterIdentity,
+      };
+    });
+
+    vi.mock('@/utils/client', async () => {
+      return {
+        getClient: mocksHook.mockGetClient,
+      };
+    });
+
+    vi.mock('@/utils/store', async () => {
+      return {
+        RWAStore: vi.fn().mockReturnValue(mocksHook.mockStore),
       };
     });
   });
@@ -287,6 +345,366 @@ describe('addInvestor hook', () => {
       );
 
       expect(result.current.isAllowed).toBe(false);
+    });
+  });
+
+  describe('submit', () => {
+    it('should call registerIdentity with the correct parameters', async () => {
+      const signMock = vi.fn().mockResolvedValue({
+        cmd: 'test-signed-command',
+      });
+
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        sign: signMock,
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const { result } = renderHook(() =>
+        useAddInvestor({ investorAccount: 'k:investor-1' }),
+      );
+
+      const data = {
+        accountName: 'k:investor-1',
+        name: 'Test Investor',
+        email: 'investor@test.com',
+        alreadyExists: false,
+      };
+
+      await result.current.submit(data);
+
+      expect(mocksHook.mockRegisterIdentity).toHaveBeenCalledWith(
+        {
+          ...data,
+          agent: { address: 'k:agent-address' },
+        },
+        {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+      );
+    });
+
+    it('should sign the transaction and submit it to the client', async () => {
+      const signMock = vi.fn().mockResolvedValue({
+        cmd: 'test-signed-command',
+      });
+
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        sign: signMock,
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const addTransactionMock = vi.fn();
+      mocksHook.useTransactions.mockImplementation(() => ({
+        addTransaction: addTransactionMock,
+        isActiveAccountChangeTx: false,
+      }));
+
+      const mockClientSubmit = vi.fn().mockResolvedValue({
+        requestKey: 'test-request-key',
+        hash: 'test-hash',
+      });
+      mocksHook.mockGetClient.mockReturnValue({
+        submit: mockClientSubmit,
+      });
+
+      const { result } = renderHook(() =>
+        useAddInvestor({ investorAccount: 'k:investor-1' }),
+      );
+
+      const data = {
+        accountName: 'k:investor-1',
+        name: 'Test Investor',
+        email: 'investor@test.com',
+        alreadyExists: false,
+      };
+
+      await result.current.submit(data);
+
+      // Verify signing was called with the unsigned command
+      expect(signMock).toHaveBeenCalledWith({ cmd: 'test-unsigned-command' });
+
+      // Verify client submission was called with the signed command
+      expect(mockClientSubmit).toHaveBeenCalledWith({
+        cmd: 'test-signed-command',
+      });
+
+      // Verify transaction was added
+      expect(addTransactionMock).toHaveBeenCalledWith({
+        requestKey: 'test-request-key',
+        hash: 'test-hash',
+        type: {
+          name: 'ADDINVESTOR',
+          overall: true,
+        },
+        accounts: ['k:agent-address', 'k:investor-1'],
+      });
+    });
+
+    it('should not submit if the sign function returns nothing', async () => {
+      const signMock = vi.fn().mockResolvedValue(undefined);
+
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        sign: signMock,
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const mockClientSubmit = vi.fn();
+      mocksHook.mockGetClient.mockReturnValue({
+        submit: mockClientSubmit,
+      });
+
+      const addTransactionMock = vi.fn();
+      mocksHook.useTransactions.mockImplementation(() => ({
+        addTransaction: addTransactionMock,
+        isActiveAccountChangeTx: false,
+      }));
+
+      const { result } = renderHook(() =>
+        useAddInvestor({ investorAccount: 'k:investor-1' }),
+      );
+
+      const data = {
+        accountName: 'k:investor-1',
+        name: 'Test Investor',
+        email: 'investor@test.com',
+        alreadyExists: false,
+      };
+
+      await result.current.submit(data);
+
+      // Verify client submission and addTransaction were not called
+      expect(mockClientSubmit).not.toHaveBeenCalled();
+      expect(addTransactionMock).not.toHaveBeenCalled();
+    });
+
+    it('should add a notification and return early when asset is not found', async () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        sign: vi.fn(),
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: undefined,
+        paused: false,
+      }));
+
+      const addNotificationMock = vi.fn();
+      mocksHook.useNotifications.mockImplementation(() => ({
+        addNotification: addNotificationMock,
+      }));
+
+      const { result } = renderHook(() =>
+        useAddInvestor({ investorAccount: 'k:investor-1' }),
+      );
+
+      const data = {
+        accountName: 'k:investor-1',
+        name: 'Test Investor',
+        email: 'investor@test.com',
+        alreadyExists: false,
+      };
+
+      await result.current.submit(data);
+
+      // Verify notification was called
+      expect(addNotificationMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          intent: 'negative',
+          label: 'asset not found',
+        }),
+        expect.any(Object),
+      );
+
+      // Verify registerIdentity was not called
+      expect(mocksHook.mockRegisterIdentity).not.toHaveBeenCalled();
+    });
+
+    it('should not call registerIdentity if alreadyExists is true', async () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        sign: vi.fn(),
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const { result } = renderHook(() =>
+        useAddInvestor({ investorAccount: 'k:investor-1' }),
+      );
+
+      const data = {
+        accountName: 'k:investor-1',
+        name: 'Test Investor',
+        email: 'investor@test.com',
+        alreadyExists: true,
+      };
+
+      await result.current.submit(data);
+
+      // Verify registerIdentity was not called
+      expect(mocksHook.mockRegisterIdentity).not.toHaveBeenCalled();
+    });
+
+    it('should handle errors and add notification', async () => {
+      const errorMessage = 'Test error message';
+      mocksHook.mockRegisterIdentity.mockRejectedValue(new Error(errorMessage));
+
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        sign: vi.fn(),
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const addNotificationMock = vi.fn();
+      mocksHook.useNotifications.mockImplementation(() => ({
+        addNotification: addNotificationMock,
+      }));
+
+      const { result } = renderHook(() =>
+        useAddInvestor({ investorAccount: 'k:investor-1' }),
+      );
+
+      const data = {
+        accountName: 'k:investor-1',
+        name: 'Test Investor',
+        email: 'investor@test.com',
+        alreadyExists: false,
+      };
+
+      await result.current.submit(data);
+
+      // Verify notification was called with error
+      expect(addNotificationMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          intent: 'negative',
+          label: 'there was an error',
+        }),
+        expect.any(Object),
+      );
+    });
+
+    it('should call store.setAccount with data after submission', async () => {
+      mocksHook.useOrganisation.mockImplementation(() => ({
+        organisation: {
+          id: 'org-123',
+          name: 'Test Organisation',
+        },
+      }));
+
+      mocksHook.useAccount.mockImplementation(() => ({
+        account: {
+          address: 'k:agent-address',
+        },
+        isOwner: false,
+        isMounted: true,
+        sign: vi.fn().mockResolvedValue({ cmd: 'test-signed-command' }),
+        accountRoles: {
+          isAgentAdmin: vi.fn().mockReturnValue(true),
+        },
+      }));
+
+      mocksHook.useAsset.mockImplementation(() => ({
+        asset: {
+          id: 'asset-123',
+          name: 'Test Asset',
+        },
+        paused: false,
+      }));
+
+      const { result } = renderHook(() =>
+        useAddInvestor({ investorAccount: 'k:investor-1' }),
+      );
+
+      const data = {
+        accountName: 'k:investor-1',
+        name: 'Test Investor',
+        email: 'investor@test.com',
+        alreadyExists: false,
+      };
+
+      await result.current.submit(data);
+
+      // Verify store.setAccount was called with data
+      expect(mocksHook.mockStore.setAccount).toHaveBeenCalledWith(data);
     });
   });
 });

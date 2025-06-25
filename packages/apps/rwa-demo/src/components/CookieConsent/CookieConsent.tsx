@@ -8,70 +8,62 @@ import {
   Text,
 } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
-import { containerClass, notificationWrapperClass } from './styles.css';
-
+import React, { useCallback, useState } from 'react';
 export const CookieConsent: FC = () => {
-  const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
-  const [mounted, setMounted] = useState<boolean>(false);
-
-  useEffect(() => {
-    setMounted(true);
+  const [cookieConsent, setCookieConsent] = useState<boolean | null>(() => {
     const stickyValue = localStorage.getItem('cookie_consent');
-    if (stickyValue === null) return;
-    setCookieConsent(JSON.parse(stickyValue));
-  }, []);
+    if (stickyValue === null) return null;
 
-  useEffect(() => {
-    if (cookieConsent === null) return;
-    updateConsent(cookieConsent);
-  }, [cookieConsent]);
+    const booleanValue = JSON.parse(stickyValue);
+
+    updateConsent(booleanValue);
+    return booleanValue;
+  });
 
   const handleAccept = useCallback(() => {
     setCookieConsent(true);
+    updateConsent(true);
   }, []);
 
   const handleReject = useCallback(() => {
     setCookieConsent(false);
+    updateConsent(false);
   }, []);
 
-  if (cookieConsent !== null || !mounted) return null;
+  if (cookieConsent !== null) return null;
 
   return (
-    <section aria-labelledby="cookie-heading" className={containerClass}>
-      <div className={notificationWrapperClass}>
-        <Notification
-          intent="info"
-          type="inlineStacked"
-          icon={<MonoCookie />}
-          role="none"
+    <Notification
+      intent="info"
+      type="inlineStacked"
+      icon={<MonoCookie />}
+      role="none"
+      contentMaxWidth={1000}
+    >
+      <NotificationHeading id="cookie-heading">
+        Cookie Consent
+      </NotificationHeading>
+      <Text variant="ui">
+        This notification concerns the cookie policy requirement to ask users
+        for their consent to use <strong>Google Analytics</strong> or other
+        tracking tools for better optimizations/performances.
+      </Text>
+      <NotificationFooter>
+        <NotificationButton
+          intent={'positive'}
+          onClick={handleAccept}
+          icon={<MonoCheck />}
         >
-          <NotificationHeading id="cookie-heading">
-            Cookie Consent
-          </NotificationHeading>
-          <Text variant="ui">
-            This notification concerns the cookie policy requirement to ask
-            users for their consent to use <strong>Google Analytics</strong> or
-            other tracking tools for better optimizations/performances.
-          </Text>
-          <NotificationFooter>
-            <NotificationButton
-              intent={'positive'}
-              onClick={handleAccept}
-              icon={<MonoCheck />}
-            >
-              Accept
-            </NotificationButton>
-            <NotificationButton
-              intent={'negative'}
-              onClick={handleReject}
-              icon={<MonoClose />}
-            >
-              Reject
-            </NotificationButton>
-          </NotificationFooter>
-        </Notification>
-      </div>
-    </section>
+          Accept
+        </NotificationButton>
+        <NotificationButton
+          intent={'negative'}
+          onClick={handleReject}
+          icon={<MonoClose />}
+        >
+          Reject
+        </NotificationButton>
+      </NotificationFooter>
+    </Notification>
   );
 };

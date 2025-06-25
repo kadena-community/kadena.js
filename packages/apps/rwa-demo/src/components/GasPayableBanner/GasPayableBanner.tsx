@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useFaucet } from '@/hooks/faucet';
 import { env } from '@/utils/env';
 import { MonoMonetizationOn } from '@kadena/kode-icons';
@@ -10,7 +11,6 @@ import {
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 export const GasPayableBanner: FC = () => {
   const { submit, isAllowed } = useFaucet();
@@ -34,7 +34,12 @@ export const GasPayableBanner: FC = () => {
   if (!isAllowed) return null;
 
   return (
-    <Notification intent="warning" role="status" type="stacked">
+    <Notification
+      intent="warning"
+      role="status"
+      type="inlineStacked"
+      contentMaxWidth={1000}
+    >
       <NotificationHeading>
         The account has no balance to pay the gas
       </NotificationHeading>

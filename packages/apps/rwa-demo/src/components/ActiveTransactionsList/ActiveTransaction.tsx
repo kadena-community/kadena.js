@@ -1,6 +1,6 @@
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { Heading, maskValue, Stack, Tile } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
   transaction: ITransaction;

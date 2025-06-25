@@ -8,7 +8,8 @@ export const wrapperClass = recipe({
       border: 'hairline',
     }),
     {
-      height: '400px',
+      maxHeight: '400px',
+      height: 'clamp(100px, 50vh, 400px)',
       borderStyle: 'dashed!important',
       borderWidth: '4px!important',
     },

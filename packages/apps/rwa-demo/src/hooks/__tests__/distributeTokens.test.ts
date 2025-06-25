@@ -87,8 +87,8 @@ describe('distribute Tokens hook', () => {
       };
     });
 
-    vi.mock('@kadena/kode-ui/patterns', async () => {
-      const actual = await vi.importActual('@kadena/kode-ui/patterns');
+    vi.mock('@/hooks/notifications', async () => {
+      const actual = await vi.importActual('@/hooks/notifications');
       return {
         ...actual,
         useNotifications: mocksHook.useNotifications,
@@ -367,7 +367,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'supply-limit-compliance') {
+              if (arg === 'supply-limit-compliance-v1') {
                 return 1;
               }
               return -1;
@@ -413,7 +413,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'supply-limit-compliance') {
+              if (arg === 'supply-limit-compliance-v1') {
                 return 100;
               }
               return -1;
@@ -461,7 +461,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'max-investors-compliance') {
+              if (arg === 'max-investors-compliance-v1') {
                 return 1;
               }
               return -1;
@@ -507,7 +507,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'max-investors-compliance') {
+              if (arg === 'max-investors-compliance-v1') {
                 return 13;
               }
               return -1;
@@ -553,7 +553,7 @@ describe('distribute Tokens hook', () => {
           },
           maxCompliance: mocksCompliance.maxCompliance.mockImplementation(
             (arg) => {
-              if (arg === 'max-investors-compliance') {
+              if (arg === 'max-investors-compliance-v1') {
                 return 2;
               }
               return -1;

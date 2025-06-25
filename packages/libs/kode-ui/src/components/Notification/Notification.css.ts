@@ -137,6 +137,11 @@ export const actionButtonRecipe = recipe({
     fontSize: token('typography.fontSize.base'),
     fontWeight: token('typography.weight.primaryFont.bold'),
     cursor: 'pointer',
+    selectors: {
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+    },
   },
   variants: {
     intent: {

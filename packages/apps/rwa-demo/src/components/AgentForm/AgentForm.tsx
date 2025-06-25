@@ -1,9 +1,10 @@
+import { useAsset } from '@/hooks/asset';
 import { useEditAgent } from '@/hooks/editAgent';
 import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
-import { Button, CheckboxGroup } from '@kadena/kode-ui';
+import { Button, CheckboxGroup, Stack } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -15,7 +16,6 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AccountNameField } from '../Fields/AccountNameField';
-import { AliasField } from '../Fields/AliasField';
 
 interface IProps {
   agent?: IRecord;
@@ -24,24 +24,31 @@ interface IProps {
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
-  const { getAll: getAllAgentRoles } = useGetAgentRoles({
-    agent: agent?.accountName,
-  });
+  const { asset, agents } = useAsset();
+  const { getAll: getAllAgentRoles, setAssetRolesForAccount } =
+    useGetAgentRoles();
   const { submit, isAllowed } = useEditAgent();
   const [isOpen, setIsOpen] = useState(false);
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+
+  useEffect(() => {
+    if (!agent || !asset) return;
+
+    setAssetRolesForAccount(agent.accountName, asset);
+  }, [agent, asset]);
 
   const {
     handleSubmit,
     control,
     register,
+    watch,
+    setError,
     formState: { isValid, errors },
     reset,
   } = useForm<IAddAgentProps>({
     mode: 'onChange',
     defaultValues: {
       accountName: agent?.accountName ?? '',
-      alias: agent?.alias ?? '',
       alreadyExists: !!agent?.accountName,
       roles: getAllAgentRoles(),
     },
@@ -50,7 +57,6 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
   useEffect(() => {
     reset({
       accountName: agent?.accountName,
-      alias: agent?.alias,
       alreadyExists: !!agent?.accountName,
       roles: getAllAgentRoles(),
     });
@@ -89,34 +95,39 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
               label={agent?.accountName ? 'Edit Agent' : 'Add Agent'}
             />
             <RightAsideContent>
-              <AccountNameField
-                error={errors.accountName}
-                accountName={agent?.accountName}
-                control={control}
-              />
+              <Stack flexDirection="column" width="100%" gap="md">
+                <AccountNameField
+                  exemptAccounts={agents.map((a) => a.accountName)}
+                  error={errors.accountName}
+                  accountName={agent?.accountName}
+                  control={control}
+                  value={watch('accountName')}
+                  setError={setError}
+                />
 
-              <AliasField
-                error={errors.alias}
-                alias={agent?.alias}
-                control={control}
-              />
-
-              <CheckboxGroup direction="column" label="Roles" name="roles">
-                {Object.entries(AGENTROLES)
-                  .filter((role) => role[1] !== AGENTROLES.OWNER)
-                  .map(([key, val]) => {
-                    return (
-                      <label key={key}>
-                        <input
-                          type="checkbox"
-                          value={val}
-                          {...register('roles')}
-                        />
-                        {val}
-                      </label>
-                    );
-                  })}
-              </CheckboxGroup>
+                <CheckboxGroup direction="column" label="Roles" name="roles">
+                  {Object.entries(AGENTROLES)
+                    .filter((role) => role[1] !== AGENTROLES.OWNER)
+                    .map(([key, val]) => {
+                      return (
+                        <Stack
+                          key={key}
+                          width="100%"
+                          gap="sm"
+                          alignItems="center"
+                        >
+                          <input
+                            type="checkbox"
+                            id={val}
+                            value={val}
+                            {...register('roles')}
+                          />
+                          <label htmlFor={val}>{val}</label>
+                        </Stack>
+                      );
+                    })}
+                </CheckboxGroup>
+              </Stack>
             </RightAsideContent>
             <RightAsideFooter>
               <Button onPress={handleOnClose} variant="transparent">

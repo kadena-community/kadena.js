@@ -65,8 +65,9 @@ export const subtitleWrapperClass = style({
 export const footerClass = style({ flexShrink: 0 });
 
 export const contentClass = style({
+  width: '100%',
   flex: 1,
-  paddingInline: token('spacing.xxxl'),
+  paddingInlineStart: token('spacing.xxxl'),
   overflowY: 'auto',
   marginLeft: calc(token('spacing.xxl')).negate().toString(),
   marginRight: calc(token('spacing.xxl')).negate().toString(),

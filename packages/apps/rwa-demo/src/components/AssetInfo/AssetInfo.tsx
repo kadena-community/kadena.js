@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
 import { env } from '@/utils/env';
 import { MonoPause, MonoPlayArrow, MonoVpnLock } from '@kadena/kode-icons';
@@ -5,7 +6,6 @@ import { Button, Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { CopyButton } from '../CopyButton/CopyButton';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 export const AssetInfo: FC = () => {
   const { paused, asset } = useAsset();

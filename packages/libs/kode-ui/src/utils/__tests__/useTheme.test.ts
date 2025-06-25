@@ -21,15 +21,8 @@ describe('useTheme', () => {
   });
 
   it('should set the state of the system (dark) when there is no localstorage set', () => {
-    mocks.getSystemTheme.mockReturnValue(Themes.dark);
     const { result } = renderHook(() => useTheme());
-    expect(result.current.theme).toEqual(Themes.dark);
-  });
-
-  it('should set the state of the system (light) when there is no localstorage set', () => {
-    mocks.getSystemTheme.mockReturnValue(Themes.light);
-    const { result } = renderHook(() => useTheme());
-    expect(result.current.theme).toEqual(Themes.light);
+    expect(result.current.theme).toEqual(Themes.system);
   });
 
   it('should set the state of the localstorage value (light), if available', () => {

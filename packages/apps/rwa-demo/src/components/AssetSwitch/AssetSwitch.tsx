@@ -1,54 +1,54 @@
 import { useAsset } from '@/hooks/asset';
-import { MonoSettings, MonoWorkspaces } from '@kadena/kode-icons';
+import { MonoApps, MonoMoreVert } from '@kadena/kode-icons';
 import {
   Button,
+  ButtonGroup,
   ContextMenu,
-  ContextMenuDivider,
   ContextMenuItem,
+  Stack,
 } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+import { assetsSwitchWrapperClass } from './style.css';
 
 export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
   showLabel = true,
 }) => {
-  const router = useRouter();
   const { assets, asset, setAsset } = useAsset();
 
   return (
-    <>
-      <ContextMenu
-        trigger={
-          <Button isCompact variant="outlined">
-            {showLabel ? (
-              asset ? (
-                asset.contractName
-              ) : (
-                'Select an asset'
-              )
-            ) : (
-              <MonoWorkspaces />
-            )}
-          </Button>
-        }
-      >
-        {assets.map((ass) => (
-          <ContextMenuItem
-            onClick={() => setAsset(ass)}
-            key={ass.uuid}
-            label={ass.contractName}
-          />
-        ))}
-        <ContextMenuDivider />
+    <Stack width="100%" className={assetsSwitchWrapperClass}>
+      <ButtonGroup fullWidth>
+        {showLabel && (
+          <>
+            <Button startVisual={<MonoApps />} isCompact variant="outlined" />
+            <Button isCompact variant="outlined" style={{ flex: 1 }}>
+              {asset ? asset.contractName : 'Select an asset'}
+            </Button>
+          </>
+        )}
 
-        <ContextMenuItem
-          onClick={() => {
-            router.push('/assets');
-          }}
-          endVisual={<MonoSettings />}
-          label="Asset Settings"
-        />
-      </ContextMenu>
-    </>
+        <ContextMenu
+          trigger={
+            <Button
+              isCompact
+              variant="outlined"
+              startVisual={showLabel ? <MonoMoreVert /> : <MonoApps />}
+            />
+          }
+        >
+          {assets.map((ass) => (
+            <ContextMenuItem
+              onClick={() => setAsset(ass)}
+              key={ass.uuid}
+              label={ass.contractName}
+            />
+          ))}
+
+          {assets.length === 0 && (
+            <ContextMenuItem onClick={() => {}} label="No assets yet" />
+          )}
+        </ContextMenu>
+      </ButtonGroup>
+    </Stack>
   );
 };

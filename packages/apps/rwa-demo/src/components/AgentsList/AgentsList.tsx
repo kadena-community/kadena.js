@@ -1,9 +1,17 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import { useAsset } from '@/hooks/asset';
 import { useEditAgent } from '@/hooks/editAgent';
-import { useGetAgents } from '@/hooks/getAgents';
 import { useRemoveAgent } from '@/hooks/removeAgent';
 import { loadingData } from '@/utils/loadingData';
-import { MonoDelete, MonoSupportAgent } from '@kadena/kode-icons';
-import { Button, Stack } from '@kadena/kode-ui';
+import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
+import {
+  Button,
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+  Stack,
+} from '@kadena/kode-ui';
 import {
   CompactTable,
   CompactTableFormatters,
@@ -13,21 +21,30 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
+import { useEffect } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
+import { FormatAccount } from '../TableFormatters/FormatAccount';
 import { FormatAgentRoles } from '../TableFormatters/FormatAgentRoles';
 import { FormatEditAgent } from '../TableFormatters/FormatEditAgent';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 export const AgentsList: FC = () => {
+  const {
+    agents: data,
+    agentsIsLoading: isLoading,
+    initFetchAgents,
+  } = useAsset();
   const { isAllowed: isEditAgentAllowed } = useEditAgent();
-  const { data, isLoading } = useGetAgents();
   const { submit, isAllowed: isRemoveAgentAllowed } = useRemoveAgent();
 
   const handleDelete = async (accountName: any) => {
     await submit({ agent: accountName });
   };
+
+  useEffect(() => {
+    initFetchAgents();
+  }, []);
 
   return (
     <>
@@ -42,7 +59,7 @@ export const AgentsList: FC = () => {
                   <Button
                     isDisabled={!isEditAgentAllowed}
                     isCompact
-                    endVisual={<MonoSupportAgent />}
+                    endVisual={<MonoAdd />}
                     variant="outlined"
                   >
                     Add Agent
@@ -63,15 +80,10 @@ export const AgentsList: FC = () => {
               variant="open"
               fields={[
                 {
-                  label: 'Name',
-                  key: 'alias',
-                  width: '20%',
-                },
-                {
                   label: 'Account',
                   key: 'accountName',
-                  width: '20%',
-                  render: CompactTableFormatters.FormatAccount(),
+                  width: '40%',
+                  render: FormatAccount(),
                 },
                 {
                   label: 'Roles',
@@ -110,6 +122,25 @@ export const AgentsList: FC = () => {
               ]}
               data={isLoading ? loadingData : data}
             />
+
+            {!isLoading && data?.length === 0 && (
+              <Notification role="alert">
+                <NotificationHeading>No agents found yet</NotificationHeading>
+                This asset has no agents yet.
+                <NotificationFooter>
+                  <AgentForm
+                    trigger={
+                      <NotificationButton
+                        isDisabled={!isEditAgentAllowed}
+                        icon={<MonoAdd />}
+                      >
+                        Add Agent
+                      </NotificationButton>
+                    }
+                  />
+                </NotificationFooter>
+              </Notification>
+            )}
           </SectionCardBody>
         </SectionCardContentBlock>
       </SectionCard>

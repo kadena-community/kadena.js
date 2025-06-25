@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { env } from '@/utils/env';
 import { getAsset } from '@/utils/getAsset';
@@ -15,13 +16,14 @@ export interface ISetComplianceProps {
 export const setCompliance = async (
   data: IComplianceRuleTypes[],
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   const newData = data.map((item) => `${env.RWADEFAULT_NAMESPACE}.${item}`);
 
   return Pact.builder
     .execution(
       `
-      (${getAsset()}.set-compliance [${newData.toString()}])`,
+      (${getAsset(asset)}.set-compliance [${newData.toString()}])`,
     )
 
     .setMeta({
@@ -29,7 +31,7 @@ export const setCompliance = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.OWNER),
       withCap(`coin.GAS`),
     ])
 

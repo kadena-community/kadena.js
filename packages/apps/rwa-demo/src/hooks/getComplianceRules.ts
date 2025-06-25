@@ -1,6 +1,6 @@
 import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IAsset } from '@/components/AssetProvider/AssetProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IComplianceProps } from '@/services/getComplianceRules';
 import { getComplianceRules } from '@/services/getComplianceRules';
 import { getAsset } from '@/utils/getAsset';
@@ -14,28 +14,30 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
   const [data, setData] = useState<IComplianceProps | undefined>();
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.COMPLIANCE-UPDATED`,
+      qualifiedName: `${getAsset(asset)}.COMPLIANCE-UPDATED`,
     },
   });
 
-  const init = async () => {
-    const res = await getComplianceRules();
-
-    if (typeof res !== 'number') {
-      setData(res);
-    }
-  };
-
   useEffect(() => {
+    if (!asset) return;
+    const init = async (asset: IAsset) => {
+      const res = await getComplianceRules(asset);
+
+      if (typeof res !== 'number') {
+        setData(res);
+      }
+    };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, []);
+    init(asset);
+  }, [asset]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;
 
     subscriptionData.events?.map((event) => {
       const params = JSON.parse(event.parameters ?? '[]');
+
+      if (!Array.isArray(params[0])) return;
 
       const activeRulesKeys = params[0].map(
         ({ refName }: any) => `${refName.name}`,

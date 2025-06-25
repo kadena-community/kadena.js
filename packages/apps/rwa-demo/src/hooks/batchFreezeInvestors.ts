@@ -1,51 +1,50 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
-import {
-  interpretErrorMessage,
-  TXTYPES,
-} from '@/components/TransactionsProvider/TransactionsProvider';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
 import { batchSetAddressFrozen } from '@/services/batchSetAddressFrozen';
-import { getClient } from '@/utils/client';
-import { store } from '@/utils/store';
-import { useNotifications } from '@kadena/kode-ui/patterns';
-import { useEffect, useState } from 'react';
+import { RWAStore } from '@/utils/store';
+import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
+import { useOrganisation } from './organisation';
 import { useTransactions } from './transactions';
+import { useUser } from './user';
+import { useSubmit2Chain } from './useSubmit2Chain';
 
 export const useBatchFreezeInvestors = () => {
-  const { account, sign, isMounted, accountRoles } = useAccount();
+  const { asset } = useAsset();
+  const { user } = useUser();
+  const { account, isMounted, accountRoles } = useAccount();
   const { paused } = useAsset();
-  const { addTransaction, isActiveAccountChangeTx } = useTransactions();
-  const { addNotification } = useNotifications();
+  const { isActiveAccountChangeTx } = useTransactions();
+
   const [isAllowed, setIsAllowed] = useState(false);
+  const { organisation } = useOrganisation();
+  const { submit2Chain } = useSubmit2Chain();
+
+  const store = useMemo(() => {
+    if (!organisation) return;
+    return RWAStore(organisation);
+  }, [organisation]);
 
   const submit = async (
     data: IBatchSetAddressFrozenProps,
   ): Promise<ITransaction | undefined> => {
-    try {
-      const tx = await batchSetAddressFrozen(data, account!);
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      await store.setFrozenMessages(data);
-      const signedTransaction = await sign(tx);
-
-      if (!signedTransaction) return;
-
-      const client = getClient();
-      const res = await client.submit(signedTransaction);
-
-      return addTransaction({
-        ...res,
+    return submit2Chain<IBatchSetAddressFrozenProps>(data, {
+      notificationSentryName: 'error:submit:batchfreezeinvestors',
+      chainFunction: async (account: IWalletAccount, asset: IAsset) => {
+        if (!user) return Promise.resolve(undefined);
+        const tx = batchSetAddressFrozen(data, account!, asset);
+        (await store?.setFrozenMessages(data, user, asset)) as any;
+        return tx;
+      },
+      transaction: {
         type: TXTYPES.FREEZEINVESTOR,
         accounts: [...data.investorAccounts, account!.address],
-      });
-    } catch (e: any) {
-      addNotification({
-        intent: 'negative',
-        label: 'there was an error',
-        message: interpretErrorMessage(e.message),
-      });
-    }
+      },
+    });
   };
 
   useEffect(() => {
@@ -59,6 +58,7 @@ export const useBatchFreezeInvestors = () => {
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
+    asset,
   ]);
 
   return { submit, isAllowed };

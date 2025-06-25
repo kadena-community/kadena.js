@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
@@ -12,15 +13,16 @@ export interface IRemoveAgentProps {
 export const removeAgent = async (
   data: IRemoveAgentProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   return Pact.builder
-    .execution(`(${getAsset()}.remove-agent (read-string 'agent))`)
+    .execution(`(${getAsset(asset)}.remove-agent (read-string 'agent))`)
     .setMeta({
       senderAccount: account.address,
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.OWNER),
       withCap(`coin.GAS`),
     ])
     .addData('agent', data.agent)
