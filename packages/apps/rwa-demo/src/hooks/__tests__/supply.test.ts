@@ -3,7 +3,7 @@ import type { IAccountContext } from '@/contexts/AccountContext/AccountContext';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IComplianceProps } from '@/services/getComplianceRules';
 import { supply } from '@/services/supply';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useAccount } from '../account';
 import { useSupply } from '../supply';
 
@@ -82,9 +82,10 @@ describe('useSupply', () => {
   });
 
   it('should call supply with correct arguments and update data when both account and asset are present', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useSupply(mockAsset),
-    );
+    // Use real timers for this test to handle async operations properly
+    vi.useRealTimers();
+
+    const { result } = renderHook(() => useSupply(mockAsset));
 
     // Initially data should be 0
     expect(result.current.data).toBe(0);
@@ -92,11 +93,13 @@ describe('useSupply', () => {
     // Check that supply was called with correct arguments
     expect(supply).toHaveBeenCalledWith({ account: mockAccount }, mockAsset);
 
-    // Wait for the async effect to complete
-    await waitForNextUpdate();
+    // Wait for the async effect to complete and data to be updated
+    await waitFor(() => {
+      expect(result.current.data).toBe(1000);
+    });
 
-    // Data should be updated with the resolved value from supply
-    expect(result.current.data).toBe(1000);
+    // Restore fake timers
+    vi.useFakeTimers();
   });
 
   it('should not update data if supply returns non-numeric value', async () => {

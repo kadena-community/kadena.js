@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
-import { renderHook } from '@testing-library/react-hooks';
-import useWalletKit from '../hooks/useWalletKit';
 import WalletKit from '@reown/walletkit';
+import { renderHook } from '@testing-library/react-hooks';
+import { describe, expect, it, vi } from 'vitest';
+import useWalletKit from '../hooks/useWalletKit';
 
 vi.mock('@reown/walletkit', () => ({
   __esModule: true,
@@ -13,8 +13,7 @@ vi.mock('@reown/walletkit', () => ({
 }));
 
 vi.mock('@walletconnect/core', () => ({
-  Core: vi.fn().mockImplementation(() => ({
-  }))
+  Core: vi.fn().mockImplementation(() => ({})),
 }));
 
 describe('useWalletKit', () => {
@@ -23,7 +22,7 @@ describe('useWalletKit', () => {
     const mockSessionRequestHandler = vi.fn();
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useWalletKit(mockSessionProposalHandler, mockSessionRequestHandler)
+      useWalletKit(mockSessionProposalHandler, mockSessionRequestHandler),
     );
 
     await waitForNextUpdate();

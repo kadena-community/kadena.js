@@ -1,5 +1,5 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useCreateContract } from '../createContract';
 

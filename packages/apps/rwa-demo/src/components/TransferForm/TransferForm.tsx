@@ -27,7 +27,7 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
@@ -35,7 +35,12 @@ import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
   isForced?: boolean;
   investorAccount: string;
 }

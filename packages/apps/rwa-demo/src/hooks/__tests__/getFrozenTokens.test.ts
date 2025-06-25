@@ -1,5 +1,5 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useGetFrozenTokens } from '../getFrozenTokens';
 
 // Create hoisted mocks
@@ -124,12 +124,14 @@ describe('useGetFrozenTokens', () => {
     // Use a simpler approach with jest.fn()
     mocks.getFrozenTokens.mockResolvedValue(100);
 
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useGetFrozenTokens({ investorAccount: mockInvestorAccount }),
     );
 
-    // Wait for the initial render and then the update after the effect
-    await waitForNextUpdate();
+    // Wait for the hook to update with the fetched data
+    await waitFor(() => {
+      expect(result.current.data).toBe(100);
+    });
 
     expect(mocks.getFrozenTokens).toHaveBeenCalledWith(
       {
@@ -138,20 +140,20 @@ describe('useGetFrozenTokens', () => {
       },
       mockAsset,
     );
-    expect(result.current.data).toBe(100);
   });
 
   it('should update data when account changes', async () => {
     // First call will return 100
     mocks.getFrozenTokens.mockResolvedValueOnce(100);
 
-    const { result, rerender, waitForNextUpdate } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetFrozenTokens({ investorAccount: mockInvestorAccount }),
     );
 
     // Wait for the first update
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(100);
+    await waitFor(() => {
+      expect(result.current.data).toBe(100);
+    });
 
     // Update account
     const newWalletAccount = {
@@ -171,7 +173,9 @@ describe('useGetFrozenTokens', () => {
     rerender();
 
     // Wait for the update after rerender
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.data).toBe(250);
+    });
 
     expect(mocks.getFrozenTokens).toHaveBeenCalledWith(
       {
@@ -180,14 +184,13 @@ describe('useGetFrozenTokens', () => {
       },
       mockAsset,
     );
-    expect(result.current.data).toBe(250);
   });
 
   it('should update data when investorAccount changes', async () => {
     // First call will return 100
     mocks.getFrozenTokens.mockResolvedValueOnce(100);
 
-    const { result, rerender, waitForNextUpdate } = renderHook(
+    const { result, rerender } = renderHook(
       ({ investorAccount }) => useGetFrozenTokens({ investorAccount }),
       {
         initialProps: { investorAccount: mockInvestorAccount },
@@ -195,8 +198,9 @@ describe('useGetFrozenTokens', () => {
     );
 
     // Wait for the first update
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(100);
+    await waitFor(() => {
+      expect(result.current.data).toBe(100);
+    });
 
     // Second call will return 300
     mocks.getFrozenTokens.mockResolvedValueOnce(300);
@@ -208,7 +212,9 @@ describe('useGetFrozenTokens', () => {
     rerender({ investorAccount: newInvestorAccount });
 
     // Wait for the update after rerender
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.data).toBe(300);
+    });
 
     expect(mocks.getFrozenTokens).toHaveBeenCalledWith(
       {
@@ -217,20 +223,20 @@ describe('useGetFrozenTokens', () => {
       },
       mockAsset,
     );
-    expect(result.current.data).toBe(300);
   });
 
   it('should update data when asset changes', async () => {
     // First call will return 100
     mocks.getFrozenTokens.mockResolvedValueOnce(100);
 
-    const { result, rerender, waitForNextUpdate } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetFrozenTokens({ investorAccount: mockInvestorAccount }),
     );
 
     // Wait for the first update
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(100);
+    await waitFor(() => {
+      expect(result.current.data).toBe(100);
+    });
 
     // Create a new asset
     const newAsset = {
@@ -251,7 +257,9 @@ describe('useGetFrozenTokens', () => {
     rerender();
 
     // Wait for the update after rerender
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.data).toBe(400);
+    });
 
     expect(mocks.getFrozenTokens).toHaveBeenCalledWith(
       {
@@ -260,20 +268,20 @@ describe('useGetFrozenTokens', () => {
       },
       newAsset,
     );
-    expect(result.current.data).toBe(400);
   });
 
   it('should update data when TOKENS-FROZEN event is received', async () => {
     // First call will return 100
     mocks.getFrozenTokens.mockResolvedValueOnce(100);
 
-    const { result, rerender, waitForNextUpdate } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetFrozenTokens({ investorAccount: mockInvestorAccount }),
     );
 
     // Wait for the first update
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(100);
+    await waitFor(() => {
+      expect(result.current.data).toBe(100);
+    });
 
     // Second call will return 500
     mocks.getFrozenTokens.mockResolvedValueOnce(500);
@@ -291,23 +299,25 @@ describe('useGetFrozenTokens', () => {
     rerender();
 
     // Wait for the update after rerender
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.data).toBe(500);
+    });
 
     expect(mocks.getFrozenTokens).toHaveBeenCalledTimes(2);
-    expect(result.current.data).toBe(500);
   });
 
   it('should update data when TOKENS-UNFROZEN event is received', async () => {
     // First call will return 100
     mocks.getFrozenTokens.mockResolvedValueOnce(100);
 
-    const { result, rerender, waitForNextUpdate } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetFrozenTokens({ investorAccount: mockInvestorAccount }),
     );
 
     // Wait for the first update
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(100);
+    await waitFor(() => {
+      expect(result.current.data).toBe(100);
+    });
 
     // Second call will return 50
     mocks.getFrozenTokens.mockResolvedValueOnce(50);
@@ -325,9 +335,10 @@ describe('useGetFrozenTokens', () => {
     rerender();
 
     // Wait for the update after rerender
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.data).toBe(50);
+    });
 
     expect(mocks.getFrozenTokens).toHaveBeenCalledTimes(2);
-    expect(result.current.data).toBe(50);
   });
 });

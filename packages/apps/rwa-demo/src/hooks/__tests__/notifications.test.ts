@@ -30,7 +30,7 @@ import type {
 } from '@/utils/analytics';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useNotifications as useUINotifications } from '@kadena/kode-ui/patterns';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useNotifications } from '../notifications';
 
 interface IAnalyticsParam {

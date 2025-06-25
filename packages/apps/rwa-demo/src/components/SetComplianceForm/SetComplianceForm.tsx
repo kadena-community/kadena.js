@@ -10,13 +10,18 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
 }
 
 export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {

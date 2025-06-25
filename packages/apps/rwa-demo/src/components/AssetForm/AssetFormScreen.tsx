@@ -5,13 +5,18 @@ import {
   RightAsideHeader,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import { AssetStepperForm } from './AssetStepperForm';
 
 interface IProps {
   asset?: IAsset;
-  trigger: ReactElement;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        onPress?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
   onClose?: () => void;
 }
 

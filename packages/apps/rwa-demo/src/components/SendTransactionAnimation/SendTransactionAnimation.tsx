@@ -1,13 +1,18 @@
 import { useTransactions } from '@/hooks/transactions';
 import { MonoWallet } from '@kadena/kode-icons';
-import type { PressEvent } from '@kadena/kode-ui';
-import type { FC, ReactElement } from 'react';
+import type { Attributes, FC, ReactElement } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { animationIconClass } from './styles.css';
 interface IProps {
-  onPress: (e: PressEvent) => any;
-  trigger: ReactElement;
+  onPress: (e: React.MouseEvent<HTMLButtonElement>) => any;
+  trigger: ReactElement<
+    Partial<HTMLButtonElement> &
+      Attributes & {
+        ref?: React.RefObject<HTMLDivElement | null>;
+        onPress?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+      }
+  >;
 }
 
 export const SendTransactionAnimation: FC<IProps> = ({ trigger, onPress }) => {
@@ -16,7 +21,8 @@ export const SendTransactionAnimation: FC<IProps> = ({ trigger, onPress }) => {
   const [triggerPos, setTriggerPos] = useState<DOMRect>();
   const [txButtonPos, setTxButtonPos] = useState<DOMRect>();
   const ref = useRef<HTMLDivElement | null>(null);
-  const handlePress = async (e: PressEvent) => {
+  const handlePress = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!onPress) return;
     const tx = await onPress(e);
     if (tx) {
       setShowAnimation(true);

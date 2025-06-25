@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook } from '@testing-library/react-hooks';
-import useAccountStore from '../hooks/useAccountStore';
 import { IAccount } from '@/wallet-communication';
+import { renderHook } from '@testing-library/react-hooks';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import useAccountStore from '../hooks/useAccountStore';
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -24,7 +24,13 @@ describe('useAccountStore', () => {
 
   it('loads accountStore from localStorage on initialization', () => {
     const mockData = JSON.stringify({
-      '123': [{ name: "account1", account: { id: "123", details: "details" }, publicKey: "publicKey1" }]
+      '123': [
+        {
+          name: 'account1',
+          account: { id: '123', details: 'details' },
+          publicKey: 'publicKey1',
+        },
+      ],
     });
     mockLocalStorage.getItem.mockReturnValueOnce(mockData);
 
@@ -46,17 +52,22 @@ describe('useAccountStore', () => {
       overallBalance: '100',
       chains: [{ chainId: '0', balance: '100' }],
       guard: { keys: ['key'], pred: 'keys-all' },
-    }
+    };
 
     // Simulate a state change in accountStore
     const newAccountStore = {
-      '456': [{ name: "account2", account: dummyAccount, publicKey: "publicKey2" }]
+      '456': [
+        { name: 'account2', account: dummyAccount, publicKey: 'publicKey2' },
+      ],
     };
 
     result.current[1](newAccountStore);
     rerender();
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('accountStore', JSON.stringify(newAccountStore));
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'accountStore',
+      JSON.stringify(newAccountStore),
+    );
     expect(result.current[0]).toEqual(newAccountStore);
   });
 });

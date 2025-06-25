@@ -1,5 +1,5 @@
 import { AccountContext } from '@/contexts/AccountContext/AccountContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
 import { useAccount } from '../account';
 

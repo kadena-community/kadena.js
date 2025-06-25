@@ -1,6 +1,6 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { AGENTROLES } from '@/services/addAgent';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useGetAgentRoles } from '../getAgentRoles';
 
@@ -90,7 +90,7 @@ describe('useGetAgentRoles', () => {
       AGENTROLES.FREEZER,
     ]);
 
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Initial state
     expect(result.current.isMounted).toBe(true);
@@ -102,13 +102,14 @@ describe('useGetAgentRoles', () => {
     });
 
     // Wait for the async initInnerData function to complete
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.getAll()).toEqual([
+        AGENTROLES.AGENTADMIN,
+        AGENTROLES.FREEZER,
+      ]);
+    });
 
     // Verify the correct roles are returned
-    expect(result.current.getAll()).toEqual([
-      AGENTROLES.AGENTADMIN,
-      AGENTROLES.FREEZER,
-    ]);
     expect(result.current.isAgentAdmin()).toBe(true);
     expect(result.current.isFreezer()).toBe(true);
     expect(result.current.isTransferManager()).toBe(false);
@@ -118,7 +119,7 @@ describe('useGetAgentRoles', () => {
     // Mock implementation of getAgentRoles with different roles
     mocks.getAgentRoles.mockResolvedValue([AGENTROLES.TRANSFERMANAGER]);
 
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Set the agent and asset
     act(() => {
@@ -126,7 +127,9 @@ describe('useGetAgentRoles', () => {
     });
 
     // Wait for the async initInnerData function to complete
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.getAll()).toEqual([AGENTROLES.TRANSFERMANAGER]);
+    });
 
     // Verify specific role checking functions
     expect(result.current.isAgentAdmin()).toBe(false);
@@ -138,7 +141,7 @@ describe('useGetAgentRoles', () => {
     // Mock implementation of getAgentRoles
     mocks.getAgentRoles.mockResolvedValue([AGENTROLES.AGENTADMIN]);
 
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Set the agent and asset
     act(() => {
@@ -146,8 +149,9 @@ describe('useGetAgentRoles', () => {
     });
 
     // Wait for the async initInnerData function to complete
-    await waitForNextUpdate();
-    expect(result.current.isAgentAdmin()).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isAgentAdmin()).toBe(true);
+    });
 
     // Reset by setting null asset
     act(() => {
@@ -163,7 +167,7 @@ describe('useGetAgentRoles', () => {
     mocks.getAgentRoles.mockResolvedValueOnce([AGENTROLES.FREEZER]);
 
     // Render the hook with simple configuration
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Initialize with account and asset
     act(() => {
@@ -171,9 +175,8 @@ describe('useGetAgentRoles', () => {
     });
 
     // Wait for first update
-    await waitForNextUpdate();
-
-    // Verify initial state
-    expect(result.current.isFreezer()).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isFreezer()).toBe(true);
+    });
   });
 });

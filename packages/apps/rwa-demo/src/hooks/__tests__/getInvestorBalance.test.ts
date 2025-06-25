@@ -1,7 +1,7 @@
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import { getInvestorBalance } from '@/services/getInvestorBalance';
 import { getAsset } from '@/utils/getAsset';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import type { Mock } from 'vitest';
 import { useAsset } from '../asset';
 import { useGetInvestorBalance } from '../getInvestorBalance';
@@ -73,11 +73,13 @@ describe('useGetInvestorBalance', () => {
   });
 
   it('should fetch investor balance when investor account and asset are provided', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(false);
+    });
 
     expect(getInvestorBalance).toHaveBeenCalledWith(
       {
@@ -114,11 +116,13 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(false);
+    });
     expect(result.current.data).toBe(1000);
 
     // Update the mock to return subscription data with events
@@ -149,11 +153,13 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(false);
+    });
     expect(result.current.data).toBe(1000);
 
     // Update the mock to return subscription data with events
@@ -184,11 +190,13 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(false);
+    });
     expect(result.current.data).toBe(1000);
 
     // Update the mock to return subscription data with multiple events
@@ -226,11 +234,13 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(false);
+    });
 
     // Initial balance after API call
     expect(result.current.data).toBe(1000);

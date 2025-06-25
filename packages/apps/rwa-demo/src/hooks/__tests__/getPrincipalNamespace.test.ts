@@ -1,7 +1,7 @@
 import type { IAccountContext } from '@/contexts/AccountContext/AccountContext';
 import { getPrincipalNamespace } from '@/services/getPrincipalNamespace';
 import type { ChainId } from '@kadena/client';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useAccount } from '../account';
 import { useGetPrincipalNamespace } from '../getPrincipalNamespace';
 
@@ -89,21 +89,18 @@ describe('useGetPrincipalNamespace', () => {
     const mockNamespace = 'test-namespace-123';
     vi.mocked(getPrincipalNamespace).mockResolvedValue(mockNamespace);
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useGetPrincipalNamespace(),
-    );
+    const { result } = renderHook(() => useGetPrincipalNamespace());
 
     // Initially data should be undefined
     expect(result.current.data).toBeUndefined();
 
-    // Wait for the effect to run
-    await waitForNextUpdate();
+    // Wait for the effect to run and data to be updated
+    await waitFor(() => {
+      expect(result.current.data).toBe(mockNamespace);
+    });
 
     // Check that the service was called with correct parameters
     expect(getPrincipalNamespace).toHaveBeenCalledWith({ owner: mockAccount });
-
-    // Check that the data was updated
-    expect(result.current.data).toBe(mockNamespace);
   });
 
   it('should update data when account changes', async () => {
@@ -113,9 +110,7 @@ describe('useGetPrincipalNamespace', () => {
       account: undefined,
     });
 
-    const { result, rerender, waitForNextUpdate } = renderHook(() =>
-      useGetPrincipalNamespace(),
-    );
+    const { result, rerender } = renderHook(() => useGetPrincipalNamespace());
     expect(result.current.data).toBeUndefined();
 
     // Update the account
@@ -131,11 +126,12 @@ describe('useGetPrincipalNamespace', () => {
     // Rerender with the new account
     rerender();
 
-    // Wait for the effect to run
-    await waitForNextUpdate();
+    // Wait for the effect to run and data to be updated
+    await waitFor(() => {
+      expect(result.current.data).toBe(mockNamespace);
+    });
 
     // Check the service was called and data updated
     expect(getPrincipalNamespace).toHaveBeenCalledWith({ owner: mockAccount });
-    expect(result.current.data).toBe(mockNamespace);
   });
 });

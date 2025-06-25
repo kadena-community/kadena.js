@@ -1,4 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks';
+import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
+import { renderHook } from '@testing-library/react';
 import { useForcedTransferTokens } from '../forcedTransferTokens';
 
 describe('forcedTransferTokens hook', () => {
@@ -354,7 +355,7 @@ describe('forcedTransferTokens hook', () => {
         investorToAccount: 'k:investor-to',
         amount: '100',
         reason: 'Test transfer',
-      };
+      } as unknown as IForcedTransferTokensProps;
 
       const response = await result.current.submit(data);
 
