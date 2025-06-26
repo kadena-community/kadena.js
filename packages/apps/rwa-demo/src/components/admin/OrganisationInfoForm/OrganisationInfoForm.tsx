@@ -13,16 +13,27 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
-import type { FC } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import type { FC, Reducer } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { OrganisationFormFields } from './OrganisationFormFields';
+import type { Action } from './reducer';
+import { domainsReducer } from './reducer';
 
 interface IProps {
   organisationId: IOrganisation['id'];
 }
 
+type IOrganisationWithNewDomain = IOrganisation & {
+  newDomain?: string;
+};
+
 export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
+  const [domains, dispatchDomains] = useReducer<Reducer<string[], Action>>(
+    domainsReducer,
+    [],
+  );
+
   const [orgStore, setOrgStore] = useState<any>();
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,16 +47,17 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     getValues,
     formState: { isValid, errors },
     reset,
-  } = useForm<IOrganisation>({
+  } = useForm<IOrganisationWithNewDomain>({
     mode: 'all',
     defaultValues: {
       name: organisation?.name,
       sendEmail: organisation?.sendEmail,
       domains: organisation?.domains ?? [],
+      newDomain: '',
     },
   });
 
-  const { fields, append, remove } = useFieldArray<IOrganisation>({
+  const { fields, append, remove } = useFieldArray<IOrganisationWithNewDomain>({
     control,
     name: 'domains',
   });
@@ -53,10 +65,20 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
   useEffect(() => {
     const init = async (organisationId: IOrganisation['id']) => {
       const store = await OrganisationStore(organisationId);
+      const rootStore = RootAdminStore();
       if (!store) return;
       setOrgStore(store);
 
       const data = await store.getOrganisation();
+
+      //getall domains for validation of domains
+      const allDomains = await rootStore.getAllDomains();
+
+      dispatchDomains({
+        type: 'init',
+        payload: allDomains,
+      });
+
       reset(data);
       setOrganisation(data);
     };
@@ -98,11 +120,17 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     append({ value: newDomainValue });
     reset({ ...getValues() });
 
+    dispatchDomains({
+      type: 'add',
+      payload: newDomainValue,
+    });
+
     setNewDomainValue('');
   }, [append, newDomainValue]);
 
   if (!organisation) return null;
 
+  console.log({ domains });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SectionCard stack="vertical">
@@ -123,49 +151,90 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
               {fields.map((field, index) => {
                 const error = (errors.domains ?? [])[index];
                 return (
-                  <Controller
-                    name={`domains.${index}.value`}
-                    control={control}
-                    key={field.id}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: 'This field is required',
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Stack width="100%" gap="sm" alignItems="center">
-                        <TextField
-                          {...field}
-                          isInvalid={!!error?.message}
-                          errorMessage={`${error?.message}`}
-                        />
-                        <Confirmation
-                          onPress={() => remove(index)}
-                          trigger={
-                            <Button
-                              isCompact
-                              variant="outlined"
-                              startVisual={<MonoDelete />}
-                            />
+                  <>
+                    <Controller
+                      name={`domains.${index}.value`}
+                      control={control}
+                      key={field.id}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                        validate: (value) => {
+                          if (!value) return 'This field is required';
+                          if (
+                            domains.includes(value) &&
+                            value !== field.value
+                          ) {
+                            return 'This domain already exists';
                           }
-                        >
-                          Are you sure you want to remove this domain?
-                        </Confirmation>
-                      </Stack>
-                    )}
-                  />
+                          return true;
+                        },
+                      }}
+                      render={({ field }) => (
+                        <Stack width="100%" gap="sm" alignItems="center">
+                          <TextField
+                            {...field}
+                            isInvalid={!!error?.value?.message}
+                            errorMessage={`${error?.value?.message}`}
+                          />
+                          <Confirmation
+                            onPress={() => {
+                              dispatchDomains({
+                                type: 'remove',
+                                payload: field.value,
+                              });
+
+                              remove(index);
+                            }}
+                            trigger={
+                              <Button
+                                isCompact
+                                variant="outlined"
+                                startVisual={<MonoDelete />}
+                              />
+                            }
+                          >
+                            Are you sure you want to remove this domain?
+                          </Confirmation>
+                        </Stack>
+                      )}
+                    />
+                  </>
                 );
               })}
 
               <Stack width="100%" gap="sm" alignItems="center">
-                <TextField
-                  name="new"
-                  onChange={(e) => setNewDomainValue(e.target.value)}
-                  defaultValue=""
-                  value={newDomainValue}
-                  placeholder="Fill in a new domain"
+                <Controller
+                  name="newDomain"
+                  control={control}
+                  rules={{
+                    validate: (value) => {
+                      if (!value) return 'This field is required';
+                      if (domains.includes(value)) {
+                        return 'This domain already exists';
+                      }
+                      return true;
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      key={field.name}
+                      defaultValue=""
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setNewDomainValue(e.target.value);
+                      }}
+                      isInvalid={!!errors.newDomain?.message}
+                      errorMessage={`${errors.newDomain?.message}`}
+                      value={newDomainValue}
+                      placeholder="Fill in a new domain"
+                    />
+                  )}
                 />
+
                 <Button
                   isCompact
                   variant="outlined"

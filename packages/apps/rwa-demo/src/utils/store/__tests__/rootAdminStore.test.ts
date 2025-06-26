@@ -1,4 +1,4 @@
-import { push, ref, set } from 'firebase/database';
+import { get, push, ref, set } from 'firebase/database';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { RootAdminStore } from '../rootAdminStore';
 
@@ -12,6 +12,30 @@ vi.mock('firebase/database', () => ({
   off: vi.fn(),
   push: vi.fn(() => ({ key: 'mock-org-key' })),
   set: vi.fn(() => Promise.resolve()),
+  get: vi.fn(() =>
+    Promise.resolve({
+      toJSON: () => ({
+        org1: {
+          id: 'org1',
+          name: 'Organization 1',
+          domains: {
+            domain1: { value: 'example.com' },
+            domain2: { value: 'test.com' },
+          },
+          sendEmail: 'admin@org1.com',
+        },
+        org2: {
+          id: 'org2',
+          name: 'Organization 2',
+          domains: {
+            domain3: { value: 'company.com' },
+            domain4: { value: 'business.org' },
+          },
+          sendEmail: 'admin@org2.com',
+        },
+      }),
+    }),
+  ),
 }));
 
 // Mock fetch
@@ -121,5 +145,79 @@ describe('RootAdminStore', () => {
     );
 
     expect(result).toBe('mock-org-key');
+  });
+
+  it('removeOrganisation removes organisation from database', async () => {
+    const store = RootAdminStore();
+    const organisationId = 'org-to-remove';
+
+    await store.removeOrganisation(organisationId);
+
+    // Verify ref was called with the correct path
+    expect(ref).toHaveBeenCalledWith(
+      undefined,
+      `/organisationsData/${organisationId}`,
+    );
+
+    // Verify set was called with null to delete the organisation
+    expect(set).toHaveBeenCalledWith(
+      `/organisationsData/${organisationId}`,
+      null,
+    );
+  });
+
+  it('getAllDomains returns all domain values from all organisations', async () => {
+    const store = RootAdminStore();
+    const result = await store.getAllDomains();
+
+    // Verify get was called with the correct path
+    expect(get).toHaveBeenCalledWith('/organisationsData');
+
+    // Verify it returns all domains from all organisations
+    expect(result).toEqual([
+      'example.com',
+      'test.com',
+      'company.com',
+      'business.org',
+    ]);
+  });
+
+  it('getAllDomains returns empty array when no organisations exist', async () => {
+    // Mock get to return empty data
+    const mockGet = vi.mocked(get);
+    mockGet.mockResolvedValueOnce({
+      toJSON: () => null,
+    } as ReturnType<typeof get> extends Promise<infer T> ? T : never);
+
+    const store = RootAdminStore();
+    const result = await store.getAllDomains();
+
+    expect(result).toEqual([]);
+  });
+
+  it('getAllDomains handles organisations without domains', async () => {
+    // Mock get to return organisations without domains
+    const mockGet = vi.mocked(get);
+    mockGet.mockResolvedValueOnce({
+      toJSON: () => ({
+        org1: {
+          id: 'org1',
+          name: 'Organization 1',
+          sendEmail: 'admin@org1.com',
+          // no domains property
+        },
+        org2: {
+          id: 'org2',
+          name: 'Organization 2',
+          domains: {}, // empty domains
+          sendEmail: 'admin@org2.com',
+        },
+      }),
+    } as ReturnType<typeof get> extends Promise<infer T> ? T : never);
+
+    const store = RootAdminStore();
+    const result = await store.getAllDomains();
+
+    expect(result).toEqual([]);
   });
 });
