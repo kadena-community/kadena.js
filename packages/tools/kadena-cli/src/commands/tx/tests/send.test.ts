@@ -42,7 +42,7 @@ describe('tx send', () => {
 
     await runCommand(['config', 'init']);
 
-    const transaction = await createAndWriteTransaction(
+    const result = await createAndWriteTransaction(
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -55,9 +55,12 @@ describe('tx send', () => {
       defaultTemplates.transfer,
     );
 
-    assertCommandError(transaction);
+    assertCommandError(result);
+
+    const { transaction, filePath } = result.data[0];
+
     await signTransactionFileWithKeyPairAction({
-      files: [transaction.data.filePath],
+      files: [filePath],
       keyPairs: [{ publicKey, secretKey }],
     });
 
@@ -79,7 +82,7 @@ describe('tx send', () => {
     useMswHandler({
       endpoint: 'send',
       response: {
-        requestKeys: [transaction.data.transaction.hash],
+        requestKeys: [transaction.hash],
       },
     });
     const { stderr } = await runCommand(['tx', 'send']);
@@ -95,7 +98,7 @@ describe('tx send', () => {
     const targetAccount =
       'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
-    const transaction = await createAndWriteTransaction(
+    const result = await createAndWriteTransaction(
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -107,10 +110,12 @@ describe('tx send', () => {
       null,
       defaultTemplates.transfer,
     );
-    assertCommandError(transaction);
+    assertCommandError(result);
+
+    const { transaction, filePath } = result.data[0];
 
     await signTransactionFileWithKeyPairAction({
-      files: [transaction.data.filePath],
+      files: [filePath],
       keyPairs: [{ publicKey, secretKey }],
     });
 
@@ -132,7 +137,7 @@ describe('tx send', () => {
     useMswHandler({
       endpoint: 'send',
       response: {
-        requestKeys: [transaction.data.transaction.hash],
+        requestKeys: [transaction.hash],
       },
     });
 
@@ -150,7 +155,7 @@ describe('tx send', () => {
     const targetAccount =
       'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
-    const transaction = await createAndWriteTransaction(
+    const result = await createAndWriteTransaction(
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -163,13 +168,16 @@ describe('tx send', () => {
       defaultTemplates.transfer,
     );
 
-    assertCommandError(transaction);
-    const result = await signTransactionFileWithKeyPairAction({
-      files: [transaction.data.filePath],
+    assertCommandError(result);
+
+    const { transaction, filePath } = result.data[0];
+
+    const signed = await signTransactionFileWithKeyPairAction({
+      files: [filePath],
       keyPairs: [{ publicKey, secretKey }],
     });
 
-    const data = extractData(JSON.stringify(result));
+    const data = extractData(JSON.stringify(signed));
 
     useMswHandler({
       response: { result: { status: 'success' } },
@@ -178,7 +186,7 @@ describe('tx send', () => {
       endpoint: 'send',
       printOriginalResponse: true,
       response: {
-        requestKeys: [transaction.data.transaction.hash],
+        requestKeys: [transaction.hash],
       },
     });
 
@@ -196,7 +204,7 @@ describe('tx send', () => {
     const targetAccount =
       'k:00b34067644479c769b48b4cc9b2c732e48fc9aeb82d06ecd52dc783550de54d';
 
-    const transaction = await createAndWriteTransaction(
+    const result = await createAndWriteTransaction(
       {
         'account:from': `k:${publicKey}`,
         'account:to': targetAccount,
@@ -209,14 +217,16 @@ describe('tx send', () => {
       defaultTemplates.transfer,
     );
 
-    assertCommandError(transaction);
+    assertCommandError(result);
 
-    const result = await signTransactionFileWithKeyPairAction({
-      files: [transaction.data.filePath],
+    const { transaction, filePath } = result.data[0];
+
+    const signed = await signTransactionFileWithKeyPairAction({
+      files: [filePath],
       keyPairs: [{ publicKey, secretKey }],
     });
 
-    const data = extractData(JSON.stringify(result));
+    const data = extractData(JSON.stringify(signed));
 
     useMswHandler({
       response: { result: { status: 'success' } },
@@ -225,7 +235,7 @@ describe('tx send', () => {
       endpoint: 'send',
       printOriginalResponse: true,
       response: {
-        requestKeys: [transaction.data.transaction.hash],
+        requestKeys: [transaction.hash],
       },
     });
 
