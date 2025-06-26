@@ -130,7 +130,6 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
   if (!organisation) return null;
 
-  console.log({ domains });
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SectionCard stack="vertical">
