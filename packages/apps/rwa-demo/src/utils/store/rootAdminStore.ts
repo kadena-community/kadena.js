@@ -1,6 +1,6 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import type { IdTokenResult } from 'firebase/auth';
-import { off, onValue, push, ref, set } from 'firebase/database';
+import { get, off, onValue, push, ref, set } from 'firebase/database';
 import { database } from './firebase';
 
 export const RootAdminStore = () => {
@@ -72,11 +72,28 @@ export const RootAdminStore = () => {
     return set(ref(database, `/organisationsData/${organisationId}`), null);
   };
 
+  const getAllDomains = async (): Promise<string[]> => {
+    const snapshot = await get(ref(database, `/organisationsData`));
+    const data = snapshot.toJSON();
+
+    const dataArray = Object.entries(data ?? {}).map(([_, v]) => v);
+
+    return dataArray.reduce((acc, value) => {
+      const org = value as IOrganisation;
+      const domains = Object.entries(org?.domains ?? {}).map(
+        ([_, domain]) => domain.value,
+      );
+
+      return [...acc, ...domains];
+    }, []) as string[];
+  };
+
   return {
     setAdmin,
     removeAdmin,
     listenToAdmins,
     createOrganisation,
     removeOrganisation,
+    getAllDomains,
   };
 };
