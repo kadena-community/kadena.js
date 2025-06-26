@@ -1,8 +1,7 @@
 {
   "git": {
     "deploymentEnabled": {
-      "main": false,
-      "release/rwa-v*": true
+      "main": true
     }
   }
 }
