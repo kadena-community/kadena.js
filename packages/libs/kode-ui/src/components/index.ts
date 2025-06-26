@@ -151,3 +151,5 @@ export {
 export { Media, MediaContextProvider, mediaProviderStyles } from './Media';
 
 export { Popover, PopoverTrigger } from './Popover';
+
+export { Version } from './Version/Version';

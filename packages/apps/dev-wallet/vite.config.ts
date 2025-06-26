@@ -65,7 +65,6 @@ export const config: UserConfig = {
       plugins: [vanillaExtractEsbuildPlugin({ runtime: true })],
     },
   },
-
   build: {
     ssr: false,
     minify: false,

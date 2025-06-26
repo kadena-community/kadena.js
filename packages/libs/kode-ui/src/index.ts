@@ -143,6 +143,7 @@ export {
   ToggleButton,
   Tooltip,
   TrackerCard,
+  Version,
   maskValue,
   mediaProviderStyles,
   useDialog,

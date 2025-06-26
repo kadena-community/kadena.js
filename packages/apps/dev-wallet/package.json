@@ -6,11 +6,11 @@
   "type": "module",
   "scripts": {
     "prebuild": "pnpm run generate-coin-type && pnpm run generate:plugins",
-    "build": "pnpm run prebuild && tsc && vite build",
+    "build": "pnpm run prebuild && tsc && VITE_BUILD_TIME=$(date -u) vite build",
     "build-dev": "tsc && vite build --mode development --watch",
     "build:e2e": "NODE_ENV=test pnpm run build",
     "build:watch": "pnpm run build && concurrently \"chokidar './src/**' './node_modules/@kadena/**' -s -t 500  --command './node_modules/.bin/vite build' \" \"pnpm run preview --port 4173\"",
-    "dev": "vite --force",
+    "dev": "VITE_BUILD_TIME=$(date -u) vite --force",
     "dev:chainweaver": "concurrently \"chokidar './src/**' --command './node_modules/.bin/vite build' --initial\" \"pnpm run preview --port 1337\"",
     "generate-coin-type": "cache-sh -i \"node_modules/.kadena/**\" -- \"pactjs contract-generate --contract \\\"coin\\\" --api \\\"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\\\"\"",
     "generate:plugins": "rimraf public/internal-registry/* && ./scripts/symlink-plugins.ts && ./scripts/generate-plugins-json.ts",
