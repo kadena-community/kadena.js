@@ -1,6 +1,7 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { useNotifications } from '@/hooks/notifications';
+import { useUser } from '@/hooks/user';
 import { OrganisationStore } from '@/utils/store/organisationStore';
 import { RootAdminStore } from '@/utils/store/rootAdminStore';
 import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
@@ -25,9 +26,10 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
   const [orgStore, setOrgStore] = useState<any>();
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const [isLoading, setIsLoading] = useState(false);
-  const addDomainRef = useRef<HTMLInputElement | null>(null);
+  const [newDomainValue, setNewDomainValue] = useState('');
   const router = useRouter();
   const { addNotification } = useNotifications();
+  const { userToken } = useUser();
   const {
     handleSubmit,
     control,
@@ -93,11 +95,11 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
   }, [organisation?.id]);
 
   const handleAddDomain = useCallback(() => {
-    if (!addDomainRef.current) return;
-    append({ value: addDomainRef.current.value });
+    append({ value: newDomainValue });
     reset({ ...getValues() });
-    addDomainRef.current.value = '';
-  }, [addDomainRef.current, append]);
+
+    setNewDomainValue('');
+  }, [append, newDomainValue]);
 
   if (!organisation) return null;
 
@@ -115,59 +117,64 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
             title="Domains"
             description={<>Domains that use this app for this organisation</>}
           />
-          <SectionCardBody>
-            {fields.map((field, index) => {
-              const error = (errors.domains ?? [])[index];
-              return (
-                <Controller
-                  name={`domains.${index}.value`}
-                  control={control}
-                  key={field.id}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'This field is required',
-                    },
-                  }}
-                  render={({ field }) => (
-                    <Stack width="100%" gap="sm" alignItems="center">
-                      <TextField
-                        {...field}
-                        isInvalid={!!error?.message}
-                        errorMessage={`${error?.message}`}
-                      />
-                      <Confirmation
-                        onPress={() => remove(index)}
-                        trigger={
-                          <Button
-                            isCompact
-                            variant="outlined"
-                            startVisual={<MonoDelete />}
-                          />
-                        }
-                      >
-                        Are you sure you want to remove this domain?
-                      </Confirmation>
-                    </Stack>
-                  )}
+
+          {userToken?.claims.rootAdmin ? (
+            <SectionCardBody>
+              {fields.map((field, index) => {
+                const error = (errors.domains ?? [])[index];
+                return (
+                  <Controller
+                    name={`domains.${index}.value`}
+                    control={control}
+                    key={field.id}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: 'This field is required',
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Stack width="100%" gap="sm" alignItems="center">
+                        <TextField
+                          {...field}
+                          isInvalid={!!error?.message}
+                          errorMessage={`${error?.message}`}
+                        />
+                        <Confirmation
+                          onPress={() => remove(index)}
+                          trigger={
+                            <Button
+                              isCompact
+                              variant="outlined"
+                              startVisual={<MonoDelete />}
+                            />
+                          }
+                        >
+                          Are you sure you want to remove this domain?
+                        </Confirmation>
+                      </Stack>
+                    )}
+                  />
+                );
+              })}
+
+              <Stack width="100%" gap="sm" alignItems="center">
+                <TextField
+                  name="new"
+                  onChange={(e) => setNewDomainValue(e.target.value)}
+                  defaultValue=""
+                  value={newDomainValue}
+                  placeholder="Fill in a new domain"
                 />
-              );
-            })}
-            <Stack width="100%" gap="sm" alignItems="center">
-              <TextField
-                name="new"
-                ref={addDomainRef}
-                defaultValue=""
-                placeholder="Fill in a new domain"
-              />
-              <Button
-                isCompact
-                variant="outlined"
-                startVisual={<MonoAdd />}
-                onPress={handleAddDomain}
-              />
-            </Stack>
-          </SectionCardBody>
+                <Button
+                  isCompact
+                  variant="outlined"
+                  startVisual={<MonoAdd />}
+                  onPress={handleAddDomain}
+                />
+              </Stack>
+            </SectionCardBody>
+          ) : null}
         </SectionCardContentBlock>
       </SectionCard>
 
@@ -177,12 +184,14 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
         marginBlockStart="md"
         gap="md"
       >
-        <Confirmation
-          onPress={handleDelete}
-          trigger={<Button variant="negative">Remove Organisation</Button>}
-        >
-          Are you sure you want to remove this organisation?
-        </Confirmation>
+        {userToken?.claims.rootAdmin ? (
+          <Confirmation
+            onPress={handleDelete}
+            trigger={<Button variant="negative">Remove Organisation</Button>}
+          >
+            Are you sure you want to remove this organisation?
+          </Confirmation>
+        ) : null}
 
         <Button
           isLoading={isLoading}
