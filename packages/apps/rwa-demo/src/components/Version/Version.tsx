@@ -5,13 +5,12 @@ export const Version: FC = () => {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const commitSha = process.env.NEXT_PUBLIC_COMMIT_SHA || 'unknown';
-    const commentStr = `
-release sha: ${commitSha}                      
-    `;
+    const commentStr = `-----<{{@ release sha: ${commitSha} @}}>-----`;
 
     const comment = document.createComment(commentStr);
     if (ref.current && ref.current.parentNode) {
-      ref.current.parentNode.insertBefore(comment, ref.current);
+      ref.current.innerHTML = '';
+      ref.current.appendChild(comment);
     }
     localStorage.setItem('version', commitSha);
   }, []);
