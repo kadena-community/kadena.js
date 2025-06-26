@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import React, { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 interface IProps {
   repo: string;
@@ -8,19 +8,18 @@ interface IProps {
 }
 
 export const Version: FC<IProps> = ({ repo, sha = 'unknown', SSRTime }) => {
-  const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const commentStr = `-----<{{@ release sha: ${sha} @}}>------->
 ${repo}
 <-------<{{@ ${SSRTime || '-'} @}}>-----`;
 
     const comment = document.createComment(commentStr);
-    if (ref.current && ref.current.parentNode) {
-      ref.current.innerHTML = '';
-      ref.current.appendChild(comment);
-    }
+
+    const body = document.querySelector('body');
+    body?.prepend(comment);
+
     localStorage.setItem('version', sha);
     localStorage.setItem('versionDate', SSRTime ?? '');
   }, []);
-  return <span ref={ref} />;
+  return null;
 };
