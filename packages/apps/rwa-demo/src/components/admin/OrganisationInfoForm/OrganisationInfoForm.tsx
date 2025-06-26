@@ -162,7 +162,11 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                           message: 'This field is required',
                         },
                         validate: (value) => {
-                          if (!value) return 'This field is required';
+                          const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+                          if (!pattern.test(value)) {
+                            return 'Invalid domain format. Use a valid URL format.';
+                          }
+
                           if (
                             domains.includes(value) &&
                             value !== field.value
@@ -173,7 +177,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                         },
                       }}
                       render={({ field }) => (
-                        <Stack width="100%" gap="sm" alignItems="center">
+                        <Stack width="100%" gap="sm" alignItems="flex-start">
                           <TextField
                             {...field}
                             isInvalid={!!error?.value?.message}
@@ -205,13 +209,19 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                 );
               })}
 
-              <Stack width="100%" gap="sm" alignItems="center">
+              <Stack width="100%" gap="sm" alignItems="flex-start">
                 <Controller
                   name="newDomain"
                   control={control}
                   rules={{
                     validate: (value) => {
                       if (!value) return 'This field is required';
+
+                      const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+                      if (!pattern.test(value)) {
+                        return 'Invalid domain format. Use a valid URL format.';
+                      }
+
                       if (domains.includes(value)) {
                         return 'This domain already exists';
                       }
@@ -237,6 +247,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
                 <Button
                   isCompact
+                  isDisabled={!!errors.newDomain?.message || !newDomainValue}
                   variant="outlined"
                   startVisual={<MonoAdd />}
                   onPress={handleAddDomain}
