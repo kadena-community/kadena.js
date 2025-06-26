@@ -17,15 +17,15 @@ pmpm add @kadena/wallet-adapter-chainweaver-legacy
 
 ## Factory Usage
 
-The primary export is a factory function `chainweaverAdapterLegacy`, which
+The primary export is a factory function `createChainweaverLegacyAdapter`, which
 detects the Chainweaver provider and, if found, returns an adapter instance. If
 the Chainweaver provider is not available, detection returns `null`:
 
 ```ts
-import { chainweaverAdapterLegacy } from '@kadena/wallet-adapter-chainweaver-legacy';
+import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweaver-legacy';
 
 (async () => {
-  const adapterFactory = chainweaverAdapterLegacy();
+  const adapterFactory = createChainweaverLegacyAdapter();
   const provider = await adapterFactory.detect();
   if (!provider) {
     console.log('Chainweaver Wallet not found.');
@@ -42,29 +42,40 @@ import { chainweaverAdapterLegacy } from '@kadena/wallet-adapter-chainweaver-leg
 
 For lower-level access, the following exports are available:
 
-- **`ChainweaverWalletAdapterLegacy`**: The adapter class you can instantiate
+- **`ChainweaverLegacyAdapter`**: The adapter class you can instantiate
   directly.
-- **`detectChainweaverProviderLegacy`**: A standalone function that checks
+- **`detectChainweaverLegacyProvider`**: A standalone function that checks
   whether the Chainweaver wallet provider is present. It returns the provider if
   found, or `null` otherwise.
 
 ```ts
 import {
-  ChainweaverWalletAdapterLegacy,
-  detectChainweaverProviderLegacy,
+  ChainweaverLegacyAdapter,
+  detectChainweaverLegacyProvider,
 } from '@kadena/wallet-adapter-chainweaver-legacy';
 
 (async () => {
-  const provider = await detectChainweaverProviderLegacy({ silent: true });
+  const provider = await detectChainweaverLegacyProvider({ silent: true });
   if (!provider) {
     console.log('Chainweaver Wallet not available.');
     return;
   }
-  const adapter = new ChainweaverWalletAdapterLegacy({ provider });
+  const adapter = new ChainweaverLegacyAdapter({ provider });
   await adapter.connect();
   console.log('Connected to Chainweaver directly!');
 })();
 ```
+
+## Supported methods
+
+| Method                | KIP         | Supported |
+| --------------------- | ----------- | --------- |
+| kadena_sign_v1        | [KIP-17][1] | Yes       |
+| kadena_quicksign_v1   | [KIP-17][1] | Yes       |
+| kadena_getAccount_v1  | [KIP-37][2] | No        |
+| kadena_getAccounts_v2 | [KIP-38][3] | No        |
+| kadena_getNetwork_v1  | [KIP-39][4] | No        |
+| kadena_getNetworks_v1 | [KIP-40][5] | No        |
 
 ## Other Notes
 
