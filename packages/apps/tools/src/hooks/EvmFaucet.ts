@@ -31,6 +31,8 @@ export function useEvmFaucet() {
     hash?: `0x${string}`;
     chainId: EVMChainId;
   }) => {
+    console.log('Creating explorer link for hash:', hash, 'on chain:', chainId);
+    console.log(hash);
     if (!hash) return '';
     return `http://chain-${chainId}.evm-testnet-blockscout.chainweb.com/tx/${hash}`;
   };
