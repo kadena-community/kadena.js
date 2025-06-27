@@ -5,7 +5,11 @@ import {
   MonoWarning,
 } from '@kadena/kode-icons/system';
 import type { INotificationProps } from '@kadena/kode-ui';
-import { Notification, NotificationHeading } from '@kadena/kode-ui';
+import {
+  Notification,
+  NotificationFooter,
+  NotificationHeading,
+} from '@kadena/kode-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -37,10 +41,11 @@ export interface IFormStatusNotificationProps {
   statusTitles?: Partial<Titles>;
   statusBodies?: Partial<Bodies>;
   children?: INotificationProps['children'];
+  actions?: React.ReactNode;
 }
 
 export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
-  { status, body, title, statusTitles, statusBodies, children } = {
+  { status, body, title, statusTitles, statusBodies, children, actions } = {
     status: 'idle',
   },
 ) => {
@@ -91,6 +96,8 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
         <NotificationHeading>{title ?? titles[status!]}</NotificationHeading>
         <p>{body ?? bodies[status!]}</p>
         {children}
+
+        {actions ? <NotificationFooter>{actions}</NotificationFooter> : null}
       </Notification>
     </div>
   );

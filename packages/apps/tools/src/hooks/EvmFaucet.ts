@@ -18,9 +18,21 @@ export function useEvmFaucet() {
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;
+    hash?: string;
+    explorerLink?: string;
   }>({ status: 'idle' });
 
   const { executeRecaptcha } = useReCaptcha();
+
+  const createExplorerLink = ({
+    hash,
+    chainId,
+  }: {
+    hash: `0x${string}`;
+    chainId: EVMChainId;
+  }) => {
+    return `http://chain-${chainId}.evm-testnet-blockscout.chainweb.com/tx/${hash}`;
+  };
 
   // Read the dispensed token amount and contract balance when the component mounts
   const getAmounts = async () => {
@@ -58,7 +70,11 @@ export function useEvmFaucet() {
       ).waitForTransactionReceipt({ hash });
 
       if (receipt.status === 'success') {
-        setRequestStatus({ status: 'successful' });
+        setRequestStatus({
+          status: 'successful',
+          hash,
+          explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
+        });
       }
 
       await getAmounts();
@@ -66,6 +82,8 @@ export function useEvmFaucet() {
       setRequestStatus({
         status: 'erroneous',
         message: 'No transaction found',
+        hash,
+        explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
       });
     }
   };
