@@ -87,10 +87,13 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     init(organisationId);
   }, [organisationId]);
 
-  const onSubmit = async (data: IOrganisation) => {
+  const onSubmit = async (data: IOrganisationWithNewDomain) => {
     setIsLoading(true);
     if (!orgStore) return;
-    const newOrganisation = { ...organisation, ...data };
+    // remove the newDomain field from the data object
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { newDomain, ...cleanedData } = data;
+    const newOrganisation = { ...organisation, ...cleanedData };
 
     await orgStore.updateOrganisation(newOrganisation);
     setIsLoading(false);
@@ -214,8 +217,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                   control={control}
                   rules={{
                     validate: (value) => {
-                      if (!value) return 'This field is required';
-
+                      if (!value) return true;
                       const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
                       if (!pattern.test(value)) {
                         return 'Invalid domain format. Use a valid URL format.';
