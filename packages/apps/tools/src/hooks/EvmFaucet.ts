@@ -31,7 +31,7 @@ export function useEvmFaucet() {
     hash?: `0x${string}`;
     chainId: EVMChainId;
   }) => {
-    if (!hash || !hash.startsWith('0x')) return '';
+    if (!hash || typeof hash !== 'string' || !hash.startsWith('0x')) return '';
     return `http://chain-${chainId}.evm-testnet-blockscout.chainweb.com/tx/${hash}`;
   };
 
