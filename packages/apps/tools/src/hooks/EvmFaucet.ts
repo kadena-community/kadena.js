@@ -18,9 +18,22 @@ export function useEvmFaucet() {
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;
+    hash?: string;
+    explorerLink?: string;
   }>({ status: 'idle' });
 
   const { executeRecaptcha } = useReCaptcha();
+
+  const createExplorerLink = ({
+    hash,
+    chainId,
+  }: {
+    hash?: `0x${string}`;
+    chainId: EVMChainId;
+  }) => {
+    if (!hash || typeof hash !== 'string' || !hash.startsWith('0x')) return '';
+    return `http://chain-${chainId}.evm-testnet-blockscout.chainweb.com/tx/${hash}`;
+  };
 
   // Read the dispensed token amount and contract balance when the component mounts
   const getAmounts = async () => {
@@ -51,14 +64,21 @@ export function useEvmFaucet() {
 
   const waitForTx = async (hash: `0x${string}`) => {
     if (!hash) return;
-    setRequestStatus({ status: 'processing' });
+    setRequestStatus({
+      status: 'processing',
+      explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
+    });
     try {
       const receipt = await getPublicClient(
         innerChainId,
       ).waitForTransactionReceipt({ hash });
 
       if (receipt.status === 'success') {
-        setRequestStatus({ status: 'successful' });
+        setRequestStatus({
+          status: 'successful',
+          hash,
+          explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
+        });
       }
 
       await getAmounts();
@@ -66,6 +86,8 @@ export function useEvmFaucet() {
       setRequestStatus({
         status: 'erroneous',
         message: 'No transaction found',
+        hash,
+        explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
       });
     }
   };
@@ -80,6 +102,7 @@ export function useEvmFaucet() {
   const dispenseTokens = async (recipient: string): Promise<void> => {
     setRequestStatus({ status: 'processing' });
 
+    let hash: any;
     try {
       const token = await executeRecaptcha('form_submit');
       console.log('Attempting dispense to:', recipient);
@@ -89,7 +112,7 @@ export function useEvmFaucet() {
         body: JSON.stringify({ recipient, chainId: innerChainId, token }),
       });
 
-      const hash: any = await result.json();
+      hash = await result.json();
 
       if (result.status !== 200) {
         throw new Error(hash.error);
@@ -98,7 +121,11 @@ export function useEvmFaucet() {
       await waitForTx(hash);
     } catch (err) {
       console.log({ err });
-      setRequestStatus({ status: 'erroneous', message: err.message });
+      setRequestStatus({
+        status: 'erroneous',
+        message: err.message,
+        explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
+      });
     }
   };
 
