@@ -18,7 +18,7 @@ export interface IActionProps {}
 export const FormatAccount = () => {
   const Component = ({ value }: ICompactTableFormatterProps) => {
     const { findAliasByAddress } = useUser();
-    const { accounts } = useAccount();
+    const { accounts, account, isOwner } = useAccount();
     const [isAliasFormOpen, setIsAliasFormOpen] = useState(false);
     const { setIsRightAsideExpanded } = useSideBarLayout();
 
@@ -33,6 +33,7 @@ export const FormatAccount = () => {
     };
 
     const isMyAccount = accounts?.map((a) => a.address).includes(`${value}`);
+    const accountIsOwner = account?.address === `${value}` && isOwner;
 
     return (
       <>
@@ -62,6 +63,11 @@ export const FormatAccount = () => {
             {isMyAccount && (
               <Badge style="positive" size="sm">
                 Me
+              </Badge>
+            )}
+            {accountIsOwner && (
+              <Badge style="info" size="sm">
+                Owner
               </Badge>
             )}
           </Stack>
