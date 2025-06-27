@@ -49,10 +49,11 @@ Overview of the main packages maintained in this repository:
 | [@kadena/wallet-adapter-chainweaver-legacy][65] | [![version][67]][66] |
 | [@kadena/wallet-adapter-core][68]               | [![version][70]][69] |
 | [@kadena/wallet-adapter-ecko][71]               | [![version][73]][72] |
-| [@kadena/wallet-adapter-react][74]              | [![version][76]][75] |
-| [@kadena/wallet-adapter-walletconnect][77]      | [![version][79]][78] |
-| [@kadena/wallet-adapter-zelcore][80]            | [![version][82]][81] |
-| [@kadena/wallet-sdk][83]                        | [![version][85]][84] |
+| [@kadena/wallet-adapter-magic][74]              | [![version][76]][75] |
+| [@kadena/wallet-adapter-react][77]              | [![version][79]][78] |
+| [@kadena/wallet-adapter-walletconnect][80]      | [![version][82]][81] |
+| [@kadena/wallet-adapter-zelcore][83]            | [![version][85]][84] |
+| [@kadena/wallet-sdk][86]                        | [![version][88]][87] |
 
 <!--packageTable end -->
 
@@ -60,7 +61,7 @@ Overview of the main packages maintained in this repository:
 
 Special thanks to the wonderful people who have contributed to this project:
 
-[![Contributors][87]][86]
+[![Contributors][90]][89]
 
 [1]: https://docs.kadena.io
 [2]: https://discord.io/kadena
@@ -158,20 +159,24 @@ Special thanks to the wonderful people who have contributed to this project:
 [72]: packages/libs/wallet-adapter-ecko/CHANGELOG.md
 [73]: https://img.shields.io/npm/v/@kadena/wallet-adapter-ecko.svg
 [74]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-react
-[75]: packages/libs/wallet-adapter-react/CHANGELOG.md
-[76]: https://img.shields.io/npm/v/@kadena/wallet-adapter-react.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-magic
+[75]: packages/libs/wallet-adapter-magic/CHANGELOG.md
+[76]: https://img.shields.io/npm/v/@kadena/wallet-adapter-magic.svg
 [77]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-walletconnect
-[78]: packages/libs/wallet-adapter-walletconnect/CHANGELOG.md
-[79]: https://img.shields.io/npm/v/@kadena/wallet-adapter-walletconnect.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-react
+[78]: packages/libs/wallet-adapter-react/CHANGELOG.md
+[79]: https://img.shields.io/npm/v/@kadena/wallet-adapter-react.svg
 [80]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-zelcore
-[81]: packages/libs/wallet-adapter-zelcore/CHANGELOG.md
-[82]: https://img.shields.io/npm/v/@kadena/wallet-adapter-zelcore.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-walletconnect
+[81]: packages/libs/wallet-adapter-walletconnect/CHANGELOG.md
+[82]: https://img.shields.io/npm/v/@kadena/wallet-adapter-walletconnect.svg
 [83]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-zelcore
+[84]: packages/libs/wallet-adapter-zelcore/CHANGELOG.md
+[85]: https://img.shields.io/npm/v/@kadena/wallet-adapter-zelcore.svg
+[86]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-sdk
-[84]: packages/libs/wallet-sdk/CHANGELOG.md
-[85]: https://img.shields.io/npm/v/@kadena/wallet-sdk.svg
-[86]: https://github.com/kadena-community/kadena.js/graphs/contributors
-[87]: https://contrib.rocks/image?repo=kadena-community/kadena.js
+[87]: packages/libs/wallet-sdk/CHANGELOG.md
+[88]: https://img.shields.io/npm/v/@kadena/wallet-sdk.svg
+[89]: https://github.com/kadena-community/kadena.js/graphs/contributors
+[90]: https://contrib.rocks/image?repo=kadena-community/kadena.js
