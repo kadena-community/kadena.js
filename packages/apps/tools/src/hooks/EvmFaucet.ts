@@ -63,7 +63,10 @@ export function useEvmFaucet() {
 
   const waitForTx = async (hash: `0x${string}`) => {
     if (!hash) return;
-    setRequestStatus({ status: 'processing' });
+    setRequestStatus({
+      status: 'processing',
+      explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
+    });
     try {
       const receipt = await getPublicClient(
         innerChainId,

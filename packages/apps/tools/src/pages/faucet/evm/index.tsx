@@ -3,12 +3,13 @@ import {
   ChainSelect,
   FormStatusNotification,
   NAME_VALIDATION,
+  statusToColorMap,
 } from '@/components/Global';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import { useEvmFaucet } from '@/hooks/EvmFaucet';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MonoKeyboardArrowRight, MonoLink } from '@kadena/kode-icons/system';
+import { MonoKeyboardArrowRight } from '@kadena/kode-icons/system';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -91,11 +92,15 @@ const ExistingAccountFaucetPage: FC = () => {
           body={requestStatus.message}
           actions={
             requestStatus.explorerLink && (
-              <NotificationButton icon={<MonoLink />}>
+              <NotificationButton
+                icon={<></>}
+                intent={statusToColorMap[requestStatus.status] || 'info'}
+              >
                 <a
                   target="_blank"
                   rel="noreferrer"
                   href={requestStatus.explorerLink}
+                  style={{ color: 'inherit' }}
                 >
                   Check the tx in Blockscout
                 </a>
