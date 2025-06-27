@@ -28,9 +28,10 @@ export function useEvmFaucet() {
     hash,
     chainId,
   }: {
-    hash: `0x${string}`;
+    hash?: `0x${string}`;
     chainId: EVMChainId;
   }) => {
+    if (!hash) return '';
     return `http://chain-${chainId}.evm-testnet-blockscout.chainweb.com/tx/${hash}`;
   };
 
@@ -101,6 +102,7 @@ export function useEvmFaucet() {
   const dispenseTokens = async (recipient: string): Promise<void> => {
     setRequestStatus({ status: 'processing' });
 
+    let hash: any;
     try {
       const token = await executeRecaptcha('form_submit');
       console.log('Attempting dispense to:', recipient);
@@ -110,7 +112,7 @@ export function useEvmFaucet() {
         body: JSON.stringify({ recipient, chainId: innerChainId, token }),
       });
 
-      const hash: any = await result.json();
+      hash = await result.json();
 
       if (result.status !== 200) {
         throw new Error(hash.error);
@@ -119,7 +121,11 @@ export function useEvmFaucet() {
       await waitForTx(hash);
     } catch (err) {
       console.log({ err });
-      setRequestStatus({ status: 'erroneous', message: err.message });
+      setRequestStatus({
+        status: 'erroneous',
+        message: err.message,
+        explorerLink: createExplorerLink({ hash, chainId: innerChainId }),
+      });
     }
   };
 
