@@ -3,8 +3,9 @@ import { CHAINS } from '@kadena/chainweb-node-client';
 import { MonoLink } from '@kadena/kode-icons/system';
 import type { ISelectProps } from '@kadena/kode-ui';
 import { Select, SelectItem } from '@kadena/kode-ui';
+import type { ChainId } from '@kadena/types';
 import type { FC } from 'react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 export type OnChainSelectChange = (value: ChainwebChainId) => void;
 
@@ -20,20 +21,24 @@ interface ChainSelectProps
   selectedKey?: ChainwebChainId;
   defaultSelectedKey?: ChainwebChainId;
   additionalInfoOptions?: any[];
+  chainCount?: number;
+  chainCountStart?: number;
 }
 const ChainSelect: FC<ChainSelectProps> = ({
   onSelectionChange,
   additionalInfoOptions,
   id,
+  chainCount = CHAINS.length,
+  chainCountStart = 0,
   ...rest
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [chains, _] = useState(
+    Array.from({ length: chainCount }, (_, i) => i + chainCountStart),
+  );
   const onSelectChange = useCallback(
     (selectedKey: string | number) => {
-      const chainId = CHAINS.find((chainId) => {
-        return chainId === selectedKey;
-      });
-
-      onSelectionChange?.(chainId!);
+      onSelectionChange?.((selectedKey as ChainId)!);
     },
     [onSelectionChange],
   );
@@ -47,9 +52,9 @@ const ChainSelect: FC<ChainSelectProps> = ({
       startVisual={<MonoLink />}
       aria-label="Select Chain ID"
     >
-      {CHAINS.map((chainId, index) => (
-        <SelectItem key={chainId} textValue={chainId}>
-          <span>{chainId}</span>
+      {chains.map((chainId, index) => (
+        <SelectItem key={chainId} textValue={`${chainId}`}>
+          <span style={{ marginInlineEnd: '16px' }}>{chainId}</span>
           {additionalInfoOptions && additionalInfoOptions.length ? (
             <span>{` (${additionalInfoOptions[index].data})`}</span>
           ) : null}
