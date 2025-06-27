@@ -167,12 +167,22 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const storage = localStorage.getItem(getAccountCookieName());
+
     if (storage && storage !== 'undefined') {
       try {
         const found = userData?.accounts.find((a) => a.address === storage);
         setAccount(found);
+
+        if (!found && userData?.accounts.length === 1) {
+          // If there is only one account, we can set it as the current account
+          setAccount(userData?.accounts[0]);
+        }
       } catch (e) {
         localStorage.removeItem(getAccountCookieName());
+      }
+    } else {
+      if (userData?.accounts.length === 1) {
+        setAccount(userData?.accounts[0]);
       }
     }
   }, [account?.address, userData?.accounts.length]);
