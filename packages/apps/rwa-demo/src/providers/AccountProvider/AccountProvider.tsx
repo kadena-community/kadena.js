@@ -11,14 +11,12 @@ import { isFrozen } from '@/services/isFrozen';
 import { isInvestor } from '@/services/isInvestor';
 import { isOwner } from '@/services/isOwner';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { chainweaverAccountLogin } from '@/utils/walletTransformers/chainweaver/login';
 import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
-import { eckoAccountLogin } from '@/utils/walletTransformers/ecko/login';
-import { eckoSignTx } from '@/utils/walletTransformers/ecko/signTx';
-import { magicAccountLogin } from '@/utils/walletTransformers/magic/login';
 import { magicSignTx } from '@/utils/walletTransformers/magic/signTx';
+import { mapWalletAdapterAccount } from '@/utils/walletTransformers/wallet-adapter';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useState } from 'react';
@@ -44,6 +42,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   const { setAssetRolesForAccount, ...accountRoles } = useGetAgentRoles();
   const router = useRouter();
+  const wallet = useKadenaWallet();
 
   const checkIsAgent = async (account: IWalletAccount, asset?: IAsset) => {
     if (!account || !asset) {
@@ -119,32 +118,52 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       name: keyof typeof WALLETTYPES,
       account?: IWalletAccount,
     ): Promise<IWalletAccount[] | undefined> => {
-      let tempAccount;
+      let tempAccount: IWalletAccount | undefined;
       switch (name) {
-        case WALLETTYPES.ECKO:
-          tempAccount = await eckoAccountLogin();
+        case WALLETTYPES.ECKO: {
+          const adapter = wallet.client.getAdapter('Ecko');
+          if (!adapter) throw new Error('Ecko adapter not detected');
+          const result = await adapter.connect();
+          if (!result) throw new Error('Ecko connection failed');
+          tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.ECKO);
           break;
-        case WALLETTYPES.CHAINWEAVER:
+        }
+        case WALLETTYPES.CHAINWEAVER: {
           if (account) {
             tempAccount = account;
             break;
           }
-          const result = await chainweaverAccountLogin();
-          if (result.length > 1) {
-            return result;
-          } else if (result.length === 1) {
-            tempAccount = result[0];
+          const adapter = wallet.client.getAdapter('Ecko');
+          if (!adapter) throw new Error('Chainweaver adapter not detected');
+          await adapter.connect();
+          const result = await adapter.getAccounts();
+          if (!result) throw new Error('Chainweaver connection failed');
+          const accounts = result.map((acc) =>
+            mapWalletAdapterAccount(acc, WALLETTYPES.CHAINWEAVER),
+          );
+
+          if (accounts.length > 1) {
+            return accounts;
+          } else if (accounts.length === 1) {
+            tempAccount = accounts[0];
           }
           break;
-        case WALLETTYPES.MAGIC:
-          tempAccount = await magicAccountLogin();
+        }
+        case WALLETTYPES.MAGIC: {
+          const adapter = wallet.client.getAdapter('Ecko');
+          if (!adapter) throw new Error('Magic adapter not detected');
+          const result = await adapter.connect();
+          if (!result) throw new Error('Magic connection failed');
+          tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.MAGIC);
           break;
-        default:
+        }
+        default: {
           addNotification({
             intent: 'negative',
             label: 'Provider does not exist',
             message: `Provider (${name}) does not exist`,
           });
+        }
       }
 
       if (tempAccount) {
@@ -231,8 +250,17 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
     switch (account?.walletName) {
-      case WALLETTYPES.ECKO:
-        return await eckoSignTx(tx);
+      case WALLETTYPES.ECKO: {
+        // return await eckoSignTx(tx);
+        const adapter = wallet.client.getAdapter('Ecko');
+        if (!adapter) throw new Error('Ecko adapter not detected');
+        const result = await adapter.connect();
+        if (!result) throw new Error('Ecko connection failed');
+        console.log('signing via wallet adapter', tx);
+        const signed = (await adapter.signTransaction(tx)) as ICommand;
+        console.log('signed', signed);
+        return signed;
+      }
       case WALLETTYPES.CHAINWEAVER:
         return await chainweaverSignTx(tx);
       case WALLETTYPES.MAGIC:
