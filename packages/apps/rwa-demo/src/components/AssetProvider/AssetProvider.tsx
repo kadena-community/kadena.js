@@ -135,7 +135,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
       const storageAsset = JSON.parse(result);
       const foundAsset = await getAsset(storageAsset.uuid, account);
-      if (!foundAsset) return;
+      if (!foundAsset || foundAsset.uuid === asset?.uuid) return;
       await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
