@@ -1,4 +1,4 @@
-# Chainweaver Wallet Adapter Legacy
+# Wallet adapter Chainweaver V3
 
 This package provides an adapter for the Chainweaver Legacy Wallet on Kadena. It
 extends a base adapter while preserving the `"kadena_"`‑prefixed methods
@@ -35,7 +35,7 @@ import { chainweaverAdapterLegacy } from '@kadena/wallet-adapter-chainweaver-leg
   await adapter.connect();
   const account = await adapter.getActiveAccount();
   console.log('Connected account:', account);
-})().catch((e) => console.error);
+})();
 ```
 
 ## Manual Usage of the Adapter or Detection
@@ -65,17 +65,6 @@ import {
   console.log('Connected to Chainweaver directly!');
 })();
 ```
-
-## Supported methods
-
-| Method                | KIP         | Supported |
-| --------------------- | ----------- | --------- |
-| kadena_sign_v1        | [KIP-17][1] | Yes       |
-| kadena_quicksign_v1   | [KIP-17][1] | Yes       |
-| kadena_getAccount_v1  | [KIP-37][2] | Yes       |
-| kadena_getAccounts_v2 | [KIP-38][3] | Yes       |
-| kadena_getNetwork_v1  | [KIP-39][4] | No        |
-| kadena_getNetworks_v1 | [KIP-40][5] | No        |
 
 ## Other Notes
 

@@ -1,10 +1,6 @@
 {
-  "name": "@kadena/wallet-adapter-chainweaver-legacy",
-  "version": "0.0.1-beta.2",
-  "contributors": [
-    "Danillo Felixdaal",
-    "Bart Huijgen"
-  ],
+  "name": "@kadena/wallet-adapter-chainweaver",
+  "version": "0.0.1-beta.0",
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
@@ -35,7 +31,6 @@
     "vitest": "^1.6.0"
   },
   "authors": [
-    "Francisco Miranda",
-    "Ariel Serranoni"
+    "Bart Huijgen"
   ]
 }

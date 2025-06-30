@@ -12,6 +12,7 @@
     "@kadena/client": "*",
     "@kadena/kode-icons": "workspace:*",
     "@kadena/kode-ui": "workspace:*",
+    "@kadena/wallet-adapter-chainweaver": "workspace:*",
     "@kadena/wallet-adapter-chainweaver-legacy": "workspace:*",
     "@kadena/wallet-adapter-core": "workspace:*",
     "@kadena/wallet-adapter-ecko": "workspace:*",
