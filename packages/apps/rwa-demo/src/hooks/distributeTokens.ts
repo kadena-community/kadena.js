@@ -15,7 +15,7 @@ import { useSubmit2Chain } from './useSubmit2Chain';
 export const useDistributeTokens = ({
   investorAccount,
 }: {
-  investorAccount: string;
+  investorAccount?: string;
 }) => {
   const { frozen } = useFreeze({ investorAccount });
   const { paused, asset, maxCompliance } = useAsset();
@@ -27,6 +27,9 @@ export const useDistributeTokens = ({
   const { submit2Chain } = useSubmit2Chain();
 
   const submit = async (data: IDistributeTokensProps) => {
+    if (!investorAccount) {
+      throw new Error('Investor account is not set');
+    }
     return submit2Chain<IDistributeTokensProps>(data, {
       notificationSentryName: 'error:submit:distributetokens',
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
@@ -46,6 +49,10 @@ export const useDistributeTokens = ({
       'supply-limit-compliance-v1',
     );
     const complianceMaxInvestors = maxCompliance('max-investors-compliance-v1');
+
+    console.log({
+      frozen,
+    });
 
     setIsAllowed(
       !frozen &&

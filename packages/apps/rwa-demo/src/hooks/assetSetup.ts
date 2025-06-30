@@ -22,7 +22,7 @@ const steps: ICompactStepperItemProps[] = [
     id: 'compliancerules',
   },
   {
-    label: 'Start a compliance rule',
+    label: 'Enforce a compliance rule',
     id: 'startcompliance',
   },
   {

@@ -29,7 +29,7 @@ export const DistributionForm: FC<IProps> = ({
   investorAccount,
   trigger,
 }) => {
-  const { maxCompliance, asset } = useAsset();
+  const { maxCompliance, asset, investors } = useAsset();
   const { data: balance } = useGetInvestorBalance({
     investorAccount,
   });
