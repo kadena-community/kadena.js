@@ -37,6 +37,10 @@ const steps: ICompactStepperItemProps[] = [
     label: 'Distribute first tokens',
     id: 'distribute',
   },
+  {
+    label: 'Complete',
+    id: 'success',
+  },
 ] as const;
 
 export const getStepIdx = (key: IStepKeys): number => {
@@ -44,8 +48,10 @@ export const getStepIdx = (key: IStepKeys): number => {
 };
 
 export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
-  const [step, setStep] = useState<IStepKeys>('setup');
-  const [stepIdx, setStepIdx] = useState<number>(() => getStepIdx(step));
+  const [step, setStepProp] = useState<ICompactStepperItemProps>(steps[0]);
+  const [stepIdx, setStepIdx] = useState<number>(() =>
+    getStepIdx(step?.id as IStepKeys),
+  );
   const {
     setAsset,
     asset,
@@ -55,16 +61,23 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     initFetchInvestors,
   } = useAsset();
 
+  const setStep = (step: IStepKeys) => {
+    const newStep = steps.find((s) => s.id === step);
+    if (newStep) {
+      setStepProp(newStep);
+    }
+  };
+
   useEffect(() => {
     if (!tempAsset) return;
     setAsset(tempAsset);
-  }, [tempAsset?.uuid]);
+  }, [tempAsset, setAsset]);
 
   const isOneComplianceRuleSet = (asset: IAsset | undefined): boolean => {
     if (!asset) return false;
 
     return Object.entries(asset.compliance ?? {}).some(
-      ([key, rule]: any) => rule?.value >= 0,
+      ([, rule]) => rule?.value >= 0,
     );
   };
 
@@ -72,7 +85,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     if (!asset) return false;
 
     return Object.entries(asset.compliance ?? {}).some(
-      ([key, rule]: any) => rule?.isActive,
+      ([, rule]) => rule?.isActive,
     );
   };
 
@@ -80,10 +93,10 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     if (!asset) return;
     initFetchAgents();
     initFetchInvestors();
-  }, [asset]);
+  }, [asset, initFetchAgents, initFetchInvestors]);
 
   useEffect(() => {
-    setStepIdx(getStepIdx(step));
+    setStepIdx(getStepIdx(step.id as IStepKeys));
   }, [step]);
 
   useEffect(() => {

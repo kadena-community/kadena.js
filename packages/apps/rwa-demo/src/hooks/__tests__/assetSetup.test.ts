@@ -1,5 +1,5 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { getStepIdx, useAssetSetup } from '../assetSetup';
 
 const mocks = vi.hoisted(() => ({
@@ -39,6 +39,7 @@ describe('getStepIdx', () => {
     expect(getStepIdx('agent')).toBe(3);
     expect(getStepIdx('investor')).toBe(4);
     expect(getStepIdx('distribute')).toBe(5);
+    expect(getStepIdx('success')).toBe(6);
   });
 
   it('should return -1 for non-existent step', () => {
@@ -102,9 +103,9 @@ describe('useAssetSetup', () => {
       useAssetSetup({ tempAsset: undefined }),
     );
 
-    expect(result.current.activeStep).toBe('setup');
+    expect(result.current.activeStep.id).toBe('setup');
     expect(result.current.activeStepIdx).toBe(0);
-    expect(result.current.steps).toHaveLength(6);
+    expect(result.current.steps).toHaveLength(7);
     expect(result.current.agents).toEqual([]);
     expect(result.current.investors).toEqual([]);
   });
@@ -150,7 +151,10 @@ describe('useAssetSetup', () => {
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
       // The step should be set to 'compliancerules' in useEffect
-      expect(mockSetState).toHaveBeenCalledWith('compliancerules');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Set up Compliance Rules',
+        id: 'compliancerules',
+      });
     });
 
     it('should progress to startcompliance step when compliance rule is set', () => {
@@ -173,7 +177,10 @@ describe('useAssetSetup', () => {
 
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
-      expect(mockSetState).toHaveBeenCalledWith('startcompliance');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Start a compliance rule',
+        id: 'startcompliance',
+      });
     });
 
     it('should progress to agent step when compliance rule is started', () => {
@@ -196,7 +203,10 @@ describe('useAssetSetup', () => {
 
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
-      expect(mockSetState).toHaveBeenCalledWith('agent');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Add first agent',
+        id: 'agent',
+      });
     });
 
     it('should progress to investor step when agents are available', () => {
@@ -208,7 +218,10 @@ describe('useAssetSetup', () => {
 
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
-      expect(mockSetState).toHaveBeenCalledWith('investor');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Add first investor',
+        id: 'investor',
+      });
     });
 
     it('should progress to distribute step when investors are available', () => {
@@ -221,7 +234,10 @@ describe('useAssetSetup', () => {
 
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
-      expect(mockSetState).toHaveBeenCalledWith('distribute');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Distribute first tokens',
+        id: 'distribute',
+      });
     });
 
     it('should progress to success step when asset has supply > 0', () => {
@@ -239,7 +255,10 @@ describe('useAssetSetup', () => {
 
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
-      expect(mockSetState).toHaveBeenCalledWith('success');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Complete',
+        id: 'success',
+      });
     });
   });
 
@@ -274,8 +293,14 @@ describe('useAssetSetup', () => {
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
       // Should not progress beyond compliancerules step
-      expect(mockSetState).toHaveBeenCalledWith('compliancerules');
-      expect(mockSetState).not.toHaveBeenCalledWith('startcompliance');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Set up Compliance Rules',
+        id: 'compliancerules',
+      });
+      expect(mockSetState).not.toHaveBeenCalledWith({
+        label: 'Start a compliance rule',
+        id: 'startcompliance',
+      });
     });
 
     it('should identify when compliance rules are set but not active', () => {
@@ -308,8 +333,14 @@ describe('useAssetSetup', () => {
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
       // Should progress to startcompliance but not to agent
-      expect(mockSetState).toHaveBeenCalledWith('startcompliance');
-      expect(mockSetState).not.toHaveBeenCalledWith('agent');
+      expect(mockSetState).toHaveBeenCalledWith({
+        label: 'Start a compliance rule',
+        id: 'startcompliance',
+      });
+      expect(mockSetState).not.toHaveBeenCalledWith({
+        label: 'Add first agent',
+        id: 'agent',
+      });
     });
   });
 
@@ -342,6 +373,7 @@ describe('useAssetSetup', () => {
       { label: 'Add first agent', id: 'agent' },
       { label: 'Add first investor', id: 'investor' },
       { label: 'Distribute first tokens', id: 'distribute' },
+      { label: 'Complete', id: 'success' },
     ];
 
     expect(result.current.steps).toEqual(expectedSteps);
