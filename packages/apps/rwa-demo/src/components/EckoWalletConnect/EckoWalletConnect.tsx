@@ -16,7 +16,7 @@ export const EckoWalletConnect: FC<{
   return (
     <ContextMenuItem
       label="Ecko Wallet"
-      onClick={() => handleConnect(WALLETTYPES.CHAINWEAVER)}
+      onClick={() => handleConnect(WALLETTYPES.ECKO)}
       isDisabled={!isMounted}
     />
   );
