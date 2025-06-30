@@ -33,6 +33,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
   asset: tempAsset,
 }) => {
   const [searchValue, setSearchValue] = useState('');
+  const [investerAccount, setInvestorAccount] = useState<string>('');
   const { asset, activeStep, activeStepIdx, steps, investors } = useAssetSetup({
     tempAsset,
   });
@@ -63,6 +64,13 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
       alias: findAliasByAddress(account.accountName),
     };
   });
+
+  const handleAccountChange = (cb: any) => async (value: any) => {
+    console.log({ value });
+    setInvestorAccount(value);
+
+    return cb(value);
+  };
 
   return (
     <SectionCard stack="vertical">
@@ -177,16 +185,20 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                   investors={filteredInvestors}
                   searchValue={searchValue}
                   setSearchValue={setSearchValue}
+                  investorToAccount={investerAccount}
                   control={control}
                   error={errors.investorToAccount}
+                  handleAccountChange={handleAccountChange}
                 />
                 <DistributionForm
-                  investorAccount={investors[0]?.account}
+                  investorAccount={investerAccount}
                   trigger={
                     <Button
                       data-testid="action-distributetokens"
                       startVisual={<MonoAdd />}
-                      isDisabled={!isDistributeTokensAllowed}
+                      isDisabled={
+                        !investerAccount || !isDistributeTokensAllowed
+                      }
                     >
                       Distribute Tokens
                     </Button>

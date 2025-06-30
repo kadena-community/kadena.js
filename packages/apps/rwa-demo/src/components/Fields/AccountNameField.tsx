@@ -10,6 +10,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
 
 interface IProps {
+  name?: string;
+  label?: string;
   exemptAccounts?: string[];
   error?: FieldErrors['accountName'];
   accountName?: string;
@@ -19,6 +21,8 @@ interface IProps {
 }
 
 export const AccountNameField: FC<IProps> = ({
+  name = 'accountName',
+  label = 'Account Name',
   exemptAccounts,
   error,
   accountName,
@@ -47,7 +51,7 @@ export const AccountNameField: FC<IProps> = ({
   return (
     <Stack flexDirection="column" gap="xs" width="100%">
       <Controller
-        name="accountName"
+        name={name}
         control={control}
         rules={{
           required: true,
@@ -79,7 +83,7 @@ export const AccountNameField: FC<IProps> = ({
             isInvalid={!!error?.message}
             errorMessage={`${error?.message}`}
             isDisabled={!!accountName}
-            label="AccountName"
+            label={label}
             {...field}
           />
         )}

@@ -50,10 +50,6 @@ export const useDistributeTokens = ({
     );
     const complianceMaxInvestors = maxCompliance('max-investors-compliance-v1');
 
-    console.log({
-      frozen,
-    });
-
     setIsAllowed(
       !frozen &&
         !paused &&

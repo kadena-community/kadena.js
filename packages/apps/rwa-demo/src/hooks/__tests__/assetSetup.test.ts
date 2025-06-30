@@ -178,7 +178,7 @@ describe('useAssetSetup', () => {
       renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
       expect(mockSetState).toHaveBeenCalledWith({
-        label: 'Start a compliance rule',
+        label: 'Enforce a compliance rule',
         id: 'startcompliance',
       });
     });
@@ -334,7 +334,7 @@ describe('useAssetSetup', () => {
 
       // Should progress to startcompliance but not to agent
       expect(mockSetState).toHaveBeenCalledWith({
-        label: 'Start a compliance rule',
+        label: 'Enforce a compliance rule',
         id: 'startcompliance',
       });
       expect(mockSetState).not.toHaveBeenCalledWith({
@@ -369,7 +369,7 @@ describe('useAssetSetup', () => {
     const expectedSteps = [
       { label: 'Set up your asset', id: 'setup' },
       { label: 'Set up Compliance Rules', id: 'compliancerules' },
-      { label: 'Start a compliance rule', id: 'startcompliance' },
+      { label: 'Enforce a compliance rule', id: 'startcompliance' },
       { label: 'Add first agent', id: 'agent' },
       { label: 'Add first investor', id: 'investor' },
       { label: 'Distribute first tokens', id: 'distribute' },
