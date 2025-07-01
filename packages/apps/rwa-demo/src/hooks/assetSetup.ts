@@ -44,7 +44,8 @@ const steps: ICompactStepperItemProps[] = [
 ] as const;
 
 export const getStepIdx = (key: IStepKeys): number => {
-  return steps.findIndex((step) => step.id === key) ?? 0;
+  const idx = steps.findIndex((step) => step.id === key);
+  return idx < 0 ? 0 : idx;
 };
 
 export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {

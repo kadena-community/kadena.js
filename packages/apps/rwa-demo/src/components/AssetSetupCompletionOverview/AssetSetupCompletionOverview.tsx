@@ -3,7 +3,6 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useAsset } from '@/hooks/asset';
-import type { IStepKeys } from '@/hooks/assetSetup';
 import { useAssetSetup } from '@/hooks/assetSetup';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useEditAgent } from '@/hooks/editAgent';
@@ -11,6 +10,7 @@ import { useSetCompliance } from '@/hooks/setCompliance';
 import { useUser } from '@/hooks/user';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { MonoAdd } from '@kadena/kode-icons';
+import type { ICompactStepperItemProps } from '@kadena/kode-ui';
 import {
   Button,
   Heading,
@@ -28,7 +28,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { ComplianceRules } from '../ComplianceRules/ComplianceRules';
@@ -50,7 +50,6 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
   const [investerAccount, setInvestorAccount] = useState<string>('');
   const {
     asset,
-    setActiveStep,
     activeStep,
     activeStepIdx,
     steps,
@@ -59,6 +58,9 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
   } = useAssetSetup({
     tempAsset,
   });
+  const [innerStep, setInnerStep] = useState<ICompactStepperItemProps>(
+    steps[0],
+  );
   const { agentsIsLoading, agents, investorsIsLoading, investors } = useAsset();
   const { findAliasByAddress } = useUser();
   const { isOwner, accountRoles } = useAccount();
@@ -79,6 +81,10 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
       investorToAccount: '',
     },
   });
+
+  useEffect(() => {
+    setInnerStep(activeStep);
+  }, [activeStep.id]);
 
   if (!asset) return null;
 
@@ -109,8 +115,8 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                     key={step.id}
                     active={activeStep.id === step.id}
                     onClick={
-                      idx < activeStepIdx
-                        ? () => setActiveStep(step.id as IStepKeys)
+                      idx <= activeStepIdx
+                        ? () => setInnerStep(step)
                         : undefined
                     }
                   >
@@ -122,13 +128,13 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
           }
         />
         <SectionCardBody>
-          <Heading as="h3">{activeStep.label}</Heading>
-          {activeStep.id === 'setup' ? (
+          <Heading as="h3">{innerStep.label}</Heading>
+          {innerStep.id === 'setup' ? (
             <Stack flexDirection="column" gap="xs">
               <Text>The setup of the asset is already done.</Text>
             </Stack>
           ) : null}
-          {activeStep.id === 'compliancerules' ? (
+          {innerStep.id === 'compliancerules' ? (
             <Stack flexDirection="column" gap="xs">
               {isOneComplianceRuleSet ? (
                 <>
@@ -175,7 +181,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
               </Stack>
             </Stack>
           ) : null}
-          {activeStep.id === 'startcompliance' ? (
+          {innerStep.id === 'startcompliance' ? (
             <Stack flexDirection="column" gap="xs">
               {isOneComplianceRuleStarted ? (
                 <Text>
@@ -195,7 +201,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
               </Stack>
             </Stack>
           ) : null}
-          {activeStep.id === 'agent' ? (
+          {innerStep.id === 'agent' ? (
             <Stack flexDirection="column" gap="xs">
               {agentsIsLoading ? (
                 <TransactionPendingIcon />
@@ -239,7 +245,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
               )}
             </Stack>
           ) : null}
-          {activeStep.id === 'investor' ? (
+          {innerStep.id === 'investor' ? (
             <Stack flexDirection="column" gap="xs">
               {investorsIsLoading ? (
                 <TransactionPendingIcon />
@@ -284,7 +290,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
               )}
             </Stack>
           ) : null}
-          {activeStep.id === 'distribute' ? (
+          {innerStep.id === 'distribute' ? (
             <Stack flexDirection="column" gap="xs">
               {asset.supply === 0 ? (
                 <Text>
@@ -343,7 +349,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
               </Stack>
             </Stack>
           ) : null}
-          {activeStep.id === 'success' ? (
+          {innerStep.id === 'success' ? (
             <Stack flexDirection="column" gap="xs">
               <Text>
                 Nicely done!
