@@ -3,7 +3,6 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useAsset } from '@/hooks/asset';
-import type { IStepKeys } from '@/hooks/assetSetup';
 import { useAssetSetup } from '@/hooks/assetSetup';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useEditAgent } from '@/hooks/editAgent';
@@ -18,6 +17,8 @@ import {
   Heading,
   Notification,
   Stack,
+  Step,
+  Stepper,
   Text,
 } from '@kadena/kode-ui';
 import {
@@ -69,7 +70,6 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
     investorAccount: investors[0]?.accountName,
   });
 
-  console.log({ activeStep });
   const {
     control,
     formState: { errors },
@@ -103,20 +103,15 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
         <SectionCardHeader
           title="Get Started"
           actions={
-            <Stack flexDirection="column" gap="md">
-              {steps.map((step) => (
-                <Button
-                  onPress={() => {
-                    setActiveStep(step.id as IStepKeys);
-                  }}
-                  isCompact
-                  variant={step === activeStep ? 'primary' : 'outlined'}
-                  key={step.id}
-                >
-                  {step.label}
-                </Button>
-              ))}
-            </Stack>
+            <>
+              <Stepper direction="vertical">
+                {steps.map((step) => (
+                  <Step key={step.id} active={activeStep.id === step.id}>
+                    {step.label}
+                  </Step>
+                ))}
+              </Stepper>
+            </>
           }
         />
         <SectionCardBody>
