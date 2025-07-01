@@ -54,7 +54,7 @@ export const RenderSigner = ({
   transactionStatus: ITransaction['status'];
   onSign: (sig: ITransaction['sigs']) => void;
 }) => {
-  const { getPublicKeyData, sign, getKeyAlias } = useWallet();
+  const { getPublicKeyData, sign, getKeyAlias, isOwnedPubkey } = useWallet();
   const signature = transaction.sigs.find(
     (sig) => sig?.pubKey === signer.pubKey && sig.sig,
   )?.sig;
@@ -118,6 +118,7 @@ export const RenderSigner = ({
     onSign(sigs.sigs);
   };
 
+  const isMyAccount = isOwnedPubkey(signer.pubKey);
   return (
     <>
       <Card fullWidth>
@@ -151,7 +152,7 @@ export const RenderSigner = ({
               >
                 {showCapabilities ? 'Hide details' : 'Show details'}
               </Button>
-              {signature ? (
+              {signature && isMyAccount ? (
                 <Button
                   variant="negative"
                   isDisabled={statusPassed(transactionStatus, 'submitted')}
@@ -167,7 +168,7 @@ export const RenderSigner = ({
                 >
                   Unsign
                 </Button>
-              ) : info ? (
+              ) : info && isMyAccount ? (
                 <Button
                   isCompact
                   variant="info"
