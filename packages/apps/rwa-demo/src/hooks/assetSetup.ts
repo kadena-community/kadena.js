@@ -52,14 +52,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
   const [stepIdx, setStepIdx] = useState<number>(() =>
     getStepIdx(step?.id as IStepKeys),
   );
-  const {
-    setAsset,
-    asset,
-    agents,
-    investors,
-    initFetchAgents,
-    initFetchInvestors,
-  } = useAsset();
+  const { setAsset, asset, agents, investors } = useAsset();
 
   const setStep = (step: IStepKeys) => {
     const newStep = steps.find((s) => s.id === step);
@@ -88,12 +81,6 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
       ([, rule]) => rule?.isActive,
     );
   };
-
-  useEffect(() => {
-    if (!asset) return;
-    initFetchAgents();
-    initFetchInvestors();
-  }, [asset, initFetchAgents, initFetchInvestors]);
 
   useEffect(() => {
     setStepIdx(getStepIdx(step.id as IStepKeys));

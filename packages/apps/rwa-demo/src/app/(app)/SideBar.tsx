@@ -1,13 +1,16 @@
 import { AccountSwitch } from '@/components/AccountSwitch/AccountSwitch';
 import { AssetSwitch } from '@/components/AssetSwitch/AssetSwitch';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
+import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import {
   MonoApps,
   MonoAttachMoney,
   MonoNetworkCheck,
   MonoSupportAgent,
 } from '@kadena/kode-icons';
+import { Badge, Stack } from '@kadena/kode-ui';
 import {
   SideBarItem,
   SideBar as SideBarLayout,
@@ -21,6 +24,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
 }) => {
   const { isExpanded } = useSideBarLayout();
+  const { agents, investors, agentsIsLoading, investorsIsLoading } = useAsset();
   const { isAgent, isOwner, isComplianceOwner, isInvestor } = useAccount();
 
   return (
@@ -45,7 +49,16 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
           {(isOwner || isAgent) && (
             <SideBarItem
               visual={<MonoSupportAgent />}
-              label="Agents"
+              label={
+                <Stack gap="xs" alignItems="center">
+                  Agents
+                  {agentsIsLoading ? (
+                    <TransactionPendingIcon />
+                  ) : (
+                    <Badge size="sm">{agents.length}</Badge>
+                  )}
+                </Stack>
+              }
               component={Link}
               href="/agents"
             />
@@ -53,7 +66,16 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
           {(isAgent || isOwner || isComplianceOwner || isInvestor) && (
             <SideBarItem
               visual={<MonoAttachMoney />}
-              label="Investors"
+              label={
+                <Stack gap="xs" alignItems="center">
+                  Investors
+                  {investorsIsLoading ? (
+                    <TransactionPendingIcon />
+                  ) : (
+                    <Badge size="sm">{investors.length}</Badge>
+                  )}
+                </Stack>
+              }
               component={Link}
               href="/investors"
             />

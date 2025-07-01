@@ -23,7 +23,7 @@ import {
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
-import { cloneElement, useEffect, useState } from 'react';
+import { cloneElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
@@ -44,7 +44,7 @@ export const TransferForm: FC<IProps> = ({
 }) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
-  const { asset, investors, initFetchInvestors } = useAsset();
+  const { asset, investors } = useAsset();
   const { findAliasByAddress } = useUser();
   const [investorToAccount, setInvestorToAccount] = useState<string>('');
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
@@ -59,10 +59,6 @@ export const TransferForm: FC<IProps> = ({
   const [selectedAccountIsFrozen, setSelectedAccountIsFrozen] = useState<
     boolean | undefined
   >(undefined);
-
-  useEffect(() => {
-    initFetchInvestors();
-  }, []);
 
   const {
     register,

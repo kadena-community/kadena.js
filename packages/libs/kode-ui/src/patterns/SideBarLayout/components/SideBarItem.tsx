@@ -10,7 +10,7 @@ import { useLayout } from './LayoutProvider';
 
 export interface ISideBarItemProps extends PropsWithChildren {
   visual: React.ReactElement;
-  label: string;
+  label: string | React.ReactElement;
   onPress?: (e: PressEvent) => void;
   isAppContext?: boolean;
   href?: string;

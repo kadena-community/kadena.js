@@ -4,8 +4,6 @@ import { getStepIdx, useAssetSetup } from '../assetSetup';
 
 const mocks = vi.hoisted(() => ({
   setAssetMock: vi.fn(),
-  initFetchAgentsMock: vi.fn(),
-  initFetchInvestorsMock: vi.fn(),
   useAssetMock: vi.fn(),
 }));
 
@@ -120,25 +118,6 @@ describe('useAssetSetup', () => {
     renderHook(() => useAssetSetup({ tempAsset: undefined }));
 
     expect(mocks.setAssetMock).not.toHaveBeenCalled();
-  });
-
-  it('should fetch agents and investors when asset is available', () => {
-    mocks.useAssetMock.mockReturnValue({
-      ...defaultUseAssetReturn,
-      asset: mockAsset,
-    });
-
-    renderHook(() => useAssetSetup({ tempAsset: undefined }));
-
-    expect(mocks.initFetchAgentsMock).toHaveBeenCalled();
-    expect(mocks.initFetchInvestorsMock).toHaveBeenCalled();
-  });
-
-  it('should not fetch agents and investors when asset is not available', () => {
-    renderHook(() => useAssetSetup({ tempAsset: undefined }));
-
-    expect(mocks.initFetchAgentsMock).not.toHaveBeenCalled();
-    expect(mocks.initFetchInvestorsMock).not.toHaveBeenCalled();
   });
 
   describe('step progression logic', () => {

@@ -21,7 +21,6 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useEffect } from 'react';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { Confirmation } from '../Confirmation/Confirmation';
 import { FormatAccount } from '../TableFormatters/FormatAccount';
@@ -30,21 +29,13 @@ import { FormatEditAgent } from '../TableFormatters/FormatEditAgent';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 export const AgentsList: FC = () => {
-  const {
-    agents: data,
-    agentsIsLoading: isLoading,
-    initFetchAgents,
-  } = useAsset();
+  const { agents: data, agentsIsLoading: isLoading } = useAsset();
   const { isAllowed: isEditAgentAllowed } = useEditAgent();
   const { submit, isAllowed: isRemoveAgentAllowed } = useRemoveAgent();
 
   const handleDelete = async (accountName: any) => {
     await submit({ agent: accountName });
   };
-
-  useEffect(() => {
-    initFetchAgents();
-  }, []);
 
   return (
     <>
