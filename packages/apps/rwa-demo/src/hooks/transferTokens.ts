@@ -36,7 +36,7 @@ export const useTransferTokens = () => {
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!frozen && !paused && isInvestor);
-  }, [paused, isMounted, isInvestor, frozen, asset]);
+  }, [paused, isMounted, isInvestor, frozen, asset?.uuid]);
 
   return { submit, isAllowed };
 };

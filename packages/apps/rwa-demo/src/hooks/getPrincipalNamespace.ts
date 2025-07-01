@@ -15,7 +15,7 @@ export const useGetPrincipalNamespace = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData();
-  }, [account]);
+  }, [account?.address]);
 
   return { data: innerData };
 };

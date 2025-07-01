@@ -45,7 +45,7 @@ export const useFreeze = ({
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(account, investorAccount, asset);
-  }, [account?.address, investorAccount, asset]);
+  }, [account?.address, investorAccount, asset?.uuid]);
 
   useEffect(() => {
     if (!data?.events?.length) return;

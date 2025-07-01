@@ -29,7 +29,7 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
-  }, [asset]);
+  }, [asset?.uuid]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

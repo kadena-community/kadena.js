@@ -224,19 +224,15 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!asset || !organisation) return;
     const data = { ...asset, investorCount } as IAsset;
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore?.updateAsset(data);
-  }, [investorCount, assetStore]);
+    setAsset(data);
+  }, [investorCount]);
 
   useEffect(() => {
     if (!asset || !organisation) return;
 
     const data = { ...asset, supply } as IAsset;
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore?.updateAsset(data);
-  }, [asset?.contractName, supply, assetStore]);
+    setAsset(data);
+  }, [asset?.contractName, supply]);
 
   // when the account or the asset changes, we need to check the roles of the account
   useEffect(() => {
@@ -275,19 +271,19 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
           },
         },
       } as IAsset;
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      assetStore?.updateAsset(newData);
+
+      setAsset(newData);
     }
-  }, [complianceSubscriptionData, assetStore]);
+  }, [complianceSubscriptionData]);
 
   useEffect(() => {
     if (!complianceRules) return;
     if (!asset || !organisation) return;
 
     const data = { ...asset, compliance: { ...complianceRules } } as IAsset;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    assetStore?.updateAsset(data);
-  }, [complianceRules, assetStore]);
+
+    setAsset(data);
+  }, [complianceRules]);
 
   return (
     <AssetContext.Provider

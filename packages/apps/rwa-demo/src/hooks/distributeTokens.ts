@@ -67,9 +67,9 @@ export const useDistributeTokens = ({
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
-    asset,
+    asset?.uuid,
     investorBalance,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed };

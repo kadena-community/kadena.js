@@ -41,7 +41,7 @@ export const useTogglePause = () => {
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed };

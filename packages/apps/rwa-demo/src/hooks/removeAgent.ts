@@ -42,7 +42,7 @@ export const useRemoveAgent = () => {
     isMounted,
     isActiveAccountChangeTx,
     isOwner,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed };

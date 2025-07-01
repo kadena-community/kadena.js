@@ -22,7 +22,7 @@ export const useGetInvestorCount = (asset?: IAsset) => {
     if (!subscriptionData?.events?.length || !asset) return;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(asset);
-  }, [asset, subscriptionData]);
+  }, [asset?.uuid, subscriptionData]);
 
   return { data: innerData };
 };

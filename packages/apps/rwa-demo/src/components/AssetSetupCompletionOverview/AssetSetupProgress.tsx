@@ -15,7 +15,6 @@ export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({ asset }) => {
   const circumference = 2 * Math.PI * radius;
 
   useEffect(() => {
-    console.log({ percentageComplete });
     const offset = circumference - (percentageComplete / 100) * circumference;
     if (circleRef.current) {
       circleRef.current.style.strokeDashoffset = offset.toString();

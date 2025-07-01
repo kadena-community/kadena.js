@@ -35,7 +35,7 @@ export const useSupply = (asset?: IAsset) => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
-  }, [account, asset]);
+  }, [account, asset?.uuid]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

@@ -64,7 +64,7 @@ export const useSetCompliance = () => {
     accountRoles,
     isOwner,
     isActiveAccountChangeTx,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed, toggleComplianceRule };
