@@ -3,6 +3,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useAsset } from '@/hooks/asset';
+import type { IStepKeys } from '@/hooks/assetSetup';
 import { useAssetSetup } from '@/hooks/assetSetup';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useEditAgent } from '@/hooks/editAgent';
@@ -105,8 +106,16 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
           actions={
             <>
               <Stepper direction="vertical">
-                {steps.map((step) => (
-                  <Step key={step.id} active={activeStep.id === step.id}>
+                {steps.map((step, idx) => (
+                  <Step
+                    key={step.id}
+                    active={activeStep.id === step.id}
+                    onClick={
+                      idx < activeStepIdx
+                        ? () => setActiveStep(step.id as IStepKeys)
+                        : undefined
+                    }
+                  >
                     {step.label}
                   </Step>
                 ))}
