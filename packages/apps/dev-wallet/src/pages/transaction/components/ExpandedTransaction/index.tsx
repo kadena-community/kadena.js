@@ -216,7 +216,7 @@ export function ExpandedTransaction({
                           />
                         }
                       >
-                        <ContextMenuItem
+                        {/* <ContextMenuItem
                           label="JSON"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json', transaction)}
@@ -225,14 +225,14 @@ export function ExpandedTransaction({
                           label="YAML"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml', transaction)}
-                        />
+                        /> */}
                         <ContextMenuItem
-                          label="JSON Legacy (v2)"
+                          label="JSON"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json', transaction, true)}
                         />
                         <ContextMenuItem
-                          label="YAML Legacy (v2)"
+                          label="YAML"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml', transaction, true)}
                         />
