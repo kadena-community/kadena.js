@@ -46,7 +46,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   } = useForm<IAddContractProps>({
     mode: 'onChange',
     values: {
-      contractName: 'sdf',
+      contractName: '',
       namespace: namespace ?? '',
     },
   });

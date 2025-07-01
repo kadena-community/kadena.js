@@ -49,7 +49,6 @@ export const useDistributeTokens = ({
       'supply-limit-compliance-v1',
     );
     const complianceMaxInvestors = maxCompliance('max-investors-compliance-v1');
-
     setIsAllowed(
       !frozen &&
         !paused &&

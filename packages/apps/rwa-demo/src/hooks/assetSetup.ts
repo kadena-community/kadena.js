@@ -3,7 +3,7 @@ import type { ICompactStepperItemProps } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 import { useAsset } from './asset';
 
-type IStepKeys =
+export type IStepKeys =
   | 'setup'
   | 'compliancerules'
   | 'startcompliance'
@@ -49,6 +49,7 @@ export const getStepIdx = (key: IStepKeys): number => {
 
 export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
   const [step, setStepProp] = useState<ICompactStepperItemProps>(steps[0]);
+  const [percentageComplete, setPercentageComplete] = useState<number>(0);
   const [stepIdx, setStepIdx] = useState<number>(() =>
     getStepIdx(step?.id as IStepKeys),
   );
@@ -87,26 +88,39 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
   }, [step]);
 
   useEffect(() => {
+    const percentageStep = 100 / (steps.length - 1);
+    setPercentageComplete((v) => 0);
     if (asset) {
       setStep('compliancerules');
+      setPercentageComplete((v) => v + percentageStep);
     }
 
     if (isOneComplianceRuleSet(asset)) {
       setStep('startcompliance');
+      setPercentageComplete((v) => v + percentageStep);
     }
 
     if (isOneComplianceRuleStarted(asset)) {
       setStep('agent');
+      setPercentageComplete((v) => v + percentageStep);
     }
     if (agents.length > 0) {
       setStep('investor');
+      setPercentageComplete((v) => v + percentageStep);
     }
     if (investors.length > 0) {
       setStep('distribute');
+      setPercentageComplete((v) => v + percentageStep);
     }
     if (asset?.supply && asset.supply > 0) {
       setStep('success');
+      setPercentageComplete((v) => v + percentageStep);
     }
+
+    setPercentageComplete((v) => {
+      if (v > 100) return 100;
+      return Math.round(v);
+    });
   }, [asset, agents, investors]);
 
   return {
@@ -114,7 +128,9 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     activeStep: step,
     activeStepIdx: stepIdx,
     steps,
-    agents,
-    investors,
+    setActiveStep: setStep,
+    percentageComplete,
+    isOneComplianceRuleSet: isOneComplianceRuleSet(asset),
+    isOneComplianceRuleStarted: isOneComplianceRuleStarted(asset),
   };
 };

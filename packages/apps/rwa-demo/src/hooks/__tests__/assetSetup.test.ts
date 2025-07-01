@@ -87,8 +87,6 @@ describe('useAssetSetup', () => {
     asset: undefined,
     agents: [],
     investors: [],
-    initFetchAgents: mocks.initFetchAgentsMock,
-    initFetchInvestors: mocks.initFetchInvestorsMock,
   };
 
   beforeEach(() => {
@@ -104,8 +102,6 @@ describe('useAssetSetup', () => {
     expect(result.current.activeStep.id).toBe('setup');
     expect(result.current.activeStepIdx).toBe(0);
     expect(result.current.steps).toHaveLength(7);
-    expect(result.current.agents).toEqual([]);
-    expect(result.current.investors).toEqual([]);
   });
 
   it('should set asset when tempAsset is provided', () => {
@@ -336,8 +332,6 @@ describe('useAssetSetup', () => {
     );
 
     expect(result.current.asset).toBe(mockAsset);
-    expect(result.current.agents).toBe(mockAgents);
-    expect(result.current.investors).toBe(mockInvestors);
   });
 
   it('should have correct step configuration', () => {
