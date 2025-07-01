@@ -1,11 +1,8 @@
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { AGENTROLES } from '@/services/addAgent';
 import { getAgentRoles } from '@/services/getAgentRoles';
-import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { getAsset } from '@/utils/getAsset';
-import type * as Apollo from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface IAgentHookProps {
@@ -15,22 +12,6 @@ export interface IAgentHookProps {
   isFreezer: () => boolean;
   isTransferManager: () => boolean;
 }
-
-export type EventQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
-
-export const getEventsDocument = (
-  variables: EventQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
-
-export const getEventsSubscription = (
-  variables: EventQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
 
 export const useGetAgentRoles = (): IAgentHookProps & {
   setAssetRolesForAccount: (account: string, asset?: IAsset) => void;
@@ -77,7 +58,7 @@ export const useGetAgentRoles = (): IAgentHookProps & {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(agent, asset);
-  }, [agent, asset]);
+  }, [agent, asset?.uuid]);
 
   useEffect(() => {
     if (!asset) return;
@@ -99,7 +80,7 @@ export const useGetAgentRoles = (): IAgentHookProps & {
     subscriptionData,
     subscriptionAgentRemovedData,
     subscriptionAgentAddedData,
-    asset,
+    asset?.uuid,
   ]);
 
   const getAll = useCallback(() => {

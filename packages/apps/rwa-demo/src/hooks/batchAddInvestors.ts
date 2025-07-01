@@ -70,7 +70,7 @@ export const useBatchAddInvestors = () => {
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed };

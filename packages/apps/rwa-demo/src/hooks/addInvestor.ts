@@ -73,7 +73,7 @@ export const useAddInvestor = ({
     isOwner,
     accountRoles,
     isActiveAccountChangeTx,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed };

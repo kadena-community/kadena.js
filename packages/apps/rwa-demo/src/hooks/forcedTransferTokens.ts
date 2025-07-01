@@ -34,7 +34,7 @@ export const useForcedTransferTokens = () => {
   useEffect(() => {
     if (!isMounted) return;
     setIsAllowed(!paused && accountRoles.isTransferManager());
-  }, [paused, isMounted, accountRoles, asset]);
+  }, [paused, isMounted, accountRoles, asset?.uuid]);
 
   return { submit, isAllowed };
 };

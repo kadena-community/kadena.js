@@ -46,7 +46,7 @@ export const useGetInvestorBalance = ({
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
-  }, [investorAccount, asset]);
+  }, [investorAccount, asset?.uuid]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

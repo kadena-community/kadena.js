@@ -1,4 +1,5 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAccount } from '@/hooks/account';
 import { useAddInvestor } from '@/hooks/addInvestor';
 import { useAsset } from '@/hooks/asset';
@@ -36,6 +37,7 @@ import { InvestorCombobox } from '../Fields/InvestorCombobox';
 import { InvestorForm } from '../InvestorForm/InvestorForm';
 import { SetComplianceForm } from '../SetComplianceForm/SetComplianceForm';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 interface IProps {
   asset?: IAsset;
@@ -67,6 +69,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
     investorAccount: investors[0]?.accountName,
   });
 
+  console.log({ activeStep });
   const {
     control,
     formState: { errors },
@@ -162,7 +165,12 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                     <Button
                       data-testid="complianceAction"
                       isDisabled={!isSetComplianceAllowed}
-                      startVisual={<MonoAdd />}
+                      startVisual={
+                        <TransactionTypeSpinner
+                          type={[TXTYPES.SETCOMPLIANCE]}
+                          fallbackIcon={<MonoAdd />}
+                        />
+                      }
                     >
                       Set Compliance Rule values
                     </Button>
@@ -219,7 +227,12 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                       trigger={
                         <Button
                           isDisabled={!isEditAgentAllowed}
-                          startVisual={<MonoAdd />}
+                          startVisual={
+                            <TransactionTypeSpinner
+                              type={[TXTYPES.ADDAGENT]}
+                              fallbackIcon={<MonoAdd />}
+                            />
+                          }
                         >
                           Add Agent
                         </Button>
@@ -259,7 +272,12 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                       trigger={
                         <Button
                           isDisabled={!isAddInvestorAllowed}
-                          startVisual={<MonoAdd />}
+                          startVisual={
+                            <TransactionTypeSpinner
+                              type={[TXTYPES.ADDINVESTOR]}
+                              fallbackIcon={<MonoAdd />}
+                            />
+                          }
                         >
                           Add Investor
                         </Button>
@@ -312,7 +330,12 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                   trigger={
                     <Button
                       data-testid="action-distributetokens"
-                      startVisual={<MonoAdd />}
+                      startVisual={
+                        <TransactionTypeSpinner
+                          type={[TXTYPES.DISTRIBUTETOKENS]}
+                          fallbackIcon={<MonoAdd />}
+                        />
+                      }
                       isDisabled={
                         !investerAccount || !isDistributeTokensAllowed
                       }

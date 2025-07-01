@@ -55,7 +55,7 @@ export const useFreezeInvestor = () => {
     isMounted,
     accountRoles,
     isActiveAccountChangeTx,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed };

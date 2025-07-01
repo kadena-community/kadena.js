@@ -50,7 +50,7 @@ export const usePaused = (asset?: IAsset) => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [account?.address, asset]);
+  }, [account?.address, asset?.uuid]);
 
   useEffect(() => {
     if (!unpausedData?.events?.length) return;

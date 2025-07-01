@@ -65,7 +65,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
   useEffect(() => {
     if (!tempAsset) return;
     setAsset(tempAsset);
-  }, [tempAsset, setAsset]);
+  }, [tempAsset?.uuid, setAsset]);
 
   const isOneComplianceRuleSet = (asset: IAsset | undefined): boolean => {
     if (!asset) return false;
@@ -85,7 +85,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
 
   useEffect(() => {
     setStepIdx(getStepIdx(step.id as IStepKeys));
-  }, [step]);
+  }, [step.id]);
 
   useEffect(() => {
     const percentageStep = 100 / (steps.length - 1);
@@ -121,7 +121,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
       if (v > 100) return 100;
       return Math.round(v);
     });
-  }, [asset, agents, investors]);
+  }, [asset?.uuid, agents, investors]);
 
   return {
     asset,

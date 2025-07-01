@@ -67,7 +67,7 @@ export const useDeleteInvestor = ({
     isMounted,
     balance,
     isActiveAccountChangeTx,
-    asset,
+    asset?.uuid,
   ]);
 
   return { submit, isAllowed, notAllowedReason };
