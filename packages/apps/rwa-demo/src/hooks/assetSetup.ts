@@ -44,7 +44,8 @@ const steps: ICompactStepperItemProps[] = [
 ] as const;
 
 export const getStepIdx = (key: IStepKeys): number => {
-  return steps.findIndex((step) => step.id === key) ?? 0;
+  const idx = steps.findIndex((step) => step.id === key);
+  return idx < 0 ? 0 : idx;
 };
 
 export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
@@ -90,38 +91,42 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
   useEffect(() => {
     const percentageStep = 100 / (steps.length - 1);
     setPercentageComplete((v) => 0);
+    let stepName: IStepKeys = 'setup';
+    let percentage = 0;
     if (asset) {
-      setStep('compliancerules');
-      setPercentageComplete((v) => v + percentageStep);
+      stepName = 'compliancerules';
+      percentage += percentageStep;
     }
 
     if (isOneComplianceRuleSet(asset)) {
-      setStep('startcompliance');
-      setPercentageComplete((v) => v + percentageStep);
+      stepName = 'startcompliance';
+      percentage += percentageStep;
     }
 
     if (isOneComplianceRuleStarted(asset)) {
-      setStep('agent');
-      setPercentageComplete((v) => v + percentageStep);
+      stepName = 'agent';
+      percentage += percentageStep;
     }
     if (agents.length > 0) {
-      setStep('investor');
-      setPercentageComplete((v) => v + percentageStep);
+      stepName = 'investor';
+      percentage += percentageStep;
     }
     if (investors.length > 0) {
-      setStep('distribute');
-      setPercentageComplete((v) => v + percentageStep);
+      stepName = 'distribute';
+      percentage += percentageStep;
     }
     if (asset?.supply && asset.supply > 0) {
-      setStep('success');
-      setPercentageComplete((v) => v + percentageStep);
+      stepName = 'success';
+      percentage += percentageStep;
     }
 
+    setStep(stepName);
+
     setPercentageComplete((v) => {
-      if (v > 100) return 100;
-      return Math.round(v);
+      if (percentage > 100) return 100;
+      return Math.round(percentage);
     });
-  }, [asset?.uuid, agents, investors]);
+  }, [asset?.uuid, asset?.supply, asset?.compliance, agents, investors]);
 
   return {
     asset,
