@@ -1,5 +1,4 @@
 'use client';
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import {
   INFINITE_COMPLIANCE,
@@ -21,24 +20,12 @@ import type {
   IComplianceRuleTypes,
 } from '@/services/getComplianceRules';
 import { getComplianceRules } from '@/services/getComplianceRules';
-import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
 import { getAsset as getAssetUtil } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { AssetStore } from '@/utils/store/assetStore';
-import type * as Apollo from '@apollo/client';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect, useMemo, useState } from 'react';
-
-export type EventQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
-
-export const getEventsDocument = (
-  variables: EventQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
@@ -122,6 +109,12 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!asset) return;
+    initFetchInvestors();
+    initFetchAgents();
+  }, [asset?.uuid, initFetchInvestors, initFetchAgents]);
+
+  useEffect(() => {
     const storageListener = async (event: StorageEvent | Event) => {
       if (
         event.type !== selectedKey &&
@@ -135,7 +128,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
       const storageAsset = JSON.parse(result);
       const foundAsset = await getAsset(storageAsset.uuid, account);
-      if (!foundAsset) return;
+      if (!foundAsset || foundAsset.uuid === asset?.uuid) return;
       await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
@@ -309,10 +302,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         paused,
         maxCompliance,
         investors,
-        initFetchInvestors,
         investorsIsLoading,
         agents,
-        initFetchAgents,
         agentsIsLoading,
       }}
     >

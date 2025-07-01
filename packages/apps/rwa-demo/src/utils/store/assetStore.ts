@@ -45,10 +45,15 @@ export const AssetStore = (organisation: IOrganisation) => {
   const addAsset = async (asset: IAsset) => {
     const assetFolderName = getAssetFolder(asset);
     if (!assetFolderName || !asset.namespace || !asset.contractName) return;
-    return await set(
+
+    const existingAsset = await get(
       ref(database, `${dbLocationString}/${assetFolderName}`),
-      asset,
     );
+
+    return await set(ref(database, `${dbLocationString}/${assetFolderName}`), {
+      ...(existingAsset.toJSON() ?? {}),
+      ...asset,
+    });
   };
 
   const updateAsset = async (asset: IAsset) => {

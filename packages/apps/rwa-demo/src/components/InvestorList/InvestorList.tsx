@@ -31,7 +31,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BadgeFreezeForm } from '../BadgeFreezeForm/BadgeFreezeForm';
 import { InvestorBatchForm } from '../InvestorBatchForm/InvestorBatchForm';
@@ -48,11 +48,7 @@ export const InvestorList: FC = () => {
     'freeze' | 'unfreeze'
   >();
   const formRef = useRef<HTMLFormElement>(null);
-  const {
-    investors: data,
-    initFetchInvestors,
-    investorsIsLoading: isLoading,
-  } = useAsset();
+  const { investors: data, investorsIsLoading: isLoading } = useAsset();
   const [isOpenBatchAddInvestors, setIsOpenBatchAddInvestors] = useState(false);
   const router = useRouter();
   const { account } = useAccount();
@@ -74,10 +70,6 @@ export const InvestorList: FC = () => {
   const handleLink = async (accountName: any) => {
     router.push(`/investors/${accountName}`);
   };
-
-  useEffect(() => {
-    initFetchInvestors();
-  }, []);
 
   return (
     <>

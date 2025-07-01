@@ -36,10 +36,8 @@ export interface IAssetContext {
   ) => Promise<IAsset | undefined>;
   maxCompliance: (rule: IComplianceRuleTypes) => number;
   investors: IRecord[];
-  initFetchInvestors: () => void;
   investorsIsLoading: boolean;
   agents: IRecord[];
-  initFetchAgents: () => void;
   agentsIsLoading: boolean;
 }
 

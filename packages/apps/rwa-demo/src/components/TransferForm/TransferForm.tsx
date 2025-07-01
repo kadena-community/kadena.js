@@ -8,16 +8,11 @@ import { useUser } from '@/hooks/user';
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
 import { isFrozen } from '@/services/isFrozen';
 import type { ITransferTokensProps } from '@/services/transferTokens';
-import { MonoWallet } from '@kadena/kode-icons';
 import {
   Button,
-  Combobox,
-  ComboboxItem,
-  maskValue,
   Notification,
   NotificationHeading,
   Stack,
-  Text,
   TextField,
 } from '@kadena/kode-ui';
 import {
@@ -28,10 +23,11 @@ import {
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
-import { cloneElement, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { cloneElement, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
 import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
+import { InvestorCombobox } from '../Fields/InvestorCombobox';
 
 interface IProps {
   onClose?: () => void;
@@ -48,7 +44,7 @@ export const TransferForm: FC<IProps> = ({
 }) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
-  const { asset, investors, initFetchInvestors } = useAsset();
+  const { asset, investors } = useAsset();
   const { findAliasByAddress } = useUser();
   const [investorToAccount, setInvestorToAccount] = useState<string>('');
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
@@ -63,10 +59,6 @@ export const TransferForm: FC<IProps> = ({
   const [selectedAccountIsFrozen, setSelectedAccountIsFrozen] = useState<
     boolean | undefined
   >(undefined);
-
-  useEffect(() => {
-    initFetchInvestors();
-  }, []);
 
   const {
     register,
@@ -169,55 +161,13 @@ export const TransferForm: FC<IProps> = ({
                   description={`max amount tokens: ${maxAmount}`}
                   errorMessage={errors.amount?.message}
                 />
-                <Controller
-                  name="investorToAccount"
+                <InvestorCombobox
                   control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <Combobox
-                      startVisual={<MonoWallet />}
-                      autoFocus
-                      placeholder={
-                        investorToAccount
-                          ? investorToAccount
-                          : 'Select an investor'
-                      }
-                      onInputChange={(e) => {
-                        setSearchValue(e);
-                      }}
-                      variant={
-                        errors.investorToAccount?.message
-                          ? 'negative'
-                          : 'default'
-                      }
-                      inputValue={searchValue}
-                      onSelectionChange={handleAccountChange(field.onChange)}
-                      errorMessage={errors.investorToAccount?.message}
-                      items={filteredInvestors.filter(
-                        (item) =>
-                          item.alias.includes(searchValue) ||
-                          item.accountName.includes(searchValue),
-                      )}
-                    >
-                      {(item) => (
-                        <ComboboxItem key={item.accountName}>
-                          <Stack
-                            paddingBlock="sm"
-                            width="100%"
-                            flexDirection="column"
-                            justifyContent="flex-start"
-                            alignItems="flex-start"
-                          >
-                            <Text variant="code">
-                              {maskValue(`${item.accountName}`)}
-                            </Text>
-
-                            <Text size="smallest">{item.alias}</Text>
-                          </Stack>
-                        </ComboboxItem>
-                      )}
-                    </Combobox>
-                  )}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  error={errors.investorToAccount}
+                  investors={filteredInvestors}
+                  handleAccountChange={handleAccountChange}
                 />
               </Stack>
               <DiscoveredAccount

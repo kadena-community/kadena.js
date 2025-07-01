@@ -19,7 +19,7 @@ export const useBatchTransferTokens = () => {
   });
 
   const { frozen } = useFreeze({ investorAccount: account?.address });
-  const { asset, paused, investors, initFetchInvestors } = useAsset();
+  const { asset, paused, investors } = useAsset();
   const { addNotification } = useNotifications();
   const [isAllowed, setIsAllowed] = useState(false);
   const { submit2Chain } = useSubmit2Chain();
@@ -74,11 +74,6 @@ export const useBatchTransferTokens = () => {
       },
     });
   };
-
-  useEffect(() => {
-    if (!isMounted) return;
-    initFetchInvestors();
-  }, [isMounted, initFetchInvestors]);
 
   useEffect(() => {
     if (!isMounted) return;

@@ -74,7 +74,7 @@ const InvestorPage = () => {
                       data-testid="action-distributetokens"
                       icon={
                         <TransactionTypeSpinner
-                          type={[TXTYPES.TOKENSFROZEN, TXTYPES.TOKENSUNFROZEN]}
+                          type={[TXTYPES.DISTRIBUTETOKENS]}
                           account={investorAccount}
                           fallbackIcon={<MonoAdd />}
                         />

@@ -2,8 +2,9 @@
 
 import { AssetAction } from '@/components/AssetAction/AssetAction';
 import { TransferAssetAction } from '@/components/AssetAction/TransferAssetAction';
+import { AssetSetupCompletionOverview } from '@/components/AssetSetupCompletionOverview/AssetSetupCompletionOverview';
 import { BatchTransferAssetAction } from '@/components/BatchTransferAsset/BatchTransferAssetAction';
-import { ComplianceRule } from '@/components/ComplianceRule/ComplianceRule';
+import { ComplianceRules } from '@/components/ComplianceRules/ComplianceRules';
 import { ContractDetails } from '@/components/ContractDetails/ContractDetails';
 import { contractDetailWrapperClass } from '@/components/ContractDetails/style.css';
 import { InvestorBalance } from '@/components/InvestorBalance/InvestorBalance';
@@ -31,8 +32,7 @@ const Home = () => {
   const { asset } = useAsset();
   const { organisation } = useOrganisation();
   const { isInvestor, account } = useAccount();
-  const { isAllowed: isSetComplianceAllowed, toggleComplianceRule } =
-    useSetCompliance();
+  const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
 
   if (!organisation) return null;
   return (
@@ -43,6 +43,7 @@ const Home = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       <Stack width="100%" flexDirection="column" gap="md">
+        <AssetSetupCompletionOverview asset={asset} />
         <SectionCard data-testid="contractCard">
           <SectionCardContentBlock>
             <SectionCardHeader
@@ -139,34 +140,7 @@ const Home = () => {
               }
             />
             <SectionCardBody>
-              {asset && (
-                <>
-                  <ComplianceRule
-                    data-testid="compliance-maxSupply"
-                    isActive={asset.compliance.maxSupply.isActive}
-                    ruleKey={asset.compliance.maxSupply.key}
-                    value={`${asset.compliance.maxSupply.value < 0 ? 'no limit' : asset.compliance.maxSupply.value} tokens`}
-                    label="Supply limit"
-                    onToggle={toggleComplianceRule}
-                  />
-                  <ComplianceRule
-                    data-testid="compliance-maxBalance"
-                    isActive={asset.compliance.maxBalance.isActive}
-                    ruleKey={asset.compliance.maxBalance.key}
-                    value={`${asset.compliance.maxBalance.value < 0 ? 'no limit' : asset.compliance.maxBalance.value} tokens`}
-                    label="Max balance"
-                    onToggle={toggleComplianceRule}
-                  />
-                  <ComplianceRule
-                    data-testid="compliance-maxInvestors"
-                    isActive={asset.compliance.maxInvestors.isActive}
-                    ruleKey={asset.compliance.maxInvestors.key}
-                    value={`${asset.compliance.maxInvestors.value < 0 ? 'no limit' : asset.compliance.maxInvestors.value} (${asset.investorCount}) investors`}
-                    label="Max Investors"
-                    onToggle={toggleComplianceRule}
-                  />
-                </>
-              )}
+              {asset && <ComplianceRules asset={asset} />}
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>

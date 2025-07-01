@@ -19,7 +19,10 @@ vi.mock('firebase/database', () => ({
   }),
   off: vi.fn(),
   set: vi.fn(async () => {}),
-  get: vi.fn(async () => ({ val: () => ({ id: '1', name: 'Asset 1' }) })),
+  get: vi.fn(async () => ({
+    val: () => ({ id: '1', name: 'Asset 1' }),
+    toJSON: () => ({ id: '1', name: 'Asset 1' }),
+  })),
 }));
 
 describe('AssetStore', () => {
@@ -82,20 +85,22 @@ describe('AssetStore', () => {
     const { addAsset } = AssetStore(mockOrg);
     const { set } = await import('firebase/database');
     await addAsset(mockAsset);
-    expect(set).toHaveBeenCalledWith(
-      '/organisations/org1/assets/nscontract',
-      mockAsset,
-    );
+    expect(set).toHaveBeenCalledWith('/organisations/org1/assets/nscontract', {
+      id: '1',
+      name: 'Asset 1',
+      ...mockAsset,
+    });
   });
 
   it('updateAsset calls addAsset', async () => {
     const { updateAsset } = AssetStore(mockOrg);
     const { set } = await import('firebase/database');
     await updateAsset(mockAsset);
-    expect(set).toHaveBeenCalledWith(
-      '/organisations/org1/assets/nscontract',
-      mockAsset,
-    );
+    expect(set).toHaveBeenCalledWith('/organisations/org1/assets/nscontract', {
+      id: '1',
+      name: 'Asset 1',
+      ...mockAsset,
+    });
   });
 
   it('removeAsset calls set with null', async () => {

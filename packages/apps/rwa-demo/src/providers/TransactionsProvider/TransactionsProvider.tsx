@@ -142,7 +142,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         type.find((t) => t.name === val.type.name),
       );
     },
-    [transactions],
+    [transactions.length],
   );
 
   const addTransaction = async (
@@ -176,6 +176,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
           transaction.type.overall ||
           transaction.accounts.indexOf(account?.address!) >= 0,
       );
+
       setTransactions(filteredTransactions);
     };
 
@@ -222,7 +223,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!account?.address) return false;
     const txs = getTransactions(TXTYPES.ADDAGENT);
     return !!txs.find((tx) => tx.accounts.indexOf(account.address) >= 0);
-  }, [getTransactions, account?.address]);
+  }, [getTransactions, transactions, account?.address]);
 
   const setTxsButtonRef = (ref: HTMLButtonElement) => {
     setTxsButtonRefData(ref);
