@@ -11,10 +11,8 @@ import { useSetCompliance } from '@/hooks/setCompliance';
 import { useUser } from '@/hooks/user';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { MonoAdd } from '@kadena/kode-icons';
-import type { ICompactStepperItemProps } from '@kadena/kode-ui';
 import {
   Button,
-  CompactStepper,
   Heading,
   Notification,
   Stack,
@@ -124,12 +122,6 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
           }
         />
         <SectionCardBody>
-          <Stack width="100%" justifyContent="flex-start">
-            <CompactStepper
-              stepIdx={activeStepIdx}
-              steps={steps as ICompactStepperItemProps[]}
-            />
-          </Stack>
           <Heading as="h3">{activeStep.label}</Heading>
           {activeStep.id === 'setup' ? (
             <Stack flexDirection="column" gap="xs">
