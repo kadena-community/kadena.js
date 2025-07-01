@@ -3,9 +3,9 @@
   "version": "0.1.10",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 next build",
     "build:e2e": "NODE_ENV=test pnpm run build",
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS=--max-old-space-size=8192 next dev",
     "generate": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact\"",
     "generate:sdk": "cache-sh -i \"{codegen-sdk.yml,./node_modules/@kadena/graph/generated-schema.graphql,src/**/*.graph.ts,src/__generated__/**}\" -- graphql-codegen --config codegen-sdk.yml",
     "lint": "pnpm run /^lint:.*/",
