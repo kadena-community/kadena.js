@@ -195,6 +195,11 @@ export const RenderSigner = ({
                   label="Share"
                   variant="info"
                   icon={<MonoShare />}
+                  tooltip={{
+                    content:
+                      'The transaction url is copied to to the clipboard.',
+                    position: 'bottom',
+                  }}
                 />
               )}
             </Stack>
@@ -231,7 +236,7 @@ export const RenderSigner = ({
                   <Divider label="Signature" align="end" />
                   <Stack flexDirection="column">
                     <Stack
-                      justifyContent={'space-between'}
+                      justifyContent={'flex-end'}
                       alignItems={'flex-start'}
                       gap={'sm'}
                     >
@@ -239,6 +244,11 @@ export const RenderSigner = ({
                         data={{
                           sig: signature,
                           pubKey: signer.pubKey,
+                        }}
+                        label="Copy signature"
+                        tooltip={{
+                          position: 'bottom',
+                          content: 'Copied signature to clipboard',
                         }}
                       />
                     </Stack>

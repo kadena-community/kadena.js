@@ -107,7 +107,13 @@ function TxStatusList({
             {shorten(tx.hash, 6)}
           </Text>
         </Stack>
-        <CopyButton data={tx.hash} />
+        <CopyButton
+          data={tx.hash}
+          tooltip={{
+            position: 'bottom',
+            content: 'Copied transaction hash to your clipboard',
+          }}
+        />
       </Stack>
     ),
     showAfterCont &&
@@ -159,7 +165,14 @@ function TxStatusList({
                 >
                   Sign Tx
                 </Button>
-                <CopyButton data={copyTx} />
+                <CopyButton
+                  data={copyTx}
+                  tooltip={{
+                    position: 'bottom',
+                    content:
+                      'The transaction url is copied to to the clipboard.',
+                  }}
+                />
               </Stack>
             </Stack>
           )}
