@@ -1,15 +1,18 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { walletRepository } from '@/modules/wallet/wallet.repository';
+import { Label } from '@/pages/transaction/components/helpers';
 import { successClass } from '@/pages/transaction/components/style.css';
 import { PasswordKeepPolicy } from '@/service-worker/types';
 import {
   MonoRadioButtonChecked,
   MonoRadioButtonUnchecked,
 } from '@kadena/kode-icons/system';
-import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
+import { useState } from 'react';
 
 export function KeepPasswordPolicy() {
   const { profile } = useWallet();
+  const [updated, setUpdated] = useState(false);
   if (!profile) {
     return null;
   }
@@ -20,11 +23,12 @@ export function KeepPasswordPolicy() {
       <MonoRadioButtonUnchecked />
     );
   };
-  const onChange = (mode: PasswordKeepPolicy) => () => {
+  const onChange = (mode: PasswordKeepPolicy) => async () => {
     profile.options.rememberPassword = mode;
-    walletRepository.patchProfile(profile.uuid, {
+    await walletRepository.patchProfile(profile.uuid, {
       options: { ...profile.options, rememberPassword: mode },
     });
+    setUpdated(true);
   };
 
   const buttonProps = (mode: PasswordKeepPolicy) => ({
@@ -41,13 +45,38 @@ export function KeepPasswordPolicy() {
         gap={'sm'}
         marginBlockEnd={'lg'}
       >
-        <Heading variant="h3">Keep password policy</Heading>
-        <Text size="small">You need to log out to apply the change</Text>
+        <Heading variant="h3">Unlock Security Module</Heading>
+        <Text size="small">
+          To perform sensitive actions (such as signing transactions or creating
+          accounts), you need to unlock the security module.
+        </Text>
       </Stack>
-      <Button {...buttonProps('on-login')}>Unlock at login</Button>
-      <Button {...buttonProps('session')}>Ask once during a session</Button>
-      <Button {...buttonProps('short-time')}>Ask each 5 minutes</Button>
-      <Button {...buttonProps('never')}>Always ask for password</Button>
+      <Stack
+        paddingInlineStart={'md'}
+        flexDirection={'column'}
+        gap={'sm'}
+        marginBlockEnd={'sm'}
+      >
+        <Label bold>When should we ask for your password or biometrics?</Label>
+      </Stack>
+      <Button {...buttonProps('on-login')}>Never (disabled)</Button>
+      <Button {...buttonProps('session')}>Only once per session</Button>
+      <Button {...buttonProps('short-time')}>
+        Every 5 minutes of inactivity
+      </Button>
+      <Button {...buttonProps('never')}>Every time (always ask)</Button>
+      {updated && (
+        <Stack
+          paddingInlineStart={'md'}
+          flexDirection={'column'}
+          gap={'sm'}
+          marginBlockEnd={'lg'}
+        >
+          <Notification role="none" intent="info">
+            You need to log out to apply the change
+          </Notification>
+        </Stack>
+      )}
     </Stack>
   );
 }

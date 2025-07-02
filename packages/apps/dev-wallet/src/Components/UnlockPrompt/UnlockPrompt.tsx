@@ -61,8 +61,8 @@ export const UnlockPrompt: React.FC<{
         <Stack flexDirection={'column'} gap={'md'}>
           <Heading>Unlock Security Module</Heading>
           <Text>
-            You need to unlock the security module in order to use it for
-            sensitive actions (e.g. sign or account creation)
+            To perform sensitive actions (such as signing transactions or
+            creating accounts), you need to unlock the security module.
           </Text>
           <Text>
             Profile:{' '}
@@ -85,7 +85,7 @@ export const UnlockPrompt: React.FC<{
               control={control}
               render={({ field }) => (
                 <RadioGroup
-                  label="Keep open"
+                  label="When should we ask for your password or biometrics?"
                   direction={'column'}
                   defaultValue={rememberPassword || 'session'}
                   value={field.value}
@@ -94,12 +94,12 @@ export const UnlockPrompt: React.FC<{
                     field.onChange(value);
                   }}
                 >
-                  <Radio value="on-login">
-                    Unlock security module at login
+                  <Radio value="on-login">Never (disabled)</Radio>
+                  <Radio value="session">Only once per session</Radio>
+                  <Radio value="short-time">
+                    Every 5 minutes of inactivity
                   </Radio>
-                  <Radio value="session">Keep open during this session</Radio>
-                  <Radio value="short-time">Lock after 5 minutes</Radio>
-                  <Radio value="never">always ask</Radio>
+                  <Radio value="never">Every time (always ask)</Radio>
                 </RadioGroup>
               )}
             />
