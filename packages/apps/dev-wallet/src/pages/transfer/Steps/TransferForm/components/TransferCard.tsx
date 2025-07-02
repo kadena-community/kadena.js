@@ -58,7 +58,12 @@ export const TransferCard: FC<IProps> = ({
           marginBlockEnd="xxxl"
           className={wrapperClass}
         >
-          <ComboField fontType="code" value={selectedAsset?.symbol}>
+          <ComboField
+            fontType="code"
+            value={selectedAsset?.symbol}
+            label="Asset"
+            aria-label="Asset"
+          >
             {({ close }) => {
               return (
                 <Stack flexDirection="column" gap="xs">
