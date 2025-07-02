@@ -4,7 +4,7 @@ import { assetBoxClass } from './style.css';
 
 interface IProps {
   label: string;
-  body?: string | ReactElement;
+  body: string | ReactElement;
   isSelected: boolean;
   handleClick: () => void;
 }
@@ -25,11 +25,9 @@ export const AssetAction: FC<IProps> = ({
         stacked="vertical"
       >
         <Text>{label ? label : <>&nbsp;</>}</Text>
-        {body && (
-          <Text color="emphasize" bold variant="code">
-            {body}
-          </Text>
-        )}
+        <Text color="emphasize" bold variant="code">
+          {body}
+        </Text>
       </Tile>
     </Stack>
   );
