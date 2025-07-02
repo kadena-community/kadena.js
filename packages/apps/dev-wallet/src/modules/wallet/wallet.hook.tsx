@@ -167,19 +167,6 @@ export const useWallet = () => {
     [getPublicKeyData, context.profile?.uuid],
   );
 
-  const isOwnedPubkey = useCallback(
-    (pubkey: string): boolean => {
-      return context.accounts.some((account) => {
-        return (
-          isKeysetGuard(account.guard) &&
-          Boolean(account.guard.keys.find((k) => k === pubkey))
-        );
-      });
-    },
-
-    [getPublicKeyData, context.accounts],
-  );
-
   const accounts = useMemo(() => {
     if (!context.accounts) return [];
     return context.accounts.filter(isOwnedAccount) as IOwnedAccount[];
@@ -516,7 +503,6 @@ export const useWallet = () => {
     createAccountByKeyset,
     createAccountByKey,
     isOwnedAccount,
-    isOwnedPubkey,
     setActiveNetwork: (network: INetwork) =>
       setActiveNetwork ? setActiveNetwork(network) : undefined,
     syncAllAccounts: () => (syncAllAccounts ? syncAllAccounts() : undefined),
