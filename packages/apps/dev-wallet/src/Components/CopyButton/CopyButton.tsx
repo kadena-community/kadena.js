@@ -7,10 +7,12 @@ export const CopyButton = ({
   data,
   label,
   variant = 'transparent',
+  icon = <MonoContentCopy />,
 }: {
   data: string | object;
   label?: string;
   variant?: IButtonProps['variant'];
+  icon?: React.ReactElement;
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const handleCopy = () => {
@@ -30,7 +32,7 @@ export const CopyButton = ({
       variant={variant}
       isCompact
       onPress={handleCopy}
-      endVisual={isSuccess ? <MonoCheck /> : <MonoContentCopy />}
+      endVisual={isSuccess ? <MonoCheck /> : icon}
     >
       {label}
     </Button>
