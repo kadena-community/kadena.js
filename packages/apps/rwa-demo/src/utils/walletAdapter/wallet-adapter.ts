@@ -1,4 +1,4 @@
-import type { WALLETTYPES } from '@/constants';
+import { WALLETTYPES } from '@/constants';
 import type {
   Guard,
   IWalletAccount,
@@ -6,13 +6,15 @@ import type {
 import type { ChainId } from '@kadena/client';
 import type { IAccountInfo } from '@kadena/wallet-adapter-core';
 
+type WalletName = (typeof WALLETTYPES)[keyof typeof WALLETTYPES];
+
 export function capitalizeFirstLetter(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 export function mapWalletAdapterAccount(
   adapterAccount: IAccountInfo,
-  walletName: (typeof WALLETTYPES)[keyof typeof WALLETTYPES],
+  walletName: WalletName,
 ): IWalletAccount {
   console.log('map wallet account', walletName, adapterAccount);
   const account: IWalletAccount = {
@@ -31,4 +33,16 @@ export function mapWalletAdapterAccount(
     walletName,
   };
   return account;
+}
+
+const NAMES_MAP = {
+  [WALLETTYPES.CHAINWEAVER]: 'Chainweaver',
+  [WALLETTYPES.ECKO]: 'Ecko',
+  [WALLETTYPES.MAGIC]: 'Magic',
+} as const satisfies Record<WalletName, string>;
+
+export function getWalletAdapterName(
+  walletName: WalletName,
+): string | undefined {
+  return NAMES_MAP[walletName] ?? undefined;
 }
