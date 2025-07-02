@@ -1,4 +1,5 @@
 'use client';
+
 import { WALLETTYPES } from '@/constants';
 import { AccountContext } from '@/contexts/AccountContext/AccountContext';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
@@ -11,9 +12,10 @@ import { isFrozen } from '@/services/isFrozen';
 import { isInvestor } from '@/services/isInvestor';
 import { isOwner } from '@/services/isOwner';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
-import { magicSignTx } from '@/utils/walletTransformers/magic/signTx';
-import { mapWalletAdapterAccount } from '@/utils/walletTransformers/wallet-adapter';
+import {
+  getWalletAdapterName,
+  mapWalletAdapterAccount,
+} from '@/utils/walletAdapter/wallet-adapter';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useKadenaWallet } from '@kadena/wallet-adapter-react';
@@ -249,29 +251,29 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
-    switch (account?.walletName) {
-      case WALLETTYPES.ECKO: {
-        // return await eckoSignTx(tx);
-        const adapter = wallet.client.getAdapter('Ecko');
-        if (!adapter) throw new Error('Ecko adapter not detected');
-        const result = await adapter.connect();
-        if (!result) throw new Error('Ecko connection failed');
-        console.log('signing via wallet adapter', tx);
-        const signed = (await adapter.signTransaction(tx)) as ICommand;
-        console.log('signed', signed);
-        return signed;
-      }
-      case WALLETTYPES.CHAINWEAVER:
-        return await chainweaverSignTx(tx);
-      case WALLETTYPES.MAGIC:
-        return await magicSignTx(tx);
-      default:
-        addNotification({
-          intent: 'negative',
-          label: 'Provider does not exist',
-          message: `Provider (${account?.walletType}) does not exist`,
-        });
+    const adapterName = account
+      ? getWalletAdapterName(account.walletName)
+      : undefined;
+
+    if (!adapterName) {
+      addNotification({
+        intent: 'negative',
+        label: 'Provider does not exist',
+        message: `Provider (${account?.walletType}) does not exist`,
+      });
+      return;
     }
+
+    const adapter = wallet.client.getAdapter(adapterName);
+    if (!adapter) throw new Error(`${adapterName} adapter not detected`);
+    const result = await adapter.connect();
+    if (!result) throw new Error(`${adapterName} connection failed`);
+
+    console.log('signing via wallet adapter', tx);
+    const signed = (await adapter.signTransaction(tx)) as ICommand;
+    console.log('signed', signed);
+
+    return signed;
   };
 
   return (
@@ -289,7 +291,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         isInvestor: isInvestorState,
         isFrozen: isFrozenState,
         selectAccount,
-
         accountRoles,
         isGasPayable: !isBalanceMounted ? undefined : kdaBalance > 0,
         checkAccountAssetRoles,
