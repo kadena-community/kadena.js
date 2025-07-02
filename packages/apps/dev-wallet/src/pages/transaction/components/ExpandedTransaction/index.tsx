@@ -205,7 +205,6 @@ export function ExpandedTransaction({
                           isCompact
                         />
                       </Tooltip>
-                      <CopyButton data={txCommand} />
                       <ContextMenu
                         placement="bottom end"
                         trigger={
