@@ -13,7 +13,6 @@ import {
 } from '@kadena/kode-ui';
 
 import { Confirmation } from '@/Components/Confirmation/Confirmation';
-import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import {
   ITransaction,
   transactionRepository,
