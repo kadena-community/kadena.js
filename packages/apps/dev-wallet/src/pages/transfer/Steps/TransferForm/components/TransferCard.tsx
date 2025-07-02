@@ -61,8 +61,8 @@ export const TransferCard: FC<IProps> = ({
           <ComboField
             fontType="code"
             value={selectedAsset?.symbol}
-            label="Asset"
-            aria-label="Asset"
+            label="Available assets"
+            aria-label="Available assets"
           >
             {({ close }) => {
               return (
