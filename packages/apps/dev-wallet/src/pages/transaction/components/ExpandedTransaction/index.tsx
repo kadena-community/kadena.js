@@ -257,7 +257,8 @@ export function ExpandedTransaction({
                     </Button>
                   ) : (
                     <Confirmation
-                      label="Abort"
+                      label="Yes, cancel"
+                      negativeLabel="No"
                       onPress={() => {
                         if (transaction.uuid) {
                           transactionRepository.deleteTransaction(
@@ -279,11 +280,11 @@ export function ExpandedTransaction({
                           variant="outlined"
                           startVisual={<MonoClose />}
                         >
-                          Abort
+                          Cancel
                         </Button>
                       }
                     >
-                      Are you sure you want to abort this transaction?
+                      Are you sure you want to cancel this transaction?
                     </Confirmation>
                   )}
                   <Button

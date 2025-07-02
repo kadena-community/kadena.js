@@ -241,7 +241,6 @@ export const useWallet = () => {
   const unlockKeySource = useCallback(
     async (keySource: IKeySource) => {
       const password = await askForPassword();
-      console.log('unlockKeySource', keySource, password);
       if (!password) {
         throw new Error('Password is required');
       }

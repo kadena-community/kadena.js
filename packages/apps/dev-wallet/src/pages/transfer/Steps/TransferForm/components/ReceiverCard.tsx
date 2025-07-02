@@ -345,7 +345,10 @@ export const ReceiverCard: FC<IProps> = ({
                                   control={control}
                                   name={`receivers.${index}.amount`}
                                   rules={{
-                                    min: 0,
+                                    min: {
+                                      value: 0,
+                                      message: 'Amount must be greater than 0',
+                                    },
                                     required: true,
                                   }}
                                   render={({
@@ -369,10 +372,8 @@ export const ReceiverCard: FC<IProps> = ({
                                       type="number"
                                       step="1"
                                       fontType="code"
-                                      isInvalid={!!error}
-                                      errorMessage={
-                                        'Please enter a valid amount'
-                                      }
+                                      isInvalid={!!error?.message}
+                                      errorMessage={error?.message}
                                     />
                                   )}
                                 />

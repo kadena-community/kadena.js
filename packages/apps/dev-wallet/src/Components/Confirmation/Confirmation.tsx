@@ -14,12 +14,14 @@ import { complianceWrapperClass } from './style.css';
 interface IProps extends PropsWithChildren {
   trigger: React.ReactElement;
   label?: string;
+  negativeLabel?: string;
   onPress: (e: PressEvent) => void;
 }
 export const Confirmation: FC<IProps> = ({
   children,
   trigger,
   label = 'ok',
+  negativeLabel = 'Cancel',
   onPress,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +44,7 @@ export const Confirmation: FC<IProps> = ({
             <DialogContent>{children}</DialogContent>
             <DialogFooter>
               <Button variant="outlined" onPress={() => setIsOpen(false)}>
-                Cancel
+                {negativeLabel}
               </Button>
               <Button variant="primary" onPress={handleAction}>
                 {label}

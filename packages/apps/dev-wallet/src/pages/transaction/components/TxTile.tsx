@@ -186,7 +186,8 @@ export const TxTile = ({
       </Stack>
       <Stack justifyContent={'space-between'} alignItems={'center'}>
         <Confirmation
-          label="Abort"
+          label="Yes, cancel"
+          negativeLabel="No"
           onPress={() => {
             if (tx.uuid) {
               transactionRepository.deleteTransaction(tx?.uuid);
@@ -199,11 +200,11 @@ export const TxTile = ({
               isCompact
               startVisual={<MonoDelete />}
             >
-              Abort
+              Cancel
             </Button>
           }
         >
-          Are you sure you want to abort this transaction?
+          Are you sure you want to cancel this transaction?
         </Confirmation>
 
         {tx.status === 'initiated' && !nothingLeftToSignByUser && (

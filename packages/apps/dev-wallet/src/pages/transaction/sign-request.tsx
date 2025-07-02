@@ -91,7 +91,7 @@ export const SignRequest = ({
             if (onAbort) onAbort();
           }}
         >
-          Abort
+          Cancel
         </Button>
       </FocussedLayoutHeaderAside>
       <Stack flexDirection={'column'} width="100%" marginBlockEnd={'md'}>

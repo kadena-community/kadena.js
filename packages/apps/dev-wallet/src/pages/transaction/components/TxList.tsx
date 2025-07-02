@@ -183,7 +183,8 @@ export const TxList = React.memo(
             </Button>
           ) : (
             <Confirmation
-              label="Abort"
+              label="Yes, cancel"
+              negativeLabel="No"
               onPress={() => {
                 transactions.forEach((tx) => {
                   if (tx.uuid) {
@@ -204,14 +205,14 @@ export const TxList = React.memo(
                   startVisual={<MonoClose />}
                 >
                   {transactions.length > 1
-                    ? `Abort ${unSubmittedTxs} transactions`
-                    : 'Abort'}
+                    ? `Cancel ${unSubmittedTxs} transactions`
+                    : 'Go back'}
                 </Button>
               }
             >
               {transactions.length > 1
-                ? 'Are you sure you want to abort these transactions?'
-                : 'Are you sure you want to abort this transaction?'}
+                ? 'Are you sure you want to cancel these transactions?'
+                : 'Are you sure you want to cancel this transaction?'}
             </Confirmation>
           )}
         </FocussedLayoutHeaderAside>
