@@ -99,7 +99,7 @@ export const UnlockPrompt: React.FC<{
                   <Radio value="short-time">
                     Every 5 minutes of inactivity
                   </Radio>
-                  <Radio value="never">Every time (always ask)</Radio>
+                  <Radio value="never">Always ask</Radio>
                 </RadioGroup>
               )}
             />

@@ -64,7 +64,7 @@ export function KeepPasswordPolicy() {
       <Button {...buttonProps('short-time')}>
         Every 5 minutes of inactivity
       </Button>
-      <Button {...buttonProps('never')}>Every time (always ask)</Button>
+      <Button {...buttonProps('never')}>Always ask</Button>
       {updated && (
         <Stack
           paddingInlineStart={'md'}
