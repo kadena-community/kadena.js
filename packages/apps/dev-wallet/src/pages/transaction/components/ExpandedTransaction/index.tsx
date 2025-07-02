@@ -137,7 +137,7 @@ export function ExpandedTransaction({
           <Card fullWidth>
             <CardContentBlock
               level={2}
-              title="In the queue"
+              title="Transaction status"
               visual={<MonoTroubleshoot width={24} height={24} />}
             >
               <Stack style={{ marginBlockStart: '-80px' }}>
