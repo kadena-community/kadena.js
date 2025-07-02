@@ -11,6 +11,7 @@ interface IProps {
   })[];
   onClick: (args: any) => void;
   selectedContract?: string;
+  hideBalances?: boolean;
 }
 
 const MAXASSETCOUNT = 4;
@@ -19,6 +20,7 @@ export const AssetCards: FC<IProps> = ({
   assets,
   onClick,
   selectedContract,
+  hideBalances = false,
 }) => {
   const [showAll, setShowAll] = useState(false);
 
@@ -46,7 +48,7 @@ export const AssetCards: FC<IProps> = ({
         <AssetAction
           key={asset.contract}
           label={asset.symbol}
-          body={`${asset.balance}`}
+          body={!hideBalances ? `${asset.balance}` : undefined}
           isSelected={asset.contract === selectedContract}
           handleClick={() => handleClick(asset.contract)}
         />

@@ -57,6 +57,7 @@ export const TransferCard: FC<IProps> = ({
             assets={assets}
             onClick={handleSetFungible}
             selectedContract={selectedContract}
+            hideBalances={true}
           />
         </Stack>
       </CardContentBlock>
