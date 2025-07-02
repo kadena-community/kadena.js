@@ -13,7 +13,6 @@ import {
 } from '@kadena/kode-ui';
 
 import { Confirmation } from '@/Components/Confirmation/Confirmation';
-import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import {
   ITransaction,
   transactionRepository,
@@ -205,7 +204,6 @@ export function ExpandedTransaction({
                           isCompact
                         />
                       </Tooltip>
-                      <CopyButton data={txCommand} />
                       <ContextMenu
                         placement="bottom end"
                         trigger={
@@ -216,7 +214,7 @@ export function ExpandedTransaction({
                           />
                         }
                       >
-                        <ContextMenuItem
+                        {/* <ContextMenuItem
                           label="JSON"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json', transaction)}
@@ -225,14 +223,14 @@ export function ExpandedTransaction({
                           label="YAML"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml', transaction)}
-                        />
+                        /> */}
                         <ContextMenuItem
-                          label="JSON Legacy (v2)"
+                          label="JSON"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json', transaction, true)}
                         />
                         <ContextMenuItem
-                          label="YAML Legacy (v2)"
+                          label="YAML"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml', transaction, true)}
                         />
