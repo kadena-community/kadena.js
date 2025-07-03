@@ -19,7 +19,7 @@ export const actionsWrapperClass = style([
 
 globalStyle(`${actionsWrapperClass} ${assetBoxClass}`, {
   gap: token('breakpoint.sm'),
-  alignItems: 'stretch',
+  alignItems: 'center',
   flex: '100%',
   ...responsiveStyle({
     xs: {

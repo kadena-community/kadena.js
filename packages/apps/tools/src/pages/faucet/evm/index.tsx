@@ -3,6 +3,7 @@ import {
   ChainSelect,
   FormStatusNotification,
   NAME_VALIDATION,
+  statusToColorMap,
 } from '@/components/Global';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
@@ -16,6 +17,7 @@ import {
   Card,
   Heading,
   Notification,
+  NotificationButton,
   NotificationHeading,
   Stack,
 } from '@kadena/kode-ui';
@@ -88,15 +90,32 @@ const ExistingAccountFaucetPage: FC = () => {
             successful: t('The coins have been funded to the given address.'),
           }}
           body={requestStatus.message}
+          actions={
+            requestStatus.explorerLink && (
+              <NotificationButton
+                icon={<></>}
+                intent={statusToColorMap[requestStatus.status] || 'info'}
+              >
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={requestStatus.explorerLink}
+                  style={{ color: 'inherit' }}
+                >
+                  Check the tx in Blockscout
+                </a>
+              </NotificationButton>
+            )
+          }
         />
         <Stack flexDirection="column" gap="lg" width="100%">
           <Card fullWidth>
             <Stack width="100%" gap="lg">
               <AccountNameField
                 {...register('name')}
-                placeholder="Ethereum name or address (0x...)"
+                placeholder="Ethereum address (0x...)"
                 errorMessage={errors.name?.message}
-                label={t('Type the Ethereum account name or address to fund')}
+                label={t('Type the Ethereum address to fund')}
               />
 
               <ChainSelect
@@ -112,7 +131,10 @@ const ExistingAccountFaucetPage: FC = () => {
             <Button
               ref={buttonRef}
               isLoading={requestStatus.status === 'processing'}
-              isDisabled={requestStatus.status === 'processing'}
+              isDisabled={
+                requestStatus.status === 'processing' ||
+                !parseFloat(dispenseAmount)
+              }
               endVisual={<MonoKeyboardArrowRight />}
               title={t('Fund X Coins', { amount: dispenseAmount })}
               type="submit"
