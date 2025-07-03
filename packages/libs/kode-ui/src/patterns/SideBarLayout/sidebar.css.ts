@@ -203,6 +203,7 @@ export const listItemClass = style([
 export const sidebartreeItemClass = recipe({
   base: {
     flex: 1,
+    width: '100%',
     justifyContent: 'flex-start',
   },
   variants: {
@@ -213,16 +214,15 @@ export const sidebartreeItemClass = recipe({
   },
 });
 
-globalStyle(`${sidebartreeItemClass()}[data-isactive="true"] svg`, {
-  color: token('color.link.base.default'),
-  width: '24px',
+globalStyle(`${sidebartreeItemClass()} > span`, {
+  flex: 1,
+  width: '100%',
 });
-globalStyle(`${sidebartreeItemClass()}[data-isactive="false"] svg`, {
-  color: token('color.text.gray.bolder'),
-  width: '24px',
-});
-globalStyle(`${sidebartreeItemClass()}[data-isactive="false"]:hover svg`, {
-  color: token('color.text.base.@hover'),
+
+globalStyle(`${sidebartreeItemClass()} [data-endvisual="true"]`, {
+  flex: 1,
+  textAlign: 'end',
+  marginInlineEnd: token('spacing.xs'),
 });
 
 export const listItemInlineClass = style([

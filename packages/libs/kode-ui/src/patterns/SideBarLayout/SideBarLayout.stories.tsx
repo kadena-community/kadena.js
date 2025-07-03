@@ -15,6 +15,7 @@ import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { useNotifications } from '../LayoutUtils';
 import {
+  Badge,
   Button,
   ButtonGroup,
   Dialog,
@@ -180,6 +181,26 @@ const InnerLayout = () => {
                   visual={<MonoWifiTethering />}
                   label="Mainnet"
                   href="javascript:void()"
+                />
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Item with badge"
+                  href="javascript:void()"
+                  endVisual={
+                    <Badge size="sm" style="positive">
+                      1
+                    </Badge>
+                  }
+                />
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Item extra"
+                  href="javascript:void()"
+                  endVisual={
+                    <Badge size="sm" style="positive">
+                      2
+                    </Badge>
+                  }
                 />
                 <SideBarTree visual={<MonoWallet />} label="My Wallet">
                   <SideBarTreeItem label="Accounts" href="https://kadena.io" />

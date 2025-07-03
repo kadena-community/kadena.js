@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass, sidebartreeItemClass } from '../sidebar.css';
 import { Anchor } from '../utils';
-import { Link } from './../../../components';
+import { Link, Stack } from './../../../components';
 import type { PressEvent } from './../../../components/Button';
 import { Media } from './../../../components/Media';
 import { breakpoints } from './../../../styles';
@@ -11,6 +11,7 @@ import { useLayout } from './LayoutProvider';
 
 export interface ISideBarItemProps extends PropsWithChildren {
   visual: React.ReactElement;
+  endVisual?: React.ReactElement;
   label: string | React.ReactElement;
   onPress?: (e: PressEvent) => void;
   isAppContext?: boolean;
@@ -20,6 +21,7 @@ export interface ISideBarItemProps extends PropsWithChildren {
 }
 export const SideBarItem: FC<ISideBarItemProps> = ({
   visual,
+  endVisual,
   label,
   onPress,
   children,
@@ -52,6 +54,11 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
         className={sidebartreeItemClass({ isExpanded })}
         isCompact
         startVisual={visual}
+        endVisual={
+          isExpanded ? (
+            <span data-endvisual="true">{endVisual}</span>
+          ) : undefined
+        }
         component={LinkWrapper}
         href={href}
         to={href}
