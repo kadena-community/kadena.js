@@ -1,4 +1,4 @@
-import { AssetAction } from '@/Components/Assets/ AssetAction';
+import { AssetAction } from '@/Components/Assets/AssetAction';
 import { actionsWrapperClass } from '@/Components/Assets/style.css';
 import { wrapperClass } from '@/pages/errors/styles.css';
 import { useShow } from '@/utils/useShow';
