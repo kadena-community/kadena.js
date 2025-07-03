@@ -1,16 +1,22 @@
 // import { MonoContentCopy } from '@kadena/kode-icons/system';
 import { MonoCheck, MonoContentCopy } from '@kadena/kode-icons/system';
-import { Button, IButtonProps } from '@kadena/kode-ui';
-import { useState } from 'react';
+import { Button, IButtonProps, ITooltipProps, Tooltip } from '@kadena/kode-ui';
+import { FC, useState } from 'react';
 
-export const CopyButton = ({
-  data,
-  label,
-  variant = 'transparent',
-}: {
+interface ICopyButtonProps {
   data: string | object;
   label?: string;
   variant?: IButtonProps['variant'];
+  icon?: React.ReactElement;
+  tooltip?: Omit<ITooltipProps, 'children'>;
+}
+
+export const CopyButton: FC<ICopyButtonProps> = ({
+  data,
+  label,
+  variant = 'transparent',
+  icon = <MonoContentCopy />,
+  tooltip,
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const handleCopy = () => {
@@ -22,17 +28,29 @@ export const CopyButton = ({
 
     setTimeout(() => {
       setIsSuccess(false);
-    }, 2000);
+    }, 3000);
   };
 
-  return (
-    <Button
-      variant={variant}
-      isCompact
-      onPress={handleCopy}
-      endVisual={isSuccess ? <MonoCheck /> : <MonoContentCopy />}
-    >
-      {label}
-    </Button>
-  );
+  const render = () => {
+    return (
+      <Button
+        variant={variant}
+        isCompact
+        onPress={handleCopy}
+        endVisual={isSuccess ? <MonoCheck /> : icon}
+      >
+        {label}
+      </Button>
+    );
+  };
+
+  if (tooltip) {
+    return (
+      <Tooltip {...tooltip} isOpen={isSuccess}>
+        {render()}
+      </Tooltip>
+    );
+  }
+
+  return render();
 };

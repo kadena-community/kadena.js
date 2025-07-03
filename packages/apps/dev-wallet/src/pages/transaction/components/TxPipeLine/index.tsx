@@ -12,6 +12,7 @@ import {
   MonoInfo,
   MonoOpenInFull,
   MonoRefresh,
+  MonoShare,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
@@ -107,7 +108,13 @@ function TxStatusList({
             {shorten(tx.hash, 6)}
           </Text>
         </Stack>
-        <CopyButton data={tx.hash} />
+        <CopyButton
+          data={tx.hash}
+          tooltip={{
+            position: 'bottom',
+            content: 'Copied transaction hash to your clipboard',
+          }}
+        />
       </Stack>
     ),
     showAfterCont &&
@@ -120,17 +127,24 @@ function TxStatusList({
         >
           {variant === 'expanded' && signedByYou && (
             <Stack gap={'sm'}>
+              <CopyButton
+                data={copyTx}
+                icon={<MonoShare />}
+                tooltip={{
+                  position: 'bottom',
+                  content: 'The transaction url is copied to to the clipboard.',
+                }}
+              />
               <Button
                 startVisual={<MonoCloudSync />}
                 isCompact
-                variant="outlined"
+                variant="primary"
                 onClick={() => {
                   syncTransactionStatus(tx, client);
                 }}
               >
                 Sync with chain
               </Button>
-              <CopyButton data={copyTx} />
             </Stack>
           )}
           {variant === 'expanded' && !signedByYou && (
@@ -141,6 +155,16 @@ function TxStatusList({
                 </Notification>
               )}
               <Stack gap={'sm'}>
+                <CopyButton
+                  data={copyTx}
+                  icon={<MonoShare />}
+                  tooltip={{
+                    position: 'bottom',
+                    content:
+                      'The transaction url is copied to to the clipboard.',
+                  }}
+                />
+
                 <Button
                   data-testid="signTx"
                   isCompact
@@ -159,7 +183,6 @@ function TxStatusList({
                 >
                   Sign Tx
                 </Button>
-                <CopyButton data={copyTx} />
               </Stack>
             </Stack>
           )}
@@ -180,15 +203,6 @@ function TxStatusList({
           {variant === 'expanded' && (
             <>
               <Stack gap={'sm'}>
-                <Button
-                  isCompact
-                  onClick={() => onPreflight()}
-                  isDisabled={sendDisabled}
-                  startVisual={<MonoViewInAr />}
-                >
-                  Preflight
-                </Button>
-
                 <Tooltip
                   position="bottom"
                   isCompact
@@ -207,7 +221,23 @@ function TxStatusList({
                     onPress={() => setShowPreflightInfo((v) => !v)}
                   />
                 </Tooltip>
-                <CopyButton data={copyTx} />
+                <CopyButton
+                  data={copyTx}
+                  icon={<MonoShare />}
+                  tooltip={{
+                    content:
+                      'The transaction url is copied to to the clipboard.',
+                    position: 'bottom',
+                  }}
+                />
+                <Button
+                  isCompact
+                  onClick={() => onPreflight()}
+                  isDisabled={sendDisabled}
+                  startVisual={<MonoViewInAr />}
+                >
+                  Preflight
+                </Button>
               </Stack>
             </>
           )}
@@ -245,7 +275,15 @@ function TxStatusList({
       tx.preflight?.result.status === 'success' && (
         <TxStatusItem variant={variant} status="paused" label="Ready to send">
           {variant === 'expanded' && (
-            <>
+            <Stack gap={'sm'}>
+              <CopyButton
+                data={copyTx}
+                icon={<MonoShare />}
+                tooltip={{
+                  content: 'The transaction url is copied to to the clipboard.',
+                  position: 'bottom',
+                }}
+              />
               <Button
                 isCompact
                 onClick={() => onSubmit()}
@@ -254,8 +292,7 @@ function TxStatusList({
               >
                 Send tx
               </Button>
-              <CopyButton data={copyTx} />
-            </>
+            </Stack>
           )}
         </TxStatusItem>
       ),

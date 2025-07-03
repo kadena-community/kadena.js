@@ -1,4 +1,3 @@
-import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { ICap, parseAsPactValue } from '@kadena/client';
 import { MonoSecurity } from '@kadena/kode-icons/system';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
@@ -36,7 +35,6 @@ export const Capability: FC<IProps> = ({
           <MonoSecurity width={16} height={16} />
           <Heading as="h5">Capability {idx}</Heading>
         </Stack>
-        <CopyButton data={data} />
       </Stack>
       <Stack paddingInlineStart="lg">
         <Text variant="code" className={breakAllClass}>

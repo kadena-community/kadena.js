@@ -556,7 +556,7 @@ export function TransferForm({
               </Confirmation>
 
               <Button isDisabled={!formState.isValid} type="submit">
-                Create Transactions
+                Create Transaction(s)
               </Button>
             </Stack>
           </Stack>

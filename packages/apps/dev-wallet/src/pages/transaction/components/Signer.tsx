@@ -27,7 +27,11 @@ import classNames from 'classnames';
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { getCopyTxString } from '@/utils/getCopyTxString';
 import { getErrorMessage } from '@/utils/getErrorMessage';
-import { MonoFactCheck, MonoSignature } from '@kadena/kode-icons/system';
+import {
+  MonoFactCheck,
+  MonoShare,
+  MonoSignature,
+} from '@kadena/kode-icons/system';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import yaml from 'js-yaml';
 import { Capability } from './Capability';
@@ -190,6 +194,12 @@ export const RenderSigner = ({
                   data={getCopyTxString(transaction)}
                   label="Share"
                   variant="info"
+                  icon={<MonoShare />}
+                  tooltip={{
+                    content:
+                      'The transaction url is copied to to the clipboard.',
+                    position: 'bottom',
+                  }}
                 />
               )}
             </Stack>
@@ -228,7 +238,7 @@ export const RenderSigner = ({
                   <Divider label="Signature" align="end" />
                   <Stack flexDirection="column">
                     <Stack
-                      justifyContent={'space-between'}
+                      justifyContent={'flex-end'}
                       alignItems={'flex-start'}
                       gap={'sm'}
                     >
@@ -236,6 +246,11 @@ export const RenderSigner = ({
                         data={{
                           sig: signature,
                           pubKey: signer.pubKey,
+                        }}
+                        label="Copy signature"
+                        tooltip={{
+                          position: 'bottom',
+                          content: 'Copied signature to clipboard',
                         }}
                       />
                     </Stack>
