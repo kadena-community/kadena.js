@@ -7,14 +7,15 @@
  */
 
 import type { IProvider } from '@kadena/wallet-adapter-core';
-import type { ResponseType } from './utils';
+import { CHAINWEAVER_ADAPTER } from './constants';
+import type { IResponseType } from './utils';
 import { communicate } from './utils';
 
 export interface IChainweaverProvider extends IProvider {
   message: (
     type: string,
     payload: Record<string, unknown>,
-  ) => Promise<ResponseType>;
+  ) => Promise<IResponseType<unknown>>;
   focus: () => void;
   close: () => void;
 }
@@ -33,7 +34,7 @@ export async function detectChainweaverProvider(options?: {
 }): Promise<IChainweaverProvider | null> {
   const walletOrigin = options?.walletUrl ?? 'https://wallet.kadena.io';
   const appName = options?.appName ?? 'dApp';
-  const walletName = 'Chainweaver';
+  const walletName = CHAINWEAVER_ADAPTER;
   let walletWindow: Window | null = null;
 
   const sleep = (time: number) =>
@@ -41,7 +42,7 @@ export async function detectChainweaverProvider(options?: {
 
   const connect = async () => {
     const wallet = window.open('', walletName, 'width=800,height=800');
-
+    console.log('connect', wallet);
     if (!wallet) {
       throw new Error('POPUP_BLOCKED');
     }
@@ -58,10 +59,11 @@ export async function detectChainweaverProvider(options?: {
             }),
           ]);
         } catch (e) {
-          console.log('error', e);
+          if (e instanceof Error && e.message !== 'TIMEOUT') {
+            console.log('error', e);
+          }
           continue;
         }
-        console.log('wallet is ready');
         break;
       }
     };
@@ -85,7 +87,7 @@ export async function detectChainweaverProvider(options?: {
 
   const provider: IChainweaverProvider = {
     request: async (request) => {
-      if (!walletWindow) {
+      if (!walletWindow || walletWindow.closed) {
         await connect();
       }
       if (!walletWindow || walletWindow.closed) {
@@ -135,7 +137,10 @@ export async function detectChainweaverProvider(options?: {
     on: () => {},
     off: () => {},
     focus: () => walletWindow?.focus(),
-    close: () => walletWindow?.close(),
+    close: () => {
+      walletWindow?.close();
+      walletWindow = null;
+    },
   };
   return provider;
 }

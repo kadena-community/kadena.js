@@ -13,6 +13,9 @@ import type { KdaMethod } from '@kadena/wallet-adapter-core';
 import type { KdaRequestArgs } from '@kadena/wallet-adapter-core';
 import type { StandardSchemaV1 } from '@kadena/wallet-adapter-core';
 
+// @public (undocumented)
+export const CHAINWEAVER_ADAPTER = "Chainweaver";
+
 // @public
 export class ChainweaverAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);
@@ -22,6 +25,10 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
     name: string;
     // (undocumented)
     nonce: number;
+    // Warning: (ae-forgotten-export) The symbol "IChainweaverProvider" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    provider: IChainweaverProvider;
     // (undocumented)
     request<M extends KdaMethod>(args: KdaRequestArgs<M>): Promise<IKdaMethodMap[M]['response']>;
 }
@@ -38,10 +45,6 @@ export function detectChainweaverProvider(options?: {
     appName?: string;
     walletUrl?: string;
 }): Promise<IChainweaverProvider | null>;
-
-// Warnings were encountered during analysis:
-//
-// dist/esm/chainweaverAdapterFactory.d.ts:21:5 - (ae-forgotten-export) The symbol "IChainweaverProvider" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
