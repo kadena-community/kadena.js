@@ -120,13 +120,27 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       name: keyof typeof WALLETTYPES,
       account?: IWalletAccount,
     ): Promise<IWalletAccount[] | undefined> => {
+      const adapterName = name ? getWalletAdapterName(name) : undefined;
+
+      if (!adapterName) {
+        addNotification({
+          intent: 'negative',
+          label: 'Provider does not exist',
+          message: `Provider (${name}) does not exist`,
+        });
+        return;
+      }
+
       let tempAccount: IWalletAccount | undefined;
+
+      const adapter = wallet.client.getAdapter(adapterName);
+      if (!adapter) throw new Error(`${adapterName} adapter not detected`);
+
       switch (name) {
         case WALLETTYPES.ECKO: {
-          const adapter = wallet.client.getAdapter('Ecko');
-          if (!adapter) throw new Error('Ecko adapter not detected');
           const result = await adapter.connect();
-          if (!result) throw new Error('Ecko connection failed');
+          if (!result) throw new Error(`${adapterName} connection failed`);
+
           tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.ECKO);
           break;
         }
@@ -135,9 +149,15 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
             tempAccount = account;
             break;
           }
-          const adapter = wallet.client.getAdapter('Ecko');
-          if (!adapter) throw new Error('Chainweaver adapter not detected');
-          await adapter.connect();
+
+          if (
+            !(await adapter.connect({
+              networkId: '',
+            }))
+          ) {
+            throw new Error(`${adapterName} connection failed`);
+          }
+
           const result = await adapter.getAccounts();
           if (!result) throw new Error('Chainweaver connection failed');
           const accounts = result.map((acc) =>
@@ -152,10 +172,9 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
           break;
         }
         case WALLETTYPES.MAGIC: {
-          const adapter = wallet.client.getAdapter('Ecko');
-          if (!adapter) throw new Error('Magic adapter not detected');
           const result = await adapter.connect();
-          if (!result) throw new Error('Magic connection failed');
+          if (!result) throw new Error(`${adapterName} connection failed`);
+
           tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.MAGIC);
           break;
         }
