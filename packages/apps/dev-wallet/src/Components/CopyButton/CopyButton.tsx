@@ -28,7 +28,7 @@ export const CopyButton: FC<ICopyButtonProps> = ({
 
     setTimeout(() => {
       setIsSuccess(false);
-    }, 5000);
+    }, 3000);
   };
 
   const render = () => {
