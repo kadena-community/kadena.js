@@ -7,6 +7,7 @@ import {
   createPactCommandFromTemplate,
 } from '../../../services/utils/yaml-converter.js';
 
+import type { ICommandPayload } from '@kadena/types';
 import {
   TX_TEMPLATE_FOLDER,
   WORKING_DIRECTORY,
@@ -15,6 +16,7 @@ import { services } from '../../../services/index.js';
 import type { CommandResult } from '../../../utils/command.util.js';
 import { assertCommandError } from '../../../utils/command.util.js';
 import { createCommand } from '../../../utils/createCommand.js';
+import { safeJsonParse } from '../../../utils/globalHelpers.js';
 import { globalOptions } from '../../../utils/globalOptions.js';
 import { log } from '../../../utils/logger.js';
 import { relativeToCwd } from '../../../utils/path.util.js';
@@ -26,7 +28,7 @@ import { writeTemplatesToDisk } from './templates/templates.js';
 export const createTransaction = async (
   variables: Record<string, string>,
   template: { template: string; path: string; cwd: string } | string,
-): Promise<IUnsignedCommand> => {
+): Promise<IUnsignedCommand[]> => {
   // Handle decimal-amount conversion
   const updatedVariables = variables['decimal-amount']
     ? {
@@ -53,7 +55,29 @@ export const createTransaction = async (
   }
 
   const fixed = fixTemplatePactCommand(command);
-  return kadenaCreateTransaction(fixed);
+  return fixed.map(kadenaCreateTransaction);
+};
+
+const allSettledToCommandResult = <T>(
+  results: PromiseSettledResult<T>[],
+): CommandResult<T[]> => {
+  const allSuccess = results.every((result) => result.status === 'fulfilled');
+  const allFailed = results.every((result) => result.status === 'rejected');
+  const status = allSuccess ? 'success' : allFailed ? 'error' : 'partial';
+
+  const commandResult = results.reduce(
+    (memo, result) => {
+      if (result.status === 'fulfilled') {
+        memo.data.push(result.value);
+      } else {
+        memo.errors.push(result.reason);
+      }
+      return memo;
+    },
+    { status, data: [] as T[], errors: [] as any[] },
+  );
+
+  return commandResult as CommandResult<T[]>;
 };
 
 export const createAndWriteTransaction = async (
@@ -62,43 +86,68 @@ export const createAndWriteTransaction = async (
   outFilePath: string | null,
   template: { template: string; path: string; cwd: string } | string,
 ): Promise<
-  CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
+  CommandResult<{ transaction: IUnsignedCommand; filePath: string }[]>
 > => {
   try {
-    const transaction = await createTransaction(variables, template);
+    const transactions = await createTransaction(variables, template);
 
-    let filePath: string | null = null;
-    if (outFilePath === null) {
-      filePath = path.join(
-        WORKING_DIRECTORY,
-        `transaction-${transaction.hash.slice(0, 10)}.json`,
-      );
-    } else if (outFilePath === '-') {
-      // "-" means print to stdout, which is always done anyways. So just don't write a file.
-      return { status: 'success', data: { transaction, filePath: '-' } };
-    } else {
-      filePath = outFilePath;
-    }
+    const transactionsWithPath = await Promise.allSettled(
+      transactions.map(async (transaction, index) => {
+        const chainId = safeJsonParse<ICommandPayload>(transaction.cmd)?.meta
+          ?.chainId;
+        const hash = `${transaction.hash.slice(0, 10)}`;
 
-    // template dir
-    // ./.kadena/transaction-templates
+        let filePath: string | null = null;
+        if (outFilePath === null) {
+          let filename: string;
 
-    // kadena tx create-transaction ./kadena/transaction-templates/transfer.yaml
+          if (transactions.length > 1 && chainId) {
+            filename = `transaction-${chainId}-${hash}.json`;
+          } else {
+            filename = `transaction-${hash}.json`;
+          }
 
-    // --to-file
+          filePath = path.join(WORKING_DIRECTORY, filename);
+        } else if (outFilePath === '-') {
+          // "-" means print to stdout, which is always done anyways. So just don't write a file.
+          return { transaction, filePath: '-' };
+        } else {
+          if (transactions.length > 1 && chainId) {
+            if (!outFilePath.endsWith('.json')) {
+              outFilePath += '.json';
+            }
+            filePath = outFilePath.replace(
+              '.json',
+              `-${chainId || index}.json`,
+            );
+          } else {
+            filePath = outFilePath;
+          }
+        }
 
-    // sign:
-    // do not prompt but allow --directory (otherwise working directory)
+        // template dir
+        // ./.kadena/transaction-templates
 
-    // output suggestion
-    // ./{templateName}-{timestamp}-{hash}.json
+        // kadena tx create-transaction ./kadena/transaction-templates/transfer.yaml
 
-    await services.filesystem.writeFile(
-      filePath,
-      JSON.stringify(transaction, null, 2),
+        // --to-file
+
+        // sign:
+        // do not prompt but allow --directory (otherwise working directory)
+
+        // output suggestion
+        // ./{templateName}-{timestamp}-{hash}.json
+
+        await services.filesystem.writeFile(
+          filePath,
+          JSON.stringify(transaction, null, 2),
+        );
+
+        return { transaction, filePath };
+      }),
     );
 
-    return { status: 'success', data: { transaction, filePath } };
+    return allSettledToCommandResult(transactionsWithPath);
   } catch (error) {
     return {
       status: 'error',
@@ -127,8 +176,8 @@ export const createTransactionCommandNew = createCommand(
         )}: ${templatesAdded.join(', ')}`,
       );
     }
-    const template = await option.template({ stdin });
 
+    const template = await option.template({ stdin });
     const showHoles = await option.holes();
 
     if (showHoles.holes === true) {
@@ -169,14 +218,27 @@ export const createTransactionCommandNew = createCommand(
 
     assertCommandError(result);
 
-    log.output(
-      JSON.stringify(result.data.transaction, null, 2),
-      result.data.transaction,
-    );
+    if (result.data.length === 1) {
+      log.output(
+        JSON.stringify(result.data[0].transaction, null, 2),
+        result.data[0].transaction,
+      );
 
-    const relativePath = path.relative(WORKING_DIRECTORY, result.data.filePath);
-    log.info(`\ntransaction saved to: ./${relativePath}`);
+      const relativePath = path.relative(
+        WORKING_DIRECTORY,
+        result.data[0].filePath,
+      );
+      log.info(`\ntransaction saved to: ./${relativePath}`);
+    } else {
+      const transactions = result.data.map(({ transaction }) => transaction);
+      log.output(JSON.stringify(transactions, null, 2), transactions);
 
-    return { outFile: relativePath };
+      const relativePaths = result.data.map((result) =>
+        path.relative(WORKING_DIRECTORY, result.filePath),
+      );
+      log.info(`\ntransaction saved to: ./${relativePaths}`);
+    }
+
+    return { outFiles: result.data.map(({ filePath }) => filePath) };
   },
 );
