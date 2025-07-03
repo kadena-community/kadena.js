@@ -38,51 +38,52 @@ export const NetworkSelector: FC<{
 
   return (
     <ButtonGroup fullWidth>
-      <Button
-        data-testid="networkselectorName"
-        isCompact
-        variant="outlined"
-        startVisual={
-          activeNetwork?.isHealthy === false ? (
-            <MonoWifiTetheringOff />
-          ) : (
-            <MonoWifiTethering />
-          )
-        }
-      >
-        {showLabel ? activeNetwork?.name : undefined}
-      </Button>
-
       {showLabel && (
-        <ContextMenu
-          trigger={
-            <Button
-              data-testid="networkselector"
-              variant={variant}
-              isCompact={isCompact}
-              startVisual={<MonoMoreVert />}
-            />
+        <Button
+          textAlign="start"
+          data-testid="networkselectorName"
+          isCompact
+          variant="outlined"
+          startVisual={
+            activeNetwork?.isHealthy === false ? (
+              <MonoWifiTetheringOff />
+            ) : (
+              <MonoWifiTethering />
+            )
           }
         >
-          {networks.map((network) => (
-            <ContextMenuItem
-              aria-label={network.name}
-              key={network.networkId}
-              label={network.name ?? network.networkId}
-              endVisual={
-                network.uuid === activeNetwork?.uuid ? <MonoCheck /> : undefined
-              }
-              onClick={() => handleNetworkUpdate(network.uuid)}
-            />
-          ))}
-          <ContextMenuDivider />
-          <ContextMenuItem
-            label="Network settings"
-            endVisual={<MonoSettings />}
-            onClick={handlePress}
-          />
-        </ContextMenu>
+          {activeNetwork?.name}
+        </Button>
       )}
+
+      <ContextMenu
+        trigger={
+          <Button
+            data-testid="networkselector"
+            variant={variant}
+            isCompact={isCompact}
+            startVisual={showLabel ? <MonoMoreVert /> : <MonoWifiTethering />}
+          />
+        }
+      >
+        {networks.map((network) => (
+          <ContextMenuItem
+            aria-label={network.name}
+            key={network.networkId}
+            label={network.name ?? network.networkId}
+            endVisual={
+              network.uuid === activeNetwork?.uuid ? <MonoCheck /> : undefined
+            }
+            onClick={() => handleNetworkUpdate(network.uuid)}
+          />
+        ))}
+        <ContextMenuDivider />
+        <ContextMenuItem
+          label="Network settings"
+          endVisual={<MonoSettings />}
+          onClick={handlePress}
+        />
+      </ContextMenu>
     </ButtonGroup>
   );
 };
