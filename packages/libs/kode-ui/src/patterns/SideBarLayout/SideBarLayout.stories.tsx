@@ -306,7 +306,6 @@ const InnerLayout = () => {
             width="100%"
             flexDirection="column"
             justifyContent="center"
-            margin="md"
             gap="md"
           >
             <Button

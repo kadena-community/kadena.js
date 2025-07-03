@@ -7,7 +7,12 @@ import {
   token,
 } from './../../styles';
 import { topbannerHeightCSS } from './aside.css';
-import { minHeaderHeight, sideBarMinWidth, sideBarWidth } from './styles.css';
+import {
+  minHeaderHeight,
+  minHeaderMargin,
+  sideBarMinWidth,
+  sideBarWidth,
+} from './styles.css';
 
 export const menuBackdropClass = recipe({
   base: [
@@ -56,7 +61,6 @@ export const menuWrapperClass = recipe({
       position: 'fixed',
       flexDirection: 'column',
       flex: 1,
-      gap: 'sm',
     }),
     {
       height: '100%',
@@ -82,7 +86,7 @@ export const menuWrapperClass = recipe({
         paddingBlockStart: `${token('spacing.sm')}`,
       },
       sm: {
-        paddingBlockStart: `calc(${token('spacing.sm')} + ${topbannerHeightCSS})`,
+        paddingBlockStart: topbannerHeightCSS,
       },
       md: {
         display: 'flex',
@@ -90,7 +94,7 @@ export const menuWrapperClass = recipe({
         padding: token('spacing.md'),
         paddingInlineStart: `${token('spacing.xs')}`,
         paddingInlineEnd: `${token('spacing.xs')}`,
-        paddingBlockStart: `calc(${token('spacing.sm')} + ${topbannerHeightCSS})`,
+        paddingBlockStart: topbannerHeightCSS,
         gridArea: 'sidebarlayout-sidebar',
         transform: 'translateX(0%)',
         backgroundColor: 'transparent',
@@ -120,10 +124,14 @@ export const menuMenuIconClass = recipe({
   base: {
     gridArea: 'header-toggle',
     width: '100%',
+    height: minHeaderHeight,
+    minHeight: minHeaderHeight,
+    maxHeight: minHeaderHeight,
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     pointerEvents: 'all',
+    marginBlockEnd: minHeaderMargin,
   },
   variants: {
     isExpanded: {
@@ -252,9 +260,13 @@ export const headerWrapperClass = recipe({
       width: '100%',
       display: 'flex',
       justifyContent: 'flex-start',
+      alignItems: 'center',
       height: minHeaderHeight,
+      minHeight: minHeaderHeight,
+      maxHeight: minHeaderHeight,
       gridArea: 'sidebarlayout-header',
       zIndex: token('zIndex.overlay'),
+      marginBlockEnd: token('spacing.sm'),
     },
   ],
   variants: {

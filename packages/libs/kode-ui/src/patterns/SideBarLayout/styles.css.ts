@@ -8,6 +8,7 @@ import {
 } from './../../styles';
 
 export const minHeaderHeight = '60px';
+export const minHeaderMargin = '8px';
 export const sideBarWidth = '232px';
 export const sideBarMinWidth = '45px';
 export const rightAsBarMinWidth = '370px';
@@ -23,7 +24,7 @@ export const layoutWrapperClass = recipe({
     responsiveStyle({
       xs: {
         gridTemplateColumns: 'auto',
-        gridTemplateRows: `min-content ${minHeaderHeight} 1fr 60px`,
+        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr 60px`,
         gridTemplateAreas: `
         "sidebarlayout-topbanner"
         "sidebarlayout-header"
@@ -32,7 +33,7 @@ export const layoutWrapperClass = recipe({
       `,
       },
       md: {
-        gridTemplateRows: `min-content ${minHeaderHeight} 1fr`,
+        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr`,
         gridTemplateAreas: `
         "sidebarlayout-sidebar sidebarlayout-topbanner"
         "sidebarlayout-sidebar sidebarlayout-header"
@@ -40,7 +41,7 @@ export const layoutWrapperClass = recipe({
       `,
       },
       xxl: {
-        gridTemplateRows: `min-content ${minHeaderHeight} 1fr`,
+        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr`,
         gridTemplateAreas: `
         "sidebarlayout-sidebar sidebarlayout-topbanner"
         "sidebarlayout-sidebar sidebarlayout-header"
