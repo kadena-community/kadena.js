@@ -16,6 +16,7 @@ import { useTransactions } from './transactions';
 interface IOptions {
   notificationSentryName: IAnalyticsEventType;
   skipAssetCheck?: boolean;
+  successMessage?: string;
   chainFunction: (
     account: IWalletAccount,
     asset: IAsset,
@@ -92,6 +93,14 @@ export const useSubmit2Chain = () => {
 
       const client = getClient();
       res = await client.submit(signedTransaction);
+
+      if (options.successMessage) {
+        addNotification({
+          intent: 'positive',
+          label: 'transaction successful',
+          message: options.successMessage,
+        });
+      }
 
       return addTransaction({
         ...res,
