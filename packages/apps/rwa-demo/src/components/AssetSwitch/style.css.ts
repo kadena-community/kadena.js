@@ -9,11 +9,3 @@ globalStyle(`${assetsSwitchWrapperClass} > section`, {
   flex: 1,
   width: '100%',
 });
-
-globalStyle(`${assetsSwitchWrapperClass} > section > span`, {
-  width: '100%',
-});
-
-globalStyle(`${assetsSwitchWrapperClass} > section > span:nth-child(2)`, {
-  flex: 1,
-});

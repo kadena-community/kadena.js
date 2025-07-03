@@ -1,8 +1,10 @@
 import {
   MonoAccountTree,
+  MonoAdd,
   MonoControlPointDuplicate,
   MonoInsertDriveFile,
   MonoLightMode,
+  MonoMoreVert,
   MonoWallet,
   MonoWifiTethering,
   MonoWindow,
@@ -12,7 +14,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { useNotifications } from '../LayoutUtils';
-import { Button, Dialog, DialogHeader, Stack } from './../../components';
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogHeader,
+  Stack,
+} from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
@@ -188,6 +196,27 @@ const InnerLayout = () => {
                   />
                 </SideBarTree>
               </>
+            }
+            appContext={
+              <SideBarItem visual={<MonoMoreVert />} label="Select Asset">
+                <ButtonGroup fullWidth>
+                  <Button
+                    startVisual={<MonoAdd />}
+                    textAlign="start"
+                    isCompact
+                    variant="outlined"
+                  >
+                    {isExpanded ? 'Asset Switch' : undefined}
+                  </Button>
+                  {isExpanded && (
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      startVisual={<MonoMoreVert />}
+                    />
+                  )}
+                </ButtonGroup>
+              </SideBarItem>
             }
             context={
               <>

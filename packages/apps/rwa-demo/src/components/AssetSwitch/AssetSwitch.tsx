@@ -20,8 +20,13 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
       <ButtonGroup fullWidth>
         {showLabel && (
           <>
-            <Button startVisual={<MonoApps />} isCompact variant="outlined" />
-            <Button isCompact variant="outlined" style={{ flex: 1 }}>
+            <Button
+              textAlign="start"
+              startVisual={<MonoApps />}
+              isCompact
+              variant="outlined"
+              style={{ flex: 1 }}
+            >
               {asset ? asset.contractName : 'Select an asset'}
             </Button>
           </>

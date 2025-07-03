@@ -112,6 +112,7 @@ const Link = forwardRef(
             variant,
             isCompact,
             isLoading,
+            textAlign: props.textAlign || 'center',
           }),
           className,
         )}

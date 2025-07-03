@@ -1,4 +1,4 @@
-import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
+import { MonoMenu } from '@kadena/kode-icons/system';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
@@ -69,14 +69,14 @@ export const SideBar: FC<ISideBarProps> = ({
           [topbannerHeightCSS]: `${topbannerHeight}px`,
         })}
       >
-        <Stack className={classNames(menuMenuIconClass)}>
-          {isExpanded ? ShowLogo() : ShowSmallLogo()}
-
+        <Stack className={classNames(menuMenuIconClass({ isExpanded }))}>
           <Button
+            isCompact
             variant="transparent"
             onPress={handleExpand}
-            startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
+            startVisual={<MonoMenu />}
           />
+          {isExpanded ? ShowLogo() : ShowSmallLogo()}
         </Stack>
         {appContext && <SideBarAppContext>{appContext}</SideBarAppContext>}
         {navigation && <SideBarNavigation>{navigation}</SideBarNavigation>}

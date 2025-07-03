@@ -34,6 +34,10 @@ const meta: Meta<IButtonProps> = {
         disable: true,
       },
     },
+    textAlign: {
+      control: { type: 'radio' },
+      options: ['start', 'center', 'end'],
+    },
     startVisual: iconControl,
     endVisual: iconControl,
     variant: {

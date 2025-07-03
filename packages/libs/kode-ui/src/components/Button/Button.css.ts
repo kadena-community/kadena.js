@@ -219,6 +219,17 @@ export const button = recipe({
     },
   ],
   variants: {
+    textAlign: {
+      start: {
+        justifyContent: 'flex-start',
+      },
+      center: {
+        justifyContent: 'center',
+      },
+      end: {
+        justifyContent: 'flex-end',
+      },
+    },
     hasAction: {
       true: {},
       false: {

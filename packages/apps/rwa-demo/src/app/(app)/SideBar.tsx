@@ -1,5 +1,4 @@
 import { AccountSwitch } from '@/components/AccountSwitch/AccountSwitch';
-import { AssetSetupProgress } from '@/components/AssetSetupCompletionOverview/AssetSetupProgress';
 import { AssetSwitch } from '@/components/AssetSwitch/AssetSwitch';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
@@ -88,7 +87,6 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
         <SideBarItem visual={<MonoNetworkCheck />} label="Select Asset">
           <AssetSwitch showLabel={isExpanded} />
           <AccountSwitch showLabel={isExpanded} />
-          <AssetSetupProgress asset={asset} />
         </SideBarItem>
       }
       context={<SidebarSideContext />}

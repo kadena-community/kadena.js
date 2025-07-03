@@ -77,6 +77,8 @@ export const menuWrapperClass = recipe({
         zIndex: token('zIndex.overlay'),
         backgroundColor: token('color.background.base.default'),
         padding: token('spacing.lg'),
+        paddingInlineStart: `${token('spacing.xs')}`,
+        paddingInlineEnd: `${token('spacing.xs')}`,
         paddingBlockStart: `${token('spacing.sm')}`,
       },
       sm: {
@@ -84,10 +86,11 @@ export const menuWrapperClass = recipe({
       },
       md: {
         display: 'flex',
-        width: '45px',
+        width: '40px',
         padding: token('spacing.md'),
+        paddingInlineStart: `${token('spacing.xs')}`,
+        paddingInlineEnd: `${token('spacing.xs')}`,
         paddingBlockStart: `calc(${token('spacing.sm')} + ${topbannerHeightCSS})`,
-        paddingInline: token('spacing.xs'),
         gridArea: 'sidebarlayout-sidebar',
         transform: 'translateX(0%)',
         backgroundColor: 'transparent',
@@ -109,18 +112,29 @@ export const menuWrapperMobileExpandedClass = style([
     },
     md: {
       width: sideBarWidth,
-      paddingInline: token('spacing.md'),
     },
   }),
 ]);
 
-export const menuMenuIconClass = style({
-  gridArea: 'header-toggle',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  pointerEvents: 'all',
+export const menuMenuIconClass = recipe({
+  base: {
+    gridArea: 'header-toggle',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    pointerEvents: 'all',
+  },
+  variants: {
+    isExpanded: {
+      true: {
+        gap: token('spacing.sm'),
+      },
+      false: {
+        gap: 0,
+      },
+    },
+  },
 });
 
 export const menuNavWrapperClass = style([
@@ -188,59 +202,24 @@ export const listItemClass = style([
 
 export const sidebartreeItemClass = recipe({
   base: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    gap: token('spacing.md'),
-    borderRadius: token('spacing.sm'),
-    textDecoration: 'none',
-    fontSize: token('typography.fontSize.sm'),
-    fontWeight: token('typography.weight.primaryFont.semiBold'),
-    paddingBlock: token('spacing.sm'),
-    cursor: 'pointer',
-
-    selectors: {
-      '&:hover': {
-        backgroundColor: token('color.background.base.@active'),
-        color: token('color.text.base.@hover'),
-      },
-    },
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   variants: {
     isExpanded: {
-      true: {
-        paddingInline: token('spacing.md'),
-      },
-      false: {
-        justifyContent: 'center',
-        paddingInline: 0,
-      },
-    },
-    isActive: {
-      true: {
-        backgroundColor: token('color.background.base.@active'),
-        color: token('color.link.base.default'),
-      },
-      false: {
-        color: token('color.text.gray.bolder'),
-        selector: {
-          '&:hover': {
-            color: token('color.text.base.@hover'),
-          },
-        },
-      },
+      true: {},
+      false: {},
     },
   },
 });
 
 globalStyle(`${sidebartreeItemClass()}[data-isactive="true"] svg`, {
   color: token('color.link.base.default'),
-  width: '12px',
+  width: '24px',
 });
 globalStyle(`${sidebartreeItemClass()}[data-isactive="false"] svg`, {
   color: token('color.text.gray.bolder'),
-  width: '12px',
+  width: '24px',
 });
 globalStyle(`${sidebartreeItemClass()}[data-isactive="false"]:hover svg`, {
   color: token('color.text.base.@hover'),

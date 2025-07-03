@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass, sidebartreeItemClass } from '../sidebar.css';
 import { Anchor } from '../utils';
+import { Link } from './../../../components';
 import type { PressEvent } from './../../../components/Button';
 import { Media } from './../../../components/Media';
 import { breakpoints } from './../../../styles';
@@ -46,20 +47,18 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   const render = (isExpanded: boolean) => {
     const LinkWrapper = component ? component : Anchor;
     return (
-      <LinkWrapper
-        aria-label={label}
-        data-isactive={isActiveUrl(href)}
-        className={sidebartreeItemClass({
-          isActive: isActiveUrl(href),
-          isExpanded,
-        })}
+      <Link
+        textAlign="start"
+        className={sidebartreeItemClass({ isExpanded })}
+        isCompact
+        startVisual={visual}
+        component={LinkWrapper}
         href={href}
         to={href}
-        title={label}
+        onPress={handlePress}
       >
-        {visual && <span>{visual}</span>}
-        {isExpanded && label}
-      </LinkWrapper>
+        {isExpanded ? label : undefined}
+      </Link>
     );
   };
 
