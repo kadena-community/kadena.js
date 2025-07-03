@@ -258,7 +258,7 @@ export function ExpandedTransaction({
                   ) : (
                     <Confirmation
                       label="Yes, cancel"
-                      negativeLabel="No"
+                      dismissLabel="No"
                       onPress={() => {
                         if (transaction.uuid) {
                           transactionRepository.deleteTransaction(

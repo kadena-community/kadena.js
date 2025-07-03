@@ -185,7 +185,7 @@ export const TxList = React.memo(
             ) : (
               <Confirmation
                 label="Yes, cancel"
-                negativeLabel="No"
+                dismissLabel="No"
                 onPress={() => {
                   transactions.forEach((tx) => {
                     if (tx.uuid) {

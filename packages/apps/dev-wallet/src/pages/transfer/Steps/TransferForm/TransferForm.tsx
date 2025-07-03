@@ -546,7 +546,7 @@ export function TransferForm({
             <Stack justifyContent="flex-end" flex={1} gap="sm">
               <Confirmation
                 label="Yes, cancel"
-                negativeLabel="No"
+                dismissLabel="No"
                 onPress={() => {
                   navigate('/');
                 }}

@@ -321,7 +321,7 @@ export function Transfer() {
             <FocussedLayoutHeaderAside>
               <Confirmation
                 label="Yes, cancel"
-                negativeLabel="No"
+                dismissLabel="No"
                 onPress={() => {
                   navigate('/');
                 }}

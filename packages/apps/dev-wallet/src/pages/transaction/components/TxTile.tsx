@@ -187,7 +187,7 @@ export const TxTile = ({
       <Stack justifyContent={'space-between'} alignItems={'center'}>
         <Confirmation
           label="Yes, cancel"
-          negativeLabel="No"
+          dismissLabel="No"
           onPress={() => {
             if (tx.uuid) {
               transactionRepository.deleteTransaction(tx?.uuid);
