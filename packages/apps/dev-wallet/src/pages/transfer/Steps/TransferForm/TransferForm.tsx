@@ -1,3 +1,4 @@
+import { Confirmation } from '@/Components/Confirmation/Confirmation';
 import { IOwnedAccount } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
@@ -543,14 +544,17 @@ export function TransferForm({
             </Button>
 
             <Stack justifyContent="flex-end" flex={1} gap="sm">
-              <Button
-                variant="negative"
+              <Confirmation
+                label="Yes, cancel"
+                dismissLabel="No"
                 onPress={() => {
                   navigate('/');
                 }}
+                trigger={<Button variant="negative">Cancel</Button>}
               >
-                Abort
-              </Button>
+                Are you sure you want to cancel this transaction?
+              </Confirmation>
+
               <Button isDisabled={!formState.isValid} type="submit">
                 Create Transactions
               </Button>
