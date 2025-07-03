@@ -1,11 +1,12 @@
+import type { IQuicksignResponseOutcomes } from '@kadena/client';
+import { createTransaction } from '@kadena/client';
 import type {
   ChainId,
   CommandSigDatas,
+  Guard,
   IAccountInfo,
   IBaseWalletAdapterOptions,
-  ICommand,
   IKdaMethodMap,
-  ISigningRequestPartial,
   IUnsignedCommand,
   JsonRpcResponse,
   KdaMethod,
@@ -14,29 +15,34 @@ import type {
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import * as v from 'valibot';
-import { ERRORS } from './constants';
-import { checkVerifiedAccount } from './utils';
+import { CHAINWEAVER_ADAPTER, ERRORS } from './constants';
+import type { IChainweaverProvider } from './provider';
+import type { IResponseType } from './utils';
+import { safeJsonParse } from './utils';
 
 const connectSchema = v.object({
-  networkId: v.optional(v.string()),
-  accountName: v.string(),
-  chainIds: v.pipe(
-    v.array(v.string()),
-    v.transform((input) => input as ChainId[]),
-  ),
-  tokenContract: v.string(),
+  appName: v.optional(v.string()),
 });
 
+interface IChainWeaverGetStatusResponse {
+  payload: {
+    accounts: {
+      address: string;
+      alias: string;
+      chains: string[];
+      guard: Guard;
+      overallBalance: string;
+    }[];
+  };
+}
 /**
  * @public
  * ChainweaverAdapter
- *
- * Overrides BaseWalletAdapter to map "kadena_*" calls to local Chainweaver endpoints
- * or minimal no-ops where necessary.
  */
 export class ChainweaverAdapter extends BaseWalletAdapter {
-  public name: string = 'Chainweaver';
+  public name: string = CHAINWEAVER_ADAPTER;
   public nonce: number = 0;
+  public provider!: IChainweaverProvider;
   public connectSchema: StandardSchemaV1 = connectSchema;
 
   public constructor(options: IBaseWalletAdapterOptions) {
@@ -51,48 +57,65 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
     args: KdaRequestArgs<M>,
   ): Promise<IKdaMethodMap[M]['response']> {
     // strict-boolean-expressions: compare explicitly rather than coerce to boolean
-    if (this.provider === undefined)
+    if (this.provider === undefined) {
       throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
+    }
 
     this.nonce++;
     const method = args.method;
     const params = 'params' in args ? args.params : undefined;
-    const parsedParams = params ?? {};
+    const parsedParams = (params ?? {}) as v.InferOutput<typeof connectSchema>;
 
     switch (method) {
       case 'kadena_connect': {
-        const { chainIds, tokenContract, accountName } =
-          args.params as v.InferOutput<typeof connectSchema>;
+        if (!('appName' in parsedParams)) {
+          console.warn(
+            'In the Chainweaver Adapter you can provide the parameter `appName` to connect()\n' +
+              '    adapter.connect({ appName: "MyApp" });`',
+          );
+        }
+        this.provider.focus();
 
-        const { status, message, data } = await checkVerifiedAccount(
-          accountName,
-          chainIds,
-          tokenContract,
-          this.networkId,
-        );
+        const applicationName = parsedParams.appName ?? 'dApp';
 
-        if (status === 'success' && data) {
-          return {
-            id: this.nonce,
-            jsonrpc: '2.0',
-            result: {
-              accountName: data.account,
-              networkId: this.networkId,
-              contract: tokenContract,
-              guard: data.guard,
-              existsOnChains: chainIds,
-            },
-          } as JsonRpcResponse<IAccountInfo>;
-        } else {
+        const response = await this.provider.message('CONNECTION_REQUEST', {
+          name: applicationName,
+        });
+
+        if ((response.payload as any).status !== 'accepted') {
           return {
             id: this.nonce,
             jsonrpc: '2.0',
             error: {
               code: 0,
-              message: ERRORS.FAILED_TO_VERIFY(message),
+              message: ERRORS.FAILED_TO_CONNECT,
             },
           } as JsonRpcResponse<IAccountInfo>;
         }
+
+        const { payload } = (await this.provider.message('GET_STATUS', {
+          name: applicationName,
+        })) as IChainWeaverGetStatusResponse;
+
+        this.provider.close();
+
+        if (payload.accounts.length === 0) {
+          throw new Error(ERRORS.NO_ACCOUNTS_FOUND);
+        }
+
+        return {
+          id: this.nonce,
+          jsonrpc: '2.0',
+          result: {
+            accountName: payload.accounts[0].address,
+            label: payload.accounts[0].alias,
+            networkId: this.networkId,
+            contract: 'coin',
+            guard: payload.accounts[0].guard,
+            keyset: payload.accounts[0].guard,
+            existsOnChains: payload.accounts[0].chains as ChainId[],
+          } as IAccountInfo,
+        };
       }
 
       case 'kadena_disconnect': {
@@ -112,42 +135,55 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
           commandSigDatas: CommandSigDatas;
         };
 
-        const resp = await fetch('http://127.0.0.1:9467/v1/quicksign', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cmdSigDatas: commandSigDatas }),
-        });
+        const results: { tx: IUnsignedCommand; data: CommandSigDatas[0] }[] =
+          [];
+        for (const commandSigData of commandSigDatas) {
+          const parsed = safeJsonParse(commandSigData.cmd);
+          if (!parsed) {
+            throw new Error(ERRORS.INVALID_PARAMS);
+          }
 
-        const data = await resp.json();
-        if (!resp.ok) {
-          throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
+          const tx = createTransaction(parsed);
+          const response = (await this.provider.message(
+            'SIGN_REQUEST',
+            tx as any,
+          )) as IResponseType<{
+            transaction: IUnsignedCommand;
+            status: 'signed' | 'rejected';
+          }>;
+
+          if (response.payload.status === 'signed') {
+            results.push({
+              tx: response.payload.transaction,
+              data: commandSigData,
+            });
+          }
         }
+
+        this.provider.close();
+
         return {
           id: this.nonce,
           jsonrpc: '2.0',
-          result: data,
-        } as JsonRpcResponse<unknown>;
+          result: {
+            responses: results.map((result) => ({
+              commandSigData: {
+                cmd: result.data.cmd,
+                sigs: result.tx.sigs,
+              },
+              outcome: {
+                result: 'success',
+                hash: result.tx.hash,
+              },
+            })),
+          },
+        } as JsonRpcResponse<IQuicksignResponseOutcomes>;
       }
 
       case 'kadena_sign_v1': {
-        const signingCmd = parsedParams as ISigningRequestPartial;
-        const resp = await fetch('http://127.0.0.1:9467/v1/sign', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(signingCmd),
-        });
-        const data = await resp.json();
-        if (!resp.ok) {
-          throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
-        }
-        return {
-          id: this.nonce,
-          jsonrpc: '2.0',
-          result: data,
-        } as JsonRpcResponse<{
-          body: ICommand | IUnsignedCommand;
-          chainId: ChainId;
-        }>;
+        throw new Error(
+          'kadena_sign_v1 is not supported in ChainweaverAdapter, use kadena_quicksign_v1 instead',
+        );
       }
 
       default:
