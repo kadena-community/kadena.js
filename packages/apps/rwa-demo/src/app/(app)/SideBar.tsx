@@ -24,8 +24,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
 }) => {
   const { isExpanded } = useSideBarLayout();
-  const { agents, investors, agentsIsLoading, investorsIsLoading, asset } =
-    useAsset();
+  const { agents, investors, agentsIsLoading, investorsIsLoading } = useAsset();
   const { isAgent, isOwner, isComplianceOwner, isInvestor } = useAccount();
 
   return (
