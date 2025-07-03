@@ -13,6 +13,7 @@ import { isKeysetGuard } from '@/modules/account/guards';
 import { IContact } from '@/modules/contact/contact.repository';
 import { INetwork } from '@/modules/network/network.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { breakAllClass } from '@/pages/transaction/components/style.css';
 import { shorten } from '@/utils/helpers';
 import { withRaceGuard } from '@/utils/promise-utils';
 import { debounce } from '@/utils/session';
@@ -236,7 +237,7 @@ export function AccountSearchBox({
           <Text size="smallest">
             No account found for{' '}
             {
-              <Text size="smallest" bold>
+              <Text size="smallest" bold className={breakAllClass}>
                 {value}
               </Text>
             }

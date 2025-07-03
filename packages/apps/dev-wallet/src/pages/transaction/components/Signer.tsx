@@ -62,7 +62,7 @@ export const RenderSigner = ({
   const signature = transaction.sigs.find(
     (sig) => sig?.pubKey === signer.pubKey && sig.sig,
   )?.sig;
-  const info = getPublicKeyData(signer.pubKey);
+  const signerPukeyInfo = getPublicKeyData(signer.pubKey);
   const [error, setError] = useState<string>();
   const [showCapabilities, setShowCapabilities] = useState(false);
   const keyAlias = useMemo(
@@ -155,7 +155,7 @@ export const RenderSigner = ({
               >
                 {showCapabilities ? 'Hide details' : 'Show details'}
               </Button>
-              {signature ? (
+              {signature && signerPukeyInfo ? (
                 <Button
                   variant="negative"
                   isDisabled={statusPassed(transactionStatus, 'submitted')}
@@ -171,7 +171,7 @@ export const RenderSigner = ({
                 >
                   Unsign
                 </Button>
-              ) : info ? (
+              ) : signerPukeyInfo ? (
                 <Button
                   isCompact
                   variant="info"
@@ -212,8 +212,10 @@ export const RenderSigner = ({
           >
             <Stack gap={'sm'} alignItems="center">
               <Heading variant="h6">Public Key</Heading>
-              <Stack flex={1}>{info && <Badge size="sm">Owned</Badge>}</Stack>
-              {<Badge size="sm">{info?.source ?? 'External'}</Badge>}
+              <Stack flex={1}>
+                {signerPukeyInfo && <Badge size="sm">Owned</Badge>}
+              </Stack>
+              {<Badge size="sm">{signerPukeyInfo?.source ?? 'External'}</Badge>}
             </Stack>
 
             <Stack gap={'sm'} alignItems={'flex-start'}>
@@ -272,7 +274,7 @@ export const RenderSigner = ({
             </Stack>
           )}
 
-          {!signature && info && (
+          {!signature && signerPukeyInfo && (
             <Stack>
               {error && (
                 <Notification intent="negative" role="alert">
@@ -281,7 +283,7 @@ export const RenderSigner = ({
               )}
             </Stack>
           )}
-          {!signature && !info && (
+          {!signature && !signerPukeyInfo && (
             <form onSubmit={handleSubmit}>
               <Stack
                 gap={'sm'}

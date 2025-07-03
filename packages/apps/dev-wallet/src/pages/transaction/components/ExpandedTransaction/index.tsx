@@ -137,7 +137,7 @@ export function ExpandedTransaction({
           <Card fullWidth>
             <CardContentBlock
               level={2}
-              title="In the queue"
+              title="Transaction status"
               visual={<MonoTroubleshoot width={24} height={24} />}
             >
               <Stack style={{ marginBlockStart: '-80px' }}>
@@ -214,7 +214,7 @@ export function ExpandedTransaction({
                           />
                         }
                       >
-                        <ContextMenuItem
+                        {/* <ContextMenuItem
                           label="JSON"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json', transaction)}
@@ -223,14 +223,14 @@ export function ExpandedTransaction({
                           label="YAML"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml', transaction)}
-                        />
+                        /> */}
                         <ContextMenuItem
-                          label="JSON Legacy (v2)"
+                          label="JSON"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('json', transaction, true)}
                         />
                         <ContextMenuItem
-                          label="YAML Legacy (v2)"
+                          label="YAML"
                           endVisual={<MonoContentCopy />}
                           onClick={copyTransactionAs('yaml', transaction, true)}
                         />
@@ -257,7 +257,8 @@ export function ExpandedTransaction({
                     </Button>
                   ) : (
                     <Confirmation
-                      label="Abort"
+                      label="Yes, cancel"
+                      dismissLabel="No"
                       onPress={() => {
                         if (transaction.uuid) {
                           transactionRepository.deleteTransaction(
@@ -279,11 +280,11 @@ export function ExpandedTransaction({
                           variant="outlined"
                           startVisual={<MonoClose />}
                         >
-                          Abort
+                          Cancel
                         </Button>
                       }
                     >
-                      Are you sure you want to abort this transaction?
+                      Are you sure you want to cancel this transaction?
                     </Confirmation>
                   )}
                   <Button
