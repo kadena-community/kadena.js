@@ -30,7 +30,7 @@ import {
   SideBarTopBanner,
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { KLogo } from './KLogo';
 import { SideBar } from './SideBar';
@@ -41,7 +41,8 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   const [openTransactionsSide, setOpenTransactionsSide] = useState(false);
-  const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
+  const { setIsRightAsideExpanded, isRightAsideExpanded, setLocation } =
+    useSideBarLayout();
   const { transactions, setTxsButtonRef, setTxsAnimationRef } =
     useTransactions();
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -49,6 +50,8 @@ const RootLayout = ({
   const { isMounted, userData, user } = useUser();
   const { asset } = useAsset();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
@@ -62,6 +65,15 @@ const RootLayout = ({
       return;
     }
   }, [user, isMounted]);
+
+  useEffect(() => {
+    const params = searchParams.toString();
+    console.log({ params, pathname });
+    setLocation({
+      url: `${pathname}${params ? `?${params}` : ''}`,
+      push: router.push,
+    });
+  }, [pathname, searchParams.toString(), setLocation]);
 
   if (!isMounted || !user) return <MainLoading />;
 

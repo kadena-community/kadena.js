@@ -219,6 +219,13 @@ export const sidebartreeItemClass = recipe({
       true: {},
       false: {},
     },
+    isActive: {
+      true: {
+        backgroundColor: `${token('color.background.base.@active')}!important`,
+        color: `${token('color.link.base.default')}!important`,
+      },
+      false: {},
+    },
   },
 });
 

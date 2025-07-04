@@ -36,6 +36,7 @@ export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     startVisual?: ReactElement;
     endVisual?: ReactElement;
     component?: any;
+    to?: string;
   };
 
 /**

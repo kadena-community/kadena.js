@@ -117,7 +117,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     }
     if (asset?.supply && asset.supply > 0) {
       stepName = 'success';
-      percentage += percentageStep;
+      percentage = 100;
     }
 
     setStep(stepName);
