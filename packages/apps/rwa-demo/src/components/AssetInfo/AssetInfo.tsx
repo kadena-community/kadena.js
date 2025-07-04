@@ -1,10 +1,8 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
-import { env } from '@/utils/env';
 import { MonoPause, MonoPlayArrow, MonoVpnLock } from '@kadena/kode-icons';
-import { Button, Heading, Stack } from '@kadena/kode-ui';
+import { Button, Heading, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import { CopyButton } from '../CopyButton/CopyButton';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 export const AssetInfo: FC = () => {
@@ -13,12 +11,11 @@ export const AssetInfo: FC = () => {
   if (!asset) return;
   return (
     <Stack width="100%" flexDirection="column">
-      <Stack width="100%" gap="sm" alignItems="center" marginBlock="md">
-        <MonoVpnLock />
+      <Stack width="100%" gap="sm" alignItems="center" marginBlockEnd="md">
+        <Text>
+          <MonoVpnLock />
+        </Text>
         <Heading as="h3">{asset.contractName}</Heading>
-        <CopyButton
-          value={`${env.URL}/assets/create/${asset?.namespace}/${asset?.contractName}`}
-        />
         <Button isCompact variant="transparent" isDisabled>
           <TransactionTypeSpinner
             type={TXTYPES.PAUSECONTRACT}

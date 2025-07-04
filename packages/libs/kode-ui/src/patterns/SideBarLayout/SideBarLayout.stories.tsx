@@ -1,8 +1,10 @@
 import {
   MonoAccountTree,
+  MonoAdd,
   MonoControlPointDuplicate,
   MonoInsertDriveFile,
   MonoLightMode,
+  MonoMoreVert,
   MonoWallet,
   MonoWifiTethering,
   MonoWindow,
@@ -12,7 +14,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { useNotifications } from '../LayoutUtils';
-import { Button, Dialog, DialogHeader, Stack } from './../../components';
+import {
+  Badge,
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogHeader,
+  Stack,
+} from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
@@ -173,6 +182,26 @@ const InnerLayout = () => {
                   label="Mainnet"
                   href="javascript:void()"
                 />
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Item with badge"
+                  href="javascript:void()"
+                  endVisual={
+                    <Badge size="sm" style="positive">
+                      1
+                    </Badge>
+                  }
+                />
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Item extra"
+                  href="javascript:void()"
+                  endVisual={
+                    <Badge size="sm" style="positive">
+                      2
+                    </Badge>
+                  }
+                />
                 <SideBarTree visual={<MonoWallet />} label="My Wallet">
                   <SideBarTreeItem label="Accounts" href="https://kadena.io" />
                   <SideBarTreeItem
@@ -188,6 +217,27 @@ const InnerLayout = () => {
                   />
                 </SideBarTree>
               </>
+            }
+            appContext={
+              <SideBarItem visual={<MonoMoreVert />} label="Select Asset">
+                <ButtonGroup fullWidth>
+                  <Button
+                    startVisual={<MonoAdd />}
+                    textAlign="start"
+                    isCompact
+                    variant="outlined"
+                  >
+                    {isExpanded ? 'Asset Switch' : undefined}
+                  </Button>
+                  {isExpanded && (
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      startVisual={<MonoMoreVert />}
+                    />
+                  )}
+                </ButtonGroup>
+              </SideBarItem>
             }
             context={
               <>
@@ -256,7 +306,6 @@ const InnerLayout = () => {
             width="100%"
             flexDirection="column"
             justifyContent="center"
-            margin="md"
             gap="md"
           >
             <Button

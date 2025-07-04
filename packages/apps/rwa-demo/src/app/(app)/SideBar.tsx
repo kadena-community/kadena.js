@@ -1,5 +1,4 @@
 import { AccountSwitch } from '@/components/AccountSwitch/AccountSwitch';
-import { AssetSetupProgress } from '@/components/AssetSetupCompletionOverview/AssetSetupProgress';
 import { AssetSwitch } from '@/components/AssetSwitch/AssetSwitch';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
@@ -11,7 +10,7 @@ import {
   MonoNetworkCheck,
   MonoSupportAgent,
 } from '@kadena/kode-icons';
-import { Badge, Stack } from '@kadena/kode-ui';
+import { Badge } from '@kadena/kode-ui';
 import {
   SideBarItem,
   SideBar as SideBarLayout,
@@ -25,8 +24,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
 }) => {
   const { isExpanded } = useSideBarLayout();
-  const { agents, investors, agentsIsLoading, investorsIsLoading, asset } =
-    useAsset();
+  const { agents, investors, agentsIsLoading, investorsIsLoading } = useAsset();
   const { isAgent, isOwner, isComplianceOwner, isInvestor } = useAccount();
 
   return (
@@ -51,16 +49,14 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
           {(isOwner || isAgent) && (
             <SideBarItem
               visual={<MonoSupportAgent />}
-              label={
-                <Stack gap="xs" alignItems="center">
-                  Agents
-                  {agentsIsLoading ? (
-                    <TransactionPendingIcon />
-                  ) : (
-                    <Badge size="sm">{agents.length}</Badge>
-                  )}
-                </Stack>
+              endVisual={
+                agentsIsLoading ? (
+                  <TransactionPendingIcon />
+                ) : (
+                  <Badge size="sm">{agents.length}</Badge>
+                )
               }
+              label={'Agents'}
               component={Link}
               href="/agents"
             />
@@ -68,16 +64,14 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
           {(isAgent || isOwner || isComplianceOwner || isInvestor) && (
             <SideBarItem
               visual={<MonoAttachMoney />}
-              label={
-                <Stack gap="xs" alignItems="center">
-                  Investors
-                  {investorsIsLoading ? (
-                    <TransactionPendingIcon />
-                  ) : (
-                    <Badge size="sm">{investors.length}</Badge>
-                  )}
-                </Stack>
+              endVisual={
+                investorsIsLoading ? (
+                  <TransactionPendingIcon />
+                ) : (
+                  <Badge size="sm">{investors.length}</Badge>
+                )
               }
+              label={'Investors'}
               component={Link}
               href="/investors"
             />
@@ -88,7 +82,6 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
         <SideBarItem visual={<MonoNetworkCheck />} label="Select Asset">
           <AssetSwitch showLabel={isExpanded} />
           <AccountSwitch showLabel={isExpanded} />
-          <AssetSetupProgress asset={asset} />
         </SideBarItem>
       }
       context={<SidebarSideContext />}

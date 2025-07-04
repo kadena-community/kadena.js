@@ -21,8 +21,13 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
       <ButtonGroup fullWidth>
         {showLabel && (
           <>
-            <Button startVisual={<MonoWallet />} isCompact variant="outlined" />
-            <Button isCompact variant="outlined" style={{ flex: 1 }}>
+            <Button
+              textAlign="start"
+              startVisual={<MonoWallet />}
+              isCompact
+              variant="outlined"
+              style={{ flex: 1 }}
+            >
               {account
                 ? account.alias || maskValue(account.address)
                 : 'Select an account'}
