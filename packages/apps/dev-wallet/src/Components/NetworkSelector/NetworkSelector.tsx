@@ -16,6 +16,7 @@ import {
   IButtonProps,
 } from '@kadena/kode-ui';
 import { FC } from 'react';
+import { truncateClass } from './style.css';
 
 export const NetworkSelector: FC<{
   showLabel?: boolean;
@@ -40,6 +41,7 @@ export const NetworkSelector: FC<{
     <ButtonGroup fullWidth>
       {showLabel && (
         <Button
+          className={truncateClass}
           textAlign="start"
           data-testid="networkselectorName"
           isCompact
