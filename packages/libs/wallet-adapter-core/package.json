@@ -1,6 +1,6 @@
 {
   "name": "@kadena/wallet-adapter-core",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.1",
   "license": "BSD-3-Clause",
   "exports": {
     "import": "./dist/esm/index.js",

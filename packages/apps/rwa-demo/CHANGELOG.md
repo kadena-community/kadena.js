@@ -1,5 +1,20 @@
 # @kadena/rwa-demo
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+- Updated dependencies \[24fb611]
+- Updated dependencies \[3759502]
+- Updated dependencies \[b5df48c]
+- Updated dependencies \[05168d0]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+  - @kadena/kode-ui\@0.21.0
+  - @kadena/graph\@2.2.3
+
 ## 0.1.10
 
 ### Patch Changes

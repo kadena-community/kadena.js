@@ -1,6 +1,6 @@
 {
   "name": "@kadena/wallet-adapter-chainweaver",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1",
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
