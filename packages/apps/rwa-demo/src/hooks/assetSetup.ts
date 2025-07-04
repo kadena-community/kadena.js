@@ -54,7 +54,14 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
   const [stepIdx, setStepIdx] = useState<number>(() =>
     getStepIdx(step?.id as IStepKeys),
   );
-  const { setAsset, asset, agents, investors } = useAsset();
+  const {
+    setAsset,
+    asset,
+    agents,
+    investors,
+    agentsIsLoading,
+    investorsIsLoading,
+  } = useAsset();
 
   const setStep = (step: IStepKeys) => {
     const newStep = steps.find((s) => s.id === step);
@@ -98,6 +105,8 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
       percentage += percentageStep;
     }
 
+    if (agentsIsLoading || investorsIsLoading) return;
+
     if (isOneComplianceRuleSet(asset)) {
       stepName = 'startcompliance';
       percentage += percentageStep;
@@ -126,7 +135,15 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
       if (percentage > 100) return 100;
       return Math.round(percentage);
     });
-  }, [asset?.uuid, asset?.supply, asset?.compliance, agents, investors]);
+  }, [
+    asset?.uuid,
+    asset?.supply,
+    asset?.compliance,
+    agents.length,
+    investors.length,
+    agentsIsLoading,
+    investorsIsLoading,
+  ]);
 
   return {
     asset,
@@ -135,6 +152,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     steps,
     setActiveStep: setStep,
     percentageComplete,
+    isLoading: agentsIsLoading || investorsIsLoading,
     isOneComplianceRuleSet: isOneComplianceRuleSet(asset),
     isOneComplianceRuleStarted: isOneComplianceRuleStarted(asset),
   };

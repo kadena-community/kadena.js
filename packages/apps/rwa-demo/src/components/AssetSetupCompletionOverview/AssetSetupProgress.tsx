@@ -10,7 +10,7 @@ import {
 } from './style.css';
 
 export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({ asset }) => {
-  const { percentageComplete } = useAssetSetup({ tempAsset: asset });
+  const { percentageComplete, isLoading } = useAssetSetup({ tempAsset: asset });
   const circleRef = useRef<SVGCircleElement>(null);
 
   const strokeWidth = 3;
@@ -26,6 +26,10 @@ export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({ asset }) => {
   }, [percentageComplete, circumference]);
 
   if (!asset) return;
+
+  //when complete, do not show progress
+  if (percentageComplete >= 100 || isLoading) return;
+
   return (
     <Stack
       gap="sm"
