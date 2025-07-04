@@ -364,7 +364,7 @@ export const button = recipe({
           height: token('size.n8'),
           vars: {
             [iconSize]: token('size.n4'),
-            [startVisualSpacing]: token('size.n3'),
+            [startVisualSpacing]: token('size.n2'),
             [endVisualSpacing]: token('size.n2'),
             [noStartVisualSpacing]: token('size.n4'),
             [noEndVisualSpacing]: token('size.n4'),
@@ -377,7 +377,7 @@ export const button = recipe({
           lineHeight: token('size.n6'),
           vars: {
             [iconSize]: token('size.n6'),
-            [startVisualSpacing]: token('size.n4'),
+            [startVisualSpacing]: token('size.n3'),
             [endVisualSpacing]: token('size.n4'),
             [noStartVisualSpacing]: token('size.n6'),
             [noEndVisualSpacing]: token('size.n6'),
