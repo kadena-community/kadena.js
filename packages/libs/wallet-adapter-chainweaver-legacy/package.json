@@ -1,6 +1,6 @@
 {
   "name": "@kadena/wallet-adapter-chainweaver-legacy",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1",
   "contributors": [
     "Danillo Felixdaal",
     "Bart Huijgen"
