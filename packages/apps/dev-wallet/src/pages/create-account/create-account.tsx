@@ -12,6 +12,7 @@ import {
   Button,
   Card,
   Heading,
+  Notification,
   Select,
   SelectItem,
   Stack,
@@ -19,6 +20,7 @@ import {
   TextField,
 } from '@kadena/kode-ui';
 
+import { getErrorMessage } from '@/utils/getErrorMessage';
 import { shorten } from '@/utils/helpers';
 import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { useState } from 'react';
@@ -38,6 +40,7 @@ export function CreateAccount({
   const [contract, setContract] = useState<string | null>(initialContract);
   const [alias, setAlias] = useState<string | null>(null);
   const { profile, activeNetwork, fungibles, accounts } = useWallet();
+  const [error, setError] = useState<string | null>(null);
 
   const filteredAccounts = accounts.filter(
     (account) => account.contract === contract,
@@ -66,9 +69,18 @@ export function CreateAccount({
       overallBalance: '0',
     };
 
-    await accountRepository.addAccount(account);
-
-    onCreated(account);
+    try {
+      await accountRepository.addAccount(account);
+      onCreated(account);
+    } catch (err) {
+      if (getErrorMessage(err).includes('unique-account')) {
+        setError(
+          'Account with this keyset already exists. Please use a different keyset.',
+        );
+      } else {
+        setError('Failed to create account. Please try again.');
+      }
+    }
   };
 
   return (
@@ -100,6 +112,7 @@ export function CreateAccount({
             variant="inline"
             keyset={keysetGuard}
             onChange={(data) => {
+              setError(null);
               if (!data) {
                 setKeysetGuard(undefined);
                 return;
@@ -134,6 +147,11 @@ export function CreateAccount({
             <>Create account</>
           </Button>
         </Stack>
+        {error && (
+          <Notification role="alert" intent="negative">
+            {error}
+          </Notification>
+        )}
       </Stack>
     </>
   );
