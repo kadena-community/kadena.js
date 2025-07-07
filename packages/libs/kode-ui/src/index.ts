@@ -126,6 +126,7 @@ export {
   Stack,
   Step,
   Stepper,
+  SuccessCircle,
   TabItem,
   Table,
   TableBody,

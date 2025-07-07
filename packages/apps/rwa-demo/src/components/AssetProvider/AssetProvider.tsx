@@ -301,6 +301,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         investorsIsLoading,
         agents,
         agentsIsLoading,
+        assetStore,
       }}
     >
       {children}

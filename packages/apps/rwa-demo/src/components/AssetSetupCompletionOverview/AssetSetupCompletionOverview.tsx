@@ -110,7 +110,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
             title="Get Started"
             actions={
               <>
-                <Stepper direction="vertical">
+                <Stepper direction="vertical" showSuccess>
                   {steps.map((step, idx) => (
                     <Step
                       key={step.id}

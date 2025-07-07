@@ -1,6 +1,6 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { ICompactStepperItemProps } from '@kadena/kode-ui';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAsset } from './asset';
 
 export type IStepKeys =
@@ -61,6 +61,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     investors,
     agentsIsLoading,
     investorsIsLoading,
+    assetStore,
   } = useAsset();
 
   const setStep = (step: IStepKeys) => {
@@ -145,6 +146,12 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     investorsIsLoading,
   ]);
 
+  const completeAssetSetup = useCallback(async () => {
+    if (!asset) return;
+    const newAsset: IAsset = { ...asset, setupComplete: true };
+    await assetStore?.updateAsset(newAsset);
+  }, [asset]);
+
   return {
     asset,
     activeStep: step,
@@ -155,5 +162,6 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     isLoading: agentsIsLoading || investorsIsLoading,
     isOneComplianceRuleSet: isOneComplianceRuleSet(asset),
     isOneComplianceRuleStarted: isOneComplianceRuleStarted(asset),
+    completeAssetSetup,
   };
 };

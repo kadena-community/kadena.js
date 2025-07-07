@@ -18,6 +18,7 @@ export interface IStepProps {
   active?: Variants['active'];
   icon?: ReactElement;
   onClick?: () => void;
+  showSuccess?: boolean;
 }
 export const Step = ({
   children,
@@ -25,6 +26,7 @@ export const Step = ({
   status = 'valid',
   icon,
   onClick,
+  showSuccess = false,
 }: IStepProps) => {
   return (
     <Stack
@@ -34,6 +36,7 @@ export const Step = ({
       gap="md"
       data-isclickable={!!onClick}
       onClick={onClick}
+      position="relative"
     >
       <Stack className={bulletClass({ status, active })} />
       <Stack

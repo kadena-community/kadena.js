@@ -5,6 +5,8 @@ import { getVariants } from '../../storyDecorators/getVariants';
 import type { IStepProps } from './Step';
 import { Step } from './Step';
 
+import { Button } from '../Button';
+import { Stack } from '../Layout';
 import { Stepper } from './Stepper';
 import { stepClass } from './Stepper.css';
 
@@ -40,21 +42,45 @@ export const Primary: Story = {
     status: 'valid',
   },
   render: (args) => {
+    const [step, setStep] = React.useState(1);
+
+    const handlePrevious = () => {
+      if (step > 0) {
+        setStep((prev) => prev - 1);
+      }
+    };
+
+    const handleNext = () => {
+      if (step < 3) {
+        setStep((prev) => prev + 1);
+      }
+    };
+
     return (
-      <Stepper {...args}>
-        <Step icon={<MonoCheck />} onClick={() => alert('1')}>
-          Prince Adam
-        </Step>
-        <Step
-          active
-          status={args.status}
-          icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
-        >
-          Power Sword
-        </Step>
-        <Step>He-man</Step>
-        <Step>Master of the Universe</Step>
-      </Stepper>
+      <Stack gap="md" flexDirection="column" marginBlockStart="n40">
+        <Stepper {...args} showSuccess>
+          <Step
+            active={step === 0}
+            icon={<MonoCheck />}
+            onClick={() => alert('1')}
+          >
+            Prince Adam
+          </Step>
+          <Step
+            active={step === 1}
+            status={args.status}
+            icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
+          >
+            Power Sword
+          </Step>
+          <Step active={step === 2}>He-man</Step>
+          <Step active={step === 3}>Master of the Universe</Step>
+        </Stepper>
+        <Stack justifyContent="space-between" width="100%">
+          <Button onPress={handlePrevious}>previous</Button>
+          <Button onPress={handleNext}>next</Button>
+        </Stack>
+      </Stack>
     );
   },
 };
@@ -65,19 +91,41 @@ export const Horizontal: Story = {
     status: 'valid',
   },
   render: (args) => {
+    const [step, setStep] = React.useState(1);
+
+    const handlePrevious = () => {
+      if (step > 0) {
+        setStep((prev) => prev - 1);
+      }
+    };
+
+    const handleNext = () => {
+      if (step < 3) {
+        setStep((prev) => prev + 1);
+      }
+    };
+
     return (
-      <Stepper {...args} direction="horizontal">
-        <Step icon={<MonoCheck />}>Prince Adam</Step>
-        <Step
-          active
-          status={args.status}
-          icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
-        >
-          Power Sword
-        </Step>
-        <Step>He-man</Step>
-        <Step>Master of the Universe</Step>
-      </Stepper>
+      <Stack gap="md" flexDirection="column" marginBlockStart="n40">
+        <Stepper {...args} direction="horizontal" showSuccess>
+          <Step active={step === 0} icon={<MonoCheck />}>
+            Prince Adam
+          </Step>
+          <Step
+            active={step === 1}
+            status={args.status}
+            icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
+          >
+            Power Sword
+          </Step>
+          <Step active={step === 2}>He-man</Step>
+          <Step active={step === 3}>Master of the Universe</Step>
+        </Stepper>
+        <Stack justifyContent="space-between" width="100%">
+          <Button onPress={handlePrevious}>previous</Button>
+          <Button onPress={handleNext}>next</Button>
+        </Stack>
+      </Stack>
     );
   },
 };
@@ -88,10 +136,11 @@ export const NoActive: Story = {
   },
   render: (args) => {
     return (
-      <Stepper {...args} direction="horizontal">
-        <Step icon={<MonoCheck />}>Prince Adam</Step>
+      <Stepper {...args} direction="vertical">
+        <Step active icon={<MonoCheck />}>
+          Prince Adam
+        </Step>
         <Step
-          active
           status="inactive"
           icon={args.status === 'error' ? <MonoClear /> : <MonoCheck />}
         >
