@@ -56,6 +56,7 @@ export const SideBar: FC<ISideBarProps> = ({
     <>
       <button
         type="button"
+        aria-label="Backdrop to close the sidebar"
         className={menuBackdropClass({ expanded: isExpanded })}
         onClick={(e) => handleExpand(e as unknown as PressEvent)}
       />
