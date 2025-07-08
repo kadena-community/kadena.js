@@ -17,6 +17,7 @@ export const useFaucet = () => {
   const submit = async (): Promise<ITransaction | undefined> => {
     return submit2Chain(undefined, {
       notificationSentryName: 'error:submit:faucet',
+      successMessage: 'Faucet request successful',
       skipAssetCheck: true,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return faucet(account!);

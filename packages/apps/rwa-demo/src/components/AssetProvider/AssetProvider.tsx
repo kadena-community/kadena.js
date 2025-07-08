@@ -72,7 +72,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const unlistenAsset = assetStore?.listenToAsset(asset, setAsset);
 
     return () => {
-      console.log('unlisten assets');
       if (unlistenAssets) {
         unlistenAssets();
       }

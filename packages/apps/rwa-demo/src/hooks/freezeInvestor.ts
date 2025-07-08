@@ -5,6 +5,7 @@ import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ISetAddressFrozenProps } from '@/services/setAddressFrozen';
 import { setAddressFrozen } from '@/services/setAddressFrozen';
 import { RWAStore } from '@/utils/store';
+import { maskValue } from '@kadena/kode-ui';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -32,6 +33,9 @@ export const useFreezeInvestor = () => {
   ): Promise<ITransaction | undefined> => {
     return submit2Chain<ISetAddressFrozenProps>(data, {
       notificationSentryName: 'error:submit:freezeinvestor',
+      successMessage: data.pause
+        ? `Freeze investor ${maskValue(data.investorAccount)} successful`
+        : `Unfreeze investor ${maskValue(data.investorAccount)} successful `,
       chainFunction: async (account: IWalletAccount, asset: IAsset) => {
         if (!user) return Promise.resolve(undefined);
         await store?.setFrozenMessage(data, user, asset);

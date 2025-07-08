@@ -17,6 +17,7 @@ export const useForcedTransferTokens = () => {
   const submit = async (data: IForcedTransferTokensProps) => {
     return submit2Chain<IForcedTransferTokensProps>(data, {
       notificationSentryName: 'error:submit:forcedtransfertokens',
+      successMessage: 'Forced transfer tokens successful',
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return forcedTransferTokens(data, account!, asset);
       },

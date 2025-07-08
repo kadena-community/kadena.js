@@ -94,17 +94,10 @@ export const useSubmit2Chain = () => {
       const client = getClient();
       res = await client.submit(signedTransaction);
 
-      if (options.successMessage) {
-        addNotification({
-          intent: 'positive',
-          label: 'transaction successful',
-          message: options.successMessage,
-        });
-      }
-
       return addTransaction({
         ...res,
         ...options.transaction,
+        successMessage: options.successMessage,
       });
     } catch (e: any) {
       addNotification(

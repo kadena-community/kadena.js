@@ -50,6 +50,7 @@ export interface ITransaction {
   listener?: any;
   accounts: string[];
   result?: ICommandResult['result'];
+  successMessage?: string;
 }
 
 export interface ITransactionsContext {
