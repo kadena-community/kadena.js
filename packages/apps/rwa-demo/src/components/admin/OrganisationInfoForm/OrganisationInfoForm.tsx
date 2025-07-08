@@ -97,6 +97,11 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
     await orgStore.updateOrganisation(newOrganisation);
     setIsLoading(false);
+    addNotification({
+      intent: 'positive',
+      label: 'Organisation updated',
+      message: `Organisation ${newOrganisation.name} has been updated successfully.`,
+    });
   };
 
   const handleDelete = useCallback(async () => {
@@ -107,7 +112,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
     addNotification(
       {
-        intent: 'positive',
+        intent: 'warning',
         label: 'Organisation removed',
         message: `Organisation ${organisation.name} has been removed successfully.`,
       },

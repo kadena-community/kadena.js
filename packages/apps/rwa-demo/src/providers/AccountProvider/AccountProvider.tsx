@@ -151,6 +151,11 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         setAccount(tempAccount);
         addAccount2User(tempAccount);
 
+        addNotification({
+          intent: 'positive',
+          message: `Account added successfully`,
+        });
+
         router.replace('/');
       }
     },

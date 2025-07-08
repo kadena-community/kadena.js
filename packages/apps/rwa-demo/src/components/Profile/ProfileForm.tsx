@@ -16,13 +16,18 @@ export const ProfileForm: FC = () => {
     if (!userStore || !userData || !user) {
       addNotification({
         intent: 'negative',
-        label: 'usertoken not set',
+        label: 'Profile not changed',
       });
       return;
     }
     await userStore.changeProfile(user.uid, {
       ...userData.data,
       displayName: data.displayName,
+    });
+
+    addNotification({
+      intent: 'positive',
+      label: 'Profile updated successfully',
     });
 
     setIsLoading(false);
