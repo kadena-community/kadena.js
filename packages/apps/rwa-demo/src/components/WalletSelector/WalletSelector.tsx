@@ -25,6 +25,7 @@ export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
   const handleConnect = async (type: keyof typeof WALLETTYPES) => {
     setType(type);
     const result = await addAccount(type);
+
     setAccounts(result);
   };
 

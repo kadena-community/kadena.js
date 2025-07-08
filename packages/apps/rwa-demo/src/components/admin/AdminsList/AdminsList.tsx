@@ -139,6 +139,10 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
     setIsLoading(false);
     setIsRightAsideExpanded(false);
+    addNotification({
+      intent: 'positive',
+      message: 'admin added successfully',
+    });
   };
 
   const handleRemove = async (uid: any) => {
@@ -163,6 +167,10 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     }
 
     setIsLoading(false);
+    addNotification({
+      intent: 'warning',
+      message: 'admin removed successfully',
+    });
   };
 
   return (

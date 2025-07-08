@@ -32,6 +32,7 @@ export const useDistributeTokens = ({
     }
     return submit2Chain<IDistributeTokensProps>(data, {
       notificationSentryName: 'error:submit:distributetokens',
+      successMessage: 'Distribute tokens successful',
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return distributeTokens(data, account!, asset);
       },

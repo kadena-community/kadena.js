@@ -11,6 +11,7 @@ import { useGetAgents } from '@/hooks/getAgents';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { useGetInvestors } from '@/hooks/getInvestors';
+import { useNotifications } from '@/hooks/notifications';
 import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
@@ -37,6 +38,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { paused } = usePaused(asset);
   const { data: supply } = useSupply(asset);
   const { data: investorCount } = useGetInvestorCount(asset);
+  const { addNotification } = useNotifications();
   const {
     data: investors,
     initFetchInvestors,
@@ -72,7 +74,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const unlistenAsset = assetStore?.listenToAsset(asset, setAsset);
 
     return () => {
-      console.log('unlisten assets');
       if (unlistenAssets) {
         unlistenAssets();
       }
@@ -150,6 +151,10 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const removeAsset = async (asset: IAsset) => {
     await assetStore?.removeAsset(asset);
+    addNotification({
+      intent: 'warning',
+      message: `Contract ${asset.contractName} removed successfully`,
+    });
   };
 
   const addAsset = ({

@@ -40,6 +40,7 @@ export const useSetCompliance = () => {
   const submit = async (data: ISetComplianceParametersProps) => {
     return submit2Chain<ISetComplianceParametersProps>(data, {
       notificationSentryName: 'error:submit:setcompliance',
+      successMessage: 'Set compliance parameters successful',
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return setComplianceParameters(data, account!, asset);
       },

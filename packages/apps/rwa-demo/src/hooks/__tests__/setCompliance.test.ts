@@ -405,6 +405,7 @@ describe('setCompliance hook', () => {
       // Check submit2Chain was called
       expect(submit2ChainMock).toHaveBeenCalledWith(complianceParameters, {
         notificationSentryName: 'error:submit:setcompliance',
+        successMessage: 'Set compliance parameters successful',
         chainFunction: expect.any(Function),
         transaction: {
           type: TXTYPES.SETCOMPLIANCE,

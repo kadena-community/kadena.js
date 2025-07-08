@@ -114,13 +114,17 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     if (result.status !== 200) {
       addNotification({
         intent: 'negative',
-        label: 'admin not added',
+        label: 'user not added',
         message: result.statusText,
       });
     }
 
     await loadData();
     setIsRightAsideExpanded(false);
+    addNotification({
+      intent: 'positive',
+      message: 'user added successfully',
+    });
   };
 
   const handleRemove = async (uid: any) => {
@@ -145,6 +149,10 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     }
 
     await loadData();
+    addNotification({
+      intent: 'warning',
+      message: 'user removed successfully',
+    });
   };
 
   return (

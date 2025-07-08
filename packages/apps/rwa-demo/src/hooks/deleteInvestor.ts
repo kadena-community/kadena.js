@@ -30,6 +30,7 @@ export const useDeleteInvestor = ({
   ): Promise<ITransaction | undefined> => {
     return submit2Chain<IDeleteIdentityProps>(data, {
       notificationSentryName: 'error:submit:deleteinvestor',
+      successMessage: `Delete investor ${data.investor} successful`,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return deleteIdentity(data, account!, asset);
       },
