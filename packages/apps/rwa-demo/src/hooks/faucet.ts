@@ -17,7 +17,7 @@ export const useFaucet = () => {
   const submit = async (): Promise<ITransaction | undefined> => {
     return submit2Chain(undefined, {
       notificationSentryName: 'error:submit:faucet',
-      successMessage: 'Faucet request successful',
+      successMessage: 'You have received KDA from the faucet',
       skipAssetCheck: true,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return faucet(account!);
