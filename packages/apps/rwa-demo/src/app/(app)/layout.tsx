@@ -84,6 +84,7 @@ const RootLayout = ({
       </SideBarTopBanner>
       <SideBarHeaderContext>
         <Button
+          aria-label="Current transactions"
           ref={txsButtonRef}
           variant="transparent"
           startVisual={

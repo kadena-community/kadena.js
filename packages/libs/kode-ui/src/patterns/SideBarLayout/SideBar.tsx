@@ -71,6 +71,7 @@ export const SideBar: FC<ISideBarProps> = ({
       >
         <Stack className={classNames(menuMenuIconClass({ isExpanded }))}>
           <Button
+            aria-label="Toggle sidemenu"
             isCompact
             variant="transparent"
             onPress={handleExpand}
