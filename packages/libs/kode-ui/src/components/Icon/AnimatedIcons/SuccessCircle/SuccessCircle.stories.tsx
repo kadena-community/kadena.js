@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { getVariants } from '../../../../storyDecorators/getVariants';
+import { button } from '../../../Button/Button.css';
 import { Button, Stack } from './../../..';
 import type { ISuccessCircleProps } from './SuccessCircle';
 import { SuccessCircle } from './SuccessCircle';
+
+const variants = getVariants(button);
 
 const meta: Meta<ISuccessCircleProps> = {
   title: 'Icons/AnimatedIcons/SuccessCircle',
@@ -15,7 +19,15 @@ const meta: Meta<ISuccessCircleProps> = {
       },
     },
   },
-  argTypes: {},
+  argTypes: {
+    variant: {
+      options: variants.variant,
+      control: {
+        type: 'select',
+      },
+      description: 'button style variant',
+    },
+  },
 };
 
 export default meta;
@@ -23,9 +35,11 @@ type Story = StoryObj<ISuccessCircleProps>;
 
 export const Primary: Story = {
   name: 'Success Amimation',
-  args: {},
+  args: {
+    variant: 'primary',
+  },
 
-  render: () => {
+  render: (props) => {
     const [play, setPlay] = React.useState(false);
     return (
       <>
@@ -39,14 +53,7 @@ export const Primary: Story = {
             height: '300px',
           }}
         >
-          <Stack
-            position="relative"
-            justifyContent="center"
-            alignItems="center"
-            style={{ width: '20px', height: '20px', backgroundColor: 'black' }}
-          >
-            <SuccessCircle play={play} size={20} />
-          </Stack>
+          <SuccessCircle {...props} play={play} size={20} />
         </Stack>
         <Button onClick={() => setPlay(!play)} variant="primary">
           Play animation

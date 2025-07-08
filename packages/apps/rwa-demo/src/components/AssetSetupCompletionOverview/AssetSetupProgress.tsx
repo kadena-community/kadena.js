@@ -34,12 +34,12 @@ export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({
 
     setTimeout(() => {
       setPlay(true);
-    }, 500);
 
-    setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      completeAssetSetup();
-    }, 2000);
+      setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        completeAssetSetup();
+      }, 2000);
+    }, 500);
   }, [isLoading, percentageComplete]);
 
   if (!asset) return;

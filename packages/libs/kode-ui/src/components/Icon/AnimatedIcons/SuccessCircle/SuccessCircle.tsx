@@ -1,18 +1,24 @@
+import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { FC } from 'react';
 import React from 'react';
+import type { button } from 'src/components/Button/Button.css';
 import { Stack } from './../../..';
-import './style.css';
+import { token } from './../../../../styles';
+import { grpClass, mainCircleClass, oval1Class, oval2Class } from './style.css';
 
+type Variants = NonNullable<RecipeVariants<typeof button>>;
 export interface ISuccessCircleProps {
   play: boolean;
   size: number;
   positioning?: { x: string; y: string };
+  variant?: Variants['variant'];
 }
 
 export const SuccessCircle: FC<ISuccessCircleProps> = ({
   play,
   size,
   positioning,
+  variant = 'primary',
 }) => {
   const strokeWidth = 3;
 
@@ -41,7 +47,6 @@ export const SuccessCircle: FC<ISuccessCircleProps> = ({
         >
           <circle
             strokeWidth={strokeWidth}
-            fill="#AAB8C2"
             id="circle"
             cx="29.5"
             cy="29.5"
@@ -51,47 +56,181 @@ export const SuccessCircle: FC<ISuccessCircleProps> = ({
           />
 
           <circle
+            className={mainCircleClass({ variant })}
+            data-play={play}
             id="main-circ"
-            fill="#E2264D"
             opacity="0"
             cx="29.5"
             cy="29.5"
             r={radius}
           />
 
-          <g id="grp7" opacity="0" transform="translate(7 6)">
-            <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2.5" />
-            <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2.5" />
+          <g
+            id="grp7"
+            opacity="0"
+            transform="translate(7 6)"
+            className={grpClass({ play })}
+          >
+            <circle
+              id="oval1"
+              fill={token('color.background.accent.primary.inverse.default')}
+              cx="2"
+              cy="6"
+              r="2.5"
+              className={oval1Class({ play })}
+            />
+            <circle
+              id="oval2"
+              fill={token('color.background.semantic.warning.inverse.default')}
+              cx="5"
+              cy="2"
+              r="2.5"
+              className={oval2Class({ play })}
+            />
           </g>
 
-          <g id="grp6" opacity="0" transform="translate(0 28)">
-            <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2.5" />
-            <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2.5" />
+          <g
+            id="grp6"
+            opacity="0"
+            transform="translate(0 28)"
+            className={grpClass({ play })}
+          >
+            <circle
+              id="oval1"
+              fill={token('color.background.semantic.negative.inverse.@active')}
+              cx="2"
+              cy="7"
+              r="2.5"
+              className={oval1Class({ play })}
+            />
+            <circle
+              id="oval2"
+              fill={token('color.background.semantic.positive.inverse.@hover')}
+              cx="3"
+              cy="2"
+              r="2.5"
+              className={oval2Class({ play })}
+            />
           </g>
 
-          <g id="grp3" opacity="0" transform="translate(52 28)">
-            <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2.5" />
-            <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2.5" />
+          <g
+            id="grp3"
+            opacity="0"
+            transform="translate(52 28)"
+            className={grpClass({ play })}
+          >
+            <circle
+              id="oval2"
+              fill={token('color.background.accent.primary.inverse.@active')}
+              cx="2"
+              cy="7"
+              r="2.5"
+              className={oval2Class({ play })}
+            />
+            <circle
+              id="oval1"
+              fill={token('color.background.semantic.warning.inverse.@hover')}
+              cx="4"
+              cy="2"
+              r="2.5"
+              className={oval1Class({ play })}
+            />
           </g>
 
-          <g id="grp2" opacity="0" transform="translate(44 6)">
-            <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2.5" />
-            <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2.5" />
+          <g
+            id="grp2"
+            opacity="0"
+            transform="translate(44 6)"
+            className={grpClass({ play })}
+          >
+            <circle
+              id="oval2"
+              fill={token('color.background.semantic.negative.inverse.@active')}
+              cx="5"
+              cy="6"
+              r="2.5"
+              className={oval2Class({ play })}
+            />
+            <circle
+              id="oval1"
+              fill={token('color.background.semantic.negative.inverse.@hover')}
+              cx="2"
+              cy="2"
+              r="2.5"
+              className={oval1Class({ play })}
+            />
           </g>
 
-          <g id="grp5" opacity="0" transform="translate(14 50)">
-            <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2.5" />
-            <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2.5" />
+          <g
+            id="grp5"
+            opacity="0"
+            transform="translate(14 50)"
+            className={grpClass({ play })}
+          >
+            <circle
+              id="oval1"
+              fill={token('color.background.semantic.positive.inverse.default')}
+              cx="6"
+              cy="5"
+              r="2.5"
+              className={oval1Class({ play })}
+            />
+            <circle
+              id="oval2"
+              fill={token('color.background.semantic.positive.inverse.@hover')}
+              cx="2"
+              cy="2"
+              r="2.5"
+              className={oval2Class({ play })}
+            />
           </g>
 
-          <g id="grp4" opacity="0" transform="translate(35 50)">
-            <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2.5" />
-            <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2.5" />
+          <g
+            id="grp4"
+            opacity="0"
+            transform="translate(35 50)"
+            className={grpClass({ play })}
+          >
+            <circle
+              id="oval1"
+              fill={token('color.background.semantic.info.inverse.default')}
+              cx="6"
+              cy="5"
+              r="2.5"
+              className={oval1Class({ play })}
+            />
+            <circle
+              id="oval2"
+              fill={token('color.background.semantic.info.inverse.@hover')}
+              cx="2"
+              cy="2"
+              r="2.5"
+              className={oval2Class({ play })}
+            />
           </g>
 
-          <g id="grp1" opacity="0" transform="translate(24)">
-            <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2.5" />
-            <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2.5" />
+          <g
+            id="grp1"
+            opacity="0"
+            transform="translate(24)"
+            className={grpClass({ play })}
+          >
+            <circle
+              id="oval1"
+              fill={token('color.background.semantic.positive.inverse.@hover')}
+              cx="2.5"
+              cy="3"
+              r="2.5"
+              className={oval1Class({ play })}
+            />
+            <circle
+              id="oval2"
+              fill={token('color.background.semantic.positive.inverse.@hover')}
+              cx="7.5"
+              cy="2"
+              r="2.5"
+              className={oval2Class({ play })}
+            />
           </g>
         </g>
       </svg>

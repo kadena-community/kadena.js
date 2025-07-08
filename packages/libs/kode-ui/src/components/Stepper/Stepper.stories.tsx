@@ -129,6 +129,46 @@ export const Horizontal: Story = {
     );
   },
 };
+
+export const Error: Story = {
+  name: 'Stepper ends in error',
+  args: {},
+  render: (args) => {
+    const [step, setStep] = React.useState(1);
+
+    const handlePrevious = () => {
+      if (step > 0) {
+        setStep((prev) => prev - 1);
+      }
+    };
+
+    const handleNext = () => {
+      if (step < 3) {
+        setStep((prev) => prev + 1);
+      }
+    };
+
+    return (
+      <Stack gap="md" flexDirection="column" marginBlockStart="n40">
+        <Stepper {...args} direction="horizontal" showSuccess>
+          <Step active={step === 0} icon={<MonoCheck />}>
+            Prince Adam
+          </Step>
+          <Step active={step === 1}>Power Sword</Step>
+          <Step active={step === 2}>He-man</Step>
+          <Step status="error" active={step === 3}>
+            Master of the Universe
+          </Step>
+        </Stepper>
+        <Stack justifyContent="space-between" width="100%">
+          <Button onPress={handlePrevious}>previous</Button>
+          <Button onPress={handleNext}>next</Button>
+        </Stack>
+      </Stack>
+    );
+  },
+};
+
 export const NoActive: Story = {
   name: 'Stepper no active',
   args: {
