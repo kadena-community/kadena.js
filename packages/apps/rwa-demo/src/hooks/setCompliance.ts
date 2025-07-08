@@ -25,6 +25,7 @@ export const useSetCompliance = () => {
   ) => {
     return submit2Chain(undefined, {
       notificationSentryName: 'error:submit:togglecompliancerule',
+      successMessage: 'Toggle compliance rule successful',
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         const rules = getActiveRulesKeys(asset.compliance, ruleKey, newState);
 

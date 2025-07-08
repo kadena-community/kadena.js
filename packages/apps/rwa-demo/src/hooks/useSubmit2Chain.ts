@@ -97,7 +97,7 @@ export const useSubmit2Chain = () => {
       return addTransaction({
         ...res,
         ...options.transaction,
-        successMessage: options.successMessage,
+        successMessage: options.successMessage ?? '',
       });
     } catch (e: any) {
       addNotification(

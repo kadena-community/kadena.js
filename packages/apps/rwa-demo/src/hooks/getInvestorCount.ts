@@ -26,11 +26,11 @@ export const useGetInvestorCount = (asset?: IAsset) => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(asset);
-  }, [asset?.uuid, subscriptionData, isMounted]);
+  }, [asset?.uuid, subscriptionData?.events?.length, isMounted]);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, [asset?.uuid]);
+    setIsMounted(false);
+  }, [asset?.uuid, subscriptionData?.events?.length]);
 
   return { data: innerData };
 };

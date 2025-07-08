@@ -86,6 +86,11 @@
     "tokens:sync": "design-sync sync",
     "verify": "tsc --noEmit"
   },
+  "browserslist": [
+    "defaults and supports es6-module",
+    "not dead",
+    "not IE 11"
+  ],
   "dependencies": {
     "@artsy/fresnel": "^7.1.4",
     "@kadena/kode-icons": "workspace:*",
