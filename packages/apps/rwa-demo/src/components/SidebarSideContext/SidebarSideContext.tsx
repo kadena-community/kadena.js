@@ -44,7 +44,7 @@ export const SidebarSideContext: FC = () => {
               <ContextMenu
                 trigger={
                   <Button
-                    textAlign="start"
+                    textAlign={isExpanded ? 'start' : 'center'}
                     isCompact
                     variant={isExpanded ? 'outlined' : 'transparent'}
                   >
