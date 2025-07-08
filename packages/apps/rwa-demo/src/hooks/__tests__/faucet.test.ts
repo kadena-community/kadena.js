@@ -202,11 +202,14 @@ describe('faucet hook', () => {
 
       expect(mockSubmit2Chain).toHaveBeenCalledWith(undefined, {
         notificationSentryName: 'error:submit:faucet',
-        successMessage: 'Faucet request successful',
+        successMessage: 'You have received KDA from the faucet',
         skipAssetCheck: true,
         chainFunction: expect.any(Function),
         transaction: {
-          type: expect.anything(),
+          type: {
+            name: 'FAUCET',
+            overall: false,
+          },
           accounts: expect.arrayContaining([expect.any(String)]),
         },
       });
