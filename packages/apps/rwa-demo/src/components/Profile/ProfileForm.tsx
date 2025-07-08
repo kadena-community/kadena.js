@@ -57,14 +57,19 @@ export const ProfileForm: FC = () => {
               value: true,
               message: 'This field is required',
             },
+            minLength: {
+              value: 3,
+              message: 'The min length is 3 characters',
+            },
             maxLength: {
-              value: 40,
+              value: 25,
               message: 'The max length is 40 characters',
             },
           }}
           render={({ field }) => (
             <TextField
               id="displayName"
+              maxLength={25}
               defaultValue={field.value}
               isInvalid={!!errors.displayName?.message}
               errorMessage={`${errors.displayName?.message}`}

@@ -1,4 +1,5 @@
 import { useAccount } from '@/hooks/account';
+import { shortenString } from '@/utils/shortenString';
 import { MonoMoreVert, MonoWallet } from '@kadena/kode-icons';
 import {
   Button,
@@ -29,7 +30,7 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
               style={{ flex: 1 }}
             >
               {account
-                ? account.alias || maskValue(account.address)
+                ? shortenString(account.alias || maskValue(account.address))
                 : 'Select an account'}
             </Button>
           </>

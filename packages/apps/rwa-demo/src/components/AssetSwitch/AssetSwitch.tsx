@@ -1,4 +1,5 @@
 import { useAsset } from '@/hooks/asset';
+import { shortenString } from '@/utils/shortenString';
 import { MonoApps, MonoMoreVert } from '@kadena/kode-icons';
 import {
   Button,
@@ -27,7 +28,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
               variant="outlined"
               style={{ flex: 1 }}
             >
-              {asset ? asset.contractName : 'Select an asset'}
+              {asset ? shortenString(asset.contractName) : 'Select an asset'}
             </Button>
           </>
         )}
