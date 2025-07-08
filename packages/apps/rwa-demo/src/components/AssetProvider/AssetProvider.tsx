@@ -128,8 +128,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!result || !account || !organisation) return;
 
       const storageAsset = JSON.parse(result);
+      if (storageAsset.uuid === asset?.uuid) return;
+
       const foundAsset = await getAsset(storageAsset.uuid, account);
       if (!foundAsset || foundAsset.uuid === asset?.uuid) return;
+
       await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
@@ -142,7 +145,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       window.removeEventListener(selectedKey, storageListener);
       window.removeEventListener('storage', storageListener);
     };
-  }, [organisation, account, assetStore]);
+  }, [organisation?.id, account?.address, assetStore]);
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));

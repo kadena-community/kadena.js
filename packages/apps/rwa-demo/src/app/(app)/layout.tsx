@@ -1,6 +1,5 @@
 'use client';
 import { ActiveTransactionsList } from '@/components/ActiveTransactionsList/ActiveTransactionsList';
-import { AssetSetupProgress } from '@/components/AssetSetupCompletionOverview/AssetSetupProgress';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { DemoBanner } from '@/components/DemoBanner/DemoBanner';
 import { FrozenInvestorBanner } from '@/components/FrozenInvestorBanner/FrozenInvestorBanner';
@@ -9,7 +8,6 @@ import { GraphOnlineBanner } from '@/components/GraphOnlineBanner/GraphOnlineBan
 import { MainLoading } from '@/components/MainLoading/MainLoading';
 import { ProfileForm } from '@/components/Profile/ProfileForm';
 import { TransactionPendingIcon } from '@/components/TransactionPendingIcon/TransactionPendingIcon';
-import { useAsset } from '@/hooks/asset';
 import { useTransactions } from '@/hooks/transactions';
 import { useUser } from '@/hooks/user';
 import { MonoAccountBalanceWallet } from '@kadena/kode-icons';
@@ -48,7 +46,6 @@ const RootLayout = ({
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
   const { isMounted, userData, user } = useUser();
-  const { asset } = useAsset();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -90,15 +87,14 @@ const RootLayout = ({
           <ProfileForm />
         </Dialog>
       )}
+      <SideBarTopBanner>
+        <DemoBanner />
+        <CookieConsent />
+        <GraphOnlineBanner />
+        <FrozenInvestorBanner />
+        <GasPayableBanner />
+      </SideBarTopBanner>
       <SideBarHeaderContext>
-        <SideBarTopBanner>
-          <DemoBanner />
-          <CookieConsent />
-          <GraphOnlineBanner />
-          <FrozenInvestorBanner />
-          <GasPayableBanner />
-        </SideBarTopBanner>
-        <AssetSetupProgress asset={asset} />
         <Button
           ref={txsButtonRef}
           variant="transparent"

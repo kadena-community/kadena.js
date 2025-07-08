@@ -25,6 +25,7 @@ import {
   SectionCardBody,
   SectionCardContentBlock,
   SectionCardHeader,
+  SideBarHeaderContext,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -38,6 +39,7 @@ import { InvestorForm } from '../InvestorForm/InvestorForm';
 import { SetComplianceForm } from '../SetComplianceForm/SetComplianceForm';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
+import { AssetSetupProgress } from './AssetSetupProgress';
 
 interface IProps {
   asset?: IAsset;
@@ -55,6 +57,9 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
     steps,
     isOneComplianceRuleSet,
     isOneComplianceRuleStarted,
+    completeAssetSetup,
+    percentageComplete,
+    isLoading,
   } = useAssetSetup({
     tempAsset,
   });
@@ -104,6 +109,14 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
 
   return (
     <>
+      <SideBarHeaderContext>
+        <AssetSetupProgress
+          asset={asset}
+          percentageComplete={percentageComplete}
+          isLoading={isLoading}
+          completeAssetSetup={completeAssetSetup}
+        />
+      </SideBarHeaderContext>
       <SectionCard stack="horizontal">
         <SectionCardContentBlock>
           <SectionCardHeader

@@ -1,5 +1,4 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
-import { useAssetSetup } from '@/hooks/assetSetup';
 import { Stack, SuccessCircle, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -9,11 +8,19 @@ import {
   progressRingCircle,
 } from './style.css';
 
-export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({
-  asset: tempAsset,
+interface IProps {
+  asset: IAsset;
+  percentageComplete?: number;
+  isLoading?: boolean;
+  completeAssetSetup: () => void;
+}
+
+export const AssetSetupProgress: FC<IProps> = ({
+  asset,
+  percentageComplete = 0,
+  isLoading = false,
+  completeAssetSetup,
 }) => {
-  const { percentageComplete, isLoading, asset, completeAssetSetup } =
-    useAssetSetup({ tempAsset });
   const [play, setPlay] = useState(false);
   const circleRef = useRef<SVGCircleElement>(null);
 
@@ -48,52 +55,54 @@ export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({
   if (isLoading || asset.setupComplete) return;
 
   return (
-    <Stack
-      gap="sm"
-      alignItems="center"
-      justifyContent="flex-end"
-      marginInlineStart="sm"
-      style={{ whiteSpace: 'nowrap' }}
-    >
-      {!play && <Text size="smallest">setup progress</Text>}
+    <>
+      <Stack
+        gap="sm"
+        alignItems="center"
+        justifyContent="flex-end"
+        marginInlineStart="sm"
+        style={{ whiteSpace: 'nowrap' }}
+      >
+        {!play && <Text size="smallest">setup progress</Text>}
 
-      <Stack position="relative" style={{ width: size, height: size }}>
-        <SuccessCircle
-          play={play}
-          size={20}
-          positioning={{ x: '-20px', y: '-20px' }}
-        />
+        <Stack position="relative" style={{ width: size, height: size }}>
+          <SuccessCircle
+            play={play}
+            size={20}
+            positioning={{ x: '-20px', y: '-20px' }}
+          />
 
-        {!play && (
-          <>
-            <svg className={progressRing} width={size} height={size}>
-              <circle
-                className={progressRingBackground}
-                strokeWidth={strokeWidth}
-                fill="transparent"
-                r={radius}
-                cx={size / 2}
-                cy={size / 2}
-                strokeDasharray={100}
-                strokeDashoffset={0}
-              />
-            </svg>
-            <svg className={progressRing} width={size} height={size}>
-              <circle
-                ref={circleRef}
-                className={progressRingCircle}
-                strokeWidth={strokeWidth}
-                fill="transparent"
-                r={radius}
-                cx={size / 2}
-                cy={size / 2}
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference}
-              />
-            </svg>
-          </>
-        )}
+          {!play && (
+            <>
+              <svg className={progressRing} width={size} height={size}>
+                <circle
+                  className={progressRingBackground}
+                  strokeWidth={strokeWidth}
+                  fill="transparent"
+                  r={radius}
+                  cx={size / 2}
+                  cy={size / 2}
+                  strokeDasharray={100}
+                  strokeDashoffset={0}
+                />
+              </svg>
+              <svg className={progressRing} width={size} height={size}>
+                <circle
+                  ref={circleRef}
+                  className={progressRingCircle}
+                  strokeWidth={strokeWidth}
+                  fill="transparent"
+                  r={radius}
+                  cx={size / 2}
+                  cy={size / 2}
+                  strokeDasharray={circumference}
+                  strokeDashoffset={circumference}
+                />
+              </svg>
+            </>
+          )}
+        </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };
