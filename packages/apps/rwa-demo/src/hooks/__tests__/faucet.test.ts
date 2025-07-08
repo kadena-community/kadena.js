@@ -202,6 +202,7 @@ describe('faucet hook', () => {
 
       expect(mockSubmit2Chain).toHaveBeenCalledWith(undefined, {
         notificationSentryName: 'error:submit:faucet',
+        successMessage: 'Faucet request successful',
         skipAssetCheck: true,
         chainFunction: expect.any(Function),
         transaction: {
