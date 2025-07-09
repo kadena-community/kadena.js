@@ -145,13 +145,14 @@ export const mainClass = style({
   position: 'relative',
   overflowY: 'scroll',
   overflowX: 'hidden',
+  paddingBlockEnd: token('spacing.n24'),
   ...responsiveStyle({
-    xs: { paddingInline: token('spacing.xs') },
+    xs: { marginInline: token('spacing.n2') },
     sm: {
-      paddingInline: token('spacing.sm'),
+      marginInline: token('spacing.n4'),
     },
     md: {
-      paddingInlineEnd: token('spacing.sm'),
+      marginInline: token('spacing.n6'),
     },
   }),
 });

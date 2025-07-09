@@ -324,12 +324,34 @@ export const crumbsWrapperClass = style([
   {
     gridArea: 'header-crumbs',
   },
+  responsiveStyle({
+    xs: {
+      paddingInlineStart: 0,
+    },
+    sm: {
+      paddingInlineStart: token('spacing.n3'),
+    },
+    md: {
+      paddingInlineStart: token('spacing.n6'),
+    },
+  }),
 ]);
 export const rightsideWrapperClass = style([
   {
     gridArea: 'header-rightside',
     justifyContent: 'flex-start',
     flexDirection: 'row-reverse',
+    ...responsiveStyle({
+      xs: {
+        paddingInlineEnd: 0,
+      },
+      sm: {
+        paddingInlineEnd: token('spacing.n1'),
+      },
+      md: {
+        paddingInlineEnd: token('spacing.n3'),
+      },
+    }),
   },
 ]);
 

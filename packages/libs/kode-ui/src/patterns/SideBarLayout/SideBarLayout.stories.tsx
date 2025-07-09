@@ -257,10 +257,7 @@ const InnerLayout = () => {
             <></>
           )}
         </TopBanner>
-        <Stack
-          flexDirection="column"
-          style={{ maxWidth: '800px', height: '400px' }}
-        >
+        <Stack flexDirection="column" style={{ maxWidth: '800px' }}>
           <Stack
             width="100%"
             flexDirection="column"
@@ -363,6 +360,7 @@ const InnerLayout = () => {
           <p>content</p>
           <p>content</p>
           <p>content</p>
+          <p>end</p>
         </Stack>
       </SideBarLayout>
     </>
@@ -475,10 +473,7 @@ const NotificationsLayout = () => {
           />
         }
       >
-        <Stack
-          flexDirection="column"
-          style={{ maxWidth: '800px', height: '400px' }}
-        >
+        <Stack flexDirection="column" style={{ maxWidth: '800px' }}>
           <Stack
             width="100%"
             flexDirection="column"
