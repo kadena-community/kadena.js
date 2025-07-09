@@ -103,7 +103,18 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
               topbannerHeight={topbannerHeight}
               location={location}
             />
-            <NotificationSlot />
+            <Stack
+              position="fixed"
+              width="100%"
+              justifyContent="flex-end"
+              style={{
+                left: 0,
+                top: `calc(${topbannerHeight}px + ${minHeaderHeight})`,
+                zIndex: 9999,
+              }}
+            >
+              <NotificationSlot />
+            </Stack>
           </main>
 
           {footer}

@@ -144,6 +144,7 @@ export const mainClass = style({
   gridArea: 'sidebarlayout-main',
   position: 'relative',
   overflowY: 'scroll',
+  overflowX: 'hidden',
   ...responsiveStyle({
     xs: { paddingInline: token('spacing.xs') },
     sm: {
