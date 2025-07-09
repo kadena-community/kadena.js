@@ -7,8 +7,6 @@ import {
   MonoMoreVert,
   MonoWallet,
   MonoWifiTethering,
-  MonoWindow,
-  MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC, PropsWithChildren } from 'react';
@@ -31,7 +29,6 @@ import {
   RightAsideContent,
   RightAsideHeader,
 } from './components/RightAside';
-import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarHeaderContext } from './components/SideBarHeaderContext/SideBarHeaderContext';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
@@ -67,13 +64,6 @@ const meta: Meta<ISideBarProps> = {
 };
 
 type IStory = StoryObj<ISideBarProps>;
-
-const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
-  children,
-  ...props
-}) => {
-  return <a {...props}>{children}</a>;
-};
 
 const InnerLayout = () => {
   const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
