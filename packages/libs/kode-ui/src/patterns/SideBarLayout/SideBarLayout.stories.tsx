@@ -9,7 +9,6 @@ import {
   MonoWifiTethering,
 } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { useNotifications } from '../LayoutUtils';
 import {
