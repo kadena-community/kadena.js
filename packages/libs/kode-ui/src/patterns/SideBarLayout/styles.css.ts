@@ -24,7 +24,7 @@ export const layoutWrapperClass = recipe({
     responsiveStyle({
       xs: {
         gridTemplateColumns: 'auto',
-        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr 60px`,
+        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr ${minHeaderHeight}`,
         gridTemplateAreas: `
         "sidebarlayout-topbanner"
         "sidebarlayout-header"
@@ -143,6 +143,7 @@ export const bodyWrapperClass = style({
 export const mainClass = style({
   gridArea: 'sidebarlayout-main',
   position: 'relative',
+  overflowY: 'scroll',
   ...responsiveStyle({
     xs: { paddingInline: token('spacing.xs') },
     sm: {

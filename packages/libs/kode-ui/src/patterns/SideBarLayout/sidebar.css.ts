@@ -328,7 +328,8 @@ export const crumbsWrapperClass = style([
 export const rightsideWrapperClass = style([
   {
     gridArea: 'header-rightside',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
+    flexDirection: 'row-reverse',
   },
 ]);
 

@@ -10,6 +10,7 @@ import {
   bodyWrapperClass,
   layoutWrapperClass,
   mainClass,
+  minHeaderHeight,
   topbannerWrapperClass,
 } from './styles.css';
 import type { ISideBarLayoutLocation } from './types';
@@ -88,7 +89,13 @@ export const SideBarLayout: FC<ISideBarLayout> = ({
           <SideBarHeader logo={logo} topbannerHeight={topbannerHeight} />
           {sidebar &&
             React.cloneElement(sidebar, { ...sidebar?.props, topbannerHeight })}
-          <main className={mainClass} style={{ top: topbannerHeight }}>
+          <main
+            className={mainClass}
+            style={{
+              top: topbannerHeight,
+              height: `calc(100dvh - ${topbannerHeight}px - ${minHeaderHeight})`,
+            }}
+          >
             <Stack width="100%" flexDirection="column" marginInlineEnd="sm">
               <Stack flex={1}>{children}</Stack>
             </Stack>

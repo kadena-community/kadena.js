@@ -31,7 +31,6 @@ import {
   RightAsideContent,
   RightAsideHeader,
 } from './components/RightAside';
-import { SideBarFooter } from './components/SideBarFooter';
 import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarHeaderContext } from './components/SideBarHeaderContext/SideBarHeaderContext';
 import { SideBarItem } from './components/SideBarItem';
@@ -74,34 +73,6 @@ const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
   ...props
 }) => {
   return <a {...props}>{children}</a>;
-};
-
-const InnerFooter = () => {
-  return (
-    <SideBarFooter>
-      <SideBarFooterItem
-        visual={<MonoWindow />}
-        component={LinkComponent}
-        href="https://kadena.io"
-        label="option 1"
-      />
-      <SideBarFooterItem
-        visual={<MonoWifiTethering />}
-        onPress={() => {}}
-        label="option 2"
-      />
-      <SideBarFooterItem
-        visual={<MonoWorkspaces />}
-        onPress={() => {}}
-        label="option 3"
-      />
-      <SideBarFooterItem
-        visual={<MonoLightMode />}
-        onPress={() => {}}
-        label="option 4"
-      />
-    </SideBarFooter>
-  );
 };
 
 const InnerLayout = () => {
@@ -272,7 +243,6 @@ const InnerLayout = () => {
             }
           />
         }
-        footer={<InnerFooter />}
       >
         <TopBanner>
           {!hideTopBanner ? (
@@ -515,7 +485,6 @@ const NotificationsLayout = () => {
             }
           />
         }
-        footer={<InnerFooter />}
       >
         <Stack
           flexDirection="column"
