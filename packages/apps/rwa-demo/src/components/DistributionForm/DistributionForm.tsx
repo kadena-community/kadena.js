@@ -100,7 +100,6 @@ export const DistributionForm: FC<IProps> = ({
     maxAmount = maxSupply - supply;
   }
 
-  console.log({ errors });
   return (
     <>
       {isRightAsideExpanded && isOpen && (
