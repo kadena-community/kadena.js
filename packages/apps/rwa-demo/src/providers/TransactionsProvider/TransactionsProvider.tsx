@@ -238,6 +238,10 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     setTxsAnimationRefData(ref);
   };
 
+  const removeTransaction = async (data: ITransaction) => {
+    await store?.removeTransaction(data, asset);
+  };
+
   return (
     <TransactionsContext.Provider
       value={{
@@ -249,6 +253,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         setTxsAnimationRef,
         txsAnimationRef,
         isActiveAccountChangeTx,
+        removeTransaction,
       }}
     >
       {children}

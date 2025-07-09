@@ -59,7 +59,6 @@ export const RWAStore = (organisation: IOrganisation) => {
     );
     const foundTx = snapshot.toJSON() as ITransaction;
 
-    console.log({ foundTx });
     if (!foundTx) return;
 
     await set(

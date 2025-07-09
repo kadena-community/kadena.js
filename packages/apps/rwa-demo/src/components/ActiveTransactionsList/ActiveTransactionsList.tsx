@@ -5,7 +5,7 @@ import { ActiveTransaction } from './ActiveTransaction';
 import { activeListClass } from './style.css';
 
 export const ActiveTransactionsList: FC = () => {
-  const { transactions } = useTransactions();
+  const { transactions, removeTransaction } = useTransactions();
 
   return (
     <Stack
@@ -19,6 +19,7 @@ export const ActiveTransactionsList: FC = () => {
         <ActiveTransaction
           key={transaction.requestKey}
           transaction={transaction}
+          onDismiss={removeTransaction}
         />
       ))}
     </Stack>
