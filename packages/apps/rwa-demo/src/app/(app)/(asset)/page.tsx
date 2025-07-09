@@ -35,6 +35,7 @@ const Home = () => {
   const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
 
   if (!organisation) return null;
+
   return (
     <>
       <SideBarBreadcrumbs>
