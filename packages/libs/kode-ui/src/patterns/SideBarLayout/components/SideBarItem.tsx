@@ -18,6 +18,7 @@ export interface ISideBarItemProps extends PropsWithChildren {
   href?: string;
   component?: any;
   tree?: ReactElement | boolean;
+  isActive?: boolean;
 }
 export const SideBarItem: FC<ISideBarItemProps> = ({
   visual,
@@ -28,6 +29,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
   href,
   component,
   tree,
+  isActive,
 }) => {
   const { isExpanded, handleSetExpanded, isActiveUrl } = useLayout();
   const isMediumDevice = useMedia(breakpoints.md, true);
@@ -46,7 +48,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
     handlePress(e as unknown as PressEvent);
   };
 
-  const isActive = isActiveUrl(href);
+  const isInnerActive = isActiveUrl(href);
 
   const render = (isExpanded: boolean) => {
     const LinkWrapper = component ? component : Anchor;
@@ -54,12 +56,12 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
       <Link
         textAlign="start"
         className={sidebartreeItemClass({
-          isActive: isActive,
+          isActive: isActive !== undefined ? isActive : isInnerActive,
           isExpanded,
         })}
         isCompact
         startVisual={visual}
-        data-isactive={isActive}
+        data-isactive={isActive !== undefined ? isActive : isInnerActive}
         endVisual={
           isExpanded ? (
             <span data-endvisual="true">{endVisual}</span>

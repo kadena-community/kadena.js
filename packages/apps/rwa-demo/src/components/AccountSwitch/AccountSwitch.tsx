@@ -1,5 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { shortenString } from '@/utils/shortenString';
 import { MonoMoreVert, MonoWallet } from '@kadena/kode-icons';
 import {
   Button,

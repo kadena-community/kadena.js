@@ -99,8 +99,8 @@ export const OrganisationsList: FC = () => {
 
     addNotification(
       {
-        intent: 'negative',
-        label: 'Organisation removed',
+        intent: 'positive',
+        label: 'Organisation created',
         message: `Organisation ${data.name} has been created successfully.`,
       },
       {

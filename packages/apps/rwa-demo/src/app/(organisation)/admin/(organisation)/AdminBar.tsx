@@ -1,42 +1,42 @@
 import { AdminButtonBar } from '@/components/AdminButtonBar/AdminButtonBar';
 import { Link as UILink } from '@kadena/kode-ui';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export const AdminBar = () => {
-  const searchParams = useSearchParams();
-  const p = searchParams.get('p') || 'info';
+  const pathname = usePathname();
+
   return (
     <AdminButtonBar>
       <UILink
         isCompact
         component={Link}
-        href={`/admin?p=info`}
-        variant={p === 'info' ? 'primary' : 'outlined'}
+        href={`/admin`}
+        variant={pathname === '/admin' ? 'primary' : 'outlined'}
       >
         Organisation info
       </UILink>
       <UILink
         isCompact
         component={Link}
-        href={`/admin?p=admins`}
-        variant={p === 'admins' ? 'primary' : 'outlined'}
+        href={`/admin/admins`}
+        variant={pathname === '/admin/admins' ? 'primary' : 'outlined'}
       >
         Admins
       </UILink>
       <UILink
         isCompact
         component={Link}
-        href={`/admin/assets?p=assets`}
-        variant={p === 'assets' ? 'primary' : 'outlined'}
+        href={`/admin/assets`}
+        variant={pathname === '/admin/assets' ? 'primary' : 'outlined'}
       >
         Assets
       </UILink>
       <UILink
         isCompact
         component={Link}
-        href={`/admin/users?p=users`}
-        variant={p === 'users' ? 'primary' : 'outlined'}
+        href={`/admin/users`}
+        variant={pathname === '/admin/users' ? 'primary' : 'outlined'}
       >
         Users
       </UILink>

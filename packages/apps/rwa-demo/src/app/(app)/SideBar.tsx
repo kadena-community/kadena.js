@@ -17,6 +17,7 @@ import {
   useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { FC } from 'react';
 import { KLogo } from './KLogo';
 
@@ -26,6 +27,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
   const { isExpanded } = useSideBarLayout();
   const { agents, investors, agentsIsLoading, investorsIsLoading } = useAsset();
   const { isAgent, isOwner, isComplianceOwner, isInvestor } = useAccount();
+  const pathName = usePathname();
 
   return (
     <SideBarLayout
@@ -44,6 +46,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
             label="Dashboard"
             component={Link}
             href="/"
+            isActive={pathName === '/'}
           />
 
           {(isOwner || isAgent) && (
@@ -59,6 +62,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
               label={'Agents'}
               component={Link}
               href="/agents"
+              isActive={pathName === '/agents'}
             />
           )}
           {(isAgent || isOwner || isComplianceOwner || isInvestor) && (
@@ -74,6 +78,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
               label={'Investors'}
               component={Link}
               href="/investors"
+              isActive={pathName === '/investors'}
             />
           )}
         </>
