@@ -24,7 +24,6 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
     if (!asset) return;
     const init = async (asset: IAsset) => {
       if (isMounted) return;
-      console.log('init compliance rules');
       setIsMounted(true);
       const res = await getComplianceRules(asset);
 

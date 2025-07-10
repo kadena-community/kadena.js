@@ -223,7 +223,6 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                   control={control}
                   rules={{
                     validate: (value) => {
-                      console.log({ value });
                       if (!value) return true;
                       const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
                       if (!pattern.test(value)) {

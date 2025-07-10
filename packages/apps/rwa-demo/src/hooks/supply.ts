@@ -23,7 +23,6 @@ export const useSupply = (asset?: IAsset) => {
 
     const init = async (asset: IAsset) => {
       if (isLoading || !account || isMounted) return;
-      console.log('init');
       setIsLoading(true);
       setIsMounted(true);
       const res = await supply(
