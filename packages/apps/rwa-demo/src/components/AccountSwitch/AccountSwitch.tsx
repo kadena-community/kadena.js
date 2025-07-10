@@ -29,9 +29,7 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
               variant="outlined"
               style={{ flex: 1 }}
             >
-              {account
-                ? shortenString(account.alias || maskValue(account.address))
-                : 'Select an account'}
+              {account ? maskValue(account.address) : 'Select an account'}
             </Button>
           </>
         )}
@@ -49,7 +47,7 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
             <ContextMenuItem
               onClick={() => selectAccount(account.address)}
               key={account.address}
-              label={account.alias || account.address}
+              label={maskValue(account.address)}
             />
           ))}
 
