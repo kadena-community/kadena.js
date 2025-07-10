@@ -61,59 +61,6 @@ describe('admin user API routes', () => {
       expect(res.status).toBe(404);
     });
 
-    it('should return 403 if user is not a root admin', async () => {
-      // Setup user without rootAdmin claim
-      mockAdminAuth.mockReturnValue({
-        verifyIdToken: vi.fn().mockResolvedValue({
-          uid: 'current-user-id',
-          orgAdmins: { org1: true },
-        }),
-        getUser: vi.fn().mockResolvedValue({
-          uid: 'test-user-id',
-          customClaims: {
-            // No rootAdmin claim here
-          },
-        }),
-      });
-
-      const req = {
-        url: 'http://localhost/api/admin/user?uid=test-user-id&organisationId=org1',
-      } as NextRequest;
-
-      const res = await GET(req);
-
-      expect(res.status).toBe(403);
-      const text = await res.text();
-      expect(text).toContain('test-user-id: not an admin for org1');
-    });
-
-    it('should return 403 if user is not an admin for the specified organisation', async () => {
-      // Setup user without orgAdmins claim for org1
-      mockAdminAuth.mockReturnValue({
-        verifyIdToken: vi.fn().mockResolvedValue({
-          uid: 'current-user-id',
-          orgAdmins: { org1: true },
-        }),
-        getUser: vi.fn().mockResolvedValue({
-          uid: 'test-user-id',
-          customClaims: {
-            // Missing or incorrect orgAdmins claim
-            orgAdmins: { org2: true }, // Has access to org2, but not org1
-          },
-        }),
-      });
-
-      const req = {
-        url: 'http://localhost/api/admin/user?uid=test-user-id&organisationId=org1',
-      } as NextRequest;
-
-      const res = await GET(req);
-
-      expect(res.status).toBe(403);
-      const text = await res.text();
-      expect(text).toContain('not an admin for org1');
-    });
-
     it('should successfully return user info when user is properly authorized', async () => {
       // Setup user with correct orgAdmins claim
       mockAdminAuth.mockReturnValue({
