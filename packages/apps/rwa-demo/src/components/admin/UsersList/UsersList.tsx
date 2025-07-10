@@ -223,6 +223,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
             actions={
               <>
                 <Button
+                  aria-label="Invite user"
                   onPress={() => {
                     setIsRightAsideExpanded(true);
                     setFormIsOpen(true);
@@ -286,6 +287,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                         onPress={handleRemove}
                         trigger={
                           <Button
+                            aria-label="Remove user"
                             isCompact
                             variant="outlined"
                             startVisual={<MonoDelete />}

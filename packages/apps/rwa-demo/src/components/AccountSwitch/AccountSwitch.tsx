@@ -22,6 +22,7 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
         {showLabel && (
           <>
             <Button
+              aria-label="Select account"
               textAlign="start"
               startVisual={<MonoWallet />}
               isCompact
@@ -36,6 +37,7 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
         <ContextMenu
           trigger={
             <Button
+              aria-label="Select account"
               isCompact
               variant="outlined"
               startVisual={showLabel ? <MonoMoreVert /> : <MonoWallet />}

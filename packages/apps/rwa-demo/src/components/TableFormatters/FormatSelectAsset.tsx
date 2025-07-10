@@ -69,7 +69,13 @@ export const FormatSelectAsset = () => {
 
     if (hasError) {
       return (
-        <Button isDisabled isCompact variant="outlined" title="asset not found">
+        <Button
+          isDisabled
+          isCompact
+          variant="outlined"
+          title="asset not found"
+          aria-label="asset not found"
+        >
           <MonoWarning />
         </Button>
       );
@@ -77,6 +83,7 @@ export const FormatSelectAsset = () => {
 
     return (
       <Button
+        aria-label="Select asset"
         isCompact
         variant="outlined"
         startVisual={<MonoFindInPage />}

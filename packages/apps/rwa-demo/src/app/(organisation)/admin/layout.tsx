@@ -66,6 +66,7 @@ const RootLayout = ({
           <GasPayableBanner />
         </SideBarTopBanner>
         <Button
+          aria-label="show transactions"
           ref={txsButtonRef}
           variant="transparent"
           startVisual={

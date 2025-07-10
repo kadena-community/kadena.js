@@ -198,6 +198,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
               gap="xs"
             >
               <Button
+                aria-label="Back"
                 onPress={() => setStep(STEPS.START)}
                 variant="transparent"
                 startVisual={<MonoKeyboardArrowLeft />}
@@ -205,6 +206,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                 Back
               </Button>
               <Button
+                aria-label="Create contract"
                 isLoading={isPending}
                 isDisabled={!isValid || !isAllowed}
                 type="submit"

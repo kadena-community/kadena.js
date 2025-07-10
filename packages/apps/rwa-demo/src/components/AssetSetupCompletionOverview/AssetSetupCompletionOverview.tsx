@@ -181,6 +181,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                   <SetComplianceForm
                     trigger={
                       <Button
+                        aria-label="Set compliance rule values"
                         data-testid="complianceAction"
                         isDisabled={!isSetComplianceAllowed}
                         startVisual={
@@ -244,6 +245,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                       <AgentForm
                         trigger={
                           <Button
+                            aria-label="Add agent"
                             isDisabled={!isEditAgentAllowed}
                             startVisual={
                               <TransactionTypeSpinner
@@ -290,6 +292,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                       <InvestorForm
                         trigger={
                           <Button
+                            aria-label="Add investor"
                             isDisabled={!isAddInvestorAllowed}
                             startVisual={
                               <TransactionTypeSpinner
@@ -348,6 +351,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                     investorAccount={investerAccount}
                     trigger={
                       <Button
+                        aria-label="Distribute tokens"
                         data-testid="action-distributetokens"
                         startVisual={
                           <TransactionTypeSpinner

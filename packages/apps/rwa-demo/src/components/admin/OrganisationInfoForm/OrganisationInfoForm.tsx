@@ -201,6 +201,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                             }}
                             trigger={
                               <Button
+                                aria-label="Remove domain"
                                 isCompact
                                 variant="outlined"
                                 startVisual={<MonoDelete />}
@@ -252,6 +253,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                 />
 
                 <Button
+                  aria-label="Add domain"
                   isCompact
                   isDisabled={!!errors.newDomain?.message || !newDomainValue}
                   variant="outlined"

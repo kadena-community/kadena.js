@@ -77,6 +77,7 @@ const Home = () => {
               <AssetFormScreen
                 trigger={
                   <Button
+                    aria-label="Add asset"
                     isDisabled={!isAllowed}
                     variant="outlined"
                     isCompact
@@ -118,6 +119,7 @@ const Home = () => {
                         onPress={handleDelete}
                         trigger={
                           <Button
+                            aria-label="Remove asset"
                             isCompact
                             variant="outlined"
                             startVisual={<MonoDelete />}

@@ -127,6 +127,7 @@ const Home = () => {
                   <SetComplianceForm
                     trigger={
                       <Button
+                        aria-label="Edit compliance rules"
                         data-testid="editrules"
                         isCompact
                         variant="outlined"

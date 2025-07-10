@@ -241,6 +241,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
             actions={
               <>
                 <Button
+                  aria-label="Add admin"
                   onPress={() => {
                     setIsRightAsideExpanded(true);
                     setFormIsOpen(true);
@@ -282,6 +283,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                         onPress={handleRemove}
                         trigger={
                           <Button
+                            aria-label="Remove admin"
                             isCompact
                             variant="outlined"
                             startVisual={<MonoDelete />}

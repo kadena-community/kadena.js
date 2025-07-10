@@ -140,6 +140,7 @@ export const OrganisationsList: FC = () => {
             title="Organisations"
             actions={
               <Button
+                aria-label="Add organisation"
                 isCompact
                 isLoading={isLoading}
                 variant="outlined"
@@ -168,6 +169,7 @@ export const OrganisationsList: FC = () => {
                   render: CompactTableFormatters.FormatActions({
                     trigger: (
                       <Button
+                        aria-label="Select organisation"
                         isCompact
                         variant="outlined"
                         startVisual={<MonoFindInPage />}

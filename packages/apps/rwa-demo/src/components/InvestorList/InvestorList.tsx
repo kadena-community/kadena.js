@@ -113,6 +113,7 @@ export const InvestorList: FC = () => {
                     <ContextMenu
                       trigger={
                         <Button
+                          aria-label="More actions"
                           isCompact
                           variant="outlined"
                           startVisual={<MonoMoreVert />}
@@ -203,6 +204,7 @@ export const InvestorList: FC = () => {
                     render: CompactTableFormatters.FormatActions({
                       trigger: (
                         <Button
+                          aria-label="Select account"
                           data-testid="select-account"
                           isCompact
                           variant="outlined"
@@ -232,6 +234,7 @@ export const InvestorList: FC = () => {
                     <InvestorForm
                       trigger={
                         <NotificationButton
+                          aria-label="Add investor"
                           isDisabled={!isAddInvestorAllowed}
                           icon={<MonoAdd />}
                         >

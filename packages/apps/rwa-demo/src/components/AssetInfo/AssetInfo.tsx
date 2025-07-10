@@ -16,7 +16,12 @@ export const AssetInfo: FC = () => {
           <MonoVpnLock />
         </Text>
         <Heading as="h3">{asset.contractName}</Heading>
-        <Button isCompact variant="transparent" isDisabled>
+        <Button
+          aria-label="toggle pause state"
+          isCompact
+          variant="transparent"
+          isDisabled
+        >
           <TransactionTypeSpinner
             type={TXTYPES.PAUSECONTRACT}
             fallbackIcon={

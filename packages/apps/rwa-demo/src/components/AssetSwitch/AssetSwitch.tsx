@@ -22,6 +22,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
         {showLabel && (
           <>
             <Button
+              aria-label="Select asset"
               textAlign="start"
               startVisual={<MonoApps />}
               isCompact

@@ -109,6 +109,7 @@ export const InvestorBatchForm: FC<IProps> = ({ onClose }) => {
                   <Stack width="100%" flexDirection="column" gap="sm">
                     <Stack>
                       <Button
+                        aria-label="Select all accounts"
                         onPress={toggleSelectAll}
                         startVisual={<MonoCheckBox />}
                         isCompact

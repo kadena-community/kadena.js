@@ -94,6 +94,7 @@ export const WalletsList: FC<{ init?: boolean }> = ({ init }) => {
                 render: CompactTableFormatters.FormatActions({
                   trigger: (
                     <Button
+                      aria-label="Select account"
                       onPress={handleSelect}
                       isCompact
                       variant="outlined"
@@ -113,6 +114,7 @@ export const WalletsList: FC<{ init?: boolean }> = ({ init }) => {
                       onPress={handleRemove}
                       trigger={
                         <Button
+                          aria-label="Unlink account"
                           isCompact
                           variant="outlined"
                           startVisual={<MonoLinkOff />}
