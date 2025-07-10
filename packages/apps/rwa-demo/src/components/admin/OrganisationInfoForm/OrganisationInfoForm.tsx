@@ -126,7 +126,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
   const handleAddDomain = useCallback(() => {
     append({ value: newDomainValue });
-    reset({ ...getValues() });
+    reset({ ...getValues(), newDomain: '' });
 
     dispatchDomains({
       type: 'add',
@@ -223,6 +223,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                   control={control}
                   rules={{
                     validate: (value) => {
+                      console.log({ value });
                       if (!value) return true;
                       const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
                       if (!pattern.test(value)) {
