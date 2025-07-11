@@ -26,7 +26,7 @@
       }
     },
     "organisationsData": {
-      ".read": "auth != null",
+      ".read": true,
       "$organisationId": {
         ".read": "(auth.token.rootAdmin === true || auth.token.allowedOrgs[$organisationId] === true)",
         ".write": "(auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true)",
