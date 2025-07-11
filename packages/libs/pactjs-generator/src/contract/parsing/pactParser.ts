@@ -75,6 +75,7 @@ export interface IModule {
   functions?: IFunction[];
   capabilities?: ICapability[];
   schemas?: ISchema[];
+  dependencies?: IModuleLike[];
 }
 
 interface IUsedModules {
@@ -136,13 +137,39 @@ function getUsedModulesInFunctions(functions?: IFunction[]): IModuleLike[] {
   if (!functions) return [];
 
   return functions.flatMap((fun) => {
-    const externalFnCalls = fun.externalFnCalls;
-    if (externalFnCalls === undefined) return [];
-    return externalFnCalls.map(({ namespace, module: name, func }) => ({
+    const externalFnCalls = fun.externalFnCalls ?? [];
+    const calls = externalFnCalls.map(({ namespace, module: name, func }) => ({
       namespace: namespace ?? '',
       name,
       imports: [func],
     }));
+    return [...calls];
+  });
+}
+
+// returns the list of modules used in the functions of the module without using "use" keyword in the module
+function getUsedInterfacesInFunctions(functions?: IFunction[]): IModuleLike[] {
+  if (!functions) return [];
+
+  return functions.flatMap((fun) => {
+    const fromParameters =
+      (fun.parameters
+        ?.map(({ type }) => {
+          if (typeof type === 'object' && type.kind === 'module') {
+            const parts = type.value.split('.');
+            return {
+              namespace: parts.length === 2 ? parts[0] : '',
+              name: parts[parts.length - 1],
+              imports: [],
+            };
+          }
+        })
+        .filter(Boolean) as {
+        namespace: string;
+        name: string;
+        imports: string[];
+      }[]) ?? [];
+    return fromParameters;
   });
 }
 
@@ -179,6 +206,26 @@ const reduceModules = (acc: Required<IModuleLike>[], module: IModuleLike) => {
   return acc;
 };
 
+function getModulesFromSchemas(schemas?: ISchema[]): IModuleLike[] {
+  if (!schemas) return [];
+  return schemas.flatMap((schema) => {
+    if (!schema.properties) return [];
+    return schema.properties
+      .filter(
+        (prop) => typeof prop.type === 'object' && prop.type.kind === 'module',
+      )
+      .map((prop) => {
+        const parts = (prop.type as IType).value.split('.');
+        return {
+          name: parts[parts.length - 1],
+          namespace: parts.length === 2 ? parts[0] : '',
+          imports: [],
+          kind: 'interface',
+        };
+      });
+  });
+}
+
 /**
  * @alpha
  */
@@ -193,15 +240,32 @@ export function contractParser(
 
   const extModules =
     modules !== undefined
-      ? modules.map(({ location, module: mod }) => ({
-          ...mod,
-          namespace: getNamespace(location, namespaces) || namespace,
-          usedModules: [
+      ? modules.map(({ location, module: mod }) => {
+          const modules = [
             ...(mod.usedModules ?? []),
             ...getUsedModules(location, usedModules),
             ...getUsedModulesInFunctions(mod.functions),
-          ].reduce(reduceModules, []),
-        }))
+          ].reduce(reduceModules, []);
+          return {
+            ...mod,
+            namespace: getNamespace(location, namespaces) || namespace,
+            usedModules: modules,
+            dependencies: [
+              ...modules,
+              ...getUsedInterfacesInFunctions(mod.functions),
+              ...getModulesFromSchemas(mod.schemas),
+              ...(mod.usedInterface?.map((usedInterface) => ({
+                ...usedInterface,
+                imports: [],
+              })) ?? []),
+            ]
+              .reduce(reduceModules, [])
+              .filter(
+                ({ name, namespace: modNamespace }) =>
+                  name !== mod.name && modNamespace !== namespace,
+              ),
+          };
+        })
       : [];
 
   return [extModules, pointer];
@@ -264,42 +328,48 @@ async function loadModuleDependencies(
   // skip this module if its not available
   if (!module) return [];
 
-  const interfaceOrModule = [
-    ...(module.usedModules || []),
-    ...(module.usedInterface || []),
-  ];
+  const interfaceOrModule = module.dependencies ?? [];
 
   const parentNamespace = module.namespace;
 
-  const mods = await Promise.all(
-    interfaceOrModule.map(async (usedModule) => {
-      if (
-        typeof usedModule.namespace === 'string' &&
-        usedModule.namespace !== ''
-      ) {
-        return loadModuleDependencies(getModuleFullName(usedModule), getModule);
-      }
-      let moduleName: string;
-      try {
-        // if the namespace is not defined, try to load the module with the parent namespace
-        const withParentNamespace = getModuleFullName({
-          name: usedModule.name,
-          namespace: parentNamespace,
-        });
-        // this will store the module in the storage so we can use it later
-        await getModule(withParentNamespace);
-        moduleName = withParentNamespace;
-      } catch {
-        // if the module is not found, continue without a namespace
-        moduleName = usedModule.name;
-        console.log(
-          `Module ${moduleName} not found. trying to load ${usedModule.name}`,
-        );
-      }
+  const mods = [];
 
-      return loadModuleDependencies(moduleName, getModule);
-    }),
-  );
+  for (const usedModule of interfaceOrModule) {
+    if (
+      typeof usedModule.namespace === 'string' &&
+      usedModule.namespace !== ''
+    ) {
+      mods.push(
+        await loadModuleDependencies(getModuleFullName(usedModule), getModule),
+      );
+      continue;
+    }
+    let moduleName: string;
+    const withParentNamespace = getModuleFullName({
+      name: usedModule.name,
+      namespace: parentNamespace,
+    });
+
+    try {
+      // if the namespace is not defined, try to load the module with the parent namespace
+      // this will store the module in the storage so we can use it later
+      await getModule(withParentNamespace);
+      moduleName = withParentNamespace;
+    } catch {
+      // if the module is not found, continue without a namespace
+      moduleName = usedModule.name;
+      if (withParentNamespace === moduleName) {
+        console.log(`Module ${moduleName} not found. skipping`);
+        continue;
+      }
+      console.log(
+        `Module ${moduleName} not found. trying to load ${usedModule.name}`,
+      );
+    }
+    if (moduleName !== fullName) {
+      mods.push(await loadModuleDependencies(moduleName, getModule));
+    }
+  }
   const dependencies = mods.flat();
 
   return [module, ...dependencies].filter(isNotDuplicated(isTheSameModule));
@@ -336,7 +406,7 @@ function addFunctionCalls(
 ): void {
   if (mod.kind !== 'module') return;
 
-  const usedModules = mod.usedModules;
+  const usedModules = mod.dependencies;
   let externalFunctions: Array<{
     module: string;
     namespace: string | undefined;
@@ -438,11 +508,9 @@ export async function pactParser({
   }
 
   // load all dependencies
-  await Promise.all(
-    [...parsedModules.keys()].map((name) => {
-      return loadModuleDependencies(name, loader.getModule);
-    }),
-  );
+  for (const name of parsedModules.keys()) {
+    await loadModuleDependencies(name, loader.getModule);
+  }
 
   const allModules = loader.getStorage();
 
