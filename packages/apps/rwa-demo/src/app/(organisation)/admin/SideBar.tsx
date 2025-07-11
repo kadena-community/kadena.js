@@ -1,11 +1,18 @@
 import { KLogo } from '@/app/(app)/KLogo';
+import { AccountSwitch } from '@/components/AccountSwitch/AccountSwitch';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
 import { useUser } from '@/hooks/user';
-import { MonoBeenhere, MonoBusiness } from '@kadena/kode-icons';
 import {
+  MonoBeenhere,
+  MonoBusiness,
+  MonoNetworkCheck,
+} from '@kadena/kode-icons';
+import {
+  SideBarItem,
   SideBar as SideBarLayout,
   SideBarTree,
   SideBarTreeItem,
+  useSideBarLayout,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -14,6 +21,7 @@ import type { FC } from 'react';
 export const SideBar: FC<{ topbannerHeight?: number }> = ({
   topbannerHeight = 0,
 }) => {
+  const { isExpanded } = useSideBarLayout();
   const { userToken } = useUser();
   const pathName = usePathname();
   return (
@@ -74,6 +82,11 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
             </SideBarTree>
           )}
         </>
+      }
+      appContext={
+        <SideBarItem visual={<MonoNetworkCheck />} label="Select Asset">
+          <AccountSwitch showLabel={isExpanded} />
+        </SideBarItem>
       }
       context={<SidebarSideContext />}
     ></SideBarLayout>

@@ -21,10 +21,18 @@ import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { IWalletAccount } from '../AccountProvider/AccountType';
 
+export interface IdTokenResultWithClaims extends IdTokenResult {
+  claims: {
+    allowedOrgs?: Record<string, boolean>;
+    orgAdmins?: Record<string, boolean>;
+    rootAdmin?: boolean;
+  };
+}
+
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [user, setUser] = useState<User | undefined>();
-  const [token, setToken] = useState<IdTokenResult | undefined>();
+  const [token, setToken] = useState<IdTokenResultWithClaims | undefined>();
   const [userData, setUserData] = useState<IUserData | undefined>();
   const { organisation } = useOrganisation();
   const router = useRouter();
@@ -108,7 +116,9 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const refreshToken = useCallback(
     async (user: User) => {
-      const tokenResult = await user?.getIdTokenResult(true);
+      const tokenResult = (await user?.getIdTokenResult(
+        true,
+      )) as IdTokenResultWithClaims;
       setToken(tokenResult);
       return tokenResult;
     },

@@ -1,3 +1,4 @@
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
 import { get, push, ref, set } from 'firebase/database';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { RootAdminStore } from '../rootAdminStore';
@@ -47,17 +48,6 @@ const mockFetch = vi.fn(async (url, options) => {
 });
 globalThis.fetch = mockFetch as typeof fetch;
 
-// Minimal IIdTokenResult mock type
-interface IIdTokenResult {
-  token: string;
-  authTime: string;
-  expirationTime: string;
-  issuedAtTime: string;
-  signInProvider: string | null;
-  signInSecondFactor: string | null;
-  claims: Record<string, unknown>;
-}
-
 describe('RootAdminStore', () => {
   afterEach(() => {
     vi.clearAllMocks();
@@ -72,7 +62,7 @@ describe('RootAdminStore', () => {
 
   it('setAdmin calls fetch with correct params', async () => {
     const store = RootAdminStore();
-    const token: IIdTokenResult = {
+    const token: IdTokenResultWithClaims = {
       token: 'mock-token',
       authTime: '',
       expirationTime: '',
@@ -96,7 +86,7 @@ describe('RootAdminStore', () => {
 
   it('removeAdmin calls fetch with correct params', async () => {
     const store = RootAdminStore();
-    const token: IIdTokenResult = {
+    const token: IdTokenResultWithClaims = {
       token: 'mock-token',
       authTime: '',
       expirationTime: '',

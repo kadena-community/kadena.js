@@ -22,6 +22,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { KLogo } from '@/app/(app)/KLogo';
 import { MainLoading } from '@/components/MainLoading/MainLoading';
+import { useOrganisation } from '@/hooks/organisation';
 import { useUser } from '@/hooks/user';
 import { useRouter } from 'next/navigation';
 import { SideBar } from './SideBar';
@@ -38,7 +39,14 @@ const RootLayout = ({
   const txsButtonRef = useRef<HTMLButtonElement | null>(null);
   const transactionAnimationRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-  const { isMounted, user } = useUser();
+  const { isMounted, user, userToken } = useUser();
+  const { organisation } = useOrganisation();
+
+  const isAdmin =
+    userToken?.claims.rootAdmin ||
+    userToken?.claims.orgAdmins?.[organisation?.id ?? '-1'];
+
+  console.log(isAdmin);
 
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
@@ -47,13 +55,13 @@ const RootLayout = ({
   }, [txsButtonRef.current, transactionAnimationRef.current]);
 
   useEffect(() => {
-    if (isMounted && !user) {
-      router.push('/login');
+    if (isMounted && !isAdmin) {
+      router.push('/');
       return;
     }
-  }, [user, isMounted]);
+  }, [user, isMounted, isAdmin]);
 
-  if (!isMounted || !user) return <MainLoading />;
+  if (!isMounted || !user || !isAdmin) return <MainLoading />;
 
   return (
     <>

@@ -4,16 +4,21 @@ import { AssetFormScreen } from '@/components/AssetForm/AssetFormScreen';
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { SideBarBreadcrumbs } from '@/components/SideBarBreadcrumbs/SideBarBreadcrumbs';
 import { FormatSelectAsset } from '@/components/TableFormatters/FormatSelectAsset';
+import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useOrganisation } from '@/hooks/organisation';
-import { MonoAdd, MonoDelete, MonoSettings } from '@kadena/kode-icons';
+import {
+  MonoAdd,
+  MonoAddLink,
+  MonoDelete,
+  MonoKeyboardArrowDown,
+} from '@kadena/kode-icons';
 import {
   Button,
   Notification,
-  NotificationButton,
   NotificationFooter,
   NotificationHeading,
 } from '@kadena/kode-ui';
@@ -27,7 +32,6 @@ import {
   SideBarBreadcrumbsItem,
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { AdminBar } from '../AdminBar';
 
 const Home = () => {
@@ -35,7 +39,6 @@ const Home = () => {
   const { isAllowed } = useCreateContract();
   const { organisation } = useOrganisation();
   const { assets, removeAsset } = useAsset();
-  const router = useRouter();
 
   const handleDelete = (value: any) => {
     removeAsset(value as IAsset);
@@ -59,15 +62,22 @@ const Home = () => {
           <NotificationHeading>No account selected</NotificationHeading>
           You do not have an account selected yet.
           <NotificationFooter>
-            <NotificationButton
-              onClick={() => router.push('/settings')}
-              icon={<MonoSettings />}
-            >
-              Go to wallet selection
-            </NotificationButton>
+            <WalletSelector
+              trigger={
+                <Button
+                  isCompact
+                  variant="outlined"
+                  startVisual={<MonoAddLink />}
+                  endVisual={<MonoKeyboardArrowDown />}
+                >
+                  Select a wallet
+                </Button>
+              }
+            />
           </NotificationFooter>
         </Notification>
       )}
+
       <SectionCard stack="vertical">
         <SectionCardContentBlock>
           <SectionCardHeader
