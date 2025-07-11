@@ -1,5 +1,32 @@
 # @kadena/dev-wallet
 
+## 0.6.0
+
+### Minor Changes
+
+- 21384f0: improve the onboarding flow
+
+### Patch Changes
+
+- 51b2f5d: add maintenance mode option
+- d0465fe: add error pages
+- f0cecde: fix setting a new password
+- 8dd1868: not possible anymore to choose an existing profilename during
+  recovery
+- 2822382: autofocus the first field of forms
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+- Updated dependencies \[24fb611]
+- Updated dependencies \[3759502]
+- Updated dependencies \[b5df48c]
+- Updated dependencies \[05168d0]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+  - @kadena/kode-ui\@0.21.0
+  - @kadena/chainweaver-pact-console-plugin\@0.0.5
+  - @kadena/chainweaver-wallet-connect-plugin\@0.0.5
+  - @kadena/pactjs-generator\@1.18.0
+
 ## 0.5.4
 
 ### Patch Changes

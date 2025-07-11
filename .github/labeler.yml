@@ -193,3 +193,9 @@ wallet-adapter-react-example:
 '@kadena/wallet-adapter-walletconnect':
   - changed-files:
       - any-glob-to-any-file: packages/libs/wallet-adapter-walletconnect/*
+'@kadena/wallet-adapter-chainweaver':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-chainweaver/*
+'@kadena/wallet-adapter-magic':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-magic/*
