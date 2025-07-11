@@ -1,6 +1,7 @@
 import { KLogo } from '@/app/(app)/KLogo';
 import { AccountSwitch } from '@/components/AccountSwitch/AccountSwitch';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
+import { useOrganisation } from '@/hooks/organisation';
 import { useUser } from '@/hooks/user';
 import {
   MonoBeenhere,
@@ -23,6 +24,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
 }) => {
   const { isExpanded } = useSideBarLayout();
   const { userToken } = useUser();
+  const { organisation } = useOrganisation();
   const pathName = usePathname();
   return (
     <SideBarLayout
@@ -53,7 +55,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
             </SideBarTree>
           )}
 
-          {userToken?.claims.orgAdmins && (
+          {organisation && userToken?.claims.orgAdmins?.[organisation?.id] && (
             <SideBarTree visual={<MonoBusiness />} label="Organisation">
               <SideBarTreeItem
                 isActive={pathName === `/admin`}

@@ -189,7 +189,7 @@ describe('createContract hook', () => {
       expect(result.current.isAllowed).toBe(true);
     });
 
-    it.only('should return false, when account is Mounted, when gasisPayable, and is NOT org admin', () => {
+    it('should return false, when account is Mounted, when gasisPayable, and is NOT org admin', () => {
       mocksHook.useAccount.mockImplementation(() => ({
         ...mocksHook.useAccount.getMockImplementation(),
         isMounted: true,
