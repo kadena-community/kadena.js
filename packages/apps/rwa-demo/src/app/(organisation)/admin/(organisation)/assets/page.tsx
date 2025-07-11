@@ -144,6 +144,14 @@ const Home = () => {
               ]}
               data={assets}
             />
+
+            {assets?.length === 0 && (
+              <Notification role="alert">
+                <NotificationHeading>No assets found yet</NotificationHeading>
+                This organisation has no assets yet. The admins of this
+                organisation can add assets.
+              </Notification>
+            )}
           </SectionCardBody>
         </SectionCardContentBlock>
       </SectionCard>

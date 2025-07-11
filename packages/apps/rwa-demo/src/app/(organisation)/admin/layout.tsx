@@ -46,8 +46,6 @@ const RootLayout = ({
     userToken?.claims.rootAdmin ||
     userToken?.claims.orgAdmins?.[organisation?.id ?? '-1'];
 
-  console.log(isAdmin);
-
   useEffect(() => {
     if (!txsButtonRef.current || !transactionAnimationRef.current) return;
     setTxsButtonRef(txsButtonRef.current);

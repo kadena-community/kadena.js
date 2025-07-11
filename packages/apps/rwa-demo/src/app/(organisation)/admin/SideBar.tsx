@@ -1,5 +1,6 @@
 import { KLogo } from '@/app/(app)/KLogo';
 import { AccountSwitch } from '@/components/AccountSwitch/AccountSwitch';
+import { AssetSwitch } from '@/components/AssetSwitch/AssetSwitch';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
 import { useOrganisation } from '@/hooks/organisation';
 import { useUser } from '@/hooks/user';
@@ -87,6 +88,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       }
       appContext={
         <SideBarItem visual={<MonoNetworkCheck />} label="Select Asset">
+          <AssetSwitch showLabel={isExpanded} />
           <AccountSwitch showLabel={isExpanded} />
         </SideBarItem>
       }

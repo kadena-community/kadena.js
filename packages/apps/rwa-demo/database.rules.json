@@ -26,9 +26,9 @@
       }
     },
     "organisationsData": {
-      ".read": "auth.token.rootAdmin === true",
+      ".read": "auth != null",
       "$organisationId": {
-        ".read": true,
+        ".read": "(auth.token.rootAdmin === true || auth.token.allowedOrgs[$organisationId] === true)",
         ".write": "(auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true)",
         "domains": {
           "$key": {

@@ -158,6 +158,16 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       intent: 'warning',
       message: `Contract ${asset.contractName} removed successfully`,
     });
+
+    const localstorageAsset = JSON.parse(
+      localStorage.getItem(selectedKey) || '{}',
+    );
+
+    if (localstorageAsset.uuid === asset.uuid) {
+      localStorage.removeItem(selectedKey);
+      window.dispatchEvent(new Event(selectedKey));
+      setAsset(undefined);
+    }
   };
 
   const addAsset = ({
@@ -203,6 +213,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       assetStore?.addAsset(asset);
     }
 
+    setAsset(asset);
+    handleSelectAsset(asset);
     return asset;
   };
 
