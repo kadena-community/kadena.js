@@ -233,6 +233,8 @@ describe('transferTokens hook', () => {
 
       expect(mocksHook.mockSubmit2Chain).toHaveBeenCalledWith(data, {
         notificationSentryName: 'error:submit:transfertokens',
+        successMessage:
+          'Transfer tokens from k:inve****ress to k:reci****ress successful',
         chainFunction: expect.any(Function),
         transaction: {
           type: TXTYPES.TRANSFERTOKENS,
@@ -266,6 +268,8 @@ describe('transferTokens hook', () => {
 
       expect(mocksHook.mockSubmit2Chain).toHaveBeenCalledWith(data, {
         notificationSentryName: 'error:submit:transfertokens',
+        successMessage:
+          'Transfer tokens from k:cust****ress to k:reci****ress successful',
         chainFunction: expect.any(Function),
         transaction: {
           type: TXTYPES.TRANSFERTOKENS,

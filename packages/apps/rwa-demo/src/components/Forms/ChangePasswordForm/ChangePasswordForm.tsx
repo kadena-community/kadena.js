@@ -61,6 +61,10 @@ export const ChangePasswordForm: FC = () => {
       .then(() => updatePassword(user, data.password))
       .then(() => {
         console.log('Password updated!');
+        addNotification({
+          intent: 'positive',
+          label: 'Password updated successfully',
+        });
         setIsSend(true);
       })
       .catch((err) => {

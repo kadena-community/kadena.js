@@ -45,6 +45,7 @@ export const GasPayableBanner: FC = () => {
       </NotificationHeading>
       <NotificationFooter>
         <Button
+          aria-label="Add KDA for gas"
           isDisabled={!isAllowed}
           onPress={handleAddKda}
           variant="warning"

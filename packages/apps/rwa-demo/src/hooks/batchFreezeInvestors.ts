@@ -34,6 +34,7 @@ export const useBatchFreezeInvestors = () => {
   ): Promise<ITransaction | undefined> => {
     return submit2Chain<IBatchSetAddressFrozenProps>(data, {
       notificationSentryName: 'error:submit:batchfreezeinvestors',
+      successMessage: 'Batch freeze investors successful',
       chainFunction: async (account: IWalletAccount, asset: IAsset) => {
         if (!user) return Promise.resolve(undefined);
         const tx = batchSetAddressFrozen(data, account!, asset);

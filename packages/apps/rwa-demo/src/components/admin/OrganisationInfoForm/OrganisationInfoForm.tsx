@@ -97,6 +97,11 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
     await orgStore.updateOrganisation(newOrganisation);
     setIsLoading(false);
+    addNotification({
+      intent: 'positive',
+      label: 'Organisation updated',
+      message: `Organisation ${newOrganisation.name} has been updated successfully.`,
+    });
   };
 
   const handleDelete = useCallback(async () => {
@@ -107,7 +112,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
     addNotification(
       {
-        intent: 'positive',
+        intent: 'warning',
         label: 'Organisation removed',
         message: `Organisation ${organisation.name} has been removed successfully.`,
       },
@@ -121,7 +126,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
   const handleAddDomain = useCallback(() => {
     append({ value: newDomainValue });
-    reset({ ...getValues() });
+    reset({ ...getValues(), newDomain: '' });
 
     dispatchDomains({
       type: 'add',
@@ -196,6 +201,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                             }}
                             trigger={
                               <Button
+                                aria-label="Remove domain"
                                 isCompact
                                 variant="outlined"
                                 startVisual={<MonoDelete />}
@@ -247,6 +253,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                 />
 
                 <Button
+                  aria-label="Add domain"
                   isCompact
                   isDisabled={!!errors.newDomain?.message || !newDomainValue}
                   variant="outlined"

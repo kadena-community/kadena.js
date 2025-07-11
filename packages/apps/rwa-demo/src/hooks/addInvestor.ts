@@ -35,6 +35,7 @@ export const useAddInvestor = ({
   ): Promise<ITransaction | undefined> => {
     const tx = await submit2Chain<Omit<IRegisterIdentityProps, 'agent'>>(data, {
       notificationSentryName: 'error:submit:addinvestor',
+      successMessage: `Investor ${data.accountName} has been added successfully.`,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         if (data.alreadyExists) return Promise.resolve(undefined);
 

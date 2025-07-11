@@ -75,15 +75,16 @@ const RootLayout = ({
           <ProfileForm />
         </Dialog>
       )}
+      <SideBarTopBanner>
+        <DemoBanner />
+        <CookieConsent />
+        <GraphOnlineBanner />
+        <FrozenInvestorBanner />
+        <GasPayableBanner />
+      </SideBarTopBanner>
       <SideBarHeaderContext>
-        <SideBarTopBanner>
-          <DemoBanner />
-          <CookieConsent />
-          <GraphOnlineBanner />
-          <FrozenInvestorBanner />
-          <GasPayableBanner />
-        </SideBarTopBanner>
         <Button
+          aria-label="Current transactions"
           ref={txsButtonRef}
           variant="transparent"
           startVisual={

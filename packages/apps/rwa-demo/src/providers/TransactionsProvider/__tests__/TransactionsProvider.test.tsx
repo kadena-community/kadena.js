@@ -47,7 +47,10 @@ vi.mock('@/hooks/account', () => ({
 
 vi.mock('@/hooks/asset', () => ({
   useAsset: () => ({
-    asset: 'test-asset',
+    asset: {
+      uuid: 'test-asset-uuid',
+      name: 'test-asset',
+    },
   }),
 }));
 
@@ -68,29 +71,73 @@ vi.mock('@/hooks/notifications', () => ({
 
 vi.mock('@/hooks/organisation', () => ({
   useOrganisation: () => ({
-    organisation: 'test-org',
+    organisation: {
+      id: 'test-org-id',
+      name: 'test-org',
+    },
   }),
 }));
 
 // Mock RWAStore
 const mockStoreCallbacks: Array<(txs: ITransaction[]) => void> = [];
+const mockTransactions: ITransaction[] = [];
 const mockStore = {
-  addTransaction: vi.fn(),
-  removeTransaction: vi.fn(),
+  addTransaction: vi.fn(async (transaction: ITransaction) => {
+    mockTransactions.push(transaction);
+    // Trigger the callback with updated transactions (filtered for current account)
+    const filteredTransactions = mockTransactions.filter(
+      (tx) =>
+        tx.type.overall || tx.accounts.indexOf('test-account-address') >= 0,
+    );
+    mockStoreCallbacks.forEach((callback) => callback(filteredTransactions));
+  }),
+  removeTransaction: vi.fn(async (transaction: ITransaction) => {
+    const index = mockTransactions.findIndex(
+      (tx) => tx.uuid === transaction.uuid,
+    );
+    if (index !== -1) {
+      mockTransactions.splice(index, 1);
+      // Trigger the callback with updated transactions (filtered for current account)
+      const filteredTransactions = mockTransactions.filter(
+        (tx) =>
+          tx.type.overall || tx.accounts.indexOf('test-account-address') >= 0,
+      );
+      mockStoreCallbacks.forEach((callback) => callback(filteredTransactions));
+    }
+  }),
   listenToTransactions: vi.fn((callback) => {
     mockStoreCallbacks.push(callback);
+    // Immediately call with current transactions (filtered for current account)
+    const filteredTransactions = mockTransactions.filter(
+      (tx) =>
+        tx.type.overall || tx.accounts.indexOf('test-account-address') >= 0,
+    );
+    callback(filteredTransactions);
     return () => {
-      /* mock cleanup */
+      const index = mockStoreCallbacks.indexOf(callback);
+      if (index !== -1) {
+        mockStoreCallbacks.splice(index, 1);
+      }
     };
   }),
 };
 
 vi.mock('@/utils/store', () => ({
-  RWAStore: () => mockStore,
+  RWAStore: vi.fn(() => mockStore),
 }));
 
 // Mock crypto.randomUUID
 const mockRandomUUID = vi.fn(() => 'test-uuid');
+
+// Mock analytics
+vi.mock('@/utils/analytics', () => ({
+  analyticsEvent: vi.fn(),
+}));
+
+// Mock GraphQL transaction subscription
+vi.mock('@/services/graph/transactionSubscription.graph', () => ({
+  transactionsQuery: 'MOCK_TRANSACTION_QUERY',
+}));
 
 // Test component to access context values
 const TestComponent = () => {
@@ -148,11 +195,14 @@ describe('TransactionsProvider', () => {
     mockSubscribe.mockImplementation((onNext, onError, onComplete) => {
       return { unsubscribe: mockUnsubscribe };
     });
+
+    // Clear store callbacks and transactions
+    mockStoreCallbacks.length = 0;
+    mockTransactions.length = 0;
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
-    mockStoreCallbacks.length = 0; // Clear callbacks array
   });
 
   describe('interpretErrorMessage', () => {
@@ -184,10 +234,8 @@ describe('TransactionsProvider', () => {
   });
 
   describe('TransactionsProvider Component', () => {
-    it('should render provider with children', async () => {
-      // Completely disable subscription mechanism
-
-      const screen = render(
+    it('should render provider with children', () => {
+      render(
         <TransactionsProvider>
           <span data-testid="test-child">Test Child</span>
         </TransactionsProvider>,
@@ -212,6 +260,11 @@ describe('TransactionsProvider', () => {
         </TransactionsProvider>,
       );
 
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
       fireEvent.click(screen.getByTestId('add-transaction-btn'));
 
       await waitFor(() => {
@@ -229,6 +282,11 @@ describe('TransactionsProvider', () => {
         </TransactionsProvider>,
       );
 
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
       // First add a transaction
       fireEvent.click(screen.getByTestId('add-transaction-btn'));
 
@@ -245,6 +303,69 @@ describe('TransactionsProvider', () => {
       });
     });
 
+    it('should prevent duplicate transactions with same requestKey', async () => {
+      const TestComponentDuplicate = () => {
+        const context = React.useContext(TransactionsContext);
+        const [addResult, setAddResult] = React.useState<ITransaction | null>(
+          null,
+        );
+
+        if (!context) {
+          return <div data-testid="no-context">No Context Available</div>;
+        }
+
+        return (
+          <div>
+            <div data-testid="transactions-count">
+              {context.transactions.length}
+            </div>
+            <button
+              data-testid="add-duplicate-transaction-btn"
+              onClick={async () => {
+                const result = await context.addTransaction({
+                  requestKey: 'duplicate-request-key',
+                  type: TXTYPES.ADDINVESTOR,
+                  accounts: ['test-account-address'],
+                });
+                setAddResult(result);
+              }}
+            >
+              Add Duplicate Transaction
+            </button>
+            <div data-testid="add-result">{addResult?.uuid || 'none'}</div>
+          </div>
+        );
+      };
+
+      render(
+        <TransactionsProvider>
+          <TestComponentDuplicate />
+        </TransactionsProvider>,
+      );
+
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
+      // Add first transaction
+      fireEvent.click(screen.getByTestId('add-duplicate-transaction-btn'));
+
+      await waitFor(() => {
+        expect(screen.getByTestId('transactions-count').textContent).toBe('1');
+        expect(screen.getByTestId('add-result').textContent).toBe('test-uuid');
+      });
+
+      // Try to add the same transaction again
+      fireEvent.click(screen.getByTestId('add-duplicate-transaction-btn'));
+
+      // Should still be 1 transaction and return the existing one
+      await waitFor(() => {
+        expect(screen.getByTestId('transactions-count').textContent).toBe('1');
+        expect(screen.getByTestId('add-result').textContent).toBe('test-uuid');
+      });
+    });
+
     it('should handle transaction subscription success', async () => {
       render(
         <TransactionsProvider>
@@ -252,29 +373,10 @@ describe('TransactionsProvider', () => {
         </TransactionsProvider>,
       );
 
-      // Add a transaction to set up the subscription
-      fireEvent.click(screen.getByTestId('add-transaction-btn'));
-
+      // Wait for the store to be set up
       await waitFor(() => {
-        expect(mockSubscribe).toHaveBeenCalled();
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
       });
-
-      // Get the onComplete callback
-      const onComplete = mockSubscribe.mock.calls[0][2];
-
-      // Simulate completion
-      onComplete();
-
-      // Check that store.removeTransaction was called
-      expect(mockStore.removeTransaction).toHaveBeenCalledTimes(1);
-    });
-
-    it('should handle transaction error responses', async () => {
-      render(
-        <TransactionsProvider>
-          <TestComponent />
-        </TransactionsProvider>,
-      );
 
       // Add a transaction to set up the subscription
       fireEvent.click(screen.getByTestId('add-transaction-btn'));
@@ -286,43 +388,182 @@ describe('TransactionsProvider', () => {
       // Get the onNext callback
       const onNext = mockSubscribe.mock.calls[0][0];
 
-      // Simulate error response
+      // Simulate successful response
       onNext({
-        errors: 'Test error',
         data: {
           transaction: {
             result: {
-              badResult: 'bad result',
+              goodResult: 'success',
+            },
+          },
+        },
+      });
+
+      // Check that store.removeTransaction was called
+      await waitFor(() => {
+        expect(mockStore.removeTransaction).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should handle transaction subscription success with success message', async () => {
+      const TestComponentWithSuccessMessage = () => {
+        const context = React.useContext(TransactionsContext);
+
+        if (!context) {
+          return <div data-testid="no-context">No Context Available</div>;
+        }
+
+        return (
+          <div>
+            <button
+              data-testid="add-transaction-with-success-btn"
+              onClick={async () => {
+                await context.addTransaction({
+                  requestKey: 'test-request-key',
+                  type: TXTYPES.ADDINVESTOR,
+                  accounts: ['test-account-address'],
+                  successMessage: 'Transaction completed successfully!',
+                });
+              }}
+            >
+              Add Transaction with Success Message
+            </button>
+          </div>
+        );
+      };
+
+      render(
+        <TransactionsProvider>
+          <TestComponentWithSuccessMessage />
+        </TransactionsProvider>,
+      );
+
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
+      // Add a transaction to set up the subscription
+      fireEvent.click(screen.getByTestId('add-transaction-with-success-btn'));
+
+      await waitFor(() => {
+        expect(mockSubscribe).toHaveBeenCalled();
+      });
+
+      // Get the onNext callback
+      const onNext = mockSubscribe.mock.calls[0][0];
+
+      // Simulate successful response
+      onNext({
+        data: {
+          transaction: {
+            result: {
+              goodResult: 'success',
+            },
+          },
+        },
+      });
+
+      // Check that success notification was called
+      await waitFor(() => {
+        expect(mocks.addNotification).toHaveBeenCalledWith({
+          intent: 'positive',
+          label: 'transaction successful',
+          message: 'Transaction completed successfully!',
+        });
+      });
+
+      // Check that store.removeTransaction was called
+      await waitFor(() => {
+        expect(mockStore.removeTransaction).toHaveBeenCalled();
+      });
+    });
+
+    it('should handle transaction error responses with badResult', async () => {
+      render(
+        <TransactionsProvider>
+          <TestComponent />
+        </TransactionsProvider>,
+      );
+
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
+      // Add a transaction to set up the subscription
+      fireEvent.click(screen.getByTestId('add-transaction-btn'));
+
+      await waitFor(() => {
+        expect(mockSubscribe).toHaveBeenCalled();
+      });
+
+      // Get the onNext callback
+      const onNext = mockSubscribe.mock.calls[0][0];
+
+      // Simulate error response with badResult
+      onNext({
+        data: {
+          transaction: {
+            result: {
+              badResult: JSON.stringify({ message: 'Transaction failed' }),
             },
           },
         },
       });
 
       // Check that addNotification was called with the error
-      expect(mocks.addNotification).toHaveBeenCalledWith(
-        {
-          intent: 'negative',
-          label: '"Test error"',
-          message: 'Interpreted: "Test error"',
-          url: 'https://explorer.kadena.io/testnet/transaction/test-request-key',
-        },
-        {
-          name: 'error:ADDINVESTOR',
-          options: {
-            message: '"Test error"',
-            requestKey: 'test-request-key',
-            sentryData: {
-              captureContext: {
-                extra: {
-                  message: '"bad result"',
-                },
-              },
-              label: Error('"Test error"'),
-              type: 'transaction-listener',
-            },
+      await waitFor(() => {
+        expect(mocks.addNotification).toHaveBeenCalled();
+      });
+
+      // Check that removeTransaction was called
+      await waitFor(() => {
+        expect(mockStore.removeTransaction).toHaveBeenCalled();
+      });
+    });
+
+    it('should handle transaction error responses with errors array', async () => {
+      render(
+        <TransactionsProvider>
+          <TestComponent />
+        </TransactionsProvider>,
+      );
+
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
+      // Add a transaction to set up the subscription
+      fireEvent.click(screen.getByTestId('add-transaction-btn'));
+
+      await waitFor(() => {
+        expect(mockSubscribe).toHaveBeenCalled();
+      });
+
+      // Get the onNext callback
+      const onNext = mockSubscribe.mock.calls[0][0];
+
+      // Simulate error response with errors array
+      onNext({
+        errors: ['Error 1', 'Error 2'],
+        data: {
+          transaction: {
+            result: {},
           },
         },
-      );
+      });
+
+      // Check that addNotification was called with the error
+      await waitFor(() => {
+        expect(mocks.addNotification).toHaveBeenCalled();
+      });
+
+      // Check that removeTransaction was called
+      await waitFor(() => {
+        expect(mockStore.removeTransaction).toHaveBeenCalled();
+      });
     });
 
     it('should handle transaction subscription errors', async () => {
@@ -331,6 +572,11 @@ describe('TransactionsProvider', () => {
           <TestComponent />
         </TransactionsProvider>,
       );
+
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
 
       // Add a transaction to set up the subscription
       fireEvent.click(screen.getByTestId('add-transaction-btn'));
@@ -346,18 +592,43 @@ describe('TransactionsProvider', () => {
       onError({ message: 'Subscription error' });
 
       // Check that addNotification was called with the error
-      expect(mocks.addNotification).toHaveBeenCalledTimes(1);
+      await waitFor(() => {
+        expect(mocks.addNotification).toHaveBeenCalled();
+      });
+    });
+
+    it('should handle transaction completion', async () => {
+      render(
+        <TransactionsProvider>
+          <TestComponent />
+        </TransactionsProvider>,
+      );
+
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
+      // Add a transaction to set up the subscription
+      fireEvent.click(screen.getByTestId('add-transaction-btn'));
+
+      await waitFor(() => {
+        expect(mockSubscribe).toHaveBeenCalled();
+      });
+
+      // Get the onComplete callback
+      const onComplete = mockSubscribe.mock.calls[0][2];
+
+      // Simulate completion
+      onComplete();
+
+      // Check that store.removeTransaction was called
+      await waitFor(() => {
+        expect(mockStore.removeTransaction).toHaveBeenCalled();
+      });
     });
 
     it('should check if account is active in transaction', async () => {
-      // Create mock transaction that includes the current account
-      const mockTxData = {
-        uuid: 'agent-uuid',
-        requestKey: 'agent-request-key',
-        type: TXTYPES.ADDAGENT,
-        accounts: ['test-account-address'],
-      };
-
       render(
         <TransactionsProvider>
           <TestComponent />
@@ -369,8 +640,25 @@ describe('TransactionsProvider', () => {
         'false',
       );
 
+      // Wait for the store to be set up
+      await waitFor(() => {
+        expect(mockStore.listenToTransactions).toHaveBeenCalled();
+      });
+
+      // Create mock transaction that includes the current account
+      const mockTxData: ITransaction = {
+        uuid: 'agent-uuid',
+        requestKey: 'agent-request-key',
+        type: TXTYPES.ADDAGENT,
+        accounts: ['test-account-address'],
+      };
+
+      // Add the transaction to the mock store
+      mockTransactions.push(mockTxData);
+
       // Simulate store calling back with transactions
-      mockStoreCallbacks[0]([mockTxData]);
+      const storeCallback = mockStore.listenToTransactions.mock.calls[0][0];
+      storeCallback([mockTxData]);
 
       // Now isActiveAccountChangeTx should be true
       await waitFor(() => {

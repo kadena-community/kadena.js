@@ -29,9 +29,6 @@ const _GET = async (request: NextRequest) => {
   try {
     const { users } = (await adminAuth().getUsers(userIds)) ?? [];
 
-    console.log(
-      `Fetched ${users.length} users for organisation ${organisationId}`,
-    );
     //filter out the users that are not in the organisation
     const orgUsers = users.filter((user: UserRecord) => {
       const allowedOrgs = user.customClaims?.allowedOrgs || {};

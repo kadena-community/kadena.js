@@ -42,12 +42,12 @@ export const SideBarAside: FC<{
 
   return (
     <>
-      <Stack
+      <button
         aria-label="background"
         className={menuBackdropClass({
           expanded: isRightAsideExpanded,
         })}
-        onClick={handleExpand}
+        onClick={(e) => handleExpand(e as unknown as PressEvent)}
       />
       <Stack
         className={asideWrapperTempClass({

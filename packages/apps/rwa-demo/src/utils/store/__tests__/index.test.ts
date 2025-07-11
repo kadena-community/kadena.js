@@ -135,7 +135,11 @@ describe('RWAstore', () => {
       });
     });
     describe('removeTransaction', () => {
-      it('should remove a transaction for an asset', async () => {
+      it('should remove a transaction for an asset, when it exists', async () => {
+        mocks.getMock.mockResolvedValueOnce({
+          toJSON: () => ({ uuid: 'tx1' }),
+        });
+
         const organisation: IOrganisation = {
           id: 'org1',
           name: '',
@@ -174,7 +178,55 @@ describe('RWAstore', () => {
           accounts: [],
         };
         await store.removeTransaction(tx, asset);
+        expect(mocks.getMock).toHaveBeenCalled();
         expect(mocks.setMock).toHaveBeenCalled();
+      });
+
+      it('should not call remove a transaction for an asset, when it  does not exist exists', async () => {
+        mocks.getMock.mockResolvedValueOnce({
+          toJSON: () => undefined,
+        });
+
+        const organisation: IOrganisation = {
+          id: 'org1',
+          name: '',
+          domains: [],
+          sendEmail: '',
+        };
+        const asset: IAsset = {
+          namespace: 'ns',
+          contractName: 'cn',
+          uuid: '',
+          supply: 0,
+          investorCount: 0,
+          compliance: {
+            maxSupply: {
+              key: 'supply-limit-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxBalance: {
+              key: 'max-balance-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+            maxInvestors: {
+              key: 'max-investors-compliance-v1',
+              isActive: false,
+              value: 0,
+            },
+          },
+        };
+        const store = RWAStore(organisation);
+        const tx: ITransaction = {
+          uuid: 'tx1',
+          requestKey: '',
+          type: { name: 'FAUCET' },
+          accounts: [],
+        };
+        await store.removeTransaction(tx, asset);
+        expect(mocks.getMock).toHaveBeenCalled();
+        expect(mocks.setMock).not.toHaveBeenCalled();
       });
       it('should not remove a transaction if asset folder is not defined', async () => {
         const organisation: IOrganisation = {

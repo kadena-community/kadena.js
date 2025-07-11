@@ -41,7 +41,7 @@ export const InvestorInfo: FC<IProps> = ({ account }) => {
         gap="md"
         flexDirection="column"
       >
-        <Button isDisabled>
+        <Button aria-label="Pause toggle" isDisabled>
           <TransactionTypeSpinner
             type={TXTYPES.FREEZEINVESTOR}
             account={accountName}

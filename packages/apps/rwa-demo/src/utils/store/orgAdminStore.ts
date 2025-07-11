@@ -1,5 +1,5 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
-import type { IdTokenResult } from 'firebase/auth';
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
 import { off, onValue, ref } from 'firebase/database';
 import { database } from './firebase';
 
@@ -26,7 +26,9 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     return () => off(orgRef);
   };
 
-  const getUserList = async (token: IdTokenResult): Promise<Response> => {
+  const getUserList = async (
+    token: IdTokenResultWithClaims,
+  ): Promise<Response> => {
     return fetch(`/api/admin/users?organisationId=${organisationId}`, {
       method: 'GET',
       headers: {
@@ -41,7 +43,7 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     token,
   }: {
     email: string;
-    token: IdTokenResult;
+    token: IdTokenResultWithClaims;
   }) => {
     const result = await fetch(
       `/api/admin/claims?organisationId=${organisationId}`,
@@ -66,7 +68,7 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     token,
   }: {
     uid: string;
-    token: IdTokenResult;
+    token: IdTokenResultWithClaims;
   }) => {
     const result = await fetch(
       `/api/admin/claims?uid=${uid}&organisationId=${organisationId}`,
@@ -87,7 +89,7 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     token,
   }: {
     email: string;
-    token: IdTokenResult;
+    token: IdTokenResultWithClaims;
   }) => {
     const result = await fetch(
       `/api/admin/user?organisationId=${organisationId}`,
@@ -112,7 +114,7 @@ export const OrgAdminStore = (organisationId: IOrganisation['id']) => {
     token,
   }: {
     uid: string;
-    token: IdTokenResult;
+    token: IdTokenResultWithClaims;
   }) => {
     const result = await fetch(
       `/api/admin/user?uid=${uid}&organisationId=${organisationId}`,

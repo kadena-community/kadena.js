@@ -3,6 +3,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ITogglePartiallyFreezeTokensProps } from '@/services/togglePartiallyFreezeTokens';
 import { togglePartiallyFreezeTokens } from '@/services/togglePartiallyFreezeTokens';
+import { maskValue } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -26,6 +27,9 @@ export const useTogglePartiallyFreezeTokens = ({
   const submit = async (data: ITogglePartiallyFreezeTokensProps) => {
     return await submit2Chain<ITogglePartiallyFreezeTokensProps>(data, {
       notificationSentryName: 'error:submit:togglePartiallyFreezeTokens',
+      successMessage: data.freeze
+        ? `Freeze tokens for ${maskValue(data.investorAccount)} successful`
+        : `Unfreeze tokens for ${maskValue(data.investorAccount)} successful`,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return togglePartiallyFreezeTokens(data, account!, asset);
       },

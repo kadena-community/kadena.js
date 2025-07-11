@@ -16,6 +16,7 @@ export const useGetInvestorBalance = ({
   investorAccount?: string;
 }) => {
   const [isPending, setIsPending] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [data, setData] = useState(0);
   const { asset } = useAsset();
   const { data: subscriptionData } = useEventSubscriptionSubscription({
@@ -28,7 +29,8 @@ export const useGetInvestorBalance = ({
     if (!asset) return;
 
     const init = async (asset: IAsset) => {
-      if (!investorAccount) return;
+      if (!investorAccount || isMounted) return;
+      setIsMounted(true);
       setIsPending(true);
       const res = await getInvestorBalance(
         {
@@ -46,7 +48,11 @@ export const useGetInvestorBalance = ({
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
-  }, [investorAccount, asset?.uuid]);
+  }, [investorAccount, asset?.uuid, isMounted]);
+
+  useEffect(() => {
+    setIsMounted(false);
+  }, [asset?.uuid]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

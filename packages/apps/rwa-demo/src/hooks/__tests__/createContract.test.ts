@@ -159,11 +159,57 @@ describe('createContract hook', () => {
   });
 
   describe('isAllowed', () => {
-    it('should return true, when account is Mounted, when gasisPayable', () => {
+    it('should return true, when account is Mounted, when gasisPayable, and is org admin', () => {
       mocksHook.useAccount.mockImplementation(() => ({
         ...mocksHook.useAccount.getMockImplementation(),
         isMounted: true,
         isGasPayable: true,
+        userToken: {
+          claims: {
+            orgAdmins: {
+              'org-123': true,
+            },
+          },
+        },
+      }));
+
+      mocksHook.useUser.mockImplementation(() => ({
+        ...mocksHook.useUser.getMockImplementation(),
+        userToken: {
+          claims: {
+            orgAdmins: {
+              'org-123': true,
+            },
+          },
+        },
+      }));
+
+      const { result } = renderHook(() => useCreateContract());
+
+      expect(result.current.isAllowed).toBe(true);
+    });
+
+    it('should return false, when account is Mounted, when gasisPayable, and is NOT org admin', () => {
+      mocksHook.useAccount.mockImplementation(() => ({
+        ...mocksHook.useAccount.getMockImplementation(),
+        isMounted: true,
+        isGasPayable: true,
+        userToken: {
+          claims: {
+            orgAdmins: {},
+          },
+        },
+      }));
+
+      mocksHook.useUser.mockImplementation(() => ({
+        ...mocksHook.useUser.getMockImplementation(),
+        userToken: {
+          claims: {
+            orgAdmins: {
+              'org-123': true,
+            },
+          },
+        },
       }));
 
       const { result } = renderHook(() => useCreateContract());

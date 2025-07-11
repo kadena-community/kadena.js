@@ -15,6 +15,7 @@ export const useFreeze = ({
   const { account } = useAccount();
   const { asset } = useAsset();
   const [frozen, setFrozen] = useState<boolean>(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   const { data } = useEventSubscriptionSubscription({
     variables: {
@@ -28,6 +29,8 @@ export const useFreeze = ({
       investorAccountProp: string,
       asset: IAsset,
     ) => {
+      if (isMounted) return;
+      setIsMounted(true);
       const res = await isFrozen(
         {
           investorAccount: investorAccountProp,
@@ -45,7 +48,11 @@ export const useFreeze = ({
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(account, investorAccount, asset);
-  }, [account?.address, investorAccount, asset?.uuid]);
+  }, [account?.address, investorAccount, asset?.uuid, isMounted]);
+
+  useEffect(() => {
+    setIsMounted(false);
+  }, [asset?.uuid, account?.address, investorAccount]);
 
   useEffect(() => {
     if (!data?.events?.length) return;

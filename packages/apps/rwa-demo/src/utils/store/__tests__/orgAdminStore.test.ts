@@ -1,4 +1,4 @@
-import type { IdTokenResult } from 'firebase/auth';
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { OrgAdminStore } from '../../store/orgAdminStore';
 
@@ -16,7 +16,7 @@ vi.mock('firebase/database', () => ({
 
 describe('OrgAdminStore', () => {
   const organisationId = 'org1';
-  const mockToken: IdTokenResult = {
+  const mockToken: IdTokenResultWithClaims = {
     token: 'mock-token',
     authTime: '',
     claims: {},

@@ -48,6 +48,7 @@ export const AgentsList: FC = () => {
               <AgentForm
                 trigger={
                   <Button
+                    aria-label="Add agent"
                     isDisabled={!isEditAgentAllowed}
                     isCompact
                     endVisual={<MonoAdd />}
@@ -98,6 +99,7 @@ export const AgentsList: FC = () => {
                         onPress={handleDelete}
                         trigger={
                           <Button
+                            aria-label="Delete agent"
                             isDisabled={!isRemoveAgentAllowed}
                             isCompact
                             variant="outlined"

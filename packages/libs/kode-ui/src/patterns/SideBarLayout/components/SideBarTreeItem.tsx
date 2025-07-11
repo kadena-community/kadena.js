@@ -13,6 +13,7 @@ export interface ISideBarTreeItemProps {
   onPress?: (e: PressEvent) => void;
   href?: string;
   component?: any;
+  isActive?: boolean;
 }
 
 const InnerAnchor = forwardRef<HTMLAnchorElement, ILinkProps>(
@@ -38,6 +39,7 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
   onPress,
   href,
   component,
+  isActive,
 }) => {
   const { handleSetExpanded, isActiveUrl } = useLayout();
   const isMediumDevice = useMedia(breakpoints.md, true);
@@ -60,7 +62,7 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
         className={sidebartreeItemClass}
         href={href}
         to={href}
-        data-isactive={isActiveUrl(href)}
+        data-isactive={isActive !== undefined ? isActive : isActiveUrl(href)}
       >
         {label}
       </LinkWrapper>

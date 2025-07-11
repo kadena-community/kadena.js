@@ -12,6 +12,8 @@ export type EventSubscriptionQueryVariables = Exact<{
 
 export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
   const [data, setData] = useState<IComplianceProps | undefined>();
+
+  const [isMounted, setIsMounted] = useState(false);
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
       qualifiedName: `${getAsset(asset)}.COMPLIANCE-UPDATED`,
@@ -21,6 +23,8 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
   useEffect(() => {
     if (!asset) return;
     const init = async (asset: IAsset) => {
+      if (isMounted) return;
+      setIsMounted(true);
       const res = await getComplianceRules(asset);
 
       if (typeof res !== 'number') {
@@ -29,6 +33,10 @@ export const useGetComplianceRules = ({ asset }: { asset?: IAsset }) => {
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
+  }, [asset?.uuid, isMounted]);
+
+  useEffect(() => {
+    setIsMounted(false);
   }, [asset?.uuid]);
 
   useEffect(() => {

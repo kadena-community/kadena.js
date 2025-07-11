@@ -122,9 +122,13 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setBreadCrumbs = (value: ISideBarBreadCrumb[]) => {
     setBreadCrumbsState(value);
   };
-  const setLocation = (value?: ISideBarLayoutLocation | undefined) => {
-    setLocationState(value);
-  };
+  const setLocation = useCallback(
+    (value?: ISideBarLayoutLocation | undefined) => {
+      setLocationState(value);
+    },
+    [setLocationState],
+  );
+
   const setRightAsideTitle = (value?: string) => {
     setRightAsideTitleState(value);
   };
@@ -147,7 +151,8 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   };
 
   const isActiveUrl = (url?: string) => {
-    return !!url && url === location?.url;
+    if (!window) return false;
+    return !!url && url === window.location.pathname + window.location.search;
   };
 
   return (

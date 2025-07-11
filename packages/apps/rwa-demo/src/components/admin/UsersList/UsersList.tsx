@@ -114,13 +114,17 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     if (result.status !== 200) {
       addNotification({
         intent: 'negative',
-        label: 'admin not added',
+        label: 'user not added',
         message: result.statusText,
       });
     }
 
     await loadData();
     setIsRightAsideExpanded(false);
+    addNotification({
+      intent: 'positive',
+      message: 'user added successfully',
+    });
   };
 
   const handleRemove = async (uid: any) => {
@@ -145,6 +149,10 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     }
 
     await loadData();
+    addNotification({
+      intent: 'warning',
+      message: 'user removed successfully',
+    });
   };
 
   return (
@@ -215,6 +223,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
             actions={
               <>
                 <Button
+                  aria-label="Invite user"
                   onPress={() => {
                     setIsRightAsideExpanded(true);
                     setFormIsOpen(true);
@@ -278,6 +287,7 @@ export const UsersList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                         onPress={handleRemove}
                         trigger={
                           <Button
+                            aria-label="Remove user"
                             isCompact
                             variant="outlined"
                             startVisual={<MonoDelete />}

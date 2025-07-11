@@ -24,6 +24,7 @@ export const cardWrapperClass = style([
 ]);
 
 globalStyle('body', {
+  overflowY: 'hidden',
   padding: '0 !important',
   margin: '0 !important',
   backgroundColor: token('color.background.base.default'),

@@ -31,6 +31,9 @@ export const useEditAgent = () => {
   ): Promise<ITransaction | undefined> => {
     const tx = await submit2Chain<IAddAgentProps>(data, {
       notificationSentryName: 'error:submit:editagent',
+      successMessage: data.alreadyExists
+        ? `Edit agent ${data.agent} successful`
+        : `Add agent ${data.agent} successful`,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return data.alreadyExists
           ? editAgent(data, account, asset)

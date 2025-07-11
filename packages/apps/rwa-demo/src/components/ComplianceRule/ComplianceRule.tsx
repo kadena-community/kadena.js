@@ -44,6 +44,7 @@ export const ComplianceRule: FC<IProps> = ({
           onPress={handleToggle}
           trigger={
             <Button
+              aria-label="Toggle compliance rule"
               isDisabled={!isAllowed}
               isCompact
               variant="outlined"

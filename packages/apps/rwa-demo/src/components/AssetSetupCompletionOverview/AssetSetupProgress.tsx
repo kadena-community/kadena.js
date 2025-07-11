@@ -1,12 +1,27 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
-import { useAssetSetup } from '@/hooks/assetSetup';
-import { Stack, Text } from '@kadena/kode-ui';
+import { Stack, SuccessCircle, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import { useEffect, useRef } from 'react';
-import { progressRing, progressRingCircle } from './style.css';
+import { useEffect, useRef, useState } from 'react';
+import {
+  progressRing,
+  progressRingBackground,
+  progressRingCircle,
+} from './style.css';
 
-export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({ asset }) => {
-  const { percentageComplete } = useAssetSetup({ tempAsset: asset });
+interface IProps {
+  asset: IAsset;
+  percentageComplete?: number;
+  isLoading?: boolean;
+  completeAssetSetup: () => void;
+}
+
+export const AssetSetupProgress: FC<IProps> = ({
+  asset,
+  percentageComplete = 0,
+  isLoading = false,
+  completeAssetSetup,
+}) => {
+  const [play, setPlay] = useState(false);
   const circleRef = useRef<SVGCircleElement>(null);
 
   const strokeWidth = 3;
@@ -21,32 +36,73 @@ export const AssetSetupProgress: FC<{ asset?: IAsset }> = ({ asset }) => {
     }
   }, [percentageComplete, circumference]);
 
-  if (!asset) return;
-  return (
-    <Stack
-      width="100%"
-      gap="md"
-      alignItems="center"
-      marginInlineStart="sm"
-      marginBlockStart="sm"
-    >
-      <Stack position="relative">
-        <svg className={progressRing} width={size} height={size}>
-          <circle
-            ref={circleRef}
-            className={progressRingCircle}
-            strokeWidth={strokeWidth}
-            fill="transparent"
-            r={radius}
-            cx={size / 2}
-            cy={size / 2}
-            strokeDasharray={circumference}
-            strokeDashoffset={circumference}
-          />
-        </svg>
-      </Stack>
+  useEffect(() => {
+    if (isLoading || percentageComplete < 100) return;
 
-      <Text size="small">setup progress</Text>
-    </Stack>
+    setTimeout(() => {
+      setPlay(true);
+
+      setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        completeAssetSetup();
+      }, 2000);
+    }, 500);
+  }, [isLoading, percentageComplete]);
+
+  if (!asset) return;
+
+  //when complete, do not show progress
+  if (isLoading || asset.setupComplete) return;
+
+  return (
+    <>
+      <Stack
+        gap="sm"
+        alignItems="center"
+        justifyContent="flex-end"
+        marginInlineStart="sm"
+        style={{ whiteSpace: 'nowrap' }}
+      >
+        {!play && <Text size="smallest">setup progress</Text>}
+
+        <Stack position="relative" style={{ width: size, height: size }}>
+          <SuccessCircle
+            play={play}
+            size={20}
+            positioning={{ x: '-20px', y: '-20px' }}
+          />
+
+          {!play && (
+            <>
+              <svg className={progressRing} width={size} height={size}>
+                <circle
+                  className={progressRingBackground}
+                  strokeWidth={strokeWidth}
+                  fill="transparent"
+                  r={radius}
+                  cx={size / 2}
+                  cy={size / 2}
+                  strokeDasharray={100}
+                  strokeDashoffset={0}
+                />
+              </svg>
+              <svg className={progressRing} width={size} height={size}>
+                <circle
+                  ref={circleRef}
+                  className={progressRingCircle}
+                  strokeWidth={strokeWidth}
+                  fill="transparent"
+                  r={radius}
+                  cx={size / 2}
+                  cy={size / 2}
+                  strokeDasharray={circumference}
+                  strokeDashoffset={circumference}
+                />
+              </svg>
+            </>
+          )}
+        </Stack>
+      </Stack>
+    </>
   );
 };

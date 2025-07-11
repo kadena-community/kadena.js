@@ -23,6 +23,7 @@ export const useTogglePause = () => {
   ): Promise<ITransaction | undefined> => {
     return submit2Chain<ITogglePauseProps>(data, {
       notificationSentryName: 'error:submit:togglepause',
+      successMessage: data.isPaused ? 'Pause successful' : 'Unpause successful',
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return togglePause(data, account!, asset);
       },

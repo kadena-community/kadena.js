@@ -463,6 +463,7 @@ describe('addInvestor hook', () => {
       expect(addTransactionMock).toHaveBeenCalledWith({
         requestKey: 'test-request-key',
         hash: 'test-hash',
+        successMessage: 'Investor k:investor-1 has been added successfully.',
         type: {
           name: 'ADDINVESTOR',
           overall: true,

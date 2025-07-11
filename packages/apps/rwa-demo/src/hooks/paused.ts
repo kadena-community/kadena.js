@@ -20,6 +20,7 @@ export const getEventsDocument = (
 
 export const usePaused = (asset?: IAsset) => {
   const [paused, setPaused] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const { account } = useAccount();
 
   const { data: pausedData } = useEventSubscriptionSubscription({
@@ -35,7 +36,8 @@ export const usePaused = (asset?: IAsset) => {
 
   useEffect(() => {
     const init = async () => {
-      if (!account || !asset) return;
+      if (!account || !asset || isMounted) return;
+      setIsMounted(true);
       const res = await isPaused(
         {
           account: account,
@@ -50,7 +52,11 @@ export const usePaused = (asset?: IAsset) => {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init();
-  }, [account?.address, asset?.uuid]);
+  }, [account?.address, asset?.uuid, isMounted]);
+
+  useEffect(() => {
+    setIsMounted(false);
+  }, [asset?.uuid]);
 
   useEffect(() => {
     if (!unpausedData?.events?.length) return;

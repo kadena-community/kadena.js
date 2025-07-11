@@ -1,6 +1,7 @@
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { ReactElement, ReactNode } from 'react';
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
+import { SuccessCircle } from '../Icon';
 import { Stack } from '../Layout/Stack/Stack';
 import {
   bulletClass,
@@ -18,6 +19,7 @@ export interface IStepProps {
   active?: Variants['active'];
   icon?: ReactElement;
   onClick?: () => void;
+  showSuccess?: boolean;
 }
 export const Step = ({
   children,
@@ -25,7 +27,20 @@ export const Step = ({
   status = 'valid',
   icon,
   onClick,
+  showSuccess = false,
 }: IStepProps) => {
+  const [playAnimation, setPlayAnimation] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!showSuccess || !active) {
+      setPlayAnimation(false);
+      return;
+    }
+    setTimeout(() => {
+      setPlayAnimation(true);
+    }, 500);
+  }, [showSuccess, active]);
+
   return (
     <Stack
       as="li"
@@ -34,8 +49,18 @@ export const Step = ({
       gap="md"
       data-isclickable={!!onClick}
       onClick={onClick}
+      position="relative"
     >
       <Stack className={bulletClass({ status, active })} />
+      {active && showSuccess && (
+        <Stack position="absolute">
+          <SuccessCircle
+            size={20}
+            play={playAnimation}
+            positioning={{ x: '-30px', y: '-30px' }}
+          />
+        </Stack>
+      )}
       <Stack
         gap="xs"
         alignItems="center"

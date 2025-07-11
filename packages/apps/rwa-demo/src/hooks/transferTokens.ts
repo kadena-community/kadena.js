@@ -3,6 +3,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import { transferTokens } from '@/services/transferTokens';
+import { maskValue } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -23,6 +24,7 @@ export const useTransferTokens = () => {
 
     return submit2Chain<ITransferTokensProps>(data, {
       notificationSentryName: 'error:submit:transfertokens',
+      successMessage: `Transfer tokens from ${maskValue(accountStr)} to ${maskValue(data.investorToAccount)} successful`,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return transferTokens(data, account!, asset);
       },

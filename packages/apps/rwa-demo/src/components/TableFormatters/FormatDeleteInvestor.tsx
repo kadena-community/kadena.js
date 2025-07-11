@@ -26,6 +26,7 @@ export const FormatDeleteInvestor = () => {
         onPress={handleDelete}
         trigger={
           <Button
+            aria-label="Delete investor"
             isDisabled={!isDeleteInvestorAllowed}
             title={notAllowedReason}
             isCompact
