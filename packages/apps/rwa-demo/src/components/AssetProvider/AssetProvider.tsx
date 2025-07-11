@@ -81,7 +81,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         unlistenAsset();
       }
     };
-  }, [organisation, assetStore]);
+  }, [organisation?.id, assetStore]);
 
   const getAsset = async (
     uuid: string,
@@ -133,7 +133,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       const foundAsset = await getAsset(storageAsset.uuid, account);
       if (!foundAsset || foundAsset.uuid === asset?.uuid) return;
 
-      await assetStore?.updateAsset(foundAsset);
+      //await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
     };

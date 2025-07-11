@@ -13,8 +13,8 @@
     },
     "organisationsTxs": {
       "$organisationId": {
-        ".read": "auth != null && (auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true)",
-        ".write": "auth != null && (auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true)"
+        ".read": "auth != null && (auth.token.rootAdmin === true || auth.token.allowedOrgs[$organisationId] === true)",
+        ".write": "auth != null && (auth.token.rootAdmin === true || auth.token.allowedOrgs[$organisationId] === true)"
       }
     },
     "organisationsUsers": {

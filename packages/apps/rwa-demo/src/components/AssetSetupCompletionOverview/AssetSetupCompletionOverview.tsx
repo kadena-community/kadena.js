@@ -68,7 +68,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
   );
   const { agentsIsLoading, agents, investorsIsLoading, investors } = useAsset();
   const { findAliasByAddress } = useUser();
-  const { isOwner, accountRoles } = useAccount();
+  const { accountRoles } = useAccount();
   const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
   const { isAllowed: isEditAgentAllowed } = useEditAgent();
   const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
@@ -104,8 +104,6 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
     setInvestorAccount(value);
     return cb(value);
   };
-
-  if (!isOwner) return null;
 
   return (
     <>

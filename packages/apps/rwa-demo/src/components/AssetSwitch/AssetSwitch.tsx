@@ -1,3 +1,4 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { useAsset } from '@/hooks/asset';
 import { shortenString } from '@/utils/shortenString';
 import { MonoApps, MonoMoreVert } from '@kadena/kode-icons';
@@ -15,6 +16,13 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
   showLabel = true,
 }) => {
   const { assets, asset, setAsset } = useAsset();
+
+  const handleSwitch = async (asset: IAsset) => {
+    await setAsset(asset);
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 500);
+  };
 
   return (
     <Stack width="100%" className={assetsSwitchWrapperClass}>
@@ -45,7 +53,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
         >
           {assets.map((ass) => (
             <ContextMenuItem
-              onClick={() => setAsset(ass)}
+              onClick={() => handleSwitch(ass)}
               key={ass.uuid}
               label={ass.contractName}
             />
