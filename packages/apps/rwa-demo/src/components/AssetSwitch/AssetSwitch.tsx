@@ -1,11 +1,13 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { useAsset } from '@/hooks/asset';
+import { useUser } from '@/hooks/user';
 import { shortenString } from '@/utils/shortenString';
 import { MonoApps, MonoMoreVert } from '@kadena/kode-icons';
 import {
   Button,
   ButtonGroup,
   ContextMenu,
+  ContextMenuDivider,
   ContextMenuItem,
   Stack,
 } from '@kadena/kode-ui';
@@ -16,6 +18,7 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
   showLabel = true,
 }) => {
   const { assets, asset, setAsset } = useAsset();
+  const { isOrgAdmin } = useUser();
 
   const handleSwitch = async (asset: IAsset) => {
     await setAsset(asset);
@@ -61,6 +64,20 @@ export const AssetSwitch: FC<{ showLabel?: boolean }> = ({
 
           {assets.length === 0 && (
             <ContextMenuItem onClick={() => {}} label="No assets yet" />
+          )}
+
+          {isOrgAdmin && (
+            <>
+              <ContextMenuDivider />
+
+              <ContextMenuItem
+                label="Add a new asset"
+                onClick={() => {
+                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                  window.location.href = '/admin/assets';
+                }}
+              />
+            </>
           )}
         </ContextMenu>
       </ButtonGroup>

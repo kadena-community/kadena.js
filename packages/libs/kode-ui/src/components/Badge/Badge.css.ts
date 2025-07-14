@@ -12,6 +12,7 @@ export const badge = recipe({
     fontWeight: token('typography.weight.primaryFont.bold'),
     borderColor: token('color.neutral.n1@alpha20'),
     color: token('color.text.base.inverse.@init'),
+    whiteSpace: 'nowrap',
   },
   variants: {
     size: {

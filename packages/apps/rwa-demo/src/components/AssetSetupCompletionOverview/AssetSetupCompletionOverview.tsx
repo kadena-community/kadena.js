@@ -14,6 +14,7 @@ import type { ICompactStepperItemProps } from '@kadena/kode-ui';
 import {
   Button,
   Heading,
+  maskValue,
   Notification,
   Stack,
   Step,
@@ -29,7 +30,7 @@ import {
 } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AgentForm } from '../AgentForm/AgentForm';
 import { ComplianceRules } from '../ComplianceRules/ComplianceRules';
@@ -68,9 +69,10 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
   );
   const { agentsIsLoading, agents, investorsIsLoading, investors } = useAsset();
   const { findAliasByAddress } = useUser();
-  const { accountRoles } = useAccount();
+  const { accountRoles, account } = useAccount();
   const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
-  const { isAllowed: isEditAgentAllowed } = useEditAgent();
+  const { isAllowed: isEditAgentAllowed, submit: submitEditAgent } =
+    useEditAgent();
   const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
   const { isAllowed: isDistributeTokensAllowed } = useDistributeTokens({
     investorAccount: investors[0]?.accountName,
@@ -90,6 +92,20 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
   useEffect(() => {
     setInnerStep(activeStep);
   }, [activeStep.id]);
+
+  const accountIsAlreadyAgent = agents.some(
+    (a) => a.accountName === account?.address,
+  );
+  const canAddOwnAccountAsAgent = isEditAgentAllowed && !accountIsAlreadyAgent;
+
+  const handleAddOwnAccountAsAgent = useCallback(async () => {
+    if (!account?.address || !canAddOwnAccountAsAgent) return;
+    await submitEditAgent({
+      accountName: account.address,
+      agent: account,
+      roles: ['agent-admin', 'freezer', 'transfer-manager'],
+    });
+  }, [account?.address, canAddOwnAccountAsAgent]);
 
   if (!asset) return null;
 
@@ -239,7 +255,39 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                       </>
                     )}
 
-                    <Stack marginBlockStart="md">
+                    <Stack
+                      marginBlockStart="md"
+                      flexDirection={{
+                        xs: 'column',
+                        sm: 'row',
+                        md: 'column',
+                        lg: 'row',
+                      }}
+                      gap="md"
+                    >
+                      {accountIsAlreadyAgent ? (
+                        <Text>
+                          Your account{' '}
+                          <Text variant="code">
+                            {maskValue(account?.address ?? '')}{' '}
+                          </Text>
+                          already an agent for this asset.
+                        </Text>
+                      ) : (
+                        <Button
+                          variant="transparent"
+                          isDisabled={!canAddOwnAccountAsAgent}
+                          onPress={handleAddOwnAccountAsAgent}
+                          startVisual={
+                            <TransactionTypeSpinner
+                              type={[TXTYPES.ADDAGENT]}
+                              fallbackIcon={<MonoAdd />}
+                            />
+                          }
+                        >
+                          Add myself as an agent
+                        </Button>
+                      )}
                       <AgentForm
                         trigger={
                           <Button

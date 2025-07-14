@@ -24,6 +24,7 @@ export interface IUserContext {
   removeAccount: (address: string) => void;
   userStore?: any;
   findAliasByAddress: (address?: string) => string;
+  isOrgAdmin: boolean;
 }
 
 export const UserContext = createContext<IUserContext | null>(null);

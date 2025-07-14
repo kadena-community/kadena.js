@@ -190,6 +190,11 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     return aliases[address]?.alias ?? '';
   };
 
+  const isOrgAdmin = useMemo(() => {
+    if (!organisation?.id) return false;
+    return token?.claims.orgAdmins?.[organisation?.id] ?? false;
+  }, [token?.token, organisation?.id]);
+
   return (
     <UserContext.Provider
       value={{
@@ -204,6 +209,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
         removeAccount,
         userStore,
         findAliasByAddress,
+        isOrgAdmin,
       }}
     >
       {children}
