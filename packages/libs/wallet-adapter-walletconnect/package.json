@@ -1,6 +1,7 @@
 {
   "name": "@kadena/wallet-adapter-walletconnect",
   "version": "0.0.1",
+  "description": "Kadena Wallet Adapter for WalletConnect",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",

@@ -1,6 +1,12 @@
 {
   "name": "@kadena/wallet-adapter-core",
   "version": "0.0.1",
+  "description": "Kadena Wallet Adapter Core",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/wallet-adapter-core"
+  },
   "license": "BSD-3-Clause",
   "exports": {
     "import": "./dist/esm/index.js",
