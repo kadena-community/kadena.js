@@ -74,7 +74,9 @@ export const Primary: Story = {
             Power Sword
           </Step>
           <Step active={step === 2}>He-man</Step>
-          <Step active={step === 3}>Master of the Universe</Step>
+          <Step active={step === 3}>
+            Master of the Universe Master of the Universe
+          </Step>
         </Stepper>
         <Stack justifyContent="space-between" width="100%">
           <Button onPress={handlePrevious}>previous</Button>

@@ -73,7 +73,8 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
   const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
   const { isAllowed: isEditAgentAllowed, submit: submitEditAgent } =
     useEditAgent();
-  const { isAllowed: isAddInvestorAllowed } = useAddInvestor({});
+  const { isAllowed: isAddInvestorAllowed, submit: submitAddInvestor } =
+    useAddInvestor({});
   const { isAllowed: isDistributeTokensAllowed } = useDistributeTokens({
     investorAccount: investors[0]?.accountName,
   });
@@ -106,6 +107,19 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
       roles: ['agent-admin', 'freezer', 'transfer-manager'],
     });
   }, [account?.address, canAddOwnAccountAsAgent]);
+
+  const accountIsAlreadyInvestor = investors.some(
+    (a) => a.accountName === account?.address,
+  );
+  const canAddOwnAccountAsInvestor =
+    isAddInvestorAllowed && !accountIsAlreadyInvestor;
+
+  const handleAddOwnAccountAsInvestor = useCallback(async () => {
+    if (!account?.address || !canAddOwnAccountAsInvestor) return;
+    await submitAddInvestor({
+      accountName: account.address,
+    });
+  }, [account?.address, canAddOwnAccountAsInvestor]);
 
   if (!asset) return null;
 
@@ -169,11 +183,14 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                     <Text>
                       The values for the compliance rules have been set.
                     </Text>
+
                     {Object.entries(asset.compliance ?? {}).map(
                       ([key, rule]) => (
                         <Stack key={key} gap="xs">
                           <Text>{key}:</Text>
-                          <Text variant="code">{rule.value}</Text>
+                          <Text variant="code">
+                            {rule.value < 0 ? 'infinite' : rule.value}
+                          </Text>
                         </Stack>
                       ),
                     )}
@@ -291,7 +308,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                       <AgentForm
                         trigger={
                           <Button
-                            aria-label="Add agent"
+                            aria-label="Add new agent"
                             isDisabled={!isEditAgentAllowed}
                             startVisual={
                               <TransactionTypeSpinner
@@ -300,7 +317,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                               />
                             }
                           >
-                            Add Agent
+                            Add new Agent
                           </Button>
                         }
                       />
@@ -334,11 +351,43 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                       </>
                     )}
 
-                    <Stack marginBlockStart="md">
+                    <Stack
+                      marginBlockStart="md"
+                      flexDirection={{
+                        xs: 'column',
+                        sm: 'row',
+                        md: 'column',
+                        lg: 'row',
+                      }}
+                      gap="md"
+                    >
+                      {accountIsAlreadyInvestor ? (
+                        <Text>
+                          Your account{' '}
+                          <Text variant="code">
+                            {maskValue(account?.address ?? '')}{' '}
+                          </Text>
+                          already an investor for this asset.
+                        </Text>
+                      ) : (
+                        <Button
+                          variant="transparent"
+                          isDisabled={!canAddOwnAccountAsInvestor}
+                          onPress={handleAddOwnAccountAsInvestor}
+                          startVisual={
+                            <TransactionTypeSpinner
+                              type={[TXTYPES.ADDINVESTOR]}
+                              fallbackIcon={<MonoAdd />}
+                            />
+                          }
+                        >
+                          Add myself as an investor
+                        </Button>
+                      )}
                       <InvestorForm
                         trigger={
                           <Button
-                            aria-label="Add investor"
+                            aria-label="Add new investor"
                             isDisabled={!isAddInvestorAllowed}
                             startVisual={
                               <TransactionTypeSpinner
@@ -347,7 +396,7 @@ export const AssetSetupCompletionOverview: FC<IProps> = ({
                               />
                             }
                           >
-                            Add Investor
+                            Add new Investor
                           </Button>
                         }
                       />

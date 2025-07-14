@@ -14,27 +14,27 @@ export type IStepKeys =
 
 const steps: ICompactStepperItemProps[] = [
   {
-    label: 'Set up your asset',
+    label: 'Configure your Asset',
     id: 'setup',
   },
   {
-    label: 'Set up Compliance Rules',
+    label: 'Configure Compliance Rule(s)',
     id: 'compliancerules',
   },
   {
-    label: 'Enforce a compliance rule',
+    label: 'Enable Compliance Rule(s)',
     id: 'startcompliance',
   },
   {
-    label: 'Add first agent',
+    label: 'Add Agent(s)',
     id: 'agent',
   },
   {
-    label: 'Add first investor',
+    label: 'Add Investor(s)',
     id: 'investor',
   },
   {
-    label: 'Distribute first tokens',
+    label: 'Distribute tokens to Investor(s)',
     id: 'distribute',
   },
   {
