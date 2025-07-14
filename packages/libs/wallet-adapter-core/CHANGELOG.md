@@ -1,5 +1,11 @@
 # @kadena/wallet-adapter-core
 
+## 0.0.2
+
+### Patch Changes
+
+- 15f1d93: Added repository field to package json
+
 ## 0.0.1
 
 ### Patch Changes

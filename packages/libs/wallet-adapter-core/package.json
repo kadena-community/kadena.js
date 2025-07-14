@@ -1,6 +1,6 @@
 {
   "name": "@kadena/wallet-adapter-core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Kadena Wallet Adapter Core",
   "repository": {
     "type": "git",
