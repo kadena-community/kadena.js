@@ -34,10 +34,7 @@ export const AssetFormScreen: FC<IProps> = ({ trigger, onClose }) => {
   return (
     <>
       {isRightAsideExpanded && isOpen && (
-        <RightAside
-          isOpen={isRightAsideExpanded && isOpen}
-          onClose={handleOnClose}
-        >
+        <RightAside isOpen={true} onClose={handleOnClose}>
           <RightAsideHeader label="Add Asset" />
           <RightAsideContent>
             <AssetStepperForm handleDone={handleOnClose} />

@@ -140,6 +140,11 @@ export const useCreateContract = () => {
         return false;
       }
 
+      addNotification({
+        intent: 'positive',
+        message: `Contract ${data.contractName} created successfully`,
+      });
+
       return true;
     } catch (e: any) {
       addNotification({

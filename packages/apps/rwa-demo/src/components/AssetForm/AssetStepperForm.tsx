@@ -82,6 +82,9 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
       setIsSuccess(true);
       setStep(STEPS.DONE);
+
+      handleDone?.();
+
       if (createdAsset) {
         setAsset(createdAsset);
       }
@@ -130,13 +133,15 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       )}
 
       {step === STEPS.DONE && (
-        <Button
-          onPress={async () => {
-            if (handleDone) handleDone();
-          }}
-        >
-          DONE
-        </Button>
+        <>
+          <Button
+            onPress={async () => {
+              if (handleDone) handleDone();
+            }}
+          >
+            DONE
+          </Button>
+        </>
       )}
 
       {step === STEPS.CREATE_CONTRACT && (
