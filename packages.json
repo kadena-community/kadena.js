@@ -187,49 +187,49 @@
   },
   {
     "name": "@kadena/wallet-adapter-chainweaver",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-chainweaver"
   },
   {
     "name": "@kadena/wallet-adapter-chainweaver-legacy",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-chainweaver-legacy"
   },
   {
     "name": "@kadena/wallet-adapter-core",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-core"
   },
   {
     "name": "@kadena/wallet-adapter-ecko",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-ecko"
   },
   {
     "name": "@kadena/wallet-adapter-magic",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-magic"
   },
   {
     "name": "@kadena/wallet-adapter-react",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-react"
   },
   {
     "name": "@kadena/wallet-adapter-walletconnect",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-walletconnect"
   },
   {
     "name": "@kadena/wallet-adapter-zelcore",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": false,
     "path": "packages/libs/wallet-adapter-zelcore"
   },
@@ -319,7 +319,7 @@
   },
   {
     "name": "wallet-adapter-react-example",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "private": true,
     "path": "packages/apps/wallet-adapter-react-example"
   },
