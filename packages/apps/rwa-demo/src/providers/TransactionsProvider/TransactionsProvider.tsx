@@ -59,10 +59,14 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       variables: { requestKey: data.requestKey },
     });
 
+    const showNotificationForAccount = data.accounts.some(
+      (a) => a === account.address,
+    );
+
     const subscription = r.subscribe(
       async (nextData: any) => {
         if (nextData?.data?.transaction?.result?.goodResult) {
-          if (data.successMessage) {
+          if (data.successMessage && showNotificationForAccount) {
             addNotification({
               intent: 'positive',
               label: 'transaction successful',
@@ -80,62 +84,68 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
             : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
                 .message;
 
-          addNotification(
-            {
-              intent: 'negative',
-              label: message,
-              message: interpretErrorMessage(message),
-              url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
-            },
-            {
-              name: `error:${data.type.name}`,
-              options: {
-                requestKey: data?.requestKey ?? '',
-                message,
-                sentryData: {
-                  label: new Error(message),
-                  type: 'transaction-listener',
-                  captureContext: {
-                    extra: {
-                      message: JSON.stringify(
-                        nextData?.data.transaction?.result.badResult,
-                      ),
+          if (showNotificationForAccount) {
+            addNotification(
+              {
+                intent: 'negative',
+                label: message,
+                message: interpretErrorMessage(message),
+                url: `https://explorer.kadena.io/${activeNetwork.name}/transaction/${data.requestKey}`,
+              },
+              {
+                name: `error:${data.type.name}`,
+                options: {
+                  requestKey: data?.requestKey ?? '',
+                  message,
+                  sentryData: {
+                    label: new Error(message),
+                    type: 'transaction-listener',
+                    captureContext: {
+                      extra: {
+                        message: JSON.stringify(
+                          nextData?.data.transaction?.result.badResult,
+                        ),
+                      },
                     },
                   },
                 },
               },
-            },
-          );
+            );
+          }
           await store?.removeTransaction(data, asset);
           return;
         }
       },
       (errorData) => {
-        addNotification(
-          {
-            intent: 'negative',
-            label: 'invalid transaction',
-            message: JSON.stringify(errorData),
-            url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
-          },
-          {
-            name: `error:${data.type.name}`,
-            options: {
-              requestKey: data?.requestKey ?? '',
-              sentryData: {
-                type: 'transaction-listener',
+        if (showNotificationForAccount) {
+          addNotification(
+            {
+              intent: 'negative',
+              label: 'invalid transaction',
+              message: JSON.stringify(errorData),
+              url: `https://explorer.kadena.io/${activeNetwork.networkId}/transaction/${data.requestKey}`,
+            },
+            {
+              name: `error:${data.type.name}`,
+              options: {
+                requestKey: data?.requestKey ?? '',
+                sentryData: {
+                  type: 'transaction-listener',
+                },
               },
             },
-          },
-        );
+          );
+        }
       },
       async () => {
-        analyticsEvent(data.type.name, {
-          chainId: data?.chainId ?? '',
-          networkId: data?.networkId ?? '',
-          requestKey: data?.requestKey ?? '',
-          message: data?.result?.status,
-        });
+        if (showNotificationForAccount) {
+          analyticsEvent(data.type.name, {
+            chainId: data?.chainId ?? '',
+            networkId: data?.networkId ?? '',
+            requestKey: data?.requestKey ?? '',
+            message: data?.result?.status,
+          });
+        }
 
         await store?.removeTransaction(data, asset);
       },
