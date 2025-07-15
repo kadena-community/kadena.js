@@ -49,6 +49,7 @@ export const toggleButtonClass = recipe({
     willChange: 'color',
     transition: 'all 300ms ease',
     color: token('color.brand.key.white'),
+    cursor: 'pointer',
     selectors: {
       '&:before': {
         content: '',
@@ -67,6 +68,13 @@ export const toggleButtonClass = recipe({
   },
 
   variants: {
+    isDisabled: {
+      true: {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+      },
+      false: {},
+    },
     isSelected: {
       true: {
         backgroundColor: token('color.accent.semantic.positive'),

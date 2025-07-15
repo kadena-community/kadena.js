@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
+import { Stack } from '../Layout';
 import type { IToggleButtonProps } from './ToggleButton';
 import { ToggleButton } from './ToggleButton';
 
@@ -26,45 +27,41 @@ const meta: Meta<IToggleButtonProps> = {
         type: 'text',
       },
     },
-    isDisabled: {
-      control: {
-        type: 'boolean',
-      },
-    },
-
-    isSelected: {
-      default: true,
-      control: {
-        type: 'boolean',
-      },
-    },
   },
 };
 
 type ToggleButtonStoryType = StoryObj<IToggleButtonProps>;
-
-// Just to make the inverse prop visible in the story
-const InverseWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div
-      style={{
-        padding: '1rem',
-      }}
-    >
-      {children}
-    </div>
-  );
-};
 
 export const Base: ToggleButtonStoryType = {
   args: {
     'aria-label': 'Check this toggle',
   },
   render: (props: IToggleButtonProps) => {
+    const [selected, setSelected] = useState(false);
+    const [selected2, setSelected2] = useState(true);
+    const [selected3, setSelected3] = useState(false);
     return (
-      <InverseWrapper>
-        <ToggleButton {...props} />
-      </InverseWrapper>
+      <Stack flexDirection="column" gap="xl">
+        <ToggleButton
+          isSelected={selected}
+          onPress={() => setSelected((v) => !v)}
+        />
+        <ToggleButton
+          isSelected={selected2}
+          onPress={() => setSelected2((v) => !v)}
+        />
+
+        <ToggleButton
+          isDisabled
+          isSelected={selected3}
+          onPress={() => setSelected3((v) => !v)}
+        />
+        <ToggleButton
+          isDisabled
+          isSelected={true}
+          onPress={() => setSelected3((v) => !v)}
+        />
+      </Stack>
     );
   },
 };

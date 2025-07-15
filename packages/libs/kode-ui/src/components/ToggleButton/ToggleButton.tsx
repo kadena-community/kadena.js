@@ -6,10 +6,9 @@ import { useToggleState } from 'react-stately';
 import { toggleButtonClass } from './style.css';
 
 export interface IToggleButtonProps extends AriaToggleButtonProps {
-  children: string;
   isDisabled?: boolean;
   isSelected?: boolean;
-  size: 'base' | 'small';
+  size?: 'base' | 'small';
   onChange?: (isSelected: boolean) => void;
 }
 
@@ -23,7 +22,10 @@ export function ToggleButton(props: IToggleButtonProps) {
     <button
       {...mergeProps(hoverProps, buttonProps)}
       data-hovered={isHovered}
-      className={toggleButtonClass({ isSelected: state.isSelected })}
+      className={toggleButtonClass({
+        isSelected: state.isSelected,
+        isDisabled: props.isDisabled,
+      })}
       ref={ref}
     >
       <MonoCheck />
