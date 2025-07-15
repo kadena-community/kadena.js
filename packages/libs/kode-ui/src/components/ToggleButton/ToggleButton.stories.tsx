@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import type { ICheckboxProps } from './../Checkbox/Checkbox';
 import type { IToggleButtonProps } from './ToggleButton';
 import { ToggleButton } from './ToggleButton';
 
-const meta: Meta<ICheckboxProps> = {
+const meta: Meta<IToggleButtonProps> = {
   title: 'Components/ToggleButton',
   parameters: {
     status: { type: 'development' },
@@ -21,12 +20,20 @@ const meta: Meta<ICheckboxProps> = {
     },
   },
   argTypes: {
+    'aria-label': {
+      default: 'This is a label',
+      control: {
+        type: 'text',
+      },
+    },
     isDisabled: {
       control: {
         type: 'boolean',
       },
     },
+
     isSelected: {
+      default: true,
       control: {
         type: 'boolean',
       },
@@ -37,18 +44,11 @@ const meta: Meta<ICheckboxProps> = {
 type ToggleButtonStoryType = StoryObj<IToggleButtonProps>;
 
 // Just to make the inverse prop visible in the story
-const InverseWrapper = ({
-  children,
-  inversed,
-}: {
-  children: React.ReactNode;
-  inversed?: boolean;
-}) => {
+const InverseWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       style={{
         padding: '1rem',
-        backgroundColor: inversed ? 'black' : 'transparent',
       }}
     >
       {children}
@@ -58,12 +58,12 @@ const InverseWrapper = ({
 
 export const Base: ToggleButtonStoryType = {
   args: {
-    children: 'Check this toggle',
+    'aria-label': 'Check this toggle',
   },
-  render: (props: ICheckboxProps) => {
+  render: (props: IToggleButtonProps) => {
     return (
-      <InverseWrapper inversed={props.inverse}>
-        <ToggleButton {...props}>{props.children}</ToggleButton>
+      <InverseWrapper>
+        <ToggleButton {...props} />
       </InverseWrapper>
     );
   },
