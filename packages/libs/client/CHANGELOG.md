@@ -1,5 +1,11 @@
 # Change Log - @kadena/client
 
+## 1.18.0
+
+### Minor Changes
+
+- b849855: Change default ttl to 15 minutes
+
 ## 1.17.1
 
 ### Patch Changes

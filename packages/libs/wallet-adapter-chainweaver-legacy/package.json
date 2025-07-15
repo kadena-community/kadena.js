@@ -1,6 +1,13 @@
 {
   "name": "@kadena/wallet-adapter-chainweaver-legacy",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.2",
+  "description": "Kadena Wallet Adapter for Chainweaver Legacy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/wallet-adapter-chainweaver-legacy"
+  },
+  "license": "BSD-3-Clause",
   "contributors": [
     "Danillo Felixdaal",
     "Bart Huijgen"

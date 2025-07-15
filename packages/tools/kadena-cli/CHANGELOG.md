@@ -1,5 +1,19 @@
 # @kadena/kadena-cli
 
+## 1.4.2
+
+### Patch Changes
+
+- fdfd6d3: fix a bug where a template filename is passed to
+  createAndWriteTransaction instead of the actual template string
+- e2d8285: Fixed showing error messages for nested properties in template files
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+  - @kadena/pactjs-cli\@1.18.0
+  - @kadena/pactjs-generator\@1.18.0
+
 ## 1.4.1
 
 ### Patch Changes
