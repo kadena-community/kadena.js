@@ -1,18 +1,21 @@
 import { MonoCheck } from '@kadena/kode-icons/system';
+import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
 import type { AriaToggleButtonProps } from 'react-aria';
 import { mergeProps, useHover, useToggleButton } from 'react-aria';
 import { useToggleState } from 'react-stately';
 import { toggleButtonClass } from './style.css';
 
-export interface IToggleButtonProps extends AriaToggleButtonProps {
+export interface ISwitchButtonProps extends AriaToggleButtonProps {
   isDisabled?: boolean;
   isSelected?: boolean;
   size?: 'base' | 'small';
   onChange?: (isSelected: boolean) => void;
+  onVisual?: ReactElement;
+  offVisual?: ReactElement;
 }
 
-export function ToggleButton(props: IToggleButtonProps) {
+export function SwitchButton(props: ISwitchButtonProps) {
   const ref = useRef<HTMLButtonElement | null>(null);
   const { isHovered, hoverProps } = useHover(props);
   const state = useToggleState(props);
@@ -28,7 +31,8 @@ export function ToggleButton(props: IToggleButtonProps) {
       })}
       ref={ref}
     >
-      <MonoCheck />
+      <span>{props.onVisual ? props.onVisual : <MonoCheck />}</span>
+      <span>{props.offVisual ? props.offVisual : null}</span>
     </button>
   );
 }

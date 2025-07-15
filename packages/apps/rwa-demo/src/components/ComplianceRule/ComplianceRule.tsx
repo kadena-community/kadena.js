@@ -2,7 +2,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { IComplianceRuleTypes } from '@/services/getComplianceRules';
 import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
-import { Badge, Button, Stack, Text } from '@kadena/kode-ui';
+import { Badge, Stack, SwitchButton, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
 import { Confirmation } from '../Confirmation/Confirmation';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
@@ -43,15 +43,19 @@ export const ComplianceRule: FC<IProps> = ({
         <Confirmation
           onPress={handleToggle}
           trigger={
-            <Button
-              aria-label="Toggle compliance rule"
+            <SwitchButton
               isDisabled={!isAllowed}
-              isCompact
-              variant="outlined"
-              endVisual={
+              isSelected={isActive}
+              onVisual={
                 <TransactionTypeSpinner
                   type={TXTYPES.SETCOMPLIANCERULE}
-                  fallbackIcon={isActive ? <MonoPlayArrow /> : <MonoPause />}
+                  fallbackIcon={<MonoPlayArrow />}
+                />
+              }
+              offVisual={
+                <TransactionTypeSpinner
+                  type={TXTYPES.SETCOMPLIANCERULE}
+                  fallbackIcon={<MonoPause />}
                 />
               }
             />

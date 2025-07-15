@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
+import { MonoAdd, MonoRemove } from '@kadena/kode-icons/system';
 import { Stack } from '../Layout';
-import type { IToggleButtonProps } from './ToggleButton';
-import { ToggleButton } from './ToggleButton';
+import type { ISwitchButtonProps } from './SwitchButton';
+import { SwitchButton } from './SwitchButton';
 
-const meta: Meta<IToggleButtonProps> = {
-  title: 'Components/ToggleButton',
+const meta: Meta<ISwitchButtonProps> = {
+  title: 'Components/SwitchButton',
   parameters: {
     status: { type: 'development' },
     controls: {
@@ -16,7 +17,7 @@ const meta: Meta<IToggleButtonProps> = {
     docs: {
       description: {
         component:
-          "The ToggleButton component is a wrapper around [react-aria's](https://react-spectrum.adobe.com/react-aria/useToggleButton.html#usetogglebutton) usetogglebutton hook. Here are just a couple of examples but you can check their docs for more.",
+          "The SwitchButton component is a wrapper around [react-aria's](https://react-spectrum.adobe.com/react-aria/useToggleButton.html#usetogglebutton) usetogglebutton hook. Here are just a couple of examples but you can check their docs for more.",
       },
     },
   },
@@ -30,36 +31,40 @@ const meta: Meta<IToggleButtonProps> = {
   },
 };
 
-type ToggleButtonStoryType = StoryObj<IToggleButtonProps>;
+type SwitchButtonStoryType = StoryObj<ISwitchButtonProps>;
 
-export const Base: ToggleButtonStoryType = {
+export const Base: SwitchButtonStoryType = {
   args: {
     'aria-label': 'Check this toggle',
   },
-  render: (props: IToggleButtonProps) => {
+  render: (props: ISwitchButtonProps) => {
     const [selected, setSelected] = useState(false);
     const [selected2, setSelected2] = useState(true);
     const [selected3, setSelected3] = useState(false);
     return (
       <Stack flexDirection="column" gap="xl">
-        <ToggleButton
+        <SwitchButton
           isSelected={selected}
           onPress={() => setSelected((v) => !v)}
         />
-        <ToggleButton
+        <SwitchButton
           isSelected={selected2}
           onPress={() => setSelected2((v) => !v)}
+          onVisual={<MonoAdd />}
+          offVisual={<MonoRemove />}
         />
 
-        <ToggleButton
+        <SwitchButton
           isDisabled
           isSelected={selected3}
           onPress={() => setSelected3((v) => !v)}
+          offVisual={<MonoRemove />}
         />
-        <ToggleButton
+        <SwitchButton
           isDisabled
           isSelected={true}
           onPress={() => setSelected3((v) => !v)}
+          onVisual={<MonoAdd />}
         />
       </Stack>
     );

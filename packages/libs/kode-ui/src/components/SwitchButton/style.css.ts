@@ -22,12 +22,13 @@ const scaleWidthBackwards = keyframes({
     width: token('spacing.n6'),
     translate: `${token('spacing.n8')} 0px`,
   },
+  '10%': {
+    width: token('spacing.n6'),
+  },
   '50%': {
     width: token('spacing.n10'),
   },
-  '90%': {
-    width: token('spacing.n7'),
-  },
+
   '100%': {
     width: token('spacing.n6'),
     translate: `0px 0px`,
@@ -37,11 +38,14 @@ const scaleWidthBackwards = keyframes({
 export const toggleButtonClass = recipe({
   base: {
     position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     height: token('spacing.n8'),
     width: token('spacing.n16'),
     borderRadius: token('radius.round'),
     padding: token('spacing.xs'),
-    paddingInlineStart: token('spacing.sm'),
+    paddingInline: token('spacing.sm'),
     alignItems: 'center',
     userSelect: 'none',
     WebkitUserSelect: 'none',
