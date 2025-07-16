@@ -43,6 +43,7 @@ export const sendVerificationMail = async ({
 
   const mailgun = new Mailgun(FormData);
   const mg = mailgun.client({ username: 'api', key: apiKey });
+
   try {
     await mg.messages.create(domain, {
       from: `${organisation.name} <${organisation.sendEmail}>`,

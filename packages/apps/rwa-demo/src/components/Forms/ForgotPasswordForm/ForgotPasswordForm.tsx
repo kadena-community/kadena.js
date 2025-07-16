@@ -43,7 +43,10 @@ export const ForgotPasswordForm: FC = () => {
 
     addNotification({
       intent: result.status === 200 ? 'positive' : 'negative',
-      message: result.statusText || 'Unknown error',
+      message:
+        result.status === 200
+          ? 'if the email is registered, a reset link has been sent'
+          : result.statusText || 'Unknown error',
     });
 
     setIsPending(false);
