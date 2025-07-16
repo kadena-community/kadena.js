@@ -7,7 +7,6 @@ import {
   INTERVALGROUPS,
   MESSAGETYPES,
 } from '../../../constants';
-import { getClient } from '../../../elasticClient';
 
 const mocks = vi.hoisted(() => {
   return {
