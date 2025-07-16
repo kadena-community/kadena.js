@@ -5,6 +5,11 @@ import type {
 import { CHAINWEAVER_ADAPTER } from './constants';
 import { detectChainweaverProvider } from './provider';
 
+interface IChainWeaverAdapterFactoryOptions extends IBaseWalletFactoryOptions {
+  appName?: string;
+  walletUrl?: string;
+}
+
 /**
  * ChainWeaver Wallet Adapter Factory
  *
@@ -23,12 +28,12 @@ import { detectChainweaverProvider } from './provider';
  * @public
  */
 export const createChainweaverAdapter = ((
-  options?: IBaseWalletFactoryOptions,
+  options?: IChainWeaverAdapterFactoryOptions,
 ) => {
   return {
     name: CHAINWEAVER_ADAPTER,
     detect: async () => {
-      return await detectChainweaverProvider();
+      return await detectChainweaverProvider(options);
     },
     adapter: async (provider) => {
       const { ChainweaverAdapter } = await import('./ChainweaverAdapter');

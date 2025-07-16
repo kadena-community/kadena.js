@@ -7,6 +7,7 @@ import type {
   IAccountInfo,
   IBaseWalletAdapterOptions,
   IKdaMethodMap,
+  INetworkInfo,
   IUnsignedCommand,
   JsonRpcResponse,
   KdaMethod,
@@ -24,17 +25,45 @@ const connectSchema = v.object({
   appName: v.optional(v.string()),
 });
 
+interface IChainWeaverAccount {
+  address: string;
+  alias: string;
+  chains: string[];
+  guard: Guard;
+  overallBalance: string;
+}
+
 interface IChainWeaverGetStatusResponse {
   payload: {
-    accounts: {
-      address: string;
-      alias: string;
-      chains: string[];
-      guard: Guard;
-      overallBalance: string;
-    }[];
+    accounts: IChainWeaverAccount[];
   };
 }
+
+interface IChainWeaverGetAccountsResponse {
+  payload: IChainWeaverAccount[];
+}
+
+interface IChainWeaverGetNetworksResponse {
+  payload: {
+    uuid: string;
+    networkId: string;
+    name: string;
+    default: boolean;
+    creationTime: number;
+    hosts: {
+      url: string;
+      submit: boolean;
+      read: boolean;
+      confirm: boolean;
+    }[];
+  }[];
+}
+
+interface IChainWeaverAdapterOptions extends IBaseWalletAdapterOptions {
+  appName?: string;
+  walletUrl?: string;
+}
+
 /**
  * @public
  * ChainweaverAdapter
@@ -44,13 +73,18 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
   public nonce: number = 0;
   public provider!: IChainweaverProvider;
   public connectSchema: StandardSchemaV1 = connectSchema;
+  public appName: string = 'dApp';
 
-  public constructor(options: IBaseWalletAdapterOptions) {
+  public constructor(options: IChainWeaverAdapterOptions) {
     if (options.provider === undefined) {
       throw new Error('Missing required option: provider');
     }
 
     super(options);
+
+    if (options.appName !== undefined) {
+      this.appName = options.appName;
+    }
   }
 
   public async request<M extends KdaMethod>(
@@ -68,18 +102,10 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
 
     switch (method) {
       case 'kadena_connect': {
-        if (!('appName' in parsedParams)) {
-          console.warn(
-            'In the Chainweaver Adapter you can provide the parameter `appName` to connect()\n' +
-              '    adapter.connect({ appName: "MyApp" });`',
-          );
-        }
         this.provider.focus();
 
-        const applicationName = parsedParams.appName ?? 'dApp';
-
         const response = await this.provider.message('CONNECTION_REQUEST', {
-          name: applicationName,
+          name: this.appName,
         });
 
         if ((response.payload as any).status !== 'accepted') {
@@ -94,7 +120,7 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
         }
 
         const { payload } = (await this.provider.message('GET_STATUS', {
-          name: applicationName,
+          name: this.appName,
         })) as IChainWeaverGetStatusResponse;
 
         this.provider.close();
@@ -122,6 +148,42 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
         return Promise.resolve() as unknown as Promise<
           IKdaMethodMap['kadena_disconnect']['response']
         >;
+      }
+
+      case 'kadena_getAccount_v1': {
+        const accounts = await this._getAccounts();
+        return {
+          id: this.nonce,
+          jsonrpc: '2.0',
+          result: accounts[0],
+        };
+      }
+
+      case 'kadena_getAccounts_v2': {
+        const accounts = await this._getAccounts();
+        return {
+          id: this.nonce,
+          jsonrpc: '2.0',
+          result: accounts,
+        };
+      }
+
+      case 'kadena_getNetwork_v1': {
+        const networks = await this._getNetworks();
+        return {
+          id: this.nonce,
+          jsonrpc: '2.0',
+          result: networks[0],
+        } as JsonRpcResponse<any>;
+      }
+
+      case 'kadena_getNetworks_v1': {
+        const networks = await this._getNetworks();
+        return {
+          id: this.nonce,
+          jsonrpc: '2.0',
+          result: networks,
+        } as JsonRpcResponse<any>;
       }
 
       case 'kadena_quicksign_v1': {
@@ -189,5 +251,53 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
       default:
         throw new Error(ERRORS.METHOD_NOT_SUPPORTED(method));
     }
+  }
+
+  private async _getAccounts() {
+    await this.provider.connect(true);
+    const { payload } = (await this.provider.message('GET_ACCOUNTS', {
+      name: this.appName,
+    })) as IChainWeaverGetAccountsResponse;
+    this.provider.close();
+
+    console.log('Chainweaver accounts:', payload);
+    if (payload.length === 0) {
+      throw new Error(ERRORS.NO_ACCOUNTS_FOUND);
+    }
+
+    return payload.map(
+      (account) =>
+        ({
+          accountName: account.address,
+          label: account.alias,
+          networkId: this.networkId,
+          contract: 'coin',
+          guard: account.guard,
+          keyset: account.guard,
+          existsOnChains: account.chains as ChainId[],
+        }) as IAccountInfo,
+    );
+  }
+
+  private async _getNetworks() {
+    await this.provider.connect(true);
+    const { payload } = (await this.provider.message('GET_NETWORK_LIST', {
+      name: this.appName,
+    })) as IChainWeaverGetNetworksResponse;
+    this.provider.close();
+
+    console.log('Chainweaver networks:', payload);
+    if (payload.length === 0) {
+      throw new Error(ERRORS.NO_ACCOUNTS_FOUND);
+    }
+
+    return payload.map(
+      (network) =>
+        ({
+          networkId: network.networkId,
+          networkName: network.name,
+          urls: network.hosts.map((host) => host.url),
+        }) as INetworkInfo,
+    );
   }
 }

@@ -240,7 +240,7 @@ export interface INetworkInfo {
     // (undocumented)
     networkName: string;
     // (undocumented)
-    url?: string[];
+    urls: string[];
 }
 
 // @public (undocumented)

@@ -18,7 +18,10 @@ export const CHAINWEAVER_ADAPTER = "Chainweaver";
 
 // @public
 export class ChainweaverAdapter extends BaseWalletAdapter {
-    constructor(options: IBaseWalletAdapterOptions);
+    // Warning: (ae-forgotten-export) The symbol "IChainWeaverAdapterOptions" needs to be exported by the entry point index.d.ts
+    constructor(options: IChainWeaverAdapterOptions);
+    // (undocumented)
+    appName: string;
     // (undocumented)
     connectSchema: StandardSchemaV1;
     // (undocumented)
@@ -33,8 +36,10 @@ export class ChainweaverAdapter extends BaseWalletAdapter {
     request<M extends KdaMethod>(args: KdaRequestArgs<M>): Promise<IKdaMethodMap[M]['response']>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "IChainWeaverAdapterFactoryOptions" needs to be exported by the entry point index.d.ts
+//
 // @public
-export const createChainweaverAdapter: <T extends IBaseWalletFactoryOptions>(options?: IBaseWalletFactoryOptions) => {
+export const createChainweaverAdapter: <T extends IBaseWalletFactoryOptions>(options?: IChainWeaverAdapterFactoryOptions) => {
     name: string;
     detect: () => Promise<IChainweaverProvider | null>;
     adapter: (provider: IProvider) => Promise<ChainweaverAdapter>;
