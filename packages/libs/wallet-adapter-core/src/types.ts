@@ -16,7 +16,7 @@ import type { Guard, KeySet } from './guard';
 export interface INetworkInfo {
   networkName: string; // The display name of the network (e.g., "mainnet").
   networkId: string; // The unique identifier for the network (e.g., "mainnet01").
-  url?: string[]; // Optional: The root endpoint URL(s) of the network.
+  urls: string[]; // The root endpoint URL(s) of the network.
 }
 
 /**
