@@ -16,6 +16,7 @@ export interface IChainweaverProvider extends IProvider {
     type: string,
     payload: Record<string, unknown>,
   ) => Promise<IResponseType<unknown>>;
+  connect: (minimalSize?: boolean) => Promise<void>;
   focus: () => void;
   close: () => void;
 }
@@ -40,15 +41,19 @@ export async function detectChainweaverProvider(options?: {
   const sleep = (time: number) =>
     new Promise<void>((resolve) => setTimeout(resolve, time));
 
-  const connect = async () => {
-    const wallet = window.open('', walletName, 'width=800,height=800');
-    console.log('connect', wallet);
+  const connect = async (minimalSize: boolean = false) => {
+    const wallet = window.open(
+      '',
+      walletName,
+      minimalSize ? 'width=1,height=1' : 'width=800,height=800',
+    );
     if (!wallet) {
       throw new Error('POPUP_BLOCKED');
     }
     walletWindow = wallet;
 
     const message = communicate(window, walletWindow, walletOrigin);
+
     const waitForWallet = async () => {
       for (let i = 0; i < 50; i++) {
         try {
@@ -67,6 +72,7 @@ export async function detectChainweaverProvider(options?: {
         break;
       }
     };
+
     await Promise.race([
       message('GET_STATUS', {
         name: appName,
@@ -79,10 +85,6 @@ export async function detectChainweaverProvider(options?: {
       // todo: replace this by a better way to know when the wallet is ready
       return waitForWallet();
     });
-    // eslint-disable-next-line require-atomic-updates
-    return {
-      message,
-    };
   };
 
   const provider: IChainweaverProvider = {
@@ -136,6 +138,7 @@ export async function detectChainweaverProvider(options?: {
     },
     on: () => {},
     off: () => {},
+    connect: connect,
     focus: () => walletWindow?.focus(),
     close: () => {
       walletWindow?.close();
