@@ -19,6 +19,10 @@ interface IProps extends PropsWithChildren {
 }
 
 export const ChainBalance: FC<IProps> = ({ chainAccount, idx }) => {
+  console.log({ chainAccount });
+
+  const hasABalance =
+    chainAccount.balance !== undefined && chainAccount.balance !== null;
   return (
     <Stack
       as="li"
@@ -43,12 +47,12 @@ export const ChainBalance: FC<IProps> = ({ chainAccount, idx }) => {
       <Stack
         justifyContent="flex-end"
         className={classNames(chainTextBaseClass, {
-          [chainTextDisabledClass]: !chainAccount.percentage,
+          [chainTextDisabledClass]: !hasABalance,
         })}
         gap="xs"
       >
         <Text variant="code" color="emphasize" className={chainTextLargeClass}>
-          {!chainAccount.balance ? '-' : chainAccount.balance}
+          {!hasABalance ? '-' : chainAccount.balance}
         </Text>
         <Text variant="ui" bold className={chainTextSubtleClass}>
           {' '}
