@@ -9,8 +9,15 @@ export const WalletAdapterProvider = ({ children }: PropsWithChildren) => {
     <KadenaWalletProvider
       adapters={[
         createEckoAdapter(),
-        createMagicAdapter({}),
-        createChainweaverAdapter({}),
+        createMagicAdapter({
+          magicApiKey: process.env.NEXT_PUBLIC_MAGIC_APIKEY,
+          chainwebApiUrl: process.env.NEXT_PUBLIC_CHAINWEBAPIURL,
+          chainId: process.env.NEXT_PUBLIC_CHAINID,
+          networkId: process.env.NEXT_PUBLIC_NETWORKID,
+        }),
+        createChainweaverAdapter({
+          appName: 'RWA Demo',
+        }),
       ]}
     >
       {children}

@@ -16,7 +16,6 @@ export function mapWalletAdapterAccount(
   adapterAccount: IAccountInfo,
   walletName: WalletName,
 ): IWalletAccount {
-  console.log('map wallet account', walletName, adapterAccount);
   const account: IWalletAccount = {
     address: adapterAccount.accountName,
     publicKey: adapterAccount.keyset.keys[0],
