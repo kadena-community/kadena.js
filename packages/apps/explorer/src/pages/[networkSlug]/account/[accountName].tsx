@@ -18,7 +18,15 @@ import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
 import { useRouter } from '@/hooks/router';
-import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
+import {
+  Badge,
+  maskValue,
+  Notification,
+  Stack,
+  TabItem,
+  Tabs,
+  Text,
+} from '@kadena/kode-ui';
 import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -195,7 +203,13 @@ const Account: FC = () => {
             <AccountTransfersTable accountName={accountName} />
           </TabItem>
           <TabItem title={`Transactions`} key="Transactions">
-            <AccountTransactionsTable accountName={accountName} />
+            <Stack flexDirection="column" gap="md">
+              <Notification role="status" type="inlineStacked">
+                All transactions in which account {maskValue(accountName)} acted
+                as the sender and covered the gas fees.
+              </Notification>
+              <AccountTransactionsTable accountName={accountName} />
+            </Stack>
           </TabItem>
         </Tabs>
       </LayoutBody>
