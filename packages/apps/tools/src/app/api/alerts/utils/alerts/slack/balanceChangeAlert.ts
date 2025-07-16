@@ -10,8 +10,6 @@ export const balanceChangeAlert = async (alert: IAlert): Promise<string[]> => {
 
     const [latest, previous] = await client.getLastRecord(alert, network);
 
-    console.log({ latest, previous });
-
     const latestTimeDiff = differenceInMinutes(
       Date.now(),
       new Date(latest._source['@timestamp']),
