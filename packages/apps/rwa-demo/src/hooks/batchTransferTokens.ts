@@ -65,6 +65,7 @@ export const useBatchTransferTokens = () => {
 
     return submit2Chain<ITransferToken[]>(data, {
       notificationSentryName: 'error:submit:batchtransfertokens',
+      successMessage: 'Batch transfer tokens successful',
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return batchTransferTokens(data, account!, asset);
       },

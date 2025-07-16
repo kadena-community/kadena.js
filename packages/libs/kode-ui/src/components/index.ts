@@ -53,6 +53,7 @@ export type {
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
 export type { IProgressCircleProps } from './ProgressCircle';
+export type { ISwitchButtonProps } from './SwitchButton';
 export type { ITableProps } from './Table';
 export type { ITabItemProps, ITabNode, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
@@ -96,7 +97,7 @@ export {
   TextField,
   TextareaField,
 } from './Form';
-export { ProductIcon, ThemeAnimateIcon } from './Icon';
+export { ProductIcon, SuccessCircle, ThemeAnimateIcon } from './Icon';
 export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { KadenaLogo } from './Logo';
@@ -121,6 +122,7 @@ export { Pagination } from './Pagination';
 export { ProgressCircle } from './ProgressCircle';
 export { Step, Stepper } from './Stepper';
 export type { IStepProps, IStepperProps } from './Stepper';
+export { SwitchButton } from './SwitchButton';
 export { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';

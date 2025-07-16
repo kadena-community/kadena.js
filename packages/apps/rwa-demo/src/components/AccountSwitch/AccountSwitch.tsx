@@ -21,11 +21,15 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
       <ButtonGroup fullWidth>
         {showLabel && (
           <>
-            <Button startVisual={<MonoWallet />} isCompact variant="outlined" />
-            <Button isCompact variant="outlined" style={{ flex: 1 }}>
-              {account
-                ? account.alias || maskValue(account.address)
-                : 'Select an account'}
+            <Button
+              aria-label="Select account"
+              textAlign="start"
+              startVisual={<MonoWallet />}
+              isCompact
+              variant="outlined"
+              style={{ flex: 1 }}
+            >
+              {account ? maskValue(account.address) : 'Select an account'}
             </Button>
           </>
         )}
@@ -33,6 +37,7 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
         <ContextMenu
           trigger={
             <Button
+              aria-label="Select account"
               isCompact
               variant="outlined"
               startVisual={showLabel ? <MonoMoreVert /> : <MonoWallet />}
@@ -43,7 +48,7 @@ export const AccountSwitch: FC<{ showLabel?: boolean }> = ({
             <ContextMenuItem
               onClick={() => selectAccount(account.address)}
               key={account.address}
-              label={account.alias || account.address}
+              label={maskValue(account.address)}
             />
           ))}
 

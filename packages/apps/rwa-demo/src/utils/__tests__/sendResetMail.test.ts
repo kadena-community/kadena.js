@@ -29,7 +29,11 @@ const OLD_ENV = process.env;
 describe('sendResetMail', () => {
   beforeEach(() => {
     vi.resetModules();
-    process.env = { ...OLD_ENV, MAILGUN_APIKEY: 'key' };
+    process.env = {
+      ...OLD_ENV,
+      MAILGUN_APIKEY: 'key',
+      NEXT_PUBLIC_MAILGUN_DOMAIN: 'rwa.kadena.io',
+    };
     vi.doMock('@/app/api/admin/app', () => ({ getDB: mocks.mockGetDB }));
     vi.doMock('mailgun.js', () => ({ default: mocks.mockMailgun }));
     vi.doMock('form-data', () => ({ default: {} }));

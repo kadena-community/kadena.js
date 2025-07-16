@@ -33,7 +33,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [step, setStep] = useState<number>(STEPS.START);
-  const { addAsset } = useAsset();
+  const { addAsset, setAsset } = useAsset();
   const { data: namespace } = useGetPrincipalNamespace();
   const { submit: submitContract, isAllowed } = useCreateContract();
   const [error, setError] = useState('');
@@ -75,13 +75,19 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     setIsPending(false);
 
     if (tx) {
-      await addAsset({
+      const createdAsset = await addAsset({
         contractName: data.contractName,
         namespace: data.namespace,
       });
 
       setIsSuccess(true);
       setStep(STEPS.DONE);
+
+      handleDone?.();
+
+      if (createdAsset) {
+        setAsset(createdAsset);
+      }
     }
   };
 
@@ -127,13 +133,15 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       )}
 
       {step === STEPS.DONE && (
-        <Button
-          onPress={async () => {
-            if (handleDone) handleDone();
-          }}
-        >
-          DONE
-        </Button>
+        <>
+          <Button
+            onPress={async () => {
+              if (handleDone) handleDone();
+            }}
+          >
+            DONE
+          </Button>
+        </>
       )}
 
       {step === STEPS.CREATE_CONTRACT && (
@@ -198,6 +206,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
               gap="xs"
             >
               <Button
+                aria-label="Back"
                 onPress={() => setStep(STEPS.START)}
                 variant="transparent"
                 startVisual={<MonoKeyboardArrowLeft />}
@@ -205,6 +214,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                 Back
               </Button>
               <Button
+                aria-label="Create contract"
                 isLoading={isPending}
                 isDisabled={!isValid || !isAllowed}
                 type="submit"

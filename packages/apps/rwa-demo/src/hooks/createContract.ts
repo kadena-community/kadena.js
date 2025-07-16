@@ -140,6 +140,11 @@ export const useCreateContract = () => {
         return false;
       }
 
+      addNotification({
+        intent: 'positive',
+        message: `Contract ${data.contractName} created successfully`,
+      });
+
       return true;
     } catch (e: any) {
       addNotification({
@@ -151,10 +156,16 @@ export const useCreateContract = () => {
   };
 
   useEffect(() => {
-    if (!isMounted || isGasPayable === undefined) return;
+    if (!organisation) return;
+    if (
+      !userToken?.claims?.orgAdmins?.[organisation?.id] ||
+      !isMounted ||
+      isGasPayable === undefined
+    )
+      return;
 
     setIsAllowed(isGasPayable);
-  }, [isMounted, isGasPayable]);
+  }, [isMounted, isGasPayable, organisation, userToken]);
 
   return { submit, isAllowed };
 };

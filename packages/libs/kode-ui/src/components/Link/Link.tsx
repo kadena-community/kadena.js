@@ -36,6 +36,7 @@ export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     startVisual?: ReactElement;
     endVisual?: ReactElement;
     component?: any;
+    to?: string;
   };
 
 /**
@@ -112,6 +113,7 @@ const Link = forwardRef(
             variant,
             isCompact,
             isLoading,
+            textAlign: props.textAlign || 'center',
           }),
           className,
         )}

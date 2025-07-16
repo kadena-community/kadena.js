@@ -44,6 +44,7 @@ export const DistributionForm: FC<IProps> = ({
     handleSubmit,
     formState: { isValid, errors },
   } = useForm<IDistributeTokensProps>({
+    mode: 'onChange',
     values: {
       amount: '0',
       investorAccount,
@@ -119,14 +120,21 @@ export const DistributionForm: FC<IProps> = ({
                   control={control}
                   rules={{
                     required: true,
-                    min: 0,
-                    max: maxAmount >= 0 ? maxAmount : undefined,
+                    min: {
+                      value: 0,
+                      message: 'Amount must be greater than or equal to 0',
+                    },
+                    max: {
+                      value: maxAmount >= 0 ? maxAmount : Infinity,
+                      message: `Amount must be less than or equal to ${maxAmount >= 0 ? maxAmount : 'unlimited'}`,
+                    },
                   }}
                   render={({ field }) => (
                     <TextField
                       type="number"
                       label="Amount"
                       {...field}
+                      isInvalid={!!errors.amount}
                       errorMessage={errors.amount?.message}
                       description={
                         maxAmount >= 0 ? `max amount: ${maxAmount}` : ''

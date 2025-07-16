@@ -1,6 +1,7 @@
 import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { WalletSelector } from '@/components/WalletSelector/WalletSelector';
 import { useAccount } from '@/hooks/account';
+import { useNotifications } from '@/hooks/notifications';
 import {
   MonoAccountBox,
   MonoAdd,
@@ -27,8 +28,14 @@ import type { FC } from 'react';
 
 export const WalletsList: FC<{ init?: boolean }> = ({ init }) => {
   const { accounts, removeAccount, selectAccount } = useAccount();
+  const { addNotification } = useNotifications();
   const handleRemove = (address: any) => {
     removeAccount(address);
+
+    addNotification({
+      intent: 'warning',
+      label: 'Address removed',
+    });
   };
 
   const handleSelect = (address: any) => {
@@ -87,6 +94,7 @@ export const WalletsList: FC<{ init?: boolean }> = ({ init }) => {
                 render: CompactTableFormatters.FormatActions({
                   trigger: (
                     <Button
+                      aria-label="Select account"
                       onPress={handleSelect}
                       isCompact
                       variant="outlined"
@@ -106,6 +114,7 @@ export const WalletsList: FC<{ init?: boolean }> = ({ init }) => {
                       onPress={handleRemove}
                       trigger={
                         <Button
+                          aria-label="Unlink account"
                           isCompact
                           variant="outlined"
                           startVisual={<MonoLinkOff />}

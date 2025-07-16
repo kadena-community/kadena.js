@@ -8,6 +8,8 @@ import { useAccount } from './account';
 
 export const useSupply = (asset?: IAsset) => {
   const [data, setData] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { account } = useAccount();
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
@@ -20,7 +22,9 @@ export const useSupply = (asset?: IAsset) => {
     if (!asset) return;
 
     const init = async (asset: IAsset) => {
-      if (!account) return;
+      if (isLoading || !account || isMounted) return;
+      setIsLoading(true);
+      setIsMounted(true);
       const res = await supply(
         {
           account: account,
@@ -31,11 +35,16 @@ export const useSupply = (asset?: IAsset) => {
       if (typeof res === 'number') {
         setData(res);
       }
+      setIsLoading(false);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(asset);
-  }, [account, asset?.uuid]);
+  }, [account?.address, asset?.uuid, isLoading, isMounted]);
+
+  useEffect(() => {
+    setIsMounted(false);
+  }, [asset?.uuid]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

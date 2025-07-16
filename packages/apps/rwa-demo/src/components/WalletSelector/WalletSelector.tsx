@@ -25,6 +25,7 @@ export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
   const handleConnect = async (type: keyof typeof WALLETTYPES) => {
     setType(type);
     const result = await addAccount(type);
+
     setAccounts(result);
   };
 
@@ -55,9 +56,7 @@ export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
                       onPress={() => selectAccount(account)}
                       style={{ width: '100%' }}
                     >
-                      {account.alias
-                        ? account.alias
-                        : maskValue(account.address)}
+                      {maskValue(account.address)}
                     </Button>
                   </Stack>
                 ))}

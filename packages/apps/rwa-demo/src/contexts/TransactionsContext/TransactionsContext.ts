@@ -50,6 +50,7 @@ export interface ITransaction {
   listener?: any;
   accounts: string[];
   result?: ICommandResult['result'];
+  successMessage?: string;
 }
 
 export interface ITransactionsContext {
@@ -63,6 +64,7 @@ export interface ITransactionsContext {
   txsAnimationRef?: HTMLDivElement | null;
   setTxsAnimationRef: (value: HTMLDivElement) => void;
   isActiveAccountChangeTx: boolean; //checks if the agentroles for this user are being changed. if so, stop all permissions until the tx is resolved
+  removeTransaction: (data: ITransaction) => Promise<void>;
 }
 
 export const TransactionsContext = createContext<ITransactionsContext | null>(

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/rwa-demo",
-  "version": "0.1.11",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=8192 next build",
@@ -16,6 +16,11 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest"
   },
+  "browserslist": [
+    "defaults and supports es6-module",
+    "not dead",
+    "not IE 11"
+  ],
   "dependencies": {
     "@apollo/client": "~3.9.11",
     "@google-analytics/data": "~3.2.2",

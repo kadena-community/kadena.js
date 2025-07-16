@@ -35,6 +35,7 @@ const Home = () => {
   const { isAllowed: isSetComplianceAllowed } = useSetCompliance();
 
   if (!organisation) return null;
+
   return (
     <>
       <SideBarBreadcrumbs>
@@ -126,6 +127,7 @@ const Home = () => {
                   <SetComplianceForm
                     trigger={
                       <Button
+                        aria-label="Edit compliance rules"
                         data-testid="editrules"
                         isCompact
                         variant="outlined"

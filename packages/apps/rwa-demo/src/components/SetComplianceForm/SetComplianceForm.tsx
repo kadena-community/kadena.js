@@ -2,7 +2,7 @@ import { useAsset } from '@/hooks/asset';
 import { useSetCompliance } from '@/hooks/setCompliance';
 import type { ISetComplianceParametersProps } from '@/services/setComplianceParameters';
 import { setComplianceValue } from '@/utils/setComplianceValue';
-import { Button, TextField } from '@kadena/kode-ui';
+import { Button, Stack, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -28,8 +28,9 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
     handleSubmit,
     reset,
     control,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<ISetComplianceParametersProps>({
+    mode: 'onChange',
     defaultValues: {
       maxBalance: `${setComplianceValue(asset?.compliance.maxBalance.value)}`,
       maxSupply: `${setComplianceValue(asset?.compliance.maxSupply.value)}`,
@@ -80,35 +81,66 @@ export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Set Compliance" />
             <RightAsideContent>
-              <Controller
-                name="maxBalance"
-                control={control}
-                rules={{ min: 0 }}
-                render={({ field }) => (
-                  <TextField type="number" label="Max Balance" {...field} />
-                )}
-              />
+              <Stack flexDirection="column" gap="md">
+                <Controller
+                  name="maxBalance"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: 'Max Balance must be a non-negative number',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      type="number"
+                      label="Max Balance"
+                      {...field}
+                      isInvalid={!!errors.maxBalance?.message}
+                      errorMessage={errors.maxBalance?.message}
+                    />
+                  )}
+                />
 
-              <Controller
-                name="maxSupply"
-                control={control}
-                rules={{ min: 0 }}
-                render={({ field }) => (
-                  <TextField type="number" label="Max Supply" {...field} />
-                )}
-              />
-              <Controller
-                name="maxInvestors"
-                control={control}
-                rules={{ min: 0 }}
-                render={({ field }) => (
-                  <TextField
-                    type="number"
-                    label="Max Investors Count"
-                    {...field}
-                  />
-                )}
-              />
+                <Controller
+                  name="maxSupply"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: 'Max supply must be a non-negative number',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      type="number"
+                      label="Max Supply"
+                      {...field}
+                      isInvalid={!!errors.maxSupply?.message}
+                      errorMessage={errors.maxSupply?.message}
+                    />
+                  )}
+                />
+                <Controller
+                  name="maxInvestors"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: 'Max investors must be a non-negative number',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      type="number"
+                      label="Max Investors Count"
+                      {...field}
+                      isInvalid={!!errors.maxInvestors?.message}
+                      errorMessage={errors.maxInvestors?.message}
+                    />
+                  )}
+                />
+              </Stack>
             </RightAsideContent>
             <RightAsideFooter>
               <Button onPress={onClose} variant="transparent">

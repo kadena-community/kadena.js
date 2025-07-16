@@ -14,9 +14,13 @@ export const sendVerificationMail = async ({
   organisationId: string;
 }): Promise<void> => {
   const apiKey = process.env.MAILGUN_APIKEY;
+  const domain = process.env.NEXT_PUBLIC_MAILGUN_DOMAIN;
 
   if (!apiKey) {
     throw new Error('MAILGUN_APIKEY is not set');
+  }
+  if (!domain) {
+    throw new Error('MAILGUN_DOMAIN is not set');
   }
 
   if (!user.email) {
@@ -39,20 +43,18 @@ export const sendVerificationMail = async ({
 
   const mailgun = new Mailgun(FormData);
   const mg = mailgun.client({ username: 'api', key: apiKey });
+
   try {
-    await mg.messages.create(
-      `sandbox5b28a024a9a040a69e7a8dcc71ea51ed.mailgun.org`,
-      {
-        from: `${organisation.name} <${organisation.sendEmail}>`,
-        to: user.email,
-        subject: `Verify your account for ${organisation.name}`,
-        text: `Hello ${user.email},\n\nPlease verify your account by clicking the link below:\n\n${link}\n\nThank you!`,
-        html: `<p>Hello ${user.email},</p><p>Please verify your account by clicking the link below:</p><p><a href="${link}">Verify Account</a></p><p>Thank you!</p>`,
-        'h:Reply-To': organisation.sendEmail,
-        'v:organisationName': organisation.name,
-        'v:userEmail': user.email,
-      },
-    );
+    await mg.messages.create(domain, {
+      from: `${organisation.name} <${organisation.sendEmail}>`,
+      to: user.email,
+      subject: `Verify your account for ${organisation.name}`,
+      text: `Hello ${user.email},\n\nPlease verify your account by clicking the link below:\n\n${link}\n\nThank you!`,
+      html: `<p>Hello ${user.email},</p><p>Please verify your account by clicking the link below:</p><p><a href="${link}">Verify Account</a></p><p>Thank you!</p>`,
+      'h:Reply-To': organisation.sendEmail,
+      'v:organisationName': organisation.name,
+      'v:userEmail': user.email,
+    });
   } catch (error) {
     console.log(error); //logs any error
   }

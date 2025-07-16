@@ -1,18 +1,24 @@
 import {
   MonoAccountTree,
+  MonoAdd,
   MonoControlPointDuplicate,
   MonoInsertDriveFile,
   MonoLightMode,
+  MonoMoreVert,
   MonoWallet,
   MonoWifiTethering,
-  MonoWindow,
-  MonoWorkspaces,
 } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 import { useNotifications } from '../LayoutUtils';
-import { Button, Dialog, DialogHeader, Stack } from './../../components';
+import {
+  Badge,
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogHeader,
+  Stack,
+} from './../../components';
 import { SideBarBreadcrumbs } from './components/Breadcrumbs/SideBarBreadcrumbs';
 import { SideBarBreadcrumbsItem } from './components/Breadcrumbs/SideBarBreadcrumbsItem';
 import { LayoutProvider, useLayout } from './components/LayoutProvider';
@@ -22,8 +28,6 @@ import {
   RightAsideContent,
   RightAsideHeader,
 } from './components/RightAside';
-import { SideBarFooter } from './components/SideBarFooter';
-import { SideBarFooterItem } from './components/SideBarFooterItem';
 import { SideBarHeaderContext } from './components/SideBarHeaderContext/SideBarHeaderContext';
 import { SideBarItem } from './components/SideBarItem';
 import { SideBarItemsInline } from './components/SideBarItemsInline';
@@ -59,41 +63,6 @@ const meta: Meta<ISideBarProps> = {
 };
 
 type IStory = StoryObj<ISideBarProps>;
-
-const LinkComponent: FC<PropsWithChildren<{ to: string }>> = ({
-  children,
-  ...props
-}) => {
-  return <a {...props}>{children}</a>;
-};
-
-const InnerFooter = () => {
-  return (
-    <SideBarFooter>
-      <SideBarFooterItem
-        visual={<MonoWindow />}
-        component={LinkComponent}
-        href="https://kadena.io"
-        label="option 1"
-      />
-      <SideBarFooterItem
-        visual={<MonoWifiTethering />}
-        onPress={() => {}}
-        label="option 2"
-      />
-      <SideBarFooterItem
-        visual={<MonoWorkspaces />}
-        onPress={() => {}}
-        label="option 3"
-      />
-      <SideBarFooterItem
-        visual={<MonoLightMode />}
-        onPress={() => {}}
-        label="option 4"
-      />
-    </SideBarFooter>
-  );
-};
 
 const InnerLayout = () => {
   const { isExpanded, setIsRightAsideExpanded, isRightAsideExpanded } =
@@ -173,6 +142,26 @@ const InnerLayout = () => {
                   label="Mainnet"
                   href="javascript:void()"
                 />
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Item with badge"
+                  href="javascript:void()"
+                  endVisual={
+                    <Badge size="sm" style="positive">
+                      1
+                    </Badge>
+                  }
+                />
+                <SideBarItem
+                  visual={<MonoWifiTethering />}
+                  label="Item extra"
+                  href="javascript:void()"
+                  endVisual={
+                    <Badge size="sm" style="positive">
+                      2
+                    </Badge>
+                  }
+                />
                 <SideBarTree visual={<MonoWallet />} label="My Wallet">
                   <SideBarTreeItem label="Accounts" href="https://kadena.io" />
                   <SideBarTreeItem
@@ -188,6 +177,27 @@ const InnerLayout = () => {
                   />
                 </SideBarTree>
               </>
+            }
+            appContext={
+              <SideBarItem visual={<MonoMoreVert />} label="Select Asset">
+                <ButtonGroup fullWidth>
+                  <Button
+                    startVisual={<MonoAdd />}
+                    textAlign="start"
+                    isCompact
+                    variant="outlined"
+                  >
+                    {isExpanded ? 'Asset Switch' : undefined}
+                  </Button>
+                  {isExpanded && (
+                    <Button
+                      isCompact
+                      variant="outlined"
+                      startVisual={<MonoMoreVert />}
+                    />
+                  )}
+                </ButtonGroup>
+              </SideBarItem>
             }
             context={
               <>
@@ -222,7 +232,6 @@ const InnerLayout = () => {
             }
           />
         }
-        footer={<InnerFooter />}
       >
         <TopBanner>
           {!hideTopBanner ? (
@@ -248,15 +257,11 @@ const InnerLayout = () => {
             <></>
           )}
         </TopBanner>
-        <Stack
-          flexDirection="column"
-          style={{ maxWidth: '800px', height: '400px' }}
-        >
+        <Stack flexDirection="column" style={{ maxWidth: '800px' }}>
           <Stack
             width="100%"
             flexDirection="column"
             justifyContent="center"
-            margin="md"
             gap="md"
           >
             <Button
@@ -355,6 +360,7 @@ const InnerLayout = () => {
           <p>content</p>
           <p>content</p>
           <p>content</p>
+          <p>end</p>
         </Stack>
       </SideBarLayout>
     </>
@@ -466,12 +472,8 @@ const NotificationsLayout = () => {
             }
           />
         }
-        footer={<InnerFooter />}
       >
-        <Stack
-          flexDirection="column"
-          style={{ maxWidth: '800px', height: '400px' }}
-        >
+        <Stack flexDirection="column" style={{ maxWidth: '800px' }}>
           <Stack
             width="100%"
             flexDirection="column"

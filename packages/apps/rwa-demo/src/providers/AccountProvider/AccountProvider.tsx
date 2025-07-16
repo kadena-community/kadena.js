@@ -106,12 +106,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectAccount = (address: string) => {
     const found = userData?.accounts.find((a) => a.address === address);
     setAccount(found);
+
     if (found) {
       localStorage.setItem(getAccountCookieName(), found.address);
     } else {
       localStorage.removeItem(getAccountCookieName());
     }
-    router.replace('/');
   };
 
   const addAccount = useCallback(
@@ -148,10 +148,17 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       }
 
       if (tempAccount) {
-        setAccount(tempAccount);
-        addAccount2User(tempAccount);
+        await addAccount2User(tempAccount);
+        await setAccount(tempAccount);
 
-        router.replace('/');
+        if (tempAccount) {
+          localStorage.setItem(getAccountCookieName(), tempAccount.address);
+        }
+
+        addNotification({
+          intent: 'positive',
+          message: `Account added successfully`,
+        });
       }
     },
 

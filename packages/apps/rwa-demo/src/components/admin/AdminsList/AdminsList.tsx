@@ -139,6 +139,10 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
 
     setIsLoading(false);
     setIsRightAsideExpanded(false);
+    addNotification({
+      intent: 'positive',
+      message: 'admin added successfully',
+    });
   };
 
   const handleRemove = async (uid: any) => {
@@ -163,6 +167,10 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
     }
 
     setIsLoading(false);
+    addNotification({
+      intent: 'warning',
+      message: 'admin removed successfully',
+    });
   };
 
   return (
@@ -233,6 +241,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
             actions={
               <>
                 <Button
+                  aria-label="Add admin"
                   onPress={() => {
                     setIsRightAsideExpanded(true);
                     setFormIsOpen(true);
@@ -274,6 +283,7 @@ export const AdminsList: FC<{ organisationId?: IOrganisation['id'] }> = ({
                         onPress={handleRemove}
                         trigger={
                           <Button
+                            aria-label="Remove admin"
                             isCompact
                             variant="outlined"
                             startVisual={<MonoDelete />}

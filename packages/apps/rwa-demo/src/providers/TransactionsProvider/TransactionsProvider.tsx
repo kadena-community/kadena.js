@@ -48,26 +48,43 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const store = useMemo(() => {
     if (!organisation) return;
     return RWAStore(organisation);
-  }, [organisation]);
+  }, [organisation?.id]);
 
-  const addListener = useCallback(
-    (data: ITransaction, account: IWalletAccount) => {
-      const r = client.subscribe({
-        query: transactionsQuery,
-        variables: { requestKey: data.requestKey },
-      });
+  const addListener = (
+    data: ITransaction,
+    account: IWalletAccount,
+  ): { unsubscribe(): void; closed: boolean } => {
+    const r = client.subscribe({
+      query: transactionsQuery,
+      variables: { requestKey: data.requestKey },
+    });
 
-      r.subscribe(
-        (nextData: any) => {
-          if (
-            nextData?.errors?.length !== undefined ||
-            nextData?.data?.transaction?.result.badResult
-          ) {
-            const message = nextData?.errors
-              ? JSON.stringify(nextData?.errors)
-              : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
-                  .message;
+    const showNotificationForAccount = data.accounts.some(
+      (a) => a === account.address,
+    );
 
+    const subscription = r.subscribe(
+      async (nextData: any) => {
+        if (nextData?.data?.transaction?.result?.goodResult) {
+          if (data.successMessage && showNotificationForAccount) {
+            addNotification({
+              intent: 'positive',
+              label: 'transaction successful',
+              message: data.successMessage,
+            });
+          }
+          await store?.removeTransaction(data, asset);
+        }
+        if (
+          nextData?.errors?.length !== undefined ||
+          nextData?.data?.transaction?.result.badResult
+        ) {
+          const message = nextData?.errors
+            ? JSON.stringify(nextData?.errors)
+            : JSON.parse(nextData?.data.transaction?.result.badResult ?? '{}')
+                .message;
+
+          if (showNotificationForAccount) {
             addNotification(
               {
                 intent: 'negative',
@@ -94,10 +111,13 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
                 },
               },
             );
-            return;
           }
-        },
-        (errorData) => {
+          await store?.removeTransaction(data, asset);
+          return;
+        }
+      },
+      (errorData) => {
+        if (showNotificationForAccount) {
           addNotification(
             {
               intent: 'negative',
@@ -115,23 +135,24 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
               },
             },
           );
-        },
-        () => {
+        }
+      },
+      async () => {
+        if (showNotificationForAccount) {
           analyticsEvent(data.type.name, {
             chainId: data?.chainId ?? '',
             networkId: data?.networkId ?? '',
             requestKey: data?.requestKey ?? '',
             message: data?.result?.status,
           });
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          store?.removeTransaction(data, asset);
-        },
-      );
+        }
 
-      return r;
-    },
-    [store, asset],
-  );
+        await store?.removeTransaction(data, asset);
+      },
+    );
+
+    return subscription;
+  };
 
   const getTransactions = useCallback(
     (type: ITxType | ITxType[]) => {
@@ -157,11 +178,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const data = { ...request, uuid: crypto.randomUUID() };
-    data.listener = addListener(data, account!);
-    setTransactions((v) => {
-      return [...v, data];
-    });
-
     await store?.addTransaction(data, asset);
 
     return data;
@@ -170,51 +186,51 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!account || !asset) return;
 
-    const listenToTransactions = (transactions: ITransaction[]) => {
-      const filteredTransactions = transactions.filter(
+    const listenToTransactions = (transactionProps: ITransaction[]) => {
+      const filteredTransactions = transactionProps.filter(
         (transaction) =>
           transaction.type.overall ||
           transaction.accounts.indexOf(account?.address!) >= 0,
       );
 
-      setTransactions(filteredTransactions);
+      setTransactions((v) => {
+        //check if the tx already exists and has a listener.
+        v.map((tx) => {
+          tx?.listener?.unsubscribe?.();
+        });
+        return filteredTransactions;
+      });
     };
 
     const unlisten = store?.listenToTransactions(listenToTransactions, asset);
-    return unlisten;
-  }, [account, asset, store]);
+    return () => {
+      if (unlisten) {
+        unlisten();
+      }
+    };
+  }, [account?.address, asset?.uuid, store]);
 
   useEffect(() => {
     if (!account || !transactions.some((v) => !v.listener)) return;
 
     // Keep track of subscriptions to clean them up
-    const subscriptions: { subscribe: { unsubscribe: () => void } }[] = [];
+    const subscriptions: { unsubscribe: () => void; closed: boolean }[] = [];
 
-    setTransactions((v) => {
-      const transactionsWithListeners = v.map((transaction) => {
-        const newTx = { ...transaction };
-        if (newTx.listener) return newTx;
-
-        newTx.listener = addListener(newTx, account);
-        if (newTx.listener) {
-          subscriptions.push(newTx.listener);
-        }
-
-        return newTx;
-      });
-
-      return transactionsWithListeners;
+    transactions.map((transaction) => {
+      transaction.listener = addListener(transaction, account);
+      subscriptions.push(transaction.listener);
+      return transaction;
     });
 
     // Cleanup subscriptions when the effect is re-run or unmounted
     return () => {
       subscriptions.forEach((subscription) => {
-        if (subscription?.subscribe?.unsubscribe) {
-          subscription.subscribe.unsubscribe();
+        if (subscription?.unsubscribe) {
+          subscription.unsubscribe();
         }
       });
     };
-  }, [transactions.length, account]);
+  }, [transactions, account?.address]);
 
   // check if the account is an active account in one of the transactions
   // this is used to determine if the account change transaction is active
@@ -232,6 +248,10 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     setTxsAnimationRefData(ref);
   };
 
+  const removeTransaction = async (data: ITransaction) => {
+    await store?.removeTransaction(data, asset);
+  };
+
   return (
     <TransactionsContext.Provider
       value={{
@@ -243,6 +263,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         setTxsAnimationRef,
         txsAnimationRef,
         isActiveAccountChangeTx,
+        removeTransaction,
       }}
     >
       {children}

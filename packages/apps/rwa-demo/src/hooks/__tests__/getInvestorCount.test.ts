@@ -1,6 +1,6 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IComplianceRule } from '@/services/getComplianceRules';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useGetInvestorCount } from '../getInvestorCount';
 
 // Create hoisted mocks
@@ -73,21 +73,18 @@ describe('useGetInvestorCount', () => {
     mocks.getInvestorCount.mockResolvedValue(42);
 
     // Render the hook with a mock asset
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useGetInvestorCount(mockAsset),
-    );
+    const { result } = renderHook(() => useGetInvestorCount(mockAsset));
 
     // Initial value should be 0
     expect(result.current.data).toBe(0);
 
-    // Wait for all updates to complete
-    await waitForNextUpdate();
+    // Wait for the async operation to complete
+    await waitFor(() => {
+      expect(result.current.data).toBe(42);
+    });
 
     // Verify that the investor count was fetched
     expect(mocks.getInvestorCount).toHaveBeenCalledWith(mockAsset);
-
-    // Data should be updated with the fetched value
-    expect(result.current.data).toBe(42);
   });
 
   it('should not fetch investor count when no events are present', async () => {
@@ -130,42 +127,46 @@ describe('useGetInvestorCount', () => {
     // Mock the getInvestorCount service
     mocks.getInvestorCount.mockResolvedValue(15);
 
-    // Setup subscription mock with a reference we can change
-    let subscriptionMock = {
+    // Setup subscription mock that returns different references
+    let subscriptionData = {
       data: {
         events: [] as Array<{ id: string }>,
       },
     };
 
     mocks.useEventSubscriptionSubscription.mockImplementation(
-      () => subscriptionMock,
+      () => subscriptionData,
     );
 
     // Render the hook
-    const { result, rerender, waitForNextUpdate } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorCount(mockAsset),
     );
 
     // Initial value should be 0
     expect(result.current.data).toBe(0);
 
-    // Update subscription data to trigger effect
-    subscriptionMock = {
+    // Update subscription data with a new reference to trigger effect
+    subscriptionData = {
       data: {
         events: [{ id: 'new-event' }],
       },
     };
 
-    // Rerender to trigger effect with new subscription data
-    rerender();
+    // Update the mock to return the new data
+    mocks.useEventSubscriptionSubscription.mockImplementation(
+      () => subscriptionData,
+    );
 
-    // Wait for updates
-    await waitForNextUpdate();
+    // Rerender to trigger effect with new subscription data
+    await rerender();
+
+    // Wait for the async operation to complete
+    await waitFor(() => {
+      expect(result.current.data).toBe(15);
+    });
 
     // Verify that getInvestorCount was called
     expect(mocks.getInvestorCount).toHaveBeenCalledWith(mockAsset);
-
-    // Data should be updated to the new value
-    expect(result.current.data).toBe(15);
   });
 });
