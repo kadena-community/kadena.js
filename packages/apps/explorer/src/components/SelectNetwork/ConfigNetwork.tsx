@@ -60,6 +60,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
       const valueValues = Array.from(values).map((input) => input.value);
 
       return keyValues.reduce((acc, val, idx) => {
+        if (!val) return acc;
         return { ...acc, [val]: valueValues[idx] };
       }, {});
     }
@@ -122,14 +123,12 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
 
     if (!value) return;
 
-    const headers = getHeaders();
-
     analyticsEvent(EVENT_NAMES['click:validate_network'], {
       network: value,
     });
 
     try {
-      const result = await checkNetwork(value, headers);
+      const result = await checkNetwork(value, getHeaders());
       const body = await result.json();
 
       if (result.status === 200) {
@@ -139,16 +138,16 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               ...defaultNamingOfNetwork(v, body.data, networks),
               graphUrlIsValid: true,
               graphUrl: value,
-              headers,
+              headers: getHeaders(),
             };
           }
           return { ...v, graphUrlIsValid: true };
         });
       } else {
-        setNetwork((v) => ({ ...v, graphUrlIsValid: false, headers }));
+        setNetwork((v) => ({ ...v, graphUrlIsValid: false }));
       }
     } catch (e) {
-      setNetwork((v) => ({ ...v, graphUrlIsValid: false, headers }));
+      setNetwork((v) => ({ ...v, graphUrlIsValid: false }));
     }
   };
 

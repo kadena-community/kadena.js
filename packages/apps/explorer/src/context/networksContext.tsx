@@ -62,6 +62,11 @@ const getApolloClient = (network: INetwork) => {
   const wsLink = new GraphQLWsLink(
     createClient({
       url: network!.wsGraphUrl,
+      connectionParams: async () => {
+        return {
+          headers: network?.headers || {},
+        };
+      },
     }),
   );
 
@@ -80,11 +85,6 @@ const getApolloClient = (network: INetwork) => {
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     link: splitLink,
     cache,
-    assumeImmutableResults: true,
-    connectToDevTools: true,
-    defaultOptions: {
-      query: { errorPolicy: 'all' },
-    },
   });
 
   return client;
