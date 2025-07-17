@@ -1,4 +1,4 @@
-import differenceInMinutes from 'date-fns/differenceInMinutes';
+import { differenceInMinutes } from 'date-fns';
 import { getClient } from '../../elasticClient';
 import { sendBalanceChangeErrorMessages } from '../../messages/balanceChange/sendBalanceChangeErrorMessages';
 import { sendBalanceChangeMessages } from '../../messages/balanceChange/sendBalanceChangeMessages';
@@ -8,13 +8,15 @@ export const balanceChangeAlert = async (alert: IAlert): Promise<string[]> => {
   const promises = alert.networks.map(async (network) => {
     const client = getClient();
 
-    const [previous, latest] = await client.getLastRecord(alert, network);
+    const [latest, previous] = await client.getLastRecord(alert, network);
+
+    // adding this console for debugging purposes
+    console.log({ latest, previous });
 
     const latestTimeDiff = differenceInMinutes(
       Date.now(),
-      new Date(previous._source['@timestamp']),
+      new Date(latest._source['@timestamp']),
     );
-
     if (latestTimeDiff > 20) {
       return sendBalanceChangeErrorMessages(alert, network);
     }

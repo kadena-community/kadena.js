@@ -8,10 +8,11 @@ export const CORE_ACCOUNT_FIELDS: DocumentNode = gql`
     chainAccounts {
       chainId
       balance
+
       guard {
         keys
         predicate
-        # raw
+        raw
       }
     }
   }
