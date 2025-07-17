@@ -19,8 +19,6 @@ interface IProps extends PropsWithChildren {
 }
 
 export const ChainBalance: FC<IProps> = ({ chainAccount, idx }) => {
-  console.log({ chainAccount });
-
   const hasABalance =
     chainAccount.balance !== undefined && chainAccount.balance !== null;
   return (
