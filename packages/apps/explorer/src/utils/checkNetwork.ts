@@ -17,7 +17,7 @@ export const checkNetwork = (
       'sec-fetch-dest': 'empty',
       'sec-fetch-mode': 'cors',
       'sec-fetch-site': 'cross-site',
-      'x-api-key': 'DKdA23Pky4K7men6DNSp8UvCoJI8eDh2uxoVQcH7',
+      ...headers,
     },
     body: JSON.stringify({
       query: `query networkInfo {

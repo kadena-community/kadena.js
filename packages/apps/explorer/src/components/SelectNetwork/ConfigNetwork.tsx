@@ -1,4 +1,4 @@
-import type { IEditNetwork, INetwork } from '@/constants/network';
+import type { IEditNetwork } from '@/constants/network';
 import { useNetwork } from '@/context/networksContext';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { checkNetwork } from '@/utils/checkNetwork';
@@ -45,10 +45,32 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     removeNetwork(network);
   }, [network]);
 
+  const getHeaders = () => {
+    if (refInputHeaders.current) {
+      const keys =
+        refInputHeaders.current.querySelectorAll<HTMLInputElement>(
+          `input[name="key"]`,
+        );
+      const values =
+        refInputHeaders.current.querySelectorAll<HTMLInputElement>(
+          `input[name="value"]`,
+        );
+
+      const keyValues = Array.from(keys).map((input) => input.value);
+      const valueValues = Array.from(values).map((input) => input.value);
+
+      return keyValues.reduce((acc, val, idx) => {
+        return { ...acc, [val]: valueValues[idx] };
+      }, {});
+    }
+  };
+
   const handleCreateNetwork: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
+    const headers = getHeaders();
+
     const { label, networkId, slug, graphUrl, isNew } =
       getFormValues<any>(data);
 
@@ -61,6 +83,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
             slug,
             graphUrl,
             wsGraphUrl: graphUrl,
+            headers,
           }
         : {
             ...network,
@@ -69,6 +92,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
             graphUrl,
             wsGraphUrl: graphUrl,
             isNew: false,
+            headers,
           };
 
     const errors = validateNewNetwork(networks, newNetwork);
@@ -95,30 +119,10 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
 
   const validateNetwork = async (url?: string) => {
     const value = url ? url : refInputGraph?.current?.value;
-    let headers: INetwork['headers'] = {};
+
     if (!value) return;
 
-    if (refInputHeaders.current) {
-      console.log(11111);
-
-      const keys =
-        refInputHeaders.current.querySelectorAll<HTMLInputElement>(
-          `input[name="key"]`,
-        );
-      const values =
-        refInputHeaders.current.querySelectorAll<HTMLInputElement>(
-          `input[name="value"]`,
-        );
-
-      const keyValues = Array.from(keys).map((input) => input.value);
-      const valueValues = Array.from(values).map((input) => input.value);
-
-      headers = keyValues.reduce((acc, val, idx) => {
-        return { ...acc, [val]: valueValues[idx] };
-      }, {});
-
-      console.log({ keyValues, valueValues });
-    }
+    const headers = getHeaders();
 
     analyticsEvent(EVENT_NAMES['click:validate_network'], {
       network: value,
@@ -135,15 +139,16 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               ...defaultNamingOfNetwork(v, body.data, networks),
               graphUrlIsValid: true,
               graphUrl: value,
+              headers,
             };
           }
           return { ...v, graphUrlIsValid: true };
         });
       } else {
-        setNetwork((v) => ({ ...v, graphUrlIsValid: false }));
+        setNetwork((v) => ({ ...v, graphUrlIsValid: false, headers }));
       }
     } catch (e) {
-      setNetwork((v) => ({ ...v, graphUrlIsValid: false }));
+      setNetwork((v) => ({ ...v, graphUrlIsValid: false, headers }));
     }
   };
 
@@ -153,6 +158,8 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
       return;
     }
     const network = networks.find((n) => n.slug === value);
+
+    console.log('selected', { network });
     if (!network) return;
     setNetwork(network);
   };

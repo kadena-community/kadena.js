@@ -15,7 +15,7 @@ export const BaseHeaders = (
   return (
     <Stack gap="md" ref={ref}>
       <TextField name="key" placeholder="key" aria-label="new key" />
-      <TextField name="key" placeholder="key" aria-label="new key" />
+      <TextField name="value" placeholder="key" aria-label="new key" />
       <Button variant="outlined" startVisual={<MonoAdd />} />
     </Stack>
   );

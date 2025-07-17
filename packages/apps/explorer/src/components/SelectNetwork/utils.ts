@@ -58,5 +58,6 @@ export const defineNewNetwork = (): IEditNetwork => {
     graphUrl: '',
     wsGraphUrl: '',
     isNew: true,
+    headers: {},
   };
 };

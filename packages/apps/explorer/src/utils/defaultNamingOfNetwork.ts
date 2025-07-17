@@ -9,9 +9,10 @@ const createTypeName = (
   label: string,
   networks: INetwork[],
 ): string => {
-  const foundResult = networks.filter((network) =>
-    network[type]?.toLowerCase().startsWith(label.toLowerCase()),
-  );
+  const foundResult = networks.filter((network) => {
+    if (type === 'headers') return false;
+    return network[type]?.toLowerCase().startsWith(label.toLowerCase());
+  });
 
   return foundResult.length > 0 ? `${label}-${foundResult.length}` : label;
 };

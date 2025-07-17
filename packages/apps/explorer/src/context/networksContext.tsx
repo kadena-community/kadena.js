@@ -56,6 +56,7 @@ export const selectedNetworkKey = 'selectedNetwork';
 const getApolloClient = (network: INetwork) => {
   const httpLink = new YogaLink({
     endpoint: network?.graphUrl,
+    headers: network?.headers,
   });
 
   const wsLink = new GraphQLWsLink(
@@ -149,9 +150,12 @@ const NetworkContextProvider = (props: {
     });
   };
 
-  const checkIfNetworkAvailable = async (graphUrl: string) => {
+  const checkIfNetworkAvailable = async (
+    graphUrl: string,
+    headers: INetwork['headers'],
+  ) => {
     try {
-      const result = await checkNetwork(graphUrl);
+      const result = await checkNetwork(graphUrl, headers);
       await result.json();
 
       if (result.status !== 200) {
@@ -166,7 +170,7 @@ const NetworkContextProvider = (props: {
     if (!activeNetwork || !activeNetwork.graphUrl) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIfNetworkAvailable(activeNetwork.graphUrl);
+    checkIfNetworkAvailable(activeNetwork.graphUrl, activeNetwork.headers);
   }, [activeNetwork]);
 
   useEffect(() => {
