@@ -15,6 +15,7 @@ import type {
 
 import * as accountService from '../services/accountService.js';
 import { pollRequestKeys } from '../services/chainweb/chainweb.js';
+import { fetchAccountsByPublicKey } from '../services/graphql/accountByPublicKey.js';
 import { getChainTransfers } from '../services/graphql/getChainTransfers.js';
 import { getTransfers } from '../services/graphql/getTransfers.js';
 import { pollGraphqlTransfers } from '../services/graphql/pollTransfers.js';
@@ -41,6 +42,8 @@ import type {
   ICreateTransferCreate,
   ICreateTransferCreateOptional,
   ICrossChainTransfer,
+  IFungibleAccountsOptions,
+  IFungibleAccountsResponse,
   INodeChainInfo,
   INodeNetworkInfo,
   ITransactionDescriptor,
@@ -95,6 +98,8 @@ export class WalletSDK {
       this.createFinishCrossChainTransfer.bind(this);
     this.sendTransaction = this.sendTransaction.bind(this);
     this.getGasLimitEstimate = this.getGasLimitEstimate.bind(this);
+    this.getFungibleAccountsByPublicKey =
+      this.getFungibleAccountsByPublicKey.bind(this);
   }
 
   public getChainwebUrl(
@@ -297,6 +302,20 @@ export class WalletSDK {
     const host = this.getChainwebUrl({ networkId, chainId });
     const result = await createClient(() => host).submitOne(transaction);
     return result;
+  }
+
+  /**
+   * Fetch accounts by public key.
+   *
+   * @param options - Options containing publicKey, fungibleName, and networkId.
+   * @returns A promise resolving to IFungibleAccountsResponse.
+   */
+  public async getFungibleAccountsByPublicKey(
+    options: IFungibleAccountsOptions,
+  ): Promise<IFungibleAccountsResponse> {
+    const { networkId, ...rest } = options;
+    const url = this.getGraphqlUrl({ networkId });
+    return fetchAccountsByPublicKey(url, rest);
   }
 
   public async getTransfers(
