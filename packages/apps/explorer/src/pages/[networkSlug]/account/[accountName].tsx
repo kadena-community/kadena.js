@@ -102,15 +102,23 @@ const Account: FC = () => {
   const keys: IKeyProps[] = useMemo(() => {
     const innerKeys: IKeyProps[] =
       fungibleAccount?.chainAccounts.reduce((acc: IKeyProps[], val) => {
-        const guardKeys: IKeyProps[] = val.guard.keys.map((key) => {
+        const jsonGuard = JSON.parse(val.guard.raw ?? '{}');
+
+        const guardKeys: IKeyProps[] = jsonGuard.keys?.map((key: any) => {
           return {
             key: key,
             balance: val.balance,
             predicate: val.guard.predicate,
-            // raw: val.guard.raw,
             chainId: val.chainId,
           };
-        });
+        }) ?? [
+          {
+            key: val.guard.raw,
+            balance: val.balance ?? 0,
+            predicate: '',
+            chainId: val.chainId,
+          },
+        ];
         return [...acc, ...guardKeys];
       }, []) ?? [];
 
