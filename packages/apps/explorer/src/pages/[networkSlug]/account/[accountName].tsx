@@ -99,7 +99,6 @@ const Account: FC = () => {
 
   const { fungibleAccount } = innerData ?? {};
 
-  console.log({ fungibleAccount });
   const keys: IKeyProps[] = useMemo(() => {
     const innerKeys: IKeyProps[] =
       fungibleAccount?.chainAccounts.reduce((acc: IKeyProps[], val) => {
