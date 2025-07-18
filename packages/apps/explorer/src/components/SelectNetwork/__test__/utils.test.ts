@@ -92,6 +92,7 @@ describe('selectnetwork utils', () => {
         chainwebUrl: '',
         graphUrl: '',
         wsGraphUrl: '',
+        headers: {},
         isNew: true,
       };
 
