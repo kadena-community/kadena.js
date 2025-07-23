@@ -8,7 +8,7 @@ export const MagicConnect: FC<{
   return (
     <ContextMenuItem
       label="Magic Connect (spirekey)"
-      onClick={() => handleConnect(WALLETTYPES.CHAINWEAVER)}
+      onClick={() => handleConnect(WALLETTYPES.MAGIC)}
     />
   );
 };
