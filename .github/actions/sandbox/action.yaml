@@ -25,12 +25,14 @@ runs:
       uses: jwalton/gh-docker-logs@v2
       with:
         dest: './logs'
-     - name: Tar logs
-       if: failure()
-       run: tar cvzf ./logs.tgz ./logs
-     - name: Upload logs to GitHub
-       if: failure()
-       uses: actions/upload-artifact@master
-       with:
-         name: docker_logs.tgz
-         path: ./logs.tgz
+
+    - name: Tar logs
+      if: failure()
+      run: tar cvzf ./logs.tgz ./logs
+
+    - name: Upload logs to GitHub
+      if: failure()
+      uses: actions/upload-artifact@master
+      with:
+        name: docker_logs.tgz
+        path: ./logs.tgz
