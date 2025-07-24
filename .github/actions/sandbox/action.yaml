@@ -12,9 +12,25 @@ runs:
 
     - name: Start sandbox
       shell: bash
+      working-directory: ./devnet
       # git clone --depth=1 -b ag/kadena-js-devnet git@github.com:kadena-io/devnet.git
-      run: cd devnet && docker compose -f docker-compose.kadenajs.yaml up -d --quiet-pull
+      run: docker compose -f docker-compose.kadenajs.yaml up -d --quiet-pull
 
     - name: Check sandbox health
       shell: bash
       run: ./healthcheck.sh
+
+    - name: Collect docker logs on failure
+      if: failure()
+      uses: jwalton/gh-docker-logs@v2
+      with:
+        dest: './logs'
+     - name: Tar logs
+       if: failure()
+       run: tar cvzf ./logs.tgz ./logs
+     - name: Upload logs to GitHub
+       if: failure()
+       uses: actions/upload-artifact@master
+       with:
+         name: docker_logs.tgz
+         path: ./logs.tgz
