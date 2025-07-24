@@ -5,7 +5,9 @@ runs:
   steps:
     - name: Start sandbox
       shell: bash
-      run: docker compose up -d
+      run: |
+        git clone git@github.com:kadena-io/devnet.git
+        cd devnet && docker compose -f docker-compose.indexer.yaml up -d --quiet-pull
       working-directory: .github/actions/sandbox
 
     - name: Check sandbox health
