@@ -1,4 +1,5 @@
 name: 'Start Kadena sandbox'
+description: 'Start a Kadena Devnet environment using docker-compose with indexer components'
 runs:
   using: 'composite'
   steps:
