@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ITableProps } from 'src/components';
+import type { ITableProps } from '../../components';
 import { Media } from './../../components/Media';
 import { CompactTableDesktop } from './CompactTableDesktop/CompactTableDesktop';
 import { CompactTableMobile } from './CompactTableMobile/CompactTableMobile';

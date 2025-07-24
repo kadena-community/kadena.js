@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import type { IButtonProps, ILinkProps } from 'src/components';
+import type { IButtonProps, ILinkProps } from '../../components';
 
 export const Anchor = forwardRef<HTMLAnchorElement, ILinkProps>(
   ({ children, ...props }, ref) => (

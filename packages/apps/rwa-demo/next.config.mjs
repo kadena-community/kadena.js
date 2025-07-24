@@ -1,12 +1,13 @@
-const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
+import { withSentryConfig } from '@sentry/nextjs';
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+
 const withVanillaExtract = createVanillaExtractPlugin();
-const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
-  transpilePackages: ['@kadena/kode-ui'],
+  // transpilePackages: ['@kadena/kode-ui'],
   env: {
     NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
     NEXT_PUBLIC_BUILD_TIME: new Date().toUTCString(),
@@ -37,4 +38,4 @@ const configWithSentry = withSentryConfig(nextConfig, {
   widenClientFileUpload: true,
 });
 
-module.exports = withVanillaExtract(configWithSentry);
+export default withVanillaExtract(configWithSentry);

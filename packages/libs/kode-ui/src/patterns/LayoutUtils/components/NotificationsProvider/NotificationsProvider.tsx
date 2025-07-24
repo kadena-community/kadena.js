@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { createContext, useContext, useState } from 'react';
-import type { INotificationProps } from 'src/components';
+import type { INotificationProps } from '../../../../components';
 
 export type INotificationMinimizedProps = Pick<
   INotificationProps,

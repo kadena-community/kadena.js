@@ -1,7 +1,7 @@
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { FC } from 'react';
 import React from 'react';
-import type { button } from 'src/components/Button/Button.css';
+import type { button } from '../../../../components/Button/Button.css';
 import { Stack } from './../../..';
 import { token } from './../../../../styles';
 import { grpClass, mainCircleClass, oval1Class, oval2Class } from './style.css';

@@ -28,7 +28,7 @@ export const SideBarAside: FC<{
     setRightAsideRef,
     rightAsideOnClose,
   } = useLayout();
-  const ref = useRef<HTMLDivElement | null>();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const handleExpand = (e: PressEvent) => {
     if (rightAsideOnClose) rightAsideOnClose();

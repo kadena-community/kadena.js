@@ -14,7 +14,7 @@ export const eckoAccountLogin = async (): Promise<
   const isKadena = Boolean(kadena && kadena.isKadena);
   if (!isKadena) return;
 
-  const result = await kadena.request({
+  const result: any = await kadena.request({
     method: 'kda_connect',
     networkId: env.NETWORKID,
   });

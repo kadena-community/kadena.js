@@ -3,7 +3,7 @@ import type {
   IAnalyticsOptionsType,
 } from '@/utils/analytics';
 import { analyticsEvent } from '@/utils/analytics';
-import type { INotificationMinimizedProps } from '@kadena/kode-ui';
+import type { INotificationMinimizedProps } from '@kadena/kode-ui/patterns';
 import { useNotifications as useUINotifications } from '@kadena/kode-ui/patterns';
 import { useNetwork } from './networks';
 

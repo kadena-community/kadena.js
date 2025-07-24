@@ -2,6 +2,7 @@
   "name": "@kadena/rwa-demo",
   "version": "2.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=8192 next build",
     "build:e2e": "NODE_ENV=test pnpm run build",
