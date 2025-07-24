@@ -6,7 +6,7 @@ runs:
     - name: Start sandbox
       shell: bash
       run: |
-        git clone git@github.com:kadena-io/devnet.git
+        git clone --depth=1 -b ag/kadena-js-devnet git@github.com:kadena-io/devnet.git
         cd devnet && docker compose -f docker-compose.indexer.yaml up -d --quiet-pull
       working-directory: .github/actions/sandbox
 
