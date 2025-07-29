@@ -38,8 +38,7 @@ import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import { KadenaExtension } from '@magic-ext/kadena';
 import type { Extension } from 'magic-sdk';
 import { Magic } from 'magic-sdk';
-import { ERRORS } from './constants';
-// import type { ExtendedMethod, IQuicksignResponse } from './types';
+import { ERRORS, MAGIC_ADAPTER } from './constants';
 import { safeJsonParse } from './utils/json';
 
 export interface IMagicAdapterOptions {
@@ -57,7 +56,7 @@ type IMagicAdapterOptionsWithProvider = IMagicAdapterOptions &
  * functionality for connecting to the Magic Wallet.
  */
 export class MagicAdapter extends BaseWalletAdapter {
-  public name: string = 'Magic';
+  public name: string = MAGIC_ADAPTER;
 
   private _magic: Magic | null = null;
   private _account: IAccountInfo | null = null;
@@ -76,7 +75,7 @@ export class MagicAdapter extends BaseWalletAdapter {
       !options.networkId
     ) {
       throw new Error(
-        'Missing required options: magicApiKey, chainwebApiUrl, chainId, networkId',
+        'Missing some or all required options: magicApiKey, chainwebApiUrl, chainId, networkId',
       );
     }
 

@@ -1,3 +1,4 @@
+export const MAGIC_ADAPTER = 'Magic';
 export const ERRORS = {
   PROVIDER_NOT_DETECTED: 'Provider not detected',
   FAILED_TO_CONNECT: 'Failed to connect',

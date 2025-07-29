@@ -1,17 +1,15 @@
-# Ecko Wallet Adapter
+# Magic Wallet Adapter
 
-This package provides an adapter for the Ecko Wallet extension on Kadena. It
-extends a base adapter but uses the `"kda_"` RPC prefix (required by Ecko)
-rather than the standard `"kadena_"` prefix.
+This package provides an adapter for the Magic Wallet extension on Kadena.
 
 ## Installation
 
 ```bash
-npm install @kadena/wallet-adapter-ecko
+npm install @kadena/wallet-adapter-magic
 # or
-yarn add @kadena/wallet-adapter-ecko
+yarn add @kadena/wallet-adapter-magic
 # or
-pmpm add @kadena/wallet-adapter-ecko
+pmpm add @kadena/wallet-adapter-magic
 ```
 
 ## Usage with wallet-adapter-core
@@ -22,31 +20,31 @@ automatically detecting which are available and providing a uniform api to
 interact with the adapters.
 
 ```ts
-import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { magicAdapter } from '@kadena/wallet-adapter-magic';
 import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 
-const client = new WalletAdapterClient([eckoAdapter]);
+const client = new WalletAdapterClient([magicAdapter]);
 await client.init();
-await client.connect('ecko');
+await client.connect('magic');
 ```
 
 ## Factory Usage
 
-The primary export is a factory function `eckoAdapter`, which detects the Ecko
-wallet provider and, if found, returns an instance of `EckoWalletAdapter`. If
-Ecko is not installed, it returns `null`:
+The primary export is a factory function `magicAdapter`, which detects the Magic
+wallet provider and, if found, returns an instance of `MagicWalletAdapter`. If
+Magic is not installed, it returns `null`:
 
 ```ts
-import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { magicAdapter } from '@kadena/wallet-adapter-magic';
 
 (async () => {
-  const provider = await eckoAdapter.detect();
+  const provider = await magicAdapter.detect();
   if (!provider) {
-    console.log('Ecko Wallet not found.');
+    console.log('Magic Wallet not found.');
     return;
   }
 
-  const adapter = await eckoAdapter.adapter(provider);
+  const adapter = await magicAdapter.adapter(provider);
 
   await adapter.connect();
   const account = await adapter.getActiveAccount();
@@ -58,33 +56,36 @@ import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
 
 If you need lower-level access, the following are also exported:
 
-- **`EckoAdapter`**: The actual adapter class, in case you want to instantiate
+- **`MagicAdapter`**: The actual adapter class, in case you want to instantiate
   it manually without relying on the lazy-loading factory.
-- **`detectEckoProvider`**: A standalone function that checks whether the Ecko
+- **`detectMagicProvider`**: A standalone function that checks whether the Magic
   wallet is present. It returns the provider if found, or `null` otherwise.
 
 ```ts
-import { EckoAdapter, detectEckoProvider } from '@kadena/wallet-adapter-ecko';
+import {
+  MagicAdapter,
+  detectMagicProvider,
+} from '@kadena/wallet-adapter-magic';
 
 (async () => {
-  const provider = await detectEckoProvider({ silent: true });
+  const provider = await detectMagicProvider({ silent: true });
   if (!provider) {
-    console.log('Ecko not available.');
+    console.log('Magic not available.');
     return;
   }
-  const adapter = new EckoWalletAdapter({ provider });
+  const adapter = new MagicWalletAdapter({ provider });
   await adapter.connect();
-  console.log('Connected to Ecko directly!');
+  console.log('Connected to Magic directly!');
 })();
 ```
 
-## Other Notes
+## Supported methods
 
-- The adapter internally calls `kda_connect`, `kda_requestSign`,
-  `kda_disconnect`, and similar Ecko-specific RPC methods (all `"kda_"`
-  prefixed).
-- If you support multiple wallets in your app, the lazy import in `eckoAdapter`
-  can help reduce your initial bundle size, because the Ecko adapter code is
-  only loaded if the provider is actually detected.
-- Make sure the user has installed the Ecko Wallet extension. Otherwise,
-  detection will yield `null`.
+| Method                | KIP         | Supported |
+| --------------------- | ----------- | --------- |
+| kadena_sign_v1        | [KIP-17][1] | No        |
+| kadena_quicksign_v1   | [KIP-17][1] | Yes       |
+| kadena_getAccount_v1  | [KIP-37][2] | Yes       |
+| kadena_getAccounts_v2 | [KIP-38][3] | Yes       |
+| kadena_getNetwork_v1  | [KIP-39][4] | No        |
+| kadena_getNetworks_v1 | [KIP-40][5] | No        |
