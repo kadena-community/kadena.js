@@ -23,6 +23,9 @@ export const createMagicAdapter: <T extends IBaseWalletFactoryOptions>(options: 
 // @public
 export function detectMagicProvider(options?: {}): Promise<IMagicProvider | null>;
 
+// @public (undocumented)
+export const MAGIC_ADAPTER = "Magic";
+
 // @public
 export class MagicAdapter extends BaseWalletAdapter {
     // Warning: (ae-forgotten-export) The symbol "IMagicAdapterOptionsWithProvider" needs to be exported by the entry point index.d.ts
