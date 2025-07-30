@@ -123,7 +123,6 @@ export const SignRequest = ({
           gap={'lg'}
           overflow="auto"
           marginBlockStart="md"
-          // height="100%"
         >
           <TxList
             onDone={() => {}}
