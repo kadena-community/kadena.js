@@ -30,8 +30,11 @@
     "@angular/platform-browser-dynamic": "^17.0.2",
     "@angular/router": "^17.0.2",
     "@kadena/client": "^1.6.2",
-    "@kadena/wallet-adapter-core": "0.0.1-beta.2",
-    "@kadena/wallet-adapter-ecko": "0.0.1-beta.2",
+    "@kadena/wallet-adapter-core": "workspace:*",
+    "@kadena/wallet-adapter-ecko": "workspace:*",
+    "@kadena/wallet-adapter-zelcore": "workspace:*",
+    "@kadena/wallet-adapter-chainweaver-legacy": "workspace:*",
+    "@kadena/wallet-adapter-walletconnect": "workspace:*",
     "rxjs": "~7.8.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
