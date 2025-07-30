@@ -20,7 +20,20 @@
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "buffer",
+              "process",
+              "qrcode",
+              "bn.js",
+              "js-sha3",
+              "elliptic",
+              "@walletconnect/environment",
+              "@walletconnect/time",
+              "@walletconnect/window-getters",
+              "@walletconnect/window-metadata",
+              "@kadena/client"
+            ]
           },
           "configurations": {
             "production": {

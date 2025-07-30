@@ -2,14 +2,9 @@
  * Polyfills required for WalletConnect and other wallet adapters
  */
 
-// Global polyfills for Node.js modules in browser environment
-(globalThis as any).global = globalThis;
-(globalThis as any).Buffer = Buffer;
-(globalThis as any).process = process;
-
 // Import required polyfills
 import { Buffer } from 'buffer';
-import process from 'process/browser';
+import * as process from 'process';
 
 // Make them available globally
 if (typeof (globalThis as any).Buffer === 'undefined') {
