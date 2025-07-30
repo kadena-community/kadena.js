@@ -4,7 +4,10 @@ import { HalfCircleSpinner } from 'epic-spinners';
 import writeMessage from './utils/writeMessage';
 import readMessage from './utils/readMessage';
 import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
-import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { createZelcoreAdapter } from '@kadena/wallet-adapter-zelcore';
+import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweaver-legacy';
+import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
 
 export default {
   name: 'App',
@@ -18,27 +21,105 @@ export default {
       messageToWrite: '' as string,
       writeInProgress: false as boolean,
       walletClient: null as WalletAdapterClient | null,
+      availableWallets: [] as Array<{name: string, detected: boolean}>,
+      loading: false as boolean,
+      // State for handling Zelcore account modal
+      zelcoreAccounts: [] as any[],
+      isZelcoreModalOpen: false as boolean,
     };
   },
 
+  async mounted() {
+    await this.initializeWallets();
+  },
+
   methods: {
-    async connectWallet() {
+    async initializeWallets() {
       try {
-        const adapter = await eckoAdapter();
-        if (!adapter) {
-          console.error('Ecko Wallet not found. Please install the extension.');
-          return;
-        }
+        const adapters = [
+          createEckoAdapter(),
+          createZelcoreAdapter(), 
+          createChainweaverLegacyAdapter(),
+          createWalletConnectAdapter(),
+        ];
 
-        this.walletClient = new WalletAdapterClient([adapter]);
-
+        this.walletClient = new WalletAdapterClient(adapters);
         await this.walletClient.init();
 
-        const { accountName } = await this.walletClient.connect(adapter.name);
+        // Check which wallets are detected
+        this.availableWallets = adapters.map(adapter => ({
+          name: adapter.name,
+          detected: this.walletClient?.isDetected(adapter.name) || false
+        }));
+      } catch (err) {
+        console.error('Failed to initialize wallets:', err);
+      }
+    },
 
-        this.account = accountName;
+    async connectWallet() {
+      if (!this.selectedWallet || !this.walletClient) {
+        console.error('No wallet selected or client not initialized');
+        return;
+      }
+
+      this.loading = true;
+      try {
+        if (this.selectedWallet === "Zelcore") {
+          const accounts = await this.walletClient.getAccounts("Zelcore");
+
+          if (!accounts || accounts.length === 0) {
+            throw new Error("No Zelcore accounts found");
+          }
+
+          // Open the modal with the list of accounts
+          this.zelcoreAccounts = accounts;
+          this.isZelcoreModalOpen = true;
+          this.loading = false;
+          return;
+        } else {
+          const accountInfo = await this.walletClient.connect(
+            this.selectedWallet,
+            this.selectedWallet === "Chainweaver"
+              ? {
+                  accountName: prompt("Input your account"),
+                  tokenContract: "coin",
+                  chainIds: ["0", "1"],
+                }
+              : undefined,
+          );
+          this.account = accountInfo.accountName;
+
+          const networkInfo = await this.walletClient.getActiveNetwork(this.selectedWallet);
+          console.log("Connected to", this.selectedWallet, "->", accountInfo?.accountName);
+        }
       } catch (err) {
         console.error('Wallet connection failed:', err);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    // Callback when an account is selected in the modal (for Zelcore)
+    async handleZelcoreAccountSelect(selectedAccount: any) {
+      try {
+        this.loading = true;
+        const accountInfo = await this.walletClient!.connect("Zelcore", {
+          accountName: selectedAccount.accountName,
+          tokenContract: selectedAccount.contract || "coin",
+          chainIds: ["0", "1"], // Update as needed
+        });
+        this.account = accountInfo.accountName;
+
+        const networkInfo = await this.walletClient!.getActiveNetwork("Zelcore");
+        console.log("Connected to Zelcore ->", selectedAccount.accountName);
+
+        // Close the modal when an account is selected
+        this.isZelcoreModalOpen = false;
+        this.zelcoreAccounts = [];
+      } catch (error) {
+        console.error("Connect error:", error);
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -53,6 +134,7 @@ export default {
           account: this.account,
           messageToWrite: this.messageToWrite,
           walletClient: this.walletClient,
+          walletName: this.selectedWallet,
         });
         this.writeInProgress = false;
       } catch (err) {
@@ -96,12 +178,24 @@ export default {
           <label for="wallet-select" class="fieldLabel">Select Wallet</label>
           <select id="wallet-select" v-model="selectedWallet" class="input">
             <option value="">-- select a wallet --</option>
-            <option value="Ecko">Ecko</option>
+            <option 
+              v-for="wallet in availableWallets" 
+              :key="wallet.name" 
+              :value="wallet.name"
+            >
+              {{ wallet.name }} {{ wallet.detected ? '(Detected)' : '(Not found)' }}
+            </option>
           </select>
         </fieldset>
 
         <div class="buttonWrapper">
-          <button @click="connectWallet" class="button">Connect Wallet</button>
+          <button 
+            @click="connectWallet" 
+            :disabled="loading || !selectedWallet || !!account"
+            class="button"
+          >
+            {{ loading ? "Connecting..." : "Connect Wallet" }}
+          </button>
         </div>
 
         <fieldset class="fieldset">
@@ -137,7 +231,7 @@ export default {
             />
             <button
               @click="writeMessage"
-              :disabled="!messageToWrite || writeInProgress || !account"
+              :disabled="!messageToWrite || writeInProgress || !account || !selectedWallet"
               class="button"
             >
               Write
@@ -183,6 +277,27 @@ export default {
         </div>
       </div>
     </section>
+
+    <!-- Render the Zelcore Account Modal when open -->
+    <div v-if="isZelcoreModalOpen" class="modalOverlay" @click="isZelcoreModalOpen = false">
+      <div class="modal" @click.stop>
+        <h3>Select an Account</h3>
+        <div style="max-height: 300px; overflow-y: auto; margin: 1rem 0">
+          <button
+            v-for="acc in zelcoreAccounts.filter(acc => acc.accountName.startsWith('k:'))"
+            :key="acc.accountName"
+            @click="handleZelcoreAccountSelect(acc)"
+            class="button"
+            style="display: block; width: 100%; margin-bottom: 0.5rem"
+          >
+            {{ acc.accountName }}
+          </button>
+        </div>
+        <button @click="isZelcoreModalOpen = false" class="button">
+          Close
+        </button>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -401,5 +516,27 @@ export default {
 
 .link:hover {
   text-decoration: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
 }
 </style>
