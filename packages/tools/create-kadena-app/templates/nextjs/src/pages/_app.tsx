@@ -1,14 +1,24 @@
+import React, { useMemo } from 'react';
 import type { AdapterFactory } from '@kadena/wallet-adapter-core';
-import { eckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { createZelcoreAdapter } from '@kadena/wallet-adapter-zelcore';
+import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweaver-legacy';
+import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
 import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
 
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps }) {
-  const adapters: AdapterFactory[] = [eckoAdapter()]; //list the adapters you want to use here
+  const adapters: AdapterFactory[] = useMemo(() => [
+    createEckoAdapter(),
+    createZelcoreAdapter(),
+    createChainweaverLegacyAdapter(),
+    createWalletConnectAdapter(),
+  ], []);
+
   return (
     <KadenaWalletProvider adapters={adapters}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </KadenaWalletProvider>
   );
 }

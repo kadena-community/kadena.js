@@ -3,10 +3,48 @@ import writeMessage from '@/utils/writeMessage';
 import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import Head from 'next/head';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SpinnerRoundFilled } from 'spinners-react';
 import KadenaImage from '../../public/assets/k-community-icon.png';
 import styles from '../styles/main.module.css';
+
+const AccountModal = ({
+  accounts,
+  onSelect,
+  onClose,
+}: {
+  accounts: any[];
+  onSelect: (account: any) => void;
+  onClose: () => void;
+}) => {
+  const filteredAccounts = accounts.filter((acc) => acc.accountName.startsWith("k:"));
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <h3>Select an Account</h3>
+        <div style={{ maxHeight: "300px", overflowY: "auto", margin: "1rem 0" }}>
+          {filteredAccounts.map((acc) => (
+            <button
+              key={acc.accountName}
+              onClick={() => {
+                onSelect(acc);
+                onClose();
+              }}
+              className={styles.button}
+              style={{ display: 'block', width: '100%', marginBottom: '0.5rem' }}
+            >
+              {acc.accountName}
+            </button>
+          ))}
+        </div>
+        <button onClick={onClose} className={styles.button}>
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const Home: React.FC = (): JSX.Element => {
   const { client, providerData } = useKadenaWallet();
@@ -16,13 +54,87 @@ const Home: React.FC = (): JSX.Element => {
   const [messageToWrite, setMessageToWrite] = useState<string>('');
   const [messageFromChain, setMessageFromChain] = useState<string>('');
   const [writeInProgress, setWriteInProgress] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  
+  // State for handling Zelcore account modal
+  const [zelcoreAccounts, setZelcoreAccounts] = useState<any[]>([]);
+  const [isZelcoreModalOpen, setIsZelcoreModalOpen] = useState<boolean>(false);
 
   const handleConnect = async () => {
+    if (!selectedWallet) {
+      console.error("No wallet selected");
+      return;
+    }
+    if (!client) {
+      console.error("Wallet client not available");
+      return;
+    }
+    setLoading(true);
     try {
-      const accountInfo = await client.connect(selectedWallet);
+      if (selectedWallet === "Zelcore") {
+        const accounts = await client.getAccounts("Zelcore");
+
+        if (!accounts || accounts.length === 0) {
+          throw new Error("No Zelcore accounts found");
+        }
+
+        // Open the modal with the list of accounts
+        setZelcoreAccounts(accounts);
+        setIsZelcoreModalOpen(true);
+        setLoading(false);
+        return;
+      } else {
+        const accountInfo = await client.connect(
+          selectedWallet,
+          selectedWallet === "Chainweaver"
+            ? {
+                accountName: prompt("Input your account"),
+                tokenContract: "coin",
+                chainIds: ["0", "1"],
+              }
+            : undefined,
+        );
+        setAccount(accountInfo.accountName);
+
+        const networkInfo = await client.getActiveNetwork(selectedWallet);
+        setNetwork(networkInfo);
+
+        console.log("Connected to", selectedWallet, "->", accountInfo?.accountName);
+      }
+    } catch (error) {
+      console.error("Connect error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Callback when an account is selected in the modal (for Zelcore)
+  const handleZelcoreAccountSelect = async (selectedAccount: any) => {
+    if (!client) {
+      console.error("Wallet client not available");
+      return;
+    }
+    try {
+      setLoading(true);
+      const accountInfo = await client.connect("Zelcore", {
+        accountName: selectedAccount.accountName,
+        tokenContract: selectedAccount.contract || "coin",
+        chainIds: ["0", "1"], // Update as needed
+      });
       setAccount(accountInfo.accountName);
-    } catch {
-      console.log('Error Connecting Wallet');
+
+      const networkInfo = await client.getActiveNetwork("Zelcore");
+      setNetwork(networkInfo);
+
+      console.log("Connected to Zelcore ->", selectedAccount.accountName);
+
+      // Close the modal when an account is selected
+      setIsZelcoreModalOpen(false);
+      setZelcoreAccounts([]);
+    } catch (error) {
+      console.error("Connect error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,6 +157,7 @@ const Home: React.FC = (): JSX.Element => {
         account: account,
         messageToWrite,
         walletClient: client,
+        walletName: selectedWallet,
       });
       setMessageToWrite('');
     } catch (e) {
@@ -53,6 +166,23 @@ const Home: React.FC = (): JSX.Element => {
       setWriteInProgress(false);
     }
   }
+
+  // Listen for account & network changes
+  useEffect(() => {
+    if (!selectedWallet || !client) return;
+
+    if (client.isDetected(selectedWallet)) {
+      client.onAccountChange(selectedWallet, (newAccount) => {
+        console.log("Account changed:", newAccount);
+        setAccount(newAccount?.accountName || '');
+      });
+
+      client.onNetworkChange(selectedWallet, (newNetwork) => {
+        console.log("Network changed:", newNetwork);
+        setNetwork(newNetwork);
+      });
+    }
+  }, [selectedWallet, client]);
 
   async function handleReadMessageClick() {
     try {
@@ -119,10 +249,10 @@ const Home: React.FC = (): JSX.Element => {
             <div className={styles.buttonWrapper} style={{ marginTop: 8 }}>
               <button
                 onClick={handleConnect}
-                disabled={!selectedWallet}
+                disabled={loading || !selectedWallet || !!account}
                 className={styles.button}
               >
-                Connect Wallet
+                {loading ? "Connecting..." : "Connect Wallet"}
               </button>
             </div>
 
@@ -164,7 +294,10 @@ const Home: React.FC = (): JSX.Element => {
                 <button
                   onClick={handleWriteMessageClick}
                   disabled={
-                    account === '' || messageToWrite === '' || writeInProgress
+                    account === '' || 
+                    messageToWrite === '' || 
+                    writeInProgress || 
+                    selectedWallet === ''
                   }
                   className={styles.button}
                 >
@@ -219,6 +352,15 @@ const Home: React.FC = (): JSX.Element => {
           </div>
         </section>
       </main>
+
+      {/* Render the Zelcore Account Modal when open */}
+      {isZelcoreModalOpen && (
+        <AccountModal
+          accounts={zelcoreAccounts}
+          onSelect={handleZelcoreAccountSelect}
+          onClose={() => setIsZelcoreModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
