@@ -9,9 +9,10 @@ export class AppService {
     account: string,
     message: string,
     walletClient: WalletAdapterClient,
+    walletName: string,
   ) {
     try {
-      await writeMessage({ account, messageToWrite: message, walletClient });
+      await writeMessage({ account, messageToWrite: message, walletClient, walletName });
     } catch (e) {
       console.log(e);
     }

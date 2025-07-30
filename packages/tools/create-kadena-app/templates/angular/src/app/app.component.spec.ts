@@ -38,8 +38,12 @@ describe('AppComponent', () => {
      });
 
     it('should render the wallet connection button', () => {
-      it('should render blockchain interaction section', () => {
-          const h4s = compiled.querySelectorAll('h4');
+      const buttons = compiled.querySelectorAll('button');
+      expect(buttons[0].textContent).toContain('Connect Wallet');
+    });
+
+    it('should render blockchain interaction section', () => {
+      const h4s = compiled.querySelectorAll('h4');
       // [0] is "Wallet"
       expect(h4s[1].textContent).toContain('Write to the blockchain');
       expect(h4s[2].textContent).toContain('Read from the blockchain');
@@ -101,4 +105,4 @@ describe('AppComponent', () => {
       });
     }));
   });
-  });
+});

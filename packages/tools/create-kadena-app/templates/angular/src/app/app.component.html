@@ -26,15 +26,21 @@
 
         <fieldset class="fieldset">
           <label for="wallet-select" class="fieldLabel">Select Wallet</label>
-          <select id="wallet-select" v-model="selectedWallet" class="input">
+          <select id="wallet-select" [(ngModel)]="selectedWallet" class="input">
             <option value="">-- select a wallet --</option>
-            <option value="Ecko">Ecko</option>
+            <option *ngFor="let wallet of availableWallets" [value]="wallet.name">
+              {{ wallet.name }} {{ wallet.detected ? '(Detected)' : '(Not found)' }}
+            </option>
           </select>
         </fieldset>
 
         <div class="buttonWrapper">
-          <button (click)="connectWallet()" class="button">
-            Connect Wallet
+          <button 
+            (click)="connectWallet()" 
+            [disabled]="loading || !selectedWallet || !!account"
+            class="button"
+          >
+            {{ loading ? 'Connecting...' : 'Connect Wallet' }}
           </button>
         </div>
 
@@ -69,7 +75,7 @@
             <button
               type="button"
               (click)="writeMessage()"
-              [disabled]="messageToWrite === '' || writeInProgress"
+              [disabled]="messageToWrite === '' || writeInProgress || account === '' || !selectedWallet"
               class="button"
             >
               Write
@@ -117,4 +123,25 @@
       </div>
     </section>
   </main>
+
+  <!-- Render the Zelcore Account Modal when open -->
+  <div *ngIf="isZelcoreModalOpen" class="modalOverlay" (click)="isZelcoreModalOpen = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Select an Account</h3>
+      <div style="max-height: 300px; overflow-y: auto; margin: 1rem 0">
+        <button
+          *ngFor="let acc of zelcoreAccounts"
+          [hidden]="!acc.accountName.startsWith('k:')"
+          (click)="handleZelcoreAccountSelect(acc)"
+          class="button"
+          style="display: block; width: 100%; margin-bottom: 0.5rem"
+        >
+          {{ acc.accountName }}
+        </button>
+      </div>
+      <button (click)="isZelcoreModalOpen = false" class="button">
+        Close
+      </button>
+    </div>
+  </div>
 </div>
