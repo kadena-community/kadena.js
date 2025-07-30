@@ -89,3 +89,9 @@ import {
 | kadena_getAccounts_v2 | [KIP-38][3] | Yes       |
 | kadena_getNetwork_v1  | [KIP-39][4] | No        |
 | kadena_getNetworks_v1 | [KIP-40][5] | No        |
+
+[1]: https://github.com/kadena-io/KIPs/blob/master/kip-0017.md
+[2]: https://github.com/kadena-io/KIPs/blob/master/kip-0037.md
+[3]: https://github.com/kadena-io/KIPs/blob/master/kip-0038.md
+[4]: https://github.com/kadena-io/KIPs/blob/master/kip-0039.md
+[5]: https://github.com/kadena-io/KIPs/blob/master/kip-0040.md
