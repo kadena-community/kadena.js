@@ -18,7 +18,6 @@
     "@kadena/client": "^1.6.2",
     "@kadena/wallet-adapter-core": "workspace:*",
     "@kadena/wallet-adapter-ecko": "workspace:*",
-    "@kadena/wallet-adapter-zelcore": "workspace:*",
     "@kadena/wallet-adapter-chainweaver-legacy": "workspace:*",
     "@kadena/wallet-adapter-walletconnect": "workspace:*",
     "@testing-library/jest-dom": "^6.1.4",

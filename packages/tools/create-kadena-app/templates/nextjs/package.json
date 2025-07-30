@@ -23,7 +23,6 @@
     "@kadena/client": "^1.5.0",
     "@kadena/wallet-adapter-core": "workspace:*",
     "@kadena/wallet-adapter-ecko": "workspace:*",
-    "@kadena/wallet-adapter-zelcore": "workspace:*",
     "@kadena/wallet-adapter-chainweaver-legacy": "workspace:*",
     "@kadena/wallet-adapter-walletconnect": "workspace:*",
     "@kadena/wallet-adapter-react": "workspace:*",
