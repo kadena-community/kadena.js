@@ -12,13 +12,15 @@ import getAccountKey from './getAccountKey';
 interface IWriteMessage {
   account: string;
   messageToWrite: string;
-  walletClient: WalletAdapterClient
+  walletClient: WalletAdapterClient;
+  walletName: string;
 }
 
 export default async function writeMessage({
   account,
   messageToWrite,
   walletClient,
+  walletName,
 }: IWriteMessage): Promise<ICommandResult> {
   try {
     const transactionBuilder = Pact.builder
@@ -38,11 +40,14 @@ export default async function writeMessage({
       .createTransaction();
 
 
-    const signedTx = await walletClient.signTransaction("Ecko", transactionBuilder);
+    const signedTx = await walletClient.signTransaction(walletName, transactionBuilder);
     const kadenaClient = createClient(API_HOST);
 
-    if (isSignedTransaction(signedTx as ICommand)) {
-      const transactionDescriptor = await kadenaClient.submit(signedTx as ICommand);
+    // Handle single transaction (not array)
+    const transaction = Array.isArray(signedTx) ? signedTx[0] : signedTx;
+    
+    if (isSignedTransaction(transaction)) {
+      const transactionDescriptor = await kadenaClient.submit(transaction);
       const response = await kadenaClient.listen(transactionDescriptor);
       if (response.result.status === 'success') {
         return response;
