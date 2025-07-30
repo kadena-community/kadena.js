@@ -21,7 +21,9 @@
     "@kadena/wallet-adapter-chainweaver-legacy": "workspace:*",
     "@kadena/wallet-adapter-walletconnect": "workspace:*",
     "@testing-library/jest-dom": "^6.1.4",
+    "buffer": "^6.0.3",
     "epic-spinners": "^2.0.0",
+    "process": "^0.11.10",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
   },
