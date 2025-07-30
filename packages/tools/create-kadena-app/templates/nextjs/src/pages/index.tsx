@@ -32,16 +32,21 @@ const Home: React.FC = (): JSX.Element => {
     setLoading(true);
     try {
       {
-        const accountInfo = await client.connect(
-          selectedWallet,
-          selectedWallet === "Chainweaver"
-            ? {
-                accountName: prompt("Input your account"),
-                tokenContract: "coin",
-                chainIds: ["0", "1"],
-              }
-            : undefined,
-        );
+        let connectionParams = undefined;
+        if (selectedWallet === "Chainweaver") {
+          const accountName = prompt("Please enter your Chainweaver account name (k:...):");
+          if (!accountName) {
+            console.error("Account name is required for Chainweaver connection");
+            return;
+          }
+          connectionParams = {
+            accountName: accountName.trim(),
+            tokenContract: "coin",
+            chainIds: ["0", "1"],
+          };
+        }
+        
+        const accountInfo = await client.connect(selectedWallet, connectionParams);
         setAccount(accountInfo.accountName);
 
         const networkInfo = await client.getActiveNetwork(selectedWallet);
@@ -51,6 +56,21 @@ const Home: React.FC = (): JSX.Element => {
       }
     } catch (error) {
       console.error("Connect error:", error);
+      
+      // Provide user-friendly error messages
+      if (selectedWallet === "Chainweaver") {
+        if (error instanceof Error && error.message.includes("fetch")) {
+          alert("Chainweaver connection failed. Please make sure:\n• Chainweaver desktop app is running\n• The app is accessible on localhost:9467\n• Your account exists on the blockchain");
+        } else if (error instanceof Error && error.message.includes("Account not found")) {
+          alert("Account verification failed. Please check:\n• Your account name is correct (should start with 'k:')\n• The account exists on the specified chains\n• You have the correct network selected");
+        } else {
+          alert("Chainweaver connection failed. Please check your account name and ensure Chainweaver desktop app is running.");
+        }
+      } else if (selectedWallet === "WalletConnect") {
+        alert("WalletConnect connection failed. Please try again or check your wallet app.");
+      } else {
+        alert(`Failed to connect to ${selectedWallet}. Please make sure the wallet is installed and try again.`);
+      }
     } finally {
       setLoading(false);
     }
