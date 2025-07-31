@@ -1,5 +1,11 @@
 # @kadena/chainweaver-wallet-connect-plugin
 
+## 0.0.6
+
+### Patch Changes
+
+- 10843bf: Fix get accounts when not passing contracts field
+
 ## 0.0.5
 
 ### Patch Changes

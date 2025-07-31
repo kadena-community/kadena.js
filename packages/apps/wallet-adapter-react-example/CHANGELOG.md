@@ -1,5 +1,12 @@
 # wallet-adapter-react-example
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies \[75c55bf]
+  - @kadena/wallet-adapter-magic\@0.0.3
+
 ## 0.0.3
 
 ### Patch Changes
