@@ -7,14 +7,16 @@
  */
 
 import type { IProvider } from '@kadena/wallet-adapter-core';
-import type { ResponseType } from './utils';
+import { CHAINWEAVER_ADAPTER } from './constants';
+import type { IResponseType } from './utils';
 import { communicate } from './utils';
 
 export interface IChainweaverProvider extends IProvider {
   message: (
     type: string,
     payload: Record<string, unknown>,
-  ) => Promise<ResponseType>;
+  ) => Promise<IResponseType<unknown>>;
+  connect: (minimalSize?: boolean) => Promise<void>;
   focus: () => void;
   close: () => void;
 }
@@ -33,21 +35,25 @@ export async function detectChainweaverProvider(options?: {
 }): Promise<IChainweaverProvider | null> {
   const walletOrigin = options?.walletUrl ?? 'https://wallet.kadena.io';
   const appName = options?.appName ?? 'dApp';
-  const walletName = 'Chainweaver';
+  const walletName = CHAINWEAVER_ADAPTER;
   let walletWindow: Window | null = null;
 
   const sleep = (time: number) =>
     new Promise<void>((resolve) => setTimeout(resolve, time));
 
-  const connect = async () => {
-    const wallet = window.open('', walletName, 'width=800,height=800');
-
+  const connect = async (minimalSize: boolean = false) => {
+    const wallet = window.open(
+      '',
+      walletName,
+      minimalSize ? 'width=1,height=1' : 'width=800,height=800',
+    );
     if (!wallet) {
       throw new Error('POPUP_BLOCKED');
     }
     walletWindow = wallet;
 
     const message = communicate(window, walletWindow, walletOrigin);
+
     const waitForWallet = async () => {
       for (let i = 0; i < 50; i++) {
         try {
@@ -58,13 +64,15 @@ export async function detectChainweaverProvider(options?: {
             }),
           ]);
         } catch (e) {
-          console.log('error', e);
+          if (e instanceof Error && e.message !== 'TIMEOUT') {
+            console.log('error', e);
+          }
           continue;
         }
-        console.log('wallet is ready');
         break;
       }
     };
+
     await Promise.race([
       message('GET_STATUS', {
         name: appName,
@@ -77,15 +85,11 @@ export async function detectChainweaverProvider(options?: {
       // todo: replace this by a better way to know when the wallet is ready
       return waitForWallet();
     });
-    // eslint-disable-next-line require-atomic-updates
-    return {
-      message,
-    };
   };
 
   const provider: IChainweaverProvider = {
     request: async (request) => {
-      if (!walletWindow) {
+      if (!walletWindow || walletWindow.closed) {
         await connect();
       }
       if (!walletWindow || walletWindow.closed) {
@@ -134,8 +138,12 @@ export async function detectChainweaverProvider(options?: {
     },
     on: () => {},
     off: () => {},
+    connect: connect,
     focus: () => walletWindow?.focus(),
-    close: () => walletWindow?.close(),
+    close: () => {
+      walletWindow?.close();
+      walletWindow = null;
+    },
   };
   return provider;
 }
