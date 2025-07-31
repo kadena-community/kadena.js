@@ -1,5 +1,13 @@
 # @kadena/dev-wallet
 
+## 0.6.1
+
+### Patch Changes
+
+- 10843bf: Fix sign request from plugin issues
+- Updated dependencies \[10843bf]
+  - @kadena/chainweaver-wallet-connect-plugin\@0.0.6
+
 ## 0.6.0
 
 ### Minor Changes

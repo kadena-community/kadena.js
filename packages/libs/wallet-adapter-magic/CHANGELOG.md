@@ -1,5 +1,11 @@
 # @kadena/wallet-adapter-magic
 
+## 0.0.3
+
+### Patch Changes
+
+- 75c55bf: Initial relaese of Magic wallet adapter.
+
 ## 0.0.2
 
 ### Patch Changes
