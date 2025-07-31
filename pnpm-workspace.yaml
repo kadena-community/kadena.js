@@ -1,2 +1,6 @@
 packages:
   - 'packages/*/*'
+  - 'packages/tools/create-kadena-app/my-test-app'
+  - 'packages/tools/create-kadena-app/test-nextjs-fixed'
+  - 'packages/tools/create-kadena-app/test-nextjs-fixed'
+  - 'packages/tools/create-kadena-app/test-nextjs-fixed'

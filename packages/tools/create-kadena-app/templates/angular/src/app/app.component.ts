@@ -56,17 +56,16 @@ export class AppComponent implements OnInit {
 
     this.loading = true;
     try {
-      const accountInfo = await this.walletClient.connect(
-        this.selectedWallet,
-        this.selectedWallet === "Chainweaver"
-          ? {
-              accountName: prompt("Input your account"),
-              tokenContract: "coin",
-              chainIds: ["0", "1"],
-            }
-          : undefined,
-      );
-      this.account = accountInfo.accountName;
+      const connectionParams = this.selectedWallet === "ChainweaverLegacy"
+        ? {
+            accountName: prompt("Input your account"),
+            tokenContract: "coin",
+            chainIds: ["0", "1"],
+          }
+        : undefined;
+
+      const accountInfo = await this.walletClient.connect(this.selectedWallet, connectionParams);
+      this.account = accountInfo?.accountName || '';
 
       const networkInfo = await this.walletClient.getActiveNetwork(this.selectedWallet);
       console.log("Connected to", this.selectedWallet, "->", accountInfo?.accountName);

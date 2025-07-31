@@ -10,14 +10,14 @@
   },
   "license": "ISC",
   "scripts": {
-    "build": "ng build",
+    "build": "pnpm exec ng build",
     "format": "prettier --write .",
-    "ng": "ng",
+    "ng": "pnpm exec ng",
     "pactjs:generate:contracts": "pactjs contract-generate --file ./pact/message-store.pact; pactjs contract-generate --file ./pact/root/coin-v5.pact",
-    "start": "ng serve",
-    "test": "ng test",
-    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
-    "watch": "ng build --watch --configuration development"
+    "start": "pnpm exec ng serve",
+    "test": "pnpm exec ng test",
+    "test:ci": "pnpm exec ng test --watch=false --browsers=ChromeHeadless",
+    "watch": "pnpm exec ng build --watch --configuration development"
   },
   "dependencies": {
     "@angular/animations": "^17.0.2",
@@ -58,7 +58,6 @@
     "prettier-eslint": "^16.1.2",
     "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-packagejson": "^2.4.6",
-    "typescript": "~5.2.2",
-    "@types/process": "^0.11.10"
+    "typescript": "~5.2.2"
   }
 }

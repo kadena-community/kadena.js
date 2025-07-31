@@ -11,6 +11,9 @@ export default mergeConfig(
       root: fileURLToPath(new URL('./', import.meta.url)),
       setupFiles: ['./vitest.setup.ts'],
       globals: true,
+      alias: {
+        'canvas': new URL('./src/__mocks__/canvas.js', import.meta.url).pathname,
+      },
     },
   }),
 );

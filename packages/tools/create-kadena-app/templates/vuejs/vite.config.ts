@@ -21,4 +21,10 @@ export default defineConfig({
   optimizeDeps: {
     include: ['buffer', 'process'],
   },
+  build: {
+    commonjsOptions: {
+      include: [/@kadena\/client/, /node_modules/],
+      transformMixedEsModules: true,
+    },
+  },
 });

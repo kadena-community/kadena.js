@@ -14,6 +14,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": [".kadena/pactjs-generated"]
+    "types": [".kadena/pactjs-generated"],
+    "skipLibCheck": true
   }
 }

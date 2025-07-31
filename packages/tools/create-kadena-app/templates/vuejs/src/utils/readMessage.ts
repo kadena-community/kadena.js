@@ -14,7 +14,7 @@ export default async function readMessage({
         // @ts-ignore
         Pact.modules['free.cka-message-store']['read-message'](account),
       )
-      .setMeta({ chainId: CHAIN_ID as any })
+      .setMeta({ chainId: CHAIN_ID })
       .setNetworkId(NETWORK_ID as string)
       .createTransaction();
 

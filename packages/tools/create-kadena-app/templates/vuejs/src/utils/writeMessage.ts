@@ -35,7 +35,7 @@ export default async function writeMessage({
         withCapability('coin.GAS'),
         withCapability('free.cka-message-store.ACCOUNT-OWNER', account),
       ])
-      .setMeta({ chainId: CHAIN_ID as any, senderAccount: account })
+      .setMeta({ chainId: CHAIN_ID, senderAccount: account })
       .setNetworkId(NETWORK_ID as string)
       .createTransaction();
 

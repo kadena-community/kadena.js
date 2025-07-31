@@ -4,7 +4,7 @@
 
 // Import required polyfills
 import { Buffer } from 'buffer';
-import process from 'process/browser';
+import process from 'process';
 
 // Make them available globally
 (globalThis as any).Buffer = Buffer;

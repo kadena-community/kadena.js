@@ -19,7 +19,7 @@ export default {
       messageFromChain: '' as string,
       messageToWrite: '' as string,
       writeInProgress: false as boolean,
-      walletClient: null as WalletAdapterClient | null,
+      walletClient: null as any,
       availableWallets: [] as Array<{name: string, detected: boolean}>,
       loading: false as boolean,
     };
@@ -34,12 +34,11 @@ export default {
       try {
         const adapters = [
           createEckoAdapter(),
- 
           createChainweaverLegacyAdapter(),
           createWalletConnectAdapter(),
         ];
 
-        this.walletClient = new WalletAdapterClient(adapters);
+        this.walletClient = new WalletAdapterClient(adapters as any);
         await this.walletClient.init();
 
         // Check which wallets are detected
