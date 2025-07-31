@@ -60,27 +60,20 @@ export default {
 
       this.loading = true;
       try {
-        {
-          let connectionParams = undefined;
-          if (this.selectedWallet === "Chainweaver") {
-            const accountName = prompt("Please enter your Chainweaver account name (k:...):");
-            if (!accountName) {
-              console.error("Account name is required for Chainweaver connection");
-              return;
-            }
-            connectionParams = {
-              accountName: accountName.trim(),
-              tokenContract: "coin",
-              chainIds: ["0", "1"],
-            };
-          }
-          
-          const accountInfo = await this.walletClient.connect(this.selectedWallet, connectionParams);
-          this.account = accountInfo.accountName;
+        const accountInfo = await this.walletClient.connect(
+          this.selectedWallet,
+          this.selectedWallet === "Chainweaver"
+            ? {
+                accountName: prompt("Input your account"),
+                tokenContract: "coin",
+                chainIds: ["0", "1"],
+              }
+            : undefined,
+        );
+        this.account = accountInfo.accountName;
 
-          const networkInfo = await this.walletClient.getActiveNetwork(this.selectedWallet);
-          console.log("Connected to", this.selectedWallet, "->", accountInfo?.accountName);
-        }
+        const networkInfo = await this.walletClient.getActiveNetwork(this.selectedWallet);
+        console.log("Connected to", this.selectedWallet, "->", accountInfo?.accountName);
       } catch (err) {
         console.error('Wallet connection failed:', err);
         

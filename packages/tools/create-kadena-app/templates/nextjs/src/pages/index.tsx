@@ -32,21 +32,16 @@ const Home: React.FC = (): JSX.Element => {
     setLoading(true);
     try {
       {
-        let connectionParams = undefined;
-        if (selectedWallet === "Chainweaver") {
-          const accountName = prompt("Please enter your Chainweaver account name (k:...):");
-          if (!accountName) {
-            console.error("Account name is required for Chainweaver connection");
-            return;
-          }
-          connectionParams = {
-            accountName: accountName.trim(),
-            tokenContract: "coin",
-            chainIds: ["0", "1"],
-          };
-        }
-        
-        const accountInfo = await client.connect(selectedWallet, connectionParams);
+        const accountInfo = await client.connect(
+          selectedWallet,
+          selectedWallet === "Chainweaver"
+            ? {
+                accountName: prompt("Input your account"),
+                tokenContract: "coin",
+                chainIds: ["0", "1"],
+              }
+            : undefined,
+        );
         setAccount(accountInfo.accountName);
 
         const networkInfo = await client.getActiveNetwork(selectedWallet);
