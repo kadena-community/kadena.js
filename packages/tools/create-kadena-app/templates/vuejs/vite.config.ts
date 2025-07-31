@@ -19,12 +19,24 @@ export default defineConfig({
     global: 'globalThis',
   },
   optimizeDeps: {
-    include: ['buffer', 'process'],
+    include: ['buffer', 'process', '@kadena/client'],
+    force: true,
   },
   build: {
     commonjsOptions: {
-      include: [/@kadena\/client/, /node_modules/],
+      include: [/@kadena/, /node_modules/],
       transformMixedEsModules: true,
+      defaultIsModuleExports: 'auto',
+    },
+    rollupOptions: {
+      external: [],
+      output: {
+        manualChunks(id) {
+          if (id.includes('@kadena')) {
+            return 'kadena';
+          }
+        },
+      },
     },
   },
 });
