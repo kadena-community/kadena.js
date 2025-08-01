@@ -47,7 +47,7 @@ import { safeJsonParse } from './utils/json';
  */
 export class SnapAdapter extends BaseWalletAdapter {
   public name: string = 'Snap';
-  private connectedAccountId: string | undefined = undefined;
+  private _connectedAccountId: string | undefined = undefined;
 
   /**
    * Constructor for the SnapAdapter.
@@ -57,7 +57,7 @@ export class SnapAdapter extends BaseWalletAdapter {
     super(options);
   }
 
-  private async invokeSnap<T>(
+  private async _invokeSnap<T>(
     method: string,
     params?: Record<string, unknown>,
   ): Promise<T> {
@@ -74,38 +74,49 @@ export class SnapAdapter extends BaseWalletAdapter {
   }
 
   private async _checkStatus(): Promise<boolean> {
-    return await this.invokeSnap<boolean>('kda_checkConnection');
+    return await this._invokeSnap<boolean>('kda_checkConnection');
   }
   /** Fetches and maps all networks from the Snap to INetworkInfo[] */
   private async _getNetworks(): Promise<INetworkInfo[]> {
-    return await this.invokeSnap<INetworkInfo[]>('kda_getNetworks_v1');
+    return await this._invokeSnap<INetworkInfo[]>('kda_getNetworks_v1');
   }
 
   private async _getActiveNetwork(): Promise<INetworkInfo> {
-    return await this.invokeSnap<INetworkInfo>('kda_getNetwork_v1');
+    return await this._invokeSnap<INetworkInfo>('kda_getNetwork_v1');
   }
   /**
    * Fetches all accounts from the Snap to IAccountInfo[]
    */
   private async _getAccounts(): Promise<IAccountInfo[]> {
-    const wallets = await this.invokeSnap<IAccountInfo[]>('kda_getAccounts_v2');
-    if (!wallets?.length) {
+    const snapAccounts =
+      await this._invokeSnap<ISnapAccount[]>('kda_getAccounts');
+    if (!snapAccounts?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
-    return wallets;
+    return snapAccounts.map((account) => {
+      const keyset = { keys: [account.publicKey], pred: 'keys-all' as const };
+      return {
+        accountName: account.address,
+        networkId: this.networkId!,
+        contract: 'coin',
+        guard: keyset,
+        keyset,
+        existsOnChains: [],
+      };
+    });
   }
 
   private async _changeNetwork(networkId: string) {
-    const networks = await this.invokeSnap<ISnapNetwork[]>('kda_getNetworks');
+    const networks = await this._invokeSnap<ISnapNetwork[]>('kda_getNetworks');
     const newNetworkId = networks.find((e) => e.networkId === networkId)?.id;
-    await this.invokeSnap('kda_setActiveNetwork', {
+    await this._invokeSnap('kda_setActiveNetwork', {
       id: newNetworkId,
     });
   }
 
   private async _signTransaction(cmd: string) {
-    const response = await this.invokeSnap<string>('kda_signTransaction', {
-      id: this.connectedAccountId,
+    const response = await this._invokeSnap<string>('kda_signTransaction', {
+      id: this._connectedAccountId,
       transaction: cmd,
     });
     return response;
@@ -147,9 +158,10 @@ export class SnapAdapter extends BaseWalletAdapter {
         }
       }
       // 2. Fetch all accounts and pick the first one
-      const wallets = await this.invokeSnap<ISnapAccount[]>('kda_getAccounts');
-      this.connectedAccountId = wallets[0].id;
+      const wallets = await this._invokeSnap<ISnapAccount[]>('kda_getAccounts');
+      this._connectedAccountId = wallets[0].id;
       const accounts = await this._getAccounts();
+      console.debug('Accounts:', JSON.stringify(accounts));
       if (accounts) return accounts[0];
       else throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     } catch (err: any) {
@@ -222,7 +234,7 @@ export class SnapAdapter extends BaseWalletAdapter {
       }
 
       case 'kadena_getAccounts_v2': {
-        // _getAccounts() returns ISnapAccount[]
+        // _getAccounts() returns IAccountInfo[]
         const result = await this._getAccounts();
         return {
           id,
@@ -247,22 +259,22 @@ export class SnapAdapter extends BaseWalletAdapter {
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
-        console.log('PARAMS   ----->', params as ISigningRequestPartial);
+        console.debug('PARAMS   ----->', params as ISigningRequestPartial);
         const paramsObj = params as ISigningRequestPartial;
         if (
           paramsObj.hasOwnProperty('code') &&
           paramsObj.hasOwnProperty('data')
         ) {
           const response = JSON.parse(
-            await this.invokeSnap<string>('kda_signTransaction', {
-              id: this.connectedAccountId,
+            await this._invokeSnap<string>('kda_signTransaction', {
+              id: this._connectedAccountId,
               transaction: JSON.stringify({
                 code: paramsObj.code,
                 data: paramsObj.data,
               }),
             }),
           );
-          console.log('RESPONSE ======>>>>', response);
+          console.debug('RESPONSE ======>>>>', response);
 
           if (response.outcome.result !== 'success') {
             const err =
@@ -317,7 +329,7 @@ export class SnapAdapter extends BaseWalletAdapter {
         const { networkId } = parsedParams as {
           networkId: string;
         };
-        console.log('CHANGING TO', networkId);
+        console.debug('CHANGING TO', networkId);
         try {
           await this._changeNetwork(networkId);
           return {

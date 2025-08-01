@@ -199,62 +199,13 @@ export interface IKadenaCheckStatusRPC {
 }
 
 /**
- * Represents a successful quicksign response from Ecko Wallet.
+ * Represents the extended method map specific to Snaps.
  *
- * In older versions of Ecko Wallet, the response property was named "quickSignData".
- * In newer versions, it is named "responses".
- *
- * @public
- */
-type IEckoQuicksignSuccessResponse = {
-  status: 'success';
-} & (
-  | {
-      /**
-       * The quicksign response data for older versions of Ecko Wallet.
-       */
-      quickSignData: IQuicksignResponseOutcomes['responses'];
-    }
-  | {
-      /**
-       * The quicksign response data for newer versions of Ecko Wallet.
-       */
-      responses: IQuicksignResponseOutcomes['responses'];
-    }
-);
-
-/**
- * Represents a failed quicksign response from Ecko Wallet.
- *
- * Contains an error code and an optional message.
+ * Contains custom methods specific to Snap, such as a custom checkStatus.
  *
  * @public
  */
-export interface IEckoQuicksignFailResponse {
-  status: 'fail';
-  error: string;
-  message?: string;
-}
-
-/**
- * Represents the overall quicksign response from Ecko Wallet.
- *
- * It may be either a successful response or a failed response.
- *
- * @public
- */
-export type IEckoQuicksignResponse =
-  | IEckoQuicksignSuccessResponse
-  | IEckoQuicksignFailResponse;
-
-/**
- * Represents the extended method map specific to Ecko Wallet.
- *
- * Contains custom methods specific to Ecko Wallet, such as a custom checkStatus.
- *
- * @public
- */
-export interface IEckoMethodMap {
+export interface ISnapMethodMap {
   /**
    * Custom method for checking wallet status.
    *
@@ -272,7 +223,7 @@ export interface IEckoMethodMap {
  *
  * @public
  */
-export type ExtendedMethodMap = StandardKdaMethodMap & IEckoMethodMap;
+export type ExtendedMethodMap = StandardKdaMethodMap & ISnapMethodMap;
 
 /**
  * ExtendedMethod represents the keys of the ExtendedMethodMap.
