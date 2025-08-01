@@ -16,6 +16,7 @@ import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweav
 import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
 import { createMagicAdapter } from '@kadena/wallet-adapter-magic';
 import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
+import { createSnapAdapter } from '@kadena/wallet-adapter-snap';
 import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
 import { createZelcoreAdapter } from '@kadena/wallet-adapter-zelcore';
 import { ThemeProvider } from 'next-themes';
@@ -29,6 +30,7 @@ const adapters = [
   createChainweaverLegacyAdapter(),
   createZelcoreAdapter(),
   createWalletConnectAdapter(),
+  createSnapAdapter(),
   createMagicAdapter({
     chainId: '1',
     chainwebApiUrl:
