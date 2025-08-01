@@ -27,7 +27,7 @@ export function detectSnapProvider(options?: {
 export type ExtendedMethod = keyof ExtendedMethodMap;
 
 // @public
-export type ExtendedMethodMap = IKdaMethodMap & IEckoMethodMap;
+export type ExtendedMethodMap = IKdaMethodMap & ISnapMethodMap;
 
 // @public (undocumented)
 export type GetSnapsResult = Record<string, ISnapMetadata>;
@@ -41,31 +41,6 @@ export interface IAddAccountResponse {
     // (undocumented)
     publicKey: string;
 }
-
-// @public
-export interface IEckoMethodMap {
-    kadena_checkStatus: {
-        params: {
-            networkId?: string;
-        };
-        response: IKadenaCheckStatusRPC;
-    };
-}
-
-// @public
-export interface IEckoQuicksignFailResponse {
-    // (undocumented)
-    error: string;
-    // (undocumented)
-    message?: string;
-    // (undocumented)
-    status: 'fail';
-}
-
-// Warning: (ae-forgotten-export) The symbol "IEckoQuicksignSuccessResponse" needs to be exported by the entry point index.d.ts
-//
-// @public
-export type IEckoQuicksignResponse = IEckoQuicksignSuccessResponse | IEckoQuicksignFailResponse;
 
 // @public
 export interface IKadenaCheckStatusRPC {
@@ -183,6 +158,16 @@ export interface ISnapMetadata {
     enabled: boolean;
     id: string;
     version: string;
+}
+
+// @public
+export interface ISnapMethodMap {
+    kadena_checkStatus: {
+        params: {
+            networkId?: string;
+        };
+        response: IKadenaCheckStatusRPC;
+    };
 }
 
 // @public (undocumented)
