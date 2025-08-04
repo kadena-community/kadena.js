@@ -39,7 +39,11 @@ const accountInfoSchema = z.object({
     keys: z.array(z.string()),
     pred: z.string(),
   }),
-  chainAccounts: z.array(z.string()),
+  existsOnChains: z.array(z.string()),
+  keyset: z.object({
+    keys: z.array(z.string()),
+    pred: z.string(),
+  }),
 });
 
 /**
