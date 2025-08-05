@@ -7,21 +7,19 @@
  *
  * - Detect the MetaMask Snap provider and initialize connection parameters.
  * - Connect to the Snap and fetch account and network information.
- * - Handle account and network change events without forcing a page reload,
+ * - Handle network change events without forcing a page reload,
  *   keeping your application in sync with the Snap’s state.
  * - Sign transactions and commands via the Snap’s `kda_signTransaction` RPC.
  * - Gracefully handle errors (e.g., user rejection, missing Snap) and preserve
  *   connection state.
- * - Clean up event listeners and internal state via the `destroy()` method to
- *   prevent memory leaks.
  *
- * IMPORTANT:
- * - We do **not** reload the page (`window.location.reload()`), ensuring your dApp
- *   remains fully in control of its own state transitions.
- * - Network switching via the Snap API is **not** supported by this adapter; network
- *   changes must be managed externally if needed.
  */
 
+import {
+  createTransaction,
+  IQuicksignResponseOutcomes,
+  Pact,
+} from '@kadena/client';
 import type {
   CommandSigDatas,
   IAccountInfo,
@@ -36,6 +34,7 @@ import type {
   ExtendedMethod,
   ExtendedMethodMap,
   IQuicksignResponse,
+  IQuicksignResponseCommand,
   ISnapAccount,
   ISnapNetwork,
 } from './types';
@@ -93,11 +92,15 @@ export class SnapAdapter extends BaseWalletAdapter {
     if (!snapAccounts?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);
     }
+    const currNetwork = await this._getActiveNetwork();
     return snapAccounts.map((account) => {
-      const keyset = { keys: [account.publicKey], pred: 'keys-all' as const };
+      const keyset = {
+        keys: [account.publicKey.replace(/^0x00/, '')],
+        pred: 'keys-all' as const,
+      };
       return {
         accountName: account.address,
-        networkId: this.networkId!,
+        networkId: currNetwork.networkId,
         contract: 'coin',
         guard: keyset,
         keyset,
@@ -112,6 +115,7 @@ export class SnapAdapter extends BaseWalletAdapter {
     await this._invokeSnap('kda_setActiveNetwork', {
       id: newNetworkId,
     });
+    this.networkId = networkId;
   }
 
   private async _signTransaction(cmd: string) {
@@ -129,11 +133,10 @@ export class SnapAdapter extends BaseWalletAdapter {
    * Connect to the wallet by:
    * 1. Checking the current connection status.
    * 2. Requesting connection (if not already connected).
-   * 3. Retrieving the account information.
+   * 3. Retrieving the first account information.
    *
    * If an "invalid" error occurs, the active network is refreshed and the connection retried.
    *
-   * @param finalParams - Parameters including networkId.
    * @param silent - If true, errors are swallowed and null is returned.
    * @returns Promise resolving to the AccountInfo or null if silent and an error occurs.
    */
@@ -259,46 +262,7 @@ export class SnapAdapter extends BaseWalletAdapter {
         } as ExtendedMethodMap[M]['response'];
       }
       case 'kadena_sign_v1': {
-        console.debug('PARAMS   ----->', params as ISigningRequestPartial);
-        const paramsObj = params as ISigningRequestPartial;
-        if (
-          paramsObj.hasOwnProperty('code') &&
-          paramsObj.hasOwnProperty('data')
-        ) {
-          const response = JSON.parse(
-            await this._invokeSnap<string>('kda_signTransaction', {
-              id: this._connectedAccountId,
-              transaction: JSON.stringify({
-                code: paramsObj.code,
-                data: paramsObj.data,
-              }),
-            }),
-          );
-          console.debug('RESPONSE ======>>>>', response);
-
-          if (response.outcome.result !== 'success') {
-            const err =
-              response.outcome.result ?? ERRORS.ERROR_SIGNING_TRANSACTION;
-            throw new Error(err);
-          }
-
-          const result = {
-            cmd: response.commandSigData.cmd,
-            hash: response.outcome.hash,
-            sigs: response.commandSigData.sigs,
-          };
-
-          return {
-            id,
-            jsonrpc: '2.0',
-            result: {
-              body: result,
-              chainId: safeJsonParse(result.cmd)?.meta?.chainId,
-            },
-          } as ExtendedMethodMap[M]['response'];
-        } else {
-          throw new Error(ERRORS.ERROR_SIGNING_TRANSACTION);
-        }
+        throw new Error(ERRORS.NOT_IMPLEMENTED);
       }
       case 'kadena_quicksign_v1': {
         if (!parsedParams || !('commandSigDatas' in parsedParams)) {
@@ -313,9 +277,8 @@ export class SnapAdapter extends BaseWalletAdapter {
 
         const response = await this._signTransaction(commandSigDatas[0].cmd);
 
-        //const hash = createTransaction(p.commandSigDatas[0].cmd);
         return {
-          id: 1,
+          id,
           jsonrpc: '2.0',
           result: JSON.parse(response) as IQuicksignResponse,
         } as ExtendedMethodMap[M]['response'];
@@ -333,13 +296,13 @@ export class SnapAdapter extends BaseWalletAdapter {
         try {
           await this._changeNetwork(networkId);
           return {
-            id: 1,
+            id,
             jsonrpc: '2.0',
             result: { success: true },
           } as ExtendedMethodMap[M]['response'];
         } catch (e) {
           return {
-            id: 1,
+            id,
             jsonrpc: '2.0',
             result: { success: false, reason: 'Error changing network' },
           } as ExtendedMethodMap[M]['response'];

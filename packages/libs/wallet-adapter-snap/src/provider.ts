@@ -13,7 +13,7 @@
 import type { IProvider } from '@kadena/wallet-adapter-core';
 import type { GetSnapsResult } from './types';
 
-export const defaultSnapOrigin = `npm:mindsend/kadena-snap`;
+export const defaultSnapOrigin = `npm:@mindsend/kadena-snap`;
 
 export interface ISnapProvider extends IProvider {
   isMetaMask?: boolean;
