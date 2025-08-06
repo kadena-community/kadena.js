@@ -1,5 +1,5 @@
 {
-  "name": "@kadena/wallet-adapter-snap",
+  "name": "@kadena/wallet-adapter-metamask-snap",
   "version": "0.0.2",
   "exports": {
     "import": "./dist/esm/index.js",
@@ -28,8 +28,5 @@
     "typescript": "5.4.5",
     "vitest": "^1.6.0"
   },
-  "authors": [
-    "Francisco Miranda",
-    "Ariel Serranoni"
-  ]
+  "authors": ["Francisco Miranda", "Ariel Serranoni"]
 }

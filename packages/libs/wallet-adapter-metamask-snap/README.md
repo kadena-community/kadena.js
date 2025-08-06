@@ -5,11 +5,11 @@ This package provides an adapter for the **MetaMask Snap for Kadena**. It extend
 ## Installation
 
 ```bash
-npm install @kadena/wallet-adapter-snap
+npm install @kadena/wallet-adapter-metamask-snap
 # or
-yarn add @kadena/wallet-adapter-snap
+yarn add @kadena/wallet-adapter-metamask-snap
 # or
-pnpm add @kadena/wallet-adapter-snap
+pnpm add @kadena/wallet-adapter-metamask-snap
 ```
 
 ## Manual Usage of the Adapter or Detection
@@ -20,7 +20,7 @@ If you need lower-level access, the following are also exported:
 * **`detectSnapProvider`**: A standalone function that checks whether the Kadena Snap is available in MetaMask. It returns the provider if found, or `null` otherwise.
 
 ```ts
-import { SnapAdapter, detectSnapProvider } from '@kadena/wallet-adapter-snap';
+import { SnapAdapter, detectSnapProvider } from '@kadena/wallet-adapter-metamask-snap';
 
 (async () => {
   const provider = await detectSnapProvider({ silent: true });

@@ -1,5 +1,5 @@
 ---
-'@kadena/wallet-adapter-snap': minor 
+'@kadena/wallet-adapter-metamask-snap': minor 
 '@kadena/wallet-adapter-core': minor
 'wallet-adapter-react-example': patch
 ---
