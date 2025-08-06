@@ -28,7 +28,7 @@ import type {
   ISigningRequestPartial,
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
-import { ERRORS } from './constants';
+import { ERRORS, SNAP_ADAPTER } from './constants';
 import { defaultSnapOrigin } from './provider';
 import type {
   ExtendedMethod,
@@ -45,7 +45,7 @@ import { safeJsonParse } from './utils/json';
  * functionality for connecting to Kadena's Metamask snap.
  */
 export class SnapAdapter extends BaseWalletAdapter {
-  public name: string = 'Snap';
+  public name: string = SNAP_ADAPTER;
   private _connectedAccountId: string | undefined = undefined;
 
   /**

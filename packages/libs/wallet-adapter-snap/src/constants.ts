@@ -9,3 +9,5 @@ export const ERRORS = {
     `Hash of the transaction signed by the wallet does not match. Our hash: ${expectedHash}, wallet hash: ${walletHash}`,
   NOT_IMPLEMENTED: "This method hasn't implemented yet",
 };
+
+export const SNAP_ADAPTER = 'Snap';
