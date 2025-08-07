@@ -1,6 +1,6 @@
 {
   "name": "wallet-adapter-react-example",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "build": "vite build",
@@ -40,5 +40,8 @@
     "vite": "^5.4.8",
     "vitest": "^1.6.0"
   },
-  "authors": ["Danillo Felixdaal", "Bart Huijgen"]
+  "authors": [
+    "Danillo Felixdaal",
+    "Bart Huijgen"
+  ]
 }
