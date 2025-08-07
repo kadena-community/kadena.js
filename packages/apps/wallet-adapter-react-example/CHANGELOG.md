@@ -1,5 +1,12 @@
 # wallet-adapter-react-example
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies \[4945ee1]
+  - @kadena/wallet-adapter-metamask-snap\@0.1.1
+
 ## 0.0.5
 
 ### Patch Changes
