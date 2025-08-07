@@ -1,6 +1,6 @@
 {
   "name": "@kadena/wallet-adapter-metamask-snap",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "exports": {
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
