@@ -216,6 +216,12 @@
     "path": "packages/libs/wallet-adapter-magic"
   },
   {
+    "name": "@kadena/wallet-adapter-metamask-snap",
+    "version": "0.0.2",
+    "private": false,
+    "path": "packages/libs/wallet-adapter-metamask-snap"
+  },
+  {
     "name": "@kadena/wallet-adapter-react",
     "version": "0.0.2",
     "private": false,
