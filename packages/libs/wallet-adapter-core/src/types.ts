@@ -199,6 +199,10 @@ export interface IKdaMethodMap {
     params: {};
     response: JsonRpcResponse<INetworkInfo>;
   };
+  kadena_changeNetwork_v1: {
+    params: { networkId: string };
+    response: JsonRpcResponse<{ success: boolean; reason?: string }>;
+  };
   kadena_getNetworks_v1: {
     params: {};
     response: JsonRpcResponse<INetworkInfo[]>;

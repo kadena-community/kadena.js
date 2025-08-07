@@ -1,0 +1,35 @@
+{
+  "name": "@kadena/wallet-adapter-metamask-snap",
+  "version": "0.0.2",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && api-extractor run",
+    "format": "prettier . --cache --write",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@kadena/wallet-adapter-core": "workspace:*",
+    "@metamask/providers": "^22.1.0"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@microsoft/api-extractor": "^7.43.1",
+    "@rushstack/eslint-config": "~3.6.9",
+    "@types/node": "^20.12.7",
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "authors": [
+    "Francisco Miranda",
+    "Ariel Serranoni"
+  ]
+}
