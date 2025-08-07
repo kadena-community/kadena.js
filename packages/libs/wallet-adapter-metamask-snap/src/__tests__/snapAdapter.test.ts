@@ -1,6 +1,5 @@
 import type {
   IAccountInfo,
-  ICommand,
   IJsonRpcSuccess,
   INetworkInfo,
   IProvider,
@@ -8,7 +7,6 @@ import type {
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ERRORS } from '../constants';
 import { SnapAdapter } from '../SnapAdapter';
-import type { IQuicksignResponseOutcomes } from '../types';
 
 let adapter: SnapAdapter;
 

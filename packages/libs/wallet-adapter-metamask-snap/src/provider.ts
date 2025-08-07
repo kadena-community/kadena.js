@@ -83,7 +83,7 @@ export async function detectSnapProvider(options?: {
     }
 
     if ((window as any).ethereum) {
-      handleProvider();
+      handleProvider().catch((err) => console.log(err));
     } else {
       window.addEventListener('ethereum#initialized', handleProvider, {
         once: true,

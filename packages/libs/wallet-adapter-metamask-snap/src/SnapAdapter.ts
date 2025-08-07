@@ -15,17 +15,11 @@
  *
  */
 
-import {
-  createTransaction,
-  IQuicksignResponseOutcomes,
-  Pact,
-} from '@kadena/client';
 import type {
   CommandSigDatas,
   IAccountInfo,
   IBaseWalletAdapterOptions,
   INetworkInfo,
-  ISigningRequestPartial,
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import { ERRORS, SNAP_ADAPTER } from './constants';
@@ -34,11 +28,10 @@ import type {
   ExtendedMethod,
   ExtendedMethodMap,
   IQuicksignResponse,
-  IQuicksignResponseCommand,
   ISnapAccount,
   ISnapNetwork,
 } from './types';
-import { safeJsonParse } from './utils/json';
+
 /**
  * @public
  * SnapAdapter is a class that extends BaseWalletAdapter to provide
