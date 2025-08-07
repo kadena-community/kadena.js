@@ -1,5 +1,11 @@
 # @kadena/wallet-adapter-metamask-snap
 
+## 0.1.1
+
+### Patch Changes
+
+- 4945ee1: Add repository field to package.json
+
 ## 0.1.0
 
 ### Minor Changes

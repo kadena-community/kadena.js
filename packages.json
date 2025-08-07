@@ -217,7 +217,7 @@
   },
   {
     "name": "@kadena/wallet-adapter-metamask-snap",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": false,
     "path": "packages/libs/wallet-adapter-metamask-snap"
   },
@@ -325,7 +325,7 @@
   },
   {
     "name": "wallet-adapter-react-example",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "private": true,
     "path": "packages/apps/wallet-adapter-react-example"
   },
