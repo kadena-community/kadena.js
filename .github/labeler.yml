@@ -199,3 +199,6 @@ wallet-adapter-react-example:
 '@kadena/wallet-adapter-magic':
   - changed-files:
       - any-glob-to-any-file: packages/libs/wallet-adapter-magic/*
+'@kadena/wallet-adapter-metamask-snap':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-metamask-snap/*

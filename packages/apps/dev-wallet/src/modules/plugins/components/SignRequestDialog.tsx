@@ -1,6 +1,7 @@
 import { SignRequest } from '@/pages/transaction/sign-request';
 import { Dialog, DialogContent, DialogHeader } from '@kadena/kode-ui';
 
+import { FocussedPageLayout } from '@/App/FocussedPageLayout/Layout';
 import { useState } from 'react';
 import { Plugin } from '../type';
 
@@ -20,11 +21,13 @@ export function SignRequestDialog({
   };
 
   return (
-    <Dialog isOpen={isOpened}>
-      <DialogHeader>{`Sign Request from ${plugin.name}`} </DialogHeader>
-      <DialogContent>
-        <SignRequest requestId={requestId} onAbort={close} onSign={close} />
-      </DialogContent>
-    </Dialog>
+    <FocussedPageLayout>
+      <Dialog isOpen={isOpened}>
+        <DialogHeader>{`Sign Request from ${plugin.name}`} </DialogHeader>
+        <DialogContent>
+          <SignRequest requestId={requestId} onAbort={close} onSign={close} />
+        </DialogContent>
+      </Dialog>
+    </FocussedPageLayout>
   );
 }

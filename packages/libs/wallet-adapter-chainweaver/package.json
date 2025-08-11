@@ -1,6 +1,6 @@
 {
   "name": "@kadena/wallet-adapter-chainweaver",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Kadena Wallet Adapter for Chainweaver",
   "repository": {
     "type": "git",

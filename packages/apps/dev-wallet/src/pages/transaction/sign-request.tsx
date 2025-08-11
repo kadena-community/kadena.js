@@ -49,6 +49,17 @@ export const SignRequest = ({
           return;
         }
 
+        // check if transaction already exists
+        const exists =
+          await transactionRepository.getTransactionByHashNetworkProfile(
+            profile.uuid,
+            networkUUID,
+            tx.hash,
+          );
+        if (exists) {
+          return setTx(exists);
+        }
+
         const transaction = await addTransaction({
           transaction: tx as IUnsignedCommand,
           profileId: profile?.uuid,

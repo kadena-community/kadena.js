@@ -1,5 +1,18 @@
 # @kadena/wallet-adapter-magic
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies \[d45d854]
+  - @kadena/wallet-adapter-core\@0.1.0
+
+## 0.0.3
+
+### Patch Changes
+
+- 75c55bf: Initial relaese of Magic wallet adapter.
+
 ## 0.0.2
 
 ### Patch Changes
