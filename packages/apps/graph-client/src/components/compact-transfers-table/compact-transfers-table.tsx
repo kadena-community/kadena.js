@@ -39,7 +39,7 @@ interface XChainTransfer {
 
 export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
-): JSX.Element => {
+): React.JSX.Element => {
   const {
     fungibleName,
     accountName,

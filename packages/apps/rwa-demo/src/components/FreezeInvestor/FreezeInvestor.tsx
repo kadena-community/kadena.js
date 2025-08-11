@@ -28,7 +28,9 @@ interface IProps {
   isCompact?: IButtonProps['isCompact'];
   variant?: IButtonProps['variant'];
   iconOnly?: boolean;
-  trigger?: ReactElement;
+  trigger?: ReactElement<
+    IButtonProps & { icon?: ReactElement; label?: string }
+  >;
 }
 
 const getVisual = (frozen: boolean, isLoading: boolean) => {

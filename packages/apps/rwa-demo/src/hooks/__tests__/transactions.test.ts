@@ -1,5 +1,5 @@
 import { TransactionsContext } from '@/contexts/TransactionsContext/TransactionsContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
 import { useTransactions } from '../transactions';
 

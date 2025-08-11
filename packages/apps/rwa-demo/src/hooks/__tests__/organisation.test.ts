@@ -1,5 +1,5 @@
 import { OrganisationContext } from '@/contexts/OrganisationContext/OrganisationContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
 import { useOrganisation } from '../organisation';
 

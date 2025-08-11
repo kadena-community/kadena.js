@@ -22,7 +22,7 @@ interface IFungibleChainAccountTableProps {
 }
 export const FungibleChainAccountTable = (
   props: IFungibleChainAccountTableProps,
-): JSX.Element => {
+): React.JSX.Element => {
   const { fungibleName, accountName, chainAccounts } = props;
 
   return (

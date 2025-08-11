@@ -21,7 +21,7 @@ import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransa
 interface IProps {
   onClose?: () => void;
   investorAccount: string;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
 }
 
 export const PartiallyFreezeTokensForm: FC<IProps> = ({

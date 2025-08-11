@@ -39,7 +39,7 @@ interface ICompactTransactionsTableProps {
 
 export const CompactTransactionsTable = (
   props: ICompactTransactionsTableProps,
-): JSX.Element => {
+): React.JSX.Element => {
   const { viewAllHref, description, truncateColumns, transactions } = props;
 
   return (

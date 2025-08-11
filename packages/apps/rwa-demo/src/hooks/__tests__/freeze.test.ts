@@ -1,6 +1,9 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
-import { renderHook } from '@testing-library/react-hooks';
+import { isFrozen } from '@/services/isFrozen';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
+import type { MockedFunction } from 'vitest';
 import { useFreeze } from '../freeze';
 
 // Create hoisted mocks
@@ -123,28 +126,19 @@ describe('useFreeze', () => {
   });
 
   it('should fetch frozen status when all dependencies are provided', async () => {
-    // Create a promise we can resolve manually
-    let resolvePromise: (value: boolean) => void;
-    const frozenPromise = new Promise<boolean>((resolve) => {
-      resolvePromise = resolve;
-    });
-
     // Mock the isFrozen function to return our controllable promise
-    mocks.isFrozen.mockReturnValue(frozenPromise);
+    mocks.isFrozen.mockReturnValue(false);
 
-    const { result, waitForValueToChange } = renderHook(() =>
+    const { result } = renderHook(() =>
       useFreeze({ investorAccount: mockInvestorAccount }),
     );
-
-    // Initially the frozen state should be true (default value)
     expect(result.current.frozen).toBe(true);
 
-    // Resolve the promise
-    resolvePromise!(false);
+    const frozenPromise = (isFrozen as MockedFunction<typeof isFrozen>).mock
+      .results[0].value;
+    // Initially the frozen state should be true (default value)
 
-    // Wait for the state to change
-    await waitForValueToChange(() => result.current.frozen);
-
+    await act(async () => frozenPromise);
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {
         investorAccount: mockInvestorAccount,
@@ -156,31 +150,21 @@ describe('useFreeze', () => {
   });
 
   it('should update data when account changes', async () => {
-    // Create the initial promise
-    let resolveInitialPromise: (value: boolean) => void;
-    const initialFrozenPromise = new Promise<boolean>((resolve) => {
-      resolveInitialPromise = resolve;
-    });
+    mocks.isFrozen.mockReturnValueOnce(false);
 
-    mocks.isFrozen.mockReturnValueOnce(initialFrozenPromise);
-
-    const { result, rerender, waitForValueToChange } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useFreeze({ investorAccount: mockInvestorAccount }),
     );
-
     // Initial state is true (default value)
     expect(result.current.frozen).toBe(true);
 
     // Resolve the first promise
-    resolveInitialPromise!(true);
+    const frozenPromise = (isFrozen as MockedFunction<typeof isFrozen>).mock
+      .results[0].value;
+    await act(async () => frozenPromise);
 
     // Create the second promise for the account change
-    let resolveSecondPromise: (value: boolean) => void;
-    const secondFrozenPromise = new Promise<boolean>((resolve) => {
-      resolveSecondPromise = resolve;
-    });
-
-    mocks.isFrozen.mockReturnValueOnce(secondFrozenPromise);
+    mocks.isFrozen.mockReturnValue(false);
 
     // Update account
     const newWalletAccount = {
@@ -200,10 +184,10 @@ describe('useFreeze', () => {
     rerender();
 
     // Resolve the second promise with false
-    resolveSecondPromise!(false);
-
-    // Wait for the value to change
-    await waitForValueToChange(() => result.current.frozen);
+    // Resolve the first promise
+    const frozenSecondPromise = (isFrozen as MockedFunction<typeof isFrozen>)
+      .mock.results[0].value;
+    await act(async () => frozenSecondPromise);
 
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {
@@ -217,14 +201,9 @@ describe('useFreeze', () => {
 
   it('should update data when investorAccount changes', async () => {
     // Create the initial promise
-    let resolveInitialPromise: (value: boolean) => void;
-    const initialFrozenPromise = new Promise<boolean>((resolve) => {
-      resolveInitialPromise = resolve;
-    });
+    mocks.isFrozen.mockReturnValueOnce(false);
 
-    mocks.isFrozen.mockReturnValueOnce(initialFrozenPromise);
-
-    const { result, rerender, waitForValueToChange } = renderHook(
+    const { result, rerender } = renderHook(
       ({ investorAccount }) => useFreeze({ investorAccount }),
       {
         initialProps: { investorAccount: mockInvestorAccount },
@@ -234,28 +213,17 @@ describe('useFreeze', () => {
     // Initial state is true (default value)
     expect(result.current.frozen).toBe(true);
 
-    // Resolve the first promise
-    resolveInitialPromise!(true);
-
     // Create the second promise for the investorAccount change
-    let resolveSecondPromise: (value: boolean) => void;
-    const secondFrozenPromise = new Promise<boolean>((resolve) => {
-      resolveSecondPromise = resolve;
-    });
-
-    mocks.isFrozen.mockReturnValueOnce(secondFrozenPromise);
+    const frozenPromise = (isFrozen as MockedFunction<typeof isFrozen>).mock
+      .results[0].value;
+    // Initially the frozen state should be true (default value)
+    await act(async () => frozenPromise);
 
     // Update the investorAccount
     const newInvestorAccount = 'k:newinvestor456';
 
     // Force rerender with new investor account
     rerender({ investorAccount: newInvestorAccount });
-
-    // Resolve the second promise with false
-    resolveSecondPromise!(false);
-
-    // Wait for the value to change
-    await waitForValueToChange(() => result.current.frozen);
 
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {
@@ -269,30 +237,22 @@ describe('useFreeze', () => {
 
   it('should update data when asset changes', async () => {
     // Create the initial promise
-    let resolveInitialPromise: (value: boolean) => void;
-    const initialFrozenPromise = new Promise<boolean>((resolve) => {
-      resolveInitialPromise = resolve;
-    });
+    mocks.isFrozen.mockReturnValueOnce(true);
 
-    mocks.isFrozen.mockReturnValueOnce(initialFrozenPromise);
-
-    const { result, rerender, waitForValueToChange } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useFreeze({ investorAccount: mockInvestorAccount }),
     );
-
     // Initial state is true (default value)
     expect(result.current.frozen).toBe(true);
 
     // Resolve the first promise
-    resolveInitialPromise!(true);
+    await act(
+      async () =>
+        (isFrozen as MockedFunction<typeof isFrozen>).mock.results[0].value,
+    );
 
     // Create the second promise for the asset change
-    let resolveSecondPromise: (value: boolean) => void;
-    const secondFrozenPromise = new Promise<boolean>((resolve) => {
-      resolveSecondPromise = resolve;
-    });
-
-    mocks.isFrozen.mockReturnValueOnce(secondFrozenPromise);
+    mocks.isFrozen.mockReturnValueOnce(false);
 
     // Create a new asset
     const newAsset = {
@@ -310,10 +270,10 @@ describe('useFreeze', () => {
     rerender();
 
     // Resolve the second promise with false
-    resolveSecondPromise!(false);
-
-    // Wait for the value to change
-    await waitForValueToChange(() => result.current.frozen);
+    await act(
+      async () =>
+        (isFrozen as MockedFunction<typeof isFrozen>).mock.results[0].value,
+    );
 
     expect(mocks.isFrozen).toHaveBeenCalledWith(
       {

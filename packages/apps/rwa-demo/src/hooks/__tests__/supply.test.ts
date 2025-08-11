@@ -3,7 +3,9 @@ import type { IAccountContext } from '@/contexts/AccountContext/AccountContext';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IComplianceProps } from '@/services/getComplianceRules';
 import { supply } from '@/services/supply';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
+import type { MockedFunction } from 'vitest';
 import { useAccount } from '../account';
 import { useSupply } from '../supply';
 
@@ -82,20 +84,19 @@ describe('useSupply', () => {
   });
 
   it('should call supply with correct arguments and update data when both account and asset are present', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useSupply(mockAsset),
-    );
+    const { result } = renderHook(() => useSupply(mockAsset));
 
     // Initially data should be 0
     expect(result.current.data).toBe(0);
 
-    // Check that supply was called with correct arguments
     expect(supply).toHaveBeenCalledWith({ account: mockAccount }, mockAsset);
 
-    // Wait for the async effect to complete
-    await waitForNextUpdate();
+    // Capture the promise (adjust index if multiple calls)
+    const supplyPromise = (supply as MockedFunction<typeof supply>).mock
+      .results[0].value;
 
-    // Data should be updated with the resolved value from supply
+    // Wait for the async effect to complete
+    await act(async () => supplyPromise);
     expect(result.current.data).toBe(1000);
   });
 

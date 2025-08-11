@@ -7,7 +7,7 @@ interface IErrorBoxProps {
   error: ApolloError;
 }
 
-export const ErrorBox = (props: IErrorBoxProps): JSX.Element => {
+export const ErrorBox = (props: IErrorBoxProps): React.JSX.Element => {
   const { error } = props;
 
   let errorTitle = 'Unknown Error Occured';

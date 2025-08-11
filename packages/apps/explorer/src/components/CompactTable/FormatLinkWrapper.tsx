@@ -30,7 +30,7 @@ export const FormatLinkWrapper = ({
 }: ICompactTableFormatterLinkProps & {
   condition?: (
     value: ICompactTableFormatterProps['value'],
-  ) => JSX.Element | false;
+  ) => React.JSX.Element | false;
 }) => {
   const Component = ({ value }: ICompactTableFormatterProps) => {
     if (condition) {

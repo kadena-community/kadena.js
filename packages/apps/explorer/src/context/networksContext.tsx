@@ -113,7 +113,7 @@ export const getNetworks = (): INetwork[] => {
 const NetworkContextProvider = (props: {
   networks?: INetwork[];
   children: React.ReactNode;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();

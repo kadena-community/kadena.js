@@ -22,18 +22,18 @@
   "dependencies": {
     "@kadena/client": "^1.5.0",
     "next": "^14.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "spinners-react": "^1.0.7"
   },
   "devDependencies": {
     "@kadena/pactjs-cli": "~1.5.0",
     "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "~16.3.0",
     "@testing-library/user-event": "^14.5.1",
     "@types/jest": "^29.5.7",
     "@types/node": "^20.8.10",
-    "@types/react": "^18.2.34",
+    "@types/react": "^19.1.1",
     "eslint": "^8.53.0",
     "eslint-config-next": "^14.0.1",
     "eslint-config-prettier": "^9.0.0",

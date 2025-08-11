@@ -13,7 +13,7 @@ interface IGraphQLQueryDialogProps {
 
 export const GraphQLQueryDialog = (
   props: IGraphQLQueryDialogProps,
-): JSX.Element => {
+): React.JSX.Element => {
   const { queries } = props;
 
   const [isOpen, setIsOpen] = useState(false);

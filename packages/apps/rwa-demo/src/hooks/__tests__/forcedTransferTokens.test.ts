@@ -1,5 +1,5 @@
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useForcedTransferTokens } from '../forcedTransferTokens';
 
 describe('forcedTransferTokens hook', () => {

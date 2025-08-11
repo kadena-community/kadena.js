@@ -13,7 +13,7 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
-import type { FC, Reducer } from 'react';
+import type { FC } from 'react';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { OrganisationFormFields } from './OrganisationFormFields';
@@ -29,7 +29,7 @@ type IOrganisationWithNewDomain = IOrganisation & {
 };
 
 export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
-  const [domains, dispatchDomains] = useReducer<Reducer<string[], Action>>(
+  const [domains, dispatchDomains] = useReducer<string[], [Action]>(
     domainsReducer,
     [],
   );

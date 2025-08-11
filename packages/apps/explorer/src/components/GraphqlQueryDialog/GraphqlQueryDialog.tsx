@@ -19,7 +19,7 @@ import React, { useState } from 'react';
 import { buttonSizeClass } from '../Navbar/styles.css';
 import { code } from './styles.css';
 
-export const GraphQLQueryDialog = (): JSX.Element => {
+export const GraphQLQueryDialog = (): React.JSX.Element => {
   const { queries } = useQueryContext();
   const { activeNetwork } = useNetwork();
   const [isOpen, setIsOpen] = useState(false);

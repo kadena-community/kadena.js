@@ -17,7 +17,11 @@ import { ChainweaverWalletConnect } from '../ChainweaverWalletConnect/Chainweave
 import { EckoWalletConnect } from '../EckoWalletConnect/EckoWalletConnect';
 import { MagicConnect } from '../MagicConnect/MagicConnect';
 
-export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
+interface IProps {
+  trigger: ReactElement<{ onPress: () => void }>;
+}
+
+export const WalletSelector: FC<IProps> = ({ trigger }) => {
   const [accounts, setAccounts] = useState<IWalletAccount[] | undefined>();
   const [type, setType] = useState<keyof typeof WALLETTYPES | undefined>();
   const { addAccount } = useAccount();

@@ -20,7 +20,9 @@ import { AccountNameField } from '../Fields/AccountNameField';
 interface IProps {
   agent?: IRecord;
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{
+    onPress: () => void;
+  }>;
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {

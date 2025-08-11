@@ -24,7 +24,7 @@
     "verify": "tsc --noEmit"
   },
   "dependencies": {
-    "@apollo/client": "~3.9.11",
+    "@apollo/client": "^3.13.9",
     "@graphql-yoga/apollo-link": "~3.3.0",
     "@kadena/graph": "workspace:*",
     "@kadena/kode-icons": "workspace:*",
@@ -34,8 +34,8 @@
     "graphql": "~16.8.1",
     "graphql-ws": "^5.16.0",
     "next": "14.2.26",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
@@ -48,8 +48,8 @@
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.1",
     "@vanilla-extract/css": "1.14.2",
     "@vanilla-extract/next-plugin": "2.4.0",
     "concurrently": "^8.2.2",
