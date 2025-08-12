@@ -131,8 +131,8 @@ importers:
         specifier: ^7.45.4
         version: 7.52.1(react@19.1.1)
       react-qrcode-logo:
-        specifier: ^2.9.0
-        version: 2.10.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-router-dom:
         specifier: ^6.26.2
         version: 6.26.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -306,8 +306,8 @@ importers:
         specifier: ^7.45.4
         version: 7.52.1(react@19.1.1)
       react-qrcode-logo:
-        specifier: ^2.9.0
-        version: 2.10.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-router-dom:
         specifier: ^6.26.2
         version: 6.26.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -493,8 +493,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@19.1.9)(react@19.1.1)
       react-qrcode-logo:
-        specifier: ^2.9.0
-        version: 2.10.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-router-dom:
         specifier: ^6.26.2
         version: 6.26.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -697,8 +697,8 @@ importers:
         specifier: ^9.10.3
         version: 9.10.3(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-qrcode-logo:
-        specifier: ^2.9.0
-        version: 2.10.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: 5.0.2
@@ -1094,10 +1094,10 @@ importers:
         version: 2.0.6(@types/express@4.17.21)(debug@4.3.4)
       next:
         specifier: 14.2.26
-        version: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.2.1(next@14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -1108,8 +1108,8 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
       react-qrcode-logo:
-        specifier: ^2.9.0
-        version: 2.10.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-swipeable-list:
         specifier: ^1.9.3
         version: 1.9.3
@@ -1167,7 +1167,7 @@ importers:
         version: 9.0.8
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
-        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
+        version: 2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
       '@vanilla-extract/vite-plugin':
         specifier: 4.0.17
         version: 4.0.17(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(vite@6.2.5(@types/node@20.14.9)(jiti@1.21.6)(lightningcss@1.25.1)(terser@5.31.1)(tsx@4.16.2)(yaml@2.4.5))
@@ -1209,7 +1209,7 @@ importers:
         version: 2.7.6(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
       next-router-mock:
         specifier: ^0.9.10
-        version: 0.9.13(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)
+        version: 0.9.13(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -1269,7 +1269,7 @@ importers:
         version: 0.11.0
       '@sentry/nextjs':
         specifier: ^8.15.0
-        version: 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.36.0)(encoding@0.1.13)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)(webpack@5.88.2)
+        version: 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.36.0)(encoding@0.1.13)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)(webpack@5.88.2)
       '@sentry/tracing':
         specifier: ^7.120.3
         version: 7.120.4
@@ -1281,7 +1281,7 @@ importers:
         version: 0.1.4
       '@vanilla-extract/next-plugin':
         specifier: 2.4.0
-        version: 2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2)
+        version: 2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2)
       '@vanilla-extract/recipes':
         specifier: 0.5.1
         version: 0.5.1(@vanilla-extract/css@1.14.2)
@@ -1317,10 +1317,10 @@ importers:
         version: 12.0.3
       next:
         specifier: 14.2.26
-        version: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.2.1(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -1402,7 +1402,7 @@ importers:
         version: 12.10.3
       next-router-mock:
         specifier: ^0.9.10
-        version: 0.9.13(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)
+        version: 0.9.13(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)
       prettier:
         specifier: ~3.2.5
         version: 3.2.5
@@ -17675,11 +17675,11 @@ packages:
   react-property@2.0.2:
     resolution: {integrity: sha512-+PbtI3VuDV0l6CleQMsx2gtK0JZbZKbpdu5ynr+lbsuvtmgbNcS3VM0tuY2QjFNOcWxvXeHjDpy42RO+4U2rug==}
 
-  react-qrcode-logo@2.10.0:
-    resolution: {integrity: sha512-Q1+jLtcyDl5rLR29YdkXVLzYk62p3+541x00HxURVBQhs6SqFyEZZVhvkU/VQ082ytXa3GdCmGWMLK5z0Vhe7g==}
+  react-qrcode-logo@3.0.0:
+    resolution: {integrity: sha512-2+vZ3GNBdUpYxIKyt6SFZsDGXa0xniyUQ0wPI4O0hJTzRjttPIx1pPnH9IWQmp/4nDMoN47IBhi3Breu1KudYw==}
     peerDependencies:
-      react: '>=16.4.1'
-      react-dom: '>=16.4.1'
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
 
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
@@ -25585,15 +25585,13 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
+  '@parcel/cache@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
@@ -25653,7 +25651,7 @@ snapshots:
   '@parcel/core@2.12.0(@swc/helpers@0.5.11)':
     dependencies:
       '@mischnic/json-sourcemap': 0.1.1
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
@@ -25666,7 +25664,7 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       abortcontroller-polyfill: 1.7.5
       base-x: 3.0.10
       browserslist: 4.24.2
@@ -25694,7 +25692,7 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
       '@parcel/watcher': 2.4.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -25768,7 +25766,7 @@ snapshots:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/rust': 2.12.0
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
 
   '@parcel/optimizer-svgo@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
     dependencies:
@@ -25800,7 +25798,7 @@ snapshots:
       '@parcel/node-resolver-core': 3.3.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@swc/core': 1.3.107(@swc/helpers@0.5.11)
       semver: 7.6.3
     transitivePeerDependencies:
@@ -25989,7 +25987,7 @@ snapshots:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       nullthrows: 1.1.1
 
   '@parcel/transformer-js@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
@@ -26000,7 +25998,7 @@ snapshots:
       '@parcel/rust': 2.12.0
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@swc/helpers': 0.5.11
       browserslist: 4.24.2
       nullthrows: 1.1.1
@@ -26068,12 +26066,12 @@ snapshots:
 
   '@parcel/types@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
+      '@parcel/cache': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))
+      '@parcel/workers': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       utility-types: 3.11.0
     transitivePeerDependencies:
       - '@parcel/core'
@@ -26151,7 +26149,7 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
 
-  '@parcel/workers@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))':
+  '@parcel/workers@2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)':
     dependencies:
       '@parcel/core': 2.12.0(@swc/helpers@0.5.11)
       '@parcel/diagnostic': 2.12.0
@@ -26160,6 +26158,8 @@ snapshots:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)
       '@parcel/utils': 2.12.0
       nullthrows: 1.1.1
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@peculiar/asn1-schema@2.3.8':
     dependencies:
@@ -28184,35 +28184,6 @@ snapshots:
       '@sentry/webpack-plugin': 2.20.1(encoding@0.1.13)(webpack@5.88.2)
       chalk: 3.0.0
       next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      resolve: 1.22.8
-      rollup: 3.29.4
-      stacktrace-parser: 0.1.10
-    optionalDependencies:
-      webpack: 5.88.2
-    transitivePeerDependencies:
-      - '@opentelemetry/api'
-      - '@opentelemetry/core'
-      - '@opentelemetry/instrumentation'
-      - '@opentelemetry/sdk-trace-base'
-      - '@opentelemetry/semantic-conventions'
-      - encoding
-      - react
-      - supports-color
-
-  '@sentry/nextjs@8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.36.0)(encoding@0.1.13)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react@19.1.1)(webpack@5.88.2)':
-    dependencies:
-      '@opentelemetry/instrumentation-http': 0.52.1(@opentelemetry/api@1.9.0)
-      '@rollup/plugin-commonjs': 26.0.1(rollup@3.29.4)
-      '@sentry/core': 8.15.0
-      '@sentry/node': 8.15.0
-      '@sentry/opentelemetry': 8.15.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.36.0)
-      '@sentry/react': 8.15.0(react@19.1.1)
-      '@sentry/types': 8.15.0
-      '@sentry/utils': 8.15.0
-      '@sentry/vercel-edge': 8.15.0
-      '@sentry/webpack-plugin': 2.20.1(encoding@0.1.13)(webpack@5.88.2)
-      chalk: 3.0.0
-      next: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       resolve: 1.22.8
       rollup: 3.29.4
       stacktrace-parser: 0.1.10
@@ -30504,9 +30475,9 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))':
+  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2)':
     dependencies:
-      '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
+      '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
       next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
     transitivePeerDependencies:
       - '@types/node'
@@ -30521,10 +30492,10 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2)':
+  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.14.9)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))':
     dependencies:
-      '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
-      next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.14.9)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2(@swc/core@1.9.2(@swc/helpers@0.5.11)))
+      next: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -30555,10 +30526,10 @@ snapshots:
       - terser
       - webpack
 
-  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2)':
+  '@vanilla-extract/next-plugin@2.4.0(@types/node@20.16.5)(lightningcss@1.25.1)(next@14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(terser@5.31.1)(webpack@5.88.2)':
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.7(@types/node@20.16.5)(lightningcss@1.25.1)(terser@5.31.1)(webpack@5.88.2)
-      next: 14.2.26(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      next: 14.2.26(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.46.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -40087,7 +40058,7 @@ snapshots:
 
   react-property@2.0.2: {}
 
-  react-qrcode-logo@2.10.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+  react-qrcode-logo@3.0.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
     dependencies:
       lodash.isequal: 4.5.0
       qrcode-generator: 1.4.4
