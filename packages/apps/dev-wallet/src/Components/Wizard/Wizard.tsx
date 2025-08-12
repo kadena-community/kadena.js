@@ -1,5 +1,15 @@
 import React, { Children, FC, useState } from 'react';
 
+type WizardRenderProp = (actions: {
+  step: number;
+  next: () => void;
+  back: () => void;
+  goTo: (step: number) => void;
+}) => React.ReactNode;
+
+type WizardRender = FC<{
+  children: React.ReactNode | WizardRenderProp;
+}>;
 export function Wizard({
   children,
   initialStep = 0,
@@ -14,7 +24,7 @@ export function Wizard({
   };
   children = Children.map(children, (child) => {
     if (
-      !React.isValidElement(child) ||
+      !React.isValidElement<typeof Wizard.Step | typeof Wizard.Render>(child) ||
       (child.type !== Wizard.Step && child.type !== Wizard.Render)
     ) {
       // return null if child is not a valid Wizard element
@@ -39,21 +49,10 @@ export function Wizard({
   return <>{children}</>;
 }
 
-type WizardRenderProp = (actions: {
-  step: number;
-  next: () => void;
-  back: () => void;
-  goTo: (step: number) => void;
-}) => React.ReactNode;
-
-type Render = FC<{
-  children: React.ReactNode | WizardRenderProp;
-}>;
-
 Wizard.Render = function WizardRender() {
   throw new Error('Wizard.Render should be used inside Wizard');
-} as Render;
+} as WizardRender;
 
 Wizard.Step = function WizardStep() {
   throw new Error('Wizard.Step should be used inside Wizard');
-} as Render;
+} as WizardRender;

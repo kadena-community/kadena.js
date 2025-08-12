@@ -230,7 +230,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const networkHostFunctionRef =
-    useRef<({ networkId, chainId }: INetworkOptions) => string>();
+    useRef<({ networkId, chainId }: INetworkOptions) => string>(null);
 
   useEffect(() => {
     channel.onmessage = (event) => {
