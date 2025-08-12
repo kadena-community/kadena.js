@@ -44,7 +44,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-intersection-observer": "^9.10.3",
-    "react-qrcode-logo": "^2.9.0"
+    "react-qrcode-logo": "^3.0.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
