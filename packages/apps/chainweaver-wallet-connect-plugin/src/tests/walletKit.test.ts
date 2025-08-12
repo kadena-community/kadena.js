@@ -1,5 +1,5 @@
 import WalletKit from '@reown/walletkit';
-import { renderHook } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import useWalletKit from '../hooks/useWalletKit';
 
@@ -21,16 +21,16 @@ describe('useWalletKit', () => {
     const mockSessionProposalHandler = vi.fn();
     const mockSessionRequestHandler = vi.fn();
 
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useWalletKit(mockSessionProposalHandler, mockSessionRequestHandler),
     );
 
-    await waitForNextUpdate();
-
-    // Assertions to check if WalletKit was initialized and handlers set
-    expect(WalletKit.init).toHaveBeenCalled();
-    expect(result.current[0]).toBeTruthy();
-    expect(result.current[1].current).toBeTruthy();
-    expect(result.current[0]?.on).toHaveBeenCalledTimes(2);
+    await waitFor(() => {
+      // Assertions to check if WalletKit was initialized and handlers set
+      expect(WalletKit.init).toHaveBeenCalled();
+      expect(result.current[0]).toBeTruthy();
+      expect(result.current[1].current).toBeTruthy();
+      expect(result.current[0]?.on).toHaveBeenCalledTimes(2);
+    });
   });
 });
