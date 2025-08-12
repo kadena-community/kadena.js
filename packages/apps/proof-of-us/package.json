@@ -39,7 +39,7 @@
     "date-fns": "~2.30.0",
     "firebase": "^10.8.0",
     "firebase-functions": "^4.7.0",
-    "framer-motion": "^11.0.5",
+    "framer-motion": "^11.18.2",
     "graphql": "~16.8.1",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
