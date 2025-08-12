@@ -91,12 +91,12 @@ export const SignForm: FC<ISignFormProps> = ({
     (chain: ChainId) => chain === watchChains[0],
   );
 
-  const senderDataRef = useRef<AccountDetails>();
+  const senderDataRef = useRef<AccountDetails>(undefined);
   const onSenderDataUpdate = (data: AccountDetails) => {
     senderDataRef.current = data;
   };
 
-  const receiverDataRef = useRef<AccountDetails>();
+  const receiverDataRef = useRef<AccountDetails>(undefined);
   const onReceiverDataUpdate = (data: AccountDetails | undefined) => {
     receiverDataRef.current = data;
   };
@@ -106,7 +106,7 @@ export const SignForm: FC<ISignFormProps> = ({
     pubKeys.current = keys;
   };
 
-  const pred = useRef<PredKey>();
+  const pred = useRef<PredKey>(undefined);
   const onPredicateUpdate = (predicate: PredKey) => {
     pred.current = predicate;
   };
@@ -116,7 +116,7 @@ export const SignForm: FC<ISignFormProps> = ({
     keyId.current = id;
   };
 
-  const derivationMode = useRef<DerivationMode>();
+  const derivationMode = useRef<DerivationMode>(undefined);
   const onDerivationUpdate = (mode: DerivationMode) => {
     derivationMode.current = mode;
   };
