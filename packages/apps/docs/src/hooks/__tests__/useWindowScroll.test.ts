@@ -1,4 +1,5 @@
-import { act, fireEvent, renderHook } from '@testing-library/react';
+import { fireEvent, renderHook } from '@testing-library/react';
+import { act } from 'react';
 import { useWindowScroll } from './../useWindowScroll';
 
 describe('useWindowScroll', () => {

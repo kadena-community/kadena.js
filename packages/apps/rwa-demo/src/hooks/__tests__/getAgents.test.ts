@@ -1,6 +1,7 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IRecord } from '@/utils/filterRemovedRecords';
-import { act, renderHook } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
 import { useGetAgents } from '../getAgents';
 
 // Create hoisted mocks

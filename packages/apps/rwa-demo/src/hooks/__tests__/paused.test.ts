@@ -1,7 +1,8 @@
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { isPaused } from '@/services/isPaused';
-import { act, renderHook } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
 import type { Mock } from 'vitest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useAccount } from '../account';
