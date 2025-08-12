@@ -9,7 +9,7 @@ import type { IAccountInfo } from '@kadena/wallet-adapter-core';
 import type { IAdapter } from '@kadena/wallet-adapter-core';
 import type { IAdapterFactoryData } from '@kadena/wallet-adapter-core';
 import type { INetworkInfo } from '@kadena/wallet-adapter-core';
-import { JSX as JSX_2 } from 'react/jsx-runtime';
+import { JSX } from 'react/jsx-runtime';
 import type { ReactNode } from 'react';
 import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
 
@@ -38,7 +38,7 @@ export interface IKadenaWalletState {
 }
 
 // @public
-export function KadenaWalletProvider({ children, adapters: inputAdapters, defaultAdapterName, }: IKadenaWalletProviderProps): JSX_2.Element;
+export function KadenaWalletProvider({ children, adapters: inputAdapters, defaultAdapterName, }: IKadenaWalletProviderProps): JSX.Element;
 
 // Warning: (ae-forgotten-export) The symbol "IKadenaWalletContextValue" needs to be exported by the entry point index.d.ts
 //

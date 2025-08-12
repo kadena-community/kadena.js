@@ -20,6 +20,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && api-extractor run",
+    "build:local": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && api-extractor run --local",
     "format": "prettier . --cache --write",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest run"
