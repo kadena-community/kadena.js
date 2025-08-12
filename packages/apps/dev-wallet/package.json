@@ -43,7 +43,7 @@
     "classnames": "^2.3.1",
     "ed25519-keygen": "0.4.8",
     "elliptic": "^6.5.5",
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^11.0.5",
     "js-yaml": "~4.1.0",
     "react": "^19.1.1",
     "react-aria": "^3.31.1",
