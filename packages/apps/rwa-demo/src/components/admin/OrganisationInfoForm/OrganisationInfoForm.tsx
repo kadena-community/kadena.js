@@ -158,62 +158,57 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
               {fields.map((field, index) => {
                 const error = (errors.domains ?? [])[index];
                 return (
-                  <>
-                    <Controller
-                      name={`domains.${index}.value`}
-                      control={control}
-                      key={field.id}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: 'This field is required',
-                        },
-                        validate: (value) => {
-                          const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
-                          if (!pattern.test(value)) {
-                            return 'Invalid domain format. Use a valid URL format.';
-                          }
+                  <Controller
+                    name={`domains.${index}.value`}
+                    control={control}
+                    key={field.id}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: 'This field is required',
+                      },
+                      validate: (value) => {
+                        const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+                        if (!pattern.test(value)) {
+                          return 'Invalid domain format. Use a valid URL format.';
+                        }
 
-                          if (
-                            domains.includes(value) &&
-                            value !== field.value
-                          ) {
-                            return 'This domain already exists';
-                          }
-                          return true;
-                        },
-                      }}
-                      render={({ field }) => (
-                        <Stack width="100%" gap="sm" alignItems="flex-start">
-                          <TextField
-                            {...field}
-                            isInvalid={!!error?.value?.message}
-                            errorMessage={`${error?.value?.message}`}
-                          />
-                          <Confirmation
-                            onPress={() => {
-                              dispatchDomains({
-                                type: 'remove',
-                                payload: field.value,
-                              });
+                        if (domains.includes(value) && value !== field.value) {
+                          return 'This domain already exists';
+                        }
+                        return true;
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Stack width="100%" gap="sm" alignItems="flex-start">
+                        <TextField
+                          {...field}
+                          isInvalid={!!error?.value?.message}
+                          errorMessage={`${error?.value?.message}`}
+                        />
+                        <Confirmation
+                          onPress={() => {
+                            dispatchDomains({
+                              type: 'remove',
+                              payload: field.value,
+                            });
 
-                              remove(index);
-                            }}
-                            trigger={
-                              <Button
-                                aria-label="Remove domain"
-                                isCompact
-                                variant="outlined"
-                                startVisual={<MonoDelete />}
-                              />
-                            }
-                          >
-                            Are you sure you want to remove this domain?
-                          </Confirmation>
-                        </Stack>
-                      )}
-                    />
-                  </>
+                            remove(index);
+                          }}
+                          trigger={
+                            <Button
+                              aria-label="Remove domain"
+                              isCompact
+                              variant="outlined"
+                              startVisual={<MonoDelete />}
+                            />
+                          }
+                        >
+                          Are you sure you want to remove this domain?
+                        </Confirmation>
+                      </Stack>
+                    )}
+                  />
                 );
               })}
 
