@@ -40,7 +40,7 @@ export const useEditAgent = () => {
           : addAgent(data, account, asset);
       },
       transaction: {
-        accounts: [data.accountName],
+        accounts: [data.accountName, account?.address!],
         type: TXTYPES.ADDAGENT,
       },
     });
