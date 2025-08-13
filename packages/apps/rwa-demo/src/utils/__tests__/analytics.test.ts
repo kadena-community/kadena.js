@@ -7,12 +7,24 @@ import {
   updateConsent,
 } from '../analytics';
 
+const mocks = vi.hoisted(() => ({
+  captureException: vi.fn(),
+}));
+
 // Type definition is omitted to use the existing gtag definition
 
 describe('analytics', () => {
   beforeEach(() => {
     // @ts-ignore - Ignore type issues with mocking gtag
     window.gtag = vi.fn();
+
+    vi.mock('@sentry/nextjs', async (importOriginal) => {
+      const actual = (await importOriginal()) as {};
+      return {
+        ...actual,
+        captureException: mocks.captureException,
+      };
+    });
   });
 
   afterEach(() => {
