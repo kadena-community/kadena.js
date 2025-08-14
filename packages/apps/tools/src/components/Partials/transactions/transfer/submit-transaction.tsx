@@ -25,7 +25,7 @@ import {
   linkStyle,
   notificationLinkErrorStyle,
   notificationLinkStyle,
-} from '@/pages/transactions/transfer/styles.css';
+} from '@/pagestyles/transactions/transfer/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
 import {
   MonoContentCopy,

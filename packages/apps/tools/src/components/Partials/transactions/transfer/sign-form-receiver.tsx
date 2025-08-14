@@ -17,7 +17,7 @@ import { ChainSelect } from '@/components/Global/ChainSelect';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { AddPublicKeysSection } from '@/components/Partials/transactions/transfer/add-public-keys';
-import { chainSelectContainerClass } from '@/pages/transactions/transfer/styles.css';
+import { chainSelectContainerClass } from '@/pagestyles/transactions/transfer/styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { AccountDetails } from '@/hooks/use-account-details-query';

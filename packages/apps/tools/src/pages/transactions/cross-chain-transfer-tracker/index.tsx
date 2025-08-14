@@ -11,6 +11,16 @@ import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
+import {
+  footerBarStyle,
+  formButtonStyle,
+  infoBoxStyle,
+  linksBoxStyle,
+} from '@/pagestyles/transactions/cross-chain-transfer-tracker/styles.css';
+import {
+  containerClass,
+  notificationContainerStyle,
+} from '@/pagestyles/transactions/styles.css';
 import type { IStatusData } from '@/services/transfer-tracker/get-transfer-status';
 import {
   StatusId,
@@ -47,13 +57,6 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { containerClass, notificationContainerStyle } from '../styles.css';
-import {
-  footerBarStyle,
-  formButtonStyle,
-  infoBoxStyle,
-  linksBoxStyle,
-} from './styles.css';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,

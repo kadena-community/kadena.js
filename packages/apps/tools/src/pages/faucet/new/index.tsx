@@ -16,7 +16,7 @@ import {
   notificationContentStyle,
   notificationLinkStyle,
   pubKeysContainerStyle,
-} from './styles.css';
+} from '@/pagestyles/faucet/new/styles.css';
 
 import {
   accountNameContainerClass,
@@ -30,7 +30,7 @@ import {
   linksBoxStyle,
   linkStyle,
   notificationContainerStyle,
-} from '../styles.css';
+} from '@/pagestyles/faucet/styles.css';
 
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';

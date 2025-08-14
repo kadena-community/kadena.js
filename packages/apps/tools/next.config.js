@@ -10,7 +10,6 @@ const config = {
     ignoreDuringBuilds: true, // lint is a different task/phase
   },
   reactStrictMode: false,
-  pageExtensions: ['tsx', 'route.ts', 'route.route.ts', 'js'],
   transpilePackages: ['@kadena/kode-ui'],
   env: {
     KADENA_API_TTIL: process.env.KADENA_API_TTIL,

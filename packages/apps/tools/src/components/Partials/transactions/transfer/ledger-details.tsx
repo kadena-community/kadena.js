@@ -6,7 +6,7 @@ import useLedgerPublicKey, {
 import {
   marginBottomOnError,
   tooltipInfoContainer,
-} from '@/pages/transactions/transfer/styles.css';
+} from '@/pagestyles/transactions/transfer/styles.css';
 import { MonoInfo, MonoKey } from '@kadena/kode-icons/system';
 import { NumberField, Stack, Tooltip } from '@kadena/kode-ui';
 import classNames from 'classnames';

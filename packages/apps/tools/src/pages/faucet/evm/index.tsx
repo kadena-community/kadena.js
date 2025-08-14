@@ -8,6 +8,10 @@ import {
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import { useEvmFaucet } from '@/hooks/EvmFaucet';
+import {
+  buttonContainerClass,
+  containerClass,
+} from '@/pagestyles/faucet/styles.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MonoKeyboardArrowRight } from '@kadena/kode-icons/system';
 import {
@@ -29,7 +33,6 @@ import type { FC } from 'react';
 import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { buttonContainerClass, containerClass } from '../styles.css';
 
 const schema = z.object({
   name: NAME_VALIDATION,
