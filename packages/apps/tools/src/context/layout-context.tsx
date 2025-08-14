@@ -69,7 +69,7 @@ const LayoutContextProvider = (props: PropsWithChildren): React.JSX.Element => {
   };
 
   return (
-    <LayoutContext.Provider
+    <LayoutContext
       value={{
         toolbar,
         setToolbar,
@@ -83,7 +83,7 @@ const LayoutContextProvider = (props: PropsWithChildren): React.JSX.Element => {
       }}
     >
       {props.children}
-    </LayoutContext.Provider>
+    </LayoutContext>
   );
 };
 

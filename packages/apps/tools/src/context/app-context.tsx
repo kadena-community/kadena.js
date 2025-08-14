@@ -48,14 +48,14 @@ const AppContextProvider = (props: PropsWithChildren): React.JSX.Element => {
   }, [devOption]);
 
   return (
-    <AppContext.Provider
+    <AppContext
       value={{
         devOption,
         setDevOption,
       }}
     >
       {props.children}
-    </AppContext.Provider>
+    </AppContext>
   );
 };
 
