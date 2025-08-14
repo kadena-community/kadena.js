@@ -13,6 +13,12 @@ import {
   useState,
 } from 'react';
 
+const refGuard = <T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+): ref is React.RefObject<T> & { current: T } => {
+  return !!ref.current;
+};
+
 export function ComboField({
   children,
   value,
@@ -135,7 +141,7 @@ export function ComboField({
           }
         />
       </div>
-      {
+      {refGuard(triggerRef) && (
         <Popover
           state={{
             isOpen: Boolean(isPopoverOpen),
@@ -153,7 +159,7 @@ export function ComboField({
         >
           {content}
         </Popover>
-      }
+      )}
     </>
   );
 }
