@@ -4,18 +4,25 @@ import {
   composePactCommand,
   execution,
 } from '@kadena/client/fp';
+import { submitClient } from '../core/client-helpers';
+import type { IClientConfig } from '../core/utils/helpers';
+
+/**
+ * @alpha
+ */
+export interface ICreatePrincipalNamespaceInput {
+  keysetName: string;
+  pred: 'keys-all' | 'keys-2' | 'keys-any';
+  keys: string[];
+  signer: string;
+}
 
 export const principalNamespaceCommand = ({
   keysetName,
   pred,
   keys,
   signer,
-}: {
-  keysetName: string;
-  pred: string;
-  keys: string[];
-  signer: string;
-}) => {
+}: ICreatePrincipalNamespaceInput) => {
   const pactCommand = `
     (let ((ns-name (ns.create-principal-namespace (read-keyset '${keysetName}))))
       (define-namespace
@@ -42,3 +49,11 @@ export const principalNamespaceCommand = ({
 
   return command();
 };
+
+/**
+ * @alpha
+ */
+export const createPrincipalNamespace = (
+  inputs: ICreatePrincipalNamespaceInput,
+  config: IClientConfig,
+) => submitClient(config)(principalNamespaceCommand(inputs));
