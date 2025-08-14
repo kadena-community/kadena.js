@@ -12,7 +12,7 @@ import {
   getQueryValue,
   mapToTreeItems,
   modelsToTreeMap,
-} from './utils';
+} from './../../modulesexplorer';
 
 const exampleCookies: NextApiRequestCookies = {
   '_persist%3AdevOption': '%22BASIC%22',

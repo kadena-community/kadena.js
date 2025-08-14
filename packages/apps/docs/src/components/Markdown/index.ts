@@ -17,7 +17,7 @@ import { Tweet } from './Tweet/Tweet';
 import { UnorderedList } from './UnorderedList/UnorderedList';
 import { Youtube } from './Youtube/Youtube';
 
-type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
+type ExtendedIntrinsicElements = React.JSX.IntrinsicElements & {
   'kda-notification': React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
@@ -33,7 +33,7 @@ type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
 };
 
 // eslint-disable-next-line @rushstack/no-new-null
-type FunctionComponent<Props> = (props: Props) => JSX.Element | null;
+type FunctionComponent<Props> = (props: Props) => React.JSX.Element | null;
 type MDXComponents = {
   [Key in keyof ExtendedIntrinsicElements]?: FunctionComponent<
     ExtendedIntrinsicElements[Key]

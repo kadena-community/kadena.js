@@ -1,5 +1,5 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useTransferTokens } from '../transferTokens';
 
 describe('transferTokens hook', () => {

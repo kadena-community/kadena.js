@@ -51,4 +51,4 @@ export const ListBoxOption = forwardRef(ListBoxOptionBase) as <
   T extends object,
 >(
   props: IListBoxOptionProps<T> & { ref?: Ref<HTMLLIElement> },
-) => JSX.Element;
+) => React.JSX.Element;

@@ -47,4 +47,4 @@ function ListBoxBase<T extends object>(
 
 export const ListBox = forwardRef(ListBoxBase) as <T extends object>(
   props: IListBoxProps<T> & { ref?: Ref<HTMLUListElement> },
-) => JSX.Element;
+) => React.JSX.Element;

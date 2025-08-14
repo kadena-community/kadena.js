@@ -5,12 +5,19 @@ import {
 import { Button, Popover, Stack, TextField } from '@kadena/kode-ui';
 import {
   ReactNode,
+  RefObject,
   useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
 } from 'react';
+
+const refGuard = <T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+): ref is React.RefObject<T> & { current: T } => {
+  return !!ref.current;
+};
 
 export function ComboField({
   children,
@@ -122,17 +129,11 @@ export function ComboField({
             <Stack>
               {clear}
               {isPopoverOpen ? (
-                <Button
-                  variant="transparent"
-                  onClick={() => closePopover()}
-                >
+                <Button variant="transparent" onClick={() => closePopover()}>
                   <MonoKeyboardArrowUp />
                 </Button>
               ) : (
-                <Button
-                  variant="transparent"
-                  onClick={() => openPopover()}
-                >
+                <Button variant="transparent" onClick={() => openPopover()}>
                   <MonoKeyboardArrowDown />
                 </Button>
               )}
@@ -140,7 +141,7 @@ export function ComboField({
           }
         />
       </div>
-      {
+      {refGuard(triggerRef) && (
         <Popover
           state={{
             isOpen: Boolean(isPopoverOpen),
@@ -150,7 +151,7 @@ export function ComboField({
             setOpen: () => {},
           }}
           offset={0}
-          triggerRef={triggerRef}
+          triggerRef={triggerRef as RefObject<Element>}
           ref={popoverRef}
           isNonModal
           showArrow={false}
@@ -158,7 +159,7 @@ export function ComboField({
         >
           {content}
         </Popover>
-      }
+      )}
     </>
   );
 }

@@ -33,7 +33,7 @@ const useAppContext = (): INetworkState => {
   return context;
 };
 
-const AppContextProvider = (props: PropsWithChildren): JSX.Element => {
+const AppContextProvider = (props: PropsWithChildren): React.JSX.Element => {
   const [devOption, setDevOption] = useState<DevOption>('BASIC');
 
   useLayoutEffect(() => {
@@ -48,14 +48,14 @@ const AppContextProvider = (props: PropsWithChildren): JSX.Element => {
   }, [devOption]);
 
   return (
-    <AppContext.Provider
+    <AppContext
       value={{
         devOption,
         setDevOption,
       }}
     >
       {props.children}
-    </AppContext.Provider>
+    </AppContext>
   );
 };
 

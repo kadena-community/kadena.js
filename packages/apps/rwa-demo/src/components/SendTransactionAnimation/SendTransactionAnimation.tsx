@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import { animationIconClass } from './styles.css';
 interface IProps {
   onPress: (e: PressEvent) => any;
-  trigger: ReactElement;
+  trigger: ReactElement<any>;
 }
 
 export const SendTransactionAnimation: FC<IProps> = ({ trigger, onPress }) => {

@@ -99,11 +99,11 @@ const steps: ICardContentProps[] = [
 
 const VisualIcon: FC<{
   accentColor: string;
-  visual?: ReactElement;
+  visual?: ReactElement<any>;
 }> = ({ accentColor, visual }) => {
   if (!visual) return null;
   return React.cloneElement(visual, {
-    ...visual.props,
+    ...(visual.props ?? {}),
     style: { color: accentColor },
   });
 };

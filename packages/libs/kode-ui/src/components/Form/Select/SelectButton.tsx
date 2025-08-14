@@ -68,4 +68,4 @@ function SelectButtonBase<T extends object>(
 
 export const SelectButton = forwardRef(SelectButtonBase) as <T extends object>(
   props: ISelectButtonProps<T> & { ref?: Ref<HTMLButtonElement> },
-) => JSX.Element;
+) => React.JSX.Element;

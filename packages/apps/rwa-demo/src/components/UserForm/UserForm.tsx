@@ -10,7 +10,7 @@ import { cloneElement, useState } from 'react';
 
 interface IProps {
   asset?: IAsset;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
   onClose?: () => void;
 }
 

@@ -405,7 +405,7 @@ function TxStatusList({
     return;
   };
 
-  if (variant === 'minimized') return statusList.pop() as JSX.Element;
+  if (variant === 'minimized') return statusList.pop() as React.JSX.Element;
   return (
     <>
       <Stack alignItems="center" justifyContent="space-between">

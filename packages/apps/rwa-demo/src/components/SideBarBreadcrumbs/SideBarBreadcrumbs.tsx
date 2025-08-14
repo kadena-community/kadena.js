@@ -22,17 +22,17 @@ export const SideBarBreadcrumbs: FC<IBreadcrumbsProps> = ({
         <Badge size="sm" style="highContrast">{`${activeNetwork?.name}`}</Badge>
       }
     >
-      <>
-        <SideBarBreadcrumbsItem component={Link} href="/">
-          Dashboard
-        </SideBarBreadcrumbsItem>
-        {React.Children.map(children, (child) => {
+      <SideBarBreadcrumbsItem component={Link} href="/">
+        Dashboard
+      </SideBarBreadcrumbsItem>
+      {
+        React.Children.map(children, (child) => {
           if (!React.isValidElement(child)) {
             return null;
           }
           return React.cloneElement(child, { ...child.props, component: Link });
-        })}
-      </>
+        }) as any
+      }
     </SideBarBreadcrumbsUI>
   );
 };

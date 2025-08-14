@@ -12,13 +12,13 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
+import { containerClass } from '@/pagestyles/transactions/styles.css';
+import { notificationLinkStyle } from '@/pagestyles/transactions/transfer/styles.css';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from 'hw-app-kda-clone';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
-import { containerClass } from '../styles.css';
-import { notificationLinkStyle } from './styles.css';
 
 import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';

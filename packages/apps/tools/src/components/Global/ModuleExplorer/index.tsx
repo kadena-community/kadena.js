@@ -2,10 +2,7 @@ import type {
   IncompleteModuleModel,
   ModuleModel,
 } from '@/hooks/use-module-query';
-import {
-  mapToTreeItems,
-  modelsToTreeMap,
-} from '@/pages/modules/explorer/utils';
+import { mapToTreeItems, modelsToTreeMap } from '@/utils/modulesexplorer';
 import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import type { IFuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';

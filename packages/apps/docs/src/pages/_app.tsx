@@ -38,7 +38,7 @@ export const MyApp = ({
   pageProps,
 }: AppProps<ImportedPagePropsType> & {
   Component: FC<IPageProps>;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
   useIphoneInputFix();

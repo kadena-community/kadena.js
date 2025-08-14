@@ -18,7 +18,7 @@ import { AccountNameField } from '../Fields/AccountNameField';
 interface IProps {
   investor?: IRecord;
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
 }
 
 export const InvestorForm: FC<IProps> = ({ onClose, trigger, investor }) => {

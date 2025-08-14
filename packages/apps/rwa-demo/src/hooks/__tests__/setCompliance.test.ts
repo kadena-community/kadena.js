@@ -2,7 +2,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { setCompliance } from '@/services/setCompliance';
 import { setComplianceParameters } from '@/services/setComplianceParameters';
 import { getActiveRulesKeys } from '@/utils/getActiveRulesKeys';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSetCompliance } from '../setCompliance';
 

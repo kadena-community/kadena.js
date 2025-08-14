@@ -82,7 +82,7 @@ export function TransferForm({
   onSubmit,
   activityId,
 }: TransferFormProps) {
-  const timer = useRef<NodeJS.Timeout>();
+  const timer = useRef<NodeJS.Timeout>(null);
   // somehow react-hook-form does not trigger re-render when the value of the form is changed
   // also for performance reason I don't want to re-render the whole form on every change
   // so I use this state to force re-render on specific changes
@@ -369,7 +369,7 @@ export function TransferForm({
     <T, R>(cb: (...args: T[]) => R) => {
       return (...args: T[]) => {
         const result = cb(...args);
-        clearTimeout(timer.current);
+        clearTimeout(timer.current ?? '');
         timer.current = setTimeout(evaluateTransactions, 100);
         return result;
       };

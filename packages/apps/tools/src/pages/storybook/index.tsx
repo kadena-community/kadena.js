@@ -8,6 +8,7 @@ import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
+import { containerStyle } from '@/pagestyles/storybook/styles.css';
 import type { ChainId } from '@kadena/client';
 import { MonoCAccount, MonoKey, MonoUsb } from '@kadena/kode-icons/system';
 import {
@@ -26,7 +27,6 @@ import {
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import React, { useState } from 'react';
-import { containerStyle } from './styles.css';
 
 const options = Array.from({ length: 10 }, (_, i) => ({
   id: `ledger-key-${i}`,

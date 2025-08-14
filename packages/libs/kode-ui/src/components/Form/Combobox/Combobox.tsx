@@ -150,6 +150,6 @@ function ComboBoxBase<T extends object>(
 
 export const Combobox = forwardRef(ComboBoxBase) as <T extends object>(
   props: IComboboxProps<T> & { ref?: ForwardedRef<HTMLInputElement> },
-) => JSX.Element;
+) => React.JSX.Element;
 
 export { Item as ComboboxItem } from 'react-stately';

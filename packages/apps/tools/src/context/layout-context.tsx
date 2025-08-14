@@ -57,7 +57,7 @@ export const useToolbar = (
   }, [pathName, setActiveMenuIndex, setToolbar, toolbar]);
 };
 
-const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
+const LayoutContextProvider = (props: PropsWithChildren): React.JSX.Element => {
   const [toolbar, setToolbar] = useState<ISidebarToolbarItem[]>([]);
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | undefined>(0);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
@@ -69,7 +69,7 @@ const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
   };
 
   return (
-    <LayoutContext.Provider
+    <LayoutContext
       value={{
         toolbar,
         setToolbar,
@@ -83,7 +83,7 @@ const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
       }}
     >
       {props.children}
-    </LayoutContext.Provider>
+    </LayoutContext>
   );
 };
 

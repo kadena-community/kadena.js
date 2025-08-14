@@ -51,4 +51,4 @@ export const ComboboxButton = forwardRef(ComboboxButtonBase) as <
   T extends object,
 >(
   props: IComboboxButtonProps<T> & { ref?: Ref<HTMLButtonElement> },
-) => JSX.Element;
+) => React.JSX.Element;

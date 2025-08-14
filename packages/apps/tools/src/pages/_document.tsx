@@ -1,7 +1,7 @@
+import { bodyStyle } from '@/pagestyles/styles.css';
 import { Head, Html, Main, NextScript } from 'next/document';
 import type { FC } from 'react';
 import React from 'react';
-import { bodyStyle } from './styles.css';
 
 const Document: FC = () => {
   return (

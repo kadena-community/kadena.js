@@ -16,7 +16,7 @@ interface IEventsTableProps {
   events?: Event[];
 }
 
-export const EventsTable = (props: IEventsTableProps): JSX.Element => {
+export const EventsTable = (props: IEventsTableProps): React.JSX.Element => {
   const { events = [] } = props;
 
   return (

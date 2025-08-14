@@ -7,7 +7,7 @@ import { SpinnerRoundFilled } from 'spinners-react';
 import KadenaImage from '../../public/assets/k-community-icon.png';
 import styles from '../styles/main.module.css';
 
-const Home: React.FC = (): JSX.Element => {
+const Home: React.FC = (): React.JSX.Element => {
   const [account, setAccount] = useState<string>('');
   const [messageToWrite, setMessageToWrite] = useState<string>('');
   const [messageFromChain, setMessageFromChain] = useState<string>('');

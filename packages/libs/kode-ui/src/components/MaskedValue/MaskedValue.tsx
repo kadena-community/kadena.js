@@ -28,7 +28,7 @@ export const MaskedValue: FC<IMaskedValueProps> = ({
   endUnmaskedValues = 4,
   maskCharacter = '*',
   maskLength = 4,
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [visible, setVisible] = useState(defaultVisibility);
 
   const toggleVisibility = (): void => {

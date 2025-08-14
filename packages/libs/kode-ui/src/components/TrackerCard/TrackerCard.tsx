@@ -40,7 +40,7 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
   helperText,
   helperTextType = 'mild',
   variant = 'vertical',
-}): JSX.Element => {
+}): React.JSX.Element => {
   const classCardContainer = classNames(
     CardContainer,
     icon ? layoutVariant[variant] : null,
