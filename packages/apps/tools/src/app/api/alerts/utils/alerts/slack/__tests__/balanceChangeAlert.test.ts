@@ -1,3 +1,4 @@
+import type { ChainId } from '@kadena/types';
 import type { IAlert } from '../../../constants';
 import {
   ALERTCODES,
@@ -167,35 +168,50 @@ describe('balance change alert Utils', () => {
     it('should return error for chain 1, success for chain 2', async () => {
       alert.chainIds = ['1', '2'];
 
-      mocks.getLastRecord
-        .mockResolvedValueOnce([
-          {
-            _source: {
-              '@timestamp': new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-              balance: '100',
+      mocks.getLastRecord.mockImplementation(
+        (alert, network, chainId: ChainId) => {
+          if (chainId === '1') {
+            return [
+              {
+                _source: {
+                  '@timestamp': new Date(
+                    Date.now() - 25 * 60 * 1000,
+                  ).toISOString(),
+                  balance: '100',
+                },
+              },
+              {
+                _source: {
+                  '@timestamp': new Date(
+                    Date.now() - 30 * 60 * 1000,
+                  ).toISOString(),
+                  balance: '90',
+                },
+              },
+            ];
+          }
+
+          //chain 2
+          return [
+            {
+              _source: {
+                '@timestamp': new Date(
+                  Date.now() - 15 * 60 * 1000,
+                ).toISOString(),
+                balance: '100',
+              },
             },
-          },
-          {
-            _source: {
-              '@timestamp': new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-              balance: '90',
+            {
+              _source: {
+                '@timestamp': new Date(
+                  Date.now() - 30 * 60 * 1000,
+                ).toISOString(),
+                balance: '90',
+              },
             },
-          },
-        ])
-        .mockResolvedValueOnce([
-          {
-            _source: {
-              '@timestamp': new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-              balance: '100',
-            },
-          },
-          {
-            _source: {
-              '@timestamp': new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-              balance: '90',
-            },
-          },
-        ]);
+          ];
+        },
+      );
 
       mocks.sendBalanceChangeErrorMessages.mockResolvedValue(
         'Error message sent',

@@ -9,7 +9,6 @@ export const balanceChangeAlert = async (alert: IAlert): Promise<string[]> => {
     const client = getClient();
 
     const chainPromises = alert.chainIds?.map(async (chainId) => {
-      console.log({ chainId });
       const [latest, previous] = await client.getLastRecord(
         alert,
         network,
@@ -23,9 +22,6 @@ export const balanceChangeAlert = async (alert: IAlert): Promise<string[]> => {
           ),
         );
       }
-
-      // adding this console for debugging purposes
-      console.log({ latest, previous });
 
       const latestTimeDiff = differenceInMinutes(
         Date.now(),
