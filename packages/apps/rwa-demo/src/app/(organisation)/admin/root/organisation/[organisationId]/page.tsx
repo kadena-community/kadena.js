@@ -10,14 +10,14 @@ import { Link as UILink } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 
 interface IPageProps {
   params: Promise<{ organisationId: string }>;
 }
 
-const Home = async ({ params }: IPageProps) => {
-  const { organisationId } = await params;
+const Home = ({ params }: IPageProps) => {
+  const { organisationId } = use(params);
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const searchParams = useSearchParams();
   const p = searchParams.get('p') || 'info';
