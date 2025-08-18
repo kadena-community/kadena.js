@@ -19,6 +19,10 @@ export const balanceCheck = async (alert: IAlert): Promise<string[]> => {
       data = { ...data, error: 'no account was found' };
     }
 
+    if (!account.data?.fungibleAccount) {
+      return `❌ elastic data fail ${alert.code} (${network.key}): account not found for ${alert.options?.account}`;
+    }
+
     const promises = (account.data?.fungibleAccount.chainAccounts ?? []).map(
       async (chain): Promise<string> => {
         const balanceData = {
