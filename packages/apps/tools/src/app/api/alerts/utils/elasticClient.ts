@@ -38,8 +38,27 @@ export const getClient = () => {
     return ids.hits.hits;
   };
 
+  const getRecordsOfLastHour = async (
+    alert: IAlert,
+    network: INETWORK,
+  ): Promise<Record<string, any>[]> => {
+    const ids = await client.search({
+      index: getElasticIndexByEnv(network),
+      size: 4,
+      sort: { '@timestamp': 'desc' },
+      query: {
+        bool: {
+          must: [{ match: { code: alert.code } }, { match: { chain_id: '2' } }],
+        },
+      },
+    });
+
+    return ids.hits.hits.reverse();
+  };
+
   return {
     index,
     getLastRecord,
+    getRecordsOfLastHour,
   };
 };

@@ -19,7 +19,7 @@
     },
     {
       "path": "/api/alerts/elastic",
-      "schedule": "*/15 * * * *"
+      "schedule": "14,29,44,59 * * * *"
     }
   ]
 }

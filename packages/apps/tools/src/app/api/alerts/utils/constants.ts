@@ -4,6 +4,7 @@ import { balanceCheck } from './alerts/elastic/balanceCheck';
 import { balanceAlert } from './alerts/slack/balanceAlert';
 import { balanceChangeAlert } from './alerts/slack/balanceChangeAlert';
 import { graphAlert } from './alerts/slack/graphAlert';
+import { kinesisBalanceChangeAlert } from './alerts/slack/kinesisBalanceChangeAlert';
 
 dotenv.config();
 export const channelId = process.env.SLACK_CHANNELID ?? '';
@@ -90,6 +91,7 @@ export const isIntervalGroup = (val: string): val is IIntervalGroup => {
 export const slackAlerts = {
   BALANCEALERT: balanceAlert,
   BALANCECHANGEALERT: balanceChangeAlert,
+  KINESISBALANCECHANGEALERT: kinesisBalanceChangeAlert,
   GRAPHALERT: graphAlert,
 } satisfies Record<string, (alert: IAlert) => Promise<string[]>>;
 

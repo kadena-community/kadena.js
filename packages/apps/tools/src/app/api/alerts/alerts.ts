@@ -115,8 +115,9 @@ export const alerts: IAlert[] = [
     chainIds: ['2'],
     slackChannelIds: [channelId],
     messageType: {
+      slack: MESSAGETYPES.slack.KINESISBALANCECHANGEALERT,
       elastic: MESSAGETYPES.elastic.BALANCECHANGEALERT,
     },
-    intervalGroup: INTERVALGROUPS['15minutes'],
+    intervalGroup: INTERVALGROUPS['1hour'],
   },
 ] as const;
