@@ -12,6 +12,7 @@
 
 import '@kadena/kode-ui/global';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
+import { createChainweaverAdapter } from '@kadena/wallet-adapter-chainweaver';
 import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweaver-legacy';
 import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
 import { createMagicAdapter } from '@kadena/wallet-adapter-magic';
@@ -27,6 +28,7 @@ import App from './App';
 // List all adapters you want to use here.
 const adapters = [
   createEckoAdapter(),
+  createChainweaverAdapter(),
   createChainweaverLegacyAdapter(),
   createZelcoreAdapter(),
   createWalletConnectAdapter(),

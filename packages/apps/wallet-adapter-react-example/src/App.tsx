@@ -126,13 +126,15 @@ const App = () => {
         // Chainweaver or others: use standard connect
         const accountInfo = await client.connect(
           selectedWallet.name,
-          selectedWallet.name === 'Chainweaver'
+          selectedWallet.name === 'ChainweaverLegacy'
             ? {
                 accountName: prompt('Input your account'),
                 tokenContract: 'coin',
                 chainIds: ['0', '1'],
               }
-            : undefined,
+            : selectedWallet.name === 'Chainweaver'
+              ? { appName: 'Example wallet adapter dApp' }
+              : undefined,
         );
         setActiveAccount(accountInfo);
 
