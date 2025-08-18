@@ -164,7 +164,7 @@ describe('balance change alert Utils', () => {
     expect(mocks.sendBalanceChangeMessages).toBeCalledTimes(0);
   });
 
-  describe.only('multiple chains', () => {
+  describe('multiple chains', () => {
     it('should return error for chain 1, success for chain 2', async () => {
       alert.chainIds = ['1', '2'];
 
