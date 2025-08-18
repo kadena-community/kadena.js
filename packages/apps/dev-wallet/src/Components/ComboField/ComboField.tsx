@@ -5,7 +5,6 @@ import {
 import { Button, Popover, Stack, TextField } from '@kadena/kode-ui';
 import {
   ReactNode,
-  RefObject,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -151,7 +150,7 @@ export function ComboField({
             setOpen: () => {},
           }}
           offset={0}
-          triggerRef={triggerRef as RefObject<Element>}
+          triggerRef={triggerRef}
           ref={popoverRef}
           isNonModal
           showArrow={false}
