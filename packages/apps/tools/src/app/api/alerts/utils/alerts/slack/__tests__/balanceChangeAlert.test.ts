@@ -1,4 +1,3 @@
-import { CHAINS } from '@kadena/chainweb-node-client';
 import type { IAlert } from '../../../constants';
 import {
   ALERTCODES,
@@ -42,7 +41,7 @@ const alert: IAlert = {
     account: 'test-kinesis-account',
     gif: 'https://media.giphy.com/media/ZNnnp4wa17dZrDQKKI/giphy.gif?cid=790b7611li34xwh3ghrh6h6xwketcjop0mjayanqbp0n1enh&ep=v1_gifs_search&rid=giphy.gif&ct=g',
   },
-  chainIds: CHAINS,
+  chainIds: ['1'],
   slackChannelIds: [channelId],
   messageType: {
     slack: MESSAGETYPES.slack.BALANCECHANGEALERT,
@@ -81,9 +80,7 @@ describe('balance change alert Utils', () => {
       'Error message sent',
     );
 
-    if (alert.messageType.slack) {
-      await alert.messageType.slack(alert);
-    }
+    await alert.messageType.slack!(alert);
 
     expect(mocks.getLastRecord).toBeCalledTimes(1);
     expect(mocks.sendBalanceChangeErrorMessages).toBeCalledTimes(1);
@@ -91,6 +88,7 @@ describe('balance change alert Utils', () => {
     expect(mocks.sendBalanceChangeErrorMessages).toBeCalledWith(
       alert,
       getTestNet(),
+      '1',
     );
   });
 
@@ -128,7 +126,7 @@ describe('balance change alert Utils', () => {
       alert,
       ['150', '100'],
       getTestNet(),
-      [latestRecord, previousRecord],
+      '1',
     );
 
     expect(
@@ -155,15 +153,70 @@ describe('balance change alert Utils', () => {
       },
     ]);
 
-    if (alert.messageType.slack) {
-      const result = await alert.messageType.slack(alert);
-      expect(result).toEqual([
-        `◻️ no need for a message ${alert.code} (${getTestNet().key})`,
-      ]);
-    }
+    const result = await alert.messageType.slack!(alert);
+    expect(result).toEqual([
+      `◻️ no need for a message KINESISBRIDGEBALANCECHANGE (testnet04) chainId:1`,
+    ]);
 
     expect(mocks.getLastRecord).toBeCalledTimes(1);
     expect(mocks.sendBalanceChangeErrorMessages).toBeCalledTimes(0);
     expect(mocks.sendBalanceChangeMessages).toBeCalledTimes(0);
+  });
+
+  describe.only('multiple chains', () => {
+    it('should return error for chain 1, success for chain 2', async () => {
+      alert.chainIds = ['1', '2'];
+
+      mocks.getLastRecord
+        .mockResolvedValueOnce([
+          {
+            _source: {
+              '@timestamp': new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+              balance: '100',
+            },
+          },
+          {
+            _source: {
+              '@timestamp': new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+              balance: '90',
+            },
+          },
+        ])
+        .mockResolvedValueOnce([
+          {
+            _source: {
+              '@timestamp': new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+              balance: '100',
+            },
+          },
+          {
+            _source: {
+              '@timestamp': new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+              balance: '90',
+            },
+          },
+        ]);
+
+      mocks.sendBalanceChangeErrorMessages.mockResolvedValue(
+        'Error message sent',
+      );
+
+      await alert.messageType.slack!(alert);
+
+      expect(mocks.getLastRecord).toBeCalledTimes(2);
+      expect(mocks.sendBalanceChangeErrorMessages).toBeCalledTimes(1);
+      expect(mocks.sendBalanceChangeMessages).toBeCalledTimes(1);
+      expect(mocks.sendBalanceChangeErrorMessages).toBeCalledWith(
+        alert,
+        getTestNet(),
+        '1',
+      );
+      expect(mocks.sendBalanceChangeMessages).toBeCalledWith(
+        alert,
+        ['100', '90'],
+        getTestNet(),
+        '2',
+      );
+    });
   });
 });

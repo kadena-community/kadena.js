@@ -120,4 +120,24 @@ export const alerts: IAlert[] = [
     },
     intervalGroup: INTERVALGROUPS['1hour'],
   },
+
+  // alert for testing purposes
+  // {
+  //   title: `Test account on testnet`,
+  //   description: 'Checks for change of balance on a testnet account',
+  //   code: ALERTCODES.BALANCECHANGE,
+  //   networks: [getTestNet()],
+  //   options: {
+  //     account:
+  //       'k:387eec0698548ae7a3470f9eb1cd1c11d116207dc814ec58a78800739dd181e9',
+  //     maxblockHeightDiff: MAXBLOCKHEIGHT_DIFFERENCE,
+  //   },
+  //   chainIds: ['1', '2', '3'],
+  //   slackChannelIds: [channelId],
+  //   messageType: {
+  //     slack: MESSAGETYPES.slack.BALANCECHANGEALERT,
+  //     elastic: MESSAGETYPES.elastic.BALANCECHANGEALERT,
+  //   },
+  //   intervalGroup: INTERVALGROUPS['1hour'],
+  // },
 ] as const;

@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import type { ChainId } from '@kadena/types';
 import type { IAlert, INETWORK } from '../../constants';
 import { createMessage } from './../createMessage';
 
@@ -6,7 +6,7 @@ export const sendBalanceChangeMessages = async (
   alert: IAlert,
   [latestChain2, previousChain2]: string[],
   network: INETWORK,
-  [latest, previous]: Record<string, any>[],
+  chainId: ChainId,
 ): Promise<string> => {
   const promises = alert.slackChannelIds.map((channelId) => {
     const body = JSON.stringify({
@@ -30,7 +30,8 @@ export const sendBalanceChangeMessages = async (
             : undefined,
           text: {
             type: 'mrkdwn',
-            text: `The balance for ${alert.code} (\`${alert.options?.account}\`) has changed (${network.key}):\n *previous balance* ${previousChain2} (elastic record: ${latest._id} - ${format(new Date(latest._source['@timestamp']), 'yyyy-MM-dd h:mm a')})\n *latest balance* ${latestChain2} (elastic record: ${previous._id} - ${format(new Date(previous._source['@timestamp']), 'yyyy-MM-dd h:mm a')})`,
+            text: `The balance for ${alert.code} (\`${alert.options?.account}\`) on chainId:\`${chainId}\` has changed (${network.key}):
+${parseFloat(previousChain2).toLocaleString(undefined, { maximumFractionDigits: 20 })} KDA -> ${parseFloat(latestChain2).toLocaleString(undefined, { maximumFractionDigits: 20 })} KDA`,
           },
         },
       ]),

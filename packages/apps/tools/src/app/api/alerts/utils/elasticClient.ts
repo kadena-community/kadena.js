@@ -1,4 +1,5 @@
 import { Client } from '@elastic/elasticsearch';
+import type { ChainId } from '@kadena/types';
 import type { IAlert, INETWORK } from './constants';
 
 const getElasticIndexByEnv = (env: INETWORK): string => {
@@ -23,6 +24,7 @@ export const getClient = () => {
   const getLastRecord = async (
     alert: IAlert,
     network: INETWORK,
+    chainId: ChainId,
   ): Promise<Record<string, any>[]> => {
     const ids = await client.search({
       index: getElasticIndexByEnv(network),
@@ -30,7 +32,10 @@ export const getClient = () => {
       sort: { '@timestamp': 'desc' },
       query: {
         bool: {
-          must: [{ match: { code: alert.code } }, { match: { chain_id: '2' } }],
+          must: [
+            { match: { code: alert.code } },
+            { match: { chain_id: chainId } },
+          ],
         },
       },
     });
