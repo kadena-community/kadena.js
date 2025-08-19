@@ -55,7 +55,7 @@ export const useLayout = (): ILayoutContext => {
   const context = useContext(LayoutContext);
   if (!context) {
     throw new Error(
-      'useOrganisation must be used within a LayoutContextProvider',
+      'useLayout must be used within a SideBarLayoutContextProvider',
     );
   }
   return context;
