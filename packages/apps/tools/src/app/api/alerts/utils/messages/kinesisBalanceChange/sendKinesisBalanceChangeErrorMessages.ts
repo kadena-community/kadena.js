@@ -1,11 +1,9 @@
-import type { ChainId } from '@kadena/types';
 import type { IAlert, INETWORK } from '../../constants';
 import { createMessage } from '../createMessage';
 
-export const sendBalanceChangeErrorMessages = async (
+export const sendKinesisBalanceChangeErrorMessages = async (
   alert: IAlert,
   network: INETWORK,
-  chainId: ChainId,
 ): Promise<string> => {
   const promises = alert.slackChannelIds.map(async (channelId) => {
     const body = JSON.stringify({
@@ -15,7 +13,7 @@ export const sendBalanceChangeErrorMessages = async (
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `For *${alert.code}:*\nThe balance data on elastic search for account \`${alert.options?.account}\` (${network.label}: chainId:\`${chainId}\`) is not working. \n There seems to be an issue with elastic search.`,
+            text: `For *${alert.code}:*\nThe balance data on elastic search for account ${alert.options?.account} (${network.label}) is not working. \n There seems to be an issue with elastic search.`,
           },
         },
       ]),

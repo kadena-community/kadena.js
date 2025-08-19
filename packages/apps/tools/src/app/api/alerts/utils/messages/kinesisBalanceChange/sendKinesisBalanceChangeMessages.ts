@@ -1,12 +1,10 @@
-import type { ChainId } from '@kadena/types';
 import type { IAlert, INETWORK } from '../../constants';
 import { createMessage } from './../createMessage';
 
-export const sendBalanceChangeMessages = async (
+export const sendKinesisBalanceChangeMessages = async (
   alert: IAlert,
-  [latestChain2, previousChain2]: string[],
   network: INETWORK,
-  chainId: ChainId,
+  [nowRecord, hourAgoRecord]: Record<string, any>[],
 ): Promise<string> => {
   const promises = alert.slackChannelIds.map((channelId) => {
     const body = JSON.stringify({
@@ -30,8 +28,8 @@ export const sendBalanceChangeMessages = async (
             : undefined,
           text: {
             type: 'mrkdwn',
-            text: `The balance for ${alert.code} (\`${alert.options?.account}\`) on chainId:\`${chainId}\` has changed (${network.key}):
-${parseFloat(previousChain2).toLocaleString(undefined, { maximumFractionDigits: 20 })} KDA -> ${parseFloat(latestChain2).toLocaleString(undefined, { maximumFractionDigits: 20 })} KDA`,
+            text: `The balance for ${alert.code} (\`${alert.options?.account}\`) has changed (${network.key}):
+${hourAgoRecord._source.balance.toLocaleString(undefined, { maximumFractionDigits: 20 })} KDA -> ${nowRecord._source.balance.toLocaleString(undefined, { maximumFractionDigits: 20 })} KDA`,
           },
         },
       ]),
