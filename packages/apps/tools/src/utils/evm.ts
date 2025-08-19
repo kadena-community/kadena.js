@@ -65,7 +65,10 @@ export const formatErrorMessage = (err: BaseError): string => {
     switch (errorName) {
       case 'CooldownPeriodNotElapsed': {
         const [, lastClaimed, cooldownPeriod] = revertError.data?.args ?? [];
-        const nextAvailable = new Date(Number(lastClaimed) * 1000);
+        const cooldownPeriodTimestamp =
+          (Number(lastClaimed) + Number(cooldownPeriod)) * 1000;
+
+        const nextAvailable = new Date(cooldownPeriodTimestamp);
         const hours = Number(cooldownPeriod) / 3600;
         return `Please wait until ${nextAvailable.toLocaleString()}. Cooldown period is ${hours} hours.`;
       }
