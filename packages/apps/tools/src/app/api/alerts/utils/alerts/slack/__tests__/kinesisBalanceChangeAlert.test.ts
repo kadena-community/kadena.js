@@ -60,6 +60,10 @@ describe('Kinesis balance change alert Utils', () => {
       const result = checkIfBalanceChangeAlert(100, 85);
       expect(result).toBe(true);
     });
+    it('should return false if balance has increased', () => {
+      const result = checkIfBalanceChangeAlert(100, 120);
+      expect(result).toBe(false);
+    });
     it('should return false if balance has not decreased by more than 10%', () => {
       const result = checkIfBalanceChangeAlert(100, 95);
       expect(result).toBe(false);
@@ -74,7 +78,7 @@ describe('Kinesis balance change alert Utils', () => {
     afterEach(() => {
       vi.resetAllMocks();
     });
-    it('should send messages when balance change alert is triggered', async () => {
+    it('should send messages when balance is (-10% or more) less than previous ', async () => {
       const previousTimestamp3 = new Date(
         Date.now() - 60 * 60 * 1000,
       ).toISOString(); // 60 minutes ago
@@ -221,7 +225,7 @@ describe('Kinesis balance change alert Utils', () => {
       expect(mocks.sendKinesisBalanceChangeErrorMessages).toBeCalledTimes(0);
       expect(mocks.sendKinesisBalanceChangeMessages).toBeCalledTimes(0);
     });
-    it('should not send any messages when balane changed less than 10 %', async () => {
+    it('should not send any messages when balance changed less than 10 %', async () => {
       const previousTimestamp3 = new Date(
         Date.now() - 60 * 60 * 1000,
       ).toISOString(); // 60 minutes ago
@@ -243,6 +247,63 @@ describe('Kinesis balance change alert Utils', () => {
         _source: {
           '@timestamp': new Date(Date.now() - 15 * 60 * 1000).toISOString(),
           balance: 91,
+        },
+      };
+
+      mocks.getRecordsOfLastHour.mockResolvedValue([
+        hourAgoRecord,
+        {
+          _source: {
+            '@timestamp': previousTimestamp2,
+            balance: 100,
+          },
+        },
+        {
+          _source: {
+            '@timestamp': previousTimestamp1,
+            balance: 100,
+          },
+        },
+        nowRecord,
+      ]);
+
+      if (alert.messageType.slack) {
+        await alert.messageType.slack(alert);
+      }
+
+      expect(mocks.getRecordsOfLastHour).toBeCalledTimes(1);
+      expect(mocks.sendKinesisBalanceChangeErrorMessages).toBeCalledTimes(0);
+      expect(mocks.sendKinesisBalanceChangeMessages).toBeCalledTimes(0);
+      expect(
+        checkIfBalanceChangeAlert(
+          hourAgoRecord._source.balance,
+          nowRecord._source.balance,
+        ),
+      ).toBe(false);
+    });
+
+    it('should not send any messages when balance increased', async () => {
+      const previousTimestamp3 = new Date(
+        Date.now() - 60 * 60 * 1000,
+      ).toISOString(); // 60 minutes ago
+      const previousTimestamp2 = new Date(
+        Date.now() - 45 * 60 * 1000,
+      ).toISOString(); // 45 minutes ago
+      const previousTimestamp1 = new Date(
+        Date.now() - 30 * 60 * 1000,
+      ).toISOString(); // 30 minutes ago
+
+      const hourAgoRecord = {
+        _source: {
+          '@timestamp': previousTimestamp3,
+          balance: 100,
+        },
+      };
+
+      const nowRecord = {
+        _source: {
+          '@timestamp': new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+          balance: 120,
         },
       };
 
