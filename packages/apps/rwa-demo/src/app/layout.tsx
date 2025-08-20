@@ -10,7 +10,7 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <title>Kadena.js RWA Demo</title>
         <meta
@@ -48,7 +48,7 @@ const RootLayout = ({
           repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/rwa-demo`}
         />
         <Providers>
-          {children}
+          <>{children}</>
           <Analytics />
         </Providers>
       </body>

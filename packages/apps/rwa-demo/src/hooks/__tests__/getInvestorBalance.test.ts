@@ -1,7 +1,7 @@
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
 import { getInvestorBalance } from '@/services/getInvestorBalance';
 import { getAsset } from '@/utils/getAsset';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import type { Mock } from 'vitest';
 import { useAsset } from '../asset';
 import { useGetInvestorBalance } from '../getInvestorBalance';
@@ -73,22 +73,22 @@ describe('useGetInvestorBalance', () => {
   });
 
   it('should fetch investor balance when investor account and asset are provided', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(getInvestorBalance).toHaveBeenCalledWith(
+        {
+          investorAccount: 'test-account',
+        },
+        mockAsset,
+      );
 
-    expect(getInvestorBalance).toHaveBeenCalledWith(
-      {
-        investorAccount: 'test-account',
-      },
-      mockAsset,
-    );
-
-    expect(result.current).toEqual({
-      data: 1000,
-      isPending: false,
+      expect(result.current).toEqual({
+        data: 1000,
+        isPending: false,
+      });
     });
   });
 
@@ -114,12 +114,13 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(1000);
+    await waitFor(() => {
+      expect(result.current.data).toBe(1000);
+    });
 
     // Update the mock to return subscription data with events
     (useEventSubscriptionSubscription as Mock).mockReturnValue({
@@ -149,12 +150,13 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(1000);
+    await waitFor(() => {
+      expect(result.current.data).toBe(1000);
+    });
 
     // Update the mock to return subscription data with events
     (useEventSubscriptionSubscription as Mock).mockReturnValue({
@@ -184,12 +186,13 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(1000);
+    await waitFor(() => {
+      expect(result.current.data).toBe(1000);
+    });
 
     // Update the mock to return subscription data with multiple events
     (useEventSubscriptionSubscription as Mock).mockReturnValue({
@@ -226,14 +229,14 @@ describe('useGetInvestorBalance', () => {
       data: null,
     });
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() =>
+    const { result, rerender } = renderHook(() =>
       useGetInvestorBalance({ investorAccount: 'test-account' }),
     );
 
-    await waitForNextUpdate();
-
-    // Initial balance after API call
-    expect(result.current.data).toBe(1000);
+    await waitFor(() => {
+      // Initial balance after API call
+      expect(result.current.data).toBe(1000);
+    });
 
     // Update the mock to return subscription data with malformed event
     (useEventSubscriptionSubscription as Mock).mockReturnValue({

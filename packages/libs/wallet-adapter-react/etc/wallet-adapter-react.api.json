@@ -205,7 +205,7 @@
             },
             {
               "kind": "Reference",
-              "text": "JSX.Element",
+              "text": "React.JSX.Element",
               "canonicalReference": "@types/react!JSX.Element:interface"
             },
             {

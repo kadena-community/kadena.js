@@ -12,6 +12,12 @@ import {
   useState,
 } from 'react';
 
+const refGuard = <T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+): ref is React.RefObject<T> & { current: T } => {
+  return !!ref.current;
+};
+
 export function ComboField({
   children,
   value,
@@ -122,17 +128,11 @@ export function ComboField({
             <Stack>
               {clear}
               {isPopoverOpen ? (
-                <Button
-                  variant="transparent"
-                  onClick={() => closePopover()}
-                >
+                <Button variant="transparent" onClick={() => closePopover()}>
                   <MonoKeyboardArrowUp />
                 </Button>
               ) : (
-                <Button
-                  variant="transparent"
-                  onClick={() => openPopover()}
-                >
+                <Button variant="transparent" onClick={() => openPopover()}>
                   <MonoKeyboardArrowDown />
                 </Button>
               )}
@@ -140,7 +140,7 @@ export function ComboField({
           }
         />
       </div>
-      {
+      {refGuard(triggerRef) && (
         <Popover
           state={{
             isOpen: Boolean(isPopoverOpen),
@@ -158,7 +158,7 @@ export function ComboField({
         >
           {content}
         </Popover>
-      }
+      )}
     </>
   );
 }

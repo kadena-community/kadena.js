@@ -35,15 +35,7 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { sidebarLinks } from '@/constants/side-links';
 import { useHighestBalanceChainId } from '@/hooks';
-import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
-import { getExplorerLink } from '@/utils/getExplorerLink';
-import type { ITransactionDescriptor } from '@kadena/client';
-import {
-  MonoInfo,
-  MonoKeyboardArrowRight,
-  MonoLink,
-} from '@kadena/kode-icons/system';
-import Link from 'next/link';
+import { notificationLinkStyle } from '@/pagestyles/faucet/new/styles.css';
 import {
   accountNameContainerClass,
   buttonContainerClass,
@@ -56,7 +48,15 @@ import {
   linkStyle,
   linksBoxStyle,
   notificationContainerStyle,
-} from '../styles.css';
+} from '@/pagestyles/faucet/styles.css';
+import { getExplorerLink } from '@/utils/getExplorerLink';
+import type { ITransactionDescriptor } from '@kadena/client';
+import {
+  MonoInfo,
+  MonoKeyboardArrowRight,
+  MonoLink,
+} from '@kadena/kode-icons/system';
+import Link from 'next/link';
 
 const schema = z.object({
   name: NAME_VALIDATION,

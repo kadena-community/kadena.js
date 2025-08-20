@@ -19,7 +19,10 @@ import type { ComponentType } from 'react';
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, react/function-component-definition
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+export default function App({
+  Component,
+  pageProps,
+}: AppProps): React.JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   const router = useRouter();

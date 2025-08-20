@@ -19,7 +19,7 @@ import * as Sentry from '@sentry/nextjs';
 import React, { useEffect } from 'react';
 import { cardWrapperClass } from './(loggedout)/style.css';
 
-const GlobalError = ({ error, componentStack, resetError }: any) => {
+const GlobalError = ({ error, resetError }: any) => {
   const { theme, rotateTheme } = useTheme();
 
   useEffect(() => {
