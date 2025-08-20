@@ -59,6 +59,7 @@ export const formatErrorMessage = (err: BaseError): string => {
   const revertError = err.walk(
     (err) => err instanceof ContractFunctionRevertedError,
   );
+
   if (revertError instanceof ContractFunctionRevertedError) {
     const errorName = revertError.data?.errorName ?? '';
 
