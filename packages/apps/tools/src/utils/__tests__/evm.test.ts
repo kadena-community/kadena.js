@@ -80,7 +80,7 @@ describe('evm utils', () => {
         const expectedTimestamp = (lastClaimed + cooldownPeriod) * 1000;
         const expectedDate = new Date(expectedTimestamp);
         expect(result).toBe(
-          `Please wait until ${expectedDate.toLocaleString()}. Cooldown period is 2 hours.`,
+          `Please wait until ${expectedDate.toLocaleString()} UTC. Cooldown period is 2 hours.`,
         );
       });
 

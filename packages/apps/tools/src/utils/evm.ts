@@ -71,7 +71,7 @@ export const formatErrorMessage = (err: BaseError): string => {
 
         const nextAvailable = new Date(cooldownPeriodTimestamp);
         const hours = Number(cooldownPeriod) / 3600;
-        return `Please wait until ${nextAvailable.toLocaleString()}. Cooldown period is ${hours} hours.`;
+        return `Please wait until ${nextAvailable.toLocaleString()} UTC. Cooldown period is ${hours} hours.`;
       }
       case 'InsufficientNativeTokenBalance':
         return 'Faucet is out of funds';
