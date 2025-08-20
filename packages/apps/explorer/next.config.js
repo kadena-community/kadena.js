@@ -3,6 +3,10 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
+    NEXT_PUBLIC_BUILD_TIME: new Date().toUTCString(),
+  },
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
@@ -23,10 +27,7 @@ module.exports = withSentryConfig(module.exports, {
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
-  env: {
-    NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
-    NEXT_PUBLIC_BUILD_TIME: new Date().toUTCString(),
-  },
+
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
