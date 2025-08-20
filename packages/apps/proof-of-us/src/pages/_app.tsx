@@ -6,6 +6,7 @@ import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Providers } from '@/components/Providers/Providers';
 import { mainWrapperClass } from '@/styles/global.css';
+import { Version } from '@kadena/kode-ui';
 import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -102,6 +103,11 @@ export const MyApp = ({
           {/* Apple touch icon */}
           <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png" />
         </Head>
+        <Version
+          sha={process.env.NEXT_PUBLIC_COMMIT_SHA}
+          SSRTime={process.env.NEXT_PUBLIC_BUILD_TIME}
+          repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/proof-of-us`}
+        />
         <main className={mainWrapperClass}>
           <CookieConsent />
           <AnimatePresence mode="popLayout">
