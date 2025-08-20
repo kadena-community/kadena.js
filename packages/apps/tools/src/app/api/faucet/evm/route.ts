@@ -80,7 +80,6 @@ export async function POST(request: NextRequest) {
       status: 200,
     });
   } catch (err) {
-    console.log({ err });
     return NextResponse.json(
       { error: formatErrorMessage(err) },
       {
