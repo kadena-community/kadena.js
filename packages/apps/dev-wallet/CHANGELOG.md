@@ -1,5 +1,18 @@
 # @kadena/dev-wallet
 
+## 0.6.2
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+- Updated dependencies \[5c56ae2]
+  - @kadena/chainweaver-wallet-connect-plugin\@0.0.7
+  - @kadena/chainweaver-pact-console-plugin\@0.0.6
+  - @kadena/kode-icons\@0.3.1
+  - @kadena/kode-ui\@0.21.1
+  - @kadena/client-utils\@0.13.1
+
 ## 0.6.1
 
 ### Patch Changes
