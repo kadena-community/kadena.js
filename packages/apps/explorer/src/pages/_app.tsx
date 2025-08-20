@@ -11,6 +11,7 @@ import {
   MediaContextProvider,
   RouterProvider,
   useTheme,
+  Version,
 } from '@kadena/kode-ui';
 import '@kadena/kode-ui/global';
 import type { AppProps } from 'next/app';
@@ -42,6 +43,11 @@ export default function App({
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
       </Head>
+      <Version
+        sha={process.env.NEXT_PUBLIC_COMMIT_SHA}
+        SSRTime={process.env.NEXT_PUBLIC_BUILD_TIME}
+        repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/explorer`}
+      />
       <ToastProvider>
         <NetworkContextProvider>
           <RouterProvider navigate={router.push}>
