@@ -99,7 +99,7 @@ export async function walletSelectByWalletPrompt(
   if (wallets.length === 0) {
     throw new CommandError({
       errors: [
-        'No wallets found containing keys to sign this transaction with. Please use "kadena wallet add" to add a new wallet and generate keys to use for signing, or use "kadena wallet import to import a wallet."',
+        'No wallets found containing keys to sign this transaction with. Please use "kadena wallet add" to add a new wallet and generate keys to use for signing, or use "kadena wallet import" to import a wallet.',
       ],
     });
   }
