@@ -9,7 +9,6 @@ import { tokens } from './tokens/contract.css';
 import { darkThemeValues } from './tokens/dark.css';
 import { lightThemeValues } from './tokens/light.css';
 
-// eslint-disable-next-line @kadena-dev/typedef-var
 const oldThemeValues = {
   fonts: {
     $main: `${primaryFont}, -apple-system, sans-serif`,
@@ -215,7 +214,6 @@ const oldThemeValues = {
 export const vars = createThemeContract(oldThemeValues);
 
 // Creating a merged contract to create both old and new css variables
-// eslint-disable-next-line @kadena-dev/typedef-var
 const lightContract = {
   ...vars,
   ...tokens,
@@ -227,7 +225,6 @@ createGlobalTheme(':root', lightContract, {
 });
 
 // the old dark theme values
-// eslint-disable-next-line @kadena-dev/typedef-var
 const oldDarkThemeColors = {
   ...colorPalette,
   ...gradients,
@@ -327,7 +324,6 @@ const oldDarkThemeColors = {
 };
 
 // here we combine the old and new values for the dark theme to export only one class
-// eslint-disable-next-line @kadena-dev/typedef-var
 const darkContract = {
   new: tokens.kda.foundation.color,
   old: vars.colors,

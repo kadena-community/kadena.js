@@ -17,16 +17,16 @@ type BooleanMap<T> = T extends 'true' | 'false' ? boolean : T;
 type VariantSelection<Variants extends VariantGroups> = {
   [VariantGroup in keyof Variants]?: BooleanMap<keyof Variants[VariantGroup]>;
 };
-interface CompoundVariant<Variants extends VariantGroups> {
+interface ICompoundVariant<Variants extends VariantGroups> {
   variants: VariantSelection<Variants>;
   style: RecipeStyleRule;
 }
 
-interface PatternOptions<Variants extends VariantGroups> {
+interface IPatternOptions<Variants extends VariantGroups> {
   base?: RecipeStyleRule;
   variants?: Variants;
   defaultVariants?: VariantSelection<Variants>;
-  compoundVariants?: Array<CompoundVariant<Variants>>;
+  compoundVariants?: Array<ICompoundVariant<Variants>>;
 }
 
 const addLayer = (styles: StyleRule) => {
@@ -61,8 +61,8 @@ export const layerStyles = (
 };
 
 export function traverseRecipe<Variants extends VariantGroups>(
-  styles: PatternOptions<Variants>,
-): PatternOptions<Variants> {
+  styles: IPatternOptions<Variants>,
+): IPatternOptions<Variants> {
   return Object.entries(styles).reduce((result, [key, value]) => {
     if (key === 'base' && styles.base) {
       return { ...result, base: layerStyles(value as RecipeStyleRule) };
@@ -133,21 +133,15 @@ export function styleVariants<
   StyleMap extends Record<string | number, ComplexStyleRule>,
 >(styleMap: StyleMap, debugId?: string): Record<keyof StyleMap, string>;
 
-export function styleVariants<
-  Data extends Record<string | number, unknown>,
-  Key extends keyof Data,
->(
-  data: Data,
-  mapData: (value: Data[Key], key: Key) => ComplexStyleRule,
+export function styleVariants(
+  styles: Record<string | number, ComplexStyleRule>,
   debugId?: string,
-): Record<keyof Data, string>;
-
-export function styleVariants(styles: any, debugId?: any) {
+) {
   return vanillaStyleVariants(mapStyleVariants(styles), debugId);
 }
 
 export function recipe<Variants extends VariantGroups>(
-  styles: PatternOptions<Variants>,
+  styles: IPatternOptions<Variants>,
   debugId?: string,
 ) {
   return vanillaRecipe(traverseRecipe(styles), debugId);

@@ -3,7 +3,6 @@ import { globalFontFace } from '@vanilla-extract/css';
 import { globalStyle } from '../styles';
 import { lightThemeValues } from './tokens/light.css';
 
-// eslint-disable-next-line @kadena-dev/typedef-var
 export const primaryFont =
   lightThemeValues.kda.foundation.typography.family.primaryFont;
 export const monospaceFont =
