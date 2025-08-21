@@ -19,8 +19,7 @@ import { comboBoxControlClass } from './Combobox.css';
 
 type Variants = NonNullable<RecipeVariants<typeof input>>;
 
-export interface IComboboxProps<T extends object = any>
-  extends AriaComboBoxProps<T> {
+export interface IComboboxProps<T extends object> extends AriaComboBoxProps<T> {
   variant?: Variants['variant'];
   fontType?: Variants['fontType'];
   size?: Variants['size'];
@@ -39,10 +38,10 @@ export interface IComboboxProps<T extends object = any>
   defaultFilter?: (textValue: string, inputValue: string) => boolean;
 }
 
-function ComboBoxBase<T extends object>(
+const ComboBoxBase = <T extends object>(
   props: IComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>,
-) {
+) => {
   const isDisabled = props.disabled ?? props.isDisabled;
   const inputRef = useObjectRef(ref);
   const buttonRef = useRef(null);
@@ -146,7 +145,7 @@ function ComboBoxBase<T extends object>(
       )}
     </Field>
   );
-}
+};
 
 export const Combobox = forwardRef(ComboBoxBase) as <T extends object>(
   props: IComboboxProps<T> & { ref?: ForwardedRef<HTMLInputElement> },

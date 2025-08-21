@@ -13,10 +13,10 @@ interface IListBoxOptionProps<T> {
   className?: string;
 }
 
-function ListBoxOptionBase<T extends object>(
+const ListBoxOptionBase = <T extends object>(
   { item, state, className }: IListBoxOptionProps<T>,
   forwardedRef: ForwardedRef<HTMLLIElement>,
-) {
+) => {
   const ref = useObjectRef(forwardedRef);
   const {
     optionProps,
@@ -45,7 +45,7 @@ function ListBoxOptionBase<T extends object>(
       <span className={classNames(ellipsis, itemWrapper)}>{item.rendered}</span>
     </li>
   );
-}
+};
 
 export const ListBoxOption = forwardRef(ListBoxOptionBase) as <
   T extends object,

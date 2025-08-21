@@ -5,12 +5,11 @@ import type { ICompactTableFormatterProps } from './types';
 
 type IActionProps = {
   label: string;
-  trigger: (value: any) => any;
+  trigger: (value: unknown) => unknown;
 }[];
 
 export const FormatContextMenu = (props: IActionProps) => {
   const Component = ({ value }: ICompactTableFormatterProps) => {
-    const anyValue = value as any;
     return (
       <ContextMenu
         placement="bottom end"
@@ -28,7 +27,7 @@ export const FormatContextMenu = (props: IActionProps) => {
               key={value.toString()}
               label={prop.label}
               onClick={async () => {
-                return await prop.trigger(anyValue);
+                return await prop.trigger(value);
               }}
             />
           );

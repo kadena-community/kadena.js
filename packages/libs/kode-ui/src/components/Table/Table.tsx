@@ -21,11 +21,12 @@ export interface ITableProps<T>
 }
 
 export const TableRowGroup = ({
-  type: Element,
+  type,
   children,
   isStriped,
 }: ITableRowGroupProps) => {
   const { rowGroupProps } = useTableRowGroup();
+  const Element = type;
   return (
     <Element data-isstriped={isStriped} {...rowGroupProps}>
       {children}

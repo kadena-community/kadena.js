@@ -25,7 +25,7 @@ export interface IRadioGroupProps extends AriaRadioGroupProps {
 
 export const RadioContext = createContext<RadioGroupState | null>(null);
 
-export function RadioGroup(props: IRadioGroupProps) {
+export const RadioGroup = (props: IRadioGroupProps) => {
   const {
     children,
     description,
@@ -86,4 +86,4 @@ export function RadioGroup(props: IRadioGroupProps) {
       )}
     </div>
   );
-}
+};

@@ -18,7 +18,7 @@ export interface IRadioProps extends AriaRadioProps {
   inverse?: boolean;
 }
 
-export function Radio(props: IRadioProps) {
+export const Radio = (props: IRadioProps) => {
   const { children, isReadOnly } = props;
   const state = (useContext(RadioContext) as RadioGroupState) || {};
   const ref = useRef(null);
@@ -63,4 +63,4 @@ export function Radio(props: IRadioProps) {
       {children}
     </label>
   );
-}
+};

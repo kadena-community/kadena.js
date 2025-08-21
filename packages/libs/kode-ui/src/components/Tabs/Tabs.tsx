@@ -31,7 +31,7 @@ export interface ITabsProps<T>
   isContained?: boolean;
 }
 
-export function Tabs<T extends object>({
+export const Tabs = <T extends object>({
   className,
   borderPosition = 'top',
   inverse = false,
@@ -40,7 +40,7 @@ export function Tabs<T extends object>({
   tabPanelClassName,
   isContained,
   ...props
-}: ITabsProps<T>): ReactNode {
+}: ITabsProps<T>): ReactNode => {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -116,4 +116,4 @@ export function Tabs<T extends object>({
       />
     </div>
   );
-}
+};

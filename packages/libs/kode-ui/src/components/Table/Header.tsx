@@ -22,13 +22,13 @@ interface ITableHeaderRowProps<T> {
   variant: ITableProps<HTMLTableElement>['variant'];
 }
 
-export function TableHeaderRow<T extends object>({
+export const TableHeaderRow = <T extends object>({
   item,
   state,
   children,
   isSubtle = false,
   variant = 'default',
-}: ITableHeaderRowProps<T>) {
+}: ITableHeaderRowProps<T>) => {
   const ref = useRef(null);
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
@@ -41,7 +41,7 @@ export function TableHeaderRow<T extends object>({
       {children}
     </tr>
   );
-}
+};
 
 /*
  * This is a utility function for the width style while the column resizing is not implemented
@@ -62,11 +62,11 @@ interface ITableColumnHeaderProps<T> {
   variant: ITableProps<HTMLTableElement>['variant'];
 }
 
-export function TableColumnHeader<T extends object>({
+export const TableColumnHeader = <T extends object>({
   column,
   state,
   variant,
-}: ITableColumnHeaderProps<T>) {
+}: ITableColumnHeaderProps<T>) => {
   const ref = useRef(null);
   const { columnHeaderProps } = useTableColumnHeader(
     { node: column },
@@ -110,4 +110,4 @@ export function TableColumnHeader<T extends object>({
       </Stack>
     </th>
   );
-}
+};

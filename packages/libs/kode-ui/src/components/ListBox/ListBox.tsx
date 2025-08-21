@@ -15,10 +15,10 @@ interface IListBoxProps<T extends object> extends AriaListBoxOptions<T> {
   itemClassName?: string;
 }
 
-function ListBoxBase<T extends object>(
+const ListBoxBase = <T extends object>(
   props: IListBoxProps<T>,
   forwardedRef: ForwardedRef<HTMLUListElement>,
-) {
+) => {
   const ref = useObjectRef(forwardedRef);
   const { state, listClassName, itemClassName } = props;
   const { listBoxProps, labelProps } = useListBox(props, state, ref);
@@ -43,7 +43,7 @@ function ListBoxBase<T extends object>(
       </ul>
     </>
   );
-}
+};
 
 export const ListBox = forwardRef(ListBoxBase) as <T extends object>(
   props: IListBoxProps<T> & { ref?: Ref<HTMLUListElement> },

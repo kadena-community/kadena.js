@@ -36,10 +36,10 @@ export interface ISelectProps<T extends object = any>
   direction?: FormFieldDirection;
 }
 
-function SelectBase<T extends object>(
+const SelectBase = <T extends object>(
   props: ISelectProps<T>,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
-) {
+) => {
   const {
     size = 'md',
     fontType = 'ui',
@@ -145,7 +145,7 @@ function SelectBase<T extends object>(
       )}
     </Field>
   );
-}
+};
 
 export const Select = forwardRef(SelectBase) as <T extends object>(
   props: ISelectProps<T> & { ref?: ForwardedRef<HTMLButtonElement> },
