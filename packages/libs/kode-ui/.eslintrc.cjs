@@ -10,6 +10,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   rules: {
+    'react/prop-types': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react-hooks/exhaustive-deps': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',

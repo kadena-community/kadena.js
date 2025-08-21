@@ -13,7 +13,7 @@ const iconKeys = ['', ...Object.keys(icons)] as Array<Icons & ''>;
 
 const mapping = iconKeys.reduce(
   (acc, key) => {
-    if (key === '') return { ...acc, '': undefined };
+    if (!key) return { ...acc };
     acc[key as Icons] = renderIcon(key);
     return acc;
   },

@@ -39,9 +39,6 @@ import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
 import './storybook.css';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
-
 const meta: Meta<ISideBarProps> = {
   title: 'Patterns/SideBarLayout',
   parameters: {

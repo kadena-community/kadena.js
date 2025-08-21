@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { FC } from 'react';
 import React, { useState } from 'react';
 import {
   getVariants,
@@ -165,10 +166,7 @@ const meta: Meta<INumberFieldProps> = {
       control: {
         type: 'radio',
       },
-      options: {
-        Row: 'row',
-        Column: 'column',
-      },
+      options: ['row', 'column'],
       defaultValue: 'row',
     },
   },
@@ -192,25 +190,27 @@ export default meta;
 
 type Story = StoryObj<INumberFieldProps>;
 
+const NumberFieldStoryRender: FC<INumberFieldProps> = (props) => {
+  const [value, setValue] = useState<number | undefined>();
+  return (
+    <NumberField
+      {...props}
+      value={value}
+      onValueChange={setValue}
+      formatOptions={{
+        notation: 'standard',
+        compactDisplay: 'long',
+      }}
+    />
+  );
+};
+
 export const NumberFieldStory: Story = {
   name: 'NumberField',
   args: {
     value: 8,
   },
-  render: (props) => {
-    const [value, setValue] = useState<number | undefined>();
-    return (
-      <NumberField
-        {...props}
-        value={value}
-        onValueChange={setValue}
-        formatOptions={{
-          notation: 'standard',
-          compactDisplay: 'long',
-        }}
-      />
-    );
-  },
+  render: NumberFieldStoryRender,
 };
 
 export const WithoutLabel: Story = {
@@ -236,29 +236,31 @@ export const UsdFormat: Story = {
   },
 };
 
+const WithStartAddonRender: FC = () => {
+  const [value, setValue] = useState<number | undefined>();
+
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(value);
+      }}
+    >
+      <NumberField
+        label="With addon"
+        value={value}
+        onValueChange={setValue}
+        startVisual={<MonoAccountCircle />}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+};
+
 export const WithStartAddon: Story = {
   name: 'With start addon',
-  render: () => {
-    const [value, setValue] = useState<number | undefined>();
-
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(value);
-        }}
-      >
-        <NumberField
-          label="With addon"
-          value={value}
-          onValueChange={setValue}
-          startVisual={<MonoAccountCircle />}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+  render: WithStartAddonRender,
 };
 
 export const MinValue: Story = {
@@ -282,50 +284,51 @@ export const MinValue: Story = {
   },
 };
 
+const CustomErrorMessageRender = () => {
+  const [value, setValue] = useState<number>();
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <NumberField
+        label="Overiding native message"
+        validationBehavior="native"
+        isRequired
+        errorMessage={(validation) => {
+          if (validation.validationDetails.valueMissing) {
+            return 'Custom message for required';
+          }
+        }}
+      />
+
+      <NumberField
+        label="When was the first transaction in the KDA mainnet done?"
+        description={
+          value === 2019
+            ? 'You are a true believer 🚀'
+            : 'Dont randomly test 😒'
+        }
+        value={value}
+        isPositive={value === 2019}
+        onValueChange={setValue}
+        validationBehavior="aria"
+        isInvalid={!!value && value !== 2019}
+        errorMessage={'WOOOPS'}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+};
+
 export const CustomErrorMessage: Story = {
   name: 'Custom error message',
-  render: () => {
-    const [value, setValue] = useState<number>();
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <NumberField
-          label="Overiding native message"
-          validationBehavior="native"
-          isRequired
-          errorMessage={(validation) => {
-            if (validation.validationDetails.valueMissing) {
-              return 'Custom message for required';
-            }
-          }}
-        />
-
-        <NumberField
-          label="When was the first transaction in the KDA mainnet done?"
-          description={
-            value === 2019
-              ? 'You are a true believer 🚀'
-              : 'Dont randomly test 😒'
-          }
-          value={value}
-          isPositive={value === 2019}
-          onValueChange={setValue}
-          validationBehavior="aria"
-          isInvalid={!!value && value !== 2019}
-          errorMessage={'WOOOPS'}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+  render: CustomErrorMessageRender,
 };
 
 export const SmallWidth: Story = {
-  name: 'Small Width',
   args: {
     direction: 'column',
     placeholder: '0',

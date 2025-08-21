@@ -1,5 +1,5 @@
-import type { FC, MouseEventHandler } from 'react';
-import React, { forwardRef, useMemo } from 'react';
+import type { FC, MouseEventHandler, ReactElement } from 'react';
+import React, { forwardRef } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass } from '../sidebar.css';
 import type { ILinkProps } from './../../../components';
@@ -12,7 +12,7 @@ export interface ISideBarTreeItemProps {
   label: string;
   onPress?: (e: PressEvent) => void;
   href?: string;
-  component?: any;
+  component?: ReactElement;
   isActive?: boolean;
 }
 
@@ -49,23 +49,56 @@ export const SideBarTreeItem: FC<ISideBarTreeItemProps> = ({
     if (!isMediumDevice) {
       handleSetExpanded(false);
     }
-    if (onPress) onPress(e);
+    if (onPress) {
+      onPress(e as unknown as PressEvent);
+    }
   };
 
-  const LinkWrapper = useMemo(() => {
-    return href ? (component ? component : InnerAnchor) : InnerButton;
-  }, [component, href]);
+  const renderContent = () => {
+    const commonProps = {
+      className: sidebartreeItemClass,
+      'data-isactive': isActive !== undefined ? isActive : isActiveUrl(href),
+    };
 
-  return (
-    <li className={listItemClass} onClick={handlePress}>
-      <LinkWrapper
+    if (component) {
+      // Clone the custom component with the necessary props
+      return React.cloneElement(
+        component as ReactElement<Record<string, unknown>>,
+        {
+          ...commonProps,
+          href,
+          to: href,
+          children: label,
+        },
+      );
+    }
+
+    if (href) {
+      return (
+        <InnerAnchor
+          className={sidebartreeItemClass}
+          href={href}
+          to={href}
+          data-isactive={isActive !== undefined ? isActive : isActiveUrl(href)}
+        >
+          {label}
+        </InnerAnchor>
+      );
+    }
+
+    return (
+      <InnerButton
         className={sidebartreeItemClass}
-        href={href}
-        to={href}
         data-isactive={isActive !== undefined ? isActive : isActiveUrl(href)}
       >
         {label}
-      </LinkWrapper>
+      </InnerButton>
+    );
+  };
+
+  return (
+    <li className={listItemClass} role="button" onClick={handlePress}>
+      {renderContent()}
     </li>
   );
 };
