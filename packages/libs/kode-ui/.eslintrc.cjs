@@ -5,15 +5,22 @@ module.exports = {
   extends: [
     '@kadena-dev/eslint-config/profile/react',
     'plugin:storybook/recommended',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react-hooks/recommended',
   ],
   rules: {
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react/function-component-definition': 'off',
   },
+
   parserOptions: {
     tsconfigRootDir: __dirname,
     ecmaVersion: 'latest',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   env: {
     es6: true,
@@ -25,5 +32,11 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ['vitest.*.ts'],
+  ignorePatterns: [
+    'vitest.*.ts',
+    'dist',
+    '.storybook',
+    'storybook-static',
+    '.eslintrc.cjs',
+  ],
 };

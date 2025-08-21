@@ -67,10 +67,10 @@
     "styles"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.mjs",
+    "build": "pnpm run lint:src && crackle fix && crackle package && jiti scripts/fix-build.ts",
     "build:storybook": "storybook build",
     "chromatic": "chromatic -b build:storybook",
-    "dev": "rollup -w -c rollup.config.mjs",
+    "dev": "crackle dev",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -78,7 +78,7 @@
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint src --ext .js,.ts,.tsx",
+    "lint:src": "eslint src --ext .js,.ts,.tsx  --report-unused-disable-directives",
     "storybook": "storybook dev -p 6006",
     "storybook:prod": "storybook",
     "test": "vitest run",
@@ -121,6 +121,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3",
+    "@crackle/cli": "^0.16.0",
     "@design-sync/cli": "^0.11.3",
     "@design-sync/vanilla-extract-plugin": "^0.7.3",
     "@etchteam/storybook-addon-status": "^5.0.0",
@@ -129,8 +130,6 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@react-types/shared": "^3.22.0",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
     "@rushstack/eslint-config": "~3.6.9",
     "@storybook/addon-a11y": "^8.4.4",
     "@storybook/addon-controls": "^8.4.4",
@@ -153,7 +152,6 @@
     "@types/node": "^20.12.7",
     "@types/react": "^19.1.1",
     "@types/react-dom": "^19.1.1",
-    "@vanilla-extract/rollup-plugin": "^1.4.1",
     "@vanilla-extract/vite-plugin": "4.0.17",
     "@vanilla-extract/webpack-plugin": "2.3.7",
     "@vitest/coverage-v8": "^1.6.0",
@@ -171,12 +169,6 @@
     "prettier": "~3.2.5",
     "prop-types": "^15.8.1",
     "rimraf": "~5.0.1",
-    "rollup": "^4.17.2",
-    "rollup-plugin-delete": "^3.0.1",
-    "rollup-plugin-dts": "^6.2.1",
-    "rollup-plugin-esbuild": "^6.2.1",
-    "rollup-plugin-polyfill-node": "^0.13.0",
-    "rollup-plugin-preserve-use-client": "^3.0.1",
     "storybook": "^8.4.4",
     "storybook-dark-mode": "^4.0.2",
     "tiny-readdir-glob": "^1.2.1",
@@ -184,5 +176,9 @@
     "typescript": "5.4.5",
     "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
   }
 }

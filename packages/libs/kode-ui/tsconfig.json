@@ -6,12 +6,15 @@
     "types": ["node", "vitest-dom/extend-expect"],
     "skipLibCheck": true,
     "module": "ESNext",
+    "declaration": true,
     "declarationDir": "types",
     "outDir": "dist/esm",
     "allowJs": true,
     "moduleResolution": "Bundler",
-    "removeComments": true
+    "removeComments": true,
+    "plugins": [{ "name": "@vanilla-extract/css" }],
+    "noEmitOnError": false
   },
-  "include": ["src", "*.config.ts", "scripts"],
-  "exclude": ["node_modules"]
+  "include": ["src", "scripts"],
+  "exclude": ["node_modules", "dist"]
 }
