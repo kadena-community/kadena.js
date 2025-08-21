@@ -12,27 +12,29 @@ export type FlattenObject<T extends object, Ignored = never> = {
   [Key in ObjectPathLeaves<T, Ignored>]: string;
 };
 
+type FlattenObjectTokens = Record<string, unknown>;
+
 /**
  * Flattens an object to a single level object with dot notation
- * @param {Record<string, any>} tokens - The tokens to flatten
+ * @param {Record<string, unknown>} tokens - The tokens to flatten
  * @param {string[]} ignoredPaths - The paths to ignore
  */
-export function flattenObject<
-  T extends Record<string, unknown>,
-  Ignored = never,
->(tokens: T, ignoredPaths: readonly string[] = []): FlattenObject<T, Ignored> {
-  return flattenObjectHelper(tokens, ignoredPaths);
+export function flattenObject<T extends FlattenObjectTokens, Ignored = never>(
+  tokens: T,
+  ignoredPaths: readonly string[] = [],
+): FlattenObject<T, Ignored> {
+  return flattenObjectHelper<T, Ignored>(tokens, ignoredPaths);
 }
 
-function flattenObjectHelper(
-  tokens: Record<string, unknown>,
+function flattenObjectHelper<T extends FlattenObjectTokens, Ignored = never>(
+  tokens: FlattenObjectTokens,
   ignoredPaths: readonly string[] = [],
   prefix?: string,
-) {
+): FlattenObject<T, Ignored> {
   if (isString(tokens)) {
-    return { [prefix!]: tokens } as any;
+    return { [prefix!]: tokens } as unknown as FlattenObject<T, Ignored>;
   }
-  const flattenedTokens: any = {};
+  const flattenedTokens = {} as unknown as FlattenObject<T, Ignored>;
   for (const key in tokens) {
     if (ignoredPaths.includes(key)) {
       continue;
@@ -45,7 +47,7 @@ function flattenObjectHelper(
         flattenObjectHelper(item, ignoredPaths, newKey),
       );
     } else {
-      flattenedTokens[newKey] = item;
+      (flattenedTokens as FlattenObjectTokens)[newKey] = item;
     }
   }
   return flattenedTokens;

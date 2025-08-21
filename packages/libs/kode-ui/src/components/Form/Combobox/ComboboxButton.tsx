@@ -15,10 +15,10 @@ export interface IComboboxButtonProps<T extends object>
   className?: string;
   isInvalid?: boolean;
 }
-function ComboboxButtonBase<T extends object>(
+const ComboboxButtonBase = <T extends object>(
   props: IComboboxButtonProps<T>,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
-) {
+) => {
   const ref = useObjectRef(forwardedRef);
   const { buttonProps } = useButton(props, ref);
   const { isHovered, hoverProps } = useHover({
@@ -45,7 +45,7 @@ function ComboboxButtonBase<T extends object>(
       />
     </button>
   );
-}
+};
 
 export const ComboboxButton = forwardRef(ComboboxButtonBase) as <
   T extends object,

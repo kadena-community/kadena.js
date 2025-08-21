@@ -1,7 +1,7 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type { ForwardedRef, ReactElement } from 'react';
+import type { FC, ForwardedRef, ReactElement } from 'react';
 import React, { forwardRef, useMemo } from 'react';
 import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
 import { useFocusRing, useHover, useLink } from 'react-aria';
@@ -35,7 +35,7 @@ export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     children?: string | number | ReactElement;
     startVisual?: ReactElement;
     endVisual?: ReactElement;
-    component?: any;
+    component?: FC<unknown>;
     to?: string;
   };
 

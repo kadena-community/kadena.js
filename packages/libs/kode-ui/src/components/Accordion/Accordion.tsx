@@ -16,10 +16,10 @@ export interface IAccordionProps<T extends object = object>
  * This will be fixed when react-aria will release the hooks for the Accordion & AccordionItem.
  */
 
-function BaseAccordion<T extends object>(
+const BaseAccordion = <T extends object>(
   props: IAccordionProps<T>,
   forwardedRef: ForwardedRef<HTMLDivElement>,
-) {
+) => {
   const state = useTreeState<T>({
     ...props,
     selectionMode: props.selectionMode ?? 'single',
@@ -34,7 +34,7 @@ function BaseAccordion<T extends object>(
       ))}
     </div>
   );
-}
+};
 
 export const Accordion = forwardRef(BaseAccordion) as <T extends object>(
   props: IAccordionProps<T> & { ref?: ForwardedRef<HTMLDivElement> },

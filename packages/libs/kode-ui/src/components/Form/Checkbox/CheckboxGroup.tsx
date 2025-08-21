@@ -25,7 +25,7 @@ export interface ICheckboxGroupProps extends AriaCheckboxGroupProps {
 
 export const CheckboxContext = createContext<CheckboxGroupState | null>(null);
 
-export function CheckboxGroup(props: ICheckboxGroupProps) {
+export const CheckboxGroup = (props: ICheckboxGroupProps) => {
   const {
     children,
     description,
@@ -86,4 +86,4 @@ export function CheckboxGroup(props: ICheckboxGroupProps) {
       )}
     </div>
   );
-}
+};

@@ -1,6 +1,3 @@
-// eslint-disable-next-line @kadena-dev/no-eslint-disable
-/* eslint-disable @kadena-dev/typedef-var */
-
 const defaultOptions = {
   character: '*',
   maskLength: 4,

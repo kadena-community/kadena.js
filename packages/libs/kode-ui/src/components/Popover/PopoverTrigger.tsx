@@ -22,10 +22,10 @@ interface IPopoverTriggerProps
   children: ReactElement;
 }
 
-function PopoverTriggerBase(
+const PopoverTriggerBase = (
   props: IPopoverTriggerProps,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
-) {
+) => {
   const ref = useObjectRef(forwardedRef);
   const state = useOverlayTriggerState(props);
   const { triggerProps, overlayProps } = useOverlayTrigger(
@@ -54,6 +54,6 @@ function PopoverTriggerBase(
       )}
     </>
   );
-}
+};
 
 export const PopoverTrigger = forwardRef(PopoverTriggerBase);

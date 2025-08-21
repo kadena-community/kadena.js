@@ -1,4 +1,9 @@
-import type { FC, PropsWithChildren, ReactElement } from 'react';
+import type {
+  FC,
+  MouseEventHandler,
+  PropsWithChildren,
+  ReactElement,
+} from 'react';
 import React, { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { listItemClass, sidebartreeItemClass } from '../sidebar.css';
@@ -16,7 +21,7 @@ export interface ISideBarItemProps extends PropsWithChildren {
   onPress?: (e: PressEvent) => void;
   isAppContext?: boolean;
   href?: string;
-  component?: any;
+  component?: ReactElement;
   tree?: ReactElement | boolean;
   isActive?: boolean;
 }
@@ -44,7 +49,7 @@ export const SideBarItem: FC<ISideBarItemProps> = ({
     if (onPress) onPress(e);
   };
 
-  const handleLinkClick = (e: any) => {
+  const handleLinkClick: MouseEventHandler<HTMLLIElement> = (e) => {
     handlePress(e as unknown as PressEvent);
   };
 

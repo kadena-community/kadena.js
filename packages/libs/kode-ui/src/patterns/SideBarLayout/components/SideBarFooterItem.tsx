@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React from 'react';
 import type { PressEvent } from './../../../components';
 import { Button, Link } from './../../../components';
@@ -10,7 +10,7 @@ export interface ISideBarFooterItemProps extends PropsWithChildren {
   onPress?: (e: PressEvent) => void;
   isAppContext?: boolean;
   href?: string;
-  component?: any;
+  component?: ReactElement;
 }
 
 export const SideBarFooterItem: FC<ISideBarFooterItemProps> = ({

@@ -1,5 +1,6 @@
 import { MonoAccountBalance, MonoCopyAll } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { FC } from 'react';
 import React, { useState } from 'react';
 import { withContentWidth } from '../../../storyDecorators';
 import { getVariants } from '../../../storyDecorators/getVariants';
@@ -155,10 +156,7 @@ const meta: Meta<ITextFieldProps> = {
       control: {
         type: 'radio',
       },
-      options: {
-        Row: 'row',
-        Column: 'column',
-      },
+      options: ['row', 'column'],
       defaultValue: 'row',
     },
   },
@@ -182,12 +180,14 @@ export default meta;
 
 type Story = StoryObj<ITextFieldProps>;
 
+const TextFieldStoryRender: FC = (props) => {
+  const [value, setValue] = useState<string>('');
+  return <TextField {...props} value={value} onValueChange={setValue} />;
+};
+
 export const TextFieldStory: Story = {
   name: 'TextField',
-  render: (props) => {
-    const [value, setValue] = useState<string>('');
-    return <TextField {...props} value={value} onValueChange={setValue} />;
-  },
+  render: TextFieldStoryRender,
 };
 
 export const WithoutLabel: Story = {
@@ -233,201 +233,207 @@ export const Disabled: Story = {
   },
 };
 
-export const Variants: Story = {
-  render: (props) => {
-    const [value, setValue] = useState<string>('');
+const VariantsRender: FC = (props) => {
+  const [value, setValue] = useState<string>('');
 
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(value);
-        }}
-      >
-        <TextField
-          {...props}
-          size="sm"
-          label="Default"
-          placeholder="Default"
-          value={value}
-          onValueChange={setValue}
-          startVisual={<MonoAccountBalance />}
-          endAddon={
-            <Button isCompact variant="transparent">
-              Button
-            </Button>
-          }
-        />
-        <TextField
-          {...props}
-          size="md"
-          label="readonly"
-          variant="readonly"
-          placeholder="Readonly"
-          value={value}
-          onValueChange={setValue}
-          startVisual={<MonoAccountBalance />}
-          endAddon={<Button variant="transparent">Button</Button>}
-        />
-        <TextField
-          {...props}
-          size="md"
-          label="negative"
-          variant="negative"
-          placeholder="Negative"
-          value={value}
-          onValueChange={setValue}
-          startVisual={<MonoAccountBalance />}
-          endAddon={<Button variant="transparent">Button</Button>}
-        />
-        <TextField
-          {...props}
-          size="md"
-          label="positive"
-          variant="positive"
-          placeholder="Positive"
-          value={value}
-          onValueChange={setValue}
-          startVisual={<MonoAccountBalance />}
-          endAddon={<Button variant="transparent">Button</Button>}
-        />
-        <TextField
-          {...props}
-          size="md"
-          label="info"
-          variant="info"
-          placeholder="Info"
-          value={value}
-          onValueChange={setValue}
-          startVisual={<MonoAccountBalance />}
-          endAddon={<Button variant="transparent">Button</Button>}
-        />
-        <TextField
-          {...props}
-          size="md"
-          label="warning"
-          variant="warning"
-          placeholder="Warning"
-          value={value}
-          onValueChange={setValue}
-          startVisual={<MonoAccountBalance />}
-          endAddon={<Button variant="transparent">Button</Button>}
-        />
-      </Form>
-    );
-  },
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(value);
+      }}
+    >
+      <TextField
+        {...props}
+        size="sm"
+        label="Default"
+        placeholder="Default"
+        value={value}
+        onValueChange={setValue}
+        startVisual={<MonoAccountBalance />}
+        endAddon={
+          <Button isCompact variant="transparent">
+            Button
+          </Button>
+        }
+      />
+      <TextField
+        {...props}
+        size="md"
+        label="readonly"
+        variant="readonly"
+        placeholder="Readonly"
+        value={value}
+        onValueChange={setValue}
+        startVisual={<MonoAccountBalance />}
+        endAddon={<Button variant="transparent">Button</Button>}
+      />
+      <TextField
+        {...props}
+        size="md"
+        label="negative"
+        variant="negative"
+        placeholder="Negative"
+        value={value}
+        onValueChange={setValue}
+        startVisual={<MonoAccountBalance />}
+        endAddon={<Button variant="transparent">Button</Button>}
+      />
+      <TextField
+        {...props}
+        size="md"
+        label="positive"
+        variant="positive"
+        placeholder="Positive"
+        value={value}
+        onValueChange={setValue}
+        startVisual={<MonoAccountBalance />}
+        endAddon={<Button variant="transparent">Button</Button>}
+      />
+      <TextField
+        {...props}
+        size="md"
+        label="info"
+        variant="info"
+        placeholder="Info"
+        value={value}
+        onValueChange={setValue}
+        startVisual={<MonoAccountBalance />}
+        endAddon={<Button variant="transparent">Button</Button>}
+      />
+      <TextField
+        {...props}
+        size="md"
+        label="warning"
+        variant="warning"
+        placeholder="Warning"
+        value={value}
+        onValueChange={setValue}
+        startVisual={<MonoAccountBalance />}
+        endAddon={<Button variant="transparent">Button</Button>}
+      />
+    </Form>
+  );
+};
+
+export const Variants: Story = {
+  render: VariantsRender,
+};
+
+const NativeValidationRender: FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [minMaxLength, setMinMaxLength] = useState<string>('');
+  const [url, setUrl] = useState<string>('');
+  const [pattern, setPattern] = useState<string>('');
+
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(JSON.stringify({ email, minMaxLength, url, pattern }));
+      }}
+    >
+      <Text>
+        Keep in mind that native validation is only triggered when the a form is
+        submitted. for realtime validation use the them `isInvalid` prop.
+      </Text>
+      <TextField
+        isRequired
+        type="email"
+        validationBehavior="native"
+        label="email"
+        value={email}
+        onValueChange={setEmail}
+        placeholder="required (email)"
+        minLength={5}
+      />
+      <TextField
+        isRequired
+        validationBehavior="native"
+        label="min/max length"
+        value={minMaxLength}
+        onValueChange={setMinMaxLength}
+        placeholder="required (minLength 5, maxLength 10)"
+        minLength={5}
+        maxLength={10}
+      />
+
+      <TextField
+        isRequired
+        type="url"
+        validationBehavior="native"
+        label="url"
+        value={url}
+        onValueChange={setUrl}
+        placeholder="required (url)"
+      />
+
+      <TextField
+        isRequired
+        validationBehavior="native"
+        label="pattern"
+        value={pattern}
+        onValueChange={setPattern}
+        placeholder="required (account address pattern 'starts with k:')"
+        pattern="^k:"
+      />
+
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
 };
 
 export const NativeValidation: Story = {
   name: 'Native validation',
-  render: () => {
-    const [email, setEmail] = useState<string>('');
-    const [minMaxLength, setMinMaxLength] = useState<string>('');
-    const [url, setUrl] = useState<string>('');
-    const [pattern, setPattern] = useState<string>('');
+  render: NativeValidationRender,
+};
 
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(JSON.stringify({ email, minMaxLength, url, pattern }));
-        }}
-      >
-        <Text>
-          Keep in mind that native validation is only triggered when the a form
-          is submitted. for realtime validation use the them `isInvalid` prop.
-        </Text>
-        <TextField
-          isRequired
-          type="email"
-          validationBehavior="native"
-          label="email"
-          value={email}
-          onValueChange={setEmail}
-          placeholder="required (email)"
-          minLength={5}
-        />
-        <TextField
-          isRequired
-          validationBehavior="native"
-          label="min/max length"
-          value={minMaxLength}
-          onValueChange={setMinMaxLength}
-          placeholder="required (minLength 5, maxLength 10)"
-          minLength={5}
-          maxLength={10}
-        />
+const ServerValidationRender: FC = () => {
+  const [value, setValue] = useState<string>('');
 
-        <TextField
-          isRequired
-          type="url"
-          validationBehavior="native"
-          label="url"
-          value={url}
-          onValueChange={setUrl}
-          placeholder="required (url)"
-        />
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(value);
+      }}
+      validationErrors={{
+        test: 'This is an error message from the server',
+      }}
+    >
+      <Text>
+        Server error messages can be provided via the `validationErrors` prop on
+        the Form component. please find more info and examples in the{' '}
+        <a
+          href="https://react-spectrum.adobe.com/react-aria/forms.html?#server-validation"
+          target="_blank"
+          rel="noreferrer"
+        >
+          react-aria docs
+        </a>
+      </Text>
 
-        <TextField
-          isRequired
-          validationBehavior="native"
-          label="pattern"
-          value={pattern}
-          onValueChange={setPattern}
-          placeholder="required (account address pattern 'starts with k:')"
-          pattern="^k:"
-        />
-
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+      <TextField
+        validationBehavior="native"
+        name="test"
+        label="min/max length"
+        value={value}
+        onValueChange={setValue}
+        placeholder="required (minLength 5, maxLength 10)"
+        minLength={5}
+        maxLength={10}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
 };
 
 export const ServerValidation: Story = {
   name: 'Server validation',
-  render: () => {
-    const [value, setValue] = useState<string>('');
-
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(value);
-        }}
-        validationErrors={{
-          test: 'This is an error message from the server',
-        }}
-      >
-        <Text>
-          Server error messages can be provided via the `validationErrors` prop
-          on the Form component. please find more info and examples in the{' '}
-          <a
-            href="https://react-spectrum.adobe.com/react-aria/forms.html?#server-validation"
-            target="_blank"
-            rel="noreferrer"
-          >
-            react-aria docs
-          </a>
-        </Text>
-
-        <TextField
-          validationBehavior="native"
-          name="test"
-          label="min/max length"
-          value={value}
-          onValueChange={setValue}
-          placeholder="required (minLength 5, maxLength 10)"
-          minLength={5}
-          maxLength={10}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+  render: ServerValidationRender,
 };
 
 export const CustomValidation: Story = {
@@ -455,59 +461,61 @@ export const CustomValidation: Story = {
   },
 };
 
-export const CustomErrorMessage: Story = {
-  name: 'Custom error message',
-  render: () => {
-    const [value, setValue] = useState<string>('');
-    const v = value.toLowerCase();
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
+const CustomErrorMessageRender: FC = () => {
+  const [value, setValue] = useState<string>('');
+  const v = value.toLowerCase();
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <Grid
+        gap="md"
+        columns={{
+          xs: 2,
         }}
       >
-        <Grid
-          gap="md"
-          columns={{
-            xs: 2,
-          }}
-        >
-          <GridItem>
-            <TextField
-              label="Overiding native message"
-              validationBehavior="native"
-              isRequired
-              errorMessage={(validation) => {
-                if (validation.validationDetails.valueMissing) {
-                  return 'Custom message for required';
-                }
-              }}
-            />
-          </GridItem>
-          <GridItem>
-            <TextField
-              label="What is your favorite crypto token?"
-              description={
-                v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
+        <GridItem>
+          <TextField
+            label="Overiding native message"
+            validationBehavior="native"
+            isRequired
+            errorMessage={(validation) => {
+              if (validation.validationDetails.valueMissing) {
+                return 'Custom message for required';
               }
-              value={value}
-              variant="positive"
-              onValueChange={setValue}
-              validationBehavior="aria"
-              isInvalid={!!v && v !== 'kda'}
-              errorMessage={
-                v.startsWith('k')
-                  ? 'You are on the right track'
-                  : 'Wrong answer think again 🤔'
-              }
-            />
-          </GridItem>
-        </Grid>
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+            }}
+          />
+        </GridItem>
+        <GridItem>
+          <TextField
+            label="What is your favorite crypto token?"
+            description={
+              v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
+            }
+            value={value}
+            variant="positive"
+            onValueChange={setValue}
+            validationBehavior="aria"
+            isInvalid={!!v && v !== 'kda'}
+            errorMessage={
+              v.startsWith('k')
+                ? 'You are on the right track'
+                : 'Wrong answer think again 🤔'
+            }
+          />
+        </GridItem>
+      </Grid>
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+};
+
+export const CustomErrorMessage: Story = {
+  name: 'Custom error message',
+  render: CustomErrorMessageRender,
 };
 
 export const WithCopyButton: Story = {

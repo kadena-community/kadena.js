@@ -67,10 +67,10 @@
     "styles"
   ],
   "scripts": {
-    "build": "crackle fix && crackle package && jiti scripts/fix-build.ts",
+    "build": "pnpm run lint:src && crackle fix && crackle package && jiti scripts/fix-build.ts",
     "build:storybook": "storybook build",
     "chromatic": "chromatic -b build:storybook",
-    "dev": "crackle dev --shim=none",
+    "dev": "crackle dev",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -78,7 +78,7 @@
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint src --ext .js,.ts,.tsx",
+    "lint:src": "eslint src --ext .js,.ts,.tsx  --report-unused-disable-directives",
     "storybook": "storybook dev -p 6006",
     "storybook:prod": "storybook",
     "test": "vitest run",
@@ -121,7 +121,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3",
-    "@crackle/cli": "^0.15.1",
+    "@crackle/cli": "^0.16.0",
     "@design-sync/cli": "^0.11.3",
     "@design-sync/vanilla-extract-plugin": "^0.7.3",
     "@etchteam/storybook-addon-status": "^5.0.0",
@@ -176,5 +176,9 @@
     "typescript": "5.4.5",
     "vitest": "^1.6.0",
     "vitest-dom": "^0.1.1"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
   }
 }

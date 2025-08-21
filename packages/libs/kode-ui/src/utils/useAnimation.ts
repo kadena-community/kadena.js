@@ -27,12 +27,11 @@ export function useEnterAnimation(
 export function useExitAnimation(ref: RefObject<HTMLElement>, isOpen: boolean) {
   // State to trigger a re-render after animation is complete, which causes the element to be removed from the DOM.
   // Ref to track the state we're in, so we don't immediately reset isExiting to true after the animation.
-  let [isExiting, setExiting] = useState(false);
+  const [isExiting, setExiting] = useState(false);
   const [exitState, setExitState] = useState('idle');
 
   // If isOpen becomes false, set isExiting to true.
   if (!isOpen && ref.current && exitState === 'idle') {
-    isExiting = true;
     setExiting(true);
     setExitState('exiting');
   }

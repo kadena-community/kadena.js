@@ -21,7 +21,7 @@ export interface ICheckboxProps extends AriaCheckboxProps {
   onChange?: (isSelected: boolean) => void;
 }
 
-export function Checkbox(props: ICheckboxProps) {
+export const Checkbox = (props: ICheckboxProps) => {
   const state = useToggleState(props);
   const ref = useRef(null);
   const { inputProps, labelProps } = useCheckbox(props, state, ref);
@@ -55,4 +55,4 @@ export function Checkbox(props: ICheckboxProps) {
       {children}
     </label>
   );
-}
+};

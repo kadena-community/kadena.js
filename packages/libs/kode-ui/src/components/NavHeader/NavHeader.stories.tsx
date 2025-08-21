@@ -4,6 +4,7 @@ import {
   MonoUsb,
 } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { FC } from 'react';
 import React, { useState } from 'react';
 import { atoms } from '../../styles/atoms.css';
 import { SelectItem } from '../Form/Select';
@@ -79,60 +80,62 @@ const meta: Meta<StoryProps> = {
 
 type IStory = StoryObj<StoryProps>;
 
+const DynamicRender: FC<StoryProps> = ({ linksCount, navHeaderActiveLink }) => {
+  const activeHref = navHeaderActiveLink
+    ? Object.values(sampleNavItems).find(
+        (item) => item.children === navHeaderActiveLink,
+      )?.href
+    : undefined;
+  const [value, setValue] = useState<string>(sampleNetworkItems[0]);
+
+  return (
+    <NavHeader
+      logo={
+        <a href="">
+          <KadenaLogo height={40} />
+        </a>
+      }
+      activeHref={activeHref}
+    >
+      <NavHeaderLinkList>
+        {sampleNavItems.slice(0, linksCount).map((item, index) => (
+          <NavHeaderLink
+            key={index}
+            href={item.href}
+            onClick={(event) => console.log(item.children, { event })}
+          >
+            {item.children}
+          </NavHeaderLink>
+        ))}
+      </NavHeaderLinkList>
+      <NavHeaderButton endVisual={<MonoAccountCircle />} />
+      <NavHeaderButton
+        endVisual={<MonoContrast />}
+        className={atoms({ marginInlineEnd: 'sm' })}
+      />
+      <NavHeaderSelect
+        aria-label="Select Network"
+        selectedKey={value}
+        onSelectionChange={(value: any) => setValue(value)}
+        startVisual={<MonoUsb />}
+      >
+        {sampleNetworkItems.map((network) => (
+          <SelectItem key={network} textValue={network}>
+            {network}
+          </SelectItem>
+        ))}
+      </NavHeaderSelect>
+    </NavHeader>
+  );
+};
+
 export const Dynamic: IStory = {
   name: 'NavHeader',
   args: {
     linksCount: 3,
     navHeaderActiveLink: undefined,
   },
-  render: ({ linksCount, navHeaderActiveLink }) => {
-    const activeHref = navHeaderActiveLink
-      ? Object.values(sampleNavItems).find(
-          (item) => item.children === navHeaderActiveLink,
-        )?.href
-      : undefined;
-    const [value, setValue] = useState<string>(sampleNetworkItems[0]);
-
-    return (
-      <NavHeader
-        logo={
-          <a href="">
-            <KadenaLogo height={40} />
-          </a>
-        }
-        activeHref={activeHref}
-      >
-        <NavHeaderLinkList>
-          {sampleNavItems.slice(0, linksCount).map((item, index) => (
-            <NavHeaderLink
-              key={index}
-              href={item.href}
-              onClick={(event) => console.log(item.children, { event })}
-            >
-              {item.children}
-            </NavHeaderLink>
-          ))}
-        </NavHeaderLinkList>
-        <NavHeaderButton endVisual={<MonoAccountCircle />} />
-        <NavHeaderButton
-          endVisual={<MonoContrast />}
-          className={atoms({ marginInlineEnd: 'sm' })}
-        />
-        <NavHeaderSelect
-          aria-label="Select Network"
-          selectedKey={value}
-          onSelectionChange={(value: any) => setValue(value)}
-          startVisual={<MonoUsb />}
-        >
-          {sampleNetworkItems.map((network) => (
-            <SelectItem key={network} textValue={network}>
-              {network}
-            </SelectItem>
-          ))}
-        </NavHeaderSelect>
-      </NavHeader>
-    );
-  },
+  render: DynamicRender,
 };
 
 export default meta;

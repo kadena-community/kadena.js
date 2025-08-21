@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { useMedia } from 'react-use';
-import { Stack } from './../../../components';
 import { breakpoints } from './../../../styles';
 import { useLayout } from './LayoutProvider';
 import type { ISideBarItemProps } from './SideBarItem';
@@ -20,7 +19,9 @@ const getLocalStorageToggle = (label: string) => {
   return storage[`${label}`] ?? true;
 };
 
-export type ISideBarTreeProps = Omit<ISideBarItemProps, 'onPress'>;
+export type ISideBarTreeProps = Omit<ISideBarItemProps, 'onPress' | 'label'> & {
+  label: string;
+};
 export const SideBarTree: FC<ISideBarTreeProps> = ({
   visual,
   label,
@@ -59,16 +60,15 @@ export const SideBarTree: FC<ISideBarTreeProps> = ({
   };
 
   return (
-    <Stack onClick={toggleTree}>
-      <SideBarItem
-        visual={visual}
-        label={label}
-        tree={
-          !!(children && isExpanded && treeisExpaned) && (
-            <ul className={sidebartreeListClass}>{children}</ul>
-          )
-        }
-      ></SideBarItem>
-    </Stack>
+    <SideBarItem
+      onPress={toggleTree}
+      visual={visual}
+      label={label}
+      tree={
+        !!(children && isExpanded && treeisExpaned) && (
+          <ul className={sidebartreeListClass}>{children}</ul>
+        )
+      }
+    ></SideBarItem>
   );
 };

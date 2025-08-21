@@ -19,15 +19,15 @@ export const FieldCell: FC<IFieldCellProps> = ({
   isLoading = false,
   isMobile = false,
 }) => {
+  const Render = useMemo(() => {
+    return typeof field.render === 'function' && field.render
+      ? field.render
+      : FormatDefault();
+  }, []);
   if (
     (typeof field.key === 'string' || typeof field.key === 'object') &&
     (typeof field.render === 'function' || !field.render)
   ) {
-    const Render = useMemo(
-      () => (field.render ? field.render : FormatDefault()),
-      [],
-    );
-
     return (
       <Text
         as="span"

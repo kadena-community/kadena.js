@@ -12,7 +12,7 @@ import type { ISideBarLayoutLocation } from '../../types';
 export interface IAppContextProps {
   visual: React.ReactElement;
   label: string;
-  component?: any;
+  component?: FC<unknown>;
   onPress?: () => void;
   href?: string;
 }
@@ -42,8 +42,8 @@ export interface ILayoutContext {
   setRightAsideRef: (value?: HTMLDivElement | null) => void;
   isRightAsideExpanded: boolean;
   setIsRightAsideExpanded: (value: boolean) => void;
-  rightAsideOnClose?: () => void;
-  setRightAsideOnClose: (value: () => void) => void;
+  rightAsideOnClose?: (props: unknown) => void;
+  setRightAsideOnClose: (value?: (props: unknown) => void) => void;
   breadcrumbsRef?: HTMLDivElement | null;
   setBreadcrumbsRef: (value?: HTMLDivElement | null) => void;
   headerContextRef?: HTMLDivElement | null;
@@ -74,7 +74,7 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const [headerContextRef, setHeaderContextRefState] =
     useState<HTMLDivElement | null>(null);
   const [isRightAsideExpanded, setIsRightAsideExpanded] = useState(false);
-  const rightAsideOnCloseRef = useRef();
+  const rightAsideOnCloseRef = useRef<(props: unknown) => void>(undefined);
   const [rightAsideTitle, setRightAsideTitleState] = useState<
     string | undefined
   >('');
@@ -146,7 +146,7 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setHeaderContextRef = (value?: HTMLDivElement | null) => {
     setHeaderContextRefState(value ? value : null);
   };
-  const setRightAsideOnClose = (value?: any) => {
+  const setRightAsideOnClose = (value?: (props: unknown) => void) => {
     rightAsideOnCloseRef.current = value;
   };
 

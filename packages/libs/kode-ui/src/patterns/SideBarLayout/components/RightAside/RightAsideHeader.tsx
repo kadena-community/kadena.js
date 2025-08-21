@@ -2,11 +2,11 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useLayout } from '../LayoutProvider';
 
-export interface iRightAsideHeader {
+export interface IRightAsideHeader {
   label?: string;
 }
 
-export const RightAsideHeader: FC<iRightAsideHeader> = ({ label }) => {
+export const RightAsideHeader: FC<IRightAsideHeader> = ({ label }) => {
   const { setRightAsideTitle } = useLayout();
 
   useEffect(() => {

@@ -4,12 +4,16 @@ import { createPortal } from 'react-dom';
 import { useLayout } from '../LayoutProvider';
 import { rightAsideClass } from './style.css';
 
-export interface iRightAside extends PropsWithChildren {
+interface IRightAside extends PropsWithChildren {
   isOpen: boolean;
   onClose?: () => void;
 }
 
-export const RightAside: FC<iRightAside> = ({ children, isOpen, onClose }) => {
+export const RightAside: FC<IRightAside> = ({
+  children,
+  isOpen,
+  onClose = () => {},
+}) => {
   const { rightAsideRef, setRightAsideOnClose } = useLayout();
 
   useEffect(() => {

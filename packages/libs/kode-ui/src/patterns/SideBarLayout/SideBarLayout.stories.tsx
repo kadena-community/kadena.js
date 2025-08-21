@@ -39,9 +39,6 @@ import { SideBar } from './SideBar';
 import { SideBarLayout } from './SideBarLayout';
 import './storybook.css';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
-
 const meta: Meta<ISideBarProps> = {
   title: 'Patterns/SideBarLayout',
   parameters: {
@@ -140,12 +137,12 @@ const InnerLayout = () => {
                 <SideBarItem
                   visual={<MonoWifiTethering />}
                   label="Mainnet"
-                  href="javascript:void()"
+                  href="#"
                 />
                 <SideBarItem
                   visual={<MonoWifiTethering />}
                   label="Item with badge"
-                  href="javascript:void()"
+                  href="#"
                   endVisual={
                     <Badge size="sm" style="positive">
                       1
@@ -155,7 +152,7 @@ const InnerLayout = () => {
                 <SideBarItem
                   visual={<MonoWifiTethering />}
                   label="Item extra"
-                  href="javascript:void()"
+                  href="#"
                   endVisual={
                     <Badge size="sm" style="positive">
                       2
@@ -441,7 +438,7 @@ const NotificationsLayout = () => {
                 <SideBarItem
                   visual={<MonoWifiTethering />}
                   label="Mainnet"
-                  href="javascript:void()"
+                  href="#"
                 />
               </>
             }
@@ -525,8 +522,6 @@ const NotificationsLayout = () => {
 };
 
 export const Notifications: IStory = {
-  name: 'Notifications',
-
   args: {},
   render: () => {
     return (

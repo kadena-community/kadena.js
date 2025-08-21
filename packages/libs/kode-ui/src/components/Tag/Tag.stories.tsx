@@ -1,5 +1,6 @@
 import { MonoEditNote } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { FC } from 'react';
 import React, { useState } from 'react';
 import { Stack } from '..';
 import type { ITagGroupProps } from '../Tag';
@@ -26,24 +27,6 @@ const meta: Meta<ITagGroupProps> = {
         type: 'text',
       },
     },
-    onRemove: {
-      description: 'Callback when a tag is removed',
-      control: {
-        type: null,
-      },
-    },
-    disabledKeys: {
-      description: 'Keys of tags that are disabled',
-      control: {
-        type: null,
-      },
-    },
-    className: {
-      description: "Optional classnames to add to the tag's container",
-      control: {
-        type: null,
-      },
-    },
   },
 };
 
@@ -60,7 +43,9 @@ const tags = [
 export const Group: Story = {
   name: 'Group of tags',
   args: {
-    label: undefined,
+    label: 'label here',
+    className: '',
+    tagAsChild: false,
   },
   render: ({ label }) => {
     return (
@@ -73,45 +58,49 @@ export const Group: Story = {
   },
 };
 
+const RemovableRender: FC = () => {
+  const [list, setList] = useState(tags);
+
+  return (
+    <TagGroup
+      label="Filter Categories"
+      onRemove={(keys) => {
+        setList(list.filter((item) => !keys.has(item.id)));
+      }}
+    >
+      {list.map((item) => (
+        <TagItem key={item.id}>{item.name}</TagItem>
+      ))}
+    </TagGroup>
+  );
+};
+
 export const Removable: Story = {
   name: 'Removable tags',
-  render: () => {
-    const [list, setList] = useState(tags);
+  render: RemovableRender,
+};
 
-    return (
-      <TagGroup
-        label="Filter Categories"
-        onRemove={(keys) => {
-          setList(list.filter((item) => !keys.has(item.id)));
-        }}
-      >
-        {list.map((item) => (
-          <TagItem key={item.id}>{item.name}</TagItem>
-        ))}
-      </TagGroup>
-    );
-  },
+const DisabledRender: FC = () => {
+  const [list, setList] = useState(tags);
+
+  return (
+    <TagGroup
+      label="Filter Categories"
+      onRemove={(keys) => {
+        setList(list.filter((item) => !keys.has(item.id)));
+      }}
+      disabledKeys={['2']}
+    >
+      {list.map((item) => (
+        <TagItem key={item.id}>{item.name}</TagItem>
+      ))}
+    </TagGroup>
+  );
 };
 
 export const Disabled: Story = {
   name: 'Disabled tag',
-  render: () => {
-    const [list, setList] = useState(tags);
-
-    return (
-      <TagGroup
-        label="Filter Categories"
-        onRemove={(keys) => {
-          setList(list.filter((item) => !keys.has(item.id)));
-        }}
-        disabledKeys={['2']}
-      >
-        {list.map((item) => (
-          <TagItem key={item.id}>{item.name}</TagItem>
-        ))}
-      </TagGroup>
-    );
-  },
+  render: DisabledRender,
 };
 
 export const AsChild: Story = {

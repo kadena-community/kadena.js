@@ -1,5 +1,6 @@
 import { MonoAdd } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { FC } from 'react';
 import React, { useState } from 'react';
 import {
   getVariants,
@@ -190,6 +191,11 @@ export default meta;
 
 type Story = StoryObj<ITextareaFieldProps>;
 
+const TextareaFieldStoryRender: FC = (props) => {
+  const [value, setValue] = useState<string>('');
+  return <TextareaField {...props} value={value} onValueChange={setValue} />;
+};
+
 export const TextareaFieldStory: Story = {
   name: 'TextareaField',
   args: {
@@ -211,10 +217,7 @@ export const TextareaFieldStory: Story = {
     autoResize: false,
     errorMessage: '',
   },
-  render: (props) => {
-    const [value, setValue] = useState<string>('');
-    return <TextareaField {...props} value={value} onValueChange={setValue} />;
-  },
+  render: TextareaFieldStoryRender,
 };
 
 export const WithoutLabel: Story = {
@@ -224,107 +227,112 @@ export const WithoutLabel: Story = {
   },
 };
 
-export const WithAddon: Story = {
-  name: 'With addon',
-  render: () => {
-    const [value, setValue] = useState<string>('');
+const WithAddonRender: FC = () => {
+  const [value, setValue] = useState<string>('');
 
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(value);
-        }}
-      >
-        <TextareaField
-          label="With addon"
-          value={value}
-          onValueChange={setValue}
-          endAddon={<Button endVisual={<MonoAdd />} isCompact />}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(value);
+      }}
+    >
+      <TextareaField
+        label="With addon"
+        value={value}
+        onValueChange={setValue}
+        endAddon={<Button endVisual={<MonoAdd />} isCompact />}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
 };
 
+export const WithAddon: Story = {
+  name: 'With addon',
+  render: WithAddonRender,
+};
+
+const NativeValidationRender: FC = () => {
+  const [value, setValue] = useState<string>('');
+
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(value);
+      }}
+    >
+      <Text>
+        Keep in mind that native validation is only triggered when the a form is
+        submitted. for realtime validation use the them `isInvalid` prop.
+      </Text>
+
+      <TextareaField
+        isRequired
+        validationBehavior="native"
+        label="min/max length"
+        value={value}
+        onValueChange={setValue}
+        placeholder="required (minLength 5, maxLength 10)"
+        minLength={5}
+        maxLength={10}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+};
 export const NativeValidation: Story = {
   name: 'Native validation',
-  render: () => {
-    const [value, setValue] = useState<string>('');
+  render: NativeValidationRender,
+};
 
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(value);
-        }}
-      >
-        <Text>
-          Keep in mind that native validation is only triggered when the a form
-          is submitted. for realtime validation use the them `isInvalid` prop.
-        </Text>
+const ServerValidationRender: FC = () => {
+  const [value, setValue] = useState<string>('');
 
-        <TextareaField
-          isRequired
-          validationBehavior="native"
-          label="min/max length"
-          value={value}
-          onValueChange={setValue}
-          placeholder="required (minLength 5, maxLength 10)"
-          minLength={5}
-          maxLength={10}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(value);
+      }}
+      validationErrors={{
+        test: 'This is an error message from the server',
+      }}
+    >
+      <Text>
+        Server error messages can be provided via the `validationErrors` prop on
+        the Form component. please find more info and examples in the{' '}
+        <a
+          href="https://react-spectrum.adobe.com/react-aria/forms.html?#server-validation"
+          target="_blank"
+          rel="noreferrer"
+        >
+          react-aria docs
+        </a>
+      </Text>
+
+      <TextareaField
+        validationBehavior="native"
+        name="test"
+        label="min/max length"
+        value={value}
+        onValueChange={setValue}
+        placeholder="required (minLength 5, maxLength 10)"
+        minLength={5}
+        maxLength={10}
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
 };
 
 export const ServerValidation: Story = {
   name: 'Server validation',
-  render: () => {
-    const [value, setValue] = useState<string>('');
-
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(value);
-        }}
-        validationErrors={{
-          test: 'This is an error message from the server',
-        }}
-      >
-        <Text>
-          Server error messages can be provided via the `validationErrors` prop
-          on the Form component. please find more info and examples in the{' '}
-          <a
-            href="https://react-spectrum.adobe.com/react-aria/forms.html?#server-validation"
-            target="_blank"
-            rel="noreferrer"
-          >
-            react-aria docs
-          </a>
-        </Text>
-
-        <TextareaField
-          validationBehavior="native"
-          name="test"
-          label="min/max length"
-          value={value}
-          onValueChange={setValue}
-          placeholder="required (minLength 5, maxLength 10)"
-          minLength={5}
-          maxLength={10}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+  render: ServerValidationRender,
 };
 
 export const CustomValidation: Story = {
@@ -352,49 +360,50 @@ export const CustomValidation: Story = {
   },
 };
 
+const CustomErrorMessageRender: FC = () => {
+  const [value, setValue] = useState<string>('');
+  const v = value.toLowerCase();
+  return (
+    <Form
+      className={formStoryClass}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <TextareaField
+        label="Overiding native message"
+        validationBehavior="native"
+        isRequired
+        errorMessage={(validation) => {
+          if (validation.validationDetails.valueMissing) {
+            return 'Custom message for required';
+          }
+        }}
+      />
+
+      <TextareaField
+        label="What is your favorite crypto token?"
+        description={
+          v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
+        }
+        value={value}
+        isPositive={v === 'kda'}
+        onValueChange={setValue}
+        validationBehavior="aria"
+        isInvalid={!!v && v !== 'kda'}
+        errorMessage={
+          v.startsWith('k')
+            ? 'You are on the right track'
+            : 'Wrong answer think again 🤔'
+        }
+      />
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+};
 export const CustomErrorMessage: Story = {
   name: 'Custom error message',
-  render: () => {
-    const [value, setValue] = useState<string>('');
-    const v = value.toLowerCase();
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <TextareaField
-          label="Overiding native message"
-          validationBehavior="native"
-          isRequired
-          errorMessage={(validation) => {
-            if (validation.validationDetails.valueMissing) {
-              return 'Custom message for required';
-            }
-          }}
-        />
-
-        <TextareaField
-          label="What is your favorite crypto token?"
-          description={
-            v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
-          }
-          value={value}
-          isPositive={v === 'kda'}
-          onValueChange={setValue}
-          validationBehavior="aria"
-          isInvalid={!!v && v !== 'kda'}
-          errorMessage={
-            v.startsWith('k')
-              ? 'You are on the right track'
-              : 'Wrong answer think again 🤔'
-          }
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
+  render: CustomErrorMessageRender,
 };
 
 export const WithCopyButton: Story = {

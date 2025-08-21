@@ -31,13 +31,13 @@ const Dot = ({ className }: { className: string }) => (
   </svg>
 );
 
-function Radio({ isSelected }: { isSelected?: boolean }) {
+const Radio = ({ isSelected }: { isSelected?: boolean }) => {
   return (
     <span className={boxClass} data-selected={isSelected} aria-hidden>
       <Dot className={iconClass} />
     </span>
   );
-}
+};
 
 export function TableSelectionCell<T>({
   cell,

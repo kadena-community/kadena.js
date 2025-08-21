@@ -22,10 +22,10 @@ export interface ISelectButtonProps<T extends object> extends AriaButtonProps {
   startIcon?: ReactNode;
   size: 'sm' | 'md' | 'lg';
 }
-function SelectButtonBase<T extends object>(
+const SelectButtonBase = <T extends object>(
   props: ISelectButtonProps<T>,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
-) {
+) => {
   const ref = useObjectRef(forwardedRef);
   const { buttonProps } = useButton(props, ref);
   const { isHovered, hoverProps } = useHover({
@@ -64,7 +64,7 @@ function SelectButtonBase<T extends object>(
       </span>
     </button>
   );
-}
+};
 
 export const SelectButton = forwardRef(SelectButtonBase) as <T extends object>(
   props: ISelectButtonProps<T> & { ref?: Ref<HTMLButtonElement> },

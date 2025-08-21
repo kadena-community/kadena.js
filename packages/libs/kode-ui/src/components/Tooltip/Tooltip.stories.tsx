@@ -1,5 +1,6 @@
 import { MonoWarningAmber } from '@kadena/kode-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { FC } from 'react';
 import React from 'react';
 import { onLayer1 } from '../../storyDecorators';
 import { atoms } from '../../styles/atoms.css';
@@ -46,20 +47,20 @@ const meta: Meta<ITooltipProps> = {
       description:
         'The delay in milliseconds before the tooltip is shown when the user hovers or focuses the element.',
       table: {
-        defaultValue: { summary: 500 },
+        defaultValue: { summary: '500' },
       },
     },
     closeDelay: {
       description:
         'The delay in milliseconds before the tooltip is hidden when the user stops hovering or focusing the element.',
       table: {
-        defaultValue: { summary: 300 },
+        defaultValue: { summary: '300' },
       },
     },
     isDisabled: {
       description: 'Disables the tooltip when set to true.',
       table: {
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     isOpen: {
@@ -68,7 +69,7 @@ const meta: Meta<ITooltipProps> = {
         type: 'boolean',
       },
       table: {
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     isCompact: {
@@ -77,13 +78,13 @@ const meta: Meta<ITooltipProps> = {
         type: 'boolean',
       },
       table: {
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     defaultOpen: {
       description: 'Sets the initial open state of the tooltip.',
       table: {
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -239,6 +240,36 @@ export const DefaultOpenBottom: Story = {
   },
 };
 
+const ControlledRender: FC<ITooltipProps> = ({
+  content,
+  position,
+  isDisabled,
+  delay,
+  closeDelay,
+}) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <>
+      <div className={atoms({ marginBlockEnd: 'xxxl' })}>
+        <Button onPress={() => setIsOpen(!isOpen)}>
+          {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
+        </Button>
+      </div>
+      <Tooltip
+        content={content}
+        position={position}
+        isDisabled={isDisabled}
+        delay={delay}
+        closeDelay={closeDelay}
+        isOpen={isOpen}
+      >
+        <MonoWarningAmber />
+      </Tooltip>
+    </>
+  );
+};
+
 export const Controlled: Story = {
   name: 'Tooltip that is controlled by a button',
   args: {
@@ -248,27 +279,5 @@ export const Controlled: Story = {
     delay: 500,
     closeDelay: 300,
   },
-  render: ({ content, position, isDisabled, delay, closeDelay }) => {
-    const [isOpen, setIsOpen] = React.useState(false);
-
-    return (
-      <>
-        <div className={atoms({ marginBlockEnd: 'xxxl' })}>
-          <Button onPress={() => setIsOpen(!isOpen)}>
-            {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
-          </Button>
-        </div>
-        <Tooltip
-          content={content}
-          position={position}
-          isDisabled={isDisabled}
-          delay={delay}
-          closeDelay={closeDelay}
-          isOpen={isOpen}
-        >
-          <MonoWarningAmber />
-        </Tooltip>
-      </>
-    );
-  },
+  render: ControlledRender,
 };

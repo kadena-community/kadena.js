@@ -49,10 +49,10 @@ export interface INumberFieldProps extends PickedAriaNumberFieldProps {
   direction?: IFormFieldHeaderProps['direction'];
 }
 
-export function NumberFieldBase(
+export const NumberFieldBase = (
   props: INumberFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
-) {
+) => {
   const ref = useObjectRef<ElementRef<'input'>>(forwardedRef);
   const isDisabled = props.isDisabled || props.disabled;
   const { locale } = useLocale();
@@ -152,6 +152,6 @@ export function NumberFieldBase(
       />
     </Field>
   );
-}
+};
 
 export const NumberField = forwardRef(NumberFieldBase);

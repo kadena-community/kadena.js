@@ -15,7 +15,7 @@ export interface ISwitchButtonProps extends AriaToggleButtonProps {
   offVisual?: ReactElement;
 }
 
-export function SwitchButton(props: ISwitchButtonProps) {
+export const SwitchButton = (props: ISwitchButtonProps) => {
   const ref = useRef<HTMLButtonElement | null>(null);
   const { isHovered, hoverProps } = useHover(props);
   const state = useToggleState(props);
@@ -35,4 +35,4 @@ export function SwitchButton(props: ISwitchButtonProps) {
       <span>{props.offVisual ? props.offVisual : null}</span>
     </button>
   );
-}
+};
