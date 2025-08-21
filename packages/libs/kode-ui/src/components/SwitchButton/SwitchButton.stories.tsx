@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
-
 import { MonoAdd, MonoRemove } from '@kadena/kode-icons/system';
+import type { Meta, StoryObj } from '@storybook/react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 import { Stack } from '../Layout';
 import type { ISwitchButtonProps } from './SwitchButton';
 import { SwitchButton } from './SwitchButton';
@@ -33,42 +33,45 @@ const meta: Meta<ISwitchButtonProps> = {
 
 type SwitchButtonStoryType = StoryObj<ISwitchButtonProps>;
 
+// when using useState in the Render component, you have to write it as seperate function
+const BaseRender: FC<ISwitchButtonProps> = () => {
+  const [selected, setSelected] = useState(false);
+  const [selected2, setSelected2] = useState(true);
+  const [selected3, setSelected3] = useState(false);
+  return (
+    <Stack flexDirection="column" gap="xl">
+      <SwitchButton
+        isSelected={selected}
+        onPress={() => setSelected((v) => !v)}
+      />
+      <SwitchButton
+        isSelected={selected2}
+        onPress={() => setSelected2((v) => !v)}
+        onVisual={<MonoAdd />}
+        offVisual={<MonoRemove />}
+      />
+
+      <SwitchButton
+        isDisabled
+        isSelected={selected3}
+        onPress={() => setSelected3((v) => !v)}
+        offVisual={<MonoRemove />}
+      />
+      <SwitchButton
+        isDisabled
+        isSelected={true}
+        onPress={() => setSelected3((v) => !v)}
+        onVisual={<MonoAdd />}
+      />
+    </Stack>
+  );
+};
+
 export const Base: SwitchButtonStoryType = {
   args: {
     'aria-label': 'Check this toggle',
   },
-  render: (props: ISwitchButtonProps) => {
-    const [selected, setSelected] = useState(false);
-    const [selected2, setSelected2] = useState(true);
-    const [selected3, setSelected3] = useState(false);
-    return (
-      <Stack flexDirection="column" gap="xl">
-        <SwitchButton
-          isSelected={selected}
-          onPress={() => setSelected((v) => !v)}
-        />
-        <SwitchButton
-          isSelected={selected2}
-          onPress={() => setSelected2((v) => !v)}
-          onVisual={<MonoAdd />}
-          offVisual={<MonoRemove />}
-        />
-
-        <SwitchButton
-          isDisabled
-          isSelected={selected3}
-          onPress={() => setSelected3((v) => !v)}
-          offVisual={<MonoRemove />}
-        />
-        <SwitchButton
-          isDisabled
-          isSelected={true}
-          onPress={() => setSelected3((v) => !v)}
-          onVisual={<MonoAdd />}
-        />
-      </Stack>
-    );
-  },
+  render: BaseRender,
 };
 
 export default meta;

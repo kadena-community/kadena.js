@@ -48,7 +48,7 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
   onValueChange?: (value: string) => void;
 }
 
-export function TextFieldBase(
+export const TextFieldBase = (
   {
     className,
     endAddon,
@@ -64,7 +64,7 @@ export function TextFieldBase(
     ...props
   }: ITextFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
-) {
+) => {
   const ref = useObjectRef<ElementRef<'input'>>(forwardedRef);
   const [isTouched, setIsTouched] = useState(false);
   const isDisabled = props.isDisabled || props.disabled;
@@ -135,6 +135,6 @@ export function TextFieldBase(
       />
     </Field>
   );
-}
+};
 
 export const TextField = forwardRef(TextFieldBase);

@@ -7,6 +7,8 @@ interface IProps {
   SSRTime?: string;
 }
 
+// because SSR is an abrieviation for Server-Side Rendering, we dont have to use camelCase
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Version: FC<IProps> = ({ repo, sha = 'unknown', SSRTime }) => {
   useEffect(() => {
     const commentStr = `-----<{{@ release sha: ${sha} @}}>------->

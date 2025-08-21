@@ -26,4 +26,4 @@ export const iconControl = {
   },
   options: iconKeys,
   mapping,
-};
+} as const;

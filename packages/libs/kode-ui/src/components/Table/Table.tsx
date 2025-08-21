@@ -5,7 +5,6 @@ import React, { useRef } from 'react';
 import type { AriaTableProps } from 'react-aria';
 import { useTable, useTableRowGroup } from 'react-aria';
 import { useTableState } from 'react-stately';
-
 import { TableCell, TableRow } from './Body';
 import { TableColumnHeader, TableHeaderRow } from './Header';
 import { table, tableVariants, tableWrapper } from './Table.css';
@@ -21,7 +20,20 @@ export interface ITableProps<T>
   variant?: 'default' | 'open';
 }
 
-export function Table<T extends object>(props: ITableProps<T>) {
+export const TableRowGroup = ({
+  type: Element,
+  children,
+  isStriped,
+}: ITableRowGroupProps) => {
+  const { rowGroupProps } = useTableRowGroup();
+  return (
+    <Element data-isstriped={isStriped} {...rowGroupProps}>
+      {children}
+    </Element>
+  );
+};
+
+export const Table = <T extends object>(props: ITableProps<T>) => {
   const scrollRef = useRef(null);
 
   const state = useTableState({
@@ -123,24 +135,10 @@ export function Table<T extends object>(props: ITableProps<T>) {
       </table>
     </div>
   );
-}
+};
 
 export interface ITableRowGroupProps {
   type: 'thead' | 'tbody';
   isStriped?: boolean;
   children?: React.ReactNode;
-}
-
-export function TableRowGroup({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  type: Element,
-  children,
-  isStriped,
-}: ITableRowGroupProps) {
-  const { rowGroupProps } = useTableRowGroup();
-  return (
-    <Element data-isstriped={isStriped} {...rowGroupProps}>
-      {children}
-    </Element>
-  );
 }

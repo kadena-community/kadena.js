@@ -52,10 +52,10 @@ export interface IPopoverProps
     OverlayTriggerProps,
     ICommonProps {}
 
-function PopoverBase(
+const PopoverBase = (
   props: IPopoverProps,
   forwardedRef: ForwardedRef<HTMLDivElement>,
-) {
+) => {
   const ref = useObjectRef(forwardedRef);
   const localState = useOverlayTriggerState(props);
   const state = props.state || localState;
@@ -74,19 +74,19 @@ function PopoverBase(
       isExiting={isExiting}
     />
   );
-}
+};
 
 interface IPopoverInnerProps extends AriaPopoverProps, IPopoverProps {
   state: OverlayTriggerState;
 }
 
-function PopoverInner({
+const PopoverInner = ({
   state,
   isExiting,
   portalContainer,
   resizeToTrigger = true,
   ...props
-}: IPopoverInnerProps) {
+}: IPopoverInnerProps) => {
   const { popoverProps, underlayProps, arrowProps, placement } = usePopover(
     {
       ...props,
@@ -134,6 +134,6 @@ function PopoverInner({
       </div>
     </Overlay>
   );
-}
+};
 
 export const Popover = forwardRef(PopoverBase);

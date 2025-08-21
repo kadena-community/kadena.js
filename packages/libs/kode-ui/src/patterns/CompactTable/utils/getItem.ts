@@ -1,8 +1,9 @@
+import type { ReactElement } from 'react';
 import type { ITableField } from '../LoadingSkeleton/types';
 
 export interface IFieldCellProps {
   field: ITableField;
-  item: any;
+  item: ReactElement;
   isLoading?: boolean;
   isMobile?: boolean;
 }
@@ -22,7 +23,7 @@ export interface IFieldCellProps {
  */
 export const getItem = (
   item: IFieldCellProps['item'],
-  key?: string | [],
+  key?: string | string[],
 ): any => {
   if (!key) return item;
 
