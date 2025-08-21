@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import { useMountedState } from './useMountedState';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AsyncFn = (...args: any[]) => Promise<any>;
 export type AsyncState<T> =
   | {

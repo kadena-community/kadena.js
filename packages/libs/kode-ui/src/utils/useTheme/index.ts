@@ -32,7 +32,7 @@ interface IUseThemeReturnProps {
   rotateTheme: () => void;
 }
 
-const getTheme = (key: string) => {
+const getTheme = (key: string): ITheme | undefined => {
   if (isServer) return undefined;
   let theme: ITheme | undefined = undefined;
   try {
@@ -50,7 +50,7 @@ export const useTheme = ({
   const [rotateThemeState, setRotateThemeState] = useState<
     ITheme | undefined
   >();
-  const [theme, setThemeState] = useState(() =>
+  const [theme, setThemeState] = useState<ITheme | undefined>(() =>
     lockedTheme ? lockedTheme : getTheme(storageKey),
   );
 

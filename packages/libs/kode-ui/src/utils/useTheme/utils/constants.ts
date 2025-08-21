@@ -1,10 +1,10 @@
 export const MEDIA = '(prefers-color-scheme: dark)';
 export const storageKey = 'theme';
-export enum Themes {
-  system = 'system',
-  light = 'light',
-  dark = 'dark',
-}
+export const Themes = {
+  system: 'system',
+  light: 'light',
+  dark: 'dark',
+} as const;
 export const isServer = typeof window === 'undefined';
 export const defaultTheme = Themes.system;
 
