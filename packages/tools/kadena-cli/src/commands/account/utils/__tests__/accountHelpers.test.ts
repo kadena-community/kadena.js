@@ -69,7 +69,7 @@ describe('readAccountFromFile', () => {
     await expect(
       async () => await services.account.get(accountAliasFile),
     ).rejects.toThrowError(
-      'Error parsing account file: publicKeys: Required\npredicate: Required',
+      'Error parsing account file: \n  - publicKeys: Required\n  - predicate: Required',
     );
   });
 });

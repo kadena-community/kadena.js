@@ -70,7 +70,7 @@ const templatePartialMetaSchema = z.object({
   ttl: z.number().optional(),
 });
 
-const templatePartialSchema = z
+export const templatePartialSchema = z
   .object({
     payload: z.object({
       exec: z.object({

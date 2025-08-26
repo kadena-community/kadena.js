@@ -1,47 +1,50 @@
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import { coreEvents } from '@/services/graph/eventSubscription.graph';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { supply } from '@/services/supply';
 import { getAsset } from '@/utils/getAsset';
-import type * as Apollo from '@apollo/client';
+
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 
-export type EventSubscriptionQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
-
-export const getEventsDocument = (
-  variables: EventSubscriptionQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
-
-export const useSupply = () => {
+export const useSupply = (asset?: IAsset) => {
   const [data, setData] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { account } = useAccount();
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.SUPPLY`,
+      qualifiedName: `${getAsset(asset)}.SUPPLY`,
     },
   });
 
-  const init = async () => {
-    if (!account) return;
-    const res = await supply({
-      account: account,
-    });
+  useEffect(() => {
+    if (!asset) return;
 
-    if (typeof res === 'number') {
-      setData(res);
-    }
-  };
+    const init = async (asset: IAsset) => {
+      if (isLoading || !account || isMounted) return;
+      setIsLoading(true);
+      setIsMounted(true);
+      const res = await supply(
+        {
+          account: account,
+        },
+        asset,
+      );
+
+      if (typeof res === 'number') {
+        setData(res);
+      }
+      setIsLoading(false);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    init(asset);
+  }, [account?.address, asset?.uuid, isLoading, isMounted]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init();
-  }, [account]);
+    setIsMounted(false);
+  }, [asset?.uuid]);
 
   useEffect(() => {
     if (!subscriptionData?.events?.length) return;

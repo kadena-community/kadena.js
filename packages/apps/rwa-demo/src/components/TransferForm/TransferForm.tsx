@@ -1,17 +1,17 @@
 import { useAccount } from '@/hooks/account';
+import { useAsset } from '@/hooks/asset';
 import { useForcedTransferTokens } from '@/hooks/forcedTransferTokens';
 import { useGetFrozenTokens } from '@/hooks/getFrozenTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
-import { useGetInvestors } from '@/hooks/getInvestors';
 import { useTransferTokens } from '@/hooks/transferTokens';
+import { useUser } from '@/hooks/user';
 import type { IForcedTransferTokensProps } from '@/services/forcedTransferTokens';
+import { isFrozen } from '@/services/isFrozen';
 import type { ITransferTokensProps } from '@/services/transferTokens';
 import {
   Button,
   Notification,
   NotificationHeading,
-  Select,
-  SelectItem,
   Stack,
   TextField,
 } from '@kadena/kode-ui';
@@ -24,12 +24,14 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
+import { DiscoveredAccount } from '../DiscoveredAccount/DiscoveredAccount';
+import { InvestorCombobox } from '../Fields/InvestorCombobox';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
   isForced?: boolean;
   investorAccount: string;
 }
@@ -40,17 +42,23 @@ export const TransferForm: FC<IProps> = ({
   isForced = false,
   investorAccount,
 }) => {
+  const [searchValue, setSearchValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
+  const { asset, investors } = useAsset();
+  const { findAliasByAddress } = useUser();
+  const [investorToAccount, setInvestorToAccount] = useState<string>('');
   const { setIsRightAsideExpanded, isRightAsideExpanded } = useSideBarLayout();
   const { account } = useAccount();
   const { data: balance } = useGetInvestorBalance({ investorAccount });
-  const { data: investors } = useGetInvestors();
   const { submit: forcedSubmit, isAllowed: isForcedAllowed } =
     useForcedTransferTokens();
   const { submit, isAllowed } = useTransferTokens();
   const { data: frozenAmount } = useGetFrozenTokens({
     investorAccount,
   });
+  const [selectedAccountIsFrozen, setSelectedAccountIsFrozen] = useState<
+    boolean | undefined
+  >(undefined);
 
   const {
     register,
@@ -89,9 +97,26 @@ export const TransferForm: FC<IProps> = ({
     handleOnClose();
   };
 
-  const filteredInvestors = investors.filter(
-    (i) => i.accountName !== investorAccount,
-  );
+  const filteredInvestors = investors
+    .filter((i) => i.accountName !== investorAccount)
+    .map((account) => {
+      return {
+        accountName: account.accountName,
+        alias: findAliasByAddress(account.accountName),
+      };
+    });
+
+  const handleAccountChange = (cb: any) => async (value: any) => {
+    setSelectedAccountIsFrozen(undefined);
+
+    setInvestorToAccount(value);
+    if (!account || !asset) return;
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    const res = await isFrozen({ investorAccount: value, account }, asset);
+    setSelectedAccountIsFrozen(res as boolean | undefined);
+
+    return cb(value);
+  };
 
   if (!account) return;
   const maxAmount = isForced ? balance : balance - frozenAmount;
@@ -112,53 +137,49 @@ export const TransferForm: FC<IProps> = ({
                   </Notification>
                 </Stack>
               )}
-              <input type="hidden" {...register('isForced', {})} />
-              <TextField
-                label="Amount"
-                type="number"
-                {...register('amount', {
-                  required: {
-                    value: true,
-                    message: 'This field is required',
-                  },
-                  min: {
-                    value: 1,
-                    message: 'The value should be at least 1',
-                  },
-                  max: {
-                    value: maxAmount,
-                    message:
-                      'The value can not be more than your balance ( - frozen tokens)',
-                  },
-                })}
-                variant={errors.amount?.message ? 'negative' : 'default'}
-                description={`max amount tokens: ${maxAmount}`}
-                errorMessage={errors.amount?.message}
+              <Stack flexDirection="column" gap="md">
+                <input type="hidden" {...register('isForced', {})} />
+                <TextField
+                  label="Amount"
+                  type="number"
+                  {...register('amount', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    min: {
+                      value: 1,
+                      message: 'The value should be at least 1',
+                    },
+                    max: {
+                      value: maxAmount,
+                      message:
+                        'The value can not be more than your balance ( - frozen tokens)',
+                    },
+                  })}
+                  variant={errors.amount?.message ? 'negative' : 'default'}
+                  description={`max amount tokens: ${maxAmount}`}
+                  errorMessage={errors.amount?.message}
+                />
+                <InvestorCombobox
+                  control={control}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  error={errors.investorToAccount}
+                  investors={filteredInvestors}
+                  handleAccountChange={handleAccountChange}
+                />
+              </Stack>
+              <DiscoveredAccount
+                accountAddress={investorToAccount}
+                asset={asset}
               />
-
-              <Controller
-                name="investorToAccount"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <Select
-                    label="Select an option"
-                    items={filteredInvestors}
-                    selectedKey={field.value}
-                    variant={
-                      errors.investorToAccount?.message ? 'negative' : 'default'
-                    }
-                    onSelectionChange={field.onChange}
-                    errorMessage={errors.investorToAccount?.message}
-                  >
-                    {(item) => (
-                      <SelectItem key={item.accountName}>
-                        {item.accountName}
-                      </SelectItem>
-                    )}
-                  </Select>
-                )}
-              />
+              {selectedAccountIsFrozen && (
+                <Notification role="status">
+                  The selected account is frozen and is not allowed to receive
+                  tokens
+                </Notification>
+              )}
             </RightAsideContent>
 
             <RightAsideFooter message={<AssetPausedMessage />}>
@@ -167,7 +188,9 @@ export const TransferForm: FC<IProps> = ({
               </Button>
               <Button
                 isDisabled={
-                  (isForced ? !isForcedAllowed : !isAllowed) || !isValid
+                  (isForced ? !isForcedAllowed : !isAllowed) ||
+                  !isValid ||
+                  selectedAccountIsFrozen === true
                 }
                 type="submit"
               >

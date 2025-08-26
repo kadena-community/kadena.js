@@ -1,6 +1,7 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
+import { env } from '../env';
 
-interface ResponseType {
+interface IResponseType {
   id: string;
   type: string;
   payload: unknown;
@@ -16,8 +17,7 @@ export interface IState {
   accounts: IWalletAccount[];
 }
 
-const walletOrigin = () =>
-  (window as any).walletUrl || 'https://wallet.kadena.io';
+const walletOrigin = () => (window as any).walletUrl || env.WALLET_URL;
 const walletUrl = () => `${walletOrigin()}`;
 const walletName = 'Dev-Wallet';
 const appName = 'Dev Wallet Example';
@@ -31,7 +31,7 @@ export const sleep = (time: number) =>
 
 const communicate =
   (client: Window, server: Window) =>
-  (type: string, payload: Record<string, unknown>): Promise<ResponseType> => {
+  (type: string, payload: Record<string, unknown>): Promise<IResponseType> => {
     const id = crypto.randomUUID();
     return new Promise((resolve) => {
       const handler = (event: MessageEvent) => {

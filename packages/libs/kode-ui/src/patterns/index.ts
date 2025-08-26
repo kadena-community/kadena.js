@@ -81,3 +81,4 @@ export { KLogoText as FocussedLayoutLogo } from './SideBarLayout/components/Logo
 
 //notifications functionality
 export { NotificationSlot, useNotifications } from './LayoutUtils';
+export type { INotificationMinimizedProps } from './LayoutUtils';

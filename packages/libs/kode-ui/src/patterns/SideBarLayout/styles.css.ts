@@ -1,6 +1,14 @@
-import { atoms, recipe, responsiveStyle, style, token } from './../../styles';
+import {
+  atoms,
+  globalStyle,
+  recipe,
+  responsiveStyle,
+  style,
+  token,
+} from './../../styles';
 
 export const minHeaderHeight = '60px';
+export const minHeaderMargin = '8px';
 export const sideBarWidth = '232px';
 export const sideBarMinWidth = '45px';
 export const rightAsBarMinWidth = '370px';
@@ -16,7 +24,7 @@ export const layoutWrapperClass = recipe({
     responsiveStyle({
       xs: {
         gridTemplateColumns: 'auto',
-        gridTemplateRows: `min-content ${minHeaderHeight} 1fr 60px`,
+        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr ${minHeaderHeight}`,
         gridTemplateAreas: `
         "sidebarlayout-topbanner"
         "sidebarlayout-header"
@@ -25,7 +33,7 @@ export const layoutWrapperClass = recipe({
       `,
       },
       md: {
-        gridTemplateRows: `min-content ${minHeaderHeight} 1fr`,
+        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr`,
         gridTemplateAreas: `
         "sidebarlayout-sidebar sidebarlayout-topbanner"
         "sidebarlayout-sidebar sidebarlayout-header"
@@ -33,7 +41,7 @@ export const layoutWrapperClass = recipe({
       `,
       },
       xxl: {
-        gridTemplateRows: `min-content ${minHeaderHeight} 1fr`,
+        gridTemplateRows: `min-content calc(${minHeaderHeight} + ${minHeaderMargin}) 1fr`,
         gridTemplateAreas: `
         "sidebarlayout-sidebar sidebarlayout-topbanner"
         "sidebarlayout-sidebar sidebarlayout-header"
@@ -122,6 +130,10 @@ export const layoutWrapperClass = recipe({
   },
 });
 
+globalStyle(`body`, {
+  backgroundColor: token('color.background.base.default'),
+});
+
 export const bodyWrapperClass = style({
   minHeight: '100dvh',
 
@@ -131,6 +143,18 @@ export const bodyWrapperClass = style({
 export const mainClass = style({
   gridArea: 'sidebarlayout-main',
   position: 'relative',
+  overflowY: 'scroll',
+  overflowX: 'hidden',
+  paddingBlockEnd: token('spacing.n24'),
+  ...responsiveStyle({
+    xs: { marginInline: token('spacing.n2') },
+    sm: {
+      marginInline: token('spacing.n4'),
+    },
+    md: {
+      marginInline: token('spacing.n6'),
+    },
+  }),
 });
 
 export const topbannerWrapperClass = style({

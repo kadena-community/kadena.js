@@ -65,7 +65,6 @@ export const config: UserConfig = {
       plugins: [vanillaExtractEsbuildPlugin({ runtime: true })],
     },
   },
-
   build: {
     ssr: false,
     minify: false,
@@ -90,8 +89,10 @@ export const config: UserConfig = {
           'kadena-ui': ['@kadena/kode-ui', '@kadena/kode-icons'],
         },
         entryFileNames: (chunk) => {
+          if (chunk.name === 'sw') {
+            return '[name].js';
+          }
           return [
-            'sw',
             'react-libs',
             'kadena-libs',
             'kadena-ui',

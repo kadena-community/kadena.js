@@ -169,52 +169,55 @@ export const TxList = React.memo(
 
     return (
       <>
-        <FocussedLayoutHeaderAside>
-          {unSubmittedTxs === 0 ? (
-            <Button
-              isCompact
-              variant="transparent"
-              startVisual={<MonoClose />}
-              onPress={() => {
-                navigate('/');
-              }}
-            >
-              Go Back
-            </Button>
-          ) : (
-            <Confirmation
-              label="Abort"
-              onPress={() => {
-                transactions.forEach((tx) => {
-                  if (tx.uuid) {
-                    transactionRepository.deleteTransaction(tx?.uuid);
-                  }
-                });
+        {!sendDisabled && (
+          <FocussedLayoutHeaderAside>
+            {unSubmittedTxs === 0 ? (
+              <Button
+                isCompact
+                variant="transparent"
+                startVisual={<MonoClose />}
+                onPress={() => {
+                  navigate('/');
+                }}
+              >
+                Go Back
+              </Button>
+            ) : (
+              <Confirmation
+                label="Yes, cancel"
+                dismissLabel="No"
+                onPress={() => {
+                  transactions.forEach((tx) => {
+                    if (tx.uuid) {
+                      transactionRepository.deleteTransaction(tx?.uuid);
+                    }
+                  });
 
-                navigate('/');
-              }}
-              trigger={
-                <Button
-                  isCompact
-                  isDisabled={
-                    !transactions[0] ||
-                    statusPassed(transactions[0].status, 'submitted')
-                  }
-                  variant="transparent"
-                  startVisual={<MonoClose />}
-                >
-                  {transactions.length > 1
-                    ? `Abort ${unSubmittedTxs} transactions`
-                    : 'Abort'}
-                </Button>
-              }
-            >
-              {transactions.length > 1
-                ? 'Are you sure you want to abort these transactions?'
-                : 'Are you sure you want to abort this transaction?'}
-            </Confirmation>
-          )}
-        </FocussedLayoutHeaderAside>
+                  navigate('/');
+                }}
+                trigger={
+                  <Button
+                    isCompact
+                    isDisabled={
+                      !transactions[0] ||
+                      statusPassed(transactions[0].status, 'submitted')
+                    }
+                    variant="transparent"
+                    startVisual={<MonoClose />}
+                  >
+                    {transactions.length > 1
+                      ? `Cancel ${unSubmittedTxs} transactions`
+                      : 'Go back'}
+                  </Button>
+                }
+              >
+                {transactions.length > 1
+                  ? 'Are you sure you want to cancel these transactions?'
+                  : 'Are you sure you want to cancel this transaction?'}
+              </Confirmation>
+            )}
+          </FocussedLayoutHeaderAside>
+        )}
         <Stack flexDirection={'column'} gap={'lg'}>
           <Stack flexDirection={'row'} flexWrap="wrap" gap="md">
             {transactions.length === 0 && <Text>No transactions</Text>}

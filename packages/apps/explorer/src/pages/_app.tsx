@@ -11,6 +11,7 @@ import {
   MediaContextProvider,
   RouterProvider,
   useTheme,
+  Version,
 } from '@kadena/kode-ui';
 import '@kadena/kode-ui/global';
 import type { AppProps } from 'next/app';
@@ -19,7 +20,10 @@ import type { ComponentType } from 'react';
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, react/function-component-definition
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+export default function App({
+  Component,
+  pageProps,
+}: AppProps): React.JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   const router = useRouter();
@@ -39,6 +43,11 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
       </Head>
+      <Version
+        sha={process.env.NEXT_PUBLIC_COMMIT_SHA}
+        SSRTime={process.env.NEXT_PUBLIC_BUILD_TIME}
+        repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/explorer`}
+      />
       <ToastProvider>
         <NetworkContextProvider>
           <RouterProvider navigate={router.push}>

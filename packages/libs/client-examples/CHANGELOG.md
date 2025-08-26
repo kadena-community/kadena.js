@@ -1,5 +1,14 @@
 # @kadena/client-examples
 
+## 0.1.14
+
+### Patch Changes
+
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+
 ## 0.1.13
 
 ### Patch Changes

@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
@@ -19,25 +20,26 @@ export interface IBatchRegisterIdentityProps {
 
 export const batchRegisterIdentity = async (
   data: IBatchRegisterIdentityProps,
+  asset: IAsset,
 ) => {
   const promises = data.accounts.map((account) =>
-    getKeysetService(account.account),
+    getKeysetService(account.account.trim()),
   );
   const keys = await Promise.all(promises);
 
   return Pact.builder
     .execution(
-      `(${getAsset()}.batch-register-identity (read-msg 'investors) (read-msg 'investor-keysets) (read-msg 'agents) (read-msg 'countries))
+      `(${getAsset(asset)}.batch-register-identity (read-msg 'investor-addresses) (read-msg 'investor-guards) (read-msg 'identities) (read-msg 'countries))
       `,
     )
-    .addData('investor-keysets', keys)
+    .addData('investor-guards', keys)
     .addData(
-      'investors',
-      data.accounts.map((account) => account.account),
+      'investor-addresses',
+      data.accounts.map((account) => account.account.trim()),
     )
-    .addData('agent', data.agent.address)
+    .addData('agent', data.agent.address.trim())
     .addData(
-      'agents',
+      'identities',
       data.accounts.map(() => ''),
     )
     .addData(
@@ -45,12 +47,12 @@ export const batchRegisterIdentity = async (
       data.accounts.map(() => new PactNumber(0).toPactInteger() as never),
     )
     .setMeta({
-      senderAccount: data.agent.address,
+      senderAccount: data.agent.address.trim(),
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(data.agent), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.OWNER),
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.OWNER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.AGENTADMIN),
       withCap(`coin.GAS`),
     ])
 

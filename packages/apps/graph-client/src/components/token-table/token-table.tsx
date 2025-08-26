@@ -17,7 +17,7 @@ interface ITokenTableProps {
   tokens: NonFungibleTokenBalance[];
 }
 
-export const TokenTable = (props: ITokenTableProps): JSX.Element => {
+export const TokenTable = (props: ITokenTableProps): React.JSX.Element => {
   const { tokens } = props;
 
   return (

@@ -2,6 +2,7 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
+import { MAGIC_ADAPTER } from './constants';
 import type { IMagicAdapterOptions } from './MagicAdapter';
 import { detectMagicProvider } from './provider';
 
@@ -10,7 +11,7 @@ import { detectMagicProvider } from './provider';
  *
  * This function creates an Magic wallet adapter factory that detects the Magic wallet provider
  * and returns a new instance of the `MagicAdapter`. The adapter method **lazily** imports
- * the `MagicAdapter` class. `detect` is seperated so `WalletAdapterClient` can use it
+ * the `MagicAdapter` class. `detect` is separated so `WalletAdapterClient` can use it
  * to detect the provider without creating an adapter instance.
  *
  * By using `await import("./MagicAdapter")`, this function only loads the Magic Wallet adapter code
@@ -26,7 +27,7 @@ export const createMagicAdapter = ((
   options: IMagicAdapterOptions & IBaseWalletFactoryOptions,
 ) => {
   return {
-    name: 'Magic',
+    name: MAGIC_ADAPTER,
     detect: async () => {
       return await detectMagicProvider();
     },

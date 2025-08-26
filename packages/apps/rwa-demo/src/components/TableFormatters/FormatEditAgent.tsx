@@ -16,6 +16,7 @@ export const FormatEditAgent = () => {
         agent={value as unknown as IRecord}
         trigger={
           <Button
+            aria-label="Edit agent"
             isDisabled={!isEditAgentAllowed}
             isCompact
             endVisual={<MonoEditNote />}

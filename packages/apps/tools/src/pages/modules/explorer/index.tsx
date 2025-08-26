@@ -7,6 +7,7 @@ import type { IncompleteModuleModel } from '@/hooks/use-module-query';
 import { fetchModule, useModuleQuery } from '@/hooks/use-module-query';
 import { QUERY_KEY, useModulesQuery } from '@/hooks/use-modules-query';
 import type { IPageProps } from '@/pages/_app';
+import { getQueryValue } from '@/utils/modulesexplorer';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
@@ -20,7 +21,6 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback, useEffect } from 'react';
-import { getQueryValue } from './utils';
 
 const QueryParams = {
   MODULE: 'module',

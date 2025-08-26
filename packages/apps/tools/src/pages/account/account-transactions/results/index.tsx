@@ -5,6 +5,11 @@ import Routes from '@/constants/routes';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
+import {
+  filterItemClass,
+  headerButtonGroupClass,
+  mainContentClass,
+} from '@/pagestyles/account/account-transactions/results/styles.css';
 import type { ITransaction } from '@/services/accounts/get-transactions';
 import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
@@ -38,11 +43,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  filterItemClass,
-  headerButtonGroupClass,
-  mainContentClass,
-} from './styles.css';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(

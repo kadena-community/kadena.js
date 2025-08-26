@@ -4,6 +4,7 @@ import { balanceCheck } from './alerts/elastic/balanceCheck';
 import { balanceAlert } from './alerts/slack/balanceAlert';
 import { balanceChangeAlert } from './alerts/slack/balanceChangeAlert';
 import { graphAlert } from './alerts/slack/graphAlert';
+import { kinesisBalanceChangeAlert } from './alerts/slack/kinesisBalanceChangeAlert';
 
 dotenv.config();
 export const channelId = process.env.SLACK_CHANNELID ?? '';
@@ -14,6 +15,7 @@ export const GalxeAccount = process.env.NEXT_PUBLIC_GALXE || '';
 export const MINBALANCE = 1000;
 export const MINXCHAINGASSTATIONBALANCE = 0.9;
 export const MINXGALXEBALANCE = 1000;
+export const MINXGALXEBALANCE_CHAIN2 = 150;
 
 //graph
 export const MAXBLOCKHEIGHT_DIFFERENCE = 100;
@@ -36,8 +38,10 @@ export const ALERTCODES = {
   LOWFAUCETBALANCE: 'LOWFAUCETBALANCE',
   LOWXCHAINGASBALANCE: 'LOWXCHAINGASBALANCE',
   LOWXGALXEBALANCE: 'LOWXGALXEBALANCE',
+  LOWXGALXEBALANCE_CHAIN2: 'LOWXGALXEBALANCE_CHAIN2',
   GRAPHDOWN: 'GRAPHDOWN',
   KINESISBRIDGEBALANCECHANGE: 'KINESISBRIDGEBALANCECHANGE',
+  BALANCECHANGE: 'BALANCECHANGE',
 } as const;
 
 export interface INETWORK {
@@ -88,6 +92,7 @@ export const isIntervalGroup = (val: string): val is IIntervalGroup => {
 export const slackAlerts = {
   BALANCEALERT: balanceAlert,
   BALANCECHANGEALERT: balanceChangeAlert,
+  KINESISBALANCECHANGEALERT: kinesisBalanceChangeAlert,
   GRAPHALERT: graphAlert,
 } satisfies Record<string, (alert: IAlert) => Promise<string[]>>;
 

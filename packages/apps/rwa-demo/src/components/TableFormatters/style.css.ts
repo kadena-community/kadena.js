@@ -1,5 +1,6 @@
-import { recipe } from '@kadena/kode-ui';
-import { token } from '@kadena/kode-ui/styles';
+import { recipe, style } from '@kadena/kode-ui';
+import { atoms, token } from '@kadena/kode-ui/styles';
+import { globalStyle } from '@vanilla-extract/css';
 
 export const formatAmountClass = recipe({
   base: {},
@@ -13,4 +14,27 @@ export const formatAmountClass = recipe({
       },
     },
   },
+});
+
+export const formatAliasEditClass = style([
+  atoms({}),
+  {
+    textDecoration: 'none',
+    selectors: {
+      '&:hover': {
+        textDecoration: 'underline',
+        cursor: 'pointer',
+      },
+    },
+  },
+]);
+
+globalStyle(`.accountwrapperclass ${formatAliasEditClass}`, {
+  visibility: 'hidden',
+  pointerEvents: 'none',
+});
+
+globalStyle(`.accountwrapperclass:hover ${formatAliasEditClass}`, {
+  visibility: 'visible',
+  pointerEvents: 'auto',
 });

@@ -104,7 +104,7 @@ export function Settings() {
         variant="outlined"
         startVisual={<MonoSecurity />}
       >
-        Keep Password Policy
+        Security Module
       </UiLink>
       <UiLink
         href="/settings/export-data"

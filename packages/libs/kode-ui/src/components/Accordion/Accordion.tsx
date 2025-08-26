@@ -38,6 +38,6 @@ function BaseAccordion<T extends object>(
 
 export const Accordion = forwardRef(BaseAccordion) as <T extends object>(
   props: IAccordionProps<T> & { ref?: ForwardedRef<HTMLDivElement> },
-) => JSX.Element;
+) => React.JSX.Element;
 
 export { Item as AccordionItem } from 'react-stately';

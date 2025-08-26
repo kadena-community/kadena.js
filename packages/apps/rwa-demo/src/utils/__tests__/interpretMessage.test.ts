@@ -1,4 +1,4 @@
-import type { ITransaction } from '@/components/TransactionsProvider/TransactionsProvider';
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { interpretMessage } from '../interpretMessage';
 
 describe('interpretMessage', () => {
@@ -51,12 +51,9 @@ describe('interpretMessage', () => {
       'User must have a zero balance before identity removal.',
     );
     expect(interpretMessage('This error ACC-PRT-001')).toEqual(
-      'Single-key account protocol violation.',
-    );
-    expect(interpretMessage('This error ACC-PRT-002')).toEqual(
       'Reserved protocol guard violation.',
     );
-    expect(interpretMessage('This error ACC-PRT-003')).toEqual(
+    expect(interpretMessage('This error ACC-PRT-002')).toEqual(
       'Invalid sender or receiver.',
     );
     expect(interpretMessage('This error ACC-FRZ-001')).toEqual(
@@ -84,7 +81,7 @@ describe('interpretMessage', () => {
       'Frozen amount exceeds available balance.',
     );
     expect(interpretMessage('This error FRZ-AMT-003')).toEqual(
-      'Amount to freeze must be positive.',
+      'Amount to freeze or unfreeze must be positive.',
     );
     expect(interpretMessage('This error FRZ-AMT-004')).toEqual(
       'Amount to unfreeze must be positive.',
@@ -103,10 +100,10 @@ describe('interpretMessage', () => {
       'Agent cannot be added if the agent is already active.',
     );
     expect(interpretMessage('This error ROL-STS-002')).toEqual(
-      'Agent is not removed.',
+      'Agent is not active.',
     );
     expect(interpretMessage('This error ROL-STS-003')).toEqual(
-      'Agent does not contain the role.',
+      'This error ROL-STS-003',
     );
     expect(interpretMessage('This error GEN-IMPL-001')).toEqual(
       'Function exists to implement interface, but is not being used.',

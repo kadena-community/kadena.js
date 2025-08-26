@@ -13,7 +13,7 @@ export const NotificationWrapper: FC<IProps> = ({ children, ...props }) => {
     if (!props.isDismissable) {
       setTimeout(() => {
         removeNotification(props);
-      }, 12000);
+      }, 6000);
     }
   }, []);
 

@@ -18,9 +18,19 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
 import {
+  formButtonStyle,
+  formContentStyle,
+  notificationContainerStyle,
+  notificationKeyStyle,
+  notificationLinkStyle,
+  textareaContainerStyle,
+  textareaWrapperStyle,
+} from '@/pagestyles/transactions/cross-chain-transfer-finisher/styles.css';
+import {
   infoBoxStyle,
   linksBoxStyle,
-} from '@/pages/transactions/cross-chain-transfer-tracker/styles.css';
+} from '@/pagestyles/transactions/cross-chain-transfer-tracker/styles.css';
+import { containerClass } from '@/pagestyles/transactions/styles.css';
 import type { ITransferResult } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
@@ -61,16 +71,6 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { containerClass } from '../styles.css';
-import {
-  formButtonStyle,
-  formContentStyle,
-  notificationContainerStyle,
-  notificationKeyStyle,
-  notificationLinkStyle,
-  textareaContainerStyle,
-  textareaWrapperStyle,
-} from './styles.css';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,

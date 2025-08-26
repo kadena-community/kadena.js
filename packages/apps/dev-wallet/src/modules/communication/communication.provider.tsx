@@ -145,7 +145,8 @@ export const CommunicationProvider: FC<
           `NO_UI_ACTION: No ui action is defined for the request type: ${requestType}`,
         );
       }
-      const path = `${route}/${requestId}`;
+      const encodedRequestId = encodeURIComponent(requestId);
+      const path = `${route}/${encodedRequestId}`;
       setOrigin(path);
       routeNavigate(path);
     },
@@ -215,20 +216,20 @@ export const CommunicationProvider: FC<
     const handleUIRequiredRequest = (
       type: 'CONNECTION_REQUEST' | 'SIGN_REQUEST',
     ) =>
-      handle(type, async (payload) => {
+      handle(type, async (payload, plugin) => {
         const request = createRequest(payload);
-        loadUiComponent(payload.id, type);
+        loadUiComponent(payload.id, type, plugin);
         return request;
       });
     const handlers = [
       handleUIRequiredRequest('CONNECTION_REQUEST'),
-      handle('SIGN_REQUEST', async (data) => {
+      handle('SIGN_REQUEST', async (data, plugin) => {
         const req = data.payload as Partial<IUnsignedCommand>;
         if (!('hash' in req) && 'cmd' in req && req.cmd) {
           req.hash = blakeHash(req.cmd);
         }
         const request = createRequest(data);
-        loadUiComponent(data.id, 'SIGN_REQUEST');
+        loadUiComponent(data.id, 'SIGN_REQUEST', plugin);
         return request;
       }),
       handle('GET_STATUS', async () => {

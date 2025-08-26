@@ -1,4 +1,4 @@
-import type { INetwork } from '@/components/NetworkProvider/NetworkProvider';
+import type { INetwork } from '@/contexts/NetworkContext/NetworkContext';
 import { createClient } from '@kadena/client';
 import { env } from './env';
 

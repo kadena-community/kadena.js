@@ -1,6 +1,13 @@
 {
   "name": "@kadena/wallet-adapter-zelcore",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.3",
+  "description": "Kadena Wallet Adapter for Zelcore",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/wallet-adapter-zelcore"
+  },
+  "license": "BSD-3-Clause",
   "contributors": [
     "Francisco Miranda",
     "Ariel Serranoni"

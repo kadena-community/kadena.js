@@ -5,11 +5,11 @@ import { Controller } from 'react-hook-form';
 
 interface IProps {
   error?: FieldErrors['accountName'];
-  alias?: string;
+  address?: string;
   control: Control<any, any>;
 }
 
-export const AliasField: FC<IProps> = ({ error, alias, control }) => {
+export const AliasField: FC<IProps> = ({ error, address, control }) => {
   return (
     <Controller
       name="alias"

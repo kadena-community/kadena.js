@@ -5,9 +5,10 @@ import { Layout } from '@/components/Common';
 import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
 import '@/resources/styles/globals.css';
-import { RouterProvider } from '@kadena/kode-ui';
+import { RouterProvider, Version } from '@kadena/kode-ui';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -31,6 +32,11 @@ const App: FC<AppProps<IPageProps>> = ({
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Version
+        sha={process.env.NEXT_PUBLIC_COMMIT_SHA}
+        SSRTime={process.env.NEXT_PUBLIC_BUILD_TIME}
+        repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/tools`}
+      />
       <ThemeProvider
         attribute="class"
         value={{
@@ -43,7 +49,11 @@ const App: FC<AppProps<IPageProps>> = ({
             <AppContextProvider>
               <LayoutContextProvider>
                 <Layout useFullWidth={pageProps.useFullPageWidth}>
-                  <Component {...pageProps} />
+                  <ReCaptchaProvider
+                    reCaptchaKey={process.env.NEXT_PUBLIC_CAPTCHA_SITEKEY}
+                  >
+                    <Component {...pageProps} />
+                  </ReCaptchaProvider>
                 </Layout>
               </LayoutContextProvider>
             </AppContextProvider>
