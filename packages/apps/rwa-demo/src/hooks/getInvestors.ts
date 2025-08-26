@@ -1,50 +1,49 @@
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import {
   useEventsQuery,
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
-import type { IRegisterIdentityProps } from '@/services/registerIdentity';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IRecord } from '@/utils/filterRemovedRecords';
 import { filterRemovedRecords } from '@/utils/filterRemovedRecords';
 import { getAsset } from '@/utils/getAsset';
-import { setAliasesToAccounts } from '@/utils/setAliasesToAccounts';
-import { store } from '@/utils/store';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-export type EventQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
-
-export const useGetInvestors = () => {
+export const useGetInvestors = (asset?: IAsset) => {
   const [innerData, setInnerData] = useState<IRecord[]>([]);
+  const [shouldFetch, setShouldFetch] = useState(false);
+
   const {
     loading: addedLoading,
     data: addedData,
     error,
   } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
+    skip: !shouldFetch,
     fetchPolicy: 'no-cache',
   });
 
   const { data: removedData, loading: removedLoading } = useEventsQuery({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
+    skip: !shouldFetch,
     fetchPolicy: 'no-cache',
   });
 
   const { data: addedSubscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REGISTERED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REGISTERED`,
     },
+    skip: !shouldFetch,
   });
 
   const { data: removedSubscriptionData } = useEventSubscriptionSubscription({
     variables: {
-      qualifiedName: `${getAsset()}.IDENTITY-REMOVED`,
+      qualifiedName: `${getAsset(asset)}.IDENTITY-REMOVED`,
     },
+    skip: !shouldFetch,
   });
 
   const initInnerData = async () => {
@@ -62,7 +61,6 @@ export const useGetInvestors = () => {
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
           creationTime: edge.node.block.creationTime,
-          alias: '',
           result: true,
         } as const;
       }) ?? [];
@@ -76,25 +74,13 @@ export const useGetInvestors = () => {
           requestKey: edge.node.requestKey,
           accountName: JSON.parse(edge.node.parameters)[0],
           creationTime: edge.node.block.creationTime,
-          alias: '',
           result: true,
         } as const;
       }) ?? [];
 
-    const aliases = await store.getAccounts();
-
-    setInnerData(
-      setAliasesToAccounts(
-        [...filterRemovedRecords([...investorsAdded, ...investorsRemoved])],
-        aliases,
-      ),
-    );
-  };
-
-  const listenToAccounts = (aliases: IRegisterIdentityProps[]) => {
-    setInnerData((v) => {
-      return setAliasesToAccounts([...v], aliases);
-    });
+    setInnerData([
+      ...filterRemovedRecords([...investorsAdded, ...investorsRemoved]),
+    ]);
   };
 
   useEffect(() => {
@@ -108,14 +94,13 @@ export const useGetInvestors = () => {
     removedData?.events.edges.length ?? 0,
   ]);
 
-  const addSubscriptionData = async () => {
+  const addSubscriptionData = useCallback(async () => {
     const investorsSubscriptionAdded: IRecord[] =
       addedSubscriptionData?.events?.map((edge: any) => {
         const params = JSON.parse(edge.parameters);
         return {
           isRemoved: false,
           accountName: params[0],
-          alias: '',
           creationTime: Date.now(),
           result: true,
         } as IRecord;
@@ -127,41 +112,38 @@ export const useGetInvestors = () => {
         return {
           isRemoved: true,
           accountName: params[0],
-          alias: '',
           creationTime: Date.now(),
           result: true,
         } as IRecord;
       }) ?? [];
 
-    const aliases = await store.getAccounts();
-
-    setInnerData((oldValues) =>
-      setAliasesToAccounts(
-        [
-          ...filterRemovedRecords([
-            ...oldValues,
-            ...investorsSubscriptionRemoved,
-            ...investorsSubscriptionAdded,
-          ]),
-        ],
-        aliases,
-      ),
-    );
-  };
+    setInnerData((oldValues) => [
+      ...filterRemovedRecords([
+        ...oldValues,
+        ...investorsSubscriptionAdded,
+        ...investorsSubscriptionRemoved,
+      ]),
+    ]);
+  }, [addedSubscriptionData?.events, removedSubscriptionData?.events]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     addSubscriptionData();
-  }, [
-    addedSubscriptionData?.events?.length ?? 0,
-    removedSubscriptionData?.events?.length ?? 0,
-  ]);
+  }, [addSubscriptionData]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    const off = store.listenToAccounts(listenToAccounts);
-    return off;
-  }, []);
+    setInnerData([]);
+    setShouldFetch(false);
+  }, [asset?.uuid]);
 
-  return { data: innerData, error, isLoading: removedLoading || addedLoading };
+  const initFetchInvestors = () => {
+    setShouldFetch(true);
+  };
+
+  return {
+    data: innerData,
+    error,
+    isLoading: removedLoading || addedLoading,
+    initFetchInvestors,
+  };
 };

@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAggregatedAccounts } from '@/utils/getAggregatedAccounts';
 import { getAsset } from '@/utils/getAsset';
@@ -8,6 +9,7 @@ import { Pact } from '@kadena/client';
 export interface ITransferToken {
   to: string;
   amount: string;
+  isFrozen?: boolean;
 }
 
 export interface IBatchTransferTokensProps {
@@ -17,6 +19,7 @@ export interface IBatchTransferTokensProps {
 export const batchTransferTokens = async (
   data: ITransferToken[],
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   /**
    * for the TRANSFER capability:
@@ -28,7 +31,7 @@ export const batchTransferTokens = async (
   return Pact.builder
     .execution(
       `
-       (${getAsset()}.batch-transfer (read-string 'from) (read-msg 'to-list) (read-msg 'amounts))`,
+       (${getAsset(asset)}.batch-transfer (read-string 'from) (read-msg 'to-list) (read-msg 'amounts))`,
     )
     .addData('from', account.address)
     .addData(
@@ -47,7 +50,7 @@ export const batchTransferTokens = async (
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
       ...aggregatedAccounts.map((_, idx) =>
         withCap(
-          `${getAsset()}.TRANSFER`,
+          `${getAsset(asset)}.TRANSFER`,
           account.address,
           aggregatedAccounts[idx].to,
           {

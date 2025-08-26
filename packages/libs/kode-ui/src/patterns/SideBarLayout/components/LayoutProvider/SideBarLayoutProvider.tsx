@@ -49,31 +49,17 @@ export interface ILayoutContext {
   headerContextRef?: HTMLDivElement | null;
   setHeaderContextRef: (value?: HTMLDivElement | null) => void;
 }
-export const LayoutContext = createContext<ILayoutContext>({
-  isExpanded: true,
-  handleToggleExpand: () => {},
-  handleSetExpanded: () => {},
-  handleToggleAsideExpand: () => {},
-  appContext: undefined,
-  setAppContext: () => {},
-  setBreadCrumbs: () => {},
-  breadCrumbs: [],
-  setLocation: () => {},
-  isActiveUrl: () => {
-    return false;
-  },
-  setRightAsideTitle: () => {},
-  isRightAsideExpanded: false,
-  setIsRightAsideExpanded: () => {},
-  setRightAsideOnClose: () => {},
-  topbannerRef: null,
-  setTopbannerRef: () => {},
-  setRightAsideRef: () => {},
-  setBreadcrumbsRef: () => {},
-  setHeaderContextRef: () => {},
-});
+export const LayoutContext = createContext<ILayoutContext | null>(null);
 
-export const useLayout = () => useContext(LayoutContext);
+export const useLayout = (): ILayoutContext => {
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      'useOrganisation must be used within a LayoutContextProvider',
+    );
+  }
+  return context;
+};
 
 export interface ILayoutProvider extends PropsWithChildren {}
 
@@ -136,9 +122,13 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   const setBreadCrumbs = (value: ISideBarBreadCrumb[]) => {
     setBreadCrumbsState(value);
   };
-  const setLocation = (value?: ISideBarLayoutLocation | undefined) => {
-    setLocationState(value);
-  };
+  const setLocation = useCallback(
+    (value?: ISideBarLayoutLocation | undefined) => {
+      setLocationState(value);
+    },
+    [setLocationState],
+  );
+
   const setRightAsideTitle = (value?: string) => {
     setRightAsideTitleState(value);
   };
@@ -161,7 +151,8 @@ export const SideBarLayoutProvider: FC<ILayoutProvider> = ({ children }) => {
   };
 
   const isActiveUrl = (url?: string) => {
-    return !!url && url === location?.url;
+    if (!window) return false;
+    return !!url && url === window.location.pathname + window.location.search;
   };
 
   return (

@@ -1,143 +1,173 @@
 'use client';
-import type { Exact, Scalars } from '@/__generated__/sdk';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
 import {
   INFINITE_COMPLIANCE,
-  LOCALSTORAGE_ASSETS_KEY,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
 } from '@/constants';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { AssetContext } from '@/contexts/AssetContext/AssetContext';
+import { useAccount } from '@/hooks/account';
+import { useGetAgents } from '@/hooks/getAgents';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
+import { useGetInvestors } from '@/hooks/getInvestors';
+import { useNotifications } from '@/hooks/notifications';
+import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
-  IComplianceProps,
   IComplianceRule,
   IComplianceRuleTypes,
 } from '@/services/getComplianceRules';
 import { getComplianceRules } from '@/services/getComplianceRules';
-import { coreEvents } from '@/services/graph/eventSubscription.graph';
 import { supply as supplyService } from '@/services/supply';
-import { getAsset as getAssetUtil, getFullAsset } from '@/utils/getAsset';
+import { getAsset as getAssetUtil } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
-import type * as Apollo from '@apollo/client';
+import { AssetStore } from '@/utils/store/assetStore';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useEffect, useState } from 'react';
-
-export interface IAsset {
-  uuid: string;
-  contractName: string;
-  namespace: string;
-  supply: number;
-  investorCount: number;
-  compliance: IComplianceProps;
-}
-
-export interface IAssetContext {
-  asset?: IAsset;
-  assets: IAsset[];
-  paused: boolean;
-  setAsset: (asset: IAsset) => void;
-  addAsset: ({
-    contractName,
-    namespace,
-  }: {
-    contractName: string;
-    namespace: string;
-  }) => IAsset | undefined;
-  addExistingAsset: (name: string) => IAsset | undefined;
-  removeAsset: (uuid: string) => void;
-  getAsset: (
-    uuid: string,
-    account: IWalletAccount,
-  ) => Promise<IAsset | undefined>;
-  maxCompliance: (rule: IComplianceRuleTypes) => number;
-}
-
-export const AssetContext = createContext<IAssetContext>({
-  assets: [],
-  paused: false,
-  setAsset: () => {},
-  addAsset: () => undefined,
-  addExistingAsset: () => undefined,
-  removeAsset: (uuid: string) => undefined,
-  getAsset: async () => undefined,
-  maxCompliance: () => -1,
-});
-
-export type EventQueryVariables = Exact<{
-  qualifiedName: Scalars['String']['input'];
-}>;
-
-export const getEventsDocument = (
-  variables: EventQueryVariables = {
-    qualifiedName: '',
-  },
-): Apollo.DocumentNode => coreEvents;
+import { useEffect, useMemo, useState } from 'react';
 
 export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const [asset, setAsset] = useState<IAsset>();
+  const { account, checkAccountAssetRoles } = useAccount();
+  const { organisation } = useOrganisation();
   const [assets, setAssets] = useState<IAsset[]>([]);
-  const storageKey = getLocalStorageKey(LOCALSTORAGE_ASSETS_KEY) ?? '';
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
-  const { paused } = usePaused();
-  const { data: supply } = useSupply();
-  const { data: investorCount } = useGetInvestorCount();
+  const { paused } = usePaused(asset);
+  const { data: supply } = useSupply(asset);
+  const { data: investorCount } = useGetInvestorCount(asset);
+  const { addNotification } = useNotifications();
+  const {
+    data: investors,
+    initFetchInvestors,
+    isLoading: investorsIsLoading,
+  } = useGetInvestors(asset);
+
+  const {
+    data: agents,
+    initFetchAgents,
+    isLoading: agentsIsLoading,
+  } = useGetAgents(asset);
   const { data: complianceRules } = useGetComplianceRules({ asset });
   const { data: complianceSubscriptionData } = useEventSubscriptionSubscription(
     {
       variables: {
-        qualifiedName: `${getAssetUtil()}.COMPLIANCE-PARAMETERS`,
+        qualifiedName: `${getAssetUtil(asset)}.COMPLIANCE-PARAMETERS`,
       },
     },
   );
 
-  const getAssets = (): IAsset[] => {
-    const result = localStorage.getItem(storageKey);
-    const arr = JSON.parse(result ?? '[]');
-    setAssets(arr);
-    return arr ?? [];
-  };
+  const assetStore = useMemo(() => {
+    if (!organisation) return;
+    return AssetStore(organisation);
+  }, [organisation]);
 
-  const storageListener = (event: StorageEvent | Event) => {
-    if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
-      return;
+  useEffect(() => {
+    if (!organisation?.id || !assetStore) return;
 
-    getAssets();
-  };
+    const unlistenAssets = assetStore?.listenToAssets(setAssets);
+    const result = localStorage.getItem(selectedKey);
+    if (!result) return;
+    const asset = JSON.parse(result);
+    const unlistenAsset = assetStore?.listenToAsset(asset, setAsset);
 
-  const handleSelectAsset = (data: IAsset) => {
-    localStorage.setItem(selectedKey, JSON.stringify(data));
-    window.dispatchEvent(new Event(selectedKey));
-
-    window.location.href = '/';
-  };
+    return () => {
+      if (unlistenAssets) {
+        unlistenAssets();
+      }
+      if (unlistenAsset) {
+        unlistenAsset();
+      }
+    };
+  }, [organisation?.id, assetStore]);
 
   const getAsset = async (
     uuid: string,
     account: IWalletAccount,
   ): Promise<IAsset | undefined> => {
-    const data = getAssets().find((a) => a.uuid === uuid);
-    const extraAssetData = await getComplianceRules();
-
-    const supplyResult = (await supplyService({
-      account: account!,
-    })) as number;
-
+    const data = assets.find((a) => a.uuid === uuid);
     if (!data) return;
-    return {
+    const extraAssetData = await getComplianceRules(data);
+
+    const supplyResult = (await supplyService(
+      {
+        account: account!,
+      },
+      data,
+    )) as number;
+
+    const foundAsset = {
       ...data,
       compliance: { ...extraAssetData },
       supply: supplyResult ?? 0,
     };
+
+    await assetStore?.updateAsset(foundAsset);
+
+    return foundAsset;
   };
-  const removeAsset = (uuid: string) => {
-    const data = getAssets().filter((a) => a.uuid !== uuid);
-    localStorage.setItem(storageKey, JSON.stringify(data));
-    window.dispatchEvent(new Event(storageKey));
-    setAssets(data);
+
+  useEffect(() => {
+    if (!asset) return;
+    initFetchInvestors();
+    initFetchAgents();
+  }, [asset?.uuid, initFetchInvestors, initFetchAgents]);
+
+  useEffect(() => {
+    const storageListener = async (event: StorageEvent | Event) => {
+      if (
+        event.type !== selectedKey &&
+        'key' in event &&
+        event.key !== selectedKey
+      )
+        return;
+
+      const result = localStorage.getItem(selectedKey);
+      if (!result || !account || !organisation) return;
+
+      const storageAsset = JSON.parse(result);
+      if (storageAsset.uuid === asset?.uuid) return;
+
+      const foundAsset = await getAsset(storageAsset.uuid, account);
+      if (!foundAsset || foundAsset.uuid === asset?.uuid) return;
+
+      //await assetStore?.updateAsset(foundAsset);
+
+      window.location.href = '/';
+    };
+
+    window.addEventListener(selectedKey, storageListener);
+    window.addEventListener('storage', storageListener);
+
+    return () => {
+      window.removeEventListener(selectedKey, storageListener);
+      window.removeEventListener('storage', storageListener);
+    };
+  }, [organisation?.id, account?.address, assetStore]);
+
+  const handleSelectAsset = (data: IAsset) => {
+    localStorage.setItem(selectedKey, JSON.stringify(data));
+    window.dispatchEvent(new Event(selectedKey));
+  };
+
+  const removeAsset = async (asset: IAsset) => {
+    await assetStore?.removeAsset(asset);
+    addNotification({
+      intent: 'warning',
+      message: `Contract ${asset.contractName} removed successfully`,
+    });
+
+    const localstorageAsset = JSON.parse(
+      localStorage.getItem(selectedKey) || '{}',
+    );
+
+    if (localstorageAsset.uuid === asset.uuid) {
+      localStorage.removeItem(selectedKey);
+      window.dispatchEvent(new Event(selectedKey));
+      setAsset(undefined);
+    }
   };
 
   const addAsset = ({
@@ -154,17 +184,17 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         maxSupply: {
           isActive: false,
           value: INFINITE_COMPLIANCE,
-          key: 'supply-limit-compliance',
+          key: 'supply-limit-compliance-v1',
         },
         maxBalance: {
           isActive: false,
           value: INFINITE_COMPLIANCE,
-          key: 'max-balance-compliance',
+          key: 'max-balance-compliance-v1',
         },
         maxInvestors: {
           isActive: false,
           value: INFINITE_COMPLIANCE,
-          key: 'max-investors-compliance',
+          key: 'max-investors-compliance-v1',
         },
       },
       investorCount: 0,
@@ -172,21 +202,19 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       namespace,
     };
 
-    //check if the asset is already there?
-    const allAssets = getAssets();
     if (
-      !allAssets.find(
+      !assets.find(
         (a) =>
           a.namespace === asset.namespace &&
           a.contractName === asset.contractName,
       )
     ) {
-      const data = [...allAssets, asset];
-      localStorage.setItem(storageKey, JSON.stringify(data));
-      window.dispatchEvent(new Event(storageKey));
-      setAssets(data);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      assetStore?.addAsset(asset);
     }
 
+    setAsset(asset);
+    handleSelectAsset(asset);
     return asset;
   };
 
@@ -201,7 +229,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // return the value of the compliance
   const maxCompliance = (ruleKey: IComplianceRuleTypes): number => {
-    const returnValue = Object.entries(asset?.compliance ?? {}).find(
+    if (!asset?.compliance) return INFINITE_COMPLIANCE;
+    const returnValue = Object.entries(asset?.compliance).find(
       ([key, rule]) => rule.key === ruleKey,
     ) as [number, IComplianceRule] | undefined;
 
@@ -213,31 +242,23 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    getAssets();
-    window.addEventListener(storageKey, storageListener);
-    window.addEventListener('storage', storageListener);
-
-    return () => {
-      window.removeEventListener(storageKey, storageListener);
-      window.removeEventListener('storage', storageListener);
-    };
-  }, []);
-
-  useEffect(() => {
-    setAsset((old) => old && { ...old, investorCount });
+    if (!asset || !organisation) return;
+    const data = { ...asset, investorCount } as IAsset;
+    setAsset(data);
   }, [investorCount]);
 
   useEffect(() => {
-    if (asset) return;
-    const innerAsset = getFullAsset();
-    setAsset(innerAsset);
-  }, [asset?.namespace, asset?.contractName]);
+    if (!asset || !organisation) return;
 
-  useEffect(() => {
-    if (!asset) return;
-
-    setAsset((old) => old && { ...old, supply });
+    const data = { ...asset, supply } as IAsset;
+    setAsset(data);
   }, [asset?.contractName, supply]);
+
+  // when the account or the asset changes, we need to check the roles of the account
+  useEffect(() => {
+    if (!account || !asset) return;
+    checkAccountAssetRoles(asset);
+  }, [asset?.contractName, account?.address, checkAccountAssetRoles]);
 
   useEffect(() => {
     if (
@@ -250,33 +271,38 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
       const data = params[0];
 
-      setAsset(
-        (old) =>
-          old && {
-            ...old,
-            compliance: {
-              ...old.compliance,
-              maxSupply: {
-                ...old.compliance.maxSupply,
-                value: data['supply-limit'],
-              },
-              maxBalance: {
-                ...old.compliance.maxBalance,
-                value: data['max-balance-per-investor'],
-              },
-              maxInvestors: {
-                ...old.compliance.maxInvestors,
-                value: data['max-investors'].int,
-              },
-            },
+      if (!asset || !organisation) return;
+
+      const newData = {
+        ...asset,
+        compliance: {
+          ...asset.compliance,
+          maxSupply: {
+            ...asset.compliance.maxSupply,
+            value: data['supply-limit'],
           },
-      );
+          maxBalance: {
+            ...asset.compliance.maxBalance,
+            value: data['max-balance-per-investor'],
+          },
+          maxInvestors: {
+            ...asset.compliance.maxInvestors,
+            value: data['max-investors'].int,
+          },
+        },
+      } as IAsset;
+
+      setAsset(newData);
     }
   }, [complianceSubscriptionData]);
 
   useEffect(() => {
     if (!complianceRules) return;
-    setAsset((old) => old && { ...old, compliance: { ...complianceRules } });
+    if (!asset || !organisation) return;
+
+    const data = { ...asset, compliance: { ...complianceRules } } as IAsset;
+
+    setAsset(data);
   }, [complianceRules]);
 
   return (
@@ -291,6 +317,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         removeAsset,
         paused,
         maxCompliance,
+        investors,
+        investorsIsLoading,
+        agents,
+        agentsIsLoading,
+        assetStore,
       }}
     >
       {children}

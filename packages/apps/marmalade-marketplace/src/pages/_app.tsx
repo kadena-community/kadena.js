@@ -11,7 +11,7 @@ export const MyApp = ({
   router,
 }: AppProps & {
   Component: FC;
-}): JSX.Element => {
+}): React.JSX.Element => {
   return (
     <Providers>
       <Layout>

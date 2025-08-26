@@ -70,7 +70,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     const { id, method, params = {} } = args;
 
     switch (method) {
-      case 'kadena_getAccount_v1':
+      case 'kadena_getAccount_v1': {
         const accounts = await this.getAccounts([]);
         const [firstAccount] = accounts;
 
@@ -79,7 +79,15 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
           jsonrpc: '2.0',
           result: firstAccount,
         } as JsonRpcResponse<IAccountInfo>;
-
+      }
+      case 'kadena_getAccounts_v2': {
+        const accounts = await this.getAccounts([]);
+        return {
+          id,
+          jsonrpc: '2.0',
+          result: accounts,
+        } as JsonRpcResponse<IAccountInfo[]>;
+      }
       case 'kadena_sign_v1': {
         if (!this.client || !this.provider?.session) {
           throw new Error(ERRORS.FAILED_TO_CONNECT);

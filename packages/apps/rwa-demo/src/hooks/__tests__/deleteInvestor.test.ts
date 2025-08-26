@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useDeleteInvestor } from '../deleteInvestor';
 
 describe('deleteInvestor hook', () => {
@@ -65,8 +65,8 @@ describe('deleteInvestor hook', () => {
       };
     });
 
-    vi.mock('@kadena/kode-ui/patterns', async () => {
-      const actual = await vi.importActual('@kadena/kode-ui/patterns');
+    vi.mock('@/hooks/notifications', async () => {
+      const actual = await vi.importActual('@/hooks/notifications');
       return {
         ...actual,
         useNotifications: mocksHook.useNotifications,

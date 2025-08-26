@@ -27,7 +27,9 @@ interface IUseThemeProps {
 }
 interface IUseThemeReturnProps {
   theme: ITheme | undefined;
+  rotateThemeState: ITheme | undefined;
   setTheme: (value: ITheme) => void;
+  rotateTheme: () => void;
 }
 
 const getTheme = (key: string) => {
@@ -45,6 +47,9 @@ export const useTheme = ({
   overwriteTheme,
   lockedTheme,
 }: IUseThemeProps = {}): IUseThemeReturnProps => {
+  const [rotateThemeState, setRotateThemeState] = useState<
+    ITheme | undefined
+  >();
   const [theme, setThemeState] = useState(() =>
     lockedTheme ? lockedTheme : getTheme(storageKey),
   );
@@ -55,6 +60,7 @@ export const useTheme = ({
 
     // If theme is system, resolve it before setting theme
     if (innerTheme === 'system') {
+      //resolved = 'system';
       resolved = getSystemTheme();
     }
     if (lockedTheme) {
@@ -86,13 +92,9 @@ export const useTheme = ({
     }
   };
 
-  const handleMediaQuery = useCallback(
-    (e: MediaQueryListEvent | MediaQueryList) => {
-      const resolved = lockedTheme ? lockedTheme : getSystemTheme(e);
-      setTheme(resolved);
-    },
-    [],
-  );
+  useEffect(() => {
+    setRotateThemeState(theme);
+  }, [theme]);
 
   // Always listen to System preference
   useEffect(() => {
@@ -100,9 +102,18 @@ export const useTheme = ({
       setTheme(lockedTheme);
       return;
     }
-
     const media = window.matchMedia(MEDIA);
     const theme = window.localStorage.getItem(storageKey) as ITheme;
+
+    const handleMediaQuery = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (theme === 'system') {
+        setTheme('system');
+        return;
+      }
+      const resolved = lockedTheme ? lockedTheme : theme;
+      setTheme(resolved ?? 'system');
+    };
+
     if (theme) {
       setTheme(theme);
     } else {
@@ -112,30 +123,53 @@ export const useTheme = ({
     media.addEventListener('change', handleMediaQuery);
 
     return () => media.removeEventListener('change', handleMediaQuery);
-  }, []);
-
-  const storageListener = useCallback((event: StorageEvent | Event) => {
-    if (event.type !== storageKey && 'key' in event && event.key !== storageKey)
-      return;
-
-    // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
-    const theme = lockedTheme
-      ? lockedTheme
-      : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
-    setTheme(theme, false);
-  }, []);
+  }, [rotateThemeState, theme, lockedTheme, setTheme]);
 
   useEffect(() => {
+    const storageListener = (event: StorageEvent | Event) => {
+      if (
+        event.type !== storageKey &&
+        'key' in event &&
+        event.key !== storageKey
+      )
+        return;
+
+      // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
+      const theme = lockedTheme
+        ? lockedTheme
+        : (window.localStorage.getItem(storageKey) as ITheme) || defaultTheme;
+      setTheme(theme, false);
+    };
+
     window.addEventListener(storageKey, storageListener);
     window.addEventListener('storage', storageListener);
     return () => {
       window.removeEventListener(storageKey, storageListener);
       window.removeEventListener('storage', storageListener);
     };
-  }, [storageListener]);
+  }, []);
+
+  const rotateTheme = () => {
+    switch (theme) {
+      case 'light':
+        setTheme('dark');
+        return;
+      case 'dark':
+        setTheme('system');
+        return;
+      case 'system':
+        setTheme('light');
+        return;
+      default:
+        setTheme('system');
+        return;
+    }
+  };
 
   return {
+    rotateThemeState: overwriteTheme ? overwriteTheme : rotateThemeState,
     theme: overwriteTheme ? overwriteTheme : theme,
     setTheme,
+    rotateTheme,
   };
 };

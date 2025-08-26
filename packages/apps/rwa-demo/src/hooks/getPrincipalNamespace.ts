@@ -6,16 +6,16 @@ export const useGetPrincipalNamespace = () => {
   const { account } = useAccount();
   const [innerData, setInnerData] = useState<string | undefined>();
 
-  const initInnerData = async () => {
-    const data = await getPrincipalNamespace({ owner: account! });
-    setInnerData(data);
-  };
-
   useEffect(() => {
     if (!account) return;
+    const initInnerData = async () => {
+      const data = await getPrincipalNamespace({ owner: account! });
+      setInnerData(data);
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData();
-  }, [account]);
+  }, [account?.address]);
 
   return { data: innerData };
 };

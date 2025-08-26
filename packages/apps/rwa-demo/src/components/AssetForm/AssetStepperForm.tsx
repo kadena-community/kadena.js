@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useGetPrincipalNamespace } from '@/hooks/getPrincipalNamespace';
@@ -5,18 +6,17 @@ import type { IAddContractProps } from '@/services/createContract';
 import { MonoAdd, MonoKeyboardArrowLeft } from '@kadena/kode-icons';
 import {
   Button,
+  Divider,
   Notification,
   NotificationHeading,
   Stack,
-  Text,
   TextField,
 } from '@kadena/kode-ui';
-import { useRouter } from 'next/navigation';
+import { token } from '@kadena/kode-ui/styles';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { AddExistingAssetForm } from './AddExistingAssetForm';
 
 interface IProps {
@@ -30,12 +30,13 @@ const STEPS = {
 } as const;
 
 export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const [step, setStep] = useState<number>(STEPS.START);
   const { addAsset, setAsset } = useAsset();
   const { data: namespace } = useGetPrincipalNamespace();
   const { submit: submitContract, isAllowed } = useCreateContract();
   const [error, setError] = useState('');
-  const router = useRouter();
 
   const {
     handleSubmit,
@@ -45,7 +46,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   } = useForm<IAddContractProps>({
     mode: 'onChange',
     values: {
-      contractName: 'sdf',
+      contractName: '',
       namespace: namespace ?? '',
     },
   });
@@ -60,6 +61,8 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   }, [namespace]);
 
   const handleSave = async (data: IAddContractProps) => {
+    setIsSuccess(false);
+    setIsPending(true);
     setError('');
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
@@ -69,16 +72,22 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
     const tx = await submitContract(data);
 
+    setIsPending(false);
+
     if (tx) {
-      setStep(STEPS.DONE);
-      const asset = addAsset({
+      const createdAsset = await addAsset({
         contractName: data.contractName,
         namespace: data.namespace,
       });
 
-      if (!asset) return;
-      setAsset(asset);
-      window.location.href = '/';
+      setIsSuccess(true);
+      setStep(STEPS.DONE);
+
+      handleDone?.();
+
+      if (createdAsset) {
+        setAsset(createdAsset);
+      }
     }
   };
 
@@ -91,11 +100,25 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
         </Notification>
       )}
 
+      {isSuccess && (
+        <Stack width="100%" marginBlockEnd="md">
+          <Notification intent="info" role="alert">
+            <NotificationHeading>
+              Asset created successfully
+            </NotificationHeading>
+            You can now use this contract.
+          </Notification>
+        </Stack>
+      )}
+
       {step === STEPS.START && (
-        <Stack flexDirection="column" gap="sm">
+        <Stack flexDirection="column" gap="sm" width="100%">
           <AddExistingAssetForm handleDone={handleDone} />
-          <Stack width="100%" justifyContent="center">
-            <Text bold>or</Text>
+          <Stack width="100%" justifyContent="center" marginBlock={'sm'}>
+            <Divider
+              label="or"
+              bgColor={token('color.background.layer.default')}
+            />
           </Stack>
           <Button
             isDisabled={!isAllowed}
@@ -110,15 +133,15 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       )}
 
       {step === STEPS.DONE && (
-        <Button
-          onPress={async () => {
-            router.replace('/assets');
-            router.refresh();
-            if (handleDone) handleDone();
-          }}
-        >
-          DONE
-        </Button>
+        <>
+          <Button
+            onPress={async () => {
+              if (handleDone) handleDone();
+            }}
+          >
+            DONE
+          </Button>
+        </>
       )}
 
       {step === STEPS.CREATE_CONTRACT && (
@@ -178,11 +201,12 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
             <Stack
               width="100%"
-              justifyContent="center"
+              justifyContent="flex-end"
               alignItems="center"
               gap="xs"
             >
               <Button
+                aria-label="Back"
                 onPress={() => setStep(STEPS.START)}
                 variant="transparent"
                 startVisual={<MonoKeyboardArrowLeft />}
@@ -190,8 +214,11 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                 Back
               </Button>
               <Button
+                aria-label="Create contract"
+                isLoading={isPending}
                 isDisabled={!isValid || !isAllowed}
                 type="submit"
+                onClick={() => {}}
                 startVisual={
                   <TransactionTypeSpinner
                     type={TXTYPES.CREATECONTRACT}

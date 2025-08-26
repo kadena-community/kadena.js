@@ -9,11 +9,7 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true, // lint is a different task/phase
   },
-  reactStrictMode: true,
-  pageExtensions:
-    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
-      ? ['tsx', 'route.ts']
-      : ['tsx', 'route.ts'],
+  reactStrictMode: false,
   transpilePackages: ['@kadena/kode-ui'],
   env: {
     KADENA_API_TTIL: process.env.KADENA_API_TTIL,
@@ -31,6 +27,8 @@ const config = {
     QA_LEDGER_MOCK: process.env.QA_LEDGER_MOCK,
     QA_LEDGER_MOCKED_PUBKEY: process.env.QA_LEDGER_MOCKED_PUBKEY,
     QA_LEDGER_MOCKED_PRIVATEKEY: process.env.QA_LEDGER_MOCKED_PRIVATEKEY,
+    NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
+    NEXT_PUBLIC_BUILD_TIME: new Date().toUTCString(),
   },
   webpack: (config) => {
     config.resolve.fallback = {
@@ -40,6 +38,14 @@ const config = {
     };
 
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/eth/:path*',
+        destination: `${process.env.NEXT_PUBLIC_EVMRPC_URL ?? 'http://localhost:8545/chain/'}:path*`,
+      },
+    ];
   },
   async redirects() {
     return [

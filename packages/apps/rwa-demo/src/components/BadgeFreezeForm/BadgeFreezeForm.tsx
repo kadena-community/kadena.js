@@ -1,24 +1,20 @@
 import { useBatchFreezeInvestors } from '@/hooks/batchFreezeInvestors';
 import type { IBatchSetAddressFrozenProps } from '@/services/batchSetAddressFrozen';
-import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import {
   Button,
   Dialog,
-  DialogContent,
   DialogFooter,
   DialogHeader,
+  Stack,
   TextareaField,
 } from '@kadena/kode-ui';
 
-import { useAccount } from '@/hooks/account';
 import type { ChangeEvent, FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { UseFormHandleSubmit, UseFormReset } from 'react-hook-form';
-import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 
 interface IProps {
-  pause: boolean;
+  type?: 'freeze' | 'unfreeze';
   isDisabled: boolean;
   handleReset: UseFormReset<{
     select: [];
@@ -35,21 +31,21 @@ export const BadgeFreezeForm: FC<IProps> = ({
   handleSubmit,
   handleReset,
   isDisabled,
-  pause,
+  type,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
-  const { account } = useAccount();
   const { submit, isAllowed } = useBatchFreezeInvestors();
 
   const onSubmit = async ({ select }: { select: string[] }) => {
     const data: IBatchSetAddressFrozenProps = {
       investorAccounts: select,
-      pause,
+      pause: type === 'freeze',
       message,
     };
+
     const tx = await submit(data);
-    setIsModalOpen(false);
+    setIsModalOpen(() => false);
     tx?.listener.subscribe(
       () => {},
       () => {},
@@ -59,23 +55,27 @@ export const BadgeFreezeForm: FC<IProps> = ({
     );
   };
 
+  useEffect(() => {
+    if (type === 'unfreeze') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      handleSubmit(onSubmit)();
+    }
+    if (type === 'freeze') {
+      setIsModalOpen(true);
+    }
+  }, [type]);
+
   const handleMessageChange = (e: ChangeEvent) => {
     setMessage((e.target as HTMLTextAreaElement).value);
   };
 
-  const handleStart = async () => {
-    if (pause) {
-      setIsModalOpen(true);
-      return;
-    }
-  };
-
   return (
     <>
-      {pause && (
+      {type === 'freeze' && (
         <Dialog isOpen={isModalOpen} onOpenChange={() => setIsModalOpen(false)}>
           <DialogHeader>Freeze selected accounts</DialogHeader>
-          <DialogContent>
+
+          <Stack width="100%">
             <TextareaField
               name="message"
               onChange={handleMessageChange}
@@ -83,7 +83,8 @@ export const BadgeFreezeForm: FC<IProps> = ({
               maxLength={100}
               rows={5}
             />
-          </DialogContent>
+          </Stack>
+
           <DialogFooter>
             <Button variant="outlined" onPress={() => setIsModalOpen(false)}>
               Cancel
@@ -98,21 +99,6 @@ export const BadgeFreezeForm: FC<IProps> = ({
           </DialogFooter>
         </Dialog>
       )}
-      <Button
-        isDisabled={isDisabled || !isAllowed}
-        onClick={pause ? handleStart : handleSubmit(onSubmit)}
-        isCompact
-        variant="outlined"
-        endVisual={
-          <TransactionTypeSpinner
-            type={[TXTYPES.FREEZEINVESTOR]}
-            account={account?.address}
-            fallbackIcon={pause ? <MonoPlayArrow /> : <MonoPause />}
-          />
-        }
-      >
-        {pause ? 'Freeze' : 'Unfreeze'}
-      </Button>
     </>
   );
 };

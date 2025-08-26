@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { templatePartialSchema } from '../../commands/tx/commands/templates/mapper.js';
 import * as globalHelpers from '../globalHelpers.js';
 
 describe('safeAssign', () => {
@@ -159,5 +160,120 @@ describe('getPubKeyFromAccount', () => {
     expect(() => globalHelpers.getPubKeyFromAccount(invalidAccount)).toThrow(
       'Invalid account',
     );
+  });
+});
+
+describe('formatZodError with templatePartialSchema', () => {
+  it('should format missing required fields', () => {
+    // Missing both meta and publicMeta, and missing payload
+    const input = {
+      signers: [],
+    };
+
+    const result = templatePartialSchema.safeParse(input);
+    expect(result.success).toBe(false);
+    if (result.error) {
+      const formatted = globalHelpers.formatZodError(result.error);
+      expect(formatted).toContain('payload');
+      expect(formatted).toContain('Required');
+    } else {
+      expect(result.error).toBeDefined();
+    }
+  });
+
+  it('should format nested errors in payload.exec', () => {
+    const input = {
+      payload: {
+        exec: {
+          code: 123, // should be string
+        },
+      },
+      signers: [],
+      meta: {
+        sender: 'sender',
+        chainId: '0',
+      },
+    };
+
+    const result = templatePartialSchema.safeParse(input);
+    expect(result.success).toBe(false);
+
+    if (result.error) {
+      const formatted = globalHelpers.formatZodError(result.error);
+      expect(formatted).toContain('payload.exec.code');
+      expect(formatted).toContain('Expected string');
+    } else {
+      expect(result.error).toBeDefined();
+    }
+  });
+
+  it('should format nested errors in payload.exec.code not presented', () => {
+    const input = {
+      payload: {
+        exec: {},
+      },
+      signers: [],
+      meta: {
+        sender: 'sender',
+        chainId: '0',
+      },
+    };
+
+    const result = templatePartialSchema.safeParse(input);
+    expect(result.success).toBe(false);
+
+    if (result.error) {
+      const formatted = globalHelpers.formatZodError(result.error);
+      expect(formatted).toContain('payload.exec.code');
+      expect(formatted).toContain('Required');
+    } else {
+      expect(result.error).toBeDefined();
+    }
+  });
+
+  it('should format error if signer pubKey is missing', () => {
+    const input = {
+      payload: {
+        exec: {
+          code: '(some code)',
+        },
+      },
+      signers: [
+        {
+          clist: [
+            {
+              name: 'foo',
+              args: [],
+            },
+          ],
+        },
+      ],
+      meta: {
+        sender: 'sender',
+        chainId: '0',
+      },
+    };
+
+    const result = templatePartialSchema.safeParse(input);
+    expect(result.success).toBe(false);
+    if (result.error) {
+      const formatted = globalHelpers.formatZodError(result.error);
+      expect(formatted).toContain('signers.0');
+      expect(formatted).toContain('Invalid input');
+    } else {
+      expect(result.error).toBeDefined();
+    }
+  });
+
+  it('should handle completely empty input gracefully', () => {
+    const result = templatePartialSchema.safeParse({});
+    expect(result.success).toBe(false);
+    if (result.error) {
+      const formatted = globalHelpers.formatZodError(result.error);
+      expect(formatted).toContain('payload');
+      expect(formatted).toContain('signers');
+    } else {
+      expect(result.error).toBeDefined();
+    }
   });
 });

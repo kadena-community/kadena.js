@@ -34,7 +34,7 @@ const useSearch = (): ISearchContext => {
 
 const SearchContextProvider = (props: {
   children: React.ReactNode;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchOption, setSearchOption] = useState<SearchOptionEnum | null>(

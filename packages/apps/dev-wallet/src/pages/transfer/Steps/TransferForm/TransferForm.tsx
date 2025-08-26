@@ -1,3 +1,4 @@
+import { Confirmation } from '@/Components/Confirmation/Confirmation';
 import { IOwnedAccount } from '@/modules/account/account.repository';
 import { activityRepository } from '@/modules/activity/activity.repository';
 import { ITransaction } from '@/modules/transaction/transaction.repository';
@@ -81,7 +82,7 @@ export function TransferForm({
   onSubmit,
   activityId,
 }: TransferFormProps) {
-  const timer = useRef<NodeJS.Timeout>();
+  const timer = useRef<NodeJS.Timeout>(null);
   // somehow react-hook-form does not trigger re-render when the value of the form is changed
   // also for performance reason I don't want to re-render the whole form on every change
   // so I use this state to force re-render on specific changes
@@ -368,7 +369,7 @@ export function TransferForm({
     <T, R>(cb: (...args: T[]) => R) => {
       return (...args: T[]) => {
         const result = cb(...args);
-        clearTimeout(timer.current);
+        clearTimeout(timer.current ?? '');
         timer.current = setTimeout(evaluateTransactions, 100);
         return result;
       };
@@ -543,16 +544,19 @@ export function TransferForm({
             </Button>
 
             <Stack justifyContent="flex-end" flex={1} gap="sm">
-              <Button
-                variant="negative"
+              <Confirmation
+                label="Yes, cancel"
+                dismissLabel="No"
                 onPress={() => {
                   navigate('/');
                 }}
+                trigger={<Button variant="negative">Cancel</Button>}
               >
-                Abort
-              </Button>
+                Are you sure you want to cancel this transaction?
+              </Confirmation>
+
               <Button isDisabled={!formState.isValid} type="submit">
-                Create Transactions
+                Create Transaction(s)
               </Button>
             </Stack>
           </Stack>

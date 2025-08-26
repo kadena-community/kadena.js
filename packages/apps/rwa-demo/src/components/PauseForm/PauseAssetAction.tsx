@@ -1,3 +1,4 @@
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
 import { useTogglePause } from '@/hooks/togglePause';
 import { useTransactions } from '@/hooks/transactions';
@@ -5,7 +6,6 @@ import { MonoPause, MonoPlayArrow } from '@kadena/kode-icons';
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
 import { AssetAction } from '../AssetAction/AssetAction';
-import { TXTYPES } from '../TransactionsProvider/TransactionsProvider';
 import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 import { PauseForm } from './PauseForm';
 

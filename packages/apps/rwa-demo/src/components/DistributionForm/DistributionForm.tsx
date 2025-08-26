@@ -1,8 +1,9 @@
+import type { ITransaction } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
 import { useDistributeTokens } from '@/hooks/distributeTokens';
 import { useGetInvestorBalance } from '@/hooks/getInvestorBalance';
 import type { IDistributeTokensProps } from '@/services/distributeTokens';
-import { Button, TextField } from '@kadena/kode-ui';
+import { Button, Stack, TextField } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -14,15 +15,14 @@ import type { FC, ReactElement } from 'react';
 import { cloneElement, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AssetPausedMessage } from '../AssetPausedMessage/AssetPausedMessage';
+import { AccountNameField } from '../Fields/AccountNameField';
 import { InvestorFrozenMessage } from '../InvestorFrozenMessage/InvestorFrozenMessage';
 import { MaxSupplyMessage } from '../MaxSupplyMessage/MaxSupplyMessage';
 import { SendTransactionAnimation } from '../SendTransactionAnimation/SendTransactionAnimation';
-import type { ITransaction } from '../TransactionsProvider/TransactionsProvider';
-
 interface IProps {
   onClose?: () => void;
   investorAccount: string;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
 }
 
 export const DistributionForm: FC<IProps> = ({
@@ -44,6 +44,7 @@ export const DistributionForm: FC<IProps> = ({
     handleSubmit,
     formState: { isValid, errors },
   } = useForm<IDistributeTokensProps>({
+    mode: 'onChange',
     values: {
       amount: '0',
       investorAccount,
@@ -87,8 +88,8 @@ export const DistributionForm: FC<IProps> = ({
     return message;
   };
 
-  const maxBalance = maxCompliance('max-balance-compliance');
-  const maxSupply = maxCompliance('supply-limit-compliance');
+  const maxBalance = maxCompliance('max-balance-compliance-v1');
+  const maxSupply = maxCompliance('supply-limit-compliance-v1');
   const supply = asset?.supply ?? 0;
 
   let maxAmount = -1;
@@ -106,26 +107,42 @@ export const DistributionForm: FC<IProps> = ({
           <form onSubmit={handleSubmit(onSubmit)}>
             <RightAsideHeader label="Distribute Tokens" />
             <RightAsideContent>
-              <Controller
-                name="amount"
-                control={control}
-                rules={{
-                  required: true,
-                  min: 0,
-                  max: maxAmount >= 0 ? maxAmount : undefined,
-                }}
-                render={({ field }) => (
-                  <TextField
-                    type="number"
-                    label="Amount"
-                    {...field}
-                    errorMessage={errors.amount?.message}
-                    description={
-                      maxAmount >= 0 ? `max amount: ${maxAmount}` : ''
-                    }
-                  />
-                )}
-              />
+              <Stack flexDirection="column" gap="md">
+                <AccountNameField
+                  name="investorAccount"
+                  label="Distribute Account"
+                  control={control}
+                  value={investorAccount}
+                  accountName={investorAccount}
+                />
+                <Controller
+                  name="amount"
+                  control={control}
+                  rules={{
+                    required: true,
+                    min: {
+                      value: 0,
+                      message: 'Amount must be greater than or equal to 0',
+                    },
+                    max: {
+                      value: maxAmount >= 0 ? maxAmount : Infinity,
+                      message: `Amount must be less than or equal to ${maxAmount >= 0 ? maxAmount : 'unlimited'}`,
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      type="number"
+                      label="Amount"
+                      {...field}
+                      isInvalid={!!errors.amount}
+                      errorMessage={errors.amount?.message}
+                      description={
+                        maxAmount >= 0 ? `max amount: ${maxAmount}` : ''
+                      }
+                    />
+                  )}
+                />
+              </Stack>
             </RightAsideContent>
             <RightAsideFooter
               message={

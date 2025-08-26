@@ -1,3 +1,4 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import {
   RightAside,
   RightAsideContent,
@@ -6,12 +7,11 @@ import {
 } from '@kadena/kode-ui/patterns';
 import type { FC, ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
-import type { IAsset } from '../AssetProvider/AssetProvider';
 import { AssetStepperForm } from './AssetStepperForm';
 
 interface IProps {
   asset?: IAsset;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
   onClose?: () => void;
 }
 
@@ -34,10 +34,7 @@ export const AssetFormScreen: FC<IProps> = ({ trigger, onClose }) => {
   return (
     <>
       {isRightAsideExpanded && isOpen && (
-        <RightAside
-          isOpen={isRightAsideExpanded && isOpen}
-          onClose={handleOnClose}
-        >
+        <RightAside isOpen={true} onClose={handleOnClose}>
           <RightAsideHeader label="Add Asset" />
           <RightAsideContent>
             <AssetStepperForm handleDone={handleOnClose} />

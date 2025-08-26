@@ -3,11 +3,10 @@ import writeMessage from '@/utils/writeMessage';
 import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import Head from 'next/head';
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SpinnerRoundFilled } from 'spinners-react';
 import KadenaImage from '../../public/assets/k-community-icon.png';
 import styles from '../styles/main.module.css';
-
 
 const Home: React.FC = (): JSX.Element => {
   const { client, providerData } = useKadenaWallet();
@@ -18,15 +17,14 @@ const Home: React.FC = (): JSX.Element => {
   const [messageFromChain, setMessageFromChain] = useState<string>('');
   const [writeInProgress, setWriteInProgress] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  
 
   const handleConnect = async () => {
     if (!selectedWallet) {
-      console.error("No wallet selected");
+      console.error('No wallet selected');
       return;
     }
     if (!client) {
-      console.error("Wallet client not available");
+      console.error('Wallet client not available');
       return;
     }
     setLoading(true);
@@ -34,11 +32,11 @@ const Home: React.FC = (): JSX.Element => {
       {
         const accountInfo = await client.connect(
           selectedWallet,
-          selectedWallet === "Chainweaver"
+          selectedWallet === 'Chainweaver'
             ? {
-                accountName: prompt("Input your account"),
-                tokenContract: "coin",
-                chainIds: ["0", "1"],
+                accountName: prompt('Input your account'),
+                tokenContract: 'coin',
+                chainIds: ['0', '1'],
               }
             : undefined,
         );
@@ -47,30 +45,47 @@ const Home: React.FC = (): JSX.Element => {
         const networkInfo = await client.getActiveNetwork(selectedWallet);
         setNetwork(networkInfo);
 
-        console.log("Connected to", selectedWallet, "->", accountInfo?.accountName);
+        console.log(
+          'Connected to',
+          selectedWallet,
+          '->',
+          accountInfo?.accountName,
+        );
       }
     } catch (error) {
-      console.error("Connect error:", error);
-      
+      console.error('Connect error:', error);
+
       // Provide user-friendly error messages
-      if (selectedWallet === "Chainweaver") {
-        if (error instanceof Error && error.message.includes("fetch")) {
-          alert("Chainweaver connection failed. Please make sure:\n• Chainweaver desktop app is running\n• The app is accessible on localhost:9467\n• Your account exists on the blockchain");
-        } else if (error instanceof Error && error.message.includes("Account not found")) {
-          alert("Account verification failed. Please check:\n• Your account name is correct (should start with 'k:')\n• The account exists on the specified chains\n• You have the correct network selected");
+      if (selectedWallet === 'Chainweaver') {
+        if (error instanceof Error && error.message.includes('fetch')) {
+          alert(
+            'Chainweaver connection failed. Please make sure:\n• Chainweaver desktop app is running\n• The app is accessible on localhost:9467\n• Your account exists on the blockchain',
+          );
+        } else if (
+          error instanceof Error &&
+          error.message.includes('Account not found')
+        ) {
+          alert(
+            "Account verification failed. Please check:\n• Your account name is correct (should start with 'k:')\n• The account exists on the specified chains\n• You have the correct network selected",
+          );
         } else {
-          alert("Chainweaver connection failed. Please check your account name and ensure Chainweaver desktop app is running.");
+          alert(
+            'Chainweaver connection failed. Please check your account name and ensure Chainweaver desktop app is running.',
+          );
         }
-      } else if (selectedWallet === "WalletConnect") {
-        alert("WalletConnect connection failed. Please try again or check your wallet app.");
+      } else if (selectedWallet === 'WalletConnect') {
+        alert(
+          'WalletConnect connection failed. Please try again or check your wallet app.',
+        );
       } else {
-        alert(`Failed to connect to ${selectedWallet}. Please make sure the wallet is installed and try again.`);
+        alert(
+          `Failed to connect to ${selectedWallet}. Please make sure the wallet is installed and try again.`,
+        );
       }
     } finally {
       setLoading(false);
     }
   };
-
 
   const handleAccountInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -107,12 +122,12 @@ const Home: React.FC = (): JSX.Element => {
 
     if (client.isDetected(selectedWallet)) {
       client.onAccountChange(selectedWallet, (newAccount) => {
-        console.log("Account changed:", newAccount);
+        console.log('Account changed:', newAccount);
         setAccount(newAccount?.accountName || '');
       });
 
       client.onNetworkChange(selectedWallet, (newNetwork) => {
-        console.log("Network changed:", newNetwork);
+        console.log('Network changed:', newNetwork);
         setNetwork(newNetwork);
       });
     }
@@ -186,7 +201,7 @@ const Home: React.FC = (): JSX.Element => {
                 disabled={loading || !selectedWallet || !!account}
                 className={styles.button}
               >
-                {loading ? "Connecting..." : "Connect Wallet"}
+                {loading ? 'Connecting...' : 'Connect Wallet'}
               </button>
             </div>
 
@@ -228,9 +243,9 @@ const Home: React.FC = (): JSX.Element => {
                 <button
                   onClick={handleWriteMessageClick}
                   disabled={
-                    account === '' || 
-                    messageToWrite === '' || 
-                    writeInProgress || 
+                    account === '' ||
+                    messageToWrite === '' ||
+                    writeInProgress ||
                     selectedWallet === ''
                   }
                   className={styles.button}
@@ -286,7 +301,6 @@ const Home: React.FC = (): JSX.Element => {
           </div>
         </section>
       </main>
-
     </div>
   );
 };

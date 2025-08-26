@@ -161,19 +161,17 @@ export const isNotEmptyObject = <T extends object>(obj?: T | null): obj is T =>
  */
 export const formatZodError = (error: ZodError): string => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const format = error.format() as any;
-  const formatted = Object.keys(format)
-    .map((key) => {
-      if (key === '_errors') {
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        return Array.isArray(format[key]) && format[key].includes('Required')
-          ? 'Can not be empty'
-          : null;
-      }
-      return `${key}: ${format[key]?._errors.join(', ')}`;
-    })
-    .filter(notEmpty);
-  return formatted.join('\n');
+  const messages = error.issues.map((issue) => {
+    const path = issue.path.join('.');
+    if (path) {
+      return `\n  - ${path}: ${issue.message}`;
+    } else {
+      return issue.message === 'Required'
+        ? 'Can not be empty'
+        : `\n  - ${issue.message}`;
+    }
+  });
+  return messages.join('');
 };
 
 export const safeJsonParse = <T extends unknown>(value: string): T | null => {

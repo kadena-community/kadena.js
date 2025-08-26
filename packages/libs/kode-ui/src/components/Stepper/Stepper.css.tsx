@@ -41,12 +41,13 @@ export const stepperClass = recipe({
 });
 
 export const steppContentWrapperClass = style({
-  textAlign: 'center',
   selectors: {
     [`${stepperClass.classNames.variants.direction.vertical} &`]: {
       marginInlineStart: token('spacing.lg'),
+      textAlign: 'start',
     },
     [`${stepperClass.classNames.variants.direction.horizontal} &`]: {
+      textAlign: 'center',
       marginBlockStart: token('spacing.lg'),
     },
   },
@@ -57,7 +58,6 @@ export const steppContentClass = style({
   WebkitLineClamp: 2,
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden',
-  textAlign: 'center',
 });
 
 export const stepClass = recipe({

@@ -158,6 +158,7 @@ export function NetworkForm({
               label="Title"
               aria-label="title"
               type="text"
+              maxLength={30}
               defaultValue={getValues('name')}
               {...register('name', { required: 'Title is required' })}
             />

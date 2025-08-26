@@ -27,7 +27,11 @@ import classNames from 'classnames';
 import { CopyButton } from '@/Components/CopyButton/CopyButton';
 import { getCopyTxString } from '@/utils/getCopyTxString';
 import { getErrorMessage } from '@/utils/getErrorMessage';
-import { MonoFactCheck, MonoSignature } from '@kadena/kode-icons/system';
+import {
+  MonoFactCheck,
+  MonoShare,
+  MonoSignature,
+} from '@kadena/kode-icons/system';
 import { CardContentBlock } from '@kadena/kode-ui/patterns';
 import yaml from 'js-yaml';
 import { Capability } from './Capability';
@@ -58,7 +62,7 @@ export const RenderSigner = ({
   const signature = transaction.sigs.find(
     (sig) => sig?.pubKey === signer.pubKey && sig.sig,
   )?.sig;
-  const info = getPublicKeyData(signer.pubKey);
+  const signerPukeyInfo = getPublicKeyData(signer.pubKey);
   const [error, setError] = useState<string>();
   const [showCapabilities, setShowCapabilities] = useState(false);
   const keyAlias = useMemo(
@@ -151,7 +155,7 @@ export const RenderSigner = ({
               >
                 {showCapabilities ? 'Hide details' : 'Show details'}
               </Button>
-              {signature ? (
+              {signature && signerPukeyInfo ? (
                 <Button
                   variant="negative"
                   isDisabled={statusPassed(transactionStatus, 'submitted')}
@@ -167,7 +171,7 @@ export const RenderSigner = ({
                 >
                   Unsign
                 </Button>
-              ) : info ? (
+              ) : signerPukeyInfo ? (
                 <Button
                   isCompact
                   variant="info"
@@ -190,6 +194,12 @@ export const RenderSigner = ({
                   data={getCopyTxString(transaction)}
                   label="Share"
                   variant="info"
+                  icon={<MonoShare />}
+                  tooltip={{
+                    content:
+                      'The transaction url is copied to to the clipboard.',
+                    position: 'bottom',
+                  }}
                 />
               )}
             </Stack>
@@ -202,8 +212,10 @@ export const RenderSigner = ({
           >
             <Stack gap={'sm'} alignItems="center">
               <Heading variant="h6">Public Key</Heading>
-              <Stack flex={1}>{info && <Badge size="sm">Owned</Badge>}</Stack>
-              {<Badge size="sm">{info?.source ?? 'External'}</Badge>}
+              <Stack flex={1}>
+                {signerPukeyInfo && <Badge size="sm">Owned</Badge>}
+              </Stack>
+              {<Badge size="sm">{signerPukeyInfo?.source ?? 'External'}</Badge>}
             </Stack>
 
             <Stack gap={'sm'} alignItems={'flex-start'}>
@@ -226,7 +238,7 @@ export const RenderSigner = ({
                   <Divider label="Signature" align="end" />
                   <Stack flexDirection="column">
                     <Stack
-                      justifyContent={'space-between'}
+                      justifyContent={'flex-end'}
                       alignItems={'flex-start'}
                       gap={'sm'}
                     >
@@ -234,6 +246,11 @@ export const RenderSigner = ({
                         data={{
                           sig: signature,
                           pubKey: signer.pubKey,
+                        }}
+                        label="Copy signature"
+                        tooltip={{
+                          position: 'bottom',
+                          content: 'Copied signature to clipboard',
                         }}
                       />
                     </Stack>
@@ -257,7 +274,7 @@ export const RenderSigner = ({
             </Stack>
           )}
 
-          {!signature && info && (
+          {!signature && signerPukeyInfo && (
             <Stack>
               {error && (
                 <Notification intent="negative" role="alert">
@@ -266,7 +283,7 @@ export const RenderSigner = ({
               )}
             </Stack>
           )}
-          {!signature && !info && (
+          {!signature && !signerPukeyInfo && (
             <form onSubmit={handleSubmit}>
               <Stack
                 gap={'sm'}

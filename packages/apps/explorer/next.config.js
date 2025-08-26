@@ -3,6 +3,10 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
+    NEXT_PUBLIC_BUILD_TIME: new Date().toUTCString(),
+  },
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],

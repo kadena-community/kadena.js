@@ -1,5 +1,17 @@
 # @kadena/client-utils
 
+## 0.13.0
+
+### Minor Changes
+
+- b849855: Add gas price estimate helper
+
+### Patch Changes
+
+- Updated dependencies \[b849855]
+  - @kadena/client\@1.18.0
+  - @kadena/pactjs-cli\@1.18.0
+
 ## 0.12.2
 
 ### Patch Changes

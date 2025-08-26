@@ -85,3 +85,14 @@ import {
   console.log('Connected to WalletConnect directly!');
 })();
 ```
+
+## Supported methods
+
+| Method                | KIP         | Supported | Calls wallet with     |
+| --------------------- | ----------- | --------- | --------------------- |
+| kadena_sign_v1        | [KIP-17][1] | Yes       | kadena_sign_v1        |
+| kadena_quicksign_v1   | [KIP-17][1] | Yes       | kadena_quicksign_v1   |
+| kadena_getAccount_v1  | [KIP-37][2] | Yes       | kadena_getAccounts_v1 |
+| kadena_getAccounts_v2 | [KIP-38][3] | Yes       | kadena_getAccounts_v1 |
+| kadena_getNetwork_v1  | [KIP-39][4] | No        |                       |
+| kadena_getNetworks_v1 | [KIP-40][5] | No        |                       |

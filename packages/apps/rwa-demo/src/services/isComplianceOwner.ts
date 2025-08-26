@@ -1,8 +1,10 @@
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { getClient, getNetwork } from '@/utils/client';
 import { Pact } from '@kadena/client';
 
 export interface IIsComplianceOwnerProps {
   owner: string;
+  asset: IAsset;
 }
 
 //@TODO: break this up in seperate owners:
@@ -13,7 +15,7 @@ export const isComplianceOwner = async (data: IIsComplianceOwnerProps) => {
   const client = getClient();
 
   const transaction = Pact.builder
-    .execution(`(max-balance-compliance.is-owner (read-string 'owner))`)
+    .execution(`(max-balance-compliance-v1.is-owner (read-string 'owner))`)
     .setMeta({
       senderAccount: data.owner,
       chainId: getNetwork().chainId,

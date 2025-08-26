@@ -1,4 +1,5 @@
-import type { IWalletAccount } from '@/components/AccountProvider/AccountType';
+import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import { getNetwork } from '@/utils/client';
 import { getAsset } from '@/utils/getAsset';
 import { getPubkeyFromAccount } from '@/utils/getPubKey';
@@ -19,6 +20,7 @@ const createPubKeyFromAccount = (account: string): string => {
 export const togglePartiallyFreezeTokens = async (
   data: ITogglePartiallyFreezeTokensProps,
   account: IWalletAccount,
+  asset: IAsset,
 ) => {
   const func = data.freeze
     ? 'freeze-partial-tokens'
@@ -27,7 +29,7 @@ export const togglePartiallyFreezeTokens = async (
   return Pact.builder
     .execution(
       `
-       (${getAsset()}.${func} (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
+       (${getAsset(asset)}.${func} (read-string 'investor) ${new PactNumber(data.amount).toDecimal()})`,
     )
     .addData('agent', account.address)
     .addData('investor', data.investorAccount)
@@ -40,7 +42,7 @@ export const togglePartiallyFreezeTokens = async (
       chainId: getNetwork().chainId,
     })
     .addSigner(getPubkeyFromAccount(account), (withCap) => [
-      withCap(`${getAsset()}.ONLY-AGENT`, AGENTROLES.FREEZER),
+      withCap(`${getAsset(asset)}.ONLY-AGENT`, AGENTROLES.FREEZER),
       withCap(`coin.GAS`),
     ])
     .setNetworkId(getNetwork().networkId)

@@ -293,12 +293,7 @@ export class ChainweaverAppIndex extends setupDatabase {
   }
 
   public async signPopupWithPassword(actor: Page): Promise<boolean> {
-    await actor
-      .getByRole('button', {
-        name: 'Unlock',
-      })
-      .waitFor();
-
+    await actor.waitForTimeout(500);
     const unlockButton = actor.getByRole('button', {
       name: 'Unlock',
     });

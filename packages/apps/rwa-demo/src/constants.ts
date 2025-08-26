@@ -1,5 +1,4 @@
 export const ACCOUNT_COOKIE_NAME = 'rwa';
-export const LOCALSTORAGE_ASSETS_KEY = 'assets';
 export const LOCALSTORAGE_ASSETS_SELECTED_KEY = 'selected_asset';
 export const LOCALSTORAGE_ACCOUNTS = 'accounts';
 export const INFINITE_COMPLIANCE = -1;

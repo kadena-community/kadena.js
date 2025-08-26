@@ -320,7 +320,8 @@ export function Transfer() {
           <>
             <FocussedLayoutHeaderAside>
               <Confirmation
-                label="Abort"
+                label="Yes, cancel"
+                dismissLabel="No"
                 onPress={() => {
                   navigate('/');
                 }}
@@ -330,11 +331,11 @@ export function Transfer() {
                     variant="transparent"
                     startVisual={<MonoClose />}
                   >
-                    Abort
+                    Go back
                   </Button>
                 }
               >
-                Are you sure you want to abort this transaction?
+                Are you sure you want to cancel this transaction?
               </Confirmation>
             </FocussedLayoutHeaderAside>
 

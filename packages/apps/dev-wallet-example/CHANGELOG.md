@@ -1,5 +1,14 @@
 # @kadena/dev-wallet-example
 
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+
 ## 0.2.4
 
 ### Patch Changes

@@ -44,7 +44,7 @@ const itemsPerPageOptions = [10, 50, 100, 200].map((x) => ({
 
 export const ExtendedTransfersTable = (
   props: IExpandedTransfersTableProps,
-): JSX.Element => {
+): React.JSX.Element => {
   const { transfers, fetchMore } = props;
 
   // Parse the query parameters from the URL using Next.js router

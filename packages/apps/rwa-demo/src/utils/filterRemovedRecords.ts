@@ -4,7 +4,6 @@ export interface IRecord {
   chainId?: string;
   requestKey?: string;
   accountName: string;
-  alias?: string;
   creationTime: number;
   result?: boolean;
 }

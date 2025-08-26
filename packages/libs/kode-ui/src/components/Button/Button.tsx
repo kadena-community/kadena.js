@@ -34,6 +34,7 @@ export type IButtonProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     onClick?: Pick<HTMLAttributes<HTMLButtonElement>, 'onClick'>['onClick'];
     startVisual?: ReactElement;
     endVisual?: ReactElement;
+    textAlign?: 'start' | 'center' | 'end';
   };
 
 /**
@@ -98,6 +99,7 @@ const Button = forwardRef(
             isCompact,
             isLoading,
             hasAction: !!props.onClick || !!props.onPress,
+            textAlign: props.textAlign || 'center',
           }),
           className,
         )}

@@ -1,4 +1,4 @@
-import { MonoMenu, MonoMenuOpen } from '@kadena/kode-icons/system';
+import { MonoMenu } from '@kadena/kode-icons/system';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { useEffect, useRef } from 'react';
@@ -67,9 +67,10 @@ export const SideBarHeader: FC<IProps> = ({ logo, topbannerHeight = 0 }) => {
         <Media lessThan="md">
           <Stack className={classNames(menuMenuIconClass)}>
             <Button
+              aria-label="Toggle sidemenu"
               variant="transparent"
               onPress={handleExpand}
-              startVisual={isExpanded ? <MonoMenuOpen /> : <MonoMenu />}
+              startVisual={<MonoMenu />}
             />
           </Stack>
         </Media>
