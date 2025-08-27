@@ -172,21 +172,21 @@ As a highly skilled and creative UI designer, create a JSON object representing 
   "type": "stack",
   "direction": "column",
   "props": {
-    "style": { "display": "flex", "flexDirection": "column" },
+    "style": { "display": "flex", "flexDirection": "column" }
   },
   "children": [
     {
       "type": "stack",
       "direction": "row",
       "props": {
-        "style": { "display": "flex", "flexDirection": "row", "gap": "16px" },
+        "style": { "display": "flex", "flexDirection": "row", "gap": "16px" }
       },
       "children": [
         {
           "type": "stack",
           "direction": "column",
           "props": {
-            "style": { "display": "flex", "flexDirection": "column", "flex": 1 },
+            "style": { "display": "flex", "flexDirection": "column", "flex": 1 }
           },
           "children": [
             {
@@ -207,7 +207,7 @@ As a highly skilled and creative UI designer, create a JSON object representing 
           "type": "stack",
           "direction": "column",
           "props": {
-            "style": { "display": "flex", "flexDirection": "column", "flex": 1 },
+            "style": { "display": "flex", "flexDirection": "column", "flex": 1 }
           },
           "children": [
             {
@@ -230,7 +230,7 @@ As a highly skilled and creative UI designer, create a JSON object representing 
       "type": "stack",
       "direction": "column",
       "props": {
-        "style": { "display": "flex", "flexDirection": "column" },
+        "style": { "display": "flex", "flexDirection": "column" }
       },
       "children": [
         {
@@ -257,7 +257,7 @@ As a highly skilled and creative UI designer, create a JSON object representing 
 }
 
 make sure that all the quotes are in the correct place and that the JSON is valid.
-make sure that ALL properties of the original JSON are represented in the layout.
+make sure that ALL properties of the original JSON are represented in the layout and there are NO new properties.
 
 JSON:
 ${JSON.stringify(reorderedData, null, 2)}

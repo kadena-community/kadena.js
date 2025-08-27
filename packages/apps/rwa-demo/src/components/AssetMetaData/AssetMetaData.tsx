@@ -9,19 +9,29 @@ const renderLayout = (layout: any) => {
   console.log(layout);
 
   const { label, value } = layout ?? {};
-  const { style: styleprop, ...props } = layout ?? {};
+  const { style: styleprop, ...props } = layout.props ?? {};
 
   const style = layout.style ?? styleprop ?? {};
 
   return layout.children?.length ? (
-    <Stack {...props} style={{ ...(style ?? {}) }}>
+    <Stack
+      {...props}
+      style={{ ...(style ?? {}) }}
+      data-type={layout.type}
+      data-propname={layout.propName}
+    >
       {label && <strong>{label}: </strong>}
       {layout.children?.map((child: any) => renderLayout(child))}
     </Stack>
   ) : (
-    <Stack {...props} style={{ ...(style ?? {}) }}>
+    <Stack
+      {...props}
+      style={{ ...(style ?? {}) }}
+      data-type={layout.type}
+      data-propname={layout.propName}
+    >
       {label && <strong>{label}: </strong>}
-      {value}
+      {JSON.stringify(value)}
     </Stack>
   );
 };
