@@ -123,72 +123,141 @@ ${jsonString}
 
   // Prompt for layout based on reordered object
   const layoutPrompt = `
-Based on the following  JSON object, create a good layout for the frontend to display the data.
-Use the allowed components to represent the data properties with labels (e.g., a div row with Text for key and appropriate component for value).
-Infer types from values:
-- Strings: Text (if looks like image URL, use Image)
-- Numbers: Number
-- Arrays of strings/numbers: List with Text/Number items (if image URLs, use ImageCarousel)
-- Nested objects: div with sub-layout
-Group related properties into rows/columns based on the ordering.
-Constraints:
-- children array SHOULD ALWAYS be in a 'children' array. NOT a children array in the props
-  example:
+As a highly skilled and creative UI designer, create a JSON object representing a frontend layout to display an ordered JSON data object in a clean, modern, and visually appealing way. The layout must use CSS flexbox with \`display: flex\` and adhere to the following rules to ensure an intuitive and aesthetically pleasing user experience:
+
+1. **Structure**: The layout is a nested structure with:
+   - "stack" objects representing containers with a \`direction\` property ("row" or "column") for flexible arrangement.
+   - "component" objects representing individual data display elements, designed for clarity and visual harmony.
+2. **Root Layout**: The root is a stack with \`direction: "column"\`, serving as the main container for the entire layout.
+3. **Two-Column Design**: Stacks with \`direction: "row"\` can contain up to two stacks with \`direction: "column"\` for a balanced two-column layout, or full-width components for emphasis on key data.
+4. **Component Flexibility**: Components can be full-width (\`width: "100%"\`) for prominent data or within a column (\`flex: 1\` or a defined width) for compact, side-by-side presentation.
+5. **Component Properties**: Each component includes a \`props\` object with the following properties (and ONLY these properties):
+  - \`type\`: "text" (for strings/numbers), "list" (for arrays), or "key-value" (for objects) to match the data type.
+  - \`style\`: An object with CSS properties. only use CSS properties that have to do with a flex layout.
+6. **Creative UI Design**:
+  - Group related data (e.g., "identification", "pricing") into stacks to create logical sections.
+  - For lists, ensure a compact, bullet-point style for readability.
+  - For nested objects, break them into sub-stacks with clear hierarchy.
+7. **Dynamic Data Handling**: Handle any JSON input dynamically, ensuring all keys are represented. For example:
+  - Strings/numbers use \`type: "text"\` with \`value\` set to the data.
+  - Arrays use \`type: "list"\` with \`value\` set to the array.
+  - Objects use \`type: "key-value"\` for simple key-value pairs or nested stacks for complex objects, with \`value\` set to the object or its properties.
+8. **Responsive and Balanced Layout**:
+  - Ensure two-column layouts are balanced, with equal \`flex: 1\` for columns unless specific widths are needed.
+  - Use full-width components for high-priority data (e.g., pricing or features) to draw attention.
+  - Maintain a maximum of two columns per row to avoid clutter and ensure responsiveness.
+9. **Component ATTRIBUTES**: Each component includes a \` the following attributes :
+  - \`value\`: The actual data value from the JSON (e.g., "123 Main St, Springfield, USA" or 350000).
+  - \`label\`: A clear, human-readable label for the data (e.g., "Address").
+  - \`propName\`: The JSON key or path using dot notation for nested keys (e.g., "identification.address").
+10. **Example Input JSON**:
+{
+  "identification": {
+    "address": "123 Main St, Springfield, USA",
+    "owner": "John Doe"
+  },
+  "propertyDetails": {
+    "size": "2000 sqft",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "yearBuilt": 1995
+  },
+  "features": ["Garage", "Swimming Pool", "Garden"],
+  "pricing": {
+    "value": 350000
+  }
+}
+11. **Example Output JSON**:
+{
+  "type": "stack",
+  "direction": "column",
+  "props": {
+    "style": { "display": "flex", "flexDirection": "column" },
+  },
+  "children": [
     {
-      type: 'Stack',
-      props: { style: { display: 'flex', flexDirection: 'column' } },
-      children: [  <--- children array here ---> ],
+      "type": "stack",
+      "direction": "row",
+      "props": {
+        "style": { "display": "flex", "flexDirection": "row", "gap": "16px" },
+      },
+      "children": [
+        {
+          "type": "stack",
+          "direction": "column",
+          "props": {
+            "style": { "display": "flex", "flexDirection": "column", "flex": 1 },
+          },
+          "children": [
+            {
+              "type": "text",
+              "value": "123 Main St, Springfield, USA",
+              "propName": "identification.address",
+              "label": "Address"
+            },
+            {
+              "type": "text",
+              "value": "John Doe",
+              "propName": "identification.owner",
+              "label": "Owner"
+            }
+          ]
+        },
+        {
+          "type": "stack",
+          "direction": "column",
+          "props": {
+            "style": { "display": "flex", "flexDirection": "column", "flex": 1 },
+          },
+          "children": [
+            {
+              "type": "text",
+              "value": "2000 sqft",
+              "propName": "propertyDetails.size",
+              "label": "Size"
+            },
+            {
+              "type": "text",
+              "value": 4,
+              "propName": "propertyDetails.bedrooms",
+              "label": "Bedrooms"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "stack",
+      "direction": "column",
+      "props": {
+        "style": { "display": "flex", "flexDirection": "column" },
+      },
+      "children": [
+        {
+          "type": "list",
+          "value": ["Garage", "Swimming Pool", "Garden"],
+          "propName": "features",
+          "label": "Features",
+          "props": {
+            "style": { "width": "100%" }
+          }
+        },
+        {
+          "type": "text",
+          "value": 350000,
+          "propName": "pricing.value",
+          "label": "Price",
+          "props": {
+            "style": { "width": "100%" }
+          }
+        }
+      ]
     }
-  example of NOT correct: 
-    {
-      type: 'Stack',
-      props: { style: { display: 'flex', flexDirection: 'column' }, children: [...], },
-      
-    }  
-- The Root Stack can contain multiple Stack components with flexDirection: 'column' for full-width rows, components
-  The Stack components that are direct children of the Root Stack can have flexDirection: 'row' or 'column' and if 'row' they can contain MAX 2 child Stack components for columns.
-  for example this is a possible layout structure:
-  - root (stack column)
-    - stack (row)
-      - stack (column)  <--- max 2 of these for columns
-        - component (flex: 1 or width defined)
-        - component (flex: 1 or width defined)
-      - stack (column)  <--- max 2 of these for columns
-        - component (flex: 1 or width defined)
-        - component (flex: 1 or width defined)
-    - component (full width)
-    - stack (row)
-      - component (full width)
-      - component (full width)
-    - stack (row)
-      - stack (column)
-        - component (flex: 1 or width defined)
-        - component (flex: 1 or width defined)
-      - stack (column)
-        - component (flex: 1 or width defined) 
+  ]
+}
 
-
-- Can mix: e.g., full-width row (1 column), then 2-column row.
-- Use flex properties like justifyContent, alignItems as needed.
-- Order components based on the reordered JSON.
-- Make the layout logical and visually appealing.
-
-Allowed components in JSON:
-- Stack: { type: 'Stack',  children: [...], props: { style: { display: 'flex', flexDirection: 'row' | 'column', ... } } }
-- Text: { type: 'Text', props: { value: string, label?:string } }
-- Number: { type: 'Number', props: { value: number, label?:string } }
-- List: { type: 'List', children?: ListItem[], props: { label?:string } }
-- ListItem: { type: 'ListItem', props: { type: 'Text' | 'Number', value:string } }
-- Image: { type: 'Image', props: { value: string, label?:string } }
-- ImageCarousel: { type: 'ImageCarousel', children?: Image[], props: { label?:string } }
-- add the name of the attribute as a prop (named: 'data-prop') of the eventual component
-- when the object is a List add the name of the attribute as a prop (named: 'data-prop') as a prop of the List component
-- no need to add a label component, this will be handled by the frontend
-- generate a good label name for the attribute name (e.g., 'firstName' -> 'First Name', 'dob' -> 'Date of Birth', etc) and add that as a prop (named: 'label') of the eventual component.
-  When there are no units available for a number in the data, do NOT make up any units by yourself
-
-make ABSOLUTELY SURE that it returns a VALID JSON object with the layout structure as described above.
-Output ONLY the JSON object for the root Stack component.
+make sure that all the quotes are in the correct place and that the JSON is valid.
+make sure that ALL properties of the original JSON are represented in the layout.
 
 JSON:
 ${JSON.stringify(reorderedData, null, 2)}
