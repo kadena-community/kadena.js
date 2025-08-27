@@ -52,6 +52,11 @@ const config = {
       dependencies: ['@vanilla-extract/next-plugin'],
     },
     {
+      label: 'Allow @kadena/rwa-demo to use a different zod version',
+      packages: ['@kadena/rwa-demo'],
+      dependencies: ['zod'],
+    },
+    {
       label: 'Allow buffer to have two versions',
       packages: ['@kadena/js-monorepo'],
       dependencies: ['buffer'],

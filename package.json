@@ -48,10 +48,5 @@
     "overrides": {
       "@vanilla-extract/esbuild-plugin>esbuild": "0.21.5"
     }
-  },
-  "overrides": {
-    "@kadena/rwa-demo": {
-      "zod": "^4.1.1"
-    }
   }
 }
