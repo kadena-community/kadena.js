@@ -6,10 +6,12 @@ import type { IAddContractProps } from '@/services/createContract';
 import { MonoAdd, MonoKeyboardArrowLeft } from '@kadena/kode-icons';
 import {
   Button,
+  CheckboxGroup,
   Divider,
   Notification,
   NotificationHeading,
   Stack,
+  Text,
   TextField,
 } from '@kadena/kode-ui';
 import { token } from '@kadena/kode-ui/styles';
@@ -40,6 +42,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
   const {
     handleSubmit,
+    register,
     control,
     reset,
     formState: { isValid, errors },
@@ -48,6 +51,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     values: {
       contractName: '',
       namespace: namespace ?? '',
+      dataType: undefined,
     },
   });
 
@@ -78,6 +82,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       const createdAsset = await addAsset({
         contractName: data.contractName,
         namespace: data.namespace,
+        dataType: data.dataType,
       });
 
       setIsSuccess(true);
@@ -198,6 +203,50 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
                 />
               )}
             />
+
+            <Notification role="alert" intent="info" type="inlineStacked">
+              This is for a PoC only. At the moment the data is saved as JSON in
+              a DB. In a real world scenario, this would be stored on-chain, as
+              a URI.
+            </Notification>
+            <CheckboxGroup direction="column" label="Data type" name="roles">
+              <Stack width="100%" gap="sm" alignItems="center">
+                <input
+                  type="radio"
+                  id="none"
+                  value=""
+                  {...register('dataType')}
+                />
+
+                <label htmlFor="none">
+                  <Text>No data</Text>
+                </label>
+              </Stack>
+              <Stack width="100%" gap="sm" alignItems="center">
+                <input
+                  type="radio"
+                  id="house"
+                  value="house"
+                  {...register('dataType')}
+                />
+
+                <label htmlFor="house">
+                  <Text>House</Text>
+                </label>
+              </Stack>
+              <Stack width="100%" gap="sm" alignItems="center">
+                <input
+                  type="radio"
+                  id="car"
+                  value="car"
+                  {...register('dataType')}
+                />
+
+                <label htmlFor="car">
+                  <Text>Car</Text>
+                </label>
+              </Stack>
+            </CheckboxGroup>
 
             <Stack
               width="100%"

@@ -2,6 +2,7 @@
 
 import { AssetAction } from '@/components/AssetAction/AssetAction';
 import { TransferAssetAction } from '@/components/AssetAction/TransferAssetAction';
+import { AssetMetaDataCard } from '@/components/AssetMetaData/AssetMetaDataCard';
 import { AssetSetupCompletionOverview } from '@/components/AssetSetupCompletionOverview/AssetSetupCompletionOverview';
 import { BatchTransferAssetAction } from '@/components/BatchTransferAsset/BatchTransferAssetAction';
 import { ComplianceRules } from '@/components/ComplianceRules/ComplianceRules';
@@ -44,6 +45,8 @@ const Home = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       <Stack width="100%" flexDirection="column" gap="md">
+        <AssetMetaDataCard />
+
         <AssetSetupCompletionOverview asset={asset} />
         <SectionCard data-testid="contractCard">
           <SectionCardContentBlock>

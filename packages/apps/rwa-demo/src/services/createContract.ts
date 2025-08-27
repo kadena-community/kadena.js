@@ -8,6 +8,7 @@ import { getContract } from './pact/modelcontract';
 export interface IAddContractProps {
   contractName: string;
   namespace: string;
+  dataType?: 'house' | 'car';
 }
 
 export const createContract = async (

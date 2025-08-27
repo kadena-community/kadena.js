@@ -173,9 +173,11 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const addAsset = ({
     contractName,
     namespace = 'RWA',
+    dataType,
   }: {
     contractName: string;
     namespace: string;
+    dataType?: 'house' | 'car';
   }) => {
     const asset: IAsset = {
       uuid: crypto.randomUUID(),
@@ -210,7 +212,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       )
     ) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      assetStore?.addAsset(asset);
+      assetStore?.addAsset(asset, dataType);
     }
 
     setAsset(asset);

@@ -15,6 +15,7 @@ export interface IAsset {
   investorCount: number;
   compliance: IComplianceProps;
   setupComplete?: boolean;
+  datajson?: any; // this is for PoC purposes only
 }
 
 export interface IAssetContext {
@@ -25,9 +26,11 @@ export interface IAssetContext {
   addAsset: ({
     contractName,
     namespace,
+    dataType,
   }: {
     contractName: string;
     namespace: string;
+    dataType?: 'house' | 'car';
   }) => IAsset | undefined;
   addExistingAsset: (name: string) => IAsset | undefined;
   removeAsset: (asset: IAsset) => void;
