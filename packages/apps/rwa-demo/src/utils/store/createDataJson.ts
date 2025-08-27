@@ -13,14 +13,89 @@ export const createDataJson = (dataType: 'house' | 'car') => {
     };
   } else if (dataType === 'car') {
     return {
-      make: 'Toyota',
       model: 'Camry',
       year: 2020,
       vin: '1HGBH41JXMN109186',
-      owner: 'Jane Smith',
-      mileage: 15000,
+      owner: 'Cringer',
+      make: 'Toyota',
+      mileage: { value: 15000, unit: 'km' },
       color: 'Blue',
-      features: ['Bluetooth', 'Backup Camera', 'Cruise Control'],
+      drivetrain: 'Front-Wheel Drive',
+      bodyStyle: 'Sedan',
+      doors: 4,
+      seatingCapacity: 5,
+      fuelEconomy: {
+        city: 28,
+        highway: 39,
+        combined: 32,
+      },
+      dimensions: {
+        length: 192.1,
+        width: 72.4,
+        height: 56.9,
+        wheelbase: 111.2,
+      },
+      weight: 3350,
+      cargoCapacity: 15.1,
+      warranty: {
+        basic: {
+          years: 3,
+          miles: 36000,
+        },
+        powertrain: {
+          years: 5,
+          miles: 60000,
+        },
+      },
+      features: {
+        infotainment: {
+          screenSize: 9.0,
+          appleCarPlay: true,
+          androidAuto: true,
+          navigation: true,
+        },
+        safety: [
+          'Adaptive Cruise Control',
+          'Lane Departure Warning',
+          'Automatic Emergency Braking',
+          'Blind Spot Monitoring',
+        ],
+        comfort: [
+          'Leather Seats',
+          'Heated Front Seats',
+          'Dual-Zone Climate Control',
+          'Power Moonroof',
+        ],
+        exterior: ['LED Headlights', 'Alloy Wheels', 'Fog Lights'],
+      },
+      price: {
+        msrp: 30500,
+        currentValue: 28000,
+      },
+      engine: {
+        type: 'Inline-4',
+        displacement: 2.5,
+        horsepower: 203,
+        torque: 184,
+        cylinders: 4,
+      },
+      transmission: {
+        type: 'Automatic',
+        gears: 8,
+      },
+      history: {
+        accidentHistory: [
+          { date: '2022-05-10', description: 'Rear-ended at a stoplight' },
+        ],
+        serviceRecords: [
+          { date: '2021-06-15', service: 'Oil Change' },
+          { date: '2022-06-20', service: 'Tire Rotation' },
+        ],
+        ownershipHistory: [
+          { owner: 'He-man', from: '2018-03-01', to: '2020-01-14' },
+          { owner: 'Skeletor', from: '2020-01-15', to: 'Present' },
+        ],
+      },
     };
   }
 };

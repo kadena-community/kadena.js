@@ -4,24 +4,30 @@ const renderLayout = (layout: any) => {
   // if(layout.children && layout.children.length > 0) {
   //     return layout.children.map((child: any, index: number) => return renderLayout(child) )
   // }
-
-  const children = layout.children
-    ? layout.children
-    : layout.props?.children ?? [];
+  const {
+    children: propsChildren,
+    label,
+    value,
+    ...restProps
+  } = layout.props ?? {};
+  const children = layout.children ? layout.children : propsChildren ?? [];
   return (
-    <div style={layout.props?.style ?? {}}>
+    <>
       {children?.length ? (
-        <div style={layout.props?.style ?? {}}>
-          {layout.props?.label && <strong>{layout.props?.label}: </strong>}
+        <div
+          {...restProps}
+          style={{ flex: 1, width: '100%', ...(restProps.style ?? {}) }}
+        >
+          {label && <strong>{label}: </strong>}
           {children.map((child: any) => renderLayout(child))}
         </div>
       ) : (
-        <div style={layout.props?.style ?? {}}>
-          {layout.props?.label && <strong>{layout.props.label}: </strong>}
-          {layout.props?.value}
+        <div {...restProps} style={{ flex: 1, ...(restProps.style ?? {}) }}>
+          {label && <strong>{label}: </strong>}
+          {value}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
@@ -30,6 +36,8 @@ export const AssetMetaData: FC<{ data: any; layout: any }> = ({
   layout,
 }) => {
   if (!data || !layout) return null;
+
+  console.log(layout);
 
   return <div>{renderLayout(layout)}</div>;
 };
