@@ -56,6 +56,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     this.modal = new WalletConnectModal({
       themeMode: 'light',
       projectId: finalOptions.projectId,
+      chains: [`kadena:${this.networkId}`],
     });
   }
 
