@@ -30,4 +30,26 @@ export interface IListNode {
   props?: IProps;
 }
 
-export type INode = IStackNode | ITextNode | IListNode;
+export interface IKeyValueNode {
+  type: 'key-value';
+  value: Record<string, string | number>;
+  propName: string;
+  label: string;
+  id: string;
+  props?: IProps;
+}
+export interface IKeyValueListNode {
+  type: 'key-value-list';
+  value: Record<string, string | number>[];
+  propName: string;
+  label: string;
+  id: string;
+  props?: IProps;
+}
+
+export type INode =
+  | IStackNode
+  | ITextNode
+  | IListNode
+  | IKeyValueNode
+  | IKeyValueListNode;

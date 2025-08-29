@@ -21,7 +21,7 @@ const LayoutRenderer = ({ node }: { node: INode }) => {
           </Stack>
         )}
         <Stack {...node.props} style={node.props?.style}>
-          {node.children?.map((child: any, index: number) => (
+          {node.children?.map((child, index: number) => (
             <LayoutRenderer key={index} node={child} />
           ))}
         </Stack>
@@ -39,7 +39,7 @@ const LayoutRenderer = ({ node }: { node: INode }) => {
       >
         <Text bold>{node.label}</Text>
         <ul>
-          {node.value?.map((item: any, index: number) => (
+          {node.value?.map((item, index: number) => (
             <li key={index}>
               <Text bold>{item}:</Text>
             </li>
@@ -109,10 +109,10 @@ const LayoutRenderer = ({ node }: { node: INode }) => {
   return null; // Fallback for unknown types
 };
 
-export const AssetMetaData: FC<{ data: any; layout: any }> = ({
-  data,
-  layout,
-}) => {
+export const AssetMetaData: FC<{
+  data: Record<string, any>;
+  layout: INode;
+}> = ({ data, layout }) => {
   if (!data || !layout) return null;
 
   return (
