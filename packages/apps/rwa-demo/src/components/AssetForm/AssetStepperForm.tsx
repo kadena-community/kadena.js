@@ -2,6 +2,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
 import { useCreateContract } from '@/hooks/createContract';
 import { useGetPrincipalNamespace } from '@/hooks/getPrincipalNamespace';
+import { useUser } from '@/hooks/user';
 import type { IAddContractProps } from '@/services/createContract';
 import { MonoAdd, MonoKeyboardArrowLeft } from '@kadena/kode-icons';
 import {
@@ -35,7 +36,8 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [step, setStep] = useState<number>(STEPS.START);
-  const { addAsset, setAsset } = useAsset();
+  const { addAsset, setAsset, createAssetMetaLayout } = useAsset();
+  const { userToken } = useUser();
   const { data: namespace } = useGetPrincipalNamespace();
   const { submit: submitContract, isAllowed } = useCreateContract();
   const [error, setError] = useState('');
@@ -76,8 +78,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
     const tx = await submitContract(data);
 
-    setIsPending(false);
-
     if (tx) {
       const createdAsset = await addAsset({
         contractName: data.contractName,
@@ -85,6 +85,11 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
         dataType: data.dataType,
       });
 
+      if (createdAsset?.datajson) {
+        await createAssetMetaLayout(createdAsset!, userToken!);
+      }
+
+      setIsPending(false);
       setIsSuccess(true);
       setStep(STEPS.DONE);
 

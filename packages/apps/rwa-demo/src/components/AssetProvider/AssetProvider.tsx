@@ -1,5 +1,6 @@
 'use client';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
+import type { INode } from '@/components/AssetMetaData/types';
 import {
   INFINITE_COMPLIANCE,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
@@ -16,6 +17,7 @@ import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
 import type {
   IComplianceRule,
   IComplianceRuleTypes,
@@ -25,6 +27,7 @@ import { supply as supplyService } from '@/services/supply';
 import { getAsset as getAssetUtil } from '@/utils/getAsset';
 import { getLocalStorageKey } from '@/utils/getLocalStorageKey';
 import { AssetStore } from '@/utils/store/assetStore';
+import { createDataJson } from '@/utils/store/createDataJson';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -180,6 +183,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     dataType?: 'house' | 'car';
   }) => {
     const asset: IAsset = {
+      datajson: dataType ? createDataJson(dataType) : undefined,
       uuid: crypto.randomUUID(),
       supply: INFINITE_COMPLIANCE,
       compliance: {
@@ -212,7 +216,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       )
     ) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      assetStore?.addAsset(asset, dataType);
+      assetStore?.addAsset(asset);
     }
 
     setAsset(asset);
@@ -307,6 +311,68 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     setAsset(data);
   }, [complianceRules]);
 
+  const fetchAssetMetaLayout = async (userToken: IdTokenResultWithClaims) => {
+    if (!asset || !organisation || !userToken) return;
+
+    if (!asset.datajson) {
+      throw new Error('No asset metadata to create layout from');
+    }
+
+    try {
+      const res = await fetch(
+        `/api/admin/contract/metadata?organisationId=${organisation.id}`,
+        {
+          method: 'POST',
+          body: JSON.stringify(asset.datajson),
+          headers: {
+            Authorization: `Bearer ${userToken?.token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      console.log({ res });
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status} ${res.statusText}`);
+      }
+
+      return await res.json();
+    } catch (e) {}
+  };
+
+  const createAssetMetaLayout = async (
+    assetProp: IAsset,
+    userToken: IdTokenResultWithClaims,
+  ) => {
+    if (!assetProp || !organisation || !userToken) return;
+
+    if (!assetProp.datajson) {
+      throw new Error('No asset metadata to create layout from');
+    }
+
+    try {
+      const result = await fetchAssetMetaLayout(userToken);
+      await assetStore?.updateAsset({ ...assetProp, dataLayoutjson: result });
+    } catch (e) {
+      addNotification(
+        {
+          intent: 'negative',
+          label: 'asset not found',
+          message: '',
+        },
+        {
+          name: 'error:submit:createcontract:metadata',
+          options: {
+            message: 'asset metadata layout error',
+            sentryData: {
+              type: 'database-transaction',
+            },
+          },
+        },
+      );
+    }
+  };
+
   return (
     <AssetContext.Provider
       value={{
@@ -324,6 +390,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         agents,
         agentsIsLoading,
         assetStore,
+        createAssetMetaLayout,
+        fetchAssetMetaLayout,
       }}
     >
       {children}

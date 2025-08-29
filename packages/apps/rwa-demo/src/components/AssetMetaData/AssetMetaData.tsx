@@ -1,82 +1,9 @@
 import { Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
+import { Data } from './DataComponents';
+import type { INode } from './types';
 
-const renderLayout = (layout: any, count = 0) => {
-  // if(layout.children && layout.children.length > 0) {
-  //     return layout.children.map((child: any, index: number) => return renderLayout(child) )
-  // }
-
-  count++;
-  console.log(layout);
-
-  const { label, value } = layout ?? {};
-  const { style: styleprop, ...props } = layout.props ?? {};
-
-  const style = layout.style ?? styleprop ?? {};
-
-  return layout.children?.length ? (
-    <Stack
-      key={layout.propName + layout.type + count}
-      {...props}
-      style={{ ...(style ?? {}) }}
-      data-type={layout.type}
-      data-propname={layout.propName}
-    >
-      {label && <strong>{label}: </strong>}
-      {layout.children?.map((child: any) => renderLayout(child, count))}
-    </Stack>
-  ) : (
-    <Stack
-      key={layout.propName + layout.type + count}
-      {...props}
-      style={{ ...(style ?? {}) }}
-      data-type={layout.type}
-      data-propname={layout.propName}
-    >
-      {label && <strong>{label}: </strong>}
-
-      {typeof value === 'string' || typeof value === 'number'
-        ? value
-        : undefined}
-
-      {layout.type === 'list' && (
-        <ul>
-          {value.map((v, idx) => (
-            <li key={idx}>{JSON.stringify(v)}</li>
-          ))}
-        </ul>
-      )}
-
-      {layout.type === 'key-value' && (
-        <ul>
-          {Object.entries(value).map(([key, keyValue]) => (
-            <li key={key}>
-              <strong>{key}</strong>: {JSON.stringify(keyValue)}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {layout.type === 'key-value-list' && (
-        <ul>
-          {value.map((v, idx) => (
-            <li key={idx}>
-              <ul>
-                {Object.entries(v).map(([key, keyValue]) => (
-                  <li key={key}>
-                    <strong>{key}</strong>: {JSON.stringify(keyValue)}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      )}
-    </Stack>
-  );
-};
-
-const LayoutRenderer = ({ node }: { node: any }) => {
+const LayoutRenderer = ({ node }: { node: INode }) => {
   if (!node) return null;
 
   if (node.type === 'stack') {
@@ -93,24 +20,15 @@ const LayoutRenderer = ({ node }: { node: any }) => {
             <strong style={{ color: 'blue' }}>{node.label}</strong>
           </Stack>
         )}
-        <Stack {...node.props} style={node.props?.style || {}}>
+        <Stack {...node.props} style={node.props?.style}>
           {node.children?.map((child: any, index: number) => (
             <LayoutRenderer key={index} node={child} />
           ))}
         </Stack>
       </Stack>
     );
-  } else if (node.type === 'text') {
-    return (
-      <Stack
-        {...node.props}
-        style={node.props?.style || {}}
-        data-type={node.type}
-        data-propname={node.propName}
-      >
-        <Text bold>{node.label}:</Text> <Text variant="code">{node.value}</Text>
-      </Stack>
-    );
+  } else if (node.type === 'text' || node.type === 'number') {
+    return <Data.Text node={node} key={node.id} />;
   } else if (node.type === 'list') {
     return (
       <Stack

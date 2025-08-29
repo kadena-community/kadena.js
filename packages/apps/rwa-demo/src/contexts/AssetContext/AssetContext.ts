@@ -1,4 +1,6 @@
+import type { INode } from '@/components/AssetMetaData/types';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
 import type {
   IComplianceProps,
   IComplianceRuleTypes,
@@ -16,6 +18,7 @@ export interface IAsset {
   compliance: IComplianceProps;
   setupComplete?: boolean;
   datajson?: any; // this is for PoC purposes only
+  dataLayoutjson?: INode; // this is for PoC purposes only
 }
 
 export interface IAssetContext {
@@ -44,6 +47,11 @@ export interface IAssetContext {
   agents: IRecord[];
   agentsIsLoading: boolean;
   assetStore: any;
+  fetchAssetMetaLayout: (userToken: IdTokenResultWithClaims) => Promise<INode>;
+  createAssetMetaLayout: (
+    asset: IAsset,
+    userToken: IdTokenResultWithClaims,
+  ) => Promise<void>;
 }
 
 export const AssetContext = createContext<IAssetContext | null>(null);

@@ -2,7 +2,6 @@ import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { get, off, onValue, ref, set } from 'firebase/database';
 import { getAssetFolder } from '.';
-import { createDataJson } from './createDataJson';
 import { database } from './firebase';
 
 export const AssetStore = (organisation: IOrganisation) => {
@@ -43,7 +42,7 @@ export const AssetStore = (organisation: IOrganisation) => {
     return () => off(assetRef);
   };
 
-  const addAsset = async (asset: IAsset, dataType?: 'house' | 'car') => {
+  const addAsset = async (asset: IAsset) => {
     const assetFolderName = getAssetFolder(asset);
     if (!assetFolderName || !asset.namespace || !asset.contractName) return;
 
@@ -55,10 +54,11 @@ export const AssetStore = (organisation: IOrganisation) => {
     // we save the data JSON in the database
     // in production this should be done on chain
 
+    console.log({ asset });
+
     return await set(ref(database, `${dbLocationString}/${assetFolderName}`), {
       ...(existingAsset.toJSON() ?? {}),
       ...asset,
-      datajson: dataType ? createDataJson(dataType) : undefined,
     });
   };
 

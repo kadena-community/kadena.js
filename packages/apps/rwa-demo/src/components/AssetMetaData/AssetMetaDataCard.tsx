@@ -9,37 +9,21 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { AssetMetaData } from './AssetMetaData';
 
 export const AssetMetaDataCard: FC = () => {
-  const { asset } = useAsset();
+  const { asset, createAssetMetaLayout } = useAsset();
   const { userToken } = useUser();
   const { organisation } = useOrganisation();
   const [isLoading, setIsLoading] = useState(false);
-  const [layout, setLayout] = useState<any>(null);
-  const isMounted = useRef(false);
 
-  const createLayout = async (data: any) => {
-    if (!userToken || !organisation) return;
+  const createLayout = async () => {
+    if (!asset || !userToken || !organisation) return;
+
     setIsLoading(true);
     try {
-      const res = await fetch(
-        `/api/admin/contract/metadata?organisationId=${organisation.id}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            Authorization: `Bearer ${userToken?.token}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status} ${res.statusText}`);
-      }
-      const result = await res.json();
-      setLayout(result);
+      await createAssetMetaLayout(asset, userToken);
     } catch (e: any) {
       console.error('Error:', e.message);
     } finally {
@@ -47,17 +31,7 @@ export const AssetMetaDataCard: FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(isMounted.current);
-    if (isMounted.current) return;
-    if (!userToken || !asset?.datajson) return;
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    createLayout(asset?.datajson);
-    isMounted.current = true;
-  }, [userToken?.token, organisation?.id, asset?.datajson]);
-
-  if (!asset?.datajson) return null;
+  if (!asset?.dataLayoutjson) return null;
 
   return (
     <SectionCard data-testid="metaDataCard">
@@ -70,7 +44,7 @@ export const AssetMetaDataCard: FC = () => {
               <Button
                 isCompact
                 variant="outlined"
-                onClick={() => createLayout(asset?.datajson)}
+                onClick={createLayout}
                 isDisabled={isLoading}
                 isLoading={isLoading}
               >
@@ -80,7 +54,7 @@ export const AssetMetaDataCard: FC = () => {
           }
         />
         <SectionCardBody>
-          <AssetMetaData data={asset?.datajson} layout={layout} />
+          <AssetMetaData data={asset?.datajson} layout={asset.dataLayoutjson} />
         </SectionCardBody>
       </SectionCardContentBlock>
     </SectionCard>
