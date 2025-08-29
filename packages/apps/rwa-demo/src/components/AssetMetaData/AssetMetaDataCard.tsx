@@ -9,7 +9,7 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AssetMetaData } from './AssetMetaData';
 
 export const AssetMetaDataCard: FC = () => {
@@ -18,6 +18,7 @@ export const AssetMetaDataCard: FC = () => {
   const { organisation } = useOrganisation();
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState<any>(null);
+  const isMounted = useRef(false);
 
   const createLayout = async (data: any) => {
     if (!userToken || !organisation) return;
@@ -47,10 +48,13 @@ export const AssetMetaDataCard: FC = () => {
   };
 
   useEffect(() => {
+    console.log(isMounted.current);
+    if (isMounted.current) return;
     if (!userToken || !asset?.datajson) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     createLayout(asset?.datajson);
+    isMounted.current = true;
   }, [userToken?.token, organisation?.id, asset?.datajson]);
 
   if (!asset?.datajson) return null;
