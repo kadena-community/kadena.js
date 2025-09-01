@@ -1,5 +1,17 @@
 # wallet-adapter-react-example
 
+## 0.0.7
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+- Updated dependencies \[4b90675]
+  - @kadena/wallet-adapter-react\@0.0.4
+  - @kadena/kode-icons\@0.3.1
+  - @kadena/kode-ui\@0.21.1
+  - @kadena/wallet-adapter-walletconnect\@0.1.0
+
 ## 0.0.6
 
 ### Patch Changes
