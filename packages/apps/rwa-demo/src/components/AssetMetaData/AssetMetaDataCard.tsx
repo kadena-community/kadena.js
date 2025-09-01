@@ -1,3 +1,4 @@
+import { useAccount } from '@/hooks/account';
 import { useAsset } from '@/hooks/asset';
 import { useOrganisation } from '@/hooks/organisation';
 import { useUser } from '@/hooks/user';
@@ -15,6 +16,7 @@ import { AssetMetaData } from './AssetMetaData';
 export const AssetMetaDataCard: FC = () => {
   const { asset, createAssetMetaLayout } = useAsset();
   const { userToken } = useUser();
+  const { isOwner } = useAccount();
   const { organisation } = useOrganisation();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,15 +43,17 @@ export const AssetMetaDataCard: FC = () => {
           description={<>Specific asset data</>}
           actions={
             <>
-              <Button
-                isCompact
-                variant="outlined"
-                onClick={createLayout}
-                isDisabled={isLoading}
-                isLoading={isLoading}
-              >
-                Redo layout
-              </Button>
+              {isOwner && (
+                <Button
+                  isCompact
+                  variant="outlined"
+                  onClick={createLayout}
+                  isDisabled={isLoading}
+                  isLoading={isLoading}
+                >
+                  Redo layout
+                </Button>
+              )}
             </>
           }
         />

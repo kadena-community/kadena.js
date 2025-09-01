@@ -1,6 +1,5 @@
 'use client';
 import { useEventSubscriptionSubscription } from '@/__generated__/sdk';
-import type { INode } from '@/components/AssetMetaData/types';
 import {
   INFINITE_COMPLIANCE,
   LOCALSTORAGE_ASSETS_SELECTED_KEY,
@@ -180,7 +179,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   }: {
     contractName: string;
     namespace: string;
-    dataType?: 'house' | 'car';
+    dataType?: 'house' | 'car' | 'painting';
   }) => {
     const asset: IAsset = {
       datajson: dataType ? createDataJson(dataType) : undefined,
@@ -311,10 +310,13 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     setAsset(data);
   }, [complianceRules]);
 
-  const fetchAssetMetaLayout = async (userToken: IdTokenResultWithClaims) => {
-    if (!asset || !organisation || !userToken) return;
+  const fetchAssetMetaLayout = async (
+    assetProp: IAsset,
+    userToken: IdTokenResultWithClaims,
+  ) => {
+    if (!assetProp || !organisation || !userToken) return;
 
-    if (!asset.datajson) {
+    if (!assetProp.datajson) {
       throw new Error('No asset metadata to create layout from');
     }
 
@@ -323,7 +325,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         `/api/admin/contract/metadata?organisationId=${organisation.id}`,
         {
           method: 'POST',
-          body: JSON.stringify(asset.datajson),
+          body: JSON.stringify(assetProp.datajson),
           headers: {
             Authorization: `Bearer ${userToken?.token}`,
             'Content-Type': 'application/json',
@@ -331,7 +333,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         },
       );
 
-      console.log({ res });
       if (!res.ok) {
         throw new Error(`Error: ${res.status} ${res.statusText}`);
       }
@@ -351,13 +352,13 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     try {
-      const result = await fetchAssetMetaLayout(userToken);
+      const result = await fetchAssetMetaLayout(assetProp, userToken);
       await assetStore?.updateAsset({ ...assetProp, dataLayoutjson: result });
     } catch (e) {
       addNotification(
         {
           intent: 'negative',
-          label: 'asset not found',
+          label: 'asset metadata layout error',
           message: '',
         },
         {

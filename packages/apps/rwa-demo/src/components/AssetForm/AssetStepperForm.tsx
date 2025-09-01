@@ -242,6 +242,18 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
               <Stack width="100%" gap="sm" alignItems="center">
                 <input
                   type="radio"
+                  id="painting"
+                  value="painting"
+                  {...register('dataType')}
+                />
+
+                <label htmlFor="house">
+                  <Text>Painting</Text>
+                </label>
+              </Stack>
+              <Stack width="100%" gap="sm" alignItems="center">
+                <input
+                  type="radio"
                   id="car"
                   value="car"
                   {...register('dataType')}

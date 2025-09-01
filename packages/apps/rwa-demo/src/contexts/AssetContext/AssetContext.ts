@@ -33,7 +33,7 @@ export interface IAssetContext {
   }: {
     contractName: string;
     namespace: string;
-    dataType?: 'house' | 'car';
+    dataType?: 'house' | 'car' | 'painting';
   }) => IAsset | undefined;
   addExistingAsset: (name: string) => IAsset | undefined;
   removeAsset: (asset: IAsset) => void;

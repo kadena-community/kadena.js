@@ -20,6 +20,14 @@ export interface ITextNode {
   id: string;
   props?: IProps;
 }
+export interface IImageNode {
+  type: 'image';
+  value: string;
+  propName: string;
+  label: string;
+  id: string;
+  props?: IProps;
+}
 
 export interface IListNode {
   type: 'list';
@@ -50,6 +58,7 @@ export interface IKeyValueListNode {
 export type INode =
   | IStackNode
   | ITextNode
+  | IImageNode
   | IListNode
   | IKeyValueNode
   | IKeyValueListNode;

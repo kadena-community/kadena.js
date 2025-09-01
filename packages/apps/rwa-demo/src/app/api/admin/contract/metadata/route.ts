@@ -133,7 +133,7 @@ As a highly skilled and creative UI designer, create a JSON object representing 
    - "component" objects representing individual data display elements, designed for clarity and visual harmony.
 2. **Root Layout**: The root is a stack with \`direction: "column"\`, serving as the main container for the entire layout.
 5. **Component Properties**: Each component includes a \`props\` object with the following properties (and ONLY these properties):
-  - \`type\`: "text" (for strings/numbers), "list" (for arrays), or "key-value" (for objects) to match the data type.
+  - \`type\`: "text" (for strings/numbers), "list" (for arrays), or "key-value" (for objects) or "key-value-list" (for list of objects) or "image" (for an image url or image object) to match the data type.
   - \`style\`: An object with CSS properties. only use CSS properties that have to do with a flex layout, expect gap.
 6. **Creative UI Design**:
   - For lists, ensure a compact, bullet-point style for readability.

@@ -1,5 +1,5 @@
 // only for PoC purposes
-export const createDataJson = (dataType: 'house' | 'car') => {
+export const createDataJson = (dataType: 'house' | 'car' | 'painting') => {
   if (dataType === 'house') {
     return {
       address: '123 Main St, Springfield, USA',
@@ -96,6 +96,44 @@ export const createDataJson = (dataType: 'house' | 'car') => {
           { owner: 'Skeletor', from: '2020-01-15', to: 'Present' },
         ],
       },
+    };
+  } else if (dataType === 'painting') {
+    return {
+      dimensions: {
+        height: '73.7 cm',
+        width: '92.1 cm',
+      },
+      title: 'Starry Night',
+      provenance: [
+        'Acquired by the Museum of Modern Art in 1941',
+        'Previously owned by various private collectors',
+      ],
+      description:
+        "The Starry Night is one of van Gogh's most famous works, depicting a swirling night sky over a quiet town.",
+      style: 'Post-Impressionism',
+      artist: 'Vincent van Gogh',
+      medium: 'Oil on canvas',
+      location: 'Museum of Modern Art, New York City',
+      exhibitionHistory: [
+        {
+          exhibitionName: 'Van Gogh and the Colors of the Night',
+          location: 'Art Institute of Chicago',
+          year: 2005,
+        },
+        {
+          exhibitionName: 'Masterpieces of Post-Impressionism',
+          location: 'Louvre Museum, Paris',
+          year: 2010,
+        },
+      ],
+      condition: 'Excellent',
+      ImageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg',
+      yearCreated: 1889,
+      literature: [
+        'Van Gogh: The Life by Steven Naifeh and Gregory White Smith',
+        'The Letters of Vincent van Gogh',
+      ],
     };
   }
 };

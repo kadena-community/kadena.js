@@ -11,7 +11,7 @@ export const TextData: FC<{ node: ITextNode }> = ({ node }) => {
       data-type={node.type}
       data-propname={node.propName}
     >
-      <Heading as="h6">{node.label}:</Heading>{' '}
+      <Heading as="h6">{node.label}:</Heading>
       <Text variant="code">{node.value}</Text>
     </Stack>
   );
