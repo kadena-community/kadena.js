@@ -1,24 +1,21 @@
-interface IProps {
-  style?: React.CSSProperties;
-}
-
-export interface IStackNode {
-  type: 'stack';
-  direction: 'row' | 'column';
-  id: string;
-  label?: string;
-  props?: IProps;
-  propName: string;
-  children: INode[];
-}
-
 export interface ITextNode {
   type: 'text' | 'number';
   value: string | number;
   propName: string;
   label: string;
   id: string;
-  props?: IProps;
+  shouldLocalizeFormat?: boolean;
+  order: string;
+}
+
+export interface IBoolean {
+  type: 'boolean';
+  value: boolean;
+  propName: string;
+  label: string;
+  id: string;
+  shouldLocalizeFormat?: boolean;
+  order: string;
 }
 export interface IImageNode {
   type: 'image';
@@ -26,39 +23,31 @@ export interface IImageNode {
   propName: string;
   label: string;
   id: string;
-  props?: IProps;
+  order: string;
 }
 
 export interface IListNode {
   type: 'list';
-  value: string[];
+  value: (string | ITextNode | IImageNode)[];
   propName: string;
   label: string;
   id: string;
-  props?: IProps;
+  order: string;
 }
 
 export interface IKeyValueNode {
   type: 'key-value';
-  value: Record<string, string | number>;
+  value: (ITextNode | IImageNode)[];
   propName: string;
   label: string;
   id: string;
-  props?: IProps;
-}
-export interface IKeyValueListNode {
-  type: 'key-value-list';
-  value: Record<string, string | number>[];
-  propName: string;
-  label: string;
-  id: string;
-  props?: IProps;
+  order: string;
 }
 
 export type INode =
-  | IStackNode
   | ITextNode
   | IImageNode
   | IListNode
   | IKeyValueNode
-  | IKeyValueListNode;
+  | IBoolean
+  | string;

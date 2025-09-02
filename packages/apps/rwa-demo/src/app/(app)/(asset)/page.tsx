@@ -45,8 +45,6 @@ const Home = () => {
         </SideBarBreadcrumbsItem>
       </SideBarBreadcrumbs>
       <Stack width="100%" flexDirection="column" gap="md">
-        <AssetMetaDataCard />
-
         <AssetSetupCompletionOverview asset={asset} />
         <SectionCard data-testid="contractCard">
           <SectionCardContentBlock>
@@ -88,7 +86,7 @@ const Home = () => {
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>
-
+        <AssetMetaDataCard />
         <SectionCard data-testid="assetCard">
           <SectionCardContentBlock>
             <SectionCardHeader title="Asset" description={<></>} />

@@ -1,23 +1,16 @@
-import { Heading, Stack, Text } from '@kadena/kode-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import type { IKeyValueNode } from '../types';
+import type { IKeyValueNode, INode } from '../types';
 
-export const KeyValueData: FC<{ node: IKeyValueNode }> = ({ node }) => {
+export const KeyValueData: FC<{
+  node: IKeyValueNode;
+  renderer: FC<{ nodes: INode[] }>;
+}> = ({ node, renderer: Renderer }) => {
   return (
-    <Stack
-      {...node.props}
-      style={node.props?.style || {}}
-      data-type={node.type}
-      data-propname={node.propName}
-    >
+    <Stack data-type={node.type} data-propname={node.propName}>
       <Heading as="h6">{node.label}:</Heading>
       <ul>
-        {Object.entries(node.value || {}).map(([key, val]) => (
-          <li key={key}>
-            <Text bold>{key}:</Text>
-            <Text variant="code">{val}</Text>
-          </li>
-        ))}
+        <Renderer nodes={node.value} />
       </ul>
     </Stack>
   );

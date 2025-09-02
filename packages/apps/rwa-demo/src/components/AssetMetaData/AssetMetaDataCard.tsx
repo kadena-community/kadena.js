@@ -20,6 +20,8 @@ export const AssetMetaDataCard: FC = () => {
   const { organisation } = useOrganisation();
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log('AssetMetaDataCard asset:', asset);
+
   const createLayout = async () => {
     if (!asset || !userToken || !organisation) return;
 
@@ -34,7 +36,6 @@ export const AssetMetaDataCard: FC = () => {
   };
 
   if (!asset?.dataLayoutjson) return null;
-
   return (
     <SectionCard data-testid="metaDataCard">
       <SectionCardContentBlock>
@@ -58,7 +59,10 @@ export const AssetMetaDataCard: FC = () => {
           }
         />
         <SectionCardBody>
-          <AssetMetaData data={asset?.datajson} layout={asset.dataLayoutjson} />
+          <AssetMetaData
+            data={asset?.datajson}
+            layout={asset?.dataLayoutjson}
+          />
         </SectionCardBody>
       </SectionCardContentBlock>
     </SectionCard>

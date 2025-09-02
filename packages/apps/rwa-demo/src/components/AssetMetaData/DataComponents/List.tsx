@@ -1,23 +1,27 @@
-import { Heading, Stack, Text } from '@kadena/kode-ui';
+import { Heading, Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
-import type { IListNode } from '../types';
+import type { IListNode, INode } from '../types';
+import { isStringArray, sortObject } from '../utils';
 
-export const ListData: FC<{ node: IListNode }> = ({ node }) => {
+export const ListData: FC<{
+  node: IListNode;
+  renderer: FC<{ nodes: INode[] }>;
+}> = ({ node, renderer: Renderer }) => {
   return (
     <Stack
-      {...node.props}
       flexDirection="column"
-      style={node.props?.style || {}}
       data-type={node.type}
       data-propname={node.propName}
     >
       <Heading as="h6">{node.label}</Heading>
       <ul>
-        {node.value?.map((item, index: number) => (
-          <li key={index}>
-            <Text bold>{item}</Text>
-          </li>
-        ))}
+        {isStringArray(node.value) ? (
+          node.value
+            .sort(sortObject)
+            .map((val, idx) => <li key={idx}>{val}</li>)
+        ) : (
+          <Renderer nodes={node.value} />
+        )}
       </ul>
     </Stack>
   );
