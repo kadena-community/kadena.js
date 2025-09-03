@@ -1,5 +1,17 @@
 # @kadena/rwa-demo
 
+## 2.1.1
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+- Updated dependencies \[5c56ae2]
+  - @kadena/kode-icons\@0.3.1
+  - @kadena/kode-ui\@0.21.1
+  - @kadena/client-utils\@0.13.1
+  - @kadena/graph\@2.2.4
+
 ## 0.1.11
 
 ### Patch Changes

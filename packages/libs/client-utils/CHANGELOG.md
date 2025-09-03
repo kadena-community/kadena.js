@@ -1,5 +1,11 @@
 # @kadena/client-utils
 
+## 0.13.1
+
+### Patch Changes
+
+- 5c56ae2: Export create principal namespace method
+
 ## 0.13.0
 
 ### Minor Changes
