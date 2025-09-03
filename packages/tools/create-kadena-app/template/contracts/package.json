@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@kadena/client": "^1.17.1",
+    "@kadena/kadena-cli": "^1.4.1",
+    "@types/inquirer": "^9.0.4",
+    "@types/yargs": "^17.0.24",
+    "@types/js-yaml": "^4.0.9",
+    "inquirer": "^12.7.0",
+    "yargs": "^18.0.0"
+  },
+  "scripts": {
+    "start-chain": "sh ./start-devnet.sh",
+    "dev-account": "sh ./dev-account.sh",
+    "deploy": "ts-node deploy.ts",
+    "stop-chain": "sh ./stop-devnet.sh"
+  }
+}
