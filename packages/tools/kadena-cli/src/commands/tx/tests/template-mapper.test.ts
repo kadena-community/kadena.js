@@ -24,7 +24,7 @@ describe('template mapper', () => {
       },
     );
 
-    const fixed = fixTemplatePactCommand(command);
+    const [fixed] = fixTemplatePactCommand(command);
 
     expect(fixed).toEqual({
       payload: {
