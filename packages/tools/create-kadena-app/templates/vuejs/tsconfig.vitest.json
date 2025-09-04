@@ -4,6 +4,7 @@
   "compilerOptions": {
     "composite": true,
     "lib": [],
-    "types": [".kadena/pactjs-generated", "node", "jsdom", "vitest/globals"]
+    "types": [".kadena/pactjs-generated", "node", "jsdom", "vitest/globals"],
+    "skipLibCheck": true
   }
 }

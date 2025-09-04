@@ -37,6 +37,8 @@
     "test:integration": "rimraf test-* && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
   "dependencies": {
+    "@kadena/wallet-adapter-core": "0.0.1-beta.2",
+    "@kadena/wallet-adapter-ecko": "0.0.1-beta.2",
     "chalk": "^5.2.0",
     "commander": "^11.0.0",
     "cross-fetch": "~3.1.5",
@@ -47,6 +49,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@rushstack/eslint-config": "~3.6.9",
+    "@testing-library/jest-dom": "^6.6.3",
     "@types/cross-spawn": "~6.0.2",
     "@types/debug": "~4.1.12",
     "@types/heft-jest": "~1.0.6",
