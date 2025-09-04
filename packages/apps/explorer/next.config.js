@@ -10,6 +10,14 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
+  async rewrites() {
+    return [
+      {
+        source: '/graph/hackachain/mainnet',
+        destination: 'https://api.mainnet.kadindexer.io/v0/',
+      },
+    ];
+  },
 };
 
 module.exports = withVanillaExtract(nextConfig);
