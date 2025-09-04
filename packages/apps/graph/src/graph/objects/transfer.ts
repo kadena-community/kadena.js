@@ -86,6 +86,7 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
         requestKey: true,
         senderAccount: true,
         receiverAccount: true,
+        moduleName: true,
         transaction: {
           select: {
             pactId: true,
@@ -114,7 +115,14 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
               const msg =
                 'Unexpected crosschain transfer: Crosschain transfer without pactId';
               console.log(msg);
-              throw new Error(msg);
+
+              if (parent.moduleName === 'coin') {
+                // only module `coin` we're sure this is implemented correctly
+                throw new Error(msg);
+              } else {
+                // if something doens't work out for another module, we'll assume this isn't a crosschaintransfer
+                return null;
+              }
             }
             // this is the receiving side of the crosschain transfer
             // we're looking for a transaction that has the same requestKey as the pactId
