@@ -50,6 +50,12 @@ export const AssetStore = (organisation: IOrganisation) => {
       ref(database, `${dbLocationString}/${assetFolderName}`),
     );
 
+    // datajson: createDataJson() is for the PoC only
+    // we save the data JSON in the database
+    // in production this should be done on chain
+
+    console.log({ asset });
+
     return await set(ref(database, `${dbLocationString}/${assetFolderName}`), {
       ...(existingAsset.toJSON() ?? {}),
       ...asset,

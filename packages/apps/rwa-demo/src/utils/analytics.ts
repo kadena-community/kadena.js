@@ -19,6 +19,8 @@ export const EVENT_NAMES = {
   'error:submit:setcompliance': 'error:submit:setcompliance',
   'error:submit:togglecompliancerule': 'error:submit:togglecompliancerule',
   'error:submit:createcontract': 'error:submit:createcontract',
+  'error:submit:createcontract:metadata':
+    'error:submit:createcontract:metadata',
   'error:submit:batchtransfertokens': 'error:submit:batchtransfertokens',
   'error:submit:togglePartiallyFreezeTokens':
     'error:submit:togglePartiallyFreezeTokens',

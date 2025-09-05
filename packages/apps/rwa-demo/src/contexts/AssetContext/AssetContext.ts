@@ -1,4 +1,6 @@
+import type { INode } from '@/components/AssetMetaData/types';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
 import type {
   IComplianceProps,
   IComplianceRuleTypes,
@@ -15,6 +17,8 @@ export interface IAsset {
   investorCount: number;
   compliance: IComplianceProps;
   setupComplete?: boolean;
+  datajson?: any; // this is for PoC purposes only
+  dataLayoutjson?: INode; // this is for PoC purposes only
 }
 
 export interface IAssetContext {
@@ -25,9 +29,11 @@ export interface IAssetContext {
   addAsset: ({
     contractName,
     namespace,
+    dataType,
   }: {
     contractName: string;
     namespace: string;
+    dataType?: 'house' | 'car' | 'painting';
   }) => IAsset | undefined;
   addExistingAsset: (name: string) => IAsset | undefined;
   removeAsset: (asset: IAsset) => void;
@@ -41,6 +47,11 @@ export interface IAssetContext {
   agents: IRecord[];
   agentsIsLoading: boolean;
   assetStore: any;
+  fetchAssetMetaLayout: (userToken: IdTokenResultWithClaims) => Promise<INode>;
+  createAssetMetaLayout: (
+    asset: IAsset,
+    userToken: IdTokenResultWithClaims,
+  ) => Promise<void>;
 }
 
 export const AssetContext = createContext<IAssetContext | null>(null);

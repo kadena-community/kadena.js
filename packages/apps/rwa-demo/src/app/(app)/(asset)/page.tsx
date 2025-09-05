@@ -2,6 +2,7 @@
 
 import { AssetAction } from '@/components/AssetAction/AssetAction';
 import { TransferAssetAction } from '@/components/AssetAction/TransferAssetAction';
+import { AssetMetaDataCard } from '@/components/AssetMetaData/AssetMetaDataCard';
 import { AssetSetupCompletionOverview } from '@/components/AssetSetupCompletionOverview/AssetSetupCompletionOverview';
 import { BatchTransferAssetAction } from '@/components/BatchTransferAsset/BatchTransferAssetAction';
 import { ComplianceRules } from '@/components/ComplianceRules/ComplianceRules';
@@ -85,7 +86,7 @@ const Home = () => {
             </SectionCardBody>
           </SectionCardContentBlock>
         </SectionCard>
-
+        <AssetMetaDataCard />
         <SectionCard data-testid="assetCard">
           <SectionCardContentBlock>
             <SectionCardHeader title="Asset" description={<></>} />
