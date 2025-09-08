@@ -4,8 +4,6 @@ export const checkNetwork = (
   graphUrl: string,
   headers: INetwork['headers'] = {},
 ): Promise<Response> => {
-  console.log(graphUrl, headers);
-
   return fetch(graphUrl, {
     method: 'POST',
     mode: 'cors',
