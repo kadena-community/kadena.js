@@ -25,7 +25,7 @@ const Height: React.FC = () => {
   const { setQueries } = useQueryContext();
 
   const blockHeightVariables = {
-    first: 138,
+    first: 200,
     startHeight: parseInt(router.query.height as string),
     endHeight: parseInt(router.query.height as string),
   };
