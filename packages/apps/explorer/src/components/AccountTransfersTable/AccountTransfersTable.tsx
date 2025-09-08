@@ -1,5 +1,6 @@
 import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
 import { useAccountTransfersQuery } from '@/__generated__/sdk';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
@@ -23,6 +24,7 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
     useState<AccountTransfersQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
   const { setQueries } = useQueryContext();
+  const { activeNetwork } = useNetwork();
 
   const { variables, handlePageChange, pageSize } = usePagination({
     id,
@@ -42,8 +44,9 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
+        label: 'Loading of account transfers failed',
         body: 'Loading of account transfers failed',
+        network: activeNetwork,
       });
     }
 

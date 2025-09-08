@@ -12,6 +12,7 @@ import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDat
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
@@ -56,6 +57,7 @@ const Block: React.FC = () => {
   }, []);
 
   const { addToast } = useToast();
+  const { activeNetwork } = useNetwork();
   const { loading, data, error } = useBlockQuery({
     variables: blockQueryVariables,
 
@@ -71,8 +73,8 @@ const Block: React.FC = () => {
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of account transactions failed',
+        label: 'Loading of account transactions failed',
+        network: activeNetwork,
       });
     }
 

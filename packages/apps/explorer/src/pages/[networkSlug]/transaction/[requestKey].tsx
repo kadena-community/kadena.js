@@ -13,6 +13,7 @@ import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchRes
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { TransactionRequestComponent } from '@/components/TransactionComponents/TransactionRequestComponent';
 import { TransactionResultComponent } from '@/components/TransactionComponents/TransactionResultComponent';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
@@ -33,6 +34,7 @@ const Transaction: React.FC = () => {
   };
 
   const { addToast } = useToast();
+  const { activeNetwork } = useNetwork();
   const { loading, data, error } = useTransactionRequestKeyQuery({
     variables: transactionRequestKeyQueryVariables,
     skip: !router.query.requestKey,
@@ -56,8 +58,8 @@ const Transaction: React.FC = () => {
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of transaction requestkey data failed',
+        label: 'Loading of transaction requestkey data failed',
+        network: activeNetwork,
       });
       setIsLoading(false);
     }

@@ -3,6 +3,7 @@ import {
   useLastBlockHeightQuery,
   useNewBlocksSubscription,
 } from '@/__generated__/sdk';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { completedBlockHeights } from '@/graphql/queries/completed-block-heights.graph';
 import { lastBlockHeight } from '@/graphql/queries/last-block-height.graph';
@@ -77,6 +78,7 @@ export const BlockTable: React.FC = () => {
 
   const { setQueries } = useQueryContext();
   const { selectedHeight } = useBlockInfo();
+  const { activeNetwork } = useNetwork();
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -115,8 +117,9 @@ export const BlockTable: React.FC = () => {
     if (newBlocksError) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
+        label: 'Loading of new blocks failed',
         body: 'Loading of new blocks failed',
+        network: activeNetwork,
       });
     }
   }, [newBlocksError]);
@@ -125,8 +128,9 @@ export const BlockTable: React.FC = () => {
     if (lastBlockError) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
+        label: 'Loading of completed blockheights failed',
         body: 'Loading of completed blockheights failed',
+        network: activeNetwork,
       });
     }
   }, [lastBlockError]);
@@ -135,8 +139,8 @@ export const BlockTable: React.FC = () => {
     if (oldBlocksError) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of old blocks failed',
+        label: 'Loading of old blocks failed',
+        network: activeNetwork,
       });
     }
   }, [oldBlocksError]);

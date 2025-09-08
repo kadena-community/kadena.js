@@ -1,5 +1,6 @@
 import { useEventsQuery } from '@/__generated__/sdk';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
@@ -24,6 +25,7 @@ export const useEventData = ({
 }: IProps) => {
   const { setIsLoading, isLoading } = useSearch();
   const { addToast } = useToast();
+  const { activeNetwork } = useNetwork();
   const [innerData, setInnerData] = useState<IEventsQueryView[]>([
     getLoadingData(),
   ]);
@@ -61,8 +63,8 @@ export const useEventData = ({
     if (error || chainsError) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of events data failed',
+        label: 'Loading of events data failed',
+        network: activeNetwork,
       });
     }
 

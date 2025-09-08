@@ -1,5 +1,6 @@
 import type { BlockTransactionsQuery, Transaction } from '@/__generated__/sdk';
 import { useBlockTransactionsQuery } from '@/__generated__/sdk';
+import { useNetwork } from '@/context/networksContext';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
 import {
@@ -29,6 +30,7 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
   });
 
   const { addToast } = useToast();
+  const { activeNetwork } = useNetwork();
   const { loading, data, error } = useBlockTransactionsQuery({
     variables,
   });
@@ -42,8 +44,8 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of block transactions failed',
+        label: 'Loading of block transactions failed',
+        network: activeNetwork,
       });
     }
 

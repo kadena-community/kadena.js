@@ -8,6 +8,7 @@ import { Layout } from '@/components/Layout/Layout';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
@@ -35,6 +36,7 @@ const Height: React.FC = () => {
   }, []);
 
   const { addToast } = useToast();
+  const { activeNetwork } = useNetwork();
   const { loading, data, error } = useBlocksFromHeightQuery({
     variables: blockHeightVariables,
     skip: !(router.query.height as string),
@@ -51,8 +53,8 @@ const Height: React.FC = () => {
       setInnerData({} as BlocksFromHeightQuery);
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of block height data failed',
+        label: 'Loading of block height data failed',
+        network: activeNetwork,
       });
     }
 

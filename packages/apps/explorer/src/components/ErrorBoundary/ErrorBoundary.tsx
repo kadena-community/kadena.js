@@ -1,4 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+import { NetworkContextProvider } from '@/context/networksContext';
 import type { NextRouter } from 'next/router';
 import { withRouter } from 'next/router';
 import type { ReactNode } from 'react';
@@ -45,7 +46,11 @@ class ErrorBoundary extends Component<
   public render(): ReactNode {
     if (this.state.hasError) {
       // Fallback UI when an error occurs
-      return <Error error={this.state.error} />;
+      return (
+        <NetworkContextProvider>
+          <Error error={this.state.error} />;
+        </NetworkContextProvider>
+      );
     }
 
     // Render children if no error

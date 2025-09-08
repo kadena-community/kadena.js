@@ -14,6 +14,7 @@ import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDat
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
@@ -49,6 +50,7 @@ const Account: FC = () => {
   };
 
   const { addToast } = useToast();
+  const { activeNetwork } = useNetwork();
   const { loading, data, error } = useAccountQuery({
     variables: accountQueryVariables,
     skip: !router.query.accountName,
@@ -63,8 +65,8 @@ const Account: FC = () => {
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of account failed',
+        label: 'Loading of account failed',
+        network: activeNetwork,
       });
     }
 

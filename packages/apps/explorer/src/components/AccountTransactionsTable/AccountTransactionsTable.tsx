@@ -3,6 +3,7 @@ import type {
   Transaction,
 } from '@/__generated__/sdk';
 import { useAccountTransactionsQuery } from '@/__generated__/sdk';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
@@ -22,6 +23,7 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
   accountName,
 }) => {
   const id = graphqlIdFor('FungibleAccount', `["coin", "${accountName}"]`);
+  const { activeNetwork } = useNetwork();
   const [innerData, setInnerData] =
     useState<AccountTransactionsQuery>(loadingData);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,8 +48,8 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of account transactions failed',
+        label: 'Loading of account transactions failed',
+        network: activeNetwork,
       });
     }
 

@@ -1,4 +1,5 @@
 'use client';
+import { useNetwork } from '@/context/networksContext';
 import {
   Button,
   Card,
@@ -20,10 +21,17 @@ import React, { useEffect } from 'react';
 
 const GlobalError = ({ error, resetError }: any) => {
   const { theme, rotateTheme } = useTheme();
+  const { activeNetwork } = useNetwork();
 
   useEffect(() => {
     console.log('Logging error to Sentry:', error);
-    Sentry.captureException(error);
+    Sentry.captureException(error, {
+      captureContext: {
+        extra: {
+          network: activeNetwork,
+        },
+      },
+    });
     console.log('done');
   }, [error]);
 

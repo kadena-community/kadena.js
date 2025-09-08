@@ -1,6 +1,7 @@
 import { useNetworkInfoQuery } from '@/__generated__/sdk';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { CONSTANTS } from '@/constants/constants';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { networkInfo } from '@/graphql/queries/network-info.graph';
 import { formatStatisticsData } from '@/services/format';
@@ -12,6 +13,7 @@ import { boxClass, overFlowClass } from './statisticsStack.css';
 export const StatisticsStack: FC = () => {
   const { addToast } = useToast();
   const { setQueries } = useQueryContext();
+  const { activeNetwork } = useNetwork();
 
   const variables = {
     pollInterval: CONSTANTS.NETWORK_POLLING_RATE,
@@ -27,8 +29,8 @@ export const StatisticsStack: FC = () => {
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of network info data failed',
+        label: 'Loading of network info data failed',
+        network: activeNetwork,
       });
       stopPolling();
     }
