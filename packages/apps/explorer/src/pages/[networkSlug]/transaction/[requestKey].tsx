@@ -70,10 +70,6 @@ const Transaction: React.FC = () => {
     }
   }, [loading, data, error, setIsLoading]);
 
-  useEffect(() => {
-    throw new Error('An unexpected error occurred in Transaction component');
-  }, []);
-
   return (
     <Layout>
       {innerData && innerData.transaction && !error ? (
