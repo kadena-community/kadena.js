@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import { complianceWrapperClass } from './style.css';
 
 interface IProps extends PropsWithChildren {
-  trigger: React.ReactElement;
+  trigger: React.ReactElement<{ onPress: (e: PressEvent) => void }>;
   label?: string;
   dismissLabel?: string;
   onPress: (e: PressEvent) => void;

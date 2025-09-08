@@ -10,7 +10,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
-import { notificationLinkStyle } from '@/pages/transactions/transfer/styles.css';
+import { notificationLinkStyle } from '@/pagestyles/transactions/transfer/styles.css';
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import { useFormContext } from 'react-hook-form';

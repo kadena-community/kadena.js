@@ -10,6 +10,6 @@ interface IDataRenderComponentField {
   key: string;
   id?: string;
   canCopy?: boolean;
-  value: string | string[] | JSX.Element | JSX.Element[];
+  value: string | string[] | React.JSX.Element | React.JSX.Element[];
   link?: string;
 }

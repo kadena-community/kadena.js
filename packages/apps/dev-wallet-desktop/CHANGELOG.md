@@ -1,5 +1,12 @@
 # @kadena/dev-wallet-desktop
 
+## 0.0.36
+
+### Patch Changes
+
+- Updated dependencies \[f59ac43]
+  - @kadena/dev-wallet\@0.6.2
+
 ## 0.0.35
 
 ### Patch Changes

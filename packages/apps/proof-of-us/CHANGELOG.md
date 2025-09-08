@@ -1,5 +1,15 @@
 # @kadena/proof-of-us
 
+## 0.5.25
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+  - @kadena/kode-icons\@0.3.1
+  - @kadena/kode-ui\@0.21.1
+  - @kadena/graph\@2.2.4
+
 ## 0.5.24
 
 ### Patch Changes

@@ -1,6 +1,7 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import { AGENTROLES } from '@/services/addAgent';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useGetAgentRoles } from '../getAgentRoles';
 
@@ -90,7 +91,7 @@ describe('useGetAgentRoles', () => {
       AGENTROLES.FREEZER,
     ]);
 
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Initial state
     expect(result.current.isMounted).toBe(true);
@@ -102,23 +103,23 @@ describe('useGetAgentRoles', () => {
     });
 
     // Wait for the async initInnerData function to complete
-    await waitForNextUpdate();
-
-    // Verify the correct roles are returned
-    expect(result.current.getAll()).toEqual([
-      AGENTROLES.AGENTADMIN,
-      AGENTROLES.FREEZER,
-    ]);
-    expect(result.current.isAgentAdmin()).toBe(true);
-    expect(result.current.isFreezer()).toBe(true);
-    expect(result.current.isTransferManager()).toBe(false);
+    await waitFor(() => {
+      // Verify the correct roles are returned
+      expect(result.current.getAll()).toEqual([
+        AGENTROLES.AGENTADMIN,
+        AGENTROLES.FREEZER,
+      ]);
+      expect(result.current.isAgentAdmin()).toBe(true);
+      expect(result.current.isFreezer()).toBe(true);
+      expect(result.current.isTransferManager()).toBe(false);
+    });
   });
 
   it('checks specific roles correctly', async () => {
     // Mock implementation of getAgentRoles with different roles
     mocks.getAgentRoles.mockResolvedValue([AGENTROLES.TRANSFERMANAGER]);
 
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Set the agent and asset
     act(() => {
@@ -126,19 +127,19 @@ describe('useGetAgentRoles', () => {
     });
 
     // Wait for the async initInnerData function to complete
-    await waitForNextUpdate();
-
-    // Verify specific role checking functions
-    expect(result.current.isAgentAdmin()).toBe(false);
-    expect(result.current.isFreezer()).toBe(false);
-    expect(result.current.isTransferManager()).toBe(true);
+    await waitFor(() => {
+      // Verify specific role checking functions
+      expect(result.current.isAgentAdmin()).toBe(false);
+      expect(result.current.isFreezer()).toBe(false);
+      expect(result.current.isTransferManager()).toBe(true);
+    });
   });
 
   it('resets data when agent or asset is not provided', async () => {
     // Mock implementation of getAgentRoles
     mocks.getAgentRoles.mockResolvedValue([AGENTROLES.AGENTADMIN]);
 
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Set the agent and asset
     act(() => {
@@ -146,8 +147,9 @@ describe('useGetAgentRoles', () => {
     });
 
     // Wait for the async initInnerData function to complete
-    await waitForNextUpdate();
-    expect(result.current.isAgentAdmin()).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isAgentAdmin()).toBe(true);
+    });
 
     // Reset by setting null asset
     act(() => {
@@ -163,17 +165,17 @@ describe('useGetAgentRoles', () => {
     mocks.getAgentRoles.mockResolvedValueOnce([AGENTROLES.FREEZER]);
 
     // Render the hook with simple configuration
-    const { result, waitForNextUpdate } = renderHook(() => useGetAgentRoles());
+    const { result } = renderHook(() => useGetAgentRoles());
 
     // Initialize with account and asset
-    act(() => {
-      result.current.setAssetRolesForAccount(mockAccount, mockAsset);
+    await act(async () => {
+      await result.current.setAssetRolesForAccount(mockAccount, mockAsset);
     });
 
     // Wait for first update
-    await waitForNextUpdate();
-
-    // Verify initial state
-    expect(result.current.isFreezer()).toBe(true);
+    await waitFor(() => {
+      // Verify initial state
+      expect(result.current.isFreezer()).toBe(true);
+    });
   });
 });

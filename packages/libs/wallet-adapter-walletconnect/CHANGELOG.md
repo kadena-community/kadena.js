@@ -1,5 +1,11 @@
 # @kadena/wallet-adapter-walletconnect
 
+## 0.1.0
+
+### Minor Changes
+
+- 4b90675: walletconnect-adapter: Include chains argument in modal instantiation
+
 ## 0.0.3
 
 ### Patch Changes

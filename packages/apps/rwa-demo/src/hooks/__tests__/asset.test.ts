@@ -1,5 +1,5 @@
 import { AssetContext } from '@/contexts/AssetContext/AssetContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
 import { useAsset } from '../asset';
 

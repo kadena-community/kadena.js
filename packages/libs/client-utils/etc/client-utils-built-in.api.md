@@ -30,6 +30,24 @@ export const createPrincipal: (inputs: ICreatePrincipalInput, config: Omit<IClie
 
 // Warning: (ae-forgotten-export) The symbol "IEmitterWrapper" needs to be exported by the entry point index.d.ts
 //
+// @alpha (undocumented)
+export const createPrincipalNamespace: (inputs: ICreatePrincipalNamespaceInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "command";
+data: IUnsignedCommand;
+}, {
+event: "sign";
+data: ICommand;
+}, {
+event: "preflight";
+data: ICommandResult;
+}, {
+event: "submit";
+data: ITransactionDescriptor;
+}, {
+event: "listen";
+data: ICommandResult;
+}], [], Promise<string> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
+
 // @alpha
 export const deployContract: (inputs: IDeployContractInput, config: IClientConfig) => IEmitterWrapper<[{
 event: "command";
@@ -58,6 +76,18 @@ export interface ICreatePrincipalInput {
         keys: string[];
         pred?: 'keys-all' | 'keys-2' | 'keys-any';
     };
+}
+
+// @alpha (undocumented)
+export interface ICreatePrincipalNamespaceInput {
+    // (undocumented)
+    keys: string[];
+    // (undocumented)
+    keysetName: string;
+    // (undocumented)
+    pred: 'keys-all' | 'keys-2' | 'keys-any';
+    // (undocumented)
+    signer: string;
 }
 
 // @alpha (undocumented)

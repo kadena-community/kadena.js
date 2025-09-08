@@ -1,5 +1,13 @@
 # @kadena/kadena-cli
 
+## 1.4.3
+
+### Patch Changes
+
+- 7ed1b5a: Fixed typo in error message
+- Updated dependencies \[5c56ae2]
+  - @kadena/client-utils\@0.13.1
+
 ## 1.4.2
 
 ### Patch Changes

@@ -24,7 +24,7 @@ import { selectBoxClass } from './styles.css';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
 }
 
 export interface IRegisterIdentityBatchProps {

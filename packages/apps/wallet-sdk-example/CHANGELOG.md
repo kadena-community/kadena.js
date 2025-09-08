@@ -1,5 +1,15 @@
 # wallet-sdk-example-app
 
+## 0.0.9
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+  - @kadena/kode-icons\@0.3.1
+  - @kadena/kode-ui\@0.21.1
+  - @kadena/wallet-sdk\@0.2.3
+
 ## 0.0.8
 
 ### Patch Changes

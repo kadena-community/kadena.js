@@ -253,7 +253,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <TransactionsContext.Provider
+    <TransactionsContext
       value={{
         transactions,
         addTransaction,
@@ -267,6 +267,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       {children}
-    </TransactionsContext.Provider>
+    </TransactionsContext>
   );
 };

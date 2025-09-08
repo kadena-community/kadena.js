@@ -16,7 +16,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
 }
 
 export const SetComplianceForm: FC<IProps> = ({ onClose, trigger }) => {

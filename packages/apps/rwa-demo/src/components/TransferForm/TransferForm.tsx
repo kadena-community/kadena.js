@@ -31,7 +31,7 @@ import { InvestorCombobox } from '../Fields/InvestorCombobox';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
   isForced?: boolean;
   investorAccount: string;
 }

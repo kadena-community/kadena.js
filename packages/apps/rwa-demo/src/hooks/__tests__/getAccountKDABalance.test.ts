@@ -1,6 +1,7 @@
 import { useEventSubscriptionFilteredSubscription } from '@/__generated__/sdk';
 import { accountKDABalance } from '@/services/accountKDABalance';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useGetAccountKDABalance } from '../getAccountKDABalance';
 
@@ -83,6 +84,11 @@ describe('useGetAccountKDABalance', () => {
       accountName: testAccountAddress,
     });
 
+    // Capture the promise (adjust index if multiple calls)
+    const balancePromise = mockAccountKDABalance.mock.results[0].value;
+
+    await act(async () => balancePromise);
+
     expect(result.current.data).toBe(100);
     // Cleanup
     vi.useRealTimers();
@@ -118,6 +124,11 @@ describe('useGetAccountKDABalance', () => {
         useGetAccountKDABalance({ accountAddress: testAccountAddress }),
       );
 
+      const balancePromiseInit = mockAccountKDABalance.mock.results[0].value;
+
+      // Wait for the async effect to complete
+      await act(async () => balancePromiseInit);
+
       // Wait for initial balance to load
       vi.runAllTimers();
       await vi.runAllTimersAsync();
@@ -149,6 +160,11 @@ describe('useGetAccountKDABalance', () => {
       const { result, rerender } = renderHook(() =>
         useGetAccountKDABalance({ accountAddress: testAccountAddress }),
       );
+
+      const balancePromiseInit = mockAccountKDABalance.mock.results[0].value;
+
+      // Wait for the async effect to complete
+      await act(async () => balancePromiseInit);
 
       // Wait for initial balance to load
       vi.runAllTimers();
@@ -186,6 +202,11 @@ describe('useGetAccountKDABalance', () => {
         useGetAccountKDABalance({ accountAddress: testAccountAddress }),
       );
 
+      const balancePromiseInit = mockAccountKDABalance.mock.results[0].value;
+
+      // Wait for the async effect to complete
+      await act(async () => balancePromiseInit);
+
       // Wait for initial balance to load
       vi.runAllTimers();
       await vi.runAllTimersAsync();
@@ -219,6 +240,11 @@ describe('useGetAccountKDABalance', () => {
         useGetAccountKDABalance({ accountAddress: testAccountAddress }),
       );
 
+      const balancePromiseInit = mockAccountKDABalance.mock.results[0].value;
+
+      // Wait for the async effect to complete
+      await act(async () => balancePromiseInit);
+
       // Wait for initial balance to load
       vi.runAllTimers();
       await vi.runAllTimersAsync();
@@ -251,6 +277,11 @@ describe('useGetAccountKDABalance', () => {
         useGetAccountKDABalance({ accountAddress: testAccountAddress }),
       );
 
+      const balancePromiseInit = mockAccountKDABalance.mock.results[0].value;
+
+      // Wait for the async effect to complete
+      await act(async () => balancePromiseInit);
+
       // Wait for initial balance to load
       vi.runAllTimers();
       await vi.runAllTimersAsync();
@@ -277,11 +308,15 @@ describe('useGetAccountKDABalance', () => {
         ],
       };
 
-      mockSubscriptionData.mockReturnValue({ data: null });
-
       const { result, rerender } = renderHook(() =>
         useGetAccountKDABalance({ accountAddress: testAccountAddress }),
       );
+
+      mockSubscriptionData.mockReturnValue({ data: null });
+      const balancePromiseInit = mockAccountKDABalance.mock.results[0].value;
+
+      // Wait for the async effect to complete
+      await act(async () => balancePromiseInit);
 
       // Wait for initial balance to load
       vi.runAllTimers();
@@ -290,6 +325,12 @@ describe('useGetAccountKDABalance', () => {
 
       // Process events with invalid JSON
       mockSubscriptionData.mockReturnValue({ data: mockEventData });
+      // Capture the promise (adjust index if multiple calls)
+      const balancePromise = mockSubscriptionData.mock.results[0].value;
+
+      // Wait for the async effect to complete
+      await act(async () => balancePromise);
+
       rerender();
 
       // Should process only the valid event (the hook should handle JSON parse errors)

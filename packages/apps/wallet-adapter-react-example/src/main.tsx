@@ -35,7 +35,7 @@ const adapters = [
     chainId: '1',
     chainwebApiUrl:
       'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact',
-    magicApiKey: 'pk_live_FB1577E16DE16B9E',
+    magicApiKey: import.meta.env.VITE_MAGIC_API_KEY,
     networkId: 'testnet04',
   }),
 ];

@@ -1,5 +1,12 @@
 # @kadena/wallet-sdk
 
+## 0.2.3
+
+### Patch Changes
+
+- Updated dependencies \[5c56ae2]
+  - @kadena/client-utils\@0.13.1
+
 ## 0.2.2
 
 ### Patch Changes

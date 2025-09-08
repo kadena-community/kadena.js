@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useEditAgent } from '../editAgent';
 
 describe('editAgent hook', () => {
@@ -527,7 +527,7 @@ describe('editAgent hook', () => {
       expect(addTransactionMock).toHaveBeenCalledWith(
         expect.objectContaining({
           type: { name: 'ADDAGENT', overall: true },
-          accounts: ['k:new-agent'],
+          accounts: ['k:new-agent', 'k:admin-address'],
         }),
       );
     });
