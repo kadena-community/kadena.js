@@ -40,12 +40,6 @@ Github Config & Actions:
 '@kadena/dev-wallet-desktop':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet-desktop/*
-'@kadena/docs':
-  - changed-files:
-      - any-glob-to-any-file: packages/apps/docs/*
-'@kadena/docs-tools':
-  - changed-files:
-      - any-glob-to-any-file: packages/tools/docs-tools/*
 '@kadena/explorer':
   - changed-files:
       - any-glob-to-any-file: packages/apps/explorer/*
@@ -139,9 +133,6 @@ e2e-rwa-demo:
 kadena.js:
   - changed-files:
       - any-glob-to-any-file: packages/libs/kadena.js/*
-'@kadena/marmalade-marketplace':
-  - changed-files:
-      - any-glob-to-any-file: packages/apps/marmalade-marketplace/*
 e2e-proof-of-us:
   - changed-files:
       - any-glob-to-any-file: packages/e2e/e2e-proof-of-us/*

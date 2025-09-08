@@ -1,7 +1,7 @@
 export const sidebarLinks: { title: string; href: string }[] = [
   {
     title: 'Tutorials',
-    href: 'https://docs.kadena.io/build/quickstart',
+    href: 'https://docs.kadena.io/quickstart',
   },
   {
     title: 'Documentation',

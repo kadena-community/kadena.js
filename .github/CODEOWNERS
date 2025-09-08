@@ -8,17 +8,14 @@
 # Apps
 /packages/apps/dev-wallet
 /packages/apps/dev-wallet-*
-/packages/apps/docs
 /packages/apps/explorer
 /packages/apps/graph
-/packages/apps/marmalade-marketplace
 /packages/apps/proof-of-us
 /packages/apps/tools
 
 # e2e2e tests
 /packages/e2e
 /packages/e2e/e2e-base
-/packages/e2e/e2e-docs
 /packages/e2e/e2e-graph
 /packages/e2e/e2e-proof-of-us
 /packages/e2e/e2e-tools
@@ -47,6 +44,5 @@
 
 # Tools
 /packages/tools
-/packages/tools/docs-tools
 /packages/tools/kadena-cli
 
