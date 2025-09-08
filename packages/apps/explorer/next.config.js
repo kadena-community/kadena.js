@@ -11,12 +11,7 @@ const nextConfig = {
   swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
   async rewrites() {
-    return [
-      {
-        source: '/graph/hackachain/mainnet',
-        destination: 'https://api.mainnet.kadindexer.io/v0/',
-      },
-    ];
+    return [];
   },
 };
 
