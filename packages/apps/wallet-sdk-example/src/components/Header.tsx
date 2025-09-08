@@ -69,6 +69,11 @@ export const Header: React.FC = () => {
             <Link to="/kadenanames">Kadena Names</Link>
           </NavHeaderLink>
         </Tooltip>
+        <Tooltip text="Get all accounts by PublicKey.">
+          <NavHeaderLink href="/accountsbypublickey" asChild>
+            <Link to="/accountsbypublickey">Accounts by public key</Link>
+          </NavHeaderLink>
+        </Tooltip>
       </NavHeaderLinkList>
 
       <Tooltip text="Select the network for executing commands.">
@@ -83,9 +88,6 @@ export const Header: React.FC = () => {
           </SelectItem>
           <SelectItem key="testnet04" textValue="Testnet">
             Testnet
-          </SelectItem>
-          <SelectItem key="testnet05" textValue="Testnet Pact5">
-            Testnet (Pact 5)
           </SelectItem>
         </NavHeaderSelect>
       </Tooltip>
