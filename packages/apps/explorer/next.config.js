@@ -10,6 +10,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
+  async rewrites() {
+    return [];
+  },
 };
 
 module.exports = withVanillaExtract(nextConfig);

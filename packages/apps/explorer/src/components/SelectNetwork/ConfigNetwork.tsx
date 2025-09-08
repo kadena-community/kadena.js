@@ -1,4 +1,4 @@
-import type { IEditNetwork } from '@/constants/network';
+import type { IEditNetwork, INetwork } from '@/constants/network';
 import { useNetwork } from '@/context/networksContext';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { checkNetwork } from '@/utils/checkNetwork';
@@ -10,16 +10,19 @@ import {
   Dialog,
   DialogContent,
   Form,
-  Heading,
+  Notification,
+  NotificationHeading,
   Select,
   SelectItem,
   Stack,
   Text,
   TextField,
 } from '@kadena/kode-ui';
+import { token } from '@kadena/kode-ui/styles';
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { CardContentBlock, CardFooter } from '../CardPattern/CardPattern';
+import { Headers } from './Headers';
 import { cardVisualClass } from './style.css';
 import { defineNewNetwork, getFormValues, validateNewNetwork } from './utils';
 
@@ -31,6 +34,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
   const { networks, addNetwork, removeNetwork } = useNetwork();
   const [formError, setFormError] = useState<(string | undefined)[]>();
   const refInputGraph = useRef<HTMLInputElement>(null);
+  const refInputHeaders = useRef<HTMLDivElement>(null);
   const [graphUrl, setGraphUrl] = useState('');
 
   const [network, setNetwork] = useState<IEditNetwork>(defineNewNetwork());
@@ -41,11 +45,34 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     removeNetwork(network);
   }, [network]);
 
+  const getHeaders = () => {
+    if (refInputHeaders.current) {
+      const keys =
+        refInputHeaders.current.querySelectorAll<HTMLInputElement>(
+          `input[name="key"]`,
+        );
+      const values =
+        refInputHeaders.current.querySelectorAll<HTMLInputElement>(
+          `input[name="value"]`,
+        );
+
+      const keyValues = Array.from(keys).map((input) => input.value);
+      const valueValues = Array.from(values).map((input) => input.value);
+
+      return keyValues.reduce((acc, val, idx) => {
+        if (!val) return acc;
+        return { ...acc, [val]: valueValues[idx] };
+      }, {});
+    }
+  };
+
   const handleCreateNetwork: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
-    const { label, networkId, slug, graphUrl, isNew } =
+    const headers = getHeaders();
+
+    const { label, networkId, slug, graphUrl, isNew, wsGraphUrl } =
       getFormValues<any>(data);
 
     const newNetwork =
@@ -56,15 +83,17 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
             networkId,
             slug,
             graphUrl,
-            wsGraphUrl: graphUrl,
+            wsGraphUrl,
+            headers,
           }
         : {
             ...network,
             label,
             networkId,
             graphUrl,
-            wsGraphUrl: graphUrl,
+            wsGraphUrl,
             isNew: false,
+            headers,
           };
 
     const errors = validateNewNetwork(networks, newNetwork);
@@ -89,8 +118,13 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     setGraphUrl(e.target.value);
   };
 
-  const validateNetwork = async (url?: string) => {
+  const validateNetwork = async (
+    url: string,
+    headersProp?: INetwork['headers'],
+  ) => {
     const value = url ? url : refInputGraph?.current?.value;
+
+    const headers = headersProp ?? getHeaders();
     if (!value) return;
 
     analyticsEvent(EVENT_NAMES['click:validate_network'], {
@@ -98,7 +132,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
     });
 
     try {
-      const result = await checkNetwork(value);
+      const result = await checkNetwork(value, headers);
       const body = await result.json();
 
       if (result.status === 200) {
@@ -108,6 +142,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               ...defaultNamingOfNetwork(v, body.data, networks),
               graphUrlIsValid: true,
               graphUrl: value,
+              headers: headers,
             };
           }
           return { ...v, graphUrlIsValid: true };
@@ -126,15 +161,17 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
       return;
     }
     const network = networks.find((n) => n.slug === value);
+
+    console.log('selected', { network });
     if (!network) return;
     setNetwork(network);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (network.isNew) return;
     setGraphUrl(network?.graphUrl);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    validateNetwork(network?.graphUrl);
+    validateNetwork(network?.graphUrl, network?.headers);
   }, [network.slug]);
 
   return (
@@ -187,7 +224,6 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
 
               <Stack gap="xl" flexDirection="column">
                 <TextField
-                  maxLength={150}
                   ref={refInputGraph}
                   label="GraphQL URL"
                   name="graphUrl"
@@ -197,7 +233,7 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                   onBlur={(e) => {
                     e.preventDefault();
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                    validateNetwork();
+                    validateNetwork('');
                   }}
                   isRequired
                   validate={() => {
@@ -205,23 +241,23 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                       return 'This network is not reachable';
                     }
                   }}
-                  endAddon={
-                    <Button
-                      isDisabled={!graphUrl}
-                      variant={
-                        network.graphUrlIsValid === false
-                          ? 'negative'
-                          : network.graphUrlIsValid === true
-                            ? 'primary'
-                            : 'transparent'
-                      }
-                      onPress={() => validateNetwork()}
-                    >
-                      Validate
-                    </Button>
-                  }
                 ></TextField>
 
+                <Headers headers={network.headers} ref={refInputHeaders} />
+
+                <Button
+                  isDisabled={!graphUrl}
+                  variant={
+                    network.graphUrlIsValid === false
+                      ? 'negative'
+                      : network.graphUrlIsValid === true
+                        ? 'primary'
+                        : 'outlined'
+                  }
+                  onPress={() => validateNetwork('')}
+                >
+                  Validate
+                </Button>
                 {network.graphUrlIsValid && (
                   <>
                     <TextField
@@ -257,6 +293,18 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                         }));
                       }}
                       name="networkId"
+                      isRequired
+                    ></TextField>
+                    <TextField
+                      label="wsGraphUrl"
+                      name="wsGraphUrl"
+                      value={network?.wsGraphUrl}
+                      onChange={(e) => {
+                        setNetwork((v) => ({
+                          ...v,
+                          wsGraphUrl: e.target.value,
+                        }));
+                      }}
                       isRequired
                     ></TextField>
                   </>
@@ -300,17 +348,21 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
               )}
             </CardFooter>
           </Form>
-          <Stack flexDirection={'column'} gap="sm">
-            <Heading as="h3">Navigating to the Explorer</Heading>
-            <Text>
-              You can pass <code>networkId</code> as querystring parameter. This
-              allows Wallets or dApps to choose a specific network.
-            </Text>
-            <Text>
-              For example, if you want to navigate to the account with the
-              networkId <code>testnet04</code>, you can use the following URL:
-              `https://explorer.kadena.io/account/k:2da46f2cc21e219c68a2f18d1a454c10606d52b18d8574913aacb2ea6b6b7251?networkId=testnet04#Transactions`
-            </Text>
+          <Stack flexDirection={'column'} gap="sm" marginBlockStart="xxxl">
+            <Notification role="alert" type="inlineStacked">
+              <NotificationHeading>
+                Navigating to the Explorer
+              </NotificationHeading>
+              <div style={{ wordBreak: 'break-word' }}>
+                You can pass <code>networkId</code> as querystring parameter.
+                This allows Wallets or dApps to choose a specific network. For
+                example, if you want to navigate to the account with the
+                networkId <code>testnet04</code>, you can use the following URL:{' '}
+                <code style={{ marginBlock: token('spacing.sm') }}>
+                  https://explorer.kadena.io/account/k:2da46f2cc21e219c68a2f18d1a454c10606d52b18d8574913aacb2ea6b6b7251?networkId=testnet04#Transactions
+                </code>
+              </div>
+            </Notification>
           </Stack>
         </DialogContent>
       )}
