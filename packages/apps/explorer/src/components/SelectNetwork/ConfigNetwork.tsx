@@ -224,7 +224,6 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
 
               <Stack gap="xl" flexDirection="column">
                 <TextField
-                  maxLength={150}
                   ref={refInputGraph}
                   label="GraphQL URL"
                   name="graphUrl"
@@ -297,7 +296,6 @@ export const ConfigNetwork: FC<IProps> = ({ handleOpen }) => {
                       isRequired
                     ></TextField>
                     <TextField
-                      maxLength={50}
                       label="wsGraphUrl"
                       name="wsGraphUrl"
                       value={network?.wsGraphUrl}
