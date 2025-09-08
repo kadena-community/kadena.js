@@ -55,9 +55,6 @@ Github Config & Actions:
 '@kadena/graph':
   - changed-files:
       - any-glob-to-any-file: packages/apps/graph/*
-'@kadena/graph-client':
-  - changed-files:
-      - any-glob-to-any-file: packages/apps/graph-client/*
 '@kadena/hd-wallet':
   - changed-files:
       - any-glob-to-any-file: packages/libs/hd-wallet/*
