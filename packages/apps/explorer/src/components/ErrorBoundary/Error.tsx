@@ -19,12 +19,11 @@ import {
 import * as Sentry from '@sentry/nextjs';
 import React, { useEffect } from 'react';
 
-const GlobalError = ({ error, resetError }: any) => {
+const GlobalError = ({ error }: any) => {
   const { theme, rotateTheme } = useTheme();
   const { activeNetwork } = useNetwork();
 
   useEffect(() => {
-    console.log('Logging error to Sentry:', error);
     Sentry.captureException(error, {
       captureContext: {
         extra: {
@@ -32,7 +31,6 @@ const GlobalError = ({ error, resetError }: any) => {
         },
       },
     });
-    console.log('done');
   }, [error]);
 
   return (
