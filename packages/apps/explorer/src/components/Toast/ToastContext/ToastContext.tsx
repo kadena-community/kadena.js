@@ -1,5 +1,6 @@
 import { MonoAutorenew } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
+import * as Sentry from '@sentry/nextjs';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { createContext, useContext, useState } from 'react';
@@ -42,6 +43,21 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
     if (toast.onlyOne) {
       setToasts([{ ...toast, id: createId() }]);
       return;
+    }
+
+    if (toast.type === 'negative') {
+      const sentryContent = {
+        mechanism: {
+          handled: true,
+          data: { message: toast.body },
+          type: 'graphQL-error',
+        },
+        captureContext: {
+          level: 'error' as const,
+        },
+      };
+
+      Sentry.captureException(toast.label, sentryContent);
     }
 
     setToasts((prevToasts) => {
