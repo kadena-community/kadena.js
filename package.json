@@ -7,7 +7,6 @@
   "scripts": {
     "build": "turbo run build",
     "build:e2e": "turbo run build:e2e",
-    "docs:changelogs": "cd ./packages/apps/docs && pnpm run build:changelogs",
     "format": "pnpm run /^format:.*/",
     "format:labels": "jiti packages/tools/scripts/generate-labels.ts",
     "format:md": "remark **/CHANGELOG.md *.md docs/*.md -o --use @kadena-dev/markdown",
