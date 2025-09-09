@@ -11,13 +11,15 @@ import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { containerClass, notificationWrapperClass } from './styles.css';
 
+export const COOKIE_CONSENT_KEY = 'cookie_consent';
+
 export const CookieConsent: FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
   const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);
-    const stickyValue = localStorage.getItem('cookie_consent');
+    const stickyValue = localStorage.getItem(COOKIE_CONSENT_KEY);
     if (stickyValue === null) return;
     setCookieConsent(JSON.parse(stickyValue));
   }, []);

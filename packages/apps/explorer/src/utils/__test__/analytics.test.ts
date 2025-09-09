@@ -1,3 +1,4 @@
+import { COOKIE_CONSENT_KEY } from '@/components/CookieConsent/CookieConsent';
 import {
   EVENT_NAMES,
   analyticsEvent,
@@ -34,7 +35,7 @@ describe('analytics', () => {
       });
 
       expect(localStorageSpy).toBeCalledTimes(1);
-      expect(localStorageSpy).toBeCalledWith('cookie_consent', 'false');
+      expect(localStorageSpy).toBeCalledWith(COOKIE_CONSENT_KEY, 'false');
     });
 
     it('should also console.warn when the nodeenv is development', () => {

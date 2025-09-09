@@ -18,22 +18,25 @@ import {
 } from '@kadena/kode-ui/patterns';
 import * as Sentry from '@sentry/nextjs';
 import React, { useEffect } from 'react';
+import { COOKIE_CONSENT_KEY } from '../CookieConsent/CookieConsent';
 
 const GlobalError = ({ error }: any) => {
   const { theme, rotateTheme } = useTheme();
   const { activeNetwork } = useNetwork();
 
   useEffect(() => {
-    Sentry.captureException(error, {
-      mechanism: {
-        handled: false,
-      },
-      captureContext: {
-        extra: {
-          network: activeNetwork,
+    if (localStorage.getItem(COOKIE_CONSENT_KEY) === 'true') {
+      Sentry.captureException(error, {
+        mechanism: {
+          handled: false,
         },
-      },
-    });
+        captureContext: {
+          extra: {
+            network: activeNetwork,
+          },
+        },
+      });
+    }
   }, [error]);
 
   return (

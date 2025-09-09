@@ -1,7 +1,7 @@
 import type { INetwork } from '@/constants/network';
+import { sendSentry } from '@/hooks/graphquery';
 import { MonoAutorenew } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
-import * as Sentry from '@sentry/nextjs';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 import React, { createContext, useContext, useState } from 'react';
@@ -75,21 +75,7 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
       },
     };
 
-    const sentryContent = {
-      mechanism: {
-        handled: true,
-        data: { message: newToast.body! },
-        type: 'network-error',
-      },
-      captureContext: {
-        level: 'error' as const,
-        extra: {
-          network: toast.network,
-        },
-      },
-    };
-
-    Sentry.captureException(newToast.label, sentryContent);
+    sendSentry({ errorLabel: newToast.body || 'Network error' }, toast.network);
 
     //there can only be 1 error like this.
     addToast(newToast);

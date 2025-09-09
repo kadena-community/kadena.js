@@ -1,3 +1,4 @@
+import { COOKIE_CONSENT_KEY } from '@/components/CookieConsent/CookieConsent';
 import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import type { INetwork } from '@/constants/network';
 import { useNetwork } from '@/context/networksContext';
@@ -25,7 +26,9 @@ export const sendSentry = (errorInfo: IErrorInfo, network: INetwork) => {
     },
   };
 
-  Sentry.captureException(errorInfo.errorLabel, sentryContent);
+  if (localStorage.getItem(COOKIE_CONSENT_KEY) === 'true') {
+    Sentry.captureException(errorInfo.errorLabel, sentryContent);
+  }
 };
 
 export const useGraphQuery = (
