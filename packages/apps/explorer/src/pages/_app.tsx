@@ -1,5 +1,6 @@
 // load global styles from @kadena/kode-ui
 import { Analytics } from '@/components/Analytics/Analytics';
+import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast/ToastContext/ToastContext';
 import { NetworkContextProvider } from '@/context/networksContext';
 import { QueryContextProvider } from '@/context/queryContext';
@@ -43,25 +44,27 @@ export default function App({
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
       </Head>
-      <Version
-        sha={process.env.NEXT_PUBLIC_COMMIT_SHA}
-        SSRTime={process.env.NEXT_PUBLIC_BUILD_TIME}
-        repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/explorer`}
-      />
-      <ToastProvider>
-        <NetworkContextProvider>
-          <RouterProvider navigate={router.push}>
-            <MediaContextProvider>
-              <QueryContextProvider>
-                <SearchContextProvider>
-                  <ReactComponent {...pageProps} />
-                </SearchContextProvider>
-              </QueryContextProvider>
-            </MediaContextProvider>
-          </RouterProvider>
-        </NetworkContextProvider>
-        <Analytics />
-      </ToastProvider>
+      <ErrorBoundary>
+        <Version
+          sha={process.env.NEXT_PUBLIC_COMMIT_SHA}
+          SSRTime={process.env.NEXT_PUBLIC_BUILD_TIME}
+          repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/explorer`}
+        />
+        <ToastProvider>
+          <NetworkContextProvider>
+            <RouterProvider navigate={router.push}>
+              <MediaContextProvider>
+                <QueryContextProvider>
+                  <SearchContextProvider>
+                    <ReactComponent {...pageProps} />
+                  </SearchContextProvider>
+                </QueryContextProvider>
+              </MediaContextProvider>
+            </RouterProvider>
+          </NetworkContextProvider>
+          <Analytics />
+        </ToastProvider>
+      </ErrorBoundary>
     </>
   );
 }

@@ -147,6 +147,7 @@ const NetworkContextProvider = (props: {
     client?.stop();
     addNetworkFailToast({
       body: `There is an issue with ${activeNetwork!.graphUrl}`,
+      network: activeNetwork!,
     });
   };
 
