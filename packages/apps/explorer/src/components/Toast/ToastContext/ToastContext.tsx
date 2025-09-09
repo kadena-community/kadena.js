@@ -18,10 +18,9 @@ export interface IToast {
   actionIcon?: ReactElement;
   actionLabel?: string;
   onlyOne?: boolean; //if this value is set, there can only be 1 error with this value. all next ones will be ignored
-  network?: INetwork;
 }
 
-export type INetworkToast = Pick<IToast, 'body' | 'network'>;
+export type INetworkToast = Pick<IToast, 'body'> & { network: INetwork };
 
 interface IToastContext {
   toasts: IToast[];
@@ -46,26 +45,6 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
     if (toast.onlyOne) {
       setToasts([{ ...toast, body, id: createId() }]);
       return;
-    }
-
-    if (toast.type === 'negative') {
-      const sentryContent = {
-        mechanism: {
-          handled: true,
-          data: { message: body },
-          type: 'graphQL-error',
-        },
-        captureContext: {
-          level: 'error' as const,
-          extra: {
-            network: toast.network,
-          },
-        },
-      };
-
-      console.log(toast.label, sentryContent);
-
-      Sentry.captureException(toast.label, sentryContent);
     }
 
     setToasts((prevToasts) => {
@@ -95,6 +74,22 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
         window.location.reload();
       },
     };
+
+    const sentryContent = {
+      mechanism: {
+        handled: true,
+        data: { message: newToast.body! },
+        type: 'network-error',
+      },
+      captureContext: {
+        level: 'error' as const,
+        extra: {
+          network: toast.network,
+        },
+      },
+    };
+
+    Sentry.captureException(newToast.label, sentryContent);
 
     //there can only be 1 error like this.
     addToast(newToast);

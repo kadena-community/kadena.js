@@ -25,6 +25,9 @@ const GlobalError = ({ error }: any) => {
 
   useEffect(() => {
     Sentry.captureException(error, {
+      mechanism: {
+        handled: false,
+      },
       captureContext: {
         extra: {
           network: activeNetwork,

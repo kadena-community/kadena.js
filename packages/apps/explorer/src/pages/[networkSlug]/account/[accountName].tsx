@@ -1,5 +1,5 @@
 import type { AccountQuery } from '@/__generated__/sdk';
-import { useAccountQuery } from '@/__generated__/sdk';
+import { AccountDocument } from '@/__generated__/sdk';
 import { AccountAside } from '@/components/AccountAside/AccountAside';
 import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { AccountTransactionsTable } from '@/components/AccountTransactionsTable/AccountTransactionsTable';
@@ -13,11 +13,10 @@ import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
-import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { useRouter } from '@/hooks/router';
 import {
   Badge,
@@ -49,12 +48,16 @@ const Account: FC = () => {
     accountName,
   };
 
-  const { addToast } = useToast();
-  const { activeNetwork } = useNetwork();
-  const { loading, data, error } = useAccountQuery({
-    variables: accountQueryVariables,
-    skip: !router.query.accountName,
-  });
+  const { loading, data, error } = useGraphQuery(
+    AccountDocument,
+    {
+      variables: accountQueryVariables,
+      skip: !router.query.accountName,
+    },
+    {
+      errorLabel: 'Loading of account failed',
+    },
+  );
 
   useEffect(() => {
     if (loading) {
@@ -63,11 +66,8 @@ const Account: FC = () => {
     }
 
     if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Loading of account failed',
-        network: activeNetwork,
-      });
+      setIsLoading(false);
+      setInnerData({} as AccountQuery);
     }
 
     if (data) {

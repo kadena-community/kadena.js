@@ -1,6 +1,6 @@
 import type { BlockTransactionsQuery, Transaction } from '@/__generated__/sdk';
-import { useBlockTransactionsQuery } from '@/__generated__/sdk';
-import { useNetwork } from '@/context/networksContext';
+import { BlockTransactionsDocument } from '@/__generated__/sdk';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
 import {
@@ -11,7 +11,6 @@ import {
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { FormatLinkWrapper } from '../CompactTable/FormatLinkWrapper';
-import { useToast } from '../Toast/ToastContext/ToastContext';
 import { loadingData } from './loadingDataBlocktransactionsquery';
 import { noTransactionsTitleClass } from './styles.css';
 
@@ -29,11 +28,15 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
     id,
   });
 
-  const { addToast } = useToast();
-  const { activeNetwork } = useNetwork();
-  const { loading, data, error } = useBlockTransactionsQuery({
-    variables,
-  });
+  const { loading, data, error } = useGraphQuery(
+    BlockTransactionsDocument,
+    {
+      variables,
+    },
+    {
+      errorLabel: 'Loading of block transactions failed',
+    },
+  );
 
   useEffect(() => {
     if (loading) {
@@ -42,11 +45,8 @@ export const BlockTransactions: FC<IProps> = ({ hash }) => {
     }
 
     if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Loading of block transactions failed',
-        network: activeNetwork,
-      });
+      setIsLoading(false);
+      setInnerData({} as BlockTransactionsQuery);
     }
 
     if (data) {

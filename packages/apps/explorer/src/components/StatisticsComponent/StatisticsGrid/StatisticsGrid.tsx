@@ -4,6 +4,7 @@ import { CONSTANTS } from '@/constants/constants';
 import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { networkInfo } from '@/graphql/queries/network-info.graph';
+import { sendSentry } from '@/hooks/graphquery';
 import { formatStatisticsData } from '@/services/format';
 import { Grid, Stack, Text } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -38,9 +39,13 @@ export const StatisticsGrid: FC<IStatisticsGridProps> = ({ inView }) => {
       addToast({
         type: 'negative',
         label: 'Loading of network info data failed',
-        network: activeNetwork,
       });
       stopPolling();
+
+      sendSentry(
+        { errorLabel: 'Loading of network info data failed' },
+        activeNetwork,
+      );
     }
     inView ? startPolling(CONSTANTS.NETWORK_POLLING_RATE) : stopPolling();
   }, [error, inView]);

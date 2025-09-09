@@ -1,11 +1,10 @@
-import { useEventsQuery } from '@/__generated__/sdk';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
-import { useNetwork } from '@/context/networksContext';
+import { EventsDocument } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
 import { useEffect, useState } from 'react';
-import { useEventsPerChainQuery } from '../eventsPerChainQuery';
+import { getEventsDocument } from '../eventsPerChainQuery';
+import { useGraphQuery } from '../graphquery';
 import type { IEventsQueryView } from './utils/getChainsViewData';
 import { getChainsViewData } from './utils/getChainsViewData';
 import { getLoadingData } from './utils/getLoadingData';
@@ -24,8 +23,6 @@ export const useEventData = ({
   selectedChains,
 }: IProps) => {
   const { setIsLoading, isLoading } = useSearch();
-  const { addToast } = useToast();
-  const { activeNetwork } = useNetwork();
   const [innerData, setInnerData] = useState<IEventsQueryView[]>([
     getLoadingData(),
   ]);
@@ -37,22 +34,33 @@ export const useEventData = ({
     maxHeight,
   };
 
-  const { loading, data, error } = useEventsQuery({
-    variables: { ...eventVariables },
-    skip: !eventVariables.qualifiedName || selectedChains.length > 0,
-  });
+  const { loading, data, error } = useGraphQuery(
+    EventsDocument,
+    {
+      variables: { ...eventVariables },
+      skip: !eventVariables.qualifiedName || selectedChains.length > 0,
+    },
+    {
+      errorLabel: 'Loading of events data failed',
+    },
+  );
 
   const {
     loading: chainsLoading,
     data: chainsData,
     error: chainsError,
-  } = useEventsPerChainQuery({
-    variables: {
+  } = useGraphQuery(
+    getEventsDocument({
       ...eventVariables,
       chains: selectedChains,
+    }),
+    {
+      skip: !eventVariables.qualifiedName || selectedChains.length === 0,
     },
-    skip: !eventVariables.qualifiedName || selectedChains.length === 0,
-  });
+    {
+      errorLabel: 'Loading of events per chain data failed',
+    },
+  );
 
   useEffect(() => {
     if (loading || chainsLoading) {
@@ -61,11 +69,8 @@ export const useEventData = ({
     }
 
     if (error || chainsError) {
-      addToast({
-        type: 'negative',
-        label: 'Loading of events data failed',
-        network: activeNetwork,
-      });
+      setIsLoading(false);
+      setInnerData([]);
     }
 
     if (data) {
