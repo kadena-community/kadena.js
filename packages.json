@@ -156,6 +156,12 @@
     "path": "packages/apps/rwa-demo"
   },
   {
+    "name": "@kadena/e2e-overview",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/e2e-overview"
+  },
+  {
     "name": "@kadena/snap",
     "version": "1.0.2",
     "private": false,
