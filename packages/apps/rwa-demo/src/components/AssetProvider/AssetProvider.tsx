@@ -15,6 +15,7 @@ import { useNotifications } from '@/hooks/notifications';
 import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
+import { useUser } from '@/hooks/user';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
   IComplianceRule,
@@ -33,6 +34,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account, checkAccountAssetRoles } = useAccount();
   const { organisation } = useOrganisation();
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const { userToken } = useUser();
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused(asset);
@@ -81,7 +83,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         unlistenAsset();
       }
     };
-  }, [organisation?.id, assetStore]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [organisation?.id, assetStore, userToken?.token]);
 
   const getAsset = async (
     uuid: string,
