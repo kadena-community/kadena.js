@@ -152,7 +152,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
           if (
             !(await adapter.connect({
-              networkId: '',
+              networkId: process.env.NEXT_PUBLIC_NETWORKID || 'mainnet01',
             }))
           ) {
             throw new Error(`${adapterName} connection failed`);

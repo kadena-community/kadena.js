@@ -5,6 +5,7 @@ import type {
 } from '@/providers/AccountProvider/AccountType';
 import type { ChainId } from '@kadena/client';
 import type { IAccountInfo } from '@kadena/wallet-adapter-core';
+import { MAGIC_ADAPTER } from '@kadena/wallet-adapter-magic';
 
 type WalletName = (typeof WALLETTYPES)[keyof typeof WALLETTYPES];
 
@@ -37,7 +38,7 @@ export function mapWalletAdapterAccount(
 const NAMES_MAP = {
   [WALLETTYPES.CHAINWEAVER]: 'Chainweaver',
   [WALLETTYPES.ECKO]: 'Ecko',
-  [WALLETTYPES.MAGIC]: 'Magic',
+  [WALLETTYPES.MAGIC]: MAGIC_ADAPTER,
 } as const satisfies Record<WalletName, string>;
 
 export function getWalletAdapterName(
