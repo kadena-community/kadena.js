@@ -26,3 +26,5 @@ export const ERRORS = {
 
   FAILED_TO_PARSE: 'Failed to parse the transaction',
 };
+
+export const WALLET_CONNECT_ADAPTER = 'WalletConnect';

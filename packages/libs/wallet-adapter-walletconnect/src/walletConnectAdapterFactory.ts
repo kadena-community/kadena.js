@@ -2,6 +2,7 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
+import { WALLET_CONNECT_ADAPTER } from './constants';
 import { detectWalletConnectProvider } from './provider';
 
 export interface IWalletConnectFactoryOptions
@@ -29,7 +30,7 @@ export const createWalletConnectAdapter = ((
   options?: IWalletConnectFactoryOptions,
 ) => {
   return {
-    name: 'WalletConnect',
+    name: WALLET_CONNECT_ADAPTER,
     detect: async () => {
       return await detectWalletConnectProvider({ silent: true });
     },

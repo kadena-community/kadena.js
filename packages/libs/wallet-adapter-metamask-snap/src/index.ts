@@ -1,3 +1,4 @@
+export { SNAP_ADAPTER } from './constants';
 export {
   SnapAdapter,
   createSnapAdapter,

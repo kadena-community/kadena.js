@@ -2,6 +2,7 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
+import { ZELCORE_ADAPTER } from './constants';
 import { detectZelcoreProvider } from './provider';
 
 /**
@@ -23,7 +24,7 @@ import { detectZelcoreProvider } from './provider';
  */
 export const createZelcoreAdapter = ((options?: IBaseWalletFactoryOptions) => {
   return {
-    name: 'Zelcore',
+    name: ZELCORE_ADAPTER,
     detect: async () => {
       return await detectZelcoreProvider({ silent: true });
     },
