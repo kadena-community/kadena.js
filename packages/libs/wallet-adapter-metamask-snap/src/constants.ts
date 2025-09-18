@@ -10,4 +10,5 @@ export const ERRORS = {
   NOT_IMPLEMENTED: "This method hasn't implemented yet",
 };
 
+/** @public */
 export const SNAP_ADAPTER = 'Snap';

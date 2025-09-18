@@ -13,6 +13,9 @@ import type { KdaMethod } from '@kadena/wallet-adapter-core';
 import type { KdaRequestArgs } from '@kadena/wallet-adapter-core';
 import type { StandardSchemaV1 } from '@kadena/wallet-adapter-core';
 
+// @public (undocumented)
+export const CHAINWEAVER_LEGACY_ADAPTER = "ChainweaverLegacy";
+
 // @public
 export class ChainweaverLegacyAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);

@@ -1,3 +1,4 @@
+export { ECKO_ADAPTER } from './constants';
 export {
   EckoAdapter,
   createEckoAdapter,

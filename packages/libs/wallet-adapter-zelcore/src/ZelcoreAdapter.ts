@@ -13,7 +13,7 @@ import type {
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import * as v from 'valibot';
-import { ERRORS } from './constants';
+import { ERRORS, ZELCORE_ADAPTER } from './constants';
 import { checkVerifiedAccount } from './utils';
 
 const connectSchema = v.object({
@@ -34,7 +34,7 @@ const connectSchema = v.object({
  * or minimal no-ops where necessary.
  */
 export class ZelcoreAdapter extends BaseWalletAdapter {
-  public name: string = 'Zelcore';
+  public name: string = ZELCORE_ADAPTER;
   public nonce: number = 0;
   public connectSchema: StandardSchemaV1 = connectSchema;
 
