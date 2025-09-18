@@ -70,7 +70,6 @@ export const WalletSelector: FC<IProps> = ({ trigger }) => {
       )}
 
       <ContextMenu trigger={trigger}>
-        <MagicConnect handleConnect={handleConnect} />
         <EckoWalletConnect handleConnect={handleConnect} />
         <ChainweaverWalletConnect handleConnect={handleConnect} />
       </ContextMenu>
