@@ -196,6 +196,9 @@ export interface ISnapNetwork {
     transactionListUrl: string;
 }
 
+// @public (undocumented)
+export const SNAP_ADAPTER = "Snap";
+
 // @public
 export class SnapAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);

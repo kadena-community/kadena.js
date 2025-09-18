@@ -10,4 +10,7 @@ export const ERRORS = {
   ERROR_SIGNING_TRANSACTION: 'Error signing transaction',
 };
 
+/**
+ * @public
+ */
 export const ZELCORE_ADAPTER = 'Zelcore';

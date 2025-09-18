@@ -26,6 +26,9 @@ export function detectZelcoreProvider(options?: {
     timeout?: number;
 }): Promise<IZelcoreProvider | null>;
 
+// @public (undocumented)
+export const ZELCORE_ADAPTER = "Zelcore";
+
 // @public
 export class ZelcoreAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);

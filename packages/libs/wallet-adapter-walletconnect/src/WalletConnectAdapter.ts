@@ -32,6 +32,11 @@ const projectId = 'b56e18d47c72ab683b10814fe9495694'; // Public API key (localho
 const relayUrl = 'wss://relay.walletconnect.com';
 const defaultNetworkId = 'mainnet01';
 
+/**
+ * @public
+ * WalletConnectAdapter is a class that extends BaseWalletAdapter to provide
+ * functionality for connecting to any wallet supporting WalletConnect.
+ */
 export class WalletConnectAdapter extends BaseWalletAdapter {
   public name: string = WALLET_CONNECT_ADAPTER;
   protected declare provider: IWalletConnectProvider;
