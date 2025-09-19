@@ -1,0 +1,13 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "launchOptions": {
+      "headless": false
+    }
+  },
+  "server": {
+    "port": 8931,
+    "host": "localhost",
+    "verbose": true
+  }
+}
