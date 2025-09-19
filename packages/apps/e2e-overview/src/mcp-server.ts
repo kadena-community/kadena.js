@@ -115,29 +115,60 @@ async function translateToMcpTools(nlCommand: string): Promise<any> {
   return mcpToolCallsSchema.parse(object).tools;
 }
 
+const initializeMcp = async () => {
+  const response = await fetch(`http://localhost:8931/mcp`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json, text/event-stream',
+    },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: Math.floor(Math.random() * 100000),
+      method: 'initialize',
+      params: {
+        protocolVersion: '2025-03-26',
+        capabilities: {
+          roots: {},
+          sampling: {},
+        },
+        clientInfo: {
+          name: 'ExampleClient',
+          version: '1.0.0',
+        },
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to initialize MCP: ${response.statusText}`);
+  }
+  return response.headers.get('mcp-session-id') || '';
+};
+
 // Function to execute a tool call via HTTP JSON-RPC
 async function executeTool(
   tool: string,
   params: any,
   sessionId: string,
 ): Promise<any> {
-  const response = await fetch(
-    `http://localhost:8931/sse?sessionId=${encodeURIComponent(sessionId)}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json, text/event-stream',
-      },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: Math.floor(Math.random() * 100000),
-        method: tool,
-        params,
-      }),
+  console.log({ tool, params });
+  const response = await fetch(`http://localhost:8931/mcp`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json, text/event-stream',
+      'mcp-session-id': sessionId,
     },
-  );
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: Math.floor(Math.random() * 100000),
+      method: tool,
+      params,
+    }),
+  });
 
+  // console.log(222, response);
   // if (tool === 'browser_take_screenshot') {
   //   const result = await response.json();
   //   console.log('Screenshot result:', result);
@@ -148,32 +179,46 @@ async function executeTool(
     throw new Error('Response body is null');
   }
 
-  const reader = response.body.getReader();
-  const chunks: Uint8Array[] = [];
+  try {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
 
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
 
-    // `value` is a Uint8Array (a view of the underlying ArrayBuffer)
-    if (value instanceof Uint8Array) {
-      chunks.push(value);
-    } else {
-      throw new Error('Unexpected chunk type received');
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+
+      // Process all complete lines
+      for (let i = 0; i < lines.length - 1; i++) {
+        const line = lines[i].trim();
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6); // Remove 'data: ' prefix
+          if (data === '[DONE]') {
+            console.log('Stream completed');
+            continue;
+          }
+          try {
+            const json = JSON.parse(data);
+            if (json.error) {
+              console.error('Server error:', json.error);
+            } else {
+              console.log('Result:', json.result);
+              return json;
+            }
+          } catch (e) {
+            console.error('Failed to parse JSON:', e, 'Raw data:', data);
+          }
+        }
+      }
+      // Keep the last (potentially incomplete) line in the buffer
+      buffer = lines[lines.length - 1];
     }
+  } catch (error) {
+    console.error('Failed to parse JSON:', error);
   }
-
-  // Combine all chunks into a single ArrayBuffer
-  const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
-  const result = new Uint8Array(totalLength);
-  let offset = 0;
-  for (const chunk of chunks) {
-    result.set(chunk, offset);
-    offset += chunk.length;
-  }
-
-  // Return the combined buffer as an ArrayBuffer or Uint8Array
-  return result.buffer; // or `return result;` if you want Uint8Array
 }
 
 // API endpoint for NL commands
@@ -191,17 +236,23 @@ app.post('/automate', async (req, res) => {
     }
 
     console.log('Playwright MCP connection initialized');
-    const transport = new SSEServerTransport('/messages', res);
-    await mcpConnection.connect(transport);
+    // const transport = new SSEServerTransport('/messages', res);
+    // await mcpConnection.connect(transport);
 
-    const sessionId = transport.sessionId;
+    // const sessionId = transport.sessionId;
 
     // Translate NL to MCP tools
     const tools = await translateToMcpTools(command);
 
+    const sessionId = await initializeMcp();
+    console.log({ sessionId });
+
     // Execute each tool call using the HTTP JSON-RPC endpoint
     const results = [];
     const resultImages = [];
+    const r = await executeTool('tools/list', {}, sessionId);
+    results.push({ tool: 'tools/list', params: {}, result: r });
+
     for (const toolCall of tools) {
       const { tool, params } = toolCall;
 
@@ -240,6 +291,9 @@ app.post('/automate', async (req, res) => {
 const server = http.createServer(app);
 const PORT = process.env.MCP_SERVER_PORT || 3002;
 server.listen(PORT, async () => {
+  if (!mcpConnection) {
+    await initializeMcpConnection();
+  }
   console.log(`MCP Server running on http://localhost:${PORT}/automate`);
   // Initialize MCP connection on server start
 });
