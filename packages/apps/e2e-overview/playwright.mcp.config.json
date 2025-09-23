@@ -5,6 +5,13 @@
       "headless": false
     }
   },
+  "outputDir": "./results",
+  "saveSession": true,
+  "saveTrace": true,
+  "timeOuts": {
+    "action": 10000,
+    "navigation": 30000
+  },
   "server": {
     "port": 8931,
     "host": "localhost",

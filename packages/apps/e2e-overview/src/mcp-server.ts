@@ -1,10 +1,11 @@
 import { createOpenAI } from '@ai-sdk/openai';
-import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
-import { createConnection } from '@playwright/mcp';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { generateObject, zodSchema } from 'ai';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import fs from 'fs';
 import http from 'http';
 import * as z from 'zod';
 
@@ -36,6 +37,8 @@ const browserTypeParamsSchema = z
   })
   .strict();
 
+const browserTakeScreenshotSchema = z.object({});
+
 const browserSnapshotParamsSchema = z.object({}).strict();
 
 // Define the tool call schema with discriminated union based on 'tool'
@@ -56,6 +59,10 @@ const mcpToolCallSchema = z.discriminatedUnion('tool', [
     tool: z.literal('browser_snapshot'),
     params: browserSnapshotParamsSchema,
   }),
+  z.object({
+    tool: z.literal('browser_take_screenshot'),
+    params: browserTakeScreenshotSchema,
+  }),
 ]);
 
 // The overall schema for the array of tool calls
@@ -69,19 +76,34 @@ const openai = createOpenAI({
 });
 
 // Create a persistent Playwright MCP connection
-let mcpConnection: any = null;
+let client: any = null;
 async function initializeMcpConnection() {
   try {
-    mcpConnection = await createConnection({
-      browser: {
-        browserName: 'chromium',
-        launchOptions: { headless: false },
-      },
-      server: {
-        port: 8931,
-        host: 'localhost',
-      },
+    const config = JSON.parse(
+      fs.readFileSync('./playwright.mcp.config.json', 'utf8'),
+    );
+
+    console.log(config);
+
+    const transport = new StdioClientTransport({
+      command: 'npx',
+      args: [
+        '-y',
+        '@playwright/mcp@latest',
+        '--isolated',
+        '--headless',
+        '--browser=chrome',
+      ],
     });
+    //mcpConnection = await createConnection(config);
+    client = new Client(
+      { name: 'demo', version: '0.1', ...config },
+      { capabilities: {} },
+    );
+    await client.connect(transport);
+    await client.listTools();
+
+    //mcpConnection = await createConnection(config);
   } catch (error) {
     console.error('Failed to initialize MCP connection:', error);
     throw error;
@@ -95,14 +117,26 @@ async function translateToMcpTools(nlCommand: string): Promise<any> {
     Output ONLY a JSON object with a single property "tools", which is an array of objects, each with "tool" and "params" properties.
     Available tools:
     - browser_navigate: { url: string }
-    - browser_click: { element: string, ref: string } (CSS selector or accessibility ref)
-    - browser_type: { element: string, ref: string, text: string }
-    - browser_snapshot: {} (returns accessibility tree)
-    - browser_take_screenshot: {} (Capture accessibility snapshot of the current page, this is better than screenshot)
-    Example output: { "tools": [ { "tool": "browser_navigate", "params": { "url": "https://example.com" } } ] }
-    For actions like browser_click and browser_type, include a placeholder "ref" field (e.g., "placeholder-ref") as it will be resolved later.
+    - browser_click: { element: string, ref: string } (use exact ref from browser_snapshot, e.g., 'e4')
+    - browser_type: { element: string, ref: string, text: string } (use exact ref from browser_snapshot)
+    - browser_snapshot: {} (returns accessibility tree, must be called before browser_click or browser_type)
+    - browser_take_screenshot: {} (captures viewport screenshot)
+    Steps:
+    1. Always include a "browser_snapshot" call after "browser_navigate" or when elements need to be identified.
+    2. For "browser_click" or "browser_type", use the exact "ref" from the snapshot (e.g., 'e4', 'e5') instead of CSS selectors.
+    3. If waiting for dynamic content is needed, include a "browser_wait_for" call with appropriate text or timeout.
+    4. Include a final "browser_take_screenshot" to capture the end state.
+    Example output:
+    {
+      "tools": [
+        { "tool": "browser_navigate", "params": { "url": "https://example.com" } },
+        { "tool": "browser_snapshot", "params": {} },
+        { "tool": "browser_click", "params": { "element": "Login button", "ref": "e4" } },
+        { "tool": "browser_take_screenshot", "params": {} }
+      ]
+    }
     Command: ${nlCommand}
-  `;
+      `;
 
   const { object } = await generateObject({
     model: openai('gpt-4o'),
@@ -115,37 +149,6 @@ async function translateToMcpTools(nlCommand: string): Promise<any> {
   return mcpToolCallsSchema.parse(object).tools;
 }
 
-const initializeMcp = async () => {
-  const response = await fetch(`http://localhost:8931/mcp`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json, text/event-stream',
-    },
-    body: JSON.stringify({
-      jsonrpc: '2.0',
-      id: Math.floor(Math.random() * 100000),
-      method: 'initialize',
-      params: {
-        protocolVersion: '2025-03-26',
-        capabilities: {
-          roots: {},
-          sampling: {},
-        },
-        clientInfo: {
-          name: 'ExampleClient',
-          version: '1.0.0',
-        },
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to initialize MCP: ${response.statusText}`);
-  }
-  return response.headers.get('mcp-session-id') || '';
-};
-
 // Function to execute a tool call via HTTP JSON-RPC
 async function executeTool(
   tool: string,
@@ -153,72 +156,14 @@ async function executeTool(
   sessionId: string,
 ): Promise<any> {
   console.log({ tool, params });
-  const response = await fetch(`http://localhost:8931/mcp`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json, text/event-stream',
-      'mcp-session-id': sessionId,
-    },
-    body: JSON.stringify({
-      jsonrpc: '2.0',
-      id: Math.floor(Math.random() * 100000),
-      method: tool,
-      params,
-    }),
+
+  const r = await client.callTool({
+    name: tool,
+    arguments: params,
   });
 
-  // console.log(222, response);
-  // if (tool === 'browser_take_screenshot') {
-  //   const result = await response.json();
-  //   console.log('Screenshot result:', result);
-  //   return result;
-  // }
-
-  if (!response.body) {
-    throw new Error('Response body is null');
-  }
-
-  try {
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder('utf-8');
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-
-      // Process all complete lines
-      for (let i = 0; i < lines.length - 1; i++) {
-        const line = lines[i].trim();
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6); // Remove 'data: ' prefix
-          if (data === '[DONE]') {
-            console.log('Stream completed');
-            continue;
-          }
-          try {
-            const json = JSON.parse(data);
-            if (json.error) {
-              console.error('Server error:', json.error);
-            } else {
-              console.log('Result:', json.result);
-              return json;
-            }
-          } catch (e) {
-            console.error('Failed to parse JSON:', e, 'Raw data:', data);
-          }
-        }
-      }
-      // Keep the last (potentially incomplete) line in the buffer
-      buffer = lines[lines.length - 1];
-    }
-  } catch (error) {
-    console.error('Failed to parse JSON:', error);
-  }
+  console.log(r.content);
+  return r;
 }
 
 // API endpoint for NL commands
@@ -231,55 +176,33 @@ app.post('/automate', async (req, res) => {
 
   try {
     // Ensure MCP connection is initialized
-    if (!mcpConnection) {
+    if (!client) {
       await initializeMcpConnection();
     }
 
     console.log('Playwright MCP connection initialized');
-    // const transport = new SSEServerTransport('/messages', res);
-    // await mcpConnection.connect(transport);
-
-    // const sessionId = transport.sessionId;
 
     // Translate NL to MCP tools
     const tools = await translateToMcpTools(command);
 
-    const sessionId = await initializeMcp();
-    console.log({ sessionId });
+    const sessionId = 'demo-session'; // Placeholder, replace with actual session ID if needed
 
     // Execute each tool call using the HTTP JSON-RPC endpoint
     const results = [];
-    const resultImages = [];
-    const r = await executeTool('tools/list', {}, sessionId);
-    results.push({ tool: 'tools/list', params: {}, result: r });
 
     for (const toolCall of tools) {
       const { tool, params } = toolCall;
 
-      //try {
       const result = await executeTool(tool, params, sessionId);
       results.push({ tool, params, result });
-
-      const resultImage = await executeTool(
-        'browser_take_screenshot',
-        {
-          raw: false,
-          fullPage: true,
-        },
-        sessionId,
-      );
-
-      resultImages.push({ tool, params, result: resultImage });
-      // } catch (error) {
-      //   console.error(`Error executing tool ${tool}:`, error);
-      //   results.push({ tool, params, error: (error as Error).message });
-      // }
     }
+
+    const result = await executeTool('browser_close', {}, sessionId);
+    results.push({ tool: 'browser_close', params: {}, result });
 
     res.json({
       success: true,
       results,
-      resultImages,
     });
   } catch (error) {
     console.error('Error in /automate:', error);
@@ -291,7 +214,7 @@ app.post('/automate', async (req, res) => {
 const server = http.createServer(app);
 const PORT = process.env.MCP_SERVER_PORT || 3002;
 server.listen(PORT, async () => {
-  if (!mcpConnection) {
+  if (!client) {
     await initializeMcpConnection();
   }
   console.log(`MCP Server running on http://localhost:${PORT}/automate`);
@@ -301,8 +224,8 @@ server.listen(PORT, async () => {
 // Graceful shutdown
 process.on('SIGTERM', async () => {
   console.log('Shutting down MCP server...');
-  if (mcpConnection) {
-    await mcpConnection.close();
+  if (client) {
+    await client.close();
   }
   server.close(() => {
     console.log('Server closed');
