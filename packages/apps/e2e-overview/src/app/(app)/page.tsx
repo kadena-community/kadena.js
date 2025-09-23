@@ -1,19 +1,20 @@
 'use client';
 import { useChat } from '@ai-sdk/react';
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 const Home = () => {
+  const [response, setResponse] = useState('');
   const handleSend = async () => {
-    const res = await fetch('http://localhost:3002/automate', {
+    const res = await fetch('/api/chat', {
       method: 'POST',
       body: JSON.stringify({
-        command:
-          'navigate to preview.wallet.kadena.io. Wait for 10 seconds till the loading state is gone and the warning is visible, click the warning away and accept cookies. and create a profile.',
+        prompt: 'navigate to preview.wallet.kadena.io.',
       }),
       headers: { 'Content-Type': 'application/json' },
     }).then((res) => res.json());
 
-    console.log(res);
+    setResponse(res);
   };
 
   return (
@@ -21,6 +22,9 @@ const Home = () => {
       <button type="button" onClick={handleSend}>
         send2
       </button>
+
+      <h2>Response</h2>
+      {response}
     </div>
   );
 };

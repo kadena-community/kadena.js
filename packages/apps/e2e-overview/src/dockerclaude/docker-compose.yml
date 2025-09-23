@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    image: mcr.microsoft.com/playwright/mcp:latest # Official image for headless browser automation
+    # Grant permissions (customize as needed: geolocation, clipboard-read/write, etc.)
+    command: >
+      npx @playwright/mcp@latest
+      --grant-permissions=geolocation,clipboard-read,clipboard-write
+      --allowed-origins=*  # Allow all origins; restrict for security (e.g.,
+      --allowed-origins=https://example.com)
+      --blocked-origins=example-blocked.com --port=3100 --headless  # Run
+      headless for server mode
+    ports:
+      - '3100:3100' # Expose MCP server port
+    environment:
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright # For browser binaries
+    volumes:
+      - /tmp:/tmp # For persistent profiles if needed
+
+  claude-cli:
+    build: . # Builds from your Dockerfile
+    depends_on:
+      - mcp-server
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY} # Pass your API key
+      - MCP_SERVERS_PLAYWRIGHT_COMMAND=docker # Configure MCP to use Docker for server
+      - MCP_SERVERS_PLAYWRIGHT_ARGS=run,-i,--rm,--init,--pull=always,mcr.microsoft.com/playwright/mcp # Spawn MCP via Docker if needed
+    volumes:
+      - .:/app # Mount your project dir for codebase access
+    command: >
+      bash -c "
+        claude mcp add playwright 'npx @playwright/mcp@latest
+      --grant-permissions=geolocation,clipboard-read --port=3100 --headless' &&
+        claude --output-format json 'Your prompt here, e.g., Analyze this code
+      and browse example.com using browser tools' "
