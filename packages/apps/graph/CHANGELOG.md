@@ -1,5 +1,15 @@
 # @kadena/graph
 
+## 2.2.5
+
+### Patch Changes
+
+- Updated dependencies \[c967a57]
+  - @kadena/pactjs\@0.5.0
+  - @kadena/chainweb-node-client\@0.9.2
+  - @kadena/client\@1.18.1
+  - @kadena/client-utils\@0.13.2
+
 ## 2.2.4
 
 ### Patch Changes

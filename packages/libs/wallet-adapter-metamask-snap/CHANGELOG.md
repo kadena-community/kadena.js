@@ -1,5 +1,13 @@
 # @kadena/wallet-adapter-metamask-snap
 
+## 0.1.2
+
+### Patch Changes
+
+- 24ed24c: Added constant export for adapter name matching
+  - @kadena/client\@1.18.1
+  - @kadena/wallet-adapter-core\@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes

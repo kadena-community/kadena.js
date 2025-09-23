@@ -1,5 +1,21 @@
 # wallet-adapter-react-example
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies \[24ed24c]
+  - @kadena/wallet-adapter-chainweaver-legacy\@0.0.4
+  - @kadena/wallet-adapter-metamask-snap\@0.1.2
+  - @kadena/wallet-adapter-walletconnect\@0.1.1
+  - @kadena/wallet-adapter-chainweaver\@0.0.4
+  - @kadena/wallet-adapter-zelcore\@0.0.4
+  - @kadena/wallet-adapter-ecko\@0.0.4
+  - @kadena/client\@1.18.1
+  - @kadena/wallet-adapter-core\@0.1.1
+  - @kadena/wallet-adapter-magic\@0.0.5
+  - @kadena/wallet-adapter-react\@0.0.5
+
 ## 0.0.7
 
 ### Patch Changes
