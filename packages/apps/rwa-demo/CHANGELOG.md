@@ -1,5 +1,21 @@
 # @kadena/rwa-demo
 
+## 2.1.2
+
+### Patch Changes
+
+- Updated dependencies \[c967a57]
+- Updated dependencies \[24ed24c]
+  - @kadena/pactjs\@0.5.0
+  - @kadena/wallet-adapter-chainweaver\@0.0.4
+  - @kadena/wallet-adapter-ecko\@0.0.4
+  - @kadena/graph\@2.2.5
+  - @kadena/client\@1.18.1
+  - @kadena/client-utils\@0.13.2
+  - @kadena/wallet-adapter-core\@0.1.1
+  - @kadena/wallet-adapter-magic\@0.0.5
+  - @kadena/wallet-adapter-react\@0.0.5
+
 ## 2.1.1
 
 ### Patch Changes
