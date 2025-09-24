@@ -7,6 +7,9 @@ Github Config & Actions:
 '@kadena/bootstrap-lib':
   - changed-files:
       - any-glob-to-any-file: packages/libs/bootstrap-lib/*
+'@kadena/chainweb-evm':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/chainweb-evm/*
 '@kadena/chainweb-node-client':
   - changed-files:
       - any-glob-to-any-file: packages/libs/chainweb-node-client/*
