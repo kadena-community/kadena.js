@@ -1,5 +1,12 @@
 # @kadena/proof-of-us
 
+## 0.5.27
+
+### Patch Changes
+
+- @kadena/graph\@2.2.6
+- @kadena/client\@1.18.2
+
 ## 0.5.26
 
 ### Patch Changes
