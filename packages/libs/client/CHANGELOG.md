@@ -1,5 +1,12 @@
 # Change Log - @kadena/client
 
+## 1.18.2
+
+### Patch Changes
+
+- Updated dependencies \[c21ada4]
+  - @kadena/chainweb-node-client\@0.9.4
+
 ## 1.18.1
 
 ### Patch Changes
