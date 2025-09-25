@@ -2,15 +2,6 @@ name: 'Runner setup'
 runs:
   using: 'composite'
   steps:
-      # TODO: verify usage of github actions cache instead of TurboRepo remote caching
-      # - name: Cache turbo build setup
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: .turbo
-      #     key: ${{ runner.os }}-turbo-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-turbo-
-
       - uses: pnpm/action-setup@v3
         with:
           version: 9

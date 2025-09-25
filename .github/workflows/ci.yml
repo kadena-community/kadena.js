@@ -62,11 +62,8 @@ jobs:
       - name: Setup Kadena sandbox
         uses: ./.github/actions/sandbox
 
-      # TODO: re-enable
-      # temporarily skip integration test as it'll fail due to race condition
-      # with package @kadena/chainweb-node-client having incorrect version indicators
-      # - name: run integration tests
-      #   run: pnpm run test:integration --filter ${{ matrix.package }}
+      - name: run integration tests
+        run: pnpm run test:integration --filter ${{ matrix.package }}
 
   end-to-end-tests:
     name: E2E - ${{ matrix.app }}
