@@ -32,6 +32,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "@types/d3": "^7.4.3",
     "@types/node": "^20.12.7",
     "@types/react": "^19.1.1",
