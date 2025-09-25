@@ -23,6 +23,7 @@
     },
     "test:e2e": {
       "inputs": ["tests/**/*.ts", "tests/**/*.tsx"],
+      "outputs": ["blob-report/**"],
       "outputLogs": "new-only"
     },
     "lint": {
