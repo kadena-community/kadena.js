@@ -47,10 +47,12 @@ describe('tx add', () => {
     });
   });
   it('Prompts values and writes the transaction file', async () => {
-    const transaction = await createAndWriteTransaction({}, null, template);
-    assertCommandError(transaction);
+    const result = await createAndWriteTransaction({}, null, template);
+    assertCommandError(result);
 
-    const cmd = JSON.parse(transaction.data.transaction.cmd);
+    const { transaction, filePath } = result.data[0];
+
+    const cmd = JSON.parse(transaction.cmd);
 
     expect(cmd.verifiers[0]).toEqual({
       name: 'allow',
@@ -59,7 +61,7 @@ describe('tx add', () => {
     });
 
     const signed = await signTransactionFileWithKeyPairAction({
-      files: [transaction.data.filePath],
+      files: [filePath],
       keyPairs: [{ publicKey, secretKey }],
     });
     assertCommandError(signed);
