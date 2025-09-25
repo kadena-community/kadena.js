@@ -9,7 +9,6 @@ export type ChainwebHostGenerator = (options: {
 export const chainwebHostMap: Record<string, string | string[]> = {
   mainnet01: 'https://api.chainweb.com',
   testnet04: 'https://api.testnet.chainweb.com',
-  testnet05: 'https://api.testnet.chainweb.com',
 };
 
 export const getChainIdByNetwork = (networkId: string): ChainId => {
