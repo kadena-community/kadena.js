@@ -1,8 +1,8 @@
 {
-  "name": "@kadena/chainweb-evm",
+  "name": "@kadena/chainweb-evm-dashboard",
   "version": "0.0.1",
   "private": true,
-  "description": "Kadena Chainweb EVM",
+  "description": "Kadena Chainweb EVM Dashboard",
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",

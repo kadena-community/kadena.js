@@ -58,7 +58,7 @@ export default function RootLayout({
         <Version
           sha={process.env.NEXT_PUBLIC_COMMIT_SHA}
           SSRTime={process.env.NEXT_PUBLIC_BUILD_TIME}
-          repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/chainweb-evm`}
+          repo={`https://github.com/kadena-community/kadena.js/tree/${process.env.NEXT_PUBLIC_COMMIT_SHA || 'main'}/packages/apps/chainweb-evm-dashboard`}
         />
         <Nav />
         <Providers>

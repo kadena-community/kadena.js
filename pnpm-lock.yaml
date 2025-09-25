@@ -397,7 +397,7 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@22.9.1)(@vitest/ui@1.6.0)(happy-dom@12.10.3)(jsdom@26.1.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(lightningcss@1.25.1)(terser@5.31.1)
 
-  packages/apps/chainweb-evm:
+  packages/apps/chainweb-evm-dashboard:
     dependencies:
       '@kadena/kode-icons':
         specifier: workspace:*
