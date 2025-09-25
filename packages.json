@@ -18,6 +18,12 @@
     "path": "packages/apps/chainweaver-wallet-connect-plugin"
   },
   {
+    "name": "@kadena/chainweb-evm-dashboard",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/apps/chainweb-evm-dashboard"
+  },
+  {
     "name": "@kadena/chainweb-node-client",
     "version": "0.9.4",
     "private": false,
