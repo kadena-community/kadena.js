@@ -11,6 +11,9 @@ const localConfig = defineConfig({
         branches: 87.5,
         statements: 86.31,
       },
+      exclude: [
+        '**/types.ts',
+      ],
     },
   },
 });
