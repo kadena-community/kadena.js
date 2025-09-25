@@ -1,16 +1,19 @@
 FROM node:18-alpine
 
 # Install dependencies
-RUN apk add --no-cache git bash
+RUN apk add --no-cache git curl bash apt-get
 
-# Install Claude Code globally
-RUN npm install -g @anthropic-ai/claude-code
+# Install Claude CLI
+RUN npm install -g @anthropic-ai/claude-code@latest
+
+# Install Playwright browsers
+RUN npx playwright install --with-deps
+
+# Copy Claude configuration
+COPY claude-config.json /.claude/settings.json
 
 # Set working directory
 WORKDIR /app
 
-# Expose any necessary ports if needed (e.g., for MCP server communication)
-EXPOSE 3100
-
-# Default command (can be overridden)
-CMD ["claude", "--help"]
+# Default command
+# CMD bash -c "claude --output-format json '${CLAUDE_PROMPT:-Navigate to https://straatemans.nl and get the main content}'"

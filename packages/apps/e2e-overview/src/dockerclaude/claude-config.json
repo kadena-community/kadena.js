@@ -1,0 +1,12 @@
+{
+  "mcp_servers": {
+    "playwright": {
+      "command": "npx @playwright/mcp@latest --port=3000 --headless",
+      "url": "http://mcp-server:3000"
+    }
+  },
+  "theme": "dark",
+  "permissions": {
+    "allow": ["ExitPlanMode", "WebFetch(*)"]
+  }
+}

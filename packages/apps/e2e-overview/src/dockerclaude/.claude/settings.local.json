@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:straatemans.nl)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

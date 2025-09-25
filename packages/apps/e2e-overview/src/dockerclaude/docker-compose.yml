@@ -1,36 +1,40 @@
-version: '3.8'
-
 services:
   mcp-server:
-    image: mcr.microsoft.com/playwright/mcp:latest # Official image for headless browser automation
-    # Grant permissions (customize as needed: geolocation, clipboard-read/write, etc.)
+    image: mcr.microsoft.com/playwright/mcp:latest
     command: >
-      npx @playwright/mcp@latest
-      --grant-permissions=geolocation,clipboard-read,clipboard-write
-      --allowed-origins=*  # Allow all origins; restrict for security (e.g.,
-      --allowed-origins=https://example.com)
-      --blocked-origins=example-blocked.com --port=3100 --headless  # Run
-      headless for server mode
+      --config /.claude/settings.json
     ports:
-      - '3100:3100' # Expose MCP server port
+      - '3000:3000'
     environment:
-      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright # For browser binaries
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    networks:
+      - claude-network
     volumes:
-      - /tmp:/tmp # For persistent profiles if needed
+      - ./claude-config.json:/.claude/settings.json
 
   claude-cli:
-    build: . # Builds from your Dockerfile
+    build: .
     depends_on:
       - mcp-server
     environment:
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY} # Pass your API key
-      - MCP_SERVERS_PLAYWRIGHT_COMMAND=docker # Configure MCP to use Docker for server
-      - MCP_SERVERS_PLAYWRIGHT_ARGS=run,-i,--rm,--init,--pull=always,mcr.microsoft.com/playwright/mcp # Spawn MCP via Docker if needed
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - ANTHROPIC_CONFIG_FILE=/.claude/settings.json
+      - MCP_SERVER_URL=http://mcp-server:3000
     volumes:
-      - .:/app # Mount your project dir for codebase access
+      - .:/app
+      - ./claude-config.json:/.claude/settings.json
+    networks:
+      - claude-network
+    stdin_open: true
+    tty: true
     command: >
       bash -c "
-        claude mcp add playwright 'npx @playwright/mcp@latest
-      --grant-permissions=geolocation,clipboard-read --port=3100 --headless' &&
-        claude --output-format json 'Your prompt here, e.g., Analyze this code
-      and browse example.com using browser tools' "
+       claude -p 'Navigate to straatemans.nl and take a screenshot of the
+      homepage.'
+      --output-format json --permission-mode plan --allowedTools
+      'mcp__playwright__browser_snapshot, mcp__playwright__browser_navigate,
+      mcp__playwright__browser_take_screenshot'"
+networks:
+  claude-network:
+    driver: bridge
