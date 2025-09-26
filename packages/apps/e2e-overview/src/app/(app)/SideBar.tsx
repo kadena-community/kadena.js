@@ -1,3 +1,4 @@
+import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
 import { MonoApps } from '@kadena/kode-icons';
 import {
   SideBarItem,
@@ -31,7 +32,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
         </>
       }
       appContext={<></>}
-      context={<></>}
+      context={<SidebarSideContext />}
     ></SideBarLayout>
   );
 };
