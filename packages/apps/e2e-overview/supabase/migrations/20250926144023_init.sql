@@ -1,3 +1,11 @@
+create table public.apps (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+
 create table public.profiles (
   id uuid not null references auth.users on delete cascade,
   email TEXT NOT NULL,
@@ -29,3 +37,9 @@ CREATE TRIGGER on_auth_user_created
 AFTER INSERT ON auth.users
 FOR EACH ROW
 EXECUTE FUNCTION public.handle_new_user();
+
+insert into public.apps
+  (name)
+values
+  ('preview.wallet.kadena.io')
+  ON CONFLICT DO NOTHING; -- Avoid duplicates

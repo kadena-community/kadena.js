@@ -1,30 +1,13 @@
 'use client';
-import { useChat } from '@ai-sdk/react';
-import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { useUser } from '@/hooks/user';
 
 const Home = () => {
-  const [response, setResponse] = useState('');
-  const handleSend = async () => {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      body: JSON.stringify({
-        prompt: 'navigate to preview.wallet.kadena.io.',
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    }).then((res) => res.json());
-
-    setResponse(res);
-  };
+  const { userData } = useUser();
 
   return (
     <div>
-      <button type="button" onClick={handleSend}>
-        send2
-      </button>
-
       <h2>Response</h2>
-      {response}
+      <pre>{JSON.stringify(userData, null, 2)}</pre>
     </div>
   );
 };
