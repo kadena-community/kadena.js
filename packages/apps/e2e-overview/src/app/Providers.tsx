@@ -1,3 +1,4 @@
+import { UserProvider } from '@/providers/UserProvider/UserProvider';
 import { MediaContextProvider } from '@kadena/kode-ui';
 import { SideBarLayoutProvider } from '@kadena/kode-ui/patterns';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
@@ -16,7 +17,9 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         enableSystem={true}
         enableColorScheme={true} // When enabled, we can't make the background of the embedded iframe transparent
       >
-        <SideBarLayoutProvider>{children}</SideBarLayoutProvider>
+        <UserProvider>
+          <SideBarLayoutProvider>{children}</SideBarLayoutProvider>
+        </UserProvider>
       </ThemeProvider>
     </MediaContextProvider>
   );
