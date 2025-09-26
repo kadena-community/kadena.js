@@ -46,7 +46,7 @@ export const SidebarSideContext: FC = () => {
                     variant={isExpanded ? 'outlined' : 'transparent'}
                   >
                     {isExpanded ? (
-                      shortenString(user?.email ?? '')
+                      shortenString(user?.user_metadata.full_name)
                     ) : (
                       <MonoAccountBox />
                     )}

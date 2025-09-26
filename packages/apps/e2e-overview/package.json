@@ -76,6 +76,7 @@
     "express": "^5.1.0",
     "prettier": "~3.2.5",
     "prisma": "^5.16.1",
+    "supabase": "^2.45.5",
     "ts-node": "~10.9.2",
     "typescript": "5.4.5",
     "vitest": "^1.6.0",
