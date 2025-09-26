@@ -1,4 +1,5 @@
 'use client';
+import { AllApps } from '@/components/AllApps/AllApps';
 import { useUser } from '@/hooks/user';
 
 const Home = () => {
@@ -8,6 +9,8 @@ const Home = () => {
     <div>
       <h2>Response</h2>
       <pre>{JSON.stringify(userData, null, 2)}</pre>
+
+      <AllApps />
     </div>
   );
 };

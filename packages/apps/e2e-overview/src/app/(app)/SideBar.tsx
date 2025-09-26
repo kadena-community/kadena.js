@@ -1,3 +1,4 @@
+'use client';
 import { SidebarSideContext } from '@/components/SidebarSideContext/SidebarSideContext';
 import { MonoApps } from '@kadena/kode-icons';
 import {
