@@ -742,7 +742,7 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
       react-hook-form:
-        specifier: ^7.45.4
+        specifier: ^7.52.1
         version: 7.52.1(react@19.1.1)
       react-markdown:
         specifier: ^10.1.0

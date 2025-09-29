@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/nextjs';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const EVENT_NAMES = {
-  'error:submitChain': 'error:submitChain',
+  'error:update:app': 'error:update:app',
 } as const;
 
 interface CaptureContext {
@@ -13,7 +13,7 @@ interface CaptureContext {
 interface SentryData {
   label?: any;
   handled?: boolean;
-  type: 'error';
+  type: 'error' | 'db-error';
   data?: Record<string, any>;
   captureContext?: CaptureContext;
 }
@@ -29,7 +29,7 @@ interface IOptionsPageViewType {
   send_to?: string;
 }
 
-export type IAnalyticsEventType = 'test';
+export type IAnalyticsEventType = keyof typeof EVENT_NAMES;
 
 export const analyticsEvent = (
   name: IAnalyticsEventType,

@@ -54,7 +54,7 @@
     "playwright": "^1.55.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-hook-form": "^7.45.4",
+    "react-hook-form": "^7.52.1",
     "react-markdown": "^10.1.0",
     "types": "link:@modelcontextprotocol/sdk/types",
     "zod": "^4.1.8"

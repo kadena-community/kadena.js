@@ -55,7 +55,6 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
     setUser(undefined);
   }, []);
 
-  console.log({ user });
   return (
     <UserContext.Provider
       value={{
