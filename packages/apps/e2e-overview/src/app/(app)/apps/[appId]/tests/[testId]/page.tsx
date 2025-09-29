@@ -1,6 +1,6 @@
 'use client';
 
-import { TestForm } from '@/components/TestForm/TestForm';
+import { TestVersionForm } from '@/components/TestForm/TestVersionForm';
 import { use } from 'react';
 
 const Home = ({
@@ -12,7 +12,7 @@ const Home = ({
 
   return (
     <>
-      <TestForm appId={appId} testId={testId} />
+      <TestVersionForm appId={appId} testId={testId} />
     </>
   );
 };

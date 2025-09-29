@@ -1,5 +1,9 @@
 import { useEditAppTestVersion } from '@/hooks/editAppTestVersion';
-import type { AppTest, InsertAppTest } from '@/hooks/getAllAppTests';
+import type {
+  AppTestVersion,
+  InsertAppTestVersion,
+} from '@/hooks/getAllAppTestVersions';
+
 import { useAppTest } from '@/hooks/getAppTest';
 import { Button, Text, TextareaField } from '@kadena/kode-ui';
 import type { FC } from 'react';
@@ -9,10 +13,10 @@ import { Controller, useForm } from 'react-hook-form';
 interface IProps {
   appId: string;
   testId: string;
-  onSuccess?: (data: AppTest) => void;
+  onSuccess?: (data: AppTestVersion) => void;
 }
 
-export const TestForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
+export const TestVersionForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
   const {
     mutate,
     isPending,
@@ -25,7 +29,7 @@ export const TestForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
     control,
     handleSubmit,
     formState: { isValid, errors },
-  } = useForm<InsertAppTest>({
+  } = useForm<InsertAppTestVersion>({
     values: {
       app_id: appId !== 'new' ? appId : undefined,
       script: data?.script || '',
@@ -33,7 +37,7 @@ export const TestForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
     },
   });
 
-  const onSubmit = async (updateData: InsertAppTest) => {
+  const onSubmit = async (updateData: InsertAppTestVersion) => {
     await mutate(updateData);
   };
 
@@ -63,6 +67,7 @@ export const TestForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
         render={({ field }) => (
           <TextareaField
             id="script"
+            isDisabled={data?.id}
             isInvalid={!!errors.script?.message}
             errorMessage={`${errors.script?.message}`}
             label="Tests"
