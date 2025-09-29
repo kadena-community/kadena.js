@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_test_versions: {
+        Row: {
+          app_id: string | null
+          created_at: string
+          id: string
+          isactive: boolean
+          script: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          app_id?: string | null
+          created_at?: string
+          id?: string
+          isactive?: boolean
+          script: string
+          updated_at?: string
+          version: number
+        }
+        Update: {
+          app_id?: string | null
+          created_at?: string
+          id?: string
+          isactive?: boolean
+          script?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_test_versions_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       apps: {
         Row: {
           created_at: string
@@ -67,7 +105,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      activate_app_version: {
+        Args: { p_app_id: string; p_test_id: string }
+        Returns: undefined
+      }
+      insert_app_test_version: {
+        Args: { app_id_input: string; script_input: string }
+        Returns: {
+          app_id: string
+          created_at: string
+          id: string
+          script: string
+          updated_at: string
+          version: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

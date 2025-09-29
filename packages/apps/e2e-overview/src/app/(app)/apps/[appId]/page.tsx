@@ -1,5 +1,6 @@
 'use client';
 
+import { AllAppTestVersions } from '@/components/AllAppTestVersions/AllAppTestVersions';
 import type { UpdateApp } from '@/hooks/getAllApps';
 import { useApp } from '@/hooks/getApp';
 import { useUpdateApp } from '@/hooks/updateApp';
@@ -9,8 +10,8 @@ import { Controller, useForm } from 'react-hook-form';
 
 const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
   const { appId } = use(params);
-  const { data, isLoading } = useApp(appId);
-  const { mutate, isPending, isError, error: mutationError } = useUpdateApp();
+  const { data } = useApp(appId);
+  const { mutate, isPending } = useUpdateApp();
 
   const {
     control,
@@ -27,11 +28,8 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
     await mutate(updateData);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-
   return (
     <>
-      <Heading>{data?.name}</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="name"
@@ -57,6 +55,9 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
           Edit
         </Button>
       </form>
+
+      <Heading as="h2">Tests</Heading>
+      <AllAppTestVersions appId={appId} />
     </>
   );
 };

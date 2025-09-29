@@ -38,8 +38,3 @@ AFTER INSERT ON auth.users
 FOR EACH ROW
 EXECUTE FUNCTION public.handle_new_user();
 
-insert into public.apps
-  (name)
-values
-  ('preview.wallet.kadena.io')
-  ON CONFLICT DO NOTHING; -- Avoid duplicates

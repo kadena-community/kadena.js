@@ -4,6 +4,9 @@ import * as Sentry from '@sentry/nextjs';
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const EVENT_NAMES = {
   'error:update:app': 'error:update:app',
+  'error:insert:app_test_version': 'error:insert:app_test_version',
+  'error:update:app_test_version': 'error:update:app_test_version',
+  'error:activate:app_test_version': 'error:activate:app_test_version',
 } as const;
 
 interface CaptureContext {
