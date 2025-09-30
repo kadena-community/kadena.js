@@ -1,6 +1,7 @@
 'use client';
 
 import { TestVersionForm } from '@/components/TestForm/TestVersionForm';
+import { TestRuns } from '@/components/TestRuns/TestRuns';
 import type { AppTestVersion } from '@/hooks/getAllAppTestVersions';
 import { Button } from '@kadena/kode-ui';
 import { useRouter } from 'next/navigation';
@@ -45,7 +46,12 @@ const Home = ({
         onSuccess={handleSuccess}
       />
 
-      {!isNew && <Button onClick={handleTest}>Run tests manually</Button>}
+      {!isNew && (
+        <>
+          <Button onClick={handleTest}>Run tests manually</Button>
+          <TestRuns testId={testId} appId={appId} />
+        </>
+      )}
     </>
   );
 };

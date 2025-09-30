@@ -100,6 +100,68 @@ export type Database = {
         }
         Relationships: []
       }
+      runs: {
+        Row: {
+          config: Json | null
+          container_logs: string | null
+          created_at: string
+          duration: number | null
+          errors: Json | null
+          expected: number | null
+          flaky: number | null
+          id: string
+          logs: string | null
+          screenshots: Json | null
+          skipped: number | null
+          start_time: string
+          suits: Json | null
+          unexpected: number | null
+          version_id: string | null
+        }
+        Insert: {
+          config?: Json | null
+          container_logs?: string | null
+          created_at?: string
+          duration?: number | null
+          errors?: Json | null
+          expected?: number | null
+          flaky?: number | null
+          id?: string
+          logs?: string | null
+          screenshots?: Json | null
+          skipped?: number | null
+          start_time?: string
+          suits?: Json | null
+          unexpected?: number | null
+          version_id?: string | null
+        }
+        Update: {
+          config?: Json | null
+          container_logs?: string | null
+          created_at?: string
+          duration?: number | null
+          errors?: Json | null
+          expected?: number | null
+          flaky?: number | null
+          id?: string
+          logs?: string | null
+          screenshots?: Json | null
+          skipped?: number | null
+          start_time?: string
+          suits?: Json | null
+          unexpected?: number | null
+          version_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "runs_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "app_test_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
