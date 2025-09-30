@@ -7,6 +7,7 @@ export const EVENT_NAMES = {
   'error:insert:app_test_version': 'error:insert:app_test_version',
   'error:update:app_test_version': 'error:update:app_test_version',
   'error:activate:app_test_version': 'error:activate:app_test_version',
+  'error:insert:testrun': 'error:insert:testrun',
 } as const;
 
 interface CaptureContext {

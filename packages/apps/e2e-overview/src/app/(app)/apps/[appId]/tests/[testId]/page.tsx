@@ -3,6 +3,7 @@
 import { TestVersionForm } from '@/components/TestForm/TestVersionForm';
 import { TestRuns } from '@/components/TestRuns/TestRuns';
 import type { AppTestVersion } from '@/hooks/getAllAppTestVersions';
+import { useRunTestVersion } from '@/hooks/runTestVersion';
 import { Button } from '@kadena/kode-ui';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
@@ -15,6 +16,7 @@ const Home = ({
   const { appId, testId } = use(params);
   const router = useRouter();
   const isNew = testId === 'new';
+  const { mutate, isSuccess } = useRunTestVersion();
 
   const handleSuccess = (data: AppTestVersion) => {
     if (data.id) {
@@ -24,18 +26,7 @@ const Home = ({
 
   const handleTest = async () => {
     // Call your API to run the tests
-    await fetch(`/api/test/playwright`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        appId,
-        testId,
-        testScript:
-          "const { test, expect } = require('@playwright/test');\ntest('dynamic test', async ({ page }) => {\n  await page.goto('http://example.com');\n  await page.screenshot({ path: 'screenshots/d3yn.png' });\n await page.screenshot({ path: 'screenshots/ddynamiffffc2.png' });\n  expect(await page.title()).toBe('Example Domain');\n});",
-      }),
-    });
+    await mutate({ appId, testId });
   };
 
   return (
@@ -49,7 +40,7 @@ const Home = ({
       {!isNew && (
         <>
           <Button onClick={handleTest}>Run tests manually</Button>
-          <TestRuns testId={testId} appId={appId} />
+          <TestRuns testId={testId} hasNewData={isSuccess} />
         </>
       )}
     </>
