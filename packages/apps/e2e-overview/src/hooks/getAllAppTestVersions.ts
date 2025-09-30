@@ -9,10 +9,11 @@ export type UpdateAppTestVersion =
 export type InsertAppTestVersion =
   Database['public']['Tables']['app_test_versions']['Insert'];
 
-export const useAllAppTestVersions = ({ appId }: { appId: string }) => {
+export const useAllAppTestVersions = ({ appId }: { appId?: string }) => {
   return useQuery<AppTestVersion[]>({
     queryKey: ['app_test_versions', appId],
     queryFn: async () => {
+      if (!appId) return [];
       const { data, error } = await supabaseClient
         .from('app_test_versions')
         .select('*')

@@ -17,13 +17,14 @@ interface IProps {
 }
 
 export const TestVersionForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
+  const innerTestId = testId === 'new' ? undefined : testId;
   const {
     mutate,
     isPending,
     isSuccess,
     data: updatedData,
-  } = useEditAppTestVersion(appId, testId);
-  const { data, isLoading } = useAppTest(appId, testId);
+  } = useEditAppTestVersion(appId, innerTestId);
+  const { data, isLoading } = useAppTest(appId, innerTestId);
 
   const {
     control,
@@ -31,7 +32,8 @@ export const TestVersionForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
     formState: { isValid, errors },
   } = useForm<InsertAppTestVersion>({
     values: {
-      app_id: appId !== 'new' ? appId : undefined,
+      id: innerTestId,
+      app_id: appId,
       script: data?.script || '',
       version: data?.version || 1,
     },
@@ -67,7 +69,6 @@ export const TestVersionForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
         render={({ field }) => (
           <TextareaField
             id="script"
-            isDisabled={data?.id}
             isInvalid={!!errors.script?.message}
             errorMessage={`${errors.script?.message}`}
             label="Tests"

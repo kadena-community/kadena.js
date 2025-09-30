@@ -12,7 +12,7 @@ const RootLayout = ({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>Kadena.js RWA Demo</title>
+        <title>Kadena.js Test Dashboard</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"

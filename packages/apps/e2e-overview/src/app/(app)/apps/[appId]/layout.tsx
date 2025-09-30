@@ -11,7 +11,8 @@ const AppLayout = ({
   params: Promise<{ appId: string }>;
 }>) => {
   const { appId } = use(params);
-  const { data, isLoading } = useApp(appId);
+  const innerAppId = appId === 'new' ? undefined : appId;
+  const { data, isLoading } = useApp(innerAppId);
 
   if (isLoading) {
     return 'loading...';

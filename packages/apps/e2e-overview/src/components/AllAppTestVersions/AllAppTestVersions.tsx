@@ -40,6 +40,7 @@ export const AllAppTestVersions: FC<IProps> = ({ appId }) => {
               <Button
                 variant="outlined"
                 isCompact
+                isDisabled={version.isactive}
                 onClick={() => handleActivate(version.id)}
               >
                 Set to active

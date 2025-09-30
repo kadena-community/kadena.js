@@ -5,11 +5,19 @@ import { useEffect } from 'react';
 import type { App, UpdateApp } from './getAllApps';
 import { useNotifications } from './notifications';
 
-export const useUpdateApp = () => {
+export const useEditApp = () => {
   const { addNotification } = useNotifications();
   const mutation = useMutation<App, Error, UpdateApp>({
-    onSuccess: () => {},
     mutationFn: async (updateData: UpdateApp) => {
+      if (!updateData.id) {
+        const { data, error } = await supabaseClient
+          .from('apps')
+          .insert(updateData)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      }
       const { data, error } = await supabaseClient
         .from('apps')
         .update({ name: updateData.name })

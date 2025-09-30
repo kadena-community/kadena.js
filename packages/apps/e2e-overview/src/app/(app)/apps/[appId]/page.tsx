@@ -1,17 +1,20 @@
 'use client';
 
 import { AllAppTestVersions } from '@/components/AllAppTestVersions/AllAppTestVersions';
+import { useEditApp } from '@/hooks/editApp';
 import type { UpdateApp } from '@/hooks/getAllApps';
 import { useApp } from '@/hooks/getApp';
-import { useUpdateApp } from '@/hooks/updateApp';
 import { Button, Heading, TextField } from '@kadena/kode-ui';
+import { useRouter } from 'next/navigation';
 import { use } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
   const { appId } = use(params);
-  const { data } = useApp(appId);
-  const { mutate, isPending } = useUpdateApp();
+  const innerAppId = appId === 'new' ? undefined : appId;
+  const { data } = useApp(innerAppId);
+  const { mutate, isPending } = useEditApp();
+  const router = useRouter();
 
   const {
     control,
@@ -19,13 +22,19 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
     formState: { isValid, errors },
   } = useForm<UpdateApp>({
     values: {
-      id: appId,
+      id: innerAppId,
       name: data?.name || '',
     },
   });
 
   const onSubmit = async (updateData: UpdateApp) => {
-    await mutate(updateData);
+    await mutate(updateData, {
+      onSuccess: (data) => {
+        console.log(11111111);
+        if (innerAppId) return;
+        router.push(`/apps/${data.id}`);
+      },
+    });
   };
 
   return (
@@ -56,8 +65,12 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
         </Button>
       </form>
 
-      <Heading as="h2">Tests</Heading>
-      <AllAppTestVersions appId={appId} />
+      {innerAppId && (
+        <>
+          <Heading as="h2">Tests</Heading>
+          <AllAppTestVersions appId={innerAppId} />
+        </>
+      )}
     </>
   );
 };

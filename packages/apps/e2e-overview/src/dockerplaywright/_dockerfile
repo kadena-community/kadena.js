@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/playwright:v1.47.0
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+RUN npx playwright install --with-deps
+COPY tests/ ./tests/
+COPY playwright.config.js ./
+RUN mkdir -p /app/test-results /app/screenshots
+EXPOSE 3000
+CMD ["sh", "-c", "npx playwright test tests/dynamic.test.js > /app/test-results/logs.txt 2>&1"]

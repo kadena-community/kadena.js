@@ -1,11 +1,12 @@
 import { supabaseClient } from '@/utils/db/createClient';
 import { useQuery } from '@tanstack/react-query';
-import type { AppTest } from './getAllAppTests';
+import type { AppTestVersion } from './getAllAppTestVersions';
 
 export const useAppTest = (appId: string, id?: string) => {
-  return useQuery<AppTest>({
+  return useQuery<AppTestVersion>({
     queryKey: [`app_test_versions`, appId, id],
     queryFn: async () => {
+      if (!id) return '';
       const { data, error } = await supabaseClient
         .from('app_test_versions')
         .select('*')

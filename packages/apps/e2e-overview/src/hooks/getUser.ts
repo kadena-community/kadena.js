@@ -9,6 +9,7 @@ export const useGetUser = (user?: User | null) => {
   return useQuery<ProfileData>({
     queryKey: ['profiles'],
     queryFn: async () => {
+      if (!user?.id) return '';
       const { data, error } = await supabaseClient
         .from('profiles')
         .select('*')
