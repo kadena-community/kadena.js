@@ -168,12 +168,31 @@ export async function POST(request: NextRequest) {
       path.join(artifactsDir, 'test-results', 'logs.txt'),
     );
 
-    return NextResponse.json({
-      testResults,
-      screenshots,
+    const insertData = {
+      version_id: testId,
       logs,
-      containerLogs,
-    });
+      container_logs: containerLogs,
+      start_time: testResults?.startTime,
+      duration: Number(testResults?.duration) || 0,
+      expected: testResults?.expected || 0,
+      flaky: testResults?.flaky || 0,
+      skipped: testResults?.skipped || 0,
+      unexpected: testResults?.unexpected || 0,
+      config: testResults?.config || {},
+      errors: testResults?.errors || [],
+      suits: testResults?.suites || {},
+      screenshots,
+    };
+
+    const { data, error } = await supabaseClient
+      .from('runs')
+      .insert(insertData)
+      .select()
+      .single();
+
+    console.log('Inserted run data:', { data, error });
+
+    return NextResponse.json(insertData);
   } catch (error: any) {
     console.error('API error:', error);
     return NextResponse.json(

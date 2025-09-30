@@ -69,6 +69,7 @@ export const TestVersionForm: FC<IProps> = ({ appId, testId, onSuccess }) => {
         render={({ field }) => (
           <TextareaField
             id="script"
+            isDisabled={!!data?.id}
             isInvalid={!!errors.script?.message}
             errorMessage={`${errors.script?.message}`}
             label="Tests"
