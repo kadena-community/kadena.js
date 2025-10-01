@@ -24,7 +24,14 @@ type OverrideMethods<T> = {
   : T[K];
 };
 
-const ExtendedBigNumber: (new (value: string | number | { int: string } | { decimal: string }) => OverrideMethods<BigNumber & IExtendedBigNumber>) = BigNumber as any
+
+type BigNumberStatics = OverrideMethods<Omit<typeof BigNumber, "prototype" | "name" | "length">>;
+
+interface ExtendedBigNumberConstructor extends BigNumberStatics {
+  new (value: string | number | { int: string } | { decimal: string }): OverrideMethods<BigNumber & IExtendedBigNumber>;
+}
+
+const ExtendedBigNumber: ExtendedBigNumberConstructor = BigNumber as any
 
 // In order to extend BigNumber methods correctly, I had to add the PactNumber methods to
 // the prototype of BigNumber. Then, something like this works:
@@ -96,5 +103,4 @@ export class PactNumber extends ExtendedBigNumber {
   }
 
 }
-
 
