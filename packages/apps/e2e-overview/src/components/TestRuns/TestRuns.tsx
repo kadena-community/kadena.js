@@ -2,7 +2,6 @@ import { useTestRuns } from '@/hooks/getTestRuns';
 import { Heading, Stack, Link as UILink } from '@kadena/kode-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
-import { useEffect } from 'react';
 
 interface IProps {
   appId: string;

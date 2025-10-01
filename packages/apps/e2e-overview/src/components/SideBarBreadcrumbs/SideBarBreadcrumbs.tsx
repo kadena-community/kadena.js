@@ -1,5 +1,4 @@
 import type { IBreadcrumbsProps } from '@kadena/kode-ui';
-import { Badge } from '@kadena/kode-ui';
 import {
   SideBarBreadcrumbsItem,
   SideBarBreadcrumbs as SideBarBreadcrumbsUI,

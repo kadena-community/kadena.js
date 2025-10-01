@@ -3,7 +3,7 @@ import { Stack } from '@kadena/kode-ui';
 import type { FC } from 'react';
 
 export const DashboardAppList: FC = () => {
-  const { data, isLoading, error } = useAllApps({
+  const { data, isLoading } = useAllApps({
     dashboard: true,
   });
 

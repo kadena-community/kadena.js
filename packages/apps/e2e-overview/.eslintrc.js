@@ -3,7 +3,7 @@ require('@rushstack/eslint-config/patch/modern-module-resolution');
 
 module.exports = {
   extends: ['@kadena-dev/eslint-config/profile/next'],
-  ignorePatterns: ['**/__generated__/**'],
+  ignorePatterns: ['**/__generated__/**', '/playwright-report'],
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
     'jsx-a11y/aria-props': 'warn',
