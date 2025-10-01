@@ -29,7 +29,7 @@ const CreateAssetPage = () => {
 
   useEffect(() => {
     if (isMounted && !account) {
-      router.replace('/');
+      router.replace('/login');
     }
   }, [account, isMounted]);
 
