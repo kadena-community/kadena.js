@@ -31,7 +31,7 @@
   ],
   "scripts": {
     "build": "tsc && api-extractor run --verbose",
-    "build:local":"tsc && api-extractor run --local --verbose",
+    "build:local": "tsc && api-extractor run --local --verbose",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -44,8 +44,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "bignumber.js": "^9.1.2",
-    "@kadena/types": "workspace:*"
+    "@kadena/types": "workspace:*",
+    "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

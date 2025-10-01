@@ -7,31 +7,33 @@ import BigNumber from 'bignumber.js';
 BigNumber.config({ EXPONENTIAL_AT: [-1e9, 1e9] });
 
 interface IExtendedBigNumber {
-    toInteger(): string;
-    toStringifiedInteger(): string;
-    toPactInteger(): IPactInt;
-    toDecimal(): string;
-    toStringifiedDecimal(): string;
-    toPactDecimal(): IPactDecimal;
-  }
-
+  toInteger(): string;
+  toStringifiedInteger(): string;
+  toPactInteger(): IPactInt;
+  toDecimal(): string;
+  toStringifiedDecimal(): string;
+  toPactDecimal(): IPactDecimal;
+}
 
 type OverrideMethods<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => BigNumber
-  ? (...args: A) => PactNumber
-  : T[K] extends BigNumber
-  ? PactNumber
-  : T[K];
+    ? (...args: A) => PactNumber
+    : T[K] extends BigNumber
+      ? PactNumber
+      : T[K];
 };
 
-
-type BigNumberStatics = OverrideMethods<Omit<typeof BigNumber, "prototype" | "name" | "length">>;
+type BigNumberStatics = OverrideMethods<
+  Omit<typeof BigNumber, 'prototype' | 'name' | 'length'>
+>;
 
 interface ExtendedBigNumberConstructor extends BigNumberStatics {
-  new (value: string | number | { int: string } | { decimal: string }): OverrideMethods<BigNumber & IExtendedBigNumber>;
+  new (
+    value: string | number | { int: string } | { decimal: string },
+  ): OverrideMethods<BigNumber & IExtendedBigNumber>;
 }
 
-const ExtendedBigNumber: ExtendedBigNumberConstructor = BigNumber as any
+const ExtendedBigNumber: ExtendedBigNumberConstructor = BigNumber as any;
 
 // In order to extend BigNumber methods correctly, I had to add the PactNumber methods to
 // the prototype of BigNumber. Then, something like this works:
@@ -45,9 +47,10 @@ ExtendedBigNumber.prototype.toInteger = function toInteger() {
   return this.toString();
 };
 
-ExtendedBigNumber.prototype.toStringifiedInteger = function toStringifiedInteger() {
-  return JSON.stringify(this.toInteger());
-};
+ExtendedBigNumber.prototype.toStringifiedInteger =
+  function toStringifiedInteger() {
+    return JSON.stringify(this.toInteger());
+  };
 
 ExtendedBigNumber.prototype.toPactInteger = function toPactInteger() {
   if (!this.isInteger()) {
@@ -65,17 +68,16 @@ ExtendedBigNumber.prototype.toDecimal = function toDecimal() {
   return `${this.toString()}`;
 };
 
-ExtendedBigNumber.prototype.toStringifiedDecimal = function toStringifiedDecimal() {
-  return JSON.stringify(this.toDecimal());
-};
+ExtendedBigNumber.prototype.toStringifiedDecimal =
+  function toStringifiedDecimal() {
+    return JSON.stringify(this.toDecimal());
+  };
 
 ExtendedBigNumber.prototype.toPactDecimal = function toPactDecimal() {
   return {
     decimal: this.toDecimal(),
   };
 };
-
-
 
 /**
  * Constructs a bignumber.js instance and formats into Pact number formats.
@@ -101,6 +103,4 @@ export class PactNumber extends ExtendedBigNumber {
     super(num);
     if (isNaN(Number(num))) throw new Error('Value is NaN');
   }
-
 }
-
