@@ -1,7 +1,9 @@
 'use client';
 
+import { DashboardAppList } from '@/components/DashboardAppList/DashboardAppList';
+
 const Home = () => {
-  return <div>sdf</div>;
+  return <DashboardAppList />;
 };
 
 export default Home;

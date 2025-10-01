@@ -6,11 +6,24 @@ export type App = Database['public']['Tables']['apps']['Row'];
 export type UpdateApp = Database['public']['Tables']['apps']['Update'];
 export type InsertApp = Database['public']['Tables']['apps']['Insert'];
 
-export const useAllApps = () => {
+interface IProps {
+  dashboard?: boolean;
+}
+
+export const useAllApps = ({ dashboard }: IProps = {}) => {
   return useQuery<App[]>({
     queryKey: ['apps'],
     queryFn: async () => {
-      const { data, error } = await supabaseClient.from('apps').select('*');
+      let query = supabaseClient
+        .from('apps')
+        .select('*')
+        .order('name', { ascending: false });
+
+      if (dashboard) {
+        query = query.eq('is_on_dashboard', true).eq('is_active', true);
+      }
+
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     },
