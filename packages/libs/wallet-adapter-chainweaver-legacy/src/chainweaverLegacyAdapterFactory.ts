@@ -2,6 +2,7 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
+import { CHAINWEAVER_LEGACY_ADAPTER } from './constants';
 import { detectChainweaverLegacyProvider } from './provider';
 
 /**
@@ -25,7 +26,7 @@ export const createChainweaverLegacyAdapter = ((
   options?: IBaseWalletFactoryOptions,
 ) => {
   return {
-    name: 'ChainweaverLegacy',
+    name: CHAINWEAVER_LEGACY_ADAPTER,
     detect: async () => {
       return await detectChainweaverLegacyProvider({ silent: true });
     },

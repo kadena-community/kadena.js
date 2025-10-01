@@ -23,6 +23,9 @@ export function detectEckoProvider(options?: {
     timeout?: number;
 }): Promise<IEckoProvider | null>;
 
+// @public (undocumented)
+export const ECKO_ADAPTER = "Ecko";
+
 // @public
 export class EckoAdapter extends BaseWalletAdapter {
     constructor(options: IBaseWalletAdapterOptions);

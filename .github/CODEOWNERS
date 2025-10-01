@@ -6,6 +6,7 @@
 /pnpm-lock.yaml
 
 # Apps
+/packages/apps/chainweb-evm-dashboard           @isaozler
 /packages/apps/dev-wallet
 /packages/apps/dev-wallet-*
 /packages/apps/explorer

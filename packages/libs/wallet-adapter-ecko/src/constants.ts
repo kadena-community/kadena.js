@@ -8,3 +8,6 @@ export const ERRORS = {
   TRANSACTION_HASH_MISMATCH: (expectedHash: string, walletHash: string) =>
     `Hash of the transaction signed by the wallet does not match. Our hash: ${expectedHash}, wallet hash: ${walletHash}`,
 };
+
+/** @public */
+export const ECKO_ADAPTER = 'Ecko';

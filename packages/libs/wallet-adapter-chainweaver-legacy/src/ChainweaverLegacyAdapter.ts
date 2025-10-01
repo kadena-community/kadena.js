@@ -14,7 +14,7 @@ import type {
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
 import * as v from 'valibot';
-import { ERRORS } from './constants';
+import { CHAINWEAVER_LEGACY_ADAPTER, ERRORS } from './constants';
 import { checkVerifiedAccount } from './utils';
 
 const connectSchema = v.object({
@@ -35,7 +35,7 @@ const connectSchema = v.object({
  * or minimal no-ops where necessary.
  */
 export class ChainweaverLegacyAdapter extends BaseWalletAdapter {
-  public name: string = 'ChainweaverLegacy';
+  public name: string = CHAINWEAVER_LEGACY_ADAPTER;
   public nonce: number = 0;
   public connectSchema: StandardSchemaV1 = connectSchema;
 

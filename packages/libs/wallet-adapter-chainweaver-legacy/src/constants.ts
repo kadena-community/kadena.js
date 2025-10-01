@@ -9,3 +9,8 @@ export const ERRORS = {
   NETWORK_MISMATCH: 'Network is not equal for all transactions',
   ERROR_SIGNING_TRANSACTION: 'Error signing transaction',
 };
+
+/**
+ * @public
+ */
+export const CHAINWEAVER_LEGACY_ADAPTER = 'ChainweaverLegacy';

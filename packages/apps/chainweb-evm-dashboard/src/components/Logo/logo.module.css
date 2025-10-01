@@ -1,0 +1,229 @@
+:root {
+  --interation-count: 1;
+}
+
+.greenTop { fill: var(--face-green-cube-top); }
+.greenLeft { fill: var(--face-green-cube-left); }
+.greenRight { fill: var(--face-green-cube-right); }
+.l {
+  fill: none;
+}
+.faceTop {
+  fill: var(--face-black-cube-top);
+}
+.faceLeft {
+  fill: var(--face-black-cube-left);
+}
+.faceRight {
+  fill: var(--face-black-cube-right);
+}
+.kadena {
+  fill: var(--kadena-text-top-foreground);
+}
+.chainweb {
+  fill: var(--chainweb-text-foreground);
+}
+
+.hexagonGroup {
+  opacity: 1;
+  transform: scale(0);
+  transform-origin: center;
+}
+
+.hex1 {
+  --duration: 2.1s;
+  --delay: 0.1s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex2 {
+  --duration: 1.8s;
+  --delay: 0.3s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex3 {
+  --duration: 2.5s;
+  --delay: 0.7s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex4 {
+  --duration: 2s;
+  --delay: 1.2s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex5 {
+  --duration: 1.6s;
+  --delay: 0.5s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex6 {
+  --duration: 2.3s;
+  --delay: 0.9s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex7 {
+  --duration: 1.9s;
+  --delay: 0.2s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex8 {
+  --duration: 2.7s;
+  --delay: 1.1s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex9 {
+  --duration: 1.7s;
+  --delay: 0.6s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex10 {
+  --duration: 2.4s;
+  --delay: 0.4s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex11 {
+  --duration: 2.2s;
+  --delay: 0.8s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex12 {
+  --duration: 1.5s;
+  --delay: 1s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex13 {
+  --duration: 2.6s;
+  --delay: 1.3s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex14 {
+  --duration: 2.8s;
+  --delay: 1.4s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex15 {
+  --duration: 1.4s;
+  --delay: 1.5s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex16 {
+  --duration: 3s;
+  --delay: 1.6s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex17 {
+  --duration: 2.9s;
+  --delay: 1.7s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+.hex18 {
+  --duration: 1.3s;
+  --delay: 1.8s;
+  animation: var(--duration) ease-out var(--delay) var(--interation-count) forwards hexScale, var(--duration) ease-out forwards endScale;
+  animation-delay: 0ms, calc(var(--interation-count) * var(--duration) + var(--delay));
+}
+
+.initiated .hexagonGroup {
+  animation: initiateScale 0.5s ease-out forwards;
+}
+
+.logo {
+  opacity: 0;
+  transform: translateX(50%);
+  animation: 2s cubic-bezier(0.19, 1, 0.22, 1) forwards moveToLeftLogo;
+  animation-delay: 1s;
+}
+
+.icon {
+  transform: translateX(150%);
+  animation: 2s cubic-bezier(0.19, 1, 0.22, 1) forwards moveToLeftIcon;
+  animation-delay: 0.75s;
+}
+
+.kadena {
+  opacity: 0;
+  fill: var(--kadena-text-top-foreground);
+  animation: 2s ease-out forwards showText;
+  animation-delay: 2s;
+}
+
+.title.chainweb {
+  opacity: 0;
+  fill: var(--chainweb-text-foreground);
+  animation: 2s ease-out forwards showText;
+  animation-delay: 1s;
+}
+
+.title.evm {
+  opacity: 0;
+  fill: var(--chainweb-text-foreground);
+  animation: 2s ease-out forwards showText;
+  animation-delay: 2s;
+}
+
+@keyframes showText {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes moveToLeftLogo {
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes moveToLeftIcon {
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes hexScale {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes initiateScale {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes endScale {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

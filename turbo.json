@@ -8,7 +8,6 @@
       "outputLogs": "new-only"
     },
     "build:e2e": {
-      "cache": false,
       "dependsOn": ["^build"],
       "outputLogs": "new-only"
     },
@@ -18,14 +17,13 @@
       "outputLogs": "new-only"
     },
     "test:integration": {
-      "cache": false,
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputLogs": "new-only"
     },
     "test:e2e": {
-      "cache": false,
       "inputs": ["tests/**/*.ts", "tests/**/*.tsx"],
+      "outputs": ["blob-report/**"],
       "outputLogs": "new-only"
     },
     "lint": {

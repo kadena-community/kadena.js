@@ -1,4 +1,5 @@
 'use client';
+
 import { WALLETTYPES } from '@/constants';
 import { AccountContext } from '@/contexts/AccountContext/AccountContext';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
@@ -11,14 +12,13 @@ import { isFrozen } from '@/services/isFrozen';
 import { isInvestor } from '@/services/isInvestor';
 import { isOwner } from '@/services/isOwner';
 import { getAccountCookieName } from '@/utils/getAccountCookieName';
-import { chainweaverAccountLogin } from '@/utils/walletTransformers/chainweaver/login';
-import { chainweaverSignTx } from '@/utils/walletTransformers/chainweaver/signTx';
-import { eckoAccountLogin } from '@/utils/walletTransformers/ecko/login';
-import { eckoSignTx } from '@/utils/walletTransformers/ecko/signTx';
-import { magicAccountLogin } from '@/utils/walletTransformers/magic/login';
-import { magicSignTx } from '@/utils/walletTransformers/magic/signTx';
+import {
+  getWalletAdapterName,
+  mapWalletAdapterAccount,
+} from '@/utils/walletAdapter/wallet-adapter';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { useNotifications } from '@kadena/kode-ui/patterns';
+import { useKadenaWallet } from '@kadena/wallet-adapter-react';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useState } from 'react';
@@ -44,6 +44,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   const { setAssetRolesForAccount, ...accountRoles } = useGetAgentRoles();
   const router = useRouter();
+  const wallet = useKadenaWallet();
 
   const checkIsAgent = async (account: IWalletAccount, asset?: IAsset) => {
     if (!account || !asset) {
@@ -119,32 +120,71 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       name: keyof typeof WALLETTYPES,
       account?: IWalletAccount,
     ): Promise<IWalletAccount[] | undefined> => {
-      let tempAccount;
+      const adapterName = name ? getWalletAdapterName(name) : undefined;
+
+      if (!adapterName) {
+        addNotification({
+          intent: 'negative',
+          label: 'Provider does not exist',
+          message: `Provider (${name}) does not exist`,
+        });
+        return;
+      }
+
+      let tempAccount: IWalletAccount | undefined;
+
+      const adapter = wallet.client.getAdapter(adapterName);
+      if (!adapter) throw new Error(`${adapterName} adapter not detected`);
+
       switch (name) {
-        case WALLETTYPES.ECKO:
-          tempAccount = await eckoAccountLogin();
+        case WALLETTYPES.ECKO: {
+          const result = await adapter.connect();
+          if (!result) throw new Error(`${adapterName} connection failed`);
+
+          tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.ECKO);
           break;
-        case WALLETTYPES.CHAINWEAVER:
+        }
+        case WALLETTYPES.CHAINWEAVER: {
           if (account) {
             tempAccount = account;
             break;
           }
-          const result = await chainweaverAccountLogin();
-          if (result.length > 1) {
-            return result;
-          } else if (result.length === 1) {
-            tempAccount = result[0];
+
+          if (
+            !(await adapter.connect({
+              networkId: process.env.NEXT_PUBLIC_NETWORKID || 'mainnet01',
+            }))
+          ) {
+            throw new Error(`${adapterName} connection failed`);
+          }
+
+          const result = await adapter.getAccounts();
+          if (!result) throw new Error('Chainweaver connection failed');
+          const accounts = result.map((acc) =>
+            mapWalletAdapterAccount(acc, WALLETTYPES.CHAINWEAVER),
+          );
+
+          if (accounts.length > 1) {
+            return accounts;
+          } else if (accounts.length === 1) {
+            tempAccount = accounts[0];
           }
           break;
-        case WALLETTYPES.MAGIC:
-          tempAccount = await magicAccountLogin();
+        }
+        case WALLETTYPES.MAGIC: {
+          const result = await adapter.connect();
+          if (!result) throw new Error(`${adapterName} connection failed`);
+
+          tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.MAGIC);
           break;
-        default:
+        }
+        default: {
           addNotification({
             intent: 'negative',
             label: 'Provider does not exist',
             message: `Provider (${name}) does not exist`,
           });
+        }
       }
 
       if (tempAccount) {
@@ -230,20 +270,29 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const sign = async (tx: IUnsignedCommand): Promise<ICommand | undefined> => {
-    switch (account?.walletName) {
-      case WALLETTYPES.ECKO:
-        return await eckoSignTx(tx);
-      case WALLETTYPES.CHAINWEAVER:
-        return await chainweaverSignTx(tx);
-      case WALLETTYPES.MAGIC:
-        return await magicSignTx(tx);
-      default:
-        addNotification({
-          intent: 'negative',
-          label: 'Provider does not exist',
-          message: `Provider (${account?.walletType}) does not exist`,
-        });
+    const adapterName = account
+      ? getWalletAdapterName(account.walletName)
+      : undefined;
+
+    if (!adapterName) {
+      addNotification({
+        intent: 'negative',
+        label: 'Provider does not exist',
+        message: `Provider (${account?.walletType}) does not exist`,
+      });
+      return;
     }
+
+    const adapter = wallet.client.getAdapter(adapterName);
+    if (!adapter) throw new Error(`${adapterName} adapter not detected`);
+    const result = await adapter.connect();
+    if (!result) throw new Error(`${adapterName} connection failed`);
+
+    console.log('signing via wallet adapter', tx);
+    const signed = (await adapter.signTransaction(tx)) as ICommand;
+    console.log('signed', signed);
+
+    return signed;
   };
 
   return (
@@ -261,7 +310,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         isInvestor: isInvestorState,
         isFrozen: isFrozenState,
         selectAccount,
-
         accountRoles,
         isGasPayable: !isBalanceMounted ? undefined : kdaBalance > 0,
         checkAccountAssetRoles,

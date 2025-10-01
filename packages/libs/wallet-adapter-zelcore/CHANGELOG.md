@@ -1,5 +1,20 @@
 # @kadena/wallet-adapter-zelcore
 
+## 0.0.5
+
+### Patch Changes
+
+- @kadena/client\@1.18.2
+- @kadena/wallet-adapter-core\@0.1.2
+
+## 0.0.4
+
+### Patch Changes
+
+- 24ed24c: Added constant export for adapter name matching
+  - @kadena/client\@1.18.1
+  - @kadena/wallet-adapter-core\@0.1.1
+
 ## 0.0.3
 
 ### Patch Changes

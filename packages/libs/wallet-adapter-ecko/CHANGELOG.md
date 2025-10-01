@@ -1,5 +1,18 @@
 # @kadena/wallet-adapter-ecko
 
+## 0.0.5
+
+### Patch Changes
+
+- @kadena/wallet-adapter-core\@0.1.2
+
+## 0.0.4
+
+### Patch Changes
+
+- 24ed24c: Added constant export for adapter name matching
+  - @kadena/wallet-adapter-core\@0.1.1
+
 ## 0.0.3
 
 ### Patch Changes

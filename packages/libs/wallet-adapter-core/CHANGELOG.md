@@ -1,5 +1,17 @@
 # @kadena/wallet-adapter-core
 
+## 0.1.2
+
+### Patch Changes
+
+- @kadena/client\@1.18.2
+
+## 0.1.1
+
+### Patch Changes
+
+- @kadena/client\@1.18.1
+
 ## 0.1.0
 
 ### Minor Changes

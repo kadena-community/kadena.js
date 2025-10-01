@@ -1,0 +1,40 @@
+/* Global CSS Variables - Temporary Values */
+:root {
+  color-scheme: light dark;
+
+  --background: #ffffff;
+  --foreground: #000000;
+
+  --face-green-cube-top: #00d4aa;
+  --face-green-cube-left: #00b894;
+  --face-green-cube-right: #009c7b;
+
+  --face-black-cube-top: #2d3748;
+  --face-black-cube-left: #1a202c;
+  --face-black-cube-right: #000000;
+
+  --kadena-text-top-foreground: #2d3748;
+  --chainweb-text-foreground: #4a5568;
+}
+
+[class*="dark"] {
+  :root {
+    color-scheme: dark !important;
+
+    --background: #000000;
+    --foreground: #ffffff;
+
+    --face-green-cube-top: #00f5d4;
+    --face-green-cube-left: #00d4aa;
+    --face-green-cube-right: #00b894;
+
+    --face-black-cube-top: #4a5568;
+    --face-black-cube-left: #2d3748;
+    --face-black-cube-right: #1a202c;
+
+    --kadena-text-top-foreground: #e2e8f0;
+    --chainweb-text-foreground: #cbd5e0;
+  }
+}
+
+

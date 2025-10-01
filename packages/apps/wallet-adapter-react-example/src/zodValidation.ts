@@ -33,17 +33,14 @@ const errorSchema = z.object({
  */
 const accountInfoSchema = z.object({
   accountName: z.string(),
+  label: z.optional(z.string()),
   networkId: z.string(),
   contract: z.string(),
-  guard: z.object({
-    keys: z.array(z.string()),
-    pred: z.string(),
-  }),
-  existsOnChains: z.array(z.string()),
   keyset: z.object({
     keys: z.array(z.string()),
     pred: z.string(),
   }),
+  existsOnChains: z.array(z.string()),
 });
 
 /**
@@ -59,7 +56,7 @@ const networkInfoSchema = z.object({
   networkName: z.string(),
   networkId: z.string(),
   // wallet can optionally return no URLs, or multiple
-  url: z.array(z.string()),
+  urls: z.array(z.string()),
 });
 
 /**

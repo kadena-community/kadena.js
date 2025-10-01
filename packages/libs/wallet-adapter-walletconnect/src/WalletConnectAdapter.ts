@@ -15,7 +15,7 @@ import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
 import type { SessionTypes } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
-import { ERRORS } from './constants';
+import { ERRORS, WALLET_CONNECT_ADAPTER } from './constants';
 import type {
   IWalletConnectAdapterOptions,
   IWalletConnectProvider,
@@ -32,8 +32,13 @@ const projectId = 'b56e18d47c72ab683b10814fe9495694'; // Public API key (localho
 const relayUrl = 'wss://relay.walletconnect.com';
 const defaultNetworkId = 'mainnet01';
 
+/**
+ * @public
+ * WalletConnectAdapter is a class that extends BaseWalletAdapter to provide
+ * functionality for connecting to any wallet supporting WalletConnect.
+ */
 export class WalletConnectAdapter extends BaseWalletAdapter {
-  public name: string = 'WalletConnect';
+  public name: string = WALLET_CONNECT_ADAPTER;
   protected declare provider: IWalletConnectProvider;
   protected networkId: string;
   private client?: Client;

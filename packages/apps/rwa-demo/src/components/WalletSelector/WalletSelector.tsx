@@ -15,7 +15,6 @@ import type { FC, ReactElement } from 'react';
 import { useState } from 'react';
 import { ChainweaverWalletConnect } from '../ChainweaverWalletConnect/ChainweaverWalletConnect';
 import { EckoWalletConnect } from '../EckoWalletConnect/EckoWalletConnect';
-import { MagicConnect } from '../MagicConnect/MagicConnect';
 
 interface IProps {
   trigger: ReactElement<{ onPress: () => void }>;
@@ -71,7 +70,6 @@ export const WalletSelector: FC<IProps> = ({ trigger }) => {
       )}
 
       <ContextMenu trigger={trigger}>
-        <MagicConnect handleConnect={handleConnect} />
         <EckoWalletConnect handleConnect={handleConnect} />
         <ChainweaverWalletConnect handleConnect={handleConnect} />
       </ContextMenu>

@@ -2,6 +2,7 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
+import { WALLET_CONNECT_ADAPTER } from './constants';
 import { detectWalletConnectProvider } from './provider';
 
 export interface IWalletConnectFactoryOptions
@@ -22,16 +23,17 @@ export interface IWalletConnectFactoryOptions
  * when it is actually needed. This **lazy loading** approach helps reduce your initial bundle size,
  * especially when multiple wallet adapters might be registered but not all are necessarily used.
  *
- * @param options The options object from BaseWalletAdapter.
+ * @param options - The options object from BaseWalletAdapter.
  * @returns An object containing the adapter factory details for WalletConnect.
+ * @public
  */
 export const createWalletConnectAdapter = ((
   options?: IWalletConnectFactoryOptions,
 ) => {
   return {
-    name: 'WalletConnect',
+    name: WALLET_CONNECT_ADAPTER,
     detect: async () => {
-      return await detectWalletConnectProvider({ silent: true });
+      return await detectWalletConnectProvider();
     },
     adapter: async (provider) => {
       const { WalletConnectAdapter } = await import('./WalletConnectAdapter');

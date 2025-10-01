@@ -1,5 +1,26 @@
 # @kadena/chainweaver-wallet-connect-plugin
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies \[c21ada4]
+  - @kadena/chainweb-node-client\@0.9.4
+  - @kadena/client\@1.18.2
+  - @kadena/client-utils\@0.13.3
+  - @kadena/pactjs-generator\@1.18.2
+
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies \[c967a57]
+  - @kadena/pactjs\@0.5.0
+  - @kadena/chainweb-node-client\@0.9.2
+  - @kadena/client\@1.18.1
+  - @kadena/client-utils\@0.13.2
+  - @kadena/pactjs-generator\@1.18.1
+
 ## 0.0.7
 
 ### Patch Changes
