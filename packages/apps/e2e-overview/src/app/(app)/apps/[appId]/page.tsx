@@ -4,7 +4,7 @@ import { AllAppTestVersions } from '@/components/AllAppTestVersions/AllAppTestVe
 import { useEditApp } from '@/hooks/editApp';
 import type { UpdateApp } from '@/hooks/getAllApps';
 import { useApp } from '@/hooks/getApp';
-import { Button, Heading, TextField } from '@kadena/kode-ui';
+import { Button, Checkbox, Heading, TextField } from '@kadena/kode-ui';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -23,6 +23,8 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
   } = useForm<UpdateApp>({
     values: {
       id: innerAppId,
+      is_active: data?.is_active || false,
+      is_on_dashboard: data?.is_on_dashboard || false,
       name: data?.name || '',
     },
   });
@@ -30,7 +32,6 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
   const onSubmit = async (updateData: UpdateApp) => {
     await mutate(updateData, {
       onSuccess: (data) => {
-        console.log(11111111);
         if (innerAppId) return;
         router.push(`/apps/${data.id}`);
       },
@@ -40,6 +41,36 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="is_active"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              id="is_active"
+              isInvalid={!!errors.is_active?.message}
+              {...field}
+              value="true"
+              isSelected={field.value}
+            >
+              Is active
+            </Checkbox>
+          )}
+        />
+        <Controller
+          name="is_on_dashboard"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              id="is_on_dashboard"
+              isInvalid={!!errors.is_on_dashboard?.message}
+              {...field}
+              value="true"
+              isSelected={field.value}
+            >
+              Show on dashboard
+            </Checkbox>
+          )}
+        />
         <Controller
           name="name"
           control={control}

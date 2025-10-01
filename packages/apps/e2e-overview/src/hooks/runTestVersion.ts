@@ -6,22 +6,20 @@ import { useNotifications } from './notifications';
 interface IRunTestParams {
   appId: string;
   testId: string;
+  runId: string;
 }
 
 export const useRunTestVersion = () => {
   const { addNotification } = useNotifications();
-  const mutation = useMutation<
-    { appId: string; testId: string },
-    Error,
-    IRunTestParams
-  >({
-    mutationFn: async ({ appId, testId }: IRunTestParams) => {
+  const mutation = useMutation<IRunTestParams, Error, IRunTestParams>({
+    mutationFn: async ({ appId, testId, runId }: IRunTestParams) => {
       const result = await fetch(`/api/test/playwright`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          runId,
           appId,
           testId,
         }),

@@ -1,20 +1,16 @@
 import { useTestRuns } from '@/hooks/getTestRuns';
-import { Heading, Stack } from '@kadena/kode-ui';
+import { Heading, Stack, Link as UILink } from '@kadena/kode-ui';
+import Link from 'next/link';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 
 interface IProps {
+  appId: string;
   testId: string;
-  hasNewData: boolean;
 }
 
-export const TestRuns: FC<IProps> = ({ testId, hasNewData }) => {
-  const { data: runs, isLoading, error, refetch } = useTestRuns(testId);
-
-  useEffect(() => {
-    if (!hasNewData) return;
-    refetch();
-  }, [hasNewData]);
+export const TestRuns: FC<IProps> = ({ appId, testId }) => {
+  const { data: runs, isLoading, error } = useTestRuns(testId);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -25,7 +21,12 @@ export const TestRuns: FC<IProps> = ({ testId, hasNewData }) => {
       <ul>
         {runs?.map((run) => (
           <li key={run.id}>
-            <div>Run ID: {run.id}</div>
+            <UILink
+              component={Link}
+              href={`/apps/${appId}/tests/${testId}/runs/${run.id}`}
+            >
+              {`Run ID: ${run.id}`}
+            </UILink>
             <div>Start Time: {new Date(run.start_time).toLocaleString()}</div>
           </li>
         ))}

@@ -34,7 +34,7 @@ const RootLayout = ({
 
       <SideBarLayout
         logo={
-          <Link href="/">
+          <Link href="/dashboard">
             <KLogo />
           </Link>
         }

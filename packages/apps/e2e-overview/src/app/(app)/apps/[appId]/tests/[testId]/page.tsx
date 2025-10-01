@@ -3,10 +3,10 @@
 import { TestVersionForm } from '@/components/TestForm/TestVersionForm';
 import { TestRuns } from '@/components/TestRuns/TestRuns';
 import type { AppTestVersion } from '@/hooks/getAllAppTestVersions';
-import { useRunTestVersion } from '@/hooks/runTestVersion';
 import { Button } from '@kadena/kode-ui';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = ({
   params,
@@ -16,7 +16,6 @@ const Home = ({
   const { appId, testId } = use(params);
   const router = useRouter();
   const isNew = testId === 'new';
-  const { mutate, isSuccess } = useRunTestVersion();
 
   const handleSuccess = (data: AppTestVersion) => {
     if (data.id) {
@@ -26,7 +25,8 @@ const Home = ({
 
   const handleTest = async () => {
     // Call your API to run the tests
-    await mutate({ appId, testId });
+    const runId = uuidv4();
+    router.push(`/apps/${appId}/tests/${testId}/runs/${runId}`);
   };
 
   return (
@@ -40,7 +40,7 @@ const Home = ({
       {!isNew && (
         <>
           <Button onClick={handleTest}>Run tests manually</Button>
-          <TestRuns testId={testId} hasNewData={isSuccess} />
+          <TestRuns appId={appId} testId={testId} />
         </>
       )}
     </>

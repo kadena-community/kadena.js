@@ -20,7 +20,7 @@ export const useEditApp = () => {
       }
       const { data, error } = await supabaseClient
         .from('apps')
-        .update({ name: updateData.name })
+        .update(updateData)
         .eq('id', updateData.id)
         .select()
         .single();

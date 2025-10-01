@@ -17,7 +17,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
       topbannerHeight={topbannerHeight}
       logo={
         <>
-          <Link href="/">
+          <Link href="/dashboard">
             <KLogo />
           </Link>
         </>
@@ -28,7 +28,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
             visual={<MonoApps />}
             label="Dashboard"
             component={Link}
-            href="/"
+            href="/dashboard"
           />
         </>
       }

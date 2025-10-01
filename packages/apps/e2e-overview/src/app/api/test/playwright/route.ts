@@ -18,7 +18,7 @@ import {
 const execAsync = promisify(exec);
 
 export async function POST(request: NextRequest) {
-  const { appId, testId } = await request.json();
+  const { appId, testId, runId } = await request.json();
 
   // Directory to store artifacts on the host
   const artifactsDir = path.join(
@@ -169,6 +169,7 @@ export async function POST(request: NextRequest) {
     );
 
     const insertData = {
+      id: runId,
       version_id: testId,
       logs,
       container_logs: containerLogs,

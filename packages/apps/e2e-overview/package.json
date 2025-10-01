@@ -58,6 +58,7 @@
     "react-hook-form": "^7.52.1",
     "react-markdown": "^10.1.0",
     "types": "link:@modelcontextprotocol/sdk/types",
+    "uuid": "^9.0.1",
     "zod": "^4.1.8"
   },
   "devDependencies": {
@@ -71,6 +72,7 @@
     "@types/node": "^20.12.7",
     "@types/react": "^19.1.1",
     "@types/react-dom": "^19.1.1",
+    "@types/uuid": "^9.0.8",
     "@vanilla-extract/vite-plugin": "4.0.17",
     "@vanilla-extract/webpack-plugin": "2.3.7",
     "@vitejs/plugin-react": "^4.3.1",

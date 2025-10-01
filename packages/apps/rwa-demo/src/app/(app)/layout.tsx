@@ -55,7 +55,7 @@ const RootLayout = ({
 
   useEffect(() => {
     if (isMounted && !user) {
-      router.push('/login');
+      router.push('/');
       return;
     }
   }, [user, isMounted]);
