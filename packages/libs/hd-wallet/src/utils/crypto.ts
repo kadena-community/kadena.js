@@ -1,4 +1,4 @@
-export type BinaryLike = string | ArrayBuffer | Uint8Array | Buffer;
+export type BinaryLike = string | ArrayBuffer | Uint8Array;
 
 /**
  *
