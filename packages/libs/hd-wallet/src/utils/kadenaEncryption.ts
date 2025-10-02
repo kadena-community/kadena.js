@@ -68,13 +68,17 @@ export async function kadenaDecrypt(
   const salt = Buffer.from(saltBase64, 'base64');
   const iv = Buffer.from(ivBase64, 'base64');
   const cipherText = Buffer.from(encryptedBase64, 'base64');
-  const iterations = Buffer.from(iterationsBase64, 'base64').toString();
+  const iterations = iterationsBase64
+    ? Buffer.from(iterationsBase64, 'base64').toString()
+    : undefined;
 
   // decrypt and return the private key.
 
-  const decrypted = await decrypt({ cipherText, iv, iterations }, password, salt).catch(
-    () => undefined,
-  );
+  const decrypted = await decrypt(
+    { cipherText, iv, iterations },
+    password,
+    salt,
+  ).catch(() => undefined);
   if (decrypted) return new Uint8Array(decrypted);
 
   throw new Error('Decryption failed');

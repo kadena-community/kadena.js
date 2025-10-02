@@ -4,6 +4,8 @@
 
 ```ts
 
+/// <reference types="node" />
+
 import { EncryptedString as EncryptedString_2 } from '../utils/kadenaEncryption.js';
 
 // @public (undocumented)

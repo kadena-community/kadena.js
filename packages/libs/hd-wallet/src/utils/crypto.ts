@@ -17,7 +17,6 @@ export const ToArrayBuffer = (data: BinaryLike): ArrayBuffer => {
 };
 
 const DEFAULT_ITERATIONS = 310000;
-const LEGACY_ITERATIONS = 1000;
 
 // derive string key
 async function deriveKey(
@@ -60,7 +59,7 @@ export async function encrypt(
   text: BinaryLike,
   password: BinaryLike,
   salt: BinaryLike,
-):Promise<IEncrypted> {
+): Promise<Required<IEncrypted>> {
   const algo = {
     name: 'AES-GCM',
     length: 256,
@@ -83,9 +82,9 @@ export async function encrypt(
 }
 
 interface IEncrypted {
-    cipherText: BinaryLike;
-    iv: BinaryLike;
-    iterations: string;
+  cipherText: BinaryLike;
+  iv: BinaryLike;
+  iterations?: string;
 }
 
 // Decrypt function
@@ -105,9 +104,12 @@ export async function decrypt(
       await deriveKey(
         password,
         salt,
-        +encrypted.iterations || LEGACY_ITERATIONS,
+        // Use legacy iterations if not specified (for backward compatibility)
+        encrypted.iterations !== undefined
+          ? parseInt(encrypted.iterations, 10)
+          : 1000,
       ),
-     ToArrayBuffer(encrypted.cipherText),
+      ToArrayBuffer(encrypted.cipherText),
     ),
   );
 }
