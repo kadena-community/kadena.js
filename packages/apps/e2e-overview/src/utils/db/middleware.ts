@@ -1,15 +1,22 @@
 import { createServerClient } from '@supabase/ssr';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { env } from 'process';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
 
+  if (!env.SUPABASE_PROJECT_URL || !env.SUPABASE_PUBLISHABLE_KEY) {
+    //needed for build without env vars
+    return '' as unknown as SupabaseClient<any, 'public', any>;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    env.SUPABASE_PROJECT_URL,
+    env.SUPABASE_PUBLISHABLE_KEY,
     {
       cookies: {
         getAll() {
