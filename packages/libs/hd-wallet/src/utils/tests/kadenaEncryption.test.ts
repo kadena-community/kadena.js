@@ -122,6 +122,16 @@ describe('kadenaChangePassword', () => {
     );
   });
 
+  it('should decrypt legacy data with no iterations value provided',async ()=>{
+    const value = Buffer.from('test-message').toString();
+    const legacyEncryptedData =
+      'sXl9mJ3p9vY6bX9u3j5g1w==.5b8f3c4d2e1f0a9b8c7d6e5f4a3b2c1d.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+    const password = 'password123';
+    const decryptedValue = await  kadenaDecrypt(password, legacyEncryptedData);
+    expect(decryptedValue).toEqual(value);
+
+  })
+
   it('fails to decrypt with the old password after the password has been changed', async () => {
     const firstPassword = 'firstPassword123';
     const secondPassword = 'secondPassword123';
