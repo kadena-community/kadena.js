@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prebuild": "pnpm run generatetypes",
     "build": "next build",
     "dev": "next dev",
     "generatetypes": "npx supabase gen types typescript --project-id ykahoipuhxpwitpuyvvn > ./src/database.types.ts",
