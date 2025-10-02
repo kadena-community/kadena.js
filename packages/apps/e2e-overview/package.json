@@ -46,6 +46,7 @@
     "cache-sh": "^1.2.1",
     "classnames": "^2.3.1",
     "cors": "^2.8.5",
+    "cronstrue": "^3.3.0",
     "dockerode": "^4.0.9",
     "dotenv": "~16.4.5",
     "execa": "^9.6.0",

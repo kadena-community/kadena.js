@@ -1,6 +1,7 @@
 'use client';
 
 import { AllAppTestVersions } from '@/components/AllAppTestVersions/AllAppTestVersions';
+import { AppCronSettings } from '@/components/AppCronSettings/AppCronSettings';
 import { useEditApp } from '@/hooks/editApp';
 import type { UpdateApp } from '@/hooks/getAllApps';
 import { useApp } from '@/hooks/getApp';
@@ -19,6 +20,8 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
   const {
     control,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { isValid, errors },
   } = useForm<UpdateApp>({
     values: {
@@ -26,6 +29,7 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
       is_active: data?.is_active || false,
       is_on_dashboard: data?.is_on_dashboard || false,
       name: data?.name || '',
+      cron: data?.cron || '* * * * *',
     },
   });
 
@@ -90,6 +94,7 @@ const Home = ({ params }: { params: Promise<{ appId: string }> }) => {
             />
           )}
         />
+        <AppCronSettings setValue={setValue} value={getValues('cron')} />
 
         <Button type="submit" isDisabled={!isValid} isLoading={isPending}>
           Edit
