@@ -40,6 +40,6 @@ describe('Key generate', () => {
     expect(parsed.legacy).toEqual(true);
     expect(
       Buffer.from(parsed.secretKey, 'base64').toString().split('.').length,
-    ).toEqual(4);
+    ).toEqual(5);
   });
 });
