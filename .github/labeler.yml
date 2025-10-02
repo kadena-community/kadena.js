@@ -49,6 +49,9 @@ Github Config & Actions:
 '@kadena/rwa-demo':
   - changed-files:
       - any-glob-to-any-file: packages/apps/rwa-demo/*
+'@kadena/e2e-overview':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/e2e-overview/*
 '@kadena/graph':
   - changed-files:
       - any-glob-to-any-file: packages/apps/graph/*

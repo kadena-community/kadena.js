@@ -55,7 +55,7 @@ const RootLayout = ({
 
   useEffect(() => {
     if (isMounted && !user) {
-      router.push('/login');
+      router.push('/');
       return;
     }
   }, [user, isMounted]);
@@ -117,7 +117,7 @@ const RootLayout = ({
       )}
       <SideBarLayout
         logo={
-          <Link href="/">
+          <Link href="/login">
             <KLogo />
           </Link>
         }

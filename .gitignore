@@ -104,3 +104,5 @@ temp
 
 # parcel
 .parcel-cache
+
+/.playwright-mcp

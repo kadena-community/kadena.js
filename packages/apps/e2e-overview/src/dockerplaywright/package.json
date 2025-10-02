@@ -1,0 +1,10 @@
+{
+  "name": "playwright-tests",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.47.0"
+  }
+}

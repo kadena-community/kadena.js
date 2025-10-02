@@ -1,0 +1,33 @@
+import { UserProvider } from '@/providers/UserProvider/UserProvider';
+import { MediaContextProvider } from '@kadena/kode-ui';
+import { SideBarLayoutProvider } from '@kadena/kode-ui/patterns';
+import { darkThemeClass } from '@kadena/kode-ui/styles';
+import { ThemeProvider } from 'next-themes';
+import type { FC, PropsWithChildren } from 'react';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Create a client
+const queryClient = new QueryClient();
+
+export const Providers: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <MediaContextProvider>
+      <ThemeProvider
+        attribute="class"
+        value={{
+          light: 'light',
+          dark: darkThemeClass,
+        }}
+        enableSystem={true}
+        enableColorScheme={true} // When enabled, we can't make the background of the embedded iframe transparent
+      >
+        <QueryClientProvider client={queryClient}>
+          <UserProvider>
+            <SideBarLayoutProvider>{children}</SideBarLayoutProvider>
+          </UserProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </MediaContextProvider>
+  );
+};
