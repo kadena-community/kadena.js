@@ -9,7 +9,7 @@ export type BinaryLike = string | ArrayBuffer | Uint8Array;
 export const randomBytes = (size: number) =>
   crypto.getRandomValues(new Uint8Array(size));
 
-export const ToArrayBuffer = (data: BinaryLike): ArrayBuffer => {
+export const toArrayBuffer = (data: BinaryLike): ArrayBuffer => {
   if (typeof data === 'string') {
     return new TextEncoder().encode(data).buffer;
   }
@@ -34,7 +34,7 @@ async function deriveKey(
     algo,
     await crypto.subtle.importKey(
       'raw',
-      ToArrayBuffer(
+      toArrayBuffer(
         typeof password === 'string'
           ? new TextEncoder().encode(password).buffer
           : password,
@@ -71,7 +71,7 @@ export async function encrypt(
       await crypto.subtle.encrypt(
         algo,
         await deriveKey(password, salt, DEFAULT_ITERATIONS),
-        ToArrayBuffer(
+        toArrayBuffer(
           typeof text === 'string' ? new TextEncoder().encode(text) : text,
         ),
       ),
@@ -109,7 +109,7 @@ export async function decrypt(
           ? parseInt(encrypted.iterations, 10)
           : 1000,
       ),
-      ToArrayBuffer(encrypted.cipherText),
+      toArrayBuffer(encrypted.cipherText),
     ),
   );
 }
