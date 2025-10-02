@@ -6,6 +6,8 @@
 
 import BigNumber from 'bignumber.js';
 import type { ICommand } from '@kadena/types';
+import type { IPactDecimal } from '@kadena/types';
+import type { IPactInt } from '@kadena/types';
 import type { IUnsignedCommand } from '@kadena/types';
 import type { PactCode } from '@kadena/types';
 import type { PactValue } from '@kadena/types';
@@ -19,8 +21,10 @@ export function ensureSignedCommand(command: IUnsignedCommand | ICommand): IComm
 // @alpha
 export function isSignedCommand(command: IUnsignedCommand | ICommand): command is ICommand;
 
+// Warning: (ae-forgotten-export) The symbol "ExtendedBigNumber" needs to be exported by the entry point index.d.ts
+//
 // @alpha
-export class PactNumber extends BigNumber {
+export class PactNumber extends ExtendedBigNumber {
     constructor(value: string | number | {
         int: string;
     } | {

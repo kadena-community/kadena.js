@@ -30,7 +30,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc && api-extractor run --verbose && cat src/extend-bignumber.ts >> dist/pactjs.d.ts",
+    "build": "tsc && api-extractor run --verbose",
+    "build:local": "tsc && api-extractor run --local --verbose",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -43,6 +44,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@kadena/types": "workspace:*",
     "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
@@ -50,7 +52,6 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@kadena/types": "workspace:*",
     "@microsoft/api-extractor": "^7.43.1",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
