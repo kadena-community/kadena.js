@@ -24,7 +24,9 @@ export async function kadenaEncrypt<
   // Using randomBytes for the salt is fine here because the salt is not secret but should be unique.
   const salt: BinaryLike = randomBytes(16);
   const { cipherText, iv, iterations } = await encrypt(
-    typeof message === 'string' ? new Uint8Array(Buffer.from(message)) : message,
+    typeof message === 'string'
+      ? new Uint8Array(Buffer.from(message))
+      : message,
     password,
     salt,
   );
