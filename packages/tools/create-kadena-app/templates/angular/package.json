@@ -10,14 +10,14 @@
   },
   "license": "ISC",
   "scripts": {
-    "build": "ng build",
+    "build": "pnpm exec ng build",
     "format": "prettier --write .",
-    "ng": "ng",
+    "ng": "pnpm exec ng",
     "pactjs:generate:contracts": "pactjs contract-generate --file ./pact/message-store.pact; pactjs contract-generate --file ./pact/root/coin-v5.pact",
-    "start": "ng serve",
-    "test": "ng test",
-    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
-    "watch": "ng build --watch --configuration development"
+    "start": "pnpm exec ng serve",
+    "test": "pnpm exec ng test",
+    "test:ci": "pnpm exec ng test --watch=false --browsers=ChromeHeadless",
+    "watch": "pnpm exec ng build --watch --configuration development"
   },
   "dependencies": {
     "@angular/animations": "^17.0.2",
@@ -30,6 +30,12 @@
     "@angular/platform-browser-dynamic": "^17.0.2",
     "@angular/router": "^17.0.2",
     "@kadena/client": "^1.6.2",
+    "@kadena/wallet-adapter-core": "0.0.2",
+    "@kadena/wallet-adapter-ecko": "0.0.2",
+    "@kadena/wallet-adapter-chainweaver-legacy": "0.0.2",
+    "@kadena/wallet-adapter-walletconnect": "0.0.2",
+    "buffer": "^6.0.3",
+    "process": "^0.11.10",
     "rxjs": "~7.8.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -55,4 +61,3 @@
     "typescript": "~5.2.2"
   }
 }
-
