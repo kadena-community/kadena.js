@@ -122,6 +122,18 @@ describe('kadenaChangePassword', () => {
     );
   });
 
+  it('Should decrypt legacy messages', async () => {
+    const value = 'test-message';
+    const password = 'test-password';
+    // This encrypted message was generated with the legacy code
+    // using 1000 iterations and without storing the iterations in the encrypted string.
+    // It is important that we can still decrypt these old messages.
+    const encryptedMessage =
+      'ZFBsTGsyUG16QXY1dk5PUEIrVHM2dz09Lm5OUDZ1UEVZZmJjMTRnMUIuYnJHdDBqZERxbW55SVEydjA3UlpMRlJDeUN4WjlPa05qN2pZR0E9PQ==';
+    const decryptedMessage = await kadenaDecrypt(password, encryptedMessage);
+    expect(Buffer.from(decryptedMessage).toString('utf-8')).toEqual(value);
+  });
+
   it('fails to decrypt with the old password after the password has been changed', async () => {
     const firstPassword = 'firstPassword123';
     const secondPassword = 'secondPassword123';

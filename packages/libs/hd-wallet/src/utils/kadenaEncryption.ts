@@ -1,5 +1,5 @@
 import type { BinaryLike } from './crypto.js';
-import { decrypt, encrypt, randomBytes } from './crypto.js';
+import { decrypt, encrypt, randomBytes, toArrayBuffer } from './crypto.js';
 
 /**
  * @public
@@ -22,16 +22,18 @@ export async function kadenaEncrypt<
   encode: TEncode = 'base64' as TEncode,
 ): Promise<TReturn> {
   // Using randomBytes for the salt is fine here because the salt is not secret but should be unique.
-  const salt = randomBytes(16);
-  const { cipherText, iv } = await encrypt(
-    typeof message === 'string' ? Buffer.from(message) : message,
+  const salt: BinaryLike = randomBytes(16);
+  const { cipherText, iv, iterations } = await encrypt(
+    typeof message === 'string'
+      ? new Uint8Array(Buffer.from(message))
+      : message,
     password,
     salt,
   );
 
   const encrypted = Buffer.from(
-    [salt, iv, cipherText]
-      .map((x) => Buffer.from(x).toString('base64'))
+    [salt, iv, cipherText, iterations]
+      .map((x) => Buffer.from(toArrayBuffer(x)).toString('base64'))
       .join('.'),
   );
 
@@ -59,21 +61,26 @@ export async function kadenaDecrypt(
   if (!encryptedData) {
     throw new Error('Encrypted data is empty');
   }
-  const [saltBase64, ivBase64, encryptedBase64] =
+  const [saltBase64, ivBase64, encryptedBase64, iterationsBase64] =
     typeof encryptedData === 'string'
       ? Buffer.from(encryptedData, 'base64').toString().split('.')
-      : Buffer.from(encryptedData).toString().split('.');
+      : Buffer.from(toArrayBuffer(encryptedData)).toString().split('.');
 
   // Convert from Base64.
-  const salt = Buffer.from(saltBase64, 'base64');
-  const iv = Buffer.from(ivBase64, 'base64');
-  const cipherText = Buffer.from(encryptedBase64, 'base64');
+  const salt = new Uint8Array(Buffer.from(saltBase64, 'base64'));
+  const iv = new Uint8Array(Buffer.from(ivBase64, 'base64'));
+  const cipherText = new Uint8Array(Buffer.from(encryptedBase64, 'base64'));
+  const iterations = iterationsBase64
+    ? Buffer.from(iterationsBase64, 'base64').toString()
+    : undefined;
 
   // decrypt and return the private key.
 
-  const decrypted = await decrypt({ cipherText, iv }, password, salt).catch(
-    () => undefined,
-  );
+  const decrypted = await decrypt(
+    { cipherText, iv, iterations },
+    password,
+    salt,
+  ).catch(() => undefined);
   if (decrypted) return new Uint8Array(decrypted);
 
   throw new Error('Decryption failed');

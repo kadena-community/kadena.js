@@ -61,11 +61,10 @@ Below are some common use cases for the `@kadena/hd-wallet` library.
   master private key. It cannot be converted back to the mnemonic or entropy.
 - **Derivation Path**: A structured way to derive multiple key pairs from a
   single master seed.
-- **[SLIP-0010](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/hd-wallet/docs/decisions/0001-use-slip10-for-private-key-generation.md)**:
-  The standard used for key derivation, ensuring compatibility with other
-  systems.
-- **[KIP-0026 (draft)](https://github.com/Takadenoshi/KIPs/blob/kip-0026/kip-0026.md)**
-  Key Derivation and Mnemonic encoding methods for Kadena
+- **[SLIP-0010][2]**: The standard used for key derivation, ensuring
+  compatibility with other systems.
+- **[KIP-0026 (draft)][3]** Key Derivation and Mnemonic encoding methods for
+  Kadena
 
 ## High-Level Steps
 
@@ -94,7 +93,7 @@ console.log(mnemonic); // Outputs a 12-word mnemonic phrase
 You can also generate a mnemonic phrase from a specific entropy value using the
 following function:
 
-> **IMPORTANT**  
+> **IMPORTANT**\
 > This isn't necessarily the same mnemonic from which the entropy was generated
 
 ```javascript
@@ -350,8 +349,7 @@ and signing functionalities directly. Here’s a simple flow for implementation:
 
 ### Key Derivation Path
 
-The Kadena wallet uses the standard derivation path
-([SLIP-0010](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/hd-wallet/docs/decisions/0001-use-slip10-for-private-key-generation.md)):
+The Kadena wallet uses the standard derivation path ([SLIP-0010][2]):
 
 ```
 m'/44'/626'/<index>'
@@ -379,8 +377,6 @@ or
 yarn add @kadena/wallet-sdk
 ```
 
-[1]: ./docs/decisions/
-
 ## Conclusion
 
 The `@kadena/hd-wallet` library offers a robust set of tools for generating
@@ -389,7 +385,10 @@ basic usage scenarios. For more detailed documentation, please refer to the
 library's source code and additional resources.
 
 If you encounter any issues or have any questions, feel free to open an issue on
-the project's [GitHub repository][2].
+the project's [GitHub repository][4].
 
 [1]: ./docs/decisions/
-[2]: https://github.com/kadena-community/kadena.js/issues/new/choose
+[2]:
+  https://github.com/kadena-community/kadena.js/blob/main/packages/libs/hd-wallet/docs/decisions/0001-use-slip10-for-private-key-generation.md
+[3]: https://github.com/Takadenoshi/KIPs/blob/kip-0026/kip-0026.md
+[4]: https://github.com/kadena-community/kadena.js/issues/new/choose
