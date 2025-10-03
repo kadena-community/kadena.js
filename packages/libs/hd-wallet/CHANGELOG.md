@@ -1,5 +1,12 @@
 # @kadena/hd-wallet
 
+## 0.6.2
+
+### Patch Changes
+
+- f23cdfd: Improved the encryption security by setting 310000 as default
+  iterations
+
 ## 0.6.1
 
 ### Patch Changes

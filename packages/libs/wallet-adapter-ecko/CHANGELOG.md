@@ -1,5 +1,11 @@
 # @kadena/wallet-adapter-ecko
 
+## 0.0.6
+
+### Patch Changes
+
+- @kadena/wallet-adapter-core\@0.1.3
+
 ## 0.0.5
 
 ### Patch Changes

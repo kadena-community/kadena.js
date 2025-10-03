@@ -1,5 +1,14 @@
 # @kadena/proof-of-us
 
+## 0.5.28
+
+### Patch Changes
+
+- Updated dependencies \[59f3cec]
+  - @kadena/pactjs\@0.6.0
+  - @kadena/graph\@2.2.7
+  - @kadena/client\@1.18.3
+
 ## 0.5.27
 
 ### Patch Changes

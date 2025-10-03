@@ -1,5 +1,12 @@
 # @kadena/wallet-adapter-metamask-snap
 
+## 0.1.4
+
+### Patch Changes
+
+- @kadena/client\@1.18.3
+- @kadena/wallet-adapter-core\@0.1.3
+
 ## 0.1.3
 
 ### Patch Changes
