@@ -1,5 +1,11 @@
 # @kadena/spirekey-example
 
+## 0.0.18
+
+### Patch Changes
+
+- @kadena/client\@1.18.3
+
 ## 0.0.17
 
 ### Patch Changes

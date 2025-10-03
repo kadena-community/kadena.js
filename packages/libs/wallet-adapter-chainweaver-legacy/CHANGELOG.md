@@ -1,5 +1,12 @@
 # @kadena/wallet-adapter-chainweaver-legacy
 
+## 0.0.6
+
+### Patch Changes
+
+- @kadena/client\@1.18.3
+- @kadena/wallet-adapter-core\@0.1.3
+
 ## 0.0.5
 
 ### Patch Changes
