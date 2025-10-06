@@ -336,11 +336,36 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
   public async disconnect(): Promise<void> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
-    if (!this.client || !this.provider || !this.provider.session) return;
-    await this.client.disconnect({
-      topic: this.provider.session.topic,
-      reason: getSdkError('USER_DISCONNECTED'),
-    });
+    if (this.client) {
+      try {
+        if (this.provider.session) {
+          await this.client.disconnect({
+            topic: this.provider.session.topic,
+            reason: getSdkError('USER_DISCONNECTED'),
+          });
+        }
+      } catch (error) {
+        console.error('Error disconnecting session:', error);
+      }
+
+      // Also clear any existing pairings so a fresh connect does not reuse them
+      try {
+        const pairings = this.client.core.pairing.getPairings();
+        await Promise.all(
+          pairings.map(async (p) => {
+            try {
+              // WalletConnect v2 exposes pairing.disconnect({ topic })
+              await (this.client as any).core.pairing.disconnect({ topic: p.topic });
+            } catch (err) {
+              // Fallback: if disconnect is unavailable, ignore and continue
+              console.warn('Failed to disconnect pairing', p.topic, err);
+            }
+          }),
+        );
+      } catch (error) {
+        console.error('Error clearing pairings:', error);
+      }
+    }
 
     // Clear state after disconnect
     this.provider = undefined as any;
