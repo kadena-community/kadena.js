@@ -3,10 +3,12 @@
  *
  * This module provides a comprehensive adapter implementation for the MetaMask Kadena Snap,
  * extending the BaseWalletAdapter from '@kadena/wallet-adapter-core'. It serves as a bridge
- * between your dApp and the snaK wallet, enabling you to:
+ * between your dApp and snaK, enabling you to:
  *
- * - Detect the MetaMask Snap provider and initialize connection parameters.
  * - Connect to the Snap and fetch account and network information.
+ * - During connect, install/enable the Kadena Snap if needed. This is where
+ *   MetaMask may prompt the user (unlock/approval). Detection itself is
+ *   non-invasive and does not trigger prompts.
  * - Handle network change events without forcing a page reload,
  *   keeping your application in sync with the Snap’s state.
  * - Sign transactions and commands via the Snap’s `kda_signTransaction` RPC.
@@ -139,16 +141,27 @@ export class SnapAdapter extends BaseWalletAdapter {
     }
 
     try {
-      // 1. Check if the Snap is connected
+      // 0. Ensure the Kadena Snap is installed/enabled.
+      // This is the correct place to potentially prompt the user to unlock/approve.
+      const snaps = (await this.provider.request({
+        method: 'wallet_getSnaps',
+      })) as Record<
+        string,
+        { id: string; enabled?: boolean; blocked?: boolean }
+      >;
+
+      if (!snaps[defaultSnapOrigin]) {
+        await this.provider.request({
+          method: 'wallet_requestSnaps',
+          params: { [defaultSnapOrigin]: { version: '*' } },
+        });
+      }
+
+      // 1. Check if the Snap is connected/ready
       const isConnected = await this._checkStatus();
       console.debug('Metamask Snap Connected?', isConnected);
       if (!isConnected) {
-        // prompt the user to connect the Snap
-        await this.provider.request({
-          method: 'wallet_requestPermissions',
-          params: [{ snapId: defaultSnapOrigin, permissions: {} }],
-        });
-        // re-check
+        // Re-check once after installation; if still not connected, fail.
         if (!(await this._checkStatus())) {
           throw new Error(ERRORS.FAILED_TO_CONNECT);
         }
@@ -230,7 +243,6 @@ export class SnapAdapter extends BaseWalletAdapter {
       }
 
       case 'kadena_getAccounts_v2': {
-        // _getAccounts() returns IAccountInfo[]
         const result = await this._getAccounts();
         return {
           id,

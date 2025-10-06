@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ISnapProvider } from '../provider';
-import { defaultSnapOrigin, detectSnapProvider } from '../provider';
+import { detectSnapProvider } from '../provider';
 
 describe('detectSnapProvider', () => {
   beforeEach(() => {
@@ -15,18 +15,10 @@ describe('detectSnapProvider', () => {
     vi.useRealTimers();
   });
 
-  it('resolves to provider when window.ethereum exists, isMetaMask true, and snap installed', async () => {
-    const snaps = {
-      [defaultSnapOrigin]: {
-        id: defaultSnapOrigin,
-        version: '0.0.0',
-        enabled: true,
-        blocked: false,
-      },
-    };
+  it('resolves to provider when window.ethereum exists and isMetaMask true (no RPC calls)', async () => {
     const fakeProvider: ISnapProvider = {
       isMetaMask: true,
-      request: vi.fn().mockResolvedValue(snaps),
+      request: vi.fn(),
       on: () => {},
       off: () => {},
     };
@@ -35,9 +27,7 @@ describe('detectSnapProvider', () => {
 
     const result = await detectSnapProvider();
     expect(result).toBe(fakeProvider);
-    expect(fakeProvider.request).toHaveBeenCalledWith({
-      method: 'wallet_getSnaps',
-    });
+    expect(fakeProvider.request).not.toHaveBeenCalled();
   });
 
   it('resolves to undefined when window.ethereum exists but isMetaMask false', async () => {

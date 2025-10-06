@@ -105,7 +105,7 @@ describe('SnapAdapter', () => {
       const network: INetworkInfo = {
         networkName: 'mainnet',
         networkId: 'mainnet01',
-        urls: ['https://api.chainweb.com'],
+        url: ['https://api.chainweb.com'],
       };
       vi.spyOn(adapter as any, '_getActiveNetwork').mockResolvedValueOnce(
         network,
@@ -122,7 +122,7 @@ describe('SnapAdapter', () => {
         {
           networkName: 'testnet',
           networkId: 'testnet04',
-          urls: ['https://api.testnet.chainweb.com'],
+          url: ['https://api.testnet.chainweb.com'],
         },
       ];
       vi.spyOn(adapter as any, '_getNetworks').mockResolvedValueOnce(networks);
