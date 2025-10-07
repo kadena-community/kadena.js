@@ -39,6 +39,7 @@
     "@kadena/wallet-adapter-ecko": "workspace:*",
     "@kadena/wallet-adapter-magic": "workspace:*",
     "@kadena/wallet-adapter-react": "workspace:*",
+    "@kadena/wallet-adapter-walletconnect": "workspace:*",
     "@magic-ext/kadena": "^0.11.0",
     "@sentry/nextjs": "^10.5.0",
     "@sentry/tracing": "^7.120.3",

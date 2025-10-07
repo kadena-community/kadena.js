@@ -4,8 +4,11 @@ import type {
   IWalletAccount,
 } from '@/providers/AccountProvider/AccountType';
 import type { ChainId } from '@kadena/client';
+import { CHAINWEAVER_ADAPTER } from '@kadena/wallet-adapter-chainweaver';
 import type { IAccountInfo } from '@kadena/wallet-adapter-core';
+import { ECKO_ADAPTER } from '@kadena/wallet-adapter-ecko';
 import { MAGIC_ADAPTER } from '@kadena/wallet-adapter-magic';
+import { WALLET_CONNECT_ADAPTER } from '@kadena/wallet-adapter-walletconnect';
 
 type WalletName = (typeof WALLETTYPES)[keyof typeof WALLETTYPES];
 
@@ -36,9 +39,10 @@ export function mapWalletAdapterAccount(
 }
 
 const NAMES_MAP = {
-  [WALLETTYPES.CHAINWEAVER]: 'Chainweaver',
-  [WALLETTYPES.ECKO]: 'Ecko',
+  [WALLETTYPES.CHAINWEAVER]: CHAINWEAVER_ADAPTER,
+  [WALLETTYPES.ECKO]: ECKO_ADAPTER,
   [WALLETTYPES.MAGIC]: MAGIC_ADAPTER,
+  [WALLETTYPES.WALLETCONNECT]: WALLET_CONNECT_ADAPTER,
 } as const satisfies Record<WalletName, string>;
 
 export function getWalletAdapterName(

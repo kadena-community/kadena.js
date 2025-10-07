@@ -178,6 +178,15 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
           tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.MAGIC);
           break;
         }
+        case WALLETTYPES.WALLETCONNECT: {
+          const result = await adapter.connect();
+          if (!result) throw new Error(`${adapterName} connection failed`);
+          tempAccount = mapWalletAdapterAccount(
+            result,
+            WALLETTYPES.WALLETCONNECT,
+          );
+          break;
+        }
         default: {
           addNotification({
             intent: 'negative',
