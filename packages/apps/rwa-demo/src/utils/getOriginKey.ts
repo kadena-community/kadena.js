@@ -7,3 +7,7 @@ export const getOriginKey = (origin?: string | null) => {
   normalized = normalized.replace(/[^a-zA-Z0-9 ]/g, '');
   return normalized;
 };
+
+export const cleanupOrigin = (origin: string) => {
+  return origin.replace(/\/$/, '');
+};

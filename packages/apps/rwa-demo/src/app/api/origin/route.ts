@@ -1,4 +1,4 @@
-import { getOriginKey } from '@/utils/getOriginKey';
+import { cleanupOrigin, getOriginKey } from '@/utils/getOriginKey';
 import type { NextRequest } from 'next/server';
 import { getDB } from './../admin/app';
 
@@ -16,10 +16,10 @@ export const GET = async (request: NextRequest) => {
   }
 
   const database = getDB();
-  const orgRef = await database
+  const orgRef = database
     ?.ref('organisationsData')
     .orderByChild(`domains/${getOriginKey(origin)}/value`)
-    .equalTo(origin);
+    .equalTo(cleanupOrigin(origin));
 
   const snapshot = await orgRef.once('value');
   const data = snapshot.toJSON() ?? {};
