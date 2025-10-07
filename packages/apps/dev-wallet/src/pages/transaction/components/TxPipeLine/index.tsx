@@ -24,7 +24,7 @@ import {
   Text,
   Tooltip,
 } from '@kadena/kode-ui';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { TxStatusItem } from './components/TxStatusItem';
 import { iconSuccessClass, statusListWrapperClass } from './style.css';
 import { statusPassed } from './utils';
@@ -99,6 +99,17 @@ function TxStatusList({
   const [signError, setSignError] = useState<string | null>(null);
 
   const copyTx = useMemo(() => getCopyTxString(tx), [tx.hash, tx.cmd, tx.sigs]);
+
+  //preflight will go automatically
+  useEffect(() => {
+    if (
+      statusPassed(tx.status, 'signed') &&
+      !statusPassed(tx.status, 'preflight')
+    ) {
+      console.log('auto preflight');
+      onPreflight();
+    }
+  }, [tx.status]);
 
   const statusList = [
     variant !== 'minimized' && (
@@ -192,83 +203,31 @@ function TxStatusList({
       <TxStatusItem variant={variant} status="success" label="Signed" />
     ),
     showAfterCont &&
-      variant !== 'tile' &&
-      statusPassed(tx.status, 'signed') &&
-      !statusPassed(tx.status, 'preflight') && (
+      statusPassed(tx.status, 'preflight') &&
+      tx.preflight?.result.status !== 'success' && (
         <TxStatusItem
           variant={variant}
-          status="paused"
-          label={sendDisabled ? 'Transaction is pending' : 'Ready to preflight'}
+          status={'failure'}
+          label={'Preflight: The transaction has issues'}
         >
-          {variant === 'expanded' && (
-            <>
-              <Stack gap={'sm'}>
-                <Tooltip
-                  position="bottom"
-                  isCompact
-                  isOpen={showPreflightInfo}
-                  content={
-                    <>
-                      <div>Preflight will test your transaction first</div>
-                      <div>to avoid paying gas for a failed submission.</div>
-                    </>
-                  }
-                >
-                  <Button
-                    isCompact
-                    variant="transparent"
-                    startVisual={<MonoInfo />}
-                    onPress={() => setShowPreflightInfo((v) => !v)}
-                  />
-                </Tooltip>
-                <CopyButton
-                  data={copyTx}
-                  icon={<MonoShare />}
-                  tooltip={{
-                    content:
-                      'The transaction url is copied to to the clipboard.',
-                    position: 'bottom',
-                  }}
-                />
+          {variant === 'expanded' &&
+            tx.status === 'preflight' &&
+            tx.preflight?.result.status === 'failure' && (
+              <>
+                <Button isCompact onClick={() => onPreflight()}>
+                  <MonoRefresh />
+                </Button>
                 <Button
                   isCompact
-                  onClick={() => onPreflight()}
-                  isDisabled={sendDisabled}
-                  startVisual={<MonoViewInAr />}
+                  variant="transparent"
+                  onClick={() => onSubmit(true)}
                 >
-                  Preflight
+                  Skip
                 </Button>
-              </Stack>
-            </>
-          )}
+              </>
+            )}
         </TxStatusItem>
       ),
-    showAfterCont && statusPassed(tx.status, 'preflight') && (
-      <TxStatusItem
-        variant={variant}
-        status={
-          tx.preflight?.result.status === 'success' ? 'success' : 'failure'
-        }
-        label="Preflight"
-      >
-        {variant === 'expanded' &&
-          tx.status === 'preflight' &&
-          tx.preflight?.result.status === 'failure' && (
-            <>
-              <Button isCompact onClick={() => onPreflight()}>
-                <MonoRefresh />
-              </Button>
-              <Button
-                isCompact
-                variant="transparent"
-                onClick={() => onSubmit(true)}
-              >
-                Skip
-              </Button>
-            </>
-          )}
-      </TxStatusItem>
-    ),
     showAfterCont &&
       variant !== 'tile' &&
       tx.status === 'preflight' &&
