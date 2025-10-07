@@ -1,0 +1,39 @@
+{
+  "name": "sample",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Nextjs starter project with @kadena/client integration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/create-kadena-app/templates/nextjs"
+  },
+  "license": "ISC",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@kadena/client": "^1.5.0",
+    "@types/react": "18.2.22",
+    "dotenv": "^17.2.0",
+    "eslint-config-next": "13.5.1",
+    "next": "^14.0.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-testing-library": "^6.1.0"
+  }
+}

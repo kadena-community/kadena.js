@@ -1,0 +1,7 @@
+.kadena/
+node_modules/
+.pc-history
+bun.lock
+output.json
+output2.json    
+.env
