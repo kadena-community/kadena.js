@@ -162,17 +162,17 @@ const generate =
 
     // Installing dependencies
     log(chalk.blue.italic('Installing dependencies ...'));
-    executeCommand('npm', ['install', '--loglevel=error'], {
+    executeCommand('pnpm', ['install', '--reporter=silent'], {
       cwd: targetDirectory,
     });
 
     // Generating Pact types for demo contract
     log(chalk.magenta('Generating types for Pact smart contract'));
-    executeCommand('npm', ['run', 'pactjs:generate:contracts'], {
+    executeCommand('pnpm', ['run', 'pactjs:generate:contracts'], {
       cwd: targetDirectory,
     });
 
-    executeCommand('npm', ['run', 'format'], {
+    executeCommand('pnpm', ['run', 'format'], {
       cwd: targetDirectory,
     });
 

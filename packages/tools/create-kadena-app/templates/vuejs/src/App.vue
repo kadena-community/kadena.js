@@ -1,32 +1,120 @@
 <script lang="ts">
+import { defineComponent } from 'vue';
 import { HalfCircleSpinner } from 'epic-spinners';
 import writeMessage from './utils/writeMessage';
 import readMessage from './utils/readMessage';
+import { WalletAdapterClient } from '@kadena/wallet-adapter-core';
+import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
+import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweaver-legacy';
+import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
 
 export default {
-  data: () => ({
-    account: '',
-    messageFromChain: '',
-    messageToWrite: '',
-    writeInProgress: false,
-  }),
+  name: 'App',
+  components: { HalfCircleSpinner },
+
+  data() {
+    return {
+      selectedWallet: '' as string,
+      account: '' as string,
+      messageFromChain: '' as string,
+      messageToWrite: '' as string,
+      writeInProgress: false as boolean,
+      walletClient: null as any,
+      availableWallets: [] as Array<{name: string, detected: boolean}>,
+      loading: false as boolean,
+    };
+  },
+
+  async mounted() {
+    await this.initializeWallets();
+  },
 
   methods: {
+    async initializeWallets() {
+      try {
+        const adapters = [
+          createEckoAdapter(),
+          createChainweaverLegacyAdapter(),
+          createWalletConnectAdapter(),
+        ];
+
+        this.walletClient = new WalletAdapterClient(adapters as any);
+        await this.walletClient.init();
+
+        // Check which wallets are detected
+        this.availableWallets = adapters.map(adapter => ({
+          name: adapter.name,
+          detected: this.walletClient?.isDetected(adapter.name) || false
+        }));
+      } catch (err) {
+        console.error('Failed to initialize wallets:', err);
+      }
+    },
+
+    async connectWallet() {
+      if (!this.selectedWallet || !this.walletClient) {
+        console.error('No wallet selected or client not initialized');
+        return;
+      }
+
+      this.loading = true;
+      try {
+        const accountInfo = await this.walletClient.connect(
+          this.selectedWallet,
+          this.selectedWallet === "Chainweaver"
+            ? {
+                accountName: prompt("Input your account"),
+                tokenContract: "coin",
+                chainIds: ["0", "1"],
+              }
+            : undefined,
+        );
+        this.account = accountInfo.accountName;
+
+        const networkInfo = await this.walletClient.getActiveNetwork(this.selectedWallet);
+        console.log("Connected to", this.selectedWallet, "->", accountInfo?.accountName);
+      } catch (err) {
+        console.error('Wallet connection failed:', err);
+        
+        // Provide user-friendly error messages
+        if (this.selectedWallet === "Chainweaver") {
+          if (err instanceof Error && err.message.includes("fetch")) {
+            alert("Chainweaver connection failed. Please make sure:\n• Chainweaver desktop app is running\n• The app is accessible on localhost:9467\n• Your account exists on the blockchain");
+          } else if (err instanceof Error && err.message.includes("Account not found")) {
+            alert("Account verification failed. Please check:\n• Your account name is correct (should start with 'k:')\n• The account exists on the specified chains\n• You have the correct network selected");
+          } else {
+            alert("Chainweaver connection failed. Please check your account name and ensure Chainweaver desktop app is running.");
+          }
+        } else if (this.selectedWallet === "WalletConnect") {
+          alert("WalletConnect connection failed. Please try again or check your wallet app.");
+        } else {
+          alert(`Failed to connect to ${this.selectedWallet}. Please make sure the wallet is installed and try again.`);
+        }
+      } finally {
+        this.loading = false;
+      }
+    },
+
+
     async readMessage() {
       this.messageFromChain = await readMessage({ account: this.account });
     },
+
     async writeMessage() {
       this.writeInProgress = true;
-      await writeMessage({
-        account: this.account,
-        messageToWrite: this.messageToWrite,
-      });
-      this.writeInProgress = false;
-      this.messageToWrite;
+      try {
+        await writeMessage({
+          account: this.account,
+          messageToWrite: this.messageToWrite,
+          walletClient: this.walletClient,
+          walletName: this.selectedWallet,
+        });
+        this.writeInProgress = false;
+      } catch (err) {
+        console.error('Error writing message', err);
+        this.writeInProgress = false;
+      }
     },
-  },
-  components: {
-    HalfCircleSpinner,
   },
 };
 </script>
@@ -47,24 +135,56 @@ export default {
         </p>
         <p class="note">
           Use the form below to interact with the Kadena blockchain using
-          <code>@kadena/client</code> and edit
-          <code>src/pages/index.tsx</code> to get started.
+          <code>@kadena/client</code> and edit <code>src/App.vue</code> to get
+          started.
         </p>
       </div>
     </section>
+
+    <!-- Wallet / Message UI -->
     <section class="contentWrapper">
+      <!-- Wallet card -->
+      <div class="card">
+        <h4 class="cardTitle">Wallet</h4>
+
+        <fieldset class="fieldset">
+          <label for="wallet-select" class="fieldLabel">Select Wallet</label>
+          <select id="wallet-select" v-model="selectedWallet" class="input">
+            <option value="">-- select a wallet --</option>
+            <option 
+              v-for="wallet in availableWallets" 
+              :key="wallet.name" 
+              :value="wallet.name"
+            >
+              {{ wallet.name }} {{ wallet.detected ? '(Detected)' : '(Not found)' }}
+            </option>
+          </select>
+        </fieldset>
+
+        <div class="buttonWrapper">
+          <button 
+            @click="connectWallet" 
+            :disabled="loading || !selectedWallet || !!account"
+            class="button"
+          >
+            {{ loading ? "Connecting..." : "Connect Wallet" }}
+          </button>
+        </div>
+
+        <fieldset class="fieldset">
+          <label for="account" class="fieldLabel">Connected Account</label>
+          <textarea
+            id="account"
+            v-model="account"
+            readonly
+            class="input codeFont nonScrollable"
+          ></textarea>
+        </fieldset>
+      </div>
       <div class="blockChain">
+        <!-- Write card -->
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
-          <fieldset class="fieldset">
-            <label for="account" class="fieldLabel">My Account</label>
-            <input
-              id="account"
-              v-model="account"
-              placeholder="Please enter a valid k:account"
-              class="input codeFont"
-            />
-          </fieldset>
           <fieldset class="fieldset">
             <label for="write-message" class="fieldLabel">Write Message</label>
             <textarea
@@ -74,22 +194,24 @@ export default {
               class="input"
             ></textarea>
           </fieldset>
+
           <div class="buttonWrapper">
             <half-circle-spinner
+              v-if="writeInProgress"
               :animation-duration="1000"
               :size="30"
               color="#ff1d5e"
-              v-show="writeInProgress"
             />
             <button
               @click="writeMessage"
-              :disabled="!messageToWrite || writeInProgress"
+              :disabled="!messageToWrite || writeInProgress || !account || !selectedWallet"
               class="button"
             >
               Write
             </button>
           </div>
         </div>
+
         <div class="card">
           <h4 class="cardTitle">Read from the blockchain</h4>
           <fieldset class="fieldset">
@@ -102,7 +224,9 @@ export default {
             ></textarea>
           </fieldset>
           <div class="buttonWrapper">
-            <button @click="readMessage" :disabled="!account">Read</button>
+            <button class="button" @click="readMessage" :disabled="!account">
+              Read
+            </button>
           </div>
         </div>
       </div>
@@ -126,6 +250,7 @@ export default {
         </div>
       </div>
     </section>
+
   </main>
 </template>
 
@@ -344,5 +469,27 @@ export default {
 
 .link:hover {
   text-decoration: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
 }
 </style>
