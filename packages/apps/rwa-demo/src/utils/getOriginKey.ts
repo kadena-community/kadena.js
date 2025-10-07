@@ -9,5 +9,5 @@ export const getOriginKey = (origin?: string | null) => {
 };
 
 export const cleanupOrigin = (origin: string) => {
-  return origin.replace(/\/$/, '');
+  return origin.replace(/\/$/, '').toLowerCase();
 };

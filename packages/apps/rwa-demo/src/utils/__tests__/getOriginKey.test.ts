@@ -27,4 +27,7 @@ describe('cleanupOrigin', () => {
       'http://masters-of-the-universe.org',
     );
   });
+  it('should convert the origin to lowercase', () => {
+    expect(cleanupOrigin('HTTPS://skeleTor.Com/')).toBe('https://skeletor.com');
+  });
 });

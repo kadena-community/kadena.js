@@ -2,6 +2,7 @@ import { Confirmation } from '@/components/Confirmation/Confirmation';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { useNotifications } from '@/hooks/notifications';
 import { useUser } from '@/hooks/user';
+import { cleanupOrigin } from '@/utils/getOriginKey';
 import { OrganisationStore } from '@/utils/store/organisationStore';
 import { RootAdminStore } from '@/utils/store/rootAdminStore';
 import { MonoDelete } from '@kadena/kode-icons';
@@ -100,7 +101,9 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     const newOrganisation = {
       ...organisation,
       ...cleanedData,
-      domains: [...data.domains, { value: newDomain }],
+      domains: newDomain
+        ? [...data.domains, { value: cleanupOrigin(newDomain) }]
+        : data.domains,
     };
 
     await orgStore.updateOrganisation(newOrganisation);
