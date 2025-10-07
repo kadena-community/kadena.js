@@ -20,7 +20,7 @@ import { useWallet } from '@/modules/wallet/wallet.hook';
 import { normalizeSigs } from '@/utils/normalizeSigs';
 import { shortenPactCode } from '@/utils/parsedCodeToPact';
 import { base64UrlEncodeArr } from '@kadena/cryptography-utils';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Value } from './helpers';
 import {
   codeClass,
@@ -76,6 +76,16 @@ export const TxTile = ({
     setCopyClick(true);
     setTimeout(() => setCopyClick(false), 5000);
   }
+
+  useEffect(() => {
+    if (
+      statusPassed(tx.status, 'signed') &&
+      !statusPassed(tx.status, 'preflight')
+    ) {
+      console.log('auto preflight');
+      onPreflight();
+    }
+  }, [tx.status]);
 
   return (
     <Stack
@@ -227,16 +237,12 @@ export const TxTile = ({
             {shareClicked ? 'Copied!' : 'Share'}
           </Button>
         )}
-        {tx.status === 'signed' && !sendDisabled && (
-          <Button
-            isCompact
-            variant="positive"
-            onClick={onPreflight}
-            startVisual={<MonoViewInAr />}
-          >
-            Preflight
-          </Button>
-        )}
+        {statusPassed(tx.status, 'preflight') &&
+          tx.preflight?.result.status !== 'success' && (
+            <Button isCompact variant="negative">
+              tx has issues
+            </Button>
+          )}
         {tx.status === 'preflight' &&
           tx.preflight.result.status === 'success' &&
           !sendDisabled && (

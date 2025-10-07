@@ -9,21 +9,13 @@ import { normalizeSigs } from '@/utils/normalizeSigs';
 import {
   MonoCloudSync,
   MonoFactCheck,
-  MonoInfo,
   MonoOpenInFull,
   MonoRefresh,
   MonoShare,
   MonoSignature,
   MonoViewInAr,
 } from '@kadena/kode-icons/system';
-import {
-  Button,
-  Heading,
-  Notification,
-  Stack,
-  Text,
-  Tooltip,
-} from '@kadena/kode-ui';
+import { Button, Heading, Notification, Stack, Text } from '@kadena/kode-ui';
 import { useEffect, useMemo, useState } from 'react';
 import { TxStatusItem } from './components/TxStatusItem';
 import { iconSuccessClass, statusListWrapperClass } from './style.css';
@@ -95,7 +87,6 @@ function TxStatusList({
     (sigData) => !sigData?.sig && getPublicKeyData(sigData?.pubKey),
   );
 
-  const [showPreflightInfo, setShowPreflightInfo] = useState(false);
   const [signError, setSignError] = useState<string | null>(null);
 
   const copyTx = useMemo(() => getCopyTxString(tx), [tx.hash, tx.cmd, tx.sigs]);
