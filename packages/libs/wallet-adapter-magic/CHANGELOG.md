@@ -1,5 +1,12 @@
 # @kadena/wallet-adapter-magic
 
+## 0.0.7
+
+### Patch Changes
+
+- @kadena/client\@1.18.3
+- @kadena/wallet-adapter-core\@0.1.3
+
 ## 0.0.6
 
 ### Patch Changes

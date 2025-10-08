@@ -1,5 +1,28 @@
 # @kadena/wallet-adapter-walletconnect
 
+## 0.2.0
+
+### Minor Changes
+
+- f00545d: WalletConnect Adapter
+
+  - Persist active session topic in localStorage and restore on reload
+  - Reuse existing pairings to avoid extra QR modal scans
+  - Reconnect automatically if provider is still connected
+  - Cleanup provider state and stored session on disconnect/deletion
+
+  Snap Adapter
+
+  - Detection is now non-invasive: `detectSnapProvider` no longer performs
+    `wallet_getSnaps` or any RPC that could trigger a MetaMask unlock prompt.
+    All snap installation/enablement and potential prompts are deferred to the
+    adapter `connect()` flow.
+
+### Patch Changes
+
+- @kadena/client\@1.18.3
+- @kadena/wallet-adapter-core\@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes
