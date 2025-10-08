@@ -3,7 +3,7 @@
   "version": "2.1.3",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 next build",
     "build:e2e": "NODE_ENV=test pnpm run build",
     "dev": "next dev",
     "generate": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact\"",
@@ -39,6 +39,7 @@
     "@kadena/wallet-adapter-ecko": "workspace:*",
     "@kadena/wallet-adapter-magic": "workspace:*",
     "@kadena/wallet-adapter-react": "workspace:*",
+    "@kadena/wallet-adapter-walletconnect": "workspace:*",
     "@magic-ext/kadena": "^0.11.0",
     "@sentry/nextjs": "^10.5.0",
     "@sentry/tracing": "^7.120.3",

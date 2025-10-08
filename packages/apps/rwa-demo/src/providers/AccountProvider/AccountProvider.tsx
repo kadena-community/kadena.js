@@ -120,84 +120,101 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       name: keyof typeof WALLETTYPES,
       account?: IWalletAccount,
     ): Promise<IWalletAccount[] | undefined> => {
-      const adapterName = name ? getWalletAdapterName(name) : undefined;
+      try {
+        const adapterName = name ? getWalletAdapterName(name) : undefined;
 
-      if (!adapterName) {
-        addNotification({
-          intent: 'negative',
-          label: 'Provider does not exist',
-          message: `Provider (${name}) does not exist`,
-        });
-        return;
-      }
-
-      let tempAccount: IWalletAccount | undefined;
-
-      const adapter = wallet.client.getAdapter(adapterName);
-      if (!adapter) throw new Error(`${adapterName} adapter not detected`);
-
-      switch (name) {
-        case WALLETTYPES.ECKO: {
-          const result = await adapter.connect();
-          if (!result) throw new Error(`${adapterName} connection failed`);
-
-          tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.ECKO);
-          break;
-        }
-        case WALLETTYPES.CHAINWEAVER: {
-          if (account) {
-            tempAccount = account;
-            break;
-          }
-
-          if (
-            !(await adapter.connect({
-              networkId: process.env.NEXT_PUBLIC_NETWORKID || 'mainnet01',
-            }))
-          ) {
-            throw new Error(`${adapterName} connection failed`);
-          }
-
-          const result = await adapter.getAccounts();
-          if (!result) throw new Error('Chainweaver connection failed');
-          const accounts = result.map((acc) =>
-            mapWalletAdapterAccount(acc, WALLETTYPES.CHAINWEAVER),
-          );
-
-          if (accounts.length > 1) {
-            return accounts;
-          } else if (accounts.length === 1) {
-            tempAccount = accounts[0];
-          }
-          break;
-        }
-        case WALLETTYPES.MAGIC: {
-          const result = await adapter.connect();
-          if (!result) throw new Error(`${adapterName} connection failed`);
-
-          tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.MAGIC);
-          break;
-        }
-        default: {
+        if (!adapterName) {
           addNotification({
             intent: 'negative',
             label: 'Provider does not exist',
             message: `Provider (${name}) does not exist`,
           });
+          return;
         }
-      }
 
-      if (tempAccount) {
-        await addAccount2User(tempAccount);
-        await setAccount(tempAccount);
+        let tempAccount: IWalletAccount | undefined;
+
+        const adapter = wallet.client.getAdapter(adapterName);
+        if (!adapter) throw new Error(`${adapterName} adapter not detected`);
+
+        switch (name) {
+          case WALLETTYPES.ECKO: {
+            const result = await adapter.connect();
+            if (!result) throw new Error(`${adapterName} connection failed`);
+
+            tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.ECKO);
+            break;
+          }
+          case WALLETTYPES.CHAINWEAVER: {
+            if (account) {
+              tempAccount = account;
+              break;
+            }
+
+            if (
+              !(await adapter.connect({
+                networkId: process.env.NEXT_PUBLIC_NETWORKID || 'mainnet01',
+              }))
+            ) {
+              throw new Error(`${adapterName} connection failed`);
+            }
+
+            const result = await adapter.getAccounts();
+            if (!result) throw new Error('Chainweaver connection failed');
+            const accounts = result.map((acc) =>
+              mapWalletAdapterAccount(acc, WALLETTYPES.CHAINWEAVER),
+            );
+
+            if (accounts.length > 1) {
+              return accounts;
+            } else if (accounts.length === 1) {
+              tempAccount = accounts[0];
+            }
+            break;
+          }
+          case WALLETTYPES.MAGIC: {
+            const result = await adapter.connect();
+            if (!result) throw new Error(`${adapterName} connection failed`);
+
+            tempAccount = mapWalletAdapterAccount(result, WALLETTYPES.MAGIC);
+            break;
+          }
+          case WALLETTYPES.WALLETCONNECT: {
+            const result = await adapter.connect();
+            if (!result) throw new Error(`${adapterName} connection failed`);
+            tempAccount = mapWalletAdapterAccount(
+              result,
+              WALLETTYPES.WALLETCONNECT,
+            );
+            break;
+          }
+          default: {
+            addNotification({
+              intent: 'negative',
+              label: 'Provider does not exist',
+              message: `Provider (${name}) does not exist`,
+            });
+          }
+        }
 
         if (tempAccount) {
-          localStorage.setItem(getAccountCookieName(), tempAccount.address);
-        }
+          await addAccount2User(tempAccount);
+          await setAccount(tempAccount);
 
+          if (tempAccount) {
+            localStorage.setItem(getAccountCookieName(), tempAccount.address);
+          }
+
+          addNotification({
+            intent: 'positive',
+            message: `Account added successfully`,
+          });
+        }
+      } catch (e) {
         addNotification({
-          intent: 'positive',
-          message: `Account added successfully`,
+          intent: 'negative',
+          label: 'Failed to connect to wallet',
+          message: `Error: ${(e as Error).message}`,
         });
       }
     },

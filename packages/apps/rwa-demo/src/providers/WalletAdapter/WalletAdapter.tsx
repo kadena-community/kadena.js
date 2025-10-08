@@ -2,6 +2,7 @@ import { createChainweaverAdapter } from '@kadena/wallet-adapter-chainweaver';
 import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
 import { createMagicAdapter } from '@kadena/wallet-adapter-magic';
 import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
+import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
 import type { PropsWithChildren } from 'react';
 
 export const WalletAdapterProvider = ({ children }: PropsWithChildren) => {
@@ -17,6 +18,10 @@ export const WalletAdapterProvider = ({ children }: PropsWithChildren) => {
         }),
         createChainweaverAdapter({
           appName: 'RWA Demo',
+        }),
+        createWalletConnectAdapter({
+          networkId: process.env.NEXT_PUBLIC_NETWORKID,
+          projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECTID,
         }),
       ]}
     >
