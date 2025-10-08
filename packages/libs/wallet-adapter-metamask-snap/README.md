@@ -14,15 +14,15 @@ yarn add @kadena/wallet-adapter-metamask-snap
 pnpm add @kadena/wallet-adapter-metamask-snap
 ```
 
-## Manual Usage of the Adapter or Detection
+## Manual Usage: Detection and Connect
 
 If you need lower-level access, the following are also exported:
 
 - **`SnapAdapter`**: The actual adapter class, in case you want to instantiate
   it manually without relying on the lazy-loading factory.
-- **`detectSnapProvider`**: A standalone function that checks whether the Kadena
-  Snap is available in MetaMask. It returns the provider if found, or `null`
-  otherwise.
+- **`detectSnapProvider`**: A standalone function that checks whether the
+  MetaMask provider is present. It returns the provider if found, or `null`
+  otherwise. Snap installation/enablement is handled during `connect()`.
 
 ```ts
 import {
@@ -33,7 +33,7 @@ import {
 (async () => {
   const provider = await detectSnapProvider({ silent: true });
   if (!provider) {
-    console.log('MetaMask Snap not available.');
+    console.log('MetaMask not detected.');
     return;
   }
   const adapter = new SnapAdapter({ provider });
@@ -42,12 +42,18 @@ import {
 })();
 ```
 
+## Detection Behavior
+
+- Detection is non-invasive. It only checks for the injected MetaMask provider
+  on `window.ethereum` and does not call `wallet_getSnaps` or other RPCs.
+- Any required prompts (unlocking MetaMask, installing/enabling the Kadena
+  Snap) occur during `adapter.connect()`.
+
 ## Other Notes
 
 - The adapter internally calls `kda_connect`, `kda_requestSign`,
   `kda_disconnect`, etc., using the `"kda_"` RPC prefix required by the Snap.
-- If you support multiple wallets in your app, the lazy import in `snapAdapter`
-  helps reduce initial bundle size, loading only when MetaMask with the Snap is
-  detected.
-- Ensure the user has MetaMask installed **and** the Kadena Snap enabled.
-  Detection will return `null` otherwise.
+- If you support multiple wallets in your app, the lazy import in
+  `snapAdapterFactory` helps reduce initial bundle size.
+- Ensure the user has MetaMask installed. The Kadena Snap will be installed or
+  enabled during connect if needed.

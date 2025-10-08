@@ -5,14 +5,13 @@
  * the core Provider from "@kadena/wallet-adapter-core".
  *
  * The detectSnapProvider function checks for the MetaMask Wallet provider by looking for its
- * presence on the global window object, installs the Snap if missing, and uses a timeout
- * mechanism to avoid waiting indefinitely. This ensures that the wallet can be reliably
- * detected and integrated within the application.
+ * presence on the global window object and uses a timeout mechanism to avoid waiting
+ * indefinitely. Importantly, it does NOT perform any JSON‑RPC calls (e.g. wallet_getSnaps)
+ * during detection, so MetaMask will not prompt the user to unlock here. All unlock/install
+ * prompts are deferred to the connection flow inside the adapter.
  */
 
 import type { IProvider } from '@kadena/wallet-adapter-core';
-import type { GetSnapsResult } from './types';
-
 export const defaultSnapOrigin = `npm:@mindsend/kadena-snap`;
 
 export interface ISnapProvider extends IProvider {
@@ -45,41 +44,10 @@ export async function detectSnapProvider(options?: {
         return resolve(null);
       }
 
-      try {
-        // Check installed snaps
-        let snaps = (await provider.request({
-          method: 'wallet_getSnaps',
-        })) as GetSnapsResult;
-        console.log('SNAPS>:', snaps);
-
-        // If Kadena Snap isn't installed, request installation
-        if (!snaps[defaultSnapOrigin]) {
-          if (!silent)
-            console.log(
-              `Requesting installation of Snap at ${defaultSnapOrigin}`,
-            );
-          await provider.request({
-            method: 'wallet_requestSnaps',
-            params: { [defaultSnapOrigin]: { version: '*' } },
-          });
-
-          snaps = (await provider.request({
-            method: 'wallet_getSnaps',
-          })) as GetSnapsResult;
-          console.log('SNAPS after request>:', snaps);
-        }
-
-        if (snaps[defaultSnapOrigin]) {
-          return resolve(provider);
-        }
-
-        if (!silent)
-          console.error(`Kadena Snap (${defaultSnapOrigin}) not installed`);
-        resolve(null);
-      } catch (err) {
-        if (!silent) console.error('Error fetching or installing snaps', err);
-        resolve(null);
-      }
+      // Do not perform any RPC here to avoid unlock prompts.
+      // Presence of MetaMask is enough for detection; snap install/state
+      // will be handled during the adapter's connect flow.
+      return resolve(provider);
     }
 
     if ((window as any).ethereum) {

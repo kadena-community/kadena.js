@@ -198,8 +198,9 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
 
   private async subscribeToEvents(): Promise<void> {
     if (!this.client) throw new Error(ERRORS.FAILED_TO_CONNECT);
+
     this.client.on('session_ping', (args) => {
-      // console.log('[walletconnect]', 'session_ping', args);
+      console.log('[walletconnect]', 'session_ping', args);
     });
 
     this.client.on('session_event', (args) => {
@@ -216,14 +217,31 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       });
     });
 
-    this.client.on('session_delete', () => {
-      console.log('[walletconnect]', 'session_delete');
+    this.client.on('session_delete', ({ topic }) => {
+      console.log('[walletconnect]', 'session_delete', topic);
+      // Cleanup on session end
+      this.provider = undefined as any;
+      localStorage.removeItem('wc_session');
     });
   }
 
   private async checkPersistedState(): Promise<void> {
     if (!this.client) throw new Error(ERRORS.FAILED_TO_CONNECT);
 
+    // First, try localStorage
+    const storedTopic = localStorage.getItem('wc_session');
+    if (storedTopic !== null && storedTopic.trim() !== '') {
+      const session = this.client.session.get(storedTopic);
+      if (session !== undefined) {
+        await this.onSessionConnected(session);
+        return;
+      } else {
+        // cleanup invalid topic
+        localStorage.removeItem('wc_session');
+      }
+    }
+
+    // Fallback: use latest active session
     const sessions = this.client.session.getAll();
     if (sessions.length) {
       await this.onSessionConnected(sessions[sessions.length - 1]);
@@ -240,7 +258,21 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         await this.subscribeToEvents();
         await this.checkPersistedState();
       }
-      await this.connectWallet();
+      // If provider already has a connected session, just reuse it
+      if (this.provider?.connected) {
+        return this.getActiveAccount();
+      }
+
+      // Auto-detect paired device
+      const pairings = this.client.core.pairing.getPairings();
+      if (pairings.length > 0) {
+        // Reuse existing device pairing (no modal)
+        await this.connectWallet({ topic: pairings[0].topic });
+      } else {
+        // No known devices → fallback to QR modal
+        await this.connectWallet();
+      }
+
       return this.getActiveAccount();
     } catch (error) {
       console.error('Connection error:', error);
@@ -273,7 +305,11 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     }
     const session = await approval();
     await this.onSessionConnected(session);
-    this.modal.closeModal();
+
+    if (uri) this.modal.closeModal();
+
+    // Persist latest session for auto-reconnect
+    localStorage.setItem('wc_session', session.topic);
   }
 
   private async onSessionConnected(
@@ -300,11 +336,40 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
   public async disconnect(): Promise<void> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
-    if (!this.client || !this.provider || !this.provider.session) return;
-    await this.client.disconnect({
-      topic: this.provider.session.topic,
-      reason: getSdkError('USER_DISCONNECTED'),
-    });
+    if (this.client) {
+      try {
+        if (this.provider.session) {
+          await this.client.disconnect({
+            topic: this.provider.session.topic,
+            reason: getSdkError('USER_DISCONNECTED'),
+          });
+        }
+      } catch (error) {
+        console.error('Error disconnecting session:', error);
+      }
+
+      // Also clear any existing pairings so a fresh connect does not reuse them
+      try {
+        const pairings = this.client.core.pairing.getPairings();
+        await Promise.all(
+          pairings.map(async (p) => {
+            try {
+              // WalletConnect v2 exposes pairing.disconnect({ topic })
+              await (this.client as any).core.pairing.disconnect({ topic: p.topic });
+            } catch (err) {
+              // Fallback: if disconnect is unavailable, ignore and continue
+              console.warn('Failed to disconnect pairing', p.topic, err);
+            }
+          }),
+        );
+      } catch (error) {
+        console.error('Error clearing pairings:', error);
+      }
+    }
+
+    // Clear state after disconnect
+    this.provider = undefined as any;
+    localStorage.removeItem('wc_session');
   }
 
   // when the contracts[] param is omitted the wallet returns all known fungible accounts
