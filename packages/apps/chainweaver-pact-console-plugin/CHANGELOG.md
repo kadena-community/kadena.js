@@ -1,5 +1,18 @@
 # @kadena/chainweaver-pact-console-plugin
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies \[59f3cec]
+- Updated dependencies \[f23cdfd]
+  - @kadena/pactjs\@0.6.0
+  - @kadena/hd-wallet\@0.6.2
+  - @kadena/chainweb-node-client\@0.9.5
+  - @kadena/client\@1.18.3
+  - @kadena/client-utils\@0.13.4
+  - @kadena/pactjs-generator\@1.18.3
+
 ## 0.0.8
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # wallet-sdk-example-app
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies \[f23cdfd]
+  - @kadena/hd-wallet\@0.6.2
+  - @kadena/client\@1.18.3
+  - @kadena/wallet-sdk\@0.2.6
+
 ## 0.0.11
 
 ### Patch Changes

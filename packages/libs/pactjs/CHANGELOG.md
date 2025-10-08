@@ -1,5 +1,11 @@
 # Change Log - @kadena/pactjs
 
+## 0.6.0
+
+### Minor Changes
+
+- 59f3cec: Support for pactjs types when using esnext config in typescript
+
 ## 0.5.0
 
 ### Minor Changes

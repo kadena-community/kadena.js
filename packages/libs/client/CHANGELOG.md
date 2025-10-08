@@ -1,5 +1,13 @@
 # Change Log - @kadena/client
 
+## 1.18.3
+
+### Patch Changes
+
+- Updated dependencies \[59f3cec]
+  - @kadena/pactjs\@0.6.0
+  - @kadena/chainweb-node-client\@0.9.5
+
 ## 1.18.2
 
 ### Patch Changes
