@@ -25,20 +25,25 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
+const networkId: 'testnet04' | 'mainnet01' = 'testnet04';
+
 // List all adapters you want to use here.
 const adapters = [
   createEckoAdapter(),
   createChainweaverAdapter(),
   createChainweaverLegacyAdapter(),
   createZelcoreAdapter(),
-  createWalletConnectAdapter(),
+  createWalletConnectAdapter({
+    debug: true,
+    networkId,
+  }),
   createSnapAdapter(),
   createMagicAdapter({
     chainId: '1',
     chainwebApiUrl:
       'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact',
     magicApiKey: import.meta.env.VITE_MAGIC_API_KEY,
-    networkId: 'testnet04',
+    networkId,
   }),
 ];
 
