@@ -13,8 +13,10 @@ export interface IWalletConnectAdapterOptions
   extends IBaseWalletAdapterOptions {
   relayUrl: string;
   projectId: string;
+  debug?: boolean;
 }
 
+/** @public */
 export interface IWalletConnectProvider extends IProvider {
   connected: boolean;
   accounts: string[];

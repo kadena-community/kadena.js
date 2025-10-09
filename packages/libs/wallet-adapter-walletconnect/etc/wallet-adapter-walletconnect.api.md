@@ -25,6 +25,16 @@ export const createWalletConnectAdapter: <T extends IBaseWalletFactoryOptions>(o
 export function detectWalletConnectProvider(): Promise<IWalletConnectProvider | null>;
 
 // @public (undocumented)
+export interface IWalletConnectProvider extends IProvider {
+    // (undocumented)
+    accounts: string[];
+    // (undocumented)
+    connected: boolean;
+    // (undocumented)
+    session?: SessionTypes.Struct;
+}
+
+// @public (undocumented)
 export const WALLET_CONNECT_ADAPTER = "WalletConnect";
 
 // @public
@@ -63,10 +73,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         params?: ExtendedMethodMap[M]['params'];
     }): Promise<ExtendedMethodMap[M]['response']>;
 }
-
-// Warnings were encountered during analysis:
-//
-// dist/esm/walletConnectAdapterFactory.d.ts:24:5 - (ae-forgotten-export) The symbol "IWalletConnectProvider" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -9,6 +9,7 @@ export interface IWalletConnectFactoryOptions
   extends IBaseWalletFactoryOptions {
   relayUrl?: string;
   projectId?: string;
+  debug?: boolean;
 }
 
 /**
