@@ -33,6 +33,7 @@ export const useBatchAddInvestors = () => {
       data,
       {
         notificationSentryName: 'error:submit:batchaddinvestor',
+        successMessage: 'Batch add investors successful',
         chainFunction: (account: IWalletAccount, asset: IAsset) => {
           const newData: IBatchRegisterIdentityProps = {
             ...data,

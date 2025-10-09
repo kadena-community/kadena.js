@@ -1,5 +1,5 @@
 import { NetworkContext } from '@/contexts/NetworkContext/NetworkContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
 import { useNetwork } from '../networks';
 

@@ -1,5 +1,6 @@
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
-import type { IdTokenResult, User } from 'firebase/auth';
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
+import type { User } from 'firebase/auth';
 import { createContext } from 'react';
 
 export interface IUserData {
@@ -13,7 +14,7 @@ export interface IUserData {
 
 export interface IUserContext {
   user?: User;
-  userToken?: IdTokenResult;
+  userToken?: IdTokenResultWithClaims;
   userData?: IUserData;
   isMounted: boolean; //set to true if all user data is loaded (user, userToken)
   signInByGoogle: () => void;
@@ -23,6 +24,7 @@ export interface IUserContext {
   removeAccount: (address: string) => void;
   userStore?: any;
   findAliasByAddress: (address?: string) => string;
+  isOrgAdmin: boolean;
 }
 
 export const UserContext = createContext<IUserContext | null>(null);

@@ -1,5 +1,5 @@
 import type { BlocksFromHeightQuery } from '@/__generated__/sdk';
-import { useBlocksFromHeightQuery } from '@/__generated__/sdk';
+import { BlocksFromHeightDocument } from '@/__generated__/sdk';
 import { blockHeightLoading } from '@/components/BlockTable/loadingBlockHeightData';
 import { FormatLinkWrapper } from '@/components/CompactTable/FormatLinkWrapper';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
@@ -7,10 +7,10 @@ import { LayoutHeader } from '@/components/Layout/components/LayoutHeader';
 import { Layout } from '@/components/Layout/Layout';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { useRouter } from '@/hooks/router';
 import { truncateValues } from '@/services/format';
 import { CompactTable } from '@kadena/kode-ui/patterns';
@@ -34,11 +34,16 @@ const Height: React.FC = () => {
     setQueries([{ query: block, variables: blockHeightVariables }]);
   }, []);
 
-  const { addToast } = useToast();
-  const { loading, data, error } = useBlocksFromHeightQuery({
-    variables: blockHeightVariables,
-    skip: !(router.query.height as string),
-  });
+  const { loading, data, error } = useGraphQuery(
+    BlocksFromHeightDocument,
+    {
+      variables: blockHeightVariables,
+      skip: !(router.query.height as string),
+    },
+    {
+      errorLabel: 'Loading of block height data failed',
+    },
+  );
 
   useEffect(() => {
     if (loading) {
@@ -49,11 +54,6 @@ const Height: React.FC = () => {
     if (error) {
       setIsLoading(false);
       setInnerData({} as BlocksFromHeightQuery);
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of block height data failed',
-      });
     }
 
     if (data) {

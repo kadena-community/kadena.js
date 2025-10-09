@@ -24,7 +24,7 @@ import { selectBoxClass } from './styles.css';
 
 interface IProps {
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{ onPress: () => void }>;
 }
 
 export interface IRegisterIdentityBatchProps {
@@ -130,6 +130,7 @@ export const BatchTransferAssetForm: FC<IProps> = ({ onClose, trigger }) => {
                   <Stack width="100%" flexDirection="column" gap="sm">
                     <Stack>
                       <Button
+                        aria-label="Select all accounts"
                         onPress={toggleSelectAll}
                         startVisual={<MonoCheckBox />}
                         isCompact

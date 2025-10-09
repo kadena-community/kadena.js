@@ -1,6 +1,6 @@
 import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { EVENT_NAMES } from '@/utils/analytics';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useSubmit2Chain } from './useSubmit2Chain';
 

@@ -18,14 +18,14 @@ function validateEncryptedValue(value: string) {
   const buffer = Buffer.from(value, 'base64').toString('utf8');
   const parts = buffer.split('.');
   // parts: salt, iv, data
-  return parts.length === 3;
+  return parts.length === 3 || parts.length === 4;
 }
 
 function validateEncryptedKeyPair(value: string) {
   const buffer = Buffer.from(value, 'base64').toString('utf8');
   const parts = buffer.split('.');
   // parts: salt, iv, data, public key (only for secretKeys, not rootKey)
-  return parts.length === 4;
+  return parts.length === 4 || parts.length === 5;
 }
 
 describe('kadenaGenMnemonic', () => {

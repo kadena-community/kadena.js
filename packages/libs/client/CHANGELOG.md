@@ -1,5 +1,34 @@
 # Change Log - @kadena/client
 
+## 1.18.3
+
+### Patch Changes
+
+- Updated dependencies \[59f3cec]
+  - @kadena/pactjs\@0.6.0
+  - @kadena/chainweb-node-client\@0.9.5
+
+## 1.18.2
+
+### Patch Changes
+
+- Updated dependencies \[c21ada4]
+  - @kadena/chainweb-node-client\@0.9.4
+
+## 1.18.1
+
+### Patch Changes
+
+- Updated dependencies \[c967a57]
+  - @kadena/pactjs\@0.5.0
+  - @kadena/chainweb-node-client\@0.9.2
+
+## 1.18.0
+
+### Minor Changes
+
+- b849855: Change default ttl to 15 minutes
+
 ## 1.17.1
 
 ### Patch Changes

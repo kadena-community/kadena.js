@@ -27,7 +27,7 @@ const useQueryContext = (): IQueryContext => {
 
 const QueryContextProvider = (props: {
   children: React.ReactNode;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [queries, setQueries] = useState<IQueryContext['queries']>([]);
   const router = useRouter();
   const handleSetQueries = (queries: IQueryContext['queries']) => {

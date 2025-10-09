@@ -8,6 +8,10 @@ import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
+import {
+  mainContentClass,
+  submitClass,
+} from '@/pagestyles/account/account-transactions/filters/styles.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MonoKeyboardArrowRight } from '@kadena/kode-icons';
 import {
@@ -27,7 +31,6 @@ import type { FC } from 'react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { mainContentClass, submitClass } from './styles.css';
 
 const schema = z.object({
   name: NAME_VALIDATION,

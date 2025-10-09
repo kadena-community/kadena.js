@@ -2,6 +2,7 @@ import type {
   AdapterFactoryCreator,
   IBaseWalletFactoryOptions,
 } from '@kadena/wallet-adapter-core';
+import { ECKO_ADAPTER } from './constants';
 import { detectEckoProvider } from './provider';
 
 /**
@@ -23,7 +24,7 @@ import { detectEckoProvider } from './provider';
  */
 export const createEckoAdapter = ((options?: IBaseWalletFactoryOptions) => {
   return {
-    name: 'Ecko',
+    name: ECKO_ADAPTER,
     detect: async () => {
       return await detectEckoProvider({ silent: true });
     },

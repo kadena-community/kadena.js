@@ -1,5 +1,11 @@
 # @kadena/kode-icons
 
+## 0.3.1
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+
 ## 0.3.0
 
 ### Minor Changes

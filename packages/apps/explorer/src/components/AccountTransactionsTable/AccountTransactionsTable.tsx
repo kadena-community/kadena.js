@@ -2,8 +2,9 @@ import type {
   AccountTransactionsQuery,
   Transaction,
 } from '@/__generated__/sdk';
-import { useAccountTransactionsQuery } from '@/__generated__/sdk';
+import { AccountTransactionsDocument } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack } from '@kadena/kode-ui';
 import {
@@ -14,7 +15,6 @@ import {
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { FormatLinkWrapper } from '../CompactTable/FormatLinkWrapper';
-import { useToast } from '../Toast/ToastContext/ToastContext';
 import { accountTransactions } from './AccountTransactions.graph';
 import { loadingData } from './loadingDataAccountTransactionsquery';
 
@@ -28,14 +28,19 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
   const { setQueries } = useQueryContext();
 
   const { variables, handlePageChange, pageSize } = usePagination({
-    id,
+    id: id,
   });
 
-  const { addToast } = useToast();
-  const { data, loading, error } = useAccountTransactionsQuery({
-    variables,
-    skip: !id,
-  });
+  const { data, loading, error } = useGraphQuery(
+    AccountTransactionsDocument,
+    {
+      variables,
+      skip: !id,
+    },
+    {
+      errorLabel: 'Loading of account transactions failed',
+    },
+  );
 
   useEffect(() => {
     if (loading) {
@@ -44,11 +49,8 @@ export const AccountTransactionsTable: FC<{ accountName: string }> = ({
     }
 
     if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of account transactions failed',
-      });
+      setIsLoading(false);
+      setInnerData({} as AccountTransactionsQuery);
     }
 
     if (data) {

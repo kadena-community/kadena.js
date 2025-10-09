@@ -1,56 +1,34 @@
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
+const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
+    NEXT_PUBLIC_BUILD_TIME: new Date().toUTCString(),
+  },
   reactStrictMode: true,
   swcMinify: true,
   transpilePackages: ['@kadena/kode-ui'],
+  async rewrites() {
+    return [];
+  },
 };
 
-module.exports = withVanillaExtract(nextConfig);
-
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require('@sentry/nextjs');
-
-module.exports = withSentryConfig(module.exports, {
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
-
-  org: 'kadena',
-  project: 'kadena-explorer',
-
-  // Only print logs for uploading source maps in CI
+const configWithSentry = withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
   silent: !process.env.CI,
-
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-
+  disableLogger: true,
+  reactComponentAnnotation: {
+    enabled: true,
+  },
+  automaticVercelMonitors: true,
+  tunnelRoute: '/monitoring',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
-
-  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
-  tunnelRoute: '/monitoring',
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: true,
-
-  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-  // See the following for more information:
-  // https://docs.sentry.io/product/crons/
-  // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: true,
-
-  // // custom local dev optimizations
-  // swcMinify: true,
-  // productionBrowserSourceMaps: false,
-  // optimizeFonts: false,
-  // fastRefresh: true,
 });
+
+module.exports = withVanillaExtract(configWithSentry);

@@ -24,6 +24,7 @@ export const CopyButton: FC<IProps> = ({ value }) => {
 
   return (
     <Button
+      aria-label="Copy item"
       data-testid="copyAsset"
       onPress={handlePress}
       isCompact

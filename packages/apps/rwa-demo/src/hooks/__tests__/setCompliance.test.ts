@@ -2,7 +2,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { setCompliance } from '@/services/setCompliance';
 import { setComplianceParameters } from '@/services/setComplianceParameters';
 import { getActiveRulesKeys } from '@/utils/getActiveRulesKeys';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSetCompliance } from '../setCompliance';
 
@@ -327,6 +327,7 @@ describe('setCompliance hook', () => {
       // Check submit2Chain was called
       expect(submit2ChainMock).toHaveBeenCalledWith(undefined, {
         notificationSentryName: 'error:submit:togglecompliancerule',
+        successMessage: 'Toggle compliance rule successful',
         chainFunction: expect.any(Function),
         transaction: {
           type: TXTYPES.SETCOMPLIANCERULE,
@@ -405,6 +406,7 @@ describe('setCompliance hook', () => {
       // Check submit2Chain was called
       expect(submit2ChainMock).toHaveBeenCalledWith(complianceParameters, {
         notificationSentryName: 'error:submit:setcompliance',
+        successMessage: 'Set compliance parameters successful',
         chainFunction: expect.any(Function),
         transaction: {
           type: TXTYPES.SETCOMPLIANCE,

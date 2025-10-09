@@ -10,26 +10,31 @@ import { Link as UILink } from '@kadena/kode-ui';
 import { SideBarBreadcrumbsItem } from '@kadena/kode-ui/patterns';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 
-const Home = ({ params }: { params: { organisationId: string } }) => {
+interface IPageProps {
+  params: Promise<{ organisationId: string }>;
+}
+
+const Home = ({ params }: IPageProps) => {
+  const { organisationId } = use(params);
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const searchParams = useSearchParams();
   const p = searchParams.get('p') || 'info';
 
   useEffect(() => {
-    if (!params.organisationId) return;
+    if (!organisationId) return;
 
-    const init = async (organisationId: IOrganisation['id']) => {
-      const orgStore = await OrganisationStore(organisationId);
+    const init = async (organisationIdProp: IOrganisation['id']) => {
+      const orgStore = await OrganisationStore(organisationIdProp);
       if (!orgStore) return;
       const data = await orgStore.getOrganisation();
       setOrganisation(data);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    init(params.organisationId);
-  }, [params.organisationId]);
+    init(organisationId);
+  }, [organisationId]);
 
   if (!organisation) return null;
   return (

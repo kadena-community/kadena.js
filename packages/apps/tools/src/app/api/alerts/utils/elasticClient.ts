@@ -1,4 +1,5 @@
 import { Client } from '@elastic/elasticsearch';
+import type { ChainId } from '@kadena/types';
 import type { IAlert, INETWORK } from './constants';
 
 const getElasticIndexByEnv = (env: INETWORK): string => {
@@ -23,10 +24,32 @@ export const getClient = () => {
   const getLastRecord = async (
     alert: IAlert,
     network: INETWORK,
+    chainId: ChainId,
   ): Promise<Record<string, any>[]> => {
     const ids = await client.search({
       index: getElasticIndexByEnv(network),
       size: 2,
+      sort: { '@timestamp': 'desc' },
+      query: {
+        bool: {
+          must: [
+            { match: { code: alert.code } },
+            { match: { chain_id: chainId } },
+          ],
+        },
+      },
+    });
+
+    return ids.hits.hits;
+  };
+
+  const getRecordsOfLastHour = async (
+    alert: IAlert,
+    network: INETWORK,
+  ): Promise<Record<string, any>[]> => {
+    const ids = await client.search({
+      index: getElasticIndexByEnv(network),
+      size: 4,
       sort: { '@timestamp': 'desc' },
       query: {
         bool: {
@@ -35,11 +58,12 @@ export const getClient = () => {
       },
     });
 
-    return ids.hits.hits;
+    return ids.hits.hits.reverse();
   };
 
   return {
     index,
     getLastRecord,
+    getRecordsOfLastHour,
   };
 };

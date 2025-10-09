@@ -1,5 +1,6 @@
 import type { TransactionRequestKeyQuery } from '@/__generated__/sdk';
-import { useTransactionRequestKeyQuery } from '@/__generated__/sdk';
+import { TransactionRequestKeyDocument } from '@/__generated__/sdk';
+import { GraphQlErrorNotification } from '@/components/GraphQlErrorNotification/GraphQlErrorNotification';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
 import { LayoutAsideContentBlock } from '@/components/Layout/components/LayoutAsideContentBlock';
 import { LayoutBody } from '@/components/Layout/components/LayoutBody';
@@ -9,14 +10,14 @@ import { Layout } from '@/components/Layout/Layout';
 import { loadingTransactionData } from '@/components/LoadingSkeleton/loadingData/loadingDataTransactionRequestKeyQuery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { TransactionRequestComponent } from '@/components/TransactionComponents/TransactionRequestComponent';
 import { TransactionResultComponent } from '@/components/TransactionComponents/TransactionResultComponent';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { transactionRequestKey } from '@/graphql/pages/transaction/transaction-requestkey.graph';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { useRouter } from '@/hooks/router';
-import { TabItem, Tabs } from '@kadena/kode-ui';
+import { Stack, TabItem, Tabs } from '@kadena/kode-ui';
 import React, { useEffect, useState } from 'react';
 
 const Transaction: React.FC = () => {
@@ -31,11 +32,16 @@ const Transaction: React.FC = () => {
     requestKey: router.query.requestKey as string,
   };
 
-  const { addToast } = useToast();
-  const { loading, data, error } = useTransactionRequestKeyQuery({
-    variables: transactionRequestKeyQueryVariables,
-    skip: !router.query.requestKey,
-  });
+  const { loading, data, error } = useGraphQuery(
+    TransactionRequestKeyDocument,
+    {
+      variables: transactionRequestKeyQueryVariables,
+      skip: !router.query.requestKey,
+    },
+    {
+      errorLabel: 'Loading of transaction requestkey data failed',
+    },
+  );
 
   useEffect(() => {
     setQueries([
@@ -53,11 +59,6 @@ const Transaction: React.FC = () => {
     }
 
     if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of transaction requestkey data failed',
-      });
       setIsLoading(false);
     }
 
@@ -71,7 +72,7 @@ const Transaction: React.FC = () => {
 
   return (
     <Layout>
-      {innerData && innerData.transaction ? (
+      {innerData && innerData.transaction && !error ? (
         <>
           <LayoutHeader>
             <ValueLoader isLoading={isLoading}>Transaction Details</ValueLoader>
@@ -125,6 +126,10 @@ const Transaction: React.FC = () => {
               type="requestKey"
               value={router.query.requestKey}
             />
+
+            <Stack marginBlockStart="md" marginInlineEnd="md">
+              <GraphQlErrorNotification error={error} />
+            </Stack>
           </LayoutBody>
         )
       )}

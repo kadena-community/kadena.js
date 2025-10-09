@@ -7,6 +7,9 @@ Github Config & Actions:
 '@kadena/bootstrap-lib':
   - changed-files:
       - any-glob-to-any-file: packages/libs/bootstrap-lib/*
+'@kadena/chainweb-evm-dashboard':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/chainweb-evm-dashboard/*
 '@kadena/chainweb-node-client':
   - changed-files:
       - any-glob-to-any-file: packages/libs/chainweb-node-client/*
@@ -40,12 +43,6 @@ Github Config & Actions:
 '@kadena/dev-wallet-desktop':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet-desktop/*
-'@kadena/docs':
-  - changed-files:
-      - any-glob-to-any-file: packages/apps/docs/*
-'@kadena/docs-tools':
-  - changed-files:
-      - any-glob-to-any-file: packages/tools/docs-tools/*
 '@kadena/explorer':
   - changed-files:
       - any-glob-to-any-file: packages/apps/explorer/*
@@ -55,9 +52,6 @@ Github Config & Actions:
 '@kadena/graph':
   - changed-files:
       - any-glob-to-any-file: packages/apps/graph/*
-'@kadena/graph-client':
-  - changed-files:
-      - any-glob-to-any-file: packages/apps/graph-client/*
 '@kadena/hd-wallet':
   - changed-files:
       - any-glob-to-any-file: packages/libs/hd-wallet/*
@@ -142,9 +136,6 @@ e2e-rwa-demo:
 kadena.js:
   - changed-files:
       - any-glob-to-any-file: packages/libs/kadena.js/*
-'@kadena/marmalade-marketplace':
-  - changed-files:
-      - any-glob-to-any-file: packages/apps/marmalade-marketplace/*
 e2e-proof-of-us:
   - changed-files:
       - any-glob-to-any-file: packages/e2e/e2e-proof-of-us/*
@@ -193,3 +184,12 @@ wallet-adapter-react-example:
 '@kadena/wallet-adapter-walletconnect':
   - changed-files:
       - any-glob-to-any-file: packages/libs/wallet-adapter-walletconnect/*
+'@kadena/wallet-adapter-chainweaver':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-chainweaver/*
+'@kadena/wallet-adapter-magic':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-magic/*
+'@kadena/wallet-adapter-metamask-snap':
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/wallet-adapter-metamask-snap/*

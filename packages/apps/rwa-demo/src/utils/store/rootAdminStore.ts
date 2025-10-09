@@ -1,5 +1,5 @@
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
-import type { IdTokenResult } from 'firebase/auth';
+import type { IdTokenResultWithClaims } from '@/providers/UserProvider/UserProvider';
 import { get, off, onValue, push, ref, set } from 'firebase/database';
 import { database } from './firebase';
 
@@ -24,7 +24,7 @@ export const RootAdminStore = () => {
     token,
   }: {
     email: string;
-    token: IdTokenResult;
+    token: IdTokenResultWithClaims;
   }) => {
     const result = await fetch('/api/admin/claims', {
       method: 'POST',
@@ -45,7 +45,7 @@ export const RootAdminStore = () => {
     token,
   }: {
     uid: string;
-    token: IdTokenResult;
+    token: IdTokenResultWithClaims;
   }) => {
     const result = await fetch(`/api/admin/claims?uid=${uid}`, {
       method: 'DELETE',

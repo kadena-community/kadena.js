@@ -1,5 +1,22 @@
 # @kadena/kode-ui
 
+## 0.21.1
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+  - @kadena/kode-icons\@0.3.1
+
+## 0.21.0
+
+### Minor Changes
+
+- 24fb611: add the focussed and landingpage layout
+- 3759502: add buttongroup component
+- b5df48c: add topbanner functionality to the layouts
+- 05168d0: add the CompactStepper component
+
 ## 0.20.2
 
 ### Patch Changes

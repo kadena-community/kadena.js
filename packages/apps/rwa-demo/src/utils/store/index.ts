@@ -28,10 +28,10 @@ export const RWAStore = (organisation: IOrganisation) => {
     throw new Error('no organisation or user found');
   }
   const dbLocationString = `/organisations/${organisation.id}`;
+  const dbLocationTxString = `/organisationsTxs/${organisation.id}`;
 
   const addTransaction = async (data: ITransaction, asset?: IAsset) => {
     const assetFolder = getAssetFolder(asset);
-
     if (!assetFolder) return;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -40,7 +40,7 @@ export const RWAStore = (organisation: IOrganisation) => {
     await set(
       ref(
         database,
-        `${dbLocationString}/assets/${assetFolder}/transactions/${data.uuid}`,
+        `${dbLocationTxString}/assets/${assetFolder}/transactions/${data.uuid}`,
       ),
       newData,
     );
@@ -50,10 +50,21 @@ export const RWAStore = (organisation: IOrganisation) => {
     const assetFolder = getAssetFolder(asset);
     if (!assetFolder) return;
 
+    //check if the transaction exists before removing
+    const snapshot = await get(
+      ref(
+        database,
+        `${dbLocationTxString}/assets/${assetFolder}/transactions/${data.uuid}`,
+      ),
+    );
+    const foundTx = snapshot.toJSON() as ITransaction;
+
+    if (!foundTx) return;
+
     await set(
       ref(
         database,
-        `${dbLocationString}/assets/${assetFolder}/transactions/${data.uuid}`,
+        `${dbLocationTxString}/assets/${assetFolder}/transactions/${data.uuid}`,
       ),
       null,
     );
@@ -66,7 +77,7 @@ export const RWAStore = (organisation: IOrganisation) => {
     if (!assetFolder) return [];
 
     const snapshot = await get(
-      ref(database, `${dbLocationString}/assets/${assetFolder}/transactions`),
+      ref(database, `${dbLocationTxString}/assets/${assetFolder}/transactions`),
     );
     const data = snapshot.toJSON() as ITransaction;
 
@@ -88,7 +99,7 @@ export const RWAStore = (organisation: IOrganisation) => {
 
     const accountRef = ref(
       database,
-      `${dbLocationString}/assets/${assetFolder}/transactions`,
+      `${dbLocationTxString}/assets/${assetFolder}/transactions`,
     );
     onValue(accountRef, async (snapshot) => {
       const data = await getOverallTransactions(asset);

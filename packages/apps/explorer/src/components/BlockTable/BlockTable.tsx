@@ -1,12 +1,14 @@
 import {
-  useCompletedBlockHeightsQuery,
-  useLastBlockHeightQuery,
+  CompletedBlockHeightsDocument,
+  LastBlockHeightDocument,
   useNewBlocksSubscription,
 } from '@/__generated__/sdk';
+import { useNetwork } from '@/context/networksContext';
 import { useQueryContext } from '@/context/queryContext';
 import { completedBlockHeights } from '@/graphql/queries/completed-block-heights.graph';
 import { lastBlockHeight } from '@/graphql/queries/last-block-height.graph';
 import { newBlocks } from '@/graphql/subscriptions/newBlocks.graph';
+import { sendSentry, useGraphQuery } from '@/hooks/graphquery';
 import type { IBlockData, IChainBlock } from '@/services/block';
 import { addBlockData } from '@/services/block';
 import { Stack } from '@kadena/kode-ui';
@@ -50,13 +52,16 @@ export const BlockTable: React.FC = () => {
     error: newBlocksError,
   } = useNewBlocksSubscription();
 
-  const {
-    data: lastBlockHeightData,
-    loading: lastBlockLoading,
-    error: lastBlockError,
-  } = useLastBlockHeightQuery({
-    fetchPolicy: 'no-cache',
-  });
+  const { data: lastBlockHeightData, loading: lastBlockLoading } =
+    useGraphQuery(
+      LastBlockHeightDocument,
+      {
+        fetchPolicy: 'no-cache',
+      },
+      {
+        errorLabel: 'Loading of last block height failed',
+      },
+    );
 
   const completedBlockHeightsVariables = {
     // Change this if the table needs to show more than 80 blocks at once (on startup)
@@ -66,17 +71,20 @@ export const BlockTable: React.FC = () => {
     heightCount: 4,
   };
 
-  const {
-    data: oldBlocksData,
-    loading: oldBlocksLoading,
-    error: oldBlocksError,
-  } = useCompletedBlockHeightsQuery({
-    variables: completedBlockHeightsVariables,
-    fetchPolicy: 'no-cache',
-  });
+  const { data: oldBlocksData, loading: oldBlocksLoading } = useGraphQuery(
+    CompletedBlockHeightsDocument,
+    {
+      variables: completedBlockHeightsVariables,
+      fetchPolicy: 'no-cache',
+    },
+    {
+      errorLabel: 'Loading of old blocks failed',
+    },
+  );
 
   const { setQueries } = useQueryContext();
   const { selectedHeight } = useBlockInfo();
+  const { activeNetwork } = useNetwork();
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -115,31 +123,18 @@ export const BlockTable: React.FC = () => {
     if (newBlocksError) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
+        label: 'Loading of new blocks failed',
         body: 'Loading of new blocks failed',
       });
+
+      sendSentry(
+        {
+          errorLabel: 'Loading of new blocks failed',
+        },
+        activeNetwork,
+      );
     }
   }, [newBlocksError]);
-
-  useEffect(() => {
-    if (lastBlockError) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of completed blockheights failed',
-      });
-    }
-  }, [lastBlockError]);
-
-  useEffect(() => {
-    if (oldBlocksError) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of old blocks failed',
-      });
-    }
-  }, [oldBlocksError]);
 
   useEffect(() => {
     if (lastBlockHeightData?.lastBlockHeight) {

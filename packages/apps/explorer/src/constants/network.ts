@@ -6,6 +6,7 @@ export interface INetwork {
   graphUrl: string;
   wsGraphUrl: string;
   explorerUrl?: string;
+  headers?: Record<string, string>;
 }
 
 export type IEditNetwork = INetwork & {

@@ -183,6 +183,16 @@ export interface IJsonRpcSuccess<T> {
 // @public (undocumented)
 export interface IKdaMethodMap {
     // (undocumented)
+    kadena_changeNetwork_v1: {
+        params: {
+            networkId: string;
+        };
+        response: JsonRpcResponse<{
+            success: boolean;
+            reason?: string;
+        }>;
+    };
+    // (undocumented)
     kadena_connect: {
         params: KdaConnectOptions;
         response: JsonRpcResponse<any>;
@@ -240,7 +250,7 @@ export interface INetworkInfo {
     // (undocumented)
     networkName: string;
     // (undocumented)
-    url?: string[];
+    urls: string[];
 }
 
 // @public (undocumented)

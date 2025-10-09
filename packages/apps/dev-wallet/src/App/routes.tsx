@@ -123,7 +123,6 @@ export const Routes: FC = () => {
 
             <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/keyset/:keysetId" element={<Keyset />} />
-
             <Route path="/account/:accountId" element={<AccountPage />} />
 
             <Route path="/contacts" element={<Contacts />} />

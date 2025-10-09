@@ -50,9 +50,6 @@ const removeOrgClaim = async (
 
 const _GET = async (request: NextRequest) => {
   const id = new URL(request.url).searchParams.get('uid');
-  const organisationId = new URL(request.url).searchParams.get(
-    'organisationId',
-  );
 
   if (!id) {
     return new Response(`no id found`, {
@@ -62,14 +59,6 @@ const _GET = async (request: NextRequest) => {
   }
 
   const user = await adminAuth()?.getUser(id);
-  const existingClaims = user?.customClaims || {};
-
-  if (!existingClaims.orgAdmins || !existingClaims.orgAdmins[organisationId!]) {
-    return new Response(`${id}: not an admin for ${organisationId}`, {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
 
   return new Response(
     JSON.stringify({

@@ -334,12 +334,12 @@ describe('useAssetSetup', () => {
     );
 
     const expectedSteps = [
-      { label: 'Set up your asset', id: 'setup' },
-      { label: 'Set up Compliance Rules', id: 'compliancerules' },
-      { label: 'Enforce a compliance rule', id: 'startcompliance' },
-      { label: 'Add first agent', id: 'agent' },
-      { label: 'Add first investor', id: 'investor' },
-      { label: 'Distribute first tokens', id: 'distribute' },
+      { label: 'Configure your Asset', id: 'setup' },
+      { label: 'Configure Compliance Rule(s)', id: 'compliancerules' },
+      { label: 'Enable Compliance Rule(s)', id: 'startcompliance' },
+      { label: 'Add Agent(s)', id: 'agent' },
+      { label: 'Add Investor(s)', id: 'investor' },
+      { label: 'Distribute tokens to Investor(s)', id: 'distribute' },
       { label: 'Complete', id: 'success' },
     ];
 

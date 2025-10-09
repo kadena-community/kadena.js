@@ -1,3 +1,5 @@
+import type { INetwork } from '@/constants/network';
+import { sendSentry } from '@/hooks/graphquery';
 import { MonoAutorenew } from '@kadena/kode-icons/system';
 import { Stack } from '@kadena/kode-ui';
 import classNames from 'classnames';
@@ -10,7 +12,7 @@ export interface IToast {
   id: string;
   type: 'warning' | 'info' | 'positive' | 'negative';
   label: string;
-  body: string;
+  body?: string;
   permanent?: boolean;
   action?: () => void;
   actionIcon?: ReactElement;
@@ -18,7 +20,7 @@ export interface IToast {
   onlyOne?: boolean; //if this value is set, there can only be 1 error with this value. all next ones will be ignored
 }
 
-export type INetworkToast = Pick<IToast, 'body'>;
+export type INetworkToast = Pick<IToast, 'body'> & { network: INetwork };
 
 interface IToastContext {
   toasts: IToast[];
@@ -38,9 +40,10 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const createId = (): string => Math.random().toString(16).slice(2);
   const addToast = (toast: Omit<IToast, 'id'>) => {
+    const body = toast.body || toast.label;
     // first check if there already is a toast with this specific onlyOneOfType that is not null
     if (toast.onlyOne) {
-      setToasts([{ ...toast, id: createId() }]);
+      setToasts([{ ...toast, body, id: createId() }]);
       return;
     }
 
@@ -63,6 +66,7 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
       onlyOne: true,
       type: 'negative',
       label: 'Network not found',
+      body: toast.body || 'There seems to be an issue with this network',
       permanent: true,
       actionLabel: 'Retry',
       actionIcon: <MonoAutorenew />,
@@ -70,6 +74,8 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
         window.location.reload();
       },
     };
+
+    sendSentry({ errorLabel: newToast.body || 'Network error' }, toast.network);
 
     //there can only be 1 error like this.
     addToast(newToast);

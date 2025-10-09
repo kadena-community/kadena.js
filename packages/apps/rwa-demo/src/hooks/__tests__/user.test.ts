@@ -1,5 +1,5 @@
 import { UserContext } from '@/contexts/UserContext/UserContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
 import { useUser } from '../user';
 

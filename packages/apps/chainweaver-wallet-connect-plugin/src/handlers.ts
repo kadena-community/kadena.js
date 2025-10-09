@@ -1,9 +1,18 @@
 import WalletKit, { WalletKitTypes } from '@reown/walletkit';
 import { getSdkError } from '@walletconnect/utils';
 import { AccountStore } from './hooks/useAccountStore';
-import { ISignResponse, AccountResponse, MessageType, IResponseType } from './wallet-communication';
+import {
+  AccountResponse,
+  IResponseType,
+  ISignResponse,
+  MessageType,
+} from './wallet-communication';
 
-export async function handleGetAccountsV1(sessionRequest: WalletKitTypes.SessionRequest, currentWalletKit: WalletKit, accountStore: AccountStore) {
+export async function handleGetAccountsV1(
+  sessionRequest: WalletKitTypes.SessionRequest,
+  currentWalletKit: WalletKit,
+  accountStore: AccountStore,
+) {
   const request = sessionRequest.params.request;
   const { id, topic } = sessionRequest;
   const { params } = request;
@@ -27,12 +36,13 @@ export async function handleGetAccountsV1(sessionRequest: WalletKitTypes.Session
   }
 
   const accountsResponse = requestedAccountsArray.map(
-    (requestedAccount: { account: string; contracts: string[] }) => {
+    (requestedAccount: { account: string; contracts?: string[] }) => {
       return storedAccounts
         .filter((storedAccount) => {
           return (
             requestedAccount.account === storedAccount.name &&
-            (requestedAccount.contracts.length === 0 ||
+            (!requestedAccount.contracts ||
+              requestedAccount.contracts.length === 0 ||
               requestedAccount.contracts.includes(
                 storedAccount.account.contract,
               ))
@@ -46,24 +56,21 @@ export async function handleGetAccountsV1(sessionRequest: WalletKitTypes.Session
               {
                 name: acc.account.address,
                 contract: acc.account.contract,
-                chains: acc.account.chains.map(chain => chain.chainId),
+                chains: acc.account.chains.map((chain) => chain.chainId),
               },
             ],
           };
         })
-        .reduce(
-          (result: AccountResponse | null, curr: AccountResponse) => {
-            if (!result) {
-              return curr;
-            }
+        .reduce((result: AccountResponse | null, curr: AccountResponse) => {
+          if (!result) {
+            return curr;
+          }
 
-            return {
-              ...result,
-              kadenaAccounts: [...result.kadenaAccounts, ...curr.kadenaAccounts]
-            };
-          },
-          null,
-        );
+          return {
+            ...result,
+            kadenaAccounts: [...result.kadenaAccounts, ...curr.kadenaAccounts],
+          };
+        }, null);
     },
   );
 
@@ -79,7 +86,10 @@ export async function handleGetAccountsV1(sessionRequest: WalletKitTypes.Session
   });
 }
 
-export async function handleSignV1(sessionRequest: WalletKitTypes.SessionRequest, currentWalletKit: WalletKit) {
+export async function handleSignV1(
+  sessionRequest: WalletKitTypes.SessionRequest,
+  currentWalletKit: WalletKit,
+) {
   const { id, topic } = sessionRequest;
   await currentWalletKit.respondSessionRequest({
     topic,
@@ -91,7 +101,14 @@ export async function handleSignV1(sessionRequest: WalletKitTypes.SessionRequest
   });
 }
 
-export async function handleQuickSignV1(sessionRequest: WalletKitTypes.SessionRequest, currentWalletKit: WalletKit, message: <T extends MessageType>(type: MessageType, payload?: Record<string, unknown>) => Promise<IResponseType<T>>) {
+export async function handleQuickSignV1(
+  sessionRequest: WalletKitTypes.SessionRequest,
+  currentWalletKit: WalletKit,
+  message: <T extends MessageType>(
+    type: MessageType,
+    payload?: Record<string, unknown>,
+  ) => Promise<IResponseType<T>>,
+) {
   const request = sessionRequest.params.request;
   const { id, topic } = sessionRequest;
   const { params } = request;
@@ -103,7 +120,7 @@ export async function handleQuickSignV1(sessionRequest: WalletKitTypes.SessionRe
 
     if (response.error) {
       responses.push({
-        error: { type: 'reject' }
+        error: { type: 'reject' },
       });
     } else {
       const { status, transaction } = response.payload as ISignResponse;
@@ -111,8 +128,8 @@ export async function handleQuickSignV1(sessionRequest: WalletKitTypes.SessionRe
         commandSigData: { cmd: transaction.cmd, sigs: transaction.sigs },
         outcome: {
           result: status === 'signed' ? 'success' : 'noSig',
-          hash: transaction.hash
-        }
+          hash: transaction.hash,
+        },
       });
     }
   }
@@ -122,7 +139,7 @@ export async function handleQuickSignV1(sessionRequest: WalletKitTypes.SessionRe
     response: {
       id,
       jsonrpc: '2.0',
-      result: { responses }
-    }
+      result: { responses },
+    },
   });
 }

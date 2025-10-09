@@ -15,7 +15,7 @@ import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
 import type { SessionTypes } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
-import { ERRORS } from './constants';
+import { ERRORS, WALLET_CONNECT_ADAPTER } from './constants';
 import type {
   IWalletConnectAdapterOptions,
   IWalletConnectProvider,
@@ -32,8 +32,13 @@ const projectId = 'b56e18d47c72ab683b10814fe9495694'; // Public API key (localho
 const relayUrl = 'wss://relay.walletconnect.com';
 const defaultNetworkId = 'mainnet01';
 
+/**
+ * @public
+ * WalletConnectAdapter is a class that extends BaseWalletAdapter to provide
+ * functionality for connecting to any wallet supporting WalletConnect.
+ */
 export class WalletConnectAdapter extends BaseWalletAdapter {
-  public name: string = 'WalletConnect';
+  public name: string = WALLET_CONNECT_ADAPTER;
   protected declare provider: IWalletConnectProvider;
   protected networkId: string;
   private client?: Client;
@@ -49,13 +54,21 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       provider: options.provider,
       projectId: options.projectId || projectId,
       relayUrl: options.relayUrl || relayUrl,
+      debug: options.debug || false,
     };
     super(finalOptions as IBaseWalletAdapterOptions);
     this.options = finalOptions;
     this.networkId = (options.networkId as string) || defaultNetworkId;
+    if (options.debug) {
+      console.log('[WalletConnect:debug] options', {
+        ...finalOptions,
+        networkId: this.networkId,
+      });
+    }
     this.modal = new WalletConnectModal({
       themeMode: 'light',
       projectId: finalOptions.projectId,
+      chains: [`kadena:${this.networkId}`],
     });
   }
 
@@ -64,6 +77,10 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     method: M;
     params?: ExtendedMethodMap[M]['params'];
   }): Promise<ExtendedMethodMap[M]['response']> {
+    if (this.options.debug) {
+      console.log('[WalletConnect:debug] request', args);
+    }
+
     if (!this.client) throw new Error(ERRORS.FAILED_TO_CONNECT);
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
@@ -192,16 +209,17 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
 
   private async subscribeToEvents(): Promise<void> {
     if (!this.client) throw new Error(ERRORS.FAILED_TO_CONNECT);
+
     this.client.on('session_ping', (args) => {
-      // console.log('[walletconnect]', 'session_ping', args);
+      console.log('[WalletConnect]', 'session_ping', args);
     });
 
     this.client.on('session_event', (args) => {
-      console.log('[walletconnect]', 'session_event', args);
+      console.log('[WalletConnect]', 'session_event', args);
     });
 
     this.client.on('session_update', ({ topic, params }) => {
-      console.log('[walletconnect]', 'session_update', { topic, params });
+      console.log('[WalletConnect]', 'session_update', { topic, params });
       const { namespaces } = params;
       const _session = this.client!.session.get(topic);
       const updatedSession = { ..._session, namespaces };
@@ -210,14 +228,31 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       });
     });
 
-    this.client.on('session_delete', () => {
-      console.log('[walletconnect]', 'session_delete');
+    this.client.on('session_delete', ({ topic }) => {
+      console.log('[WalletConnect]', 'session_delete', topic);
+      // Cleanup on session end
+      this.provider = undefined as any;
+      localStorage.removeItem('wc_session');
     });
   }
 
   private async checkPersistedState(): Promise<void> {
     if (!this.client) throw new Error(ERRORS.FAILED_TO_CONNECT);
 
+    // First, try localStorage
+    const storedTopic = localStorage.getItem('wc_session');
+    if (storedTopic !== null && storedTopic.trim() !== '') {
+      const session = this.client.session.get(storedTopic);
+      if (session !== undefined) {
+        await this.onSessionConnected(session);
+        return;
+      } else {
+        // cleanup invalid topic
+        localStorage.removeItem('wc_session');
+      }
+    }
+
+    // Fallback: use latest active session
     const sessions = this.client.session.getAll();
     if (sessions.length) {
       await this.onSessionConnected(sessions[sessions.length - 1]);
@@ -234,7 +269,22 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         await this.subscribeToEvents();
         await this.checkPersistedState();
       }
-      await this.connectWallet();
+      // If provider already has a connected session, just reuse it
+      if (this.provider?.connected) {
+        return this.getActiveAccount();
+      }
+
+      // Auto-detect paired device
+      const pairings = this.client.core.pairing.getPairings();
+      if (pairings.length > 0) {
+        console.log('[WalletConnect] found existing topic:', pairings[0].topic);
+        // Reuse existing device pairing (no modal)
+        await this.connectWallet({ topic: pairings[0].topic });
+      } else {
+        // No known devices → fallback to QR modal
+        await this.connectWallet();
+      }
+
       return this.getActiveAccount();
     } catch (error) {
       console.error('Connection error:', error);
@@ -245,9 +295,12 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
   private async connectWallet(pairing?: { topic: string }): Promise<void> {
     if (!this.client) throw new Error(ERRORS.FAILED_TO_CONNECT);
 
+    if (this.options.debug) {
+      console.log('[WalletConnect:debug] connectWallet', { pairing });
+    }
     const { uri, approval } = await this.client.connect({
       pairingTopic: pairing?.topic,
-      requiredNamespaces: {
+      optionalNamespaces: {
         kadena: {
           methods: [
             'kadena_getAccounts_v1',
@@ -260,14 +313,27 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       },
     });
 
+    if (this.options.debug) {
+      console.log('[WalletConnect:debug] uri', { uri });
+    }
+
     if (uri) {
       this.modal.openModal({ uri }).catch((error) => {
         console.error('Error opening modal:', error);
       });
     }
     const session = await approval();
+
+    if (this.options.debug) {
+      console.log('[WalletConnect:debug] session', { session });
+    }
+
     await this.onSessionConnected(session);
-    this.modal.closeModal();
+
+    if (uri) this.modal.closeModal();
+
+    // Persist latest session for auto-reconnect
+    localStorage.setItem('wc_session', session.topic);
   }
 
   private async onSessionConnected(
@@ -277,15 +343,26 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       connected: true,
       accounts: session.namespaces.kadena.accounts,
       session,
-      request: async (args: { method: string; params?: any }) =>
-        this.client!.request({
+      request: async (args: { method: string; params?: any }) => {
+        if (this.options.debug) {
+          console.log('[WalletConnect:debug] provider.request', args);
+        }
+        const response = await this.client!.request({
           topic: session.topic,
           chainId: `kadena:${this.networkId}`,
           request: {
             method: args.method,
             params: args.params ?? {},
           },
-        }),
+        });
+        if (this.options.debug) {
+          console.log(
+            '[WalletConnect:debug] provider.request response',
+            response,
+          );
+        }
+        return response;
+      },
       on: (event, listener) => this.client!.on(event as any, listener),
       off: (event, listener) => this.client!.off(event as any, listener),
     };
@@ -294,24 +371,67 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
   public async disconnect(): Promise<void> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
-    if (!this.client || !this.provider || !this.provider.session) return;
-    await this.client.disconnect({
-      topic: this.provider.session.topic,
-      reason: getSdkError('USER_DISCONNECTED'),
-    });
+    if (this.client) {
+      try {
+        if (this.provider.session) {
+          await this.client.disconnect({
+            topic: this.provider.session.topic,
+            reason: getSdkError('USER_DISCONNECTED'),
+          });
+        }
+      } catch (error) {
+        console.error('Error disconnecting session:', error);
+      }
+
+      // Also clear any existing pairings so a fresh connect does not reuse them
+      try {
+        const pairings = this.client.core.pairing.getPairings();
+        await Promise.all(
+          pairings.map(async (p) => {
+            try {
+              // WalletConnect v2 exposes pairing.disconnect({ topic })
+              await (this.client as any).core.pairing.disconnect({
+                topic: p.topic,
+              });
+            } catch (err) {
+              // Fallback: if disconnect is unavailable, ignore and continue
+              console.warn('Failed to disconnect pairing', p.topic, err);
+            }
+          }),
+        );
+      } catch (error) {
+        console.error('Error clearing pairings:', error);
+      }
+    }
+
+    // Clear state after disconnect
+    this.provider = undefined as any;
+    localStorage.removeItem('wc_session');
   }
 
   // when the contracts[] param is omitted the wallet returns all known fungible accounts
   public async getAccounts(contracts?: string[]): Promise<IAccountInfo[]> {
     if (!this.provider) throw new Error(ERRORS.PROVIDER_NOT_DETECTED);
 
+    if (this.options.debug) {
+      console.log('[WalletConnect:debug] getAccounts', {
+        accounts: this.provider.accounts.map((account) => ({ account })),
+        contracts: contracts ?? ['coin'],
+      });
+    }
     const response = (await this.provider.request({
       method: 'kadena_getAccounts_v1',
       params: {
-        accounts: this.provider.accounts.map((account) => ({ account })),
-        contracts: contracts,
+        accounts: this.provider.accounts.map((account) => ({
+          account,
+          contracts: contracts ?? ['coin'],
+        })),
       },
     })) as IKadenaGetAccountsResponse;
+
+    if (this.options.debug) {
+      console.log('[WalletConnect:debug] getAccounts response', response);
+    }
 
     if (!response?.accounts?.length) {
       throw new Error(ERRORS.COULD_NOT_FETCH_ACCOUNT);

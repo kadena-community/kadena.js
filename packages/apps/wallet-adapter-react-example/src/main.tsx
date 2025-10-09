@@ -12,9 +12,11 @@
 
 import '@kadena/kode-ui/global';
 import { darkThemeClass } from '@kadena/kode-ui/styles';
+import { createChainweaverAdapter } from '@kadena/wallet-adapter-chainweaver';
 import { createChainweaverLegacyAdapter } from '@kadena/wallet-adapter-chainweaver-legacy';
 import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
 import { createMagicAdapter } from '@kadena/wallet-adapter-magic';
+import { createSnapAdapter } from '@kadena/wallet-adapter-metamask-snap';
 import { KadenaWalletProvider } from '@kadena/wallet-adapter-react';
 import { createWalletConnectAdapter } from '@kadena/wallet-adapter-walletconnect';
 import { createZelcoreAdapter } from '@kadena/wallet-adapter-zelcore';
@@ -23,18 +25,25 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
+const networkId: 'testnet04' | 'mainnet01' = 'testnet04';
+
 // List all adapters you want to use here.
 const adapters = [
   createEckoAdapter(),
+  createChainweaverAdapter(),
   createChainweaverLegacyAdapter(),
   createZelcoreAdapter(),
-  createWalletConnectAdapter(),
+  createWalletConnectAdapter({
+    debug: true,
+    networkId,
+  }),
+  createSnapAdapter(),
   createMagicAdapter({
     chainId: '1',
     chainwebApiUrl:
       'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact',
-    magicApiKey: 'pk_live_FB1577E16DE16B9E',
-    networkId: 'testnet04',
+    magicApiKey: import.meta.env.VITE_MAGIC_API_KEY,
+    networkId,
   }),
 ];
 
