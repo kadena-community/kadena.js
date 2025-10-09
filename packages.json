@@ -73,7 +73,7 @@
   },
   {
     "name": "@kadena/dev-wallet",
-    "version": "0.6.5",
+    "version": "3.1.0",
     "private": true,
     "path": "packages/apps/dev-wallet"
   },
@@ -157,7 +157,7 @@
   },
   {
     "name": "@kadena/rwa-demo",
-    "version": "2.1.4",
+    "version": "2.1.5",
     "private": true,
     "path": "packages/apps/rwa-demo"
   },
@@ -229,7 +229,7 @@
   },
   {
     "name": "@kadena/wallet-adapter-walletconnect",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "private": false,
     "path": "packages/libs/wallet-adapter-walletconnect"
   },
@@ -325,7 +325,7 @@
   },
   {
     "name": "wallet-adapter-react-example",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "private": true,
     "path": "packages/apps/wallet-adapter-react-example"
   },

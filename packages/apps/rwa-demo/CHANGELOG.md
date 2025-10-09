@@ -1,5 +1,12 @@
 # @kadena/rwa-demo
 
+## 2.1.5
+
+### Patch Changes
+
+- Updated dependencies \[43fd3e8]
+  - @kadena/wallet-adapter-walletconnect\@0.2.1
+
 ## 2.1.4
 
 ### Patch Changes
