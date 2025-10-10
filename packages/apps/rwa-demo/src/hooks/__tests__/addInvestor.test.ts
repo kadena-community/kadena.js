@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useAddInvestor } from '../addInvestor';
 
 describe('addInvestor hook', () => {
@@ -463,6 +463,7 @@ describe('addInvestor hook', () => {
       expect(addTransactionMock).toHaveBeenCalledWith({
         requestKey: 'test-request-key',
         hash: 'test-hash',
+        successMessage: 'Investor k:investor-1 has been added successfully.',
         type: {
           name: 'ADDINVESTOR',
           overall: true,

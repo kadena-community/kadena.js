@@ -11,9 +11,11 @@ import { useGetAgents } from '@/hooks/getAgents';
 import { useGetComplianceRules } from '@/hooks/getComplianceRules';
 import { useGetInvestorCount } from '@/hooks/getInvestorCount';
 import { useGetInvestors } from '@/hooks/getInvestors';
+import { useNotifications } from '@/hooks/notifications';
 import { useOrganisation } from '@/hooks/organisation';
 import { usePaused } from '@/hooks/paused';
 import { useSupply } from '@/hooks/supply';
+import { useUser } from '@/hooks/user';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type {
   IComplianceRule,
@@ -32,11 +34,13 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account, checkAccountAssetRoles } = useAccount();
   const { organisation } = useOrganisation();
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const { userToken } = useUser();
   const selectedKey =
     getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY) ?? '';
   const { paused } = usePaused(asset);
   const { data: supply } = useSupply(asset);
   const { data: investorCount } = useGetInvestorCount(asset);
+  const { addNotification } = useNotifications();
   const {
     data: investors,
     initFetchInvestors,
@@ -72,7 +76,6 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
     const unlistenAsset = assetStore?.listenToAsset(asset, setAsset);
 
     return () => {
-      console.log('unlisten assets');
       if (unlistenAssets) {
         unlistenAssets();
       }
@@ -80,7 +83,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         unlistenAsset();
       }
     };
-  }, [organisation, assetStore]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [organisation?.id, assetStore, userToken?.token]);
 
   const getAsset = async (
     uuid: string,
@@ -127,9 +131,12 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!result || !account || !organisation) return;
 
       const storageAsset = JSON.parse(result);
+      if (storageAsset.uuid === asset?.uuid) return;
+
       const foundAsset = await getAsset(storageAsset.uuid, account);
       if (!foundAsset || foundAsset.uuid === asset?.uuid) return;
-      await assetStore?.updateAsset(foundAsset);
+
+      //await assetStore?.updateAsset(foundAsset);
 
       window.location.href = '/';
     };
@@ -141,7 +148,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       window.removeEventListener(selectedKey, storageListener);
       window.removeEventListener('storage', storageListener);
     };
-  }, [organisation, account, assetStore]);
+  }, [organisation?.id, account?.address, assetStore]);
 
   const handleSelectAsset = (data: IAsset) => {
     localStorage.setItem(selectedKey, JSON.stringify(data));
@@ -150,6 +157,20 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const removeAsset = async (asset: IAsset) => {
     await assetStore?.removeAsset(asset);
+    addNotification({
+      intent: 'warning',
+      message: `Contract ${asset.contractName} removed successfully`,
+    });
+
+    const localstorageAsset = JSON.parse(
+      localStorage.getItem(selectedKey) || '{}',
+    );
+
+    if (localstorageAsset.uuid === asset.uuid) {
+      localStorage.removeItem(selectedKey);
+      window.dispatchEvent(new Event(selectedKey));
+      setAsset(undefined);
+    }
   };
 
   const addAsset = ({
@@ -195,6 +216,8 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
       assetStore?.addAsset(asset);
     }
 
+    setAsset(asset);
+    handleSelectAsset(asset);
     return asset;
   };
 
@@ -301,6 +324,7 @@ export const AssetProvider: FC<PropsWithChildren> = ({ children }) => {
         investorsIsLoading,
         agents,
         agentsIsLoading,
+        assetStore,
       }}
     >
       {children}

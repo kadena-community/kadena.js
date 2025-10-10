@@ -1,5 +1,5 @@
 import { AssetContext } from '@/contexts/AssetContext/AssetContext';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
 import { useAsset } from '../asset';
 
@@ -109,8 +109,6 @@ describe('useAsset', () => {
     expect(typeof result.current.removeAsset).toBe('function');
     expect(typeof result.current.getAsset).toBe('function');
     expect(typeof result.current.maxCompliance).toBe('function');
-    expect(typeof result.current.initFetchInvestors).toBe('function');
-    expect(typeof result.current.initFetchAgents).toBe('function');
   });
 
   it('should call the correct functions when methods are used', async () => {
@@ -165,13 +163,5 @@ describe('useAsset', () => {
     expect(mocks.maxComplianceMock).toHaveBeenCalledWith(
       'max-investors-compliance-v1',
     );
-
-    // Test initFetchInvestors function
-    result.current.initFetchInvestors();
-    expect(mocks.initFetchInvestorsMock).toHaveBeenCalled();
-
-    // Test initFetchAgents function
-    result.current.initFetchAgents();
-    expect(mocks.initFetchAgentsMock).toHaveBeenCalled();
   });
 });

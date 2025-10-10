@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 import { useFaucet } from '../faucet';
 
@@ -202,10 +202,14 @@ describe('faucet hook', () => {
 
       expect(mockSubmit2Chain).toHaveBeenCalledWith(undefined, {
         notificationSentryName: 'error:submit:faucet',
+        successMessage: 'You have received KDA from the faucet',
         skipAssetCheck: true,
         chainFunction: expect.any(Function),
         transaction: {
-          type: expect.anything(),
+          type: {
+            name: 'FAUCET',
+            overall: false,
+          },
           accounts: expect.arrayContaining([expect.any(String)]),
         },
       });

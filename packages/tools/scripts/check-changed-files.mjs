@@ -2,13 +2,7 @@
 import micromatch from 'micromatch';
 import { $ } from 'zx';
 
-const allowed_file_globs = [
-  'packages/apps/docs/src/docs/**/*',
-  'packages/apps/docs/src/config.yaml',
-  'packages/apps/docs/public/assets/**/*',
-  'packages/apps/docs/src/redirects/**/*',
-  'packages/**/README.md'
-];
+const allowed_file_globs = ['packages/**/README.md'];
 
 // Get the list of changed files
 const changedFiles = await $`git diff --name-only origin/main`;

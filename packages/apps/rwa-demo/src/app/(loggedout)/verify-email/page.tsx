@@ -80,7 +80,10 @@ const Home = () => {
 
     addNotification({
       intent: result.status === 200 ? 'positive' : 'negative',
-      message: result.statusText || 'Unknown error',
+      message:
+        result.status === 200
+          ? 'The address is verified'
+          : result.statusText || 'Unknown error',
     });
 
     setIsPending(false);

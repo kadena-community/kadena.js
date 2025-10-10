@@ -1,6 +1,6 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 import type { ICompactStepperItemProps } from '@kadena/kode-ui';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAsset } from './asset';
 
 export type IStepKeys =
@@ -14,27 +14,27 @@ export type IStepKeys =
 
 const steps: ICompactStepperItemProps[] = [
   {
-    label: 'Set up your asset',
+    label: 'Configure your Asset',
     id: 'setup',
   },
   {
-    label: 'Set up Compliance Rules',
+    label: 'Configure Compliance Rule(s)',
     id: 'compliancerules',
   },
   {
-    label: 'Enforce a compliance rule',
+    label: 'Enable Compliance Rule(s)',
     id: 'startcompliance',
   },
   {
-    label: 'Add first agent',
+    label: 'Add Agent(s)',
     id: 'agent',
   },
   {
-    label: 'Add first investor',
+    label: 'Add Investor(s)',
     id: 'investor',
   },
   {
-    label: 'Distribute first tokens',
+    label: 'Distribute tokens to Investor(s)',
     id: 'distribute',
   },
   {
@@ -54,7 +54,15 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
   const [stepIdx, setStepIdx] = useState<number>(() =>
     getStepIdx(step?.id as IStepKeys),
   );
-  const { setAsset, asset, agents, investors } = useAsset();
+  const {
+    setAsset,
+    asset,
+    agents,
+    investors,
+    agentsIsLoading,
+    investorsIsLoading,
+    assetStore,
+  } = useAsset();
 
   const setStep = (step: IStepKeys) => {
     const newStep = steps.find((s) => s.id === step);
@@ -98,6 +106,8 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
       percentage += percentageStep;
     }
 
+    if (agentsIsLoading || investorsIsLoading) return;
+
     if (isOneComplianceRuleSet(asset)) {
       stepName = 'startcompliance';
       percentage += percentageStep;
@@ -117,7 +127,7 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     }
     if (asset?.supply && asset.supply > 0) {
       stepName = 'success';
-      percentage += percentageStep;
+      percentage = 100;
     }
 
     setStep(stepName);
@@ -126,7 +136,21 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
       if (percentage > 100) return 100;
       return Math.round(percentage);
     });
-  }, [asset?.uuid, asset?.supply, asset?.compliance, agents, investors]);
+  }, [
+    asset?.uuid,
+    asset?.supply,
+    asset?.compliance,
+    agents.length,
+    investors.length,
+    agentsIsLoading,
+    investorsIsLoading,
+  ]);
+
+  const completeAssetSetup = useCallback(async () => {
+    if (!asset) return;
+    const newAsset: IAsset = { ...asset, setupComplete: true };
+    await assetStore?.updateAsset(newAsset);
+  }, [asset]);
 
   return {
     asset,
@@ -135,7 +159,9 @@ export const useAssetSetup = ({ tempAsset }: { tempAsset?: IAsset }) => {
     steps,
     setActiveStep: setStep,
     percentageComplete,
+    isLoading: agentsIsLoading || investorsIsLoading,
     isOneComplianceRuleSet: isOneComplianceRuleSet(asset),
     isOneComplianceRuleStarted: isOneComplianceRuleStarted(asset),
+    completeAssetSetup,
   };
 };

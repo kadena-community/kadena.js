@@ -4,6 +4,7 @@ import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import type { IWalletAccount } from '@/providers/AccountProvider/AccountType';
 import type { IRemoveAgentProps } from '@/services/removeAgent';
 import { removeAgent } from '@/services/removeAgent';
+import { maskValue } from '@kadena/kode-ui';
 import { useEffect, useState } from 'react';
 import { useAccount } from './account';
 import { useAsset } from './asset';
@@ -22,6 +23,7 @@ export const useRemoveAgent = () => {
   ): Promise<ITransaction | undefined> => {
     return submit2Chain<IRemoveAgentProps>(data, {
       notificationSentryName: 'error:submit:removeagent',
+      successMessage: `Remove agent ${maskValue(data.agent)} successful`,
       chainFunction: (account: IWalletAccount, asset: IAsset) => {
         return removeAgent(data, account!, asset);
       },

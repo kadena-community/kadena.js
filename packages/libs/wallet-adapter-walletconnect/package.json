@@ -1,6 +1,7 @@
 {
   "name": "@kadena/wallet-adapter-walletconnect",
-  "version": "0.0.1-beta.3",
+  "version": "0.2.0",
+  "description": "Kadena Wallet Adapter for WalletConnect",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
@@ -22,7 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
+    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && api-extractor run",
     "format": "prettier . --cache --write",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest run"
@@ -35,6 +36,7 @@
     "@walletconnect/utils": "^2.18.0"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.43.1",
     "@walletconnect/types": "~2.8.1",
     "jsdom": "^22.1.0",
     "typescript": "5.4.5",

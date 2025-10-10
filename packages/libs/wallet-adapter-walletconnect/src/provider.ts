@@ -13,28 +13,24 @@ export interface IWalletConnectAdapterOptions
   extends IBaseWalletAdapterOptions {
   relayUrl: string;
   projectId: string;
+  debug?: boolean;
 }
 
+/** @public */
 export interface IWalletConnectProvider extends IProvider {
   connected: boolean;
   accounts: string[];
   session?: SessionTypes.Struct;
 }
 
-export async function detectWalletConnectProvider(options?: {
-  silent?: boolean;
-  timeout?: number;
-}): Promise<IWalletConnectProvider | null> {
-  const { silent, timeout } = options ?? {};
-
-  if (silent !== undefined && typeof silent !== 'boolean') {
-    throw new Error('Expected option "silent" to be a boolean.');
-  }
-
-  if (timeout !== undefined && typeof timeout !== 'number') {
-    throw new Error('Expected option "timeout" to be a number.');
-  }
-
+/**
+ * Provide a mock for wallet connect, since this modal needs to be dynamically built
+ * it will be re-created inside the adapter, and we can safely assume it is always available.
+ *
+ * @returns A promise resolving to the WalletConnect provider or null.
+ * @public
+ */
+export async function detectWalletConnectProvider(): Promise<IWalletConnectProvider | null> {
   const provider: IWalletConnectProvider = {
     connected: false,
     accounts: [],

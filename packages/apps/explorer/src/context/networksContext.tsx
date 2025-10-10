@@ -56,11 +56,17 @@ export const selectedNetworkKey = 'selectedNetwork';
 const getApolloClient = (network: INetwork) => {
   const httpLink = new YogaLink({
     endpoint: network?.graphUrl,
+    headers: network?.headers,
   });
 
   const wsLink = new GraphQLWsLink(
     createClient({
       url: network!.wsGraphUrl,
+      connectionParams: async () => {
+        return {
+          headers: network?.headers || {},
+        };
+      },
     }),
   );
 
@@ -79,11 +85,6 @@ const getApolloClient = (network: INetwork) => {
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     link: splitLink,
     cache,
-    assumeImmutableResults: true,
-    connectToDevTools: true,
-    defaultOptions: {
-      query: { errorPolicy: 'all' },
-    },
   });
 
   return client;
@@ -113,7 +114,7 @@ export const getNetworks = (): INetwork[] => {
 const NetworkContextProvider = (props: {
   networks?: INetwork[];
   children: React.ReactNode;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [networks, setNetworks] = useState<INetwork[]>(getDefaultNetworks());
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
@@ -146,12 +147,16 @@ const NetworkContextProvider = (props: {
     client?.stop();
     addNetworkFailToast({
       body: `There is an issue with ${activeNetwork!.graphUrl}`,
+      network: activeNetwork!,
     });
   };
 
-  const checkIfNetworkAvailable = async (graphUrl: string) => {
+  const checkIfNetworkAvailable = async (
+    graphUrl: string,
+    headers: INetwork['headers'],
+  ) => {
     try {
-      const result = await checkNetwork(graphUrl);
+      const result = await checkNetwork(graphUrl, headers);
       await result.json();
 
       if (result.status !== 200) {
@@ -166,7 +171,7 @@ const NetworkContextProvider = (props: {
     if (!activeNetwork || !activeNetwork.graphUrl) return;
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    checkIfNetworkAvailable(activeNetwork.graphUrl);
+    checkIfNetworkAvailable(activeNetwork.graphUrl, activeNetwork.headers);
   }, [activeNetwork]);
 
   useEffect(() => {

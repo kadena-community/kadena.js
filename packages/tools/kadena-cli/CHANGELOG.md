@@ -1,5 +1,60 @@
 # @kadena/kadena-cli
 
+## 1.4.6
+
+### Patch Changes
+
+- Updated dependencies \[59f3cec]
+- Updated dependencies \[f23cdfd]
+  - @kadena/pactjs\@0.6.0
+  - @kadena/hd-wallet\@0.6.2
+  - @kadena/client\@1.18.3
+  - @kadena/client-utils\@0.13.4
+  - @kadena/pactjs-cli\@1.18.3
+  - @kadena/pactjs-generator\@1.18.3
+
+## 1.4.5
+
+### Patch Changes
+
+- @kadena/client\@1.18.2
+- @kadena/client-utils\@0.13.3
+- @kadena/pactjs-cli\@1.18.2
+- @kadena/pactjs-generator\@1.18.2
+
+## 1.4.4
+
+### Patch Changes
+
+- Updated dependencies \[c967a57]
+  - @kadena/pactjs\@0.5.0
+  - @kadena/client\@1.18.1
+  - @kadena/client-utils\@0.13.2
+  - @kadena/pactjs-cli\@1.18.1
+  - @kadena/pactjs-generator\@1.18.1
+
+## 1.4.3
+
+### Patch Changes
+
+- 7ed1b5a: Fixed typo in error message
+- Updated dependencies \[5c56ae2]
+  - @kadena/client-utils\@0.13.1
+
+## 1.4.2
+
+### Patch Changes
+
+- fdfd6d3: fix a bug where a template filename is passed to
+  createAndWriteTransaction instead of the actual template string
+- e2d8285: Fixed showing error messages for nested properties in template files
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+  - @kadena/pactjs-cli\@1.18.0
+  - @kadena/pactjs-generator\@1.18.0
+
 ## 1.4.1
 
 ### Patch Changes

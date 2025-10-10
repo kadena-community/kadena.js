@@ -16,7 +16,7 @@ const AgentLayout = ({
 
   if (!isMounted) return <MainLoading />;
   if (!account) return <WalletsList init={true} />;
-  if (!asset?.contractName) return <AssetsList init={true} />;
+  if (!asset?.contractName) return <AssetsList />;
 
   return (
     <>

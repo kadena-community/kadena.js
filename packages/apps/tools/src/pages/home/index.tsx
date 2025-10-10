@@ -2,7 +2,7 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
-import { homeWrapperClass, infoBoxStyle } from '@/pages/home/styles.css';
+import { homeWrapperClass, infoBoxStyle } from '@/pagestyles/home/styles.css';
 import {
   Accordion,
   AccordionItem,
@@ -25,7 +25,7 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
-import { linkStyle } from '@/pages/faucet/styles.css';
+import { linkStyle } from '@/pagestyles/faucet/styles.css';
 import { MonoHelp } from '@kadena/kode-icons/system';
 import Link from 'next/link';
 import type { FC } from 'react';

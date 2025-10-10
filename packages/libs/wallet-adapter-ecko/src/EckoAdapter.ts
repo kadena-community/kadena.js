@@ -32,7 +32,7 @@ import type {
   ISigningRequestPartial,
 } from '@kadena/wallet-adapter-core';
 import { BaseWalletAdapter } from '@kadena/wallet-adapter-core';
-import { ERRORS } from './constants';
+import { ECKO_ADAPTER, ERRORS } from './constants';
 import type {
   ExtendedMethod,
   ExtendedMethodMap,
@@ -52,7 +52,7 @@ import { safeJsonParse } from './utils/json';
  * functionality for connecting to the Ecko Wallet.
  */
 export class EckoAdapter extends BaseWalletAdapter {
-  public name: string = 'Ecko';
+  public name: string = ECKO_ADAPTER;
 
   // Listeners for 'kadena_networkChanged'.
   private _networkChangedListeners: Array<(network: INetworkInfo) => void> = [];

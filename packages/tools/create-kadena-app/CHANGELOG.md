@@ -1,5 +1,11 @@
 # @kadena/create-kadena-app
 
+## 0.2.1
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,5 @@
 import type { BlockQuery } from '@/__generated__/sdk';
-import { useBlockQuery } from '@/__generated__/sdk';
+import { BlockDocument } from '@/__generated__/sdk';
 import { BlockTransactions } from '@/components/BlockTransactions/BlockTransactions';
 import { DataRenderComponent } from '@/components/DataRenderComponent/DataRenderComponent';
 import { LayoutAside } from '@/components/Layout/components/LayoutAside';
@@ -11,10 +11,10 @@ import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataBlockquery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { block } from '@/graphql/queries/block.graph';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { useRouter } from '@/hooks/router';
 import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
 import type { Key } from 'react';
@@ -55,12 +55,17 @@ const Block: React.FC = () => {
     setQueries([{ query: block, variables: blockQueryVariables }]);
   }, []);
 
-  const { addToast } = useToast();
-  const { loading, data, error } = useBlockQuery({
-    variables: blockQueryVariables,
+  const { loading, data, error } = useGraphQuery(
+    BlockDocument,
+    {
+      variables: blockQueryVariables,
 
-    skip: !router.query.hash,
-  });
+      skip: !router.query.hash,
+    },
+    {
+      errorLabel: 'Loading of block hash data failed',
+    },
+  );
 
   useEffect(() => {
     if (loading) {
@@ -69,11 +74,8 @@ const Block: React.FC = () => {
     }
 
     if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of account transactions failed',
-      });
+      setInnerData({} as BlockQuery);
+      setIsLoading(false);
     }
 
     if (data) {

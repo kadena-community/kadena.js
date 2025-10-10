@@ -91,6 +91,7 @@ export const SideBar: FC<{ topbannerHeight?: number }> = ({
           </SideBarItem>
           <SideBarItem component={Link} visual={<></>} label="">
             <UILink
+              textAlign="start"
               isCompact
               href="/transfer"
               component={Link}

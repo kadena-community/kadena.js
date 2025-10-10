@@ -7,7 +7,8 @@ export default defineConfig({
   test: {
     // we exclude the chainweaver tests since there is another config for it
     exclude: ['src/chainweaver/**/*.test.ts'],
-    testTimeout: 5000,
+    // since we changed iteration tests can be a slower
+    testTimeout: 30000,
     include: ['src/**/*.test.ts'],
     setupFiles: './vitest.setup.js',
   },

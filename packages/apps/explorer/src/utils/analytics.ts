@@ -1,3 +1,5 @@
+import { COOKIE_CONSENT_KEY } from '@/components/CookieConsent/CookieConsent';
+
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const EVENT_NAMES = {
   'click:search': 'click:search',
@@ -13,8 +15,6 @@ export const EVENT_NAMES = {
   'click:open_blockheightpopup': 'click:open_blockheightpopup',
   'event:stopserver': 'event:stopserver',
 } as const;
-
-const COOKIE_CONSENTNAME = 'cookie_consent';
 
 type IOptionsType = Record<string, string | undefined>;
 
@@ -46,7 +46,7 @@ export const analyticsPageView = (options: IOptionsPageViewType = {}): void => {
 
 export const updateConsent = (hasConsent: boolean): void => {
   const newValue = hasConsent ? 'granted' : 'denied';
-  localStorage.setItem(COOKIE_CONSENTNAME, hasConsent.toString());
+  localStorage.setItem(COOKIE_CONSENT_KEY, hasConsent.toString());
 
   if (process.env.NODE_ENV === 'development') {
     console.warn('SET CONSENT', { value: newValue });

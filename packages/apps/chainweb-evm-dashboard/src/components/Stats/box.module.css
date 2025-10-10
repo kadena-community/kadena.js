@@ -1,0 +1,54 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  min-width: 80px;
+}
+
+.boxGraphWrapper {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+
+  &:hover .graphTitle {
+    opacity: 0.8;
+    top: 0.8rem;
+  }
+
+  .graphTitle {
+    position: absolute;
+    top: -0.8rem;
+    right: 1.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
+  }
+
+  svg, .graphTitle {
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+.barWrapper {
+  position: relative;
+  width: 100%;
+  height: 8px;
+
+  .bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    min-width: 5px;
+    transition: width 0.3s ease;
+  }
+}

@@ -13,7 +13,8 @@
     "outDir": "dist",
     "rootDir": "src",
     "baseUrl": ".",
-    "declaration": true
+    "declaration": true,
+    "types": ["vite/client"]
   },
   "include": ["src/**/*", "packages/**/*", "examples/**/*"],
   "exclude": ["node_modules", "dist"]

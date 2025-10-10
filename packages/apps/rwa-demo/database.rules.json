@@ -11,7 +11,12 @@
         }
       }
     },
-
+    "organisationsTxs": {
+      "$organisationId": {
+        ".read": "auth != null && (auth.token.rootAdmin === true || auth.token.allowedOrgs[$organisationId] === true)",
+        ".write": "auth != null && (auth.token.rootAdmin === true || auth.token.allowedOrgs[$organisationId] === true)"
+      }
+    },
     "organisationsUsers": {
       "$organisationId": {
         ".read": "auth != null",
@@ -21,9 +26,9 @@
       }
     },
     "organisationsData": {
-      ".read": "auth.token.rootAdmin === true",
+      ".read": true,
       "$organisationId": {
-        ".read": true,
+        ".read": "(auth.token.rootAdmin === true || auth.token.allowedOrgs[$organisationId] === true)",
         ".write": "(auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true)",
         "domains": {
           "$key": {
@@ -44,7 +49,7 @@
     "organisations": {
       "$organisationId": {
         "assets": {
-          ".read": "auth != null",
+          ".read": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true  || auth.token.allowedOrgs[$organisationId] === true",
           ".write": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true  || auth.token.allowedOrgs[$organisationId] === true"
         },
         "messages": {
@@ -52,7 +57,7 @@
             "$userId": {
               "$account": {
                 ".read": "auth != null && auth.uid === $userId",
-                ".write": "auth != null"
+                ".write": "auth.token.rootAdmin === true || auth.token.orgAdmins[$organisationId] === true  || auth.token.allowedOrgs[$organisationId] === true"
               }
             }
           }
@@ -124,8 +129,8 @@
       }
     },
     "transactions": {
-      ".read": true,
-      ".write": true
+      ".read": false,
+      ".write": false
     }
   }
 }

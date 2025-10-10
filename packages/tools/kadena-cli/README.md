@@ -42,4 +42,4 @@ pnpm install -g @kadena/kadena-cli
 
 Read more at [docs.kadena.io][1]
 
-[1]: https://docs.kadena.io/reference/kadena-cli
+[1]: https://docs.kadena.io/reference/kadena-cli-ref

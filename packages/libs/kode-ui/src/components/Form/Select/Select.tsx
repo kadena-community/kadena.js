@@ -149,6 +149,6 @@ function SelectBase<T extends object>(
 
 export const Select = forwardRef(SelectBase) as <T extends object>(
   props: ISelectProps<T> & { ref?: ForwardedRef<HTMLButtonElement> },
-) => JSX.Element;
+) => React.JSX.Element;
 
 export { Item as SelectItem } from 'react-stately';

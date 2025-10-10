@@ -13,6 +13,7 @@ import {
   MINBALANCE,
   MINXCHAINGASSTATIONBALANCE,
   MINXGALXEBALANCE,
+  MINXGALXEBALANCE_CHAIN2,
   NETWORKS,
   xchainGasStationAccount,
 } from './utils/constants';
@@ -55,8 +56,8 @@ export const alerts: IAlert[] = [
     intervalGroup: INTERVALGROUPS['12hours'],
   },
   {
-    title: `Low GALXE account alert! ⛽️`,
-    description: 'check the balance of the GALXE account',
+    title: `Low GALXE account alert for chain 8! ⛽️`,
+    description: 'check the balance of the GALXE account on chain 8',
     code: ALERTCODES.LOWXGALXEBALANCE,
     networks: [getMainNet()],
     options: {
@@ -68,6 +69,22 @@ export const alerts: IAlert[] = [
     messageType: {
       slack: MESSAGETYPES.slack.BALANCEALERT,
       elastic: MESSAGETYPES.elastic.BALANCEALERT,
+    },
+    intervalGroup: INTERVALGROUPS['12hours'],
+  },
+  {
+    title: `Low GALXE account alert for chain 2! ⛽️`,
+    description: 'check the balance of the GALXE account on chain 2',
+    code: ALERTCODES.LOWXGALXEBALANCE_CHAIN2,
+    networks: [getMainNet()],
+    options: {
+      account: GalxeAccount,
+      minBalance: MINXGALXEBALANCE_CHAIN2,
+    },
+    chainIds: ['2'],
+    slackChannelIds: [channelId],
+    messageType: {
+      slack: MESSAGETYPES.slack.BALANCEALERT,
     },
     intervalGroup: INTERVALGROUPS['12hours'],
   },
@@ -98,9 +115,29 @@ export const alerts: IAlert[] = [
     chainIds: ['2'],
     slackChannelIds: [channelId],
     messageType: {
-      slack: MESSAGETYPES.slack.BALANCECHANGEALERT,
+      slack: MESSAGETYPES.slack.KINESISBALANCECHANGEALERT,
       elastic: MESSAGETYPES.elastic.BALANCECHANGEALERT,
     },
-    intervalGroup: INTERVALGROUPS['15minutes'],
+    intervalGroup: INTERVALGROUPS['1hour'],
   },
+
+  // alert for testing purposes
+  // {
+  //   title: `Test account on testnet`,
+  //   description: 'Checks for change of balance on a testnet account',
+  //   code: ALERTCODES.BALANCECHANGE,
+  //   networks: [getTestNet()],
+  //   options: {
+  //     account:
+  //       'k:387eec0698548ae7a3470f9eb1cd1c11d116207dc814ec58a78800739dd181e9',
+  //     maxblockHeightDiff: MAXBLOCKHEIGHT_DIFFERENCE,
+  //   },
+  //   chainIds: ['1', '2', '3'],
+  //   slackChannelIds: [channelId],
+  //   messageType: {
+  //     slack: MESSAGETYPES.slack.BALANCECHANGEALERT,
+  //     elastic: MESSAGETYPES.elastic.BALANCECHANGEALERT,
+  //   },
+  //   intervalGroup: INTERVALGROUPS['1hour'],
+  // },
 ] as const;

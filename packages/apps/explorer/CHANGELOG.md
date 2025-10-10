@@ -1,5 +1,44 @@
 # @kadena/explorer
 
+## 0.9.9
+
+### Patch Changes
+
+- @kadena/graph\@2.2.7
+
+## 0.9.8
+
+### Patch Changes
+
+- @kadena/graph\@2.2.6
+
+## 0.9.7
+
+### Patch Changes
+
+- @kadena/graph\@2.2.5
+
+## 0.9.6
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+  - @kadena/kode-icons\@0.3.1
+  - @kadena/kode-ui\@0.21.1
+  - @kadena/graph\@2.2.4
+
+## 0.9.5
+
+### Patch Changes
+
+- Updated dependencies \[24fb611]
+- Updated dependencies \[3759502]
+- Updated dependencies \[b5df48c]
+- Updated dependencies \[05168d0]
+  - @kadena/kode-ui\@0.21.0
+  - @kadena/graph\@2.2.3
+
 ## 0.9.4
 
 ### Patch Changes

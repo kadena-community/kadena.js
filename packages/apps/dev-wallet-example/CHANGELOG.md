@@ -1,5 +1,43 @@
 # @kadena/dev-wallet-example
 
+## 0.2.9
+
+### Patch Changes
+
+- @kadena/client\@1.18.3
+- @kadena/client-utils\@0.13.4
+
+## 0.2.8
+
+### Patch Changes
+
+- @kadena/client\@1.18.2
+- @kadena/client-utils\@0.13.3
+
+## 0.2.7
+
+### Patch Changes
+
+- @kadena/client\@1.18.1
+- @kadena/client-utils\@0.13.2
+
+## 0.2.6
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[5c56ae2]
+  - @kadena/client-utils\@0.13.1
+
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+
 ## 0.2.4
 
 ### Patch Changes

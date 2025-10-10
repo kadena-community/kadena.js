@@ -1,5 +1,50 @@
 # @kadena/graph
 
+## 2.2.7
+
+### Patch Changes
+
+- Updated dependencies \[59f3cec]
+  - @kadena/pactjs\@0.6.0
+  - @kadena/chainweb-node-client\@0.9.5
+  - @kadena/client\@1.18.3
+  - @kadena/client-utils\@0.13.4
+
+## 2.2.6
+
+### Patch Changes
+
+- Updated dependencies \[c21ada4]
+  - @kadena/chainweb-node-client\@0.9.4
+  - @kadena/client\@1.18.2
+  - @kadena/client-utils\@0.13.3
+
+## 2.2.5
+
+### Patch Changes
+
+- Updated dependencies \[c967a57]
+  - @kadena/pactjs\@0.5.0
+  - @kadena/chainweb-node-client\@0.9.2
+  - @kadena/client\@1.18.1
+  - @kadena/client-utils\@0.13.2
+
+## 2.2.4
+
+### Patch Changes
+
+- Updated dependencies \[5c56ae2]
+  - @kadena/client-utils\@0.13.1
+
+## 2.2.3
+
+### Patch Changes
+
+- Updated dependencies \[b849855]
+- Updated dependencies \[b849855]
+  - @kadena/client-utils\@0.13.0
+  - @kadena/client\@1.18.0
+
 ## 2.2.2
 
 ### Patch Changes

@@ -1,5 +1,53 @@
 # @kadena/proof-of-us
 
+## 0.5.28
+
+### Patch Changes
+
+- Updated dependencies \[59f3cec]
+  - @kadena/pactjs\@0.6.0
+  - @kadena/graph\@2.2.7
+  - @kadena/client\@1.18.3
+
+## 0.5.27
+
+### Patch Changes
+
+- @kadena/graph\@2.2.6
+- @kadena/client\@1.18.2
+
+## 0.5.26
+
+### Patch Changes
+
+- Updated dependencies \[c967a57]
+  - @kadena/pactjs\@0.5.0
+  - @kadena/graph\@2.2.5
+  - @kadena/client\@1.18.1
+
+## 0.5.25
+
+### Patch Changes
+
+- f59ac43: update to react 19, Next 15 and other dependend packages
+- Updated dependencies \[f59ac43]
+  - @kadena/kode-icons\@0.3.1
+  - @kadena/kode-ui\@0.21.1
+  - @kadena/graph\@2.2.4
+
+## 0.5.24
+
+### Patch Changes
+
+- Updated dependencies \[b849855]
+- Updated dependencies \[24fb611]
+- Updated dependencies \[3759502]
+- Updated dependencies \[b5df48c]
+- Updated dependencies \[05168d0]
+  - @kadena/client\@1.18.0
+  - @kadena/kode-ui\@0.21.0
+  - @kadena/graph\@2.2.3
+
 ## 0.5.23
 
 ### Patch Changes

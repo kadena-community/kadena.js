@@ -1,5 +1,7 @@
 import { useAsset } from '@/hooks/asset';
-import { Notification, NotificationHeading } from '@kadena/kode-ui';
+import { useCreateContract } from '@/hooks/createContract';
+import { MonoAdd } from '@kadena/kode-icons';
+import { Button, Notification, NotificationHeading } from '@kadena/kode-ui';
 import {
   CompactTable,
   SectionCard,
@@ -8,10 +10,13 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import type { FC } from 'react';
+import { AssetFormScreen } from '../AssetForm/AssetFormScreen';
 import { FormatSelectAsset } from '../TableFormatters/FormatSelectAsset';
 
 export const AssetsList: FC<{ init?: boolean }> = ({ init }) => {
-  const { assets } = useAsset();
+  const { assets, asset } = useAsset();
+  const { isAllowed } = useCreateContract();
+
   return (
     <SectionCard stack="vertical">
       <SectionCardContentBlock>
@@ -19,13 +24,29 @@ export const AssetsList: FC<{ init?: boolean }> = ({ init }) => {
           title="Assets"
           description={
             <>
-              {init
+              {!asset?.contractName
                 ? 'You have no asset selected. Which asset do you want to work with?'
                 : 'List the organisation contracts'}
             </>
           }
+          actions={
+            <AssetFormScreen
+              trigger={
+                <Button
+                  aria-label="Add asset"
+                  isDisabled={!isAllowed}
+                  variant="outlined"
+                  isCompact
+                  endVisual={<MonoAdd />}
+                >
+                  Add Asset
+                </Button>
+              }
+            />
+          }
         />
         <SectionCardBody>
+          {isAllowed.toString()}
           <CompactTable
             variant="open"
             fields={[
@@ -37,12 +58,12 @@ export const AssetsList: FC<{ init?: boolean }> = ({ init }) => {
               {
                 key: 'namespace',
                 label: 'ns',
-                width: '70%',
+                width: '50%',
               },
               {
                 label: '',
                 key: '',
-                width: '10%',
+                width: '15%',
                 align: 'end',
                 render: FormatSelectAsset(),
               },

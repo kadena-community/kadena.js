@@ -1,5 +1,5 @@
 import type { AccountQuery } from '@/__generated__/sdk';
-import { useAccountQuery } from '@/__generated__/sdk';
+import { AccountDocument } from '@/__generated__/sdk';
 import { AccountAside } from '@/components/AccountAside/AccountAside';
 import { AccountBalanceDistribution } from '@/components/AccountBalanceDistribution/AccountBalanceDistribution';
 import { AccountTransactionsTable } from '@/components/AccountTransactionsTable/AccountTransactionsTable';
@@ -13,12 +13,19 @@ import { Layout } from '@/components/Layout/Layout';
 import { loadingData } from '@/components/LoadingSkeleton/loadingData/loadingDataAccountquery';
 import { ValueLoader } from '@/components/LoadingSkeleton/ValueLoader/ValueLoader';
 import { NoSearchResults } from '@/components/Search/NoSearchResults/NoSearchResults';
-import { useToast } from '@/components/Toast/ToastContext/ToastContext';
 import { useQueryContext } from '@/context/queryContext';
 import { useSearch } from '@/context/searchContext';
 import { account } from '@/graphql/queries/account.graph';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { useRouter } from '@/hooks/router';
-import { Badge, TabItem, Tabs } from '@kadena/kode-ui';
+import {
+  Badge,
+  maskValue,
+  Notification,
+  Stack,
+  TabItem,
+  Tabs,
+} from '@kadena/kode-ui';
 import { CompactTable, CompactTableFormatters } from '@kadena/kode-ui/patterns';
 import type { FC, Key } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -41,11 +48,16 @@ const Account: FC = () => {
     accountName,
   };
 
-  const { addToast } = useToast();
-  const { loading, data, error } = useAccountQuery({
-    variables: accountQueryVariables,
-    skip: !router.query.accountName,
-  });
+  const { loading, data, error } = useGraphQuery(
+    AccountDocument,
+    {
+      variables: accountQueryVariables,
+      skip: !router.query.accountName,
+    },
+    {
+      errorLabel: 'Loading of account failed',
+    },
+  );
 
   useEffect(() => {
     if (loading) {
@@ -54,11 +66,8 @@ const Account: FC = () => {
     }
 
     if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of account failed',
-      });
+      setIsLoading(false);
+      setInnerData({} as AccountQuery);
     }
 
     if (data) {
@@ -95,15 +104,23 @@ const Account: FC = () => {
   const keys: IKeyProps[] = useMemo(() => {
     const innerKeys: IKeyProps[] =
       fungibleAccount?.chainAccounts.reduce((acc: IKeyProps[], val) => {
-        const guardKeys: IKeyProps[] = val.guard.keys.map((key) => {
+        const jsonGuard = JSON.parse(val.guard.raw ?? '{}');
+
+        const guardKeys: IKeyProps[] = jsonGuard.keys?.map((key: any) => {
           return {
             key: key,
             balance: val.balance,
             predicate: val.guard.predicate,
-            // raw: val.guard.raw,
             chainId: val.chainId,
           };
-        });
+        }) ?? [
+          {
+            key: val.guard.raw,
+            balance: val.balance ?? 0,
+            predicate: '',
+            chainId: val.chainId,
+          },
+        ];
         return [...acc, ...guardKeys];
       }, []) ?? [];
 
@@ -195,7 +212,13 @@ const Account: FC = () => {
             <AccountTransfersTable accountName={accountName} />
           </TabItem>
           <TabItem title={`Transactions`} key="Transactions">
-            <AccountTransactionsTable accountName={accountName} />
+            <Stack flexDirection="column" gap="md">
+              <Notification role="status" type="inlineStacked">
+                All transactions in which account {maskValue(accountName)} acted
+                as the sender and covered the gas fees.
+              </Notification>
+              <AccountTransactionsTable accountName={accountName} />
+            </Stack>
           </TabItem>
         </Tabs>
       </LayoutBody>

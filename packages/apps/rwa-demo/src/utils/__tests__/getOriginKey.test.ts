@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getOriginKey } from '../getOriginKey';
+import { cleanupOrigin, getOriginKey } from '../getOriginKey';
 
 describe('getOriginKey', () => {
   it('should return undefined for undefined or null input', () => {
@@ -17,5 +17,17 @@ describe('getOriginKey', () => {
     expect(getOriginKey('https://he-man.com/path?query=1')).toBe(
       'httpshemancompathquery1',
     );
+  });
+});
+
+describe('cleanupOrigin', () => {
+  it('should remove trailing slash from the origin', () => {
+    expect(cleanupOrigin('https://he-man.com')).toBe('https://he-man.com');
+    expect(cleanupOrigin('http://masters-of-the-universe.org/')).toBe(
+      'http://masters-of-the-universe.org',
+    );
+  });
+  it('should convert the origin to lowercase', () => {
+    expect(cleanupOrigin('HTTPS://skeleTor.Com/')).toBe('https://skeletor.com');
   });
 });

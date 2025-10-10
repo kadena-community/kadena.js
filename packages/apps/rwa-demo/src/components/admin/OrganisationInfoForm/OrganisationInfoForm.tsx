@@ -2,9 +2,10 @@ import { Confirmation } from '@/components/Confirmation/Confirmation';
 import type { IOrganisation } from '@/contexts/OrganisationContext/OrganisationContext';
 import { useNotifications } from '@/hooks/notifications';
 import { useUser } from '@/hooks/user';
+import { cleanupOrigin } from '@/utils/getOriginKey';
 import { OrganisationStore } from '@/utils/store/organisationStore';
 import { RootAdminStore } from '@/utils/store/rootAdminStore';
-import { MonoAdd, MonoDelete } from '@kadena/kode-icons';
+import { MonoDelete } from '@kadena/kode-icons';
 import { Button, Stack, TextField } from '@kadena/kode-ui';
 import {
   SectionCard,
@@ -13,7 +14,7 @@ import {
   SectionCardHeader,
 } from '@kadena/kode-ui/patterns';
 import { useRouter } from 'next/navigation';
-import type { FC, Reducer } from 'react';
+import type { FC } from 'react';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { OrganisationFormFields } from './OrganisationFormFields';
@@ -29,7 +30,7 @@ type IOrganisationWithNewDomain = IOrganisation & {
 };
 
 export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
-  const [domains, dispatchDomains] = useReducer<Reducer<string[], Action>>(
+  const [domains, dispatchDomains] = useReducer<string[], [Action]>(
     domainsReducer,
     [],
   );
@@ -37,6 +38,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
   const [orgStore, setOrgStore] = useState<any>();
   const [organisation, setOrganisation] = useState<IOrganisation | undefined>();
   const [isLoading, setIsLoading] = useState(false);
+  const [reload, setReload] = useState(true);
   const [newDomainValue, setNewDomainValue] = useState('');
   const router = useRouter();
   const { addNotification } = useNotifications();
@@ -44,7 +46,6 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
   const {
     handleSubmit,
     control,
-    getValues,
     formState: { isValid, errors },
     reset,
   } = useForm<IOrganisationWithNewDomain>({
@@ -57,7 +58,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray<IOrganisationWithNewDomain>({
+  const { fields, remove } = useFieldArray<IOrganisationWithNewDomain>({
     control,
     name: 'domains',
   });
@@ -81,11 +82,15 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
       reset(data);
       setOrganisation(data);
+      setReload(false);
     };
 
+    if (reload === false) return;
+
+    console.log('reload');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(organisationId);
-  }, [organisationId]);
+  }, [organisationId, reload]);
 
   const onSubmit = async (data: IOrganisationWithNewDomain) => {
     setIsLoading(true);
@@ -93,10 +98,23 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
     // remove the newDomain field from the data object
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { newDomain, ...cleanedData } = data;
-    const newOrganisation = { ...organisation, ...cleanedData };
+    const newOrganisation = {
+      ...organisation,
+      ...cleanedData,
+      domains: newDomain
+        ? [...data.domains, { value: cleanupOrigin(newDomain) }]
+        : data.domains,
+    };
 
     await orgStore.updateOrganisation(newOrganisation);
     setIsLoading(false);
+    setReload(true);
+    addNotification({
+      intent: 'positive',
+      label: 'Organisation updated',
+      message: `Organisation ${newOrganisation.name} has been updated successfully.`,
+    });
+    setNewDomainValue('');
   };
 
   const handleDelete = useCallback(async () => {
@@ -107,7 +125,7 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
     addNotification(
       {
-        intent: 'positive',
+        intent: 'warning',
         label: 'Organisation removed',
         message: `Organisation ${organisation.name} has been removed successfully.`,
       },
@@ -118,18 +136,6 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
     router.push('/admin/root');
   }, [organisation?.id]);
-
-  const handleAddDomain = useCallback(() => {
-    append({ value: newDomainValue });
-    reset({ ...getValues() });
-
-    dispatchDomains({
-      type: 'add',
-      payload: newDomainValue,
-    });
-
-    setNewDomainValue('');
-  }, [append, newDomainValue]);
 
   if (!organisation) return null;
 
@@ -153,61 +159,59 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
               {fields.map((field, index) => {
                 const error = (errors.domains ?? [])[index];
                 return (
-                  <>
-                    <Controller
-                      name={`domains.${index}.value`}
-                      control={control}
-                      key={field.id}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: 'This field is required',
-                        },
-                        validate: (value) => {
-                          const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
-                          if (!pattern.test(value)) {
-                            return 'Invalid domain format. Use a valid URL format.';
-                          }
+                  <Controller
+                    name={`domains.${index}.value`}
+                    control={control}
+                    key={field.id}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: 'This field is required',
+                      },
+                      validate: (value) => {
+                        const pattern =
+                          /^(https?:\/\/)[^\s\/$.?#].[^\s]*[^\/\s]$/i;
+                        if (!pattern.test(value)) {
+                          return 'Invalid domain format. Use a valid URL format. Do not end with a /';
+                        }
 
-                          if (
-                            domains.includes(value) &&
-                            value !== field.value
-                          ) {
-                            return 'This domain already exists';
-                          }
-                          return true;
-                        },
-                      }}
-                      render={({ field }) => (
-                        <Stack width="100%" gap="sm" alignItems="flex-start">
-                          <TextField
-                            {...field}
-                            isInvalid={!!error?.value?.message}
-                            errorMessage={`${error?.value?.message}`}
-                          />
-                          <Confirmation
-                            onPress={() => {
-                              dispatchDomains({
-                                type: 'remove',
-                                payload: field.value,
-                              });
+                        if (domains.includes(value) && value !== field.value) {
+                          return 'This domain already exists';
+                        }
+                        return true;
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Stack width="100%" gap="sm" alignItems="flex-start">
+                        <TextField
+                          {...field}
+                          isDisabled
+                          isInvalid={!!error?.value?.message}
+                          errorMessage={`${error?.value?.message}`}
+                        />
+                        <Confirmation
+                          onPress={() => {
+                            dispatchDomains({
+                              type: 'remove',
+                              payload: field.value,
+                            });
 
-                              remove(index);
-                            }}
-                            trigger={
-                              <Button
-                                isCompact
-                                variant="outlined"
-                                startVisual={<MonoDelete />}
-                              />
-                            }
-                          >
-                            Are you sure you want to remove this domain?
-                          </Confirmation>
-                        </Stack>
-                      )}
-                    />
-                  </>
+                            remove(index);
+                          }}
+                          trigger={
+                            <Button
+                              aria-label="Remove domain"
+                              isCompact
+                              variant="outlined"
+                              startVisual={<MonoDelete />}
+                            />
+                          }
+                        >
+                          Are you sure you want to remove this domain?
+                        </Confirmation>
+                      </Stack>
+                    )}
+                  />
                 );
               })}
 
@@ -218,9 +222,10 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                   rules={{
                     validate: (value) => {
                       if (!value) return true;
-                      const pattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+                      const pattern =
+                        /^(https?:\/\/)[^\s\/$.?#].[^\s]*[^\/\s]$/i;
                       if (!pattern.test(value)) {
-                        return 'Invalid domain format. Use a valid URL format.';
+                        return 'Invalid domain format. Use a valid URL format. Do not end with a /';
                       }
 
                       if (domains.includes(value)) {
@@ -244,14 +249,6 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
                       placeholder="Fill in a new domain"
                     />
                   )}
-                />
-
-                <Button
-                  isCompact
-                  isDisabled={!!errors.newDomain?.message || !newDomainValue}
-                  variant="outlined"
-                  startVisual={<MonoAdd />}
-                  onPress={handleAddDomain}
                 />
               </Stack>
             </SectionCardBody>

@@ -27,7 +27,7 @@ export const NavAccordionRoot: FC<INavAccordionRootProps> = ({
   const [openSections, setOpenSections] =
     useState<NavAccordionState>(initialOpenSections);
 
-  const NavElement = (): JSX.Element => (
+  const NavElement = (): React.JSX.Element => (
     <nav className={navAccordionWrapperClass}>{children}</nav>
   );
 

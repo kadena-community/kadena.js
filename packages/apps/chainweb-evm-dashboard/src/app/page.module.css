@@ -1,0 +1,110 @@
+.statsValue {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.labeledBoxContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.overallCardBackground {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+  z-index: 0;
+}
+
+.overallCard {
+  z-index: 0;
+}
+
+.overallCardStats {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.overallCardStatsLoading {
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.5;
+}
+
+.overallChainsBoxGraph {
+  left: 50% !important;
+}
+
+.guageChainsBoxGraph {
+  left: 25% !important;
+}
+
+.chainBoxGraph {
+  position: relative;
+}
+
+.chainBoxGraphContainer {
+  position: relative;
+  width: calc(100% + 3.6rem);
+  height: calc(20px + 3.6rem);
+  margin: -1.8rem -1.8rem 0 -1.8rem;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999999999;
+  pointer-events: none;
+  user-select: none;
+
+  .wrapper {
+    max-width: 80%;
+  }
+}
+
+.overlay.overlayHidden {
+  animation: 0.5s ease-out 0s 1 forwards fadeOut;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+    z-index: -1;
+    background-color: transparent;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 32px;
+    padding-bottom: 80px;
+  }
+
+  .main {
+    align-items: center;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: invert();
+  }
+}

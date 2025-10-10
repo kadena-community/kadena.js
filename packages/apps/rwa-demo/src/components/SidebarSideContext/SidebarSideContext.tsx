@@ -18,10 +18,12 @@ import {
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
+import { useOrganisation } from '@/hooks/organisation';
 import './style.css';
 
 export const SidebarSideContext: FC = () => {
-  const { signOut, userToken, userData } = useUser();
+  const { signOut, userToken, userData, isMounted } = useUser();
+  const { organisation } = useOrganisation();
   const { theme, rotateTheme } = useTheme();
   const { isExpanded } = useSideBarLayout();
   const router = useRouter();
@@ -30,6 +32,8 @@ export const SidebarSideContext: FC = () => {
     signOut();
     router.push('/');
   };
+
+  if (!organisation || !isMounted) return null;
 
   return (
     <>
@@ -44,6 +48,7 @@ export const SidebarSideContext: FC = () => {
               <ContextMenu
                 trigger={
                   <Button
+                    textAlign={isExpanded ? 'start' : 'center'}
                     isCompact
                     variant={isExpanded ? 'outlined' : 'transparent'}
                   >
@@ -63,7 +68,7 @@ export const SidebarSideContext: FC = () => {
                     }}
                   />
                 ) : null}
-                {userToken?.claims.orgAdmins ? (
+                {userToken?.claims.orgAdmins?.[organisation.id] ? (
                   <ContextMenuItem
                     label="org. admin"
                     onClick={() => {

@@ -15,9 +15,13 @@ import type { FC, ReactElement } from 'react';
 import { useState } from 'react';
 import { ChainweaverWalletConnect } from '../ChainweaverWalletConnect/ChainweaverWalletConnect';
 import { EckoWalletConnect } from '../EckoWalletConnect/EckoWalletConnect';
-import { MagicConnect } from '../MagicConnect/MagicConnect';
+import { WalletConnectContextMenu } from '../WalletConnectContextMenu/WalletConnectContextMenu';
 
-export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
+interface IProps {
+  trigger: ReactElement<{ onPress: () => void }>;
+}
+
+export const WalletSelector: FC<IProps> = ({ trigger }) => {
   const [accounts, setAccounts] = useState<IWalletAccount[] | undefined>();
   const [type, setType] = useState<keyof typeof WALLETTYPES | undefined>();
   const { addAccount } = useAccount();
@@ -25,6 +29,7 @@ export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
   const handleConnect = async (type: keyof typeof WALLETTYPES) => {
     setType(type);
     const result = await addAccount(type);
+
     setAccounts(result);
   };
 
@@ -55,9 +60,7 @@ export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
                       onPress={() => selectAccount(account)}
                       style={{ width: '100%' }}
                     >
-                      {account.alias
-                        ? account.alias
-                        : maskValue(account.address)}
+                      {maskValue(account.address)}
                     </Button>
                   </Stack>
                 ))}
@@ -68,9 +71,9 @@ export const WalletSelector: FC<{ trigger: ReactElement }> = ({ trigger }) => {
       )}
 
       <ContextMenu trigger={trigger}>
-        <MagicConnect handleConnect={handleConnect} />
         <EckoWalletConnect handleConnect={handleConnect} />
         <ChainweaverWalletConnect handleConnect={handleConnect} />
+        <WalletConnectContextMenu handleConnect={handleConnect} />
       </ContextMenu>
     </>
   );

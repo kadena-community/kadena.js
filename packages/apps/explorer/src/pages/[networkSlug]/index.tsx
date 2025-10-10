@@ -10,6 +10,7 @@ import { useInView } from 'react-intersection-observer';
 
 const Home: React.FC = () => {
   const { inView, ref: inViewRef } = useInView();
+
   return (
     <Layout layout="full">
       <BlockInfoProvider>

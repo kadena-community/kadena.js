@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 export const useGetInvestorCount = (asset?: IAsset) => {
   const [innerData, setInnerData] = useState<number>(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   const { data: subscriptionData } = useEventSubscriptionSubscription({
     variables: {
@@ -13,16 +14,23 @@ export const useGetInvestorCount = (asset?: IAsset) => {
     },
   });
 
-  const initInnerData = async (asset: IAsset) => {
-    const data = await getInvestorCount(asset);
-    setInnerData(data);
-  };
-
   useEffect(() => {
     if (!subscriptionData?.events?.length || !asset) return;
+
+    const initInnerData = async (asset: IAsset) => {
+      if (isMounted) return;
+      setIsMounted(true);
+      const data = await getInvestorCount(asset);
+      setInnerData(data);
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     initInnerData(asset);
-  }, [asset?.uuid, subscriptionData]);
+  }, [asset?.uuid, subscriptionData?.events?.length, isMounted]);
+
+  useEffect(() => {
+    setIsMounted(false);
+  }, [asset?.uuid, subscriptionData?.events?.length]);
 
   return { data: innerData };
 };

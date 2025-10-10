@@ -1,6 +1,7 @@
 import type { AccountTransfersQuery, Transfer } from '@/__generated__/sdk';
-import { useAccountTransfersQuery } from '@/__generated__/sdk';
+import { AccountTransfersDocument } from '@/__generated__/sdk';
 import { useQueryContext } from '@/context/queryContext';
+import { useGraphQuery } from '@/hooks/graphquery';
 import { graphqlIdFor } from '@/utils/graphqlIdFor';
 import { Heading, Stack, Text } from '@kadena/kode-ui';
 import {
@@ -11,7 +12,6 @@ import {
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { FormatLinkWrapper } from '../CompactTable/FormatLinkWrapper';
-import { useToast } from '../Toast/ToastContext/ToastContext';
 import { accountTransfers } from './AccountTransfers.graph';
 import { loadingData } from './loadingDataAccountTransfersquery';
 
@@ -27,11 +27,16 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
   const { variables, handlePageChange, pageSize } = usePagination({
     id,
   });
-  const { addToast } = useToast();
-  const { data, loading, error } = useAccountTransfersQuery({
-    variables,
-    skip: !id,
-  });
+  const { data, loading, error } = useGraphQuery(
+    AccountTransfersDocument,
+    {
+      variables,
+      skip: !id,
+    },
+    {
+      errorLabel: 'Loading of account transfers failed',
+    },
+  );
 
   useEffect(() => {
     if (loading) {
@@ -40,11 +45,8 @@ export const AccountTransfersTable: FC<{ accountName: string }> = ({
     }
 
     if (error) {
-      addToast({
-        type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of account transfers failed',
-      });
+      setIsLoading(false);
+      setInnerData({} as AccountTransfersQuery);
     }
 
     if (data) {

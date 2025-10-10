@@ -4,7 +4,7 @@ import { useGetAgentRoles } from '@/hooks/getAgentRoles';
 import type { IAddAgentProps } from '@/services/addAgent';
 import { AGENTROLES } from '@/services/addAgent';
 import type { IRecord } from '@/utils/filterRemovedRecords';
-import { Button, CheckboxGroup, Stack } from '@kadena/kode-ui';
+import { Button, CheckboxGroup, Stack, Text } from '@kadena/kode-ui';
 import {
   RightAside,
   RightAsideContent,
@@ -20,7 +20,9 @@ import { AccountNameField } from '../Fields/AccountNameField';
 interface IProps {
   agent?: IRecord;
   onClose?: () => void;
-  trigger: ReactElement;
+  trigger: ReactElement<{
+    onPress: () => void;
+  }>;
 }
 
 export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
@@ -122,7 +124,10 @@ export const AgentForm: FC<IProps> = ({ onClose, agent, trigger }) => {
                             value={val}
                             {...register('roles')}
                           />
-                          <label htmlFor={val}>{val}</label>
+
+                          <label htmlFor={val}>
+                            <Text>{val}</Text>
+                          </label>
                         </Stack>
                       );
                     })}

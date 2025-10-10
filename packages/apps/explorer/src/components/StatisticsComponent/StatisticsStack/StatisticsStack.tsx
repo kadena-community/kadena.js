@@ -27,8 +27,7 @@ export const StatisticsStack: FC = () => {
     if (error) {
       addToast({
         type: 'negative',
-        label: 'Something went wrong',
-        body: 'Loading of network info data failed',
+        label: 'Loading of network info data failed',
       });
       stopPolling();
     }

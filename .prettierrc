@@ -11,13 +11,5 @@
     "prettier-plugin-organize-imports",
     "prettier-plugin-packagejson"
   ],
-  "organizeImportsSkipDestructiveCodeActions": true,
-  "overrides": [
-    {
-      "files": "./packages/apps/docs/src/**/*.md",
-      "options": {
-        "proseWrap": "never"
-      }
-    }
-  ]
+  "organizeImportsSkipDestructiveCodeActions": true
 }

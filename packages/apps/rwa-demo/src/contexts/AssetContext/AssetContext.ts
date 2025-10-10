@@ -14,6 +14,7 @@ export interface IAsset {
   supply: number;
   investorCount: number;
   compliance: IComplianceProps;
+  setupComplete?: boolean;
 }
 
 export interface IAssetContext {
@@ -39,6 +40,7 @@ export interface IAssetContext {
   investorsIsLoading: boolean;
   agents: IRecord[];
   agentsIsLoading: boolean;
+  assetStore: any;
 }
 
 export const AssetContext = createContext<IAssetContext | null>(null);

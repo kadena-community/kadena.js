@@ -121,6 +121,9 @@ export const asideWrapperClass = recipe({
 
 export const menuBackdropClass = recipe({
   base: [
+    {
+      border: 0,
+    },
     responsiveStyle({
       xs: {
         display: 'flex',

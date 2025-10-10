@@ -1,4 +1,0 @@
-[ ] Had to set `declaration: false` in tsconfig as a workaround for this: https://github.com/microsoft/TypeScript/issues/42873
-[ ] Importing @graphql-yoga/apollo-link from next is broken: https://github.com/dotansimha/graphql-yoga/issues/2194
-  - had to use require() and eslint-ignore it
-[ ] Had to force the Component type in pages/_app.tsx to fix "Type 'React.ReactNode' is not assignable to type 'import("/home/tasinet/code/kadena.js/common/temp/node_modules/.pnpm/@types+react@18.0.26/node_modules/@types/react/index`).ReactNode'.`
