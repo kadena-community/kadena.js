@@ -27,6 +27,11 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
+# moved this to the top for testing
+      - name: Setup Kadena sandbox
+        uses: ./.github/actions/sandbox
+# remove to above when done testing
+
       - name: Runner setup
         uses: ./.github/actions/runner-setup
 
