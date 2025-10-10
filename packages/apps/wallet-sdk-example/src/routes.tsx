@@ -1,5 +1,6 @@
 import { RouteObject } from 'react-router-dom';
 
+import { AccountsByPublicKey } from './pages/accountsByPublickey';
 import MarkdownPage from './pages/Home';
 import { KadenaNames } from './pages/kadenaNames/KadenaNamesResolver';
 import { Transfer } from './pages/Transfer';
@@ -26,6 +27,10 @@ const routes: RouteObject[] = [
   {
     path: '/kadenanames',
     element: <KadenaNames />,
+  },
+  {
+    path: 'accountsbypublickey',
+    element: <AccountsByPublicKey />,
   },
 ];
 
