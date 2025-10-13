@@ -1,4 +1,4 @@
-import { MonoKey, MonoSearch } from '@kadena/kode-icons/system';
+import { MonoKey, MonoRemoveRedEye } from '@kadena/kode-icons/system';
 import {
   Button,
   Dialog,
@@ -59,7 +59,7 @@ const RenderContent = ({
           <Button
             isCompact
             variant="outlined"
-            startVisual={<MonoSearch />}
+            startVisual={<MonoRemoveRedEye />}
             onClick={() => setIsOpen(true)}
           />
         </Stack>
