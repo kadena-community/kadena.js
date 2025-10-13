@@ -3,6 +3,7 @@ import { shorten } from '@/utils/helpers';
 import { BuiltInPredicate } from '@kadena/client';
 import { Badge, Stack, Text } from '@kadena/kode-ui';
 import { useMemo } from 'react';
+import { keyClass } from './style.css';
 
 export const Keyset = ({
   guard,
@@ -26,18 +27,32 @@ export const Keyset = ({
       flexDirection={'row'}
       gap="md"
       paddingInline={'sm'}
-      marginBlock={'xs'}
+      width="100%"
     >
       <Stack width="100%" gap="xs" flexDirection={direction}>
-        {!hidePred && <Text size="smallest">{guard.pred}:</Text>}
-        {keysWithAlias.map(({ key, alias }) => (
-          <Stack key={key} gap="sm" alignItems={'center'}>
-            {alias && <Badge size="sm">{alias}</Badge>}
-            <Text variant="code" size="smallest">
-              {shorten(key!)}
-            </Text>
+        {!hidePred && (
+          <Stack style={{ width: '75px' }}>
+            <Badge size="sm" style="highContrast">
+              {guard.pred}
+            </Badge>
           </Stack>
-        ))}
+        )}
+        <Stack flexWrap="wrap" flexDirection={'row'} flex={1}>
+          {keysWithAlias.map(({ key, alias }) => (
+            <Stack
+              key={key}
+              gap="sm"
+              alignItems={'center'}
+              className={keyClass}
+              paddingBlockEnd="xs"
+            >
+              {alias && <Badge size="sm">{alias}</Badge>}
+              <Text variant="code" size="smallest">
+                {shorten(key!)}
+              </Text>
+            </Stack>
+          ))}
+        </Stack>
         {alias && (
           <Stack flex={1} justifyContent={'flex-end'}>
             <Badge size="sm">{alias}</Badge>

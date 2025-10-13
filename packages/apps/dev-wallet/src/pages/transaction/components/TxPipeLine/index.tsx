@@ -199,7 +199,7 @@ function TxStatusList({
         <TxStatusItem
           variant={variant}
           status={'failure'}
-          label={'Preflight: The transaction has issues'}
+          label={'Preflight: Verification for this transaction failed'}
         >
           {variant === 'expanded' &&
             tx.status === 'preflight' &&
