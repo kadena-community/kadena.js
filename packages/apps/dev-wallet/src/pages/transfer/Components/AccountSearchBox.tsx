@@ -24,6 +24,7 @@ import { useEffect, useRef, useState } from 'react';
 import { IRetrievedAccount } from '../../../modules/account/IRetrievedAccount';
 import { discoverReceiver } from '../utils';
 import { AccountItem } from './AccountItem';
+import { AccountNotFound } from './AccountNotFound';
 import { DiscoveredAccount } from './DiscoveredAccount/DiscoveredAccount';
 import { createAccountBoxClass, popoverClass } from './style.css';
 
@@ -483,28 +484,40 @@ export function AccountSearchBox({
                   </Text>
                 </Stack>
 
-                <Button
-                  isDisabled={isSenderAccount}
-                  variant="outlined"
-                  isCompact
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    close();
-                    const guard = (await prompt((resolve, reject) => (
-                      <KeySetForm close={reject} onChange={resolve} isOpen />
-                    ))) as IGuard;
-                    if (guard) {
-                      onSelectHandle({
-                        address: value,
-                        guard: guard,
-                        chains: [],
-                        overallBalance: '0.0',
-                      });
-                    }
-                  }}
-                >
-                  Add account guard
-                </Button>
+                {!isSenderAccount && (
+                  <Button
+                    variant="outlined"
+                    isCompact
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      close();
+                      const guard = (await prompt((resolve, reject) => (
+                        <KeySetForm
+                          close={reject}
+                          onChange={resolve}
+                          isOpen
+                          title="Account not found blockchain"
+                          extraContent={
+                            <>
+                              <AccountNotFound address={value} />
+                              <Heading as="h4">Create Key Set</Heading>
+                            </>
+                          }
+                        />
+                      ))) as IGuard;
+                      if (guard) {
+                        onSelectHandle({
+                          address: value,
+                          guard: guard,
+                          chains: [],
+                          overallBalance: '0.0',
+                        });
+                      }
+                    }}
+                  >
+                    What does this mean?
+                  </Button>
+                )}
               </Stack>
             ) : undefined;
 
