@@ -58,9 +58,9 @@ export const useSubmit2Chain = () => {
     }
 
     let res: ITransactionDescriptor | undefined = undefined;
-    const tx: IUnsignedCommand | undefined = undefined;
+    let tx: IUnsignedCommand | undefined = undefined;
     try {
-      const tx = await options.chainFunction(account!, asset!);
+      tx = await options.chainFunction(account!, asset!);
 
       if (!tx) {
         addNotification(

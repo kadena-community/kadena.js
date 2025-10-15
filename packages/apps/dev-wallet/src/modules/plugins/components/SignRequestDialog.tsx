@@ -22,8 +22,8 @@ export function SignRequestDialog({
 
   return (
     <FocussedPageLayout>
-      <Dialog isOpen={isOpened}>
-        <DialogHeader>{`Sign Request from ${plugin.name}`} </DialogHeader>
+      <Dialog isOpen={isOpened} onOpenChange={close}>
+        <DialogHeader>{`Sign Request from ${plugin.name}`}</DialogHeader>
         <DialogContent>
           <SignRequest requestId={requestId} onAbort={close} onSign={close} />
         </DialogContent>

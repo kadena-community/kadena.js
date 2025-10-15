@@ -224,7 +224,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const removeAccount = useCallback(
     async (accountVal: string) => {
-      removeAccountFromUser(accountVal);
+      await removeAccountFromUser(accountVal);
+
+      const account = userData?.accounts.find((w) => w.address === accountVal);
+      console.log({ account });
+      const adapter = wallet.client.getAdapter(account?.walletName ?? '');
+      await adapter?.disconnect();
     },
     [removeAccountFromUser],
   );
@@ -304,6 +309,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!adapter) throw new Error(`${adapterName} adapter not detected`);
     const result = await adapter.connect();
     if (!result) throw new Error(`${adapterName} connection failed`);
+
+    adapter.on('kadena_connect', async () => {
+      console.log('this is how it works');
+    });
 
     console.log('signing via wallet adapter', tx);
     const signed = (await adapter.signTransaction(tx)) as ICommand;

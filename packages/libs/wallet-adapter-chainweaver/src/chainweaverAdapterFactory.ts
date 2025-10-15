@@ -36,6 +36,7 @@ export const createChainweaverAdapter = ((
       return await detectChainweaverProvider(options);
     },
     adapter: async (provider) => {
+      console.log({ provider });
       const { ChainweaverAdapter } = await import('./ChainweaverAdapter');
       return new ChainweaverAdapter({ ...options, provider });
     },
