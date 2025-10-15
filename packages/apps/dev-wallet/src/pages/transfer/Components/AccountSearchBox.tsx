@@ -496,7 +496,7 @@ export function AccountSearchBox({
                           close={reject}
                           onChange={resolve}
                           isOpen
-                          title="Account not found blockchain"
+                          title={`${shorten(value)} not found blockchain`}
                           extraContent={
                             <Stack flexDirection="column" gap="sm">
                               <AccountNotFound address={value} />
