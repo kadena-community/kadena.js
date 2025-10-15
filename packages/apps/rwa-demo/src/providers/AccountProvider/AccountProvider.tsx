@@ -310,15 +310,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     const result = await adapter.connect();
     if (!result) throw new Error(`${adapterName} connection failed`);
 
-    adapter.on('kadena_connect', async () => {
-      console.log('this is how it works');
-    });
-
-    console.log('signing via wallet adapter', tx);
-    const signed = (await adapter.signTransaction(tx)) as ICommand;
-    console.log('signed', signed);
-
-    return signed;
+    try {
+      const signed = (await adapter.signTransaction(tx)) as ICommand;
+      return signed;
+    } catch (e) {
+      console.log('not signed');
+    }
   };
 
   return (

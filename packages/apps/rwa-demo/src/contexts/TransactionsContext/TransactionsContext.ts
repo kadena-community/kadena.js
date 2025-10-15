@@ -65,6 +65,8 @@ export interface ITransactionsContext {
   setTxsAnimationRef: (value: HTMLDivElement) => void;
   isActiveAccountChangeTx: boolean; //checks if the agentroles for this user are being changed. if so, stop all permissions until the tx is resolved
   removeTransaction: (data: ITransaction) => Promise<void>;
+  showTransactionDialog: () => void;
+  hideTransactionDialog: () => void;
 }
 
 export const TransactionsContext = createContext<ITransactionsContext | null>(

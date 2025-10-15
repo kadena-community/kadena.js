@@ -17,7 +17,6 @@ import { ConnectionRequest } from '../plugins/components/ConnectionRequest';
 import { SignRequestDialog } from '../plugins/components/SignRequestDialog';
 import { pluginManager } from '../plugins/PluginManager';
 import { Permission, Plugin } from '../plugins/type';
-import { transactionRepository } from '../transaction/transaction.repository';
 import { useWallet } from '../wallet/wallet.hook';
 
 export type Message = {

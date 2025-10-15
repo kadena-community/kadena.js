@@ -1,7 +1,7 @@
 import { env } from './env';
 
 export const checkNetwork = (graphUrl: string): Promise<Response> =>
-  fetch(graphUrl, {
+  fetch('/graph', {
     method: 'POST',
     headers: {
       'x-api-key': env.GRAPHAPIKEY,
