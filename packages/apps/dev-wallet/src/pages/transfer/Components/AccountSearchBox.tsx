@@ -476,11 +476,11 @@ export function AccountSearchBox({
                 <Stack alignItems={'center'} gap={'sm'}>
                   <MonoInfo />
                   <Text size="smallest" color="inherit">
-                    Address{' '}
+                    Keys for{' '}
                     <Text color="inherit" bold size="smallest">
                       {shorten(search)}
                     </Text>{' '}
-                    is not found on the blockchain
+                    weren’t found on the blockchain.
                   </Text>
                 </Stack>
 
@@ -498,10 +498,26 @@ export function AccountSearchBox({
                           isOpen
                           title="Account not found blockchain"
                           extraContent={
-                            <>
+                            <Stack flexDirection="column" gap="sm">
                               <AccountNotFound address={value} />
-                              <Heading as="h4">Create Key Set</Heading>
-                            </>
+                              <Heading as="h4">
+                                Add a Multi-Signature Keyset
+                              </Heading>
+                              <Stack flexDirection="column">
+                                <Heading as="h5">Keys</Heading>
+                                <Text>
+                                  Select or enter each public key authorized to
+                                  sign transactions for this account
+                                </Text>
+                              </Stack>
+                              <Stack flexDirection="column">
+                                <Heading as="h5">Predicate</Heading>
+                                <Text>
+                                  Select the number of keys required to sign
+                                  transactions for this account
+                                </Text>
+                              </Stack>
+                            </Stack>
                           }
                         />
                       ))) as IGuard;
@@ -515,7 +531,7 @@ export function AccountSearchBox({
                       }
                     }}
                   >
-                    What does this mean?
+                    Add missing keys?
                   </Button>
                 )}
               </Stack>
@@ -570,7 +586,7 @@ export function AccountSearchBox({
                 alignItems={'center'}
                 justifyContent={'space-between'}
               >
-                <Heading variant="h6">Select one account</Heading>
+                <Heading variant="h6">Select one address</Heading>
                 {isSenderAccount && (
                   <Button
                     onClick={() => setShowDisabled((v) => !v)}

@@ -6,17 +6,17 @@ export const AccountNotFound: FC<{ address: string }> = ({ address }) => {
   return (
     <Stack flexDirection="column" gap="md" marginBlockEnd="lg">
       <Text color="inherit">
-        Address{' '}
+        The signing keys for{' '}
         <Text color="inherit" bold>
           {shorten(address)}
         </Text>{' '}
-        is not found on the blockchain
+        weren’t found on the blockchain.
       </Text>
       {address.startsWith('w:') && (
         <Text color="inherit">
-          The account is probably not found, because it was never used on the
-          chain yet. If you want to use this account, make sure it has a
-          predicate and at least 2 keys. You can add them below in the form
+          If this is the first time you’re using the account on the target
+          chain, add all of its signing keys and select an appropriate predicate
+          to continue.
         </Text>
       )}
     </Stack>
