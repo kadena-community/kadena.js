@@ -219,7 +219,7 @@ export interface IClient extends IBaseClient {
   runPact: (
     code: string,
     data: Record<string, unknown>,
-    option: ClientRequestInit & INetworkOptions,
+    option: ClientRequestInit & Omit<INetworkOptions,'type'>,
   ) => Promise<ICommandResult>;
 
   /**
@@ -286,11 +286,23 @@ export interface ICreateClient {
    * @param defaults - default options for the client it includes confirmationDepth that is used for polling
    */
   (
-    hostAddressGenerator?: (options: {
-      chainId: ChainId;
-      networkId: string;
-      type?: 'local' | 'send' | 'poll' | 'listen' | 'spv';
-    }) => string | { hostUrl: string; requestInit: ClientRequestInit },
+    hostAddressGenerator?: (options: INetworkOptions) => string | { hostUrl: string; requestInit: ClientRequestInit },
+    defaults?: { confirmationDepth?: number },
+  ): IClient;
+
+  /**
+   * Generates a client instance by passing async hostUrlGenerator function.
+   * this function will be called for each request to get the latest host URL.
+   * You also can use this for more advanced use cases like load balancing or
+   * failover between multiple hosts or control rate limiting.
+   *
+   * Note: The default hostUrlGenerator creates a Kadena testnet or mainnet URL based on networkId.
+   * @param hostAddressGenerator - the function that generates the URL based on `chainId` and `networkId` from the transaction
+   * @param defaults - default options for the client it includes confirmationDepth that is used for polling
+   */
+
+  (
+    hostAddressGenerator?: (options: INetworkOptions) => Promise<string | { hostUrl: string; requestInit: ClientRequestInit }>,
     defaults?: { confirmationDepth?: number },
   ): IClient;
 }
@@ -317,11 +329,12 @@ export const createClient: ICreateClient = (
   const getHost = typeof host === 'string' ? () => host : host;
 
   const client: IBaseClient = {
-    local(body, options) {
+    async local(body, options) {
       const cmd: IPactCommand = JSON.parse(body.cmd);
-      const hostObject = getHost({
+      const hostObject = await getHost({
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
+        type: 'local',
       });
       const { hostUrl, requestInit } = getHostData(hostObject);
       return local(body, hostUrl, mergeOptions(requestInit, options));
@@ -334,9 +347,10 @@ export const createClient: ICreateClient = (
         throw new Error('EMPTY_COMMAND_LIST');
       }
       const cmd: IPactCommand = JSON.parse(first.cmd);
-      const hostObject = getHost({
+      const hostObject = await getHost({
         chainId: cmd.meta.chainId,
         networkId: cmd.networkId,
+        type: 'send',
       });
 
       const { hostUrl, requestInit } = getHostData(hostObject);
@@ -364,18 +378,17 @@ export const createClient: ICreateClient = (
         : [transactionDescriptors];
       const results = groupByHost(
         requestsList.map(({ requestKey, chainId, networkId }) => {
-          const hostObject = getHost({ chainId, networkId, type: 'poll' });
-          const { hostUrl, requestInit } = getHostData(hostObject);
           return {
             requestKey,
-            host: hostUrl,
-            requestInit,
+            host: JSON.stringify({ chainId, networkId}),
           };
         }),
-      ).map(([host, requestKeys]) => {
-        const requestInit = requestKeys[0].requestInit;
+      ).map( async ([host, requestKeys]) => {
+        const { chainId, networkId} = JSON.parse(host)
+        const hostObject = await getHost({ chainId, networkId, type: 'poll' });
+        const { hostUrl, requestInit } = getHostData(hostObject)
         return pollStatus(
-          host,
+          hostUrl,
           requestKeys.map((r) => r.requestKey),
           {
             confirmationDepth,
@@ -396,17 +409,16 @@ export const createClient: ICreateClient = (
 
       const results = await Promise.all(
         groupByHost(
-          requestsList.map(({ requestKey, chainId, networkId }) => {
-            const hostObject = getHost({ chainId, networkId, type: 'poll' });
-            const { hostUrl, requestInit } = getHostData(hostObject);
-            return {
-              requestKey,
-              host: hostUrl,
-              requestInit,
-            };
-          }),
-        ).map(([hostUrl, requestKeys]) => {
-          const requestInit = requestKeys[0].requestInit;
+        requestsList.map(({ requestKey, chainId, networkId }) => {
+          return {
+            requestKey,
+            host: JSON.stringify({ chainId, networkId}),
+          };
+        }),
+      ).map(async ([host, requestKeys]) => {
+           const { chainId, networkId} = JSON.parse(host)
+        const hostObject = await getHost({ chainId, networkId, type: 'poll' });
+        const { hostUrl, requestInit } = getHostData(hostObject)
 
           return poll(
             { requestKeys: requestKeys.map((r) => r.requestKey) },
@@ -424,7 +436,7 @@ export const createClient: ICreateClient = (
     },
 
     async listen({ requestKey, chainId, networkId }, options) {
-      const hostObject = getHost({ chainId, networkId, type: 'listen' });
+      const hostObject = await getHost({ chainId, networkId, type: 'listen' });
       const { hostUrl, requestInit } = getHostData(hostObject);
       const result = await listen(
         { listen: requestKey },
@@ -435,8 +447,8 @@ export const createClient: ICreateClient = (
       return result;
     },
 
-    pollCreateSpv({ requestKey, chainId, networkId }, targetChainId, options) {
-      const hostObject = getHost({ chainId, networkId, type: 'spv' });
+    async pollCreateSpv({ requestKey, chainId, networkId }, targetChainId, options) {
+      const hostObject = await getHost({ chainId, networkId, type: 'spv' });
       const { hostUrl, requestInit } = getHostData(hostObject);
       return pollSpv(
         hostUrl,
@@ -451,7 +463,7 @@ export const createClient: ICreateClient = (
       targetChainId,
       options,
     ) {
-      const hostObject = getHost({ chainId, networkId, type: 'spv' });
+      const hostObject = await getHost({ chainId, networkId, type: 'spv' });
       const { hostUrl, requestInit } = getHostData(hostObject);
       return getSpv(
         hostUrl,
@@ -486,8 +498,8 @@ export const createClient: ICreateClient = (
         signatureVerification: false,
       });
     },
-    runPact: (code, data, options) => {
-      const hostObject = getHost(options);
+    runPact: async (code, data, options) => {
+      const hostObject = await getHost({...options, type: 'local'});
       const { hostUrl, requestInit } = getHostData(hostObject);
       if (hostUrl === '') throw new Error('NO_HOST_URL');
 
