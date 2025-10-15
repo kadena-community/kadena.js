@@ -55,19 +55,22 @@ export const getHostUrl = (hostBaseUrl: string) => {
 export const kadenaHostGenerator = ({
   networkId,
   chainId,
+  type
 }: INetworkOptions): string => {
   switch (networkId) {
     case 'mainnet01':
-      return getHostUrl('https://api.chainweb.com')({ networkId, chainId });
+      return getHostUrl('https://api.chainweb.com')({ networkId, chainId, type });
     case 'testnet04':
       return getHostUrl('https://api.testnet.chainweb.com')({
         networkId,
         chainId,
+        type
       });
     case 'testnet05':
       return getHostUrl('https://api.testnet05.chainweb.com')({
         networkId,
         chainId,
+        type
       });
     default:
       throw new Error(`UNKNOWN_NETWORK_ID: ${networkId}`);
@@ -119,12 +122,7 @@ export const mergeAll = <T extends object>(results: Array<T>): T =>
 export const mergeAllPollRequestPromises = <T extends object | string>(
   results: Array<IPollRequestPromise<T>>,
 ): IPollRequestPromise<T> => {
-  return Object.assign(Promise.all(results).then(mergeAll), {
-    requests: results.reduce(
-      (acc, data) => ({ ...acc, ...data.requests }),
-      {} as Record<string, Promise<T>>,
-    ),
-  });
+  return Object.assign(Promise.all(results).then(mergeAll));
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -157,16 +155,15 @@ export const groupByHost = (
   items: Array<{
     requestKey: string;
     host: string;
-    requestInit?: ClientRequestInit;
   }>,
 ): [string, { requestInit?: ClientRequestInit; requestKey: string }[]][] => {
   const byHost = new Map<
     string,
     { requestInit?: ClientRequestInit; requestKey: string }[]
   >();
-  items.forEach(({ host: hostUrl, requestKey, requestInit }) => {
+  items.forEach(({ host: hostUrl, requestKey }) => {
     const prev = byHost.get(hostUrl) ?? [];
-    byHost.set(hostUrl, [...prev, { requestInit, requestKey }]);
+    byHost.set(hostUrl, [...prev, { requestKey }]);
   });
   return [...byHost.entries()];
 };

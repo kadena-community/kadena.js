@@ -16,20 +16,5 @@ export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> 
   });
 
   // await for each individual request
-  await Promise.all(
-    Object.entries(results.requests).map(([requestKey, promise]) =>
-      promise
-        .then((data) => {
-          console.log('the request ', requestKey, 'result:', data);
-        })
-        .catch((error) => {
-          console.log(
-            'error while getting the status of ',
-            requestKey,
-            'error:',
-            error,
-          );
-        }),
-    ),
-  );
+  console.log('waiting for results', await results);
 }

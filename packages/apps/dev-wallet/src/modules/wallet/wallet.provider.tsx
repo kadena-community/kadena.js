@@ -251,7 +251,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
         const hostUrl = networkHostFunctionRef.current;
         if (hostUrl && ctx.activeNetwork) {
           try {
-            hostUrl({ networkId: ctx.activeNetwork.networkId, chainId: '0' });
+            hostUrl({ networkId: ctx.activeNetwork.networkId, chainId: '0', type: 'local' });
             if (ctx.activeNetwork.isHealthy === true) return ctx;
             return {
               ...ctx,
