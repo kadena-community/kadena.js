@@ -8,7 +8,7 @@ import {
 } from '@/utils/evm';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { createWalletClient, http } from 'viem';
+import { createWalletClient, http, parseGwei } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { checkRecaptcha } from './utils/captcha';
 
@@ -16,6 +16,8 @@ const PRIVATE_KEY = process.env.EVMFAUCET_PRIVATE_KEY as `0x${string}`;
 const EVMFAUCET_CONTRACT_ADDRESS =
   process.env.NEXT_PUBLIC_EVMFAUCET_CONTRACT_ADDRESS;
 const RPC_URL = process.env.NEXT_PUBLIC_EVMRPC_URL;
+const MAX_PRIORITY_FEE_CAP_GWEI =
+  (process.env.NEXT_PUBLIC_MAX_PRIORITY_FEE_CAP_GWEI as string) ?? '0.000001'; // 1000 wei cap default
 
 // Create the faucet account from private key
 
@@ -56,18 +58,43 @@ export async function POST(request: NextRequest) {
     transport: http(createServerUrl(body.chainId, true)),
   });
 
+  const publicClient = getPublicClient(body.chainId, true);
+
+  // Estimating and setting a cap so that the faucet doesn't get caught up in the high gas feedback loop that happens when relying only on Viem's estimation
+  const block = await publicClient.getBlock();
+  const baseFeePerGas = block.baseFeePerGas ?? BigInt(0);
+  const estimatedFees = await publicClient.estimateFeesPerGas();
+  const cappedPriorityFee = parseGwei(MAX_PRIORITY_FEE_CAP_GWEI);
+
+  console.log('Base fee per gas:', baseFeePerGas.toString());
+  console.log(
+    'Estimated max priority fee per gas:',
+    estimatedFees.maxPriorityFeePerGas.toString(),
+  );
+  console.log('Capped max priority fee per gas:', cappedPriorityFee.toString());
+
+  // Use estimated or capped value, whichever is lower
+  const maxPriorityFee =
+    estimatedFees.maxPriorityFeePerGas > cappedPriorityFee
+      ? cappedPriorityFee
+      : estimatedFees.maxPriorityFeePerGas;
+
+  const maxFeePerGas = baseFeePerGas + maxPriorityFee;
+
+  console.log('Using max priority fee per gas:', maxPriorityFee.toString());
+  console.log('Using max fee per gas:', maxFeePerGas.toString());
+
   // First simulate the transaction to check for errors
   try {
-    const { request: evmRequest } = await getPublicClient(
-      body.chainId,
-      true,
-    ).simulateContract({
+    const { request: evmRequest } = await publicClient.simulateContract({
       address: process.env
         .NEXT_PUBLIC_EVMFAUCET_CONTRACT_ADDRESS as `0x${string}`,
       abi: faucetABI,
       functionName: 'dispenseNativeToken',
       args: [body.recipient],
       account,
+      maxPriorityFeePerGas: maxPriorityFee,
+      maxFeePerGas: maxFeePerGas,
     });
 
     console.log('Simulation successful, sending transaction...');
