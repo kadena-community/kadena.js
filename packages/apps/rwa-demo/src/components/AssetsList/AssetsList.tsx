@@ -46,7 +46,6 @@ export const AssetsList: FC<{ init?: boolean }> = ({ init }) => {
           }
         />
         <SectionCardBody>
-          {isAllowed.toString()}
           <CompactTable
             variant="open"
             fields={[

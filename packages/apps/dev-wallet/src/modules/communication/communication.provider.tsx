@@ -172,6 +172,8 @@ export const CommunicationProvider: FC<
             requestId={requestId}
             plugin={plugin}
             onDone={() => {
+              const request = requests.get(requestId);
+              request?.reject(request.payload);
               setUiComponent(null);
             }}
           />,

@@ -28,7 +28,7 @@ const cache = new InMemoryCache({
 
 const getApolloClient = (network: INetwork) => {
   const httpLink = new YogaLink({
-    endpoint: network?.graphUrl,
+    endpoint: '/graph',
     headers: {
       'x-api-key': env.GRAPHAPIKEY,
       'bypass-tunnel-reminder': env.GRAPHURL,

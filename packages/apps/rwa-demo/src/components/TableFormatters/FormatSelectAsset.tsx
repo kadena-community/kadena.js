@@ -3,7 +3,9 @@ import {
   useEventSubscriptionSubscription,
 } from '@/__generated__/sdk';
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
+import { TXTYPES } from '@/contexts/TransactionsContext/TransactionsContext';
 import { useAsset } from '@/hooks/asset';
+import { useTransactions } from '@/hooks/transactions';
 import { getAsset } from '@/utils/getAsset';
 import { MonoFindInPage, MonoWarning } from '@kadena/kode-icons';
 import { Button } from '@kadena/kode-ui';
@@ -11,14 +13,17 @@ import type { ICompactTableFormatterProps } from '@kadena/kode-ui/patterns';
 import { useNotifications } from '@kadena/kode-ui/patterns';
 import { useEffect, useState } from 'react';
 import { TransactionPendingIcon } from '../TransactionPendingIcon/TransactionPendingIcon';
+import { TransactionTypeSpinner } from '../TransactionTypeSpinner/TransactionTypeSpinner';
 
 export interface IActionProps {}
 
 export const FormatSelectAsset = () => {
   const Component = ({ value }: ICompactTableFormatterProps) => {
     const [hasError, setHasError] = useState(false);
+    const [isCreatingContract, setIsCreatingContract] = useState(false);
 
-    const { setAsset } = useAsset();
+    const { getTransactions, transactions } = useTransactions();
+    const { setAsset, asset: currentAsset } = useAsset();
     const { addNotification } = useNotifications();
     const asset = value as unknown as IAsset | undefined;
 
@@ -34,6 +39,17 @@ export const FormatSelectAsset = () => {
         qualifiedName: `${getAsset(asset)}.UPDATED-TOKEN-INFORMATION`,
       },
     });
+
+    useEffect(() => {
+      if (!asset?.uuid || !currentAsset?.uuid) return;
+      if (asset.uuid !== currentAsset.uuid || transactions.length === 0) {
+        setIsCreatingContract(false);
+        return;
+      }
+
+      const creatingContractTx = getTransactions(TXTYPES.CREATECONTRACT);
+      setIsCreatingContract(!!creatingContractTx);
+    }, [asset?.uuid, transactions.length, currentAsset?.uuid]);
 
     useEffect(() => {
       if (loading) return;
@@ -54,20 +70,31 @@ export const FormatSelectAsset = () => {
       window.location.href = '/';
     };
 
-    if (loading) {
+    console.log(
+      2222,
+      asset?.contractName,
+      isCreatingContract,
+      loading,
+      hasError,
+    );
+    if (loading || (hasError && isCreatingContract)) {
       return (
         <Button
           isDisabled
           isCompact
           variant="outlined"
           title="creation transaction pending"
-        >
-          <TransactionPendingIcon />
-        </Button>
+          startVisual={
+            <TransactionTypeSpinner
+              type={TXTYPES.CREATECONTRACT}
+              fallbackIcon={<TransactionPendingIcon />}
+            />
+          }
+        />
       );
     }
 
-    if (hasError) {
+    if (hasError && !isCreatingContract) {
       return (
         <Button
           isDisabled
@@ -75,9 +102,8 @@ export const FormatSelectAsset = () => {
           variant="outlined"
           title="asset not found"
           aria-label="asset not found"
-        >
-          <MonoWarning />
-        </Button>
+          startVisual={<MonoWarning />}
+        />
       );
     }
 

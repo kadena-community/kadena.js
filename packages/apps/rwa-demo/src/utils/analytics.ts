@@ -76,7 +76,7 @@ export const analyticsEvent = (
     let explorerUrl = options.sentryData.data?.explorerUrl;
     if (
       !explorerUrl &&
-      options.sentryData.captureContext?.extra?.res.requestKey
+      options.sentryData.captureContext?.extra?.res?.requestKey
     ) {
       explorerUrl = `https://explorer.kadena.io/${options.networkId}/transaction/${options.sentryData.captureContext.extra.res.requestKey}`;
     }

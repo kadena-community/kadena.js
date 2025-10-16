@@ -29,7 +29,8 @@ interface IOptions {
 
 export const useSubmit2Chain = () => {
   const { account, sign } = useAccount();
-  const { addTransaction } = useTransactions();
+  const { addTransaction, showTransactionDialog, hideTransactionDialog } =
+    useTransactions();
   const { asset } = useAsset();
   const { addNotification } = useNotifications();
 
@@ -58,9 +59,10 @@ export const useSubmit2Chain = () => {
     }
 
     let res: ITransactionDescriptor | undefined = undefined;
-    const tx: IUnsignedCommand | undefined = undefined;
+    let tx: IUnsignedCommand | undefined = undefined;
     try {
-      const tx = await options.chainFunction(account!, asset!);
+      showTransactionDialog();
+      tx = await options.chainFunction(account!, asset!);
 
       if (!tx) {
         addNotification(
@@ -123,6 +125,8 @@ export const useSubmit2Chain = () => {
           },
         },
       );
+    } finally {
+      hideTransactionDialog();
     }
   };
 
