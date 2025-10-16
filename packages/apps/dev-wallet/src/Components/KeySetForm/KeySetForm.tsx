@@ -33,6 +33,8 @@ export function KeySetForm({
   keyset,
   variant = 'dialog',
   LiveForm = false,
+  title = 'Create Key Set',
+  extraContent,
 }: {
   isOpen: boolean;
   close: () => void;
@@ -41,6 +43,8 @@ export function KeySetForm({
   variant?: 'dialog' | 'inline';
   LiveForm?: boolean;
   filteredKeysets?: Array<IKeySet & { used: boolean }>;
+  title?: string;
+  extraContent?: React.ReactNode;
 }) {
   const { control, getValues, setValue, handleSubmit } = useForm<IKeysetForm>({
     defaultValues: {
@@ -112,8 +116,13 @@ export function KeySetForm({
         className={displayContentsClass}
         onSubmit={handleSubmit((data) => onSubmit(data))}
       >
-        {variant === 'dialog' && <DialogHeader>Create Key Set</DialogHeader>}
+        {variant === 'dialog' && <DialogHeader>{title}</DialogHeader>}
         <DialogContent>
+          {extraContent && (
+            <Stack flexDirection="column" marginBlock="xl">
+              {extraContent}
+            </Stack>
+          )}
           <Stack flexDirection={'column'} gap={'xxxl'}>
             <Stack flexDirection={'column'} gap={'lg'}>
               <Stack flexDirection={'column'} gap={'sm'} flex={1}>
