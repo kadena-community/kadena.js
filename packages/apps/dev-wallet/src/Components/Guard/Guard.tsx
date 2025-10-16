@@ -69,13 +69,7 @@ export const Guard = ({
   const { type, value } = getGuardInfo(guard);
 
   return (
-    <Stack
-      flexWrap="wrap"
-      flexDirection={'row'}
-      gap="md"
-      paddingInline={'sm'}
-      marginBlock={'xs'}
-    >
+    <Stack flexWrap="wrap" flexDirection={'row'} gap="md" paddingInline={'sm'}>
       <Text size="smallest" className={ellipsis}>
         {type}
         {value ? `: ${maskValue(value)}` : ''}

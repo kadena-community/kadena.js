@@ -1,4 +1,10 @@
-import { atoms, recipe, style, token } from '@kadena/kode-ui/styles';
+import {
+  atoms,
+  recipe,
+  responsiveStyle,
+  style,
+  token,
+} from '@kadena/kode-ui/styles';
 import { globalStyle } from '@vanilla-extract/css';
 
 export const backgroundClass = recipe({
@@ -23,6 +29,17 @@ export const backgroundClass = recipe({
       },
     },
   },
+});
+
+export const keyClass = style({
+  ...responsiveStyle({
+    xs: {
+      width: '100%',
+    },
+    md: {
+      width: '50%',
+    },
+  }),
 });
 
 export const labelClass = style({});
