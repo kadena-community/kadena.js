@@ -15,7 +15,8 @@ export const useCreateContract = () => {
   const { userToken } = useUser();
   const { organisation } = useOrganisation();
   const [isAllowed, setIsAllowed] = useState(false);
-  const { addTransaction } = useTransactions();
+  const { addTransaction, hideTransactionDialog, showTransactionDialog } =
+    useTransactions();
   const { addNotification } = useNotifications();
 
   const submit = async (
@@ -88,6 +89,7 @@ export const useCreateContract = () => {
     }
 
     try {
+      showTransactionDialog();
       const signedTransaction = await sign(tx);
 
       if (!signedTransaction) {
@@ -118,32 +120,35 @@ export const useCreateContract = () => {
 
       const client = getClient();
       const res = await client.submit(signedTransaction);
+      hideTransactionDialog();
+      await addTransaction(
+        {
+          ...res,
+          type: TXTYPES.CREATECONTRACT,
+          accounts: [account?.address!],
+        },
+        data,
+      );
 
-      await addTransaction({
-        ...res,
-        type: TXTYPES.CREATECONTRACT,
-        accounts: [account?.address!],
-      });
+      // const dataResult = await client.listen(res);
 
-      const dataResult = await client.listen(res);
+      // // if the contract already exists, go to that contract
+      // if (dataResult.result.status === 'failure') {
+      //   if (
+      //     (dataResult.result.error as any)?.message?.includes(
+      //       '"PactDuplicateTableError',
+      //     )
+      //   ) {
+      //     window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
+      //     return false;
+      //   }
+      //   return false;
+      // }
 
-      // if the contract already exists, go to that contract
-      if (dataResult.result.status === 'failure') {
-        if (
-          (dataResult.result.error as any)?.message?.includes(
-            '"PactDuplicateTableError',
-          )
-        ) {
-          window.location.href = `/assets/create/${data.namespace}/${data.contractName}`;
-          return false;
-        }
-        return false;
-      }
-
-      addNotification({
-        intent: 'positive',
-        message: `Contract ${data.contractName} created successfully`,
-      });
+      // addNotification({
+      //   intent: 'positive',
+      //   message: `Contract ${data.contractName} created successfully`,
+      // });
 
       return true;
     } catch (e: any) {

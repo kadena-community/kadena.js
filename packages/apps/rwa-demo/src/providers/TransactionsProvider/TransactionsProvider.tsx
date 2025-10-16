@@ -12,6 +12,7 @@ import { useAsset } from '@/hooks/asset';
 import { useNetwork } from '@/hooks/networks';
 import { useNotifications } from '@/hooks/notifications';
 import { useOrganisation } from '@/hooks/organisation';
+import type { IAddContractProps } from '@/services/createContract';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { analyticsEvent } from '@/utils/analytics';
 import { interpretMessage } from '@/utils/interpretMessage';
@@ -165,11 +166,20 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         type.find((t) => t.name === val.type.name),
       );
     },
-    [transactions.length],
+    [transactions],
+  );
+
+  const getTransaction = useCallback(
+    (uuid: string) => {
+      console.log({ uuid, transactions });
+      return transactions.find((val) => val.uuid === uuid);
+    },
+    [transactions],
   );
 
   const addTransaction = async (
     request: Omit<ITransaction, 'uuid'>,
+    newAsset?: IAddContractProps,
   ): Promise<ITransaction> => {
     const foundExistingTransaction = transactions.find(
       (v) => v.requestKey === request.requestKey,
@@ -180,7 +190,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const data = { ...request, uuid: crypto.randomUUID() };
-    await store?.addTransaction(data, asset);
+    await store?.addTransaction(data, newAsset ? newAsset : asset);
 
     return data;
   };
@@ -275,6 +285,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         removeTransaction,
         showTransactionDialog,
         hideTransactionDialog,
+        getTransaction,
       }}
     >
       <>

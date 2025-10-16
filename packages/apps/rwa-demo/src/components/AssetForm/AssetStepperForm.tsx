@@ -64,6 +64,7 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     setIsSuccess(false);
     setIsPending(true);
     setError('');
+
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
 
@@ -72,13 +73,13 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
 
     const tx = await submitContract(data);
 
-    setIsPending(false);
-
     if (tx) {
       const createdAsset = await addAsset({
         contractName: data.contractName,
         namespace: data.namespace,
       });
+
+      setIsPending(false);
 
       setIsSuccess(true);
       setStep(STEPS.DONE);
