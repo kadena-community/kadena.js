@@ -135,7 +135,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         let tempAccount: IWalletAccount | undefined;
 
         const adapter = wallet.client.getAdapter(adapterName);
+
         if (!adapter) throw new Error(`${adapterName} adapter not detected`);
+
+        adapter.on('session_delete', async ({ id, topic }) => {
+          console.log('Session deleted:', topic);
+        });
 
         switch (name) {
           case WALLETTYPES.ECKO: {
@@ -227,7 +232,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       await removeAccountFromUser(accountVal);
 
       const account = userData?.accounts.find((w) => w.address === accountVal);
-      console.log({ account });
       const adapter = wallet.client.getAdapter(account?.walletName ?? '');
       await adapter?.disconnect();
     },
@@ -306,9 +310,19 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const adapter = wallet.client.getAdapter(adapterName);
+
+    console.log({ adapter });
+    console.log(11111);
     if (!adapter) throw new Error(`${adapterName} adapter not detected`);
-    const result = await adapter.connect();
-    if (!result) throw new Error(`${adapterName} connection failed`);
+    console.log(33333);
+
+    try {
+      const result = await adapter.connect({});
+      console.log(2222, result);
+      if (!result) throw new Error(`${adapterName} connection failed`);
+    } catch (e) {
+      console.log('not connected');
+    }
 
     try {
       const signed = (await adapter.signTransaction(tx)) as ICommand;

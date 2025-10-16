@@ -269,6 +269,17 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         await this.subscribeToEvents();
         await this.checkPersistedState();
       }
+
+      //check if the session is avaible. or if it is stale
+      const sessions = this.client.session.getAll();
+      const activeSession = sessions.find(
+        (s) => s.topic === this.provider.session?.topic,
+      );
+      if (!activeSession) {
+        console.log('stale session, disconnecting');
+        await this.disconnect();
+      }
+
       // If provider already has a connected session, just reuse it
       if (this.provider?.connected) {
         return this.getActiveAccount();
@@ -276,6 +287,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
 
       // Auto-detect paired device
       const pairings = this.client.core.pairing.getPairings();
+
       if (pairings.length > 0) {
         console.log('[WalletConnect] found existing topic:', pairings[0].topic);
         // Reuse existing device pairing (no modal)
@@ -298,6 +310,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     if (this.options.debug) {
       console.log('[WalletConnect:debug] connectWallet', { pairing });
     }
+
     const { uri, approval } = await this.client.connect({
       pairingTopic: pairing?.topic,
       optionalNamespaces: {
@@ -322,7 +335,10 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         console.error('Error opening modal:', error);
       });
     }
+
+    console.log({ pairing });
     const session = await approval();
+    console.log({ session });
 
     if (this.options.debug) {
       console.log('[WalletConnect:debug] session', { session });

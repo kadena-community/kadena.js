@@ -169,14 +169,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     [transactions],
   );
 
-  const getTransaction = useCallback(
-    (uuid: string) => {
-      console.log({ uuid, transactions });
-      return transactions.find((val) => val.uuid === uuid);
-    },
-    [transactions],
-  );
-
   const addTransaction = async (
     request: Omit<ITransaction, 'uuid'>,
     newAsset?: IAddContractProps,
@@ -285,7 +277,6 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         removeTransaction,
         showTransactionDialog,
         hideTransactionDialog,
-        getTransaction,
       }}
     >
       <>

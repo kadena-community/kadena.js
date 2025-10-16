@@ -91,7 +91,6 @@ export const useSubmit2Chain = () => {
       }
 
       const signedTransaction = await sign(tx);
-      console.log(1111, signedTransaction);
       if (!signedTransaction) return;
 
       const client = getClient();

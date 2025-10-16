@@ -87,7 +87,6 @@ export const OrganisationInfoForm: FC<IProps> = ({ organisationId }) => {
 
     if (reload === false) return;
 
-    console.log('reload');
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     init(organisationId);
   }, [organisationId, reload]);
