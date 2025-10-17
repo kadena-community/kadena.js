@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "deploy": "vercel deploy",
-    "dev": "vercel dev",
+    "dev:test": "vercel dev",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",

@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/*.js": {
-      "runtime": "nodejs22.x"
+      "runtime": "edge"
     }
   },
   "git": {
