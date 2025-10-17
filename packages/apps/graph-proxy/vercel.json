@@ -1,4 +1,17 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/graph/(.*)",
+      "dest": "/api/graph.ts"
+    }
+  ],
   "git": {
     "deploymentEnabled": {
       "main": true,
