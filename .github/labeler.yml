@@ -46,6 +46,9 @@ Github Config & Actions:
 '@kadena/explorer':
   - changed-files:
       - any-glob-to-any-file: packages/apps/explorer/*
+'@kadena/graph-proxy':
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/graph-proxy/*
 '@kadena/rwa-demo':
   - changed-files:
       - any-glob-to-any-file: packages/apps/rwa-demo/*
