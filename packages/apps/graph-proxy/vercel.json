@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "functions": {
+    "api/*.js": {
+      "runtime": "edge"
+    }
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "release/graphproxy-v*": true
+    }
+  }
+}
