@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "build": "tsc",
+    "deploy": "vercel deploy",
+    "dev": "vercel dev",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint src"
+    "lint:src": "eslint src",
+    "start": "node dist/api/graphql.js"
   },
   "dependencies": {
     "@vercel/edge": "^1.2.2",
