@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export default async function handler(request: Request): Promise<Response> {
   const GRAPHQL_ENDPOINT = process.env.GRAPH_ENDPOINT_TEST || '';
 
@@ -6,7 +10,6 @@ export default async function handler(request: Request): Promise<Response> {
       method: request.method,
       headers: {
         'Content-Type': 'application/json',
-        ...Object.fromEntries(request.headers.entries()),
       },
       body: request.body ? JSON.stringify(await request.json()) : undefined,
     });

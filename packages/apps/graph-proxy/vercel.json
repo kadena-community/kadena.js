@@ -1,7 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "api/*.js": {
+    "./src/api/*.js": {
       "runtime": "edge"
     }
   },
