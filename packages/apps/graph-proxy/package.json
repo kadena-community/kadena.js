@@ -19,10 +19,10 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@types/node": "^22.7.5",
+    "@types/node": "^20.12.7",
     "eslint": "^8.45.0",
     "prettier": "~3.2.5",
-    "typescript": "^5.6.3",
+    "typescript": "5.4.5",
     "vitest": "^1.6.0"
   }
 }
