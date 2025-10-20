@@ -8,8 +8,16 @@
   ],
   "routes": [
     {
-      "src": "/api/graph/(.*)",
-      "dest": "/api/graph"
+      "src": "/api/mainnet/graph/(.*)",
+      "dest": "/api/mainnet/graph"
+    },
+    {
+      "src": "/api/testnet/graph/(.*)",
+      "dest": "/api/testnet/graph"
+    },
+    {
+      "src": "/api/test(.*)",
+      "dest": "/api/test"
     }
   ],
   "git": {
