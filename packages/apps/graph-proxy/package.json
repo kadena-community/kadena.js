@@ -6,6 +6,9 @@
   "scripts": {
     "build": "tsc",
     "deploy": "vercel --prod",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:src": "eslint api",
     "start": "vercel dev"
   },
   "dependencies": {
