@@ -1,3 +1,4 @@
+import type { IAddContractProps } from '@/services/createContract';
 import type { ICommandResult } from '@kadena/client';
 import { createContext } from 'react';
 
@@ -57,6 +58,7 @@ export interface ITransactionsContext {
   transactions: ITransaction[];
   addTransaction: (
     request: Omit<ITransaction, 'uuid'>,
+    newAsset?: IAddContractProps,
   ) => Promise<ITransaction>;
   getTransactions: (type: ITxType | ITxType[]) => ITransaction[];
   txsButtonRef?: HTMLButtonElement | null;

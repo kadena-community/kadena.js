@@ -1,6 +1,8 @@
 import type { IAsset } from '@/contexts/AssetContext/AssetContext';
 
-export const getAsset = (asset?: IAsset): string => {
+export const getAsset = (
+  asset?: Pick<IAsset, 'namespace' | 'contractName'>,
+): string => {
   // const data = localStorage.getItem(
   //   getLocalStorageKey(LOCALSTORAGE_ASSETS_SELECTED_KEY),
   // );

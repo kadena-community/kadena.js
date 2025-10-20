@@ -109,7 +109,7 @@ describe('useSubmit2Chain', () => {
     const { result } = renderHook(() => useSubmit2Chain());
 
     const chainFunction = vi.fn().mockResolvedValue(undefined);
-    const { useNotifications } = await import('./notifications');
+    const { useNotifications } = await import('./../notifications');
     const mockAddNotification =
       vi.mocked(useNotifications).mock.results[0].value.addNotification;
 
@@ -160,7 +160,7 @@ describe('useSubmit2Chain', () => {
       hash: 'test-hash',
     });
 
-    const { useAccount } = await import('./account');
+    const { useAccount } = await import('./../account');
     const mockSign = vi.mocked(useAccount).mock.results[0].value.sign;
 
     await result.current.submit2Chain(
@@ -189,7 +189,7 @@ describe('useSubmit2Chain', () => {
       throw new Error('Test error message');
     });
 
-    const { useNotifications } = await import('./notifications');
+    const { useNotifications } = await import('./../notifications');
     const mockAddNotification =
       vi.mocked(useNotifications).mock.results[0].value.addNotification;
 
@@ -233,7 +233,7 @@ describe('useSubmit2Chain', () => {
       hash: 'test-hash',
     });
 
-    const { useTransactions } = await import('./transactions');
+    const { useTransactions } = await import('./../transactions');
     const mockAddTransaction =
       vi.mocked(useTransactions).mock.results[0].value.addTransaction;
 
@@ -268,7 +268,7 @@ describe('useSubmit2Chain', () => {
 
   it('should send notification when asset is not found and skipAssetCheck is not true', async () => {
     // Override asset mock to return undefined
-    vi.mocked(await import('./asset')).useAsset.mockReturnValueOnce({
+    vi.mocked(await import('./../asset')).useAsset.mockReturnValueOnce({
       asset: undefined,
       assets: [],
       paused: false,
@@ -279,17 +279,16 @@ describe('useSubmit2Chain', () => {
       getAsset: vi.fn(),
       maxCompliance: vi.fn(),
       investors: [],
-      initFetchInvestors: vi.fn(),
       investorsIsLoading: false,
       agents: [],
-      initFetchAgents: vi.fn(),
       agentsIsLoading: false,
+      assetStore: {},
     });
 
     const { result } = renderHook(() => useSubmit2Chain());
 
     const chainFunction = vi.fn();
-    const { useNotifications } = await import('./notifications');
+    const { useNotifications } = await import('./../notifications');
     const mockAddNotification =
       vi.mocked(useNotifications).mock.results[0].value.addNotification;
 
@@ -327,7 +326,7 @@ describe('useSubmit2Chain', () => {
 
   it('should proceed when skipAssetCheck is true even when asset is undefined', async () => {
     // Override asset mock to return undefined
-    vi.mocked(await import('./asset')).useAsset.mockReturnValueOnce({
+    vi.mocked(await import('./../asset')).useAsset.mockReturnValueOnce({
       asset: undefined,
       assets: [],
       paused: false,
@@ -338,11 +337,10 @@ describe('useSubmit2Chain', () => {
       getAsset: vi.fn(),
       maxCompliance: vi.fn(),
       investors: [],
-      initFetchInvestors: vi.fn(),
       investorsIsLoading: false,
       agents: [],
-      initFetchAgents: vi.fn(),
       agentsIsLoading: false,
+      assetStore: {},
     });
 
     const { result } = renderHook(() => useSubmit2Chain());
@@ -383,7 +381,7 @@ describe('useSubmit2Chain', () => {
 
     const chainFunction = vi.fn().mockResolvedValue(txPayload);
 
-    const { useAccount } = await import('./account');
+    const { useAccount } = await import('./../account');
     const mockSign = vi.mocked(useAccount).mock.results[0].value.sign;
     mockSign.mockResolvedValue({
       ...txPayload,
