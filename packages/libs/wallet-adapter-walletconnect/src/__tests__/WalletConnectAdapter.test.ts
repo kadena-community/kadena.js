@@ -6,6 +6,7 @@ import type {
 import type { SessionTypes } from '@walletconnect/types';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { WalletConnectAdapter } from '../WalletConnectAdapter';
+import { ERRORS } from '../constants';
 import type { IWalletConnectProvider } from '../provider';
 
 // Default fallback network id for tests
@@ -77,13 +78,15 @@ const mockProvider: IWalletConnectProvider = {
   request: vi.fn().mockResolvedValue({}),
 };
 
+const sessionGetAllMock = vi.fn().mockReturnValue([]);
+
 // Create a mock client with request and disconnect methods.
 const mockClient = {
   request: vi.fn(),
   disconnect: vi.fn().mockResolvedValue(undefined),
   on: vi.fn(),
   off: vi.fn(),
-  session: { topic: 'dummy-topic' },
+  session: { topic: 'dummy-topic', getAll: sessionGetAllMock },
 };
 
 // A sample unsigned command for signing tests.
@@ -269,6 +272,38 @@ describe('WalletConnectAdapter', () => {
     test('returns array of networks', async () => {
       const nets = await adapter.getNetworks();
       expect(nets).toEqual([]);
+    });
+  });
+
+  describe('connect', () => {
+    test('should connect and return the active account', async () => {
+      const mockActiveAccount: IAccountInfo = {
+        accountName: 'acct1',
+        existsOnChains: ['1'],
+        guard: { keys: ['key1'], pred: 'keys-all' },
+        keyset: { keys: ['key1'], pred: 'keys-all' },
+        networkId: 'development',
+        contract: 'coin',
+      };
+      sessionGetAllMock.mockReturnValueOnce([mockSession]);
+      vi.spyOn(adapter, 'getActiveAccount').mockResolvedValueOnce(
+        mockActiveAccount,
+      );
+
+      const activeAcount = await adapter.connect();
+      expect(activeAcount.accountName).toBe('acct1');
+    });
+    test('should disconnect when active account is stale', async () => {
+      sessionGetAllMock.mockReturnValueOnce([
+        { ...mockSession, topic: 'not-found' },
+      ]);
+      vi.spyOn(adapter, 'getActiveAccount').mockResolvedValueOnce(
+        undefined as any,
+      );
+      vi.spyOn(adapter, 'disconnect');
+
+      await expect(adapter.connect()).rejects.toThrow(ERRORS.FAILED_TO_CONNECT);
+      expect(adapter.disconnect).toHaveBeenCalled();
     });
   });
 
