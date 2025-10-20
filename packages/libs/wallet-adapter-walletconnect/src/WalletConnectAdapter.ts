@@ -269,6 +269,19 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         await this.subscribeToEvents();
         await this.checkPersistedState();
       }
+
+      // check if the session is avaible. or if it is stale
+      // and should be disconnected
+      const sessions = this.client.session.getAll();
+      const activeSession = sessions.find(
+        (s) => s.topic === this.provider.session?.topic,
+      );
+
+      if (!activeSession) {
+        console.log('stale session, disconnecting');
+        await this.disconnect();
+      }
+
       // If provider already has a connected session, just reuse it
       if (this.provider?.connected) {
         return this.getActiveAccount();
