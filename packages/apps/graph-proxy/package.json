@@ -1,0 +1,29 @@
+{
+  "name": "@kadena/graph-proxy",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "deploy": "vercel deploy",
+    "dev": "vercel dev",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src",
+    "start": "node dist/api/graphql.js"
+  },
+  "dependencies": {
+    "@vercel/edge": "^1.2.2",
+    "dotenv": "~16.4.5",
+    "typescript": "5.4.5",
+    "vercel": "^48.4.0"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "eslint": "^8.45.0",
+    "prettier": "~3.2.5",
+    "vitest": "^1.6.0"
+  }
+}

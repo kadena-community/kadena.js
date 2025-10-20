@@ -96,6 +96,12 @@
     "path": "packages/apps/explorer"
   },
   {
+    "name": "@kadena/graph-proxy",
+    "version": "1.0.0",
+    "private": true,
+    "path": "packages/apps/graph-proxy"
+  },
+  {
     "name": "@kadena/graph",
     "version": "2.2.7",
     "private": false,
