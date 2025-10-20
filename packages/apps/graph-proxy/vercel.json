@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/api/graph/(.*)",
-      "dest": "/api/graph.ts"
+      "dest": "/api/graph"
     }
   ],
   "git": {

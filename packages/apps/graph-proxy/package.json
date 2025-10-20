@@ -9,7 +9,8 @@
     "start": "vercel dev"
   },
   "dependencies": {
-    "@vercel/node": "^3.2.15"
+    "@vercel/node": "^3.2.15",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
