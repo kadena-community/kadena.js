@@ -307,17 +307,14 @@ function TxStatusList({
             <Text>{`cont: ${shorten(contTx.hash, 6)}`}</Text>
           </Stack>
         ),
-        statusPassed(contTx.status, 'preflight') && (
-          <TxStatusItem
-            variant={variant}
-            status={
-              contTx.preflight?.result.status === 'success'
-                ? 'success'
-                : 'failure'
-            }
-            label="Preflight"
-          />
-        ),
+        statusPassed(contTx.status, 'preflight') &&
+          contTx.preflight?.result.status === 'failure' && (
+            <TxStatusItem
+              variant={variant}
+              status="failure"
+              label="Preflight"
+            />
+          ),
         statusPassed(contTx.status, 'submitted') && (
           <TxStatusItem variant={variant} status="success" label="Send" />
         ),
