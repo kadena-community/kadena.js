@@ -149,11 +149,11 @@ export const Routes: FC = () => {
           <Route element={<Redirect if={isUnlocked} to={origin} />}>
             <Route path="/select-profile" element={<SelectProfile />} />
             <Route path="/create-profile/*" element={<CreateProfile />} />
+            <Route path="/wallet-recovery" element={<WalletRecovery />} />
             <Route
               path="/wallet-recovery/recover-from-mnemonic"
               element={<RecoverFromMnemonic />}
             />
-            <Route path="/wallet-recovery" element={<WalletRecovery />} />
           </Route>
           <Route path="/account-discovery" element={<AccountDiscovery />} />
           <Route

@@ -16,15 +16,14 @@ import {
   Text,
   Link as UiLink,
 } from '@kadena/kode-ui';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { wrapperClass } from '../errors/styles.css';
 
 export function SelectProfile() {
   const { profileList } = useWallet();
-  const navigate = useNavigate();
 
   const handleRecover = () => {
-    navigate('/wallet-recovery');
+    window.location.href = '/wallet-recovery';
   };
 
   return (
