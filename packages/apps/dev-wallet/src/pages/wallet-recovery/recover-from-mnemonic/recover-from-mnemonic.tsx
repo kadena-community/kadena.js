@@ -106,9 +106,11 @@ export function RecoverFromMnemonic() {
     accentColor,
     keyDerivation: method,
   }: Inputs) {
-    const is12Words = mnemonic.trim().split(' ').length === 12;
-    if (!is12Words) {
-      setError('enter 12 words');
+    const isMenemonic =
+      mnemonic.trim().split(' ').length === 12 ||
+      mnemonic.trim().split(' ').length === 24;
+    if (!isMenemonic) {
+      setError('enter 12 or 24 words');
       return;
     }
     let pass = password;
@@ -170,7 +172,11 @@ export function RecoverFromMnemonic() {
 
   async function createFirstKeys() {
     const mnemonic = getValues('mnemonic');
-    if (!mnemonic || mnemonic.trim().split(' ').length < 12) {
+    if (
+      !mnemonic ||
+      !(mnemonic.trim().split(' ').length === 12) ||
+      !(mnemonic.trim().split(' ').length === 24)
+    ) {
       return;
     }
     await Promise.all([
@@ -221,7 +227,8 @@ export function RecoverFromMnemonic() {
                     name="mnemonic"
                     rules={{
                       validate: (value) =>
-                        value.trim().split(' ').length === 12,
+                        value.trim().split(' ').length === 12 ||
+                        value.trim().split(' ').length === 24,
                     }}
                     render={({ field }) => (
                       <TextField

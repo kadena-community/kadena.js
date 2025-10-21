@@ -291,7 +291,7 @@ export function CreateKeySetForm({
                     alignItems={'center'}
                     className={keyItemClass}
                   >
-                    <Key publicKey={key} shortening={20} />
+                    <Key publicKey={key} shortening={10} />
                     <Button
                       variant="transparent"
                       onPress={() => {
@@ -318,8 +318,10 @@ export function CreateKeySetForm({
               gap={'md'}
               marginBlockStart={'lg'}
             >
-              {addedKeys.length < 2 && 'At least 2 keys are required'}
-              {addedKeys.length >= 2 && `Selected Keys: ${addedKeys.length}`}
+              <Text>
+                {addedKeys.length < 2 && 'At least 2 keys are required'}
+                {addedKeys.length >= 2 && `Selected Keys: ${addedKeys.length}`}
+              </Text>
             </Stack>
           </Stack>
           <Stack gap="md" justifyContent="flex-end">
