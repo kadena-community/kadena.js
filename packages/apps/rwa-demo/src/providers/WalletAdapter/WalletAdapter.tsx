@@ -25,7 +25,6 @@ export const WalletAdapterProvider = ({ children }: PropsWithChildren) => {
           networkId: process.env.NEXT_PUBLIC_NETWORKID,
           projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECTID,
           relayUrl: 'wss://relay.walletconnect.com',
-          debug: true,
         }),
       ]}
     >

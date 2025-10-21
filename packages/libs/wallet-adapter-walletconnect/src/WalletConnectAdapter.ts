@@ -338,9 +338,7 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
       });
     }
 
-    console.log({ pairing });
     const session = await approval();
-    console.log({ session });
 
     if (this.options.debug) {
       console.log('[WalletConnect:debug] session', { session });

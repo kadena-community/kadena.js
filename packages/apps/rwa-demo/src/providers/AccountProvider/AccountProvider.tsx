@@ -138,10 +138,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
         if (!adapter) throw new Error(`${adapterName} adapter not detected`);
 
-        adapter.on('session_delete', async ({ id, topic }) => {
-          console.log('Session deleted:', topic);
-        });
-
         switch (name) {
           case WALLETTYPES.ECKO: {
             const result = await adapter.connect();
@@ -310,15 +306,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const adapter = wallet.client.getAdapter(adapterName);
-
-    console.log({ adapter });
-    console.log(11111);
     if (!adapter) throw new Error(`${adapterName} adapter not detected`);
-    console.log(33333);
 
     try {
       const result = await adapter.connect({});
-      console.log(2222, result);
       if (!result) throw new Error(`${adapterName} connection failed`);
     } catch (e) {
       console.log('not connected');
