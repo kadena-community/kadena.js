@@ -1,5 +1,12 @@
 # @kadena/wallet-adapter-walletconnect
 
+## 0.2.1
+
+### Patch Changes
+
+- 43fd3e8: Add fallback contracts to prevent errors in get accounts call.
+- eea5264: check if session is stale and disconnect
+
 ## 0.2.0
 
 ### Minor Changes
