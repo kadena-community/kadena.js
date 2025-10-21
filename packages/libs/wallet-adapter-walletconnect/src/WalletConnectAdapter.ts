@@ -289,7 +289,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
 
       // Auto-detect paired device
       const pairings = this.client.core.pairing.getPairings();
-
       if (pairings.length > 0) {
         console.log('[WalletConnect] found existing topic:', pairings[0].topic);
         // Reuse existing device pairing (no modal)
@@ -312,7 +311,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
     if (this.options.debug) {
       console.log('[WalletConnect:debug] connectWallet', { pairing });
     }
-
     const { uri, approval } = await this.client.connect({
       pairingTopic: pairing?.topic,
       optionalNamespaces: {
@@ -337,7 +335,6 @@ export class WalletConnectAdapter extends BaseWalletAdapter {
         console.error('Error opening modal:', error);
       });
     }
-
     const session = await approval();
 
     if (this.options.debug) {

@@ -70,13 +70,6 @@ export const FormatSelectAsset = () => {
       window.location.href = '/';
     };
 
-    console.log(
-      2222,
-      asset?.contractName,
-      isCreatingContract,
-      loading,
-      hasError,
-    );
     if (loading || (hasError && isCreatingContract)) {
       return (
         <Button

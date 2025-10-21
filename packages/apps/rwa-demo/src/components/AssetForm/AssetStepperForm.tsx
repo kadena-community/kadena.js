@@ -64,7 +64,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
     setIsSuccess(false);
     setIsPending(true);
     setError('');
-
     if (!data.namespace) {
       setError('there was an issue creating the namespace');
 
@@ -80,7 +79,6 @@ export const AssetStepperForm: FC<IProps> = ({ handleDone }) => {
       });
 
       setIsPending(false);
-
       setIsSuccess(true);
       setStep(STEPS.DONE);
 
