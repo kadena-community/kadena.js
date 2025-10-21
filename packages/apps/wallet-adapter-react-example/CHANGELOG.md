@@ -1,5 +1,13 @@
 # wallet-adapter-react-example
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies \[43fd3e8]
+- Updated dependencies \[eea5264]
+  - @kadena/wallet-adapter-walletconnect\@0.2.1
+
 ## 0.0.10
 
 ### Patch Changes
