@@ -4,6 +4,7 @@ import { CardContent } from '@/App/LayoutLandingPage/components/CardContent';
 import { CardFooterContent } from '@/App/LayoutLandingPage/components/CardFooterContent';
 import { ChainWeaverLogo } from '@/Components/ChainweaverLogo/ChainweaverLogo';
 import { ProfileListItem } from '@/Components/ProfileListItem/ProfileListItem';
+import { usePatchedNavigate } from '@/utils/usePatchedNavigate';
 import { MonoAdd, MonoMoreVert } from '@kadena/kode-icons';
 import {
   Box,
@@ -21,9 +22,10 @@ import { wrapperClass } from '../errors/styles.css';
 
 export function SelectProfile() {
   const { profileList } = useWallet();
+  const navigate = usePatchedNavigate();
 
   const handleRecover = () => {
-    window.location.href = '/wallet-recovery';
+    navigate('/wallet-recovery');
   };
 
   return (
