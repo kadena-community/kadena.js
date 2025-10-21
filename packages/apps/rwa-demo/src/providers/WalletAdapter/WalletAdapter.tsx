@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import { createChainweaverAdapter } from '@kadena/wallet-adapter-chainweaver';
 import { createEckoAdapter } from '@kadena/wallet-adapter-ecko';
 import { createMagicAdapter } from '@kadena/wallet-adapter-magic';
@@ -18,6 +19,7 @@ export const WalletAdapterProvider = ({ children }: PropsWithChildren) => {
         }),
         createChainweaverAdapter({
           appName: 'RWA Demo',
+          walletUrl: env.WALLET_URL,
         }),
         createWalletConnectAdapter({
           networkId: process.env.NEXT_PUBLIC_NETWORKID,

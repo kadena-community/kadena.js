@@ -11,7 +11,9 @@ import { get, off, onValue, ref, remove, set } from 'firebase/database';
 import { getAsset } from '../getAsset';
 import { database } from './firebase';
 
-export const getAssetFolder = (asset?: IAsset) => {
+export const getAssetFolder = (
+  asset?: Pick<IAsset, 'namespace' | 'contractName'>,
+) => {
   if (!asset) return '';
   return getAsset(asset).replace(/\./g, '');
 };
@@ -30,7 +32,10 @@ export const RWAStore = (organisation: IOrganisation) => {
   const dbLocationString = `/organisations/${organisation.id}`;
   const dbLocationTxString = `/organisationsTxs/${organisation.id}`;
 
-  const addTransaction = async (data: ITransaction, asset?: IAsset) => {
+  const addTransaction = async (
+    data: ITransaction,
+    asset?: Pick<IAsset, 'namespace' | 'contractName'>,
+  ) => {
     const assetFolder = getAssetFolder(asset);
     if (!assetFolder) return;
 

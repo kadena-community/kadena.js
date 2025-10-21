@@ -135,6 +135,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         let tempAccount: IWalletAccount | undefined;
 
         const adapter = wallet.client.getAdapter(adapterName);
+
         if (!adapter) throw new Error(`${adapterName} adapter not detected`);
 
         switch (name) {
@@ -224,7 +225,11 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const removeAccount = useCallback(
     async (accountVal: string) => {
-      removeAccountFromUser(accountVal);
+      await removeAccountFromUser(accountVal);
+
+      const account = userData?.accounts.find((w) => w.address === accountVal);
+      const adapter = wallet.client.getAdapter(account?.walletName ?? '');
+      await adapter?.disconnect();
     },
     [removeAccountFromUser],
   );
@@ -302,14 +307,20 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const adapter = wallet.client.getAdapter(adapterName);
     if (!adapter) throw new Error(`${adapterName} adapter not detected`);
-    const result = await adapter.connect();
-    if (!result) throw new Error(`${adapterName} connection failed`);
 
-    console.log('signing via wallet adapter', tx);
-    const signed = (await adapter.signTransaction(tx)) as ICommand;
-    console.log('signed', signed);
+    try {
+      const result = await adapter.connect({});
+      if (!result) throw new Error(`${adapterName} connection failed`);
+    } catch (e) {
+      console.log('not connected');
+    }
 
-    return signed;
+    try {
+      const signed = (await adapter.signTransaction(tx)) as ICommand;
+      return signed;
+    } catch (e) {
+      console.log('not signed');
+    }
   };
 
   return (

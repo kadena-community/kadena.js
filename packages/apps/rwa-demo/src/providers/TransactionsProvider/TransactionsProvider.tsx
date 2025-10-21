@@ -12,11 +12,13 @@ import { useAsset } from '@/hooks/asset';
 import { useNetwork } from '@/hooks/networks';
 import { useNotifications } from '@/hooks/notifications';
 import { useOrganisation } from '@/hooks/organisation';
+import type { IAddContractProps } from '@/services/createContract';
 import { transactionsQuery } from '@/services/graph/transactionSubscription.graph';
 import { analyticsEvent } from '@/utils/analytics';
 import { interpretMessage } from '@/utils/interpretMessage';
 import { RWAStore } from '@/utils/store';
 import { useApolloClient } from '@apollo/client';
+import { Dialog, DialogContent } from '@kadena/kode-ui';
 import type { FC, PropsWithChildren } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { IWalletAccount } from '../AccountProvider/AccountType';
@@ -43,6 +45,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<HTMLDivElement | null>(null);
   const [txsButtonRef, setTxsButtonRefData] =
     useState<HTMLButtonElement | null>(null);
+  const [isTransactionDialog, setIsShowTransactionDialog] = useState(false);
   const { activeNetwork } = useNetwork();
 
   const store = useMemo(() => {
@@ -163,11 +166,12 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         type.find((t) => t.name === val.type.name),
       );
     },
-    [transactions.length],
+    [transactions],
   );
 
   const addTransaction = async (
     request: Omit<ITransaction, 'uuid'>,
+    newAsset?: IAddContractProps,
   ): Promise<ITransaction> => {
     const foundExistingTransaction = transactions.find(
       (v) => v.requestKey === request.requestKey,
@@ -178,7 +182,7 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const data = { ...request, uuid: crypto.randomUUID() };
-    await store?.addTransaction(data, asset);
+    await store?.addTransaction(data, newAsset ? newAsset : asset);
 
     return data;
   };
@@ -252,6 +256,13 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store?.removeTransaction(data, asset);
   };
 
+  const showTransactionDialog = () => {
+    setIsShowTransactionDialog(true);
+  };
+  const hideTransactionDialog = () => {
+    setIsShowTransactionDialog(false);
+  };
+
   return (
     <TransactionsContext
       value={{
@@ -264,9 +275,20 @@ export const TransactionsProvider: FC<PropsWithChildren> = ({ children }) => {
         txsAnimationRef,
         isActiveAccountChangeTx,
         removeTransaction,
+        showTransactionDialog,
+        hideTransactionDialog,
       }}
     >
-      {children}
+      <>
+        {isTransactionDialog && (
+          <Dialog isOpen onOpenChange={hideTransactionDialog} size="sm">
+            <DialogContent>
+              The transaction has been started. Please go to you wallet to sign.
+            </DialogContent>
+          </Dialog>
+        )}
+        {children}
+      </>
     </TransactionsContext>
   );
 };

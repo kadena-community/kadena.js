@@ -1,3 +1,4 @@
+import type { IAddContractProps } from '@/services/createContract';
 import type { ICommandResult } from '@kadena/client';
 import { createContext } from 'react';
 
@@ -57,6 +58,7 @@ export interface ITransactionsContext {
   transactions: ITransaction[];
   addTransaction: (
     request: Omit<ITransaction, 'uuid'>,
+    newAsset?: IAddContractProps,
   ) => Promise<ITransaction>;
   getTransactions: (type: ITxType | ITxType[]) => ITransaction[];
   txsButtonRef?: HTMLButtonElement | null;
@@ -65,6 +67,8 @@ export interface ITransactionsContext {
   setTxsAnimationRef: (value: HTMLDivElement) => void;
   isActiveAccountChangeTx: boolean; //checks if the agentroles for this user are being changed. if so, stop all permissions until the tx is resolved
   removeTransaction: (data: ITransaction) => Promise<void>;
+  showTransactionDialog: () => void;
+  hideTransactionDialog: () => void;
 }
 
 export const TransactionsContext = createContext<ITransactionsContext | null>(

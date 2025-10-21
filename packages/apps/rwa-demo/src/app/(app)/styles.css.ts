@@ -18,3 +18,9 @@ export const logoClass = style({
 globalStyle('body', {
   overflowY: 'hidden',
 });
+
+// fix to make sure the wallet connect modal is ALWAYS on top
+globalStyle('wcm-modal', {
+  position: 'relative',
+  zIndex: 99999999999,
+});
