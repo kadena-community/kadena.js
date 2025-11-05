@@ -48,8 +48,8 @@ export async function recentHeaders(
   host: string,
 ): Promise<IBlockHeader[]> {
   const cut = await currentCut(network, host);
-  const start = cut.hashes['0'].height - depth - n + 1;
-  const end = cut.hashes['0'].height - depth;
+  const start = cut.hashes[`${chainId}`].height - depth - n + 1;
+  const end = cut.hashes[`${chainId}`].height - depth;
   const upper = cut.hashes[`${chainId}`].hash;
 
   return branch(chainId, [upper], [], start, end, n, 'json', network, host);
