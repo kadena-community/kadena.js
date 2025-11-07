@@ -1,64 +1,39 @@
 {
-  "name": "@kadena/create-kadena-app",
-  "version": "0.2.1",
-  "description": "CLI tool to create a starter project with @kadena/client integration",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kadena-community/kadena.js.git",
-    "directory": "packages/tools/create-kadena-app"
-  },
-  "license": "ISC",
-  "contributors": [
-    {
-      "name": "Jermaine Jong",
-      "email": "jermaine@kadena.io"
-    },
-    {
-      "name": "Mohamed Ismail",
-      "email": "mohamed@kadena.io"
-    }
-  ],
+  "name": "create-kadena",
+  "version": "1.0.0",
+  "description": "Scaffold Kadena Dapp with frontend, scripts, and contracts",
+  "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "create-kadena-app": "./bin/index.js"
+    "create-kadena": "./dist/index.js"
   },
   "files": [
-    "dist",
-    "lib"
+    "dist/",
+    "template/",
+    "package.json",
+    "README.md"
   ],
   "scripts": {
-    "build": "pnpm run cleanup && tsc && pnpm run copy",
-    "cleanup": "rimraf dist lib",
-    "copy": "node ./src/scripts/copy.mjs",
-    "format": "prettier config src templates --write",
-    "lint": "eslint ./src --ext .js,.ts --fix",
-    "start": "ts-node --transpile-only src/index.ts",
-    "test": "echo 'No unit tests'",
-    "test:integration": "rimraf test-* && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
+    "build": "tsup bin/index.ts --out-dir dist --format esm && cp -r template dist/",
+    "start": "node dist/index.js"
   },
   "dependencies": {
-    "chalk": "^5.2.0",
-    "commander": "^11.0.0",
-    "cross-fetch": "~3.1.5",
-    "cross-spawn": "~7.0.3",
-    "yaml": "~2.1.1"
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.7"
   },
   "devDependencies": {
-    "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/shared-config": "workspace:*",
-    "@rushstack/eslint-config": "~3.6.9",
-    "@types/cross-spawn": "~6.0.2",
-    "@types/debug": "~4.1.12",
-    "@types/heft-jest": "~1.0.6",
-    "@types/mkdirp": "~1.0.2",
-    "@types/node": "^20.12.7",
-    "@types/rimraf": "~3.0.2",
-    "cross-env": "~7.0.3",
-    "eslint": "^8.45.0",
-    "prettier": "~3.2.5",
-    "recursive-copy": "^2.0.14",
-    "rimraf": "~5.0.1",
-    "ts-node": "~10.9.2",
-    "typescript": "5.4.5"
-  }
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.8",
+    "@types/node": "^24.0.14",
+    "tsup": "^8.5.0",
+    "typescript": "^5.4.5"
+  },
+  "keywords": [
+    "kadena",
+    "dapp",
+    "scaffold",
+    "create",
+    "cli"
+  ],
+  "license": "MIT"
 }
