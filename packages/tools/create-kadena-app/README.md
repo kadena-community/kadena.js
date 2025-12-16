@@ -26,9 +26,9 @@ The two most common blockchain use cases are covered in this starter app:
 - Reading a message from the chain (requires no transaction).
 - Writing a message on the chain, which includes signing and sending a
   transaction on chain and waiting for it to be mined.
+- `@kadena/wallet-adapter-core` for flexible wallet integration
 
-[Chainweaver][2] is used for signing transactions, since it's the Official
-Kadena wallet for advanced blockchain usage and smart contract development.
+[Wallet Adapter Core][2] is used for signing transactions, enabling support for multiple Kadena wallets (Chainweaver, Ecko, Zelcore, etc.) and more adapters are continually being added.
 
 ## Supported Templates
 
@@ -127,7 +127,7 @@ the complete details of the contract nor the Pact language. For more detailed
 info on Pact development visit the **Build** section on [docs.kadena.io][7].
 
 [1]: ##The-Pact-smart-contract
-[2]: https://docs.kadena.io/basics/chainweaver/chainweaver-user-guide
+[2]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/wallet-adapter-core
 [3]: https://nextjs.org/
 [4]: https://vuejs.org/
 [5]: https://angular.io/

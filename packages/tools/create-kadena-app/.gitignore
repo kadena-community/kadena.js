@@ -7,3 +7,6 @@ test-*/*
 sample-*
 *-app
 *-app*
+*.~undo-tree~
+TASKS.md
+test-*.sh

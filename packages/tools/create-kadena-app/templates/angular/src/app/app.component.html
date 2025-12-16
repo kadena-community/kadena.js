@@ -15,23 +15,50 @@
         <p class="note">
           Use the form below to interact with the Kadena blockchain using
           <code>&#64;kadena/client</code> and edit
-          <code>src/pages/index.tsx</code> to get started.
+          <code>src/app/app.component.ts</code> to get started.
         </p>
       </div>
     </section>
+
     <section class="contentWrapper">
+      <div class="card">
+        <h4 class="cardTitle">Wallet</h4>
+
+        <fieldset class="fieldset">
+          <label for="wallet-select" class="fieldLabel">Select Wallet</label>
+          <select id="wallet-select" [(ngModel)]="selectedWallet" class="input">
+            <option value="">-- select a wallet --</option>
+            <option *ngFor="let wallet of availableWallets" [value]="wallet.name">
+              {{ wallet.name }} {{ wallet.detected ? '(Detected)' : '(Not found)' }}
+            </option>
+          </select>
+        </fieldset>
+
+        <div class="buttonWrapper">
+          <button 
+            (click)="connectWallet()" 
+            [disabled]="loading || !selectedWallet || !!account"
+            class="button"
+          >
+            {{ loading ? 'Connecting...' : 'Connect Wallet' }}
+          </button>
+        </div>
+
+        <fieldset class="fieldset">
+          <label for="account" class="fieldLabel">Connected Account</label>
+          <textarea
+            id="account"
+            [(ngModel)]="account"
+            readonly
+            class="input codeFont"
+          ></textarea>
+        </fieldset>
+      </div>
+
       <div class="blockChain">
         <div class="card">
           <h4 class="cardTitle">Write to the blockchain</h4>
-          <fieldset class="fieldset">
-            <label for="account" class="fieldLabel">My Account</label>
-            <input
-              id="account"
-              [(ngModel)]="account"
-              placeholder="Please enter a valid k:account"
-              class="input codeFont"
-            />
-          </fieldset>
+
           <fieldset class="fieldset">
             <label for="messageToWrite" class="fieldLabel">Write Message</label>
             <textarea
@@ -48,7 +75,7 @@
             <button
               type="button"
               (click)="writeMessage()"
-              [disabled]="messageToWrite === '' || writeInProgress"
+              [disabled]="messageToWrite === '' || writeInProgress || account === '' || !selectedWallet"
               class="button"
             >
               Write
@@ -59,11 +86,9 @@
           <h4 class="cardTitle">Read from the blockchain</h4>
           <fieldset class="fieldset">
             <label for="messageToRead" class="fieldLabel">Read Message</label>
-            <textarea id="messageToRead" disabled class="input">
-{{
+            <textarea id="messageToRead" disabled class="input">{{
               messageFromChain
-            }}</textarea
-            >
+            }}</textarea>
           </fieldset>
           <div class="buttonWrapper">
             <button
@@ -98,4 +123,5 @@
       </div>
     </section>
   </main>
+
 </div>
