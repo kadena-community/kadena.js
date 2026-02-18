@@ -3,3 +3,4 @@
 .github/actions
 !.changeset
 pnpm-lock.yaml
+devnet
