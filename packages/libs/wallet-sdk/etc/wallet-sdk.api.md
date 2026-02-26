@@ -51,6 +51,14 @@ export interface IChain {
 }
 
 // @public (undocumented)
+export interface IChainAccount {
+    // (undocumented)
+    accountName: string;
+    // (undocumented)
+    chainId: string;
+}
+
+// @public (undocumented)
 export type ICreateCrossChainTransfer = Parameters<typeof createCrossChainCommand>[0];
 
 // @public (undocumented)
@@ -164,6 +172,30 @@ export interface IEthvmDevTokenInfo {
     maxSupply?: number;
     // (undocumented)
     totalSupply?: number;
+}
+
+// @public (undocumented)
+export interface IFungibleAccount {
+    // (undocumented)
+    accountName: string;
+    // (undocumented)
+    chainAccounts: IChainAccount[];
+}
+
+// @public (undocumented)
+export interface IFungibleAccountsOptions {
+    // (undocumented)
+    fungibleName?: string;
+    // (undocumented)
+    networkId: string;
+    // (undocumented)
+    publicKey: string;
+}
+
+// @public (undocumented)
+export interface IFungibleAccountsResponse {
+    // (undocumented)
+    fungibleAccounts: IFungibleAccount[];
 }
 
 // @public (undocumented)
@@ -305,6 +337,7 @@ export class WalletSDK {
     getChains(networkHost: string): Promise<IChain[]>;
     // (undocumented)
     getChainwebUrl(...args: Parameters<ChainwebHostGenerator>): ReturnType<ChainwebHostGenerator>;
+    getFungibleAccountsByPublicKey(options: IFungibleAccountsOptions): Promise<IFungibleAccountsResponse>;
     // (undocumented)
     getGasLimitEstimate(transaction: ICommand, networkId: string, chainId: ChainId_2): Promise<number>;
     // (undocumented)
