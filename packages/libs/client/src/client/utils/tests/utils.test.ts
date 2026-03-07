@@ -56,18 +56,18 @@ describe('client utils', () => {
   describe('kadenaHostGenerator', () => {
     it('returns mainnet url with the correct chainId', () => {
       expect(
-        kadenaHostGenerator({ networkId: 'mainnet01', chainId: '14' }),
+        kadenaHostGenerator({ networkId: 'mainnet01', chainId: '14', type: 'local' }),
       ).toBe('https://api.chainweb.com/chainweb/0.0/mainnet01/chain/14/pact');
     });
 
     it('returns testnet url with the correct chainId', () => {
       expect(
-        kadenaHostGenerator({ networkId: 'testnet04', chainId: '14' }),
+        kadenaHostGenerator({ networkId: 'testnet04', chainId: '14',type: 'local' }),
       ).toBe(
         'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact',
       );
       expect(
-        kadenaHostGenerator({ networkId: 'testnet05', chainId: '14' }),
+        kadenaHostGenerator({ networkId: 'testnet05', chainId: '14', type: 'local' }),
       ).toBe(
         'https://api.testnet05.chainweb.com/chainweb/0.0/testnet05/chain/14/pact',
       );
@@ -75,7 +75,7 @@ describe('client utils', () => {
 
     it('throes exception if networkId is not either mainnet01 nor testnet04 ', () => {
       expect(() =>
-        kadenaHostGenerator({ networkId: 'incorrect-network', chainId: '14' }),
+        kadenaHostGenerator({ networkId: 'incorrect-network', chainId: '14', type: 'local' }),
       ).toThrowError(Error(`UNKNOWN_NETWORK_ID: incorrect-network`));
     });
   });
@@ -84,14 +84,14 @@ describe('client utils', () => {
     it('returns a function that generates host url based on the networkId and chainId', () => {
       const hostUrl = 'http://localhost:8080';
       const getLocalHostUrl = getHostUrl(hostUrl);
-      expect(getLocalHostUrl({ networkId: 'mainnet01', chainId: '14' })).toBe(
+      expect(getLocalHostUrl({ networkId: 'mainnet01', chainId: '14', type:'local' })).toBe(
         'http://localhost:8080/chainweb/0.0/mainnet01/chain/14/pact',
       );
     });
     it("removes the last '/' from the host url", () => {
       const hostUrl = 'http://localhost:8080/';
       const getLocalHostUrl = getHostUrl(hostUrl);
-      expect(getLocalHostUrl({ networkId: 'mainnet01', chainId: '14' })).toBe(
+      expect(getLocalHostUrl({ networkId: 'mainnet01', chainId: '14', type:'local' })).toBe(
         'http://localhost:8080/chainweb/0.0/mainnet01/chain/14/pact',
       );
     });
@@ -199,23 +199,12 @@ describe('client utils', () => {
           requests: { key2: Promise.resolve('r2') },
         },
       );
-      const mergedPr = mergeAllPollRequestPromises([pr1, pr2]);
+      const mergedPr = await mergeAllPollRequestPromises([pr1, pr2]);
 
-      expect(Object.keys(mergedPr.requests)).toEqual(['key1', 'key2']);
-
-      const res = await Promise.all([
-        mergedPr,
-        mergedPr.requests.key1,
-        mergedPr.requests.key2,
-      ]);
-
-      expect(res[0]).toEqual({
+      expect(mergedPr).toEqual({
         key1: 'r1',
         key2: 'r2',
       });
-
-      expect(res[1]).toEqual('r1');
-      expect(res[2]).toEqual('r2');
     });
   });
 

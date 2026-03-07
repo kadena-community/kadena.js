@@ -61,7 +61,8 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
   checkNetworks().catch((er) =>
     console.log('Error while checking networks', er),
   );
-  return ({ networkId, chainId }: INetworkOptions) => {
+  return ({ networkId, chainId, type }: INetworkOptions) => {
+    // TODO: for the devnet we should consider rate limiting as well and pause the process for some time
     if (Date.now() - lastCheckTime > 30000) {
       checkNetworks().catch((er) =>
         console.log('Error while checking networks', er),
@@ -75,6 +76,6 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
     if (!host) {
       throw new Error('No healthy host found');
     }
-    return getHostUrl(host.url)({ networkId, chainId });
+    return getHostUrl(host.url)({ networkId, chainId, type });
   };
 };

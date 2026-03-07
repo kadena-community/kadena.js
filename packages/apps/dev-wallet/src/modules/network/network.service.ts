@@ -45,7 +45,7 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
   checkNetworks().catch((er) =>
     console.log('Error while checking networks', er),
   );
-  return ({ networkId, chainId }: INetworkOptions) => {
+  return ({ networkId, chainId, type }: INetworkOptions) => {
     if (Date.now() - lastCheckTime > 10000) {
       checkNetworks().catch((er) =>
         console.log('Error while checking networks', er),
@@ -59,6 +59,6 @@ export const hostUrlGenerator = (networks: INetwork[]) => {
     if (!host) {
       throw new Error('No healthy host found');
     }
-    return getHostUrl(host.url)({ networkId, chainId });
+    return getHostUrl(host.url)({ networkId, chainId, type });
   };
 };

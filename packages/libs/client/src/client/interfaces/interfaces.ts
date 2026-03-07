@@ -10,6 +10,7 @@ import type { ChainId } from '@kadena/types';
 export interface INetworkOptions {
   networkId: string;
   chainId: ChainId;
+  type: 'local' | 'send' | 'poll' | 'listen' | 'spv';
 }
 
 /**
@@ -32,9 +33,4 @@ export interface IPollOptions extends ClientRequestInit {
 /**
  * @public
  */
-export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
-  /**
-   * @deprecated pass callback to {@link IPollOptions.onResult} instead
-   */
-  requests: Record<string, Promise<T>>;
-};
+export type IPollRequestPromise<T> = Promise<Record<string, T>>

@@ -131,7 +131,7 @@ export interface IClient extends IBaseClient {
     getPoll: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor, options?: ClientRequestInit) => Promise<IPollResponse>;
     pollOne: (transactionDescriptor: ITransactionDescriptor, options?: IPollOptions) => Promise<ICommandResult>;
     preflight: (transaction: ICommand | IUnsignedCommand, options?: ClientRequestInit) => Promise<ILocalCommandResult>;
-    runPact: (code: string, data: Record<string, unknown>, option: ClientRequestInit & INetworkOptions) => Promise<ICommandResult>;
+    runPact: (code: string, data: Record<string, unknown>, option: ClientRequestInit & Omit<INetworkOptions, 'type'>) => Promise<ICommandResult>;
     // @deprecated
     send: ISubmit;
     signatureVerification: (transaction: ICommand, options?: ClientRequestInit) => Promise<ICommandResult>;
@@ -171,14 +171,16 @@ export interface ICreateClient {
     (hostUrl: string, defaults?: {
         confirmationDepth?: number;
     }): IClient;
-    (hostAddressGenerator?: (options: {
-        chainId: ChainId;
-        networkId: string;
-        type?: 'local' | 'send' | 'poll' | 'listen' | 'spv';
-    }) => string | {
+    (hostAddressGenerator?: (options: INetworkOptions) => string | {
         hostUrl: string;
         requestInit: ClientRequestInit;
     }, defaults?: {
+        confirmationDepth?: number;
+    }): IClient;
+    (hostAddressGenerator?: (options: INetworkOptions) => Promise<string | {
+        hostUrl: string;
+        requestInit: ClientRequestInit;
+    }>, defaults?: {
         confirmationDepth?: number;
     }): IClient;
 }
@@ -230,6 +232,8 @@ export interface INetworkOptions {
     chainId: ChainId;
     // (undocumented)
     networkId: string;
+    // (undocumented)
+    type: 'local' | 'send' | 'poll' | 'listen' | 'spv';
 }
 
 // @public
@@ -307,9 +311,7 @@ export interface IPollOptions extends ClientRequestInit {
 }
 
 // @public (undocumented)
-export type IPollRequestPromise<T> = Promise<Record<string, T>> & {
-    requests: Record<string, Promise<T>>;
-};
+export type IPollRequestPromise<T> = Promise<Record<string, T>>;
 
 export { IPollResponse }
 
