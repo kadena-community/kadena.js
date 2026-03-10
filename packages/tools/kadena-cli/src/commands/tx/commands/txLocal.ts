@@ -61,7 +61,7 @@ export const createTxLocalCommand: (program: Command, version: string) => void =
         return;
       }
 
-      const transaction = await createTransaction(
+      const [transaction] = await createTransaction(
         {
           code,
           'chain-id': templateChainId,
