@@ -1,6 +1,6 @@
 import { signHash } from '@kadena/cryptography-utils';
 
-import { HDKey } from 'ed25519-keygen/hdkey';
+import { HDKey } from 'micro-key-producer/slip10.js';
 import { uint8ArrayToHex } from '../../utils/buffer-helpers.js';
 
 export interface ISignatureWithPublicKey {

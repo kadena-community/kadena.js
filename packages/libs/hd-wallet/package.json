@@ -57,7 +57,7 @@
     "buffer": "6.0.3",
     "buffer-from": "1.1.2",
     "debug": "4.3.4",
-    "ed25519-keygen": "0.4.8"
+    "micro-key-producer": "0.8.6"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
